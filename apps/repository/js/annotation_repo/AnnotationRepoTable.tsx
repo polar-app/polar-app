@@ -61,9 +61,10 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
         this.refreshState(Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex));
     }
 
-    public highlightRow(selected: number) {
+    public onSelected(selected: number, repoAnnotation: RepoAnnotation) {
 
         this.setState({...this.state, selected});
+        this.props.onSelected(repoAnnotation);
 
     }
 
@@ -146,8 +147,10 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                         return {
 
                             onClick: (e: any) => {
-                                console.log(`FIXME: rowInfo: `, rowInfo.original);
-                                this.highlightRow(rowInfo.index as number);
+
+                                const repoAnnotation = rowInfo.original as RepoAnnotation;
+                                this.onSelected(rowInfo.index as number, repoAnnotation);
+
                             },
 
                             style: {
@@ -229,6 +232,9 @@ interface IProps {
     readonly repoDocMetaManager: RepoDocMetaManager;
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
+
+    readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
+
 }
 
 interface IState {

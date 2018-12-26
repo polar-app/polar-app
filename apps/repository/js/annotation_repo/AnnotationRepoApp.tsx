@@ -16,6 +16,8 @@ import {Footer, Tips} from '../Utils';
 import {RepoHeader} from '../RepoHeader';
 import {MessageBanner} from '../MessageBanner';
 import SplitterLayout from 'react-splitter-layout';
+import {RepoAnnotation} from '../RepoAnnotation';
+import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
 
 const log = Logger.create();
 
@@ -37,8 +39,6 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
         this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
 
         this.state = {
-            data: [],
-            columns: new TableColumns()
         };
 
     }
@@ -60,12 +60,13 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                         <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
                                              repoDocMetaManager={this.props.repoDocMetaManager}
-                                             repoDocMetaLoader={this.props.repoDocMetaLoader}/>
+                                             repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                             onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
 
                     </div>
 
-                    <div style={{width: '350px'}}>
-                        this is the metadata ....
+                    <div className="mt-2" style={{width: '350px'}}>
+                        <RepoAnnotationMetaView repoAnnotation={this.state.repoAnnotation}/>
                     </div>
 
 
@@ -78,6 +79,13 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
             </div>
 
         );
+    }
+
+    private onRepoAnnotationSelected(repoAnnotation: RepoAnnotation) {
+        // console.log("A repo annotation was selected: " , repoAnnotation);
+
+        this.setState({repoAnnotation});
+
     }
 
 }
@@ -96,5 +104,7 @@ export interface IProps {
 }
 
 export interface IState {
+
+    readonly repoAnnotation?: RepoAnnotation;
 
 }
