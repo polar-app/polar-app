@@ -57,6 +57,18 @@ export class RepoSidebar extends React.Component<IProps, IState> {
             expanded: false
         };
 
+        window.addEventListener('keyup', event => {
+
+            if (event.key === "Escape") {
+
+                if (this.state.expanded) {
+                    this.setState({ expanded: false });
+                }
+
+            }
+
+        });
+
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {

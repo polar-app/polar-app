@@ -80,6 +80,25 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.initAsync()
             .catch(err => log.error("Could not init: ", err));
 
+
+        window.addEventListener('keyup', event => {
+
+            if (this.state.selected === undefined) {
+                return;
+            }
+
+            if (event.key === "ArrowUp") {
+                const selected = Math.max(this.state.selected - 1, 0);
+                this.setState({...this.state, selected });
+            }
+
+            if (event.key === "ArrowDown") {
+                const selected = this.state.selected + 1;
+                this.setState({...this.state, selected });
+            }
+
+        });
+
     }
 
     private init() {
@@ -473,12 +492,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 // console.log(`doc fingerprint:
                                 // ${rowInfo.original.fingerprint} and filename
                                 // ${rowInfo.original.filename}`);
-                                this.highlightRow(rowInfo.index as number);
+                                this.highlightRow(rowInfo.viewIndex as number);
                             },
 
                             style: {
-                                background: rowInfo && rowInfo.index === this.state.selected ? '#00afec' : 'white',
-                                color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black',
+                                background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
+                                color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
                             }
                         };
                     }}
