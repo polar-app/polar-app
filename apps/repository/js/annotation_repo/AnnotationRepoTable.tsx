@@ -114,6 +114,8 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                                 show: true,
                                 Cell: (row: any) => {
 
+                                    // TODO: use <FormattedTags>
+
                                     const tags: {[id: string]: Tag} = row.original.tags;
 
                                     const formatted = Object.values(tags)
