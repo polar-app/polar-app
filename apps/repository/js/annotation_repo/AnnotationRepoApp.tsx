@@ -66,7 +66,8 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                     </div>
 
                     <div className="mt-2" style={{width: '350px'}}>
-                        <RepoAnnotationMetaView repoAnnotation={this.state.repoAnnotation}/>
+                        <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
+                                                repoAnnotation={this.state.repoAnnotation}/>
                     </div>
 
 

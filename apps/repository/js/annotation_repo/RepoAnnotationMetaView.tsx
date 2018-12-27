@@ -4,7 +4,7 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {TableColumns} from '../TableColumns';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
-import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {IDocInfo, DocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoHeader} from '../RepoHeader';
@@ -15,7 +15,12 @@ import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import Moment from 'react-moment';
 import {FormattedTags} from '../FormattedTags';
+import {Hashcode} from '../../../../web/js/metadata/Hashcode';
+import {Logger} from '../../../../web/js/logger/Logger';
+import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
+import {Button} from 'reactstrap';
 
+const log = Logger.create();
 
 const Styles: IStyleMap = {
 
@@ -31,12 +36,14 @@ const Styles: IStyleMap = {
         display: 'table-cell',
         // fontWeight: 'bold',
         color: 'var(--secondary)',
-        marginRight: '10px'
+        marginRight: '10px',
+        verticalAlign: 'top'
     },
 
     metaValue: {
         paddingLeft: '5px',
         display: 'table-cell',
+        verticalAlign: 'top'
     },
 
     annotationText: {
@@ -52,9 +59,12 @@ const Styles: IStyleMap = {
 };
 export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
+    private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
 
         this.state = {
             data: [],
@@ -66,6 +76,8 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
     public render() {
 
         if (this.props.repoAnnotation) {
+
+            const repoAnnotation = this.props.repoAnnotation;
 
             return (
 
@@ -82,7 +94,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
                                         titleFormat="D MMM YYYY hh:MM A"
                                         format="MMM DD YYYY HH:mm A"
                                         filter={(value) => value.replace(/^an? /g, '1 ')}>
-                                    {this.props.repoAnnotation.created}
+                                    {repoAnnotation.created}
                                 </Moment>
 
                                 <div style={Styles.relativeTime}>
@@ -92,7 +104,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
                                     <Moment withTitle={true}
                                             titleFormat="D MMM YYYY hh:MM A"
                                             fromNow>
-                                        {this.props.repoAnnotation.created}
+                                        {repoAnnotation.created}
                                     </Moment>
 
                                     )
@@ -109,7 +121,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
                             <div style={Styles.metaValue}>
 
-                                <FormattedTags tags={this.props.repoAnnotation.tags || {}}/>
+                                <FormattedTags tags={repoAnnotation.tags || {}}/>
 
                             </div>
 
@@ -121,7 +133,17 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
                             <div style={Styles.metaValue}>
 
-                                {this.props.repoAnnotation.docInfo.title}
+                                {/*TODO: make this into a TextLink component*/}
+
+                                <Button onClick={() => this.onDocumentLoadRequested(repoAnnotation.docInfo)}
+                                        style={{whiteSpace: 'normal', textAlign: 'left'}}
+                                        className="p-0"
+                                        size="sm"
+                                        color="link">
+
+                                    {repoAnnotation.docInfo.title}
+
+                                </Button>
 
                             </div>
 
@@ -130,7 +152,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
                     </div>
 
                     <div style={Styles.annotationText}>
-                        {this.props.repoAnnotation.text}
+                        {repoAnnotation.text}
                     </div>
 
                 </div>
@@ -151,10 +173,20 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
     }
 
+    private onDocumentLoadRequested(docInfo: IDocInfo) {
+
+        this.synchronizingDocLoader.load(docInfo.fingerprint,
+                                         docInfo.filename!,
+                                         docInfo.hashcode)
+            .catch(err => log.error("Unable to load doc: ", err));
+
+    }
+
 }
 
 export interface IProps {
 
+    readonly persistenceLayerManager: PersistenceLayerManager;
     readonly repoAnnotation?: RepoAnnotation;
 }
 

@@ -47,6 +47,7 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
+import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 
 const log = Logger.create();
 
@@ -60,10 +61,13 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
+    private readonly synchronizingDocLoader: SynchronizingDocLoader;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
+        this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
 
         this.onDocTagged = this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
@@ -720,35 +724,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                                     filename: string,
                                     hashcode?: Hashcode) {
 
-        const handler = async () => {
-
-            const persistenceLayer = this.persistenceLayerManager.get();
-
-            const ref: FileRef = {
-                name: filename,
-                hashcode
-            };
-
-            // NOTE: these operations execute locally first, so it's a quick
-            // way to verify that the file needs to be synchronized.
-            const requiresSynchronize =
-                ! await persistenceLayer.contains(fingerprint) ||
-                ! await persistenceLayer.containsFile(Backend.STASH, ref);
-
-            if (requiresSynchronize) {
-                await persistenceLayer.synchronizeDocs(fingerprint);
-                log.notice("Forcing synchronization (doc not local): " + fingerprint);
-            }
-
-            await DocLoader.load({
-                fingerprint,
-                filename,
-                newWindow: true
-            });
-
-        };
-
-        handler()
+        this.synchronizingDocLoader.load(fingerprint, filename, hashcode)
             .catch(err => log.error("Unable to load doc: ", err));
 
     }
