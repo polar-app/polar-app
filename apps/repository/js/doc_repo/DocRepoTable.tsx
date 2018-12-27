@@ -80,7 +80,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.initAsync()
             .catch(err => log.error("Could not init: ", err));
 
-
+        // FIXME: this won't work as it will need to be released...
         window.addEventListener('keyup', event => {
 
             // TODO: only do this if the current react component has focus but

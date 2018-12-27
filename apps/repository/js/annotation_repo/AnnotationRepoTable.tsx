@@ -21,10 +21,11 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {HighlighterIcon} from '../../../../web/js/ui/standard_icons/HighlighterIcon';
+import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 
 const log = Logger.create();
 
-export default class AnnotationRepoTable extends ReleasingReactComponent<IProps, IState> {
+export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
@@ -62,7 +63,8 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
         this.refreshState(Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex));
     }
 
-    public onSelected(selected: number, repoAnnotation: RepoAnnotation) {
+    public onSelected(selected: number,
+                      repoAnnotation: RepoAnnotation) {
 
         this.setState({...this.state, selected});
         this.props.onSelected(repoAnnotation);
@@ -86,7 +88,6 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                                 maxWidth: 30,
 
                                 Cell: (row: any) => {
-                                    console.log(row.original);
                                     return (
 
                                         <div className="text-center">
@@ -170,17 +171,19 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                             onClick: (e: any) => {
 
                                 const repoAnnotation = rowInfo.original as RepoAnnotation;
-                                this.onSelected(rowInfo.index as number, repoAnnotation);
+                                this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
 
                             },
 
                             style: {
-                                background: rowInfo && rowInfo.index === this.state.selected ? '#00afec' : 'white',
-                                color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black',
+                                background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
+                                color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
                             }
+
                         };
                     }}
                     getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
+
 
                         const singleClickColumns: string[] = [];
 
@@ -260,10 +263,9 @@ interface IProps {
 
 }
 
-interface IState {
+interface IState extends IReactTableState {
 
     data: RepoAnnotation[];
-    selected?: number;
 
 }
 
