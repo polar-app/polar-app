@@ -1,5 +1,12 @@
 # 1.7.0
 
+- New annotations view to see all your annotations in one place.
+
+- New sidebar to expand contract to show other pages within polar 
+
+- New option to create a pagemark at the mouse point.  Still more work to make
+  the key bindings visible.
+
 - Adding forced CSS for ::selection so that sites that have broken CSS for 
   highlighting don't actually break polar and we also have consistent highlight
   support.

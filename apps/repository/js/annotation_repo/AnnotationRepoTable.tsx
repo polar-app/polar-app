@@ -20,6 +20,7 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
+import {HighlighterIcon} from '../../../../web/js/ui/standard_icons/HighlighterIcon';
 
 const log = Logger.create();
 
@@ -81,6 +82,23 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                         [
                             {
                                 Header: '',
+                                accessor: 'type',
+                                maxWidth: 30,
+
+                                Cell: (row: any) => {
+                                    console.log(row.original);
+                                    return (
+
+                                        <div className="text-center">
+                                            <HighlighterIcon color={row.original.color}/>
+                                        </div>
+
+                                    );
+                                }
+
+                            },
+                            {
+                                Header: '',
                                 accessor: 'title',
                                 Cell: (row: any) => {
                                     const id = 'annotation-title' + row.index;
@@ -112,6 +130,7 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                                 Header: 'Tags',
                                 accessor: '',
                                 show: true,
+                                width: 200,
                                 Cell: (row: any) => {
 
                                     // TODO: use <FormattedTags>
@@ -169,8 +188,8 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                             return {
                                 onDoubleClick: (e: any) => {
                                     // this.onDocumentLoadRequested(rowInfo.original.fingerprint,
-                                    //                              rowInfo.original.filename,
-                                    //                              rowInfo.original.hashcode);
+                                    // rowInfo.original.filename,
+                                    // rowInfo.original.hashcode);
                                 }
                             };
                         }
@@ -181,8 +200,10 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
 
                                 onClick: ((e: any, handleOriginal?: () => void) => {
                                     //
-                                    // this.handleToggleField(rowInfo.original, column.id)
-                                    //     .catch(err => log.error("Could not handle toggle: ", err));
+                                    // this.handleToggleField(rowInfo.original,
+                                    // column.id) .catch(err =>
+                                    // log.error("Could not handle toggle: ",
+                                    // err));
 
                                     if (handleOriginal) {
                                         // needed for react table to function

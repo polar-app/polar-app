@@ -1,7 +1,7 @@
 import {TextHighlight} from '../../../web/js/metadata/TextHighlight';
 import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
 import {DocInfo} from '../../../web/js/metadata/DocInfo';
-import {RepoAnnotation} from './RepoAnnotation';
+import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
 
@@ -54,6 +54,16 @@ export class RepoAnnotations {
 
         }
 
+        let meta: RepoHighlightInfo | undefined;
+
+        if (type === AnnotationType.TEXT_HIGHLIGHT || type === AnnotationType.AREA_HIGHLIGHT) {
+
+            meta = {
+                color: sourceAnnotation.color
+            };
+
+        }
+
         return {
             id: sourceAnnotation.id,
             fingerprint: docInfo.fingerprint,
@@ -61,6 +71,7 @@ export class RepoAnnotations {
             type,
             created: sourceAnnotation.created,
             tags: docInfo.tags || {},
+            meta,
             docInfo
         };
 

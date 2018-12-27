@@ -24,6 +24,7 @@ import {NULL_FUNCTION} from '../../js/util/Functions';
 import {InviteUsersModal} from '../../js/ui/cloud_auth/InviteUsersModal';
 import Button from 'reactstrap/lib/Button';
 import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
+import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -84,6 +85,12 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <div style={{backgroundColor: 'black', padding: '20px'}}>
+
+                    <HighlighterIcon color={'yellow'}/>
+                </div>
+
+                <HighlighterIcon color={'yellow'}/>
 
 
                 <section className="sidebar text-muted p-1">
