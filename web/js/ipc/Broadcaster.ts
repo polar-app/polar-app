@@ -25,6 +25,7 @@ export class Broadcaster {
 
         this.channel = inputChannel;
 
+        // TODO: require that this is registered via start (not automatically).
         ipcMain.on(inputChannel, (event: Electron.Event, arg: any) => {
 
             log.info("Forwarding message: " , inputChannel, event);

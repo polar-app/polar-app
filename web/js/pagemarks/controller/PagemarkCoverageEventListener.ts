@@ -7,6 +7,8 @@ import {KeyEvents} from '../../KeyEvents';
 import {Elements} from '../../util/Elements';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Percentages} from '../../util/Percentages';
+import {PagemarkMode} from '../../metadata/PagemarkMode';
+import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 
 const log = Logger.create();
 
@@ -30,8 +32,28 @@ export class PagemarkCoverageEventListener {
     public start() {
 
         log.info("Starting...");
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+
+        this.model.registerListenerForDocumentLoaded(() => this.onDocumentLoaded());
+        window.addEventListener("message", event => this.onMessageReceived(event), false);
+
         log.info("Starting...done");
+
+    }
+
+    // for message send from the context menu
+    private onMessageReceived(event: any) {
+
+        log.info("Received message: ", event);
+
+        const triggerEvent = event.data;
+
+        switch (event.data.type) {
+
+            case "create-pagemark-to-point":
+                this.onContextMenuCreatePagemarkToPoint(triggerEvent);
+                break;
+
+        }
 
     }
 
@@ -47,7 +69,7 @@ export class PagemarkCoverageEventListener {
             pageElement.addEventListener("click", this.mouseListener.bind(this));
         });
 
-        if(pages.length === 0) {
+        if (pages.length === 0) {
             log.warn("No pages found for click listener.");
         } else {
             log.debug("Added click listener to N pages: " + pages.length);
@@ -80,29 +102,46 @@ export class PagemarkCoverageEventListener {
             return;
         }
 
-        await this.onActivated(event);
+        await this.onMouseEventCreatePagemarkToPoint(event);
+
+    }
+
+    private async onContextMenuCreatePagemarkToPoint(triggerEvent: TriggerEvent) {
+
+        const pageElement = this.docFormat.getPageElementFromPageNum(triggerEvent.pageNum);
+        const pageNum = triggerEvent.pageNum;
+        const verticalOffsetWithinPageElement = triggerEvent.points.pageOffset.y;
+
+        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement);
+
+        RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
 
     }
 
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
-    private async onActivated(event: MouseEvent) {
+    private async onMouseEventCreatePagemarkToPoint(event: MouseEvent) {
 
         // this should always be .page since we're using currentTarget
         const pageElement = Elements.untilRoot(<HTMLElement> event.currentTarget, ".page");
+        const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+        const eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
+        const verticalOffsetWithinPageElement = eventTargetOffset.top + event.offsetY;
+
+        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement);
+
+        RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
+
+    }
+
+    private async createPagemarkAtPoint(pageNum: number,
+                                        pageElement: HTMLElement,
+                                        verticalOffsetWithinPageElement: number) {
 
         const pageHeight = pageElement.clientHeight;
 
-        const eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
+        const percentage = Percentages.calculate(verticalOffsetWithinPageElement, pageHeight);
 
-        const mouseY = eventTargetOffset.top + event.offsetY;
-
-        const percentage = Percentages.calculate(mouseY, pageHeight);
-
-        log.info("percentage: ", percentage);
-
-        const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-
-        RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
+        log.info("percentage for pagemark: ", percentage);
 
         this.controller.erasePagemark(pageNum);
         await this.controller.createPagemark(pageNum, {percentage});

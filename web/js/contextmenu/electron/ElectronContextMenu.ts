@@ -31,6 +31,7 @@ export class ElectronContextMenu {
 
         });
 
+        // noinspection TsLint: no-unused-expression
         new Broadcaster('create-annotation');
 
     }
@@ -52,7 +53,7 @@ export class ElectronContextMenu {
         // arguments not a object. Note that we should NOT include the mouse
         // point as by default it uses the mouse point anyway which is almost
         // always what we want.
-        ctxMenu.popup(<PopupOptions>{
+        ctxMenu.popup(<PopupOptions> {
             window
         });
 
@@ -257,8 +258,28 @@ export class ElectronContextMenu {
         //     click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
         // }));
 
+
+        // ctxMenu.append(this.createSubmenu('Create Pagemark...', [
+        //
+        //     new MenuItem({
+        //         label: '... To Point',
+        //         click: () => this.postContextMenuMessage("create-pagemark-to-point", triggerEvent)
+        //     }),
+        //
+        //     new MenuItem({
+        //         label: '... Box At Point',
+        //         click: () => this.postContextMenuMessage("create-pagemark", triggerEvent)
+        //     }),
+        //
+        // ]));
+
         ctxMenu.append(new MenuItem({
-            label: 'Create Pagemark',
+            label: 'Create Pagemark to Point',
+            click: () => this.postContextMenuMessage("create-pagemark-to-point", triggerEvent)
+        }));
+
+        ctxMenu.append(new MenuItem({
+            label: 'Create Pagemark Box',
             click: () => this.postContextMenuMessage("create-pagemark", triggerEvent)
         }));
 
@@ -329,11 +350,11 @@ export class ElectronContextMenu {
 
     }
 
-    createSubmenu(label: string, menuItems: MenuItem[]): MenuItem {
+    public createSubmenu(label: string, menuItems: MenuItem[]): MenuItem {
 
-        let submenu = new Menu();
+        const submenu = new Menu();
 
-        let submenuItem = new MenuItem({
+        const submenuItem = new MenuItem({
             label,
             type: 'submenu',
             submenu

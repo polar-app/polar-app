@@ -19,7 +19,7 @@ export abstract class DocFormat {
         return parseInt(dataPageNum);
     }
 
-    public getPageElementFromPageNum(pageNum: number) {
+    public getPageElementFromPageNum(pageNum: number): HTMLElement {
 
         if (!pageNum) {
             throw new Error("Page number not specified");
@@ -35,7 +35,7 @@ export abstract class DocFormat {
             throw new Error("Unable to find page element for page num: " + pageNum);
         }
 
-        return pageElement;
+        return <HTMLElement> pageElement;
 
     }
 
