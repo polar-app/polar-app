@@ -46,10 +46,11 @@ import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
+import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 
 const log = Logger.create();
 
-export default class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
+export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private static hasSentInitAnalyitics = false;
 
@@ -79,28 +80,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         this.initAsync()
             .catch(err => log.error("Could not init: ", err));
-
-        // FIXME: this won't work as it will need to be released...
-        window.addEventListener('keyup', event => {
-
-            // TODO: only do this if the current react component has focus but
-            // I'm not sure if I can figure this out...
-
-            if (this.state.selected === undefined) {
-                return;
-            }
-
-            if (event.key === "ArrowUp") {
-                const selected = Math.max(this.state.selected - 1, 0);
-                this.setState({...this.state, selected });
-            }
-
-            if (event.key === "ArrowDown") {
-                const selected = this.state.selected + 1;
-                this.setState({...this.state, selected });
-            }
-
-        });
 
     }
 
@@ -816,12 +795,8 @@ interface IProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 }
 
-interface IState {
-
-    // docs: DocDetail[];
-
+interface IState extends IReactTableState {
     data: RepoDocInfo[];
     columns: TableColumns;
-    selected?: number;
 }
 
