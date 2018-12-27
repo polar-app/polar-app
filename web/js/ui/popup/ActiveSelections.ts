@@ -21,6 +21,9 @@ export class ActiveSelections {
 
         let activeSelection: ActiveSelection | undefined;
 
+        type EventFired = 'none' | 'created' | 'destroyed';
+
+        let eventFired: EventFired = 'none';
 
         // TODO: this code has the following known issues:
         //
@@ -30,6 +33,15 @@ export class ActiveSelections {
         //
         // - if we click outside of the main iframe then we don't get the follow
         //   on events.
+
+        const handleDestroyedSelection = () => {
+
+            listener({ ...activeSelection!, type: 'destroyed' });
+            activeSelection = undefined;
+
+            eventFired = 'destroyed';
+
+        };
 
         target.addEventListener('mousedown', (event: MouseEvent) => {
 
@@ -43,10 +55,8 @@ export class ActiveSelections {
 
             const handleMouseEvent = () => {
 
-                type EventFired = 'none' | 'created' | 'destroyed';
-
                 let hasActiveTextSelection: boolean = false;
-                let eventFired: EventFired = 'none';
+                eventFired = 'none';
 
                 try {
 
@@ -64,13 +74,7 @@ export class ActiveSelections {
                     }
 
                     if (activeSelection) {
-
-                        activeSelection = { ...activeSelection, type: 'destroyed' };
-                        listener(activeSelection);
-                        activeSelection = undefined;
-
-                        eventFired = 'destroyed';
-
+                        handleDestroyedSelection();
                     }
 
                     if (hasActiveTextSelection) {
@@ -103,16 +107,49 @@ export class ActiveSelections {
 
             };
 
-            // needs to be called via setTimeout becuase if we click 'on' the
-            // selection there's a bug where the selection is still present and
-            // isn't removed.  Allowing the event to complete by taking this
-            // event handler and pushing it on the event queue allows the
-            // selection to be removed by the default handler once it bubbles
-            // up.
-            setTimeout(() => handleMouseEvent(), 1);
+            this.withTimeout(() => handleMouseEvent());
 
         });
 
+        // TODO: I played with closing the annotation bar on right click but
+        // it was difficult to setup. It had the following problems:
+        //
+        //
+        // 1. When the selection was active, and we right click, the selection
+        //    does not go away.  Which means that the annotation bar should still
+        //    be up.
+        //
+        // 2. There was inconsistent behavior.  If we right click then the
+        //    selection goes away if we click outside but stays if we click inside
+        //    the selection.
+        //
+        //  3. This isn't a MASSIVE problem so probably shouldn't spend much time
+        //    on it.
+
+        // target.addEventListener('contextmenu', (event: MouseEvent) => {
+        //
+        //     const handleMouseEvent = () => {
+        //
+        //         if (activeSelection) {
+        //             handleDestroyedSelection();
+        //         }
+        //
+        //     };
+        //
+        //     this.withTimeout(() => handleMouseEvent());
+        //
+        // });
+
+    }
+
+    // needs to be called via setTimeout becuase if we click 'on' the
+    // selection there's a bug where the selection is still present and
+    // isn't removed.  Allowing the event to complete by taking this
+    // event handler and pushing it on the event queue allows the
+    // selection to be removed by the default handler once it bubbles
+    // up.
+    private static withTimeout(callback: () => void) {
+        setTimeout(() => callback(), 1);
     }
 
     private static targetElementForEvent(event: MouseEvent): HTMLElement | undefined {
