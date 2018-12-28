@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Tag} from '../../../web/js/tags/Tag';
 import {TagsDB} from './TagsDB';
 import Select from 'react-select';
-import {Popover, PopoverBody} from 'reactstrap';
+import {Popover, PopoverBody, Button} from 'reactstrap';
 import {Blackout} from './Blackout';
 import {TagSelectOptions} from './TagSelectOptions';
 import {TagSelectOption} from './TagSelectOption';
@@ -40,13 +40,25 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 
             <div>
 
-                <div id={this.id} onClick={this.toggle} className="header-filter-clickable">
+                {/*<div id={this.id} onClick={this.toggle} className="header-filter-clickable">*/}
 
-                    <label>Tags: </label>
+                    {/*<label>Tags: </label>*/}
 
-                    <i className="fa fa-tag doc-button doc-button-selectable"/>
+                    {/*<i className="fa fa-tag doc-button doc-button-selectable"/>*/}
 
-                </div>
+                {/*</div>*/}
+
+                <Button color="light"
+                        id={this.id}
+                        size="sm"
+                        onClick={this.toggle}
+                        className="header-filter-clickable p-1 pl-2 pr-2 border">
+
+                    <i className="fa fa-tag doc-button doc-button-selectable mr-1"/>
+                    Tags
+
+                </Button>
+
 
                 <Popover placement="bottom"
                          isOpen={this.state.popoverOpen}

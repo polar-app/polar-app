@@ -8,6 +8,7 @@ const Styles: IStyleMap = {
 
     child: {
         display: 'inline-block',
+        verticalAlign: 'middle'
     },
 
     textLogo: {
