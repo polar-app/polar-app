@@ -29,7 +29,6 @@ const Styles: IStyleMap = {
 
 };
 
-// noinspection TsLint
 export class FilterTagInput extends React.Component<FilterTagInputProps, FilterTagInputState> {
 
     private readonly id = "filter-tag-input";
@@ -60,14 +59,6 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 
             <div>
 
-                {/*<div id={this.id} onClick={this.toggle} className="header-filter-clickable">*/}
-
-                    {/*<label>Tags: </label>*/}
-
-                    {/*<i className="fa fa-tag doc-button doc-button-selectable"/>*/}
-
-                {/*</div>*/}
-
                 <Button color="light"
                         id={this.id}
                         size="sm"
@@ -80,7 +71,6 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
                     <div style={Styles.dropdownChevron}></div>
 
                 </Button>
-
 
                 <Popover placement="bottom"
                          isOpen={this.state.popoverOpen}
