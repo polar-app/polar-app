@@ -12,8 +12,10 @@ import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from '../metadata/AnnotationType';
-import {UncontrolledCollapse} from 'reactstrap';
+import {UncontrolledCollapse, Button} from 'reactstrap';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {CommentIcon} from '../ui/standard_icons/CommentIcon';
+import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 
 
 const Styles: IStyleMap = {
@@ -73,21 +75,29 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                     <div className="flexbar-right">
 
-                        <a className="text-muted ml-2"
-                           title="Create comment"
-                           style={Styles.button}
-                           href="#" onClick={() => this.toggleActiveInputComponent('comment')}>
-                            <i style={Styles.icon}
-                               className="fas fa-comment-alt"></i>
-                        </a>
+                        {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        <a className="text-muted ml-2"
-                           title="Create flashcard"
-                           style={Styles.button}
-                           href="#" onClick={() => this.toggleActiveInputComponent('flashcard')}>
-                            <i style={Styles.icon}
-                               className="fas fa-bolt"></i>
-                        </a>
+                        <Button className="text-muted"
+                                title="Create comment"
+                                size="sm"
+                                color="light"
+                                style={Styles.button}
+                                onClick={() => this.toggleActiveInputComponent('comment')}>
+
+                            <CommentIcon/>
+
+                        </Button>
+
+                        <Button className="text-muted"
+                                title="Create flashcard"
+                                style={Styles.button}
+                                size="sm"
+                                color="light"
+                                onClick={() => this.toggleActiveInputComponent('flashcard')}>
+
+                            <FlashcardIcon/>
+
+                        </Button>
 
                         {/*<a className="text-muted ml-2"*/}
                            {/*title="Jump to annotation contet"*/}
