@@ -59,10 +59,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
     }
 
-    public refresh() {
-        this.refreshState(Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex));
-    }
-
     public onSelected(selected: number,
                       repoAnnotation: RepoAnnotation) {
 
@@ -233,9 +229,18 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         );
     }
 
-    private refreshState(repoAnnotations: RepoAnnotation[]) {
+    public refresh() {
+        const data = Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
+        this.doRefresh(this.filter(data));
+    }
 
-        const state: IState = {...this.state, data: repoAnnotations};
+    private filter(data: RepoAnnotation[]): RepoAnnotation[] {
+        return data;
+    }
+
+    private doRefresh(data: RepoAnnotation[]) {
+
+        const state: IState = {...this.state, data};
 
         setTimeout(() => {
 

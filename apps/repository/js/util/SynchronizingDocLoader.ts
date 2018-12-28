@@ -38,10 +38,10 @@ export class SynchronizingDocLoader {
         }
 
         await DocLoader.load({
-                                 fingerprint,
-                                 filename,
-                                 newWindow: true
-                             });
+             fingerprint,
+             filename,
+             newWindow: true
+         });
 
     }
 

@@ -16,7 +16,7 @@ describe('BrowserWindowRegistry', function() {
 
     }
 
-    it("make sure GC works", async function () {
+    it("make sure GC works", async function() {
 
         const mockLiveWindowsProvider = new MockLiveWindowsProvider();
 
@@ -37,7 +37,7 @@ describe('BrowserWindowRegistry', function() {
     });
 
 
-    it("basic tagging", async function () {
+    it("basic tagging", async function() {
 
         const mockLiveWindowsProvider = new MockLiveWindowsProvider();
 

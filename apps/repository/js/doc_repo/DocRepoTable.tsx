@@ -161,10 +161,6 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     }
 
-    public refresh() {
-        this.refreshState(this.filterRepoDocInfos(Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex)));
-    }
-
     public highlightRow(selected: number) {
 
         const state: AppState = Object.assign({}, this.state);
@@ -620,11 +616,16 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     }
 
-    private refreshState(repoDocInfos: RepoDocInfo[]) {
+    public refresh() {
+        this.doRefresh(this.filter(Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex)));
+    }
 
-        const state: AppState = Object.assign({}, this.state);
+    /**
+     * Perform the actual refresh.
+     */
+    private doRefresh(data: RepoDocInfo[]) {
 
-        state.data = repoDocInfos;
+        const state = {...this.state, data};
 
         setTimeout(() => {
 
@@ -636,7 +637,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     }
 
-    private filterRepoDocInfos(repoDocInfos: RepoDocInfo[]): RepoDocInfo[] {
+    private filter(repoDocInfos: RepoDocInfo[]): RepoDocInfo[] {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
@@ -684,9 +685,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
     private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
         if (this.filterArchived) {
-
             log.info("Applying archived filter");
-
             return repoDocs.filter(current => !current.archived);
         }
 

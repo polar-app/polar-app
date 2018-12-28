@@ -47,6 +47,7 @@ const Styles: IStyleMap = {
     }
 
 };
+
 export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
