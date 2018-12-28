@@ -7,7 +7,27 @@ import {Blackout} from './Blackout';
 import {TagSelectOptions} from './TagSelectOptions';
 import {TagSelectOption} from './TagSelectOption';
 import {FilteredTags} from './FilteredTags';
+import {IStyleMap} from '../../../web/js/react/IStyleMap';
 // import {SyntheticKeyboardEvent} from 'react-dom';
+
+const Styles: IStyleMap = {
+
+    dropdownChevron: {
+
+        display: 'inline-block',
+        width: 0,
+        height: 0,
+        marginLeft: '.255em',
+        verticalAlign: '.255em',
+        borderTop: '.3em solid',
+        borderRight: '.3em solid transparent',
+        borderBottom: 0,
+        borderLeft: '.3em solid transparent',
+        color: 'var(--secondary)'
+
+    }
+
+};
 
 // noinspection TsLint
 export class FilterTagInput extends React.Component<FilterTagInputProps, FilterTagInputState> {
@@ -56,6 +76,8 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 
                     <i className="fa fa-tag doc-button doc-button-selectable mr-1"/>
                     Tags
+
+                    <div style={Styles.dropdownChevron}></div>
 
                 </Button>
 
