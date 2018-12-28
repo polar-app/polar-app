@@ -17,6 +17,7 @@ import {InviteUsersContent} from '../../js/ui/cloud_auth/InviteUsersContent';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import Button from 'reactstrap/lib/Button';
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
+import {ToggleButton} from './ToggleButton';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -77,6 +78,91 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <div className="p-2">
+                    <ToggleButton label="flagged only"
+                                  onChange={() => console.log('changed')}/>
+                </div>
+
+
+                <div className="p-2">
+
+
+
+
+                    <Button color="light p-0 pr-1 border rounded" size="sm">
+
+                        <div style={{display: 'flex'}}>
+
+                            <div className="p-1 bg-secondary text-light rounded-left"
+                                 style={{verticalAlign: 'middle', textAlign: 'center', width: '2.5em'}}>
+
+                                &nbsp;<i className="fas fa-minus"></i>&nbsp;
+
+                            </div>
+
+                            <div className="p-1"
+                                 style={{verticalAlign: 'middle'}}>
+                                &nbsp;flagged only
+                            </div>
+
+                        </div>
+
+                    </Button>
+
+                </div>
+
+
+
+                <div className="p-2">
+
+
+                    <Button color="light p-0 pr-1 border rounded" size="sm">
+
+                        <div style={{display: 'flex'}}>
+
+                            <div className="p-1 bg-primary text-light rounded-left"
+                                 style={{verticalAlign: 'middle', textAlign: 'center', width: '2.5em'}}>
+
+                                &nbsp;<i className="fas fa-check"></i>&nbsp;
+
+                            </div>
+
+                            <div className="p-1"
+                                 style={{verticalAlign: 'middle'}}>
+                                &nbsp;flagged only
+                            </div>
+
+                        </div>
+
+                    </Button>
+
+                </div>
+
+
+                <div className="p-2">
+
+                    <Button color="light" size="sm">
+                        <i className="fas fa-check"></i> &nbsp;flagged only
+                    </Button>
+
+                </div>
+
+                <div className="form-group">
+                    <input type="checkbox" name="fancy-checkbox-default"
+                           id="fancy-checkbox-default" autoComplete="off"/>
+                    <div className="btn-group">
+                        <label htmlFor="fancy-checkbox-default"
+                               className="btn btn-default">
+                            <span className="glyphicon glyphicon-ok"></span>
+                            <span> </span>
+                        </label>
+                        <label htmlFor="fancy-checkbox-default"
+                               className="btn btn-default active">
+                            Default Checkbox
+                        </label>
+                    </div>
+                </div>
+
                 <div style={{backgroundColor: 'black', padding: '20px'}}>
 
                     <HighlighterIcon color={'yellow'}/>
@@ -108,13 +194,18 @@ class App<P> extends React.Component<{}, IAppState> {
                 </section>
 
 
+
+
                 <div className="p-2">
 
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend">
-                            <Button>To the Left!</Button>
+                    <InputGroup className="border rounded">
+
+                        <Button color="primary">
+                            <i className="fas fa-check"></i> &nbsp;
+                        </Button>
+                        <InputGroupAddon addonType="append">
+                            <Button color="light">flagged only</Button>
                         </InputGroupAddon>
-                        <Input />
                     </InputGroup>
 
                 </div>
