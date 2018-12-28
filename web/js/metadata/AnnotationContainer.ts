@@ -16,7 +16,7 @@ export class AnnotationContainer<A extends Annotation> {
     public static newInstance<A extends Annotation>(descriptor: AnnotationDescriptor,
                                                     value: A): Readonly<AnnotationContainer<A>> {
 
-        let result = new AnnotationContainer(<AnnotationContainer<A>> {
+        const result = new AnnotationContainer(<AnnotationContainer<A>> {
             descriptor, value
         });
 
