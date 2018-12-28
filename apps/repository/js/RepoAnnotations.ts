@@ -64,6 +64,16 @@ export class RepoAnnotations {
             text = Texts.toText(sourceText);
         }
 
+        if (type === AnnotationType.FLASHCARD) {
+            const flashcard = <Flashcard> sourceAnnotation;
+            const textFields = Object.values(flashcard.fields);
+
+            if (textFields.length > 0) {
+                text = Texts.toText(textFields[0]);
+            }
+
+        }
+
         let meta: RepoHighlightInfo | undefined;
 
         if (type === AnnotationType.TEXT_HIGHLIGHT) {
