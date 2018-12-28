@@ -48,6 +48,7 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
+import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
 
 const log = Logger.create();
 
@@ -63,6 +64,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
+    private filterArchived = true;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -74,6 +77,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
         this.onFilterByTitle = this.onFilterByTitle.bind(this);
+
+        this.onToggleFilterArchived = this.onToggleFilterArchived.bind(this);
 
         this.state = {
             data: [],
@@ -193,16 +198,12 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
                             <div className="header-filter-box"
                                  style={{whiteSpace: 'nowrap'}}>
+
                                 <div className="checkbox-group">
 
-                                    <input id="filter_archived"
-                                           defaultChecked
-                                           type="checkbox"
-                                           className="header-filter-clickable"
-                                           onChange={() => this.refresh()}/>
-
-                                    <label className="header-filter-clickable"
-                                           htmlFor="filter_archived">hide archived</label>
+                                    <ToggleButton label="hide archived"
+                                                  initialValue={true}
+                                                  onChange={value => this.onToggleFilterArchived(value)}/>
 
                                 </div>
 
@@ -680,9 +681,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
-        const filterElement = document.querySelector("#filter_archived") as HTMLInputElement;
+        if (this.filterArchived) {
 
-        if (filterElement.checked) {
             log.info("Applying archived filter");
 
             return repoDocs.filter(current => !current.archived);
@@ -756,6 +756,11 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
             this.refresh();
         }
 
+    }
+
+    private onToggleFilterArchived(value: boolean) {
+        this.filterArchived = value;
+        this.refresh();
     }
 
 }

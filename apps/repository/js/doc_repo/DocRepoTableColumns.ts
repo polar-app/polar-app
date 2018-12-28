@@ -56,3 +56,5 @@ export class DocRepoTableColumns implements KeyValueMapping<DocRepoTableColumns,
     };
 
 }
+
+
