@@ -120,6 +120,18 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
                         <div style={Styles.metaTableRow}>
 
+                            <div style={Styles.metaField}>Type</div>
+
+                            <div style={Styles.metaValue}>
+
+                                {repoAnnotation.type}
+
+                            </div>
+
+                        </div>
+
+                        <div style={Styles.metaTableRow}>
+
                             <div style={Styles.metaField}>Doc</div>
 
                             <div style={Styles.metaValue}>

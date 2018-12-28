@@ -22,6 +22,7 @@ import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {HighlighterIcon} from '../../../../web/js/ui/standard_icons/HighlighterIcon';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
+import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
 
 const log = Logger.create();
 
@@ -69,6 +70,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
     public render() {
         const { data } = this.state;
+
         return (
 
             <div id="doc-repo-table">
@@ -87,7 +89,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                     return (
 
                                         <div className="text-center">
-                                            <HighlighterIcon color={row.original.color}/>
+                                            <AnnotationIcon type={row.original.type} color={row.original.color}/>
                                         </div>
 
                                     );

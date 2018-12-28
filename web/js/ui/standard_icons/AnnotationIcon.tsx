@@ -1,0 +1,55 @@
+import * as React from 'react';
+import {HighlightColor} from '../../metadata/BaseHighlight';
+import {AnnotationType} from '../../metadata/AnnotationType';
+import {FlashcardIcon} from './FlashcardIcon';
+import {CommentIcon} from './CommentIcon';
+import {HighlighterIcon} from './HighlighterIcon';
+
+/**
+ */
+export class AnnotationIcon extends React.Component<IProps, IState> {
+
+    constructor(props: IProps, context: any) {
+        super(props, context);
+    }
+
+    public render() {
+
+        switch (this.props.type) {
+
+            case AnnotationType.FLASHCARD:
+                return ( <FlashcardIcon/> );
+
+            case AnnotationType.COMMENT:
+                return ( <CommentIcon/> );
+
+            case AnnotationType.AREA_HIGHLIGHT:
+                return ( <HighlighterIcon color={this.props.color!}/> );
+
+            case AnnotationType.TEXT_HIGHLIGHT:
+                return ( <HighlighterIcon color={this.props.color!}/> );
+
+            default:
+                return ( <div>none</div> );
+
+        }
+
+        return (
+
+            <span className="fas fa-highlighter text-secondary"
+                  aria-hidden="true"/>
+
+        );
+
+    }
+
+
+}
+
+interface IProps {
+    type: AnnotationType;
+    color?: HighlightColor;
+}
+
+interface IState {
+}
