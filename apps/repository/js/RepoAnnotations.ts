@@ -6,6 +6,8 @@ import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Flashcard} from '../../../web/js/metadata/Flashcard';
+import {Text} from '../../../web/js/metadata/Text';
+import {Texts} from '../../../web/js/metadata/Texts';
 
 export class RepoAnnotations {
 
@@ -29,7 +31,7 @@ export class RepoAnnotations {
                 result.push(this.toRepoAnnotation(areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
             }
 
-            for (const comment of areaHighlights) {
+            for (const comment of comments) {
                 result.push(this.toRepoAnnotation(comment, AnnotationType.COMMENT, docInfo));
             }
 
@@ -53,17 +55,13 @@ export class RepoAnnotations {
         let text: string | undefined;
 
         if ((<any> sourceAnnotation).text) {
+            const sourceText: Text = (<any> sourceAnnotation).text;
+            text = Texts.toText(sourceText);
+        }
 
-            const sourceText: any = (<any> sourceAnnotation).text;
-
-            if (sourceText.TEXT) {
-                text = sourceText.TEXT;
-            }
-
-            if (sourceText.HTML) {
-                text = sourceText.HTML;
-            }
-
+        if ((<any> sourceAnnotation).content) {
+            const sourceText: Text = (<any> sourceAnnotation).content;
+            text = Texts.toText(sourceText);
         }
 
         let meta: RepoHighlightInfo | undefined;
