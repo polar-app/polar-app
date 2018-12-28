@@ -17,7 +17,7 @@ import {InviteUsersContent} from '../../js/ui/cloud_auth/InviteUsersContent';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import Button from 'reactstrap/lib/Button';
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
-import {ToggleButton} from './ToggleButton';
+import {ToggleButton} from '../../js/ui/ToggleButton';
 
 class App<P> extends React.Component<{}, IAppState> {
 
