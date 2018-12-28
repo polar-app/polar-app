@@ -49,6 +49,7 @@ import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
+import {Input} from 'reactstrap';
 
 const log = Logger.create();
 
@@ -66,6 +67,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private filterArchived = true;
 
+    private filterFlaggedOnly = false;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -79,6 +82,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
         this.onFilterByTitle = this.onFilterByTitle.bind(this);
 
         this.onToggleFilterArchived = this.onToggleFilterArchived.bind(this);
+        this.onToggleFlaggedOnly = this.onToggleFlaggedOnly.bind(this);
 
         this.state = {
             data: [],
@@ -187,12 +191,11 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                             <div className="header-filter-box"
                                  style={{whiteSpace: 'nowrap'}}>
                                 <div className="checkbox-group">
-                                    <input id="filter_flagged"
-                                           type="checkbox"
-                                           className="header-filter-clickable"
-                                           onChange={() => this.refresh()}/>
-                                    <label className="header-filter-clickable"
-                                           htmlFor="filter_flagged">flagged only</label>
+
+                                    <ToggleButton label="flagged only"
+                                                  initialValue={false}
+                                                  onChange={value => this.onToggleFlaggedOnly(value)}/>
+
                                 </div>
                             </div>
 
@@ -219,6 +222,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                             </div>
 
                             <div className="header-filter-box">
+
                                 <input id="filter_title"
                                        type="text"
                                        placeholder="Filter by title"
@@ -669,9 +673,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private doFilterFlaggedOnly(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
-        const filterElement = document.querySelector("#filter_flagged") as HTMLInputElement;
-
-        if (filterElement.checked) {
+        if (this.filterFlaggedOnly) {
             return repoDocs.filter(current => current.flagged);
         }
 
@@ -756,6 +758,11 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
             this.refresh();
         }
 
+    }
+
+    private onToggleFlaggedOnly(value: boolean) {
+        this.filterFlaggedOnly = value;
+        this.refresh();
     }
 
     private onToggleFilterArchived(value: boolean) {
