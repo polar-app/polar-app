@@ -1,13 +1,12 @@
 import {RepoDocInfo} from './RepoDocInfo';
-import {ListOptionType} from '../../../web/js/ui/list_selector/ListSelector';
-import {TableColumns} from './TableColumns';
+import {DocRepoTableColumns} from './doc_repo/DocRepoTableColumns';
 
 export interface AppState {
 
     // docs: DocDetail[];
 
     data: RepoDocInfo[];
-    columns: TableColumns;
+    columns: DocRepoTableColumns;
     selected?: number;
 }
 

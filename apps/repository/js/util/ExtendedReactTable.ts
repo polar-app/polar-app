@@ -1,7 +1,4 @@
-import {RepoDocInfo} from '../RepoDocInfo';
-import {TableColumns} from '../TableColumns';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
-import * as React from 'react';
 
 export class ExtendedReactTable<P, S extends IReactTableState> extends ReleasingReactComponent<P, S> {
 

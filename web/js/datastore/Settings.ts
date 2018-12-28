@@ -1,4 +1,4 @@
-import {TableColumns} from "../../../apps/repository/js/TableColumns";
+import {DocRepoTableColumns} from "../../../apps/repository/js/doc_repo/DocRepoTableColumns";
 
 /**
  * User settings for the UI.
@@ -19,7 +19,7 @@ export interface DocumentRepositorySettings {
     /**
      * Allows us to keep track of the columns that are enabled/disabled.
      */
-    columns?: TableColumns;
+    columns?: DocRepoTableColumns;
 
 }
 

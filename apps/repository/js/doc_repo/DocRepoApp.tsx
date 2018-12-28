@@ -3,7 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {FilteredTags} from '../FilteredTags';
-import {TableColumns} from '../TableColumns';
+import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBar, SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
@@ -33,7 +33,7 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
 
         this.state = {
             data: [],
-            columns: new TableColumns()
+            columns: new DocRepoTableColumns()
         };
 
     }

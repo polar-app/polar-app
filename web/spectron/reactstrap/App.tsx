@@ -1,39 +1,6 @@
 import * as React from 'react';
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownToggle,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupButtonDropdown,
-    ListGroup,
-    ListGroupItem,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter
-} from 'reactstrap';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import Navbar from 'reactstrap/lib/Navbar';
-import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
-import Moment from 'react-moment';
-import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelector';
-import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
-import {IStyleMap} from '../../js/react/IStyleMap';
-import {CloudSyncOverviewModal} from '../../js/ui/cloud_auth/CloudSyncOverviewModal';
 import {SyncBar, SyncBarProgress} from '../../js/ui/sync_bar/SyncBar';
-import {WhatsNewComponent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewComponent';
 import {IEventDispatcher, SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {WhatsNewModal} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewModal';
-import ReactTable from 'react-table';
-import {DateTimeTableCell} from '../../../apps/repository/js/DateTimeTableCell';
-import {Tag} from '../../js/tags/Tag';
-import {RepoDocInfo} from '../../../apps/repository/js/RepoDocInfo';
-import {Optional} from '../../js/util/ts/Optional';
-import {TagInput} from '../../../apps/repository/js/TagInput';
-import {DocDropdown} from '../../../apps/repository/js/DocDropdown';
 import {Logger} from '../../js/logger/Logger';
 import {LogEventViewer} from './LogEventViewer';
 

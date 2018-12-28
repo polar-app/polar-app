@@ -1,29 +1,21 @@
 import * as React from 'react';
 import {ListOptionType, ListSelector} from '../../js/ui/list_selector/ListSelector';
-import {TableDropdown} from '../../../apps/repository/js/TableDropdown';
+import {DocRepoTableDropdown} from '../../../apps/repository/js/doc_repo/DocRepoTableDropdown';
 import {AnnotationSidebar} from '../../js/annotation_sidebar/AnnotationSidebar';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {Proxies} from '../../js/proxies/Proxies';
-import {Refs} from '../../js/metadata/Refs';
-import {Flashcards} from '../../js/metadata/Flashcards';
 import {Rect} from '../../js/Rect';
 import {TextRect} from '../../js/metadata/TextRect';
 import {TextHighlightRecords} from '../../js/metadata/TextHighlightRecords';
-import {AnnotationType} from '../../js/metadata/AnnotationType';
-import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/CommentComponent';
 import {CommentComponentExample} from './CommentComponentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
 import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
-import {ModalBody, InputGroup, InputGroupAddon, Input, ListGroup, ListGroupItem} from 'reactstrap';
+import {Input, InputGroup, InputGroupAddon, ListGroup, ListGroupItem} from 'reactstrap';
 import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
 import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
-import {CloudSyncConfiguredModal} from '../../js/ui/cloud_auth/CloudSyncConfiguredModal';
-import {CloudSyncOverviewModal} from '../../js/ui/cloud_auth/CloudSyncOverviewModal';
 import {InviteUsersContent} from '../../js/ui/cloud_auth/InviteUsersContent';
 import {NULL_FUNCTION} from '../../js/util/Functions';
-import {InviteUsersModal} from '../../js/ui/cloud_auth/InviteUsersModal';
 import Button from 'reactstrap/lib/Button';
-import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
 
 class App<P> extends React.Component<{}, IAppState> {
@@ -185,8 +177,8 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <h2>TableDropdown</h2>
 
-                <TableDropdown id="table-dropdown"
-                               onSelectedColumns={(options) => console.log("onSelectedColumns: ", options)}
+                <DocRepoTableDropdown id="table-dropdown"
+                                      onSelectedColumns={(options) => console.log("onSelectedColumns: ", options)}
                 />
 
                 <h2>Annotation Sidebar</h2>

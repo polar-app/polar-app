@@ -1,21 +1,11 @@
 import * as React from 'react';
-import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
-import {TableColumns} from '../TableColumns';
+import {DocRepoTableColumns} from '../doc_repo/DocRepoTableColumns';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
-import {IDocInfo, DocInfo} from '../../../../web/js/metadata/DocInfo';
-import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
+import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {RepoAnnotation} from '../RepoAnnotation';
-import {RepoHeader} from '../RepoHeader';
-import {MessageBanner} from '../MessageBanner';
-import AnnotationRepoTable from './AnnotationRepoTable';
-import {Footer, Tips} from '../Utils';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
-import {DateTimeTableCell} from '../DateTimeTableCell';
 import Moment from 'react-moment';
 import {FormattedTags} from '../FormattedTags';
-import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {Button} from 'reactstrap';
@@ -68,7 +58,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
         this.state = {
             data: [],
-            columns: new TableColumns()
+            columns: new DocRepoTableColumns()
         };
 
     }

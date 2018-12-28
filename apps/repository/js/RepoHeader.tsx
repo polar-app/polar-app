@@ -1,20 +1,9 @@
 import * as React from 'react';
-import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody, Tooltip} from 'reactstrap';
-import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
-import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {ListOptionType, ListSelector} from "../../../web/js/ui/list_selector/ListSelector";
-import {LightboxPopover} from '../../../web/js/ui/lightbox_popover/LightboxPopover';
-import {TableColumns} from './TableColumns';
-import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
-import {LargeModalBody} from '../../../web/js/ui/large_modal/LargeModalBody';
-import {FilterTagInput} from './FilterTagInput';
 import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
-import {TableDropdown} from './TableDropdown';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {RepoSidebar} from './RepoSidebar';
-import {NavLogo} from './nav/NavLog';
 
 const log = Logger.create();
 

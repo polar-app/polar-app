@@ -1,7 +1,7 @@
-import {createListOptionTypeMap, ListOptionType, ListOptionTypeMap} from '../../../web/js/ui/list_selector/ListSelector';
-import {KeyValueMapping} from '../../../web/js/util/KeyValueMapping';
+import {createListOptionTypeMap, ListOptionType, ListOptionTypeMap} from '../../../../web/js/ui/list_selector/ListSelector';
+import {KeyValueMapping} from '../../../../web/js/util/KeyValueMapping';
 
-export class TableColumns implements KeyValueMapping<TableColumns, ListOptionType> {
+export class DocRepoTableColumns implements KeyValueMapping<DocRepoTableColumns, ListOptionType> {
 
     public readonly title: ListOptionType = {
         id: "title",

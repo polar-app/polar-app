@@ -21,8 +21,8 @@ import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from '../MessageBanner';
 import {DocDropdown} from '../DocDropdown';
-import {TableDropdown} from '../TableDropdown';
-import {TableColumns} from '../TableColumns';
+import {DocRepoTableDropdown} from './DocRepoTableDropdown';
+import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
 import {Version} from '../../../../web/js/util/Version';
 import {RepoDocInfoIndex} from '../RepoDocInfoIndex';
@@ -77,7 +77,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
         this.state = {
             data: [],
-            columns: new TableColumns()
+            columns: new DocRepoTableColumns()
         };
 
         this.init();
@@ -230,9 +230,9 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
                             <div className="p-1">
 
-                                <TableDropdown id="table-dropdown"
-                                               options={Object.values(this.state.columns)}
-                                               onSelectedColumns={() => this.onSelectedColumns()}/>
+                                <DocRepoTableDropdown id="table-dropdown"
+                                                      options={Object.values(this.state.columns)}
+                                                      onSelectedColumns={() => this.onSelectedColumns()}/>
                             </div>
 
                         </div>
@@ -773,6 +773,6 @@ interface IProps {
 
 interface IState extends IReactTableState {
     data: RepoDocInfo[];
-    columns: TableColumns;
+    columns: DocRepoTableColumns;
 }
 
