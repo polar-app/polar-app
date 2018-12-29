@@ -91,6 +91,7 @@ export class RelatedTags {
         const tagHitsDesc = Object.values(tagHits)
             // remove the input tags from the results...
             .filter(current => ! tags.includes(current.tag))
+            .filter(current => current.hits > 1)
             // sort the results descending.
             .sort((hit0, hit1) => hit1.hits - hit0.hits);
 
