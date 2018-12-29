@@ -48,7 +48,7 @@ export class RelatedTags {
      * Compute related tags for the given tags...
      * @param tags
      */
-    public compute(tags: TagLiteral[], limit: number = 3): TagHit[] {
+    public compute(tags: TagLiteral[], limit: number = 5): TagHit[] {
 
         // keep a running index of the hits when computing the related tags.
         const tagHits: {[tag: string]: TagHit} = {};
