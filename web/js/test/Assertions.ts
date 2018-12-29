@@ -30,7 +30,7 @@ export function assertJSON(actual: any, expected: any, message?: string) {
 
 export function toJSON(obj: any) {
 
-    if(typeof obj === "string") {
+    if (typeof obj === "string") {
         return obj;
     }
 
@@ -44,6 +44,17 @@ export function toJSON(obj: any) {
 
     // also accept an array of strings.
 
-    return JSON.stringify(obj, null, "  ");
+    const replacer = (key: any, value: any) => {
+
+        // handle set replacement...
+        if (typeof value === 'object' && value instanceof Set) {
+            return [...value];
+        }
+
+        return value;
+
+    };
+
+    return JSON.stringify(obj, replacer, "  ");
 
 }
