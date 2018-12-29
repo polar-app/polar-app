@@ -46,9 +46,9 @@ export default class CommunityContent extends React.Component<IProps, IState> {
 
                     <div className="row mt-2">
 
-                        <div className="col-lg-6">
-                            <MailingListCard/>
-                        </div>
+                        {/*<div className="col-lg-6">*/}
+                            {/*<MailingListCard/>*/}
+                        {/*</div>*/}
 
 
                         <div className="col-lg-6">

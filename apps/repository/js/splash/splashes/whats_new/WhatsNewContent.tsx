@@ -22,6 +22,50 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
             <div>
 
+                <h3>Polar 1.7 - Annotation Manager</h3>
+
+                <div className="intro">
+
+                    <p>
+                        This release focuses on two major new features - a
+                        sidebar and also a an annotation view to allow users
+                        to view the annotations they've made on documents.
+                    </p>
+
+                    <p className="text-center">
+                        <iframe width="560" height="315"
+                                src="https://www.youtube.com/embed/oGk9Skaa6Q0"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen></iframe>
+                    </p>
+
+                    <h4>Changelog:</h4>
+
+                    <ul>
+
+                        <li> New annotations view to see all your annotations in one place.</li>
+
+                        <li> New sidebar to expand contract to show other pages within polar</li>
+
+                        <li>  New option to create a pagemark at the mouse point.  Still more work to make
+                            the key bindings visible.</li>
+
+                        <li>  Adding forced CSS for ::selection so that sites that have broken CSS for
+                        highlighting don't actually break polar and we also have consistent highlight
+                            support.</li>
+
+                        <li>  Fixed some navigational issues in the web capture system.</li>
+
+                        <li>  Fixed bug the annotation bar in PDF where resize will kill it.  Hopefully the
+                            last bug there.</li>
+
+                        <li>  Backend changes to support cloze deletions in Anki.</li>
+
+                    </ul>
+
+                </div>
+
                 <h3>Polar 1.6 - Polar Needs Your Help!</h3>
 
                 <div className="intro">
