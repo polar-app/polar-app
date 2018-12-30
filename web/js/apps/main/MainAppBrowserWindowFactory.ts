@@ -4,7 +4,7 @@ import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 
 const log = Logger.create();
 
-const WIDTH = 800 * 1.2;
+const WIDTH = 900 * 1.2;
 const HEIGHT = 1100 * 1.2;
 
 const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/home/default.html');
