@@ -28,22 +28,22 @@ describe('Statistics', function() {
             docInfos.push(MockDocMetas.createMockDocMeta('0x006').docInfo);
             docInfos.push(MockDocMetas.createMockDocMeta('0x007').docInfo);
 
-            const dateStatMap = Statistics.computeDocumentsAddedRate(docInfos);
+            const dateStats = Statistics.computeDocumentsAddedRate(docInfos);
 
-            assertJSON(dateStatMap, {
-                "2012-03-02": {
+            assertJSON(dateStats, [
+                {
                     "date": "2012-03-02",
                     "value": 3
                 },
-                "2012-03-03": {
+                {
                     "date": "2012-03-03",
                     "value": 2
                 },
-                "2012-03-04": {
+                {
                     "date": "2012-03-04",
                     "value": 2
                 }
-            });
+            ]);
 
         });
 

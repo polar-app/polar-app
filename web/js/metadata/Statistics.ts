@@ -1,19 +1,20 @@
 /**
  * Main entrypoint for computing stats on underlying metadata...
  */
-import {DocInfo} from './DocInfo';
+import {DocInfo, IDocInfo} from './DocInfo';
 import {ISODateString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {Dictionaries} from '../util/Dictionaries';
 
 export class Statistics {
 
-    public static computeDocumentsAddedRate(docInfos: Iterable<DocInfo>): DateStatMap {
+    public static computeDocumentsAddedRate(docInfos: Iterable<IDocInfo>): DateStats {
 
         const result: DateStatMap = {};
 
         for (const docInfo of docInfos) {
 
-            // merge the 'added' time to a Date map and convert it ot the date...
+            // merge the 'added' time to a Date map and convert it ot the
+            // date...
 
             if (docInfo.added) {
                const addedDate = ISODateTimeStrings.parse(docInfo.added!);
@@ -29,7 +30,8 @@ export class Statistics {
 
         }
 
-        return result;
+        return Object.values(result)
+            .sort((a, b) => a.date.localeCompare(b.date));
 
     }
 
@@ -38,6 +40,8 @@ export class Statistics {
 export interface DateStatMap {
     [date: string]: DateStat;
 }
+
+export type DateStats = ReadonlyArray<DateStat>;
 
 export interface DateStat {
     readonly date: ISODateString;

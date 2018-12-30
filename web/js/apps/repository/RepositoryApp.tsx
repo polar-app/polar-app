@@ -98,7 +98,7 @@ export class RepositoryApp {
         };
 
         const renderStats = () => {
-            return (  <StatsApp/> );
+            return (  <StatsApp repoDocMetaManager={this.repoDocInfoManager}/> );
         };
 
         ReactDOM.render(

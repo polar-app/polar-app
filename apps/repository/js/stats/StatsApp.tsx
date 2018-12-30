@@ -3,6 +3,8 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
 import {MessageBanner} from '../MessageBanner';
 import {Line} from 'react-chartjs-2';
+import {RepoDocMetaManager} from '../RepoDocMetaManager';
+import {Statistics} from '../../../../web/js/metadata/Statistics';
 
 const log = Logger.create();
 
@@ -18,8 +20,21 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
     public render() {
 
+        const docInfos =
+            Object.values(this.props.repoDocMetaManager.repoDocInfoIndex)
+                .map(current => current.docInfo);
+
+        const dateStats = Statistics.computeDocumentsAddedRate(docInfos);
+
+        const labels = dateStats.map(current => current.date);
+        const dataPoints = dateStats.map(current => current.value);
+
+        // https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
+
+        const legend = {display: false};
+
         const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels,
             datasets: [
                 {
                     label: 'Documents Added',
@@ -40,9 +55,11 @@ export default class StatsApp extends React.Component<IProps, IState> {
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                }
+                    data: dataPoints
+                },
+
             ]
+
         };
 
         return (
@@ -59,7 +76,9 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                 <div className="m-1">
 
-                    <Line data={data} height={100} />
+                    <h6 className="text-center">Rate of New Documents</h6>
+
+                    <Line data={data} height={100} legend={legend}/>
 
                 </div>
 
@@ -71,7 +90,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-
+    readonly repoDocMetaManager: RepoDocMetaManager;
 }
 
 export interface IState {
