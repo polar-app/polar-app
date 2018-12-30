@@ -1,7 +1,5 @@
 import {DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener} from './Datastore';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
-import {UUIDs} from '../metadata/UUIDs';
-import {filter} from 'rxjs/operators';
 import {IDocInfo} from '../metadata/DocInfo';
 
 export class DocMetaSnapshotEventListeners {
