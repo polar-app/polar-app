@@ -41,7 +41,7 @@ export class Proxies {
 
         traceListeners = TraceListeners.asArray(traceListeners);
 
-        let objectPathEntries = ObjectPaths.recurse(target);
+        const objectPathEntries = ObjectPaths.recurse(target);
 
         let root: any;
 
@@ -49,15 +49,15 @@ export class Proxies {
 
             let path = objectPathEntry.path;
 
-            if(opts.pathPrefix && opts.pathPrefix !== "") {
+            if (opts.pathPrefix && opts.pathPrefix !== "") {
                 path = Paths.create(opts.pathPrefix, objectPathEntry.path);
             }
 
-            let proxy = Proxies.trace(path, objectPathEntry.value, traceListeners);
+            const proxy = Proxies.trace(path, objectPathEntry.value, traceListeners);
 
             // replace the object key in the parent with a new object that is
             // traced.
-            if(objectPathEntry.parent != null) {
+            if (objectPathEntry.parent != null) {
                 objectPathEntry.parent[objectPathEntry.parentKey!] = proxy;
             } else {
                 root = proxy;
@@ -71,13 +71,13 @@ export class Proxies {
 
     public static trace(path: string, value: any, traceListeners: any) {
 
-        if(typeof value !== "object") {
+        if (typeof value !== "object") {
             throw new Error("We can only trace object types.");
         }
 
         traceListeners = TraceListeners.asArray(traceListeners);
 
-        if(Object.isFrozen(value)) {
+        if (Object.isFrozen(value)) {
 
             // Do not handle frozen objects but might have to in the future for
             // the initial value.
@@ -89,13 +89,13 @@ export class Proxies {
 
         }
 
-        let traceIdentifier = sequence++;
+        const traceIdentifier = sequence++;
 
         // for this to work, I need to keep track of ALL TraceHandlers in the
         // object itself by possibly having a __traceHandlers or some other
         // strategy or __paths and then dispatch that way...
 
-        let traceHandler = new TraceHandler(path, traceListeners, value, traceIdentifier, Proxies);
+        const traceHandler = new TraceHandler(path, traceListeners, value, traceIdentifier, Proxies);
 
         // TODO: could I store these in the TraceHandler and not in the value?
         //
@@ -104,7 +104,7 @@ export class Proxies {
         // I think I can do this by custom handling the get() Proxy and then
         // returning __traceIdentifier or __traceListeners based on the caller.
 
-        let privateMembers = [
+        const privateMembers = [
 
             // the __traceIdentifier is a unique key for the object which we use
             // to identify which one is being traced.  This way we essentially
@@ -143,7 +143,7 @@ export class Proxies {
 
         // TODO: do this in the TraceHandler get method?
 
-        if(value.addTraceListener) {
+        if (value.addTraceListener) {
             value.addTraceListener(traceListeners);
         } else {
             Object.defineProperty(value, "addTraceListener", {

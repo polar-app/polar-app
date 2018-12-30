@@ -90,15 +90,15 @@ export class RepositoryApp {
         };
 
         const renderWhatsNew = () => {
-            return (  <WhatsNewApp/> );
+            return ( <WhatsNewApp/> );
         };
 
         const renderCommunity = () => {
-            return (  <CommunityApp/> );
+            return ( <CommunityApp/> );
         };
 
         const renderStats = () => {
-            return (  <StatsApp repoDocMetaManager={this.repoDocInfoManager}/> );
+            return ( <StatsApp repoDocMetaManager={this.repoDocInfoManager}/> );
         };
 
         ReactDOM.render(

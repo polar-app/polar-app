@@ -39,6 +39,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public referrer?: string;
     public shareStrategy?: ShareStrategy;
     public storedResources?: Set<StoredResource>;
+    public mutating?: boolean;
 
     constructor(val: IDocInfo) {
 
@@ -207,6 +208,12 @@ export interface IDocInfo {
     shareStrategy?: ShareStrategy;
 
     storedResources?: Set<StoredResource>;
+
+    /**
+     * When true, we're mutating this entire DocMeta as a batch.  Setting it to
+     * true defers writes until mutating is flipped back to false.
+     */
+    mutating?: boolean;
 
 }
 

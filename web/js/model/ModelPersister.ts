@@ -12,10 +12,9 @@ export class ModelPersister {
 
     public readonly docMeta: DocMeta;
 
-    private readonly persistenceLayer: ListenablePersistenceLayer;
+    public nrWrites: number = 0;
 
-    // TODO: push this into the main process and also use the duplicate event
-    // merger to verify that we don't do duplicate writes by the same UUID.
+    private readonly persistenceLayer: ListenablePersistenceLayer;
 
     constructor(persistenceLayer: ListenablePersistenceLayer, docMeta: DocMeta) {
         this.persistenceLayer = persistenceLayer;
@@ -23,21 +22,24 @@ export class ModelPersister {
 
         const batcher = new Batcher(async () => {
 
-            // right now we just sync the datastore on mutation.  We do not
-            // attempt to use a journal yet.
-
             await this.persistenceLayer.write(this.docMeta.docInfo.fingerprint, this.docMeta);
+            ++this.nrWrites;
 
         });
 
+        // create a new DocMeta proxy that updates on ANY update.
         this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
+
+            if (this.docMeta.docInfo.mutating) {
+                // skip bulk updates. This is done when we need to mutate multiple
+                // fields like setting 5-10 pagemarks at once or setting pagemarks
+                // and other metrics metadata.
+                return;
+            }
 
             log.info(`sync of persistence layer at ${traceEvent.path} : ${traceEvent.property}"`);
 
             setTimeout(() => {
-
-                // use setTimeout so that we function in the same thread which
-                // avoids concurrency issues with the batcher.
 
                 batcher.enqueue().run()
                     .catch(err => log.error("Unable to commit to disk: ", err));
