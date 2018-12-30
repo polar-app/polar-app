@@ -25,6 +25,7 @@ import {Throttler} from '../../datastore/Throttler';
 import {WhatsNewContent} from '../../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
 import WhatsNewApp from '../../../../apps/repository/js/whats_new/WhatsNewApp';
 import CommunityApp from '../../../../apps/repository/js/community/CommunityApp';
+import StatsApp from '../../../../apps/repository/js/stats/StatsApp';
 
 const log = Logger.create();
 
@@ -96,6 +97,10 @@ export class RepositoryApp {
             return (  <CommunityApp/> );
         };
 
+        const renderStats = () => {
+            return (  <StatsApp/> );
+        };
+
         ReactDOM.render(
 
             <div>
@@ -111,6 +116,7 @@ export class RepositoryApp {
                         <Route exact path='/annotations' render={renderAnnotationRepoApp}/>
                         <Route exact path='/whats-new' render={renderWhatsNew}/>
                         <Route exact path='/community' render={renderCommunity}/>
+                        <Route exact path='/stats' render={renderStats}/>
                     </Switch>
 
                 </HashRouter>

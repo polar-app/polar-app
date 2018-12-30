@@ -125,6 +125,11 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          iconClassName="fas fa-layer-group"
                                          text="Annotations"/>
 
+                        <RepoSidebarItem href="#stats"
+                                         onClick={() => this.toggle()}
+                                         iconClassName="fas fa-chart-line"
+                                         text="Stats"/>
+
                         <RepoSidebarItem href="#community"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-hands-helping"

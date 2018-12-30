@@ -18,6 +18,7 @@ import {NULL_FUNCTION} from '../../js/util/Functions';
 import Button from 'reactstrap/lib/Button';
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
 import {ToggleButton} from '../../js/ui/ToggleButton';
+import {Doughnut, Line} from 'react-chartjs-2';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -51,9 +52,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
         const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
 
-        let rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
-        let textSelections: TextRect[] = [new TextRect({text: "hello world"})];
-        let text = "hello world";
+        const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
+        const textSelections: TextRect[] = [new TextRect({text: "hello world"})];
+        const text = "hello world";
 
         const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
@@ -74,9 +75,40 @@ class App<P> extends React.Component<{}, IAppState> {
         // TODO: we have to create some flashcards and comments for this object
         // so that the annotation sidear renders.
 
+        const data = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [
+                {
+                    label: 'Documents Added',
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: 'rgba(75,192,192,1)',
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                    pointHoverBorderColor: 'rgba(220,220,220,1)',
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                }
+            ]
+        };
+
         return (
 
             <div>
+
+                https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
+
+                <Line data={data} height={100} />
 
                 <div className="p-2">
                     <ToggleButton label="flagged only"
@@ -222,7 +254,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 </div>
 
 
-                <InviteUsersContent onInvitedUserText={NULL_FUNCTION}/>
+                {/*<InviteUsersContent onInvitedUserText={NULL_FUNCTION}/>*/}
 
                 {/*<InviteUsersModal isOpen={true} onCancel={NULL_FUNCTION} onInvite={(emailAddresses) => console.log(emailAddresses)}/>*/}
 
