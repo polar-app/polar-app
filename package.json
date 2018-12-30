@@ -154,7 +154,7 @@
     "npm": "^6.4.1",
     "opencollective-postinstall": "^2.0.1",
     "pdfjs-dist": "^2.0.489",
-    "popper.js": "^1.14.4",
+    "popper.js": "^1.14.6",
     "prettify": "^0.1.7",
     "prop-types": "^15.6.2",
     "raphael": "^2.2.7",
