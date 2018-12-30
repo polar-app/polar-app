@@ -9,7 +9,7 @@ export class DocInfoAdvertisementListenerService {
 
     private readonly reactor: SimpleReactor<DocInfoAdvertisement> = new SimpleReactor();
 
-    private listener: () => void;
+    private listener: (event: any, docInfoAdvertisement: DocInfoAdvertisement) => void;
 
     constructor() {
         this.listener = this.onDocInfoAdvertisement.bind(this);

@@ -61,12 +61,15 @@ export class AnnotationSidebars {
 
     private static scrollToElement(element: HTMLElement) {
 
-        // NOTE: behavior: smooth won't actually work
-        element.scrollIntoView({
+        const options = {
             behavior: 'instant',
             block: 'center',
             inline: 'center'
-       });
+        };
+
+        // NOTE that 'instant' is apparently unsupported in the typescript type
+        // but it's supported in Javascript.
+        element.scrollIntoView(options as ScrollIntoViewOptions);
 
     }
 
