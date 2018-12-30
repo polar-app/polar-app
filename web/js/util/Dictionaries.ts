@@ -1,5 +1,6 @@
 import {Preconditions} from '../Preconditions';
 import {Optional} from './ts/Optional';
+import {DocID} from '../tags/related/RelatedTags';
 
 export class Dictionaries {
 
@@ -40,9 +41,9 @@ export class Dictionaries {
 
     /**
      * Returns a dictionary with sorted keys. Dictionaries by definition aren't
-     * sorted by they're implemented internally as linked hash tables.  We return
-     * the same set-theoretic dictionaries where the key set are identical, just
-     * in a different key order.
+     * sorted by they're implemented internally as linked hash tables.  We
+     * return the same set-theoretic dictionaries where the key set are
+     * identical, just in a different key order.
      *
      * This is primarily used for testing.
      *
@@ -71,8 +72,8 @@ export class Dictionaries {
 
     /**
      *
-     * Recursively work through this object and remove any fields that are stored
-     * with unassigned values.
+     * Recursively work through this object and remove any fields that are
+     * stored with unassigned values.
      *
      * @param dict
      */
@@ -158,6 +159,38 @@ export class Dictionaries {
     public static size<V>(dict: {[key: string]: V}) {
         return Object.keys(dict).length;
     }
+
+
+    /**
+     * If the specified key is not already associated with a value (or is mapped
+     * to undefined or null), attempts to compute its value using the given
+     * mapping function and enters it into this map unless undefined or null.
+     *
+     */
+    public static computeIfAbsent<V>(dict: {[key: string]: V},
+                                     key: string,
+                                     mappingFunction: (newKey: string) => V): V {
+
+        const currentValue = dict[key];
+
+        if (currentValue) {
+            return currentValue;
+        } else {
+
+            const newValue = mappingFunction(key);
+
+            if (newValue) {
+                dict[key] = newValue;
+            }
+
+            // note that we return the newValue EITHER way which could be null
+            // or undefined here just like in a normal map.
+            return newValue;
+
+        }
+
+    }
+
 }
 
 

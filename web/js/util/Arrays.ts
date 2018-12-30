@@ -8,10 +8,10 @@ export class Arrays {
      */
     public static toDict(val: {} | any[]): {[key: string]: any} {
 
-        let isObject = typeof val === "object";
-        let isArray = val instanceof Array;
+        const isObject = typeof val === "object";
+        const isArray = val instanceof Array;
 
-        if(! isObject && ! isArray) {
+        if (! isObject && ! isArray) {
             // only needed if we're called from JS.  Otherwise the compiler
             // will check the type.
             throw new Error("Neither an object or an array.");
@@ -55,9 +55,9 @@ export class Arrays {
          * {Array<ArrayPosition>}
          * @type {Array}
          */
-        let result = [];
+        const result = [];
 
-        for(let idx = 0; idx < arrayLikeObject.length; ++idx) {
+        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
 
             result.push(new ArrayPosition<T>(
                 Optional.of(arrayLikeObject[idx-1]).getOrUndefined(),
@@ -84,7 +84,7 @@ export class Arrays {
      */
     public static createBatches<T>(input: T[], batchSize: number): T[][] {
 
-        let result: T[][] = [];
+        const result: T[][] = [];
 
         let batch: T[] = [];
 
@@ -138,6 +138,25 @@ export class Arrays {
         }
 
         return arr;
+
+    }
+
+    /**
+     * Get up to `limit` values from the given input.
+     * @param input
+     */
+    public static head<T>(input: T[], limit: number): T[] {
+
+        // adjust the limit so we never fetch too many values.
+        limit = Math.min(limit, input.length);
+
+        const result: T[] = [];
+
+        for (let idx = 0; idx < limit; ++idx) {
+            result[idx] = input[idx];
+        }
+
+        return result;
 
     }
 
