@@ -180,7 +180,7 @@
     "stream-to-array": "~2.3.0",
     "string-to-stream": "~1.1.1",
     "summernote": "^0.8.11",
-    "text-encoding": "~0.6.4",
+    "text-encoding": "~0.7.0",
     "texthighlighter": "~1.2.4",
     "toastr": "~2.1.4",
     "tooltip.js": "~1.2.0",
