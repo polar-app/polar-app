@@ -14,6 +14,8 @@ export class ModelPersister {
 
     public nrWrites: number = 0;
 
+    public nrDeferredWrites: number = 0;
+
     private readonly persistenceLayer: ListenablePersistenceLayer;
 
     constructor(persistenceLayer: ListenablePersistenceLayer, docMeta: DocMeta) {
@@ -24,6 +26,7 @@ export class ModelPersister {
 
             await this.persistenceLayer.write(this.docMeta.docInfo.fingerprint, this.docMeta);
             ++this.nrWrites;
+            this.nrDeferredWrites = 0;
 
         });
 
@@ -31,10 +34,24 @@ export class ModelPersister {
         this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
 
             if (this.docMeta.docInfo.mutating) {
+
                 // skip bulk updates. This is done when we need to mutate multiple
                 // fields like setting 5-10 pagemarks at once or setting pagemarks
                 // and other metrics metadata.
+
+                ++this.nrDeferredWrites;
+
                 return;
+            }
+
+            if (this.isFinalMutatingEvent(traceEvent)) {
+
+                if (this.nrDeferredWrites <= 1) {
+                    // we only have one deferred write and this is the toggling
+                    // of the mutating field.
+                    return;
+                }
+
             }
 
             log.info(`sync of persistence layer at ${traceEvent.path} : ${traceEvent.property}"`);
@@ -63,6 +80,14 @@ export class ModelPersister {
             this.docMeta.docInfo = new DocInfo(event.docInfo);
 
         });
+
+    }
+
+    private isFinalMutatingEvent(traceEvent: TraceEvent) {
+
+        return traceEvent.path === '/docInfo' &&
+               traceEvent.property === 'mutating' &&
+               traceEvent.value === false;
 
     }
 

@@ -18,13 +18,13 @@ describe('ModelPersister', function() {
 
         await Promises.waitFor(1000);
 
-        waitForExpect(() => {
+        await waitForExpect(() => {
             assert.equal(modelPersister.nrWrites, nrWrites);
         });
 
         await Promises.waitFor(1000);
 
-        waitForExpect(() => {
+        await waitForExpect(() => {
             assert.equal(modelPersister.nrWrites, nrWrites);
         });
 
@@ -72,5 +72,14 @@ describe('ModelPersister', function() {
 
     });
 
+    it("with no batched write", async function() {
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+            // no writes
+        });
+
+        await assertWrites(0);
+
+    });
 
 });
