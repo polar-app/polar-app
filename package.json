@@ -80,7 +80,7 @@
     "wait-for-expect": "^1.1.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "~5.5.0",
+    "@fortawesome/fontawesome-free": "~5.6.3",
     "@sentry/electron": "~0.13.0",
     "@types/chart.js": "^2.7.42",
     "@types/deep-equal": "~1.0.1",
@@ -128,7 +128,7 @@
     "firebaseui": "~3.4.1",
     "flowchart": "~1.2.0",
     "font-awesome": "~4.7.0",
-    "fontawesome": "~4.7.2",
+    "fontawesome": "~5.6.3",
     "glyphicons": "~0.2.0",
     "http-proxy-agent": "~2.1.0",
     "http-proxy-middleware": "^0.19.1",
