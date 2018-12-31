@@ -5,6 +5,7 @@ import {MessageBanner} from '../MessageBanner';
 import {Line} from 'react-chartjs-2';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
+import * as chartjs from 'chart.js';
 
 const log = Logger.create();
 
@@ -33,7 +34,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
         const legend = {display: false};
 
-        const data = {
+        const data: chartjs.ChartData = {
             labels,
             datasets: [
                 {
@@ -71,8 +72,6 @@ export default class StatsApp extends React.Component<IProps, IState> {
                     <RepoSidebar/>
 
                 </header>
-
-                <MessageBanner/>
 
                 <div className="m-1">
 

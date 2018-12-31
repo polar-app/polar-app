@@ -1,4 +1,4 @@
-import {DocFormat} from './DocFormat';
+import {DocFormat, PageDetail} from './DocFormat';
 import {notNull} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 
@@ -9,6 +9,23 @@ export class HTMLFormat extends DocFormat {
     constructor() {
         super();
         this.name = "html";
+    }
+
+    /**
+     * Get all the metadata about the current page.
+     */
+    public getCurrentPageDetail(): PageDetail {
+
+        const pageElement = notNull(this.getCurrentPageElement());
+        const pageNum = this.getPageNumFromPageElement(pageElement);
+
+        const dimensions = {
+            width: pageElement.offsetWidth,
+            height: pageElement.offsetHeight
+        };
+
+        return { pageElement, pageNum, dimensions };
+
     }
 
     /**

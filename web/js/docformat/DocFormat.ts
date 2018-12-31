@@ -1,6 +1,7 @@
 import {notNull, Preconditions} from '../Preconditions';
 import {Elements} from '../util/Elements';
 import {DocDetail} from '../metadata/DocDetail';
+import {IDimensions} from '../util/Dimensions';
 
 /**
  * Get the proper docFormat to work with.
@@ -82,42 +83,42 @@ export abstract class DocFormat {
     /**
      * Get all the metadata about the current page.
      */
-    public getCurrentPageMeta() {
+    public getCurrentPageDetail(): PageDetail {
 
-        let pageElement = notNull(this.getCurrentPageElement());
-        let pageNum = this.getPageNumFromPageElement(pageElement);
+        const pageElement = notNull(this.getCurrentPageElement());
+        const pageNum = this.getPageNumFromPageElement(pageElement);
 
-        return { pageElement, pageNum }
+        return { pageElement, pageNum };
 
     }
 
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    abstract currentDocFingerprint(): string | undefined;
+    public abstract currentDocFingerprint(): string | undefined;
 
     /**
      * Get the current state of the doc.
      */
-    abstract currentState(event: any): CurrentState;
+    public abstract currentState(event: any): CurrentState;
 
-    supportThumbnails() {
+    public supportThumbnails() {
         return false;
     }
 
-    textHighlightOptions() {
+    public textHighlightOptions() {
         return {};
     }
 
-    targetDocument(): HTMLDocument | null {
+    public targetDocument(): HTMLDocument | null {
         throw new Error("Not implemented");
     }
 
-    docDetail(): DocDetail {
+    public docDetail(): DocDetail {
 
-        let fingerprint = this.currentDocFingerprint();
+        const fingerprint = this.currentDocFingerprint();
 
-        if( ! fingerprint) {
+        if (! fingerprint) {
             throw new Error("No document loaded");
         }
 
@@ -125,6 +126,12 @@ export abstract class DocFormat {
 
     }
 
+}
+
+export interface PageDetail {
+    readonly pageElement: HTMLElement;
+    readonly pageNum: number;
+    readonly dimensions?: IDimensions;
 }
 
 export interface CurrentPageElement {

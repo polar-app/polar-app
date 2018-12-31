@@ -13,7 +13,6 @@ export class Pagemark extends Annotation {
 
     /**
      * The note for this annotation.
-     *
      */
     public notes: {[id: string]: Note};
 
@@ -79,23 +78,23 @@ export class Pagemark extends Annotation {
 
         super.setup();
 
-        if(!this.notes) {
-            this.notes = {}
+        if (!this.notes) {
+            this.notes = {};
         }
 
-        if(!this.type) {
+        if (!this.type) {
             this.type = PagemarkType.SINGLE_COLUMN;
         }
 
-        if(!this.mode) {
+        if (!this.mode) {
             this.mode = PagemarkMode.READ;
         }
 
-        if(!this.percentage) {
+        if (!this.percentage) {
             this.percentage = 100;
         }
 
-        if(!this.column) {
+        if (!this.column) {
             this.column = 0;
         }
 

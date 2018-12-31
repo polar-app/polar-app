@@ -345,7 +345,7 @@ export class TextHighlightController {
 
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
-        const currentPageMeta = this.docFormat.getCurrentPageMeta();
+        const currentPageMeta = this.docFormat.getCurrentPageDetail();
 
         const pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
 

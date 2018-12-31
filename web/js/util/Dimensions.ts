@@ -34,7 +34,7 @@ export class Dimensions {
         return this.width * this.height;
     }
 
-    toString() {
+    public toString() {
         return `${this.width}x${this.height}`;
     }
 

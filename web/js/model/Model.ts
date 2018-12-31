@@ -11,6 +11,8 @@ import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLaye
 import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
+import {DocFormats} from '../docformat/DocFormats';
+import {DocFormatFactory} from '../docformat/DocFormatFactory';
 
 const log = Logger.create();
 
@@ -95,6 +97,8 @@ export class Model {
         // to swap out the docMeta with the right version.
         this.docMetaPromise = Promise.resolve(docMeta);
 
+        this.handleExtendedMetadataExtraction();
+
         this.reactor.dispatchEvent('documentLoaded', {
             fingerprint,
             nrPages,
@@ -103,6 +107,33 @@ export class Model {
         });
 
         return this.docMeta;
+
+    }
+
+    /**
+     * Go through and extract additional metadata on first page load.
+     */
+    private handleExtendedMetadataExtraction() {
+
+        const docFormat = DocFormatFactory.getInstance();
+
+        const currentPageElement = docFormat.getCurrentPageElement();
+
+        if (!currentPageElement) {
+            log.warn("No current page element");
+            return;
+        }
+
+        const pageNum = docFormat.getPageNumFromPageElement(currentPageElement);
+
+        if (pageNum !== 1) {
+            log.warn("Working with wrong page number: " + pageNum);
+            return;
+        }
+
+        const currentPageDetail = docFormat.getCurrentPageDetail();
+
+        console.log("FIXME: Working with current page detail for extended extraction: ", currentPageDetail);
 
     }
 

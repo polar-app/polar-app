@@ -104,7 +104,7 @@ export class Pagemarks {
      */
     static createKeyOptions(options: any) {
 
-        let keyOptions: KeyOptions = {
+        const keyOptions: KeyOptions = {
             count: 0,
             hasPercentage: false,
             hasRect: false,
