@@ -4,6 +4,8 @@
 import {DocInfo, IDocInfo} from './DocInfo';
 import {ISODateString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {Dictionaries} from '../util/Dictionaries';
+import {HitMap} from '../util/HitMap';
+import {Arrays} from '../util/Arrays';
 
 export class Statistics {
 
@@ -32,6 +34,24 @@ export class Statistics {
 
         return Object.values(result)
             .sort((a, b) => a.date.localeCompare(b.date));
+
+    }
+
+    public static computeTopTags(docInfos: Iterable<IDocInfo>, topN: number = 25) {
+
+        const hitMap = new HitMap();
+
+        for (const docInfo of docInfos) {
+
+            const tags = Object.values(docInfo.tags || {});
+
+            for (const tag of tags) {
+                hitMap.registerHit(tag.label);
+            }
+
+        }
+
+        return Arrays.head(hitMap.toRanked(), topN);
 
     }
 

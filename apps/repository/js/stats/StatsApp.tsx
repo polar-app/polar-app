@@ -6,6 +6,10 @@ import {Line} from 'react-chartjs-2';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
 import * as chartjs from 'chart.js';
+import NewDocumentRateChart from './NewDocumentRateChart';
+import DonationsCard from '../community/DonationsCard';
+import GithubStarsCard from '../community/GithubStarsCard';
+import TopTagsChart from './TopTagsChart';
 
 const log = Logger.create();
 
@@ -25,44 +29,6 @@ export default class StatsApp extends React.Component<IProps, IState> {
             Object.values(this.props.repoDocMetaManager.repoDocInfoIndex)
                 .map(current => current.docInfo);
 
-        const dateStats = Statistics.computeDocumentsAddedRate(docInfos);
-
-        const labels = dateStats.map(current => current.date);
-        const dataPoints = dateStats.map(current => current.value);
-
-        // https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
-
-        const legend = {display: false};
-
-        const data: chartjs.ChartData = {
-            labels,
-            datasets: [
-                {
-                    label: 'Documents Added',
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,192,192,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: dataPoints
-                },
-
-            ]
-
-        };
-
         return (
 
             <div id="doc-repository">
@@ -73,11 +39,20 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                 </header>
 
-                <div className="m-1">
+                <div className="container-fluid">
 
-                    <h6 className="text-center">Rate of New Documents</h6>
+                    <div className="row mt-2">
 
-                    <Line data={data} height={100} legend={legend}/>
+                        <div className="col-lg-6">
+                            <NewDocumentRateChart docInfos={docInfos}/>
+                        </div>
+
+                        <div className="col-lg-6">
+                            <TopTagsChart docInfos={docInfos}/>
+                        </div>
+
+                    </div>
+
 
                 </div>
 

@@ -145,7 +145,7 @@ export class Arrays {
      * Get up to `limit` values from the given input.
      * @param input
      */
-    public static head<T>(input: T[], limit: number): T[] {
+    public static head<T>(input: ReadonlyArray<T>, limit: number): T[] {
 
         // adjust the limit so we never fetch too many values.
         limit = Math.min(limit, input.length);
