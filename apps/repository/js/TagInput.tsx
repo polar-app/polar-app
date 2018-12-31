@@ -19,11 +19,11 @@ let SEQUENCE = 0;
 const log = Logger.create();
 
 // noinspection TsLint
-export class TagInput extends React.Component<TagInputProps, TagInputState> {
+export class TagInput extends React.Component<IProps, IState> {
 
     private readonly id = "popover-" + SEQUENCE++;
 
-    constructor(props: TagInputProps, context: any) {
+    constructor(props: IProps, context: any) {
         super(props, context);
 
         Preconditions.assertPresent(props.repoDocInfo);
@@ -89,16 +89,11 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                             onChange={selectedOptions => this.handleChange(selectedOptions)}
                             defaultValue={defaultValue}
                             placeholder="Create or select tags ..."
-
                             options={options} >
 
                             <div>this is the error</div>
 
                         </CreatableSelect>
-
-                        {/*<Button onClick={this.save}>*/}
-                        {/*Save*/}
-                        {/*</Button>*/}
 
                     </PopoverBody>
                 </Popover>
@@ -136,7 +131,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
             // important to always call onChange even if we have no valid tags
             // as this is acceptable and we want to save these to disk.
-            this.props.onChange(this.props.repoDocInfo, validTags);
+            this.props.onChange(validTags);
 
             if (invalidTags.length > 0) {
                 log.warn("Some tags were invalid", invalidTags);
@@ -148,22 +143,21 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
 }
 
-interface TagInputState {
+export interface IProps {
+
+    readonly repoDocInfo: RepoDocInfo;
+
+    readonly tagsDB: TagsDB;
+
+    readonly existingTags?: Tag[];
+
+    readonly onChange?: (values: Tag[]) => void;
+
+}
+
+interface IState {
     readonly open: boolean;
 }
-
-export interface TagInputProps {
-
-    repoDocInfo: RepoDocInfo;
-
-    tagsDB: TagsDB;
-
-    existingTags?: Tag[];
-
-    onChange?: (repoDocInfo: RepoDocInfo, values: Tag[]) => void;
-
-}
-
 
 
 

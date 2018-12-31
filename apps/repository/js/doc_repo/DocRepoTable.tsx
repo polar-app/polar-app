@@ -378,7 +378,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                                         <TagInput repoDocInfo={repoDocInfo}
                                                   tagsDB={this.props.repoDocMetaManager!.tagsDB}
                                                   existingTags={existingTags}
-                                                  onChange={(_, tags) =>
+                                                  onChange={(tags) =>
                                                       this.onDocTagged(repoDocInfo, tags)
                                                           .catch(err => log.error("Unable to update tags: ", err))} />
                                     );
