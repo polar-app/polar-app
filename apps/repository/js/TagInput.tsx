@@ -2,32 +2,24 @@ import * as React from 'react';
 import {Popover, PopoverBody} from 'reactstrap';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {Blackout} from './Blackout';
-import {RepoDocInfo} from './RepoDocInfo';
 import {Tag} from '../../../web/js/tags/Tag';
-import {Preconditions} from '../../../web/js/Preconditions';
 import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {TagSelectOption} from './TagSelectOption';
 import {TagSelectOptions} from './TagSelectOptions';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Logger} from '../../../web/js/logger/Logger';
-import {Toaster} from '../../../web/js/toaster/Toaster';
-import Select from 'react-select';
 
 let SEQUENCE = 0;
 
 const log = Logger.create();
 
-// noinspection TsLint
 export class TagInput extends React.Component<IProps, IState> {
 
     private readonly id = "popover-" + SEQUENCE++;
 
     constructor(props: IProps, context: any) {
         super(props, context);
-
-        Preconditions.assertPresent(props.repoDocInfo);
-        Preconditions.assertPresent(props.repoDocInfo.docInfo, "repoDocInfo.docInfo");
 
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -52,13 +44,11 @@ export class TagInput extends React.Component<IProps, IState> {
     public render() {
 
         const options: TagSelectOption[]
-            = TagSelectOptions.fromTags(this.props.tagsDB.tags());
+            = TagSelectOptions.fromTags(this.props.tags);
 
         const existingTags: Tag[] = Optional.of(this.props.existingTags).getOrElse([]);
 
         const defaultValue: TagSelectOption[] = TagSelectOptions.fromTags(existingTags);
-
-        // const foo: SyntheticEvent
 
         return (
 
@@ -145,10 +135,14 @@ export class TagInput extends React.Component<IProps, IState> {
 
 export interface IProps {
 
-    readonly repoDocInfo: RepoDocInfo;
+    /**
+     * The tags that can be selected.
+     */
+    readonly tags: Tag[];
 
-    readonly tagsDB: TagsDB;
-
+    /**
+     * The existing tags on this item.
+     */
     readonly existingTags?: Tag[];
 
     readonly onChange?: (values: Tag[]) => void;
