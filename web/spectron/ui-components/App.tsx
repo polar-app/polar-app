@@ -19,6 +19,7 @@ import Button from 'reactstrap/lib/Button';
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
 import {ToggleButton} from '../../js/ui/ToggleButton';
 import {Doughnut, Line} from 'react-chartjs-2';
+import {ChartData} from 'chart.js';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -75,7 +76,7 @@ class App<P> extends React.Component<{}, IAppState> {
         // TODO: we have to create some flashcards and comments for this object
         // so that the annotation sidear renders.
 
-        const data = {
+        const data: ChartData = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [
                 {

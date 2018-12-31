@@ -249,7 +249,7 @@ SpectronRenderer.run(async (state) => {
 
                 await externallyWrittenDocLatch.get();
 
-                waitForExpect(async () => {
+                await waitForExpect(async () => {
                     assert.ok(await persistenceLayer.contains('0x002'), "Does not contain second doc");
                 });
 

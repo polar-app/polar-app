@@ -97,8 +97,8 @@ describe('DocMetaSnapshotEventListener', function() {
 
         await deduplicatedListener(docMetaSnapshotEvent);
 
-        waitForExpect(() => {
-            assert.equal(emitted.length, 1);
+        await waitForExpect(() => {
+            assert.equal(emitted.length, 2);
         });
 
     });
@@ -111,7 +111,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
         await deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
-        waitForExpect(() => {
+        await waitForExpect(() => {
             assert.equal(emitted.length, 2);
         });
 
@@ -125,7 +125,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
         await deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
-        waitForExpect(() => {
+        await waitForExpect(() => {
             assert.equal(emitted.length, 2);
         });
 
@@ -143,7 +143,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
         await deduplicatedListener(createDocMetaSnapshotEvent('created'));
 
-        waitForExpect(() => {
+        await waitForExpect(() => {
             assert.equal(emitted.length, 3);
         });
 
