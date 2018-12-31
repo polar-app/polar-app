@@ -194,8 +194,8 @@ export class DocMetas {
             mutator();
 
         } finally {
-            // we set it to undefined so that it isn't actually persisted in the
-            // resulting JSON.
+            // set it to undefined so that it isn't actually persisted in the
+            // resulting JSON
             docMeta.docInfo.mutating = undefined;
         }
 

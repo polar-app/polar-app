@@ -87,7 +87,7 @@ export class ModelPersister {
 
         return traceEvent.path === '/docInfo' &&
                traceEvent.property === 'mutating' &&
-               traceEvent.value === false;
+               traceEvent.value === undefined;
 
     }
 
