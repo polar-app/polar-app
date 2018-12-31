@@ -148,7 +148,6 @@
     "lodash": "~4.17.10",
     "markdown-plus": "~2.5.2",
     "micromodal": "~0.3.2",
-    "namor": "~1.0.1",
     "node-fetch": "~2.3.0",
     "npm": "~6.4.1",
     "opencollective-postinstall": "~2.0.1",
