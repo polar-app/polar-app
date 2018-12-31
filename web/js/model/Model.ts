@@ -131,9 +131,19 @@ export class Model {
             return;
         }
 
-        const currentPageDetail = docFormat.getCurrentPageDetail();
+        DocMetas.withBatchedMutations(this.docMeta, () => {
 
-        console.log("FIXME: Working with current page detail for extended extraction: ", currentPageDetail);
+            const pageMeta = this.docMeta.getPageMeta(pageNum);
+            if (!pageMeta.pageInfo.dimensions) {
+                const currentPageDetail = docFormat.getCurrentPageDetail();
+
+                if (currentPageDetail.dimensions) {
+                    pageMeta.pageInfo.dimensions = currentPageDetail.dimensions;
+                }
+
+            }
+
+        });
 
     }
 

@@ -211,7 +211,9 @@ export interface IDocInfo {
 
     /**
      * When true, we're mutating this entire DocMeta as a batch.  Setting it to
-     * true defers writes until mutating is flipped back to false.
+     * true defers writes until mutating is flipped back to false.  ALWAYS use a
+     * try/finally block when updating this because if it's not set back to
+     * false then writes will be lost.
      */
     mutating?: boolean;
 

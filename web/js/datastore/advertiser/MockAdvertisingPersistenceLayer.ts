@@ -11,8 +11,11 @@ export class MockAdvertisingPersistenceLayer
     extends AbstractAdvertisingPersistenceLayer
     implements ListenablePersistenceLayer {
 
-    constructor(persistenceLayer: PersistenceLayer) {
+    private readonly noDispatchEvent: boolean;
+
+    constructor(persistenceLayer: PersistenceLayer, noDispatchEvent: boolean = false) {
         super(persistenceLayer);
+        this.noDispatchEvent = noDispatchEvent;
     }
 
     public async init(): Promise<void> {
@@ -24,6 +27,11 @@ export class MockAdvertisingPersistenceLayer
     }
 
     public broadcastEvent(event: PersistenceLayerEvent): void {
+
+        if (this.noDispatchEvent) {
+            return;
+        }
+
         // NOTE that technically this violates our main contract that persistence
         // layers don't re-notify themselves.  I need to revisit this because
         // it might make sense to allow them to notify themselves but just be

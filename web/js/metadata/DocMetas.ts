@@ -179,6 +179,27 @@ export class DocMetas {
 
     }
 
+    /**
+     * Make changes to the document so that they write as one batched mutation
+     * at the end.
+     *
+     * @param mutator
+     */
+    public static withBatchedMutations(docMeta: DocMeta, mutator: () => void) {
+
+        try {
+
+            docMeta.docInfo.mutating = true;
+
+            mutator();
+
+        } finally {
+            docMeta.docInfo.mutating = false;
+        }
+
+    }
+
+
 }
 
 export class MockDocMetas {
@@ -222,5 +243,6 @@ export class MockDocMetas {
         return docMeta;
 
     }
+
 
 }
