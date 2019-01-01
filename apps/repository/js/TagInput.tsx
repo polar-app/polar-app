@@ -28,8 +28,24 @@ const Styles: IStyleMap = {
         fontWeight: 'bold'
     },
 
+    relatedTags: {
+        marginTop: '5px',
+        display: 'flex',
+    },
+
+    relatedTagsLabel: {
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+
     relatedTag: {
-        display: 'inline-block'
+        display: 'inline-block',
+        backgroundColor: '#e5e5e5',
+        color: 'hsl(0,0%,20%)',
+        fontSize: '12px',
+        padding: '3px',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     }
 
 };
@@ -46,7 +62,7 @@ export class TagInput extends React.Component<IProps, IState> {
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             open: false,
-            tags: TagSelectOptions.fromTags(this.props.existingTags || [])
+            tags: []
         };
 
     }
@@ -57,35 +73,36 @@ export class TagInput extends React.Component<IProps, IState> {
 
         Blackout.toggle(open);
 
-        this.setState({
-            open
-        });
+        const tags = TagSelectOptions.fromTags(this.props.existingTags || []);
+
+        this.setState({...this.state, open, tags});
 
     }
 
     public render() {
 
-        const options: TagSelectOption[]
+        const availableTagOptions: TagSelectOption[]
             = TagSelectOptions.fromTags(this.props.availableTags);
 
         const existingTags: Tag[] = Optional.of(this.props.existingTags).getOrElse([]);
 
-        const defaultValue: TagSelectOption[] = TagSelectOptions.fromTags(existingTags);
+        const defaultValue: TagSelectOption[] =
+            TagSelectOptions.fromTags(existingTags)
+                .sort((a, b) => a.label.localeCompare(b.label));
 
         const relatedTags: string[]
             = this.props.relatedTags.compute(this.state.tags.map(current => current.label))
                                     .map(current => current.tag);
 
-        console.log("FIXME: got related tags: ", relatedTags);
-
         const RelatedTagsItems = () => {
             return <span>
                 {relatedTags.map(item =>
-                                     <Button className="p-0"
-                                             style={Styles.relatedTag}
-                                             color="link"
-                                             size="sm"
-                                             onClick={() => this.addTag(item)}>{item}</Button>)}
+                     <Button className="mr-1"
+                             key={item}
+                             style={Styles.relatedTag}
+                             color="light"
+                             size="sm"
+                             onClick={() => this.addTag(item)}>{item}</Button>)}
             </span>;
 
         };
@@ -97,8 +114,10 @@ export class TagInput extends React.Component<IProps, IState> {
                 return <div></div>;
             }
 
-            return <div>
-                <strong>Related: </strong>
+            return <div style={Styles.relatedTags}>
+                <div className="mr-1" style={Styles.relatedTagsLabel}>
+                    <strong>Related tags: </strong>
+                </div>
                 <RelatedTagsItems/>
             </div>;
 
@@ -140,11 +159,11 @@ export class TagInput extends React.Component<IProps, IState> {
                             onKeyDown={event => this.onKeyDown(event)}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={selectedOptions => this.handleChange(selectedOptions)}
+                            onChange={(selectedOptions) => this.handleChange(selectedOptions as TagSelectOption[])}
                             value={this.state.tags}
                             defaultValue={defaultValue}
                             placeholder="Create or select tags ..."
-                            options={options} >
+                            options={availableTagOptions} >
 
                             <div>this is the error</div>
 
@@ -167,10 +186,12 @@ export class TagInput extends React.Component<IProps, IState> {
 
 
     private addTag(tag: string) {
-        // const newTag = new Tag{id: tag, label: tag};
 
         const newTag: TagSelectOption = {value: tag, label: tag};
-        this.setState({...this.state, tags: [...this.state.tags, newTag]});
+        const tags = [...this.state.tags, newTag];
+        this.setState({...this.state, tags});
+        this.handleChange(tags);
+
     }
 
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
@@ -189,7 +210,7 @@ export class TagInput extends React.Component<IProps, IState> {
         // noop
     }
 
-    private handleChange(selectedOptions: any) {
+    private handleChange(selectedOptions: TagSelectOption[]) {
 
         const tags = TagSelectOptions.toTags(selectedOptions);
 

@@ -16,7 +16,7 @@ export class ProgressBar {
     public update(val: number) {
 
         if (this.element instanceof HTMLProgressElement) {
-            this.element.tags = val;
+            this.element.value = val;
         }
 
     }
