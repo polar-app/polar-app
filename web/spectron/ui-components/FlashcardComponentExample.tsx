@@ -48,8 +48,6 @@ export class FlashcardComponentExample extends React.Component<IProps, IState> {
 
             <div className="m-2">
 
-                <h2>FlashcardComponent</h2>
-
                 <FlashcardComponent flashcard={flashcard} />
 
             </div>
