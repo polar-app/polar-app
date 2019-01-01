@@ -56,3 +56,10 @@ webmaster_verifications:
 #   - vendor/ruby/
 
 include: ['_docs']
+exclude:
+  - firebase.json
+  - package.json
+  - package-lock.json
+  - feed.xml
+  - Gemfile
+  - Gemfile.lock
