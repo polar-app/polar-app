@@ -35,7 +35,17 @@ const Styles: IStyleMap = {
 
         // minWidth: '350px',
         // width: '350px'
+    },
+
+    barBody: {
+        display: 'flex'
+    },
+
+    barChild: {
+        marginTop: 'auto',
+        marginBottom: 'auto',
     }
+
 };
 
 /**
@@ -60,10 +70,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
             <div className="annotation-control-bar">
 
+                <div style={Styles.barBody}
+                     className="flexbar annotation-buttons border-top pt-1 pb-2">
 
-                <div className="flexbar annotation-buttons border-top pt-1 pb-2">
-
-                    <div className="text-muted annotation-context-link">
+                    <div style={Styles.barChild}
+                         className="text-muted annotation-context-link">
                         {/*TODO: make this into its own component... */}
                         <a href="#" onClick={() => this.onJumpToContext(annotation)}>
                             <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
@@ -72,8 +83,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                         </a>
                     </div>
 
-
-                    <div className="flexbar-right">
+                    <div style={Styles.barChild}
+                         className="flexbar-right">
 
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
