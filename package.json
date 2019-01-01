@@ -149,7 +149,7 @@
     "markdown-plus": "~2.5.2",
     "micromodal": "~0.3.2",
     "node-fetch": "~2.3.0",
-    "npm": "~6.4.1",
+    "npm": "~6.5.0",
     "opencollective-postinstall": "~2.0.1",
     "pdfjs-dist": "^2.0.943",
     "popper.js": "~1.14.4",

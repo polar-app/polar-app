@@ -23,6 +23,8 @@ import {ChartData} from 'chart.js';
 import {TagInput} from '../../../apps/repository/js/TagInput';
 import {Tag} from '../../../web/js/tags/Tag';
 import {RelatedTags} from '../../js/tags/related/RelatedTags';
+import {CommentIcon} from '../../js/ui/standard_icons/CommentIcon';
+import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -163,6 +165,13 @@ class App<P> extends React.Component<{}, IAppState> {
                     <b>highlighter: </b> <HighlighterIcon color={'yellow'}/>
                 </p>
 
+                <p>
+                    <b>comment: </b> <CommentIcon/>
+                </p>
+
+                <p>
+                    <b>flashcard: </b> <FlashcardIcon/>
+                </p>
 
 
                 {/*<InviteUsersContent onInvitedUserText={NULL_FUNCTION}/>*/}
