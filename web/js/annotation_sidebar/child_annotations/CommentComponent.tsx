@@ -4,8 +4,22 @@ import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationDropdown} from '../AnnotationDropdown';
 import {CommentDropdown} from './CommentDropdown';
 import {Logger} from '../../logger/Logger';
+import {IStyleMap} from '../../react/IStyleMap';
 
 const log = Logger.create();
+
+const Styles: IStyleMap = {
+
+    barBody: {
+        display: 'flex'
+    },
+
+    barChild: {
+        marginTop: 'auto',
+        marginBottom: 'auto',
+    }
+
+};
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -39,16 +53,17 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div className="flexbar comment-bar border-top pt-1 pb-2">
+                    <div style={Styles.barBody}
+                         className="flexbar comment-bar border-top pt-1 pb-2">
 
-                        <div className="text-muted">
+                        <div style={Styles.barChild} className="text-muted">
                             {/*TODO: make this into its own component... */}
                             <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
                                 {comment.created}
                             </Moment>
                         </div>
 
-                        <div className="flexbar-right">
+                        <div style={Styles.barChild} className="flexbar-right">
 
                             <CommentDropdown id={'comment-dropdown-' + comment.id}
                                              comment={comment}

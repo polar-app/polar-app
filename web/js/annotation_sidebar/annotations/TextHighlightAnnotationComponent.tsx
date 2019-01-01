@@ -4,6 +4,8 @@ import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
+import {IStyleMap} from '../../react/IStyleMap';
+
 
 /**
  * A generic wrapper that determines which sub-component to render.
