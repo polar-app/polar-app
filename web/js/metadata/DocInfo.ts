@@ -5,7 +5,7 @@
 import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from './PagemarkType';
 import {Preconditions} from '../Preconditions';
-import {ISODateTimeString} from './ISODateTimeStrings';
+import {ISODateTimeString, ISODateString} from './ISODateTimeStrings';
 import {Tag} from '../tags/Tag';
 import {Hashcode} from './Hashcode';
 import {UUID} from './UUID';
@@ -40,6 +40,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public shareStrategy?: ShareStrategy;
     public storedResources?: Set<StoredResource>;
     public mutating?: boolean;
+    public published?: ISODateString | ISODateTimeString;
 
     constructor(val: IDocInfo) {
 
@@ -216,6 +217,14 @@ export interface IDocInfo {
      * false then writes will be lost.
      */
     mutating?: boolean;
+
+    /**
+     * The time this document was originally published according to the
+     * publisher.  For a PDF this might be extracted from the internal metadata
+     * and for a HTML page this might be extracted from HTML microdata or
+     * opengraph information.
+     */
+    published?: ISODateString | ISODateTimeString;
 
 }
 
