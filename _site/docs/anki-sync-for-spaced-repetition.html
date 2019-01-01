@@ -3,18 +3,20 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Incremental Reading | POLAR - Easily manage your PDFs, web content, and notes.</title>
+<title>Anki Sync for Spaced Repetition | POLAR - Easily manage your PDFs, web content, and notes.</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Incremental Reading" />
+<meta property="og:title" content="Anki Sync for Spaced Repetition" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
 <meta property="og:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
-<link rel="canonical" href="https://getpolarized.io/incremental-reading.html" />
-<meta property="og:url" content="https://getpolarized.io/incremental-reading.html" />
+<link rel="canonical" href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html" />
+<meta property="og:url" content="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html" />
 <meta property="og:site_name" content="POLAR - Easily manage your PDFs, web content, and notes." />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-19T07:22:47-08:00" />
 <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 <script type="application/ld+json">
-{"description":"A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.","@type":"WebPage","url":"https://getpolarized.io/incremental-reading.html","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"}},"headline":"Incremental Reading","@context":"http://schema.org"}</script>
+{"description":"A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.","@type":"BlogPosting","url":"https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"}},"headline":"Anki Sync for Spaced Repetition","dateModified":"2018-12-19T07:22:47-08:00","datePublished":"2018-12-19T07:22:47-08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   <meta name="twitter:card"  content="summary">
@@ -26,7 +28,7 @@
   
 
   
-  <meta name="twitter:title" content="Incremental Reading">
+  <meta name="twitter:title" content="Anki Sync for Spaced Repetition">
   
 
   <meta name="twitter:site" content="@getpolarized">
@@ -157,51 +159,73 @@
           <div class="row">
             <div class="col">
 
-              <h1 id="incremental-reading">Incremental Reading</h1>
+              <h1 id="anki-and-spaced-repetition">Anki and Spaced Repetition</h1>
 
-<p>Incremental reading is a strategy around suspending and resuming reading of a
-document over time.  Reading the documents in chunks and coming back to the 
-document at any future point in time.</p>
+<p>Polar supports native integration with Anki via the Anki Connect plugin.</p>
 
-<p>Incremental reading in Polar is implemented with the use of “pagemarks” which
-allow the user to mark regions of the document as read.</p>
+<p>This allows for annotations on document and connecting flashcards to these
+annotations and then synchronizing them directly to Anki.</p>
 
-<p>Pagemarks allow suspend and resume of reading for weeks and months in
-the future until you’re ready to resume, without losing your place.</p>
+<p>Polar supports a robust annotation system internally with features like text
+and highlights, and allowing comments and flashcards to be attached directly 
+to the text highlights.</p>
 
-<p>Pagemarks are contrasted with bookmarks in that a bookmark is only a simple
-pointer.</p>
+<p>This allows you to create flashcards but keep <em>context</em> associated with the 
+flashcards.</p>
 
-<p>Pagemarks allow you to specify a range, or multiple ranges.  Additionally,
-pagemarks are used to keep track of the total progress of the document and to
-sort documents in the document repository by their reading progress..</p>
+<h1 id="setup">Setup</h1>
 
-<p><img class="img-fluid" src="./assets/screenshots/annotations-shadow.png" /></p>
-
-<div class="text-center">Screenshot showing a document with 4 pagemarks</div>
+<ul>
+  <li>Install Anki Connect and restart Anki.</li>
+</ul>
 
 <h1 id="usage">Usage</h1>
 
-<p>Pagemarks can be created with either the keyboard of the mouse.</p>
+<p>Once Anki Connect is running, go to <code class="highlighter-rouge">Tools | Sync Flashcards to Anki</code> from 
+within the Document Repository.</p>
 
-<p>When working with a document you can simply right click and 
-“Create Pagemark at Point” which will create a pagemark on the current page
-to the current mouse position.</p>
-
-<h2 id="linux--windows-key-bindings">Linux / Windows key bindings</h2>
+<h1 id="limitations">Limitations</h1>
 
 <ul>
-  <li>Control Alt N - create a new pagemark on the current page</li>
-  <li>Control Alt click - create a pagemark on the page up until the current mouse click</li>
-  <li>Control Alt E - erase the current pagemark</li>
+  <li>
+    <p>No support for cloze deletions.  It’s on the roadmap.</p>
+  </li>
+  <li>
+    <p>Only front/back cards for now.  We will implement more card types in the future.</p>
+  </li>
+  <li>
+    <p>No current ability to update flashcards.  Polar currently lacks a flashcard 
+update UI so this needs to be added to Polar before we can implement this in 
+Anki sync.</p>
+  </li>
+  <li>
+    <p>Anki must have Anki Connect. This will always be a hard requirement but we
+might create a Polar Sync plugin for Anki.</p>
+  </li>
+  <li>
+    <p>No support for nested decks.  Each deck is created at the root.  If you move it
+the new deck will be created. We will have a fix for this in the future.</p>
+  </li>
+  <li>
+    <p>All flashcards are always sync’d each time. This is probably going to be slower
+for larger decks but we plan to implement differential sync in the future.</p>
+  </li>
 </ul>
 
-<h2 id="macos-key-bindings">MacOS Key bindings</h2>
+<h1 id="roadmap">Roadmap</h1>
+
+<p>We plan on eventually supporting the following features when creating flashcards:</p>
 
 <ul>
-  <li>Meta-Command N - create a new pagemark on the current page</li>
-  <li>Meta-Command click - create a pagemark on the page up until the current mouse click</li>
-  <li>Meta-Command E - erase the current pagemark</li>
+  <li>
+    <p>Preserving the original context URL so that you can link into polar and
+have it open the document direction</p>
+  </li>
+  <li>
+    <p>Storing additional fields in Anki including the name of the document, 
+original text content of the highlight, possibly images of the highlight
+that the flashcard is bound to.</p>
+  </li>
 </ul>
 
 

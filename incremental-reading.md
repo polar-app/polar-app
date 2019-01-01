@@ -6,8 +6,14 @@ layout: doc
 
 # Incremental Reading
 
-Pagemarks are a new concept for tracking your reading inspired by incremental
-reading. Pagemarks allow suspend and resume of reading for weeks and months in
+Incremental reading is a strategy around suspending and resuming reading of a
+document over time.  Reading the documents in chunks and coming back to the 
+document at any future point in time.
+
+Incremental reading in Polar is implemented with the use of "pagemarks" which
+allow the user to mark regions of the document as read.
+
+Pagemarks allow suspend and resume of reading for weeks and months in
 the future until you're ready to resume, without losing your place.
 
 Pagemarks are contrasted with bookmarks in that a bookmark is only a simple
@@ -22,6 +28,12 @@ sort documents in the document repository by their reading progress..
 <div class="text-center">Screenshot showing a document with 4 pagemarks</div>
 
 # Usage
+
+Pagemarks can be created with either the keyboard of the mouse.
+
+When working with a document you can simply right click and 
+"Create Pagemark at Point" which will create a pagemark on the current page
+to the current mouse position. 
 
 ## Linux / Windows key bindings
 
