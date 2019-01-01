@@ -157,64 +157,11 @@ class App<P> extends React.Component<{}, IAppState> {
                     <ToggleButton label="toggle enabled" initialValue={true} onChange={() => console.log('changed')}/>
                 </div>
 
+                <h1 className="component">Standard Icons</h1>
 
-
-
-
-                <div className="p-2">
-
-                    <Button color="light" size="sm">
-                        <i className="fas fa-check"></i> &nbsp;flagged only
-                    </Button>
-
-                </div>
-
-                <div className="form-group">
-                    <input type="checkbox" name="fancy-checkbox-default"
-                           id="fancy-checkbox-default" autoComplete="off"/>
-                    <div className="btn-group">
-                        <label htmlFor="fancy-checkbox-default"
-                               className="btn btn-default">
-                            <span className="glyphicon glyphicon-ok"></span>
-                            <span> </span>
-                        </label>
-                        <label htmlFor="fancy-checkbox-default"
-                               className="btn btn-default active">
-                            Default Checkbox
-                        </label>
-                    </div>
-                </div>
-
-                <div style={{backgroundColor: 'black', padding: '20px'}}>
-
-                    <HighlighterIcon color={'yellow'}/>
-                </div>
-
-                <HighlighterIcon color={'yellow'}/>
-
-
-                <section className="sidebar text-muted p-1">
-
-                    <ListGroup flush>
-                        <ListGroupItem active={true} tag="a" href="#" action>
-                            <i className="fas fa-archive"></i>
-                            &nbsp; Documents
-                        </ListGroupItem>
-
-                        <ListGroupItem tag="a" href="#" action>
-                            <i className="fas fa-sticky-note"></i>
-                            &nbsp; Annotations
-                        </ListGroupItem>
-
-                        <ListGroupItem tag="a" href="#" action>
-                            <i className="fas fa-sticky-note"></i>
-                            &nbsp; Settings
-                        </ListGroupItem>
-
-                    </ListGroup>
-
-                </section>
-
+                <p>
+                    <b>highlighter: </b> <HighlighterIcon color={'yellow'}/>
+                </p>
 
 
 
