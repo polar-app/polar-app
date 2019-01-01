@@ -31,7 +31,6 @@ export class SettingsStore {
         await Files.writeFileAsync(settingsPath, data);
 
         log.info("Wrote settings to: " + settingsPath);
-
     }
 
 }

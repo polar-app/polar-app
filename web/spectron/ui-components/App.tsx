@@ -136,73 +136,29 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <br/><br/><br/>
-
-                &nbsp;&nbsp;&nbsp;
+                <h1 className="component">TagInput</h1>
 
                 <TagInput availableTags={tags}
                           existingTags={existingTags}
                           relatedTags={relatedTags}
                           onChange={newTags => console.log('got tags', newTags)}/>
 
+                <h1 className="component">Basic Line Chart</h1>
+
                 <Line data={data} height={100} />
 
+                <h1 className="component">Toggle Buttons</h1>
+
                 <div className="p-2">
-                    <ToggleButton label="flagged only"
-                                  onChange={() => console.log('changed')}/>
+                    <ToggleButton label="flagged only" onChange={() => console.log('changed')}/>
                 </div>
 
-
                 <div className="p-2">
-
-                    <Button color="light p-0 pr-1 border rounded" size="sm">
-
-                        <div style={{display: 'flex'}}>
-
-                            <div className="p-1 bg-secondary text-light rounded-left"
-                                 style={{verticalAlign: 'middle', textAlign: 'center', width: '2.5em'}}>
-
-                                &nbsp;<i className="fas fa-minus"></i>&nbsp;
-
-                            </div>
-
-                            <div className="p-1"
-                                 style={{verticalAlign: 'middle'}}>
-                                &nbsp;flagged only
-                            </div>
-
-                        </div>
-
-                    </Button>
-
+                    <ToggleButton label="toggle enabled" initialValue={true} onChange={() => console.log('changed')}/>
                 </div>
 
 
 
-                <div className="p-2">
-
-
-                    <Button color="light p-0 pr-1 border rounded" size="sm">
-
-                        <div style={{display: 'flex'}}>
-
-                            <div className="p-1 bg-primary text-light rounded-left"
-                                 style={{verticalAlign: 'middle', textAlign: 'center', width: '2.5em'}}>
-
-                                &nbsp;<i className="fas fa-check"></i>&nbsp;
-
-                            </div>
-
-                            <div className="p-1"
-                                 style={{verticalAlign: 'middle'}}>
-                                &nbsp;flagged only
-                            </div>
-
-                        </div>
-
-                    </Button>
-
-                </div>
 
 
                 <div className="p-2">
