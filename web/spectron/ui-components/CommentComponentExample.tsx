@@ -41,8 +41,6 @@ export class CommentComponentExample extends React.Component<IProps, IState> {
 
             <div>
 
-                <h2>CommentComponent</h2>
-
                 <CommentComponent comment={comment}/>
 
             </div>

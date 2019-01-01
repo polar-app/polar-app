@@ -165,42 +165,13 @@ class App<P> extends React.Component<{}, IAppState> {
 
 
 
-                <div className="p-2">
-
-                    <InputGroup className="border rounded">
-
-                        <Button color="primary">
-                            <i className="fas fa-check"></i> &nbsp;
-                        </Button>
-                        <InputGroupAddon addonType="append">
-                            <Button color="light">flagged only</Button>
-                        </InputGroupAddon>
-                    </InputGroup>
-
-                </div>
-
-                <div className="p-2">
-
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend">
-                            <Button>To the Left!</Button>
-                        </InputGroupAddon>
-                        <Input type="checkbox" />
-                    </InputGroup>
-
-                </div>
-
-
                 {/*<InviteUsersContent onInvitedUserText={NULL_FUNCTION}/>*/}
 
                 {/*<InviteUsersModal isOpen={true} onCancel={NULL_FUNCTION} onInvite={(emailAddresses) => console.log(emailAddresses)}/>*/}
 
                 {/*<TableDropdown id={'table-dropdown'}></TableDropdown>*/}
 
-                <h1>UI Components</h1>
-                <hr/>
-
-                <h1>headings</h1>
+                <h1 className="component">Typographic headings</h1>
 
                 <h1>h1</h1>
                 <h2>h2</h2>
@@ -208,8 +179,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 <h4>h4</h4>
                 <h5>h5</h5>
 
-                <h1>Intro</h1>
-                <hr/>
+                <h1 className="component">Intro classes</h1>
 
                 <div className="intro">
 
@@ -227,7 +197,7 @@ class App<P> extends React.Component<{}, IAppState> {
                     List of important UI components in Polar.
                 </p>
 
-                <h2>ListSelector</h2>
+                <h1 className="component">ListSelector</h1>
 
                 <ListSelector options={options}
                               id="list-options"
@@ -235,17 +205,21 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 </ListSelector>
 
-                <h2>TableDropdown</h2>
+                <h1 className="component">TableDropdown</h1>
 
                 <DocRepoTableDropdown id="table-dropdown"
                                       onSelectedColumns={(newOptions) => console.log("onSelectedColumns: ", newOptions)}
                 />
 
-                <h2>Annotation Sidebar</h2>
+                <h1 className="component">Annotation Sidebar</h1>
 
                 <AnnotationSidebar docMeta={docMeta}/>
 
+                <h1 className="component">Comment component</h1>
+
                 <CommentComponentExample/>
+
+                <h1 className="component">Flashcard component</h1>
 
                 <FlashcardComponentExample/>
 
