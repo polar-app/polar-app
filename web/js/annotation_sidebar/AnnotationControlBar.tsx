@@ -12,10 +12,11 @@ import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from '../metadata/AnnotationType';
-import {UncontrolledCollapse, Button} from 'reactstrap';
+import {Button} from 'reactstrap';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {CommentIcon} from '../ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
+import {FlashcardType} from '../metadata/FlashcardType';
 
 
 const Styles: IStyleMap = {
@@ -141,7 +142,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'flashcard'}>
 
-                    <AnnotationFlashcardBox annotation={annotation}
+                    <AnnotationFlashcardBox id={annotation.id}
+                                            type={FlashcardType.BASIC_FRONT_BACK}
                                             onCancel={() => this.toggleActiveInputComponent('none')}
                                             onFlashcardCreated={(front, back) => this.onFlashcardCreated(front, back)}/>
 

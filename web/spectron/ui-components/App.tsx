@@ -25,6 +25,8 @@ import {Tag} from '../../../web/js/tags/Tag';
 import {RelatedTags} from '../../js/tags/related/RelatedTags';
 import {CommentIcon} from '../../js/ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
+import {AnnotationFlashcardBox} from '../../js/annotation_sidebar/AnnotationFlashcardBox';
+import {FlashcardType} from '../../js/metadata/FlashcardType';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -137,6 +139,8 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+                <h1 className="component">Flashcard input</h1>
+                <AnnotationFlashcardBox id='flashcard-0' type={FlashcardType.BASIC_FRONT_BACK}/>
 
                 <h1 className="component">TagInput</h1>
 

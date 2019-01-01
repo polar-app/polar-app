@@ -5,6 +5,7 @@ import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichText
 import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from './RichTextArea';
 import Select from 'react-select';
+import {FlashcardType} from '../metadata/FlashcardType';
 
 const log = Logger.create();
 
@@ -27,20 +28,20 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { annotation } = this.props;
+        const { id } = this.props;
 
         return (
 
             <div id="annotation-flashcard-box" className="">
 
                 <RichTextArea label="front"
-                              id={`front-${annotation.id}`}
+                              id={`front-${id}`}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.front = html}/>
 
                 <RichTextArea label="back"
-                              id={`back-${annotation.id}`}
+                              id={`back-${id}`}
                               onChange={(html) => this.back = html}/>
 
                 <div className="text-right">
@@ -94,13 +95,14 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    annotation: DocAnnotation;
-    onFlashcardCreated?: (front: htmlstring, back: htmlstring) => void;
-    onCancel?: () => void;
+    readonly id: string;
+    readonly type: FlashcardType;
+    readonly onFlashcardCreated?: (front: htmlstring, back: htmlstring) => void;
+    readonly onCancel?: () => void;
 }
 
 export interface IState {
-    iter: number;
+    readonly iter: number;
 }
 
 export type htmlstring = string;
