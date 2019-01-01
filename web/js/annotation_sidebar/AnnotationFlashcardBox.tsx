@@ -77,7 +77,14 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
     private onCreate(): void {
 
         if (this.props.onFlashcardCreated) {
-            this.props.onFlashcardCreated(this.front, this.back);
+
+            const fields: FrontAndBackFields = {
+                front: this.front,
+                back: this.back
+            };
+
+            this.props.onFlashcardCreated(this.props.type, fields);
+
         }
 
         this.setState({
@@ -97,7 +104,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 export interface IProps {
     readonly id: string;
     readonly type: FlashcardType;
-    readonly onFlashcardCreated?: (front: htmlstring, back: htmlstring) => void;
+    readonly onFlashcardCreated?: (type: FlashcardType, fields: FrontAndBackFields | ClozeFields) => void;
     readonly onCancel?: () => void;
 }
 
@@ -106,3 +113,12 @@ export interface IState {
 }
 
 export type htmlstring = string;
+
+export interface ClozeFields {
+    readonly text: htmlstring;
+}
+
+export interface FrontAndBackFields {
+    readonly front: htmlstring;
+    readonly back: htmlstring;
+}

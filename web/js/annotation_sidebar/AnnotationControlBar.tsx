@@ -6,8 +6,7 @@ import {AnnotationCommentBox} from './AnnotationCommentBox';
 import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
 import {Refs} from '../metadata/Refs';
-import {AnnotationFlashcardBox} from './AnnotationFlashcardBox';
-import {HTMLString} from '../util/HTMLString';
+import {AnnotationFlashcardBox, ClozeFields, FrontAndBackFields} from './AnnotationFlashcardBox';
 import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
@@ -145,7 +144,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                     <AnnotationFlashcardBox id={annotation.id}
                                             type={FlashcardType.BASIC_FRONT_BACK}
                                             onCancel={() => this.toggleActiveInputComponent('none')}
-                                            onFlashcardCreated={(front, back) => this.onFlashcardCreated(front, back)}/>
+                                            onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>
 
                 </Collapse>
 
@@ -202,7 +201,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     }
 
-    private onFlashcardCreated(front: HTMLString, back: HTMLString) {
+    private onFlashcardCreated(type: FlashcardType, fields: FrontAndBackFields | ClozeFields) {
 
         RendererAnalytics.event({category: 'annotations', action: 'flashcard-created'});
 
@@ -214,14 +213,21 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const ref = Refs.createFromAnnotationType(annotation.id, annotation.annotationType);
 
-        let flashcard = Flashcards.createFrontBack(front, back, ref);
+        if (type === FlashcardType.BASIC_FRONT_BACK) {
 
-        // TODO: an idiosyncracy of the proxies system is that it mutates the
-        // object so if it's read only it won't work.  This is a bug with
-        // Proxies so I need to also fix that bug there in the future.
-        flashcard = Object.assign({}, flashcard);
+            const frontAndBackFields = fields as FrontAndBackFields;
+            const {front, back} = frontAndBackFields;
 
-        annotation.pageMeta.flashcards[flashcard.id] = flashcard;
+            let flashcard = Flashcards.createFrontBack(front, back, ref);
+
+            // TODO: an idiosyncracy of the proxies system is that it mutates the
+            // object so if it's read only it won't work.  This is a bug with
+            // Proxies so I need to also fix that bug there in the future.
+            flashcard = Object.assign({}, flashcard);
+
+            annotation.pageMeta.flashcards[flashcard.id] = flashcard;
+
+        }
 
         this.setState({
             activeInputComponent: 'none'
