@@ -1,13 +1,35 @@
 import * as React from 'react';
 import {Logger} from '../logger/Logger';
-import {DocAnnotation} from './DocAnnotation';
-import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichTextEditor4';
 import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from './RichTextArea';
-import Select from 'react-select';
 import {FlashcardType} from '../metadata/FlashcardType';
+import Input from 'reactstrap/lib/Input';
 
 const log = Logger.create();
+
+class Styles {
+
+    public static BottomBar: React.CSSProperties = {
+        display: 'flex'
+    };
+
+    public static BottomBarItem: React.CSSProperties = {
+        marginTop: 'auto',
+        marginBottom: 'auto',
+    };
+
+    public static BottomBarItemRight: React.CSSProperties = {
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        width: '100%'
+    };
+
+    public static SelectCardType: React.CSSProperties = {
+        minWidth: '10em',
+        fontSize: '14px'
+    };
+
+}
 
 export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
@@ -21,7 +43,8 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
         this.onCancel = this.onCancel.bind(this);
 
         this.state = {
-            iter: 0
+            iter: 0,
+            type: this.props.type || FlashcardType.BASIC_FRONT_BACK
         };
 
     }
@@ -30,9 +53,21 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
         const { id } = this.props;
 
-        return (
+        const RenderClozeFields = () => {
+            return (<div>
 
-            <div id="annotation-flashcard-box" className="">
+                <RichTextArea label="text"
+                              id={`text-${id}`}
+                              autofocus={true}
+                              onKeyDown={event => this.onKeyDown(event)}
+                              onChange={(html) => this.front = html}/>
+
+            </div>);
+        };
+
+
+        const RenderFrontAndBackFields = () => {
+            return (<div>
 
                 <RichTextArea label="front"
                               id={`front-${id}`}
@@ -44,15 +79,61 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
                               id={`back-${id}`}
                               onChange={(html) => this.back = html}/>
 
-                <div className="text-right">
+            </div>);
+        };
 
-                    <Button color="secondary" size="sm" className="mt-2" onClick={() => this.onCancel()}>
-                        Cancel
-                    </Button>
+        const RenderFields = () => {
 
-                    <Button color="primary" size="sm" className="mt-2 ml-1" onClick={() => this.onCreate()}>
-                        Create
-                    </Button>
+            if (this.state.type === FlashcardType.BASIC_FRONT_BACK) {
+                return ( <RenderFrontAndBackFields/> );
+            } else {
+                return ( <RenderClozeFields/> );
+            }
+
+        };
+
+        return (
+
+            <div id="annotation-flashcard-box" className="">
+
+                <RenderFields/>
+
+                {/*FIXME: put the following buttons on the bottom of the flashcard:*/}
+
+                {/*- select to change the flashcard type*/}
+
+                {/*- close delete button to cloze delete a region of text*/}
+
+                {/*- quote annotation ... to copy the annotation text.*/}
+
+                <div style={Styles.BottomBar}>
+
+                    <div style={Styles.BottomBarItem}>
+
+                        <Input type="select"
+                               style={Styles.SelectCardType}
+                               className="p-1"
+                               onChange={htmlInputElement => this.onChangeType(htmlInputElement.target.value as FlashcardType)}>
+
+                            <option value={FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
+                            <option value={FlashcardType.CLOZE}>Cloze</option>
+
+                        </Input>
+
+                    </div>
+
+                    <div style={Styles.BottomBarItemRight}
+                         className="text-right">
+
+                        <Button color="secondary" size="sm" className="" onClick={() => this.onCancel()}>
+                            Cancel
+                        </Button>
+
+                        <Button color="primary" size="sm" className="ml-1" onClick={() => this.onCreate()}>
+                            Create
+                        </Button>
+
+                    </div>
 
                 </div>
 
@@ -74,6 +155,11 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
     }
 
+    private onChangeType(type: FlashcardType) {
+        console.log("FIXME: type changed to: " + type);
+        this.setState({...this.state, type});
+    }
+
     private onCreate(): void {
 
         if (this.props.onFlashcardCreated) {
@@ -83,7 +169,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
                 back: this.back
             };
 
-            this.props.onFlashcardCreated(this.props.type, fields);
+            this.props.onFlashcardCreated(this.state.type, fields);
 
         }
 
@@ -103,16 +189,19 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly id: string;
-    readonly type: FlashcardType;
-    readonly onFlashcardCreated?: (type: FlashcardType, fields: FrontAndBackFields | ClozeFields) => void;
+    readonly type?: FlashcardType;
+    readonly onFlashcardCreated?: (type: FlashcardType, fields: FlashcardInputFieldsType) => void;
     readonly onCancel?: () => void;
 }
 
 export interface IState {
     readonly iter: number;
+    readonly type: FlashcardType;
 }
 
 export type htmlstring = string;
+
+export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
 
 export interface ClozeFields {
     readonly text: htmlstring;

@@ -52,7 +52,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
         // console.log('onChange: newValue: ', newValue);
 
-        log.debug('onChange', newValue);
+        // log.debug('onChange', newValue);
 
         this.value = newValue;
 
@@ -63,7 +63,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
     }
 
     private onBlur() {
-        log.info("onBlur");
+        // log.info("onBlur");
 
         if (this.props.onBlur) {
             this.props.onBlur(this.id, this.value);
@@ -73,7 +73,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
     }
 
     private onFocus() {
-        log.info("onFocus");
+        // log.info("onFocus");
 
         if (this.props.onFocus) {
             this.props.onFocus(this.id, this.value);
