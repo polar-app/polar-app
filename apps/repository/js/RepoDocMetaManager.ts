@@ -14,6 +14,7 @@ import {IProvider} from '../../../web/js/util/Providers';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
+import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 
 const log = Logger.create();
 
@@ -31,7 +32,9 @@ export class RepoDocMetaManager {
 
     public readonly repoAnnotationIndex: RepoAnnotationIndex = {};
 
-    public readonly tagsDB: TagsDB = new TagsDB();
+    public readonly tagsDB = new TagsDB();
+
+    public readonly relatedTags = new RelatedTags();
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
@@ -46,6 +49,9 @@ export class RepoDocMetaManager {
 
             this.repoDocInfoIndex[fingerprint] = repoDocMeta.repoDocInfo;
             this.updateTagsDB(repoDocMeta.repoDocInfo);
+
+            this.relatedTags.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
+                                                                 .map(current => current.label));
 
             for (const repoAnnotation of repoDocMeta.repoAnnotations) {
                 this.repoAnnotationIndex[repoAnnotation.id] = repoAnnotation;

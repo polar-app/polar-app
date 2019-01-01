@@ -375,7 +375,7 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                                         = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
 
                                     return (
-                                        <TagInput tags={this.props.repoDocMetaManager!.tagsDB.tags()}
+                                        <TagInput availableTags={this.props.repoDocMetaManager!.tagsDB.tags()}
                                                   existingTags={existingTags}
                                                   onChange={(tags) =>
                                                       this.onDocTagged(repoDocInfo, tags)

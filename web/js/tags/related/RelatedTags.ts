@@ -59,6 +59,11 @@ export class RelatedTags {
 
             const indexedTagMeta = this.tagMetaIndex[tag];
 
+            if (! indexedTagMeta) {
+                // this tag isn't indexed yet.
+                return;
+            }
+
             const relatedDocs = indexedTagMeta.docs;
 
             for (const relatedDoc of relatedDocs) {

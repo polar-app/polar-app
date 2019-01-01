@@ -20,6 +20,9 @@ import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
 import {ToggleButton} from '../../js/ui/ToggleButton';
 import {Doughnut, Line} from 'react-chartjs-2';
 import {ChartData} from 'chart.js';
+import {TagInput} from '../../../apps/repository/js/TagInput';
+import {Tag} from '../../../web/js/tags/Tag';
+import {RelatedTags} from '../../js/tags/related/RelatedTags';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -103,11 +106,44 @@ class App<P> extends React.Component<{}, IAppState> {
             ]
         };
 
+        const relatedTags = new RelatedTags();
+
+        relatedTags.update('0x01', 'set', 'linux');
+        relatedTags.update('0x01', 'set', 'microsoft');
+
+        relatedTags.update('0x02', 'set', 'linux');
+        relatedTags.update('0x02', 'set', 'google');
+
+        relatedTags.update('0x03', 'set', 'linux');
+        relatedTags.update('0x03', 'set', 'microsoft');
+
+        relatedTags.update('0x04', 'set', 'linux');
+        relatedTags.update('0x04', 'set', 'microsoft');
+
+        relatedTags.update('0x05', 'set', 'linux');
+        relatedTags.update('0x05', 'set', 'google');
+
+        const tags: Tag[] = [
+            {id: 'microsoft', label: 'microsoft'},
+            {id: 'google', label: 'google'}
+        ];
+
+        const existingTags: Tag[] = [
+            {id: 'google', label: 'google'}
+        ];
+
         return (
 
             <div>
 
-                https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
+                <br/><br/><br/>
+
+                &nbsp;&nbsp;&nbsp;
+
+                <TagInput availableTags={tags}
+                          existingTags={existingTags}
+                          relatedTags={relatedTags}
+                          onChange={newTags => console.log('got tags', newTags)}/>
 
                 <Line data={data} height={100} />
 
@@ -118,9 +154,6 @@ class App<P> extends React.Component<{}, IAppState> {
 
 
                 <div className="p-2">
-
-
-
 
                     <Button color="light p-0 pr-1 border rounded" size="sm">
 
@@ -302,7 +335,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 <h2>TableDropdown</h2>
 
                 <DocRepoTableDropdown id="table-dropdown"
-                                      onSelectedColumns={(options) => console.log("onSelectedColumns: ", options)}
+                                      onSelectedColumns={(newOptions) => console.log("onSelectedColumns: ", newOptions)}
                 />
 
                 <h2>Annotation Sidebar</h2>
