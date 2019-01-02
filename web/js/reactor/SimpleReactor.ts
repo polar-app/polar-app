@@ -23,16 +23,16 @@ export class SimpleReactor<V> implements ISimpleReactor<V> {
         this.delegate.clearEvent(EVENT_NAME);
     }
 
-    public addEventListener(listener: EventListener<V>) {
-        return this.delegate.addEventListener(EVENT_NAME, listener);
+    public addEventListener(eventListener: EventListener<V>): RegisteredEventListener<V> {
+        return this.delegate.addEventListener(EVENT_NAME, eventListener);
     }
 
     public once(): Promise<V> {
         return this.delegate.once(EVENT_NAME);
     }
 
-    public removeEventListener(listener: EventListener<V>): boolean {
-        return this.delegate.removeEventListener(EVENT_NAME, listener);
+    public removeEventListener(eventListener: EventListener<V>): boolean {
+        return this.delegate.removeEventListener(EVENT_NAME, eventListener);
     }
 
     public size(): number {
@@ -56,9 +56,9 @@ export interface ISimpleReactor<V> {
      * Add the listener and return the listener that was added.  This allows you
      * to later remove the listener if necessary.
      */
-    addEventListener(listener: EventListener<V>): RegisteredEventListener<V>;
+    addEventListener(eventListener: EventListener<V>): RegisteredEventListener<V>;
 
-    removeEventListener(listener: EventListener<V>): boolean;
+    removeEventListener(eventListener: EventListener<V>): boolean;
 
     dispatchEvent(value: V): void;
 

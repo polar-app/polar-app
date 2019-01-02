@@ -20,6 +20,7 @@ import {isPresent} from '../Preconditions';
 
 import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
+import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -189,7 +190,13 @@ export interface LoggingConfig {
 
 export interface LogMessage {
 
-    // TODO: timestamp ?
+    /**
+     * A unique number for this LogMessage, just needs to be unique to the
+     * process and we should be able to use a simple nonce.
+     */
+    readonly idx: number;
+
+    readonly timestamp: ISODateTimeString;
 
     readonly level: LogLevelName;
     readonly msg: string;

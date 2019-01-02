@@ -1,9 +1,13 @@
 import {ILogger} from './ILogger';
 import {Strings} from '../util/Strings';
 import {FixedBuffer} from '../util/FixedBuffer';
-import {LogMessage} from './Logging';
+import {LogLevelName, LogMessage} from './Logging';
+import {EventListener, Releaseable} from '../reactor/EventListener';
+import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 
 const capacity = Strings.toNumber(process.env.POLAR_LOG_CAPACITY, 250);
+
+let IDX_GENERATOR = 0;
 
 const buffer = new FixedBuffer<LogMessage>(capacity);
 
@@ -16,27 +20,27 @@ export class MemoryLogger implements ILogger {
     public readonly name: string = 'memory-logger';
 
     public notice(msg: string, ...args: any[]) {
-        buffer.write({level: 'notice', msg, args});
+        buffer.write(createLogMessage('notice', msg, args));
     }
 
     public info(msg: string, ...args: any[]) {
-        buffer.write({level: 'info', msg, args});
+        buffer.write(createLogMessage( 'info', msg, args));
     }
 
     public warn(msg: string, ...args: any[]) {
-        buffer.write({level: 'warn', msg, args});
+        buffer.write(createLogMessage( 'warn', msg, args));
     }
 
     public error(msg: string, ...args: any[]) {
-        buffer.write({level: 'error', msg, args});
+        buffer.write(createLogMessage( 'error', msg, args));
     }
 
     public verbose(msg: string, ...args: any[]) {
-        buffer.write({level: 'verbose', msg, args});
+        buffer.write(createLogMessage( 'verbose', msg, args));
     }
 
     public debug(msg: string, ...args: any[]) {
-        buffer.write({level: 'debug', msg, args});
+        buffer.write(createLogMessage( 'debug', msg, args));
     }
 
     public getOutput(): string {
@@ -55,5 +59,28 @@ export class MemoryLogger implements ILogger {
         // noop
     }
 
+    public static addEventListener(eventListener: EventListener<LogMessage>): Releaseable {
+        return buffer.addEventListener(eventListener);
+    }
+
+    public static toView(): ReadonlyArray<LogMessage> {
+        return buffer.toView();
+    }
+
 }
+
+function createLogMessage(level: LogLevelName,
+                          msg: string,
+                          args: ReadonlyArray<any>): LogMessage {
+
+    return {
+        timestamp: ISODateTimeStrings.create(),
+        idx: IDX_GENERATOR++,
+        level,
+        msg,
+        args
+    };
+
+}
+
 

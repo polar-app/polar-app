@@ -1,11 +1,16 @@
 /**
  * Fixed capacity buffer view of the underlying data.
  */
+import {SimpleReactor} from '../reactor/SimpleReactor';
+import {EventListener, Releaseable} from '../reactor/EventListener';
+
 export class FixedBuffer<V> {
 
     public readonly buffer: V[] = [];
 
     private readonly capacity: number;
+
+    private readonly reactor = new SimpleReactor<V>();
 
     constructor(capacity: number) {
         this.capacity = capacity;
@@ -19,10 +24,16 @@ export class FixedBuffer<V> {
 
         this.buffer.push(value);
 
+        this.reactor.dispatchEvent(value);
+
     }
 
     public toView(): ReadonlyArray<V> {
         return this.buffer;
+    }
+
+    public addEventListener(eventListener: EventListener<V>): Releaseable {
+        return this.reactor.addEventListener(eventListener);
     }
 
 }

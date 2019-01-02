@@ -90,7 +90,7 @@ export class Arrays {
 
         input.forEach(current => {
 
-            if(batch.length === batchSize) {
+            if (batch.length === batchSize) {
                 result.push(batch);
                 batch = [];
             }
@@ -99,7 +99,7 @@ export class Arrays {
 
         });
 
-        if(batch.length > 0) {
+        if (batch.length > 0) {
             result.push(batch);
         }
 
@@ -112,8 +112,7 @@ export class Arrays {
      */
     public static async asyncForEach<T>(items: T[], callback: AsyncCallback<T>) {
 
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
+        for (const item of items) {
             await callback(item);
         }
 

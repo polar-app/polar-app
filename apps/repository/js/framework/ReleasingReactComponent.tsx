@@ -14,7 +14,7 @@ export default class ReleasingReactComponent<P, S> extends React.Component<P, S>
     }
 
     public componentWillUnmount(): void {
-        console.log("Releasing resources with releaser");
+        log.info("Releasing resources with releaser");
         this.releaser.release();
     }
 

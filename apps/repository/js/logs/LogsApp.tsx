@@ -3,6 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
 import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
 import LogsContent from './LogsContent';
+import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 
 const log = Logger.create();
 
@@ -28,13 +29,19 @@ export default class LogsApp extends React.Component<IProps, IState> {
 
                 </header>
 
-                <div className="container">
+                <div className="container-fluid">
 
                     <div className="row">
 
                         <div className="col-lg-12">
 
-                            <LogsContent/>
+                            <div className="mb-1">
+                                <CopyLogsToClipboardButton/>
+                            </div>
+
+                            <div className="mb-2">
+                                <LogsContent/>
+                            </div>
 
                         </div>
 
