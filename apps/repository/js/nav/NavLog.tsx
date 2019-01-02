@@ -8,13 +8,16 @@ const Styles: IStyleMap = {
 
     child: {
         display: 'inline-block',
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
+        userSelect: 'none'
     },
 
     textLogo: {
         paddingLeft: '5px',
         fontWeight: 'bold',
-        fontSize: '20px'
+        fontSize: '20px',
+        userSelect: 'none',
+        textDecoration: 'none'
     }
 
 };
@@ -32,7 +35,9 @@ export class NavLogo extends React.Component<IProps, IState> {
         return (
             <div style={Styles.parent}>
                 <div style={Styles.child}>
-                    <img src="./img/icon.svg" height="25"/>
+                    <a href="#">
+                        <img src="./img/icon.svg" height="25"/>
+                    </a>
                 </div>
 
                 <div style={Styles.child}>

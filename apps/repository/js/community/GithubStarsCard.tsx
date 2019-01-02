@@ -18,25 +18,23 @@ export default class GithubStarsCard extends React.Component<any, any> {
             <Card>
                 <CardHeader><b>Github Stars</b></CardHeader>
                 <CardBody>
-                    <CardText>
 
-                        <div className="mt-2 mb-2 intro">
+                    <div className="mt-2 mb-2 intro">
 
-                            <p>
-                                Liking Polar?  Would you mind giving us a star on
-                                Github?
-                            </p>
+                        <p>
+                            Liking Polar?  Would you mind giving us a star on
+                            Github?
+                        </p>
 
-                            <p className="text-center">
-                                <a href="https://github.com/burtonator/polar-bookshelf">
-                                    <img height="100"
-                                         src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
-                                </a>
-                            </p>
+                        <p className="text-center">
+                            <a href="https://github.com/burtonator/polar-bookshelf">
+                                <img height="100"
+                                     src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
+                            </a>
+                        </p>
 
-                        </div>
+                    </div>
 
-                    </CardText>
                 </CardBody>
             </Card>
 

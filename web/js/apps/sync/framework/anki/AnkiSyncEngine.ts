@@ -28,9 +28,11 @@ export class AnkiSyncEngine implements SyncEngine {
 
     public readonly descriptor: SyncEngineDescriptor = new AnkiSyncEngineDescriptor();
 
-    public async sync(docMetaSupplierCollection: DocMetaSupplierCollection, progress: SyncProgressListener): Promise<PendingSyncJob> {
+    public async sync(docMetaSupplierCollection: DocMetaSupplierCollection,
+                      progress: SyncProgressListener,
+                      deckNameStrategy: DeckNameStrategy = 'default'): Promise<PendingSyncJob> {
 
-        const noteDescriptors = await this.toNoteDescriptors(docMetaSupplierCollection);
+        const noteDescriptors = await this.toNoteDescriptors(deckNameStrategy, docMetaSupplierCollection);
 
         const deckNames = Sets.toSet(noteDescriptors.map(noteDescriptor => noteDescriptor.deckName));
 
@@ -43,13 +45,14 @@ export class AnkiSyncEngine implements SyncEngine {
 
     }
 
-    protected async toNoteDescriptors(docMetaSupplierCollection: DocMetaSupplierCollection): Promise<NoteDescriptor[]> {
+    protected async toNoteDescriptors(deckNameStrategy: DeckNameStrategy,
+                                      docMetaSupplierCollection: DocMetaSupplierCollection): Promise<NoteDescriptor[]> {
 
         const  flashcardDescriptors = await FlashcardDescriptors.toFlashcardDescriptors(docMetaSupplierCollection);
 
         return flashcardDescriptors.map(flashcardDescriptor => {
 
-            const deckName = this.computeDeckName(flashcardDescriptor.docMeta.docInfo);
+            const deckName = this.computeDeckName(deckNameStrategy, flashcardDescriptor.docMeta.docInfo);
 
             const fields: {[name: string]: string} = {};
 
@@ -80,7 +83,11 @@ export class AnkiSyncEngine implements SyncEngine {
 
     }
 
-    protected computeDeckName(docInfo: DocInfo): string {
+    protected computeDeckName(deckNameStrategy: DeckNameStrategy, docInfo: DocInfo): string {
+
+        if (deckNameStrategy === 'default') {
+            return "Default";
+        }
 
         let deckName;
 
@@ -120,3 +127,12 @@ class AnkiSyncEngineDescriptor implements SyncEngineDescriptor {
     public readonly description: string = "Sync Engine for Anki";
 
 }
+
+/**
+ * The strategy for computing the deck name for the flashcards.
+ *
+ * default: Use the Default deck.
+ *
+ * per-document: Create a deck per document.
+ */
+export type DeckNameStrategy = 'default' | 'per-document';

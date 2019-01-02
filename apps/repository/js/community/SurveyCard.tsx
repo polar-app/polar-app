@@ -19,29 +19,27 @@ export default class SurveyCard extends React.Component<any, any> {
             <Card>
                 <CardHeader><b>Take our Survey</b></CardHeader>
                 <CardBody>
-                    <CardText>
 
-                        <div className="mt-2 mb-2 intro">
+                    <div className="mt-2 mb-2 intro">
 
-                            <p className="text-center">
+                        <p className="text-center">
 
-                            <a href="https://kevinburton1.typeform.com/to/u1zNWG">
-                            <img src={EmbeddedImages.SURVEY}></img>
-                            </a>
+                        <a href="https://kevinburton1.typeform.com/to/u1zNWG">
+                        <img src={EmbeddedImages.SURVEY}></img>
+                        </a>
 
-                            </p>
+                        </p>
 
-                            <p>
-                            Could you take 2 minutes and <a href="https://kevinburton1.typeform.com/to/u1zNWG">answer 10 questions
-                            </a> about
-                            your use of Polar?  We're trying to focus on the most
-                            important features for our user base and your feedback
-                            is critical!
-                            </p>
+                        <p>
+                        Could you take 2 minutes and <a href="https://kevinburton1.typeform.com/to/u1zNWG">answer 10 questions
+                        </a> about
+                        your use of Polar?  We're trying to focus on the most
+                        important features for our user base and your feedback
+                        is critical!
+                        </p>
 
-                        </div>
+                    </div>
 
-                    </CardText>
                 </CardBody>
             </Card>
 
