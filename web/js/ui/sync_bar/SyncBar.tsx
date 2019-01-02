@@ -26,7 +26,8 @@ const Styles: IStyleMap = {
         borderColor: '#D4D4D4',
         borderRadius: '0px 5px 0px 0px',
         minWidth: '250px',
-        userSelect: 'none'
+        userSelect: 'none',
+        zIndex: 99999999999,
     },
 
     progress: {
