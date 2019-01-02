@@ -45,13 +45,13 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
                 <div className="flexbar w-100">
 
-                    <div className="text-muted m-1 p-1">
+                    {/*<div className="text-muted m-1 p-1">*/}
 
-                        <i className="fab fa-html5" style={{fontSize: '20px'}}></i>
-                        &nbsp;
-                        HTML styling supported
+                        {/*<i className="fab fa-html5" style={{fontSize: '20px'}}></i>*/}
+                        {/*&nbsp;*/}
+                        {/*HTML styling supported*/}
 
-                    </div>
+                    {/*</div>*/}
 
                     <div className="flexbar-right">
 

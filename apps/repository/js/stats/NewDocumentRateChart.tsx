@@ -36,7 +36,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 
             <div className="p-1">
 
-                <StatTitle>Rate of New Documents</StatTitle>
+                <StatTitle>New Documents Per Day</StatTitle>
 
                 <div className="p-1" style={{height: '300px', width: '100%'}}>
 
@@ -47,7 +47,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
                         ]}
                         indexBy="date"
                         margin={{
-                            top: 50,
+                            top: 10,
                             right: 10,
                             bottom: 50,
                             left: 40
