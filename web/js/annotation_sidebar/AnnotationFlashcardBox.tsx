@@ -67,8 +67,6 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                 {/*FIXME: put the following buttons on the bottom of the flashcard:*/}
 
-                {/*- select to change the flashcard type*/}
-
                 {/*- close delete button to cloze delete a region of text*/}
 
                 {/*- quote annotation ... to copy the annotation text.*/}
