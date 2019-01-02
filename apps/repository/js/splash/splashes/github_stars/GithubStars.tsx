@@ -1,9 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {LargeModal} from '../../../../../../web/js/ui/large_modal/LargeModal';
-import {ModalHeader, ModalFooter, Button} from 'reactstrap';
-import {LargeModalBody} from '../../../../../../web/js/ui/large_modal/LargeModalBody';
-import {PrioritizedComponent} from '../../../../../../web/js/ui/prioritized/PrioritizedComponentManager';
 import {Splash} from '../../Splash';
 
 export class GithubStars extends React.Component<IProps, IState> {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {PrioritizedComponentRef} from "../../../../../../web/js/ui/prioritized/PrioritizedComponentManager";
 import {GithubStars} from './GithubStars';
 import {ConditionalPrioritizedComponentRef} from '../ConditionalPrioritizedComponentRef';
 

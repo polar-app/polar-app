@@ -1,26 +1,18 @@
 import * as React from 'react';
 import ReactTable from "react-table";
-import {Footer, Tips} from '../Utils';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {AppState} from '../AppState';
-import {RepoDocInfo} from '../RepoDocInfo';
 import {Tag} from '../../../../web/js/tags/Tag';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
-import {MessageBanner} from '../MessageBanner';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {RepoHeader} from '../RepoHeader';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
-import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
-import ReleasingReactComponent from '../framework/ReleasingReactComponent';
-import {HighlighterIcon} from '../../../../web/js/ui/standard_icons/HighlighterIcon';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
 

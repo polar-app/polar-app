@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {Card, CardBody, CardHeader, CardText} from 'reactstrap';
+import {Card, CardBody, CardHeader} from 'reactstrap';
 import {EmbeddedImages} from '../splash/splashes/whats_new/EmbeddedImages';
 
 const log = Logger.create();

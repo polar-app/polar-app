@@ -1,4 +1,3 @@
-import {GithubStars} from '../github_stars/GithubStars';
 import * as React from 'react';
 import {WhatsNewModal} from './WhatsNewModal';
 import {PrioritizedComponentRef} from '../../../../../../web/js/ui/prioritized/PrioritizedComponentManager';

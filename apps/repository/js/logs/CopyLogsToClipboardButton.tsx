@@ -1,9 +1,5 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
-import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
-import {LogMessage} from '../../../../web/js/logger/Logging';
-import {ILogMessage} from 'electron-log';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import {Button} from 'reactstrap';

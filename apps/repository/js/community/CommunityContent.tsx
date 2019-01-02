@@ -1,14 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
-import {MessageBanner} from '../MessageBanner';
-import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
-import {Card, CardBody, CardTitle, CardText, CardHeader} from 'reactstrap';
-import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 import DonationsCard from './DonationsCard';
 import GithubStarsCard from './GithubStarsCard';
-import MailingListCard from "./MailingListCard";
-import {Survey} from '../splash/splashes/survey/Survey';
 import SurveyCard from './SurveyCard';
 
 const log = Logger.create();

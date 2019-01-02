@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
-import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
 import LogsContent from './LogsContent';
 import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 

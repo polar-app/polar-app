@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
 import {MessageBanner} from '../MessageBanner';
-import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
 import CommunityContent from './CommunityContent';
 
 const log = Logger.create();

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {PrioritizedComponentRef} from "../../../../../../web/js/ui/prioritized/PrioritizedComponentManager";
 import {ConditionalPrioritizedComponentRef} from '../ConditionalPrioritizedComponentRef';
 import {Survey} from './Survey';
 
