@@ -17,6 +17,7 @@ import {CommentIcon} from '../ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from '../metadata/FlashcardType';
 import {Flashcard} from '../metadata/Flashcard';
+import {Functions} from '../util/Functions';
 
 
 const Styles: IStyleMap = {
@@ -210,37 +211,41 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
             activeInputComponent: 'none'
         });
 
-        // TODO: right now it seems to strip important CSS styles and data URLs
-        // which I need to fix in the HTML sanitizer.
-        // html = HTMLSanitizer.sanitize(html);
+        Functions.withTimeout(() => {
 
-        const {annotation} = this.props;
+            // TODO: right now it seems to strip important CSS styles and data URLs
+            // which I need to fix in the HTML sanitizer.
+            // html = HTMLSanitizer.sanitize(html);
 
-        const ref = Refs.createFromAnnotationType(annotation.id, annotation.annotationType);
+            const {annotation} = this.props;
 
-        let flashcard: Flashcard | undefined;
+            const ref = Refs.createFromAnnotationType(annotation.id, annotation.annotationType);
 
-        if (type === FlashcardType.BASIC_FRONT_BACK) {
+            let flashcard: Flashcard | undefined;
 
-            const frontAndBackFields = fields as FrontAndBackFields;
-            const {front, back} = frontAndBackFields;
+            if (type === FlashcardType.BASIC_FRONT_BACK) {
 
-            flashcard = Flashcards.createFrontBack(front, back, ref);
+                const frontAndBackFields = fields as FrontAndBackFields;
+                const {front, back} = frontAndBackFields;
 
-        }
+                flashcard = Flashcards.createFrontBack(front, back, ref);
 
-        if (type === FlashcardType.CLOZE) {
+            }
 
-            const clozeFields = fields as ClozeFields;
-            const {text} = clozeFields;
+            if (type === FlashcardType.CLOZE) {
 
-            flashcard = Flashcards.createCloze(text, ref);
+                const clozeFields = fields as ClozeFields;
+                const {text} = clozeFields;
 
-        }
+                flashcard = Flashcards.createCloze(text, ref);
 
-        if (flashcard) {
-            annotation.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
-        }
+            }
+
+            if (flashcard) {
+                annotation.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
+            }
+
+        });
 
     }
 

@@ -30,7 +30,7 @@ export class Flashcards {
         // TODO: implement 'machine codes' here where we have a unique code per
         // physical device.  This way two people can create the same flashcard
         // and never conflict.  This way we support distributed behavior.
-        const id = Hashcodes.createID({fields});
+        const id = Hashcodes.createID({fields, created});
 
         return Flashcard.newInstance(id, id, created, lastUpdated, type, fields, archetype, ref);
 

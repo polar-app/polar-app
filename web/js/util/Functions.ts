@@ -105,16 +105,9 @@ export class Functions {
     /**
      * Calls the given callback as a promise which we can await.
      */
-    public static async withTimeout(timeout: number, callback: () => any) {
+    public static async withTimeout(callback: () => any, timeout: number = 1) {
 
-        return new Promise((resolve, reject) => {
-
-            setTimeout(() => {
-                callback().then((result: any) => resolve(result))
-                          .catch((err: Error) => reject(err));
-            }, timeout);
-
-        });
+        setTimeout(callback, timeout);
 
     }
 

@@ -112,7 +112,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                         <Input type="select"
                                style={Styles.SelectCardType}
-                               className="p-1"
+                               className="p-0"
                                onChange={htmlInputElement => this.onChangeType(htmlInputElement.target.value as FlashcardType)}>
 
                             <option value={FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
