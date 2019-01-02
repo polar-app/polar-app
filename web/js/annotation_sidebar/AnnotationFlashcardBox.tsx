@@ -33,8 +33,7 @@ class Styles {
 
 export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
-    private front: htmlstring = "";
-    private back: htmlstring = "";
+    private fields: FlashcardInputFieldsType;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -46,6 +45,8 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
             iter: 0,
             type: this.props.type || FlashcardType.BASIC_FRONT_BACK
         };
+
+        this.fields = this.createFields(this.state.type);
 
     }
 
@@ -59,7 +60,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
                 <RichTextArea id={`text-${id}`}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
-                              onChange={(html) => this.front = html}/>
+                              onChange={(html) => (this.fields as ClozeFields).text = html}/>
 
             </div>);
         };
@@ -72,11 +73,11 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
                               id={`front-${id}`}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
-                              onChange={(html) => this.front = html}/>
+                              onChange={(html) => (this.fields as FrontAndBackFields).front = html}/>
 
                 <RichTextArea label="back"
                               id={`back-${id}`}
-                              onChange={(html) => this.back = html}/>
+                              onChange={(html) => (this.fields as FrontAndBackFields).back = html}/>
 
             </div>);
         };
@@ -155,22 +156,17 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
     }
 
     private onChangeType(type: FlashcardType) {
-        console.log("FIXME: type changed to: " + type);
+        this.fields = this.createFields(type);
         this.setState({...this.state, type});
     }
 
     private onCreate(): void {
 
         if (this.props.onFlashcardCreated) {
-
-            const fields: FrontAndBackFields = {
-                front: this.front,
-                back: this.back
-            };
-
-            this.props.onFlashcardCreated(this.state.type, fields);
-
+            this.props.onFlashcardCreated(this.state.type, this.fields);
         }
+
+        this.reset();
 
         this.setState({
             iter: this.state.iter + 1
@@ -179,9 +175,29 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
     }
 
     private onCancel(): void {
+
         if (this.props.onCancel) {
             this.props.onCancel();
         }
+
+        this.reset();
+
+    }
+
+    private reset(): void {
+        this.fields = this.createFields(this.state.type);
+    }
+
+    private createFields(type: FlashcardType): FlashcardInputFieldsType {
+
+        if (type === FlashcardType.BASIC_FRONT_BACK) {
+            const result: FrontAndBackFields = {front: "", back: ""};
+            return result;
+        } else {
+            const result: ClozeFields = {text: ""};
+            return result;
+        }
+
     }
 
 }
@@ -189,7 +205,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 export interface IProps {
     readonly id: string;
     readonly type?: FlashcardType;
-    readonly onFlashcardCreated?: (type: FlashcardType, fields: FlashcardInputFieldsType) => void;
+    readonly onFlashcardCreated?: (type: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
     readonly onCancel?: () => void;
 }
 
@@ -203,10 +219,10 @@ export type htmlstring = string;
 export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
 
 export interface ClozeFields {
-    readonly text: htmlstring;
+    text: htmlstring;
 }
 
 export interface FrontAndBackFields {
-    readonly front: htmlstring;
-    readonly back: htmlstring;
+    front: htmlstring;
+    back: htmlstring;
 }

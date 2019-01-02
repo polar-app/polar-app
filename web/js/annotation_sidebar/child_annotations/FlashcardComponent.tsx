@@ -39,6 +39,55 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
 
         const key = 'comment-' + flashcard.id;
 
+        const RenderFrontAndBackFields = () => {
+
+            return (
+                <div>
+
+                    <div className="pb-1 pt-1">
+
+                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
+
+                            </span>
+
+                    </div>
+
+                    <div className="pb-1 pt-1 border-top">
+
+                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
+
+                            </span>
+
+                    </div>
+
+                </div>
+            );
+
+        };
+
+        const RenderClozeFields = () => {
+
+            return (
+                <div>
+                    <div className="pb-1 pt-1">
+                        <span dangerouslySetInnerHTML={{__html: flashcard.fields!.text}}>
+                        </span>
+                    </div>
+                </div>
+            );
+
+        };
+
+        const RenderFields = () => {
+
+            if (flashcard.fields!.text) {
+                return (<RenderClozeFields/>);
+            } else {
+                return (<RenderFrontAndBackFields/>);
+            }
+
+        };
+
         return (
 
             <div key={key}>
@@ -47,21 +96,7 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
 
                     <div className="card-body p-1">
 
-                        <div className="pb-1 pt-1">
-
-                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
-
-                            </span>
-
-                        </div>
-
-                        <div className="pb-1 pt-1 border-top">
-
-                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
-
-                            </span>
-
-                        </div>
+                        <RenderFields/>
 
                     </div>
 

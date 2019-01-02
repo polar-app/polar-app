@@ -30,9 +30,9 @@ export class Objects {
      */
     public static clear(obj: any) {
 
-        if(obj instanceof Array) {
+        if (obj instanceof Array) {
 
-            for(let idx = 0; idx < obj.length; ++idx) {
+            for (let idx = 0; idx < obj.length; ++idx) {
                 obj.pop();
             }
 
@@ -40,9 +40,9 @@ export class Objects {
 
         }
 
-        if(typeof obj === "object") {
+        if (typeof obj === "object") {
 
-            for(let key in obj) {
+            for (const key in obj) {
                 delete obj[key];
             }
 

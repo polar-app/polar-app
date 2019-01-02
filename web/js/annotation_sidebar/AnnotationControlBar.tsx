@@ -16,6 +16,7 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {CommentIcon} from '../ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from '../metadata/FlashcardType';
+import {Flashcard} from '../metadata/Flashcard';
 
 
 const Styles: IStyleMap = {
@@ -205,6 +206,10 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         RendererAnalytics.event({category: 'annotations', action: 'flashcard-created'});
 
+        this.setState({
+            activeInputComponent: 'none'
+        });
+
         // TODO: right now it seems to strip important CSS styles and data URLs
         // which I need to fix in the HTML sanitizer.
         // html = HTMLSanitizer.sanitize(html);
@@ -213,25 +218,29 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const ref = Refs.createFromAnnotationType(annotation.id, annotation.annotationType);
 
+        let flashcard: Flashcard | undefined;
+
         if (type === FlashcardType.BASIC_FRONT_BACK) {
 
             const frontAndBackFields = fields as FrontAndBackFields;
             const {front, back} = frontAndBackFields;
 
-            let flashcard = Flashcards.createFrontBack(front, back, ref);
-
-            // TODO: an idiosyncracy of the proxies system is that it mutates the
-            // object so if it's read only it won't work.  This is a bug with
-            // Proxies so I need to also fix that bug there in the future.
-            flashcard = Object.assign({}, flashcard);
-
-            annotation.pageMeta.flashcards[flashcard.id] = flashcard;
+            flashcard = Flashcards.createFrontBack(front, back, ref);
 
         }
 
-        this.setState({
-            activeInputComponent: 'none'
-        });
+        if (type === FlashcardType.CLOZE) {
+
+            const clozeFields = fields as ClozeFields;
+            const {text} = clozeFields;
+
+            flashcard = Flashcards.createCloze(text, ref);
+
+        }
+
+        if (flashcard) {
+            annotation.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
+        }
 
     }
 

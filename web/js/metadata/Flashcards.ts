@@ -13,6 +13,13 @@ import {Ref} from './Refs';
 
 export class Flashcards {
 
+    public static createMutable(flashcard: Flashcard): Flashcard {
+        // TODO: an idiosyncracy of the proxies system is that it mutates the
+        // object so if it's read only it won't work.  This is a bug with
+        // Proxies so I need to also fix that bug there in the future.
+        return <Flashcard> {...flashcard};
+    }
+
     public static create(type: FlashcardType, fields: {[key: string]: Text}, archetype: string, ref: Ref) {
 
         Preconditions.assertNotNull(fields, "fields");
@@ -26,6 +33,18 @@ export class Flashcards {
         const id = Hashcodes.createID({fields});
 
         return Flashcard.newInstance(id, id, created, lastUpdated, type, fields, archetype, ref);
+
+    }
+
+    public static createCloze(text: HTMLString, ref: Ref) {
+
+        const archetype = "76152976-d7ae-4348-9571-d65e48050c3f";
+
+        const fields: {[key: string]: Text } = {};
+
+        fields.text = Texts.create(text, TextType.HTML);
+
+        return Flashcards.create(FlashcardType.CLOZE, fields, archetype, ref);
 
     }
 
