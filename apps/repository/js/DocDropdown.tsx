@@ -5,7 +5,10 @@ import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {clipboard} from 'electron';
+import {clipboard, shell} from 'electron';
+import {Directories} from '../../../web/js/datastore/Directories';
+import {FilePaths} from '../../../web/js/util/FilePaths';
+import {Toaster} from '../../../web/js/toaster/Toaster';
 
 const log = Logger.create();
 
@@ -78,6 +81,16 @@ export class DocDropdown extends React.Component<IProps, IState> {
                             Copy Original URL
                         </DropdownItem>
 
+                        <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                                      onClick={() => this.onShowFile(this.props.repoDocInfo.filename!)}>
+                            Show File
+                        </DropdownItem>
+
+                        <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                                      onClick={() => this.onCopyFilePath(this.props.repoDocInfo.filename!)}>
+                            Copy File Path
+                        </DropdownItem>
+
                         {/*TODO: maybe load original URL too?*/}
 
                         <DropdownItem divider />
@@ -110,12 +123,35 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
     }
 
+    private onShowFile(filename: string) {
+
+        const directories = new Directories();
+        const path = FilePaths.join(directories.stashDir, filename);
+        shell.showItemInFolder(path);
+    }
+
+    private onCopyFilePath(filename: string) {
+
+        const directories = new Directories();
+        const path = FilePaths.join(directories.stashDir, filename);
+
+        this.copyText(path);
+        Toaster.success("File path copied to clipboard!");
+
+    }
+
     private onCopyURL(url: string) {
+        this.copyText(url);
+        Toaster.success("URL copied to clipboard!");
+
+    }
+
+    private copyText(text: string) {
 
         if (clipboard) {
-            clipboard.writeText(url);
+            clipboard.writeText(text);
         } else {
-            log.warn("No clipboard with which to copy url: ", url);
+            log.warn("No clipboard with which to copy text: ", text);
         }
 
     }

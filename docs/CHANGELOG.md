@@ -1,3 +1,13 @@
+# 1.8.0
+
+- related tags
+
+- copy URL to clipboard shows toaster
+
+- reveal file
+
+- copy file path to clipboard
+
 # 1.7.0
 
 - New annotations view to see all your annotations in one place.

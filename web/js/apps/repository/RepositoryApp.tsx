@@ -40,6 +40,8 @@ export class RepositoryApp {
         this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
     }
 
+
+
     public async start() {
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
