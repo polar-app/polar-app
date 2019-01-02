@@ -4,6 +4,8 @@ import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from './RichTextArea';
 import {FlashcardType} from '../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
+import {FlashcardFrontAndBackFields} from './FlashcardFrontAndBackFields';
+import {FlashcardFields} from './FlashcardFields';
 
 const log = Logger.create();
 
@@ -54,49 +56,14 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
         const { id } = this.props;
 
-        const RenderClozeFields = () => {
-            return (<div>
-
-                <RichTextArea id={`text-${id}`}
-                              autofocus={true}
-                              onKeyDown={event => this.onKeyDown(event)}
-                              onChange={(html) => (this.fields as ClozeFields).text = html}/>
-
-            </div>);
-        };
-
-
-        const RenderFrontAndBackFields = () => {
-            return (<div>
-
-                <RichTextArea label="front"
-                              id={`front-${id}`}
-                              autofocus={true}
-                              onKeyDown={event => this.onKeyDown(event)}
-                              onChange={(html) => (this.fields as FrontAndBackFields).front = html}/>
-
-                <RichTextArea label="back"
-                              id={`back-${id}`}
-                              onChange={(html) => (this.fields as FrontAndBackFields).back = html}/>
-
-            </div>);
-        };
-
-        const RenderFields = () => {
-
-            if (this.state.type === FlashcardType.BASIC_FRONT_BACK) {
-                return ( <RenderFrontAndBackFields/> );
-            } else {
-                return ( <RenderClozeFields/> );
-            }
-
-        };
-
         return (
 
             <div id="annotation-flashcard-box" className="">
 
-                <RenderFields/>
+                <FlashcardFields type={this.state.type}
+                                 id={this.props.id}
+                                 fields={this.fields}
+                                 onKeyDown={event => this.onKeyDown(event)}/>
 
                 {/*FIXME: put the following buttons on the bottom of the flashcard:*/}
 
@@ -226,3 +193,4 @@ export interface FrontAndBackFields {
     front: htmlstring;
     back: htmlstring;
 }
+
