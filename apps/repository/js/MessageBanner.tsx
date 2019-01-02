@@ -28,6 +28,7 @@ export class MessageBanner extends React.Component<IProps, IState> {
         return (
 
             <div>
+
                 <Alert color="info"
                        isOpen={this.state.visible}
                        toggle={this.onDismiss}

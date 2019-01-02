@@ -23,13 +23,23 @@ export class RichTextArea extends React.Component<IProps, IState> {
             label = undefined;
         }
 
+        const Label = () => {
+
+            if (this.props.label) {
+                return (<div>{label}</div>);
+            } else {
+                return ( <div></div> );
+            }
+
+        };
+
         return (
 
             <div id={this.props.id} className="rich-text-area">
 
                 <div>
 
-                    {label}
+                    <Label/>
 
                     <div className="border rounded p-1 mb-1 rich-text-area-input">
 

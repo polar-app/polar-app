@@ -56,8 +56,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
         const RenderClozeFields = () => {
             return (<div>
 
-                <RichTextArea label="text"
-                              id={`text-${id}`}
+                <RichTextArea id={`text-${id}`}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.front = html}/>
