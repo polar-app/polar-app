@@ -10,6 +10,7 @@ import NewDocumentRateChart from './NewDocumentRateChart';
 import DonationsCard from '../community/DonationsCard';
 import GithubStarsCard from '../community/GithubStarsCard';
 import TopTagsChart from './TopTagsChart';
+import ExampleLineChart from './ExampleLineChart';
 
 const log = Logger.create();
 
@@ -39,6 +40,8 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                 </header>
 
+                <ExampleLineChart/>
+
                 <div className="container-fluid">
 
                     <div className="row mt-2">
@@ -47,9 +50,9 @@ export default class StatsApp extends React.Component<IProps, IState> {
                             <NewDocumentRateChart docInfos={docInfos}/>
                         </div>
 
-                        {/*<div className="col-lg-6">*/}
-                            {/*<TopTagsChart docInfos={docInfos}/>*/}
-                        {/*</div>*/}
+                        <div className="col-lg-12">
+                            <TopTagsChart docInfos={docInfos}/>
+                        </div>
 
                     </div>
 
