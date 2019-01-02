@@ -275,6 +275,8 @@ export class ElectronContextMenu {
 
         ctxMenu.append(new MenuItem({
             label: 'Create Pagemark to Point',
+            // accelerator: "CommandOrControl+Alt+LeftClick",
+            // registerAccelerator: false,
             click: () => this.postContextMenuMessage("create-pagemark-to-point", triggerEvent)
         }));
 
