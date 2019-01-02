@@ -20,6 +20,24 @@ export class Strings {
 
     }
 
+
+    /**
+     * Convert the string to a number or return the default value.
+     */
+    public static toNumber(value: string | null | undefined,
+                           defaultValue: number) {
+
+        // don't use type cooercion as the rules are insane.
+
+        if (value && value.match(/^[0-9]+$/)) {
+            return parseInt(value, 10);
+        }
+
+        return defaultValue;
+
+    }
+
+
     public static empty(value: string | null | undefined): boolean {
         return value === null || value === undefined || value.trim() === "";
     }

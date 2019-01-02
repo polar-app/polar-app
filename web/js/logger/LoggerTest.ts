@@ -24,8 +24,8 @@ describe('Logger', function() {
 
         const log = Logger.create();
 
-        let hello = {msg: 'hello'};
-        let world = {msg: 'world'};
+        const hello = {msg: 'hello'};
+        const world = {msg: 'world'};
         log.info("with two arguments:", hello, world);
 
     });

@@ -175,3 +175,9 @@ export interface LoggingConfig {
     readonly target: LoggerTarget;
     readonly level: LogLevel;
 }
+
+export interface LogMessage {
+    readonly level: string;
+    readonly msg: string;
+    readonly args: ReadonlyArray<any>;
+}
