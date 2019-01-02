@@ -13,6 +13,7 @@
 @import url('./flexbar.css');
 @import url('./progress.css');
 @import url('./typography.css');
+@import url('./summernote.css');
 
 body {
     height: 100%;

@@ -41,7 +41,7 @@ export class RichTextArea extends React.Component<IProps, IState> {
 
                     <Label/>
 
-                    <div className="border rounded p-1 mb-1 rich-text-area-input">
+                    <div className="border rounded mb-1 rich-text-area-input">
 
                         <RichTextEditor4 id={`rich-text-area-${this.props.id}`}
                                          value={this.props.value || ''}

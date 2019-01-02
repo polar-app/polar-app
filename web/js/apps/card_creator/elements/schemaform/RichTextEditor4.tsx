@@ -118,10 +118,11 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                 options={{
                     id: this.typedWidgetProps.id,
                     lang: 'en-US',
-                    height: 280,
+                    height: 180,
+                    disableResizeEditor: true,
                     placeholder: this.props.placeholder || '',
                     dialogsInBody: false,
-                    airMode: true,
+                    airMode: false,
                     // used to fix issues with tab navigation
                     tabSize: 0,
                     // toolbar: [
@@ -141,11 +142,14 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
                     toolbar: [
                         ['style', ['style']],
-                        ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
+                        // ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
+                        ['font', ['bold', 'italic', 'underline']],
                         // ['fontname', ['fontname']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['link', 'picture', 'video']],
+                        // ['para', ['ul', 'ol', 'paragraph']],
+                        ['para', ['paragraph']],
+                        // ['table', ['table']],
+                        // ['insert', ['link', 'picture', 'video']],
+                        ['insert', ['link', 'picture']],
                         ['view', []]
                     ]
 

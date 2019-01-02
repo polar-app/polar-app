@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {Logger} from '../logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {RichTextArea} from './RichTextArea';
 import {FlashcardType} from '../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
-import {FlashcardFrontAndBackFields} from './FlashcardFrontAndBackFields';
 import {FlashcardFields} from './FlashcardFields';
 
 const log = Logger.create();
@@ -87,6 +85,15 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                     </div>
 
+                    <div style={Styles.BottomBarItem} className="ml-1">
+
+                        <Button color="light"
+                                size="sm"
+                                className="p-1 border">[…]</Button>
+
+                    </div>
+
+
                     <div style={Styles.BottomBarItemRight}
                          className="text-right">
 
@@ -113,11 +120,33 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
         // if (event.key === "Escape") {
         //     this.toggle();
         // }
+        console.log("FIXME: keyboard event", event);
+
+        console.log("FIXME: CONTROL", event.getModifierState("Control"));
+        console.log("FIXME: Shift", event.getModifierState("Shift"));
+        console.log("FIXME: KeyC", event.key === "KeyC");
+
+        if (this.state.type === FlashcardType.CLOZE &&
+            this.isClozeKeyboardEvent(event)) {
+
+            console.log("FIXME: cloze!!!");
+
+            // this.onCreate();
+
+        }
+
 
         if (event.getModifierState("Control") && event.key === "Enter") {
             this.onCreate();
         }
 
+    }
+
+    private isClozeKeyboardEvent(event: KeyboardEvent) {
+
+        return event.getModifierState("Control") &&
+               event.getModifierState("Shift") &&
+               event.key === "C";
     }
 
     private onChangeType(type: FlashcardType) {
