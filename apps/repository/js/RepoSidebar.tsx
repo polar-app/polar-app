@@ -3,7 +3,7 @@ import {Button, ListGroup} from 'reactstrap';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {Blackout} from './Blackout';
-import {NavLogo} from './nav/NavLog';
+import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
 
 const log = Logger.create();
