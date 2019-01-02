@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody, Tooltip} from 'reactstrap';
-import {ConfirmPopover} from '../../../../web/js/ui/confirm/ConfirmPopover';
-import {TextInputPopover} from '../../../../web/js/ui/text_input/TextInputPopover';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, PopoverBody} from 'reactstrap';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {ListOptionType, ListSelector} from "../../../../web/js/ui/list_selector/ListSelector";
 import {LightboxPopover} from '../../../../web/js/ui/lightbox_popover/LightboxPopover';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 
 const log = Logger.create();
 

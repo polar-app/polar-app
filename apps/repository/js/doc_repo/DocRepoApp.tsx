@@ -5,10 +5,8 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {FilteredTags} from '../FilteredTags';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
-import {SyncBar, SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
-import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
-import {DocRepoAnkiSyncController} from '../../../../web/js/controller/DocRepoAnkiSyncController';
-import {PrioritizedSplashes} from '../splash/PrioritizedSplashes';
+import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
+import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import DocRepoTable from './DocRepoTable';
 
