@@ -81,6 +81,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "~5.6.3",
+    "@nivo/bar": "^0.52.0",
     "@nivo/calendar": "^0.52.0",
     "@nivo/line": "^0.52.0",
     "@nivo/pie": "^0.52.0",

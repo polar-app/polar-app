@@ -42,7 +42,7 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
 
                 {/*<Doughnut data={data} height={200} legend={legend}/>*/}
 
-                <div style={{height: '600px'}}>
+                <div style={{height: '600px', width: '100%'}}>
 
                     <ResponsivePie
                         data={data}

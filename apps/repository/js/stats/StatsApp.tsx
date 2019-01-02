@@ -40,13 +40,12 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                 </header>
 
-                <ExampleLineChart/>
-
                 <div className="container-fluid">
 
                     <div className="row mt-2">
 
                         <div className="col-lg-12">
+                            <ExampleLineChart/>
                             <NewDocumentRateChart docInfos={docInfos}/>
                         </div>
 
