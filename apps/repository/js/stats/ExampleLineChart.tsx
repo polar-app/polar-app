@@ -133,8 +133,7 @@ export default class ExampleLineChart extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="p-1 App" style={{height: '600px', width: '100%'}}>
-
+            <div className="p-1" style={{height: '600px', width: '100%'}}>
 
                 <ResponsiveBar
                     data={data}

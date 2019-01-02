@@ -4,6 +4,33 @@ import {Optional} from './ts/Optional';
 export class Arrays {
 
     /**
+     * Take N samples from the given input.
+     * @param values
+     */
+    public static sample<T>(values: T[], count: number) {
+
+        if (count === 0) {
+            return [];
+        }
+
+        if (values.length <= count) {
+            // we're done and already have enough samples.
+            return values;
+        }
+
+        const result: T[] = [];
+
+        const gap = Math.floor(values.length / count);
+
+        for (let idx = 0; idx < values.length; idx += gap) {
+            result.push(values[idx]);
+        }
+
+        return result;
+
+    }
+
+    /**
      * Convert an array to a dictionary.
      */
     public static toDict(val: {} | any[]): {[key: string]: any} {

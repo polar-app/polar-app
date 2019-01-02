@@ -1,13 +1,8 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
-import {MessageBanner} from '../MessageBanner';
-import {Line, Doughnut} from 'react-chartjs-2';
-import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
-import * as chartjs from 'chart.js';
-import {DocInfo, IDocInfo} from '../../../../web/js/metadata/DocInfo';
-import { ResponsivePie } from '@nivo/pie';
+import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {ResponsivePie} from '@nivo/pie';
 import StatTitle from './StatTitle';
 
 const log = Logger.create();
@@ -39,8 +34,6 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
             <div className="p-1">
 
                 <StatTitle>Top Tags</StatTitle>
-
-                {/*<Doughnut data={data} height={200} legend={legend}/>*/}
 
                 <div style={{height: '600px', width: '100%'}}>
 

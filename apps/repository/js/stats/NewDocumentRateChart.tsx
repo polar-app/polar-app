@@ -1,13 +1,10 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
-import {MessageBanner} from '../MessageBanner';
-import {Line} from 'react-chartjs-2';
-import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
-import * as chartjs from 'chart.js';
-import {DocInfo, IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import StatTitle from './StatTitle';
+import {ResponsiveBar} from '@nivo/bar';
+import {Arrays} from '../../../../web/js/util/Arrays';
 
 const log = Logger.create();
 
@@ -26,40 +23,14 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
         const dateStats = Statistics.computeDocumentsAddedRate(this.props.docInfos);
 
         const labels = dateStats.map(current => current.date);
-        const dataPoints = dateStats.map(current => current.value);
+        const ticks = Arrays.sample(labels, 10);
 
-        // https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
-
-        const legend = {display: false};
-
-        const data: chartjs.ChartData = {
-            labels,
-            datasets: [
-                {
-                    label: 'Documents Added',
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,192,192,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: dataPoints
-                },
-
-            ]
-
-        };
+        const data = dateStats.map(current => {
+            return {
+                date: current.date,
+                value: current.value
+            };
+        });
 
         return (
 
@@ -67,7 +38,86 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 
                 <StatTitle>Rate of New Documents</StatTitle>
 
-                <Line data={data} height={100} legend={legend}/>
+                <div className="p-1" style={{height: '300px', width: '100%'}}>
+
+                    <ResponsiveBar
+                        data={data}
+                        keys={[
+                            "value",
+                        ]}
+                        indexBy="date"
+                        margin={{
+                            top: 50,
+                            right: 10,
+                            bottom: 50,
+                            left: 40
+                        }}
+                        padding={0.3}
+                        colors="category10"
+                        colorBy="id"
+                        defs={[
+                            {
+                                "id": "dots",
+                                "type": "patternDots",
+                                "background": "inherit",
+                                "color": "#38bcb2",
+                                "size": 4,
+                                "padding": 1,
+                                "stagger": true
+                            },
+                            {
+                                "id": "lines",
+                                "type": "patternLines",
+                                "background": "inherit",
+                                "color": "#eed312",
+                                "rotation": -45,
+                                "lineWidth": 6,
+                                "spacing": 10
+                            }
+                        ]}
+                        fill={[
+                            {
+                                "match": {
+                                    "id": "fries"
+                                },
+                                "id": "dots"
+                            },
+                            {
+                                "match": {
+                                    "id": "sandwich"
+                                },
+                                "id": "lines"
+                            }
+                        ]}
+                        // borderColor="inherit:darker(1.6)"
+                        // axisTop=null
+                        // axisRight=null
+                        axisBottom={{
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legendOffset: 32,
+                            tickValues: ticks,
+                        } as any}
+                        // axisLeft={{
+                        //     "tickSize": 5,
+                        //     "tickPadding": 5,
+                        //     "tickRotation": 0,
+                        //     "legend": "food",
+                        //     "legendPosition": "middle",
+                        //     "legendOffset": -40
+                        // }}
+                        labelSkipWidth={12}
+                        labelSkipHeight={12}
+                        labelTextColor="inherit:darker(1.6)"
+                        animate={true}
+                        motionStiffness={90}
+                        motionDamping={15}
+
+                    />
+
+                </div>
+
 
             </div>
 
