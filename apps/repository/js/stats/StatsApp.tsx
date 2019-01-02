@@ -43,13 +43,13 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                     <div className="row mt-2">
 
-                        <div className="col-lg-6">
+                        <div className="col-lg-12">
                             <NewDocumentRateChart docInfos={docInfos}/>
                         </div>
 
-                        <div className="col-lg-6">
-                            <TopTagsChart docInfos={docInfos}/>
-                        </div>
+                        {/*<div className="col-lg-6">*/}
+                            {/*<TopTagsChart docInfos={docInfos}/>*/}
+                        {/*</div>*/}
 
                     </div>
 

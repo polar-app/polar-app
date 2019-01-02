@@ -66,7 +66,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 
                 <h6 className="text-center">Rate of New Documents</h6>
 
-                <Line data={data} height={200} legend={legend}/>
+                <Line data={data} height={100} legend={legend}/>
 
             </div>
 
