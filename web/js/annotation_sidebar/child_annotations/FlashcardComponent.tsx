@@ -90,7 +90,7 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
 
         return (
 
-            <div key={key}>
+            <div key={key} className="mt-1">
 
                 <div className="flashcard card shadow-sm mb-3">
 
