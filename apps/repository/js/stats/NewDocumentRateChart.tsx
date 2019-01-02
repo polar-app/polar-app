@@ -7,6 +7,7 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
 import * as chartjs from 'chart.js';
 import {DocInfo, IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import StatTitle from './StatTitle';
 
 const log = Logger.create();
 
@@ -64,7 +65,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 
             <div className="p-1">
 
-                <h6 className="text-center">Rate of New Documents</h6>
+                <StatTitle>Rate of New Documents</StatTitle>
 
                 <Line data={data} height={100} legend={legend}/>
 

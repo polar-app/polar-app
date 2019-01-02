@@ -8,6 +8,7 @@ import {Statistics} from '../../../../web/js/metadata/Statistics';
 import * as chartjs from 'chart.js';
 import {DocInfo, IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import { ResponsivePie } from '@nivo/pie';
+import StatTitle from './StatTitle';
 
 const log = Logger.create();
 
@@ -25,9 +26,6 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
 
         const topTags = Statistics.computeTopTags(this.props.docInfos, 10);
 
-        // const labels = topTags.map(current => current.key);
-        // const dataPoints = topTags.map(current => current.value);
-
         const data = topTags.map(current => {
             return {
                 id: current.key,
@@ -36,72 +34,11 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
             };
         });
 
-        // https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
-
-        // const legend = {display: false};
-        //
-        // 3A405A
-        //
-        // AEC5EB
-        // F9DEC9
-        // E9AFA3
-        // 685044
-
-        // const data: chartjs.ChartData = {
-        //     labels,
-        //     datasets: [
-        //         {
-        //             label: 'Tag',
-        //             data: dataPoints,
-        //             backgroundColor: [
-        //                 '#3A405A',
-        //                 '#AEC5EB',
-        //                 '#F9DEC9',
-        //                 '#E9AFA3',
-        //                 '#685044'
-        //             ],
-        //         },
-        //
-        //     ]
-        //
-        // };
-
-        //
-        // const data = [
-        //     {
-        //         "id": "lisp",
-        //         "label": "lisp",
-        //         "value": 435,
-        //     },
-        //     {
-        //         "id": "sass",
-        //         "label": "sass",
-        //         "value": 452,
-        //     },
-        //     {
-        //         "id": "erlang",
-        //         "label": "erlang",
-        //         "value": 228,
-        //     },
-        //     {
-        //         "id": "c",
-        //         "label": "c",
-        //         "value": 152,
-        //     },
-        //     {
-        //         "id": "elixir",
-        //         "label": "elixir",
-        //         "value": 337,
-        //     }
-        // ];
-
-        console.log("FIXME: ", data);
-
         return (
 
             <div className="p-1">
 
-                <h6 className="text-center">Top Tags</h6>
+                <StatTitle>Top Tags</StatTitle>
 
                 {/*<Doughnut data={data} height={200} legend={legend}/>*/}
 
@@ -135,26 +72,7 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
                         animate={true}
                         motionStiffness={90}
                         motionDamping={15}
-                        legends={[
-                            {
-                                "anchor": "bottom",
-                                "direction": "row",
-                                "translateY": 56,
-                                "itemWidth": 100,
-                                "itemHeight": 18,
-                                "itemTextColor": "#222",
-                                "symbolSize": 18,
-                                "symbolShape": "circle",
-                                "effects": [
-                                    {
-                                        "on": "hover",
-                                        "style": {
-                                            "itemTextColor": "#000"
-                                        }
-                                    }
-                                ]
-                            }
-                        ]}
+
                     />
                 </div>
             </div>
