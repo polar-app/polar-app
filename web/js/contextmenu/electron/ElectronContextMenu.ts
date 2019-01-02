@@ -371,4 +371,3 @@ export class ElectronContextMenu {
     }
 
 }
-

@@ -599,7 +599,14 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
         SettingsStore.load()
             .then((settings) => {
-                settings.documentRepository.columns = this.state.columns;
+
+                settings = {
+                    ...settings,
+                    documentRepository: {
+                        columns: this.state.columns
+                    }
+                };
+
                 SettingsStore.write(settings);
             })
             .catch(err => log.error("Could not load settings: ", err));
