@@ -92,6 +92,11 @@ export class FileImportController {
 
         const importedFiles = await this.doImportFiles(files);
 
+        if (importedFiles.length === 0) {
+            // nothing to do here...
+            return;
+        }
+
         if (importedFiles.length === 1) {
 
             const importedFile = importedFiles[0];

@@ -40,7 +40,7 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
                     <ResponsivePie
                         data={data}
                         margin={{
-                            "top": 40,
+                            "top": 5,
                             "right": 80,
                             "bottom": 80,
                             "left": 80
