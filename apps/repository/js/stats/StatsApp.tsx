@@ -1,16 +1,9 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
-import {MessageBanner} from '../MessageBanner';
-import {Line} from 'react-chartjs-2';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import {Statistics} from '../../../../web/js/metadata/Statistics';
-import * as chartjs from 'chart.js';
 import NewDocumentRateChart from './NewDocumentRateChart';
-import DonationsCard from '../community/DonationsCard';
-import GithubStarsCard from '../community/GithubStarsCard';
 import TopTagsChart from './TopTagsChart';
-import ExampleLineChart from './ExampleLineChart';
 
 const log = Logger.create();
 
