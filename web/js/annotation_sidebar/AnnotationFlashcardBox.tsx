@@ -179,16 +179,16 @@ export interface IState {
     readonly type: FlashcardType;
 }
 
-export type htmlstring = string;
+export type HtmlString = string;
 
 export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
 
 export interface ClozeFields {
-    text: htmlstring;
+    text: HtmlString;
 }
 
 export interface FrontAndBackFields {
-    front: htmlstring;
-    back: htmlstring;
+    front: HtmlString;
+    back: HtmlString;
 }
 
