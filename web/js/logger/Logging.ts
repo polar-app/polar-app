@@ -19,6 +19,7 @@ import {PersistentErrorLogger} from './PersistentErrorLogger';
 import {isPresent} from '../Preconditions';
 
 import process from 'process';
+import {MemoryLogger} from './MemoryLogger';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -78,6 +79,8 @@ export class Logging {
 
         const loggers: ILogger[] = [];
 
+        const electronContext = ElectronContextTypes.create();
+
         if (level === LogLevel.WARN && SentryLogger.isEnabled()) {
             // SentryLogger enabled for INFO will lock us up.
             // *** first logger is sentry but only if we are not running within
@@ -86,10 +89,17 @@ export class Logging {
         }
 
         // *** next up is the Toaster Logger to visually show errors.
-        if (ElectronContextTypes.create() === ElectronContextType.RENDERER) {
+
+        if (electronContext === ElectronContextType.RENDERER) {
             // use a ToasterLogger when running in the renderer context so that
             // we can bring up error messages for the user.
             loggers.push(new ToasterLogger());
+        }
+
+        if (electronContext === ElectronContextType.RENDERER) {
+            // when in the renderer use the memory logger so that we can show
+            // logs in the log view
+            loggers.push(new MemoryLogger());
         }
 
         // *** now include the persistent error log so that we can get error
@@ -176,8 +186,14 @@ export interface LoggingConfig {
     readonly level: LogLevel;
 }
 
+
 export interface LogMessage {
-    readonly level: string;
+
+    // TODO: timestamp ?
+
+    readonly level: LogLevelName;
     readonly msg: string;
     readonly args: ReadonlyArray<any>;
 }
+
+export type LogLevelName = 'notice' | 'info' | 'warn' | 'error' | 'verbose' | 'debug';
