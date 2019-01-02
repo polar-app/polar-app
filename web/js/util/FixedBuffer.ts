@@ -19,7 +19,7 @@ export class FixedBuffer<V> {
     public write(value: V): void {
 
         if (this.buffer.length >= this.capacity) {
-            this.buffer.splice(0);
+            this.buffer.splice(0, 1);
         }
 
         this.buffer.push(value);
