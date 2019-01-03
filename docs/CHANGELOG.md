@@ -1,12 +1,23 @@
 # 1.8.0
 
-- related tags
+- Stats view for core stats  
 
-- copy URL to clipboard shows toaster
+- New logs view to show logs as they're being written which can help users 
+  debug issues with Polar and report problems to the dev team plus understand
+  what's happening with their data.
 
-- reveal file
+- Cloze deletion UI mostly working
 
-- copy file path to clipboard
+- refactored the rich text editor so the bar at the top is no longer in 'air' 
+  mode so that users can realize that it supports rich text.
+
+- Related tags in the tag selector
+
+- Copy URL to clipboard shows toaster that the URL was copied successfully.
+
+- Reveal file in finder (or Explorer on Windows) 
+
+- Copy file path to clipboard.
 
 # 1.7.0
 

@@ -136,6 +136,8 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                     //     ['image', []]
                     // ]
 
+                    // FIXME: somehow images paste has broken now...
+
                     // FIXME: add blockquote, code, and pre, and cite
 
                     // missing the highlight color pulldown...

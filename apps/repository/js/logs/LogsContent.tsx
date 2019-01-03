@@ -3,6 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {LogMessage} from '../../../../web/js/logger/Logging';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
+import ReactJson from 'react-json-view';
 
 const log = Logger.create();
 
@@ -24,7 +25,11 @@ class Styles {
     public static LogFieldMsg: React.CSSProperties = {
         fontFamily: 'Courier New, monospace',
         whiteSpace: 'nowrap',
-        overflow: 'hidden'
+        overflow: 'none'
+    };
+
+    public static LogFieldArgs: React.CSSProperties = {
+        marginLeft: '5px'
     };
 
 }
@@ -55,6 +60,28 @@ export default class LogsContent extends ReleasingReactComponent<IProps, IState>
 
         const messages = [...this.state.messages];
 
+        const argsRenderable = (args: any): boolean => {
+
+            if (args) {
+
+                if (Array.isArray(args)) {
+
+                    if (args.length > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                }
+
+                return true;
+
+            }
+
+            return false;
+
+        };
+
         return messages.reverse()
                        .map(current => {
 
@@ -68,10 +95,27 @@ export default class LogsContent extends ReleasingReactComponent<IProps, IState>
                 className = 'alert-danger';
             }
 
+            const RenderJSON = () => {
+
+                if (argsRenderable(current.args)) {
+
+                    return (<div style={Styles.LogFieldArgs}>
+                        <ReactJson src={current.args} name={'args'} shouldCollapse={() => true}/>
+                    </div>);
+
+                }
+
+                return (<div></div>);
+
+            };
+
             return <div style={Styles.LogMessage} className={className} key={current.idx}>
 
                 <div style={Styles.LogFieldTimestamp}>{current.timestamp}</div>
                 <div style={Styles.LogFieldMsg}>{current.msg}</div>
+
+
+                <RenderJSON/>
 
             </div>;
 
