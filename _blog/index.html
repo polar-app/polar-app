@@ -1,7 +1,7 @@
 ---
 layout: doc
-title: Polar Documentation
-permalink: /docs/index.html
+title: Polar Blog
+permalink: /blog/index.html
 ---
 
 <div class="home">
@@ -15,7 +15,7 @@ permalink: /docs/index.html
     <div class="post-list">
       {%- for post in site.pages -%}
 
-      {%- if post.layout == 'doc' and post.permalink != '/docs/index.html' and post.permalink != '/blog/index.html' -%}
+      {%- if post.layout == 'post' and post.permalink != '/blog/index.html' -%}
 
       <div>
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}

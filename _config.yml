@@ -55,7 +55,7 @@ webmaster_verifications:
 #   - vendor/gems/
 #   - vendor/ruby/
 
-include: ['_docs']
+include: ['_docs', '_blog']
 exclude:
   - firebase.json
   - package.json
