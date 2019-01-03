@@ -2,14 +2,19 @@
 title:  Building Cloud Document Sync with Google Firebase
 date:   2019-01-03 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/banners/desktop-thin.jpg
+large_image: https://getpolarized.io/assets/images/firebase-sync.jpg
 ---
 
-About a month ago we shipped a version of Polar which enables support for cloud
-sync backed by Firebase.
+<img class="img-fluid" src="https://getpolarized.io/assets/images/firebase-sync.jpg">
 
-Polar is a personal knowledge repository for your books, and web content which
-supports annotation including highlights and comments.  Having this data
+# Building Cloud Document Sync with Google Firebase
+
+About a month ago we shipped <a
+href="https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync.html">a new
+version of Polar</a> which enables support for cloud sync backed by Firebase.
+
+Polar is a personal knowledge repository for your books, PDFs, and web content
+which supports annotation including highlights and comments.  Having this data
 available across all your computers is insanely helpful.
 
 Our users wanted the ability to sync their reading and annotations across 
@@ -43,6 +48,8 @@ Firebase seemed like an almost perfect fit for our model. AppSync and GraphQL
 seem great if you're planning on using DynamoDB or have a complex (and legacy) 
 backend with connectivity to a lot of different datasources.
 
+<img class="img-fluid" src="https://getpolarized.io/assets/images/mvp.png">
+
 Firebase is almost brilliantly designed for knocking out a MVP (minimum viable
 product).  They seem to focus on the key features needed to get an app off the
 ground quickly but also allow you to iterate over time.
@@ -63,6 +70,8 @@ It doesn't really have full-text search.  You can sort of bolt it on but it woul
 be nice if this was a native feature in Firebase.  
 
 ## Authentication
+
+<img class="img-fluid" src="/assets/images/firebase-auth.png">
 
 Clearly the first hurdle would be authentication.  We actually used
 this as smoke test to see which platforms were easiest to implement.

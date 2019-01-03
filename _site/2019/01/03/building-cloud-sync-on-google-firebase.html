@@ -7,8 +7,8 @@
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Building Cloud Document Sync with Google Firebase" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="About a month ago we shipped a version of Polar which enables support for cloud sync backed by Firebase." />
-<meta property="og:description" content="About a month ago we shipped a version of Polar which enables support for cloud sync backed by Firebase." />
+<meta name="description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
+<meta property="og:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
 <link rel="canonical" href="https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html" />
 <meta property="og:url" content="https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html" />
 <meta property="og:site_name" content="POLAR - Easily manage your PDFs, web content, and notes." />
@@ -16,12 +16,12 @@
 <meta property="article:published_time" content="2019-01-03T09:00:00-08:00" />
 <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 <script type="application/ld+json">
-{"description":"About a month ago we shipped a version of Polar which enables support for cloud sync backed by Firebase.","@type":"BlogPosting","url":"https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"}},"headline":"Building Cloud Document Sync with Google Firebase","dateModified":"2019-01-03T09:00:00-08:00","datePublished":"2019-01-03T09:00:00-08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html"},"@context":"http://schema.org"}</script>
+{"description":"A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.","@type":"BlogPosting","url":"https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"}},"headline":"Building Cloud Document Sync with Google Firebase","dateModified":"2019-01-03T09:00:00-08:00","datePublished":"2019-01-03T09:00:00-08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
   
-  <meta name="twitter:image" content="https://getpolarized.io/assets/images/banners/desktop-thin.jpg">
+  <meta name="twitter:image" content="https://getpolarized.io/assets/images/firebase-sync.jpg">
   <meta name="twitter:card"  content="summary_large_image">
   
 
@@ -163,11 +163,15 @@
           <div class="row">
             <div class="col">
 
-              <p>About a month ago we shipped a version of Polar which enables support for cloud
-sync backed by Firebase.</p>
+              <p><img class="img-fluid" src="https://getpolarized.io/assets/images/firebase-sync.jpg" /></p>
 
-<p>Polar is a personal knowledge repository for your books, and web content which
-supports annotation including highlights and comments.  Having this data
+<h1 id="building-cloud-document-sync-with-google-firebase">Building Cloud Document Sync with Google Firebase</h1>
+
+<p>About a month ago we shipped <a href="https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync.html">a new
+version of Polar</a> which enables support for cloud sync backed by Firebase.</p>
+
+<p>Polar is a personal knowledge repository for your books, PDFs, and web content
+which supports annotation including highlights and comments.  Having this data
 available across all your computers is insanely helpful.</p>
 
 <p>Our users wanted the ability to sync their reading and annotations across 
@@ -203,6 +207,8 @@ on Firebase to see how difficult it would be to work with.</p>
 seem great if you’re planning on using DynamoDB or have a complex (and legacy) 
 backend with connectivity to a lot of different datasources.</p>
 
+<p><img class="img-fluid" src="https://getpolarized.io/assets/images/mvp.png" /></p>
+
 <p>Firebase is almost brilliantly designed for knocking out a MVP (minimum viable
 product).  They seem to focus on the key features needed to get an app off the
 ground quickly but also allow you to iterate over time.</p>
@@ -223,6 +229,8 @@ when compared to AWS.</p>
 be nice if this was a native feature in Firebase.</p>
 
 <h2 id="authentication">Authentication</h2>
+
+<p><img class="img-fluid" src="/assets/images/firebase-auth.png" /></p>
 
 <p>Clearly the first hurdle would be authentication.  We actually used
 this as smoke test to see which platforms were easiest to implement.</p>

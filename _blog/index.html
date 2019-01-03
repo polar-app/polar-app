@@ -26,6 +26,14 @@ permalink: /blog/index.html
           </a>
         </h3>
 
+        {%- if post.large_image -%}
+
+          <div class="text-center">
+            <img style="max-height: 300px" src="{{post.large_image}}">
+          </div>
+
+        {%- endif -%}
+
         <blockquote>
 
           {{ post.content | strip_html | truncatewords: 75 }}
