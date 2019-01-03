@@ -2,10 +2,13 @@
   <dictionary name="burton">
     <words>
       <w>appimage</w>
+      <w>datasources</w>
       <w>firebase</w>
+      <w>firestore</w>
       <w>freemium</w>
       <w>pagemark</w>
       <w>pagemarks</w>
+      <w>realtime</w>
       <w>targz</w>
     </words>
   </dictionary>
