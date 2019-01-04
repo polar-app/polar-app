@@ -2,10 +2,10 @@
 title:  Plan S for Open Science - Major 
 date:   2019-01-03 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/openscience.jpg
+large_image: https://getpolarized.io/assets/images/openscience.jpeg
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/openscience.jpg">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/openscience.jpeg">
 
 # The EU Plan S for Open Access to Scientific Research 
 
