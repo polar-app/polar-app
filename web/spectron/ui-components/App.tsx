@@ -126,7 +126,10 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <h1 className="component">AnnotationFlashcardBox</h1>
 
-                <AnnotationFlashcardBox id='flashcard-0' type={FlashcardType.BASIC_FRONT_BACK}/>
+                <AnnotationFlashcardBox id='flashcard-0'
+                                        flashcardType={FlashcardType.BASIC_FRONT_BACK}
+                                        onCancel={() => console.log("onCancel")}
+                                        onFlashcardCreated={(flashcardType, fields) => console.log("created: ", flashcardType, fields)}/>
 
                 <h1 className="component">TagInput</h1>
 
