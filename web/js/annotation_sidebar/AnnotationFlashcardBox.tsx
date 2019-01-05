@@ -89,7 +89,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                         <Button color="light"
                                 size="sm"
-                                className="p-1 border">[…]</Button>
+                                className="ml-1 p-1 border">[…]</Button>
 
                     </div>
 

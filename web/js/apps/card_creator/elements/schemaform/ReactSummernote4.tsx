@@ -6,12 +6,13 @@ import 'summernote/dist/summernote-bs4';
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {HTMLString, RichTextMutator} from './RichTextMutator';
 const randomUid = () => Math.floor(Math.random() * 100000);
 
 /**
  * React Summernote for Twitter Boostrap v4
  */
-export class ReactSummernote4 extends Component {
+export class ReactSummernote4 extends Component<IProps, any> implements RichTextMutator {
 
     private readonly uid: string;
 
@@ -20,8 +21,6 @@ export class ReactSummernote4 extends Component {
     private noteEditable: any;
 
     private notePlaceholder: any;
-
-    readonly props : any;
 
     // ReactSummernote.propTypes = {
     //     value: PropTypes.string,
@@ -45,8 +44,6 @@ export class ReactSummernote4 extends Component {
     constructor(props: any) {
         super(props);
 
-        this.props = props;
-
         if (this.props.options.id) {
             this.uid = this.props.options.id;
         } else {
@@ -69,6 +66,12 @@ export class ReactSummernote4 extends Component {
         this.insertImage = this.insertImage.bind(this);
         this.insertNode = this.insertNode.bind(this);
         this.insertText = this.insertText.bind(this);
+
+        if (this.props.onRichTextMutator) {
+            // give the caller access to summernote to perform its own
+            // mutation when necessary.
+            this.props.onRichTextMutator(this);
+        }
 
     }
 
@@ -163,7 +166,7 @@ export class ReactSummernote4 extends Component {
         }
     }
 
-    onImageUpload(images: any) {
+    public onImageUpload(images: any) {
 
         const { onImageUpload } = this.props;
 
@@ -172,19 +175,19 @@ export class ReactSummernote4 extends Component {
         }
     }
 
-    focus() {
+    public focus() {
         this.editor.summernote('focus');
     }
 
-    isEmpty() {
+    public isEmpty() {
         return this.editor.summernote('isEmpty');
     }
 
-    reset() {
+    public reset() {
         this.editor.summernote('reset');
     }
 
-    replace(content: any) {
+    public replace(content: string) {
         const { noteEditable, notePlaceholder } = this;
         const prevContent = noteEditable.html();
         const contentLength = content.length;
@@ -196,20 +199,28 @@ export class ReactSummernote4 extends Component {
                 notePlaceholder.show();
             }
 
-            console.log("FIXME doing replace...")
             noteEditable.html(content);
         }
     }
 
-    disable() {
+    public currentValue(): HTMLString {
+        return this.noteEditable.html();
+    }
+
+    public createRange(): Range {
+        return this.editor.summernote('createRange');
+
+    }
+
+    public disable() {
         this.editor.summernote('disable');
     }
 
-    enable() {
+    public enable() {
         this.editor.summernote('enable');
     }
 
-    toggleState(disabled: boolean) {
+    public toggleState(disabled: boolean) {
         if (disabled) {
             this.disable();
         } else {
@@ -217,15 +228,15 @@ export class ReactSummernote4 extends Component {
         }
     }
 
-    insertImage(url: any, filenameOrCallback: any) {
+    public insertImage(url: any, filenameOrCallback: any) {
         this.editor.summernote('insertImage', url, filenameOrCallback);
     }
 
-    insertNode(node: Node) {
+    public insertNode(node: Node) {
         this.editor.summernote('insertNode', node);
     }
 
-    insertText(text: Node) {
+    public insertText(text: Node) {
         this.editor.summernote('insertText', text);
     }
 
@@ -247,7 +258,7 @@ export class ReactSummernote4 extends Component {
 
     public render() {
         const { value, defaultValue, className } = this.props;
-        const html = value || defaultValue;
+        const html = value || defaultValue || "";
 
         return (
             <div className={className}>
@@ -257,3 +268,36 @@ export class ReactSummernote4 extends Component {
     }
 
 }
+
+interface IProps {
+
+    readonly options: any;
+    readonly value?: string;
+    readonly defaultValue?: string;
+    readonly className?: string;
+
+    readonly disabled?: boolean;
+    readonly autofocus?: boolean;
+
+    readonly codeview?: any;
+
+    readonly onEnter?: any;
+    readonly onFocus?: any;
+    readonly onBlur?: any;
+    readonly onKeyUp?: any;
+    readonly onKeyDown?: any;
+    readonly onPaste?: any;
+    readonly onChange?: any;
+    readonly onInit?: any;
+    readonly onImageUpload?: any;
+
+    /**
+     * Called on the constructor so that callers can build their own buttons
+     * and fucntionality on the underlying text component.
+     */
+    readonly onRichTextMutator?: (mutator: RichTextMutator) => void;
+
+}
+
+
+
