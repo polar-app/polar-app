@@ -28,13 +28,13 @@ export class ExtendedReactTable<P, S extends IReactTableState> extends Releasing
 
         };
 
-        window.addEventListener('keyup', keyboardHandler);
-
-        this.releaser.register({
-            release: () => {
-                window.removeEventListener('keyup', keyboardHandler);
-            }
-       });
+       //  window.addEventListener('keyup', keyboardHandler);
+       //
+       //  this.releaser.register({
+       //      release: () => {
+       //          window.removeEventListener('keyup', keyboardHandler);
+       //      }
+       // });
 
     }
 

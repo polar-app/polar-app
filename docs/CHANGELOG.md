@@ -1,5 +1,7 @@
 # 1.8.0
 
+- support for cloze deletion
+
 - Stats view for core stats  
 
 - New logs view to show logs as they're being written which can help users 
