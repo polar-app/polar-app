@@ -83,9 +83,9 @@ export class Elements {
      *
      * @param html The HTML element to create
      */
-    public static createElementHTML(html: string): HTMLElement {
+    public static createElementHTML(html: string, tagName = 'div' ): HTMLElement {
 
-        const div = document.createElement("div");
+        const div = document.createElement(tagName);
         div.innerHTML = html;
 
         return <HTMLElement> div.firstChild!;

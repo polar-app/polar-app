@@ -9,6 +9,7 @@ import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../RichTextArea';
 import {ClozeFields, FlashcardInputFieldsType} from './AnnotationFlashcardBox';
 import {RichTextMutator} from '../../apps/card_creator/elements/schemaform/RichTextMutator';
+import {Elements} from '../../util/Elements';
 
 const log = Logger.create();
 
@@ -100,7 +101,23 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
     }
 
     private onClozeDelete(): void {
-        this.richTextMutator!.replace('hello world!');
+
+        // TODO: don't use the top level window but get it from the proper
+        // event
+        const sel = window.getSelection();
+        const range = sel.getRangeAt(0);
+
+        const wrapper = document.createElement('span');
+        range.surroundContents(wrapper);
+
+        const prefix = Elements.createElementHTML('{{c1:', 'span');
+        const suffix = Elements.createElementHTML('}}', 'span');
+
+        wrapper.parentNode!.insertBefore(prefix, wrapper);
+        wrapper.parentNode!.insertBefore(suffix, wrapper.nextSibling);
+
+        sel.removeAllRanges();
+
     }
 
     private onKeyDown(event: KeyboardEvent) {
