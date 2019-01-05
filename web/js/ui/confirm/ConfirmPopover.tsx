@@ -5,23 +5,27 @@ import Popper from 'popper.js';
 import {Blackout} from '../../../../apps/repository/js/Blackout';
 import {IStyleMap} from '../../react/IStyleMap';
 
-const Styles: IStyleMap = {
+class Styles {
 
-    title: {
+    public static title: React.CSSProperties = {
         fontSize: "20px",
         fontWeight: "bold"
-    },
+    };
 
-    subtitle: {
+    public static subtitle: React.CSSProperties = {
         fontSize: "14px"
-    },
+    };
 
-    popover: {
+    public static button: React.CSSProperties = {
+        fontSize: "14px"
+    };
+
+    public static popover: React.CSSProperties = {
         // minWidth: '350px',
         // width: '350px'
-    }
+    };
 
-};
+}
 
 export class ConfirmPopover extends React.Component<IProps, IState> {
 
@@ -63,11 +67,13 @@ export class ConfirmPopover extends React.Component<IProps, IState> {
                     </div>
 
                     <Button color="secondary"
+                            style={Styles.button}
                             size="sm"
                             className="m-1"
                             onClick={() => this.props.onCancel()}>Cancel</Button>
 
                     <Button color="primary"
+                            style={Styles.button}
                             size="sm"
                             className="m-1"
                             onClick={() => this.props.onConfirm()}>Confirm</Button>

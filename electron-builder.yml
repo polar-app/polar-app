@@ -59,6 +59,7 @@ win:
   icon: ./icons/icon-512x512.png
   fileAssociations:
     - ext: pdf
+      description: Polar PDF
   publisherName: Spinn3r
 
 snap:
