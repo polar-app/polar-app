@@ -7,6 +7,7 @@ import {TypedWidgetProps} from './TypedWidgetProps';
 import {Logger} from '../../../../logger/Logger';
 import {ReactSummernote4} from './ReactSummernote4';
 import {NULL_FUNCTION} from '../../../../util/Functions';
+import {RichTextMutator} from './RichTextMutator';
 const log = Logger.create();
 
 /**
@@ -163,6 +164,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                 onFocus={this.onFocus}
                 // onSubmit={this.onSubmit}
                 onImageUpload={this.onImageUpload}
+                onRichTextMutator={this.props.onRichTextMutator}
             />
 
         );
@@ -172,14 +174,15 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 }
 
 interface IProps {
-    id: string;
-    autofocus?: boolean;
-    value?: string;
-    onKeyDown?: (event: KeyboardEvent) => void;
-    onChange?: (newValue: string) => void;
-    onBlur?: (id: string, value: string) => void;
-    onFocus?: (id: string, value: string) => void;
-    placeholder?: string;
+    readonly id: string;
+    readonly autofocus?: boolean;
+    readonly value?: string;
+    readonly onKeyDown?: (event: KeyboardEvent) => void;
+    readonly onChange?: (newValue: string) => void;
+    readonly onBlur?: (id: string, value: string) => void;
+    readonly onFocus?: (id: string, value: string) => void;
+    readonly placeholder?: string;
+    readonly onRichTextMutator?: (mutator: RichTextMutator) => void;
 }
 
 interface IState {

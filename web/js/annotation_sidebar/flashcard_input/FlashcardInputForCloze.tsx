@@ -5,6 +5,10 @@ import {FlashcardType} from '../../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
 import {FlashcardFields} from './FlashcardFields';
 import {FlashcardButtons} from './FlashcardButtons';
+import {FlashcardTypeSelector} from './FlashcardTypeSelector';
+import {RichTextArea} from '../RichTextArea';
+import {ClozeFields, FlashcardInputFieldsType} from './AnnotationFlashcardBox';
+import {RichTextMutator} from '../../apps/card_creator/elements/schemaform/RichTextMutator';
 
 const log = Logger.create();
 
@@ -25,16 +29,13 @@ class Styles {
         width: '100%'
     };
 
-    public static SelectCardType: React.CSSProperties = {
-        minWidth: '10em',
-        fontSize: '14px'
-    };
-
 }
 
-export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
+export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
-    private fields: FlashcardInputFieldsType;
+    private fields: ClozeFields = {text: ""};
+
+    private richTextMutator?: RichTextMutator;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -44,10 +45,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
         this.state = {
             iter: 0,
-            type: this.props.type || FlashcardType.BASIC_FRONT_BACK
         };
-
-        this.fields = this.createFields(this.state.type);
 
     }
 
@@ -59,14 +57,11 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
             <div id="annotation-flashcard-box" className="">
 
-                <FlashcardFields type={this.state.type}
-                                 id={this.props.id}
-                                 fields={this.fields}
-                                 onKeyDown={event => this.onKeyDown(event)}/>
-
-                {/*FIXME: put the following buttons on the bottom of the flashcard:*/}
-
-                {/*- close delete button to cloze delete a region of text*/}
+                <RichTextArea id={`text-${this.props.id}`}
+                              autofocus={true}
+                              onKeyDown={event => this.onKeyDown(event)}
+                              onRichTextMutator={richTextMutator => this.richTextMutator = richTextMutator}
+                              onChange={(html) => this.fields.text = html}/>
 
                 {/*- quote annotation ... to copy the annotation text.*/}
 
@@ -74,15 +69,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                     <div style={Styles.BottomBarItem}>
 
-                        <Input type="select"
-                               style={Styles.SelectCardType}
-                               className="p-0"
-                               onChange={htmlInputElement => this.onChangeType(htmlInputElement.target.value as FlashcardType)}>
-
-                            <option value={FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
-                            <option value={FlashcardType.CLOZE}>Cloze</option>
-
-                        </Input>
+                        <FlashcardTypeSelector onChangeFlashcardType={flashcardType => this.onChangeType(flashcardType)}/>
 
                     </div>
 
@@ -90,6 +77,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                         <Button color="light"
                                 size="sm"
+                                onClick={() => this.onClozeDelete()}
                                 className="ml-1 p-1 border">[…]</Button>
 
                     </div>
@@ -111,6 +99,10 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
     }
 
+    private onClozeDelete(): void {
+        this.richTextMutator!.replace('hello world!');
+    }
+
     private onKeyDown(event: KeyboardEvent) {
 
         // if (event.key === "Escape") {
@@ -122,8 +114,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
         console.log("FIXME: Shift", event.getModifierState("Shift"));
         console.log("FIXME: KeyC", event.key === "KeyC");
 
-        if (this.state.type === FlashcardType.CLOZE &&
-            this.isClozeKeyboardEvent(event)) {
+        if (this.isClozeKeyboardEvent(event)) {
 
             console.log("FIXME: cloze!!!");
 
@@ -141,19 +132,18 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
     private isClozeKeyboardEvent(event: KeyboardEvent) {
 
         return event.getModifierState("Control") &&
-               event.getModifierState("Shift") &&
-               event.key === "C";
+            event.getModifierState("Shift") &&
+            event.key === "C";
     }
 
-    private onChangeType(type: FlashcardType) {
-        this.fields = this.createFields(type);
-        this.setState({...this.state, type});
+    private onChangeType(flashcardType: FlashcardType) {
+        this.props.onFlashcardChangeType(flashcardType);
     }
 
     private onCreate(): void {
 
         if (this.props.onFlashcardCreated) {
-            this.props.onFlashcardCreated(this.state.type, this.fields);
+            this.props.onFlashcardCreated(FlashcardType.CLOZE, this.fields);
         }
 
         this.reset();
@@ -175,47 +165,21 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
     }
 
     private reset(): void {
-        this.fields = this.createFields(this.state.type);
+        this.fields = {text: ""};
     }
 
-    private createFields(type: FlashcardType): FlashcardInputFieldsType {
-
-        if (type === FlashcardType.BASIC_FRONT_BACK) {
-            const result: FrontAndBackFields = {front: "", back: ""};
-            return result;
-        } else {
-            const result: ClozeFields = {text: ""};
-            return result;
-        }
-
-    }
 
 }
 
 export interface IProps {
     readonly id: string;
-    readonly type?: FlashcardType;
-    readonly onFlashcardCreated?: (type: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
+    readonly onFlashcardCreated: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
+    readonly onFlashcardChangeType: (flashcardType: FlashcardType) => void;
     readonly onCancel?: () => void;
 }
 
 export interface IState {
     readonly iter: number;
-    readonly type: FlashcardType;
 }
-
-export type HtmlString = string;
-
-export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
-
-export interface ClozeFields {
-    text: HtmlString;
-}
-
-export interface FrontAndBackFields {
-    front: HtmlString;
-    back: HtmlString;
-}
-
 
 

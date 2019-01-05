@@ -40,6 +40,9 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
         this.state = {
             iter: 0,
+
+            // TODO: maybe read this from localStorage so the users prefs
+            // are kept
             type: this.props.type || FlashcardType.BASIC_FRONT_BACK
         };
 

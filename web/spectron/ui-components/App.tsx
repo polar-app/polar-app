@@ -21,6 +21,7 @@ import {CommentIcon} from '../../js/ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
 import {AnnotationFlashcardBox} from '../../js/annotation_sidebar/flashcard_input/AnnotationFlashcardBox';
 import {FlashcardType} from '../../js/metadata/FlashcardType';
+import {FlashcardInputForCloze} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForCloze';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -106,6 +107,13 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <FlashcardInputForCloze
+                    id={'FlashcardInputForCloze'}
+                    onCancel={() => console.log("onCancel")}
+                    onFlashcardCreated={(flashcardType, fields) => console.log("created: ")}
+                    onFlashcardChangeType={flashcardType => console.log("flashcardType: ", flashcardType)}/>
+
                 <h1 className="component">Flashcard input</h1>
                 <AnnotationFlashcardBox id='flashcard-0' type={FlashcardType.BASIC_FRONT_BACK}/>
 
