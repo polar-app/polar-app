@@ -5,7 +5,7 @@ import {RichTextArea} from '../RichTextArea';
 import {FlashcardType} from '../../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
 import {NULL_FUNCTION} from '../../util/Functions';
-import {FrontAndBackFields} from './AnnotationFlashcardBox';
+import {FrontAndBackFields} from './FlashcardInput';
 
 const log = Logger.create();
 
