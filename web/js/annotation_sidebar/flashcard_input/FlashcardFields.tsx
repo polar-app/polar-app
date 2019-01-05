@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Logger} from '../logger/Logger';
-import {FlashcardType} from '../metadata/FlashcardType';
+import {Logger} from '../../logger/Logger';
+import {FlashcardType} from '../../metadata/FlashcardType';
 import {FlashcardFrontAndBackFields} from './FlashcardFrontAndBackFields';
 import {ClozeFields, FlashcardInputFieldsType, FrontAndBackFields} from './AnnotationFlashcardBox';
 import {FlashcardClozeFields} from './FlashcardClozeFields';
@@ -46,4 +46,6 @@ export interface IProps {
 
 export interface IState {
 }
+
+
 

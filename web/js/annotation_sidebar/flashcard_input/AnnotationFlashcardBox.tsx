@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {Logger} from '../logger/Logger';
+import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {FlashcardType} from '../metadata/FlashcardType';
+import {FlashcardType} from '../../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
 import {FlashcardFields} from './FlashcardFields';
+import {FlashcardButtons} from './FlashcardButtons';
 
 const log = Logger.create();
 
@@ -97,13 +98,8 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
                     <div style={Styles.BottomBarItemRight}
                          className="text-right">
 
-                        <Button color="secondary" size="sm" className="" onClick={() => this.onCancel()}>
-                            Cancel
-                        </Button>
-
-                        <Button color="primary" size="sm" className="ml-1" onClick={() => this.onCreate()}>
-                            Create
-                        </Button>
+                        <FlashcardButtons onCancel={() => this.onCancel()}
+                                          onCreate={() => this.onCreate()}/>
 
                     </div>
 
@@ -220,4 +216,6 @@ export interface FrontAndBackFields {
     front: HtmlString;
     back: HtmlString;
 }
+
+
 

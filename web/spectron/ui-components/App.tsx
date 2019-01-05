@@ -19,7 +19,7 @@ import {Tag} from '../../../web/js/tags/Tag';
 import {RelatedTags} from '../../js/tags/related/RelatedTags';
 import {CommentIcon} from '../../js/ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
-import {AnnotationFlashcardBox} from '../../js/annotation_sidebar/AnnotationFlashcardBox';
+import {AnnotationFlashcardBox} from '../../js/annotation_sidebar/flashcard_input/AnnotationFlashcardBox';
 import {FlashcardType} from '../../js/metadata/FlashcardType';
 
 class App<P> extends React.Component<{}, IAppState> {

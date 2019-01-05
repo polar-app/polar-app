@@ -6,7 +6,7 @@ import {AnnotationCommentBox} from './AnnotationCommentBox';
 import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
 import {Refs} from '../metadata/Refs';
-import {AnnotationFlashcardBox, ClozeFields, FrontAndBackFields} from './AnnotationFlashcardBox';
+import {AnnotationFlashcardBox, ClozeFields, FrontAndBackFields} from './flashcard_input/AnnotationFlashcardBox';
 import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';

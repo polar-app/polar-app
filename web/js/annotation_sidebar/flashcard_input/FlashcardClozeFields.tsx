@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Logger} from '../logger/Logger';
+import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {RichTextArea} from './RichTextArea';
-import {FlashcardType} from '../metadata/FlashcardType';
+import {RichTextArea} from '../RichTextArea';
+import {FlashcardType} from '../../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from '../../util/Functions';
 import {ClozeFields, FrontAndBackFields} from './AnnotationFlashcardBox';
 
 const log = Logger.create();
@@ -30,7 +30,7 @@ export class FlashcardClozeFields extends React.Component<IProps, IState> {
 
         </div>);
 
-    };
+    }
 
 }
 
@@ -42,4 +42,6 @@ export interface IProps {
 
 export interface IState {
 }
+
+
 
