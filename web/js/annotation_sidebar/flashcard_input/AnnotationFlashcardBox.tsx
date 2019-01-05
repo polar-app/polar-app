@@ -21,7 +21,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
             // TODO: maybe read this from localStorage so the users prefs
             // are kept
-            flashcardType: this.props.flashcardType || FlashcardType.BASIC_FRONT_BACK
+            flashcardType: this.props.flashcardType || this.defaultFlashcardType()
         };
 
     }
@@ -48,6 +48,29 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
     private onFlashcardChangeType(flashcardType: FlashcardType) {
         this.setState({...this.state, flashcardType});
+        this.setDefaultFlashcardType(flashcardType);
+    }
+
+    private defaultFlashcardType() {
+
+        const defaultFlashcardType = window.localStorage.getItem('default-flashcard-type');
+
+        switch (defaultFlashcardType) {
+
+            case FlashcardType.BASIC_FRONT_BACK:
+                return FlashcardType.BASIC_FRONT_BACK;
+
+            case FlashcardType.CLOZE:
+                return FlashcardType.CLOZE;
+
+            default:
+                return FlashcardType.BASIC_FRONT_BACK;
+        }
+
+    }
+
+    private setDefaultFlashcardType(flashcardType: FlashcardType) {
+        window.localStorage.setItem('default-flashcard-type', flashcardType);
     }
 
     private onFlashcardCreated(flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>): void {
@@ -70,7 +93,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly id: string;
-    readonly flashcardType: FlashcardType;
+    readonly flashcardType?: FlashcardType;
     readonly onFlashcardCreated: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
     readonly onCancel: () => void;
 }

@@ -6,7 +6,7 @@ import {AnnotationCommentBox} from './AnnotationCommentBox';
 import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
 import {Refs} from '../metadata/Refs';
-import {AnnotationFlashcardBox, ClozeFields, FrontAndBackFields} from './flashcard_input/AnnotationFlashcardBox';
+import {AnnotationFlashcardBox} from './flashcard_input/AnnotationFlashcardBox';
 import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
@@ -18,6 +18,7 @@ import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from '../metadata/FlashcardType';
 import {Flashcard} from '../metadata/Flashcard';
 import {Functions} from '../util/Functions';
+import {FrontAndBackFields, ClozeFields} from './flashcard_input/FlashcardInput';
 
 
 const Styles: IStyleMap = {
@@ -144,7 +145,6 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'flashcard'}>
 
                     <AnnotationFlashcardBox id={annotation.id}
-                                            flashcardType={FlashcardType.BASIC_FRONT_BACK}
                                             onCancel={() => this.toggleActiveInputComponent('none')}
                                             onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>
 
@@ -213,9 +213,9 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         Functions.withTimeout(() => {
 
-            // TODO: right now it seems to strip important CSS styles and data URLs
-            // which I need to fix in the HTML sanitizer.
-            // html = HTMLSanitizer.sanitize(html);
+            // TODO: right now it seems to strip important CSS styles and data
+            // URLs which I need to fix in the HTML sanitizer. html =
+            // HTMLSanitizer.sanitize(html);
 
             const {annotation} = this.props;
 
