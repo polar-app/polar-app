@@ -105,7 +105,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
             return;
         }
 
-        const prefix = document.createTextNode('{{c1:');
+        const prefix = document.createTextNode('{{c1::');
         const suffix = document.createTextNode('}}');
 
         const firstNode = textNodes[0];
