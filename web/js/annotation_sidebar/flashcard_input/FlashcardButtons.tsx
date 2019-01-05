@@ -27,11 +27,17 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 
             <div>
 
-                <Button color="secondary" size="sm" className="" onClick={() => this.props.onCancel()}>
+                <Button color="secondary"
+                        size="sm"
+                        className=""
+                        onClick={() => this.props.onCancel()}>
                     Cancel
                 </Button>
 
-                <Button color="primary" size="sm" className="ml-1" onClick={() => this.props.onCreate()}>
+                <Button color="primary"
+                        size="sm"
+                        className="ml-1"
+                        onClick={() => this.props.onCreate()}>
                     Create
                 </Button>
 

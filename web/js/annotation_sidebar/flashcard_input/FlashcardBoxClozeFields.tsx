@@ -5,7 +5,6 @@ import {FlashcardType} from '../../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
 import {FlashcardFields} from './FlashcardFields';
 import {FlashcardButtons} from './FlashcardButtons';
-import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 
 const log = Logger.create();
 
@@ -24,6 +23,11 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         width: '100%'
+    };
+
+    public static SelectCardType: React.CSSProperties = {
+        minWidth: '10em',
+        fontSize: '14px'
     };
 
 }
@@ -70,7 +74,15 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                     <div style={Styles.BottomBarItem}>
 
-                        <FlashcardTypeSelector onChangeFlashcardType={flashcardType => this.onChangeType(flashcardType)}/>
+                        <Input type="select"
+                               style={Styles.SelectCardType}
+                               className="p-0"
+                               onChange={htmlInputElement => this.onChangeType(htmlInputElement.target.value as FlashcardType)}>
+
+                            <option value={FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
+                            <option value={FlashcardType.CLOZE}>Cloze</option>
+
+                        </Input>
 
                     </div>
 
