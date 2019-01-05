@@ -2,35 +2,14 @@ import * as React from 'react';
 import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import {FlashcardType} from '../../metadata/FlashcardType';
-import Input from 'reactstrap/lib/Input';
-import {FlashcardFields} from './FlashcardFields';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../RichTextArea';
-import {ClozeFields, FlashcardInputFieldsType} from './AnnotationFlashcardBox';
 import {RichTextMutator} from '../../apps/card_creator/elements/schemaform/RichTextMutator';
 import {Elements} from '../../util/Elements';
+import {FlashcardInputFieldsType, Styles, ClozeFields} from './FlashcardInput';
 
 const log = Logger.create();
-
-class Styles {
-
-    public static BottomBar: React.CSSProperties = {
-        display: 'flex'
-    };
-
-    public static BottomBarItem: React.CSSProperties = {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-    };
-
-    public static BottomBarItemRight: React.CSSProperties = {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        width: '100%'
-    };
-
-}
 
 export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 

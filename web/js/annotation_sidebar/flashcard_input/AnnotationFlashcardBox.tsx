@@ -6,6 +6,7 @@ import Input from 'reactstrap/lib/Input';
 import {FlashcardFields} from './FlashcardFields';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
+import {FlashcardInputFieldsType, FrontAndBackFields, ClozeFields} from './FlashcardInput';
 
 const log = Logger.create();
 
@@ -104,25 +105,6 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
     private onKeyDown(event: KeyboardEvent) {
 
-        // if (event.key === "Escape") {
-        //     this.toggle();
-        // }
-        console.log("FIXME: keyboard event", event);
-
-        console.log("FIXME: CONTROL", event.getModifierState("Control"));
-        console.log("FIXME: Shift", event.getModifierState("Shift"));
-        console.log("FIXME: KeyC", event.key === "KeyC");
-
-        if (this.state.type === FlashcardType.CLOZE &&
-            this.isClozeKeyboardEvent(event)) {
-
-            console.log("FIXME: cloze!!!");
-
-            // this.onCreate();
-
-        }
-
-
         if (event.getModifierState("Control") && event.key === "Enter") {
             this.onCreate();
         }
@@ -194,19 +176,3 @@ export interface IState {
     readonly iter: number;
     readonly type: FlashcardType;
 }
-
-export type HtmlString = string;
-
-export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
-
-export interface ClozeFields {
-    text: HtmlString;
-}
-
-export interface FrontAndBackFields {
-    front: HtmlString;
-    back: HtmlString;
-}
-
-
-
