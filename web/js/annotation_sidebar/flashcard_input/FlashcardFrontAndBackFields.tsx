@@ -1,10 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../logger/Logger';
-import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from '../RichTextArea';
-import {FlashcardType} from '../../metadata/FlashcardType';
-import Input from 'reactstrap/lib/Input';
-import {NULL_FUNCTION} from '../../util/Functions';
 import {FrontAndBackFields} from './FlashcardInput';
 
 const log = Logger.create();

@@ -1,10 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../logger/Logger';
-import Button from 'reactstrap/lib/Button';
 import {FlashcardType} from '../../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
-import {FlashcardFields} from './FlashcardFields';
-import {FlashcardButtons} from './FlashcardButtons';
 
 const log = Logger.create();
 
