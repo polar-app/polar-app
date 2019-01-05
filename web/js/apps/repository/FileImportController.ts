@@ -21,6 +21,8 @@ const log = Logger.create();
 /**
  * Handles performing imports into the datastore when users select files from
  * the import dialog.
+ *
+ * @ElectronRendererContext
  */
 export class FileImportController {
 

@@ -72,7 +72,8 @@ export class ReactSummernote4 extends Component {
 
     }
 
-    componentDidMount() {
+    public componentDidMount() {
+
         const options = this.props.options || {};
         const codeview = this.props.codeview;
         // const codeviewCommand = codeview ? 'codeview.activate' : 'codeview.deactivate';
@@ -98,14 +99,14 @@ export class ReactSummernote4 extends Component {
 
     }
 
-    componentWillReceiveProps(nextProps: any) {
+    public componentWillReceiveProps(nextProps: any) {
 
         const { props } = this;
 
         const codeview = nextProps.codeview;
         const codeviewCommand = codeview ? 'codeview.activate' : 'codeview.deactivate';
 
-        if (typeof nextProps.value === 'string' && props.value !== nextProps.value) {
+        if (typeof nextProps.value === 'string') {
             this.replace(nextProps.value);
         }
 
@@ -123,17 +124,17 @@ export class ReactSummernote4 extends Component {
 
     }
 
-    shouldComponentUpdate() {
+    public shouldComponentUpdate() {
         return false;
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount() {
         if (this.editor.summernote) {
             this.editor.summernote('destroy');
         }
     }
 
-    onInit() {
+    public onInit() {
 
         const { disabled, onInit } = this.props;
 
@@ -195,6 +196,7 @@ export class ReactSummernote4 extends Component {
                 notePlaceholder.show();
             }
 
+            console.log("FIXME doing replace...")
             noteEditable.html(content);
         }
     }

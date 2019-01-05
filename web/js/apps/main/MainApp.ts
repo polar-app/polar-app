@@ -27,6 +27,7 @@ import process from "process";
 import {AppPath} from '../../electron/app_path/AppPath';
 import {MainAPI} from './MainAPI';
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
+import {FileImportClient} from '../repository/FileImportClient';
 
 declare var global: any;
 
@@ -148,8 +149,7 @@ export class MainApp {
         app.on('open-file', async (event, path) => {
 
             log.info("Open file called for: ", path);
-
-            await mainAppController.handleLoadDoc(path);
+            FileImportClient.send({files: [path]});
 
         });
 
@@ -160,7 +160,9 @@ export class MainApp {
             const fileArg = Cmdline.getDocArg(commandLine);
 
             if (fileArg) {
-                await mainAppController.handleLoadDoc(fileArg);
+
+                FileImportClient.send({files: [fileArg]});
+
             } else {
                 mainAppController.activateMainWindow();
             }

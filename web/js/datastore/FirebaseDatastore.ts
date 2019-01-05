@@ -230,6 +230,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
         if (! recordHolder) {
+            log.warn("FIXME: could not get docMeta with id: " + id);
             return null;
         }
 
@@ -708,11 +709,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
             const docInfo = record.value;
 
-            const dataProvider = async () => await this.getDocMeta(docInfo.fingerprint);
+            const dataProvider = async () => {
+                return await this.getDocMeta(docInfo.fingerprint);
+            };
 
             const docMetaProvider = AsyncProviders.memoize(async () => {
                 const data = await dataProvider();
-                Preconditions.assertPresent(data, "No data for docMeta with fingerprint: " + docInfo.fingerprint);
+                const docMetaID = this.computeDocMetaID(this.getUserID(), docInfo.fingerprint);
+                Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
                 return DocMetas.deserialize(data!);
             });
 

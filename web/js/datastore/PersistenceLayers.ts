@@ -276,7 +276,15 @@ export class PersistenceLayers {
 
             const targetSyncDoc = target.syncDocMap[sourceSyncDoc.fingerprint];
 
-            const handler = async () => await handleSyncDoc(sourceSyncDoc, targetSyncDoc);
+            const handler = async () => {
+
+                try {
+                    await handleSyncDoc(sourceSyncDoc, targetSyncDoc);
+                } catch (e) {
+                    log.error("Unable to sync between source and target: ", {sourceSyncDoc, targetSyncDoc});
+                }
+
+            };
 
             docMetaAsyncWorkQueue.enqueue(handler);
 

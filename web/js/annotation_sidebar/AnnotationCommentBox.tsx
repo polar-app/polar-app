@@ -57,7 +57,6 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
                         {/*onClick={this.handleComment}*/}
 
-
                         <Button color="secondary" size="sm" className="mt-2 mr-1" onClick={() => this.onCancel()}>
                             Cancel
                         </Button>
@@ -116,6 +115,9 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
     }
 
     private onCancel(): void {
+
+        this.html = "";
+
         if (this.props.onCancel) {
             this.props.onCancel();
         }
