@@ -17,7 +17,7 @@ class Styles {
 
 }
 
-export class FlashcardTypeSelector extends React.PureComponent<IProps, IState> {
+export class FlashcardTypeSelector extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -36,8 +36,11 @@ export class FlashcardTypeSelector extends React.PureComponent<IProps, IState> {
                    className="p-0"
                    onChange={htmlInputElement => this.props.onChangeFlashcardType(htmlInputElement.target.value as FlashcardType)}>
 
-                <option value={FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
-                <option value={FlashcardType.CLOZE}>Cloze</option>
+                <option value={FlashcardType.BASIC_FRONT_BACK}
+                        selected={this.props.flashcardType === FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
+
+                <option value={FlashcardType.CLOZE}
+                        selected={this.props.flashcardType === FlashcardType.CLOZE}>Cloze</option>
 
             </Input>
 
@@ -48,6 +51,7 @@ export class FlashcardTypeSelector extends React.PureComponent<IProps, IState> {
 }
 
 export interface IProps {
+    readonly flashcardType: FlashcardType;
     readonly onChangeFlashcardType: (flashcardType: FlashcardType) => void;
 }
 

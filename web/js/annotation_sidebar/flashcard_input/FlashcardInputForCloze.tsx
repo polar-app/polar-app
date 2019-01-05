@@ -8,10 +8,13 @@ import {RichTextArea} from '../RichTextArea';
 import {RichTextMutator} from '../../apps/card_creator/elements/schemaform/RichTextMutator';
 import {Elements} from '../../util/Elements';
 import {FlashcardInputFieldsType, Styles, ClozeFields} from './FlashcardInput';
+import {UncontrolledTooltip} from 'reactstrap';
 
 const log = Logger.create();
 
 export class FlashcardInputForCloze extends React.Component<IProps, IState> {
+
+    private readonly flashcardType: FlashcardType = FlashcardType.CLOZE;
 
     private fields: ClozeFields = {text: ""};
 
@@ -49,16 +52,25 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                     <div style={Styles.BottomBarItem}>
 
-                        <FlashcardTypeSelector onChangeFlashcardType={flashcardType => this.props.onFlashcardChangeType(flashcardType)}/>
+                        <FlashcardTypeSelector
+                            flashcardType={this.flashcardType}
+                            onChangeFlashcardType={flashcardType => this.props.onFlashcardChangeType(flashcardType)}/>
 
                     </div>
 
                     <div style={Styles.BottomBarItem} className="ml-1">
 
-                        <Button color="light"
+                        <Button id={`button-${this.props.id}`}
+                                color="light"
                                 size="sm"
                                 onClick={() => this.onClozeDelete()}
                                 className="ml-1 p-1 border">[…]</Button>
+
+                        <UncontrolledTooltip placement="auto"
+                                             delay={{show: 750, hide: 0}}
+                                             target={`button-${this.props.id}`}>
+                            Create cloze deletion for text <span className="text-muted">Control+Shift+C</span>
+                        </UncontrolledTooltip>
 
                     </div>
 
@@ -97,27 +109,16 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
         sel.removeAllRanges();
 
+        this.fields.text = this.richTextMutator!.currentValue();
+
+
     }
 
     private onKeyDown(event: KeyboardEvent) {
 
-        // if (event.key === "Escape") {
-        //     this.toggle();
-        // }
-        console.log("FIXME: keyboard event", event);
-
-        console.log("FIXME: CONTROL", event.getModifierState("Control"));
-        console.log("FIXME: Shift", event.getModifierState("Shift"));
-        console.log("FIXME: KeyC", event.key === "KeyC");
-
-        if (this.isClozeKeyboardEvent(event)) {
-
-            console.log("FIXME: cloze!!!");
-
-            // this.onCreate();
-
+        if (this.isKeyboardControlShiftC(event)) {
+            this.onClozeDelete();
         }
-
 
         if (event.getModifierState("Control") && event.key === "Enter") {
             this.onCreate();
@@ -125,17 +126,17 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
     }
 
-    private isClozeKeyboardEvent(event: KeyboardEvent) {
+    private isKeyboardControlShiftC(event: KeyboardEvent) {
 
         return event.getModifierState("Control") &&
-            event.getModifierState("Shift") &&
-            event.key === "C";
+               event.getModifierState("Shift") &&
+               event.key === "C";
     }
 
     private onCreate(): void {
 
         if (this.props.onFlashcardCreated) {
-            this.props.onFlashcardCreated(FlashcardType.CLOZE, this.fields);
+            this.props.onFlashcardCreated(this.flashcardType, this.fields);
         }
 
         this.reset();

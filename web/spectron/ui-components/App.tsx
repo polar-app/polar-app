@@ -114,14 +114,14 @@ class App<P> extends React.Component<{}, IAppState> {
                 <FlashcardInputForCloze
                     id={'FlashcardInputForCloze'}
                     onCancel={() => console.log("onCancel")}
-                    onFlashcardCreated={(flashcardType, fields) => console.log("created: ")}
+                    onFlashcardCreated={(flashcardType, fields) => console.log("created: ", flashcardType, fields)}
                     onFlashcardChangeType={flashcardType => console.log("flashcardType: ", flashcardType)}/>
 
                 <h1 className="component">FlashcardInputForFrontAndBack</h1>
                 <FlashcardInputForFrontAndBack
                     id={'FlashcardInputForFrontAndBack'}
                     onCancel={() => console.log("onCancel")}
-                    onFlashcardCreated={(flashcardType, fields) => console.log("created: ")}
+                    onFlashcardCreated={(flashcardType, fields) => console.log("created: ", flashcardType, fields)}
                     onFlashcardChangeType={flashcardType => console.log("flashcardType: ", flashcardType)}/>
 
                 <h1 className="component">AnnotationFlashcardBox</h1>

@@ -74,7 +74,9 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                     <div style={Styles.BottomBarItem}>
 
-                        <FlashcardTypeSelector onChangeFlashcardType={flashcardType => this.onChangeType(flashcardType)}/>
+                        <FlashcardTypeSelector
+                            flashcardType={this.state.type}
+                            onChangeFlashcardType={flashcardType => this.onChangeType(flashcardType)}/>
 
                     </div>
 

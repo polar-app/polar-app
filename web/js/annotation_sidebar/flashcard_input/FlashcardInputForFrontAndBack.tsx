@@ -13,6 +13,8 @@ const log = Logger.create();
 
 export class FlashcardInputForFrontAndBack extends React.Component<IProps, IState> {
 
+    private readonly flashcardType: FlashcardType = FlashcardType.BASIC_FRONT_BACK;
+
     private fields: FrontAndBackFields = {front: "", back: ""};
 
     constructor(props: IProps, context: any) {
@@ -55,7 +57,9 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                     <div style={Styles.BottomBarItem}>
 
-                        <FlashcardTypeSelector onChangeFlashcardType={flashcardType => this.props.onFlashcardChangeType(flashcardType)}/>
+                        <FlashcardTypeSelector
+                            flashcardType={this.flashcardType}
+                            onChangeFlashcardType={flashcardType => this.props.onFlashcardChangeType(flashcardType)}/>
 
                     </div>
 
@@ -87,7 +91,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
     private onCreate(): void {
 
         if (this.props.onFlashcardCreated) {
-            this.props.onFlashcardCreated(FlashcardType.BASIC_FRONT_BACK, this.fields);
+            this.props.onFlashcardCreated(this.flashcardType, this.fields);
         }
 
         this.reset();
