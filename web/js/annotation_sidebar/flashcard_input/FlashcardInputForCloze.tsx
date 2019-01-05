@@ -9,6 +9,7 @@ import {RichTextMutator} from '../../apps/card_creator/elements/schemaform/RichT
 import {Elements} from '../../util/Elements';
 import {FlashcardInputFieldsType, Styles, ClozeFields} from './FlashcardInput';
 import {UncontrolledTooltip} from 'reactstrap';
+import {Ranges} from '../..//highlights/text/selection/Ranges';
 
 const log = Logger.create();
 
@@ -98,19 +99,24 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
         const sel = window.getSelection();
         const range = sel.getRangeAt(0);
 
-        const wrapper = document.createElement('span');
-        range.surroundContents(wrapper);
+        const textNodes = Ranges.getTextNodes(range);
 
-        const prefix = Elements.createElementHTML('{{c1:', 'span');
-        const suffix = Elements.createElementHTML('}}', 'span');
+        if (textNodes.length === 0) {
+            return;
+        }
 
-        wrapper.parentNode!.insertBefore(prefix, wrapper);
-        wrapper.parentNode!.insertBefore(suffix, wrapper.nextSibling);
+        const prefix = document.createTextNode('{{c1:');
+        const suffix = document.createTextNode('}}');
+
+        const firstNode = textNodes[0];
+        const lastNode = textNodes[textNodes.length - 1];
+
+        firstNode.parentNode!.insertBefore(prefix, firstNode);
+        lastNode.parentNode!.insertBefore(suffix, lastNode.nextSibling);
 
         sel.removeAllRanges();
 
         this.fields.text = this.richTextMutator!.currentValue();
-
 
     }
 
