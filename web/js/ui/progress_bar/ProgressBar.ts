@@ -19,6 +19,11 @@ export class ProgressBar {
             return;
         }
 
+        // FIXME: there is now a bug here where if the ProgressBar is
+        // auto-destroyed early, any lagging progress bar values won't get
+        // created... we need the ability to auto-create if the value is
+        // in the interval [0,100) but destroy it if the value is 100.
+
         ProgressBar.getProgressElement().map(progressElement => {
 
             if (progressElement instanceof HTMLProgressElement) {
@@ -46,7 +51,7 @@ export class ProgressBar {
             }
 
         } else {
-            log.warn("No progress bar to desroy.");
+            // log.warn("No progress bar to destroy.");
         }
 
     }

@@ -10,13 +10,13 @@ Major changes:
   debug issues with Polar and report problems to the dev team plus understand
   what's happening with their data.
 
-- refactored the rich text editor so the bar at the top is no longer in 'air' 
+- Refactored the rich text editor so the bar at the top is no longer in 'air' 
   mode so that users can realize that it supports rich text.
+
+- Related tags in the tag selector
 
 - 'capturing' a PDF from the browser now works and the PDF is then saved into 
   the repository.
-
-- Related tags in the tag selector
 
 - Copy URL to clipboard shows toaster that the URL was copied successfully.
 

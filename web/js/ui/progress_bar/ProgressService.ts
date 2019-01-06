@@ -2,6 +2,7 @@ import {ipcRenderer} from "electron";
 import {ProgressMessage} from "./ProgressMessage";
 import {ProgressMessages} from "./ProgressMessages";
 import {ProgressBar} from './ProgressBar';
+import {DeterminateProgressBar} from './DeterminateProgressBar';
 
 /**
  *
@@ -13,8 +14,7 @@ export class ProgressService {
         ipcRenderer.on(ProgressMessages.CHANNEL, (event: Electron.EventEmitter,
                                                   progressMessage: ProgressMessage) => {
 
-            const progressBar = ProgressBar.create(false);
-            progressBar.update(progressMessage.progress);
+            DeterminateProgressBar.update(progressMessage.progress);
 
         });
 

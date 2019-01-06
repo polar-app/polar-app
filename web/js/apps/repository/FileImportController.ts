@@ -13,6 +13,7 @@ import {FilePaths} from "../../util/FilePaths";
 import {isPresent} from "../../Preconditions";
 import {Toaster} from "../../ui/toaster/Toaster";
 import {IProvider} from "../../util/Providers";
+import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';
 
 const log = Logger.create();
 
@@ -123,7 +124,6 @@ export class FileImportController {
 
     private async doImportFiles(files: string[]): Promise<Array<Optional<ImportedFile>>> {
 
-        const progressBar = ProgressBar.create(false);
         const progress = new ProgressCalculator(files.length);
 
         const result: Array<Optional<ImportedFile>> = [];
@@ -139,7 +139,9 @@ export class FileImportController {
                     log.error("Failed to import file: " + file, e);
                 } finally {
                     progress.incr();
-                    progressBar.update(progress.percentage());
+
+                    DeterminateProgressBar.update(progress.percentage());
+
                 }
 
             }
@@ -147,7 +149,6 @@ export class FileImportController {
             return result;
 
         } finally {
-            progressBar.destroy();
         }
 
     }

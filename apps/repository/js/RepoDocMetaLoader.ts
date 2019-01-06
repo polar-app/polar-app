@@ -22,6 +22,7 @@ import {ProgressTrackerIndex} from '../../../web/js/util/ProgressTrackerIndex';
 import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
+import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
 
 const log = Logger.create();
 
@@ -69,20 +70,11 @@ export class RepoDocMetaLoader {
 
                 const {progress, docMetaMutations} = docMetaSnapshotEvent;
 
-                if (!progressBar) {
-                    progressBar = ProgressBar.create(false);
-                }
-
                 progressTrackerIndex.update(progress);
 
                 const minProgress = progressTrackerIndex.min();
 
-                progressBar.update(minProgress);
-
-                if (minProgress === 100) {
-                    progressBar.destroy();
-                    progressBar = undefined;
-                }
+                DeterminateProgressBar.update(minProgress);
 
                 const mutations: RepoDocMetaMutation[] = [];
 
