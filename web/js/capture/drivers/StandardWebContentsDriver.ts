@@ -19,6 +19,7 @@ import {PDFImporter} from '../../apps/repository/importers/PDFImporter';
 import {FileImportClient} from '../../apps/repository/FileImportClient';
 import {ProgressTracker} from '../../util/ProgressTracker';
 import {ProgressMessages} from '../../ui/progress_bar/ProgressMessages';
+import {AppLauncher} from '../../apps/main/AppLauncher';
 
 const log = Logger.create();
 
@@ -222,9 +223,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
                 log.warn("No browser window to clsoe");
             }
 
-            // FIXME: focus the main app so that progress events are shown
-            // there... as well as a Toaster that it's being download in the
-            // background.
+            AppLauncher.launchRepositoryApp();
 
             log.info("Going to to download: ", downloadItem.getURL());
 

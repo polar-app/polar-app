@@ -58,7 +58,17 @@ export class ProgressBar {
 
     public static create(indeterminate: boolean = true): ProgressBar {
 
+        const current = this.getProgressElement();
+
+        if (current.isPresent()) {
+            return new ProgressBar();
+        }
+
         let element: HTMLElement;
+
+        // TODO: technically there's a bug if we used indeterminate and
+        // determinate progress bars but we don't use them overlapping in
+        // the same app right now.
 
         if (indeterminate) {
 

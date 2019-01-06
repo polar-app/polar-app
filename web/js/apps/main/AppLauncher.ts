@@ -9,11 +9,14 @@ const log =  Logger.create();
 
 export class AppLauncher {
 
+    /**
+     * Launch the repository app or focus it if it's already created.
+     */
     public static async launchRepositoryApp(): Promise<BrowserWindow> {
 
         const browserWindowTag = {name: 'app', value: 'repository'};
 
-        return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
+        const browserWindow = await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
             const url = ResourcePaths.resourceURLFromRelativeURL('/apps/repository/index.html', false);
             log.info("Loading app from URL: " + url);
 
@@ -25,6 +28,10 @@ export class AppLauncher {
 
             return await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
         });
+
+        browserWindow.focus();
+
+        return browserWindow;
 
     }
 
