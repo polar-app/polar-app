@@ -7,7 +7,7 @@ import {Logger} from '../../../logger/Logger';
 import {AnnotationType} from '../../../metadata/AnnotationType';
 import {Model} from '../../../model/Model';
 import {Flashcard} from '../../../metadata/Flashcard';
-import {Toaster} from '../../../toaster/Toaster';
+import {Toaster} from '../../../ui/toaster/Toaster';
 
 const log = Logger.create();
 

@@ -27,6 +27,7 @@ import WhatsNewApp from '../../../../apps/repository/js/whats_new/WhatsNewApp';
 import CommunityApp from '../../../../apps/repository/js/community/CommunityApp';
 import StatsApp from '../../../../apps/repository/js/stats/StatsApp';
 import LogsApp from '../../../../apps/repository/js/logs/LogsApp';
+import {ToasterService} from '../../ui/toaster/ToasterService';
 
 const log = Logger.create();
 
@@ -40,8 +41,6 @@ export class RepositoryApp {
         this.repoDocInfoManager = new RepoDocMetaManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
     }
-
-
 
     public async start() {
 
@@ -59,6 +58,8 @@ export class RepositoryApp {
 
         new CloudService(this.persistenceLayerManager)
             .start();
+
+        new ToasterService().start();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);

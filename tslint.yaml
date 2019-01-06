@@ -82,6 +82,11 @@ rules:
 
   await-promise: true
 
+  # this is actually more annoying than not.  Shadowed variables can be annoying
+  # but I find having to rename them more annoying and that these don't actually
+  # cause bugs in production.
+  no-shadowed-variable: false
+
 jsRules:
   max-line-length:
     options: [140]

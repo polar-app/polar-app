@@ -1,7 +1,8 @@
 import Toastr from 'toastr';
 
 // needed to enforce that jquery is working.
-import $ from '../ui/JQuery';
+import $ from '../JQuery';
+import {Optional} from '../../util/ts/Optional';
 
 /**
  * High level interface to create toaster UI popups for messages.
@@ -9,18 +10,22 @@ import $ from '../ui/JQuery';
 export class Toaster {
 
     public static info(message: string, title: string = "", options: ToasterOptions = {}) {
+        title = Optional.of(title).getOrElse("");
         Toastr.info(message, title, this.augmentExtendedOptions(options));
     }
 
     public static success(message: string, title: string = "", options: ToasterOptions = {}) {
+        title = Optional.of(title).getOrElse("");
         Toastr.success(message, title, this.augmentExtendedOptions(options));
     }
 
     public static warning(message: string, title: string = "", options: ToasterOptions = {}) {
+        title = Optional.of(title).getOrElse("");
         Toastr.warning(message, title, this.augmentExtendedOptions(options));
     }
 
     public static error(message: string, title: string = "", options: ToasterOptions = {}) {
+        title = Optional.of(title).getOrElse("");
         Toastr.error(message, title, this.augmentExtendedOptions(options));
     }
 
@@ -69,7 +74,7 @@ export interface ToasterOptions {
     positionClass?: 'toast-top-center' | 'toast-top-right' | 'toast-top-left' | 'toast-top-full-width';
 }
 
-export enum ToastrType {
+export enum ToasterMessageType {
 
     SUCCESS = "success",
 
@@ -80,3 +85,5 @@ export enum ToastrType {
     ERROR = "error"
 
 }
+
+

@@ -4,7 +4,7 @@
 import {DocumentLoadedEvent, Model} from '../model/Model';
 import {Strings} from '../util/Strings';
 import {Logger} from '../logger/Logger';
-import {Toaster} from '../toaster/Toaster';
+import {Toaster} from '../ui/toaster/Toaster';
 
 const log = Logger.create();
 

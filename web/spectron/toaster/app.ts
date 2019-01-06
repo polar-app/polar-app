@@ -1,5 +1,5 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {Toaster} from '../../js/toaster/Toaster';
+import {Toaster} from '../../js/ui/toaster/Toaster';
 
 import {assert} from 'chai';
 import {wait} from 'dom-testing-library';

@@ -8,7 +8,7 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {clipboard, shell} from 'electron';
 import {Directories} from '../../../web/js/datastore/Directories';
 import {FilePaths} from '../../../web/js/util/FilePaths';
-import {Toaster} from '../../../web/js/toaster/Toaster';
+import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 
 const log = Logger.create();
 

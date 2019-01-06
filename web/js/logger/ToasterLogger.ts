@@ -2,7 +2,7 @@
  * Simple logger that just writes to the console.
  */
 import {ILogger} from './ILogger';
-import {Toaster} from '../toaster/Toaster';
+import {Toaster} from '../ui/toaster/Toaster';
 
 /**
  * Creates a toast when when an error or a warning is displayed. No other

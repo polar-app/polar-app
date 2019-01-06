@@ -4,7 +4,7 @@ import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import {Button} from 'reactstrap';
 import {clipboard} from 'electron';
-import {Toaster} from '../../../../web/js/toaster/Toaster';
+import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 
 const log = Logger.create();
 

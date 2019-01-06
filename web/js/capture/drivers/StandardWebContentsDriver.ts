@@ -1,4 +1,4 @@
-import {BrowserWindow, WebContents} from 'electron';
+import {BrowserWindow, DownloadItem, WebContents} from 'electron';
 import {WebContentsDriver, WebContentsEvent, WebContentsEventName} from './WebContentsDriver';
 import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
@@ -7,11 +7,16 @@ import {IDimensions} from '../../util/Dimensions';
 import {configureBrowser} from '../renderer/ContentCaptureFunctions';
 import {Functions} from '../../util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
-import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
 import {Reactor} from '../../reactor/Reactor';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
-import {Browser} from '../Browser';
+import {FilePaths} from '../../util/FilePaths';
+import {ToasterMessages} from '../../ui/toaster/ToasterMessages';
+import {ToasterMessageType} from '../../ui/toaster/Toaster';
+import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
+import base = Mocha.reporters.base;
+import {PDFImporter} from '../../apps/repository/importers/PDFImporter';
+import {FileImportClient} from '../../apps/repository/FileImportClient';
 
 const log = Logger.create();
 
@@ -56,9 +61,9 @@ export class StandardWebContentsDriver implements WebContentsDriver {
      * @param url The URL to load.
      *
      * @param waitForFinishLoad When true, wait for the 'did-finish-load' event
-     * which is the default since the old capture system was based on the browser
-     * loading event stream and we assumed the load event would mean the page
-     * was finished rendering - which is not really true.
+     * which is the default since the old capture system was based on the
+     *     browser loading event stream and we assumed the load event would
+     *     mean the page was finished rendering - which is not really true.
      */
     public async loadURL(url: string, waitForFinishLoad: boolean = true): Promise<void> {
 
@@ -125,6 +130,111 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     private async initWebContentsEvents(webContents: WebContents) {
 
+        console.log("FIXME: here1901");
+
+        webContents.session.on('will-download', (event: Event,
+                                                 downloadItem: DownloadItem,
+                                                 downloadWebContents: WebContents) => {
+
+            const mimeType = downloadItem.getMimeType();
+
+            if (mimeType !== 'application/pdf') {
+                log.warn("Downloading PDF and unable to handle");
+                return;
+            }
+
+            const basename = FilePaths.basename(downloadItem.getURL());
+            const tmpPath = FilePaths.createTempName(basename);
+
+            // FIXME: compute the path in the stash otherwise we're wasting IO
+            // writing to two places... (unless we use a hard link).
+            //
+            // FIXME: use a tmpdir within stash and then move it when finished
+            //
+            log.info("Download PDF file to " + tmpPath);
+
+            ToasterMessages.send({type: ToasterMessageType.INFO, message: "PDF download starting for " + basename});
+
+            downloadItem.setSavePath(tmpPath);
+
+            downloadItem.on('done', (event, state) => {
+
+                const message = `PDF download ${state}!` + basename;
+
+                switch (state) {
+
+                    case 'completed':
+                        ToasterMessages.send({type: ToasterMessageType.SUCCESS, message});
+                        FileImportClient.send({files: [tmpPath]});
+
+                        break;
+
+                    case 'cancelled':
+                        ToasterMessages.send({type: ToasterMessageType.WARNING, message});
+                        break;
+
+                    case  'interrupted':
+                        ToasterMessages.send({type: ToasterMessageType.WARNING, message});
+                        break;
+
+                }
+
+            });
+
+
+            let rootWebContents = webContents;
+
+            while (rootWebContents.hostWebContents) {
+                rootWebContents = rootWebContents.hostWebContents;
+            }
+
+            const browserWindowID = rootWebContents.id;
+
+            log.info("Getting BrowserWindow from ID: " + browserWindowID);
+
+            const browserWindow = BrowserWindow.fromId(browserWindowID);
+            browserWindow.close();
+
+            // FIXME: focus the main app so that progress events are shown
+            // there... as well as a Toaster that it's being download in the
+            // background.
+
+            // FIXME: we need an API that has the following features:
+
+            // - show progress and also support background states
+            // - API consisistent on whether we're in the viewer, main app, or
+            //   main process (just always works)
+            // - supports focusing the MainApp when necessary to show key events.
+            // - supports a toaster popup in the main app.
+            //
+            // - MainAppContext.  FIXME: how does MainAppContext detect the
+            // following states?
+            //
+            //    - renderer context but running within the correct app
+            //    - renderer context but NOT running within the correct app
+            //    - maybe ALWAYs go through the main proc?
+            //
+            //    ... possibly an API that allows me to send messags to windows
+            //    with specific tags directly and does the handling of the
+            //    delivery internally.
+
+            // FIXME downloadItem.on('updated')
+
+            // /**
+            //  * The API is only available in session's will-download callback
+            //  * function. If user doesn't set the save path via the API,
+            //  * Electron will use the original routine to determine the save
+            //  * path(Usually prompts a save dialog).
+            //  */
+            // setSavePath(path: string): void;
+
+            log.info("Going to to download: ", downloadItem.getURL());
+            console.log("FIXME: Going to to download: ", downloadItem.getURL());
+
+        });
+
+
+
         webContents.on('dom-ready', (e) => {
 
             log.info("dom-ready: ", e);
@@ -146,7 +256,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
     public static async configureWebContents(webContents: WebContents, browserProfile: BrowserProfile) {
-        
+
         const url = webContents.getURL();
 
         log.info("Configuring webContents with URL: " + url);

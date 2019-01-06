@@ -6,7 +6,7 @@ import {Nullable} from '../../util/ts/Nullable';
 import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
 import {IPCClient} from '../../ipc/handler/IPCClient';
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
-import {Toaster} from '../../toaster/Toaster';
+import {Toaster} from '../../ui/toaster/Toaster';
 
 const log = Logger.create();
 

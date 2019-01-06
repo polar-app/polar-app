@@ -1,4 +1,4 @@
-import {BrowserWindow, nativeImage, shell} from "electron";
+import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents} from "electron";
 import {Logger} from '../../logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 
@@ -67,9 +67,9 @@ export class MainAppBrowserWindowFactory {
         const position = this.computeXY();
 
         if (position) {
-            // add some offset to this window so that the previous window and the
-            // current one don't line up perfectly or else it seems like nothing
-            // happened or that the new window replaced the old one.
+            // add some offset to this window so that the previous window and
+            // the current one don't line up perfectly or else it seems like
+            // nothing happened or that the new window replaced the old one.
             browserWindowOptions.x = position.x;
             browserWindowOptions.y = position.y;
         }
