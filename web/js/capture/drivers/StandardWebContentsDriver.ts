@@ -142,100 +142,109 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     private async initWebContentsEvents(webContents: WebContents) {
 
-        const willDownloadHandler = (event: Event,
-                                     downloadItem: DownloadItem,
-                                     downloadWebContents: WebContents) => {
+        const configurePDFDownloadHandler = (): void => {
 
-            const mimeType = downloadItem.getMimeType();
+            // TODO: might not even need this handler here if we handle it in
+            // the API and look at the mimeType there which is a better way
+            // to handle this.
 
-            if (mimeType !== 'application/pdf') {
-                log.warn("Downloading PDF and unable to handle");
-                return;
-            }
+            const willDownloadHandler = (event: Event,
+                                         downloadItem: DownloadItem,
+                                         downloadWebContents: WebContents) => {
 
-            const basename = FilePaths.basename(downloadItem.getURL());
-            const tmpPath = FilePaths.createTempName(basename);
+                const mimeType = downloadItem.getMimeType();
 
-            // FIXME: compute the path in the stash otherwise we're wasting IO
-            // writing to two places... (unless we use a hard link).
-            //
-            // FIXME: use a tmpdir within stash and then move it when finished
-            //
-            log.info("Download PDF file to " + tmpPath);
-
-            ToasterMessages.send({type: ToasterMessageType.INFO, message: "PDF download starting for " + basename});
-
-            downloadItem.setSavePath(tmpPath);
-
-            const progressTracker = new ProgressTracker(downloadItem.getTotalBytes(), 'download:' + basename);
-
-            downloadItem.once('done', (event, state) => {
-
-                // send the final progress event.
-                ProgressMessages.send(progressTracker.terminate());
-
-                const message = `PDF download ${state} for ${basename}`;
-
-                switch (state) {
-
-                    case 'completed':
-                        ToasterMessages.send({type: ToasterMessageType.SUCCESS, message});
-                        FileImportClient.send({files: [tmpPath]});
-
-                        break;
-
-                    case 'cancelled':
-                        ToasterMessages.send({type: ToasterMessageType.WARNING, message});
-                        break;
-
-                    case  'interrupted':
-                        ToasterMessages.send({type: ToasterMessageType.WARNING, message});
-                        break;
-
+                if (mimeType !== 'application/pdf') {
+                    log.warn("Downloading PDF and unable to handle");
+                    return;
                 }
 
-                this.destroy();
+                const basename = FilePaths.basename(downloadItem.getURL());
+                const tmpPath = FilePaths.createTempName(basename);
 
+                // TODO: compute the path in the stash otherwise we're wasting IO
+                // writing to two places... (unless we use a hard link).
+                //
+                // TODO: use a tmpdir within stash and then move it when finished
+                log.info("Download PDF file to " + tmpPath);
+
+                ToasterMessages.send({type: ToasterMessageType.INFO, message: "PDF download starting for " + basename});
+
+                downloadItem.setSavePath(tmpPath);
+
+                const progressTracker = new ProgressTracker(downloadItem.getTotalBytes(), 'download:' + basename);
+
+                downloadItem.once('done', (event, state) => {
+
+                    // send the final progress event.
+                    ProgressMessages.send(progressTracker.terminate());
+
+                    const message = `PDF download ${state} for ${basename}`;
+
+                    switch (state) {
+
+                        case 'completed':
+                            ToasterMessages.send({type: ToasterMessageType.SUCCESS, message});
+                            FileImportClient.send({files: [tmpPath]});
+
+                            break;
+
+                        case 'cancelled':
+                            ToasterMessages.send({type: ToasterMessageType.WARNING, message});
+                            break;
+
+                        case  'interrupted':
+                            ToasterMessages.send({type: ToasterMessageType.WARNING, message});
+                            break;
+
+                    }
+
+                    this.destroy();
+
+                });
+
+                downloadItem.on('updated', () => {
+
+                    const progress = progressTracker.abs(downloadItem.getReceivedBytes());
+                    ProgressMessages.send(progress);
+
+                });
+
+                let rootWebContents = webContents;
+
+                while (rootWebContents.hostWebContents) {
+                    rootWebContents = rootWebContents.hostWebContents;
+                }
+
+                const browserWindowID = rootWebContents.id;
+
+                log.info("Getting BrowserWindow from ID: " + browserWindowID);
+
+                const browserWindow = BrowserWindow.fromId(browserWindowID);
+
+                if (browserWindow) {
+                    browserWindow.close();
+                } else {
+                    log.warn("No browser window to clsoe");
+                }
+
+                AppLauncher.launchRepositoryApp();
+
+                log.info("Going to to download: ", downloadItem.getURL());
+
+            };
+
+            const session = webContents.session;
+
+            session.addListener('will-download', willDownloadHandler);
+
+            webContents.on('destroyed', () => {
+                session.removeListener('will-download', willDownloadHandler);
             });
-
-            downloadItem.on('updated', () => {
-
-                const progress = progressTracker.abs(downloadItem.getReceivedBytes());
-                ProgressMessages.send(progress);
-
-            });
-
-            let rootWebContents = webContents;
-
-            while (rootWebContents.hostWebContents) {
-                rootWebContents = rootWebContents.hostWebContents;
-            }
-
-            const browserWindowID = rootWebContents.id;
-
-            log.info("Getting BrowserWindow from ID: " + browserWindowID);
-
-            const browserWindow = BrowserWindow.fromId(browserWindowID);
-
-            if (browserWindow) {
-                browserWindow.close();
-            } else {
-                log.warn("No browser window to clsoe");
-            }
-
-            AppLauncher.launchRepositoryApp();
-
-            log.info("Going to to download: ", downloadItem.getURL());
 
         };
 
-        const session = webContents.session;
-
-        session.addListener('will-download', willDownloadHandler);
-
-        webContents.on('destroyed', () => {
-             session.removeListener('will-download', willDownloadHandler);
-        });
+        configurePDFDownloadHandler();
 
         webContents.on('dom-ready', (e) => {
 
