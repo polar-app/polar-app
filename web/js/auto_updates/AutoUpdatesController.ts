@@ -1,5 +1,5 @@
 import {Logger} from "../logger/Logger";
-import {ProgressInfo} from "builder-util-runtime"
+import {ProgressInfo} from "builder-util-runtime";
 import electron, {ipcRenderer} from 'electron';
 import {ProgressBar} from "../ui/progress_bar/ProgressBar";
 
@@ -30,7 +30,7 @@ export class AutoUpdatesController {
 
         this.progressBar.update(percent);
 
-        if (percent === 100) {
+        if (percent >= 100) {
             this.progressBar.destroy();
             this.progressBar = undefined;
         }

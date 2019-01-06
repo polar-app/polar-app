@@ -17,6 +17,8 @@ import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOption
 import base = Mocha.reporters.base;
 import {PDFImporter} from '../../apps/repository/importers/PDFImporter';
 import {FileImportClient} from '../../apps/repository/FileImportClient';
+import {ProgressTracker} from '../../util/ProgressTracker';
+import {ProgressMessages} from '../../ui/progress_bar/ProgressMessages';
 
 const log = Logger.create();
 
@@ -52,7 +54,16 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     public async destroy() {
         log.info("Destroying window...");
-        Optional.of(this.browserWindow).when(window => window.close());
+
+        Optional.of(this.browserWindow)
+            .map(browserWindow => {
+
+                if (!browserWindow.isDestroyed()) {
+                    browserWindow.close();
+                }
+
+            });
+
         log.info("Destroying window...done");
     }
 
@@ -130,11 +141,9 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     private async initWebContentsEvents(webContents: WebContents) {
 
-        console.log("FIXME: here1901");
-
-        webContents.session.on('will-download', (event: Event,
-                                                 downloadItem: DownloadItem,
-                                                 downloadWebContents: WebContents) => {
+        const willDownloadHandler = (event: Event,
+                                     downloadItem: DownloadItem,
+                                     downloadWebContents: WebContents) => {
 
             const mimeType = downloadItem.getMimeType();
 
@@ -157,9 +166,14 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
             downloadItem.setSavePath(tmpPath);
 
-            downloadItem.on('done', (event, state) => {
+            const progressTracker = new ProgressTracker(downloadItem.getTotalBytes(), 'download:' + basename);
 
-                const message = `PDF download ${state}!` + basename;
+            downloadItem.once('done', (event, state) => {
+
+                // send the final progress event.
+                ProgressMessages.send(progressTracker.terminate());
+
+                const message = `PDF download ${state} for ${basename}`;
 
                 switch (state) {
 
@@ -179,8 +193,16 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
                 }
 
+                this.destroy();
+
             });
 
+            downloadItem.on('updated', () => {
+
+                const progress = progressTracker.abs(downloadItem.getReceivedBytes());
+                ProgressMessages.send(progress);
+
+            });
 
             let rootWebContents = webContents;
 
@@ -193,47 +215,28 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             log.info("Getting BrowserWindow from ID: " + browserWindowID);
 
             const browserWindow = BrowserWindow.fromId(browserWindowID);
-            browserWindow.close();
+
+            if (browserWindow) {
+                browserWindow.close();
+            } else {
+                log.warn("No browser window to clsoe");
+            }
 
             // FIXME: focus the main app so that progress events are shown
             // there... as well as a Toaster that it's being download in the
             // background.
 
-            // FIXME: we need an API that has the following features:
-
-            // - show progress and also support background states
-            // - API consisistent on whether we're in the viewer, main app, or
-            //   main process (just always works)
-            // - supports focusing the MainApp when necessary to show key events.
-            // - supports a toaster popup in the main app.
-            //
-            // - MainAppContext.  FIXME: how does MainAppContext detect the
-            // following states?
-            //
-            //    - renderer context but running within the correct app
-            //    - renderer context but NOT running within the correct app
-            //    - maybe ALWAYs go through the main proc?
-            //
-            //    ... possibly an API that allows me to send messags to windows
-            //    with specific tags directly and does the handling of the
-            //    delivery internally.
-
-            // FIXME downloadItem.on('updated')
-
-            // /**
-            //  * The API is only available in session's will-download callback
-            //  * function. If user doesn't set the save path via the API,
-            //  * Electron will use the original routine to determine the save
-            //  * path(Usually prompts a save dialog).
-            //  */
-            // setSavePath(path: string): void;
-
             log.info("Going to to download: ", downloadItem.getURL());
-            console.log("FIXME: Going to to download: ", downloadItem.getURL());
 
+        };
+
+        const session = webContents.session;
+
+        session.addListener('will-download', willDownloadHandler);
+
+        webContents.on('destroyed', () => {
+             session.removeListener('will-download', willDownloadHandler);
         });
-
-
 
         webContents.on('dom-ready', (e) => {
 

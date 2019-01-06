@@ -28,6 +28,7 @@ import CommunityApp from '../../../../apps/repository/js/community/CommunityApp'
 import StatsApp from '../../../../apps/repository/js/stats/StatsApp';
 import LogsApp from '../../../../apps/repository/js/logs/LogsApp';
 import {ToasterService} from '../../ui/toaster/ToasterService';
+import {ProgressService} from '../../ui/progress_bar/ProgressService';
 
 const log = Logger.create();
 
@@ -60,6 +61,7 @@ export class RepositoryApp {
             .start();
 
         new ToasterService().start();
+        new ProgressService().start();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);

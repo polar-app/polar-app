@@ -1,4 +1,10 @@
+import {Percentage} from '../../util/ProgressTracker';
+import {Logger} from '../../logger/Logger';
+import {Optional} from '../../util/ts/Optional';
+
 const ID = 'polar-progress-bar';
+
+const log = Logger.create();
 
 /**
  * Simple progress bar that we can display at any time on a page without
@@ -7,26 +13,47 @@ const ID = 'polar-progress-bar';
  */
 export class ProgressBar {
 
-    private readonly element: HTMLElement;
+    public update(val: number, autoDestroy: boolean = true) {
 
-    constructor(element: HTMLElement) {
-        this.element = element;
-    }
-
-    public update(val: number) {
-
-        if (this.element instanceof HTMLProgressElement) {
-            this.element.value = val;
+        if (! val || val < 0) {
+            return;
         }
+
+        ProgressBar.getProgressElement().map(progressElement => {
+
+            if (progressElement instanceof HTMLProgressElement) {
+                progressElement.value = val;
+            }
+
+            if (autoDestroy && val >= 100) {
+                this.destroy();
+            }
+
+        });
 
     }
 
     public destroy() {
 
-        if (this.element.parentElement !== null) {
-            this.element.parentElement.removeChild(this.element);
+        const progressElement = ProgressBar.getProgressElement().getOrUndefined();
+
+        if (progressElement) {
+
+            if (progressElement.parentElement !== null) {
+                progressElement.parentElement.removeChild(progressElement);
+            } else {
+                log.warn("No parent element for progress bar.");
+            }
+
+        } else {
+            log.warn("No progress bar to desroy.");
         }
 
+    }
+
+    private static getProgressElement(): Optional<HTMLProgressElement> {
+        const element = document.getElementById(ID);
+        return Optional.of(<HTMLProgressElement> element);
     }
 
     public static create(indeterminate: boolean = true): ProgressBar {
@@ -76,7 +103,7 @@ export class ProgressBar {
 
         document.body.appendChild(element);
 
-        return new ProgressBar(element);
+        return new ProgressBar();
 
     }
 

@@ -2,7 +2,7 @@ import {Percentage, Progress} from './ProgressTracker';
 
 export class ProgressTrackers {
 
-    // public static completed(id: string, total: number = 1): ProgressState {
+    // public static completed(id: string, completed: number, total: number = 1): ProgressState {
     //
     //     return {
     //         completed: 1,
@@ -12,6 +12,6 @@ export class ProgressTrackers {
     //         id
     //     };
     //
-    // }
+    // // }
 
 }

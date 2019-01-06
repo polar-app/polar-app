@@ -33,15 +33,23 @@ export class ProgressTracker {
     }
 
     /**
+     * Progress as an absolute value.  Used for counters like received bytes
+     * that aren't deltas but are absolute values.
+     *
+     */
+    public abs(value: number) {
+        this.state.completed = value;
+        this.state.progress = this.calculate();
+        this.state.duration = Date.now() - this.epoch;
+        return this.peek();
+    }
+
+    /**
      * Increment the progress of the job by one, compute the updated state,
      * and return.
      */
-    public incr(): Readonly<Progress> {
-        ++this.state.completed;
-        this.state.progress = this.calculate();
-        this.state.duration = Date.now() - this.epoch;
-
-        return this.peek();
+    public incr(value: number = 1): Readonly<Progress> {
+        return this.abs(this.state.completed + value);
     }
 
     /**
