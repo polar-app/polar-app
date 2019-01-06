@@ -1,5 +1,7 @@
 # 1.8.0
 
+Major changes:
+
 - support for cloze deletion
 
 - Stats view for core stats  
@@ -8,10 +10,11 @@
   debug issues with Polar and report problems to the dev team plus understand
   what's happening with their data.
 
-- Cloze deletion UI mostly working
-
 - refactored the rich text editor so the bar at the top is no longer in 'air' 
   mode so that users can realize that it supports rich text.
+
+- 'capturing' a PDF from the browser now works and the PDF is then saved into 
+  the repository.
 
 - Related tags in the tag selector
 
