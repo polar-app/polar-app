@@ -2,6 +2,8 @@
 
 Major changes:
 
+- PDFs auto-import when trying to share them from the browser.
+
 - support for cloze deletion
 
 - Stats view for core stats  
