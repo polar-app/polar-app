@@ -29,7 +29,11 @@ permalink: /blog/index.html
         {%- if post.large_image -%}
 
           <div class="text-center">
-            <img class="img-fluid" src="{{post.large_image}}">
+
+            <a href="{{ post.url | relative_url }}">
+              <img class="img-fluid" src="{{post.large_image}}">
+            </a>
+
           </div>
 
         {%- endif -%}
