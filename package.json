@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"const polar_release = '%s';\n\" > assets/js/release.js",
     "build": "bundle exec jekyll build",
     "deploy": "bundle exec jekyll build && firebase deploy",
     "serve": "bundle exec jekyll serve"
