@@ -19,9 +19,23 @@ to the text highlights.
 This allows you to create flashcards but keep *context* associated with the 
 flashcards.   
 
+# Deck mapping
+
+By default Polar stores all Anki cards in the 'Default' deck.
+
+You can change the deck per document by setting a tag with a 'deck:' prefix.
+
+For example, if you want to store things in the 'Technology' deck you just 
+tag the document you're reading as 'deck:Technology'.
+
+NOTE: In Polar versions prior to 1.8.0 we used a 'deck per doc' strategy where
+a new deck was created per document.  Not many users liked this and we removed
+it in 1.8.0. Technically it's still supported but needs to be re-enabled. 
+
 # Setup
 
-- Install Anki Connect and restart Anki.
+Install Anki Connect and restart Anki.  At this point Polar can sync to Anki 
+properly.
 
 # Usage 
 

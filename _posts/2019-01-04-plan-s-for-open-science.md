@@ -1,5 +1,5 @@
 ---
-title:  Plan S for Open Science - Major 
+title:  Plan S for Open Science - Open Access to Scientific Research  
 date:   2019-01-03 09:00:00 -0800
 layout: post
 large_image: https://getpolarized.io/assets/images/openscience.jpeg
