@@ -17,7 +17,7 @@ permalink: /blog/index.html
 
       {%- if post.layout == 'post' and post.permalink != '/blog/index.html' -%}
 
-      <div>
+      <div class="blog-post shadow">
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
         <!--<span class="post-meta">{{ post.date | date: date_format }}</span>-->
         <h3>
