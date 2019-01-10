@@ -1,0 +1,26 @@
+<div class="top-posts-footer">
+
+    {% assign top_posts = site.posts | where_exp:"post", "post.layout == 'post'" | where_exp:"post", "post.permalink != '/blog/index.html'" %}
+
+    {%- if site.posts.size > 0 -%}
+
+    <div class="post-list">
+
+        <!--https://stackoverflow.com/questions/12655109/limit-the-number-of-post-though-a-category-with-jekyll-->
+
+        FIXME: we have to find just the top three and this is a big tough..
+
+        {%- for post in top_posts -%}
+
+        {%- if post.layout == 'post' and post.permalink != '/blog/index.html' && post.permalink != page.permalink -%}
+
+            {{post.title | escape}}
+
+        {%- endif -%}
+
+        {%- endfor -%}
+    </div>
+
+    {%- endif -%}
+
+</div>
