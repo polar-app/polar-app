@@ -1,4 +1,10 @@
-# 1.8.1
+# 1.9.0
+
+- Now using 'localhost' instead of 'localapp.getpolarized.io' for the hostname.
+  Some users weren't able to resolve this (not sure why) and additionally 
+  working offline didn't function either.
+
+# 1.8.0
 
 Major changes:
 
