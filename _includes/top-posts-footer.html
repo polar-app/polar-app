@@ -13,9 +13,9 @@
 
         FIXME: we have to find just the top three and this is a big tough..
 
-        {%- for post in top_posts  -%}
+        {%- for post in top_posts limit: 3 -%}
 
-        {{post.title | escape}}
+        {{post.title | escape}}<br/>
 
         {%- endfor -%}
     </div>
