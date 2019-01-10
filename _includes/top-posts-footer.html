@@ -1,23 +1,44 @@
 <div class="top-posts-footer">
 
 
-    <!--| where_exp:"post", "post.permalink != page.permalink"-->
+    <!--| where_exp:"post", "post.url != page.url"-->
 
-    {% assign top_posts = site.posts | where_exp:"post", "post.layout == 'post'" | where_exp:"post", "post.permalink != '/blog/index.html'"  %}
+    {% assign top_posts = site.posts | where_exp:"post", "post.layout == 'post'" | where_exp:"post", "post.permalink != '/blog/index.html'" | where_exp:"post", "post.url != page.url" %}
 
     {%- if top_posts.size > 0 -%}
 
     <div class="post-list">
+    <div class="container">
+    <div class="row">
 
         <!--https://stackoverflow.com/questions/12655109/limit-the-number-of-post-though-a-category-with-jekyll-->
 
-        FIXME: we have to find just the top three and this is a big tough..
-
         {%- for post in top_posts limit: 3 -%}
+        <div class="col-lg-4">
+        <div class="card m-1" style="">
 
-        {{post.title | escape}}<br/>
+            <a href="{{ post.url }}">
+                <img class="card-img-top" src="{{ post.large_image }}" alt="{{ post.title | escape }}">
+            </a>
+
+            <div class="card-body">
+                <a href="{{ post.url }}">
+                    <h5 class="card-title">{{ post.title | escape }}</h5>
+                </a>
+
+                <p class="card-text">
+                    {{ post.content | strip_html | truncatewords: 40 }}
+                </p>
+
+            </div>
+
+        </div>
+        </div>
 
         {%- endfor -%}
+
+    </div>
+    </div>
     </div>
 
     {%- endif -%}
