@@ -151,7 +151,8 @@ figcaption {
     text-justify: auto;
 }
 
-#doc {
+#doc,
+#post {
     max-width: 900px;
 }
 
@@ -164,7 +165,9 @@ header .container {
     margin-bottom: 15px;
 }
 
+#post h1,
 #doc h1 {
+    margin-top: 15px;
     margin-bottom: 15px;
 }
 
