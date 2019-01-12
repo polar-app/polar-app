@@ -1,5 +1,4 @@
-import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent,
-        DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -9,7 +8,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
-import {Providers, AsyncProviders} from '../util/Providers';
+import {AsyncProviders} from '../util/Providers';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
