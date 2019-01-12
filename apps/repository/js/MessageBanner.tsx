@@ -114,6 +114,10 @@ const MESSAGES: Message[] = [
         element: <div>Make sure you have our <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/">Chrome Extension</a> to <b>capture web pages directly from your browser!</b></div>
     },
 
+    {
+        id: 'polar-updates',
+        element: <div><b>Polar is updated often</b> - at least twice a month and usually once a week.  <b>Always make sure you're on the latest version.</b></div>
+    },
 
 
     // {

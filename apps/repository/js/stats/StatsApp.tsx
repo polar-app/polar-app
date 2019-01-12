@@ -5,6 +5,7 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import NewDocumentRateChart from './NewDocumentRateChart';
 import TopTagsChart from './TopTagsChart';
 import TopTagsTable from './TopTagsTable';
+import {MessageBanner} from '../MessageBanner';
 
 const log = Logger.create();
 
@@ -34,7 +35,9 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                 </header>
 
-                <div className="container-fluid">
+                <MessageBanner/>
+
+                <div className="container-fluid border-top ml-1 mr-1">
 
                     <div className="row mt-2">
 
