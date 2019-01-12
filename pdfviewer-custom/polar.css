@@ -52,8 +52,8 @@ body {
     margin-top: 20px;
 }
 
-.polar-htmlviewer #polar-viewer,
-.polar-htmlviewer #polar-sidebar {
+.polar-htmlviewer .polar-viewer,
+.polar-htmlviewer .polar-sidebar {
     margin-top: 65px;
     height: calc(100% - 65px);
     width: 100%;
