@@ -11,5 +11,11 @@ export interface Tag {
      */
     readonly label: string;
 
+    /**
+     * True when the tag is hidden.  Used for special types of tags that should
+     * not be shown in the UI as they would just clutter the UI.
+     */
+    readonly hidden?: boolean;
+
 }
 
