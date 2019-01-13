@@ -37,6 +37,13 @@ it in 1.8.0. Technically it's still supported but needs to be re-enabled.
 Install Anki Connect and restart Anki.  At this point Polar can sync to Anki 
 properly.
 
+# International Users!
+
+***IMPORTANT** If you're using an non-English version of Anki you have to
+create note types for "Basic" and "Cloze" otherwise sync will fail.  Changing
+the language doesn't re-create the note types unfortunately.  We're working 
+on a fix for this issue. 
+
 # Usage 
 
 Once Anki Connect is running, go to ```Tools | Sync Flashcards to Anki``` from 
