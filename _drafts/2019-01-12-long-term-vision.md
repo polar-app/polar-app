@@ -122,11 +122,19 @@ and issues with pronounciation.
 The problem with this style of asynchronous learning is that without sitting
 down to study a text book you can't make flashcards.
 
-This is definitely a valuable use but what if we refactored the way we looked
-at text books.
+Many people in the SRS community feel that creating the flashcards is part of 
+the learning process.  
 
-What if text books were actually secondary material and the primary material
-were flashcards?    
+I don't doubt that this is true for many people, however, I think we can do 
+better.
+
+What if part of incremental reading as integrated with spaced repetition?
+
+What if we broke apart a book into chunks, and each chunk was readable by itself, 
+and also, could have associated flashcards.
+
+While reading the text you could have the option to view the flashcard, and 
+optionally import it into Polar.   
   
   
 
