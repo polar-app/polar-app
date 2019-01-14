@@ -183,7 +183,8 @@ export class DocMetas {
      * Make changes to the document so that they write as one batched mutation
      * at the end.
      *
-     * @param mutator
+     * @param mutator  The function to execute which will mutation the
+     * underlying DocMeta properly.
      */
     public static withBatchedMutations(docMeta: DocMeta, mutator: () => void) {
 

@@ -19,12 +19,14 @@ class Styles {
         fontWeight: 'bold',
         marginRight: '5px',
         fontSize: '22px',
+        textAlign: 'right'
     };
 
     public static link: React.CSSProperties = {
         display: 'table-cell',
         fontSize: '22px',
-        textAlign: 'left'
+        textAlign: 'left',
+        paddingLeft: '5px'
     };
 
 }

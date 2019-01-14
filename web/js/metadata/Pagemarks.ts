@@ -38,9 +38,9 @@ export class Pagemarks {
      * added.
      *
      */
-    public static create(options: any = {}): Pagemark {
+    public static create(opts: Partial<PagemarkOptions> = {}): Pagemark {
 
-        options = Objects.defaults( options, {
+        const options: PagemarkOptions = Objects.defaults( opts, {
 
             // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
             // default for now until we add multiple column types and handle
@@ -55,26 +55,26 @@ export class Pagemarks {
 
         });
 
-        let keyOptions= Pagemarks.createKeyOptions(options);
+        const keyOptions = Pagemarks.createKeyOptions(options);
 
-        if(keyOptions.count === 0) {
+        if (keyOptions.count === 0) {
             throw new Error("Must specify either rect or percentage.");
         }
 
-        if(keyOptions.count === 1) {
+        if (keyOptions.count === 1) {
 
-            if(keyOptions.hasPercentage) {
+            if (keyOptions.hasPercentage) {
                 keyOptions.rect = PagemarkRects.createFromPercentage(keyOptions.percentage);
             }
 
-            if(keyOptions.hasRect) {
+            if (keyOptions.hasRect) {
                 keyOptions.percentage = keyOptions.rect.toPercentage();
             }
 
         }
 
-        if(round(keyOptions.percentage) !== round(keyOptions.rect.toPercentage())) {
-            let msg = "Percentage and rect are not the same";
+        if (round(keyOptions.percentage) !== round(keyOptions.rect.toPercentage())) {
+            const msg = "Percentage and rect are not the same";
             log.warn(msg, keyOptions.percentage, keyOptions.rect, keyOptions.rect.toPercentage());
             throw new Error(msg);
         }
@@ -100,11 +100,11 @@ export class Pagemarks {
     /**
      *
      * @param options
-     * @return {KeyOptions}
+     * @return {KeyPagemarkOptions}
      */
-    static createKeyOptions(options: any) {
+    private static createKeyOptions(options: PagemarkOptions): KeyPagemarkOptions {
 
-        const keyOptions: KeyOptions = {
+        const keyOptions: KeyPagemarkOptions = {
             count: 0,
             hasPercentage: false,
             hasRect: false,
@@ -115,11 +115,13 @@ export class Pagemarks {
         keyOptions.hasPercentage = "percentage" in options;
         keyOptions.hasRect = "rect" in options;
 
-        if(keyOptions.hasPercentage)
+        if (keyOptions.hasPercentage) {
             ++keyOptions.count;
+        }
 
-        if(keyOptions.hasRect)
+        if (keyOptions.hasRect) {
             ++keyOptions.count;
+        }
 
         return keyOptions;
 
@@ -201,34 +203,14 @@ export class Pagemarks {
 
 }
 
-/**
- * The key / important options when creating a Pagemark.
- */
-export interface KeyOptions {
+export interface PagemarkOptions {
 
     /**
-     * The total number of key options.
-     *
-     * @type {number}
+     * The type of pagemark we're working with.
      */
-    count: number;
+    type: PagemarkType;
 
     /**
-     * True when we have the percentage.
-     *
-     * @type {boolean}
-     */
-    hasPercentage: boolean;
-
-    /**
-     * True when we have the rect.
-     *
-     * @type {boolean}
-     */
-    hasRect: boolean;
-
-    /**
-     * @type {PagemarkRect}
      */
     rect: PagemarkRect;
 
@@ -236,5 +218,38 @@ export interface KeyOptions {
      */
     percentage: number;
 
+    column: number;
+
+}
+
+/**
+ * The key / important options when creating a Pagemark.
+ */
+export interface KeyPagemarkOptions {
+
+    /**
+     * The total number of key options.
+     */
+    count: number;
+
+    /**
+     * True when we have the percentage.
+     *
+     */
+    hasPercentage: boolean;
+
+    /**
+     * True when we have the rect.
+     *
+     */
+    hasRect: boolean;
+
+    /**
+     */
+    rect: PagemarkRect;
+
+    /**
+     */
+    percentage: number;
 
 }
