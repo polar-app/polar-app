@@ -12,6 +12,7 @@ import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
+import {PageNumber} from './PageMeta';
 
 const log = Logger.create();
 
@@ -30,6 +31,16 @@ export class Pagemarks {
 
         // truncate.  We don't need that much precision against collision.
         return id.substring(0, 10);
+
+    }
+
+
+    /**
+     * Create pagemarks over the given range.
+     */
+    public static createRange(docMeta: DocMeta, end: PageNumber) {
+
+
 
     }
 

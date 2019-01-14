@@ -269,6 +269,10 @@ export class Files {
         return fs.createReadStream(path, options);
     }
 
+    public static createWriteStream(path: PathLike, options?: CreateWriteStreamOptions): fs.WriteStream {
+        return fs.createWriteStream(path, options);
+    }
+
     // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
 
     /**
@@ -472,6 +476,15 @@ export type CreateReadStreamOptions = string | {
     start?: number;
     end?: number;
     highWaterMark?: number;
+};
+
+export type CreateWriteStreamOptions = string | {
+    flags?: string;
+    encoding?: string;
+    fd?: number;
+    mode?: number;
+    autoClose?: boolean;
+    start?: number;
 };
 
 /**
