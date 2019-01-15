@@ -24,7 +24,7 @@ describe('Texts', function() {
             "HTML": "asdf"
         };
 
-        assertJSON(Texts.toText(input), "");
+        assertJSON(Texts.toPlainText(input), "");
 
     });
 

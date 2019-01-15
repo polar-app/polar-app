@@ -1,5 +1,6 @@
 import {Text} from './Text';
 import {TextType} from './TextType';
+import {isPresent} from '../Preconditions';
 
 export class Texts {
 
@@ -15,15 +16,21 @@ export class Texts {
     }
 
     /**
-     * This is somewhat confusing but take a Text object and convert it to a text
-     * string.
+     * This is somewhat confusing but take a Text object and convert it to a
+     * plain text string with no HTML formatting.
      */
-    public static toText(text?: Text): string | undefined {
+    public static toPlainText(text?: Text | string): string | undefined {
 
-        if (text) {
+        if (text && this.isText(text)) {
+
+            text = <Text> text;
 
             if (text.TEXT) {
                 return text.TEXT;
+            }
+
+            if (text.MARKDOWN) {
+                return text.MARKDOWN;
             }
 
             if (text.HTML) {
@@ -34,10 +41,56 @@ export class Texts {
 
         }
 
+        if (typeof text === 'string') {
+            return text;
+        }
+
         return undefined;
 
     }
 
+    /**
+     * Get the first field from the text object or the string value.
+     */
+    public static toString(text?: Text | string): string | undefined {
+
+        if (text && this.isText(text)) {
+
+            text = <Text> text;
+
+            if (text.TEXT) {
+                return text.TEXT;
+            }
+
+            if (text.MARKDOWN) {
+                return text.MARKDOWN;
+            }
+
+            if (text.HTML) {
+                return text.MARKDOWN;
+            }
+
+        }
+
+        if (typeof text === 'string') {
+            return text;
+        }
+
+        return undefined;
+
+    }
+
+    public static isText(text?: any): boolean {
+
+        if (text) {
+
+            return isPresent(text.MARKDOWN) || isPresent(text.HTML) || isPresent(text.TEXT);
+
+        }
+
+        return false;
+
+    }
 
 }
 

@@ -56,12 +56,12 @@ export class RepoAnnotations {
 
         if ((<any> sourceAnnotation).text) {
             const sourceText: Text = (<any> sourceAnnotation).text;
-            text = Texts.toText(sourceText);
+            text = Texts.toPlainText(sourceText);
         }
 
         if ((<any> sourceAnnotation).content) {
             const sourceText: Text = (<any> sourceAnnotation).content;
-            text = Texts.toText(sourceText);
+            text = Texts.toPlainText(sourceText);
         }
 
         if (type === AnnotationType.FLASHCARD) {
@@ -69,7 +69,7 @@ export class RepoAnnotations {
             const textFields = Object.values(flashcard.fields);
 
             if (textFields.length > 0) {
-                text = Texts.toText(textFields[0]);
+                text = Texts.toPlainText(textFields[0]);
             }
 
         }
