@@ -85,11 +85,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
     protected computeDeckName(deckNameStrategy: DeckNameStrategy, docInfo: DocInfo): string {
 
-        if (deckNameStrategy === 'default') {
-            return "Default";
-        }
-
-        let deckName;
+        let deckName: string | undefined;
 
         const tags = docInfo.tags;
 
@@ -108,7 +104,13 @@ export class AnkiSyncEngine implements SyncEngine {
         }
 
         if (! deckName) {
+
+            if (deckNameStrategy === 'default') {
+                return "Default";
+            }
+
             deckName = DocInfos.bestTitle(docInfo);
+
         }
 
         return deckName;

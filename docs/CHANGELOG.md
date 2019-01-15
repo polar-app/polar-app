@@ -1,5 +1,7 @@
 # 1.9.0
 
+- Fixed bug with the 'deck:' tag not properly working with Anki sync.
+
 - Importing large numbers of PDFs (and large PDFs) is now a log faster and more
   responsive when using cloud storage.  In the past we used to wait until the 
   cloud layer was finished but this takes a long time to complete.
