@@ -129,14 +129,12 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         const result = this.local.writeFile(backend, ref, data, meta);
 
-        // For this to work we have to use fierbase snapshot QuerySnapshot and
-        // look at docChanges and wait for the document we requested...
+        // don't await the cloud write.  Once it's written locally we're fine
+        // if it's not in the cloud we get an error logged and we should also
+        // have task progress in the future.
+        this.cloud.writeFile(backend, ref, data, meta)
+            .catch(err => log.error("Unable to write file to cloud: ", err));
 
-        await this.cloud.writeFile(backend, ref, data, meta);
-
-        // TODO: can't we just wait until the event is fired when it's pulled
-        // down as part of the normal snapshot mechanism.?  That might be best
-        // as we would be adding it twice.
         return result;
 
     }
@@ -170,13 +168,13 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             // this should never fail in practice.
             .catch(err => log.error("Could not handle delete: ", err));
 
-        await DatastoreMutations.executeBatchedWrite(datastoreMutation,
-                                                     async (remoteCoordinator) => {
-                                                         await this.cloud.delete(docMetaFileRef, remoteCoordinator);
-                                                     },
-                                                     async (localCoordinator) => {
-                                                         await this.local.delete(docMetaFileRef, localCoordinator);
-                                                     });
+        await this.datastoreMutations.executeBatchedWrite(datastoreMutation,
+                                                          async (remoteCoordinator) => {
+                                                              await this.cloud.delete(docMetaFileRef, remoteCoordinator);
+                                                          },
+                                                          async (localCoordinator) => {
+                                                              await this.local.delete(docMetaFileRef, localCoordinator);
+                                                          });
 
         return {};
 
@@ -196,13 +194,13 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         // this should never fail in practice.
         .catch(err => log.error("Could not handle delete: ", err));
 
-        return DatastoreMutations.executeBatchedWrite(datastoreMutation,
-                                                      async (remoteCoordinator) => {
-                                                          await this.cloud.write(fingerprint, data, docInfo, remoteCoordinator);
-                                                      },
-                                                      async (localCoordinator) => {
-                                                          await this.local.write(fingerprint, data, docInfo, localCoordinator);
-                                                      });
+        return this.datastoreMutations.executeBatchedWrite(datastoreMutation,
+                                                           async (remoteCoordinator) => {
+                                                               await this.cloud.write(fingerprint, data, docInfo, remoteCoordinator);
+                                                           },
+                                                           async (localCoordinator) => {
+                                                               await this.local.write(fingerprint, data, docInfo, localCoordinator);
+                                                           });
 
     }
 

@@ -37,10 +37,13 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
     public readonly datastore: Datastore;
 
+    private datastoreMutations: DatastoreMutations;
+
     constructor(datastore: Datastore) {
         this.datastore = datastore;
         this.stashDir = this.datastore.stashDir;
         this.logsDir = this.datastore.logsDir;
+        this.datastoreMutations = DatastoreMutations.create('written');
     }
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION) {
@@ -167,7 +170,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         const docInfo = Object.assign({}, docMeta.docInfo);
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();
-        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+        this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
         await this.datastore.write(fingerprint, data, docInfo, syncMutation);
 

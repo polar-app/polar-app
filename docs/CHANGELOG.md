@@ -1,5 +1,9 @@
 # 1.9.0
 
+- Importing large numbers of PDFs (and large PDFs) is now a log faster and more
+  responsive when using cloud storage.  In the past we used to wait until the 
+  cloud layer was finished but this takes a long time to complete.
+
 - Now using 'localhost' instead of 'localapp.getpolarized.io' for the hostname.
   Some users weren't able to resolve this (not sure why) and additionally 
   working offline didn't function either.

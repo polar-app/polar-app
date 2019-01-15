@@ -107,6 +107,12 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
 
 export abstract class AbstractDatastore {
 
+    protected datastoreMutations: DatastoreMutations;
+
+    constructor() {
+        this.datastoreMutations = DatastoreMutations.create('written');
+
+    }
     public async writeDocMeta(docMeta: DocMeta,
                               datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
@@ -114,7 +120,7 @@ export abstract class AbstractDatastore {
         const docInfo = docMeta.docInfo;
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();
-        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+        this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
         await this.write(docMeta.docInfo.fingerprint, data, docInfo, syncMutation);
         return docInfo;

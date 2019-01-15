@@ -171,6 +171,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
+        log.info("delete: ", docMetaFileRef);
+
         if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
 
             // the PDF/PHZ data file should be added as a stash file via

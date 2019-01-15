@@ -1,23 +1,40 @@
 import {Latch} from '../util/Latch';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreConsistency} from './Datastore';
 
 export class DatastoreMutations {
 
-    public static batched<T>(dm0: DatastoreMutation<T>, dm1: DatastoreMutation<T>, target: DatastoreMutation<T> ) {
+    private readonly consistency: DatastoreConsistency;
+
+    private constructor(consistency: DatastoreConsistency) {
+        this.consistency = consistency;
+    }
+
+    public static create(consistency: DatastoreConsistency): DatastoreMutations {
+        return new DatastoreMutations(consistency);
+    }
+
+    public batched<T>(dm0: DatastoreMutation<T>, dm1: DatastoreMutation<T>, target: DatastoreMutation<T> ) {
 
         this.batchPromises(dm0.written.get(), dm1.written.get(), target.written);
-        this.batchPromises(dm0.committed.get(), dm1.committed.get(), target.committed);
+
+        if (this.consistency === 'committed') {
+            this.batchPromises(dm0.committed.get(), dm1.committed.get(), target.committed);
+        }
 
     }
 
-    public static handle<V, T>(promise: Promise<V>, target: DatastoreMutation<T>, converter: (input: V) => T): void {
+    public handle<V, T>(promise: Promise<V>, target: DatastoreMutation<T>, converter: (input: V) => T): void {
 
         promise.then((result) => {
 
             try {
 
                 target.written.resolve(converter(result));
-                target.committed.resolve(converter(result));
+
+                if (this.consistency === 'committed') {
+                    target.committed.resolve(converter(result));
+                }
 
             } catch (err) {
                 console.error("Unable to resolve: ", err);
@@ -28,7 +45,10 @@ export class DatastoreMutations {
             try {
 
                 target.written.reject(err);
-                target.committed.reject(err);
+
+                if (this.consistency === 'committed') {
+                    target.committed.reject(err);
+                }
 
             } catch (err) {
                 console.error("Unable to reject: ", err);
@@ -41,12 +61,15 @@ export class DatastoreMutations {
     /**
      * Pipe the resolve and reject status of the latches to the target.
      */
-    public static pipe<T, V>(source: DatastoreMutation<T>,
-                             target: DatastoreMutation<V>,
-                             converter: (input: T) => V): void {
+    public pipe<T, V>(source: DatastoreMutation<T>,
+                      target: DatastoreMutation<V>,
+                      converter: (input: T) => V): void {
 
         this.pipeLatch(source.written, target.written, converter);
-        this.pipeLatch(source.committed, target.committed, converter);
+
+        if (this.consistency === 'committed') {
+            this.pipeLatch(source.committed, target.committed, converter);
+        }
 
     }
 
@@ -73,11 +96,11 @@ export class DatastoreMutations {
      * @param remoteSync
      * @param localSync
      */
-    public static async executeBatchedWrite<T>(datastoreMutation: DatastoreMutation<T>,
-                                               remoteSync: (remoteCoordinator: DatastoreMutation<T>) => Promise<void>,
-                                               localSync: (localCoordinator: DatastoreMutation<T>) => Promise<void>,
-                                               remoteCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation(),
-                                               localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()): Promise<void> {
+    public async executeBatchedWrite<T>(datastoreMutation: DatastoreMutation<T>,
+                                        remoteSync: (remoteCoordinator: DatastoreMutation<T>) => Promise<void>,
+                                        localSync: (localCoordinator: DatastoreMutation<T>) => Promise<void>,
+                                        remoteCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation(),
+                                        localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()): Promise<void> {
 
         return new Promise<void>((resolve, reject) => {
 
@@ -93,23 +116,25 @@ export class DatastoreMutations {
                 })
                 .catch((err) => reject(err));
 
-            DatastoreMutations.batched(remoteCoordinator, localCoordinator, datastoreMutation);
+            this.batched(remoteCoordinator, localCoordinator, datastoreMutation);
 
             // only return once the remote and local promises / operations have
             // been completed...
 
-            datastoreMutation.committed.get()
-                .then(() => resolve())
-                .catch((err) => reject(err));
+            if (this.consistency === 'committed') {
+                datastoreMutation.committed.get()
+                    .then(() => resolve())
+                    .catch((err) => reject(err));
+            }
 
         });
 
     }
 
 
-    private static pipeLatch<T, V>(source: Latch<T>,
-                                   target: Latch<V>,
-                                   converter: (input: T) => V): void {
+    private pipeLatch<T, V>(source: Latch<T>,
+                            target: Latch<V>,
+                            converter: (input: T) => V): void {
 
         source.get()
             .then((value: T) => target.resolve(converter(value)))
@@ -117,7 +142,7 @@ export class DatastoreMutations {
 
     }
 
-    private static batchPromises<T>(promise0: Promise<T>, promise1: Promise<T>, latch: Latch<T>): void {
+    private batchPromises<T>(promise0: Promise<T>, promise1: Promise<T>, latch: Latch<T>): void {
 
         const batch = Promise.all([promise0, promise1]);
 

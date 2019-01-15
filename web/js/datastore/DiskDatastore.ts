@@ -114,9 +114,9 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         // now handle all the promises with the datastore mutation so that we
         // can verify that we were written and committed.
-        DatastoreMutations.handle(Promise.all([ deleteStatePathPromise, deleteDocPathPromise]),
-                                  datastoreMutation,
-                                  () => true);
+        this.datastoreMutations.handle(Promise.all([ deleteStatePathPromise, deleteDocPathPromise]),
+                                       datastoreMutation,
+                                       () => true);
 
         return {
             docMetaFile: await deleteStatePathPromise,
@@ -255,7 +255,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
 
-        DatastoreMutations.handle(result, datastoreMutation, () => true);
+        this.datastoreMutations.handle(result, datastoreMutation, () => true);
 
         return result;
 
