@@ -14,19 +14,19 @@ Cloud sync is near real-time and actively pushes updates to your other devices
 so that when you change computers your documents are already up to date - no 
 waiting (assuming your computer is active at the time). 
 
-# Backed by Firebase
+## Backed by Firebase
 
 Polar cloud sync is backed by Google's Firebase.  You can read about the design
 in this <a href="https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html">blog 
 post in the cloud sync infrastructure.</a>
 
-# Security and Permissions
+## Security and Permissions
 
 All documents in Polar are only available to your account and we use Google
 Firebase access control credentials to block unauthorized users (anyone other
 than you).
 
-# Future Features
+## Future Features
 
 Additionally, cloud sync was specifically designed to support additional
 features in the future including mobile, selective replication
@@ -39,10 +39,14 @@ them when necessary.
 This enables users with massive repositories to free up disk space by keeping
 most of their data in the cloud.
 
-# Pricing
+## Pricing
 
 Right now cloud sync is free for all users.  We plan on making Polar cloud sync
 free for 95% users and the remaining 5% have the added 1benefit of supporting
-Polar with their monthly subscription fee.            1
+Polar with their monthly subscription fee.            
+
+We expect cloud sync to cost $7.99 per month for users with the largest document 
+repository.
+ 
 
 

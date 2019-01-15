@@ -29,7 +29,7 @@ compatible with git since files are removed but may be selectively restored.
 Selective sync allows you to selectively replicate files locally that are 
 actively being used and keep the rest of your repository in the cloud.
 
-# Usage
+## Usage
 
 Just add your ```.polar``` directory to git via ```git init``` and use the normal
 git flow.  

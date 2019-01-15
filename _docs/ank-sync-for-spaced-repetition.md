@@ -51,8 +51,6 @@ within the Document Repository.
 
 # Limitations
 
-- No support for cloze deletions.  It's on the roadmap.
-
 - Only front/back cards for now.  We will implement more card types in the future.
 
 - No current ability to update flashcards.  Polar currently lacks a flashcard 
