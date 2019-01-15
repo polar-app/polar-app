@@ -1,5 +1,8 @@
 # 1.9.0
 
+- Fixed bug where VH rules that were less than 100 weren't being set properly 
+  and some pages rendered ugly.
+
 - Fixed bug with the 'deck:' tag not properly working with Anki sync.
 
 - Importing large numbers of PDFs (and large PDFs) is now a log faster and more

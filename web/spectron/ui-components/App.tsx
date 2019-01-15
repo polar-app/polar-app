@@ -24,6 +24,7 @@ import {FlashcardType} from '../../js/metadata/FlashcardType';
 import {FlashcardInputForCloze} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForFrontAndBack';
 import {TopPDFExample} from './TopPDFExample';
+import {AnnotationCommentBox} from '../../js/annotation_sidebar/AnnotationCommentBox';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -110,9 +111,17 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <h1 className="component">Top PDFs</h1>
+                {/*<h1 className="component">Top PDFs</h1>*/}
 
-                <TopPDFExample/>
+                {/*<TopPDFExample/>*/}
+
+                <h1 className="component">Annotation Sidebar</h1>
+
+                <AnnotationSidebar docMeta={docMeta}/>
+
+                <h1 className="component">AnnotationCommentBox</h1>
+
+                <AnnotationCommentBox id={'test-comment-box'}/>
 
                 <h1 className="component">FlashcardInputForCloze</h1>
 

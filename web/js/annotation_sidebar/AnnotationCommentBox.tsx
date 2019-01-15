@@ -25,9 +25,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { annotation } = this.props;
-
-        const id = 'rich-text-editor-' + annotation.id;
+        const id = 'rich-text-editor-' + this.props.id;
 
         return (
 
@@ -132,7 +130,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    annotation: DocAnnotation;
+    id: string;
 
     /**
      * When given a comment we're editing an existing comment.

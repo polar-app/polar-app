@@ -136,7 +136,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'comment'}>
 
-                    <AnnotationCommentBox annotation={annotation}
+                    <AnnotationCommentBox id={annotation.id}
                                           onCancel={() => this.toggleActiveInputComponent('none')}
                                           onCommentCreated={(html) => this.onCommentCreated(html)}/>
 

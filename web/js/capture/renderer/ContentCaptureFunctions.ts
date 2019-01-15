@@ -84,7 +84,26 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     }
 
-    function defineAutoStylesheetFor100VH(rule: CSSStyleRule) {
+    function isVHProp(name: string, value: string | null) {
+
+        const regex = /^[0-9]+VH$/gi;
+
+        const val = value || "";
+
+        return val.match(regex) !== null;
+
+    }
+
+    function isVHRule(rule: CSSStyleRule) {
+
+        const height: string = rule.style.height || "";
+        const minHeight: string = rule.style.minHeight || "";
+
+        return isVHProp('height', height) || isVHProp('min-height', minHeight);
+
+    }
+
+    function defineAutoStylesheetForVH(rule: CSSStyleRule) {
 
         // TODO: I need to consider if it's not just better to measure the
         // viewport height and replace it myself.  It is probably a bad idea
@@ -93,7 +112,7 @@ export function configureBrowser(windowDimensions: IDimensions) {
         function defineStyle(cssPropertyValue: string | null,
                              cssPropertyName: string) {
 
-            if (cssPropertyValue === '100vh') {
+            if (isVHProp(cssPropertyName, cssPropertyValue)) {
 
                 console.log(`Defining CSS auto style for: ${cssPropertyName}`);
 
@@ -136,19 +155,15 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
         console.log("Configuring max vertical height...");
 
-        function is100VH(rule: CSSStyleRule) {
-            return rule.style.height === '100vh' || rule.style.minHeight === '100vh';
-        }
-
         for (const stylesheet of Array.from(document.styleSheets)) {
 
             const rules: CSSStyleRule[] = (<any> stylesheet).rules;
 
             for (const rule of rules) {
 
-                if (rule.style && is100VH(rule)) {
+                if (rule.style && isVHRule(rule)) {
 
-                    console.log(`Found 100vh rule to override (follows): ${rule.selectorText}`);
+                    console.log(`Found VH rule to override (follows): ${rule.selectorText}`);
 
                     // now verify that the elements we would block quality.
 
@@ -170,12 +185,12 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
                     if (elementsQualify) {
 
-                        console.log("Handling 100vh with strategy: " + VH_HANDLING_STRATEGY);
+                        console.log("Handling VH with strategy: " + VH_HANDLING_STRATEGY);
 
                         if (VH_HANDLING_STRATEGY === 'max-height') {
                             defineMaxHeightStylesheet(rule.selectorText);
                         } else {
-                            defineAutoStylesheetFor100VH(rule);
+                            defineAutoStylesheetForVH(rule);
                         }
                     }
 
