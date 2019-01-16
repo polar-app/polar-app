@@ -6,9 +6,9 @@ import {Nullables} from "../../util/ts/Nullables";
 
 export class StylesheetSerializer {
 
-    public static serialize(listener: SerializedStylesheetListener) {
+    public static serialize(listener: SerializedStylesheetListener, doc: Document) {
 
-        this.serializeStylesheets(document.styleSheets, listener);
+        this.serializeStylesheets(doc.styleSheets, listener);
 
     }
 
@@ -50,7 +50,7 @@ export class StylesheetSerializer {
 
         }
 
-        const stylesheet = {
+        const stylesheet: SerializedStylesheet = {
             disabled: styleSheet.disabled,
             href: Nullables.toUndefined(styleSheet.href),
             text: buff.toString(),

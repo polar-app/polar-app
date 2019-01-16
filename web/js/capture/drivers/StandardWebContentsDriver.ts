@@ -81,8 +81,9 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         const opts = {
 
-            // TODO: remove the no-cache or at least make it into a configurable
-            // TODO: make the referer something the user can set in the UI
+            // the no-cache header is needed here so that we don't load the data
+            // into the cache and then accidentally load it.
+            // extraHeaders: `pragma: no-cache, no-store\nreferer: ${url}\n`,
             extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
             userAgent: this.browserProfile.userAgent
 

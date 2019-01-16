@@ -112,8 +112,7 @@ export class MainApp {
         // });
 
         const cacheInterceptorService =
-            new CachingStreamInterceptorService(cacheRegistry,
-                                                mainSession.protocol);
+            new CachingStreamInterceptorService(cacheRegistry, mainSession.protocol);
 
         await cacheInterceptorService.start();
 
