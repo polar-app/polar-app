@@ -1,11 +1,10 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, DocMetaSnapshotEventListener, SnapshotResult, ErrorListener} from './Datastore';
+import {Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
 import {PersistenceLayer} from './PersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
@@ -16,9 +15,6 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
-import {Datastores} from './Datastores';
-import {PersistenceLayers} from './PersistenceLayers';
-import {ErrorHandleFunction} from 'connect';
 import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();

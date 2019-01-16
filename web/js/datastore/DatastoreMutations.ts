@@ -31,10 +31,7 @@ export class DatastoreMutations {
             try {
 
                 target.written.resolve(converter(result));
-
-                if (this.consistency === 'committed') {
-                    target.committed.resolve(converter(result));
-                }
+                target.committed.resolve(converter(result));
 
             } catch (err) {
                 console.error("Unable to resolve: ", err);
@@ -45,10 +42,7 @@ export class DatastoreMutations {
             try {
 
                 target.written.reject(err);
-
-                if (this.consistency === 'committed') {
-                    target.committed.reject(err);
-                }
+                target.committed.reject(err);
 
             } catch (err) {
                 console.error("Unable to reject: ", err);
@@ -66,10 +60,7 @@ export class DatastoreMutations {
                       converter: (input: T) => V): void {
 
         this.pipeLatch(source.written, target.written, converter);
-
-        if (this.consistency === 'committed') {
-            this.pipeLatch(source.committed, target.committed, converter);
-        }
+        this.pipeLatch(source.committed, target.committed, converter);
 
     }
 
