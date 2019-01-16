@@ -1,6 +1,6 @@
 import {assertJSON} from '../test/Assertions';
 import {Pagemarks} from "./Pagemarks";
-import {DocMetas, MockDocMetas} from "./DocMetas";
+import {DocMetas} from "./DocMetas";
 import {TestingTime} from "../test/TestingTime";
 
 TestingTime.freeze();
@@ -12,7 +12,6 @@ describe('Pagemarks', function() {
         it("for one page", function() {
 
             const docMeta = DocMetas.create('0x0001', 1);
-
 
             Pagemarks.createRange(docMeta, 1);
 
