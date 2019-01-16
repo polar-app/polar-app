@@ -24,17 +24,13 @@ const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
     height: 100
 });
 
+let sequence = 0;
+
 export class Pagemarks {
 
     public static createID(created: ISODateTimeString) {
-
-        const id = Hashcodes.create(JSON.stringify(created));
-
-        // truncate.  We don't need that much precision against collision.
-        return id.substring(0, 10);
-
+        return Hashcodes.createID({created, sequence: sequence++});
     }
-
 
     /**
      * Create pagemarks over the given range.  We go back to either the first page
@@ -120,7 +116,7 @@ export class Pagemarks {
 
                 const rect = createPagemarkRect(pageNum, pageNum === end ? percentage : 100);
 
-                Pagemarks.updatePagemark(docMeta, start, Pagemarks.create({rect}));
+                Pagemarks.updatePagemark(docMeta, pageNum, Pagemarks.create({rect}));
 
             }
 
