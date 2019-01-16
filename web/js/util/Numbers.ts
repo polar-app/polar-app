@@ -18,4 +18,16 @@ export class Numbers {
 
     }
 
+    public static range(start: number, end: number): ReadonlyArray<number> {
+
+        const result = [];
+
+        for (let idx = start; idx <= end; ++idx) {
+            result.push(idx);
+        }
+
+        return result;
+
+    }
+
 }

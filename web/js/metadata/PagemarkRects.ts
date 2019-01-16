@@ -51,7 +51,7 @@ export class PagemarkRects {
      * @param rect {Rect}
      * @return {PagemarkRect}
      */
-    static createFromRect(rect: any) {
+    public static createFromRect(rect: any) {
 
         return new PagemarkRect({
             left: rect.left,
