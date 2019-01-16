@@ -78,8 +78,8 @@ describe('DocMetas', function() {
                     "pageMetas": {
                         "1": {
                             "pagemarks": {
-                                "12Vf1bAzeo": {
-                                    "id": "12Vf1bAzeo",
+                                "12CDjpvoCY": {
+                                    "id": "12CDjpvoCY",
                                     "created": "2012-03-02T11:38:49.321Z",
                                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "type": "SINGLE_COLUMN",
@@ -109,8 +109,8 @@ describe('DocMetas', function() {
                         },
                         "2": {
                             "pagemarks": {
-                                "12Vf1bAzeo": {
-                                    "id": "12Vf1bAzeo",
+                                "12wfHNWzGf": {
+                                    "id": "12wfHNWzGf",
                                     "created": "2012-03-02T11:38:49.321Z",
                                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "type": "SINGLE_COLUMN",
@@ -187,13 +187,15 @@ describe('DocMetas', function() {
             it("Pagemark without rect", function() {
                 let docMeta = createUpgradeDoc();
 
-                delete docMeta.getPageMeta(1).pagemarks["12Vf1bAzeo"].rect ;
+                console.log(Object.keys(docMeta.getPageMeta(1).pagemarks));
+
+                delete docMeta.getPageMeta(1).pagemarks["1hajrtFtkP"].rect ;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
                 const expected = {
-                        "12Vf1bAzeo": {
-                            "id": "12Vf1bAzeo",
+                        "1hajrtFtkP": {
+                            "id": "1hajrtFtkP",
                             "created": "2012-03-02T11:38:49.321Z",
                             "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "type": "SINGLE_COLUMN",
@@ -242,13 +244,17 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                (<any> (docMeta.getPageMeta(1).pagemarks["12Vf1bAzeo"].id)) = null;
+                console.log(JSON.stringify(docMeta.getPageMeta(1).pagemarks, null, "  "));
+
+                console.log(Object.keys(docMeta.getPageMeta(1).pagemarks));
+
+                (<any> (docMeta.getPageMeta(1).pagemarks["12cyUyU3s3"].id)) = null;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
                 const expected = {
-                        "12Vf1bAzeo": {
-                            "id": "12Vf1bAzeo",
+                        "12cyUyU3s3": {
+                            "id": "12cyUyU3s3",
                             "created": "2012-03-02T11:38:49.321Z",
                             "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "type": "SINGLE_COLUMN",

@@ -242,7 +242,7 @@ export class Pagemarks {
 
             if (! pagemark.id) {
                 log.debug("Pagemark given ID");
-                pagemark.id = Pagemarks.createID(pagemark.created);
+                pagemark.id = key;
             }
 
             if ( ! pagemark.mode) {
