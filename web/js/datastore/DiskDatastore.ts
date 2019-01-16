@@ -1,5 +1,14 @@
-import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener,
-        ErrorListener, FileMeta, FileRef, InitResult, SnapshotResult} from './Datastore';
+import {
+    AbstractDatastore,
+    Datastore,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    FileMeta,
+    FileRef,
+    InitResult,
+    SnapshotResult
+} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -17,7 +26,6 @@ import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "../util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {DatastoreMutations} from './DatastoreMutations';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Strings} from '../util/Strings';
