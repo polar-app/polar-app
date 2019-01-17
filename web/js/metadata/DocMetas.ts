@@ -11,6 +11,7 @@ import {PageMetas} from './PageMetas';
 import {forDict} from '../util/Functions';
 import {TextHighlights} from './TextHighlights';
 import {Preconditions} from '../Preconditions';
+import {Errors} from '../util/Errors';
 
 const log = Logger.create();
 
@@ -104,7 +105,7 @@ export class DocMetas {
 
     /**
      */
-    public static deserialize(data: string): DocMeta {
+    public static deserialize(data: string, fingerprint: string): DocMeta {
 
         Preconditions.assertPresent(data, 'data');
 
@@ -114,21 +115,27 @@ export class DocMetas {
 
         let docMeta: DocMeta = Object.create(DocMeta.prototype);
 
-        docMeta = MetadataSerializer.deserialize(docMeta, data);
+        try {
 
-        if (docMeta.docInfo && ! docMeta.docInfo.filename) {
-            log.warn("DocMeta has no filename: " + docMeta.docInfo.fingerprint);
+            docMeta = MetadataSerializer.deserialize(docMeta, data);
+
+            if (docMeta.docInfo && !docMeta.docInfo.filename) {
+                log.warn("DocMeta has no filename: " + docMeta.docInfo.fingerprint);
+            }
+
+            return DocMetas.upgrade(docMeta);
+
+        } catch (e) {
+            throw Errors.rethrow(e, "Unable to deserialize doc: " + fingerprint);
         }
-
-        return DocMetas.upgrade(docMeta);
 
     }
 
     public static upgrade(docMeta: DocMeta) {
 
-        // validate the JSON data and set defaults. In the future we should migrate
-        // to using something like AJV to provide these defaults and also perform
-        // type assertion.
+        // validate the JSON data and set defaults. In the future we should
+        // migrate to using something like AJV to provide these defaults and
+        // also perform type assertion.
 
         docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas);
 

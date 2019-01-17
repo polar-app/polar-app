@@ -23,7 +23,7 @@ describe('DocMetas', function() {
 
             const json = MetadataSerializer.serialize(docMeta, "  ");
 
-            const actual = DocMetas.deserialize(json);
+            const actual = DocMetas.deserialize(json, fingerprint);
 
             assertJSON(docMeta, actual);
 
@@ -36,7 +36,7 @@ describe('DocMetas', function() {
 
             const json = "{}";
 
-            const docMeta = DocMetas.deserialize(json);
+            const docMeta = DocMetas.deserialize(json, '0x000');
 
             assert.equal(docMeta instanceof DocMeta, true);
 
@@ -147,7 +147,7 @@ describe('DocMetas', function() {
 
             assertJSON(json, expected);
 
-            docMeta = DocMetas.deserialize(json);
+            docMeta = DocMetas.deserialize(json, fingerprint);
 
             // now we have to trace it like it would be in production..
             docMeta = Proxies.create(docMeta);

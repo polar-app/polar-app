@@ -49,7 +49,7 @@ export class Datastores {
                 throw new Error("Could not find docMeta for fingerprint: " + docMetaRef.fingerprint);
             }
 
-            const docMeta = DocMetas.deserialize(docMetaData);
+            const docMeta = DocMetas.deserialize(docMetaData, docMetaRef.fingerprint);
             listener(docMeta);
         }
 
@@ -99,7 +99,7 @@ export class Datastores {
             // // TODO: in the cloud store implementation it will probably be much
             // // faster to use a file JUST for the DocInfo to speed up loading.
             const dataProvider = AsyncProviders.memoize(async () => await datastore.getDocMeta(docMetaFile.fingerprint));
-            const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize((await dataProvider())!));
+            const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize((await dataProvider())!, docMetaFile.fingerprint));
             const docInfoProvider = AsyncProviders.memoize(async () => (await docMetaProvider()).docInfo);
             const docMetaFileRefProvider = AsyncProviders.memoize(async () => DocMetaFileRefs.createFromDocInfo(await docInfoProvider()));
 
@@ -166,7 +166,7 @@ export class Datastores {
             work.push(async () => {
 
                 const data = await datastore.getDocMeta(docMetaFile.fingerprint);
-                const docMeta = DocMetas.deserialize(data!);
+                const docMeta = DocMetas.deserialize(data!, docMetaFile.fingerprint);
 
                 const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
 

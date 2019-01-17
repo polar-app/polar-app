@@ -1,5 +1,8 @@
 # 1.9.0
 
+- Fixed major Twitter content capture bug where we weren't saving the CSS styles
+  of HTML content.
+
 - Fixed bug where VH rules that were less than 100 weren't being set properly 
   and some pages rendered ugly.
 

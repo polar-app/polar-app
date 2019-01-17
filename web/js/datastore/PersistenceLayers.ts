@@ -58,7 +58,7 @@ export class PersistenceLayers {
 
                 if (isPresent(data)) {
 
-                    const docMeta = DocMetas.deserialize(data!);
+                    const docMeta = DocMetas.deserialize(data!, docMetaFile.fingerprint);
 
                     syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
 

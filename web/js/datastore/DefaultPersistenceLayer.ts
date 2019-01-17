@@ -81,7 +81,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
             throw new Error("Expected string and received: " + typeof data);
         }
 
-        const docMeta = DocMetas.deserialize(data);
+        const docMeta = DocMetas.deserialize(data, fingerprint);
 
         return docMeta;
 
