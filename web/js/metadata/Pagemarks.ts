@@ -13,6 +13,7 @@ import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PageNumber} from './PageMeta';
+import {Numbers} from "../util/Numbers";
 
 const log = Logger.create();
 
@@ -23,24 +24,103 @@ const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
     height: 100
 });
 
+let sequence = 0;
+
 export class Pagemarks {
 
     public static createID(created: ISODateTimeString) {
-
-        const id = Hashcodes.create(JSON.stringify(created));
-
-        // truncate.  We don't need that much precision against collision.
-        return id.substring(0, 10);
-
+        return Hashcodes.createID({created, sequence: sequence++});
     }
 
-
     /**
-     * Create pagemarks over the given range.
+     * Create pagemarks over the given range.  We go back to either the first page
+     * that has a pagemark or the beginning of the document.
+     *
+     * @param percentage The percentage of the end page to create a pagemark.
      */
-    public static createRange(docMeta: DocMeta, end: PageNumber) {
+    public static createRange(docMeta: DocMeta,
+                              end: PageNumber,
+                              percentage: number = 100 ) {
 
+        if (end < 1) {
+            throw new Error("Page number must be 1 or more");
+        }
 
+        const calculateStartPage = () => {
+
+            // find the starting page by going back to the beginning of the document
+            // until we find the first pagemark or we hit the first page.
+
+            const range = [ ... Numbers.range(1, Math.max(1, end - 1)) ].reverse();
+
+            for (const r of range) {
+
+                const pageMeta = DocMetas.getPageMeta(docMeta, r);
+
+                if (Dictionaries.size(pageMeta.pagemarks || {}) !== 0) {
+                    // this page has a pagemark so we should start from there.
+                    return r;
+                }
+
+            }
+
+            return 1;
+
+        };
+
+        const createPagemarkRect = (pageNum: PageNumber, percentage: number = 100): PagemarkRect => {
+
+            // find the pagemark that is the furthest down the page.
+
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+
+            const pagemarks = Object.values(pageMeta.pagemarks || {});
+
+            if (pagemarks.length === 0) {
+
+                return PagemarkRects.createFromRect({
+                    left: 0,
+                    top: 0,
+                    height: percentage,
+                    width: 100
+                });
+
+            }
+
+            let top: number = 0;
+
+            for (const pagemark of pagemarks) {
+
+                const newTop = pagemark.rect.top + pagemark.rect.height;
+
+                if (newTop > top) {
+                   top = newTop;
+                }
+
+            }
+
+            return PagemarkRects.createFromRect({
+                left: 0,
+                top,
+                height: 100 - top,
+                width: 100
+            });
+
+        };
+
+        const start = calculateStartPage();
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+
+            for (const pageNum of Numbers.range(start, end)) {
+
+                const rect = createPagemarkRect(pageNum, pageNum === end ? percentage : 100);
+
+                Pagemarks.updatePagemark(docMeta, pageNum, Pagemarks.create({rect}));
+
+            }
+
+        });
 
     }
 
@@ -162,7 +242,7 @@ export class Pagemarks {
 
             if (! pagemark.id) {
                 log.debug("Pagemark given ID");
-                pagemark.id = Pagemarks.createID(pagemark.created);
+                pagemark.id = key;
             }
 
             if ( ! pagemark.mode) {

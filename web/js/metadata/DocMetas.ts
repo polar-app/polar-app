@@ -61,8 +61,20 @@ export class DocMetas {
         return MockDocMetas.createMockDocMeta();
     }
 
-    /**
-     */
+    public static getPageMeta(docMeta: DocMeta, num: number) {
+
+        num = Preconditions.assertPresent(num, "num");
+
+        const pageMeta = docMeta.pageMetas[num];
+
+        if (!pageMeta) {
+            throw new Error("No pageMeta for page: " + num);
+        }
+
+        return pageMeta;
+
+    }
+
     public static addPagemarks(docMeta: DocMeta, options: any) {
 
         if (!options) {
