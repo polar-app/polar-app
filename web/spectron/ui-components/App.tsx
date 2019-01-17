@@ -25,6 +25,7 @@ import {FlashcardInputForCloze} from '../../js/annotation_sidebar/flashcard_inpu
 import {FlashcardInputForFrontAndBack} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForFrontAndBack';
 import {TopPDFExample} from './TopPDFExample';
 import {AnnotationCommentBox} from '../../js/annotation_sidebar/AnnotationCommentBox';
+import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -110,6 +111,27 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+
+
+                <UncontrolledDropdown direction="down"
+                                      size="sm">
+
+                    <DropdownToggle color="success" caret>
+                        <i className="fas fa-plus" style={{marginRight: '5px'}}></i>
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem size="sm" onClick={() => console.log('')}>
+                            <i className="fas fa-hdd"></i> from disk
+                        </DropdownItem>
+                        <DropdownItem size="sm" onClick={() => console.log('')}>
+                            <i className="fas fa-browser"></i>
+                            from the web
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+
+
 
                 {/*<h1 className="component">Top PDFs</h1>*/}
 
