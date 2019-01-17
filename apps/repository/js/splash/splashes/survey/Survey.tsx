@@ -16,14 +16,14 @@ export class Survey extends React.Component<IProps, IState> {
 
                 <p className="text-center">
 
-                    <a href="https://kevinburton1.typeform.com/to/SsuiyB">
+                    <a href="https://kevinburton1.typeform.com/to/u1zNWG">
                         <img src={EmbeddedImages.SURVEY}></img>
                     </a>
 
                 </p>
 
                 <p className="h5">
-                    Could you take 2 minutes and <a href="https://kevinburton1.typeform.com/to/SsuiyB">answer 10 questions
+                    Could you take 2 minutes and <a href="https://kevinburton1.typeform.com/to/u1zNWG">answer 10 questions
                 </a> about
                     your use of Polar?
                 </p>
@@ -34,7 +34,7 @@ export class Survey extends React.Component<IProps, IState> {
                 </p>
 
                 <p className="text-center">
-                    <a className="btn btn-success btn-lg" href="https://kevinburton1.typeform.com/to/SsuiyB" role="button">Take Survey</a>
+                    <a className="btn btn-success btn-lg" href="https://kevinburton1.typeform.com/to/u1zNWG" role="button">Take Survey</a>
                 </p>
 
             </Splash>
