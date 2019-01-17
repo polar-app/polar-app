@@ -37,6 +37,7 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
+import {InputGroup, Input, InputGroupAddon, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 
 const log = Logger.create();
 
@@ -165,14 +166,81 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
                 <header>
 
-                    <RepoSidebar/>
+                    <div className="container-fluid pl-0 pr-0">
+
+                        <div className="row">
+
+                            <div className="col-md-auto"
+                                 style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                                <RepoSidebar/>
+
+                            </div>
+
+                            <div className="col-md-auto ml-1"
+                                 style={{marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                <div className="header-filter-box">
+
+                                    <InputGroup size="sm">
+
+                                        <InputGroupAddon addonType="prepend">
+                                            A
+                                        </InputGroupAddon>
+
+                                        <Input id="filter_title"
+                                               type="text"
+                                               placeholder="Filter by title"
+                                               onChange={() => this.onFilterByTitle()}/>
+
+                                    </InputGroup>
+
+                                </div>
+
+                            </div>
+
+                            <div className="col text-right"
+                                 style={{marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                    <CloudAuthButton persistenceLayerManager={this.persistenceLayerManager} />
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
 
                     <div id="header-filter">
 
-                        <div className="header-filter-boxes">
+                        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
 
-                            <div className="header-filter-box"
-                                 style={{whiteSpace: 'nowrap'}}>
+                            <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                            <UncontrolledDropdown direction="down"
+                                                  size="sm">
+
+                                    <DropdownToggle color="success" caret>
+                                        <i className="fas fa-plus" style={{marginRight: '5px'}}></i>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem size="sm" onClick={() => console.log('')}>
+                                            <i className="fas fa-hdd"></i> from disk
+                                        </DropdownItem>
+                                        <DropdownItem size="sm" onClick={() => console.log('')}>
+                                            <i className="fas fa-browser"></i>
+                                            from the web
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+
+                            </div>
+
+                            <div className="mr-2"
+                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
                                 <div className="checkbox-group">
 
                                     <ToggleButton label="flagged only"
@@ -182,8 +250,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                                 </div>
                             </div>
 
-                            <div className="header-filter-box"
-                                 style={{whiteSpace: 'nowrap'}}>
+                            <div className="header-filter-box mr-1"
+                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                                 <div className="checkbox-group">
 
@@ -195,8 +263,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
                             </div>
 
-                            <div className="header-filter-box header-filter-tags"
-                                 style={{whiteSpace: 'nowrap'}}>
+                            <div className="header-filter-box header-filter-tags mr-1"
+                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                                 <FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                 refresher={() => this.refresh()}
@@ -204,21 +272,10 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
                             </div>
 
-                            <div className="header-filter-box">
+                            <div className="p-1"
+                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                <input id="filter_title"
-                                       type="text"
-                                       placeholder="Filter by title"
-                                       onChange={() => this.onFilterByTitle()}/>
-                            </div>
-
-                            <div className="header-filter-box">
-                                <CloudAuthButton persistenceLayerManager={this.persistenceLayerManager} />
-                            </div>
-
-                            <div className="p-1">
-
-                                <DocRepoTableDropdown id="table-dropdown"
+                            <DocRepoTableDropdown id="table-dropdown"
                                                       options={Object.values(this.state.columns)}
                                                       onSelectedColumns={() => this.onSelectedColumns()}/>
                             </div>
@@ -470,6 +527,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                             },
 
                             style: {
+                                // TODO: dark-mode.  Use CSS variable names for
+                                // colors
                                 background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
                                 color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
                             }

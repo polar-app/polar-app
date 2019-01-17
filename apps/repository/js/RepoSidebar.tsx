@@ -28,8 +28,6 @@ const Styles: IStyleMap = {
     },
 
     subheaderItem: {
-        display: 'inline-block',
-        paddingRight: '5px',
     }
 
 };
@@ -74,21 +72,29 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
         const sidebarStyle = Object.assign({}, Styles.sidebar, {display});
 
+        const NavButtons = () => (
+            <div style={{display: 'flex'}}>
+
+                <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                    <Button color='light'
+                            onClick={() => this.toggle()}>
+                        <i className="fas fa-bars"></i>
+                    </Button>
+                </div>
+
+                <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                    <NavLogo/>
+                </div>
+
+            </div>
+        );
+
         return (
 
             <div className="repo-sidebar">
 
                 <div>
-
-                    <div style={Styles.subheaderItem}>
-                        <Button color='light'
-                                onClick={() => this.toggle()}>
-                            <i className="fas fa-bars"></i>
-                        </Button>
-                    </div>
-
-                    <NavLogo/>
-
+                    <NavButtons/>
                 </div>
 
                 {/*Rework this so that I can accept the ESC key binding here.*/}
@@ -100,16 +106,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     <div className="subheader p-1" style={Styles.subheader}>
 
-                        <div style={Styles.subheaderItem}>
-                            <Button onClick={() => this.toggle()}
-                                    color='light'>
-
-                                <i className="fas fa-bars"></i>
-
-                            </Button>
-                        </div>
-
-                        <NavLogo/>
+                        <NavButtons/>
 
                     </div>
 
