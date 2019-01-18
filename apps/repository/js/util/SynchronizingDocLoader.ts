@@ -33,7 +33,7 @@ export class SynchronizingDocLoader {
             ! await persistenceLayer.containsFile(Backend.STASH, ref);
 
         if (requiresSynchronize) {
-            await persistenceLayer.synchronizeDocs(fingerprint);
+            await persistenceLayer.synchronizeDocs({fingerprint});
             log.notice("Forcing synchronization (doc not local): " + fingerprint);
         }
 

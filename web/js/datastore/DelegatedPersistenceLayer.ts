@@ -93,8 +93,8 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.writeDocMeta(docMeta, datastoreMutation);
     }
 
-    public async synchronizeDocs(...fingerprints: string[]): Promise<void> {
-        return this.delegate.synchronizeDocs(...fingerprints);
+    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+        return this.delegate.synchronizeDocs(...docMetaRefs);
     }
 
     public async writeFile(backend: Backend, ref: FileRef, data: FileHandle | Buffer | string, meta?: FileMeta): Promise<DatastoreFile> {

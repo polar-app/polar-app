@@ -44,6 +44,10 @@ export class RepoDocMetaLoader {
         return this.eventDispatcher.removeEventListener(listener);
     }
 
+    public dispatchEvent(event: RepoDocMetaEvent) {
+        this.eventDispatcher.dispatchEvent(event);
+    }
+
     public async start() {
 
         // TODO: handle events properly..
@@ -59,8 +63,6 @@ export class RepoDocMetaLoader {
     }
 
     private onPersistenceLayerChanged(persistenceLayer: PersistenceLayer) {
-
-        let progressBar: ProgressBar | undefined;
 
         const progressTrackerIndex = new ProgressTrackerIndex();
 

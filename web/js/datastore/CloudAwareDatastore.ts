@@ -208,18 +208,13 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         return this.local.getDocMetaFiles();
     }
 
-    public async synchronizeDocs(...fingerprints: string[]) {
+    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]) {
 
-        log.info("CloudAwareDatastore: synchronizeDocs: ", fingerprints);
+        log.info("CloudAwareDatastore: synchronizeDocs: ", docMetaRefs);
 
         const toSyncOrigin = async (datastore: Datastore): Promise<SyncOrigin> => {
 
-            const docaMetaFiles: DocMetaRef[] =
-                fingerprints.map(current => {
-                    return {fingerprint: current};
-                });
-
-            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(datastore, docaMetaFiles);
+            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(datastore, docMetaRefs);
 
             return {
                 datastore,
