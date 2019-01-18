@@ -30,13 +30,38 @@ sort documents in the document repository by their reading progress..
 
 <div class="text-center">Screenshot showing a document with 4 pagemarks</div>
 
+# Create Pagemark to Point
+
+When you right click and select "Create Pagemark to Point" Polar creates 
+pagemarks over all previous pages up until the previous pagemark (or the 
+beginning) of the document.
+
+This enables you to import a book which you've been reading and mark multiple
+pages as read so that you can now just use Polar to track your pgoress.
+
+For example, if you have a 300 page book, and you've read pages 1-200 you can 
+just jump to page 200 and "Create Pagemark to Point" and pagemarks will be
+created across all previous pages.
+
+You can still pagemark the current page by selecting "Create Pagemark Box" to 
+or run "Control Alt N" to mark just the current page.  
+
+# Create Pagemark Box.
+
+When you right click and select "Create Pagemark Box" Polar creates a single
+pagemark box which you can resize and drag to cover parts of the page you've
+read.
+
+This is useful when the document has multiple columns and you want to mark a 
+single column. 
+
 # Usage
 
 Pagemarks can be created with either the keyboard of the mouse.
 
-When working with a document you can simply right click and 
-"Create Pagemark at Point" which will create a pagemark on the current page
-to the current mouse position. 
+When working with a document you can simply right click and "Create Pagemark at
+Point" which will create a pagemark on the current page to the current mouse
+position.
 
 ## Linux / Windows key bindings
 

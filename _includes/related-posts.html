@@ -20,9 +20,14 @@
         <div class="col-lg-4">
         <div class="card m-1" style="">
 
+            {%- if post.large_image && post.large_image != "" -%}
+
             <a href="{{ post.url }}">
                 <img class="card-img-top" src="{{ post.large_image }}" alt="{{ post.title | escape }}">
             </a>
+
+            {%- endif -%}
+
 
             <div class="card-body">
                 <a href="{{ post.url }}">
