@@ -222,10 +222,11 @@ export class Model {
 
     }
 
-    assertPageNum(pageNum: number) {
+    private assertPageNum(pageNum: number) {
 
-        if (pageNum == null)
+        if (pageNum == null) {
             throw new Error("Must specify page pageNum");
+        }
 
         if (pageNum <= 0) {
             throw new Error("Page numbers begin at 1");
@@ -242,8 +243,5 @@ export interface DocumentLoadedEvent {
     readonly docMeta: DocMeta;
 }
 
-
-export interface DocumentLoadedCallback {
-    (event: DocumentLoadedEvent): void;
-}
+export type DocumentLoadedCallback = (event: DocumentLoadedEvent) => void;
 

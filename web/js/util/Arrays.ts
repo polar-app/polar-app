@@ -3,6 +3,26 @@ import {Optional} from './ts/Optional';
 
 export class Arrays {
 
+    public static first<T>(values: ReadonlyArray<T>): T | undefined {
+
+        if (values.length === 0) {
+            return undefined;
+        }
+
+        return values[0];
+
+    }
+
+    public static last<T>(values: ReadonlyArray<T>): T | undefined {
+
+        if (values.length === 0) {
+            return undefined;
+        }
+
+        return values[values.length - 1];
+
+    }
+
     /**
      * Take N samples from the given input.
      * @param values
