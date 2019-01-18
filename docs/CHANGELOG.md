@@ -1,5 +1,7 @@
 # 1.9.0
 
+- Create pagemark to point now works across multiple pages and ranges.  
+
 - Fixed bad bug where the UI wouldn't update when a newly imported PDF wasn't
   immediately visible in the UI.
 

@@ -188,6 +188,18 @@ export class Model {
 
     }
 
+    public async createPagemarksForRange(end: number, percentage: number) {
+
+        const docMeta = await this.docMetaPromise;
+
+        const pagemarkRefs = Pagemarks.updatePagemarksForRange(docMeta, end, percentage);
+
+        for (const pagemarkRef of pagemarkRefs) {
+            this.reactor.dispatchEvent('createPagemark', pagemarkRef);
+        }
+
+    }
+
     /**
      * @refactor This code should be in its own dedicated helper class
      * @param pageNum

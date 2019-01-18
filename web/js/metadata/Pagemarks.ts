@@ -1,5 +1,5 @@
 import {PagemarkRect} from './PagemarkRect';
-import {Pagemark} from './Pagemark';
+import {Pagemark, PagemarkRef} from './Pagemark';
 import {Logger} from '../logger/Logger';
 import {Hashcodes} from '../Hashcodes';
 import {Objects} from '../util/Objects';
@@ -41,7 +41,7 @@ export class Pagemarks {
      */
     public static updatePagemarksForRange(docMeta: DocMeta,
                                           end: PageNumber,
-                                          percentage: number = 100 ) {
+                                          percentage: number = 100 ): ReadonlyArray<PagemarkRef> {
 
         if (end < 1) {
             throw new Error("Page number must be 1 or more");
@@ -121,6 +121,8 @@ export class Pagemarks {
 
         const start = calculateStartPage();
 
+        const result: PagemarkRef[] = [];
+
         DocMetas.withBatchedMutations(docMeta, () => {
 
             for (const pageNum of Numbers.range(start, end)) {
@@ -128,12 +130,18 @@ export class Pagemarks {
                 const rect = createPagemarkRect(pageNum, pageNum === end ? percentage : 100);
 
                 if (rect) {
-                    Pagemarks.updatePagemark(docMeta, pageNum, Pagemarks.create({rect}));
+                    const pagemark = Pagemarks.create({rect});
+                    Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
+
+                    result.push({pageNum, pagemark});
+
                 }
 
             }
 
         });
+
+        return result;
 
     }
 
