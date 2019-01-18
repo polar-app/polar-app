@@ -14,6 +14,7 @@ import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PageNumber} from './PageMeta';
 import {Numbers} from "../util/Numbers";
+import {Reducers} from '../util/Reducers';
 
 const log = Logger.create();
 
@@ -33,14 +34,14 @@ export class Pagemarks {
     }
 
     /**
-     * Create pagemarks over the given range.  We go back to either the first page
-     * that has a pagemark or the beginning of the document.
+     * Create pagemarks over the given range.  We go back to either the first
+     * page that has a pagemark or the beginning of the document.
      *
      * @param percentage The percentage of the end page to create a pagemark.
      */
-    public static createRange(docMeta: DocMeta,
-                              end: PageNumber,
-                              percentage: number = 100 ) {
+    public static updatePagemarksForRange(docMeta: DocMeta,
+                                          end: PageNumber,
+                                          percentage: number = 100 ) {
 
         if (end < 1) {
             throw new Error("Page number must be 1 or more");
@@ -48,8 +49,9 @@ export class Pagemarks {
 
         const calculateStartPage = () => {
 
-            // find the starting page by going back to the beginning of the document
-            // until we find the first pagemark or we hit the first page.
+            // find the starting page by going back to the beginning of the
+            // document until we find the first pagemark or we hit the first
+            // page.
 
             const range = [ ... Numbers.range(1, Math.max(1, end - 1)) ].reverse();
 
@@ -68,7 +70,7 @@ export class Pagemarks {
 
         };
 
-        const createPagemarkRect = (pageNum: PageNumber, percentage: number = 100): PagemarkRect => {
+        const createPagemarkRect = (pageNum: PageNumber, percentage: number = 100): PagemarkRect | undefined => {
 
             // find the pagemark that is the furthest down the page.
 
@@ -99,6 +101,15 @@ export class Pagemarks {
 
             }
 
+            if (pagemarks.map(pagemark => pagemark.percentage)
+                         .reduce(Reducers.SUM, 0) === 100) {
+
+                // if this page is completely covered just ignore it
+
+                return undefined;
+
+            }
+
             return PagemarkRects.createFromRect({
                 left: 0,
                 top,
@@ -116,7 +127,9 @@ export class Pagemarks {
 
                 const rect = createPagemarkRect(pageNum, pageNum === end ? percentage : 100);
 
-                Pagemarks.updatePagemark(docMeta, pageNum, Pagemarks.create({rect}));
+                if (rect) {
+                    Pagemarks.updatePagemark(docMeta, pageNum, Pagemarks.create({rect}));
+                }
 
             }
 

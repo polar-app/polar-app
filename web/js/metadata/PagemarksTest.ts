@@ -2,6 +2,8 @@ import {assertJSON} from '../test/Assertions';
 import {Pagemarks} from "./Pagemarks";
 import {DocMetas} from "./DocMetas";
 import {TestingTime} from "../test/TestingTime";
+import {assert} from 'chai';
+import {DocMeta} from './DocMeta';
 
 TestingTime.freeze();
 
@@ -13,7 +15,7 @@ describe('Pagemarks', function() {
 
             const docMeta = DocMetas.create('0x0001', 1);
 
-            Pagemarks.createRange(docMeta, 1);
+            Pagemarks.updatePagemarksForRange(docMeta, 1);
 
             const expected = [
                 {
@@ -39,11 +41,11 @@ describe('Pagemarks', function() {
         });
 
 
-        it("for two page", function() {
+        it("for two pages", function() {
 
             const docMeta = DocMetas.create('0x0001', 2);
 
-            Pagemarks.createRange(docMeta, 2);
+            Pagemarks.updatePagemarksForRange(docMeta, 2);
 
             const pagemark1 = [
                 {
@@ -88,7 +90,79 @@ describe('Pagemarks', function() {
             assertJSON(Object.values(DocMetas.getPageMeta(docMeta, 2).pagemarks), pagemark2);
 
         });
+
+
+        it("for existing", function() {
+
+            const docMeta = DocMetas.create('0x0001', 10);
+
+            Pagemarks.updatePagemark(docMeta, 3, Pagemarks.create({percentage: 100}));
+
+            Pagemarks.updatePagemarksForRange(docMeta, 4);
+
+            const assertPagemark = (pageNum: number) => {
+
+                const pagemarks = Object.values(DocMetas.getPageMeta(docMeta, pageNum).pagemarks);
+
+                assert.equal(pagemarks.length, 1);
+
+                assert.equal(pagemarks[0].percentage, 100);
+            };
+
+
+            assertPagemark(3);
+            assertPagemark(4);
+
+        });
+
+        it("for existing large range", function() {
+
+            const docMeta = DocMetas.create('0x0001', 10);
+
+            Pagemarks.updatePagemark(docMeta, 3, Pagemarks.create({percentage: 100}));
+
+            Pagemarks.updatePagemarksForRange(docMeta, 8);
+
+            assertPagemark(docMeta, 3);
+            assertPagemark(docMeta, 4);
+            assertPagemark(docMeta, 5);
+            assertPagemark(docMeta, 6);
+            assertPagemark(docMeta, 7);
+            assertPagemark(docMeta, 8);
+
+        });
+
+
+        it("for fractional range", function() {
+
+            const docMeta = DocMetas.create('0x0001', 10);
+
+            Pagemarks.updatePagemark(docMeta, 3, Pagemarks.create({percentage: 50}));
+
+            Pagemarks.updatePagemarksForRange(docMeta, 4);
+
+            const pagemarks = Object.values(DocMetas.getPageMeta(docMeta, 3).pagemarks);
+
+            assert.equal(pagemarks.length, 2);
+
+            assert.equal(pagemarks[0].percentage, 50);
+            assert.equal(pagemarks[1].percentage, 50);
+
+            assertPagemark(docMeta, 4);
+
+        });
+
     });
 
 
 });
+
+
+const assertPagemark = (docMeta: DocMeta, pageNum: number) => {
+
+    const pagemarks = Object.values(DocMetas.getPageMeta(docMeta, pageNum).pagemarks);
+
+    assert.equal(pagemarks.length, 1);
+
+    assert.equal(pagemarks[0].percentage, 100);
+};

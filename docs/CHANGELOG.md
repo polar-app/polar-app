@@ -1,5 +1,11 @@
 # 1.9.0
 
+- Fixed bad bug where the UI wouldn't update when a newly imported PDF wasn't
+  immediately visible in the UI.
+
+  This was a bad initial user experience as they would have to reload for the
+  PDFs to be visible.
+
 - Fixed major Twitter content capture bug where we weren't saving the CSS styles
   of HTML content.
 
@@ -8,7 +14,7 @@
 
 - Fixed bug with the 'deck:' tag not properly working with Anki sync.
 
-- Importing large numbers of PDFs (and large PDFs) is now a log faster and more
+- Importing large numbers of PDFs (and large PDFs) is now a lot faster and more
   responsive when using cloud storage.  In the past we used to wait until the 
   cloud layer was finished but this takes a long time to complete.
 
