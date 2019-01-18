@@ -63,7 +63,7 @@
     "chai": "~4.2.0",
     "chai-diff": "~1.0.1",
     "dtsmake": "0.0.10",
-    "electron": "~3.0.13",
+    "electron": "^3.1.1",
     "electron-builder": "~20.34.0",
     "electron-mocha": "~6.0.4",
     "jsdom": "~13.1.0",

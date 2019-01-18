@@ -1,3 +1,10 @@
+# 1.10.0
+
+- Update to electron 3.1.1 
+
+- Fixed bug where hitting Enter when working with a title would cause the page
+  to reload.
+
 # 1.9.0
 
 - Create pagemark to point now works across multiple pages and ranges.  
