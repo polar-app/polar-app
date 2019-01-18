@@ -334,6 +334,33 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 Header: 'Tags',
                                 accessor: '',
                                 show: this.state.columns.tags.selected,
+
+                                sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
+
+                                    const toSTR = (obj: any): string => {
+
+                                        if (! obj) {
+                                            return "";
+                                        }
+
+                                        if (typeof obj === 'string') {
+                                            return obj;
+                                        }
+
+                                        return JSON.stringify(obj);
+
+                                    };
+
+                                    const cmp = toSTR(a.tags).localeCompare(toSTR(b.tags));
+
+                                    if (cmp !== 0) {
+                                        return cmp;
+                                    }
+
+                                    // for ties use the date added...
+                                    return toSTR(a.added).localeCompare(toSTR(b.added));
+
+                                },
                                 Cell: (row: any) => {
 
                                     const tags: {[id: string]: Tag} = row.original.tags;
