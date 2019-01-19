@@ -62,6 +62,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private filterFlaggedOnly = false;
 
+    private reactTable: any;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -77,6 +79,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.onToggleFilterArchived = this.onToggleFilterArchived.bind(this);
         this.onToggleFlaggedOnly = this.onToggleFlaggedOnly.bind(this);
 
+        this.onMultiTagged = this.onMultiTagged.bind(this);
+        this.getSelected = this.getSelected.bind(this);
+
         this.state = {
             data: [],
             columns: new DocRepoTableColumns(),
@@ -87,6 +92,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         this.initAsync()
             .catch(err => log.error("Could not init: ", err));
+
 
     }
 
@@ -183,9 +189,30 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private onMultiTagged() {
+    private onMultiTagged(tags: Tag[]) {
 
-        // FIXME:
+        const repoDocInfos = this.getSelected();
+
+        for (const repoDocInfo of repoDocInfos) {
+            const existingTags = Object.values(repoDocInfo.tags || {});
+            const effectTags = Tags.union(existingTags, tags || []);
+            this.onDocTagged(repoDocInfo, effectTags);
+        }
+
+    }
+
+    private getSelected(): RepoDocInfo[] {
+
+        const resolvedState = this.reactTable!.getResolvedState();
+
+        const sortedData = resolvedState.sortedData;
+
+        const result: RepoDocInfo[] =
+            this.state.selected
+                .map(selectedIdx => sortedData[selectedIdx])
+                .map(item => item._original);
+
+        return result;
 
     }
 
@@ -269,7 +296,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                         {/*filteredTags={this.filteredTags} />*/}
 
                                         <TagButton tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                   onSelectedTags={tags => console.log("tags: ", tags)}/>
+                                                   onSelectedTags={tags => this.onMultiTagged(tags)}/>
 
                                     </div>
 
@@ -373,6 +400,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 <div id="doc-table">
                 <ReactTable
                     data={data}
+                    ref={(r: any) => this.reactTable = r}
                     columns={
                         [
                             {

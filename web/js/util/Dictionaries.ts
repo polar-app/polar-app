@@ -191,8 +191,16 @@ export class Dictionaries {
 
     }
 
-}
+    public static putAll<V>(source: {[key: string]: V},
+                            target: {[key: string]: V} = {}) {
 
+        for (const key of Object.keys(source)) {
+            target[key] = source[key];
+        }
+
+    }
+
+}
 
 
 interface ForDictCallbackFunction<T> {

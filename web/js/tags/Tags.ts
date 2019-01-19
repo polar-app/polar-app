@@ -3,6 +3,7 @@ import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Tag} from './Tag';
 import {TypedTag} from './TypedTag';
+import {Dictionaries} from '../util/Dictionaries';
 
 export class Tags {
 
@@ -80,6 +81,20 @@ export class Tags {
         }
 
         return result;
+
+    }
+
+    /**
+     * From a union of the two tag arrays.
+     */
+    public static union(a: Tag[], b: Tag[]): Tag[] {
+
+        const result: { [id: string]: Tag } = {};
+
+        Dictionaries.putAll(Tags.toMap(a), result);
+        Dictionaries.putAll(Tags.toMap(b), result);
+
+        return Object.values(result);
 
     }
 
