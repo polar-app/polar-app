@@ -192,40 +192,19 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                 <header>
 
-                    <div className="container-fluid pl-0 pr-0">
+                    <div className="pl-0 pr-0">
 
-                        <div className="row">
+                        <div style={{display: 'flex'}}>
 
-                            <div className="col-md-auto"
-                                 style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                            <div className=""
+                                 style={{marginTop: 'auto', marginBottom: 'auto', width: '250px'}}>
+
                                 <RepoSidebar/>
 
                             </div>
 
-                            <div className="col-md-auto ml-1"
-                                 style={{marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                <div className="header-filter-box">
-
-                                    <InputGroup size="sm">
-
-                                        <InputGroupAddon addonType="prepend">
-                                            A
-                                        </InputGroupAddon>
-
-                                        <Input id="filter_title"
-                                               type="text"
-                                               placeholder="Filter by title"
-                                               onChange={() => this.onFilterByTitle()}/>
-
-                                    </InputGroup>
-
-                                </div>
-
-                            </div>
-
-                            <div className="col text-right"
-                                 style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                            <div className=""
+                                 style={{marginTop: 'auto', marginBottom: 'auto', display: 'flex', justifyContent: 'flex-end', width: '100%'}}>
 
                                 <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
@@ -242,71 +221,109 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                     <div id="header-filter">
 
-                        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                        <div style={{display: 'flex'}}>
 
                             <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                            <UncontrolledDropdown direction="down"
-                                                  size="sm">
+                                <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <DropdownToggle color="success" caret>
-                                        <i className="fas fa-plus" style={{marginRight: '5px'}}></i>
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        <DropdownItem size="sm" onClick={() => console.log('')}>
-                                            <i className="fas fa-hdd"></i> from disk
-                                        </DropdownItem>
-                                        <DropdownItem size="sm" onClick={() => console.log('')}>
-                                            <i className="fas fa-browser"></i>
-                                            from the web
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
+                                    <UncontrolledDropdown direction="down"
+                                                          size="sm">
 
-                            </div>
-
-                            <div className="mr-2"
-                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-                                <div className="checkbox-group">
-
-                                    <ToggleButton label="flagged only"
-                                                  initialValue={false}
-                                                  onChange={value => this.onToggleFlaggedOnly(value)}/>
-
-                                </div>
-                            </div>
-
-                            <div className="header-filter-box mr-1"
-                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                <div className="checkbox-group">
-
-                                    <ToggleButton label="hide archived"
-                                                  initialValue={true}
-                                                  onChange={value => this.onToggleFilterArchived(value)}/>
+                                        <DropdownToggle color="success" caret>
+                                            <i className="fas fa-plus" style={{marginRight: '5px'}}></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem size="sm" onClick={() => console.log('')}>
+                                                <i className="fas fa-hdd"></i> from disk
+                                            </DropdownItem>
+                                            <DropdownItem size="sm" onClick={() => console.log('')}>
+                                                <i className="fas fa-browser"></i>
+                                                from the web
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
 
                                 </div>
 
                             </div>
 
-                            <div className="header-filter-box header-filter-tags mr-1"
-                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                            <div style={{width: '100%'}}>
 
-                                <FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                refresher={() => this.refresh()}
-                                                filteredTags={this.filteredTags} />
+                                <div style={{display: 'flex', justifyContent: 'flex-end'}}>
 
-                            </div>
+                                    <div className="mr-2"
+                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                                        <div className="checkbox-group">
 
-                            <div className="p-1"
-                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                                            <ToggleButton label="flagged only"
+                                                          initialValue={false}
+                                                          onChange={value => this.onToggleFlaggedOnly(value)}/>
 
-                            <DocRepoTableDropdown id="table-dropdown"
-                                                      options={Object.values(this.state.columns)}
-                                                      onSelectedColumns={() => this.onSelectedColumns()}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="header-filter-box mr-1"
+                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                        <div className="checkbox-group">
+
+                                            <ToggleButton label="hide archived"
+                                                          initialValue={true}
+                                                          onChange={value => this.onToggleFilterArchived(value)}/>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="header-filter-box header-filter-tags mr-1"
+                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                        <FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                        refresher={() => this.refresh()}
+                                                        filteredTags={this.filteredTags} />
+
+                                    </div>
+
+
+                                    <div className="header-filter-box mr-1"
+                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                        <div className="header-filter-box">
+
+                                            <InputGroup size="sm">
+
+                                                {/*<InputGroupAddon addonType="prepend">*/}
+                                                {/*A*/}
+                                                {/*</InputGroupAddon>*/}
+
+                                                <Input id="filter_title"
+                                                       type="text"
+                                                       placeholder="Filter by title"
+                                                       onChange={() => this.onFilterByTitle()}/>
+
+                                            </InputGroup>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div className=""
+                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                        <DocRepoTableDropdown id="table-dropdown"
+                                                              options={Object.values(this.state.columns)}
+                                                              onSelectedColumns={() => this.onSelectedColumns()}/>
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
+
 
 
                     </div>

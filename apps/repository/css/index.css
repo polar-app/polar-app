@@ -63,13 +63,8 @@ html, body {
   width: 55px;
 }
 
-#header-filter {
-  text-align: right;
-  padding-right: 10px;
-}
-
 #header-filter input[type=text] {
-  width: 200px;
+  width: 225px;
   padding: 3px;
 }
 
