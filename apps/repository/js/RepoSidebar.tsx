@@ -5,6 +5,7 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {Blackout} from './Blackout';
 import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
+import {Tooltip} from '../../../web/js/ui/tooltip/Tooltip';
 
 const log = Logger.create();
 
@@ -75,12 +76,15 @@ export class RepoSidebar extends React.Component<IProps, IState> {
         const NavButtons = () => (
             <div style={{display: 'flex'}}>
 
-                <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                <div id="toggle-sidebar"
+                     style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <Button color='light'
                             onClick={() => this.toggle()}>
                         <i className="fas fa-bars"></i>
                     </Button>
                 </div>
+
+                <Tooltip target="toggle-sidebar">Toggle showing the sidebar</Tooltip>
 
                 <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <NavLogo/>

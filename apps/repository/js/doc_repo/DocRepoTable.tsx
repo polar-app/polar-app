@@ -4,7 +4,6 @@ import {Footer, Tips} from '../Utils';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {Strings} from '../../../../web/js/util/Strings';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
-import {AppState} from '../AppState';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocInfos} from '../RepoDocInfos';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
@@ -34,14 +33,13 @@ import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {RepoSidebar} from '../RepoSidebar';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
-import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {InputGroup, Input, InputGroupAddon, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import {DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, UncontrolledDropdown} from 'reactstrap';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
-import {sort} from 'semver';
+import {Tooltip} from '../../../../web/js/ui/tooltip/Tooltip';
 
 const log = Logger.create();
 
@@ -227,7 +225,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                 <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <UncontrolledDropdown direction="down"
+                                    <UncontrolledDropdown id="add-content-button"
+                                                          direction="down"
                                                           size="sm">
 
                                         <DropdownToggle color="success" caret>
@@ -244,6 +243,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
 
+                                    <Tooltip target="add-content-button">Add PDF docs or capture web content.</Tooltip>
+
                                 </div>
 
                             </div>
@@ -256,11 +257,15 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
                                         <div className="checkbox-group">
 
-                                            <ToggleButton label="flagged only"
+                                            <ToggleButton id="toggle-flagged"
+                                                          label="flagged only"
                                                           initialValue={false}
                                                           onChange={value => this.onToggleFlaggedOnly(value)}/>
 
+                                            <Tooltip target="toggle-flagged">Toggle showing flagged documents</Tooltip>
+
                                         </div>
+
                                     </div>
 
                                     <div className="header-filter-box mr-1"
@@ -268,9 +273,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         <div className="checkbox-group">
 
-                                            <ToggleButton label="hide archived"
+                                            <ToggleButton id="toggle-archived"
+                                                          label="hide archived"
                                                           initialValue={true}
                                                           onChange={value => this.onToggleFilterArchived(value)}/>
+
+                                            <Tooltip target="toggle-archived">Toggle showing archived documents</Tooltip>
 
                                         </div>
 
@@ -573,7 +581,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                         ]}
 
-                    defaultPageSize={25}
+                    defaultPageSize={50}
                     noDataText="No documents available."
                     className="-striped -highlight"
                     defaultSorted={[
