@@ -205,7 +205,7 @@ export class MainAppMenu {
             submenu: [
 
                 {
-                    label: 'Import',
+                    label: 'Import from Disk',
                     accelerator: 'CmdOrCtrl+I',
                     click: this.mainAppController.cmdImport.bind(this.mainAppController)
                 },

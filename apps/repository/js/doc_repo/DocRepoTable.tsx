@@ -229,21 +229,22 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                           direction="down"
                                                           size="sm">
 
-                                        <DropdownToggle color="success" caret>
-                                            <i className="fas fa-plus" style={{marginRight: '5px'}}></i>
+                                        <DropdownToggle style={{fontWeight: 'bold'}} color="success" caret>
+                                            <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
                                         </DropdownToggle>
                                         <DropdownMenu>
                                             <DropdownItem size="sm" onClick={() => console.log('')}>
-                                                <i className="fas fa-hdd"></i> from disk
+                                                <i className="fas fa-hdd"></i>
+                                                &nbsp; Import from Disk
                                             </DropdownItem>
                                             <DropdownItem size="sm" onClick={() => console.log('')}>
-                                                <i className="fas fa-browser"></i>
-                                                from the web
+                                                <i className="fab fa-chrome"></i>
+                                                &nbsp; Capture Web Page
                                             </DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
 
-                                    <Tooltip target="add-content-button">Add PDF docs or capture web content.</Tooltip>
+                                    {/*<Tooltip target="add-content-button">Add PDF docs or capture web content.</Tooltip>*/}
 
                                 </div>
 

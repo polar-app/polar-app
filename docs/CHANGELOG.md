@@ -1,5 +1,9 @@
 # 1.10.0
 
+- Sorting by tags is now much better and actually works.  If you double click
+  the sort column it will show you untagged documents sorted by the time they 
+  were added. 
+
 - Update to electron 3.1.1 
 
 - Fixed bug where hitting Enter when working with a title would cause the page
