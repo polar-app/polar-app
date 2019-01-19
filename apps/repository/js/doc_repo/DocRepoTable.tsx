@@ -40,6 +40,7 @@ import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
 import {Tooltip} from '../../../../web/js/ui/tooltip/Tooltip';
+import {TagButton} from './TagButton';
 
 const log = Logger.create();
 
@@ -182,6 +183,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
+    private onMultiTagged() {
+
+        // FIXME:
+
+    }
+
     public render() {
         const { data } = this.state;
         return (
@@ -190,7 +197,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                 <header>
 
-                    <div className="pl-0 pr-0">
+                    <div className="pl-0 pr-0 border-bottom mb-1">
 
                         <div style={{display: 'flex'}}>
 
@@ -221,9 +228,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                         <div style={{display: 'flex'}}>
 
-                            <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                            <div className=""
+                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto', display: 'flex'}}>
 
-                                <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                                <div className="mr-1"
+                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                                     <UncontrolledDropdown id="add-content-button"
                                                           direction="down"
@@ -248,6 +257,24 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                 </div>
 
+
+                                <div className="mr-1"
+                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                    <div style={{display: this.state.selected.length <= 1 ? 'none' : 'block'}}>
+
+                                        {/*<FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}*/}
+                                                        {/*refresher={() => this.refresh()}*/}
+                                                        {/*disabled={this.state.selected.length === 0}*/}
+                                                        {/*filteredTags={this.filteredTags} />*/}
+
+                                        <TagButton tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                   onSelectedTags={tags => console.log("tags: ", tags)}/>
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
                             <div style={{width: '100%'}}>
@@ -256,6 +283,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                     <div className="mr-2"
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
                                         <div className="checkbox-group">
 
                                             <ToggleButton id="toggle-flagged"
