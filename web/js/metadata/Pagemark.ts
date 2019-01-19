@@ -109,3 +109,11 @@ export class Pagemark extends Annotation {
     }
 
 }
+
+export interface PagemarkRef {
+
+    readonly pageNum: number;
+
+    readonly pagemark: Pagemark;
+
+}

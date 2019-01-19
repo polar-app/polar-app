@@ -97,8 +97,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     }
 
-    public async synchronizeDocs(...fingerprints: string[]): Promise<void> {
-        return this.delegate.synchronizeDocs(...fingerprints);
+    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+        return this.delegate.synchronizeDocs(...docMetaRefs);
     }
 
     public async contains(fingerprint: string): Promise<boolean> {

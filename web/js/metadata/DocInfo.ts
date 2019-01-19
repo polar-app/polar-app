@@ -256,3 +256,23 @@ export type ShareStrategy = 'saved' | 'navigated';
  *
  */
 export type StoredResource = 'link' | 'doc' | 'styles' | 'images' | 'fonts';
+
+export interface Storage {
+
+    /**
+     * The number of bytes used by the doc (pdf or phz file).
+     */
+    readonly docFile: DiskUsage;
+
+    /**
+     * The number of bytes used to store this file based on DocMeta.
+     */
+    readonly docMeta?: DiskUsage;
+}
+
+/**
+ * Represents the disk usage of the given resources.
+ */
+export interface DiskUsage {
+    readonly bytesUsed: number;
+}

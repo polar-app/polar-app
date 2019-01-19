@@ -29,6 +29,8 @@ import StatsApp from '../../../../apps/repository/js/stats/StatsApp';
 import LogsApp from '../../../../apps/repository/js/logs/LogsApp';
 import {ToasterService} from '../../ui/toaster/ToasterService';
 import {ProgressService} from '../../ui/progress_bar/ProgressService';
+import {ProgressTracker} from '../../util/ProgressTracker';
+import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 
 const log = Logger.create();
 
@@ -171,36 +173,58 @@ export class RepositoryApp {
      */
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
 
-        log.info("Received DocInfo update");
+        const handleUpdatedDocInfo = async () => {
 
-        const repoDocInfo = RepoDocInfos.convert(docInfo);
+            log.info("Received DocInfo update");
 
-        if (RepoDocInfos.isValid(repoDocInfo)) {
+            const docMeta = await this.persistenceLayerManager.get().getDocMeta(docInfo.fingerprint);
 
-            this.repoDocInfoManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, repoDocInfo);
+            const repoDocMeta = RepoDocMetas.convert(docInfo.fingerprint, docMeta);
 
-            // TODO: technically I don't think we need to test if we're using
-            // the cloud layer anymore as synchronizeDocs is a noop in all other
-            // datastores.
-            const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
+            if (RepoDocMetas.isValid(repoDocMeta)) {
 
-            if (PersistenceLayerTypes.get() === 'cloud') {
+                this.repoDocInfoManager.updateFromRepoDocMeta(docInfo.fingerprint, repoDocMeta);
 
-                const handleWriteDocMeta = async () => {
-                    await persistenceLayer.synchronizeDocs(docInfo.fingerprint);
-                };
+                const progress = new ProgressTracker(1, 'doc-info-update').terminate();
 
-                handleWriteDocMeta()
-                    .catch(err => log.error("Unable to write docMeta to datastore: ", err));
+                this.repoDocInfoLoader.dispatchEvent({
+                     mutations: [
+                         {
+                             mutationType: 'created',
+                             fingerprint: docInfo.fingerprint,
+                             repoDocMeta
+                         }
+                     ],
+                     progress
+                 });
+
+                // TODO: technically I don't think we need to test if we're
+                // using the cloud layer anymore as synchronizeDocs is a noop
+                // in all other datastores.
+                const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
+
+                if (PersistenceLayerTypes.get() === 'cloud') {
+
+                    const handleWriteDocMeta = async () => {
+                        await persistenceLayer.synchronizeDocs({fingerprint: docInfo.fingerprint, docMeta});
+                    };
+
+                    handleWriteDocMeta()
+                        .catch(err => log.error("Unable to write docMeta to datastore: ", err));
+
+                }
+
+            } else {
+
+                log.warn("We were given an invalid DocInfo which yielded a broken RepoDocMeta: ",
+                         docInfo, repoDocMeta);
 
             }
 
-        } else {
+        };
 
-            log.warn("We were given an invalid DocInfo which yielded a broken RepoDocInfo: ",
-                     docInfo, repoDocInfo);
-
-        }
+        handleUpdatedDocInfo()
+            .catch(err => log.error("Unable to update doc info: ", err));
 
     }
 

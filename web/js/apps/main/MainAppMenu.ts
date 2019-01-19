@@ -421,6 +421,8 @@ export class MainAppMenu {
                     label: 'About',
                     click: () => this.showHelpAboutDialog()
                 },
+                { label: 'Documentation',
+                    click: () => shell.openExternal('https://getpolarized.io/docs/') },
                 {
                     id: 'check-for-updates',
                     label: 'Check for updates',

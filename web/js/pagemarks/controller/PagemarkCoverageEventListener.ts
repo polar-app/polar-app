@@ -145,8 +145,8 @@ export class PagemarkCoverageEventListener {
 
         log.info("percentage for pagemark: ", percentage);
 
-        this.controller.erasePagemark(pageNum);
-        await this.controller.createPagemark(pageNum, {percentage});
+        this.model.erasePagemark(pageNum);
+        await this.model.createPagemarksForRange(pageNum, percentage);
 
     }
 

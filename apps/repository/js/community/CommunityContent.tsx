@@ -22,9 +22,9 @@ export default class CommunityContent extends React.Component<IProps, IState> {
 
             <div>
 
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
 
-                    <div className="row mt-2">
+                    <div className="row">
 
                         <div className="col-lg-6">
                             <DonationsCard/>
@@ -37,7 +37,7 @@ export default class CommunityContent extends React.Component<IProps, IState> {
                     </div>
 
 
-                    <div className="row mt-2">
+                    <div className="row">
 
                         {/*<div className="col-lg-6">*/}
                             {/*<MailingListCard/>*/}

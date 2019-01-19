@@ -25,11 +25,14 @@ export default class TopTagsTable extends React.Component<IProps, IState> {
         return <div>
             <StatTitle>Top Tags</StatTitle>
             <Table>
-            {topTags.map(topTag =>
-                 <tr key={topTag.key}>
-                     <td className="pt-1 pb-1">{topTag.key}</td>
-                     <td className="pt-1 pb-1">{topTag.value}</td>
-                 </tr>)}
+                <tbody>
+                    {topTags.map(topTag =>
+                         <tr key={topTag.key}>
+                             <td className="pt-1 pb-1">{topTag.key}</td>
+                             <td className="pt-1 pb-1">{topTag.value}</td>
+                         </tr>)}
+
+                </tbody>
             </Table>
         </div>;
     }

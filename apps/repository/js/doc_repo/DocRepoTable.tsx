@@ -38,10 +38,16 @@ import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
 import {InputGroup, Input, InputGroupAddon, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import ReleasingReactComponent from '../framework/ReleasingReactComponent';
+import {Arrays} from '../../../../web/js/util/Arrays';
+import {Numbers} from '../../../../web/js/util/Numbers';
+import {sort} from 'semver';
 
 const log = Logger.create();
 
-export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
+// TODO: go back to ExtendedReactTable
+
+export default class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     private static hasSentInitAnalyitics = false;
 
@@ -74,7 +80,8 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
         this.state = {
             data: [],
-            columns: new DocRepoTableColumns()
+            columns: new DocRepoTableColumns(),
+            selected: []
         };
 
         this.init();
@@ -149,12 +156,31 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
 
     }
 
-    public highlightRow(selected: number) {
+    public selectRow(selectedIdx: number, event: MouseEvent) {
 
-        const state: AppState = Object.assign({}, this.state);
-        state.selected = selected;
+        if (typeof selectedIdx === 'string') {
+            selectedIdx = parseInt(selectedIdx);
+        }
 
-        this.setState(state);
+        let selected: ReadonlyArray<number> = [selectedIdx];
+
+        if (event.shiftKey) {
+
+            let min: number = 0;
+            let max: number = 0;
+
+            if (this.state.selected.length > 0) {
+                const sorted = [...this.state.selected].sort((a, b) => a - b);
+                min = Arrays.first(sorted)!;
+                max = Arrays.last(sorted)!;
+            }
+
+            selected = Numbers.range(Math.min(min, selectedIdx),
+                                     Math.max(max, selectedIdx));
+
+        }
+
+        this.setState({...this.state, selected});
 
     }
 
@@ -365,6 +391,33 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                                 Header: 'Tags',
                                 accessor: '',
                                 show: this.state.columns.tags.selected,
+
+                                sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
+
+                                    const toSTR = (obj: any): string => {
+
+                                        if (! obj) {
+                                            return "";
+                                        }
+
+                                        if (typeof obj === 'string') {
+                                            return obj;
+                                        }
+
+                                        return JSON.stringify(obj);
+
+                                    };
+
+                                    const cmp = toSTR(a.tags).localeCompare(toSTR(b.tags));
+
+                                    if (cmp !== 0) {
+                                        return cmp;
+                                    }
+
+                                    // for ties use the date added...
+                                    return toSTR(a.added).localeCompare(toSTR(b.added));
+
+                                },
                                 Cell: (row: any) => {
 
                                     const tags: {[id: string]: Tag} = row.original.tags;
@@ -519,19 +572,21 @@ export default class DocRepoTable extends ExtendedReactTable<IProps, IState> {
                     getTrProps={(state: any, rowInfo: any) => {
                         return {
 
-                            onClick: (e: any) => {
+                            onClick: (event: MouseEvent) => {
                                 // console.log(`doc fingerprint:
                                 // ${rowInfo.original.fingerprint} and filename
                                 // ${rowInfo.original.filename}`);
-                                this.highlightRow(rowInfo.viewIndex as number);
+                                this.selectRow(rowInfo.viewIndex as number, event);
                             },
 
                             style: {
                                 // TODO: dark-mode.  Use CSS variable names for
                                 // colors
-                                background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
-                                color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
+
+                                background: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? '#00afec' : 'white',
+                                color: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'white' : 'black',
                             }
+
                         };
                     }}
                     getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
@@ -835,8 +890,9 @@ interface IProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 }
 
-interface IState extends IReactTableState {
-    data: RepoDocInfo[];
-    columns: DocRepoTableColumns;
+interface IState {
+    readonly data: RepoDocInfo[];
+    readonly columns: DocRepoTableColumns;
+    readonly selected: ReadonlyArray<number>;
 }
 

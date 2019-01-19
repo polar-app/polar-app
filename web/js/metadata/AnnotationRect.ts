@@ -96,7 +96,7 @@ export class AnnotationRect {
     /**
      * Compute a percentage of the page that this rect holds.
      */
-    toPercentage() {
+    public toPercentage(): number {
         return 100 * (Rects.createFromBasicRect(this).area / ENTIRE_PAGE.area);
     }
 

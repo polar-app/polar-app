@@ -39,7 +39,7 @@ export class PersistenceLayers {
     }
 
     public static async toSyncDocMapFromDocs(datastore: Datastore,
-                                             docMetaFiles: DocMetaRef[],
+                                             docMetaRefs: DocMetaRef[],
                                              progressStateListener: ProgressListener = NULL_FUNCTION) {
 
         const syncDocsMap: SyncDocMap = {};
@@ -47,20 +47,28 @@ export class PersistenceLayers {
         const work: AsyncFunction[] = [];
         const asyncWorkQueue = new AsyncWorkQueue(work);
 
-        const progressTracker = new ProgressTracker(docMetaFiles.length,
+        const progressTracker = new ProgressTracker(docMetaRefs.length,
                                                     `datastore:${datastore.id}#toSyncDocMapFromDocs`);
 
-        for (const docMetaFile of docMetaFiles) {
+        for (const docMetaRef of docMetaRefs) {
 
             work.push(async () => {
 
-                const data = await datastore.getDocMeta(docMetaFile.fingerprint);
+                let docMeta: DocMeta | undefined = docMetaRef.docMeta;
 
-                if (isPresent(data)) {
+                if (! docMeta) {
 
-                    const docMeta = DocMetas.deserialize(data!, docMetaFile.fingerprint);
+                    const data = await datastore.getDocMeta(docMetaRef.fingerprint);
 
-                    syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
+                    if (isPresent(data)) {
+                        docMeta = DocMetas.deserialize(data!, docMetaRef.fingerprint);
+                    }
+
+                }
+
+                if (isPresent(docMeta)) {
+
+                    syncDocsMap[docMetaRef.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
 
                     progressStateListener(progressTracker.peek());
 

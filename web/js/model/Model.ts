@@ -188,6 +188,18 @@ export class Model {
 
     }
 
+    public async createPagemarksForRange(end: number, percentage: number) {
+
+        const docMeta = await this.docMetaPromise;
+
+        const pagemarkRefs = Pagemarks.updatePagemarksForRange(docMeta, end, percentage);
+
+        for (const pagemarkRef of pagemarkRefs) {
+            this.reactor.dispatchEvent('createPagemark', pagemarkRef);
+        }
+
+    }
+
     /**
      * @refactor This code should be in its own dedicated helper class
      * @param pageNum
@@ -210,10 +222,11 @@ export class Model {
 
     }
 
-    assertPageNum(pageNum: number) {
+    private assertPageNum(pageNum: number) {
 
-        if (pageNum == null)
+        if (pageNum == null) {
             throw new Error("Must specify page pageNum");
+        }
 
         if (pageNum <= 0) {
             throw new Error("Page numbers begin at 1");
@@ -230,8 +243,5 @@ export interface DocumentLoadedEvent {
     readonly docMeta: DocMeta;
 }
 
-
-export interface DocumentLoadedCallback {
-    (event: DocumentLoadedEvent): void;
-}
+export type DocumentLoadedCallback = (event: DocumentLoadedEvent) => void;
 

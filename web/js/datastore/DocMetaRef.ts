@@ -7,11 +7,19 @@ import {Preconditions} from '../Preconditions';
 import {FileRef} from './Datastore';
 
 export interface DocMetaRef {
+
     readonly fingerprint: string;
+
+    /**
+     * Store the DocMeta if we're passing this directly but have already read
+     * the DocMeta elsewhere and it's not actually stale.
+     */
+    readonly docMeta?: DocMeta;
+
 }
 
 /**
- * Includes more metadata including the filename of the PDF or PHZ file.  the
+ * Includes more metadata including the filename of the PDF or PHZ file.
  *
  */
 export interface DocMetaFileRef extends DocMetaRef {

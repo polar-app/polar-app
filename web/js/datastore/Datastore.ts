@@ -132,7 +132,7 @@ export abstract class AbstractDatastore {
                           docInfo: IDocInfo,
                           datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
 
-    public async synchronizeDocs(...fingerprints: string[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
         // noop
     }
 
@@ -172,7 +172,7 @@ interface WritableDatastore {
      * Make sure the docs with the given fingerprints are synchronized with
      * this datastore. Only implemented in cloud datastores.
      */
-    synchronizeDocs(...fingerprints: string[]): Promise<void>;
+    synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void>;
 
     createBackup(): Promise<void>;
 
