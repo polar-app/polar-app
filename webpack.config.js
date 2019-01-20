@@ -55,7 +55,10 @@ module.exports = {
     ],
     optimization: {
         minimize: true,
-        usedExports: true
+        usedExports: true,
+        // removeAvailableModules: false,
+        // removeEmptyChunks: false,
+        // splitChunks: false,
     }
 
 }

@@ -39,22 +39,29 @@ export class TextHighlightController {
         this.model = Preconditions.assertNotNull(model, "model");
         this.docFormat = DocFormatFactory.getInstance();
 
-        // TODO: migrate this to Messenger and postMessage so that it's easily
-        // tested outside of electron.
-        ipcRenderer.on('context-menu-command', (event: Electron.EventEmitter, arg: any) => {
+        if (ipcRenderer) {
 
-            switch (arg.command) {
 
-                case "delete-text-highlight":
-                    this.onTextHighlightDeleted(arg);
-                    break;
+            // TODO: migrate this to Messenger and postMessage so that it's easily
+            // tested outside of electron.
+            ipcRenderer.on('context-menu-command', (event: Electron.EventEmitter, arg: any) => {
 
-                default:
-                    console.warn("Unhandled command: " + arg.command);
-                    break;
-            }
+                switch (arg.command) {
 
-        });
+                    case "delete-text-highlight":
+                        this.onTextHighlightDeleted(arg);
+                        break;
+
+                    default:
+                        console.warn("Unhandled command: " + arg.command);
+                        break;
+                }
+
+            });
+
+        } else {
+            log.warn("No ipcRenderer");
+        }
 
     }
 

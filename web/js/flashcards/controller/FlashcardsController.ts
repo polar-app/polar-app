@@ -19,7 +19,7 @@ export class FlashcardsController {
         this.model = model;
     }
 
-    start() {
+    public start() {
 
         let ipcEngine = IPCEngines.rendererProcess();
 

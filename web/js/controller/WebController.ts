@@ -17,6 +17,7 @@ import {AreaHighlightController} from '../highlights/area/controller/AreaHighlig
 import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCoverageEventListener';
 import {DocDetails} from '../metadata/DocDetails';
 import {Optional} from '../util/ts/Optional';
+import {AppRuntime} from '../AppRuntime';
 
 
 const log = Logger.create();
@@ -44,7 +45,6 @@ export class WebController extends Controller {
 
         new PagemarkController(model).start();
         new DocTitleController(this.model).start();
-        new AnkiSyncController(this.model).start();
 
     }
 
@@ -244,7 +244,7 @@ export class WebController extends Controller {
 
         new PagemarkCoverageEventListener(this, this.model).start();
 
-        new FlashcardsController(this.model).start();
+        // new FlashcardsController(this.model).start();
 
         // await new AnnotationsController().start();
 

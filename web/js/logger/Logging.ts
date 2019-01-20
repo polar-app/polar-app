@@ -83,7 +83,7 @@ export class Logging {
 
         const electronContext = ElectronContextTypes.create();
 
-        if (level === LogLevel.WARN && SentryLogger.isEnabled()) {
+        if (level === LogLevel.WARN && SentryLogger.isEnabled() && AppRuntime.isElectron()) {
             // SentryLogger enabled for INFO will lock us up.
             // *** first logger is sentry but only if we are not running within
             // a SNAP container.
@@ -107,7 +107,7 @@ export class Logging {
         // *** now include the persistent error log so that we can get error
         // reports from users.
 
-        if (level === LogLevel.WARN) {
+        if (level === LogLevel.WARN && AppRuntime.isElectron()) {
             // PersistentErrorLogger enabled for INFO will lock us up.
             loggers.push(await PersistentErrorLogger.create());
         }
@@ -135,7 +135,7 @@ export class Logging {
 
     private static async loggingConfig(): Promise<LoggingConfig> {
 
-        if (AppRuntime.get() === 'electron') {
+        if (AppRuntime.isElectron()) {
 
             const directories = await new Directories().init();
 

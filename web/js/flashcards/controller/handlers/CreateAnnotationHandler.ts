@@ -32,13 +32,13 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
 
         log.info("Got create annotation message: ", annotationContainer );
 
-        let descriptor = annotationContainer.descriptor;
+        const descriptor = annotationContainer.descriptor;
 
-        if(descriptor.type === AnnotationType.FLASHCARD) {
+        if (descriptor.type === AnnotationType.FLASHCARD) {
 
-            let flashcard = new Flashcard(<Flashcard> annotationContainer.value);
+            const flashcard = new Flashcard(<Flashcard> annotationContainer.value);
 
-            if(descriptor.docFingerprint === this.model.docMeta.docInfo.fingerprint) {
+            if (descriptor.docFingerprint === this.model.docMeta.docInfo.fingerprint) {
 
                 log.info("Going to add this flashcard to the model");
 

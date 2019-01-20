@@ -12,6 +12,7 @@ import {PageSearchController} from '../page_search/PageSearchController';
 import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
 import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
+import {AppRuntime} from '../AppRuntime';
 
 const log = Logger.create();
 
@@ -37,6 +38,8 @@ export class Launcher {
      */
     public async trigger() {
 
+        console.log("Running with app runtime: " + AppRuntime.get());
+
         const persistenceLayer = await this.persistenceLayerFactory();
         await persistenceLayer.init();
 
@@ -48,7 +51,11 @@ export class Launcher {
         new AreaHighlightView(model).start();
         new PagemarkView(model).start();
         new AnnotationSidebarService(model).start();
-        new PageSearchController(model).start();
+
+        if (AppRuntime.isElectron()) {
+            new PageSearchController(model).start();
+        }
+
         new CommentsController(model).start();
         new AnnotationBarService(model).start();
 
