@@ -25,21 +25,17 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
         return (
 
-            <header>
+            <SplitBar>
 
-                <SplitBar>
+                <SplitBarLeft>
+                    <RepoSidebar/>
+                </SplitBarLeft>
 
-                    <SplitBarLeft>
-                        <RepoSidebar/>
-                    </SplitBarLeft>
+                <SplitBarRight>
+                    <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
+                </SplitBarRight>
 
-                    <SplitBarRight>
-                        <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
-                    </SplitBarRight>
-
-                </SplitBar>
-
-            </header>
+            </SplitBar>
 
         );
 

@@ -34,7 +34,7 @@ export class MessageBanner extends React.Component<IProps, IState> {
                        toggle={this.onDismiss}
                        fade={false}
                        onClick={() => this.onClick(this.message!)}
-                       className="m-1 pl-1 pr-1">
+                       className="mt-1 mb-1 pl-1 pr-1">
 
                     {this.message!.element}
 

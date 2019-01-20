@@ -47,9 +47,11 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
             <div id="doc-repository">
 
-                <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                <header>
+                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                <MessageBanner/>
+                    <MessageBanner/>
+                </header>
 
                 <div style={{display: 'flex'}}>
 

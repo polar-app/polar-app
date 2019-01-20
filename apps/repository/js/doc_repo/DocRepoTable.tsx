@@ -42,6 +42,7 @@ import {Numbers} from '../../../../web/js/util/Numbers';
 import {Tooltip} from '../../../../web/js/ui/tooltip/Tooltip';
 import {TagButton} from './TagButton';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
+import {RepoHeader} from '../RepoHeader';
 
 const log = Logger.create();
 
@@ -225,17 +226,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                 <header>
 
-                    <SplitBar>
-
-                        <SplitBarLeft>
-                            <RepoSidebar/>
-                        </SplitBarLeft>
-
-                        <SplitBarRight>
-                            <CloudAuthButton persistenceLayerManager={this.persistenceLayerManager} />
-                        </SplitBarRight>
-
-                    </SplitBar>
+                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
                     <div id="header-filter">
 
@@ -378,9 +369,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                     </div>
 
-                </header>
+                    <MessageBanner/>
 
-                <MessageBanner/>
+                </header>
 
                 <div id="doc-table">
                 <ReactTable
