@@ -1,5 +1,8 @@
 # 1.10.0
 
+- New buttons for '+ Add' to import from disk or capture web page.  Much easier
+  to determine how to add content to polar.
+
 - multi-select and ability to tag multiple docs at once.
 
 - Sorting by tags is now much better and actually works.  If you double click

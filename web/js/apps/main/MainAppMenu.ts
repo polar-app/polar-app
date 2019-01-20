@@ -207,7 +207,11 @@ export class MainAppMenu {
                 {
                     label: 'Import from Disk',
                     accelerator: 'CmdOrCtrl+I',
-                    click: this.mainAppController.cmdImport.bind(this.mainAppController)
+                    click: () => {
+                        this.mainAppController.cmdImport()
+                            .catch((err: Error) => log.error("Could not import from disk: ", err));
+                    }
+
                 },
                 {
                     label: 'Capture Web Page',

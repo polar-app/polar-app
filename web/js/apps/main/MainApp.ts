@@ -131,6 +131,8 @@ export class MainApp {
 
         const mainAppController = new MainAppController(fileLoader, webserver);
 
+        global.mainAppController = mainAppController;
+
         const mainAppAPI = new MainAPI(mainAppController, webserver);
         mainAppAPI.start();
 

@@ -27,10 +27,8 @@ import {RepoDocInfoIndex} from '../RepoDocInfoIndex';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
-import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Hashcode} from '../../../../web/js/metadata/Hashcode';
-import {RepoSidebar} from '../RepoSidebar';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
@@ -41,8 +39,8 @@ import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
 import {Tooltip} from '../../../../web/js/ui/tooltip/Tooltip';
 import {TagButton} from './TagButton';
-import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
 import {RepoHeader} from '../RepoHeader';
+import {remote} from 'electron';
 
 const log = Logger.create();
 
@@ -83,6 +81,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         this.onMultiTagged = this.onMultiTagged.bind(this);
         this.getSelected = this.getSelected.bind(this);
+
+        this.cmdImportFromDisk = this.cmdImportFromDisk.bind(this);
+        this.cmdCaptureWebPage = this.cmdCaptureWebPage.bind(this);
 
         this.state = {
             data: [],
@@ -246,18 +247,16 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                             <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
                                         </DropdownToggle>
                                         <DropdownMenu>
-                                            <DropdownItem size="sm" onClick={() => console.log('')}>
+                                            <DropdownItem size="sm" onClick={() => this.cmdImportFromDisk()}>
                                                 <i className="fas fa-hdd"></i>
                                                 &nbsp; Import from Disk
                                             </DropdownItem>
-                                            <DropdownItem size="sm" onClick={() => console.log('')}>
+                                            <DropdownItem size="sm" onClick={() => this.cmdCaptureWebPage()}>
                                                 <i className="fab fa-chrome"></i>
                                                 &nbsp; Capture Web Page
                                             </DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
-
-                                    {/*<Tooltip target="add-content-button">Add PDF docs or capture web content.</Tooltip>*/}
 
                                 </div>
 
@@ -933,6 +932,24 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     private onToggleFilterArchived(value: boolean) {
         this.filterArchived = value;
         this.refresh();
+    }
+
+    private cmdImportFromDisk() {
+
+        const mainAppController = remote.getGlobal('mainAppController');
+
+        mainAppController.cmdImport()
+            .catch((err: Error) => log.error("Could not import from disk: ", err));
+
+    }
+
+    private cmdCaptureWebPage() {
+
+        const mainAppController = remote.getGlobal('mainAppController');
+
+        mainAppController.cmdCaptureWebPageWithBrowser()
+            .catch((err: Error) => log.error("Could not capture page: ", err));
+
     }
 
 }
