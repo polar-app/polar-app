@@ -41,6 +41,7 @@ import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
 import {Tooltip} from '../../../../web/js/ui/tooltip/Tooltip';
 import {TagButton} from './TagButton';
+import {SplitBar, SplitBarLeft, SplitBarRight} from './SplitBar';
 
 const log = Logger.create();
 
@@ -224,32 +225,17 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                 <header>
 
-                    <div className="pl-0 pr-0 border-bottom mb-1">
+                    <SplitBar>
 
-                        <div style={{display: 'flex'}}>
+                        <SplitBarLeft>
+                            <RepoSidebar/>
+                        </SplitBarLeft>
 
-                            <div className=""
-                                 style={{marginTop: 'auto', marginBottom: 'auto', width: '250px'}}>
+                        <SplitBarRight>
+                            <CloudAuthButton persistenceLayerManager={this.persistenceLayerManager} />
+                        </SplitBarRight>
 
-                                <RepoSidebar/>
-
-                            </div>
-
-                            <div className=""
-                                 style={{marginTop: 'auto', marginBottom: 'auto', display: 'flex', justifyContent: 'flex-end', width: '100%'}}>
-
-                                <div style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                    <CloudAuthButton persistenceLayerManager={this.persistenceLayerManager} />
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
+                    </SplitBar>
 
                     <div id="header-filter">
 
@@ -977,4 +963,5 @@ interface IState {
     readonly columns: DocRepoTableColumns;
     readonly selected: ReadonlyArray<number>;
 }
+
 

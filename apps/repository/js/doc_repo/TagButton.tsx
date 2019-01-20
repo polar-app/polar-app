@@ -151,4 +151,3 @@ interface IProps {
 interface IState {
     readonly popoverOpen: boolean;
 }
-
