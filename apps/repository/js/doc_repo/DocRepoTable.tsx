@@ -41,7 +41,7 @@ import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
 import {Tooltip} from '../../../../web/js/ui/tooltip/Tooltip';
 import {TagButton} from './TagButton';
-import {SplitBar, SplitBarLeft, SplitBarRight} from './SplitBar';
+import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
 
 const log = Logger.create();
 
@@ -377,7 +377,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
 
                     </div>
-
 
                 </header>
 

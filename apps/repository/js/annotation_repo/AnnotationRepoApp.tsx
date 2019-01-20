@@ -13,6 +13,9 @@ import {RepoHeader} from '../RepoHeader';
 import {MessageBanner} from '../MessageBanner';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
+import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
+import {RepoSidebar} from '../RepoSidebar';
+import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 
 const log = Logger.create();
 

@@ -68,6 +68,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
             <div id="doc-repo-table">
 
                 <div id="doc-table">
+
                 <ReactTable
                     data={data}
                     columns={

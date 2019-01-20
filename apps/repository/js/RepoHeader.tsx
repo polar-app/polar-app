@@ -4,6 +4,7 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {RepoSidebar} from './RepoSidebar';
+import {SplitBar, SplitBarLeft, SplitBarRight} from './SplitBar';
 
 const log = Logger.create();
 
@@ -16,11 +17,8 @@ const Styles: IStyleMap = {
  */
 export class RepoHeader extends React.Component<IProps, IState> {
 
-
     constructor(props: IProps, context: any) {
         super(props, context);
-
-
     }
 
     public render() {
@@ -29,21 +27,17 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
             <header>
 
-                <RepoSidebar/>
+                <SplitBar>
 
-                {this.props.children}
+                    <SplitBarLeft>
+                        <RepoSidebar/>
+                    </SplitBarLeft>
 
-                <div id="header-filter">
+                    <SplitBarRight>
+                        <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
+                    </SplitBarRight>
 
-                    <div className="header-filter-boxes">
-
-                        <div className="header-filter-box">
-                            <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
-                        </div>
-
-                    </div>
-
-                </div>
+                </SplitBar>
 
             </header>
 
