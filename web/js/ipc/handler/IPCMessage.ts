@@ -33,8 +33,8 @@ export class IPCMessage<T> {
                 error?: IPCError,
                 context = ElectronContexts.create()) {
 
-        if(value && value instanceof IPCMessage) {
-            throw new Error("Value is already an IPCMessage")
+        if (value && value instanceof IPCMessage) {
+            throw new Error("Value is already an IPCMessage");
         }
 
         this._type = type;

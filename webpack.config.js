@@ -16,9 +16,17 @@ module.exports = {
             },
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
+                // use: 'ts-loader',
+                exclude: /node_modules/,
+                loader: 'ts-loader',
+                options: {
+                    // performance: this improved performance by about 2x.
+                    // from 20s to about 10s
+                    transpileOnly: true,
+                    experimentalWatchApi: true,
+                }
             }
+
         ]
     },
     resolve: {
@@ -51,4 +59,5 @@ module.exports = {
     }
 
 }
+
 
