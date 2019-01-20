@@ -20,10 +20,6 @@ export interface PersistenceLayer {
      */
     readonly datastore: Datastore;
 
-    readonly stashDir: string;
-
-    readonly logsDir: string;
-
     init(errorListener?: ErrorListener): Promise<void>;
 
     stop(): Promise<void>;

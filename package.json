@@ -25,7 +25,9 @@
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
     "postinstall": "opencollective-postinstall",
-    "tslint": "tslint --project tsconfig.json --config tslint.yaml"
+    "tslint": "tslint --project tsconfig.json --config tslint.yaml",
+    "webpack": "npx webpack --config=webpack.config.js",
+    "webpack-watch": "npx webpack --config=webpack.config.js --watch"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
@@ -81,6 +83,7 @@
     "typescript": "~3.1.6",
     "wait-for-expect": "~1.1.0",
     "webpack": "^4.28.4",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.2.1"
   },
   "dependencies": {

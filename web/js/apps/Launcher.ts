@@ -12,7 +12,6 @@ import {PageSearchController} from '../page_search/PageSearchController';
 import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
 import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
-import {AutoUpdatesController} from '../auto_updates/AutoUpdatesController';
 
 const log = Logger.create();
 
@@ -55,9 +54,6 @@ export class Launcher {
 
         const viewer = ViewerFactory.create(model);
         viewer.start();
-
-        log.info("Stash dir: ", persistenceLayer.stashDir);
-        log.info("Logs dir: ", persistenceLayer.logsDir);
 
         await new WebController(model, viewer).start();
 

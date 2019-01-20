@@ -7,6 +7,28 @@ import {FilePaths} from "./FilePaths";
 
 const log = Logger.create();
 
+// noinspection TsLint
+class Promised {
+
+    public readFileAsync = promisify(fs.readFile);
+    public writeFileAsync = promisify(fs.writeFile);
+    public mkdirAsync = promisify(fs.mkdir);
+    public accessAsync = promisify(fs.access);
+    public statAsync = promisify(fs.stat);
+    public unlinkAsync = promisify(fs.unlink);
+    public rmdirAsync = promisify(fs.rmdir);
+    public readdirAsync = promisify(fs.readdir);
+    public realpathAsync = promisify(fs.realpath);
+    public copyFileAsync = promisify(fs.copyFile);
+    public appendFileAsync = promisify(fs.appendFile);
+    public openAsync = promisify(fs.open);
+    public closeAsync = promisify(fs.close);
+    public fdatasyncAsync = promisify(fs.fdatasync);
+    public fsyncAsync = promisify(fs.fsync);
+    public linkAsync = promisify(fs.link);
+
+}
+
 export class Files {
 
     /**
@@ -262,7 +284,7 @@ export class Files {
      *
      */
     public static async readFileAsync(path: PathLike | number): Promise<Buffer> {
-        return this.withProperException(() => this.Promised.readFileAsync(path));
+        return this.withProperException(() => this.promised.readFileAsync(path));
     }
 
     public static createReadStream(path: PathLike, options?: CreateReadStreamOptions): fs.ReadStream {
@@ -300,7 +322,7 @@ export class Files {
 
         if (data instanceof Buffer || typeof data === 'string') {
 
-            return this.withProperException(() => this.Promised.writeFileAsync(path, data, options));
+            return this.withProperException(() => this.promised.writeFileAsync(path, data, options));
 
         } else if ( FileHandles.isFileHandle(data) ) {
 
@@ -316,46 +338,46 @@ export class Files {
     }
 
     public static async statAsync(path: string): Promise<Stats> {
-        return this.withProperException(() => this.Promised.statAsync(path));
+        return this.withProperException(() => this.promised.statAsync(path));
     }
 
     public static async mkdirAsync(path: string, mode?: number | string | undefined | null): Promise<void> {
-        return this.withProperException(() => this.Promised.mkdirAsync(path, mode));
+        return this.withProperException(() => this.promised.mkdirAsync(path, mode));
     }
 
     public static async accessAsync(path: PathLike, mode: number | undefined): Promise<void> {
-        return this.withProperException(() => this.Promised.accessAsync(path, mode));
+        return this.withProperException(() => this.promised.accessAsync(path, mode));
     }
 
     public static async unlinkAsync(path: PathLike): Promise<void> {
-        return this.withProperException(() => this.Promised.unlinkAsync(path));
+        return this.withProperException(() => this.promised.unlinkAsync(path));
     }
 
     public static async rmdirAsync(path: PathLike): Promise<void> {
-        return this.withProperException(() => this.Promised.rmdirAsync(path));
+        return this.withProperException(() => this.promised.rmdirAsync(path));
     }
 
     public static async linkAsync(existingPath: PathLike, newPath: PathLike): Promise<void> {
-        return this.withProperException(() => this.Promised.linkAsync(existingPath, newPath));
+        return this.withProperException(() => this.promised.linkAsync(existingPath, newPath));
     }
 
     public static async readdirAsync(path: string): Promise<string[]> {
-        return this.withProperException(() => this.Promised.readdirAsync(path));
+        return this.withProperException(() => this.promised.readdirAsync(path));
     }
 
     public static async realpathAsync(path: string): Promise<string> {
-        return this.withProperException(() => this.Promised.realpathAsync(path));
+        return this.withProperException(() => this.promised.realpathAsync(path));
     }
 
     public static async copyFileAsync(src: string, dest: string, flags?: number): Promise<void> {
-        return this.withProperException(() => this.Promised.copyFileAsync(src, dest, flags));
+        return this.withProperException(() => this.promised.copyFileAsync(src, dest, flags));
     }
 
     public static async appendFileAsync(path: string | Buffer | number,
                                         data: string | Buffer,
                                         options?: AppendFileOptions): Promise<void> {
 
-        return this.withProperException(() => this.Promised.appendFileAsync(path, data, options));
+        return this.withProperException(() => this.promised.appendFileAsync(path, data, options));
 
     }
 
@@ -367,7 +389,7 @@ export class Files {
                                   flags: string | number,
                                   mode?: number): Promise<number> {
 
-        return this.withProperException(() => this.Promised.openAsync(path, flags, mode));
+        return this.withProperException(() => this.promised.openAsync(path, flags, mode));
 
     }
 
@@ -375,15 +397,15 @@ export class Files {
      *
      */
     public static async closeAsync(fd: number): Promise<void> {
-        return this.withProperException(() => this.Promised.closeAsync(fd));
+        return this.withProperException(() => this.promised.closeAsync(fd));
     }
 
     public static async fdatasyncAsync(fd: number): Promise<void> {
-        return this.withProperException(() => this.Promised.fdatasyncAsync(fd));
+        return this.withProperException(() => this.promised.fdatasyncAsync(fd));
     }
 
     public static async fsyncAsync(fd: number): Promise<void> {
-        return this.withProperException(() => this.Promised.fsyncAsync(fd));
+        return this.withProperException(() => this.promised.fsyncAsync(fd));
     }
 
     private static async withProperException<T>(func: () => Promise<T>): Promise<T> {
@@ -418,26 +440,7 @@ export class Files {
     }
 
     // noinspection TsLint
-    private static readonly Promised = {
-
-        readFileAsync: promisify(fs.readFile),
-        writeFileAsync: promisify(fs.writeFile),
-        mkdirAsync: promisify(fs.mkdir),
-        accessAsync: promisify(fs.access),
-        statAsync: promisify(fs.stat),
-        unlinkAsync: promisify(fs.unlink),
-        rmdirAsync: promisify(fs.rmdir),
-        readdirAsync: promisify(fs.readdir),
-        realpathAsync: promisify(fs.realpath),
-        copyFileAsync: promisify(fs.copyFile),
-        appendFileAsync: promisify(fs.appendFile),
-        openAsync: promisify(fs.open),
-        closeAsync: promisify(fs.close),
-        fdatasyncAsync: promisify(fs.fdatasync),
-        fsyncAsync: promisify(fs.fsync),
-        linkAsync: promisify(fs.link),
-
-    };
+    private static readonly promised = fs.readFile ? new Promised() : null!;
 
 }
 

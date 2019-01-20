@@ -1,10 +1,4 @@
-import {
-    FileSynchronizationEvent, Datastore, DeleteResult,
-    DocMetaSnapshotEvent, FileMeta,
-    InitResult, SynchronizingDatastore, MutationType, FileRef,
-    DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult,
-    DocMetaSnapshotBatch, ErrorListener, AbstractDatastore, DatastoreConsistency
-} from './Datastore';
+import {AbstractDatastore, Datastore, DatastoreConsistency, DeleteResult, DocMetaMutation, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -17,14 +11,12 @@ import {Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
-import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
-import {Providers, AsyncProviders} from '../util/Providers';
+import {AsyncProviders} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
 import {FileHandle, FileHandles, Files} from '../util/Files';
 import {UserID} from '../firebase/Firebase';
@@ -43,12 +35,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'firebase';
 
-    public readonly stashDir: string;
-
-    public readonly logsDir: string;
-
-    public readonly directories: Directories;
-
     public enablePersistence: boolean = true;
 
     private app?: firebase.app.App;
@@ -61,9 +47,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     constructor() {
         super();
-        this.directories = new Directories();
-        this.stashDir = this.directories.stashDir;
-        this.logsDir = this.directories.logsDir;
 
     }
 
@@ -955,3 +938,4 @@ interface StorageSettings {
     readonly cacheControl: string;
     readonly contentType: string;
 }
+

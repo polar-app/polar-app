@@ -24,17 +24,11 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
 
     public readonly datastore: Datastore;
 
-    public readonly logsDir: string;
-
-    public readonly stashDir: string;
-
     private readonly delegate: PersistenceLayer;
 
     constructor(delegate: PersistenceLayer) {
         this.delegate = delegate;
         this.datastore = delegate.datastore;
-        this.logsDir = delegate.logsDir;
-        this.stashDir = delegate.stashDir;
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {

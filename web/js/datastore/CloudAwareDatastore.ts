@@ -1,34 +1,19 @@
-import {
-    Datastore, FileMeta, InitResult, SynchronizingDatastore,
-    MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
-    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap,
-    ErrorListener, DocMetaSnapshotEvents, SyncDocMaps, SynchronizationEvent,
-    FileSynchronizationEvent, FileSynchronizationEventListener,
-    SynchronizationEventListener,
-    AbstractDatastore} from './Datastore';
+import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileMeta, FileRef, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore} from './Datastore';
 import {Directories} from './Directories';
-import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {DatastoreMutations} from './DatastoreMutations';
 import {UUID} from '../metadata/UUID';
-import {Datastores} from './Datastores';
-import {DocMeta} from '../metadata/DocMeta';
-import {UUIDs} from '../metadata/UUIDs';
-import {DocMetas} from '../metadata/DocMetas';
 import {Logger} from "../logger/Logger";
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapshotEventListeners';
 import {Latch} from '../util/Latch';
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../util/Functions';
-import {isUpperCase} from 'tslint/lib/utils';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {Preconditions} from '../Preconditions';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
@@ -54,12 +39,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public readonly id = 'cloud-aware';
 
-    public readonly stashDir: string;
-
-    public readonly logsDir: string;
-
-    public readonly directories: Directories;
-
     public readonly local: Datastore;
 
     public readonly cloud: Datastore;
@@ -80,9 +59,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         super();
         this.local = local;
         this.cloud = cloud;
-        this.stashDir = local.stashDir;
-        this.logsDir = local.logsDir;
-        this.directories = local.directories;
     }
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {

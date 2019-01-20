@@ -88,8 +88,8 @@ export class MainApp {
         await webserver.start();
 
         log.info("App loaded from: ", app.getAppPath());
-        log.info("Stash dir: ", this.datastore.stashDir);
-        log.info("Logs dir: ", this.datastore.logsDir);
+        log.info("Stash dir: ", directories.stashDir);
+        log.info("Logs dir: ", directories.logsDir);
 
         // NOTE: removing the next three lines removes the colors in the toolbar.
         // const appIcon = new Tray(app_icon);

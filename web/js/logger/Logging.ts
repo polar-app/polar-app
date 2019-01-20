@@ -21,6 +21,7 @@ import {isPresent} from '../Preconditions';
 import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
+import {AppRuntime} from '../AppRuntime';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -134,28 +135,32 @@ export class Logging {
 
     private static async loggingConfig(): Promise<LoggingConfig> {
 
-        const directories = await new Directories().init();
+        if (AppRuntime.get() === 'electron') {
 
-        const path = FilePaths.join(directories.configDir, 'logging.json');
+            const directories = await new Directories().init();
 
-        if (await Files.existsAsync(path)) {
+            const path = FilePaths.join(directories.configDir, 'logging.json');
 
-            const buffer = await Files.readFileAsync(path);
-            const json = buffer.toString('utf8');
-            let config = JSON.parse(json) as LoggingConfig;
+            if (await Files.existsAsync(path)) {
 
-            if (typeof config.level === 'string') {
+                const buffer = await Files.readFileAsync(path);
+                const json = buffer.toString('utf8');
+                let config = JSON.parse(json) as LoggingConfig;
 
-                // needed to convert the symbol back to the enum.  Not sure
-                // this is very clean though and wish there was a better way
-                // to do this.
+                if (typeof config.level === 'string') {
 
-                config = { level: LogLevels.fromName(config.level),
-                           target: config.target };
+                    // needed to convert the symbol back to the enum.  Not sure
+                    // this is very clean though and wish there was a better way
+                    // to do this.
+
+                    config = { level: LogLevels.fromName(config.level),
+                        target: config.target };
+
+                }
+
+                return config;
 
             }
-
-            return config;
 
         }
 

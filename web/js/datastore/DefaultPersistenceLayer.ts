@@ -27,18 +27,12 @@ const log = Logger.create();
  */
 export class DefaultPersistenceLayer implements PersistenceLayer {
 
-    public readonly stashDir: string;
-
-    public readonly logsDir: string;
-
     public readonly datastore: Datastore;
 
     private datastoreMutations: DatastoreMutations;
 
     constructor(datastore: Datastore) {
         this.datastore = datastore;
-        this.stashDir = this.datastore.stashDir;
-        this.logsDir = this.datastore.logsDir;
         this.datastoreMutations = DatastoreMutations.create('written');
     }
 

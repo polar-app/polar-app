@@ -1,8 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-    mode: 'production',
+    // mode: 'production',
     entry: {
         "chrome": [ "./web/js/apps/chrome.ts"],
     },
@@ -23,7 +24,7 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    // devtool: "source-map",
+    devtool: "source-map",
     output: {
         path: path.resolve(__dirname, 'web/dist'),
         filename: '[name]-bundle.js',
@@ -36,6 +37,7 @@ module.exports = {
         tls: 'empty',
     },
     plugins: [
+        // new BundleAnalyzerPlugin(),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -44,7 +46,8 @@ module.exports = {
         })
     ],
     optimization: {
-        minimize: true
+        minimize: true,
+        usedExports: true
     }
 
 }

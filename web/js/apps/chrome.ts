@@ -1,4 +1,3 @@
-
 import {Launcher} from './Launcher';
 import {FirebasePersistenceLayerFactory} from "../datastore/factories/FirebasePersistenceLayerFactory";
 import {Logger} from '../logger/Logger';
@@ -16,3 +15,5 @@ async function persistenceLayerFactory() {
 new Launcher(persistenceLayerFactory).launch()
     .then(() => log.info("App now loaded."))
     .catch(err => log.error(err));
+
+

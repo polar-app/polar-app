@@ -22,3 +22,4 @@ function persistenceLayerFactory() {
 new Launcher_1.Launcher(persistenceLayerFactory).launch()
     .then(() => log.info("App now loaded."))
     .catch(err => log.error(err));
+//# sourceMappingURL=chrome.js.map

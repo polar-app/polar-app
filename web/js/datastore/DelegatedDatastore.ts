@@ -21,10 +21,6 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
 
     public readonly directories: Directories;
 
-    public readonly logsDir: string;
-
-    public readonly stashDir: string;
-
     public readonly filesDir: string;
 
     private readonly delegate: Datastore;
@@ -35,8 +31,6 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         this.id = 'delegated:' + delegate.id;
         this.delegate = delegate;
         this.directories = new Directories();
-        this.logsDir = delegate.logsDir;
-        this.stashDir = delegate.stashDir;
         this.filesDir = this.directories.filesDir;
 
     }

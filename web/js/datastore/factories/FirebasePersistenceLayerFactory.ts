@@ -7,6 +7,7 @@ import {AbstractAdvertisingPersistenceLayer} from '../advertiser/AbstractAdverti
 import {PersistenceLayer} from '../PersistenceLayer';
 import {ErrorListener} from '../Datastore';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
+import {Firebase} from '../../firebase/Firebase';
 
 const log = Logger.create();
 
@@ -14,7 +15,9 @@ export class FirebasePersistenceLayerFactory {
 
     public static create(): ListenablePersistenceLayer {
 
-        log.info("Using firebase persistence layer and disk store");
+        log.info("Using firebase persistence layer");
+
+        Firebase.init();
 
         const datastore = new FirebaseDatastore();
 
@@ -31,14 +34,6 @@ export class NullListenablePersistenceLayer extends AbstractAdvertisingPersisten
     }
 
     protected broadcastEvent(event: PersistenceLayerEvent): void {
-    }
-
-    public init(errorListener?: ErrorListener): Promise<void> {
-        return super.delegate.init(errorListener);
-    }
-
-    public stop(): Promise<void> {
-        return super.delegate.stop();
     }
 
 }

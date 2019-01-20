@@ -26,10 +26,6 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     public readonly datastore: Datastore;
 
-    public readonly stashDir: string;
-
-    public readonly logsDir: string;
-
     protected readonly reactor = new SimpleReactor<PersistenceLayerEvent>();
 
     /**
@@ -40,13 +36,15 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
     protected constructor(delegate: PersistenceLayer) {
         this.datastore = delegate.datastore;
         this.delegate = delegate;
-        this.stashDir = this.delegate.stashDir;
-        this.logsDir = this.delegate.logsDir;
     }
 
-    public abstract init(errorListener?: ErrorListener): Promise<void>;
+    public init(errorListener?: ErrorListener): Promise<void> {
+        return this.delegate.init(errorListener);
+    }
 
-    public abstract stop(): Promise<void>;
+    public stop(): Promise<void> {
+        return this.delegate.stop();
+    }
 
     public addEventListener(listener: PersistenceLayerListener): Releaseable {
         return this.reactor.addEventListener(listener);

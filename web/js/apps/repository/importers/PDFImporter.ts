@@ -30,7 +30,9 @@ export class PDFImporter {
 
     public async importFile(filePath: string): Promise<Optional<ImportedFile>> {
 
-        if (await PDFImporter.isWithinStashdir(filePath)) {
+        const directories = new Directories();
+
+        if (await PDFImporter.isWithinStashdir(directories.stashDir, filePath)) {
 
             // prevent the user from re-importing/opening a file that is ALREADY
             // in the stash dir.
@@ -65,7 +67,7 @@ export class PDFImporter {
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename);
 
-        const stashFilePath = FilePaths.join(persistenceLayer.stashDir, filename);
+        const stashFilePath = FilePaths.join(directories.stashDir, filename);
 
         // always read from a stream here as some of the PDFs we might want to
         // import could be rather large.  Also this needs to be a COPY of the
@@ -112,13 +114,11 @@ export class PDFImporter {
 
     }
 
-    private static async isWithinStashdir(path: string): Promise<boolean> {
-
-        const directories = new Directories();
+    private static async isWithinStashdir(stashDir: string, path: string): Promise<boolean> {
 
         const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
 
-        const stashDir = await Files.realpathAsync(directories.stashDir);
+        stashDir = await Files.realpathAsync(stashDir);
 
         return currentDirname === stashDir;
 

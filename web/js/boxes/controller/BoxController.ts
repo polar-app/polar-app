@@ -16,6 +16,7 @@ import {Optional} from '../../util/ts/Optional';
 
 // import {} from 'interactjs';
 const interact = require('interactjs');
+// import * as interact from 'interactjs';
 
 const {DragRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator");
 const {ResizeRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");

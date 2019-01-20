@@ -1,24 +1,17 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {
-    Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent,
-    SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch,
-    AbstractDatastore, ErrorListener } from './Datastore';
-import {Preconditions, isPresent} from '../Preconditions';
+import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult} from './Datastore';
+import {isPresent, Preconditions} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FilePaths} from '../util/FilePaths';
-import {Directories} from './Directories';
 import {Logger} from '../logger/Logger';
-import {DeleteResult} from './Datastore';
-import {FileDeleted, FileHandle, Files} from '../util/Files';
+import {FileHandle, Files} from '../util/Files';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
-import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DiskInitResult} from './DiskDatastore';
 
@@ -28,16 +21,6 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'memory';
 
-    public readonly stashDir: string;
-
-    public readonly filesDir: string;
-
-    public readonly dataDir: string;
-
-    public readonly logsDir: string;
-
-    public readonly directories: Directories;
-
     protected readonly docMetas: {[fingerprint: string]: string} = {};
 
     protected readonly files: {[key: string]: FileData} = {};
@@ -45,23 +28,13 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     constructor() {
         super();
 
-        this.directories = new Directories();
-
-        // these dir values are used in the UI and other places so we need to
-        // actually have values for them.
-        this.dataDir = Directories.getDataDir().path;
-        this.stashDir = FilePaths.create(this.dataDir, "stash");
-        this.filesDir = FilePaths.create(this.dataDir, "files");
-
-        this.logsDir = FilePaths.create(this.dataDir, "logs");
-
         this.docMetas = {};
 
     }
 
     // noinspection TsLint
     public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<DiskInitResult> {
-        return await this.directories.init();
+        return {};
     }
 
     public async stop() {

@@ -27,23 +27,6 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     readonly id: DatastoreID;
 
     /**
-     * @Deprecated
-     */
-    readonly stashDir: string;
-
-    // readonly filesDir: string;
-
-    /**
-     * @Deprecated
-     */
-    readonly logsDir: string;
-
-    /**
-     * @Deprecated
-     */
-    readonly directories: Directories;
-
-    /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
     init(errorListener?: ErrorListener): Promise<InitResult>;
