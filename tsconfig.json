@@ -1,9 +1,6 @@
 {
     "compilerOptions": {
 
-        "sourceMap": true,
-        "inlineSourceMap": false,
-        "inlineSources": false,
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
@@ -13,6 +10,8 @@
         "noImplicitReturns": true,
         "removeComments": true,
         "strictFunctionTypes": true,
+        "inlineSourceMap": true,
+        "inlineSources": true,
         "target": "ES2015",
         "module": "commonjs",
         "moduleResolution": "node",
