@@ -8,7 +8,8 @@ const log = Logger.create();
 
 /**
  * The link handler works with the the iframe, and all child iframes, and
- * intercepts all link clicks, and aborts them, forwarding them to the shell.
+ * intercepts all link clicks, and aborts them, forwarding them to the shell
+ * if we're running within Electron.
  */
 export class LinkHandler {
 
@@ -18,9 +19,9 @@ export class LinkHandler {
         this.iframe = iframe;
     }
 
-    async start() {
+    public async start() {
 
-        let doc = await IFrames.waitForContentDocument(this.iframe);
+        const doc = await IFrames.waitForContentDocument(this.iframe);
 
         await DocumentReadyStates.waitFor(doc, 'interactive');
 
@@ -72,10 +73,10 @@ export class LinkHandler {
 
     private handleLinkEvent(event: Event) {
 
-        let anchor = Events.getAnchor(event.target);
+        const anchor = Events.getAnchor(event.target);
 
-        if(anchor) {
-            let href = anchor.href;
+        if (anchor) {
+            const href = anchor.href;
             log.info("Opening URL: " + href);
             shell.openExternal(href);
         }

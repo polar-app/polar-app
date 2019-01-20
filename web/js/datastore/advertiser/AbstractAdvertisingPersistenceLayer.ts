@@ -44,7 +44,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         this.logsDir = this.delegate.logsDir;
     }
 
-    public abstract init(): Promise<void>;
+    public abstract init(errorListener?: ErrorListener): Promise<void>;
 
     public abstract stop(): Promise<void>;
 

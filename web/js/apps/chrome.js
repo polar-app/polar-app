@@ -1,53 +1,24 @@
-//const {$} = require('jquery');
-const {DocMeta} = require("../metadata/DocMeta");
-const {DocMetas} = require("../metadata/DocMetas");
-const {DocInfo} = require("../metadata/DocInfo");
-const {Controller} = require("../controller/Controller.js");
-
-const {PersistenceLayer} = require("../datastore/PersistenceLayer.js");
-const {MemoryDatastore} = require("../datastore/MemoryDatastore.js");
-const {Electron} = require("../Electron");
-const {Launcher} = require("./Launcher");
-
-
-function createDocMeta0() {
-
-    // create some fake documents for our example PDFs
-    let fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
-
-    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
-    DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
-    return docMeta;
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Launcher_1 = require("./Launcher");
+const FirebasePersistenceLayerFactory_1 = require("../datastore/factories/FirebasePersistenceLayerFactory");
+const Logger_1 = require("../logger/Logger");
+const log = Logger_1.Logger.create();
+function persistenceLayerFactory() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const persistenceLayer = FirebasePersistenceLayerFactory_1.FirebasePersistenceLayerFactory.create();
+        yield persistenceLayer.init();
+        return persistenceLayer;
+    });
 }
-
-function createDocMeta1() {
-
-    // create some fake documents for our example PDFs
-    let fingerprint = "htmldoc01";
-
-    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 1);
-    DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 1, percentage: 25})
-    return docMeta;
-
-}
-
-async function persistenceLayerFactory() {
-
-    console.log("Using mock persistence layer and memory store");
-
-    let datastore = new MemoryDatastore();
-    let persistenceLayer = new PersistenceLayer(datastore);
-
-    await persistenceLayer.init();
-
-    await persistenceLayer.syncDocMeta(createDocMeta0());
-    await persistenceLayer.syncDocMeta(createDocMeta1());
-
-    return persistenceLayer;
-
-}
-
-new Launcher(persistenceLayerFactory).launch().then(function () {
-    console.log("App now loaded.");
-});
+new Launcher_1.Launcher(persistenceLayerFactory).launch()
+    .then(() => log.info("App now loaded."))
+    .catch(err => log.error(err));

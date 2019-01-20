@@ -1,5 +1,7 @@
 # 1.10.0
 
+- multi-select and ability to tag multiple docs at once.
+
 - Sorting by tags is now much better and actually works.  If you double click
   the sort column it will show you untagged documents sorted by the time they 
   were added. 
