@@ -44,7 +44,14 @@ export class WebView extends View {
 
         log.info("Percentage is now: " + perc);
 
+        const headerElement = <HTMLElement> document.querySelector("#polar-header");
+
+        if (headerElement) {
+            headerElement.style.display = 'block';
+        }
+
         const progressElement = <HTMLProgressElement> document.querySelector("#polar-progress progress");
+
         progressElement.value = perc;
 
         // now update the description of the doc at the bottom.
