@@ -13,6 +13,8 @@ import {Captured} from './renderer/Captured';
 
 const log = Logger.create();
 
+const MAX_TITLE_LENGTH = 50;
+
 export class ContentCaptureExecutor {
 
     private static directories = new Directories();
@@ -49,9 +51,11 @@ export class ContentCaptureExecutor {
 
         const url = captured.url;
 
+        const title = (captured.title || "").substring(0, MAX_TITLE_LENGTH);
+
         const hash = Hashcodes.createID(url);
         const stashDir = this.directories.stashDir;
-        const filename = hash + '-' + Filenames.sanitize(captured.title);
+        const filename = hash + '-' + Filenames.sanitize(title);
 
         const phzPath = FilePaths.join(stashDir, filename) + '.phz';
 

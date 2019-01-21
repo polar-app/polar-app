@@ -1,5 +1,9 @@
 # 1.10.0
 
+- Fixed bug where long titles in URLs could generate filenames that were too
+  long and couldn't be represented on the filesystem.  We not truncate at 50 
+  chars.
+
 - shift selects a range of documents, control selects one document at a time 
   for multiple documents at once.
 
