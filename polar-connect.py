@@ -244,7 +244,7 @@ class WebServer:
 
     def handlerWrapper(self, req):
         if len(req.body) == 0:
-            body = makeBytes('AnkiConnect v.{}'.format(API_VERSION))
+            body = makeBytes('PolarConnect v.{}'.format(API_VERSION))
         else:
             try:
                 params = json.loads(makeStr(req.body))
@@ -281,10 +281,10 @@ class WebServer:
 
 
 #
-# AnkiConnect
+# PolarConnect
 #
 
-class AnkiConnect:
+class PolarConnect:
     def __init__(self):
         self.server = WebServer(self.handler)
         self.log = None
@@ -300,7 +300,7 @@ class AnkiConnect:
         except:
             QMessageBox.critical(
                 self.window(),
-                'AnkiConnect',
+                'PolarConnect',
                 'Failed to listen on port {}.\nMake sure it is available and is not in use.'.format(NET_PORT)
             )
 
@@ -483,7 +483,7 @@ class AnkiConnect:
     def upgrade(self):
         response = QMessageBox.question(
             self.window(),
-            'AnkiConnect',
+            'PolarConnect',
             'Upgrade to the latest version?',
             QMessageBox.Yes | QMessageBox.No
         )
@@ -496,12 +496,12 @@ class AnkiConnect:
                     fp.write(makeStr(data))
                 QMessageBox.information(
                     self.window(),
-                    'AnkiConnect',
+                    'PolarConnect',
                     'Upgraded to the latest version, please restart Anki.'
                 )
                 return True
             except Exception as e:
-                QMessageBox.critical(self.window(), 'AnkiConnect', 'Failed to download latest version.')
+                QMessageBox.critical(self.window(), 'PolarConnect', 'Failed to download latest version.')
                 raise e
 
         return False
@@ -1160,4 +1160,4 @@ class AnkiConnect:
 # Entry
 #
 
-ac = AnkiConnect()
+ac = PolarConnect()
