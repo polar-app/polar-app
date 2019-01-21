@@ -174,6 +174,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         if (event.shiftKey) {
 
+            // select a range
+
             let min: number = 0;
             let max: number = 0;
 
@@ -186,6 +188,13 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             selected = Numbers.range(Math.min(min, selectedIdx),
                                      Math.max(max, selectedIdx));
 
+        }
+
+        if (event.ctrlKey) {
+
+            // one at a time
+
+            selected = [...this.state.selected, selectedIdx];
         }
 
         this.setState({...this.state, selected});

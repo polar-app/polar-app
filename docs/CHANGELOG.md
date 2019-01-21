@@ -1,5 +1,8 @@
 # 1.10.0
 
+- shift selects a range of documents, control selects one document at a time 
+  for multiple documents at once.
+
 - New buttons for '+ Add' to import from disk or capture web page.  Much easier
   to determine how to add content to polar.
 

@@ -5,6 +5,7 @@ import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {RepoSidebar} from './RepoSidebar';
 import {SplitBar, SplitBarLeft, SplitBarRight} from './SplitBar';
+import Button from 'reactstrap/lib/Button';
 
 const log = Logger.create();
 
@@ -32,7 +33,16 @@ export class RepoHeader extends React.Component<IProps, IState> {
                 </SplitBarLeft>
 
                 <SplitBarRight>
+
                     <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
+
+                    <Button size="sm"
+                            className="ml-1"
+                            onClick={() => document.location!.href = 'https://getpolarized.io/docs/'}
+                            color="light">
+                        <i className="fas fa-question"></i>
+                    </Button>
+
                 </SplitBarRight>
 
             </SplitBar>
