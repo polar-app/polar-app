@@ -117,6 +117,7 @@ export class MainAppController {
                 if (browserWindow.isClosable() && ! browserWindow.isDestroyed()) {
                     log.info(`Closing window id=${id}, url=${url}`);
                     browserWindow.close();
+                    browserWindow.destroy();
                 } else {
                     log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
                 }

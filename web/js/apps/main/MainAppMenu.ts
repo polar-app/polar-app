@@ -249,7 +249,7 @@ export class MainAppMenu {
                     label: 'Quit',
                     visible: ! isMacOS,
                     accelerator: 'CmdOrCtrl+Q',
-                    click: this.mainAppController.cmdExit.bind(this.mainAppController)
+                    click: () => this.mainAppController.cmdExit()
                 },
             ]
         };
