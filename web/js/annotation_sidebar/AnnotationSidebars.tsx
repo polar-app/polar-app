@@ -13,6 +13,9 @@ export class AnnotationSidebars {
 
         const splitter = new Splitter('.polar-viewer', '.polar-sidebar');
 
+        const polarSidebar = document.querySelector(".polar-sidebar")! as HTMLElement;
+        polarSidebar.style.display = 'block';
+
         splitter.collapse();
 
         ReactDOM.render(

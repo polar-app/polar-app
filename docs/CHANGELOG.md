@@ -1,5 +1,9 @@
 # 1.10.0
 
+- Fixed (I hope) long standing ugly bug of 'crash' of Electron on app exit due
+  to windows not being destroyed via destroy().  Close does not release the 
+  resources properly.  
+
 - Fixed bug where long titles in URLs could generate filenames that were too
   long and couldn't be represented on the filesystem.  We not truncate at 50 
   chars.
