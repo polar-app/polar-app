@@ -170,7 +170,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             selectedIdx = parseInt(selectedIdx);
         }
 
-        let selected: ReadonlyArray<number> = [selectedIdx];
+        let selected: number[] = [selectedIdx];
 
         if (event.shiftKey) {
 
@@ -185,8 +185,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 max = Arrays.last(sorted)!;
             }
 
-            selected = Numbers.range(Math.min(min, selectedIdx),
-                                     Math.max(max, selectedIdx));
+            selected = [...Numbers.range(Math.min(min, selectedIdx),
+                                         Math.max(max, selectedIdx))];
 
         }
 
@@ -194,7 +194,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
             // one at a time
 
-            selected = [...this.state.selected, selectedIdx];
+            selected = [...this.state.selected];
+
+            if (selected.includes(selectedIdx)) {
+                selected.splice(selected.indexOf(selectedIdx), 1);
+            } else {
+                selected = [...selected, selectedIdx];
+            }
+
         }
 
         this.setState({...this.state, selected});
