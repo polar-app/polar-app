@@ -28,12 +28,33 @@ describe('Strings', function() {
 
     describe('toUnixLineNewLines', function() {
 
-        it("basic", function () {
+        it("basic", function() {
 
             assert.equal(Strings.toUnixLineNewLines('this\r\nis\r\nlong\r\n'), 'this\nis\nlong\n')
         });
 
     });
 
+    describe('indent', function() {
+
+        it("basic", function() {
+
+            assert.equal(Strings.indent("hello", "  "), "  hello");
+
+        });
+
+        it("two lines", function() {
+
+            assert.equal(Strings.indent("hello\nworld", "  "), "  hello\n  world");
+
+        });
+
+        it("three lines", function() {
+
+            assert.equal(Strings.indent("hello\nworld\ncat", "  "), "  hello\n  world\n  cat");
+
+        });
+
+    });
 
 });

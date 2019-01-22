@@ -5,13 +5,15 @@ import {TextType} from './TextType';
 import {Texts} from './Texts';
 import {Ref} from './Refs';
 
+let sequenceGenerator: number = 0;
+
 export class Comments {
 
     public static createTextComment(text: string, ref: Ref) {
 
         const content = Texts.create(text, TextType.TEXT);
 
-        const id = Hashcodes.createRandomID();
+        const id = Hashcodes.createID(sequenceGenerator++);
         const created = ISODateTimeStrings.create();
         const lastUpdated = created;
 
@@ -23,7 +25,7 @@ export class Comments {
 
         const content = Texts.create(text, TextType.HTML);
 
-        const id = Hashcodes.createRandomID();
+        const id = Hashcodes.createID(sequenceGenerator++);
         const created = ISODateTimeStrings.create();
         const lastUpdated = created;
 

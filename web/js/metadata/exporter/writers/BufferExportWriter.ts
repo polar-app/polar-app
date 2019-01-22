@@ -11,7 +11,7 @@ export class BufferExportWriter implements ExportWriter {
     private buffer: string[] = [];
 
     public async init(): Promise<void> {
-
+        // noop
     }
 
     public async write(data: string): Promise<void> {
@@ -19,6 +19,7 @@ export class BufferExportWriter implements ExportWriter {
     }
 
     public async close(err?: Error): Promise<void> {
+        // noop
     }
 
     public toString(): string {

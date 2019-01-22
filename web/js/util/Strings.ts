@@ -70,4 +70,10 @@ export class Strings {
         return str.replace(/\r\n/g, '\n');
     }
 
+    public static indent(text: string, padding: string) {
+        text = padding + text;
+        text = text.replace(/\n/g, "\n" + padding);
+        return text;
+    }
+
 }

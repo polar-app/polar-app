@@ -6,6 +6,7 @@ import {AbstractExportConverter} from './AbstractExportConverter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
+import {Strings} from "../../util/Strings";
 
 export class JSONExportConverter extends AbstractExportConverter {
 
@@ -14,10 +15,10 @@ export class JSONExportConverter extends AbstractExportConverter {
     private hasItem: boolean = false;
 
     public async init(writer: Writable): Promise<void> {
-        return super.init(writer);
+        super.init(writer);
 
         await writer.write("{\n");
-        await writer.write("  \"version\": 1.0,\n");
+        await writer.write("  \"version\": 1,\n");
         await writer.write("  \"items\": [\n");
 
     }
@@ -33,19 +34,19 @@ export class JSONExportConverter extends AbstractExportConverter {
     }
 
     protected async convertAreaHighlight(writer: Writable, areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
-        await writer.write(JSON.stringify(areaHighlight, null, "  "));
+        await writer.write(this.toRecord(areaHighlight));
     }
 
     protected async convertTextHighlight(writer: Writable, textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
-        await writer.write(JSON.stringify(textHighlight, null, "  "));
+        await writer.write(this.toRecord(textHighlight));
     }
 
     protected async convertComment(writer: Writable, comment: Comment, exportable: AnnotationHolder): Promise<void> {
-        await writer.write(JSON.stringify(comment, null, "  "));
+        await writer.write(this.toRecord(comment));
     }
 
     protected async convertFlashcard(writer: Writable, flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
-        await writer.write(JSON.stringify(Flashcard, null, "  "));
+        await writer.write(this.toRecord(Flashcard));
     }
 
     public async close(writer: Writable, err?: Error): Promise<void> {
@@ -55,4 +56,9 @@ export class JSONExportConverter extends AbstractExportConverter {
 
         return super.close(writer, err);
     }
+
+    private toRecord(obj: any) {
+        return Strings.indent(JSON.stringify(obj, null, "  "), "    ");
+    }
+
 }

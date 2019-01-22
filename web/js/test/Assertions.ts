@@ -28,10 +28,12 @@ export function assertJSON(actual: any, expected: any, message?: string) {
 
 }
 
-export function toJSON(obj: any) {
+export function toJSON(obj: any): string {
 
     if (typeof obj === "string") {
-        return obj;
+        // first parse it as as JSON into an object so it's serialized using
+        // the same canonical function below.
+        obj = JSON.parse(obj);
     }
 
     // if(obj instanceof Array) {

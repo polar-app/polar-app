@@ -37,8 +37,5 @@ describe('BufferExportWriter', function() {
 
     });
 
-
-
-
 });
 
