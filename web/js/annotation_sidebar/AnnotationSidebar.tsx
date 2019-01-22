@@ -15,6 +15,9 @@ import {CommentModel} from './CommentModel';
 import {Ref, Refs} from '../metadata/Refs';
 import {FlashcardModel} from './FlashcardModel';
 import {Flashcard} from '../metadata/Flashcard';
+import {ExportButton} from '../ui/export/ExportButton';
+import {ExportFormat, Exporters} from '../metadata/exporter/Exporters';
+import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
 
 const log = Logger.create();
 
@@ -26,6 +29,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         super(props, context);
 
         this.scrollToAnnotation = this.scrollToAnnotation.bind(this);
+        this.onExport = this.onExport.bind(this);
 
         const annotations = DocAnnotations.getAnnotationsForPage(props.docMeta);
 
@@ -208,7 +212,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
     }
 
-    private createHTML(annotations: DocAnnotation[]) {
+    private createItems(annotations: DocAnnotation[]) {
 
         // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
 
@@ -225,17 +229,56 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
     }
 
+    private onExport(path: string, format: ExportFormat) {
+
+        Exporters.doExport(path, format, this.props.docMeta);
+
+    }
+
     public render() {
+
         const { annotations } = this.state;
+
+        const AnnotationHeader = () => {
+
+            if (annotations.length === 0) {
+                return (<div></div>);
+            }
+
+            return (
+
+
+                <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1">
+
+                    <SplitBar>
+
+                        <SplitBarLeft>
+                            <div style={{fontWeight: 'bold', fontSize: '14px'}}>Annotations</div>
+                        </SplitBarLeft>
+
+                        <SplitBarRight>
+
+                            <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
+
+                        </SplitBarRight>
+
+
+                    </SplitBar>
+
+                </div>
+
+            );
+
+        };
 
         return (
 
             <div id="annotation-manager" className="annotation-sidebar">
 
-                {/*<RichTextEditor4 id='asdf'/>*/}
+                <AnnotationHeader/>
 
                 <div className="annotations">
-                    {this.createHTML(annotations)}
+                    {this.createItems(annotations)}
                 </div>
 
             </div>

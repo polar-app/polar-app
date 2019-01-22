@@ -23,14 +23,16 @@ export class ExportButton extends React.Component<IProps, IState> {
                 <UncontrolledDropdown direction="down"
                                       size="sm">
 
-                    <DropdownToggle color="primary" caret>
+                    <DropdownToggle color="primary" caret style={{fontSize: '14px'}}>
 
                         <i className="fas fa-file-export" style={{marginRight: '5px'}}></i>
                         Export
+
                     </DropdownToggle>
+
                     <DropdownMenu>
                         <DropdownItem size="sm" onClick={() => this.doExport('markdown')}>Markdown</DropdownItem>
-                        <DropdownItem size="sm" onClick={() => this.doExport('html')}>HTML</DropdownItem>
+                        {/*<DropdownItem size="sm" onClick={() => this.doExport('html')}>HTML</DropdownItem>*/}
                         <DropdownItem size="sm" onClick={() => this.doExport('json')}>JSON</DropdownItem>
                     </DropdownMenu>
                 </UncontrolledDropdown>

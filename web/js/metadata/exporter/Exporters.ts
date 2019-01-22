@@ -8,6 +8,8 @@ import {AnnotationHolder} from '../AnnotationHolder';
 import {FileWriter} from './writers/FileWriter';
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
+import {DocMeta} from '../DocMeta';
+import {AnnotationHolders} from '../AnnotationHolders';
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -20,18 +22,25 @@ import {JSONExporter} from './JSONExporter';
  */
 export class Exporters {
 
-    public static async doExport(path: string, format: ExportFormat): Promise<void> {
-
-        // create the writer (file, clipboard, etc)
+    public static async doExport(path: string,
+                                 format: ExportFormat,
+                                 docMeta: DocMeta): Promise<void> {
 
         const writer = new FileWriter(path);
+
+        await writer.init();
 
         // create the exporter (markdown, html, etc)
         const exporter = this.toExporter(format);
 
         await exporter.init(writer);
 
-        // TODO: need to get all the annotations sequentially...
+        const annotationHolders = [...AnnotationHolders.fromDocMeta(docMeta)]
+            .sort((a, b) => a.annotation.created.localeCompare(b.annotation.created));
+
+        for (const annotationHolder of annotationHolders) {
+            await exporter.write(annotationHolder);
+        }
 
         await exporter.close();
 
@@ -110,6 +119,6 @@ export interface Writer extends Writable {
  * A supplier that provides an exportable when called. We use a supplier to
  * avoid having to keep everything in memory during an export.
  */
-export type ExportableSupplier = () => Promise<AnnotationHolder>;
+export type ExportableSupplier = () => Promise<ReadonlyArray<AnnotationHolder>>;
 
 export type ExportFormat = 'html' | 'markdown' | 'json';

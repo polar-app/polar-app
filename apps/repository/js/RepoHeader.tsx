@@ -26,26 +26,28 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
         return (
 
-            <SplitBar>
+            <div className="border-bottom">
+                <SplitBar>
 
-                <SplitBarLeft>
-                    <RepoSidebar/>
-                </SplitBarLeft>
+                    <SplitBarLeft>
+                        <RepoSidebar/>
+                    </SplitBarLeft>
 
-                <SplitBarRight>
+                    <SplitBarRight>
 
-                    <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
+                        <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
 
-                    <Button size="sm"
-                            className="ml-1"
-                            onClick={() => document.location!.href = 'https://getpolarized.io/docs/'}
-                            color="light">
-                        <i className="fas fa-question"></i>
-                    </Button>
+                        <Button size="sm"
+                                className="ml-1"
+                                onClick={() => document.location!.href = 'https://getpolarized.io/docs/'}
+                                color="light">
+                            <i className="fas fa-question"></i>
+                        </Button>
 
-                </SplitBarRight>
+                    </SplitBarRight>
 
-            </SplitBar>
+                </SplitBar>
+            </div>
 
         );
 

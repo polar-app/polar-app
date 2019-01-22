@@ -54,7 +54,7 @@ export class TextInputPopover extends React.Component<IProps, IState> {
                            autoFocus
                            placeholder={this.props.placement || ''}/>
 
-                    <div className="text-right">
+                    <div className="text-right mt-1">
 
                         <Button color="secondary"
                                 size="sm"
