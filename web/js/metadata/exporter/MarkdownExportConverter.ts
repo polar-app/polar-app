@@ -5,7 +5,6 @@ import {AreaHighlight} from '../AreaHighlight';
 import {AbstractExportConverter} from './AbstractExportConverter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
-import {Optional} from "../../util/ts/Optional";
 import {Texts} from "../Texts";
 
 export class MarkdownExportConverter extends AbstractExportConverter {
@@ -16,8 +15,9 @@ export class MarkdownExportConverter extends AbstractExportConverter {
         // noop
 
         const output =
-            `created: ${areaHighlight.created}` +
-            `color: ${areaHighlight.color || ''}`
+            `created: ${areaHighlight.created}\n` +
+            `color: ${areaHighlight.color || ''}\n` +
+            `type: area-highlight\n`
             ;
 
         await writer.write(output);
@@ -28,7 +28,8 @@ export class MarkdownExportConverter extends AbstractExportConverter {
 
         const output =
             `created: ${textHighlight.created}\n` +
-            `color: ${textHighlight.color || ''}\n`
+            `color: ${textHighlight.color || ''}\n` +
+            `type: text-highlight\n`
             ;
 
         await writer.write(output);
@@ -43,14 +44,38 @@ export class MarkdownExportConverter extends AbstractExportConverter {
 
     protected async convertComment(writer: Writable, comment: Comment, exportable: AnnotationHolder): Promise<void> {
 
+        const output =
+            `created: ${comment.created}\n` +
+            `type: comment\n`
+        ;
 
+        await writer.write(output);
 
+        const body = Texts.toString(comment.content);
+
+        if (body) {
+            await writer.write(body);
+        }
 
     }
 
     protected async convertFlashcard(writer: Writable, flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
-        // noop
-    }
 
+        for (const fieldName of Object.keys(flashcard.fields)) {
+
+            const output =
+                `created: ${flashcard.created}\n` +
+                `type: flashcard\n`
+            ;
+
+            await writer.write(output);
+
+            const field = flashcard.fields[fieldName];
+
+            await writer.write(`${fieldName}: ` + Texts.toString(field));
+
+        }
+
+    }
 
 }
