@@ -61,7 +61,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
                         <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
 
-                        Cloud Sync
+                        Enable Cloud Sync
 
                     </Button>
 
