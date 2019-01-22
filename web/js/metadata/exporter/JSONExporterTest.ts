@@ -1,4 +1,4 @@
-import {BufferExportWriter} from './writers/BufferExportWriter';
+import {BufferWriter} from './writers/BufferWriter';
 import {JSONExporter} from './JSONExporter';
 import {Comments} from '../Comments';
 import {AnnotationType} from '../AnnotationType';
@@ -12,7 +12,7 @@ describe('JSONExporter', function() {
 
         TestingTime.freeze();
 
-        const writer = new BufferExportWriter();
+        const writer = new BufferWriter();
 
         const converter = new JSONExporter();
 

@@ -6,7 +6,7 @@ import {Writer} from '../Exporters';
 /**
  * Simple writer that just writes to memory
  */
-export class BufferExportWriter implements Writer {
+export class BufferWriter implements Writer {
 
     private buffer: string[] = [];
 

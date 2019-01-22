@@ -3,7 +3,7 @@ import {Files} from '../../../util/Files';
 import {Preconditions} from '../../../Preconditions';
 import {Writer} from '../Exporters';
 
-export class FileExportWriter implements Writer {
+export class FileWriter implements Writer {
 
     private readonly path: string;
 

@@ -1,11 +1,11 @@
-import {BufferExportWriter} from './BufferExportWriter';
+import {BufferWriter} from './BufferWriter';
 import {assert} from 'chai';
 
-describe('BufferExportWriter', function() {
+describe('BufferWriter', function() {
 
     it("basic", async function() {
 
-        const writer = new BufferExportWriter();
+        const writer = new BufferWriter();
 
         await writer.write("hello");
         await writer.write("world");
@@ -18,7 +18,7 @@ describe('BufferExportWriter', function() {
 
     it("no data", async function() {
 
-        const writer = new BufferExportWriter();
+        const writer = new BufferWriter();
 
         await writer.close();
 
@@ -28,7 +28,7 @@ describe('BufferExportWriter', function() {
 
     it("one write", async function() {
 
-        const writer = new BufferExportWriter();
+        const writer = new BufferWriter();
         await writer.write("hello");
 
         await writer.close();
