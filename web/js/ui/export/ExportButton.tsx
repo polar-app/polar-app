@@ -1,7 +1,7 @@
 import React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {Logger} from '../../logger/Logger';
-import {ExportFormat} from '../../metadata/exporter/Exporter';
+import {ExportFormat} from '../../metadata/exporter/Exporters';
 import {remote} from 'electron';
 
 const log = Logger.create();

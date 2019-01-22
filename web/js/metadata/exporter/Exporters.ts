@@ -15,9 +15,9 @@ import {AnnotationHolder} from '../AnnotationHolder';
  *
  *
  */
-export class Exporter {
+export class Exporters {
 
-    public static async export(): Promise<void> {
+    public static async doExport(): Promise<void> {
 
         // create the writer (file, clipboard, etc)
 
@@ -36,15 +36,15 @@ export class Exporter {
 /**
  *
  */
-export interface ExportConverter {
+export interface Exporter {
 
     readonly id: string;
 
     init(writer: Writable): Promise<void>;
 
-    convert(writer: Writable, exportable: AnnotationHolder): Promise<void>;
+    write(exportable: AnnotationHolder): Promise<void>;
 
-    close(writer: Writable, err?: Error): Promise<void>;
+    close(err?: Error): Promise<void>;
 
 }
 
@@ -66,7 +66,7 @@ export interface Writable {
  * resources on endExport.
  *
  */
-export interface ExportWriter extends Writable {
+export interface Writer extends Writable {
 
     init(): Promise<void>;
 

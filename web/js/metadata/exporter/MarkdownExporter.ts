@@ -1,17 +1,17 @@
-import {Writable} from "./Exporter";
+import {Writable} from "./Exporters";
 import {AnnotationHolder} from "../AnnotationHolder";
 import {TextHighlight} from "../TextHighlight";
 import {AreaHighlight} from '../AreaHighlight';
-import {AbstractExportConverter} from './AbstractExportConverter';
+import {AbstractExporter} from './AbstractExporter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
 
-export class MarkdownExportConverter extends AbstractExportConverter {
+export class MarkdownExporter extends AbstractExporter {
 
     public readonly id: string = 'markdown';
 
-    protected async convertAreaHighlight(writer: Writable, areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
+    protected async writeAreaHighlight(areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
         // noop
 
         const output =
@@ -20,11 +20,11 @@ export class MarkdownExportConverter extends AbstractExportConverter {
             `type: area-highlight\n`
             ;
 
-        await writer.write(output);
+        await this.writer!.write(output);
 
     }
 
-    protected async convertTextHighlight(writer: Writable, textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
+    protected async writeTextHighlight(textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
 
         const output =
             `created: ${textHighlight.created}\n` +
@@ -32,34 +32,34 @@ export class MarkdownExportConverter extends AbstractExportConverter {
             `type: text-highlight\n`
             ;
 
-        await writer.write(output);
+        await this.writer!.write(output);
 
         const body = Texts.toString(textHighlight.text);
 
         if (body) {
-            await writer.write(body);
+            await this.writer!.write(body);
         }
 
     }
 
-    protected async convertComment(writer: Writable, comment: Comment, exportable: AnnotationHolder): Promise<void> {
+    protected async writeComment(comment: Comment, exportable: AnnotationHolder): Promise<void> {
 
         const output =
             `created: ${comment.created}\n` +
             `type: comment\n`
         ;
 
-        await writer.write(output);
+        await this.writer!.write(output);
 
         const body = Texts.toString(comment.content);
 
         if (body) {
-            await writer.write(body);
+            await this.writer!.write(body);
         }
 
     }
 
-    protected async convertFlashcard(writer: Writable, flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
+    protected async writeFlashcard(flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
 
         for (const fieldName of Object.keys(flashcard.fields)) {
 
@@ -68,11 +68,11 @@ export class MarkdownExportConverter extends AbstractExportConverter {
                 `type: flashcard\n`
             ;
 
-            await writer.write(output);
+            await this.writer!.write(output);
 
             const field = flashcard.fields[fieldName];
 
-            await writer.write(`${fieldName}: ` + Texts.toString(field));
+            await this.writer!.write(`${fieldName}: ` + Texts.toString(field));
 
         }
 

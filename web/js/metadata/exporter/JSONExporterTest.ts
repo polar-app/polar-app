@@ -1,12 +1,12 @@
 import {BufferExportWriter} from './writers/BufferExportWriter';
-import {JSONExportConverter} from './JSONExportConverter';
+import {JSONExporter} from './JSONExporter';
 import {Comments} from '../Comments';
 import {AnnotationType} from '../AnnotationType';
 import {assert} from 'chai';
 import {assertJSON} from '../../test/Assertions';
 import {TestingTime} from '../../test/TestingTime';
 
-describe('JSONExportConverter', function() {
+describe('JSONExporter', function() {
 
     it("basic", async function() {
 
@@ -14,15 +14,15 @@ describe('JSONExportConverter', function() {
 
         const writer = new BufferExportWriter();
 
-        const converter = new JSONExportConverter();
+        const converter = new JSONExporter();
 
         await converter.init(writer);
 
         const comment = Comments.createTextComment("hello world", 'page:1');
 
-        await converter.convert(writer, {type: AnnotationType.COMMENT, annotation: comment} );
+        await converter.write({type: AnnotationType.COMMENT, annotation: comment} );
 
-        await converter.close(writer);
+        await converter.close();
 
         const expected = {
             "version": 1,

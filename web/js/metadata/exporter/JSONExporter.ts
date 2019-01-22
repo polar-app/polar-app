@@ -1,0 +1,64 @@
+import {Writable} from "./Exporters";
+import {AnnotationHolder} from "../AnnotationHolder";
+import {TextHighlight} from "../TextHighlight";
+import {AreaHighlight} from '../AreaHighlight';
+import {AbstractExporter} from './AbstractExporter';
+import {Flashcard} from '../Flashcard';
+import {Comment} from '../Comment';
+import {Texts} from "../Texts";
+import {Strings} from "../../util/Strings";
+
+export class JSONExporter extends AbstractExporter {
+
+    public readonly id: string = 'json';
+
+    private hasItem: boolean = false;
+
+    public async init(writer: Writable): Promise<void> {
+        super.init(writer);
+
+        await writer.write("{\n");
+        await writer.write("  \"version\": 1,\n");
+        await writer.write("  \"items\": [\n");
+
+    }
+
+    private async onItem(writer: Writable) {
+
+        if (this.hasItem) {
+            await writer.write(",\n");
+        }
+
+        this.hasItem = true;
+
+    }
+
+    protected async writeAreaHighlight(areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
+        await this.writer!.write(this.toRecord(areaHighlight));
+    }
+
+    protected async writeTextHighlight(textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
+        await this.writer!.write(this.toRecord(textHighlight));
+    }
+
+    protected async writeComment(comment: Comment, exportable: AnnotationHolder): Promise<void> {
+        await this.writer!.write(this.toRecord(comment));
+    }
+
+    protected async writeFlashcard(flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
+        await this.writer!.write(this.toRecord(Flashcard));
+    }
+
+    public async close(err?: Error): Promise<void> {
+
+        await this.writer!.write("\n  ]\n");
+        await this.writer!.write("\n}\n");
+
+        return super.close(err);
+    }
+
+    private toRecord(obj: any) {
+        return Strings.indent(JSON.stringify(obj, null, "  "), "    ");
+    }
+
+}

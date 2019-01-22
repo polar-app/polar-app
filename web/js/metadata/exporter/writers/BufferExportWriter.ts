@@ -1,12 +1,12 @@
 import {WriteStream} from "fs";
 import {Files} from '../../../util/Files';
 import {Preconditions} from '../../../Preconditions';
-import {ExportWriter} from '../Exporter';
+import {Writer} from '../Exporters';
 
 /**
  * Simple writer that just writes to memory
  */
-export class BufferExportWriter implements ExportWriter {
+export class BufferExportWriter implements Writer {
 
     private buffer: string[] = [];
 
