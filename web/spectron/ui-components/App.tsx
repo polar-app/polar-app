@@ -27,6 +27,7 @@ import {TopPDFExample} from './TopPDFExample';
 import {AnnotationCommentBox} from '../../js/annotation_sidebar/AnnotationCommentBox';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {GDPRNotice} from '../../js/ui/gdpr/GDPRNotice';
+import {ExportButton} from '../../js/ui/export/ExportButton';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -112,6 +113,8 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <ExportButton/>
 
                 <GDPRNotice/>
 
