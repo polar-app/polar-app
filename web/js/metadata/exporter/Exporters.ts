@@ -5,6 +5,9 @@ import {Files} from '../../util/Files';
 import {WriteStream} from 'fs';
 import {Preconditions} from '../../Preconditions';
 import {AnnotationHolder} from '../AnnotationHolder';
+import {FileWriter} from './writers/FileWriter';
+import {MarkdownExporter} from './MarkdownExporter';
+import {JSONExporter} from './JSONExporter';
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -17,17 +20,37 @@ import {AnnotationHolder} from '../AnnotationHolder';
  */
 export class Exporters {
 
-    public static async doExport(): Promise<void> {
+    public static async doExport(path: string, format: ExportFormat): Promise<void> {
 
         // create the writer (file, clipboard, etc)
 
-        // create the converter (markdown, html, etc)
+        const writer = new FileWriter(path);
 
-        // for each exporter, convert it, and write to the writer,
+        // create the exporter (markdown, html, etc)
+        const exporter = this.toExporter(format);
 
-        // if an exception happens, terminate,
+        await exporter.init(writer);
 
-        // otherwise close on termination.
+        // TODO: need to get all the annotations sequentially...
+
+        await exporter.close();
+
+    }
+
+    private static toExporter(format: ExportFormat) {
+
+        switch (format) {
+
+            case 'markdown':
+                return new MarkdownExporter();
+
+            case 'json':
+                return new JSONExporter();
+
+            case 'html':
+                throw new Error("not supported yet");
+
+        }
 
     }
 
