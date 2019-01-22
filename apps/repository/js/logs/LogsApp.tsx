@@ -3,6 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
 import LogsContent from './LogsContent';
 import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
+import ClearLogsButton from './ClearLogsButton';
 
 const log = Logger.create();
 
@@ -34,8 +35,16 @@ export default class LogsApp extends React.Component<IProps, IState> {
 
                         <div className="col-lg-12">
 
-                            <div className="mb-1">
-                                <CopyLogsToClipboardButton/>
+                            <div style={{display: 'flex'}}>
+
+                                <div className="mb-1">
+                                    <CopyLogsToClipboardButton/>
+                                </div>
+
+                                <div className="ml-1 mb-1">
+                                    <ClearLogsButton/>
+                                </div>
+
                             </div>
 
                             <div className="mb-2">

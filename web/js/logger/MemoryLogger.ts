@@ -47,10 +47,6 @@ export class MemoryLogger implements ILogger {
         return buffer.toView().join("\n");
     }
 
-    public toView(): ReadonlyArray<LogMessage> {
-        return buffer.toView();
-    }
-
     public toJSON() {
         return JSON.stringify(buffer.toView(), null, "  ");
     }
@@ -65,6 +61,11 @@ export class MemoryLogger implements ILogger {
 
     public static toView(): ReadonlyArray<LogMessage> {
         return buffer.toView();
+    }
+
+    public static clear(): void {
+        buffer.clear();
+        buffer.write(createLogMessage( 'info', "Log messages cleared", []));
     }
 
 }

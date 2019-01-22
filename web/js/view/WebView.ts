@@ -69,7 +69,7 @@ export class WebView extends View {
     /**
      * @deprecated Moved to pagemark.ProgressView... remove this code.
      */
-    computeProgress(docMeta: DocMeta) {
+    private computeProgress(docMeta: DocMeta) {
 
         // I think this is an issue of being async maybel?
 
@@ -93,7 +93,7 @@ export class WebView extends View {
     /**
      * Setup a document once we detect that a new one has been loaded.
      */
-    onDocumentLoaded() {
+    private onDocumentLoaded() {
 
         log.info("WebView.onDocumentLoaded: ", this.model.docMeta);
 

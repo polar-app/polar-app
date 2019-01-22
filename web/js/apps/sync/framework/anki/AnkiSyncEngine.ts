@@ -19,6 +19,7 @@ import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCol
 import {Sets} from '../../../../util/Sets';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
 import {FlashcardDescriptors} from './FlashcardDescriptors';
+import {AnkiConnectFetch} from './AnkiConnectFetch';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -31,6 +32,9 @@ export class AnkiSyncEngine implements SyncEngine {
     public async sync(docMetaSupplierCollection: DocMetaSupplierCollection,
                       progress: SyncProgressListener,
                       deckNameStrategy: DeckNameStrategy = 'default'): Promise<PendingSyncJob> {
+
+        // determine how to connect to Anki
+        await AnkiConnectFetch.initialize();
 
         const noteDescriptors = await this.toNoteDescriptors(deckNameStrategy, docMetaSupplierCollection);
 

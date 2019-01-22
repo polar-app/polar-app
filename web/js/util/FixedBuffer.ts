@@ -28,6 +28,10 @@ export class FixedBuffer<V> {
 
     }
 
+    public clear(): void {
+        this.buffer.splice(0, this.buffer.length);
+    }
+
     public toView(): ReadonlyArray<V> {
         return this.buffer;
     }
