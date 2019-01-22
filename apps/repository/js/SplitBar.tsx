@@ -24,7 +24,7 @@ export class SplitBar extends React.PureComponent<any, any> {
 
         return (
 
-            <div className="split-bar pl-0 pr-0 mb-1">
+            <div className="split-bar pl-0 pr-0">
 
                 <div style={{display: 'flex'}}>
 
