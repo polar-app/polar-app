@@ -14,6 +14,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Nav} from '../util/Nav';
 import {InviteUsersModal} from './InviteUsersModal';
 import {Invitations} from '../../datastore/Invitations';
+import {Tooltip} from '../tooltip/Tooltip';
 
 const log = Logger.create();
 
@@ -55,7 +56,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
             return (
                 <div>
 
-                    <Button color="primary"
+                    <Button id="enable-cloud-sync"
+                            color="primary"
                             size="sm"
                             onClick={() => this.enableCloudSync()}>
 
@@ -64,6 +66,11 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                         Enable Cloud Sync
 
                     </Button>
+
+                    <Tooltip target="enable-cloud-sync">
+                        Turn on cloud sync enabling you to synchronize your
+                        repository across multiple computers.
+                    </Tooltip>
 
                     <CloudLoginModal isOpen={this.state.stage === 'login'}
                                      onCancel={() => this.changeAuthStage()}/>

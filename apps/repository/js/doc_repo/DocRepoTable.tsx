@@ -274,6 +274,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
 
+                                    <Tooltip target="add-content-button">
+                                        Quickly add content including PDFs from
+                                        your local drive or web pages captured
+                                        from the web.
+                                    </Tooltip>
+
                                 </div>
 
 
@@ -702,9 +708,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                     }}
 
                 />
-                <br />
-                <Tips />
-                <Footer/>
+                {/*<br />*/}
+                {/*<Tips />*/}
+                {/*<Footer/>*/}
 
                 </div>
 

@@ -6,6 +6,7 @@ import {Blackout} from './Blackout';
 import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
 import {Tooltip} from '../../../web/js/ui/tooltip/Tooltip';
+import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 
 const log = Logger.create();
 
@@ -97,6 +98,8 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
             <div className="repo-sidebar">
 
+                <GDPRNotice/>
+
                 <div>
                     <NavButtons/>
                 </div>
@@ -128,7 +131,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                         <RepoSidebarItem href="#editors-picks"
                                          onClick={() => this.toggle()}
-                                         iconClassName="fas fa-chart-line"
+                                         iconClassName="fas fa-star"
                                          text="Editors Picks"/>
 
                         <RepoSidebarItem href="#stats"

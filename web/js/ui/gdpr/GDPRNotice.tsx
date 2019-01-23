@@ -17,8 +17,8 @@ class Styles {
 
         position: 'fixed',
         width: '450px',
-        bottom: '0',
-        right: '0',
+        bottom: '10px',
+        right: '15px',
         zIndex: 9999,
         backgroundColor: '#ced4da',
 
@@ -32,79 +32,84 @@ class Styles {
 
     };
 
-    public static subintro: React.CSSProperties = {
-
-        fontWeight: 'bold',
-        fontSize: '18px',
-        margin: '5px 0px 10px 0px'
-
-    };
-
 }
 
 /**
- * The sync bar is a bar in the bottom right of the page that displays sync
- * progress and can bring up a popup displaying what it is currently doing.
  */
-export class GDPRNotice extends React.Component<any, any> {
+export class GDPRNotice extends React.Component<any, IState> {
 
     constructor(props: any) {
         super(props);
+
+        this.onAccept = this.onAccept.bind(this);
+
+        this.state = {
+            disabled: window.localStorage.getItem('gdpr-accepted') === 'true'
+        };
+
     }
 
     public render() {
 
+        const display = this.state.disabled ? 'none' : 'block';
+
         return (
 
-            <div className="p-3 m-2 rounded" style={Styles.notice}>
+            <div style={{display}}>
 
-                <div className="pt-1 pb-1">
+                <div className="p-3 m-2 rounded" style={Styles.notice}>
 
-                    <div style={Styles.intro}>
-                        We uses cookes to track your usage.
+                    <div className="pt-1 pb-1">
+
+                        <div style={Styles.intro}>
+                            We uses cookes to track your usage.
+                        </div>
+
+                        <p>
+                            We use cookies to track your usage and to determine
+                            which features are used to improve the quality of Polar.
+                        </p>
+
+                        <p>
+                            Additionally, we track application errors which helps us
+                            find bugs and to prioritize which issues to fix.
+                        </p>
+
+                        <p>
+                            This data is sent to 3rd parties which provide the
+                            infrastructure necessary to provide the analytics
+                            services needed to analyze and store the data.
+                        </p>
+
+                        <p>
+                            We avoid sending personally identifiable information
+                            at all times.
+                        </p>
+
+                        <div style={Styles.intro}>
+                            Cloud storage and privacy.
+                        </div>
+
+                        <p>
+                            When using Polar cloud sync we store your data in the
+                            cloud and authentication / authorization is controlled
+                            by the auth provider you select.
+                        </p>
+
+                        <p>
+                            We do not sell your private data.  Your private data is
+                            your and we're not interested in selling, monetizing, or
+                            distributing it to 3rd parties except when necessary to
+                            provide data storage services.
+                        </p>
+
                     </div>
 
-                    <p>
-                        We use cookies to track your usage of Polar and to
-                        determine which features are used and how often and
-                        to improve the quality of product over time.
-                    </p>
+                    <div className="text-right">
 
-                    <p>
-                        Additionally, we track errors and send them along with
-                        exception reports to fix errors that happen in
-                        production.  This helps us track down bugs that
-                        happen in the wild and to prioritize which issues
-                        to fix based on how often they occur.
-                    </p>
+                        <Button color="primary" onClick={() => this.onAccept()}>Accept</Button>
 
-                    <p>
-                        This data is sent to 3rd parties which provide the
-                        infrastructure necessary to provide the analytics
-                        services.
-                    </p>
-
-                    <div style={Styles.intro}>
-                        Cloud storage and privacy.
                     </div>
-
-                    <p>
-                        When using Polar cloud sync we store your data in the
-                        cloud and authentication / authorization is controlled
-                        by the auth provider you select.
-                    </p>
-
-                    <p>
-                        We do not sell your private data.  Your private data is
-                        your own and we're not interested in selling or
-                        monetizing it or distributing it to 3rd parties.
-                    </p>
-
-                </div>
-
-                <div className="text-right">
-
-                    <Button color="primary">Accept</Button>
 
                 </div>
 
@@ -113,4 +118,18 @@ export class GDPRNotice extends React.Component<any, any> {
         );
     }
 
+    private onAccept() {
+
+        window.localStorage.setItem('gdpr-accepted', 'true');
+
+        this.setState({
+            disabled: true
+        });
+
+    }
+
+}
+
+export interface IState {
+    readonly disabled: boolean;
 }

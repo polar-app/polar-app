@@ -24,7 +24,24 @@ export default class EditorsPicksApp extends React.Component<IProps, IState> {
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
                 </header>
 
-                <EditorsPicksContent/>
+
+                <div className="m-1">
+
+                    <h3>Suggested Content</h3>
+
+                    <p className="text-muted" style={{fontSize: '18px'}}>
+                        In order to get you up and running quickly, we've compiled
+                        a list of interesting documents you might like to start with.
+                    </p>
+
+                    <p>
+                        When you add any of these documents they will be automatically
+                        downloaded and added to your repository.
+                    </p>
+
+                    <EditorsPicksContent/>
+
+                </div>
 
             </div>
 

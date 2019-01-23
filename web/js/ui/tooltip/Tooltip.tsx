@@ -17,7 +17,8 @@ export class Tooltip extends React.Component<IProps, IState> {
         const placement = this.props.placement || 'bottom';
 
         return (
-            <UncontrolledTooltip style={{maxWidth: '1000px'}}
+            <UncontrolledTooltip style={{maxWidth: '325px',
+                                         textAlign: 'justify'}}
                                  placement={placement}
                                  delay={{show: 500, hide: 0}}
                                  target={this.props.target}>

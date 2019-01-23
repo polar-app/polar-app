@@ -1,32 +1,15 @@
 import * as React from 'react';
 import {FilePaths} from '../../../../web/js/util/FilePaths';
+import ReactTable from 'react-table';
+import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
+import {DateTimeTableCell} from '../DateTimeTableCell';
+import {Tag} from '../../../../web/js/tags/Tag';
+import {RepoAnnotation} from '../RepoAnnotation';
+import Button from 'reactstrap/lib/Button';
+import {DropdownToggle} from 'reactstrap';
 
 class Styles {
 
-    public static entries: React.CSSProperties = {
-        display: 'table',
-        width: '100%'
-    };
-
-    public static entry: React.CSSProperties = {
-        display: 'table-row',
-        width: '100%'
-    };
-
-    public static idx: React.CSSProperties = {
-        display: 'table-cell',
-        fontWeight: 'bold',
-        marginRight: '5px',
-        fontSize: '22px',
-        textAlign: 'right'
-    };
-
-    public static link: React.CSSProperties = {
-        display: 'table-cell',
-        fontSize: '22px',
-        textAlign: 'left',
-        paddingLeft: '5px'
-    };
 
 }
 
@@ -38,20 +21,125 @@ export class EditorsPicksContent extends React.Component<IProps, IState> {
 
     public render() {
 
+        let idx = 1;
+
         for (const entry of entries) {
+            entry.idx = idx++;
             entry.download = FilePaths.basename(entry.link);
         }
 
-        let idx = 0;
+        return (
+        <ReactTable
+            data={entries}
+            columns={
+                [
+                    {
+                        Header: 'idx',
+                        accessor: 'idx',
+                        maxWidth: 40,
+                        style: {
+                            marginTop: 'auto',
+                            marginBottom: 'auto',
+                            fontWeight: 'bold',
+                            textAlign: 'right'
+                        }
+                    },
+                    {
+                        Header: 'Title',
+                        accessor: 'title',
+                        style: {
+                            marginTop: 'auto',
+                            marginBottom: 'auto'
+                        },
 
-        return <div style={Styles.entries}>
-            {entries.map(entry =>
-                 <div key={idx++} style={Styles.entry}>
-                     <div style={Styles.idx}>{idx}.</div>
+                    },
+                    {
+                        Header: '',
+                        accessor: 'link',
+                        maxWidth: 80,
+                        style: {
+                            marginTop: 'auto',
+                            marginBottom: 'auto',
+                            textAlign: 'right'
+                        },
 
-                     <div style={Styles.link}><a href={entry.link} download={entry.download}>{entry.title}</a></div>
-                 </div> )}
-        </div>;
+                        Cell: (row: any) => {
+
+                            const entry: Entry = row.original;
+
+                            return (
+
+                                <Button style={{fontWeight: 'bold'}}
+                                        className="m-0"
+                                        size="sm"
+                                        color="success">
+                                    <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add
+                                </Button>
+
+                            );
+                        }
+
+                    },
+
+                ]}
+
+            defaultPageSize={50}
+            noDataText="No data available."
+            className=""
+            // defaultSorted={[
+            //     {
+            //         id: "idx",
+            //     }
+            // ]}
+            // sorted={[{
+            //     id: 'added',
+            //     desc: true
+            // }]}
+            getTrProps={(state: any, rowInfo: any) => {
+                return {
+
+                    // onClick: (e: any) => {
+                    //
+                    //     const repoAnnotation = rowInfo.original as RepoAnnotation;
+                    //     this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
+                    //
+                    // },
+                    //
+                    style: {
+                        // background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
+                        // color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
+                    }
+
+                };
+            }}
+            getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
+
+
+                const singleClickColumns: string[] = [];
+
+                if (! singleClickColumns.includes(column.id)) {
+                    return {
+                        onDoubleClick: (e: any) => {
+                            // noop
+                        }
+                    };
+                }
+
+                return {};
+
+            }}
+
+        />);
+
+        //
+        // return <div style={Styles.entries}>
+        //     {entries.map(entry =>
+        //          <div key={idx++} style={Styles.entry}>
+        //              <div style={Styles.idx}>{idx}.</div>
+        //
+        //              <div style={Styles.link}><a href={entry.link} download={entry.download}>{entry.title}</a></div>
+        //          </div> )}
+        // </div>;
     }
 
 }
@@ -78,6 +166,8 @@ interface Entry {
     // download not a navigate
 
     download?: string;
+
+    idx?: number;
 
 }
 

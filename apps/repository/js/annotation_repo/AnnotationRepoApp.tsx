@@ -73,9 +73,9 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
                 </div>
 
-                <br />
-                <Tips />
-                <Footer/>
+                {/*<br />*/}
+                {/*<Tips />*/}
+                {/*<Footer/>*/}
 
             </div>
 

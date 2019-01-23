@@ -28,6 +28,7 @@ import {AnnotationCommentBox} from '../../js/annotation_sidebar/AnnotationCommen
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {GDPRNotice} from '../../js/ui/gdpr/GDPRNotice';
 import {ExportButton} from '../../js/ui/export/ExportButton';
+import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -113,10 +114,11 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+                <EditorsPicksContent/>
 
                 <ExportButton/>
 
-                <GDPRNotice/>
+                {/*<GDPRNotice/>*/}
 
 
                 <UncontrolledDropdown direction="down"
@@ -139,6 +141,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
 
                 {/*<h1 className="component">Top PDFs</h1>*/}
+
 
                 {/*<TopPDFExample/>*/}
 
