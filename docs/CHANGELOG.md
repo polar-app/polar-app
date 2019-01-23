@@ -1,29 +1,33 @@
 # 1.10.0
 
-- Fixed (I hope) long standing ugly bug of 'crash' of Electron on app exit due
+- Feature: Shift selects a range of documents, control selects one document at a
+  time for multiple documents at once.
+
+- Feature: Implemented a basic exporter framework.  Annotations can now be
+  exported from the sidebar.  Exporting will be improved over time with more
+  features.
+
+- Bug: Fixed (I hope) long standing ugly bug of 'crash' of Electron on app exit due
   to windows not being destroyed via destroy().  Close does not release the 
   resources properly.  
 
-- Fixed bug where long titles in URLs could generate filenames that were too
+- Bug: Fixed bug where long titles in URLs could generate filenames that were too
   long and couldn't be represented on the filesystem.  We not truncate at 50 
   chars.
 
-- shift selects a range of documents, control selects one document at a time 
-  for multiple documents at once.
+- Feature: New buttons for '+ Add' to import from disk or capture web page. 
+  Much easier to determine how to add content to polar.
 
-- New buttons for '+ Add' to import from disk or capture web page.  Much easier
-  to determine how to add content to polar.
+- Feature: multi-select and ability to tag multiple docs at once.
 
-- multi-select and ability to tag multiple docs at once.
+- Feature: Sorting by tags is now much better and actually works.  If you double
+  click the sort column it will show you untagged documents sorted by the time
+  they were added.
 
-- Sorting by tags is now much better and actually works.  If you double click
-  the sort column it will show you untagged documents sorted by the time they 
-  were added. 
+- Dependencies: Update to electron 3.1.1 
 
-- Update to electron 3.1.1 
-
-- Fixed bug where hitting Enter when working with a title would cause the page
-  to reload.
+- Bug: Fixed bug where hitting Enter when working with a title would cause the
+  page to reload.
 
 # 1.9.0
 

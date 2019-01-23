@@ -31,6 +31,7 @@ import {ToasterService} from '../../ui/toaster/ToasterService';
 import {ProgressService} from '../../ui/progress_bar/ProgressService';
 import {ProgressTracker} from '../../util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
+import EditorsPicksApp from '../../../../apps/repository/js/editors_picks/EditorsPicksApp';
 
 const log = Logger.create();
 
@@ -113,6 +114,10 @@ export class RepositoryApp {
             return ( <LogsApp /> );
         };
 
+        const editorsPicks = () => {
+            return ( <EditorsPicksApp persistenceLayerManager={this.persistenceLayerManager}/> );
+        };
+
         ReactDOM.render(
 
             <div>
@@ -130,6 +135,7 @@ export class RepositoryApp {
                         <Route exact path='/community' render={renderCommunity}/>
                         <Route exact path='/stats' render={renderStats}/>
                         <Route exact path='/logs' render={renderLogs}/>
+                        <Route exact path='/editors-picks' render={editorsPicks}/>
                     </Switch>
 
                 </HashRouter>
