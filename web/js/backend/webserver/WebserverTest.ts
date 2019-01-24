@@ -75,7 +75,9 @@ describe('Webserver', function() {
 
             const response = await Http.execute(fileMeta.url);
 
-            assertJSON(hashcode, Hashcodes.create(response.data.toString('utf8')));
+            console.log("FIXME:" + response.data.toString('utf8'));
+
+            assert.equal(hashcode, Hashcodes.create(response.data.toString('utf8')));
 
             webserver.stop();
 
