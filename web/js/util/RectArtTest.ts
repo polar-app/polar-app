@@ -35,7 +35,7 @@ describe('RectArt', function() {
                        "     |         |\n" +
                        "     +---------+\n" +
                        "                \n";
-        assertJSON(RectArt.createFromRect(rect).toString(), expected );
+        assert.equal(RectArt.createFromRect(rect).toString(), expected );
 
     });
 
@@ -90,7 +90,7 @@ describe('RectArt', function() {
         let textArray = RectArt.formatRects([rect0, rect1]);
 
         //assert.equal(textArray.width, 15);
-        assertJSON(textArray.toString(), expected );
+        assert.equal(textArray.toString(), expected );
 
     });
 
