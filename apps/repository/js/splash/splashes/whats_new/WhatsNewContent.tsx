@@ -14,7 +14,226 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
         return (
 
+
             <div>
+
+                <h3>Polar 1.10</h3>
+
+                <div className="intro">
+
+                    <p>
+                        The 1.10 release again focused on a number of medium-scale
+                        features but also improves stability across the board.
+                    </p>
+
+                    <h4>Updated UI</h4>
+
+                    <p>
+                        The most obvious feature is that the UI has been
+                        significantly updated to support a new fixed header bar
+                        bar.
+                    </p>
+
+                    <p>
+                        One of the motivations for this was that users were
+                        getting confused when using the app for the first time
+                        and didn't know how to add content.  Now there's a
+                        large '+ Add' button front and center which is a clear
+                        call to action.
+                    </p>
+
+                    <p>
+                        Additionally, the added space allows for selecting multiple
+                        items.
+                    </p>
+
+                    <h4>Tagging Multiple Items</h4>
+
+                    <p>
+                        You can now tag multiple items in the UI by holding
+                        down shift (or control) and then clicking on the items
+                        you want to modify.
+                    </p>
+
+                    <p>
+                        Shift allows you to select a range and control allows
+                        you to select one at a time.
+                    </p>
+
+                    <p>
+                        At the top left a new 'tag' button will pop up and you
+                        can then assign tags to multiple documents at once.
+                        This is very handy for new users that want to bulk-tag
+                        multiple documents.
+                    </p>
+
+                    <p>
+                        Additionally, you can now sort by tags and if you hit the
+                        'tags' column header at the top, twice, you can see
+                        untagged documents and then tag them in bulk.
+                    </p>
+
+                    <p>
+                        This can be used when importing a large number of documents
+                        at once that all have the same tags.
+                    </p>
+
+                    <h4>New Exporter Framework</h4>
+
+                    <p>
+                        Many users requested the ability to easily export
+                        annotations from Polar and we've shipped an initial
+                        implementation of exporting content.
+                    </p>
+
+                    <p>
+                        Note that you have always had the ability to export the
+                        raw content in JSON form but this is designed to make
+                        exports more usable.
+                    </p>
+
+                    <p>
+                        In the annotation sidebar there's a new button for
+                        'Export' which allows you to write the annotations to
+                        JSON or Markdown.
+                    </p>
+
+                    <p>
+                        Right now it only supports writing to a file but we're
+                        also going to implement support for writing to the
+                        clipboard as HTML format for easily posting your
+                        annotations to your blog, Twitter, etc.
+                    </p>
+
+                    <h4>Changelog:</h4>
+
+                    <ul>
+
+                        <li>
+                        Feature: Migrated to fixed nav header
+                        </li>
+
+                        <li>
+                       Feature: GDPR notice in place.
+                        </li>
+
+                        <li>
+                        Feature: Shift selects a range of documents, control selects one document at a
+                        time for multiple documents at once.
+                        </li>
+
+                        <li>
+                       Feature: Implemented a basic exporter framework.  Annotations can now be
+                        exported from the sidebar.  Exporting will be improved over time with more
+                        features.
+                        </li>
+
+                        <li>
+                       Bug: Fixed (I hope) long standing ugly bug of 'crash' of Electron on app exit due
+                        to windows not being destroyed via destroy().  Close does not release the
+                        resources properly.
+                        </li>
+
+                        <li>
+                       Bug: Fixed bug where long titles in URLs could generate filenames that were too
+                        long and couldn't be represented on the filesystem.  We not truncate at 50
+                        chars.
+                        </li>
+
+                        <li>
+                       Feature: New buttons for '+ Add' to import from disk or capture web page.
+                        Much easier to determine how to add content to polar.
+                        </li>
+
+                        <li>
+                       Feature: multi-select and ability to tag multiple docs at once.
+                        </li>
+
+                        <li>
+                       Feature: Sorting by tags is now much better and actually works.  If you double
+                        click the sort column it will show you untagged documents sorted by the time
+                        they were added.
+                        </li>
+
+                        <li>
+                       Dependencies: Update to electron 3.1.1
+                        </li>
+
+                        <li>
+                        Bug: Fixed bug where hitting Enter when working with a title would cause the
+                        page to reload.
+                        </li>
+
+
+                    </ul>
+
+                </div>
+
+                <h3>Polar 1.9</h3>
+
+
+                <div className="intro">
+
+                    <p>
+                        Polar 1.9.0 was just released. This release is mostly focused around stability and fixes a number of important bugs.
+                    </p>
+
+                    <p>
+                        One big new feature went into this release though - you’re now able create pagemarks across multiple pages.
+                    </p>
+
+                    <p>Here’s the excerpt from the documentation:</p>
+
+                    <p>When you right click and select “Create Pagemark to Point” Polar creates
+                        pagemarks over all previous pages up until the previous pagemark (or the
+                        beginning) of the document.</p>
+
+                    <p>This enables you to import a book which you’ve been reading and mark multiple
+                        pages as read so that you can now just use Polar to track your pgoress.</p>
+
+                    <p>For example, if you have a 300 page book, and you’ve read pages 1-200 you can
+                        just jump to page 200 and “Create Pagemark to Point” and pagemarks will be
+                        created across all previous pages.</p>
+
+                    <p>You can still pagemark the current page by selecting “Create Pagemark Box” to
+                        or run “Control Alt N” to mark just the current page.</p>
+
+                    <h4>Changelog:</h4>
+
+                    <ul>
+
+                        <li>
+                            <p>Create pagemark to point now works across multiple pages and ranges.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bad bug where the UI wouldn’t update when a newly imported PDF wasn’t
+                                immediately visible in the UI. This was a bad initial user experience as they
+                                would have to reload for the PDFs to be visible.</p>
+                        </li>
+                        <li>
+                            <p>Fixed major Twitter content capture bug where we weren’t saving the CSS styles
+                                of HTML content.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bug where VH rules that were less than 100 weren’t being set properly
+                                and some pages rendered ugly.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bug with the ‘deck:’ tag not properly working with Anki sync.</p>
+                        </li>
+                        <li>
+                            <p>Importing large numbers of PDFs (and large PDFs) is now a lot faster and more
+                                responsive when using cloud storage.  In the past we used to wait until the
+                                cloud layer was finished but this takes a long time to complete.</p>
+                        </li>
+                        <li>
+                            <p>Now using ‘localhost’ instead of ‘localapp.getpolarized.io’ for the hostname.
+                                Some users weren’t able to resolve this (not sure why) and additionally
+                                working offline didn’t function either.</p>
+                        </li>
+                    </ul>
+
+                </div>
 
                 <h3>Polar 1.8</h3>
 
