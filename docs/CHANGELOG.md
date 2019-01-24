@@ -1,5 +1,9 @@
 # 1.10.0
 
+- Feature: Migrated to fixed nav header
+
+- Feature: GDPR notice in place.
+
 - Feature: Shift selects a range of documents, control selects one document at a
   time for multiple documents at once.
 

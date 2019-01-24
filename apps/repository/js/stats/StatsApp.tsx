@@ -6,6 +6,7 @@ import NewDocumentRateChart from './NewDocumentRateChart';
 import TopTagsChart from './TopTagsChart';
 import TopTagsTable from './TopTagsTable';
 import {MessageBanner} from '../MessageBanner';
+import {FixedNav, FixedNavBody} from '../FixedNav';
 
 const log = Logger.create();
 
@@ -27,41 +28,45 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="doc-repository">
+            <FixedNav id="doc-repository">
 
                 <header>
 
                     <RepoSidebar/>
 
+                    <MessageBanner/>
+
                 </header>
 
-                <MessageBanner/>
+                <FixedNavBody>
 
-                <div className="container-fluid border-top ml-1 mr-1">
+                    <div className="container-fluid border-top">
 
-                    <div className="row mt-2">
+                        <div className="row mt-2">
 
-                        <div className="col-lg-12">
-                            <NewDocumentRateChart docInfos={docInfos}/>
+                            <div className="col-lg-12">
+                                <NewDocumentRateChart docInfos={docInfos}/>
+                            </div>
+
+                        </div>
+
+                        <div className="row mt-2">
+
+                            <div className="col-lg-8">
+                                <TopTagsChart docInfos={docInfos}/>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <TopTagsTable docInfos={docInfos}/>
+                            </div>
+
                         </div>
 
                     </div>
 
-                    <div className="row mt-2">
+                </FixedNavBody>
 
-                        <div className="col-lg-8">
-                            <TopTagsChart docInfos={docInfos}/>
-                        </div>
-
-                        <div className="col-lg-4">
-                            <TopTagsTable docInfos={docInfos}/>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
+            </FixedNav>
 
         );
     }

@@ -16,6 +16,7 @@ import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
 import {RepoSidebar} from '../RepoSidebar';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
+import {FixedNav, FixedNavBody} from '../FixedNav';
 
 const log = Logger.create();
 
@@ -45,7 +46,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="doc-repository">
+            <FixedNav id="doc-repository">
 
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
@@ -53,31 +54,31 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                     <MessageBanner/>
                 </header>
 
-                <div style={{display: 'flex'}}>
+                <FixedNavBody>
 
-                    <div style={{width: 'calc(100% - 350px)'}}>
+                    <div style={{display: 'flex'}}>
 
-                        <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                             updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                             repoDocMetaManager={this.props.repoDocMetaManager}
-                                             repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                             onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
+                        <div style={{width: 'calc(100% - 350px)'}}>
+
+                            <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                                 updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                                 repoDocMetaManager={this.props.repoDocMetaManager}
+                                                 repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                                 onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
+
+                        </div>
+
+                        <div className="mt-2" style={{width: '350px'}}>
+                            <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
+                                                    repoAnnotation={this.state.repoAnnotation}/>
+                        </div>
+
 
                     </div>
 
-                    <div className="mt-2" style={{width: '350px'}}>
-                        <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                repoAnnotation={this.state.repoAnnotation}/>
-                    </div>
+                </FixedNavBody>
 
-
-                </div>
-
-                {/*<br />*/}
-                {/*<Tips />*/}
-                {/*<Footer/>*/}
-
-            </div>
+            </FixedNav>
 
         );
     }
@@ -109,3 +110,4 @@ export interface IState {
     readonly repoAnnotation?: RepoAnnotation;
 
 }
+

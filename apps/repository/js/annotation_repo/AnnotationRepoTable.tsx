@@ -69,153 +69,153 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
                 <div id="doc-table">
 
-                <ReactTable
-                    data={data}
-                    columns={
-                        [
-                            {
-                                Header: '',
-                                accessor: 'type',
-                                maxWidth: 30,
+                    <ReactTable
+                        data={data}
+                        columns={
+                            [
+                                {
+                                    Header: '',
+                                    accessor: 'type',
+                                    maxWidth: 30,
 
-                                Cell: (row: any) => {
-                                    return (
+                                    Cell: (row: any) => {
+                                        return (
 
-                                        <div className="text-center">
-                                            <AnnotationIcon type={row.original.type} color={row.original.color}/>
-                                        </div>
+                                            <div className="text-center">
+                                                <AnnotationIcon type={row.original.type} color={row.original.color}/>
+                                            </div>
 
-                                    );
-                                }
-
-                            },
-                            {
-                                Header: '',
-                                accessor: 'title',
-                                Cell: (row: any) => {
-                                    const id = 'annotation-title' + row.index;
-                                    return (
-                                        <div id={id}>
-
-                                            <div>{row.original.text || 'no text'}</div>
-
-                                        </div>
-
-                                    );
-                                }
-
-                            },
-                            {
-                                Header: 'Created',
-                                // accessor: (row: any) => row.added,
-                                accessor: 'created',
-                                show: true,
-                                maxWidth: 100,
-                                defaultSortDesc: true,
-                                Cell: (row: any) => (
-                                    <DateTimeTableCell className="doc-col-last-updated" datetime={row.original.created}/>
-                                )
-
-                            },
-                            {
-                                id: 'tags',
-                                Header: 'Tags',
-                                accessor: '',
-                                show: true,
-                                width: 200,
-                                Cell: (row: any) => {
-
-                                    // TODO: use <FormattedTags>
-
-                                    const tags: {[id: string]: Tag} = row.original.tags;
-
-                                    const formatted = Object.values(tags)
-                                        .map(tag => tag.label)
-                                        .sort()
-                                        .join(", ");
-
-                                    return (
-                                        <div>{formatted}</div>
-                                    );
-
-                                }
-                            },
-
-                        ]}
-
-                    defaultPageSize={50}
-                    noDataText="No annotations available."
-                    className="-striped -highlight"
-                    defaultSorted={[
-                        {
-                            id: "created",
-                            desc: true
-                        }
-                    ]}
-                    // sorted={[{
-                    //     id: 'added',
-                    //     desc: true
-                    // }]}
-                    getTrProps={(state: any, rowInfo: any) => {
-                        return {
-
-                            onClick: (e: any) => {
-
-                                const repoAnnotation = rowInfo.original as RepoAnnotation;
-                                this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
-
-                            },
-
-                            style: {
-                                background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
-                                color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
-                            }
-
-                        };
-                    }}
-                    getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
-
-
-                        const singleClickColumns: string[] = [];
-
-                        if (! singleClickColumns.includes(column.id)) {
-                            return {
-                                onDoubleClick: (e: any) => {
-                                    // this.onDocumentLoadRequested(rowInfo.original.fingerprint,
-                                    // rowInfo.original.filename,
-                                    // rowInfo.original.hashcode);
-                                }
-                            };
-                        }
-
-                        if (singleClickColumns.includes(column.id)) {
-
-                            return {
-
-                                onClick: ((e: any, handleOriginal?: () => void) => {
-                                    //
-                                    // this.handleToggleField(rowInfo.original,
-                                    // column.id) .catch(err =>
-                                    // log.error("Could not handle toggle: ",
-                                    // err));
-
-                                    if (handleOriginal) {
-                                        // needed for react table to function
-                                        // properly.
-                                        handleOriginal();
+                                        );
                                     }
 
-                                })
+                                },
+                                {
+                                    Header: '',
+                                    accessor: 'title',
+                                    Cell: (row: any) => {
+                                        const id = 'annotation-title' + row.index;
+                                        return (
+                                            <div id={id}>
+
+                                                <div>{row.original.text || 'no text'}</div>
+
+                                            </div>
+
+                                        );
+                                    }
+
+                                },
+                                {
+                                    Header: 'Created',
+                                    // accessor: (row: any) => row.added,
+                                    accessor: 'created',
+                                    show: true,
+                                    maxWidth: 100,
+                                    defaultSortDesc: true,
+                                    Cell: (row: any) => (
+                                        <DateTimeTableCell className="doc-col-last-updated" datetime={row.original.created}/>
+                                    )
+
+                                },
+                                {
+                                    id: 'tags',
+                                    Header: 'Tags',
+                                    accessor: '',
+                                    show: true,
+                                    width: 200,
+                                    Cell: (row: any) => {
+
+                                        // TODO: use <FormattedTags>
+
+                                        const tags: {[id: string]: Tag} = row.original.tags;
+
+                                        const formatted = Object.values(tags)
+                                            .map(tag => tag.label)
+                                            .sort()
+                                            .join(", ");
+
+                                        return (
+                                            <div>{formatted}</div>
+                                        );
+
+                                    }
+                                },
+
+                            ]}
+
+                        defaultPageSize={50}
+                        noDataText="No annotations available."
+                        className="-striped -highlight"
+                        defaultSorted={[
+                            {
+                                id: "created",
+                                desc: true
+                            }
+                        ]}
+                        // sorted={[{
+                        //     id: 'added',
+                        //     desc: true
+                        // }]}
+                        getTrProps={(state: any, rowInfo: any) => {
+                            return {
+
+                                onClick: (e: any) => {
+
+                                    const repoAnnotation = rowInfo.original as RepoAnnotation;
+                                    this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
+
+                                },
+
+                                style: {
+                                    background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
+                                    color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
+                                }
 
                             };
+                        }}
+                        getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
 
-                        }
 
-                        return {};
+                            const singleClickColumns: string[] = [];
 
-                    }}
+                            if (! singleClickColumns.includes(column.id)) {
+                                return {
+                                    onDoubleClick: (e: any) => {
+                                        // this.onDocumentLoadRequested(rowInfo.original.fingerprint,
+                                        // rowInfo.original.filename,
+                                        // rowInfo.original.hashcode);
+                                    }
+                                };
+                            }
 
-                />
+                            if (singleClickColumns.includes(column.id)) {
+
+                                return {
+
+                                    onClick: ((e: any, handleOriginal?: () => void) => {
+                                        //
+                                        // this.handleToggleField(rowInfo.original,
+                                        // column.id) .catch(err =>
+                                        // log.error("Could not handle toggle: ",
+                                        // err));
+
+                                        if (handleOriginal) {
+                                            // needed for react table to function
+                                            // properly.
+                                            handleOriginal();
+                                        }
+
+                                    })
+
+                                };
+
+                            }
+
+                            return {};
+
+                        }}
+
+                    />
 
                 </div>
 
@@ -268,4 +268,3 @@ interface IState extends IReactTableState {
     data: RepoAnnotation[];
 
 }
-

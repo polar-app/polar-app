@@ -4,6 +4,7 @@ import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import {Logger} from "../../logger/Logger";
 import {Dictionaries} from "../../util/Dictionaries";
+import {PDFDownloadHandlers} from '../../capture/PDFDownloadHandlers';
 
 const log =  Logger.create();
 
@@ -17,6 +18,7 @@ export class AppLauncher {
         const browserWindowTag = {name: 'app', value: 'repository'};
 
         const browserWindow = await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
+
             const url = ResourcePaths.resourceURLFromRelativeURL('/apps/repository/index.html', false);
             log.info("Loading app from URL: " + url);
 
@@ -27,7 +29,10 @@ export class AppLauncher {
             browserWindowOptions.webPreferences!.partition = 'persist:polar-app';
 
             return await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
+
         });
+
+        PDFDownloadHandlers.create(browserWindow.webContents);
 
         browserWindow.focus();
 

@@ -40,7 +40,7 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="doc-repository">
+            <div id="doc-repository" style={{height: '100%'}}>
 
                 <DocRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                               updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}

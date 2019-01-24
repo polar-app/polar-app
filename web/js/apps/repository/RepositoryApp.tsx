@@ -120,7 +120,7 @@ export class RepositoryApp {
 
         ReactDOM.render(
 
-            <div>
+            <div style={{height: '100%'}}>
 
                 <PrioritizedSplashes/>
 

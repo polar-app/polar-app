@@ -1,12 +1,7 @@
 import * as React from 'react';
 import {FilePaths} from '../../../../web/js/util/FilePaths';
 import ReactTable from 'react-table';
-import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
-import {DateTimeTableCell} from '../DateTimeTableCell';
-import {Tag} from '../../../../web/js/tags/Tag';
-import {RepoAnnotation} from '../RepoAnnotation';
 import Button from 'reactstrap/lib/Button';
-import {DropdownToggle} from 'reactstrap';
 
 class Styles {
 
@@ -17,6 +12,9 @@ export class EditorsPicksContent extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onAdd = this.onAdd.bind(this);
+
     }
 
     public render() {
@@ -72,8 +70,11 @@ export class EditorsPicksContent extends React.Component<IProps, IState> {
                                 <Button style={{fontWeight: 'bold'}}
                                         className="m-0"
                                         size="sm"
+                                        onClick={() => this.onAdd(entry.link!)}
                                         color="success">
+
                                     <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add
+
                                 </Button>
 
                             );
@@ -131,15 +132,22 @@ export class EditorsPicksContent extends React.Component<IProps, IState> {
 
         />);
 
-        //
-        // return <div style={Styles.entries}>
-        //     {entries.map(entry =>
-        //          <div key={idx++} style={Styles.entry}>
-        //              <div style={Styles.idx}>{idx}.</div>
-        //
-        //              <div style={Styles.link}><a href={entry.link} download={entry.download}>{entry.title}</a></div>
-        //          </div> )}
-        // </div>;
+
+
+    }
+
+    private onAdd(href: string) {
+
+        const anchor = document.createElement('a');
+        anchor.setAttribute('href', href);
+        anchor.setAttribute('download', FilePaths.basename(href));
+        anchor.style.display = 'none';
+
+        document.body.appendChild(anchor);
+        anchor.click();
+
+        document.body.removeChild(anchor);
+
     }
 
 }

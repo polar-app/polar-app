@@ -4,6 +4,7 @@ import {RepoSidebar} from '../RepoSidebar';
 import LogsContent from './LogsContent';
 import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 import ClearLogsButton from './ClearLogsButton';
+import {FixedNav, FixedNavBody} from '../FixedNav';
 
 const log = Logger.create();
 
@@ -21,33 +22,33 @@ export default class LogsApp extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="doc-repository">
+            <FixedNav id="doc-repository">
 
                 <header>
 
                     <RepoSidebar/>
 
+                    <div style={{display: 'flex'}}>
+
+                        <div className="mb-1">
+                            <CopyLogsToClipboardButton/>
+                        </div>
+
+                        <div className="ml-1 mb-1">
+                            <ClearLogsButton/>
+                        </div>
+
+                    </div>
+
                 </header>
 
-                <div className="container-fluid">
+                <FixedNavBody className="container-fluid">
 
                     <div className="row">
 
                         <div className="col-lg-12">
 
-                            <div style={{display: 'flex'}}>
-
-                                <div className="mb-1">
-                                    <CopyLogsToClipboardButton/>
-                                </div>
-
-                                <div className="ml-1 mb-1">
-                                    <ClearLogsButton/>
-                                </div>
-
-                            </div>
-
-                            <div className="mb-2">
+                            <div className="mb-2 pl-1 pr-1">
                                 <LogsContent/>
                             </div>
 
@@ -55,9 +56,9 @@ export default class LogsApp extends React.Component<IProps, IState> {
 
                     </div>
 
-                </div>
+                </FixedNavBody>
 
-            </div>
+            </FixedNav>
 
         );
     }
