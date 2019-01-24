@@ -16,11 +16,13 @@ export class Tooltip extends React.Component<IProps, IState> {
 
         const placement = this.props.placement || 'bottom';
 
+        const show = this.props.show !== undefined ? this.props.show : 500;
+
         return (
             <UncontrolledTooltip style={{maxWidth: '325px',
                                          textAlign: 'justify'}}
                                  placement={placement}
-                                 delay={{show: 500, hide: 0}}
+                                 delay={{show, hide: 0}}
                                  target={this.props.target}>
 
                 {this.props.children}
@@ -34,7 +36,8 @@ export class Tooltip extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly target: string;
-    readonly placement?: 'bottom' | 'top';
+    readonly placement?: 'bottom' | 'top' | 'right' | 'left';
+    readonly show?: number;
 }
 
 interface IState {

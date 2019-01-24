@@ -19,7 +19,8 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
 
         return (
 
-            <ListGroupItem active={active}
+            <ListGroupItem {...(this.props.id ? {id: this.props.id} : {})}
+                           active={active}
                            tag="a"
                            href={this.props.href}
                            onClick={() => this.props.onClick()}
@@ -50,6 +51,7 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    readonly id?: string;
     readonly href: string;
     readonly iconClassName: string;
     readonly text: string;

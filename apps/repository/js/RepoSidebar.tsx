@@ -119,12 +119,14 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     <ListGroup flush>
 
-                        <RepoSidebarItem href="#"
+                        <RepoSidebarItem id="sidebar-item-documents"
+                                         href="#"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-archive"
                                          text="Documents"/>
 
-                        <RepoSidebarItem href="#annotations"
+                        <RepoSidebarItem id="sidebar-item-annotations"
+                                         href="#annotations"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-layer-group"
                                          text="Annotations"/>
@@ -134,27 +136,81 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          {/*iconClassName="fas fa-star"*/}
                                          {/*text="Editors Picks"/>*/}
 
-                        <RepoSidebarItem href="#stats"
+                        <RepoSidebarItem id="sidebar-item-stats"
+                                         href="#stats"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-chart-line"
                                          text="Stats"/>
 
-                        <RepoSidebarItem href="#logs"
+                        <RepoSidebarItem id="sidebar-item-logs"
+                                         href="#logs"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-info-circle"
                                          text="Logs"/>
 
-                        <RepoSidebarItem href="#community"
+                        <RepoSidebarItem id="sidebar-item-community"
+                                         href="#community"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-hands-helping"
                                          text="Community"/>
 
-                        <RepoSidebarItem href="#whats-new"
+                        <RepoSidebarItem id="sidebar-item-whatsnew"
+                                         href="#whats-new"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-bullhorn"
                                          text="Whats New"/>
 
                     </ListGroup>
+
+                    <Tooltip target="sidebar-item-documents"
+                             show={0}
+                             placement="right">
+
+                        Manage all documents you're reading including filtering and sorting.
+
+                    </Tooltip>
+
+                    <Tooltip target="sidebar-item-annotations"
+                             show={0}
+                             placement="right">
+
+                        Manage all annotations of all your documents in one central view.
+
+                    </Tooltip>
+
+                    <Tooltip target="sidebar-item-stats"
+                             show={0}
+                             placement="right">
+
+                        Show stats on your usage of Polar including stats on tags,
+                        rate of document addition, etc.
+
+                    </Tooltip>
+
+                    <Tooltip target="sidebar-item-logs"
+                             show={0}
+                             placement="right">
+
+                        Show logs on internal activity during background operations
+                        like cloud activity and sync.
+
+                    </Tooltip>
+
+                    <Tooltip target="sidebar-item-community"
+                             show={0}
+                             placement="right">
+
+                        Find community resources including links to discussions around Polar.
+
+                    </Tooltip>
+
+                    <Tooltip target="sidebar-item-whatsnew"
+                             show={0}
+                             placement="right">
+
+                        Find out what's new with each Polar release.
+
+                    </Tooltip>
 
                 </section>
             </div>
