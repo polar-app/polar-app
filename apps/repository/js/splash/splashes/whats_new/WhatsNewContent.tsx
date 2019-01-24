@@ -105,6 +105,14 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                         annotations to your blog, Twitter, etc.
                     </p>
 
+                    <p>
+                        The plan is to enable exporting in the 'annotation'
+                        view which would allow you to export all your annotations
+                        based any filters you define.  This would allow you
+                        to preview the annotations and then export them in bulk
+                        without having to open up a specific document.
+                    </p>
+
                     <h4>Changelog:</h4>
 
                     <ul>

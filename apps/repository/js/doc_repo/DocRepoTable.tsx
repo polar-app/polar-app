@@ -315,7 +315,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         <div className="checkbox-group">
 
                                             <ToggleButton id="toggle-flagged"
-                                                          label="flagged only"
+                                                          label="flagged"
                                                           initialValue={false}
                                                           onChange={value => this.onToggleFlaggedOnly(value)}/>
 
@@ -331,9 +331,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         <div className="checkbox-group">
 
                                             <ToggleButton id="toggle-archived"
-                                                          label="hide archived"
-                                                          initialValue={true}
-                                                          onChange={value => this.onToggleFilterArchived(value)}/>
+                                                          label="archived"
+                                                          initialValue={false}
+                                                          onChange={value => this.onToggleFilterArchived(!value)}/>
 
                                             <Tooltip target="toggle-archived">Toggle showing archived documents</Tooltip>
 
