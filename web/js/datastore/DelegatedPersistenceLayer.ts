@@ -13,7 +13,7 @@ import {IDocInfo, DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {PersistenceLayers} from './PersistenceLayers';
-import {PersistenceLayer} from './PersistenceLayer';
+import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {FileHandle} from '../util/Files';
 
@@ -21,6 +21,8 @@ import {FileHandle} from '../util/Files';
  * A PersistenceLayer that just forwards events to the given delegate.
  */
 export class DelegatedPersistenceLayer implements PersistenceLayer {
+
+    public readonly id: PersistenceLayerID = 'delegated';
 
     public readonly datastore: Datastore;
 

@@ -50,7 +50,8 @@ export class PagemarkCoverageEventListener {
         switch (event.data.type) {
 
             case "create-pagemark-to-point":
-                this.onContextMenuCreatePagemarkToPoint(triggerEvent);
+                this.onContextMenuCreatePagemarkToPoint(triggerEvent)
+                    .catch(err => log.error(err));
                 break;
 
         }
@@ -114,7 +115,8 @@ export class PagemarkCoverageEventListener {
         const pageNum = triggerEvent.pageNum;
         const verticalOffsetWithinPageElement = triggerEvent.points.pageOffset.y;
 
-        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement);
+        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement)
+            .catch(err => log.error(err));
 
         RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
 
@@ -129,7 +131,8 @@ export class PagemarkCoverageEventListener {
         const eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
         const verticalOffsetWithinPageElement = eventTargetOffset.top + event.offsetY;
 
-        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement);
+        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement)
+            .catch(err => log.error(err));
 
         RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
 

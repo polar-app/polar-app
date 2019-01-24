@@ -26,6 +26,8 @@ import {PersistenceLayerListener} from './PersistenceLayerListener';
  */
 export class DelegatedListenablePersistenceLayer extends DelegatedPersistenceLayer implements ListenablePersistenceLayer {
 
+    public readonly id = 'delegated-listenable';
+
     private readonly listenablePersistenceLayer: ListenablePersistenceLayer;
 
     constructor(listenablePersistenceLayer: ListenablePersistenceLayer) {

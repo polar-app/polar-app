@@ -216,7 +216,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         for (const repoDocInfo of repoDocInfos) {
             const existingTags = Object.values(repoDocInfo.tags || {});
             const effectTags = Tags.union(existingTags, tags || []);
-            this.onDocTagged(repoDocInfo, effectTags);
+
+            this.onDocTagged(repoDocInfo, effectTags)
+                .catch(err => log.error(err));
+
         }
 
     }
@@ -776,7 +779,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                     }
                 };
 
-                SettingsStore.write(settings);
+                SettingsStore.write(settings)
+                    .catch(err => log.error(err));
+
             })
             .catch(err => log.error("Could not load settings: ", err));
 

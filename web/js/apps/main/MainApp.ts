@@ -114,9 +114,11 @@ export class MainApp {
         const cacheInterceptorService =
             new CachingStreamInterceptorService(cacheRegistry, mainSession.protocol);
 
-        await cacheInterceptorService.start();
+        await cacheInterceptorService.start()
+            .catch(err => log.error(err));
 
         await captureController.start();
+
         await dialogWindowService.start();
 
         const userAgent = mainWindow.webContents.getUserAgent();

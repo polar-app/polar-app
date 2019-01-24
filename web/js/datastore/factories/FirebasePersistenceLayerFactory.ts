@@ -4,7 +4,7 @@ import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
 import {AdvertisingPersistenceLayer} from '../advertiser/AdvertisingPersistenceLayer';
 import {FirebaseDatastore} from '../FirebaseDatastore';
 import {AbstractAdvertisingPersistenceLayer} from '../advertiser/AbstractAdvertisingPersistenceLayer';
-import {PersistenceLayer} from '../PersistenceLayer';
+import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {ErrorListener} from '../Datastore';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {Firebase} from '../../firebase/Firebase';
@@ -28,6 +28,8 @@ export class FirebasePersistenceLayerFactory {
 }
 
 export class NullListenablePersistenceLayer extends AbstractAdvertisingPersistenceLayer {
+
+    public readonly id: PersistenceLayerID = 'null';
 
     constructor(delegate: PersistenceLayer) {
         super(delegate);

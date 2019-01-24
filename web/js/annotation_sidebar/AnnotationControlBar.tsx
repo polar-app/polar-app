@@ -18,8 +18,10 @@ import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from '../metadata/FlashcardType';
 import {Flashcard} from '../metadata/Flashcard';
 import {Functions} from '../util/Functions';
-import {FrontAndBackFields, ClozeFields} from './flashcard_input/FlashcardInput';
+import {ClozeFields, FrontAndBackFields} from './flashcard_input/FlashcardInput';
+import {Logger} from '../logger/Logger';
 
+const log = Logger.create();
 
 const Styles: IStyleMap = {
 
@@ -245,7 +247,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 annotation.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
             }
 
-        });
+        }).catch(err => log.error(err));
 
     }
 

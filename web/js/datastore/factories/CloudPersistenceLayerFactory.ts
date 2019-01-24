@@ -13,7 +13,7 @@ export class CloudPersistenceLayerFactory {
 
     public static create(): ListenablePersistenceLayer {
 
-        log.info("Using remote persistence layer and disk store");
+        log.info("Using remote persistence layer and cloud aware data store");
 
         const local = RemoteDatastores.create();
         const cloud = new FirebaseDatastore();

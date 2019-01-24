@@ -27,6 +27,8 @@ const log = Logger.create();
  */
 export class DefaultPersistenceLayer implements PersistenceLayer {
 
+    public readonly id = 'default';
+
     public readonly datastore: Datastore;
 
     private datastoreMutations: DatastoreMutations;

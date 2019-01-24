@@ -1,4 +1,4 @@
-import {PersistenceLayer} from '../PersistenceLayer';
+import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersistenceLayer';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
@@ -10,6 +10,8 @@ import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 export class MockAdvertisingPersistenceLayer
     extends AbstractAdvertisingPersistenceLayer
     implements ListenablePersistenceLayer {
+
+    public readonly id: PersistenceLayerID = 'mock';
 
     private readonly noDispatchEvent: boolean;
 

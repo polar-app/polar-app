@@ -170,7 +170,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         // this should never fail in practice.
         .catch(err => log.error("Could not handle delete: ", err));
 
-        return this.datastoreMutations.executeBatchedWrite(datastoreMutation,
+        await this.datastoreMutations.executeBatchedWrite(datastoreMutation,
                                                            async (remoteCoordinator) => {
                                                                await this.cloud.write(fingerprint, data, docInfo, remoteCoordinator);
                                                            },

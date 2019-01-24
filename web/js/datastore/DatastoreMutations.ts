@@ -113,9 +113,17 @@ export class DatastoreMutations {
             // been completed...
 
             if (this.consistency === 'committed') {
+
                 datastoreMutation.committed.get()
                     .then(() => resolve())
                     .catch((err) => reject(err));
+
+            } else {
+
+                datastoreMutation.written.get()
+                    .then(() => resolve())
+                    .catch((err) => reject(err));
+
             }
 
         });

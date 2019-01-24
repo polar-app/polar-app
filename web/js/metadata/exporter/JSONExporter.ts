@@ -15,7 +15,7 @@ export class JSONExporter extends AbstractExporter {
     private hasItem: boolean = false;
 
     public async init(writer: Writable): Promise<void> {
-        super.init(writer);
+        await super.init(writer);
 
         await writer.write("{\n");
         await writer.write("  \"version\": 1,\n");

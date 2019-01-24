@@ -750,13 +750,17 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         const handleDocChange = (docChange: firebase.firestore.DocumentChange) => {
             const docMetaMutation = docMetaMutationFromDocChange(docChange);
-            handleDocMetaMutation(docMetaMutation);
+            handleDocMetaMutation(docMetaMutation)
+                .catch(err => log.error(err));
+
         };
 
 
         const handleDoc = (doc: firebase.firestore.QueryDocumentSnapshot) => {
             const docMetaMutation = docMetaMutationFromDoc(doc.data());
-            handleDocMetaMutation(docMetaMutation);
+            handleDocMetaMutation(docMetaMutation)
+                .catch(err => log.error(err));
+
         };
 
 

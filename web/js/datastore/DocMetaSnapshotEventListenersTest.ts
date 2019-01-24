@@ -80,7 +80,7 @@ describe('DocMetaSnapshotEventListener', function() {
         await deduplicatedListener(docMetaSnapshotEvent);
         await deduplicatedListener(docMetaSnapshotEvent);
 
-        waitForExpect(() => {
+        await waitForExpect(() => {
             assert.equal(emitted.length, 1);
         });
 

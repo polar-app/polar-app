@@ -146,7 +146,10 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
 
         const onDownloadedHandler = () => {
-            this.destroy();
+
+            this.destroy()
+                .catch(err => log.error(err));
+
         };
 
         const onDownloadHandler = () => {
@@ -169,7 +172,8 @@ export class StandardWebContentsDriver implements WebContentsDriver {
                 log.warn("No browser window to clsoe");
             }
 
-            AppLauncher.launchRepositoryApp();
+            AppLauncher.launchRepositoryApp()
+                .catch(err => log.error(err));
 
         };
 

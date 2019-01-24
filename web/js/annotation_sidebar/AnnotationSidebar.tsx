@@ -231,7 +231,8 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
     private onExport(path: string, format: ExportFormat) {
 
-        Exporters.doExport(path, format, this.props.docMeta);
+        Exporters.doExport(path, format, this.props.docMeta)
+            .catch(err => log.error(err));
 
     }
 

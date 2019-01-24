@@ -19,6 +19,8 @@ export class AdvertisingPersistenceLayer
 
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
+    public readonly id = 'advertising';
+
     constructor(delegate: PersistenceLayer) {
         super(delegate);
     }

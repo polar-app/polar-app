@@ -15,6 +15,8 @@ import {NULL_FUNCTION} from '../util/Functions';
 
 export interface PersistenceLayer {
 
+    readonly id: PersistenceLayerID;
+
     /**
      * The underlying datastore backing this persistence layer.
      */
@@ -76,4 +78,5 @@ export interface PersistenceLayer {
 
 }
 
+export type PersistenceLayerID = string;
 
