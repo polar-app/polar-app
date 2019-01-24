@@ -1,5 +1,8 @@
 # 1.10.0
 
+- Fixed bug with promises not being resolved and the viewer not being updated
+  bug I don't think this was actually released.
+
 - Feature: Migrated to fixed nav header
 
 - Feature: GDPR notice in place.

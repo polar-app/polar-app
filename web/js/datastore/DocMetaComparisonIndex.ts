@@ -59,32 +59,19 @@ export class DocMetaComparisonIndex {
 
         let doUpdated = false;
 
-        if (mutationType === 'created' && ! this.contains(docInfo.fingerprint)) {
+        const docComparison = this.get(docInfo.fingerprint);
+
+        if (!docComparison) {
             doUpdated = true;
         }
 
-        if (mutationType === 'updated') {
+        if (docComparison) {
 
-            const docComparison = this.get(docInfo.fingerprint);
-
-            if (!docComparison) {
+            if (UUIDs.compare(docComparison.uuid, docInfo.uuid) < 0) {
                 doUpdated = true;
+            } else {
+                // noop
             }
-
-            if (docComparison && UUIDs.compare(docComparison.uuid, docInfo.uuid) < 0) {
-                doUpdated = true;
-            }
-
-            if (docComparison) {
-
-                if (UUIDs.compare(docComparison.uuid, docInfo.uuid) < 0) {
-                    doUpdated = true;
-                } else {
-                    // noop
-                }
-
-            }
-
 
         }
 

@@ -12,12 +12,14 @@ import {AsyncProviders} from '../util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
 import {MetadataSerializer} from '../metadata/MetadataSerializer';
+import {Reducers} from '../util/Reducers';
+import {DocMeta} from '../metadata/DocMeta';
 
 describe('DocMetaSnapshotEventListener', function() {
 
-    const docMeta = MockDocMetas.createMockDocMeta();
+    let docMeta: DocMeta;
 
-    let emitted: DocMetaSnapshotEvent[] = [];
+    let docMetaSnapshotEvents: DocMetaSnapshotEvent[] = [];
 
     let deduplicatedListener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION;
 
@@ -30,10 +32,12 @@ describe('DocMetaSnapshotEventListener', function() {
     beforeEach(function() {
         TestingTime.freeze();
 
-        emitted = [];
+        docMeta = MockDocMetas.createMockDocMeta();
+
+        docMetaSnapshotEvents = [];
 
         const eventDeduplicator = DocMetaSnapshotEventListeners.createDeduplicatedListener(async emittedEvent => {
-            emitted.push(emittedEvent);
+            docMetaSnapshotEvents.push(emittedEvent);
         });
 
         deduplicatedListener = eventDeduplicator.listener;
@@ -73,15 +77,27 @@ describe('DocMetaSnapshotEventListener', function() {
         return UUIDs.create();
     }
 
+    function computeEmittedDocMetaMutations(event: DocMetaSnapshotEvent[]) {
+
+        return docMetaSnapshotEvents.map(current => current.docMetaMutations.length)
+            .reduce(Reducers.SUM, 0);
+
+    }
+
     it("basic duplicate suppression", async function() {
 
         const docMetaSnapshotEvent = createDocMetaSnapshotEvent();
 
+        assert.equal(computeEmittedDocMetaMutations(docMetaSnapshotEvents), 0);
+
         await deduplicatedListener(docMetaSnapshotEvent);
+
+        assert.equal(computeEmittedDocMetaMutations(docMetaSnapshotEvents), 1);
+
         await deduplicatedListener(docMetaSnapshotEvent);
 
         await waitForExpect(() => {
-            assert.equal(emitted.length, 1);
+            assert.equal(computeEmittedDocMetaMutations(docMetaSnapshotEvents), 1);
         });
 
     });
@@ -91,14 +107,25 @@ describe('DocMetaSnapshotEventListener', function() {
 
         const docMetaSnapshotEvent = createDocMetaSnapshotEvent();
 
-        await deduplicatedListener(docMetaSnapshotEvent);
-
-        docMeta.docInfo.uuid = createFutureUUID();
+        assert.equal(computeEmittedDocMetaMutations(docMetaSnapshotEvents), 0);
 
         await deduplicatedListener(docMetaSnapshotEvent);
+
+        assert.equal(computeEmittedDocMetaMutations(docMetaSnapshotEvents), 1);
+
+        TestingTime.forward(60000);
+        const futureUUID = createFutureUUID();
+
+        assert.notEqual(docMeta.docInfo.uuid, futureUUID);
+
+        docMeta.docInfo.uuid = futureUUID;
+
+        await deduplicatedListener(docMetaSnapshotEvent);
+
+        assert.equal(computeEmittedDocMetaMutations(docMetaSnapshotEvents), 2);
 
         await waitForExpect(() => {
-            assert.equal(emitted.length, 2);
+            assert.equal(computeEmittedDocMetaMutations(docMetaSnapshotEvents), 2);
         });
 
     });
@@ -112,7 +139,7 @@ describe('DocMetaSnapshotEventListener', function() {
         await deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
         await waitForExpect(() => {
-            assert.equal(emitted.length, 2);
+            assert.equal(docMetaSnapshotEvents.length, 2);
         });
 
     });
@@ -126,7 +153,7 @@ describe('DocMetaSnapshotEventListener', function() {
         await deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
         await waitForExpect(() => {
-            assert.equal(emitted.length, 2);
+            assert.equal(docMetaSnapshotEvents.length, 2);
         });
 
     });
@@ -144,7 +171,7 @@ describe('DocMetaSnapshotEventListener', function() {
         await deduplicatedListener(createDocMetaSnapshotEvent('created'));
 
         await waitForExpect(() => {
-            assert.equal(emitted.length, 3);
+            assert.equal(docMetaSnapshotEvents.length, 3);
         });
 
     });
