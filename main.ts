@@ -9,6 +9,11 @@ import {LazyWriteDatastore} from './web/js/datastore/LazyWriteDatastore';
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
+if (process.env.POLAR_DISABLE_HARDWARE_ACCELERATION === 'true') {
+    console.log("Disabling hardware acceleration");
+    app.disableHardwareAcceleration();
+}
+
 if (!hasSingleInstanceLock) {
     console.error("Quiting.  App is single instance.");
     app.quit();

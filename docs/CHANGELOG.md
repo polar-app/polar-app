@@ -1,6 +1,12 @@
-# 1.10.0
+# 1.11.0
 
 - Donate and Discord buttons in header.  These are important.
+
+- Setting POLAR_DISABLE_HARDWARE_ACCELERATION should disable hardwawre 
+  acceleration now
+
+
+# 1.10.0
 
 - Fixed sync bug related to not sending data to the cloud but I don't think this
   was actually released.
