@@ -173,7 +173,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         let selected: number[] = [selectedIdx];
 
-        if (event.shiftKey) {
+        if (event.getModifierState("Shift")) {
 
             // select a range
 
@@ -191,7 +191,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         }
 
-        if (event.ctrlKey) {
+        if (event.getModifierState("Control")) {
 
             // one at a time
 
@@ -341,9 +341,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                  placement="bottom">
 
                                             Tag multiple documents at once.  To
-                                            tag multiple documents at once sort
-                                            by the 'Tags' column (twice) to see
-                                            documents without tags.
+                                            fidn untagged documents sort by the
+                                            'Tags' column (twice).  Once to sort
+                                            alphabetically and the second click
+                                            click will reverse the sort showing
+                                            untagged documents.
 
                                         </Tooltip>
 

@@ -107,11 +107,11 @@ export class FilterTagInput extends React.Component<IProps, IState> {
 
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
-        if (event.key === "Escape") {
+        if (event.key.toLowerCase() === "escape") {
             this.toggle();
         }
 
-        if (event.getModifierState("Control") && event.key === "Enter") {
+        if (event.getModifierState("Control") && event.key.toLowerCase() === "enter") {
             this.toggle();
         }
 
