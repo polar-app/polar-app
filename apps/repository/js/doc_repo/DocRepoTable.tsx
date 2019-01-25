@@ -259,6 +259,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 <div className="mr-1"
                                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
+
                                     <UncontrolledDropdown id="add-content-button"
                                                           direction="down"
                                                           size="sm">
@@ -267,16 +268,48 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                             <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
                                         </DropdownToggle>
                                         <DropdownMenu>
-                                            <DropdownItem size="sm" onClick={() => this.cmdImportFromDisk()}>
+
+                                            <DropdownItem id="add-content-import-from-disk"
+                                                          size="sm"
+                                                          onClick={() => this.cmdImportFromDisk()}>
+
                                                 <i className="fas fa-hdd"></i>
-                                                &nbsp; Import from Disk
+                                                    &nbsp; Import from Disk
+
+                                                <Tooltip target="add-content-import-from-disk"
+                                                         show={0}
+                                                         placement="right">
+
+                                                    Import PDFs from disk in bulk.  Select
+                                                    one PDF or multiple PDFs at once.
+
+                                                </Tooltip>
+
                                             </DropdownItem>
-                                            <DropdownItem size="sm" onClick={() => this.cmdCaptureWebPage()}>
+
+                                            <DropdownItem id="add-content-capture-web-page"
+                                                          size="sm"
+                                                          onClick={() => this.cmdCaptureWebPage()}>
+
                                                 <i className="fab fa-chrome"></i>
                                                 &nbsp; Capture Web Page
+
+                                                <Tooltip target="add-content-capture-web-page"
+                                                         show={0}
+                                                         placement="right">
+
+                                                    Capture a web page from the Internet and
+                                                    save it to Polar for annotation and long
+                                                    term archival.
+
+                                                </Tooltip>
+
                                             </DropdownItem>
+
                                         </DropdownMenu>
+
                                     </UncontrolledDropdown>
+
 
                                     {/*TODO: can't enable this as it fights with the */}
                                     {/*dropdown toggle.*/}
