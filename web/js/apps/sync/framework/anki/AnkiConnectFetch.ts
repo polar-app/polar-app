@@ -70,7 +70,7 @@ export class AnkiConnectFetch {
 
             return result.result;
         } catch (e) {
-            log.warn("Anki connect fetch failed: ", e);
+            log.warn("Anki connect fetch failed (install Polar Connect or Anki Connect): ", e);
             throw e;
         }
 
