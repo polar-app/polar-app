@@ -1,5 +1,7 @@
 # 1.10.0
 
+- Donate and Discord buttons in header.  These are important.
+
 - Fixed sync bug related to not sending data to the cloud but I don't think this
   was actually released.
 
