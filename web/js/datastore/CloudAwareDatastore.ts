@@ -188,7 +188,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         log.info("CloudAwareDatastore: synchronizeDocs: ", docMetaRefs);
 
-        const toSyncOrigin = async (datastore: Datastore): Promise<SyncOrigin> => {
+        const toSyncOrigin = async (datastore: Datastore, ...docMetaRefs: DocMetaRef[]): Promise<SyncOrigin> => {
 
             const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(datastore, docMetaRefs);
 
@@ -199,8 +199,18 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         };
 
-        const cloudSyncOrigin = await toSyncOrigin(this.cloud);
-        const localSyncOrigin = await toSyncOrigin(this.local);
+        const clearDocMeta = (...docMetaRefs: DocMetaRef[]): DocMetaRef[] => {
+            return docMetaRefs.map(current => {
+
+                return {
+                    fingerprint: current.fingerprint
+                };
+
+            });
+        };
+
+        const cloudSyncOrigin = await toSyncOrigin(this.cloud, ...clearDocMeta(...docMetaRefs));
+        const localSyncOrigin = await toSyncOrigin(this.local, ...docMetaRefs);
 
         // TODO: there are no events with this and the UI won't be updated.
         // the problme is that I don't think we can re-send the event data
