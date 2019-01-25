@@ -191,7 +191,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         }
 
-        if (event.getModifierState("Control")) {
+        if (event.getModifierState("Control") || event.getModifierState("Meta")) {
 
             // one at a time
 
