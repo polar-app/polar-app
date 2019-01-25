@@ -74,7 +74,7 @@ export class CloudSyncOverviewContent extends React.Component<IProps, IState> {
 
                 <p className="intro" style={Styles.overview}>
                     <b>Polar Cloud Sync</b> enables synchronization between
-                    multiple devices transparently with the cloud.
+                    multiple devices transparently running Polar.
                 </p>
 
                 <ul style={Styles.features}>
@@ -105,26 +105,6 @@ export class CloudSyncOverviewContent extends React.Component<IProps, IState> {
                     </li>
 
                 </ul>
-
-                <p>
-                    <b>PREVIEW:</b> Cloud sync is currently available in
-                    preview. We anticipate making soon and will support up to
-                    100 documents for free and <b>$7.99</b> for up to 10GB of
-                    storage.  For now we're letting users use cloud sync in
-                    preview mode with full access.
-                </p>
-
-                {/*<p style={Styles.price}>*/}
-
-                    {/*<div style={Styles.price_value}>*/}
-                        {/*$7.99*/}
-                    {/*</div>*/}
-
-                    {/*<div className="text-muted" style={Styles.price_overview}>*/}
-                        {/*per month*/}
-                    {/*</div>*/}
-
-                {/*</p>*/}
 
             </div>
 

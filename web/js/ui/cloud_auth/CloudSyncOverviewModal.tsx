@@ -29,7 +29,7 @@ export class CloudSyncOverviewModal extends React.Component<IProps, IState> {
 
                     <Button color="primary"
                             onClick={() => this.props.onSignup()}>
-                        Sign Up
+                        Login
                     </Button>{' '}
 
                 </ModalFooter>
