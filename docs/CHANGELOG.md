@@ -1,7 +1,10 @@
 # 1.10.0
 
+- Fixed sync bug related to not sending data to the cloud but I don't think this
+  was actually released.
+
 - Fixed bug with promises not being resolved and the viewer not being updated
-  bug I don't think this was actually released.
+  but I don't think this was actually released.
 
 - Feature: Migrated to fixed nav header
 
