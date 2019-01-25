@@ -332,8 +332,20 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                         {/*disabled={this.state.selected.length === 0}*/}
                                                         {/*filteredTags={this.filteredTags} />*/}
 
-                                        <TagButton tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                        <TagButton id="tag-multiple-documents"
+                                                   tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                    onSelectedTags={tags => this.onMultiTagged(tags)}/>
+
+
+                                        <Tooltip target="tag-multiple-documents"
+                                                 placement="bottom">
+
+                                            Tag multiple documents at once.  To
+                                            tag multiple documents at once sort
+                                            by the 'Tags' column (twice) to see
+                                            documents without tags.
+
+                                        </Tooltip>
 
                                     </div>
 
@@ -380,9 +392,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     <div className="header-filter-box header-filter-tags mr-1"
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                        <FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                        <FilterTagInput id="filter-tag-input"
+                                                        tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                         refresher={() => this.refresh()}
                                                         filteredTags={this.filteredTags} />
+
+                                        <Tooltip target="filter-tag-input">Filter the document list by a specific tag.</Tooltip>
 
                                     </div>
 
@@ -402,6 +417,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                        type="text"
                                                        placeholder="Filter by title"
                                                        onChange={() => this.onFilterByTitle()}/>
+
+                                                <Tooltip target="filter_title">Filter the document list by the title of the document.</Tooltip>
 
                                             </InputGroup>
 

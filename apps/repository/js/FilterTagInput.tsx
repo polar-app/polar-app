@@ -31,7 +31,7 @@ const Styles: IStyleMap = {
 
 export class FilterTagInput extends React.Component<IProps, IState> {
 
-    private readonly id = "filter-tag-input";
+    private readonly id: string;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -42,6 +42,8 @@ export class FilterTagInput extends React.Component<IProps, IState> {
             popoverOpen: false,
             defaultValue: []
         };
+
+        this.id = this.props.id || "filter-tag-input";
 
     }
 
@@ -155,6 +157,8 @@ export class FilterTagInput extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+
+    readonly id?: string;
 
     readonly disabled?: boolean;
 
