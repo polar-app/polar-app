@@ -7,7 +7,7 @@ permalink: /docs/anki-sync-for-spaced-repetition.html
 
 # Anki and Spaced Repetition
 
-Polar supports native integration with Anki via the Anki Connect plugin.
+Polar supports native integration with Anki via the [Polar Connect](https://ankiweb.net/shared/info/734898866) add-on
 
 This allows for annotations on document and connecting flashcards to these
 annotations and then synchronizing them directly to Anki.
@@ -34,8 +34,11 @@ it in 1.8.0. Technically it's still supported but needs to be re-enabled.
 
 # Setup
 
-Install Anki Connect and restart Anki.  At this point Polar can sync to Anki 
-properly.
+Install the [Polar Connect](https://ankiweb.net/shared/info/734898866) add-on 
+and restart Anki.  At this point Polar can sync to Anki properly.
+
+Note that we used to recommend Anki Connect but we suggest you install Polar
+Connect now which will have more functionality.
 
 # International Users!
 
@@ -46,7 +49,7 @@ on a fix for this issue.
 
 # Usage 
 
-Once Anki Connect is running, go to ```Tools | Sync Flashcards to Anki``` from 
+Once Polar Connect is running, go to ```Tools | Sync Flashcards to Anki``` from 
 within the Document Repository. 
 
 # Limitations
@@ -57,7 +60,7 @@ within the Document Repository.
   update UI so this needs to be added to Polar before we can implement this in 
   Anki sync.
 
-- Anki must have Anki Connect. This will always be a hard requirement but we
+- Anki must have Polar Connect. This will always be a hard requirement but we
   might create a Polar Sync plugin for Anki.
 
 - No support for nested decks.  Each deck is created at the root.  If you move it
