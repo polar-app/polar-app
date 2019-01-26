@@ -39,6 +39,9 @@ export class Files {
     public static async recursively(path: string,
                                     listener: (path: string) => Promise<void>) {
 
+        // TODO: provide a function that returns true if we should abort the
+        // recursive find operation.
+
         if (! await this.existsAsync(path)) {
             throw new Error("Path does not exist: " + path);
         }

@@ -5,7 +5,7 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {Blackout} from './Blackout';
 import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
-import {Tooltip} from '../../../web/js/ui/tooltip/Tooltip';
+import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
 import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 
 const log = Logger.create();
@@ -85,7 +85,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                     </Button>
                 </div>
 
-                <Tooltip target="toggle-sidebar">Toggle showing the sidebar</Tooltip>
+                <SimpleTooltip target="toggle-sidebar">Toggle showing the sidebar</SimpleTooltip>
 
                 <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <NavLogo/>
@@ -162,55 +162,55 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     </ListGroup>
 
-                    <Tooltip target="sidebar-item-documents"
-                             show={0}
-                             placement="right">
+                    <SimpleTooltip target="sidebar-item-documents"
+                                   show={0}
+                                   placement="right">
 
                         Manage all documents you're reading including filtering and sorting.
 
-                    </Tooltip>
+                    </SimpleTooltip>
 
-                    <Tooltip target="sidebar-item-annotations"
-                             show={0}
-                             placement="right">
+                    <SimpleTooltip target="sidebar-item-annotations"
+                                   show={0}
+                                   placement="right">
 
                         Manage all annotations of all your documents in one central view.
 
-                    </Tooltip>
+                    </SimpleTooltip>
 
-                    <Tooltip target="sidebar-item-stats"
-                             show={0}
-                             placement="right">
+                    <SimpleTooltip target="sidebar-item-stats"
+                                   show={0}
+                                   placement="right">
 
                         Show stats on your usage of Polar including stats on tags,
                         rate of document addition, etc.
 
-                    </Tooltip>
+                    </SimpleTooltip>
 
-                    <Tooltip target="sidebar-item-logs"
-                             show={0}
-                             placement="right">
+                    <SimpleTooltip target="sidebar-item-logs"
+                                   show={0}
+                                   placement="right">
 
                         Show logs on internal activity during background operations
                         like cloud activity and sync.
 
-                    </Tooltip>
+                    </SimpleTooltip>
 
-                    <Tooltip target="sidebar-item-community"
-                             show={0}
-                             placement="right">
+                    <SimpleTooltip target="sidebar-item-community"
+                                   show={0}
+                                   placement="right">
 
                         Find community resources including links to discussions around Polar.
 
-                    </Tooltip>
+                    </SimpleTooltip>
 
-                    <Tooltip target="sidebar-item-whatsnew"
-                             show={0}
-                             placement="right">
+                    <SimpleTooltip target="sidebar-item-whatsnew"
+                                   show={0}
+                                   placement="right">
 
                         Find out what's new with each Polar release.
 
-                    </Tooltip>
+                    </SimpleTooltip>
 
                 </section>
             </div>

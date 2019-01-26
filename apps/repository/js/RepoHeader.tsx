@@ -6,7 +6,7 @@ import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLaye
 import {RepoSidebar} from './RepoSidebar';
 import {SplitBar, SplitBarLeft, SplitBarRight} from './SplitBar';
 import Button from 'reactstrap/lib/Button';
-import {Tooltip} from '../../../web/js/ui/tooltip/Tooltip';
+import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
 import {DropdownItem} from 'reactstrap';
 
 const log = Logger.create();
@@ -39,57 +39,90 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
 
-                        <Button id="discord-button"
-                                size="sm"
-                                className="ml-1"
-                                onClick={() => document.location!.href = 'https://discord.gg/GT8MhA6'}
-                                color="light">
+                        <div>
 
-                            <i className="fab fa-discord" style={{fontSize: '22px', marginTop: 'auto', marginBottom: 'auto'}}></i>
+                            <Button id="discord-button"
+                                    size="sm"
+                                    className="ml-1"
+                                    onClick={() => document.location!.href = 'https://discord.gg/GT8MhA6'}
+                                    color="light">
 
-                        </Button>
+                                <i className="fab fa-discord" style={{fontSize: '22px', marginTop: 'auto', marginBottom: 'auto'}}></i>
 
-                        <Tooltip target="discord-button"
-                                 placement="bottom">
+                            </Button>
 
-                            Chat with other Polar users live on Discord.
+                            <SimpleTooltip target="discord-button"
+                                           placement="bottom">
 
-                        </Tooltip>
+                                Chat with other Polar users live on Discord.
 
-                        <Button id="donate-button"
-                                size="sm"
-                                className="ml-1"
-                                onClick={() => document.location!.href = 'https://opencollective.com/polar-bookshelf'}
-                                color="light">
+                            </SimpleTooltip>
 
-                            <i className="fas fa-donate" style={{fontSize: '22px'}}></i>
-
-                        </Button>
-
-                        <Tooltip target="donate-button"
-                                 placement="bottom">
-
-                            Donate to support Polar
-
-                        </Tooltip>
+                        </div>
 
 
-                        <Button id="help-button"
-                                size="sm"
-                                className="ml-1"
-                                onClick={() => document.location!.href = 'https://getpolarized.io/docs/'}
-                                color="light">
-                            <i className="fas fa-question"></i>
-                        </Button>
+                        <div>
 
-                        <Tooltip target="help-button"
-                                 placement="bottom">
+                            <Button id="donate-button"
+                                    size="sm"
+                                    className="ml-1"
+                                    onClick={() => document.location!.href = 'https://opencollective.com/polar-bookshelf'}
+                                    color="light">
 
-                            Read documentation about Polar.
+                                <i className="fas fa-donate" style={{fontSize: '22px'}}></i>
 
-                        </Tooltip>
+                            </Button>
+
+                            <SimpleTooltip target="donate-button"
+                                           placement="bottom">
+
+                                Donate to support Polar
+
+                            </SimpleTooltip>
+
+                        </div>
 
 
+                        <div>
+
+                            <Button id="poll-button"
+                                    size="sm"
+                                    className="ml-1"
+                                    onClick={() => document.location!.href = 'https://kevinburton1.typeform.com/to/u1zNWG'}
+                                    color="light">
+
+                                <i className="fas fa-poll-h" style={{fontSize: '22px'}}></i>
+
+                            </Button>
+
+                            <SimpleTooltip target="poll-button"
+                                           placement="bottom">
+
+                                Take a quick survey about your usage of Polar
+                                to help us prioritize our feature roadmap.
+
+                            </SimpleTooltip>
+
+                        </div>
+
+                        <div>
+
+                            <Button id="help-button"
+                                    size="sm"
+                                    className="ml-1"
+                                    onClick={() => document.location!.href = 'https://getpolarized.io/docs/'}
+                                    color="light">
+                                <i className="fas fa-question"></i>
+                            </Button>
+
+                            <SimpleTooltip target="help-button"
+                                           placement="bottom">
+
+                                Read documentation about Polar.
+
+                            </SimpleTooltip>
+
+                        </div>
 
                     </SplitBarRight>
 

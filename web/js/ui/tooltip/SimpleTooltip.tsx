@@ -2,7 +2,7 @@
 import React from 'react';
 import {UncontrolledTooltip} from 'reactstrap';
 
-export class Tooltip extends React.Component<IProps, IState> {
+export class SimpleTooltip extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -19,6 +19,7 @@ export class Tooltip extends React.Component<IProps, IState> {
         const show = this.props.show !== undefined ? this.props.show : 500;
 
         return (
+
             <UncontrolledTooltip style={{maxWidth: '325px',
                                          textAlign: 'justify'}}
                                  placement={placement}

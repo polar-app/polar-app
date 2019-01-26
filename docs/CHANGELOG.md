@@ -1,5 +1,8 @@
 # 1.11.0
 
+- Disabled the top message boxes.  They were annoying and only a stop gap until
+  we have a proper onboarding mechanism.
+
 - Electron 3.1.2
 
 - Donate and Discord buttons in header.  These are important.

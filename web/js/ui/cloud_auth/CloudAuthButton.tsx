@@ -14,7 +14,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Nav} from '../util/Nav';
 import {InviteUsersModal} from './InviteUsersModal';
 import {Invitations} from '../../datastore/Invitations';
-import {Tooltip} from '../tooltip/Tooltip';
+import {SimpleTooltip} from '../tooltip/SimpleTooltip';
 
 const log = Logger.create();
 
@@ -67,11 +67,11 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
                     </Button>
 
-                    <Tooltip target="enable-cloud-sync">
+                    <SimpleTooltip target="enable-cloud-sync">
                         Turn on cloud sync enabling you to synchronize your
                         repository across multiple computers.  Files are
                         distributed in real time and always up to date.
-                    </Tooltip>
+                    </SimpleTooltip>
 
                     <CloudLoginModal isOpen={this.state.stage === 'login'}
                                      onCancel={() => this.changeAuthStage()}/>
@@ -106,9 +106,45 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                             Cloud Sync
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem size="sm" onClick={() => this.changeAuthStage('invite')}>Invite Users</DropdownItem>
+                            <DropdownItem id="cloud-sync-invite-users"
+                                          size="sm"
+                                          onClick={() => this.changeAuthStage('invite')}>
+
+                                <i className="fas fa-user-plus mr-1"></i>
+
+                                Invite Users
+
+                                <SimpleTooltip target="cloud-sync-invite-users"
+                                               show={0}
+                                               placement="left">
+                                    Invite users to Polar. If they sign up and
+                                    use cloud sync we will give you a free month
+                                    of cloud sync.
+                                </SimpleTooltip>
+
+                            </DropdownItem>
                             <DropdownItem divider />
-                            <DropdownItem size="sm" onClick={() => this.logout()} className="text-danger">Logout</DropdownItem>
+
+                            <DropdownItem id="cloud-sync-logout"
+                                          size="sm"
+                                          onClick={() => this.logout()}
+                                          className="text-danger">
+
+                                <i className="fas fa-sign-out-alt mr-1"></i>
+
+                                Logout
+
+                                <SimpleTooltip target="cloud-sync-logout"
+                                               show={0}
+                                               placement="left">
+
+                                    Logout of cloud sync. Your data will no
+                                    longer be synchronized between your devices.
+
+                                </SimpleTooltip>
+
+                            </DropdownItem>
+
                         </DropdownMenu>
                     </UncontrolledDropdown>
 

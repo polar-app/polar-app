@@ -37,11 +37,12 @@ import {DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, Uncontrol
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
-import {Tooltip} from '../../../../web/js/ui/tooltip/Tooltip';
+import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TagButton} from './TagButton';
 import {RepoHeader} from '../RepoHeader';
 import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
+import {AddContentButton} from './AddContentButton';
 
 const log = Logger.create();
 
@@ -259,65 +260,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 <div className="mr-1"
                                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-
-                                    <UncontrolledDropdown id="add-content-button"
-                                                          direction="down"
-                                                          size="sm">
-
-                                        <DropdownToggle style={{fontWeight: 'bold'}} color="success" caret>
-                                            <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
-                                        </DropdownToggle>
-                                        <DropdownMenu>
-
-                                            <DropdownItem id="add-content-import-from-disk"
-                                                          size="sm"
-                                                          onClick={() => this.cmdImportFromDisk()}>
-
-                                                <i className="fas fa-hdd"></i>
-                                                    &nbsp; Import from Disk
-
-                                                <Tooltip target="add-content-import-from-disk"
-                                                         show={0}
-                                                         placement="right">
-
-                                                    Import PDFs from disk in bulk.  Select
-                                                    one PDF or multiple PDFs at once.
-
-                                                </Tooltip>
-
-                                            </DropdownItem>
-
-                                            <DropdownItem id="add-content-capture-web-page"
-                                                          size="sm"
-                                                          onClick={() => this.cmdCaptureWebPage()}>
-
-                                                <i className="fab fa-chrome"></i>
-                                                &nbsp; Capture Web Page
-
-                                                <Tooltip target="add-content-capture-web-page"
-                                                         show={0}
-                                                         placement="right">
-
-                                                    Capture a web page from the Internet and
-                                                    save it to Polar for annotation and long
-                                                    term archival.
-
-                                                </Tooltip>
-
-                                            </DropdownItem>
-
-                                        </DropdownMenu>
-
-                                    </UncontrolledDropdown>
-
-
-                                    {/*TODO: can't enable this as it fights with the */}
-                                    {/*dropdown toggle.*/}
-                                    {/*<Tooltip target="add-content-button">*/}
-                                        {/*Quickly add content including PDFs from*/}
-                                        {/*your local drive or web pages captured*/}
-                                        {/*from the web.*/}
-                                    {/*</Tooltip>*/}
+                                    <AddContentButton importFromDisk={() => this.cmdImportFromDisk()}
+                                                      captureWebPage={this.cmdCaptureWebPage}/>
 
                                 </div>
 
@@ -337,8 +281,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                    onSelectedTags={tags => this.onMultiTagged(tags)}/>
 
 
-                                        <Tooltip target="tag-multiple-documents"
-                                                 placement="bottom">
+                                        <SimpleTooltip target="tag-multiple-documents"
+                                                       placement="bottom">
 
                                             Tag multiple documents at once.  To
                                             fidn untagged documents sort by the
@@ -347,7 +291,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                             click will reverse the sort showing
                                             untagged documents.
 
-                                        </Tooltip>
+                                        </SimpleTooltip>
 
                                     </div>
 
@@ -369,7 +313,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                           initialValue={false}
                                                           onChange={value => this.onToggleFlaggedOnly(value)}/>
 
-                                            <Tooltip target="toggle-flagged">Toggle showing flagged documents</Tooltip>
+                                            <SimpleTooltip target="toggle-flagged">Toggle showing flagged documents</SimpleTooltip>
 
                                         </div>
 
@@ -385,7 +329,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                           initialValue={false}
                                                           onChange={value => this.onToggleFilterArchived(!value)}/>
 
-                                            <Tooltip target="toggle-archived">Toggle showing archived documents</Tooltip>
+                                            <SimpleTooltip target="toggle-archived">Toggle showing archived documents</SimpleTooltip>
 
                                         </div>
 
@@ -399,7 +343,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                         refresher={() => this.refresh()}
                                                         filteredTags={this.filteredTags} />
 
-                                        <Tooltip target="filter-tag-input">Filter the document list by a specific tag.</Tooltip>
+                                        <SimpleTooltip target="filter-tag-input">Filter the document list by a specific tag.</SimpleTooltip>
 
                                     </div>
 
@@ -420,7 +364,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                        placeholder="Filter by title"
                                                        onChange={() => this.onFilterByTitle()}/>
 
-                                                <Tooltip target="filter_title">Filter the document list by the title of the document.</Tooltip>
+                                                <SimpleTooltip target="filter_title">Filter the document list by the title of the document.</SimpleTooltip>
 
                                             </InputGroup>
 
