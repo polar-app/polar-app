@@ -69,7 +69,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
                     <Tooltip target="enable-cloud-sync">
                         Turn on cloud sync enabling you to synchronize your
-                        repository across multiple computers.
+                        repository across multiple computers.  Files are
+                        distributed in real time and always up to date.
                     </Tooltip>
 
                     <CloudLoginModal isOpen={this.state.stage === 'login'}

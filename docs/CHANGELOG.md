@@ -1,5 +1,7 @@
 # 1.11.0
 
+- Electron 3.1.2
+
 - Donate and Discord buttons in header.  These are important.
 
 - Setting POLAR_DISABLE_HARDWARE_ACCELERATION should disable hardwawre 
