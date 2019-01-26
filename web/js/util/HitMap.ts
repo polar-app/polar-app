@@ -17,6 +17,15 @@ export class HitMap {
 
     }
 
+    public registerHits(...keys: string[]) {
+
+        for (const key of keys) {
+            this.registerHit(key);
+        }
+
+    }
+
+
     /**
      * Return the hit index as a map.
      */

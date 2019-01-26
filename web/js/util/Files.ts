@@ -32,6 +32,48 @@ class Promised {
 export class Files {
 
     /**
+     * Go through the given directory path recursively call the callback
+     * function for each file.
+     *
+     */
+    public static async recursively(path: string,
+                                    listener: (path: string) => Promise<void>) {
+
+        if (! await this.existsAsync(path)) {
+            throw new Error("Path does not exist: " + path);
+        }
+
+        // make sure we're given a directory and not a symlink, character
+        // device, etc.
+        Preconditions.assertEqual('directory',
+                                  await Files.fileType(path),
+                                  'Path had invalid type: ' + path);
+
+        const dirEntries = await this.readdirAsync(path);
+
+        for (const dirEntry of dirEntries) {
+
+            const dirEntryPath = FilePaths.join(path, dirEntry);
+            const dirEntryType = await this.fileType(dirEntryPath);
+
+            if (dirEntryType === 'directory') {
+
+                await this.recursively(dirEntryPath, listener);
+
+            } else if (dirEntryType === 'file') {
+
+                await listener(dirEntryPath);
+
+
+            } else {
+                throw new Error(`Unable to handle dir entry: ${dirEntryPath} of type ${dirEntryType}`);
+            }
+
+        }
+
+    }
+
+    /**
      * Create a recursive directory snapshot of files using hard links.
      *
      * @param filter Accept any files that pass the filter predicate (return true).

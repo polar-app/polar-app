@@ -62,7 +62,7 @@ export class GDPRNotice extends React.Component<any, IState> {
                     <div className="pt-1 pb-1">
 
                         <div style={Styles.intro}>
-                            We uses cookes to track your usage.
+                            We use cookes to track your usage.
                         </div>
 
                         <p>
