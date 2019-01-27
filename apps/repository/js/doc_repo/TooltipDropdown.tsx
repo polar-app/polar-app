@@ -24,8 +24,7 @@ export class TooltipDropdown extends React.Component<IProps, IState> {
         };
 
         this.show = this.props.tooltip.show !== undefined ? this.props.tooltip.show : 500;
-
-
+        
     }
 
     public render() {

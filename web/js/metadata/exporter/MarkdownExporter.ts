@@ -6,6 +6,8 @@ import {AbstractExporter} from './AbstractExporter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
+import {PageInfo} from '../PageInfo';
+import {Optional} from "../../util/ts/Optional";
 
 export class MarkdownExporter extends AbstractExporter {
 
@@ -24,7 +26,18 @@ export class MarkdownExporter extends AbstractExporter {
 
     }
 
+    protected pageInfoToText(pageInfo?: PageInfo): string {
+
+        if (!pageInfo) {
+            return "";
+        }
+
+        return `page: ${pageInfo.num}\n`;
+    }
+
     protected async writeTextHighlight(textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
+
+        await this.writer!.write(this.pageInfoToText(exportable.pageInfo));
 
         const output =
             `created: ${textHighlight.created}\n` +
@@ -44,6 +57,8 @@ export class MarkdownExporter extends AbstractExporter {
 
     protected async writeComment(comment: Comment, exportable: AnnotationHolder): Promise<void> {
 
+        await this.writer!.write(this.pageInfoToText(exportable.pageInfo));
+
         const output =
             `created: ${comment.created}\n` +
             `type: comment\n`
@@ -60,6 +75,8 @@ export class MarkdownExporter extends AbstractExporter {
     }
 
     protected async writeFlashcard(flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
+
+        await this.writer!.write(this.pageInfoToText(exportable.pageInfo));
 
         for (const fieldName of Object.keys(flashcard.fields)) {
 

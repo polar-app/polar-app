@@ -1,5 +1,7 @@
 # 1.11.0
 
+- page number in markdown export
+
 - Disabled the top message boxes.  They were annoying and only a stop gap until
   we have a proper onboarding mechanism.
 

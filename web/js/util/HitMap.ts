@@ -1,4 +1,6 @@
 import {Dictionaries} from "./Dictionaries";
+import {Reducers} from "./Reducers";
+import {Multimap} from './Multimap';
 
 /**
  * Keeps track of hits for a given key...
@@ -43,9 +45,50 @@ export class HitMap {
 
     }
 
+    public toPercRanked(total?: number): ReadonlyArray<PercRankedEntry> {
+
+        const ranked = this.toRanked();
+
+        if (total === undefined) {
+            total = Object.values(ranked)
+                .map(current => current.value)
+                .reduce(Reducers.SUM, 0);
+
+        }
+
+        let idx = 1;
+        return ranked.map(current => {
+
+            return {
+                idx: idx++,
+                key: current.key,
+                hits: current.value,
+                perc: Math.floor((current.value / total!)  * 100)
+            };
+
+        });
+
+    }
+
 }
+
+/**
+ * A HitMap impl that uses a Multimap to keep the values as well for reporting.
+ */
+// export class MultiHitMap {
+//
+//     private backing: Multimap
+//
+// }
 
 interface HitEntry {
     key: string;
     value: number;
+}
+
+interface PercRankedEntry {
+    idx: number;
+    key: string;
+    hits: number;
+    perc: number;
 }
