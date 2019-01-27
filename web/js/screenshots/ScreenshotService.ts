@@ -1,4 +1,3 @@
-import {Logger} from '../logger/Logger';
 import {IPCEngines} from '../ipc/handler/IPCEngines';
 import {ScreenshotHandler} from './ScreenshotHandler';
 

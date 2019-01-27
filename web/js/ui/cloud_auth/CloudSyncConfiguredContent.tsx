@@ -1,56 +1,27 @@
 import * as React from 'react';
-import {IStyleMap} from '../../react/IStyleMap';
 
 
-const Styles: IStyleMap = {
+class Styles {
 
-    button: {
-        paddingTop: '4px',
-        color: 'red !important',
-        fontSize: '15px'
-
-        // minWidth: '350px',
-        // width: '350px'
-    },
-
-    icon: {
+    public static icon: React.CSSProperties = {
         fontSize: '120px',
         margin: '20px',
         // color: '007bff'
         // minWidth: '350px',
         // width: '350px'
-    },
+    };
 
-    overview: {
+    public static overview: React.CSSProperties = {
         fontSize: '18px',
         textAlign: 'justify',
         margin: '25px'
-    },
+    };
 
-    features: {
-        marginLeft: '25px'
-    },
-
-    price: {
-        textAlign: 'center',
-    },
-
-    price_value: {
-        fontSize: '40px',
-        fontWeight: 'bold',
-        lineHeight: '1em',
-    },
-
-
-    price_overview: {
-        fontSize: '14px',
-    },
-
-    content: {
+    public static content: React.CSSProperties = {
         maxWidth: '800px'
-    }
+    };
 
-};
+}
 
 export class CloudSyncConfiguredContent extends React.Component<IProps, IState> {
 

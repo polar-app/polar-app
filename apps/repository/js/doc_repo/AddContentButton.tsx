@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
+import {DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import Dropdown from 'reactstrap/lib/Dropdown';
 import {TooltipDropdown} from './TooltipDropdown';
 
 export class AddContentButton extends React.Component<IProps, IState> {
@@ -23,13 +22,13 @@ export class AddContentButton extends React.Component<IProps, IState> {
 
         return (
 
-            <UncontrolledDropdown id="add-content-dropdown"
-                                  // tooltip={{
-                                  //     text: "Add content by importing PDFs from your local drive or capturing web pages from the Internet.",
-                                  //     placement: 'right'
-                                  // }}
-                                  direction="down"
-                                  size="sm">
+            <TooltipDropdown id="add-content-dropdown"
+                             tooltip={{
+                                 text: "Add content by importing PDFs from your local drive or capturing web pages from the Internet.",
+                                 placement: 'bottom'
+                             }}
+                             direction="down"
+                             size="sm">
 
                 <DropdownToggle style={{fontWeight: 'bold'}} color="success" caret>
                     <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
@@ -76,7 +75,7 @@ export class AddContentButton extends React.Component<IProps, IState> {
 
                 </DropdownMenu>
 
-            </UncontrolledDropdown>
+            </TooltipDropdown>
 
         );
 
