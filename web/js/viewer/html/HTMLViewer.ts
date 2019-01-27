@@ -189,12 +189,8 @@ export class HTMLViewer extends Viewer {
 
         this._changeScaleMeta(scale);
         this._changeScale(scale);
-        this._resizeFrame();
         this._removeAnnotations();
         this._signalScale();
-
-        // FIXME: perform a resize on the iframe since the hosted content
-        // should be larger and we need to expand its size.
 
     }
 
@@ -229,22 +225,10 @@ export class HTMLViewer extends Viewer {
         const contentParent = notNull(document.querySelector("#content-parent"));
         (contentParent as HTMLElement).style.transform = `scale(${scale})`;
 
-        const height = parseInt(this.content.getAttribute('data-height')!);
+        const height = parseInt(this.content.getAttribute('data-original-height')!);
         const newHeight = height * scale;
 
-        const host = contentParent.parentElement!;
-
-        host.style.height = `${newHeight}px`;
-        this.content.style.height = `${newHeight}px`;
-
-    }
-
-    private _resizeFrame() {
-
-        // setTimeout(() => {
-        //     console.log("FIXME resizing");
-        //     this.frameResizer!.resize(true);
-        // }, 1000);
+        this.frameResizer!.resize(true, newHeight);
 
     }
 

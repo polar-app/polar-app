@@ -26,10 +26,10 @@ export class FrameResizer {
     //
     // https://stackoverflow.com/questions/1835219/is-there-an-event-that-fires-on-changes-to-scrollheight-or-scrollwidth-in-jquery
 
-    constructor(parent: HTMLElement, iframe: HTMLIFrameElement | Electron.WebviewTag) {
+    constructor(parent: HTMLElement, host: HTMLIFrameElement | Electron.WebviewTag) {
 
         this.parent = Preconditions.assertPresent(parent);
-        this.host = Preconditions.assertPresent(iframe);
+        this.host = Preconditions.assertPresent(host);
 
         // the current height
         this.height = undefined;
@@ -43,7 +43,7 @@ export class FrameResizer {
      * sort of caching or throttling of resize, we can just force it one last
      * time.
      */
-    public async resize(force: boolean = false) {
+    public async resize(force: boolean = false, newHeight?: number) {
 
         // TODO: accidental horizontal overflow...
         //
@@ -58,13 +58,17 @@ export class FrameResizer {
         // less than 1% I can just wait until the final rendering.  We are
         // often only off by a few px.
 
-        const newHeightAsOptional = await this.getDocumentHeight();
+        if (! newHeight) {
 
-        if (! newHeightAsOptional.isPresent()) {
-            return;
+            const newHeightAsOptional = await this.getDocumentHeight();
+
+            if (! newHeightAsOptional.isPresent()) {
+                return;
+            }
+
+            newHeight = newHeightAsOptional.get();
+
         }
-
-        const newHeight = newHeightAsOptional.get();
 
         const height = Styles.parsePX(Optional.of(this.host.style.height)
                                         .filter( (current: any) => current !== null)
@@ -89,7 +93,15 @@ export class FrameResizer {
             // ${this.iframe.style.height}`);
             this.host.style.minHeight = `${newHeight}px`;
             heightElement.style.minHeight = `${newHeight}px`;
-            heightElement.setAttribute('data-height', `${newHeight}`);
+
+            for (const dataHeightElement of [heightElement, this.host]) {
+                dataHeightElement.setAttribute('data-height', `${newHeight}`);
+
+                if (dataHeightElement.getAttribute('data-original-height') === null) {
+                    dataHeightElement.setAttribute('data-original-height', `${newHeight}`);
+                }
+
+            }
 
             this.height = newHeight;
 

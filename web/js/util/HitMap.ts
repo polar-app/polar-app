@@ -1,6 +1,7 @@
 import {Dictionaries} from "./Dictionaries";
 import {Reducers} from "./Reducers";
-import {Multimap} from './Multimap';
+import {ArrayListMultimap, Multimap} from './Multimap';
+import {Arrays} from "./Arrays";
 
 /**
  * Keeps track of hits for a given key...
@@ -75,20 +76,68 @@ export class HitMap {
 /**
  * A HitMap impl that uses a Multimap to keep the values as well for reporting.
  */
-// export class MultiHitMap {
-//
-//     private backing: Multimap
-//
-// }
+export class SampledHitMap<V> {
+
+    private hitMap = new HitMap();
+
+    private multiMap: Multimap<string, V> = new ArrayListMultimap();
+
+    public registerHit(key: string, value: V): void {
+        this.hitMap.registerHit(key);
+        this.multiMap.put(key, value);
+    }
+
+
+    /**
+     *
+     * @param nrSamples the max samples per entry.
+     * @param total
+     */
+    public toPercRanked(nrSamples: number,
+                        total?: number): ReadonlyArray<SampledPercRankedEntry<V>> {
+
+        const ranked = this.hitMap.toRanked();
+
+        if (total === undefined) {
+            total = Object.values(ranked)
+                .map(current => current.value)
+                .reduce(Reducers.SUM, 0);
+
+        }
+
+        let idx = 1;
+        return ranked.map(current => {
+
+            const samples =
+                Arrays.head(
+                    Arrays.shuffle(...this.multiMap.get(current.key)), nrSamples);
+
+            return {
+                idx: idx++,
+                key: current.key,
+                hits: current.value,
+                perc: Math.floor((current.value / total!)  * 100),
+                samples
+            };
+
+        });
+
+    }
+
+}
 
 interface HitEntry {
     key: string;
     value: number;
 }
 
-interface PercRankedEntry {
-    idx: number;
-    key: string;
-    hits: number;
-    perc: number;
+export interface PercRankedEntry {
+    readonly idx: number;
+    readonly key: string;
+    readonly hits: number;
+    readonly perc: number;
+}
+
+export interface SampledPercRankedEntry<V> extends PercRankedEntry {
+    readonly samples: ReadonlyArray<V>;
 }

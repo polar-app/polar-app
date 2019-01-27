@@ -1,6 +1,6 @@
 import {PDFMetadata} from './PDFMetadata';
 import {Files} from '../../../../../web/js/util/Files';
-import {HitMap} from '../../../util/HitMap';
+import {HitMap, SampledHitMap} from '../../../util/HitMap';
 import {Strings} from '../../../util/Strings';
 
 describe('PDF Metadata', function() {
@@ -13,9 +13,9 @@ describe('PDF Metadata', function() {
     });
 
 
-    it("build property index", async function() {
+    xit("build property index", async function() {
 
-        const hitMap = new HitMap();
+        const hitMap = new SampledHitMap<string>();
 
         let nrFiles: number = 0;
 
@@ -29,21 +29,83 @@ describe('PDF Metadata', function() {
 
             const pdfMeta = await PDFMetadata.getMetadata(path);
 
-            hitMap.registerHits(...Object.keys(pdfMeta.props));
+            for (const propKey of Object.keys(pdfMeta.props)) {
+                const propValue = pdfMeta.props[propKey];
+                hitMap.registerHit(propKey, propValue);
+            }
+
+            const toDOI = () => {
+
+                const toDOIWithProp = (prop: string): string | undefined => {
+
+                    if (pdfMeta.props[prop]) {
+                        return prop;
+                    }
+
+                    return undefined;
+
+                };
+
+                const toDOIWithPropContainsValue = (prop: string, value: string): string | undefined => {
+
+                    if (pdfMeta.props[prop] && pdfMeta.props[prop].indexOf(value) !== -1) {
+                        return prop;
+                    }
+
+                    return undefined;
+
+                };
+
+                const toDOIWithPropStartsWithValue = (prop: string, value: string): string | undefined => {
+
+                    if (pdfMeta.props[prop] && pdfMeta.props[prop].startsWith(value)) {
+                        return prop;
+                    }
+
+                    return undefined;
+
+                };
+
+                return [
+                        toDOIWithProp("prism:doi"),
+                        toDOIWithProp("crossmark:doi"),
+                        toDOIWithProp("pdfx:doi"),
+                        toDOIWithPropStartsWithValue("dc:identifier", "doi:"),
+                        toDOIWithPropContainsValue("prism:url", "doi.org"),
+                        toDOIWithPropContainsValue("dc:title", "doi:"),
+                        toDOIWithPropContainsValue("dc:description", "doi:")
+                        ]
+                    .filter(current => current !== undefined);
+
+            };
+
+            const doiMappings = toDOI();
+
+            if (doiMappings.length >= 1) {
+                hitMap.registerHit("__DOI__", doiMappings[0]!);
+            }
+
+            for (const doiMapping of doiMappings) {
+                hitMap.registerHit("__DOI:" + doiMapping!, "true");
+            }
+
             ++nrFiles;
 
         });
 
-        const percRanked = hitMap.toPercRanked(nrFiles);
+        const nrSamples = 10;
+
+        const percRanked = hitMap.toPercRanked(nrSamples, nrFiles);
 
         for (const current of percRanked) {
 
             const strIdx = Strings.lpad(current.idx, ' ', 4);
-            const strKey = Strings.lpad(current.key, ' ', 45);
+            const strKey = Strings.lpad(current.key, ' ', 50);
             const strPerc = Strings.lpad(current.perc, ' ', 4);
             const strHits = Strings.lpad(current.hits, ' ', 10);
+            const samples = current.samples.join(", ").substring(0, 120).replace(/\n/g, ".");
 
-            console.log(`${strIdx} ${strKey} ${strPerc} ${strHits}`);
+            console.log(`${strIdx} ${strKey} ${strPerc} ${strHits} : ${samples}`);
 
         }
 
