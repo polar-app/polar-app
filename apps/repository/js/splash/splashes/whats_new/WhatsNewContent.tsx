@@ -38,7 +38,7 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                     <p>
                         The most obvious feature is that the UI has been
-                        significantly updated to support a new fixed header bar
+                        significantly updated to support a new fixed header
                         bar.
                     </p>
 

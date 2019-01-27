@@ -68,18 +68,18 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                     </Button>
 
                     <SimpleTooltip target="enable-cloud-sync">
-                        Turn on cloud sync enabling you to synchronize your
-                        repository across multiple computers.  Files are
-                        distributed in real time and always up to date.
+                        Cloud sync enables synchronizing your repository across
+                        multiple computers.  Files are distributed in real time
+                        and always up to date.
                     </SimpleTooltip>
 
                     <CloudLoginModal isOpen={this.state.stage === 'login'}
                                      onCancel={() => this.changeAuthStage()}/>
 
 
-                    <CloudSyncOverviewModal isOpen={this.state.stage === 'overview'}
-                                            onCancel={() => this.changeAuthStage()}
-                                            onSignup={() => this.changeAuthStage('login')}/>
+                    {/*<CloudSyncOverviewModal isOpen={this.state.stage === 'overview'}*/}
+                                            {/*onCancel={() => this.changeAuthStage()}*/}
+                                            {/*onSignup={() => this.changeAuthStage('login')}/>*/}
 
                 </div>
 
@@ -182,7 +182,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
     }
 
     private enableCloudSync() {
-        this.changeAuthStage('overview');
+        this.changeAuthStage('login');
     }
 
     private changeAuthStage(stage?: AuthStage) {

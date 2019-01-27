@@ -23,13 +23,13 @@ export class AddContentButton extends React.Component<IProps, IState> {
 
         return (
 
-            <TooltipDropdown id="add-content-dropdown"
-                             tooltip={{
-                                 text: "Add content by importing PDFs from your local drive or capturing web pages from the Internet.",
-                                 placement: 'right'
-                             }}
-                             direction="down"
-                             size="sm">
+            <UncontrolledDropdown id="add-content-dropdown"
+                                  // tooltip={{
+                                  //     text: "Add content by importing PDFs from your local drive or capturing web pages from the Internet.",
+                                  //     placement: 'right'
+                                  // }}
+                                  direction="down"
+                                  size="sm">
 
                 <DropdownToggle style={{fontWeight: 'bold'}} color="success" caret>
                     <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
@@ -76,10 +76,9 @@ export class AddContentButton extends React.Component<IProps, IState> {
 
                 </DropdownMenu>
 
-            </TooltipDropdown>
+            </UncontrolledDropdown>
 
         );
-
 
         {/*TODO: can't enable this as it fights with the */}
         {/*dropdown toggle.*/}

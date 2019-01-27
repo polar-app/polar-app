@@ -14,10 +14,13 @@ export class TooltipDropdown extends React.Component<IProps, IState> {
 
         this.toggle = this.toggle.bind(this);
         this.toggleTooltip = this.toggleTooltip.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
 
         this.state = {
             open: false,
-            tooltip: false
+            tooltip: false,
+            tooltipSupported: false
         };
 
     }
@@ -32,6 +35,8 @@ export class TooltipDropdown extends React.Component<IProps, IState> {
                       isOpen={this.state.open}
                       toggle={() => this.toggle()}
                       direction={this.props.direction}
+                      onMouseEnter={() => this.onMouseEnter()}
+                      onMouseLeave={() => this.onMouseLeave()}
                       size={this.props.size}>
 
                 {this.props.children}
@@ -53,6 +58,14 @@ export class TooltipDropdown extends React.Component<IProps, IState> {
 
     }
 
+    private onMouseEnter(): void {
+        this.setState({...this.state, tooltipSupported: true});
+    }
+
+    private onMouseLeave(): void {
+        this.setState({...this.state, tooltipSupported: true});
+    }
+
     private toggle(): void {
 
         const open = !this.state.open;
@@ -60,14 +73,14 @@ export class TooltipDropdown extends React.Component<IProps, IState> {
         const tooltip: boolean =
             open ? false : !this.state.tooltip;
 
-        this.setState({open, tooltip});
+        this.setState({...this.state, open, tooltip});
 
     }
 
     private toggleTooltip(): void {
 
         const tooltip: boolean =
-            this.state.open ? false : !this.state.tooltip;
+            this.state.open || ! this.state.tooltipSupported ? false : !this.state.tooltip;
 
         this.setState({...this.state, tooltip});
 
@@ -92,10 +105,14 @@ interface TooltipProps {
 }
 
 interface IState {
+
     readonly open: boolean;
 
     /**
      * True when the tooltip is open.
      */
     readonly tooltip: boolean;
+
+    readonly tooltipSupported: boolean;
+
 }
