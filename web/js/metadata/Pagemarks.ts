@@ -12,7 +12,7 @@ import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
-import {PageNumber} from './PageMeta';
+import {PageMeta, PageNumber} from './PageMeta';
 import {Numbers} from "../util/Numbers";
 import {Reducers} from '../util/Reducers';
 
@@ -292,38 +292,54 @@ export class Pagemarks {
     }
 
     /**
+     * Update pagemarks on the given page.
      *
-     * @param docMeta
-     * @param pageNum
-     *
-     * @param pagemark An optional pagemark to update.  If the pagemark isn't
-     * specified all the pagemarks on the page are deleted and progress updated.
+     * @param pagemark The pagemark to udpate.
      */
-    public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark?: Pagemark) {
+    public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: Pagemark) {
 
+        this.doPagemarkMutation(docMeta, pageNum, (pageMeta) => {
+            pageMeta.pagemarks[pagemark.id] = pagemark;
+        });
+
+    }
+
+    /**
+     *
+     * @param id When id is specified we delete just a specific pagemark,
+     * otherwise we delete all of them.
+     */
+    public static deletePagemark(docMeta: DocMeta, pageNum: number, id?: string) {
+
+        this.doPagemarkMutation(docMeta, pageNum, (pageMeta) => {
+
+            if (id) {
+                delete pageMeta.pagemarks[id];
+            } else {
+                Objects.clear(pageMeta.pagemarks);
+            }
+
+        });
+
+    }
+
+    private static doPagemarkMutation(docMeta: DocMeta,
+                                      pageNum: number,
+                                      pagemarkMutator: (pageMeta: PageMeta) => void): void {
+
+        Preconditions.assertPresent(docMeta, "docMeta");
         Preconditions.assertPresent(pageNum, "pageNum");
 
-        const pageMeta = docMeta.getPageMeta(pageNum);
+        DocMetas.withBatchedMutations(docMeta, () => {
 
-        if (pagemark) {
-            // set the pagemark that we just created into the map.
-            pageMeta.pagemarks[pagemark.id] = pagemark;
-        } else {
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
-            // TODO: this could/should be done as a mutation because multiple
-            // pagemarks could be involved.
+            pagemarkMutator(pageMeta);
 
-            // delete the pagemarks on the page.
-            Objects.clear(pageMeta.pagemarks);
+            const progress = Math.floor(DocMetas.computeProgress(docMeta) * 100);
+            docMeta.docInfo.progress = progress;
 
-        }
-
-        // TODO: this actually requires TWO disk syncs and we're going to
-        // need a way to resolve this in the future. It would be nice to
-        // elide these to one somehow by hinting to the persistenceLayer
-        // used in the model to start a batch around these objects then
-        // commit just the last one.
-        docMeta.docInfo.progress = Math.floor(DocMetas.computeProgress(docMeta) * 100);
+        });
 
     }
 

@@ -1,6 +1,7 @@
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {FrameResizer} from './FrameResizer';
+import {NULL_FUNCTION} from '../../util/Functions';
 
 const log = Logger.create();
 
@@ -27,10 +28,15 @@ export class BackgroundFrameResizer {
 
     private frameResizer: FrameResizer;
 
-    constructor(parent: HTMLElement, host: HTMLIFrameElement | Electron.WebviewTag) {
+    private onResized: OnResizedCallback;
+
+    constructor(parent: HTMLElement,
+                host: HTMLIFrameElement | Electron.WebviewTag,
+                onResized: OnResizedCallback = NULL_FUNCTION) {
 
         this.parent = Preconditions.assertPresent(parent);
         this.host = Preconditions.assertPresent(host);
+        this.onResized = onResized;
 
         this.frameResizer = new FrameResizer(parent, host);
 
@@ -40,13 +46,16 @@ export class BackgroundFrameResizer {
 
         this.resizeParentInBackground()
             .catch(err => log.error("Could not resize in background: ", err));
+
     }
 
     private async resizeParentInBackground() {
 
         if (this.resizes > MAX_RESIZES) {
             log.info("Hit MAX_RESIZES: " + MAX_RESIZES);
-            await this.doBackgroundResize(true);
+            const height = await this.doBackgroundResize(true);
+            this.onResized(height);
+
             return;
         } else {
             await this.doBackgroundResize(false);
@@ -72,3 +81,5 @@ export class BackgroundFrameResizer {
     }
 
 }
+
+type OnResizedCallback = (height: number | undefined) => void;

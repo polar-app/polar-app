@@ -33,6 +33,7 @@ import {ProgressTracker} from '../../util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import EditorsPicksApp from '../../../../apps/repository/js/editors_picks/EditorsPicksApp';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {Version} from '../../util/Version';
 
 const log = Logger.create();
 
@@ -145,6 +146,8 @@ export class RepositoryApp {
 
         window.addEventListener("hashchange", () => onNavChange(), false);
 
+        this.sendAnalytics();
+
         ReactDOM.render(
 
             <div style={{height: '100%'}}>
@@ -199,6 +202,10 @@ export class RepositoryApp {
 
         });
 
+    }
+
+    private sendAnalytics() {
+        RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
     }
 
     /**

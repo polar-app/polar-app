@@ -214,7 +214,7 @@ export class Model {
 
         if (this.docMeta) {
 
-            Pagemarks.updatePagemark(this.docMeta, pageNum);
+            Pagemarks.deletePagemark(this.docMeta, pageNum);
 
             this.reactor.dispatchEvent('erasePagemark', {pageNum});
 

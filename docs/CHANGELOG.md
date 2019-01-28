@@ -4,7 +4,7 @@
 
 - Fixed bug with page zoom not working properly.
 
-- page number in markdown export
+- Page number in markdown export
 
 - Disabled the top message boxes.  They were annoying and only a stop gap until
   we have a proper onboarding mechanism.
@@ -14,8 +14,7 @@
 - Donate and Discord buttons in header.  These are important.
 
 - Setting POLAR_DISABLE_HARDWARE_ACCELERATION should disable hardwawre 
-  acceleration now
-
+  acceleration now if that's causing a problme for you.
 
 # 1.10.0
 

@@ -43,7 +43,7 @@ export class FrameResizer {
      * sort of caching or throttling of resize, we can just force it one last
      * time.
      */
-    public async resize(force: boolean = false, newHeight?: number) {
+    public async resize(force: boolean = false, newHeight?: number): Promise<number | undefined> {
 
         // TODO: accidental horizontal overflow...
         //
@@ -63,7 +63,7 @@ export class FrameResizer {
             const newHeightAsOptional = await this.getDocumentHeight();
 
             if (! newHeightAsOptional.isPresent()) {
-                return;
+                return this.height;
             }
 
             newHeight = newHeightAsOptional.get();
@@ -81,7 +81,7 @@ export class FrameResizer {
         const deltaPerc = 100 * (delta / height);
 
         if (! force && deltaPerc < 5) {
-            return;
+            return this.height;
         }
 
         // we basically keep polling.
@@ -105,7 +105,11 @@ export class FrameResizer {
 
             this.height = newHeight;
 
+            return this.height;
+
         }
+
+        return this.height;
 
     }
 

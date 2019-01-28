@@ -14,6 +14,7 @@ import {Descriptors} from './Descriptors';
 import {IFrameWatcher} from './IFrameWatcher';
 import {FrameResizer} from './FrameResizer';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {DocMetas} from '../../metadata/DocMetas';
 
 const log = Logger.create();
 
@@ -70,7 +71,11 @@ export class HTMLViewer extends Viewer {
 
                 log.info("Loading page now...");
 
-                const backgroundFrameResizer = new BackgroundFrameResizer(this.contentParent, this.content);
+                const backgroundFrameResizer
+                    = new BackgroundFrameResizer(this.contentParent,
+                                                 this.content,
+                                                 () => this.onResized());
+
                 backgroundFrameResizer.start();
 
                 const frameInitializer = new FrameInitializer(this.content, this.textLayer);
@@ -90,6 +95,23 @@ export class HTMLViewer extends Viewer {
             await Services.start(new LinkHandler(this.content));
 
         });
+
+    }
+
+    private onResized() {
+
+        const docMeta = this.model.docMeta;
+
+        const pageMeta = DocMetas.getPageMeta(docMeta, 1);
+
+        if (! pageMeta.pageInfo.dimensions) {
+
+            const width = this.content.offsetWidth;
+            const height = this.content.offsetHeight;
+
+            pageMeta.pageInfo.dimensions = {width, height};
+
+        }
 
     }
 
@@ -222,8 +244,8 @@ export class HTMLViewer extends Viewer {
 
         // iframeParentElement.removeChild(iframe);
 
-        // FIXME: run an algorithm to maek sure there are no elements between two
-        // paths in the DOM that have any scrollHeight > their height.
+        // FIXME: run an algorithm to maek sure there are no elements between
+        // two paths in the DOM that have any scrollHeight > their height.
 
         const contentParent = notNull(document.querySelector("#content-parent"));
         (contentParent as HTMLElement).style.transform = `scale(${scale})`;

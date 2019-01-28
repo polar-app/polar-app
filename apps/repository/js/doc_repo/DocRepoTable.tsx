@@ -152,6 +152,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private emitInitAnalytics(repoDocs: RepoDocInfoIndex) {
 
+        // TODO: move some of these analytics into the main RepoaitoryApp.tsx.
+
         const nrDocs = Object.keys(repoDocs).length;
 
         RendererAnalytics.set({'nrDocs': nrDocs});
@@ -159,8 +161,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         const persistenceLayerType = this.persistenceLayerManager.currentType();
 
         RendererAnalytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
-
-        RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
 
     }
 

@@ -32,11 +32,11 @@ export class FrameInitializer {
         notNull(this.iframe.contentDocument)
             .addEventListener("readystatechange", this.onReadyStateChange.bind(this));
 
-        this._checkLoaded();
+        this.checkLoaded();
 
     }
 
-    _checkLoaded() {
+    private checkLoaded() {
 
         if (!this.loaded) {
             this.loaded = true;
@@ -49,7 +49,7 @@ export class FrameInitializer {
     public onReadyStateChange() {
 
         if (notNull(this.iframe.contentDocument).readyState === "complete") {
-            this._checkLoaded();
+            this.checkLoaded();
         }
 
     }
@@ -57,7 +57,7 @@ export class FrameInitializer {
     /**
      *
      */
-    onLoad() {
+    private onLoad() {
 
         log.info("Frame loaded.  Sending pagesinit on .page");
         this.dispatchPagesInit();
@@ -66,13 +66,13 @@ export class FrameInitializer {
 
     }
 
-    updateDocTitle() {
+    private updateDocTitle() {
         const title = notNull(this.iframe.contentDocument).title;
         log.info("Setting title: " + title);
         document.title = title;
     }
 
-    dispatchPagesInit() {
+    private dispatchPagesInit() {
 
         const event = new Event('pagesinit', {bubbles: true});
 
@@ -81,7 +81,7 @@ export class FrameInitializer {
 
     }
 
-    startEventBridge() {
+    private startEventBridge() {
 
         document.querySelectorAll(".page").forEach(pageElement => {
             const eventBridge = new EventBridge(<HTMLElement> pageElement, this.iframe);

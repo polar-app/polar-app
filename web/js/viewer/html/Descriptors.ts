@@ -16,11 +16,11 @@ export class Descriptors {
         let width = 800;
         let minHeight = 1100;
 
-        if(! descriptor) {
+        if (!descriptor) {
             return {width, minHeight};
         }
 
-        if(descriptor.browser) {
+        if (descriptor.browser) {
 
             // use the screen width from the emulated device
             width = descriptor.browser.deviceEmulation.screenSize.width;
@@ -31,13 +31,13 @@ export class Descriptors {
 
         const scrollBox = this.computeScrollBox(descriptor);
 
-        if( scrollBox.isPresent() && scrollBox.get().width > width ) {
+        if (scrollBox.isPresent() && scrollBox.get().width > width ) {
 
             // we have a document that isn't mobile aware and hard coded to a
             // specific width greater than our default width.  This is a new
             // setting so we have to make sure the key is in the descriptor.
 
-            if(! isPresent(scrollBox.get().widthOverflow) ||
+            if (!isPresent(scrollBox.get().widthOverflow) ||
                 scrollBox.get().widthOverflow === 'visible') {
 
                 width = scrollBox.get().width;
@@ -50,7 +50,7 @@ export class Descriptors {
 
         // page height size should be a function of 8.5x11
 
-        minHeight = (11/8.5) * width;
+        minHeight = (11 / 8.5) * width;
 
         return {width, minHeight};
 

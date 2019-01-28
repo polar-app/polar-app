@@ -142,8 +142,7 @@ export class PagemarkController {
 
         Optional.first(...annotationPointers).map(annotationPointer => {
             const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
-            delete pageMeta.pagemarks[annotationPointer.id];
-            Pagemarks.updatePagemark(this.model.docMeta, annotationPointer.pageNum);
+            Pagemarks.deletePagemark(this.model.docMeta, annotationPointer.pageNum, annotationPointer.id);
         });
 
     }
