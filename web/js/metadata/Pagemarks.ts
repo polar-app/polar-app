@@ -314,12 +314,56 @@ export class Pagemarks {
         this.doPagemarkMutation(docMeta, pageNum, (pageMeta) => {
 
             if (id) {
-                delete pageMeta.pagemarks[id];
+
+                const primaryPagemark = pageMeta.pagemarks[id];
+
+                if (primaryPagemark.batch) {
+
+                    // if this pagemark has a batch we have to delete everything
+                    // in the same batch
+
+                    const pagemarksWithinBatch
+                        = this.pagemarksWithinBatch(docMeta, primaryPagemark.batch);
+
+                    for (const pagemarkRef of pagemarksWithinBatch) {
+                        delete pagemarkRef.pageMeta.pagemarks[pagemarkRef.id];
+                    }
+
+                } else {
+                    delete pageMeta.pagemarks[id];
+                }
+
             } else {
                 Objects.clear(pageMeta.pagemarks);
             }
 
         });
+
+    }
+
+    /**
+     * Scan all the pagemarks finding ones with the same batch.
+     */
+    private static pagemarksWithinBatch(docMeta: DocMeta, batch: string): ReadonlyArray<PagemarkPageMetaRef> {
+
+        const result = [];
+
+        const nrPages = Object.keys(docMeta.pageMetas).length;
+
+        for (let pageIdx = 1; pageIdx <= nrPages; ++pageIdx) {
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageIdx);
+
+            for (const pagemark of Object.values(pageMeta.pagemarks || {})) {
+
+                if (pagemark.batch === batch) {
+                    result.push({pageMeta, id: pagemark.id});
+                }
+
+            }
+
+        }
+
+        return result;
 
     }
 
@@ -342,6 +386,12 @@ export class Pagemarks {
         });
 
     }
+
+}
+
+interface PagemarkPageMetaRef {
+    readonly pageMeta: PageMeta;
+    readonly id: string;
 
 }
 

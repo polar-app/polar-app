@@ -244,7 +244,7 @@ export class HTMLViewer extends Viewer {
 
         // iframeParentElement.removeChild(iframe);
 
-        // FIXME: run an algorithm to maek sure there are no elements between
+        // FIXME: run an algorithm to make sure there are no elements between
         // two paths in the DOM that have any scrollHeight > their height.
 
         const contentParent = notNull(document.querySelector("#content-parent"));
@@ -350,9 +350,9 @@ export class HTMLViewer extends Viewer {
         // https://www.youtube.com/watch?v=CP1BVpF-NjY
 
         const u = new URL(url);
-        const video_id = u.searchParams.get('v');
+        const videoID = u.searchParams.get('v');
 
-        return `<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        return `<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${videoID}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     }
 
     public docDetail(): DocDetail {

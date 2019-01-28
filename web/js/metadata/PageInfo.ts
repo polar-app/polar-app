@@ -27,7 +27,7 @@ export class PageInfo extends SerializedObject {
 
     }
 
-    validate() {
+    public validate() {
         Preconditions.assertNumber(this.num, "num");
     }
 
