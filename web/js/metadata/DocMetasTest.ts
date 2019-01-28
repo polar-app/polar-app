@@ -91,6 +91,7 @@ describe('DocMetas', function() {
                                         "width": 100,
                                         "height": 100
                                     },
+                                    "batch": "1TLPYPE5XU",
                                     "notes": {},
                                     "mode": "READ"
                                 }
@@ -105,7 +106,7 @@ describe('DocMetas', function() {
                             "thumbnails": {},
                             "pageInfo": {
                                 "num": 1
-                            },
+                            }
                         },
                         "2": {
                             "pagemarks": {
@@ -122,6 +123,7 @@ describe('DocMetas', function() {
                                         "width": 100,
                                         "height": 100
                                     },
+                                    "batch": "12r4saWMd2",
                                     "notes": {},
                                     "mode": "READ"
                                 }
@@ -136,8 +138,7 @@ describe('DocMetas', function() {
                             "thumbnails": {},
                             "pageInfo": {
                                 "num": 2
-                            },
-
+                            }
                         }
                     }
                 }
@@ -201,6 +202,7 @@ describe('DocMetas', function() {
                             "type": "SINGLE_COLUMN",
                             "percentage": 100,
                             "column": 0,
+                            "batch": "1jQboVWxtJ",
                             "notes": {},
                             "mode": "READ",
                             "rect": {
@@ -210,7 +212,8 @@ describe('DocMetas', function() {
                                 "height": 100
                             }
                         }
-                    };
+                    }
+                ;
 
                 assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
 
@@ -266,9 +269,9 @@ describe('DocMetas', function() {
                                 "width": 100,
                                 "height": 100
                             },
+                            "batch": "1ZUGnh2R1J",
                             "notes": {},
                             "mode": "READ"
-
                         }
                     }
                 ;

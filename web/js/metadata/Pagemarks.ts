@@ -309,8 +309,13 @@ export class Pagemarks {
             // set the pagemark that we just created into the map.
             pageMeta.pagemarks[pagemark.id] = pagemark;
         } else {
+
+            // TODO: this could/should be done as a mutation because multiple
+            // pagemarks could be involved.
+
             // delete the pagemarks on the page.
             Objects.clear(pageMeta.pagemarks);
+
         }
 
         // TODO: this actually requires TWO disk syncs and we're going to
@@ -318,7 +323,7 @@ export class Pagemarks {
         // elide these to one somehow by hinting to the persistenceLayer
         // used in the model to start a batch around these objects then
         // commit just the last one.
-        docMeta.docInfo.progress = (DocMetas.computeProgress(docMeta) * 100);
+        docMeta.docInfo.progress = Math.floor(DocMetas.computeProgress(docMeta) * 100);
 
     }
 
