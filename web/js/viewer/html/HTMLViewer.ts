@@ -13,6 +13,7 @@ import {BackgroundFrameResizer} from './BackgroundFrameResizer';
 import {Descriptors} from './Descriptors';
 import {IFrameWatcher} from './IFrameWatcher';
 import {FrameResizer} from './FrameResizer';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -48,6 +49,8 @@ export class HTMLViewer extends Viewer {
         this.textLayer = <HTMLElement> document.querySelector(".textLayer");
 
         this.htmlFormat = new HTMLFormat();
+
+        RendererAnalytics.pageview("/htmlviewer");
 
         // *** start the resizer and initializer before setting the iframe
 

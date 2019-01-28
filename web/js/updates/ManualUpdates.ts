@@ -5,8 +5,6 @@ import {Logger} from '../logger/Logger';
 
 import process from 'process';
 import {Broadcasters} from '../ipc/Broadcasters';
-import {AppAnalytics} from '../ga/AppAnalytics';
-import {GA} from '../ga/GA';
 import {Version} from '../util/Version';
 
 // borrowed from here and ported to typescript:
@@ -68,8 +66,8 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
 
                     try {
 
-                        await GA.getInstance().event('updates', 'manual-update');
-                        await GA.getInstance().event('updates', 'manual-update-' + Version.get());
+                        // await GA.getInstance().event('updates', 'manual-update');
+                        // await GA.getInstance().event('updates', 'manual-update-' + Version.get());
 
                     } catch (e) {
                         log.error("Unable to send event data: ", e);

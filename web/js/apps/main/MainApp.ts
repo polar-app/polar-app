@@ -19,10 +19,6 @@ import {MainAppService} from './ipc/MainAppService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
-import {GA} from "../../ga/GA";
-import {Version} from "../../util/Version";
-import {Files} from '../../util/Files';
-import {WebserverCerts} from '../../backend/webserver/WebserverCerts';
 import process from "process";
 import {AppPath} from '../../electron/app_path/AppPath';
 import {MainAPI} from './MainAPI';
@@ -123,8 +119,6 @@ export class MainApp {
 
         const userAgent = mainWindow.webContents.getUserAgent();
 
-        GA.setUserAgent(userAgent);
-
         const fileLoader = new AnalyticsFileLoader(defaultFileLoader);
 
         await new DocInfoBroadcasterService().start();
@@ -146,8 +140,6 @@ export class MainApp {
 
         const mainAppMenu = new MainAppMenu(mainAppController);
         mainAppMenu.setup();
-
-        this.sendAnalytics();
 
         app.on('open-file', async (event, path) => {
 
@@ -231,16 +223,6 @@ export class MainApp {
         });
 
         return {mainWindow, mainAppController};
-
-    }
-
-    private sendAnalytics() {
-
-        // send off analytics so we know who's using the platform.
-
-        const appAnalytics = GA.getAppAnalytics();
-
-        appAnalytics.set('version', Version.get());
 
     }
 

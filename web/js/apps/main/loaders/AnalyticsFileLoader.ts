@@ -1,6 +1,4 @@
 import {FileLoader} from './FileLoader';
-import {FileTypes} from './FileTypes';
-import {GA} from '../../../ga/GA';
 import {LoadedFile} from './LoadedFile';
 
 export class AnalyticsFileLoader extends FileLoader {
@@ -14,11 +12,8 @@ export class AnalyticsFileLoader extends FileLoader {
 
     public registerForLoad(path: string): Promise<LoadedFile> {
 
-        const appAnalytics = GA.getAppAnalytics();
-
-        const fileType = FileTypes.create(path);
-
-        appAnalytics.screen(`${fileType}viewer`);
+        // TODO: remove this in the future as we're not longer using the
+        // main proce analytics.
 
         return this.delegate.registerForLoad(path);
 
