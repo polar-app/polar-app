@@ -11,6 +11,15 @@ describe('Pagemarks', function() {
 
     describe('createRange', function() {
 
+        beforeEach(function() {
+
+            console.log(<any> Pagemarks);
+
+            Pagemarks.sequences.id = 0;
+            Pagemarks.sequences.batch = 0;
+
+        });
+
         it("for one page", function() {
 
             const docMeta = DocMetas.create('0x0001', 1);
@@ -50,7 +59,7 @@ describe('Pagemarks', function() {
 
             const pagemark1 = [
                 {
-                    "id": "126nS8PMqF",
+                    "id": "1s2gw2Mkwb",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "type": "SINGLE_COLUMN",
@@ -62,31 +71,32 @@ describe('Pagemarks', function() {
                         "width": 100,
                         "height": 100
                     },
-                    "batch": "1yNbsiPseh",
+                    "batch": "1Y9CcEHSxc",
                     "notes": {},
                     "mode": "READ"
                 }
             ];
 
             const pagemark2 = [
-                {
-                    "id": "12QXpSeNoV",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "lastUpdated": "2012-03-02T11:38:49.321Z",
-                    "type": "SINGLE_COLUMN",
-                    "percentage": 100,
-                    "column": 0,
-                    "rect": {
-                        "left": 0,
-                        "top": 0,
-                        "width": 100,
-                        "height": 100
-                    },
-                    "batch": "1yNbsiPseh",
-                    "notes": {},
-                    "mode": "READ"
-                }
-            ];
+                    {
+                        "id": "126nS8PMqF",
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        "type": "SINGLE_COLUMN",
+                        "percentage": 100,
+                        "column": 0,
+                        "rect": {
+                            "left": 0,
+                            "top": 0,
+                            "width": 100,
+                            "height": 100
+                        },
+                        "batch": "1Y9CcEHSxc",
+                        "notes": {},
+                        "mode": "READ"
+                    }
+                ]
+            ;
 
 
             assertJSON(Object.values(DocMetas.getPageMeta(docMeta, 1).pagemarks), pagemark1);

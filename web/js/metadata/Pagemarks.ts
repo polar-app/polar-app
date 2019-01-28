@@ -25,15 +25,15 @@ const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
     height: 100
 });
 
-const sequences = {
-    id: 0,
-    batch: 0
-};
-
 export class Pagemarks {
 
+    public static sequences = {
+        id: 0,
+        batch: 0
+    };
+
     public static createID(created: ISODateTimeString) {
-        return Hashcodes.createID({created, sequence: sequences.id++});
+        return Hashcodes.createID({created, sequence: this.sequences.id++});
     }
 
     /**
@@ -51,7 +51,7 @@ export class Pagemarks {
         }
 
         const created = ISODateTimeStrings.create();
-        const batch = Hashcodes.createID({created, id: sequences.batch++});
+        const batch = Hashcodes.createID({created, id: this.sequences.batch++});
 
         const calculateStartPage = () => {
 
@@ -199,7 +199,7 @@ export class Pagemarks {
 
         const created = options.created || ISODateTimeStrings.create();
 
-        const batch = options.batch || Hashcodes.createID({created, id: sequences.batch++});
+        const batch = options.batch || Hashcodes.createID({created, id: this.sequences.batch++});
 
         return new Pagemark({
 
