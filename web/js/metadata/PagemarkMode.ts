@@ -5,6 +5,8 @@
  */
 export enum PagemarkMode {
 
+    PRE_READ = "PRE-READ",
+
     READ = "READ",
 
     IGNORED = "IGNORED",

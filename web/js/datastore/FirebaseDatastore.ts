@@ -869,7 +869,7 @@ export enum Visibility {
     PRIVATE = 'private', /* or 0 */
 
     /**
-     * Only to users that
+     * Only to users that this user is following.
      */
     FOLLOWING = 'following', /* or 1 */
 

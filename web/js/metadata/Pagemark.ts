@@ -52,6 +52,15 @@ export class Pagemark extends Annotation {
      */
     public mode: PagemarkMode;
 
+    /**
+     * A batch is used when creating multiple pagemarks over multiple pages.
+     *
+     * We can then change settings on the entire, batch at once.  The batch
+     * is created with one unique operation across several pages.
+     *
+     */
+    public batch?: string;
+
     constructor(val: any) {
 
         super(val);

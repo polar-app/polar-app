@@ -31,6 +31,7 @@ describe('Pagemarks', function() {
                         "width": 100,
                         "height": 100
                     },
+                    "batch": "1Y9CcEHSxc",
                     "notes": {},
                     "mode": "READ"
                 }
@@ -61,6 +62,7 @@ describe('Pagemarks', function() {
                         "width": 100,
                         "height": 100
                     },
+                    "batch": "1yNbsiPseh",
                     "notes": {},
                     "mode": "READ"
                 }
@@ -80,6 +82,7 @@ describe('Pagemarks', function() {
                         "width": 100,
                         "height": 100
                     },
+                    "batch": "1yNbsiPseh",
                     "notes": {},
                     "mode": "READ"
                 }
@@ -123,12 +126,13 @@ describe('Pagemarks', function() {
 
             Pagemarks.updatePagemarksForRange(docMeta, 8);
 
-            assertPagemark(docMeta, 3);
-            assertPagemark(docMeta, 4);
-            assertPagemark(docMeta, 5);
-            assertPagemark(docMeta, 6);
-            assertPagemark(docMeta, 7);
-            assertPagemark(docMeta, 8);
+            assertPagemark(docMeta, 3, "1Y9CcEHSxc");
+
+            assertPagemark(docMeta, 4, "1yNbsiPseh");
+            assertPagemark(docMeta, 5, "1yNbsiPseh");
+            assertPagemark(docMeta, 6, "1yNbsiPseh");
+            assertPagemark(docMeta, 7, "1yNbsiPseh");
+            assertPagemark(docMeta, 8, "1yNbsiPseh");
 
         });
 
@@ -148,7 +152,7 @@ describe('Pagemarks', function() {
             assert.equal(pagemarks[0].percentage, 50);
             assert.equal(pagemarks[1].percentage, 50);
 
-            assertPagemark(docMeta, 4);
+            assertPagemark(docMeta, 4, "1yNbsiPseh");
 
         });
 
@@ -158,11 +162,14 @@ describe('Pagemarks', function() {
 });
 
 
-const assertPagemark = (docMeta: DocMeta, pageNum: number) => {
+const assertPagemark = (docMeta: DocMeta, pageNum: number, batch: string) => {
 
     const pagemarks = Object.values(DocMetas.getPageMeta(docMeta, pageNum).pagemarks);
 
     assert.equal(pagemarks.length, 1);
+    const pagemark = pagemarks[0];
+    assert.equal(pagemark.percentage, 100);
 
-    assert.equal(pagemarks[0].percentage, 100);
+    assert.equal(pagemark.batch, batch);
+
 };

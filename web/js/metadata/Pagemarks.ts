@@ -25,12 +25,15 @@ const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
     height: 100
 });
 
-let sequence = 0;
+const sequences = {
+    id: 0,
+    batch: 0
+};
 
 export class Pagemarks {
 
     public static createID(created: ISODateTimeString) {
-        return Hashcodes.createID({created, sequence: sequence++});
+        return Hashcodes.createID({created, sequence: sequences.id++});
     }
 
     /**
@@ -46,6 +49,9 @@ export class Pagemarks {
         if (end < 1) {
             throw new Error("Page number must be 1 or more");
         }
+
+        const created = ISODateTimeStrings.create();
+        const batch = Hashcodes.createID({created, id: sequences.batch++});
 
         const calculateStartPage = () => {
 
@@ -130,7 +136,7 @@ export class Pagemarks {
                 const rect = createPagemarkRect(pageNum, pageNum === end ? percentage : 100);
 
                 if (rect) {
-                    const pagemark = Pagemarks.create({rect});
+                    const pagemark = Pagemarks.create({created, rect, batch});
                     Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
 
                     result.push({pageNum, pagemark});
@@ -191,7 +197,9 @@ export class Pagemarks {
             throw new Error(msg);
         }
 
-        const created = ISODateTimeStrings.create();
+        const created = options.created || ISODateTimeStrings.create();
+
+        const batch = options.batch || Hashcodes.createID({created, id: sequences.batch++});
 
         return new Pagemark({
 
@@ -203,7 +211,8 @@ export class Pagemarks {
             type: options.type,
             percentage: keyOptions.percentage,
             column: options.column,
-            rect: keyOptions.rect
+            rect: keyOptions.rect,
+            batch
 
         });
 
@@ -331,6 +340,10 @@ export interface PagemarkOptions {
     percentage: number;
 
     column: number;
+
+    batch?: string;
+
+    created?: string;
 
 }
 
