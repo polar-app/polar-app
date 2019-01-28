@@ -38,8 +38,14 @@ export class RendererAnalytics {
 
     }
 
-    public static pageview(path: string): void {
-        visitor.pageview(path).send();
+    public static pageview(path: string, hostname?: string, title?: string): void {
+
+        if (hostname && title) {
+            visitor.pageview(path, hostname, title).send();
+        } else {
+            visitor.pageview(path).send();
+        }
+
     }
 
     // public static modalview(name: string, trackerNames?: TrackerNames): void

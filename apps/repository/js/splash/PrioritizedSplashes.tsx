@@ -11,7 +11,7 @@ const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
     new WhatsNewRef(),
     // new GithubStarsRef(),
-    new SurveyRef()
+    // new SurveyRef()
 ];
 
 export class PrioritizedSplashes extends React.Component<IProps, IState> {

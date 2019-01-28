@@ -32,6 +32,7 @@ import {ProgressService} from '../../ui/progress_bar/ProgressService';
 import {ProgressTracker} from '../../util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import EditorsPicksApp from '../../../../apps/repository/js/editors_picks/EditorsPicksApp';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -117,6 +118,32 @@ export class RepositoryApp {
         const editorsPicks = () => {
             return ( <EditorsPicksApp persistenceLayerManager={this.persistenceLayerManager}/> );
         };
+
+        const onNavChange = () => {
+
+            try {
+
+                const url = new URL(document.location!.href);
+
+                const path = url.pathname + url.hash || "";
+                const hostname = url.hostname;
+                const title = document.title;
+
+                log.info("Navigating to: ", { path, hostname, title });
+
+                RendererAnalytics.pageview(path, hostname, document.title);
+
+            } catch (e) {
+                log.error("Unable to handle hash change", e);
+            }
+
+        };
+
+        // must be called the first time so that we have analytics for the home
+        // page on first load.
+        onNavChange();
+
+        window.addEventListener("hashchange", () => onNavChange(), false);
 
         ReactDOM.render(
 

@@ -152,8 +152,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private emitInitAnalytics(repoDocs: RepoDocInfoIndex) {
 
-        RendererAnalytics.pageview("/");
-
         const nrDocs = Object.keys(repoDocs).length;
 
         RendererAnalytics.set({'nrDocs': nrDocs});

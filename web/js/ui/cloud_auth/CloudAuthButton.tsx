@@ -40,7 +40,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
             stage
         };
 
-        console.log("state: ", this.state);
+        log.info("auth state: ", this.state);
 
         Firebase.init();
 
