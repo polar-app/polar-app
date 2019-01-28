@@ -1,5 +1,7 @@
 # 1.11.0
 
+- Reworked analytics.  I'm expecting a 2x falloff on this release I think. 
+
 - Fixed bug with page zoom not working properly.
 
 - page number in markdown export
