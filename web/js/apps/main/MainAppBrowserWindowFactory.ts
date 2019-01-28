@@ -102,14 +102,25 @@ export class MainAppBrowserWindowFactory {
 
             // TODO: this is a bit of a hack and these URLs shouldn't be hard
             // coded here.  We can refactor this in the future though.
-            if (navURL.startsWith("https://accounts.google.com") ||
-                navURL.startsWith("https://polar-32b0f.firebaseapp.com") ||
-                navURL.startsWith("http://localhost")) {
 
-                log.info("Allowing URL for authentication: " + navURL);
+            const parsedURL = new URL(navURL);
 
+            const host = parsedURL.hostname;
+
+            const allowedHosts = ["accounts.google.com",
+                                  "polar-32b0f.firebaseapp.com",
+                                  "accountchooser.com",
+                                  "www.accountchooser.com",
+                                  "localhost"];
+
+            if (host === "localhost") {
+                log.info("Always allowing localhost URL");
                 return;
+            }
 
+            if (navURL.startsWith("https://") && allowedHosts.includes(host)) {
+                log.info("Allowing URL for authentication: " + navURL);
+                return;
             }
 
             log.info("Attempt to navigate to new URL: ", navURL);

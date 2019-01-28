@@ -16,6 +16,7 @@ export class CaptureButton extends React.Component<IProps, any> {
         return (
 
             <InputGroupAddon addonType="append">
+
                 <Button type="button"
                         className="btn"
                         color="primary"
