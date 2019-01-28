@@ -166,8 +166,27 @@ describe('Pagemarks', function() {
 
         });
 
-    });
+        it("Delete all within batch", function() {
 
+            const docMeta = DocMetas.create('0x0001', 10);
+
+            Pagemarks.updatePagemarksForRange(docMeta, 8);
+
+            const pageMeta = DocMetas.getPageMeta(docMeta, 8);
+
+            const pagemarks = Object.values(pageMeta.pagemarks);
+
+            assert.equal(pagemarks.length, 1);
+
+            assert.equal(Object.values(DocMetas.getPageMeta(docMeta, 1).pagemarks).length, 1);
+
+            Pagemarks.deletePagemark(docMeta, 8, pagemarks[0].id);
+
+            assert.equal(Object.values(DocMetas.getPageMeta(docMeta, 1).pagemarks).length, 0);
+
+        });
+
+    });
 
 });
 
