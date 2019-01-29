@@ -92,8 +92,8 @@ describe('DocMetas', function() {
                                         "height": 100
                                     },
                                     "batch": "1TLPYPE5XU",
-                                    "notes": {},
-                                    "mode": "READ"
+                                    "mode": "READ",
+                                    "notes": {}
                                 }
                             },
                             "notes": {},
@@ -124,8 +124,8 @@ describe('DocMetas', function() {
                                         "height": 100
                                     },
                                     "batch": "12r4saWMd2",
-                                    "notes": {},
-                                    "mode": "READ"
+                                    "mode": "READ",
+                                    "notes": {}
                                 }
                             },
                             "notes": {},
@@ -203,8 +203,8 @@ describe('DocMetas', function() {
                             "percentage": 100,
                             "column": 0,
                             "batch": "1jQboVWxtJ",
-                            "notes": {},
                             "mode": "READ",
+                            "notes": {},
                             "rect": {
                                 "left": 0,
                                 "top": 0,
@@ -270,8 +270,8 @@ describe('DocMetas', function() {
                                 "height": 100
                             },
                             "batch": "1ZUGnh2R1J",
+                            "mode": "READ",
                             "notes": {},
-                            "mode": "READ"
                         }
                     }
                 ;

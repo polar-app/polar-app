@@ -41,8 +41,8 @@ describe('Pagemarks', function() {
                         "height": 100
                     },
                     "batch": "1Y9CcEHSxc",
-                    "notes": {},
-                    "mode": "READ"
+                    "mode": "READ",
+                    "notes": {}
                 }
             ];
 
@@ -92,8 +92,8 @@ describe('Pagemarks', function() {
                             "height": 100
                         },
                         "batch": "1Y9CcEHSxc",
-                        "notes": {},
-                        "mode": "READ"
+                        "mode": "READ",
+                        "notes": {}
                     }
                 ]
             ;
