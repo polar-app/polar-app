@@ -58,17 +58,18 @@ export class TraceHandler {
      * you can also narrow it down to a specific property by specifying a given
      * property to monitor.
      */
-    addTraceListener(traceListeners: TraceListener[], options: any = {}) {
+    public addTraceListener(traceListeners: TraceListener | TraceListener[], options: any = {}) {
 
-        traceListeners = TraceListeners.asArray(traceListeners);
+        const traceListenerArray: TraceListener[]
+            = <TraceListener[]> [...TraceListeners.asArray(traceListeners)];
 
         let eventName = EVENT_NAME;
 
-        if(options.property) {
+        if (options.property) {
             eventName = `${eventName}:${options.property}`;
         }
 
-        traceListeners.forEach(traceListener => {
+        traceListenerArray.forEach(traceListener => {
 
             traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
 
@@ -78,17 +79,17 @@ export class TraceHandler {
 
         });
 
-        return new TraceListenerExecutor(traceListeners, this);
+        return new TraceListenerExecutor(traceListenerArray, this);
 
     }
 
-    getTraceListeners() {
+    public getTraceListeners() {
         return this.reactor.getEventListeners(EVENT_NAME);
     }
 
-    get(target: any, property: string, receiver: any) {
+    public get(target: any, property: string, receiver: any) {
 
-        switch(property) {
+        switch (property) {
 
             // provide some default / hidden fields that can be used for debug
             // reasons.
@@ -108,29 +109,29 @@ export class TraceHandler {
 
     }
 
-    set(target: any, property: string, value: any, receiver: any) {
+    public set(target: any, property: string, value: any, receiver: any) {
 
         // TODO: before we change the value, also trace the new input values
         // if we are given an object.
 
-        let traceListeners = this.reactor.getEventListeners(EVENT_NAME);
+        const traceListeners = this.reactor.getEventListeners(EVENT_NAME);
 
-        if(typeof value === "object") {
+        if (typeof value === "object") {
 
             // we have to proxy this object since it would mean adding a new
             // sub-graph that isn't traced.
 
-            let pathPrefix = Paths.create(this.path, property);
+            const pathPrefix = Paths.create(this.path, property);
 
             value = (<any> this.proxies).create(value, traceListeners, {pathPrefix});
 
         }
 
-        let previousValue = target[property];
+        const previousValue = target[property];
 
-        let result = Reflect.set(target, property, value, receiver);
+        const result = Reflect.set(target, property, value, receiver);
 
-        let traceEvent = new TraceEvent({
+        const traceEvent = new TraceEvent({
             path: this.path,
             mutationType: MutationType.SET,
             target,
@@ -144,13 +145,13 @@ export class TraceHandler {
 
     }
 
-    deleteProperty(target: any, property: string) {
+    public deleteProperty(target: any, property: string) {
 
-        let previousValue = target[property];
+        const previousValue = target[property];
 
-        let result = Reflect.deleteProperty(target, property);
+        const result = Reflect.deleteProperty(target, property);
 
-        let traceEvent = new TraceEvent({
+        const traceEvent = new TraceEvent({
             path: this.path,
             mutationType: MutationType.DELETE,
             target,
