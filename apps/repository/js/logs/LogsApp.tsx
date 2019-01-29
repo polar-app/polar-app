@@ -5,6 +5,8 @@ import LogsContent from './LogsContent';
 import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 import ClearLogsButton from './ClearLogsButton';
 import {FixedNav, FixedNavBody} from '../FixedNav';
+import {RepoHeader} from '../RepoHeader';
+import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
 const log = Logger.create();
 
@@ -26,7 +28,7 @@ export default class LogsApp extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoSidebar/>
+                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
                     <div style={{display: 'flex'}}>
 
@@ -66,7 +68,7 @@ export default class LogsApp extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-
+    readonly persistenceLayerManager: PersistenceLayerManager;
 }
 
 export interface IState {

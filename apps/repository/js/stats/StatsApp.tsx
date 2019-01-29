@@ -7,6 +7,8 @@ import TopTagsChart from './TopTagsChart';
 import TopTagsTable from './TopTagsTable';
 import {MessageBanner} from '../MessageBanner';
 import {FixedNav, FixedNavBody} from '../FixedNav';
+import {RepoHeader} from '../RepoHeader';
+import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
 const log = Logger.create();
 
@@ -32,7 +34,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoSidebar/>
+                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
                     <MessageBanner/>
 
@@ -40,7 +42,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                 <FixedNavBody>
 
-                    <div className="container-fluid border-top">
+                    <div className="container-fluid">
 
                         <div className="row mt-2">
 
@@ -74,6 +76,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
+    readonly persistenceLayerManager: PersistenceLayerManager;
     readonly repoDocMetaManager: RepoDocMetaManager;
 }
 

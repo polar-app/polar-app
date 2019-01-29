@@ -1,17 +1,20 @@
 # 1.11.0
 
+- more consistent header bar throughout the app.
+
 - Pagemark batches which help working with PDFs that have multiple pages.  Now
   if you create pagemarks across pages you can delete one and the whole batch 
-  goes away.
+  is also deleted.
 
 - Reworked analytics.  I'm expecting a 2x falloff on this release I think. 
 
-- Fixed bug with page zoom not working properly.
+- Fixed bug with page zoom not working properly in the HTML viewer.  The zoom 
+  now works but pagemarks still aren't placed properly.
 
 - Page number in markdown export
 
 - Disabled the top message boxes.  They were annoying and only a stop gap until
-  we have a proper onboarding mechanism.
+  we have a proper onboarding mechanism.  I
 
 - Electron 3.1.2
 

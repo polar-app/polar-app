@@ -101,19 +101,20 @@ export class RepositoryApp {
         };
 
         const renderWhatsNew = () => {
-            return ( <WhatsNewApp/> );
+            return ( <WhatsNewApp persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const renderCommunity = () => {
-            return ( <CommunityApp/> );
+            return ( <CommunityApp persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const renderStats = () => {
-            return ( <StatsApp repoDocMetaManager={this.repoDocInfoManager}/> );
+            return ( <StatsApp persistenceLayerManager={this.persistenceLayerManager}
+                               repoDocMetaManager={this.repoDocInfoManager}/> );
         };
 
         const renderLogs = () => {
-            return ( <LogsApp /> );
+            return ( <LogsApp persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const editorsPicks = () => {

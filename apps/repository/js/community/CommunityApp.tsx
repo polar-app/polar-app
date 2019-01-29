@@ -3,6 +3,8 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
 import {MessageBanner} from '../MessageBanner';
 import CommunityContent from './CommunityContent';
+import {RepoHeader} from '../RepoHeader';
+import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
 const log = Logger.create();
 
@@ -24,7 +26,7 @@ export default class CommunityApp extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoSidebar/>
+                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
                 </header>
 
@@ -42,7 +44,7 @@ export default class CommunityApp extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-
+    readonly persistenceLayerManager: PersistenceLayerManager;
 }
 
 export interface IState {
