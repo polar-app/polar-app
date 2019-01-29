@@ -12,6 +12,8 @@ import {Objects} from "../util/Objects";
 import {TraceHandler} from "./TraceHandler";
 import {ObjectPaths} from "./ObjectPaths";
 import {Paths} from "../util/Paths";
+import {TraceListener, TraceListenerFunction} from './TraceListener';
+import {TraceEvent} from './TraceEvent';
 
 /**
  * A sequence identifier generator so that we can assign objects a unique value
@@ -22,12 +24,15 @@ let sequence = 0;
 export class Proxies {
 
     /**
-     * Deeply trace the given object and call back on the traceListener every time
-     * we notice a mutation.  The trace listener receives the following arguments:
+     * Deeply trace the given object and call back on the traceListener every
+     * time we notice a mutation.  The trace listener receives the following
+     * arguments:
      */
-    public static create<T>(target: T, traceListeners?: any, opts?: any): T {
+    public static create<T>(target: T,
+                            traceListeners?: TraceListener | TraceListenerFunction | ReadonlyArray<TraceListener>,
+                            opts?: any): T {
 
-        if(typeof target !== "object") {
+        if (typeof target !== "object") {
             throw new Error("Only works on objects: " + typeof target);
         }
 
@@ -39,7 +44,7 @@ export class Proxies {
             traceListeners = [];
         }
 
-        traceListeners = TraceListeners.asArray(traceListeners);
+        const traceListenersArray = TraceListeners.asArray(traceListeners);
 
         const objectPathEntries = ObjectPaths.recurse(target);
 
@@ -53,7 +58,7 @@ export class Proxies {
                 path = Paths.create(opts.pathPrefix, objectPathEntry.path);
             }
 
-            const proxy = Proxies.trace(path, objectPathEntry.value, traceListeners);
+            const proxy = Proxies.trace(path, objectPathEntry.value, traceListenersArray);
 
             // replace the object key in the parent with a new object that is
             // traced.
@@ -106,17 +111,18 @@ export class Proxies {
 
         const privateMembers = [
 
-            // the __traceIdentifier is a unique key for the object which we use
+            // the __traceIdentifier is a unique key for the object which we
+            // use
             // to identify which one is being traced.  This way we essentially
             // have a pointer we can use to work with the object directly.
             //
             // { name: "__traceIdentifier", value: traceIdentifier },
             //
-            // // keep the traceListener registered with the object so that I can
-            // // verify that the object we're working with is actually being used
-            // // with the same trace and not being re-traced by something else.
-            //
-            // { name: "__traceListeners", value: traceListeners },
+            // // keep the traceListener registered with the object so that I
+            // can // verify that the object we're working with is actually
+            // being used // with the same trace and not being re-traced by
+            // something else.  { name: "__traceListeners", value:
+            // traceListeners },
 
             // keep the path to this object for debug purposes.
             // { name: "__path", value: path }
@@ -127,19 +133,11 @@ export class Proxies {
         //
         //     if(! (privateMember.name in value)) {
         //
-        //         // the __traceIdentifier is a unique key for the object which we use
-        //         // to identify which one is being traced.  This way we essentially
-        //         // have a pointer we can use to work with the object directly.
-        //
-        //         Object.defineProperty(value, privateMember.name, {
-        //             value: privateMember.value,
-        //             enumerable: false,
-        //             writable: false
-        //         });
-        //
-        //     }
-        //
-        // });
+        //         // the __traceIdentifier is a unique key for the object
+        // which we use // to identify which one is being traced.  This way we
+        // essentially // have a pointer we can use to work with the object
+        // directly.  Object.defineProperty(value, privateMember.name, { value:
+        // privateMember.value, enumerable: false, writable: false });  }  });
 
         // TODO: do this in the TraceHandler get method?
 

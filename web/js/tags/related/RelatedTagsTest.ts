@@ -54,7 +54,7 @@ describe('RelatedTags', function() {
                        "0x05"
                    ]
                }
-           });
+           }, undefined, true);
 
         const tagHits = relatedTags.compute(['linux']);
 
@@ -67,7 +67,7 @@ describe('RelatedTags', function() {
                    "tag": "google",
                    "hits": 2
                }
-           ]);
+           ], undefined, true);
 
     });
 

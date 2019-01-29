@@ -1,3 +1,5 @@
+import {Dictionaries} from "../util/Dictionaries";
+
 const chai = require("chai");
 const chaiDiff = require("chai-diff");
 
@@ -7,11 +9,14 @@ const expect = chai.expect;
 chai.config.truncateThreshold = 0;
 chai.use(chaiDiff);
 
-export function assertJSON(actual: any, expected: any, message?: string) {
+export function assertJSON(actual: any,
+                           expected: any,
+                           message?: string,
+                           unsorted?: boolean) {
 
     // first convert both to JSON if necessary.
-    actual = toJSON(actual);
-    expected = toJSON(expected);
+    actual = toJSON(actual, unsorted);
+    expected = toJSON(expected, unsorted);
 
     if ( actual !== expected) {
         console.error("BEGIN ACTUAL ==========");
@@ -20,7 +25,7 @@ export function assertJSON(actual: any, expected: any, message?: string) {
     }
 
     try {
-        expect(actual).not.differentFrom(expected, message);
+        expect(actual).not. differentFrom(expected, message);
     } catch (e) {
         console.error(e.message);
         throw e;
@@ -28,7 +33,7 @@ export function assertJSON(actual: any, expected: any, message?: string) {
 
 }
 
-export function toJSON(obj: any): string {
+export function toJSON(obj: any, unsorted: boolean = false): string {
 
     if (typeof obj === "string") {
         // first parse it as as JSON into an object so it's serialized using
@@ -56,6 +61,14 @@ export function toJSON(obj: any): string {
         return value;
 
     };
+
+    if (!unsorted) {
+
+        // TODO: because of the toJSON method we might want to call JSON
+        // stringify, then parse it again, then sort, then stringify again.
+
+        obj = Dictionaries.sorted(obj);
+    }
 
     return JSON.stringify(obj, replacer, "  ");
 

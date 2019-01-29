@@ -20,7 +20,7 @@ export class Line {
         this.start = Preconditions.assertNumber(start, "start");
         this.end = Preconditions.assertNumber(end, "end");
         this.axis = axis; // TODO validate
-        //this.length = length;
+        // this.length = length;
     }
 
     /**
@@ -112,7 +112,7 @@ export class Line {
             start: this.start,
             end: this.end,
             length: this.length
-        }
+        };
 
     }
 

@@ -42,10 +42,11 @@ export class Dictionaries {
     /**
      * Returns a dictionary with sorted keys. Dictionaries by definition aren't
      * sorted by they're implemented internally as linked hash tables.  We
-     * return the same set-theoretic dictionaries where the key set are
-     * identical, just in a different key order.
+     * return the same canonical dictionaries (according to set theory) where
+     * the key set are identical, just in a different key order.
      *
-     * This is primarily used for testing.
+     * This is primarily used for testing purposes so that two dicts are always
+     * canonically the same.
      *
      */
     public static sorted(dict: any): any {
