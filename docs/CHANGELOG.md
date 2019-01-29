@@ -1,5 +1,9 @@
 # 1.11.0
 
+- Pagemark batches which help working with PDFs that have multiple pages.  Now
+  if you create pagemarks across pages you can delete one and the whole batch 
+  goes away.
+
 - Reworked analytics.  I'm expecting a 2x falloff on this release I think. 
 
 - Fixed bug with page zoom not working properly.

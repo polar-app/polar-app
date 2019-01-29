@@ -201,6 +201,8 @@ export class Pagemarks {
 
         const batch = options.batch || Hashcodes.createID({created, id: this.sequences.batch++});
 
+        const mode = options.mode || PagemarkMode.READ;
+
         return new Pagemark({
 
             // per-pagemark fields.
@@ -212,7 +214,8 @@ export class Pagemarks {
             percentage: keyOptions.percentage,
             column: options.column,
             rect: keyOptions.rect,
-            batch
+            batch,
+            mode
 
         });
 
@@ -300,6 +303,59 @@ export class Pagemarks {
 
         this.doPagemarkMutation(docMeta, pageNum, (pageMeta) => {
             pageMeta.pagemarks[pagemark.id] = pagemark;
+        });
+
+    }
+
+    /**
+     * Replace the pagemarks with a new pagemark with the given options replaced.
+     */
+    public static replacePagemark(docMeta: DocMeta,
+                                  pagemarkPtr: PagemarkPtr,
+                                  options: ReplacePagemarkOptions) {
+
+        const pagemarksToMutate = () => {
+
+            // the pagemarks to mutate.
+            const result: PagemarkPageMetaRef[] = [];
+
+            if (pagemarkPtr.ref) {
+                // find the pagemarks by ref...
+                const pageMeta = DocMetas.getPageMeta(docMeta, pagemarkPtr.ref.pageNum);
+                result.push({pageMeta, id: pagemarkPtr.ref.pagemark.id});
+            }
+
+            if (pagemarkPtr.batch) {
+                // find the pagemarks by batch...
+                result.push(...this.pagemarksWithinBatch(docMeta, pagemarkPtr.batch));
+            }
+
+            return result;
+
+        };
+
+        // find what we should mutate
+        const pagemarkRefs = pagemarksToMutate();
+
+        // now perform the mutations on the pagemarks.  At the end we should
+        // STILL compute the progress on the document as we are changing the
+        // types on the pagemark.
+        DocMetas.withBatchedMutations(docMeta, () => {
+
+            for (const ref of pagemarkRefs) {
+
+                const currPagemark = ref.pageMeta.pagemarks[ref.id];
+
+                const newPagemark = new Pagemark(currPagemark);
+
+                if (options.mode) {
+                    newPagemark.mode = options.mode;
+                }
+
+                ref.pageMeta.pagemarks[ref.id] = newPagemark;
+
+            }
+
         });
 
     }
@@ -415,6 +471,25 @@ export interface PagemarkOptions {
     batch?: string;
 
     created?: string;
+
+    mode?: PagemarkMode;
+
+}
+
+/**
+ * A pointer to a pagemark either by id , batch.
+ */
+export interface PagemarkPtr {
+
+    readonly ref?: PagemarkRef;
+
+    readonly batch?: string;
+
+}
+
+export interface ReplacePagemarkOptions {
+
+    readonly mode?: PagemarkMode;
 
 }
 
