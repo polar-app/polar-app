@@ -1,4 +1,9 @@
 
+# OUT OF DATE
+
+This document is very out of date and we will be resiving it with a new 
+system shortly.
+
 # Overview
 
 Polar is a very ambitious project but since it's based on Electron and uses a
