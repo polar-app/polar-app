@@ -52,6 +52,10 @@ export class RepoDocInfos {
             tags: Optional.of(docInfo.tags)
                 .getOrElse({}),
 
+            site: Optional.of(docInfo.url)
+                .map(url => new URL(url).hostname)
+                .getOrUndefined(),
+
             url: docInfo.url,
 
             nrAnnotations: Optional.of(docInfo.nrAnnotations)

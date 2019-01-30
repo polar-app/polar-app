@@ -83,6 +83,11 @@ export class FilterTagInput extends React.Component<IProps, IState> {
                          className="tag-input-popover">
 
                     <PopoverBody>
+
+                        <div className="pt-1 pb-1">
+                            <strong>Filter documents by tag:</strong>
+                        </div>
+
                         <Select
                             isMulti
                             isClearable

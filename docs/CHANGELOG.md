@@ -1,3 +1,9 @@
+# 1.12.0
+
+- More descriptive text for the assignment and filtering of documents. 
+
+- Electron 4.0.3
+
 # 1.11.0
 
 - more consistent header bar throughout the app.

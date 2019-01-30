@@ -38,6 +38,8 @@ export interface RepoDocInfo {
 
     hashcode?: Hashcode;
 
+    site?: string;
+
     /**
      * The original DocInfo used to construct this RepoDocInfo.
      */

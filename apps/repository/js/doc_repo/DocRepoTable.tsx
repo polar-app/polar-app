@@ -43,6 +43,7 @@ import {RepoHeader} from '../RepoHeader';
 import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {AddContentButton} from './AddContentButton';
+import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
 
 const log = Logger.create();
 
@@ -140,8 +141,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             .map(current => current.columns)
             .when(columns => {
 
+                // columns = Object.assign( new DocRepoTableColumns(), columns);
+
                 log.info("Loaded columns from settings: ", columns);
-                this.setState(Object.assign(this.state, {columns}));
+                this.setState({...this.state, columns});
                 this.refresh();
 
             });
@@ -377,7 +380,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         <DocRepoTableDropdown id="table-dropdown"
                                                               options={Object.values(this.state.columns)}
-                                                              onSelectedColumns={() => this.onSelectedColumns()}/>
+                                                              onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
                                     </div>
 
                                 </div>
@@ -445,7 +448,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     },
                                     {
                                         Header: 'Added',
-                                        // accessor: (row: any) => row.added,
                                         accessor: 'added',
                                         show: this.state.columns.added.selected,
                                         maxWidth: 100,
@@ -453,6 +455,48 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         Cell: (row: any) => (
                                             <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
                                         )
+                                    },
+                                    {
+                                        Header: 'Site',
+                                        accessor: 'site',
+                                        show: (this.state.columns.site || {}).selected || false,
+                                        // show: false,
+                                        maxWidth: 200,
+                                        sortable: false,
+                                        sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
+
+                                            const toSTR = (doc?: RepoDocInfo): string => {
+
+                                                if (! doc) {
+                                                    return "";
+                                                }
+
+                                                if (doc.site) {
+                                                    return doc.site;
+                                                }
+
+                                                return "";
+
+                                            };
+
+                                            const aSTR = toSTR(a);
+                                            const bSTR = toSTR(b);
+
+                                            // if (aSTR === bSTR) {
+                                            //     return 0;
+                                            // }
+                                            //
+                                            // if (aSTR === "") {
+                                            //     return Number.MIN_VALUE;
+                                            // }
+                                            //
+                                            // if (bSTR === "") {
+                                            //     return Number.MAX_VALUE;
+                                            // }
+
+                                            return aSTR.localeCompare(bSTR);
+
+                                        },
                                     },
                                     //
                                     // d => {
@@ -755,7 +799,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private onSelectedColumns() {
+    private onSelectedColumns(columns: ListOptionType[]) {
 
         RendererAnalytics.event({category: 'user', action: 'selected-columns'});
 

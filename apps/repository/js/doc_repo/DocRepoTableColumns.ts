@@ -55,4 +55,10 @@ export class DocRepoTableColumns implements KeyValueMapping<DocRepoTableColumns,
         selected: true
     };
 
+    public readonly site: ListOptionType =  {
+        id: "site",
+        label: "Site",
+        selected: false
+    };
+
 }
