@@ -21,7 +21,7 @@
 - Donate and Discord buttons in header.  These are important.
 
 - Setting POLAR_DISABLE_HARDWARE_ACCELERATION should disable hardwawre 
-  acceleration now if that's causing a problme for you.
+  acceleration now if that's causing a problem for you.
 
 # 1.10.0
 

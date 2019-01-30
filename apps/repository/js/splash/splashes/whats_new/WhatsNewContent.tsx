@@ -17,6 +17,61 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
             <div>
 
+                <h3>Polar 1.11</h3>
+
+                <div className="intro">
+
+                    <h4>Changelog:</h4>
+
+                    <p>
+                        Version 1.11 has fewer features than our normal weekly
+                        releases. The next release will take a bit longer and we
+                        wanted to get a version released sooner rather than
+                        later.
+                    </p>
+
+                    <ul>
+
+                        <li>Feature: More consistent header bar throughout the app.
+                        </li>
+
+                        <li>Feature: Pagemark batches which help working with
+                        PDFs that have multiple pages.  Now if you create
+                        pagemarks across pages you can delete one and the whole
+                        batch is also deleted.
+                        </li>
+
+                        <li>
+                            Feature: Page number in markdown export
+                        </li>
+
+                        <li>
+                            Feature: Disabled the top message boxes.  They were
+                            annoying and only a stop gap until we have a proper
+                            onboarding mechanism.
+                        </li>
+
+                        <li> Bug: Fixed bug with page zoom not working properly
+                        in the HTML viewer.  The zoom now works but pagemarks
+                        still aren't placed properly. </li>
+
+                        <li>
+                        Upgrade: Electron 3.1.2
+                        </li>
+
+                        <li> Donate and Discord buttons in header.  These are
+                        important. </li>
+
+                        <li>
+                        Feature: Setting POLAR_DISABLE_HARDWARE_ACCELERATION
+                        should disable hardwawre acceleration now if that's
+                        causing a problem for you.
+                        </li>
+
+                    </ul>
+
+                </div>
+
                 <h3>Polar 1.10</h3>
 
                 <div className="intro">

@@ -76,7 +76,9 @@ export class RepoHeader extends React.Component<IProps, IState> {
                             <SimpleTooltip target="donate-button"
                                            placement="bottom">
 
-                                Donate to support Polar
+                                Donate to support Polar.  Polar donations are
+                                very low and development can't continue without
+                                your support.
 
                             </SimpleTooltip>
 
