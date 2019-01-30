@@ -8,13 +8,12 @@ large_image: https://getpolarized.io/assets/images/openscience.jpeg
 # Polar Long Term Vision
 
 I wanted to finally take the time and write up my long term vision of where
-Polar is going as well as discuss some anti-goals (or at least secondary goals)
+Polar is headed as well as discuss some anti-goals (or at least secondary goals)
 of the project.
 
-At first glance, Polar is designed around the idea of maintaining all your
-documents in one place, annotating them with highlights, comments, managing your
-documents with tags, and maintaining key extracted knowledge via spaced
-repetition.
+Polar is designed around the idea of maintaining all your documents in one
+place, annotating them with highlights, comments, managing your documents with
+tags, and maintaining key extracted knowledge via spaced repetition.
 
 I believe this is a new class of application which we will see more players over
 the next decade - at least I hope so as competition is a good thing.
@@ -36,14 +35,14 @@ While you might still have a copy of the data you won't be able to actually
 use the notes or at the very minimum your notes will have less value as they're
 not exactly usable.
 
-This is why I went with the name Polar.  A "polar" repository essentially freezes
-and protects all your knowledge and maintains its integrity.  A Polar repository
-is designed to follow through your entire career.  Everything that you learn in 
-college (or in your spare time) is kept in Polar to prevent forgetting key 
+This is why I went with the name Polar.  Your repository essentially freezes and
+protects all your knowledge and maintains its integrity.  A Polar repository is
+designed to follow through your entire career.  Everything that you learn in
+college (or in your spare time) is kept in Polar to prevent forgetting key
 material.
 
-This is why spaced repetition is important for Polar.  Without spaced repetition 
-managing such a massive repository of information would not be manageable.    
+This is why spaced repetition is important.  Without spaced repetition managing
+such a massive repository of information would not be manageable.
 
 ## Data Integrity.
 
@@ -52,7 +51,7 @@ This is why the data integrity of Polar is critical.
 One of our primary goals is that you control the data and you can export at 
 any time and the file formats used are self describing and easy to work with.
 
-While they might not necessarily be an Open Standard (yet) you can export 
+While they might not necessarily be an open standard (yet) you can export 
 and easily write tools to migrate to another platform should you wish.
 
 # Long Term Education
@@ -68,12 +67,12 @@ we call this "bit rot."
 Generally, for neurological systems (AKA humans) if the neural connectivity 
 isn't regularly exercised - it's lost.  
 
-Simply put - you forget.
+Simply put - you forget.  Use it or lose it.
 
 We force students to go through the gauntlet, pass the exams, then don't care 
 that they've forgotten the material.
 
-I think this is a tragedy.
+This is a tragedy.
 
 It doesn't make sense to get a degree just to forget everything you've learned.
 
