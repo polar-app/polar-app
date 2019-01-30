@@ -46,22 +46,22 @@ export class Launcher {
         await Logging.init();
 
         const model = new Model(persistenceLayer);
+
         new WebView(model).start();
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
         new PagemarkView(model).start();
         new AnnotationSidebarService(model).start();
 
-        if (AppRuntime.isElectron()) {
-            new PageSearchController(model).start();
-        }
+        // if (AppRuntime.isElectron()) {
+        //     new PageSearchController(model).start();
+        // }
 
         new CommentsController(model).start();
         new AnnotationBarService(model).start();
 
         const viewer = ViewerFactory.create(model);
         viewer.start();
-
         await new WebController(model, viewer).start();
 
     }

@@ -14,7 +14,6 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
         return (
 
-
             <div>
 
                 <h3>Polar 1.11</h3>
