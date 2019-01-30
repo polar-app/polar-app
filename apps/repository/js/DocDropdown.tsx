@@ -91,6 +91,11 @@ export class DocDropdown extends React.Component<IProps, IState> {
                             Copy File Path
                         </DropdownItem>
 
+                        <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                                      onClick={() => this.onCopyText(this.props.repoDocInfo.fingerprint, "Document ID copied to clipboard")}>
+                            Copy Document ID
+                        </DropdownItem>
+
                         {/*TODO: maybe load original URL too?*/}
 
                         <DropdownItem divider />
@@ -140,10 +145,14 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
     }
 
+    private onCopyText(text: string, message: string) {
+        this.copyText(text);
+        Toaster.success(message);
+    }
+
     private onCopyURL(url: string) {
         this.copyText(url);
         Toaster.success("URL copied to clipboard!");
-
     }
 
     private copyText(text: string) {
