@@ -95,11 +95,13 @@ export class MainAppController {
         for (const browserWindow of browserWindows) {
             const id = browserWindow.id;
 
+            log.info("Closing window with id: " + id);
+
             let url: string | undefined;
 
-            if (browserWindow.webContents) {
-                url = browserWindow.webContents.getURL();
-            }
+            // if (browserWindow.webContents) {
+            //     url = browserWindow.webContents.getURL();
+            // }
 
             if (! browserWindow.isDestroyed()) {
 
