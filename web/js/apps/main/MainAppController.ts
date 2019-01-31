@@ -98,31 +98,21 @@ export class MainAppController {
 
         log.info("Closing all windows...");
 
-        if (Platforms.get() !== Platform.WINDOWS) {
+        for (const browserWindow of browserWindows) {
+            const id = browserWindow.id;
 
-            // this causes Windows to segfault so avoid it.  It might also not
-            // strictly be necessary.
+            let url: string | undefined;
 
-            for (const browserWindow of browserWindows) {
-                const id = browserWindow.id;
-
-                let url: string | undefined;
-
-                if (browserWindow.webContents) {
-                    url = browserWindow.webContents.getURL();
-                }
-
-                log.info(`Closing window id=${id}, url=${url}`);
-
-                if (browserWindow.isClosable() && ! browserWindow.isDestroyed()) {
-                    log.info(`Closing window id=${id}, url=${url}`);
-                    browserWindow.close();
-                    browserWindow.destroy();
-                } else {
-                    log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
-                }
+            if (browserWindow.webContents) {
+                url = browserWindow.webContents.getURL();
             }
 
+            if (! browserWindow.isDestroyed()) {
+                log.info(`Destroying window id=${id}, url=${url}`);
+                browserWindow.destroy();
+            } else {
+                log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
+            }
         }
 
         log.info("Closing all windows...done");

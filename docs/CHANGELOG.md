@@ -1,5 +1,11 @@
 # 1.12.0
 
+- Enabling the window.destroy fix for Windows as I'm pretty sure it's necessary
+  and we can avoid the issue with lockup now. 
+
+- Ability to set the 'mode' for pagemarks now so that we can keep track of 
+  reading progress better.
+
 - More descriptive text for the assignment and filtering of documents. 
 
 - Electron 4.0.3
