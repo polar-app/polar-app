@@ -105,10 +105,10 @@ export class MainAppController {
 
             if (! browserWindow.isDestroyed()) {
 
-                if (browserWindow.isClosable()) {
-                    log.info(`Closing window id=${id}, url=${url}`);
-                    browserWindow.close();
-                }
+                // if (browserWindow.isClosable()) {
+                //     log.info(`Closing window id=${id}, url=${url}`);
+                //     browserWindow.close();
+                // }
 
                 log.info(`Destroying window id=${id}, url=${url}`);
 
