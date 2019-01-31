@@ -114,6 +114,12 @@ export class HTMLViewer extends Viewer {
 
         }
 
+        // this.doScreenshot();
+
+    }
+
+    private doScreenshot() {
+
         const width = 125;
 
         const height = (11 / 8.5) * 125;
