@@ -86,12 +86,6 @@ export class MainAppController {
 
         log.info("Exiting app...");
 
-        log.info("Shutting down services...");
-        Services.stop({
-            webserver: this.webserver,
-        });
-        log.info("Shutting down services...done");
-
         log.info("Getting all browser windows...");
         const browserWindows = BrowserWindow.getAllWindows();
         log.info("Getting all browser windows...done");
@@ -108,14 +102,30 @@ export class MainAppController {
             }
 
             if (! browserWindow.isDestroyed()) {
+
+                if (browserWindow.isClosable()) {
+                    log.info(`Closing window id=${id}, url=${url}`);
+                    browserWindow.close();
+                }
+
                 log.info(`Destroying window id=${id}, url=${url}`);
+
                 browserWindow.destroy();
+
             } else {
                 log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
             }
         }
 
         log.info("Closing all windows...done");
+
+        log.info("Shutting down services...");
+
+        Services.stop({
+            webserver: this.webserver,
+        });
+
+        log.info("Shutting down services...done");
 
         log.info("Exiting electron...");
 
