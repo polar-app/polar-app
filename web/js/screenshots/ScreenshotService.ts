@@ -1,5 +1,3 @@
-import {IPCEngines} from '../ipc/handler/IPCEngines';
-import {ScreenshotHandler} from './ScreenshotHandler';
 import {ScreenshotDelegate} from './ScreenshotDelegate';
 
 declare var global: any;

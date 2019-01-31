@@ -1,17 +1,14 @@
 import {IXYRect} from '../util/rects/IXYRect';
 import {IXYRects} from '../util/rects/IXYRects';
-import {CapturedScreenshot, ResizeDimensions, CropDimensions} from './CapturedScreenshot';
+import {CapturedScreenshot, CropDimensions, ResizeDimensions} from './CapturedScreenshot';
 import {ScreenshotRequest} from './ScreenshotRequest';
 import {ClientRects} from '../util/rects/ClientRects';
 import {Logger} from '../logger/Logger';
-import {ElectronIPCPipe} from '../ipc/handler/ElectronIPCPipe';
-import {ElectronRendererPipe} from '../ipc/pipes/ElectronRendererPipe';
-import {IPCClient} from '../ipc/handler/IPCClient';
 import {Screenshot} from '../metadata/Screenshot';
 import {Screenshots} from '../metadata/Screenshots';
 import {ImageType} from '../metadata/ImageType';
 import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
-import {remote, webContents} from 'electron';
+import {remote} from 'electron';
 
 const log = Logger.create();
 

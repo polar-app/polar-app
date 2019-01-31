@@ -1,7 +1,4 @@
-import {IPCHandler} from '../ipc/handler/IPCHandler';
 import {ScreenshotRequest} from './ScreenshotRequest';
-import {IPCMessage} from '../ipc/handler/IPCMessage';
-import {IPCEvent} from '../ipc/handler/IPCEvent';
 import {CapturedScreenshot} from './CapturedScreenshot';
 import {webContents} from "electron";
 import {Logger} from '../logger/Logger';

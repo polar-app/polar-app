@@ -15,6 +15,7 @@ import {IFrameWatcher} from './IFrameWatcher';
 import {FrameResizer} from './FrameResizer';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {DocMetas} from '../../metadata/DocMetas';
+import {CapturedScreenshots} from '../../screenshots/CapturedScreenshots';
 
 const log = Logger.create();
 
@@ -112,6 +113,24 @@ export class HTMLViewer extends Viewer {
             pageMeta.pageInfo.dimensions = {width, height};
 
         }
+
+        const width = 125;
+
+        const height = (11 / 8.5) * 125;
+
+        const captureOpts = {
+            resize: {
+                width: 125
+            },
+            crop: {
+                width, height, x: 0, y: 0
+            }
+        };
+
+        CapturedScreenshots.capture(<HTMLElement> document.querySelector(".page"), captureOpts)
+            .then(screenshot => {
+                console.log("FIXME: got screnshot", screenshot);
+            });
 
     }
 
