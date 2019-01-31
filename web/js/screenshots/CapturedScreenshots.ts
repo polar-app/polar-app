@@ -10,11 +10,10 @@ import {IPCClient} from '../ipc/handler/IPCClient';
 import {Screenshot} from '../metadata/Screenshot';
 import {Screenshots} from '../metadata/Screenshots';
 import {ImageType} from '../metadata/ImageType';
+import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
+import {remote, webContents} from 'electron';
 
 const log = Logger.create();
-
-const ipcPipe = new ElectronIPCPipe(new ElectronRendererPipe());
-const ipcClient = new IPCClient(ipcPipe);
 
 /**
  * Create a screenshot of the display.
@@ -40,7 +39,11 @@ export class CapturedScreenshots {
 
         log.info("Sending screenshot request: ", screenshotRequest);
 
-        return await ipcClient.call<ScreenshotRequest, CapturedScreenshot>('/screenshots/create-screenshot', screenshotRequest);
+        // const id: WebContentsID = webContents.id;
+
+        const id = this.getWebContentsID();
+
+        return await this.getRemoteDelegate().capture(id, screenshotRequest);
 
     }
 
@@ -50,6 +53,14 @@ export class CapturedScreenshots {
 
         // noop for now
 
+    }
+
+    private static getRemoteDelegate(): IScreenshotDelegate {
+        return remote.getGlobal(ScreenshotDelegate.DELEGATE_NAME);
+    }
+
+    private static getWebContentsID(): WebContentsID {
+        return remote.getCurrentWebContents().id;
     }
 
     private static async doCapture(target: CaptureTarget, opts: CaptureOpts = {}): Promise<ScreenshotRequest> {

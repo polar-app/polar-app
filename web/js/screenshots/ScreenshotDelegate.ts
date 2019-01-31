@@ -3,42 +3,22 @@ import {ScreenshotRequest} from './ScreenshotRequest';
 import {IPCMessage} from '../ipc/handler/IPCMessage';
 import {IPCEvent} from '../ipc/handler/IPCEvent';
 import {CapturedScreenshot} from './CapturedScreenshot';
-import {WebContents} from "electron";
+import {webContents} from "electron";
 import {Logger} from '../logger/Logger';
 
 const log = Logger.create();
 
 /**
- * @Deprecated
+ * Handles the actual screenshotting.
  */
-export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
+export class ScreenshotDelegate implements IScreenshotDelegate {
 
-    protected createValue(ipcMessage: IPCMessage<any>): ScreenshotRequest {
-        return ipcMessage.value;
-    }
+    public static DELEGATE_NAME = "screenshotDelegate";
 
-    protected async handleIPC(event: IPCEvent, screenshotRequest: ScreenshotRequest): Promise<CapturedScreenshot> {
+    public async capture(id: WebContentsID, screenshotRequest: ScreenshotRequest): Promise<CapturedScreenshot> {
 
-        const webContents = event.webContents;
-
-        if (webContents === undefined) {
-            throw new Error("Must be sent called from a renderer.");
-        }
-
-        const image = await ScreenshotHandler.capture(webContents, screenshotRequest);
-
-        const dataURL = image.toDataURL();
-        const size = image.getSize();
-
-        const capturedScreenshot: CapturedScreenshot = {
-            dataURL,
-            dimensions: {
-                width: size.width,
-                height: size.height
-            }
-        };
-
-        return capturedScreenshot;
+        const nativeImage = await this.captureNativeImage(id, screenshotRequest);
+        return this.toCapturedScreenshot(nativeImage);
 
     }
 
@@ -53,7 +33,9 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
      *         with scaleFactor as an option.
      *
      */
-    public static async capture(webContents: WebContents, screenshotRequest: ScreenshotRequest): Promise<Electron.NativeImage> {
+    private async captureNativeImage(id: WebContentsID, screenshotRequest: ScreenshotRequest): Promise<Electron.NativeImage> {
+
+        const webContentsInstance = webContents.fromId(id);
 
         if (! screenshotRequest) {
             throw new Error("screenshotRequest required");
@@ -77,7 +59,7 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
 
         return new Promise<Electron.NativeImage>((resolve) => {
 
-            webContents.capturePage(rect, (image) => {
+            webContentsInstance.capturePage(rect, (image) => {
 
                 if (screenshotRequest.resize) {
 
@@ -106,4 +88,27 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
 
     }
 
+    private toCapturedScreenshot(image: Electron.NativeImage) {
+
+        const dataURL = image.toDataURL();
+        const size = image.getSize();
+
+        const capturedScreenshot: CapturedScreenshot = {
+            dataURL,
+            dimensions: {
+                width: size.width,
+                height: size.height
+            }
+        };
+
+        return capturedScreenshot;
+
+    }
+
 }
+
+export interface IScreenshotDelegate {
+    capture(id: WebContentsID, screenshotRequest: ScreenshotRequest): Promise<CapturedScreenshot>;
+}
+
+export type WebContentsID = number;

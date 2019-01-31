@@ -1,5 +1,6 @@
 import {IPCEngines} from '../ipc/handler/IPCEngines';
 import {ScreenshotHandler} from './ScreenshotHandler';
+import {ScreenshotDelegate} from './ScreenshotDelegate';
 
 declare var global: any;
 
@@ -16,11 +17,13 @@ export class ScreenshotService {
 
     public start() {
 
-        const ipcEngine = IPCEngines.mainProcess();
+        const screenshotDelegate = new ScreenshotDelegate();
 
-        ipcEngine.registry.registerPath('/screenshots/create-screenshot', new ScreenshotHandler());
+        if (global[ScreenshotDelegate.DELEGATE_NAME]) {
+            throw new Error("Object named screenshotDelegate already in global");
+        }
 
-        ipcEngine.start();
+        global[ScreenshotDelegate.DELEGATE_NAME] = screenshotDelegate;
 
     }
 
