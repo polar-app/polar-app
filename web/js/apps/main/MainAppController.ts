@@ -80,6 +80,12 @@ export class MainAppController {
 
     public exitApp() {
 
+        const doProcessExit = true;
+        const doAppQuit = true;
+        const doServicesStop = true;
+        const doCloseWindows = true;
+        const doDestroyWindows = true;
+
         // the exception handlers need to be re-registered as I think they're
         // being removed on exit (possibly by sentry?)
         MainAppExceptionHandlers.register();
@@ -90,12 +96,10 @@ export class MainAppController {
         const browserWindows = BrowserWindow.getAllWindows();
         log.info("Getting all browser windows...done");
 
-        log.info("Closing all windows...");
+        log.info("Closing/destroying all windows...");
 
         for (const browserWindow of browserWindows) {
             const id = browserWindow.id;
-
-            log.info("Closing window with id: " + id);
 
             let url: string | undefined;
 
@@ -105,36 +109,46 @@ export class MainAppController {
 
             if (! browserWindow.isDestroyed()) {
 
-                // if (browserWindow.isClosable()) {
-                //     log.info(`Closing window id=${id}, url=${url}`);
-                //     browserWindow.close();
-                // }
+                if (doCloseWindows && browserWindow.isClosable()) {
+                    log.info(`Closing window id=${id}, url=${url}`);
+                    browserWindow.close();
+                }
 
-                log.info(`Destroying window id=${id}, url=${url}`);
-
-                browserWindow.destroy();
+                if (doDestroyWindows) {
+                    log.info(`Destroying window id=${id}, url=${url}`);
+                    browserWindow.destroy();
+                }
 
             } else {
-                log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
+                log.info(`Skipping destroy window (is destroyed) id=${id}, url=${url}`);
             }
         }
 
-        log.info("Closing all windows...done");
+        log.info("Closing/destroying all windows...done");
 
-        log.info("Shutting down services...");
+        if (doServicesStop) {
 
-        Services.stop({
-            webserver: this.webserver,
-        });
+            log.info("Stopping services...");
 
-        log.info("Shutting down services...done");
+            Services.stop({
+                webserver: this.webserver,
+            });
 
-        log.info("Exiting electron...");
+            log.info("Stopping services...done");
 
-        app.quit();
+        }
 
-        log.info("Exiting main...");
-        process.exit();
+        if (doAppQuit) {
+            log.info("Quitting app...");
+            app.quit();
+            log.info("Quitting app...done");
+        }
+
+        if (doProcessExit) {
+            log.info("Process exit...");
+            process.exit();
+            log.info("Process exit...done");
+        }
 
     }
 
