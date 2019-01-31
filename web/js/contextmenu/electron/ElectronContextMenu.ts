@@ -8,6 +8,7 @@ import {Preconditions} from '../../Preconditions';
 import {ContextMenuType} from '../ContextMenuType';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
+import {PagemarkModes} from '../../metadata/PagemarkModes';
 
 const log = Logger.create();
 
@@ -220,15 +221,24 @@ export class ElectronContextMenu {
 
     /**
      *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     * @return {Electron.Menu}
      */
     private createPagemarkContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
         const ctxMenu = new Menu();
 
+        const createModeSubmenuItems = () => {
+
+            return PagemarkModes.toDescriptors().map(current => {
+                return new MenuItem({
+                     label: current.title,
+                     click: () => this.postContextMenuMessage("set-pagemark-mode-" + current.key, triggerEvent)
+                 });
+            });
+
+        };
+
         ctxMenu.append(this.createSubmenu('Pagemark', [
+            this.createSubmenu('Mode ...', createModeSubmenuItems()),
             new MenuItem({
                 label: 'Delete Pagemark',
                 // accelerator: 'CmdOrCtrl+A',
@@ -242,9 +252,6 @@ export class ElectronContextMenu {
 
     /**
      *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     * @return {Electron.Menu}
      */
     private createPageContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
@@ -306,9 +313,6 @@ export class ElectronContextMenu {
 
     /**
      *
-     * @param triggerEvent
-     * @param sender
-     * @return {Electron.Menu}
      */
     private createDefaultContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 

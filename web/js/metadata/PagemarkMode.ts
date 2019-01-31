@@ -10,7 +10,7 @@ export enum PagemarkMode {
      * or setting.  This should not count towards their daily reading progress
      * as it was done outside the app.
      */
-    PRE_READ = "PRE-READ",
+    PRE_READ = "PRE_READ",
 
     /**
      * The user has read this portion of the document.  This is the default

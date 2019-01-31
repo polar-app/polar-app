@@ -13,6 +13,7 @@ import {Optional} from '../../../util/ts/Optional';
 import {Rects} from '../../../Rects';
 import {Rect} from '../../../Rect';
 import {BoxController} from "../../../boxes/controller/BoxController";
+import {PagemarkMode} from '../../../metadata/PagemarkMode';
 
 const log = Logger.create();
 
@@ -211,8 +212,11 @@ export class AbstractPagemarkComponent extends Component {
         pagemarkElement.className = "pagemark annotation";
 
         // pagemark.style.backgroundColor="rgb(198, 198, 198)";
-        pagemarkElement.style.backgroundColor = "#00CCFF";
-        pagemarkElement.style.opacity = "0.3";
+
+        const pagemarkColor = this.toPagemarkColor();
+
+        pagemarkElement.style.backgroundColor = pagemarkColor.backgroundColor;
+        pagemarkElement.style.opacity = "" + pagemarkColor.opacity;
 
         pagemarkElement.style.position = "absolute";
 
@@ -234,6 +238,59 @@ export class AbstractPagemarkComponent extends Component {
         pagemarkElement.style.width = `${pagemarkRect.width}px`;
         pagemarkElement.style.height = `${pagemarkRect.height}px`;
         pagemarkElement.style.zIndex = '9';
+
+    }
+
+    private toPagemarkColor() {
+
+        class PagemarkColors {
+
+            public static BLUE = {
+                backgroundColor: "#00CCFF",
+                opacity: 0.3
+            };
+
+            public static LIGHTBLUE = {
+                backgroundColor: "#00CCFF",
+                opacity: 0.15
+            };
+
+            public static GREY = {
+                backgroundColor: "rgb(125, 125, 125)",
+                opacity: 0.3
+            };
+
+        }
+
+        if (! this.pagemark) {
+            return PagemarkColors.BLUE;
+        }
+
+        if (!this.pagemark.mode) {
+            return PagemarkColors.BLUE;
+        }
+
+        switch (this.pagemark.mode) {
+
+            case PagemarkMode.IGNORED:
+                return PagemarkColors.GREY;
+
+            case PagemarkMode.TABLE_OF_CONTENTS:
+                return PagemarkColors.GREY;
+
+            case PagemarkMode.APPENDEX:
+                return PagemarkColors.GREY;
+
+            case PagemarkMode.REFERENCES:
+                return PagemarkColors.GREY;
+
+            case PagemarkMode.PRE_READ:
+                return PagemarkColors.LIGHTBLUE;
+
+            default:
+                return PagemarkColors.BLUE;
+
+        }
 
     }
 
@@ -312,3 +369,8 @@ export interface ElementOptions {
 }
 
 type PagemarkComponentType = 'primary' | 'thumbnail';
+
+interface PagemarkColor {
+    backgroundColor: string;
+    opacity: number;
+}

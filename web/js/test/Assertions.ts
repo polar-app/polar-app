@@ -62,7 +62,7 @@ export function toJSON(obj: any, unsorted: boolean = false): string {
 
     };
 
-    if (!unsorted) {
+    if (! Array.isArray(obj) && !unsorted) {
 
         // TODO: because of the toJSON method we might want to call JSON
         // stringify, then parse it again, then sort, then stringify again.

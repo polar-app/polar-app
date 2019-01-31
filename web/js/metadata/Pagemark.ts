@@ -126,3 +126,11 @@ export interface PagemarkRef {
     readonly pagemark: Pagemark;
 
 }
+
+export interface PagemarkIDRef {
+
+    readonly pageNum: number;
+
+    readonly id: string;
+
+}

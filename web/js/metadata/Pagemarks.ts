@@ -311,7 +311,7 @@ export class Pagemarks {
      * Replace the pagemarks with a new pagemark with the given options replaced.
      */
     public static replacePagemark(docMeta: DocMeta,
-                                  pagemarkPtr: PagemarkPtr,
+                                  pagemarkPtr: PagemarkPTR,
                                   options: ReplacePagemarkOptions) {
 
         const pagemarksToMutate = () => {
@@ -479,7 +479,7 @@ export interface PagemarkOptions {
 /**
  * A pointer to a pagemark either by id , batch.
  */
-export interface PagemarkPtr {
+export interface PagemarkPTR {
 
     readonly ref?: PagemarkRef;
 

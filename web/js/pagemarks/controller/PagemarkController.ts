@@ -4,12 +4,14 @@ import {DocFormat} from '../../docformat/DocFormat';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {AnnotationPointers} from '../../annotations/AnnotationPointers';
 import {Logger} from '../../logger/Logger';
-import {Pagemarks} from '../../metadata/Pagemarks';
+import {PagemarkPTR, Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
 import {Rects} from '../../Rects';
 import {Optional} from '../../util/ts/Optional';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {PagemarkIDRef} from '../../metadata/Pagemark';
+import {DocMetas} from '../../metadata/DocMetas';
 
 const log = Logger.create();
 
@@ -50,6 +52,10 @@ export class PagemarkController {
                 this.onDeletePagemark(triggerEvent);
                 break;
 
+            case "set-pagemark-mode-pre-read":
+                this.onSetPagemarkMode(triggerEvent, PagemarkMode.PRE_READ);
+                break;
+
             case "set-pagemark-mode-read":
                 this.onSetPagemarkMode(triggerEvent, PagemarkMode.READ);
                 break;
@@ -58,6 +64,17 @@ export class PagemarkController {
                 this.onSetPagemarkMode(triggerEvent, PagemarkMode.IGNORED);
                 break;
 
+            case "set-pagemark-mode-table-of-contents":
+                this.onSetPagemarkMode(triggerEvent, PagemarkMode.TABLE_OF_CONTENTS);
+                break;
+
+            case "set-pagemark-mode-table-of-appendix":
+                this.onSetPagemarkMode(triggerEvent, PagemarkMode.APPENDEX);
+                break;
+
+            case "set-pagemark-mode-table-of-references":
+                this.onSetPagemarkMode(triggerEvent, PagemarkMode.REFERENCES);
+                break;
 
         }
 
@@ -70,8 +87,8 @@ export class PagemarkController {
         // convert the point on the page and then save it into the
         // model/docMeta... the view will do the rest.
 
-        // FIXME migrate this to AnnotationRects now as this shares a lot of code
-        // here...
+        // FIXME migrate this to AnnotationRects now as this shares a lot of
+        // code here...
 
         let elements = document.elementsFromPoint(triggerEvent.points.client.x, triggerEvent.points.client.y);
 
@@ -135,21 +152,63 @@ export class PagemarkController {
 
         log.info("Deleting pagemark: ", triggerEvent);
 
+        const pagemarkIDRef = this.toPagemarkID(triggerEvent);
+
+        if (pagemarkIDRef) {
+            Pagemarks.deletePagemark(this.model.docMeta, pagemarkIDRef.pageNum, pagemarkIDRef.id);
+        }
+
+    }
+
+
+    private onSetPagemarkMode(triggerEvent: TriggerEvent, mode: PagemarkMode) {
+
+        log.info("Setting pagemark mode: ", mode);
+
+        const pagemarkIDRef = this.toPagemarkID(triggerEvent);
+
+        if (pagemarkIDRef) {
+
+            const pageNum = pagemarkIDRef.pageNum;
+            const pageMeta = DocMetas.getPageMeta(this.model.docMeta, pageNum);
+            const pagemark = pageMeta.pagemarks[pagemarkIDRef.id];
+
+
+            if (pagemark) {
+
+                const pagemarkPTR: PagemarkPTR = {
+                    ref: {
+                        pageNum,
+                        pagemark
+                    }
+                };
+
+                Pagemarks.replacePagemark(this.model.docMeta, pagemarkPTR, {mode});
+
+            }
+
+        }
+
+
+    }
+    private toPagemarkID(triggerEvent: TriggerEvent): PagemarkIDRef | undefined {
+
         const annotationPointers
             = AnnotationPointers.toAnnotationPointers(".pagemark", triggerEvent);
 
         log.info("Working with annotationPointers: ", annotationPointers);
 
-        Optional.first(...annotationPointers).map(annotationPointer => {
+        return Optional.first(...annotationPointers).map(annotationPointer => {
             const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
-            Pagemarks.deletePagemark(this.model.docMeta, annotationPointer.pageNum, annotationPointer.id);
-        });
+
+            return {
+                pageNum: annotationPointer.pageNum,
+                id: annotationPointer.id
+            };
+
+        }).getOrUndefined();
 
     }
 
-    private onSetPagemarkMode(triggerEvent: TriggerEvent, mode: PagemarkMode) {
-        log.info("Setting pagemark mode: ", triggerEvent);
-
-    }
 
 }
