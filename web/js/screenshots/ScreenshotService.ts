@@ -1,6 +1,8 @@
 import {IPCEngines} from '../ipc/handler/IPCEngines';
 import {ScreenshotHandler} from './ScreenshotHandler';
 
+declare var global: any;
+
 /**
  * Service that runs in the Electron main context which listens to IPC events
  * and performs screenshots on windows when requested.
@@ -12,12 +14,9 @@ import {ScreenshotHandler} from './ScreenshotHandler';
  */
 export class ScreenshotService {
 
-    constructor() {
-    }
+    public start() {
 
-    start() {
-
-        let ipcEngine = IPCEngines.mainProcess();
+        const ipcEngine = IPCEngines.mainProcess();
 
         ipcEngine.registry.registerPath('/screenshots/create-screenshot', new ScreenshotHandler());
 

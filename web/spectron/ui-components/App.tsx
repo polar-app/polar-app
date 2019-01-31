@@ -29,6 +29,7 @@ import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from '
 import {GDPRNotice} from '../../js/ui/gdpr/GDPRNotice';
 import {ExportButton} from '../../js/ui/export/ExportButton';
 import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
+import {AnkiReviewContent} from './AnkiReviewContent';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -114,6 +115,16 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <br/>
+                <br/><br/><br/>
+
+                <AnkiReviewContent/>
+
+
+                <br/>
+                <br/><br/><br/>
+
                 <EditorsPicksContent/>
 
                 <ExportButton/>

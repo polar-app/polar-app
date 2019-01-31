@@ -4,6 +4,9 @@ import {IPCMessage} from '../ipc/handler/IPCMessage';
 import {IPCEvent} from '../ipc/handler/IPCEvent';
 import {CapturedScreenshot} from './CapturedScreenshot';
 import {WebContents} from "electron";
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
 
@@ -13,18 +16,18 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
 
     protected async handleIPC(event: IPCEvent, screenshotRequest: ScreenshotRequest): Promise<CapturedScreenshot> {
 
-        let webContents = event.webContents;
+        const webContents = event.webContents;
 
-        if(webContents === undefined) {
+        if (webContents === undefined) {
             throw new Error("Must be sent called from a renderer.");
         }
 
-        let image = await ScreenshotHandler.capture(webContents, screenshotRequest);
+        const image = await ScreenshotHandler.capture(webContents, screenshotRequest);
 
-        let dataURL = image.toDataURL();
-        let size = image.getSize();
+        const dataURL = image.toDataURL();
+        const size = image.getSize();
 
-        let capturedScreenshot: CapturedScreenshot = {
+        const capturedScreenshot: CapturedScreenshot = {
             dataURL,
             dimensions: {
                 width: size.width,
@@ -47,15 +50,15 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
      *         with scaleFactor as an option.
      *
      */
-    static async capture(webContents: WebContents, screenshotRequest: ScreenshotRequest): Promise<Electron.NativeImage> {
+    public static async capture(webContents: WebContents, screenshotRequest: ScreenshotRequest): Promise<Electron.NativeImage> {
 
-        if(! screenshotRequest) {
+        if (! screenshotRequest) {
             throw new Error("screenshotRequest required");
         }
 
         let rect: Electron.Rectangle = screenshotRequest.rect;
 
-        if(! rect) {
+        if (! rect) {
             throw new Error("No rect");
         }
 
@@ -72,10 +75,31 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
         return new Promise<Electron.NativeImage>((resolve) => {
 
             webContents.capturePage(rect, (image) => {
-                resolve(image);
-            })
 
-        })
+                if (screenshotRequest.resize) {
+
+                    if (screenshotRequest.resize.width !== undefined ||
+                        screenshotRequest.resize.height !== undefined) {
+
+                        log.info("Resizing image to: ", screenshotRequest.resize);
+
+                        image = image.resize(screenshotRequest.resize);
+
+                    }
+
+                }
+
+                if (screenshotRequest.crop) {
+                    log.info("Cropping image to: ", screenshotRequest.resize);
+
+                    image = image.resize(screenshotRequest.crop);
+                }
+
+                resolve(image);
+
+            });
+
+        });
 
     }
 
