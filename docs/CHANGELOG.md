@@ -1,7 +1,7 @@
 # 1.12.0
 
-- Enabling the window.destroy fix for Windows as I'm pretty sure it's necessary
-  and we can avoid the issue with lockup now. 
+- Rework the way we do app exit which hopefully fixes windows bugs and exceptions
+  on exit.
 
 - Ability to set the 'mode' for pagemarks now so that we can keep track of 
   reading progress better.

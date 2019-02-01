@@ -61,13 +61,28 @@ export class Dictionaries {
             return dict;
         }
 
-        const result: any = {};
 
-        Object.keys(dict).sort().forEach(key => {
-            result[key] = this.sorted(dict[key]);
-        });
+        if (Array.isArray(dict)) {
 
-        return result;
+            const result: any[] = [];
+
+            for (let idx = 0; idx < dict.length; ++idx) {
+                result[idx] = this.sorted(dict[idx]);
+            }
+
+            return result;
+
+        } else {
+
+            const result: any = {};
+
+            Object.keys(dict).sort().forEach(key => {
+                result[key] = this.sorted(dict[key]);
+            });
+
+            return result;
+
+        }
 
     }
 

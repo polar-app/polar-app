@@ -7,12 +7,12 @@ describe('Dictionaries', function() {
 
     it("basic", async function () {
 
-        let dict = {
+        const dict = {
             'z': 1,
             'a': 2
         };
 
-        let expected = {
+        const expected = {
             "a": 2,
             "z": 1
         };
@@ -21,14 +21,14 @@ describe('Dictionaries', function() {
 
     });
 
-    it("with nulls and undefined", async function () {
+    it("with nulls and undefined", async function() {
 
-        let dict = {
+        const dict = {
             'z': null,
             'a': undefined
         };
 
-        let expected = {
+        const expected = {
             "z": null
         };
 
@@ -36,9 +36,9 @@ describe('Dictionaries', function() {
 
     });
 
-    it("nested", async function () {
+    it("nested", async function() {
 
-        let dict = {
+        const dict = {
             z: 1,
             a: 2,
             nested: {
@@ -47,7 +47,7 @@ describe('Dictionaries', function() {
             }
         };
 
-        let expected = {
+        const expected = {
             "a": 2,
             "nested": {
                 "a": 2,
@@ -57,6 +57,34 @@ describe('Dictionaries', function() {
         };
 
         assertJSON(Dictionaries.sorted(dict), expected);
+
+    });
+
+
+    it("dict with internal array", async function() {
+
+        const dict = {
+            arr: [
+                1, 2, 3
+            ]
+        };
+
+        const expected = {
+            arr: [
+                1,
+                2,
+                3
+            ]
+        };
+
+        assertJSON(Dictionaries.sorted(dict), expected);
+
+    });
+
+
+    it("raw array", async function() {
+
+        assertJSON(Dictionaries.sorted([1, 2, 3]), [1, 2, 3]);
 
     });
 

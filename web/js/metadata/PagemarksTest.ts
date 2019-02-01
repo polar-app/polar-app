@@ -72,8 +72,8 @@ describe('Pagemarks', function() {
                         "height": 100
                     },
                     "batch": "1Y9CcEHSxc",
+                    "mode": "READ",
                     "notes": {},
-                    "mode": "READ"
                 }
             ];
 

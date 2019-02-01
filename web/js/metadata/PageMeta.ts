@@ -125,3 +125,4 @@ export class PageMeta extends SerializedObject {
  * A dedicated type for a page number.  From range [1,infinity)
  */
 export type PageNumber = number;
+

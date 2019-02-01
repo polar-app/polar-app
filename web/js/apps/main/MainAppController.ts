@@ -80,11 +80,18 @@ export class MainAppController {
 
     public exitApp() {
 
+        // we have a collection of flags here controlling shutdown as Electron
+        // is picky in some situations regarding raising exceptions and we're
+        // still trying to track down the proper way to handle app quit.
+
         const doProcessExit = true;
         const doAppQuit = true;
         const doServicesStop = true;
-        const doCloseWindows = true;
-        const doDestroyWindows = true;
+
+        const doWindowGC = false;
+
+        const doCloseWindows = false;
+        const doDestroyWindows = false;
 
         // the exception handlers need to be re-registered as I think they're
         // being removed on exit (possibly by sentry?)
@@ -92,39 +99,38 @@ export class MainAppController {
 
         log.info("Exiting app...");
 
-        log.info("Getting all browser windows...");
-        const browserWindows = BrowserWindow.getAllWindows();
-        log.info("Getting all browser windows...done");
+        if (doWindowGC) {
 
-        log.info("Closing/destroying all windows...");
+            log.info("Getting all browser windows...");
+            const browserWindows = BrowserWindow.getAllWindows();
+            log.info("Getting all browser windows...done");
 
-        for (const browserWindow of browserWindows) {
-            const id = browserWindow.id;
+            log.info("Closing/destroying all windows...");
 
-            let url: string | undefined;
+            for (const browserWindow of browserWindows) {
+                const id = browserWindow.id;
 
-            // if (browserWindow.webContents) {
-            //     url = browserWindow.webContents.getURL();
-            // }
+                if (! browserWindow.isDestroyed()) {
 
-            if (! browserWindow.isDestroyed()) {
+                    if (doCloseWindows && browserWindow.isClosable()) {
+                        log.info(`Closing window id=${id}`);
+                        browserWindow.close();
+                    }
 
-                if (doCloseWindows && browserWindow.isClosable()) {
-                    log.info(`Closing window id=${id}, url=${url}`);
-                    browserWindow.close();
+                    if (doDestroyWindows) {
+                        log.info(`Destroying window id=${id}`);
+                        browserWindow.destroy();
+                    }
+
+                } else {
+                    log.info(`Skipping destroy window (is destroyed) id=${id}`);
                 }
 
-                if (doDestroyWindows) {
-                    log.info(`Destroying window id=${id}, url=${url}`);
-                    browserWindow.destroy();
-                }
-
-            } else {
-                log.info(`Skipping destroy window (is destroyed) id=${id}, url=${url}`);
             }
-        }
 
-        log.info("Closing/destroying all windows...done");
+            log.info("Closing/destroying all windows...done");
+
+        }
 
         if (doServicesStop) {
 
