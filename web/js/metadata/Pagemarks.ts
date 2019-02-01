@@ -375,6 +375,8 @@ export class Pagemarks {
 
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
+            let pageMetaMutator: VOID_FUNCTION | undefined;
+
             if (id) {
 
                 const primaryPagemark = pageMeta.pagemarks[id];
@@ -387,17 +389,26 @@ export class Pagemarks {
                     const pagemarksWithinBatch
                         = this.pagemarksWithinBatch(docMeta, primaryPagemark.batch);
 
-                    for (const pagemarkRef of pagemarksWithinBatch) {
-                        delete pagemarkRef.pageMeta.pagemarks[pagemarkRef.id];
-                    }
+                    pageMetaMutator = () => {
+
+                        for (const pagemarkRef of pagemarksWithinBatch) {
+                            delete pagemarkRef.pageMeta.pagemarks[pagemarkRef.id];
+                        }
+
+                    };
+
 
                 } else {
-                    delete pageMeta.pagemarks[id];
+
+                    pageMetaMutator = () => delete pageMeta.pagemarks[id];
+
                 }
 
             } else {
-                Objects.clear(pageMeta.pagemarks);
+                pageMetaMutator = () => Objects.clear(pageMeta.pagemarks);
             }
+
+            this.doPageMetaMutation(pageMeta, pageMetaMutator);
 
         });
 
@@ -450,9 +461,13 @@ export class Pagemarks {
     /**
      * Mutage the pagemarks on the PageMeta and also update the readingProgress
      */
-    private static doPageMetaMutation(pageMeta: PageMeta, mutator: () => void): void {
+    private static doPageMetaMutation(pageMeta: PageMeta, pageMetaMutator?: VOID_FUNCTION): void {
 
-        mutator();
+        if (! pageMetaMutator) {
+            return;
+        }
+
+        pageMetaMutator();
 
         const progress = Object.values(pageMeta.pagemarks)
             .map(current => current.percentage)
@@ -574,3 +589,5 @@ export interface KeyPagemarkOptions {
     percentage: number;
 
 }
+
+export type VOID_FUNCTION = () => void;
