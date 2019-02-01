@@ -72,9 +72,7 @@ export class PageMeta extends SerializedObject {
      */
     public readonly thumbnails: {[id: string]: Thumbnail} = {};
 
-    public readonly readingProgress?: ReadingProgress;
-
-    public readonly readingProgressLog: {[id: string]: ReadingProgress} = {};
+    public readonly readingProgress: {[id: string]: ReadingProgress} = {};
 
     constructor(val: any) {
 

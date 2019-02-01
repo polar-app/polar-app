@@ -6,9 +6,9 @@ describe('TestHighlights', function() {
 
     it("deleteTextHighlight", async function () {
 
-        let pageMeta = new PageMeta(PAGE_META);
+        const pageMeta = new PageMeta(PAGE_META);
 
-        let textHighlight = pageMeta.textHighlights['1xU5hiNvuy'];
+        const textHighlight = pageMeta.textHighlights['1xU5hiNvuy'];
 
         TextHighlights.deleteTextHighlight(pageMeta, textHighlight);
 
@@ -17,6 +17,7 @@ describe('TestHighlights', function() {
             "notes": {},
             "comments": {},
             "questions": {},
+            "readingProgress": {},
             "flashcards": {},
             "textHighlights": {},
             "areaHighlights": {},

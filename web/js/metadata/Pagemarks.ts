@@ -15,6 +15,8 @@ import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PageMeta, PageNumber} from './PageMeta';
 import {Numbers} from "../util/Numbers";
 import {Reducers} from '../util/Reducers';
+import {ProgressByMode, ReadingProgress} from './ReadingProgress';
+import {ReadingProgresses} from './ReadingProgresses';
 
 const log = Logger.create();
 
@@ -301,14 +303,16 @@ export class Pagemarks {
      */
     public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: Pagemark) {
 
-        this.doPagemarkMutation(docMeta, pageNum, (pageMeta) => {
+        this.doDocMetaMutation(docMeta, pageNum, () => {
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
             pageMeta.pagemarks[pagemark.id] = pagemark;
         });
 
     }
 
     /**
-     * Replace the pagemarks with a new pagemark with the given options replaced.
+     * Replace the pagemarks with a new pagemark with the given options
+     * replaced.
      */
     public static replacePagemark(docMeta: DocMeta,
                                   pagemarkPtr: PagemarkPTR,
@@ -367,7 +371,9 @@ export class Pagemarks {
      */
     public static deletePagemark(docMeta: DocMeta, pageNum: number, id?: string) {
 
-        this.doPagemarkMutation(docMeta, pageNum, (pageMeta) => {
+        this.doDocMetaMutation(docMeta, pageNum, () => {
+
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
             if (id) {
 
@@ -423,23 +429,67 @@ export class Pagemarks {
 
     }
 
-    private static doPagemarkMutation(docMeta: DocMeta,
-                                      pageNum: number,
-                                      pagemarkMutator: (pageMeta: PageMeta) => void): void {
+    private static doDocMetaMutation(docMeta: DocMeta,
+                                     pageNum: number,
+                                     pagemarkMutator: () => void): void {
 
         Preconditions.assertPresent(docMeta, "docMeta");
         Preconditions.assertPresent(pageNum, "pageNum");
 
         DocMetas.withBatchedMutations(docMeta, () => {
 
-            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
-
-            pagemarkMutator(pageMeta);
+            pagemarkMutator();
 
             const progress = Math.floor(DocMetas.computeProgress(docMeta) * 100);
             docMeta.docInfo.progress = progress;
 
         });
+
+    }
+
+    /**
+     * Mutage the pagemarks on the PageMeta and also update the readingProgress
+     */
+    private static doPageMetaMutation(pageMeta: PageMeta, mutator: () => void): void {
+
+        mutator();
+
+        const progress = Object.values(pageMeta.pagemarks)
+            .map(current => current.percentage)
+            .reduce(Reducers.SUM, 0);
+
+        const createInitialProgressByMode = () => {
+
+            const result: ProgressByMode = {};
+
+            for (const mode of Object.values(PagemarkMode)) {
+                result[mode] = 0;
+            }
+
+            return result;
+
+        };
+
+        const createProgressByMode = () => {
+
+            const result = createInitialProgressByMode();
+
+            for (const pagemark of Object.values(pageMeta.pagemarks)) {
+                const mode = pagemark.mode || PagemarkMode.READ;
+                result[mode] = result[mode] + pagemark.percentage;
+            }
+
+            return result;
+
+        };
+
+        const progressByMode = createProgressByMode();
+
+        const readingProgress =
+            ReadingProgresses.create(progress, progressByMode);
+
+        pageMeta.readingProgress[readingProgress.id] = readingProgress;
+
 
     }
 
