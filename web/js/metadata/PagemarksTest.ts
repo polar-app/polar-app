@@ -9,7 +9,7 @@ TestingTime.freeze();
 
 describe('Pagemarks', function() {
 
-    describe('createRange', function() {
+    describe('updatePagemarksForRange', function() {
 
         beforeEach(function() {
 
@@ -23,6 +23,10 @@ describe('Pagemarks', function() {
         it("for one page", function() {
 
             const docMeta = DocMetas.create('0x0001', 1);
+
+            const pageMeta = DocMetas.getPageMeta(docMeta, 1);
+
+            assertJSON(pageMeta.readingProgress, {});
 
             Pagemarks.updatePagemarksForRange(docMeta, 1);
 
@@ -46,10 +50,26 @@ describe('Pagemarks', function() {
                 }
             ];
 
-            assertJSON(Object.values(DocMetas.getPageMeta(docMeta, 1).pagemarks), expected);
+
+            assertJSON(Object.values(pageMeta.pagemarks), expected);
+
+            assertJSON(pageMeta.readingProgress, {
+                "1AS9DE87jw": {
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "1AS9DE87jw",
+                    "progress": 100,
+                    "progressByMode": {
+                        "APPENDEX": 0,
+                        "IGNORED": 0,
+                        "PRE_READ": 0,
+                        "READ": 100,
+                        "REFERENCES": 0,
+                        "TABLE_OF_CONTENTS": 0
+                    }
+                }
+            });
 
         });
-
 
         it("for two pages", function() {
 
