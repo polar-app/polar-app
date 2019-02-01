@@ -305,7 +305,11 @@ export class Pagemarks {
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
-            pageMeta.pagemarks[pagemark.id] = pagemark;
+
+            this.doPageMetaMutation(pageMeta, () => {
+                pageMeta.pagemarks[pagemark.id] = pagemark;
+            });
+
         });
 
     }
@@ -356,7 +360,9 @@ export class Pagemarks {
                     newPagemark.mode = options.mode;
                 }
 
-                ref.pageMeta.pagemarks[ref.id] = newPagemark;
+                this.doPageMetaMutation(ref.pageMeta, () => {
+                    ref.pageMeta.pagemarks[ref.id] = newPagemark;
+                });
 
             }
 
