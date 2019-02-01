@@ -99,7 +99,21 @@ describe('DocMetas', function() {
                             "notes": {},
                             "comments": {},
                             "questions": {},
-                            "readingProgress": {},
+                            "readingProgress": {
+                                "136SMQ5mZM": {
+                                    "created": "2012-03-02T11:38:49.321Z",
+                                    "id": "136SMQ5mZM",
+                                    "progress": 100,
+                                    "progressByMode": {
+                                        "APPENDEX": 0,
+                                        "IGNORED": 0,
+                                        "PRE_READ": 0,
+                                        "READ": 100,
+                                        "REFERENCES": 0,
+                                        "TABLE_OF_CONTENTS": 0
+                                    }
+                                }
+                            },
                             "flashcards": {},
                             "textHighlights": {},
                             "areaHighlights": {},
@@ -132,8 +146,21 @@ describe('DocMetas', function() {
                             "notes": {},
                             "comments": {},
                             "questions": {},
-                            "readingProgress": {},
-                            "flashcards": {},
+                            "readingProgress": {
+                                "145xgms7VH": {
+                                    "created": "2012-03-02T11:38:49.321Z",
+                                    "id": "145xgms7VH",
+                                    "progress": 100,
+                                    "progressByMode": {
+                                        "APPENDEX": 0,
+                                        "IGNORED": 0,
+                                        "PRE_READ": 0,
+                                        "READ": 100,
+                                        "REFERENCES": 0,
+                                        "TABLE_OF_CONTENTS": 0
+                                    }
+                                }
+                            },                            "flashcards": {},
                             "textHighlights": {},
                             "areaHighlights": {},
                             "screenshots": {},
