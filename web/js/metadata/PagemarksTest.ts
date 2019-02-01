@@ -50,7 +50,6 @@ describe('Pagemarks', function() {
                 }
             ];
 
-
             assertJSON(Object.values(pageMeta.pagemarks), expected);
 
             assertJSON(pageMeta.readingProgress, {

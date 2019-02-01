@@ -30,6 +30,7 @@ import {GDPRNotice} from '../../js/ui/gdpr/GDPRNotice';
 import {ExportButton} from '../../js/ui/export/ExportButton';
 import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
 import {AnkiReviewContent} from './AnkiReviewContent';
+import ReadingProgressTable from '../../../apps/repository/js/stats/ReadingProgressTable';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -118,6 +119,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <br/>
                 <br/><br/><br/>
+
+
+                <ReadingProgressTable/>
 
                 <AnkiReviewContent/>
 

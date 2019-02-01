@@ -9,6 +9,7 @@ import {MessageBanner} from '../MessageBanner';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import ReadingProgressTable from './ReadingProgressTable';
 
 const log = Logger.create();
 
@@ -43,6 +44,14 @@ export default class StatsApp extends React.Component<IProps, IState> {
                 <FixedNavBody>
 
                     <div className="container-fluid">
+
+                        {/*<div className="row mt-2">*/}
+
+                            {/*<div className="col-lg-12">*/}
+                                {/*<ReadingProgressTable docInfos={docInfos}/>*/}
+                            {/*</div>*/}
+
+                        {/*</div>*/}
 
                         <div className="row mt-2">
 

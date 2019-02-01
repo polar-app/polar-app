@@ -17,6 +17,7 @@ import {Numbers} from "../util/Numbers";
 import {Reducers} from '../util/Reducers';
 import {ProgressByMode, ReadingProgress} from './ReadingProgress';
 import {ReadingProgresses} from './ReadingProgresses';
+import {Provider} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -511,6 +512,22 @@ export class Pagemarks {
 
         pageMeta.readingProgress[readingProgress.id] = readingProgress;
 
+
+    }
+
+    public static computeReadingProgressStats(docMetaProviders: ReadonlyArray<Provider<DocMeta>>) {
+
+        // TODO: we don't ahve the pageMeta here so maybe we could just write
+        // out a minimal vector of day + number of the number of pages we've
+        // read to the DocInfo
+
+        for (const docMetaProvider of docMetaProviders) {
+
+            const docMeta = docMetaProvider();
+
+
+
+        }
 
     }
 

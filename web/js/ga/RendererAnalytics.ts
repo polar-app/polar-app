@@ -3,7 +3,9 @@ import {Logger} from '../logger/Logger';
 
 const TRACKING_ID = 'UA-122721184-1';
 
-const visitor = ua(TRACKING_ID);
+const DEBUG = false;
+
+const visitor = ua(TRACKING_ID).debug(DEBUG);
 
 const log = Logger.create();
 
