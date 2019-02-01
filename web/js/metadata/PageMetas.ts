@@ -63,6 +63,11 @@ export class PageMetas {
                 pageMeta.questions = {};
             }
 
+            if (!pageMeta.readingProgressLog) {
+                log.debug("No readingProgressLog.  Assigning default (empty map)");
+                pageMeta.readingProgressLog = {};
+            }
+
             pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
 
         } );

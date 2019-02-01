@@ -9,6 +9,7 @@ import {Screenshot} from './Screenshot';
 import {Thumbnail} from './Thumbnail';
 import {Pagemark} from './Pagemark';
 import {Question} from './Question';
+import {ReadingProgress} from './ReadingProgress';
 
 export class PageMeta extends SerializedObject {
 
@@ -70,6 +71,10 @@ export class PageMeta extends SerializedObject {
      * look at the width and height.
      */
     public readonly thumbnails: {[id: string]: Thumbnail} = {};
+
+    public readonly readingProgress?: ReadingProgress;
+
+    public readonly readingProgressLog: {[id: string]: ReadingProgress} = {};
 
     constructor(val: any) {
 
