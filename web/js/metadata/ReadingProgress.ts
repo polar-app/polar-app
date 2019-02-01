@@ -7,11 +7,19 @@ export interface ReadingProgress {
     /**
      * The time time this was created.
      */
-    readonly timestamp: ISODateTimeString;
+    readonly created: ISODateTimeString;
 
     /**
      * The reading progress / percentag completed for the current page.
      */
     readonly progress: number;
 
+    readonly progressByMode: ProgressByMode;
+
 }
+
+export interface ProgressByMode {
+    [id: string]: number;
+}
+
+
