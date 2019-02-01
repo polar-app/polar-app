@@ -63,9 +63,9 @@ export class PageMetas {
                 pageMeta.questions = {};
             }
 
-            if (!pageMeta.readingProgressLog) {
+            if (!pageMeta.readingProgress) {
                 log.debug("No readingProgressLog.  Assigning default (empty map)");
-                pageMeta.readingProgressLog = {};
+                pageMeta.readingProgress = {};
             }
 
             pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
