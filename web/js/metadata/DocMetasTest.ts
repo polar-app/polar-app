@@ -73,7 +73,10 @@ describe('DocMetas', function() {
                         "nrPages": 2,
                         "fingerprint": "0x001",
                         "added": "2012-03-02T11:38:49.321Z",
-                        "uuid": "__canonicalized__"
+                        "uuid": "__canonicalized__",
+                        "readingPerDay": {
+                            "2012-03-02": 2
+                        },
                     },
                     "pageMetas": {
                         "1": {
