@@ -4,6 +4,7 @@ import {FilePaths} from '../../../util/FilePaths';
 import {Optional} from '../../../util/ts/Optional';
 import {PDFJSStatic} from 'pdfjs-dist';
 import * as PDFJSDIST from 'pdfjs-dist';
+import {DOIs} from './DOIs';
 
 const pdfjs: PDFJSStatic = <any> PDFJSDIST;
 
@@ -32,6 +33,7 @@ export class PDFMetadata {
         let title: string | undefined;
         let description: string | undefined;
         let creator: string | undefined;
+        let doi: string | undefined;
         let props: Props = {};
 
         if (metaHolder.metadata) {
@@ -51,11 +53,12 @@ export class PDFMetadata {
 
             };
 
+            props = toProps();
+
             title = Optional.of(metadata.get('dc:title')).getOrUndefined();
             description = Optional.of(metadata.get('dc:description')).getOrUndefined();
             creator = Optional.of(metadata.get('dc:creator')).getOrUndefined();
-
-            props = toProps();
+            doi = DOIs.toDOI(props);
 
         }
 
@@ -64,7 +67,8 @@ export class PDFMetadata {
             nrPages: doc.numPages,
             title,
             description,
-            props
+            props,
+            doi
         };
 
     }
@@ -84,6 +88,8 @@ export interface PDFMeta {
 
     readonly description?: string;
 
+    readonly doi?: string;
+
     /**
      * A link back to the page hosting the content.  This may not be the
      * original resource though and might be a page overview of the resource.
@@ -98,6 +104,7 @@ export interface PDFMeta {
     readonly props: Readonly<Props>;
 
 }
+
 
 export interface Props {
     [key: string]: string;

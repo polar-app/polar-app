@@ -2,6 +2,7 @@ import {PDFMetadata} from './PDFMetadata';
 import {Files} from '../../../../../web/js/util/Files';
 import {HitMap, SampledHitMap} from '../../../util/HitMap';
 import {Strings} from '../../../util/Strings';
+import {DOIs} from './DOIs';
 
 describe('PDF Metadata', function() {
     this.timeout(999999);
@@ -13,7 +14,7 @@ describe('PDF Metadata', function() {
     });
 
 
-    xit("build property index", async function() {
+    it("build property index", async function() {
 
         const hitMap = new SampledHitMap<string>();
 
@@ -70,6 +71,7 @@ describe('PDF Metadata', function() {
                         toDOIWithProp("prism:doi"),
                         toDOIWithProp("crossmark:doi"),
                         toDOIWithProp("pdfx:doi"),
+                        toDOIWithProp("pdfx:wps-articledoi"),
                         toDOIWithPropStartsWithValue("dc:identifier", "doi:"),
                         toDOIWithPropContainsValue("prism:url", "doi.org"),
                         toDOIWithPropContainsValue("dc:title", "doi:"),
@@ -81,8 +83,14 @@ describe('PDF Metadata', function() {
 
             const doiMappings = toDOI();
 
+            const doi = DOIs.toDOI(pdfMeta.props);
+
             if (doiMappings.length >= 1) {
                 hitMap.registerHit("__DOI__", doiMappings[0]!);
+            }
+
+            if (doi) {
+                hitMap.registerHit("__PARSED_DOI__", "true");
             }
 
             for (const doiMapping of doiMappings) {
