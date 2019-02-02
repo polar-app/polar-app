@@ -8,13 +8,13 @@ export class Preconditions {
      * @param message
      * @return Return the value we've been given once it's passed assertions.
      */
-    static assert<T>(value: T, testFunction: AssertionFunction<T>, message: string): T {
+    public static assert<T>(value: T, testFunction: AssertionFunction<T>, message: string): T {
 
         Preconditions.assertNotNull(testFunction, "testFunction");
 
-        let result = testFunction(value);
+        const result = testFunction(value);
 
-        if(!result) {
+        if (!result) {
             throw new Error(`Assertion failed for value ${value}: ` + message);
         }
 

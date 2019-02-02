@@ -262,6 +262,29 @@ describe('Pagemarks', function() {
 
         });
 
+        it("fake HTML page with deltas across days..", function() {
+
+            const docMeta = DocMetas.create('0x0001', 1);
+
+            DocMetas.getPageMeta(docMeta, 1).pageInfo.dimensions = {
+                width: 850,
+                height: 2500
+            };
+
+            Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 40}));
+
+            TestingTime.forward(24 * 60 * 60 * 1000);
+
+            Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 40}));
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-02": 0.91,
+                "2012-03-03": 0.91
+            });
+
+        });
+
+
     });
 
 });

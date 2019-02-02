@@ -77,8 +77,7 @@ export class Functions {
             callback(key, value);
         });
 
-    };
-
+    }
 
     /**
      * We iterate over all keys in the dictionary.
@@ -150,6 +149,7 @@ export class Functions {
      *
      * @param arrayLikeObject {Array<any>}
      * @return {Array<ArrayPosition>}
+     * @Deprecated use Tuples.createSiblings
      */
     public static createSiblings(arrayLikeObject: any) {
 
@@ -190,9 +190,7 @@ export interface IArrayPosition<T> {
 
 }
 
-export interface KeyValueCallback {
-    (key: string, value: any): void;
-}
+export type KeyValueCallback = (key: string, value: any) => void;
 
 export function forDict(dict: {[key: string]: any}, callback: KeyValueCallback) {
     return Functions.forDict(dict, callback);

@@ -4,19 +4,16 @@ import {isPresent} from '../Preconditions';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverview} from './ReadingOverview';
 import {ArrayListMultimap} from '../util/Multimap';
-import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PagemarkModes} from './PagemarkModes';
 import {PagemarkMode} from './PagemarkMode';
 import {Reducers} from '../util/Reducers';
 import {Numbers} from '../util/Numbers';
+import {Tuples} from '../util/Tuples';
 
 export class ReadingOverviews {
 
-
-    /**
-     * Return an ISO date to percentage (0 to 100) mapping per day.
-     */
-    private static toDailyReadingProgress(records: ReadonlyArray<ReadingProgress>) {
+    private static toDatePercs(records: ReadonlyArray<ReadingProgress>): ReadonlyArray<DatePerc> {
 
         const mapping = new ArrayListMultimap<string /* ISODateString */, Perc>();
 
@@ -25,10 +22,34 @@ export class ReadingOverviews {
             mapping.put(date, record.progressByMode[PagemarkMode.READ] || 0);
         }
 
-        const result: {[date: string]: Perc} = {};
+        const dates = [...mapping.keys()].sort();
 
-        for (const date of mapping.keys()) {
-            result[date] = mapping.get(date).reduce(Reducers.MAX, 0);
+        const result: DatePerc[] = [];
+
+        for (const date of dates) {
+            const perc = mapping.get(date).reduce(Reducers.MAX, 0);
+            result.push({date, perc});
+        }
+
+        return result;
+
+    }
+
+    private static toDatePercDeltas(readingEntries: ReadonlyArray<DatePercDelta>) {
+
+        const tuples = Tuples.createSiblings(readingEntries);
+
+        const result: DatePercDelta[] = [];
+
+        for (const tuple of tuples) {
+
+            if (! tuple.prev) {
+                result.push(tuple.curr);
+            } else {
+                const perc = Math.abs(tuple.curr.perc - tuple.prev.perc);
+                result.push({date: tuple.curr.date, perc});
+            }
+
         }
 
         return result;
@@ -49,21 +70,30 @@ export class ReadingOverviews {
 
     }
 
+    private static toFixedFloat(value: number) {
+        return Numbers.toFixedFloat(value, 2);
+    }
+
     public static compute(pageMetas: ReadonlyArray<PageMeta>): ReadingOverview {
 
         const result = new HitMap();
 
         for (const pageMeta of pageMetas) {
 
-            const dailyReadingProgress
-                = this.toDailyReadingProgress(Object.values(pageMeta.readingProgress));
-
             const logicalPages = this.toLogicalPages(pageMeta);
 
-            for (const date of Object.keys(dailyReadingProgress)) {
-                const perc = dailyReadingProgress[date];
-                const nrPages = Numbers.toFixedFloat((perc / 100) * logicalPages, 2);
+            const datePercs
+                = this.toDatePercs(Object.values(pageMeta.readingProgress));
+
+            const datePercDeltas = this.toDatePercDeltas(datePercs);
+
+            for (const datePercDelta of datePercDeltas) {
+
+                const date = datePercDelta.date;
+                const perc = datePercDelta.perc;
+                const nrPages = this.toFixedFloat((perc / 100) * logicalPages);
                 result.registerHit(date, nrPages);
+
             }
 
         }
@@ -74,7 +104,21 @@ export class ReadingOverviews {
 
 }
 
+interface DatePerc {
+    readonly date: ISODateString;
+    readonly perc: Perc;
+}
+
 /**
+ * Just like reading entry but the reading entries are delta encoded with
+ * the first being the initial value.
+ */
+interface DatePercDelta extends DatePerc {
+
+}
+
+/**
+ *
  * Percentage from 0 to 100
  */
 type Perc = number;
