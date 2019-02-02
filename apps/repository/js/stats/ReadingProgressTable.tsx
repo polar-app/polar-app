@@ -110,6 +110,19 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
 
             </div>
 
+            <div className="p-1 pl-5 pr-5 mr-auto ml-auto"
+                 style={{height: '100%', width: '800px'}}>
+
+                <p className="text-muted">
+                    The number of pages read per day.  This is computed by using
+                    the 'read' pagemarks from the documents you're tracking.  If
+                    it seems like there are too many pages read per day try
+                    changing the 'mode' of the pagemark to either 'previously
+                    read' or 'ignored'.  Thsi can happen when importing documents
+                    you're previously read and create a large pagemark.
+                </p>
+
+            </div>
 
         </div>;
 
