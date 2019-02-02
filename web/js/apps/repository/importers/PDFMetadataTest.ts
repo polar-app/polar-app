@@ -13,8 +13,7 @@ describe('PDF Metadata', function() {
         console.log(pdfMeta);
     });
 
-
-    it("build property index", async function() {
+    xit("build property index", async function() {
 
         const hitMap = new SampledHitMap<string>();
 

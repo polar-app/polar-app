@@ -18,6 +18,7 @@ import {Reducers} from '../util/Reducers';
 import {ProgressByMode, ReadingProgress} from './ReadingProgress';
 import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from '../util/Providers';
+import {HitMap} from '../util/HitMap';
 
 const log = Logger.create();
 
@@ -480,32 +481,20 @@ export class Pagemarks {
             .map(current => current.percentage)
             .reduce(Reducers.SUM, 0);
 
-        const createInitialProgressByMode = () => {
-
-            const result: ProgressByMode = {};
-
-            for (const mode of Object.values(PagemarkMode)) {
-                result[mode] = 0;
-            }
-
-            return result;
-
-        };
-
         const createProgressByMode = () => {
 
-            const result = createInitialProgressByMode();
+            const result = new HitMap();
 
             for (const pagemark of Object.values(pageMeta.pagemarks)) {
                 const mode = pagemark.mode || PagemarkMode.READ;
-                result[mode] = result[mode] + pagemark.percentage;
+                result.registerHit(mode, pagemark.percentage);
             }
 
             return result;
 
         };
 
-        const progressByMode = createProgressByMode();
+        const progressByMode = createProgressByMode().toLiteralMap();
 
         const readingProgress =
             ReadingProgresses.create(progress, progressByMode);

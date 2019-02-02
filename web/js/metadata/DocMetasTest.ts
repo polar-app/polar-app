@@ -105,12 +105,7 @@ describe('DocMetas', function() {
                                     "id": "136SMQ5mZM",
                                     "progress": 100,
                                     "progressByMode": {
-                                        "APPENDEX": 0,
-                                        "IGNORED": 0,
-                                        "PRE_READ": 0,
                                         "READ": 100,
-                                        "REFERENCES": 0,
-                                        "TABLE_OF_CONTENTS": 0
                                     }
                                 }
                             },
@@ -152,15 +147,11 @@ describe('DocMetas', function() {
                                     "id": "145xgms7VH",
                                     "progress": 100,
                                     "progressByMode": {
-                                        "APPENDEX": 0,
-                                        "IGNORED": 0,
-                                        "PRE_READ": 0,
                                         "READ": 100,
-                                        "REFERENCES": 0,
-                                        "TABLE_OF_CONTENTS": 0
                                     }
                                 }
-                            },                            "flashcards": {},
+                            },
+                            "flashcards": {},
                             "textHighlights": {},
                             "areaHighlights": {},
                             "screenshots": {},

@@ -58,12 +58,7 @@ describe('Pagemarks', function() {
                     "id": "1AS9DE87jw",
                     "progress": 100,
                     "progressByMode": {
-                        "APPENDEX": 0,
-                        "IGNORED": 0,
-                        "PRE_READ": 0,
                         "READ": 100,
-                        "REFERENCES": 0,
-                        "TABLE_OF_CONTENTS": 0
                     }
                 }
             });

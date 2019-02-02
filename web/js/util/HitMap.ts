@@ -10,13 +10,13 @@ export class HitMap {
 
     private index: {[key: string]: HitEntry} = {};
 
-    public registerHit(key: string): number {
+    public registerHit(key: string, delta: number = 1): number {
 
         const entry = Dictionaries.computeIfAbsent(this.index, key, () => {
             return {key, value: 0};
         });
 
-        return ++entry.value;
+        return entry.value += delta;
 
     }
 
@@ -34,6 +34,21 @@ export class HitMap {
      */
     public toMap(): Readonly<{[key: string]: HitEntry}> {
         return Object.freeze({...this.index});
+    }
+
+    /**
+     * Return a map of key to hits without an entry object.
+     */
+    public toLiteralMap(): LiteralMap {
+
+        const result: LiteralMap = {};
+
+        for (const key of Object.keys(this.index)) {
+            result[key] = this.index[key].value;
+        }
+
+        return result;
+
     }
 
     /**
@@ -141,3 +156,8 @@ export interface PercRankedEntry {
 export interface SampledPercRankedEntry<V> extends PercRankedEntry {
     readonly samples: ReadonlyArray<V>;
 }
+
+export interface LiteralMap {
+    [key: string]: number;
+}
+
