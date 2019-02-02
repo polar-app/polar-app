@@ -19,6 +19,7 @@ import {ProgressByMode, ReadingProgress} from './ReadingProgress';
 import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';
+import {ReadingOverviews} from './ReadingOverviews';
 
 const log = Logger.create();
 
@@ -461,6 +462,9 @@ export class Pagemarks {
 
             const progress = Math.floor(DocMetas.computeProgress(docMeta) * 100);
             docMeta.docInfo.progress = progress;
+
+            docMeta.docInfo.readingPerDay
+                = ReadingOverviews.compute(Object.values(docMeta.pageMetas));
 
         });
 

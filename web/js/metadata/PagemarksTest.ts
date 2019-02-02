@@ -4,14 +4,16 @@ import {DocMetas} from "./DocMetas";
 import {TestingTime} from "../test/TestingTime";
 import {assert} from 'chai';
 import {DocMeta} from './DocMeta';
+import {ISODateTimeStrings} from './ISODateTimeStrings';
 
-TestingTime.freeze();
 
 describe('Pagemarks', function() {
 
     describe('updatePagemarksForRange', function() {
 
         beforeEach(function() {
+
+            TestingTime.freeze();
 
             console.log(<any> Pagemarks);
 
@@ -197,6 +199,66 @@ describe('Pagemarks', function() {
             Pagemarks.deletePagemark(docMeta, 8, pagemarks[0].id);
 
             assert.equal(Object.values(DocMetas.getPageMeta(docMeta, 1).pagemarks).length, 0);
+
+        });
+
+    });
+
+    describe("reading overview", function() {
+
+        beforeEach(function() {
+            TestingTime.freeze();
+        });
+
+        it("basic over multiple pages", function() {
+
+            const docMeta = DocMetas.create('0x0001', 10);
+            Pagemarks.updatePagemarksForRange(docMeta, 2);
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-02": 2
+            });
+
+        });
+
+
+        it("basic over multiple days and pages", function() {
+
+            const docMeta = DocMetas.create('0x0001', 10);
+
+            Pagemarks.updatePagemarksForRange(docMeta, 1);
+
+            TestingTime.forward(24 * 60 * 60 * 1000);
+            assert.equal(ISODateTimeStrings.create(), "2012-03-03T11:38:49.321Z");
+            Pagemarks.updatePagemarksForRange(docMeta, 2);
+
+            TestingTime.forward(24 * 60 * 60 * 1000);
+            assert.equal(ISODateTimeStrings.create(), "2012-03-04T11:38:49.321Z");
+            Pagemarks.updatePagemarksForRange(docMeta, 3);
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-02": 1,
+                "2012-03-03": 1,
+                "2012-03-04": 1
+            });
+
+        });
+
+        it("fake HTML page", function() {
+
+            const docMeta = DocMetas.create('0x0001', 1);
+
+            DocMetas.getPageMeta(docMeta, 1).pageInfo.dimensions = {
+                width: 850,
+                height: 2500
+            };
+
+            const pagemark = Pagemarks.create({percentage: 80});
+            Pagemarks.updatePagemark(docMeta, 1, pagemark);
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-02": 1.82
+            });
 
         });
 

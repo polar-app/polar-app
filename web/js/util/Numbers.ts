@@ -30,4 +30,8 @@ export class Numbers {
 
     }
 
+    public static toFixedFloat(input: number, width: number): number {
+        return parseFloat(input.toFixed(width));
+    }
+
 }
