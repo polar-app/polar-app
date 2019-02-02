@@ -42,6 +42,8 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
             };
         });
 
+        const domain = [0, data.map(current => current.value).reduce(Reducers.MAX, 0)];
+
         // compute the from and to year...
 
         const days = data.map(current => current.day).sort();
@@ -69,6 +71,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
                         data={data}
                         from={from}
                         to={to}
+                        domain={domain}
                         emptyColor="#eeeeee"
                         colors={[
                             "rgba(0,0,255,0.1)",
