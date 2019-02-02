@@ -44,5 +44,9 @@ export class ISODateTimeStrings {
         return input.substring(0, '0000-00-00'.length);
     }
 
+    public static toISOYear(input: ISODateTimeString): ISODateString {
+        return input.substring(0, '0000'.length);
+    }
+
 }
 

@@ -45,13 +45,13 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                     <div className="container-fluid">
 
-                        {/*<div className="row mt-2">*/}
+                        <div className="row mt-2">
 
-                            {/*<div className="col-lg-12">*/}
-                                {/*<ReadingProgressTable docInfos={docInfos}/>*/}
-                            {/*</div>*/}
+                            <div className="col-lg-12">
+                                <ReadingProgressTable docInfos={docInfos}/>
+                            </div>
 
-                        {/*</div>*/}
+                        </div>
 
                         <div className="row mt-2">
 

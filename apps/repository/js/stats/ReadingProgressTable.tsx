@@ -6,6 +6,10 @@ import {ResponsivePie} from '@nivo/pie';
 import StatTitle from './StatTitle';
 import {Table} from 'reactstrap';
 import { ResponsiveCalendar, Calendar } from '@nivo/calendar';
+import {HitMap} from '../../../../web/js/util/HitMap';
+import {Dictionaries} from '../../../../web/js/util/Dictionaries';
+import {ISODateTimeStrings, ISODateString} from '../../../../web/js/metadata/ISODateTimeStrings';
+import {Reducers} from '../../../../web/js/util/Reducers';
 
 const log = Logger.create();
 
@@ -21,6 +25,38 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
 
     public render() {
 
+        const progressPerDay = new HitMap();
+
+        for (const docInfo of this.props.docInfos || []) {
+
+            for (const entry of Dictionaries.entries(docInfo.readingPerDay || {})) {
+                progressPerDay.registerHit(entry.key, entry.value);
+            }
+
+        }
+
+        const data = progressPerDay.toArray().map(current => {
+            return {
+                day: current.key,
+                value: current.value
+            };
+        });
+
+        // compute the from and to year...
+
+        const days = data.map(current => current.day).sort();
+
+        const today = ISODateTimeStrings.toISODate(ISODateTimeStrings.create());
+
+        const fromYear = ISODateTimeStrings.toISOYear(days.reduce(Reducers.FIRST, today));
+        const toYear = ISODateTimeStrings.toISOYear(days.reduce(Reducers.LAST, today));
+
+        // NOTE: we offset the days by 1 so that we don't fold into the next year
+        // depending on timezones.
+
+        const from = `${fromYear}-01-02`;
+        const to = `${fromYear}-12-30`;
+
         return <div>
 
             <StatTitle>Reading Progress</StatTitle>
@@ -30,9 +66,9 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
                      style={{height: '100%', width: '800px'}}>
 
                     <ResponsiveCalendar
-                        data={this.getData()}
-                        from="2010-02-01"
-                        to="2010-06-31"
+                        data={data}
+                        from={from}
+                        to={to}
                         emptyColor="#eeeeee"
                         colors={[
                             "rgba(0,0,255,0.1)",

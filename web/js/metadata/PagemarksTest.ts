@@ -6,7 +6,6 @@ import {assert} from 'chai';
 import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 
-
 describe('Pagemarks', function() {
 
     describe('updatePagemarksForRange', function() {

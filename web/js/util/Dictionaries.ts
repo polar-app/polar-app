@@ -17,6 +17,23 @@ export class Dictionaries {
 
     }
 
+    public static entries<V>(dict: {[key: string]: V} | undefined | null): ReadonlyArray<DictionaryEntry<V>> {
+
+        if (! dict) {
+            return [];
+        }
+
+        return Object.entries(dict).map(current => {
+
+            return {
+                key: current[0],
+                value: current[1]
+            };
+
+        });
+
+    }
+
     /**
      * We iterate over all keys in the dictionary
      *
@@ -219,7 +236,9 @@ export class Dictionaries {
 }
 
 
-interface ForDictCallbackFunction<T> {
-    (key: string, value: T): void;
-}
+type ForDictCallbackFunction<T> = (key: string, value: T) => void;
 
+export interface DictionaryEntry<V> {
+    readonly key: string;
+    readonly value: V;
+}

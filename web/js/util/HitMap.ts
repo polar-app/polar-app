@@ -36,6 +36,10 @@ export class HitMap {
         return Object.freeze({...this.index});
     }
 
+    public toArray(): ReadonlyArray<HitEntry> {
+        return Object.freeze(Object.values(this.index));
+    }
+
     /**
      * Return a map of key to hits without an entry object.
      */
