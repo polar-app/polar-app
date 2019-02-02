@@ -82,6 +82,7 @@ export class PDFImporter {
                                         .getOrElse(defaultTitle);
 
         docMeta.docInfo.description = pdfMeta.description;
+        docMeta.docInfo.doi = pdfMeta.doi;
 
         docMeta.docInfo.hashcode = {
             enc: HashEncoding.BASE58CHECK,

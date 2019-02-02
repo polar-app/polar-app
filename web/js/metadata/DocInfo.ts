@@ -41,6 +41,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public storedResources?: Set<StoredResource>;
     public mutating?: boolean;
     public published?: ISODateString | ISODateTimeString;
+    public doi?: string;
 
     constructor(val: IDocInfo) {
 
@@ -225,6 +226,8 @@ export interface IDocInfo {
      * opengraph information.
      */
     published?: ISODateString | ISODateTimeString;
+
+    doi?: string;
 
 }
 

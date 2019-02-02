@@ -1,5 +1,7 @@
 # 1.12.0
 
+- Now parse DOIs from PDFs and store them in the model.
+
 - Rework the way we do app exit which hopefully fixes windows bugs and exceptions
   on exit.
 
