@@ -41,6 +41,9 @@ describe('AdvertisingPersistenceLayer', function() {
                 "progress": 100,
                 "pagemarkType": "SINGLE_COLUMN",
                 "properties": {},
+                "readingPerDay": {
+                    "2012-03-02": 1
+                },
                 "archived": false,
                 "flagged": false,
                 "tags": {},
