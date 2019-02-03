@@ -7,18 +7,19 @@ import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {RectEdges} from '../../pagemarks/controller/interact/edges/RectEdges';
 import {Optional} from '../../util/ts/Optional';
+import {DragRectAdjacencyCalculator} from '../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator';
 
 // import interact from 'interactjs';
 
-// TODO: the interactjs typescript bindings in our version are incompatible with
-// our typescript config because we disallow implicity any.  Apparently interactjs
-// fixed this BUT the fix doesn't seem to be in the 1.3.x series.
+// TODO: the interactjs typescript bindings in our version are incompatible
+// with
+// our typescript config because we disallow implicity any.  Apparently
+// interactjs fixed this BUT the fix doesn't seem to be in the 1.3.x series.
 
 // import {} from 'interactjs';
 const interact = require('interactjs');
 // import * as interact from 'interactjs';
 
-const {DragRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator");
 const {ResizeRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");
 
 const log = Logger.create();

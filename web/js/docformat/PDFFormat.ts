@@ -5,11 +5,10 @@ declare var window: any;
 
 export class PDFFormat extends DocFormat {
 
-    public readonly name: string;
+    public readonly name = 'pdf';
 
     constructor() {
         super();
-        this.name = "pdf";
     }
 
     /**

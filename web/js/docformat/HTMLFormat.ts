@@ -1,14 +1,13 @@
-import {DocFormat, PageDetail} from './DocFormat';
+import {DocFormat, DocFormatName, PageDetail} from './DocFormat';
 import {notNull} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 
 export class HTMLFormat extends DocFormat {
 
-    public readonly name: string;
+    public readonly name = 'html';
 
     constructor() {
         super();
-        this.name = "html";
     }
 
     /**
