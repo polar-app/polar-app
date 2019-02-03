@@ -233,6 +233,20 @@ export class Dictionaries {
 
     }
 
+    /**
+     * Return true if the dictionary is empty and has no entries (null or
+     * undefined too).
+     */
+    public static empty(dict: {[key: string]: any} | null | undefined): boolean {
+
+        if (! dict) {
+            return true;
+        }
+
+        return Object.values(dict).length === 0;
+
+    }
+
 }
 
 

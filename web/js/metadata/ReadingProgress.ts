@@ -16,6 +16,12 @@ export interface ReadingProgress {
 
     readonly progressByMode: ProgressByMode;
 
+    /**
+     * This is a roll-up of a 'pre-existing' pagemark and shouldn't be counted
+     * towards the daily limits only for the delta.  
+     */
+    readonly preExisting?: boolean;
+
 }
 
 export interface ProgressByMode {

@@ -10,6 +10,8 @@ import {Reducers} from '../util/Reducers';
 import {Numbers} from '../util/Numbers';
 import {Tuples} from '../util/Tuples';
 
+const PRE_EXISTING_DAY = '!preexisting';
+
 export class ReadingOverviews {
 
     private static toDatePercs(records: ReadonlyArray<ReadingProgress>): ReadonlyArray<DatePerc> {
@@ -22,11 +24,15 @@ export class ReadingOverviews {
         const mapping = new ArrayListMultimap<string /* ISODateString */, DateToReadPerc>();
 
         for (const record of records) {
-            const date = ISODateTimeStrings.toISODate(record.created);
+
+            const date = record.preExisting ? PRE_EXISTING_DAY : ISODateTimeStrings.toISODate(record.created);
+            const created = record.created;
+
             mapping.put(date, {
-                created: record.created,
+                created,
                 perc: record.progressByMode[PagemarkMode.READ] || 0
             });
+
         }
 
         const dates = [...mapping.keys()].sort();
@@ -89,7 +95,7 @@ export class ReadingOverviews {
 
     public static compute(pageMetas: ReadonlyArray<PageMeta>): ReadingOverview {
 
-        const result = new HitMap();
+        const hitMap = new HitMap();
 
         for (const pageMeta of pageMetas) {
 
@@ -105,13 +111,16 @@ export class ReadingOverviews {
                 const date = datePercDelta.date;
                 const perc = datePercDelta.perc;
                 const nrPages = this.toFixedFloat((perc / 100) * logicalPages);
-                result.registerHit(date, nrPages);
+                hitMap.registerHit(date, nrPages);
 
             }
 
         }
 
-        return result.toLiteralMap();
+        const result = hitMap.toLiteralMap();
+        delete result[PRE_EXISTING_DAY];
+
+        return result;
 
     }
 

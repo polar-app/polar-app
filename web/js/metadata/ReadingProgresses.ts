@@ -3,12 +3,16 @@ import {Hashcodes} from '../Hashcodes';
 import {ProgressByMode, ReadingProgress} from './ReadingProgress';
 import {Preconditions} from '../Preconditions';
 
-let sequence: number = 0;
 
 export class ReadingProgresses {
 
+    public static sequences = {
+        id: 0,
+    };
+
     public static create(progress: number,
-                         progressByMode: ProgressByMode): ReadingProgress {
+                         progressByMode: ProgressByMode,
+                         preExisting?: boolean): ReadingProgress {
 
         Preconditions.assert(progress,
                              () => progress >= 0 && progress <= 100,
@@ -16,9 +20,9 @@ export class ReadingProgresses {
 
         const created = ISODateTimeStrings.create();
 
-        const id = Hashcodes.createID({nonce: sequence++, created});
+        const id = Hashcodes.createID({nonce: this.sequences.id++, created});
 
-        return {id, created, progress, progressByMode};
+        return {id, created, progress, progressByMode, preExisting};
 
     }
 

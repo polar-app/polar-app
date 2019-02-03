@@ -471,19 +471,13 @@ export class Pagemarks {
     }
 
     /**
-     * Mutage the pagemarks on the PageMeta and also update the readingProgress
+     * Mutate the pagemarks on the PageMeta and also update the readingProgress
      */
     private static doPageMetaMutation(pageMeta: PageMeta, pageMetaMutator?: VOID_FUNCTION): void {
 
         if (! pageMetaMutator) {
             return;
         }
-
-        pageMetaMutator();
-
-        const progress = Object.values(pageMeta.pagemarks)
-            .map(current => current.percentage)
-            .reduce(Reducers.SUM, 0);
 
         const createProgressByMode = () => {
 
@@ -494,17 +488,35 @@ export class Pagemarks {
                 result.registerHit(mode, pagemark.percentage);
             }
 
-            return result;
+            return result.toLiteralMap();
 
         };
 
-        const progressByMode = createProgressByMode().toLiteralMap();
+        const writeReadingProgress = (preExisting?: boolean) => {
 
-        const readingProgress =
-            ReadingProgresses.create(progress, progressByMode);
+            const progress = Object.values(pageMeta.pagemarks)
+                .map(current => current.percentage)
+                .reduce(Reducers.SUM, 0);
 
-        pageMeta.readingProgress[readingProgress.id] = readingProgress;
+            const progressByMode = createProgressByMode();
 
+            const readingProgress =
+                ReadingProgresses.create(progress, progressByMode, preExisting);
+
+            pageMeta.readingProgress[readingProgress.id] = readingProgress;
+
+        };
+
+        const doPreExisting =
+            Dictionaries.empty(pageMeta.readingProgress) && ! Dictionaries.empty(pageMeta.pagemarks);
+
+        if (doPreExisting) {
+            writeReadingProgress(true);
+        }
+
+        pageMetaMutator();
+
+        writeReadingProgress();
 
     }
 

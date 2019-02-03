@@ -5,20 +5,23 @@ import {TestingTime} from "../test/TestingTime";
 import {assert} from 'chai';
 import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {Objects} from '../util/Objects';
+import {ReadingProgresses} from './ReadingProgresses';
+
+
+function reset() {
+    TestingTime.freeze();
+    Pagemarks.sequences.id = 0;
+    Pagemarks.sequences.batch = 0;
+    ReadingProgresses.sequences.id = 0;
+}
 
 describe('Pagemarks', function() {
 
     describe('updatePagemarksForRange', function() {
 
         beforeEach(function() {
-
-            TestingTime.freeze();
-
-            console.log(<any> Pagemarks);
-
-            Pagemarks.sequences.id = 0;
-            Pagemarks.sequences.batch = 0;
-
+            reset();
         });
 
         it("for one page", function() {
@@ -206,7 +209,7 @@ describe('Pagemarks', function() {
     describe("reading overview", function() {
 
         beforeEach(function() {
-            TestingTime.freeze();
+            reset();
         });
 
         it("basic over multiple pages", function() {
@@ -263,6 +266,105 @@ describe('Pagemarks', function() {
 
         });
 
+
+        it("legacy doc that doesn't have reading history", function() {
+
+            const docMeta = DocMetas.create('0x0001', 1);
+
+            const pageMeta = DocMetas.getPageMeta(docMeta, 1);
+
+            assert.equal(Object.values(pageMeta.pagemarks).length, 0);
+
+            Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 80}));
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-02": 0.8
+            });
+
+            assertJSON(pageMeta.readingProgress, {
+                "1AS9DE87jw": {
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "1AS9DE87jw",
+                    "progress": 80,
+                    "progressByMode": {
+                        "READ": 80
+                    }
+                }
+            });
+
+            // now that it has the pagemark clear out the existing data...
+
+            Objects.clear(docMeta.docInfo.readingPerDay);
+            Objects.clear(pageMeta.readingProgress);
+
+            TestingTime.forward('1w');
+
+            Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 10}));
+
+            assertJSON(pageMeta.pagemarks, {
+                "12mskuuTzp": {
+                    "batch": "1SDFF4T2Rj",
+                    "column": 0,
+                    "created": "2012-03-09T11:38:49.321Z",
+                    "id": "12mskuuTzp",
+                    "lastUpdated": "2012-03-09T11:38:49.321Z",
+                    "mode": "READ",
+                    "notes": {},
+                    "percentage": 10,
+                    "rect": {
+                        "height": 10,
+                        "left": 0,
+                        "top": 0,
+                        "width": 100
+                    },
+                    "type": "SINGLE_COLUMN"
+                },
+                "1s2gw2Mkwb": {
+                    "batch": "1Y9CcEHSxc",
+                    "column": 0,
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "1s2gw2Mkwb",
+                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                    "mode": "READ",
+                    "notes": {},
+                    "percentage": 80,
+                    "rect": {
+                        "height": 80,
+                        "left": 0,
+                        "top": 0,
+                        "width": 100
+                    },
+                    "type": "SINGLE_COLUMN"
+                }
+            });
+
+            assertJSON(pageMeta.readingProgress, {
+                   "123r9JKcE5": {
+                       "created": "2012-03-09T11:38:49.321Z",
+                       "id": "123r9JKcE5",
+                       "progress": 90,
+                       "progressByMode": {
+                           "READ": 90
+                       }
+                   },
+                   "1SfHn5ScW2": {
+                       "created": "2012-03-09T11:38:49.321Z",
+                       "id": "1SfHn5ScW2",
+                       "preExisting": true,
+                       "progress": 80,
+                       "progressByMode": {
+                           "READ": 80
+                       }
+                   }
+               }
+            );
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-09": 0.1
+            });
+
+        });
+
         it("fake HTML page", function() {
 
             const docMeta = DocMetas.create('0x0001', 1);
@@ -292,7 +394,7 @@ describe('Pagemarks', function() {
 
             Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 40}));
 
-            TestingTime.forward(24 * 60 * 60 * 1000);
+            TestingTime.forward('1d');
 
             Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 40}));
 
