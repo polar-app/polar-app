@@ -115,7 +115,13 @@ export class WebView extends View {
 
                 last.scrollIntoView({block: 'end'});
 
-                const scrollParent = <HTMLElement> Elements.getScrollParent(last);
+                let scrollParent = <HTMLElement> Elements.getScrollParent(last); // html mode
+
+                if (this.docFormat.name === 'pdf') {
+                    scrollParent = <HTMLElement> document.querySelector("#viewerContainer");
+                }
+
+                console.log("FIXME1", scrollParent);
 
                 if (scrollParent) {
 
@@ -123,6 +129,8 @@ export class WebView extends View {
                     const scrollTop = scrollParent.scrollTop;
 
                     const newScrollTop = scrollTop + scrollDelta;
+
+                    console.log(`FIXME: scrollTop: ${scrollTop} newScrollTop: ${newScrollTop}`)
 
                     scrollParent.scrollTop = newScrollTop;
 

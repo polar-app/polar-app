@@ -43,18 +43,18 @@ export class LineAdjustment {
      * Apply the adjustment to the given rect and return the new rect.
      *
      */
-    adjustRect(primaryRect: Rect) {
+    public adjustRect(primaryRect: Rect) {
 
-        let dir: any = {};
+        const dir: any = {};
         dir[this.axis] = this.start;
 
-        let absolute=true;
+        const absolute = true;
 
         return Rects.move(primaryRect, dir, absolute);
 
     }
 
-    static create(opts: any) {
+    public static create(opts: any) {
 
         Preconditions.assertNotNull(opts.start, "start");
         Preconditions.assertNotNull(opts.previous, "previous");

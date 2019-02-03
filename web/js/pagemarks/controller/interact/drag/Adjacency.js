@@ -1,52 +1,16 @@
-
-/**
- * Represents the results from the {RectAdjacencyCalculator}
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Adjacency {
-
     constructor() {
-
-        /**
-         *
-         * @type {Rect}
-         */
-        this.primaryRect = undefined;
-
-        /**
-         *
-         * @type {Rect}
-         */
-        this.secondaryRect = undefined;
-
+        this.primaryRect = null;
+        this.secondaryRect = null;
         this.adjustments = {
-
-            /**
-             * @type {LineAdjustment}
-             */
             horizontal: null,
-
-            /**
-             * @type {LineAdjustment}
-             */
             vertical: null
-
         };
-
-        /**
-         *
-         * The final adjustment.
-         *
-         * @type {LineAdjustment}
-         */
         this.adjustment = null;
-
-        /**
-         * @type {Rect}
-         */
         this.adjustedRect = null;
-
     }
-
 }
-
-module.exports.Adjacency = Adjacency;
+exports.Adjacency = Adjacency;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQWRqYWNlbmN5LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiQWRqYWNlbmN5LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBTUEsTUFBYSxTQUFTO0lBWWxCO1FBQ0ksSUFBSSxDQUFDLFdBQVcsR0FBRyxJQUFLLENBQUM7UUFDekIsSUFBSSxDQUFDLGFBQWEsR0FBRyxJQUFLLENBQUM7UUFDM0IsSUFBSSxDQUFDLFdBQVcsR0FBRztZQUNmLFVBQVUsRUFBRSxJQUFLO1lBQ2pCLFFBQVEsRUFBRSxJQUFLO1NBQ2xCLENBQUM7UUFDRixJQUFJLENBQUMsVUFBVSxHQUFHLElBQUssQ0FBQztRQUN4QixJQUFJLENBQUMsWUFBWSxHQUFHLElBQUssQ0FBQztJQUM5QixDQUFDO0NBRUo7QUF2QkQsOEJBdUJDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtSZWN0fSBmcm9tIFwiLi4vLi4vLi4vLi4vUmVjdFwiO1xuaW1wb3J0IHtMaW5lQWRqdXN0bWVudH0gZnJvbSAnLi9MaW5lQWRqdXN0bWVudCc7XG5cbi8qKlxuICogUmVwcmVzZW50cyB0aGUgcmVzdWx0cyBmcm9tIHRoZSB7UmVjdEFkamFjZW5jeUNhbGN1bGF0b3J9XG4gKi9cbmV4cG9ydCBjbGFzcyBBZGphY2VuY3kge1xuXG4gICAgcHVibGljIHByaW1hcnlSZWN0OiBSZWN0O1xuXG4gICAgcHVibGljIHNlY29uZGFyeVJlY3Q6IFJlY3Q7XG5cbiAgICBwdWJsaWMgYWRqdXN0bWVudHM6IEFkanVzdG1lbnRzO1xuXG4gICAgcHVibGljIGFkanVzdG1lbnQ6IExpbmVBZGp1c3RtZW50O1xuXG4gICAgcHVibGljIGFkanVzdGVkUmVjdDogUmVjdDtcblxuICAgIGNvbnN0cnVjdG9yKCkge1xuICAgICAgICB0aGlzLnByaW1hcnlSZWN0ID0gbnVsbCE7XG4gICAgICAgIHRoaXMuc2Vjb25kYXJ5UmVjdCA9IG51bGwhO1xuICAgICAgICB0aGlzLmFkanVzdG1lbnRzID0ge1xuICAgICAgICAgICAgaG9yaXpvbnRhbDogbnVsbCEsXG4gICAgICAgICAgICB2ZXJ0aWNhbDogbnVsbCFcbiAgICAgICAgfTtcbiAgICAgICAgdGhpcy5hZGp1c3RtZW50ID0gbnVsbCE7XG4gICAgICAgIHRoaXMuYWRqdXN0ZWRSZWN0ID0gbnVsbCE7XG4gICAgfVxuXG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgQWRqdXN0bWVudHMge1xuICAgIGhvcml6b250YWw6IExpbmVBZGp1c3RtZW50O1xuICAgIHZlcnRpY2FsOiBMaW5lQWRqdXN0bWVudDtcbn1cbiJdfQ==

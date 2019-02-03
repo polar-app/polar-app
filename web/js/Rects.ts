@@ -51,7 +51,7 @@ export class Rects {
      *
      * @return {Rect}
      */
-    static validate(rect: any): Rect {
+    public static validate(rect: any): Rect {
 
         Preconditions.assertNotNull(rect.left, "left");
         Preconditions.assertNotNull(rect.top, "top");
@@ -67,7 +67,7 @@ export class Rects {
         Preconditions.assertNumber(rect.bottom, "bottom");
         Preconditions.assertNumber(rect.right, "right");
 
-        if(! (rect instanceof Rect)) {
+        if (! (rect instanceof Rect)) {
             return new Rect(rect);
         } else {
             return rect;
@@ -82,7 +82,7 @@ export class Rects {
      * @param point {Point}
      * @param rect {Rect}
      */
-    static relativeTo(point: Point, rect: Rect) {
+    public static relativeTo(point: Point, rect: Rect) {
 
         rect = Rects.validate(rect);
         rect = new Rect(rect);

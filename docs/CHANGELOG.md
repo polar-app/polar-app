@@ -1,5 +1,15 @@
 # 1.12.0
 
+- Properly keep track of reading progress and update the reading progress 
+  metrics now.
+
+- Double click on the pagemark progress bar now jumps to the last pagemark. This
+  has been frequently requested but more specifically to have it automatically
+  jump to the last position.  I'm not able to implement the automatic portion
+  right away so this is a temporary work around.  My plan is to eventually put
+  a button and a right click context menu when I rework some of the viewer 
+  support to React.
+
 - Now parse DOIs from PDFs and store them in the model.
 
 - Rework the way we do app exit which hopefully fixes windows bugs and exceptions

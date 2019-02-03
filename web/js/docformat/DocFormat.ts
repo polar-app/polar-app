@@ -8,7 +8,7 @@ import {IDimensions} from '../util/Dimensions';
  */
 export abstract class DocFormat {
 
-    public abstract readonly name: string;
+    public abstract readonly name: 'html' | 'pdf';
 
     public currentScale(): number {
         return 1.0;
