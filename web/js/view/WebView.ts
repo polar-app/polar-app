@@ -106,7 +106,7 @@ export class WebView extends View {
 
     private handleProgressDoubleClick() {
 
-        document.querySelector("#polar-progress")!.addEventListener('dblclick', () => {
+        document.querySelector("#polar-header")!.addEventListener('dblclick', () => {
 
             const pagemarks = Array.from(document.querySelectorAll(".page .pagemark"));
             const last = <HTMLElement> Arrays.last(pagemarks);
@@ -121,16 +121,12 @@ export class WebView extends View {
                     scrollParent = <HTMLElement> document.querySelector("#viewerContainer");
                 }
 
-                console.log("FIXME1", scrollParent);
-
                 if (scrollParent) {
 
                     const scrollDelta = window.innerHeight * (2 / 3);
                     const scrollTop = scrollParent.scrollTop;
 
                     const newScrollTop = scrollTop + scrollDelta;
-
-                    console.log(`FIXME: scrollTop: ${scrollTop} newScrollTop: ${newScrollTop}`)
 
                     scrollParent.scrollTop = newScrollTop;
 

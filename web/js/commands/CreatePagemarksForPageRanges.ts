@@ -11,7 +11,7 @@ export class CreatePagemarksForPageRanges {
 
     public execute(options: any) {
 
-        if(! options) {
+        if (! options) {
             options = {};
         }
 
@@ -19,9 +19,9 @@ export class CreatePagemarksForPageRanges {
 
             console.log("Creating pagemark for page: " + pageNum);
 
-            let pageMeta = this.docMeta.getPageMeta(pageNum);
+            const pageMeta = this.docMeta.getPageMeta(pageNum);
 
-            let pagemark = Pagemarks.create();
+            const pagemark = Pagemarks.create();
 
             Pagemarks.updatePagemark(this.docMeta, pageNum, pagemark);
 
