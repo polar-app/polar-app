@@ -243,6 +243,26 @@ describe('Pagemarks', function() {
 
         });
 
+
+        it("drop back in progress on the same day", function() {
+
+            const docMeta = DocMetas.create('0x0001', 1);
+
+            Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 80}));
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-02": 0.8
+            });
+
+            Pagemarks.deletePagemark(docMeta, 1);
+            Pagemarks.updatePagemark(docMeta, 1, Pagemarks.create({percentage: 20}));
+
+            assertJSON(docMeta.docInfo.readingPerDay, {
+                "2012-03-02": 0.2
+            });
+
+        });
+
         it("fake HTML page", function() {
 
             const docMeta = DocMetas.create('0x0001', 1);
