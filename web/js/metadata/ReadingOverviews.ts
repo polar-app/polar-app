@@ -4,7 +4,7 @@ import {isPresent} from '../Preconditions';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverview} from './ReadingOverview';
 import {ArrayListMultimap} from '../util/Multimap';
-import {ISODateString, ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateString, ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PagemarkMode} from './PagemarkMode';
 import {Reducers} from '../util/Reducers';
 import {Numbers} from '../util/Numbers';
@@ -15,7 +15,7 @@ export class ReadingOverviews {
     private static toDatePercs(records: ReadonlyArray<ReadingProgress>): ReadonlyArray<DatePerc> {
 
         interface DateToReadPerc {
-            readonly created: ISODateString;
+            readonly created: ISODateTimeString;
             readonly perc: Perc;
         }
 

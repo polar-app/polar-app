@@ -6,6 +6,8 @@ import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from '../util/Functions';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
+import {Arrays} from '../util/Arrays';
+import {Elements} from '../util/Elements';
 
 const log = Logger.create();
 
@@ -98,8 +100,40 @@ export class WebView extends View {
         log.info("WebView.onDocumentLoaded: ", this.model.docMeta);
 
         this.updateProgress();
+        this.handleProgressDoubleClick();
+
+    }
+
+    private handleProgressDoubleClick() {
+
+        document.querySelector("#polar-progress")!.addEventListener('dblclick', () => {
+
+            const pagemarks = Array.from(document.querySelectorAll(".page .pagemark"));
+            const last = <HTMLElement> Arrays.last(pagemarks);
+
+            if (last) {
+
+                last.scrollIntoView({block: 'end'});
+
+                const scrollParent = <HTMLElement> Elements.getScrollParent(last);
+
+                if (scrollParent) {
+
+                    const scrollDelta = window.innerHeight * (2 / 3);
+                    const scrollTop = scrollParent.scrollTop;
+
+                    const newScrollTop = scrollTop + scrollDelta;
+
+                    scrollParent.scrollTop = newScrollTop;
+
+                }
+
+            }
+
+        });
 
     }
 
 }
+
 

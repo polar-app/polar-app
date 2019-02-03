@@ -17,6 +17,8 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {DocMetas} from '../../metadata/DocMetas';
 import {CapturedScreenshots} from '../../screenshots/CapturedScreenshots';
 import {ViewerScreenshots} from '../ViewerScreenshots';
+import {Arrays} from '../../util/Arrays';
+import {Elements} from '../../util/Elements';
 
 const log = Logger.create();
 
@@ -118,8 +120,6 @@ export class HTMLViewer extends Viewer {
         // ViewerScreenshots.doScreenshot();
 
     }
-
-
 
     private _captureBrowserZoom() {
 

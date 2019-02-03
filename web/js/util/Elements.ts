@@ -188,4 +188,18 @@ export class Elements {
 
     }
 
+    public static getScrollParent(element: Element | null | undefined): Element | undefined {
+
+        if (!element) {
+            return undefined;
+        }
+
+        if (element.scrollHeight > element.clientHeight) {
+            return element;
+        } else {
+            return this.getScrollParent(element.parentElement);
+        }
+
+    }
+
 }
