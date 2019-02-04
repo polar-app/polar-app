@@ -1,5 +1,8 @@
 # 1.12.0
 
+- Verified Electron 4.0.3 mostly works with Polar but only using 3.1.3 due to 
+  a bug with resizing / pagemarks. 
+
 - Properly keep track of reading progress and update the reading progress 
   metrics now.
 
@@ -19,8 +22,6 @@
   reading progress better.
 
 - More descriptive text for the assignment and filtering of documents. 
-
-- Electron 4.0.3
 
 # 1.11.0
 

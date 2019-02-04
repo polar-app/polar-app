@@ -98,11 +98,11 @@ export class BrowserApp2 {
 
             };
 
-            content.getWebContents().addListener('did-start-navigation', (event, url, isInPlace, isMainFrame) => {
-
-                onDidStartNavigation('did-start-navigation', url, isMainFrame);
-
-            });
+            // content.getWebContents().addListener('did-start-navigation', (event, url, isInPlace, isMainFrame) => {
+            //
+            //     onDidStartNavigation('did-start-navigation', url, isMainFrame);
+            //
+            // });
 
             content.getWebContents()
                 .addListener('did-frame-finish-load', (event: Electron.Event,
