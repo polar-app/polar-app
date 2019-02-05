@@ -10,6 +10,7 @@ import {HitMap} from '../../../../web/js/util/HitMap';
 import {Dictionaries} from '../../../../web/js/util/Dictionaries';
 import {ISODateTimeStrings, ISODateString} from '../../../../web/js/metadata/ISODateTimeStrings';
 import {Reducers} from '../../../../web/js/util/Reducers';
+import {Numbers} from '../../../../web/js/util/Numbers';
 
 const log = Logger.create();
 
@@ -38,7 +39,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
         const data = progressPerDay.toArray().map(current => {
             return {
                 day: current.key,
-                value: current.value
+                value: Numbers.toFixedFloat(current.value, 2)
             };
         });
 
@@ -53,8 +54,8 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
         const fromYear = ISODateTimeStrings.toISOYear(days.reduce(Reducers.FIRST, today));
         const toYear = ISODateTimeStrings.toISOYear(days.reduce(Reducers.LAST, today));
 
-        // NOTE: we offset the days by 1 so that we don't fold into the next year
-        // depending on timezones.
+        // NOTE: we offset the days by 1 so that we don't fold into the next
+        // year depending on timezones.
 
         const from = `${fromYear}-01-02`;
         const to = `${fromYear}-12-30`;

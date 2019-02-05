@@ -1,11 +1,14 @@
 import ua from 'universal-analytics';
 import {Logger} from '../logger/Logger';
+import {CIDs} from './CIDs';
 
 const TRACKING_ID = 'UA-122721184-1';
 
-const DEBUG = false;
+const DEBUG = true;
 
-const visitor = ua(TRACKING_ID).debug(DEBUG);
+const cid = CIDs.get();
+
+const visitor = ua(TRACKING_ID, {cid}).debug(DEBUG);
 
 const log = Logger.create();
 
