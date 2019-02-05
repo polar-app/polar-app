@@ -1,10 +1,12 @@
-import {Percentage} from '../../util/ProgressTracker';
+import {Progress} from '../../util/ProgressTracker';
 import {Logger} from '../../logger/Logger';
 import {Optional} from '../../util/ts/Optional';
 
 const ID = 'polar-determinate-progress-bar';
 
 const log = Logger.create();
+
+const FAST_PROGRESS_CUTOFF = 300;
 
 /**
  * Simple progress bar that we can display at any time on a page without
@@ -13,16 +15,28 @@ const log = Logger.create();
  */
 export class DeterminateProgressBar {
 
-    public static update(val: number) {
+    // TODO: we accept a progress object too
+    public static update(value: number | Progress) {
 
-        if (! val || val < 0 || val > 100) {
+        const progress: number =
+            typeof value === 'number' ? value : value.progress;
+
+        if (! progress || progress < 0 || progress > 100) {
             return;
         }
 
-        const progressElement = this.getOrCreate();
-        progressElement.value = val;
+        if (! (typeof value === 'number')) {
 
-        if (val >= 100) {
+            if (value.duration < FAST_PROGRESS_CUTOFF && progress < 100) {
+                return;
+            }
+
+        }
+
+        const progressElement = this.getOrCreate();
+        progressElement.value = progress;
+
+        if (progress >= 100) {
             this.destroy();
         }
 
