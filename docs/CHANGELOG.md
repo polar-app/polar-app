@@ -1,10 +1,15 @@
 # 1.12.0
 
+- Bug: Logging out of cloud sync makes it impossible to login back again. #536
+
+- Feature: site is now a column which you can add to the doc repo but isn't
+  enabled by default.
+
 - Verified Electron 4.0.3 mostly works with Polar but only using 3.1.3 due to 
   a bug with resizing / pagemarks. 
 
-- Properly keep track of reading progress and update the reading progress 
-  metrics now.
+- Feature: Properly keep track of reading progress and update the reading
+  progress metrics now.
 
 - Double click on the pagemark progress bar now jumps to the last pagemark. This
   has been frequently requested but more specifically to have it automatically
@@ -18,8 +23,9 @@
 - Rework the way we do app exit which hopefully fixes windows bugs and exceptions
   on exit.
 
-- Ability to set the 'mode' for pagemarks now so that we can keep track of 
-  reading progress better.
+- Feature: Ability to set the 'mode' for pagemarks now so that we can keep track
+  of reading progress better.  We support various pagemark modes like read, 
+  previously-read, table of contents, etc. 
 
 - More descriptive text for the assignment and filtering of documents. 
 

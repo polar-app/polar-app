@@ -40,7 +40,11 @@ SpectronRenderer.run(async (state) => {
             "progress": 100,
             "properties": {},
             "tags": {},
-            "uuid": "4743a590-645c-11e1-809e-478d48422a2c"
+            "uuid": "4743a590-645c-11e1-809e-478d48422a2c",
+            "readingPerDay": {
+                "2012-03-02": 1
+            }
+
         };
 
         assertJSON(canonicalize(adv.docInfo), canonicalize(expected));
