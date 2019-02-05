@@ -177,10 +177,14 @@ export class PagemarkController {
             if (pagemark) {
 
                 const pagemarkPTR: PagemarkPTR = {
+
                     ref: {
                         pageNum,
                         pagemark
-                    }
+                    },
+
+                    batch: pagemark.batch,
+
                 };
 
                 Pagemarks.replacePagemark(this.model.docMeta, pagemarkPTR, {mode});

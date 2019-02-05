@@ -7,6 +7,7 @@ import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Objects} from '../util/Objects';
 import {ReadingProgresses} from './ReadingProgresses';
+import {PagemarkMode} from './PagemarkMode';
 
 
 function reset() {
@@ -242,6 +243,62 @@ describe('Pagemarks', function() {
                 "2012-03-02": 1,
                 "2012-03-03": 1,
                 "2012-03-04": 1
+            });
+
+        });
+
+
+        it("create range over batch then set the mode to 'previously read'", function() {
+
+            const docMeta = DocMetas.create('0x0001', 10);
+
+            Pagemarks.updatePagemarksForRange(docMeta, 5);
+
+            assert.equal(Object.values(DocMetas.getPageMeta(docMeta, 1).pagemarks).length, 1);
+            assert.equal(Object.values(DocMetas.getPageMeta(docMeta, 5).pagemarks).length, 1);
+
+            const pagemark = Object.values(DocMetas.getPageMeta(docMeta, 5).pagemarks)[0];
+
+            Pagemarks.replacePagemark(docMeta, {batch: pagemark.batch}, {mode: PagemarkMode.PRE_READ});
+
+            assertJSON(DocMetas.getPageMeta(docMeta, 1).pagemarks, {
+                "1s2gw2Mkwb": {
+                    "batch": "1Y9CcEHSxc",
+                    "column": 0,
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "1s2gw2Mkwb",
+                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                    "mode": "PRE_READ",
+                    "notes": {},
+                    "percentage": 100,
+                    "rect": {
+                        "height": 100,
+                        "left": 0,
+                        "top": 0,
+                        "width": 100
+                    },
+                    "type": "SINGLE_COLUMN"
+                }
+            });
+
+            assertJSON(DocMetas.getPageMeta(docMeta, 5).pagemarks, {
+                "12CDjpvoCY": {
+                    "batch": "1Y9CcEHSxc",
+                    "column": 0,
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "12CDjpvoCY",
+                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                    "mode": "PRE_READ",
+                    "notes": {},
+                    "percentage": 100,
+                    "rect": {
+                        "height": 100,
+                        "left": 0,
+                        "top": 0,
+                        "width": 100
+                    },
+                    "type": "SINGLE_COLUMN"
+                }
             });
 
         });

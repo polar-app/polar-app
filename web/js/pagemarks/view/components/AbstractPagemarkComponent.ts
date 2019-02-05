@@ -14,6 +14,7 @@ import {Rects} from '../../../Rects';
 import {Rect} from '../../../Rect';
 import {BoxController} from "../../../boxes/controller/BoxController";
 import {PagemarkMode} from '../../../metadata/PagemarkMode';
+import {DocMetas} from "../../../metadata/DocMetas";
 
 const log = Logger.create();
 
@@ -90,24 +91,26 @@ export class AbstractPagemarkComponent extends Component {
 
             log.info("Box move completed.  Updating to trigger persistence.");
 
-            const pagemark = Object.assign({}, this.pagemark);
-            pagemark.percentage = rect.toPercentage();
-            pagemark.rect = rect;
-
             const annotationEvent = this.annotationEvent!;
-
             const pageNum = annotationEvent.pageMeta.pageInfo.num;
+            const docMeta = annotationEvent.docMeta;
+
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+
+            // re-read the current pagemark from the model
+            this.pagemark = pageMeta.pagemarks[this.pagemark!.id];
+
+            const newPagemark = Object.assign({}, this.pagemark);
+            newPagemark.percentage = rect.toPercentage();
+            newPagemark.rect = rect;
 
             log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
-            Pagemarks.updatePagemark(annotationEvent.docMeta, pageNum, pagemark);
+            Pagemarks.updatePagemark(annotationEvent.docMeta, pageNum, newPagemark);
+
+            this.pagemark = newPagemark;
 
         } else {
-
-            // this.pagemark.percentage = rect.toPercentage();
-            // this.pagemark.rect = rect;
-
             log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
-
         }
 
         log.info("New pagemarkRect: ", this.pagemark!.rect);
@@ -227,7 +230,8 @@ export class AbstractPagemarkComponent extends Component {
 
         if (this.type === 'primary') {
             // console.log("FIXME: placementRect: " , placementRect);
-            // console.log("FIXME: pagemarkRect (overlay rect): " , pagemarkRect);
+            // console.log("FIXME: pagemarkRect (overlay rect): " ,
+            // pagemarkRect);
         }
 
         // TODO: what I need is a generic way to cover an element and place

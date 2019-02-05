@@ -302,7 +302,7 @@ export class Pagemarks {
     /**
      * Update pagemarks on the given page.
      *
-     * @param pagemark The pagemark to udpate.
+     * @param pagemark The pagemark to update.
      */
     public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: Pagemark) {
 
@@ -331,6 +331,10 @@ export class Pagemarks {
             const result: PagemarkPageMetaRef[] = [];
 
             if (pagemarkPtr.ref) {
+
+                // TODO: since we're given a pagemark directly shouldn't
+                // we also resolve by the batch?
+
                 // find the pagemarks by ref...
                 const pageMeta = DocMetas.getPageMeta(docMeta, pagemarkPtr.ref.pageNum);
                 result.push({pageMeta, id: pagemarkPtr.ref.pagemark.id});
