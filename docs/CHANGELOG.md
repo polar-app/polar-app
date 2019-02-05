@@ -1,33 +1,37 @@
 # 1.12.0
 
-- Bug: Logging out of cloud sync makes it impossible to login back again. #536
+- Feature: Properly keep track of reading progress and update the reading
+  progress metrics now.
+
+- Feature: Ability to set the 'mode' for pagemarks now so that we can keep track
+  of reading progress better.  We support various pagemark modes like read, 
+  previously-read, table of contents, etc. 
 
 - Feature: site is now a column which you can add to the doc repo but isn't
   enabled by default.
 
-- Verified Electron 4.0.3 mostly works with Polar but only using 3.1.3 due to 
-  a bug with resizing / pagemarks. 
-
-- Feature: Properly keep track of reading progress and update the reading
-  progress metrics now.
-
-- Double click on the pagemark progress bar now jumps to the last pagemark. This
+- Feature: Double click on the pagemark progress bar now jumps to the last pagemark. This
   has been frequently requested but more specifically to have it automatically
   jump to the last position.  I'm not able to implement the automatic portion
   right away so this is a temporary work around.  My plan is to eventually put
   a button and a right click context menu when I rework some of the viewer 
   support to React.
 
-- Now parse DOIs from PDFs and store them in the model.
+- Feature: Now parse DOIs from PDFs and store them in the model.  This feature
+  isn't really used yet but we plan to add support for fetching additional 
+  metadata based on the DOI
 
-- Rework the way we do app exit which hopefully fixes windows bugs and exceptions
-  on exit.
+- Bug: Rework the way we do app exit which hopefully fixes windows bugs and
+  exception on exit.
 
-- Feature: Ability to set the 'mode' for pagemarks now so that we can keep track
-  of reading progress better.  We support various pagemark modes like read, 
-  previously-read, table of contents, etc. 
+- Feature: More descriptive text for the assignment and filtering of documents
+  around tags to avoid confusing the user around creating vs filtering of tags. 
+  Might still have to improve the UX here.
 
-- More descriptive text for the assignment and filtering of documents. 
+- Verified Electron 4.0.3 mostly works with Polar but only using 3.1.3 due to 
+  a bug with resizing / pagemarks. 
+
+- Bug: Logging out of cloud sync makes it impossible to login back again. #536
 
 # 1.11.0
 
