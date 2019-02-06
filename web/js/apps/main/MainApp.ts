@@ -24,6 +24,7 @@ import {AppPath} from '../../electron/app_path/AppPath';
 import {MainAPI} from './MainAPI';
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileImportClient} from '../repository/FileImportClient';
+import {RendererAnalyticsService} from '../../ga/RendererAnalyticsService';
 
 declare var global: any;
 
@@ -87,8 +88,8 @@ export class MainApp {
         log.info("Stash dir: ", directories.stashDir);
         log.info("Logs dir: ", directories.logsDir);
 
-        // NOTE: removing the next three lines removes the colors in the toolbar.
-        // const appIcon = new Tray(app_icon);
+        // NOTE: removing the next three lines removes the colors in the
+        // toolbar. const appIcon = new Tray(app_icon);
         // appIcon.setToolTip('Polar Bookshelf');
         // appIcon.setContextMenu(contextMenu);
 
@@ -117,6 +118,8 @@ export class MainApp {
 
         await dialogWindowService.start();
 
+        new RendererAnalyticsService().start();
+
         const userAgent = mainWindow.webContents.getUserAgent();
 
         const fileLoader = new AnalyticsFileLoader(defaultFileLoader);
@@ -135,8 +138,8 @@ export class MainApp {
         const mainAppService = new MainAppService(mainAppController);
         mainAppService.start();
 
-        // TODO: handle the command line here.. IE if someone opens up a file via
-        // argument.
+        // TODO: handle the command line here.. IE if someone opens up a file
+        // via argument.
 
         const mainAppMenu = new MainAppMenu(mainAppController);
         mainAppMenu.setup();
@@ -205,10 +208,11 @@ export class MainApp {
         app.on('activate', async function() {
 
             // On OS X it's common to re-create a window in the app when the
-            // dock icon is clicked and there are no other windows open. The way
-            // we handle this now is that if there are no windows open we re-create
-            // the document repository so they can select one. Otherwise we just
-            // re-focus the most recently used window.
+            // dock icon is clicked and there are no other windows open. The
+            // way
+            // we handle this now is that if there are no windows open we
+            // re-create the document repository so they can select one.
+            // Otherwise we just re-focus the most recently used window.
 
             const visibleWindows = BrowserWindow.getAllWindows()
                 .filter(current => current.isVisible());
