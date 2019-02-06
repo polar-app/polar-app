@@ -19,7 +19,11 @@ export class CIDProviders {
         Preconditions.assertPresent(provider, "provider");
 
         if (! isPresent(remote.getGlobal('cidProvider'))) {
-            throw new Error("No global cid provider in remote");
+            log.warn("No global cid provider in remote");
+            // note that we can't track anything at this point but we might be
+            // in a testing framework which hasn't defined the variable we need
+            // within main.
+            return;
         }
 
         remote.getGlobal('cidProvider').value = provider.get();
