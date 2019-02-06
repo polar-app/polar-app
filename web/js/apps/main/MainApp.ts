@@ -75,6 +75,8 @@ export class MainApp {
         const screenshotService = new ScreenshotService();
         screenshotService.start();
 
+        new RendererAnalyticsService().start();
+
         await directories.init();
 
         log.info("Electron app path is: " + app.getAppPath());
@@ -117,8 +119,6 @@ export class MainApp {
         await captureController.start();
 
         await dialogWindowService.start();
-
-        new RendererAnalyticsService().start();
 
         const userAgent = mainWindow.webContents.getUserAgent();
 

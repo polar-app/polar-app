@@ -5,7 +5,7 @@ import {CIDs} from './CIDs';
 // const TRACKING_ID = 'UA-122721184-1';
 const TRACKING_ID = 'UA-122721184-5';
 
-const DEBUG = true;
+const DEBUG = false;
 
 const cid = CIDs.get();
 

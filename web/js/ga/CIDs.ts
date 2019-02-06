@@ -5,6 +5,7 @@ import {CIDProviders} from './CIDProviders';
 import {Optional} from '../util/ts/Optional';
 import {CIDProvider} from './CIDProvider';
 import {Logger} from '../logger/Logger';
+import {isPresent} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -32,17 +33,18 @@ export class CIDs {
 
     }
 
-    private static fetch() {
+    private static fetch(): string | undefined {
 
         const mainCID = Optional.of(CIDProviders.getInstance())
-            .map(cidProvider => cidProvider.get())
+            .filter(current => isPresent(current))
+            .map(current => current.get())
             .getOrUndefined();
 
         const localCID = window.localStorage.getItem(KEY);
 
         log.debug(`mainCID: ${mainCID}, localCID: ${localCID}`);
 
-        return Optional.first(mainCID, localCID).get();
+        return Optional.first(mainCID, localCID).getOrUndefined();
 
     }
 
