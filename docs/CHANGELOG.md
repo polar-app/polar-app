@@ -7,8 +7,10 @@
   of reading progress better.  We support various pagemark modes like read, 
   previously-read, table of contents, etc. 
 
-- Feature: site is now a column which you can add to the doc repo but isn't
-  enabled by default.
+- Feature: site (example.com) is now a column which you can add to the doc repo
+  but isn't enabled by default.  This is used for captured content.  We may
+  add this for other types of content in the future including PDFs if we can 
+  get proper URLs for the content in the future.
 
 - Feature: Double click on the pagemark progress bar now jumps to the last pagemark. This
   has been frequently requested but more specifically to have it automatically
@@ -21,12 +23,12 @@
   isn't really used yet but we plan to add support for fetching additional 
   metadata based on the DOI
 
-- Bug: Rework the way we do app exit which hopefully fixes windows bugs and
-  exception on exit.
-
 - Feature: More descriptive text for the assignment and filtering of documents
   around tags to avoid confusing the user around creating vs filtering of tags. 
   Might still have to improve the UX here.
+
+- Bug: Rework the way we do app exit which hopefully fixes windows bugs and
+  exception on exit.
 
 - Verified Electron 4.0.3 mostly works with Polar but only using 3.1.3 due to 
   a bug with resizing / pagemarks. 

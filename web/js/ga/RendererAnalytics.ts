@@ -2,7 +2,8 @@ import ua from 'universal-analytics';
 import {Logger} from '../logger/Logger';
 import {CIDs} from './CIDs';
 
-const TRACKING_ID = 'UA-122721184-1';
+// const TRACKING_ID = 'UA-122721184-1';
+const TRACKING_ID = 'UA-122721184-5';
 
 const DEBUG = true;
 
