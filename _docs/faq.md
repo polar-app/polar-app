@@ -5,6 +5,11 @@ date: 2019-01-30 07:22:47 -0800
 permalink: /docs/frequently-asked-questions.html
 ---
 
+# How do I support Polar?
+
+We have an [Open Collective](https://opencollective.com/polar-bookshelf) setup
+to allow donations.
+
 # How do I import my existing data?
 
 If you have a large number of PDF files that you would like to import you can 
@@ -21,14 +26,42 @@ This changes between platforms depending if you're on Windows, MacOS or Linux.
 
 You can find out the exact directory by going to ```Help | About```.
 
+# Polar is awesome!
+
+That's not really a question but we agree completely.
+
+# Why is Polar using so much disk space?
+
+The Polar disk repository is actually amazingly efficient in terms of disk 
+usage however the operating system sometimes misreports the total usage.
+
+The main culprit is our .backup directories which are used when performing 
+cloud syncs.  We generally keep one per day for every initial sync (though we
+might keep more in the future).
+
+These contain a full backup/snapshot of your disk repository at the time 
+it was created (once per day).
+
+However, these use what are called 'hard links' where we 'link' the same files
+together and they appear in two places on the filesystem but they're actually
+the same file.
+
+If you have 10 hard links to 1 file, and you count the bytes used, some tools
+report 10x the actual space.
+
+However, we're actually using very little more than the original file size sync
+the data is actually the same.
+
+They're basically just alternative for the same underlying file.        
+
 # Why can't I open files directly?  
 
 Polar has somewhat strict data requirements for the files it's managing.  The 
 goal of Polar is to keep your data for as long as it's valuable to you so we 
 need to make sure it's always consistent.
 
-By using a dedicated data directory we can avoid accidental deletions of files, 
-mutations of files, etc.
+By using a dedicated data directory we can avoid accidental deletions, 
+and mutations of files.
 
 Additionally, since all your data is now in one place, we can support features
 like cloud sync, filesystem consistency checks, sharing, etc. 
@@ -37,21 +70,17 @@ Some of these features aren't implemented yet but are on the roadmap.
 
 # How do I sync to Anki
 
-- Install the Anki Connect plugin in your version of Anki and make sure it's 
-  running.
-  
-- Create text highlights on a document and attach a flashcard to them.  
-  
-- In the document repository select ```Tools | Sync Flashcards to Anki```  
+https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html
 
 # Can I export data from Polar?
 
 Yes.  The PDF and PHZ (web capture) files are in your ```stash``` directory in 
 your local datastore.  You can just copy them out if you wish to export.
 
-The annotations are another issue.  We don't currently have any exporters defined
-to export the annotations but the file is in JSON format which means anyone could
-easily write an exporter.   
+The annotations are another issue.  
+
+We have exporters for annotations which can be run per document and are located
+in the annotation sidebar.
 
 # What characters are supported in tags?
 
