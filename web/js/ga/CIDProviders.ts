@@ -24,7 +24,8 @@ export class CIDProviders {
 
         remote.getGlobal('cidProvider').value = provider.get();
 
-        log.debug("value is now: " + JSON.stringify(this.getInstance()));
+        // log.debug("value is now: " + JSON.stringify(this.getInstance()));
+
     }
 
 }

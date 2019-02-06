@@ -21,7 +21,7 @@ export class RendererAnalytics {
         // one of the arguments like action and label but give category and
         // value then we don't handle the method call properly.
 
-        log.debug("Sending analytics event: ", args);
+        // log.debug("Sending analytics event: ", args);
 
         const callback = (err: Error) => {
 
