@@ -1,3 +1,7 @@
+# 1.12.1
+
+- Updated windows build with new icons. 
+
 # 1.12.0
 
 - Feature: Properly keep track of reading progress and update the reading
