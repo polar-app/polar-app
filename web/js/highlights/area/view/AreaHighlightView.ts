@@ -9,8 +9,6 @@ export class AreaHighlightView {
     private componentManager: ComponentManager;
 
     /**
-     *
-     * @param model {Model}
      */
     constructor(model: Model) {
 

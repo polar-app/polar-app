@@ -36,7 +36,6 @@ export class AreaHighlightComponent extends Component {
 
     /**
      * @Override
-     * @param annotationEvent
      */
     public init(annotationEvent: AnnotationEvent) {
 
