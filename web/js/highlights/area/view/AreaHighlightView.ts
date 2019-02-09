@@ -21,7 +21,7 @@ export class AreaHighlightView {
 
     }
 
-    start() {
+    public start() {
         this.componentManager.start();
     }
 

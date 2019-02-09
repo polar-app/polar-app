@@ -17,7 +17,7 @@ import {DocFormat} from "../../../../docformat/DocFormat";
 import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
 import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
 
-const log = Logger.create()
+const log = Logger.create();
 
 export class AreaHighlightComponent extends Component {
 
@@ -38,7 +38,7 @@ export class AreaHighlightComponent extends Component {
      * @Override
      * @param annotationEvent
      */
-    init(annotationEvent: AnnotationEvent) {
+    public init(annotationEvent: AnnotationEvent) {
 
         // TODO: we should a specific event class for this data which is
         // captured within a higher level annotationEvent.
@@ -52,19 +52,19 @@ export class AreaHighlightComponent extends Component {
     /**
      *
      */
-    onBoxMoved(boxMoveEvent: BoxMoveEvent) {
+    private onBoxMoved(boxMoveEvent: BoxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
 
         // TODO: refactor / this code is shared with the
         // AbstractPagemarkComponent
 
-        console.log("Box moved to: ", boxMoveEvent);
+        // console.log("Box moved to: ", boxMoveEvent);
 
-        let annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
+        const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                                       boxMoveEvent.restrictionRect);
 
-        let areaHighlightRect = new AreaHighlightRect(annotationRect);
+        const areaHighlightRect = new AreaHighlightRect(annotationRect);
 
         // FIXME: the lastUpdated here isn't being updated. I'm going to
         // have to change the setters I think..
@@ -85,7 +85,7 @@ export class AreaHighlightComponent extends Component {
             annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id] = this.areaHighlight;
 
         } else {
-
+            // noop
         }
 
     }
@@ -93,7 +93,7 @@ export class AreaHighlightComponent extends Component {
     /**
      * @Override
      */
-    render() {
+    public render() {
 
         this.destroy();
 
@@ -103,35 +103,35 @@ export class AreaHighlightComponent extends Component {
 
         log.debug("render()");
 
-        let docMeta = annotationEvent.docMeta;
-        let pageMeta = annotationEvent.pageMeta;
-        let docInfo = docMeta.docInfo;
+        const docMeta = annotationEvent.docMeta;
+        const pageMeta = annotationEvent.pageMeta;
+        const docInfo = docMeta.docInfo;
 
-        let pageElement = this.docFormat.getPageElementFromPageNum(pageMeta.pageInfo.num);
-        let dimensionsElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
+        const pageElement = this.docFormat.getPageElementFromPageNum(pageMeta.pageInfo.num);
+        const dimensionsElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
 
         // the container must ALWAYS be the pageElement because if we use any
         // other container PDF.js breaks.
-        let containerElement = pageElement;
+        const containerElement = pageElement;
 
-        let pageDimensions = new Dimensions({
+        const pageDimensions = new Dimensions({
             width: dimensionsElement.clientWidth,
             height: dimensionsElement.clientHeight
         });
 
         forDict(areaHighlight.rects, (key, rect) => {
 
-            let areaHighlightRect = AreaHighlightRects.createFromRect(rect);
+            const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
 
-            let overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+            const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 
             log.debug("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));
 
-            let id = this.createID();
+            const id = this.createID();
 
             let highlightElement = document.getElementById(id);
 
-            if(highlightElement === null ) {
+            if (highlightElement === null ) {
 
                 // only create the pagemark if it's missing.
                 highlightElement = document.createElement("div");
@@ -192,17 +192,17 @@ export class AreaHighlightComponent extends Component {
     /**
      * Create a unique DOM ID for this pagemark.
      */
-    createID() {
+    private createID() {
         return `area-highlight-${this.areaHighlight!.id}`;
     }
 
     /**
      * @Override
      */
-    destroy() {
+    public destroy() {
 
-        let selector = `.area-highlight-${this.areaHighlight!.id}`;
-        let elements = document.querySelectorAll(selector);
+        const selector = `.area-highlight-${this.areaHighlight!.id}`;
+        const elements = document.querySelectorAll(selector);
 
         log.debug(`Found N elements for selector ${selector}: ` + elements.length);
 
