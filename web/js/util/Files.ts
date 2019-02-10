@@ -376,6 +376,14 @@ export class Files {
             const fileRef = <FileHandle> data;
 
             if (existing === 'link') {
+
+                if (await Files.existsAsync(path)) {
+                    // in the link mode an existing files has to be removed
+                    // before it can be linked.  Normally writeFileAsync would
+                    // overwrite existing files.
+                    await Files.unlinkAsync(path);
+                }
+
                 await Files.linkAsync(fileRef.path, path);
             } else {
                 Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
