@@ -48,6 +48,26 @@ export class PDFImporter {
 
         if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
             log.warn(`This file is already present in the datastore with fingerprint ${pdfMeta.fingerprint}: ${filePath}`);
+
+
+            const docMeta = await persistenceLayer.getDocMeta(pdfMeta.fingerprint);
+
+            if (docMeta) {
+
+                if (docMeta.docInfo.filename) {
+
+                    // return the existing doc meta information.
+
+                    const stashFilePath = FilePaths.join(directories.stashDir, docMeta.docInfo.filename);
+                    return Optional.of({
+                        stashFilePath,
+                        docInfo: docMeta.docInfo
+                    });
+
+                }
+
+            }
+
             return Optional.empty();
         }
 

@@ -149,6 +149,7 @@ export class FileImportController {
             return result;
 
         } finally {
+            // noop
         }
 
     }

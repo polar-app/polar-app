@@ -51,6 +51,7 @@ export class MarkdownExporter extends AbstractExporter {
 
         if (body) {
             await this.writer!.write(body);
+            await this.writer!.write('\n');
         }
 
     }
@@ -70,6 +71,7 @@ export class MarkdownExporter extends AbstractExporter {
 
         if (body) {
             await this.writer!.write(body);
+            await this.writer!.write('\n');
         }
 
     }
@@ -90,6 +92,7 @@ export class MarkdownExporter extends AbstractExporter {
             const field = flashcard.fields[fieldName];
 
             await this.writer!.write(`${fieldName}: ` + Texts.toString(field));
+            await this.writer!.write('\n');
 
         }
 

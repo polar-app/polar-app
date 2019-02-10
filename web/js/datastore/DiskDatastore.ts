@@ -12,7 +12,7 @@ import {
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, FileHandle, Files} from '../util/Files';
+import {FileDeleted, FileHandle, FileHandles, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 
@@ -183,6 +183,11 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         // this would create the parent dir for the file when it does not exist.
         await Files.createDirAsync(fileReference.dir);
 
+        if (FileHandles.isFileHandle(data)) {
+
+        }
+
+        // FIXME: if the data is FileHandle , we should use a hard link.
         await Files.writeFileAsync(fileReference.path, data);
 
         await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '));

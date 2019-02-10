@@ -362,7 +362,7 @@ export class Files {
      */
     public static async writeFileAsync(path: string,
                                        data: FileHandle | NodeJS.ReadableStream | Buffer | string,
-                                       options?: WriteFileAsyncOptions | string | undefined | null) {
+                                       options: WriteFileAsyncOptions = {}) {
 
 
         if (data instanceof Buffer || typeof data === 'string') {
@@ -370,6 +370,8 @@ export class Files {
             return this.withProperException(() => this.promised.writeFileAsync(path, data, options));
 
         } else if ( FileHandles.isFileHandle(data) ) {
+
+            const existing = options.existing ? options.existing : 'link';
 
             const fileRef = <FileHandle> data;
             Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
@@ -496,9 +498,19 @@ export interface CreateDirResult {
 }
 
 export interface WriteFileAsyncOptions {
-    encoding?: string | null;
-    mode?: number | string;
-    flag?: string;
+
+    readonly encoding?: string | null;
+
+    readonly mode?: number | string;
+
+    readonly flag?: string;
+
+    /**
+     * Startegy for how to handle existing files.  Copy is just a copy of the
+     * original file but link creates a hard link.
+     */
+    readonly existing?: 'link' | 'copy';
+
 }
 
 export interface AppendFileOptions {

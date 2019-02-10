@@ -13,6 +13,7 @@ import {Menus} from './Menus';
 import {isPresent} from '../../Preconditions';
 import {Directories} from '../../datastore/Directories';
 import {Messenger} from '../../electron/messenger/Messenger';
+import {AppConfig} from '../../app_config/AppConfig';
 
 const log = Logger.create();
 
@@ -124,9 +125,11 @@ export class MainAppMenu {
 
     }
 
+
     private platformSupportsUpdates() {
-        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get());
-        // return true;
+
+        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && AppConfig.ENABLE_UPDATES;
+
     }
 
     private createAboutMessage() {
@@ -265,7 +268,8 @@ export class MainAppMenu {
                 { role: 'undo' },
                 { role: 'redo' },
                 // { type: 'separator' },
-                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: () => InPageSearch.execute() },
+                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: () =>
+                // InPageSearch.execute() },
                 { type: 'separator' },
                 { role: 'cut'},
                 { role: 'copy' },
@@ -301,7 +305,8 @@ export class MainAppMenu {
                 { role: 'undo', enabled: false, visible: 'false'},
                 { role: 'redo' },
                 // { type: 'separator' },
-                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: () => InPageSearch.execute() },
+                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: () =>
+                // InPageSearch.execute() },
                 { type: 'separator' },
                 { role: 'cut'},
                 { role: 'copy' },
@@ -339,12 +344,10 @@ export class MainAppMenu {
                 // {
                 //     label: 'Annotations Sidebar',
                 //     type: 'checkbox',
-                //     click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
-                //         if (focusedWindow) {
-                //             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-                //         }
-                //     }
-                // },
+                //     click: (item: Electron.MenuItem, focusedWindow:
+                // BrowserWindow) => { if (focusedWindow) {
+                // focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+                // } } },
 
                 {
                     id: 'toggle-annotation-sidebar',
@@ -430,10 +433,10 @@ export class MainAppMenu {
                 {
                     id: 'check-for-updates',
                     label: 'Check for updates',
-                    // only show on Windows and MacOS as all other platforms have
-                    // their own dist system (for now).
+                    // only show on Windows and MacOS as all other platforms
+                    // have their own dist system (for now).
                     visible: this.platformSupportsUpdates(),
-                    click: ManualUpdates.checkForUpdates
+                    click: ManualUpdates.checkForUpdates,
                 },
 
                 {type: 'separator'},

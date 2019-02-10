@@ -1,5 +1,12 @@
 # 1.12.1
 
+- re-importing an exting file should now open it in polar instead of doing 
+  nothing. 
+
+- starting work to disable updates for MS and Apple stores.  
+
+- adding some newlines between markdown exported entries.
+
 - Updated windows build with new icons. 
 
 # 1.12.0
