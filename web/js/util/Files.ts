@@ -371,7 +371,7 @@ export class Files {
 
         } else if ( FileHandles.isFileHandle(data) ) {
 
-            const existing = options.existing ? options.existing : 'link';
+            const existing = options.existing ? options.existing : 'copy';
 
             const fileRef = <FileHandle> data;
 

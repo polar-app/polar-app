@@ -183,12 +183,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         // this would create the parent dir for the file when it does not exist.
         await Files.createDirAsync(fileReference.dir);
 
-        if (FileHandles.isFileHandle(data)) {
-
-        }
-
-        // FIXME: if the data is FileHandle , we should use a hard link.
-        await Files.writeFileAsync(fileReference.path, data);
+        await Files.writeFileAsync(fileReference.path, data, {existing: 'link'});
 
         await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '));
 

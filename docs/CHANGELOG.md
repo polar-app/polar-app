@@ -1,5 +1,10 @@
 # 1.12.1
 
+- If we are given a path to a file during the writeFile datastore operation, we
+  hard link it instead of copying it.  This is only done with file paths 
+  (not data blobs) and works during PDF file import to avoid duplicate disk 
+  space usage.   
+
 - re-importing an exting file should now open it in polar instead of doing 
   nothing. 
 
