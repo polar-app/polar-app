@@ -374,7 +374,12 @@ export class Files {
             const existing = options.existing ? options.existing : 'link';
 
             const fileRef = <FileHandle> data;
-            Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
+
+            if (existing === 'link') {
+                await Files.linkAsync(fileRef.path, path);
+            } else {
+                Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
+            }
 
         } else {
 
