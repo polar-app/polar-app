@@ -377,6 +377,9 @@ export class Files {
 
             if (existing === 'link') {
 
+                // try to create a hard link first, then revert to a regular
+                // file copy if necessary.
+
                 if (await Files.existsAsync(path)) {
                     // in the link mode an existing files has to be removed
                     // before it can be linked.  Normally writeFileAsync would

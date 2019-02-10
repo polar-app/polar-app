@@ -30,14 +30,13 @@ export class FlashcardTypeSelector extends React.Component<IProps, IState> {
 
             <Input type="select"
                    style={Styles.SelectCardType}
+                   defaultValue={this.props.flashcardType}
                    className="p-0"
                    onChange={htmlInputElement => this.props.onChangeFlashcardType(htmlInputElement.target.value as FlashcardType)}>
 
-                <option value={FlashcardType.BASIC_FRONT_BACK}
-                        selected={this.props.flashcardType === FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
+                <option value={FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
 
-                <option value={FlashcardType.CLOZE}
-                        selected={this.props.flashcardType === FlashcardType.CLOZE}>Cloze</option>
+                <option value={FlashcardType.CLOZE}>Cloze</option>
 
             </Input>
 
