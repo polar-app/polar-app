@@ -384,10 +384,19 @@ export class Files {
                     await Files.unlinkAsync(path);
                 }
 
-                await Files.linkAsync(fileRef.path, path);
-            } else {
-                Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
+                const src = fileRef.path;
+                const dest = path;
+
+                try {
+                    await Files.linkAsync(src, dest);
+                    return;
+                } catch (e) {
+                    log.warn(`Unable to create hard link from ${src} to ${dest} (reverting to copy)`);
+                }
+
             }
+
+            Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
 
         } else {
 
