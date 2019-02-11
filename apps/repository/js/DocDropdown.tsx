@@ -9,6 +9,7 @@ import {clipboard, shell} from 'electron';
 import {Directories} from '../../../web/js/datastore/Directories';
 import {FilePaths} from '../../../web/js/util/FilePaths';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
+import {Clipboards} from '../../../web/js/util/system/clipboard/Clipboards';
 
 const log = Logger.create();
 
@@ -157,11 +158,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
     private copyText(text: string) {
 
-        if (clipboard) {
-            clipboard.writeText(text);
-        } else {
-            log.warn("No clipboard with which to copy text: ", text);
-        }
+        Clipboards.getInstance().writeText(text);
 
     }
 

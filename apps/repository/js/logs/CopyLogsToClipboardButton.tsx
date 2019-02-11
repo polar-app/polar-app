@@ -2,8 +2,8 @@ import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import {Button} from 'reactstrap';
-import {clipboard} from 'electron';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
+import {Clipboards} from '../../../../web/js/util/system/clipboard/Clipboards';
 
 const log = Logger.create();
 
@@ -44,7 +44,7 @@ export default class CopyLogsToClipboardButton extends React.Component<IProps, I
 
         }).join("\n");
 
-        clipboard.writeText(text);
+        Clipboards.getInstance().writeText(text);
 
         Toaster.success("Wrote log output to clipboard.");
 
