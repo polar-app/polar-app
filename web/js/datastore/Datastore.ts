@@ -29,7 +29,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
-    init(errorListener?: ErrorListener): Promise<InitResult>;
+    init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<InitResult>;
 
     stop(): Promise<void>;
 
@@ -124,8 +124,9 @@ export abstract class AbstractDatastore {
     }
 
     public async createBackup(): Promise<void> {
+
         // only supported with the disk datastore.
-        throw new Error("Not supported with this datatore");
+        // throw new Error("Not supported with this datatore");
 
     }
 
@@ -568,3 +569,7 @@ export class SyncDocs {
 }
 
 export type DatastoreID = string;
+
+export interface DatastoreInitOpts {
+    readonly noInitialSnapshot?: boolean;
+}

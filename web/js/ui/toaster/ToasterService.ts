@@ -10,6 +10,10 @@ export class ToasterService {
 
     public start(): void {
 
+        if (! ipcRenderer) {
+            return;
+        }
+
         ipcRenderer.on(ToasterMessages.CHANNEL, (event: Electron.EventEmitter,
                                                  toasterMessage: ToasterMessage) => {
 

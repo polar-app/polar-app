@@ -1,4 +1,4 @@
-import {AbstractDatastore, Datastore, DatastoreConsistency, DeleteResult, DocMetaMutation, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult} from './Datastore';
+import {AbstractDatastore, Datastore, DatastoreConsistency, DatastoreInitOpts, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -20,6 +20,7 @@ import {AsyncProviders} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
 import {FileHandle, FileHandles, Files} from '../util/Files';
 import {UserID} from '../firebase/Firebase';
+import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 
 const log = Logger.create();
 
@@ -45,12 +46,19 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     private initialized: boolean = false;
 
+    private primarySnapshot?: SnapshotResult;
+
+    private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
+
     constructor() {
         super();
 
     }
 
-    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION,
+                      opts: DatastoreInitOpts = {}): Promise<InitResult> {
+
+        console.log("FIXME: starting init");
 
         if (this.initialized) {
             return {};
@@ -60,6 +68,16 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         this.app = firebase.app();
         this.firestore = await Firestore.getInstance({enablePersistence: this.enablePersistence});
         this.storage = firebase.storage();
+
+        if (! opts.noInitialSnapshot) {
+
+            // do not run this if we specify options of noInitialSnapshot
+
+            const snapshotListener = async (event: DocMetaSnapshotEvent) => this.docMetaSnapshotEventDispatcher.dispatchEvent(event);
+
+            this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
+
+        }
 
         this.initialized = true;
 
@@ -132,7 +150,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public async stop() {
 
-        // TODO: all snapshots that have been handed out should be stopped...
+        if (this.primarySnapshot && this.primarySnapshot.unsubscribe) {
+            this.primarySnapshot.unsubscribe();
+        }
 
     }
 
@@ -826,7 +846,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
-        throw new Error("Not implemented");
+        this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
     }
 
 }

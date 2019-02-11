@@ -6,7 +6,13 @@ import {ipcRenderer} from 'electron';
 export class AppInstance {
 
     public static notifyStarted(name: string) {
+
+        if (!ipcRenderer) {
+            return;
+        }
+
         ipcRenderer.send('app-instance-started:' + name);
+
     }
 
 }

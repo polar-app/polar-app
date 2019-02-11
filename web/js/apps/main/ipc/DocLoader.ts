@@ -14,6 +14,8 @@ export class DocLoader {
         Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
         Preconditions.assertPresent(loadDocRequest.filename, "filename");
 
+        // FIXME this is not supported on the web...
+
         await ipcClient.execute('/main/load-doc', loadDocRequest);
 
     }

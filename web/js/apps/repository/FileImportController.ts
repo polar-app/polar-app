@@ -42,7 +42,9 @@ export class FileImportController {
 
     public start(): void {
 
-        log.info("File import controller started");
+        if (! ipcRenderer) {
+            return;
+        }
 
         ipcRenderer.on('file-import', (event: any, fileImportRequest: FileImportRequest) => {
 
@@ -54,6 +56,8 @@ export class FileImportController {
         document.body.addEventListener('dragenter', (event) => this.onDragEnterOrOver(event));
         document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event));
         document.body.addEventListener('drop', event => this.onDrop(event));
+
+        log.info("File import controller started");
 
     }
 

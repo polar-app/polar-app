@@ -5,7 +5,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = {
     // mode: 'production',
     entry: {
-        "chrome": [ "./web/js/apps/chrome.ts"],
+        // "chrome": [ "./web/js/apps/chrome.ts"],
+        "repository": [ "./apps/repository/js/entry.tsx"],
+        "login": [ "./apps/repository/js/login.ts"],
     },
     module: {
 
@@ -36,7 +38,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'web/dist'),
         filename: '[name]-bundle.js',
-        publicPath: '/web/js/apps'
+        // publicPath: '/web/js/apps'
     },
     node: {
         //needed to make webpack work on chrome

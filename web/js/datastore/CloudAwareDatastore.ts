@@ -63,7 +63,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {
 
-        await Promise.all([this.cloud.init(errorListener), this.local.init(errorListener)]);
+        await Promise.all([
+            this.cloud.init(errorListener, {noInitialSnapshot: true}),
+            this.local.init(errorListener)
+        ]);
 
         const snapshotListener = async (event: DocMetaSnapshotEvent) => this.docMetaSnapshotEventDispatcher.dispatchEvent(event);
 

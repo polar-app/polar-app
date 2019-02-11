@@ -11,6 +11,10 @@ export class ProgressService {
 
     public start(): void {
 
+        if (! ipcRenderer) {
+            return;
+        }
+
         ipcRenderer.on(ProgressMessages.CHANNEL, (event: Electron.EventEmitter,
                                                   progressMessage: ProgressMessage) => {
 

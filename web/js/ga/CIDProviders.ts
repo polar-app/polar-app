@@ -11,11 +11,18 @@ const log = Logger.create();
 export class CIDProviders {
 
     public static getInstance(): CIDProvider | null {
-        return remote.getGlobal('cidProvider');
+
+        if (remote) {
+            return remote.getGlobal('cidProvider');
+        } else {
+            return new CIDProvider("__none__");
+        }
+
     }
 
     public static setInstance(provider: CIDProvider) {
 
+/*
         Preconditions.assertPresent(provider, "provider");
 
         if (! isPresent(remote.getGlobal('cidProvider'))) {
@@ -29,7 +36,16 @@ export class CIDProviders {
         remote.getGlobal('cidProvider').value = provider.get();
 
         // log.debug("value is now: " + JSON.stringify(this.getInstance()));
+*/
 
     }
 
 }
+
+
+
+
+
+
+
+

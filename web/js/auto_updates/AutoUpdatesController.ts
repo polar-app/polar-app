@@ -10,6 +10,10 @@ export class AutoUpdatesController {
 
     public start(): void {
 
+        if (! ipcRenderer) {
+            return;
+        }
+
         ipcRenderer.on('download-progress', (event: any, progress: ProgressInfo) => {
             this.onProgressInfo(progress);
         });

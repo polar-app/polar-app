@@ -8,6 +8,7 @@ import {IProvider} from "../util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "../logger/Logger";
 import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {FirebasePersistenceLayerFactory} from './factories/FirebasePersistenceLayerFactory';
 
 const log = Logger.create();
 
@@ -124,11 +125,13 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
     private createPersistenceLayer(type: PersistenceLayerType): ListenablePersistenceLayer {
 
         if (type === 'local') {
-            return RemotePersistenceLayerFactory.create();
+            // return RemotePersistenceLayerFactory.create();
+
+            return FirebasePersistenceLayerFactory.create();
         }
 
         if (type === 'cloud') {
-            return CloudPersistenceLayerFactory.create();
+            return FirebasePersistenceLayerFactory.create();
         }
 
         throw new Error("Unknown type: " + type);
