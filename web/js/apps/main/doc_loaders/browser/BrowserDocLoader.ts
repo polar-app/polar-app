@@ -25,6 +25,8 @@ export class BrowserDocLoader {
         const persistenceLayer = this.persistenceLayerProvider.get();
 
         // nwo resolve the URL for this doc.
+        // TODO: this is slow and might be nice to have this computed async on
+        // startup
         const optionalDatastoreFile
             = await persistenceLayer.getFile(Backend.STASH, loadDocRequest.fileRef);
 
@@ -38,6 +40,8 @@ export class BrowserDocLoader {
             const viewerURL = PDFLoader.createViewerURL(datastoreFile.url, loadDocRequest.fileRef.name);
 
             console.log("FIXME: viewerURL: " + viewerURL);
+
+            window.open(viewerURL, '_blank');
 
         } else {
             log.warn("No datastore file for: ", loadDocRequest);

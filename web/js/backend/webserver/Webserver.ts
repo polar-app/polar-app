@@ -56,7 +56,7 @@ export class Webserver implements WebRequestHandler {
 
         });
 
-        // FIXME: add infinite caching if the files are woff2 web fonts...
+        // TODO: add infinite caching if the files are woff2 web fonts...
         this.app.use(serveStatic(this.webserverConfig.dir, {immutable: true}));
 
         this.app.use(express.json());
@@ -66,6 +66,8 @@ export class Webserver implements WebRequestHandler {
         this.registerResourcesHandler();
 
         if (this.webserverConfig.useSSL) {
+
+            Preconditions.assertPresent(this.webserverConfig.ssl, "No SSLConfig");
 
             const sslConfig = {
                 key: this.webserverConfig.ssl!.key,

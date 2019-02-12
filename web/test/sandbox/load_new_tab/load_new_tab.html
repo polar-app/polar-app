@@ -13,14 +13,17 @@
 
         const href = 'http://example.com';
 
-        const anchor = Object.assign(document.createElement('a'), {
-            target: '_blank',
-            href
-        });
+        // const anchor = Object.assign(document.createElement('a'), {
+        //     target: '_blank',
+        //     href
+        // });
 
         // anchor.dispatchEvent(event);
 
         // document.location.href = href;
+
+        window.open(href, '_blank');
+
 
     });
 

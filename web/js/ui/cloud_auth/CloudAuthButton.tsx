@@ -15,6 +15,7 @@ import {Nav} from '../util/Nav';
 import {InviteUsersModal} from './InviteUsersModal';
 import {Invitations} from '../../datastore/Invitations';
 import {SimpleTooltip} from '../tooltip/SimpleTooltip';
+import {URLs} from '../../util/URLs';
 
 const log = Logger.create();
 
@@ -188,7 +189,9 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
     private changeAuthStage(stage?: AuthStage) {
 
         if (stage === 'login') {
-            window.location.href = 'http://localhost:8500/apps/repository/login.html';
+            const base = URLs.toBase(document.location!.href);
+            const newLocation = new URL('/apps/repository/login.html', base).toString();
+            window.location.href = newLocation;
             return;
         }
 
