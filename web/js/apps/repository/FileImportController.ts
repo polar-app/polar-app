@@ -13,6 +13,7 @@ import {Toaster} from "../../ui/toaster/Toaster";
 import {IProvider} from "../../util/Providers";
 import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';
 import {DocLoader} from "../main/doc_loaders/DocLoader";
+import {FileRef} from "../../datastore/Datastore";
 
 const log = Logger.create();
 
@@ -30,12 +31,15 @@ export class FileImportController {
 
     private readonly pdfImporter: PDFImporter;
 
+    private readonly docLoader: DocLoader;
+
     constructor(persistenceLayerProvider: IProvider<PersistenceLayer>,
                 updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>) {
 
         this.persistenceLayerProvider = persistenceLayerProvider;
         this.updatedDocInfoEventDispatcher = updatedDocInfoEventDispatcher;
         this.pdfImporter = new PDFImporter(persistenceLayerProvider);
+        this.docLoader = new DocLoader(persistenceLayerProvider);
 
     }
 
@@ -111,9 +115,14 @@ export class FileImportController {
                 const fingerprint = file.docInfo.fingerprint;
                 const path = file.stashFilePath;
 
-                DocLoader.load({
+                // TODO we should ideally have the hashcode built here.
+                const fileRef: FileRef = {
+                    name: FilePaths.basename(path)
+                };
+
+                this.docLoader.load({
                     fingerprint,
-                    filename: FilePaths.basename(path),
+                    fileRef,
                     newWindow: true
                 }).catch(err => log.error("Unable to load doc: ", err));
 

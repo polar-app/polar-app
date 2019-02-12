@@ -10,9 +10,11 @@ const log = Logger.create();
 export class SynchronizingDocLoader {
 
     private persistenceLayerManager: PersistenceLayerManager;
+    private readonly docLoader: DocLoader;
 
     constructor(persistenceLayerManager: PersistenceLayerManager) {
         this.persistenceLayerManager = persistenceLayerManager;
+        this.docLoader = new DocLoader(persistenceLayerManager);
     }
 
     public async load(fingerprint: string,
@@ -37,9 +39,14 @@ export class SynchronizingDocLoader {
             log.notice("Forcing synchronization (doc not local): " + fingerprint);
         }
 
-        await DocLoader.load({
+        const fileRef: FileRef = {
+            name: filename,
+            hashcode
+        };
+
+        await this.docLoader.load({
              fingerprint,
-             filename,
+             fileRef,
              newWindow: true
          });
 
