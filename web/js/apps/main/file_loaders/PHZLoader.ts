@@ -27,8 +27,6 @@ export class PHZLoader extends FileLoader {
 
         const filename = FilePaths.basename(path);
 
-        // FIXME: update main.js to use this loader moving forward...
-
         // register the phz.  the cache interceptor should do the rest.
         const cachedRequestsHolder = await this.cacheRegistry.registerFile(path);
 
@@ -56,7 +54,10 @@ export class PHZLoader extends FileLoader {
 
         const filenameParam = encodeURIComponent(filename);
 
-        const queryData = `?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}&filename=${filenameParam}`;
+        const fileParam = encodeURIComponent(cachedRequest.url);
+        const descriptorParam = encodeURIComponent(descriptorJSON);
+
+        const queryData = `?file=${fileParam}&fingerprint=${fingerprint}&descriptor=${descriptorParam}&filename=${filenameParam}`;
         const appURL = appPath + queryData;
 
         const docDimensions = Descriptors.calculateDocDimensions(descriptor);
