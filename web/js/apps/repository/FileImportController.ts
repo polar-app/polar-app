@@ -3,17 +3,16 @@ import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
 import {FileImportRequest} from "../main/MainAppController";
 import {ImportedFile, PDFImporter} from './importers/PDFImporter';
-import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 import {ProgressCalculator} from "../../util/ProgressCalculator";
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
 import {Optional} from "../../util/ts/Optional";
-import {ElectronDocLoader} from '../main/doc_loaders/electron/ElectronDocLoader';
 import {FilePaths} from "../../util/FilePaths";
 import {isPresent} from "../../Preconditions";
 import {Toaster} from "../../ui/toaster/Toaster";
 import {IProvider} from "../../util/Providers";
 import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';
+import {DocLoader} from "../main/doc_loaders/DocLoader";
 
 const log = Logger.create();
 
@@ -108,7 +107,7 @@ export class FileImportController {
                 const fingerprint = file.docInfo.fingerprint;
                 const path = file.stashFilePath;
 
-                ElectronDocLoader.load({
+                DocLoader.load({
                     fingerprint,
                     filename: FilePaths.basename(path),
                     newWindow: true

@@ -9,7 +9,7 @@ const ipcClient = new IPCClient(ipcPipe);
 
 export class ElectronDocLoader {
 
-    public static async load(loadDocRequest: LoadDocRequest): Promise<void> {
+    public static async load(loadDocRequest: LoadDocRequest) {
 
         Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
         Preconditions.assertPresent(loadDocRequest.filename, "filename");
