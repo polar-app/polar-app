@@ -1,5 +1,4 @@
 import {ResourcePaths} from "../../electron/webresource/ResourcePaths";
-import {PHZLoader} from '../../apps/main/loaders/PHZLoader';
 import {ipcMain} from 'electron';
 import {Preconditions} from '../../Preconditions';
 import {Logger} from '../../logger/Logger';
@@ -11,6 +10,7 @@ import {CaptureOpts} from '../CaptureOpts';
 import {StartCaptureMessage} from './CaptureClient';
 import {Directories} from '../../datastore/Directories';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
+import {PHZLoader} from "../../apps/main/file_loaders/PHZLoader";
 
 const log = Logger.create();
 
@@ -58,7 +58,8 @@ export class CaptureController {
         const captureResult = await this.runCapture(webContents, url);
         //
         // let captureResult = {
-        //     path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
+        //     path:
+        // "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
         // };
 
         // now load the phz in the target window

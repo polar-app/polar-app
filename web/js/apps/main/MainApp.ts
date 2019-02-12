@@ -6,9 +6,7 @@ import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {Directories} from '../../datastore/Directories';
 import {CaptureController} from '../../capture/controller/CaptureController';
 import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
-import {DefaultFileLoader} from './loaders/DefaultFileLoader';
 import {Webserver} from '../../backend/webserver/Webserver';
-import {AnalyticsFileLoader} from './loaders/AnalyticsFileLoader';
 import {MainAppController} from './MainAppController';
 import {MainAppMenu} from './MainAppMenu';
 import {Cmdline} from '../../electron/Cmdline';
@@ -25,6 +23,8 @@ import {MainAPI} from './MainAPI';
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileImportClient} from '../repository/FileImportClient';
 import {RendererAnalyticsService} from '../../ga/RendererAnalyticsService';
+import {AnalyticsFileLoader} from './file_loaders/AnalyticsFileLoader';
+import {DefaultFileLoader} from './file_loaders/DefaultFileLoader';
 
 declare var global: any;
 

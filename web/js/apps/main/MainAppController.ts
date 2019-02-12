@@ -2,7 +2,6 @@ import {app, BrowserWindow, dialog} from 'electron';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {Logger} from '../../logger/Logger';
 import {Services} from '../../util/services/Services';
-import {FileLoader} from './loaders/FileLoader';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {AppLauncher} from './AppLauncher';
@@ -16,6 +15,7 @@ import {CaptureOpts} from '../../capture/CaptureOpts';
 import {Platform, Platforms} from '../../util/Platforms';
 import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
+import {FileLoader} from './file_loaders/FileLoader';
 
 const log = Logger.create();
 

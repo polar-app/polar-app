@@ -13,7 +13,7 @@ import {Menus} from './Menus';
 import {isPresent} from '../../Preconditions';
 import {Directories} from '../../datastore/Directories';
 import {Messenger} from '../../electron/messenger/Messenger';
-import {AppConfig} from '../../app_config/AppConfig';
+import {DistConfig} from '../../dist_config/DistConfig';
 
 const log = Logger.create();
 
@@ -128,7 +128,7 @@ export class MainAppMenu {
 
     private platformSupportsUpdates() {
 
-        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && AppConfig.ENABLE_UPDATES;
+        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && DistConfig.ENABLE_UPDATES;
 
     }
 
