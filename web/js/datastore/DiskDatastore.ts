@@ -269,7 +269,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getDocMetaFiles(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
 
         if ( ! await Files.existsAsync(this.dataDir)) {
             // no data dir but this should rarely happen.

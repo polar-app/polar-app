@@ -144,7 +144,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getDocMetaFiles(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
 
         return Object.keys(this.docMetas)
             .map(fingerprint => <DocMetaRef> {fingerprint});
