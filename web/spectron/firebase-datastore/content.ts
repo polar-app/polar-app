@@ -54,7 +54,7 @@ SpectronRenderer.run(async (state) => {
                 });
 
                 await waitForExpect(async () => {
-                    const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                    const docMetaFiles = await persistenceLayer.getDocMetaRefs();
                     assert.equal(docMetaFiles.length, 0);
                 });
 
@@ -73,7 +73,7 @@ SpectronRenderer.run(async (state) => {
                 assert.isFalse(docReplicationEventListenerCalled);
 
                 await waitForExpect(async () => {
-                    const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                    const docMetaFiles = await persistenceLayer.getDocMetaRefs();
                     assert.equal(docMetaFiles.length, 1);
                 });
 

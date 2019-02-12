@@ -191,7 +191,7 @@ SpectronRenderer.run(async (state) => {
 
                 await persistenceLayer.init();
 
-                const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                const docMetaFiles = await persistenceLayer.getDocMetaRefs();
                 assert.equal(docMetaFiles.length, 0);
 
                 persistenceLayer.stop();
@@ -368,7 +368,7 @@ SpectronRenderer.run(async (state) => {
 
                 await Datastores.purge(targetPersistenceLayer.datastore);
 
-                const docMetaFiles = await targetPersistenceLayer.getDocMetaFiles();
+                const docMetaFiles = await targetPersistenceLayer.getDocMetaRefs();
                 assert.equal(docMetaFiles.length, 0);
 
                 let gotEventAfterUnsubscribe = false;
