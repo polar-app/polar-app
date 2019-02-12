@@ -3,6 +3,7 @@ import {app, remote} from 'electron';
 import path from 'path';
 import fs from 'fs';
 import {isPresent} from '../../Preconditions';
+import {URLs} from '../../util/URLs';
 
 const USE_FILE_URL = true;
 
@@ -31,10 +32,10 @@ export class ResourcePaths {
 
             try {
 
-                // We use readFileSync here because we need to we need to peek into
-                // .asar files which do not support exists but DO support reading
-                // the file.  If this fails we will get an exception about not
-                // finding the file.
+                // We use readFileSync here because we need to we need to peek
+                // into .asar files which do not support exists but DO support
+                // reading the file.  If this fails we will get an exception
+                // about not finding the file.
 
                 fs.readFileSync(absolutePath);
                 return absolutePath;
@@ -72,7 +73,13 @@ export class ResourcePaths {
             return 'file://' + absolutePath + queryData;
 
         } else {
-            return "http://localhost:8500" + relativeURL;
+
+            const base = window.location.href ?
+                URLs.toBase(window.location.href) :
+                "http://localhost:8500";
+
+            return base + relativeURL;
+
         }
 
     }
