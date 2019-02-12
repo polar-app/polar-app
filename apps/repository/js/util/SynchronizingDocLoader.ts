@@ -1,6 +1,6 @@
 import {FileRef} from '../../../../web/js/datastore/Datastore';
 import {Backend} from '../../../../web/js/datastore/Backend';
-import {DocLoader} from '../../../../web/js/apps/main/ipc/DocLoader';
+import {ElectronDocLoader} from '../../../../web/js/apps/main/doc_loaders/electron/ElectronDocLoader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {Logger} from '../../../../web/js/logger/Logger';
@@ -37,7 +37,7 @@ export class SynchronizingDocLoader {
             log.notice("Forcing synchronization (doc not local): " + fingerprint);
         }
 
-        await DocLoader.load({
+        await ElectronDocLoader.load({
              fingerprint,
              filename,
              newWindow: true

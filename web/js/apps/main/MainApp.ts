@@ -15,7 +15,7 @@ import {Cmdline} from '../../electron/Cmdline';
 import {Logger} from '../../logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/ScreenshotService';
-import {MainAppService} from './ipc/MainAppService';
+import {DocLoaderService} from './doc_loaders/electron/ipc/DocLoaderService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
@@ -135,7 +135,7 @@ export class MainApp {
         const mainAppAPI = new MainAPI(mainAppController, webserver);
         mainAppAPI.start();
 
-        const mainAppService = new MainAppService(mainAppController);
+        const mainAppService = new DocLoaderService(mainAppController);
         mainAppService.start();
 
         // TODO: handle the command line here.. IE if someone opens up a file

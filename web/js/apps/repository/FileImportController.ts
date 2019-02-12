@@ -8,7 +8,7 @@ import {ProgressCalculator} from "../../util/ProgressCalculator";
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
 import {Optional} from "../../util/ts/Optional";
-import {DocLoader} from '../main/ipc/DocLoader';
+import {ElectronDocLoader} from '../main/doc_loaders/electron/ElectronDocLoader';
 import {FilePaths} from "../../util/FilePaths";
 import {isPresent} from "../../Preconditions";
 import {Toaster} from "../../ui/toaster/Toaster";
@@ -108,7 +108,7 @@ export class FileImportController {
                 const fingerprint = file.docInfo.fingerprint;
                 const path = file.stashFilePath;
 
-                DocLoader.load({
+                ElectronDocLoader.load({
                     fingerprint,
                     filename: FilePaths.basename(path),
                     newWindow: true

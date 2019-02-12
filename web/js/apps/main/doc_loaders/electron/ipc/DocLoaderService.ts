@@ -1,8 +1,8 @@
-import {IPCEngines} from '../../../ipc/handler/IPCEngines';
+import {IPCEngines} from '../../../../../ipc/handler/IPCEngines';
 import {LoadDocHandler} from './handlers/LoadDocHandler';
-import {MainAppController} from '../MainAppController';
+import {MainAppController} from '../../../MainAppController';
 
-export class MainAppService {
+export class DocLoaderService {
 
     private readonly mainAppController: MainAppController;
 

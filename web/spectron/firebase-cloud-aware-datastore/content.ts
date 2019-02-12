@@ -12,7 +12,7 @@ import {Firestore} from '../../js/firebase/Firestore';
 import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
-import {DocLoader} from '../../js/apps/main/ipc/DocLoader';
+import {ElectronDocLoader} from '../../js/apps/main/doc_loaders/electron/ElectronDocLoader';
 import {FirebaseRunner} from '../../js/firebase/FirebaseRunner';
 import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
 import {FilePaths} from '../../js/util/FilePaths';
