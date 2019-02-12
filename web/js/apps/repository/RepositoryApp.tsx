@@ -1,19 +1,16 @@
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import {RemotePersistenceLayerFactory} from '../../datastore/factories/RemotePersistenceLayerFactory';
 import {FileImportController} from './FileImportController';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
-import {PersistenceLayers} from '../../datastore/PersistenceLayers';
 import {PersistenceLayerManager, PersistenceLayerTypes} from '../../datastore/PersistenceLayerManager';
-import {HashRouter, Switch, Route} from 'react-router-dom';
+import {HashRouter, Route, Switch} from 'react-router-dom';
 import {PrioritizedSplashes} from '../../../../apps/repository/js/splash/PrioritizedSplashes';
 import {SyncBar, SyncBarProgress} from '../../ui/sync_bar/SyncBar';
 import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
 import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
 import AnnotationRepoApp from '../../../../apps/repository/js/annotation_repo/AnnotationRepoApp';
-import {RepoDocInfos} from '../../../../apps/repository/js/RepoDocInfos';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from '../../logger/Logger';
 import {AutoUpdatesController} from '../../auto_updates/AutoUpdatesController';
@@ -21,8 +18,6 @@ import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
-import {Throttler} from '../../datastore/Throttler';
-import {WhatsNewContent} from '../../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
 import WhatsNewApp from '../../../../apps/repository/js/whats_new/WhatsNewApp';
 import CommunityApp from '../../../../apps/repository/js/community/CommunityApp';
 import StatsApp from '../../../../apps/repository/js/stats/StatsApp';
@@ -34,6 +29,7 @@ import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import EditorsPicksApp from '../../../../apps/repository/js/editors_picks/EditorsPicksApp';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from '../../util/Version';
+import {AppOrigin} from '../AppOrigin';
 
 const log = Logger.create();
 
@@ -49,6 +45,8 @@ export class RepositoryApp {
     }
 
     public async start() {
+
+        AppOrigin.configure();
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
