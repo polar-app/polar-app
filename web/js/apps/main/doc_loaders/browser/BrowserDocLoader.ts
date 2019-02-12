@@ -4,6 +4,7 @@ import {IProvider} from '../../../../util/Providers';
 import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
 import {Backend} from '../../../../datastore/Backend';
 import {Logger} from '../../../..//logger/Logger';
+import {PDFLoader} from '../../file_loaders/PDFLoader';
 
 const log = Logger.create();
 
@@ -34,7 +35,9 @@ export class BrowserDocLoader {
             console.log("FIXME: loading ", datastoreFile);
             console.log("FIXME: loading from URL", datastoreFile.url);
 
-            // FIXME/TODO create the PDF viewer URL now...
+            const viewerURL = PDFLoader.createViewerURL(datastoreFile.url, loadDocRequest.fileRef.name);
+
+            console.log("FIXME: viewerURL: " + viewerURL);
 
         } else {
             log.warn("No datastore file for: ", loadDocRequest);

@@ -23,15 +23,19 @@ export class PDFLoader extends FileLoader {
 
         const fileMeta = this.fileRegistry.registerFile(path);
 
-        const fileParam = encodeURIComponent(fileMeta.url);
-        const filenameParam = encodeURIComponent(filename);
-
-        const appURL = ResourcePaths.resourceURLFromRelativeURL(`/pdfviewer/web/index.html?file=${fileParam}&filename=${filenameParam}&zoom=page-width`, false);
+        const appURL = PDFLoader.createViewerURL(fileMeta.url, filename);
 
         return {
             webResource: WebResource.createURL(appURL)
         };
 
+    }
+
+    public static createViewerURL(fileURL: string, filename: string) {
+        const fileParam = encodeURIComponent(fileURL);
+        const filenameParam = encodeURIComponent(filename);
+
+        return ResourcePaths.resourceURLFromRelativeURL(`/pdfviewer/web/index.html?file=${fileParam}&filename=${filenameParam}&zoom=page-width`, false);
     }
 
 }
