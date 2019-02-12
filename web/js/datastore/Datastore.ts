@@ -50,8 +50,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     /**
      * Return an array of {DocMetaRef}s currently in the repository.
      */
-    // TODO: refactor to getDocMetaRefs
-    getDocMetaFiles(): Promise<DocMetaRef[]>;
+    getDocMetaRefs(): Promise<DocMetaRef[]>;
 
     /**
      * Get a current snapshot of the internal state of the Datastore by
@@ -569,6 +568,7 @@ export class SyncDocs {
 }
 
 export type DatastoreID = string;
+
 
 export interface DatastoreInitOpts {
     readonly noInitialSnapshot?: boolean;

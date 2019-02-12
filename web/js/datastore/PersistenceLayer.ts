@@ -34,7 +34,7 @@ export interface PersistenceLayer {
 
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
-    getDocMetaFiles(): Promise<DocMetaRef[]>;
+    getDocMetaRefs(): Promise<DocMetaRef[]>;
 
     /**
      * Get a current snapshot of the internal state of the Datastore by

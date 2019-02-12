@@ -83,7 +83,7 @@ export class DocRepoAnkiSyncController {
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 
-        const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+        const docMetaFiles = await persistenceLayer.getDocMetaRefs();
 
         const docMetaSuppliers: DocMetaSupplierCollection
             = docMetaFiles.map(docMetaFile => {

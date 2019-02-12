@@ -12,7 +12,7 @@ import {Firestore} from '../../js/firebase/Firestore';
 import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
-import {DocLoader} from '../../js/apps/main/ipc/DocLoader';
+import {ElectronDocLoader} from '../../js/apps/main/doc_loaders/electron/ElectronDocLoader';
 import {FirebaseRunner} from '../../js/firebase/FirebaseRunner';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
@@ -54,7 +54,7 @@ SpectronRenderer.run(async (state) => {
                 });
 
                 await waitForExpect(async () => {
-                    const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                    const docMetaFiles = await persistenceLayer.getDocMetaRefs();
                     assert.equal(docMetaFiles.length, 0);
                 });
 
@@ -73,7 +73,7 @@ SpectronRenderer.run(async (state) => {
                 assert.isFalse(docReplicationEventListenerCalled);
 
                 await waitForExpect(async () => {
-                    const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                    const docMetaFiles = await persistenceLayer.getDocMetaRefs();
                     assert.equal(docMetaFiles.length, 1);
                 });
 

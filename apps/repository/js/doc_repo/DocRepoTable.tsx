@@ -286,10 +286,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                        placement="bottom">
 
                                             Tag multiple documents at once.  To
-                                            fidn untagged documents sort by the
+                                            find untagged documents sort by the
                                             'Tags' column (twice).  Once to sort
-                                            alphabetically and the second click
-                                            click will reverse the sort showing
+                                            alphabetically and then second click
+                                            will reverse the sort showing
                                             untagged documents.
 
                                         </SimpleTooltip>

@@ -32,7 +32,7 @@ export class PersistenceLayers {
     public static async toSyncDocMap(datastore: Datastore,
                                      progressStateListener: ProgressListener = NULL_FUNCTION) {
 
-        const docMetaFiles = await datastore.getDocMetaFiles();
+        const docMetaFiles = await datastore.getDocMetaRefs();
 
         return this.toSyncDocMapFromDocs(datastore, docMetaFiles, progressStateListener);
 

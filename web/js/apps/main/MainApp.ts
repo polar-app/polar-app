@@ -6,16 +6,14 @@ import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {Directories} from '../../datastore/Directories';
 import {CaptureController} from '../../capture/controller/CaptureController';
 import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
-import {DefaultFileLoader} from './loaders/DefaultFileLoader';
 import {Webserver} from '../../backend/webserver/Webserver';
-import {AnalyticsFileLoader} from './loaders/AnalyticsFileLoader';
 import {MainAppController} from './MainAppController';
 import {MainAppMenu} from './MainAppMenu';
 import {Cmdline} from '../../electron/Cmdline';
 import {Logger} from '../../logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/ScreenshotService';
-import {MainAppService} from './ipc/MainAppService';
+import {DocLoaderService} from './doc_loaders/electron/ipc/DocLoaderService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
@@ -25,6 +23,8 @@ import {MainAPI} from './MainAPI';
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileImportClient} from '../repository/FileImportClient';
 import {RendererAnalyticsService} from '../../ga/RendererAnalyticsService';
+import {AnalyticsFileLoader} from './file_loaders/AnalyticsFileLoader';
+import {DefaultFileLoader} from './file_loaders/DefaultFileLoader';
 
 declare var global: any;
 
@@ -135,7 +135,7 @@ export class MainApp {
         const mainAppAPI = new MainAPI(mainAppController, webserver);
         mainAppAPI.start();
 
-        const mainAppService = new MainAppService(mainAppController);
+        const mainAppService = new DocLoaderService(mainAppController);
         mainAppService.start();
 
         // TODO: handle the command line here.. IE if someone opens up a file

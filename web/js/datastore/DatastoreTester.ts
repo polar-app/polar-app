@@ -204,7 +204,7 @@ export class DatastoreTester {
 
             it("getDocMetaFiles", async function() {
 
-                const docMetaFiles = await datastore.getDocMetaFiles();
+                const docMetaFiles = await datastore.getDocMetaRefs();
 
                 assert.equal(docMetaFiles.length > 0, true);
 

@@ -1,10 +1,10 @@
-import {IPCHandler} from '../../../../ipc/handler/IPCHandler';
-import {IPCMessage} from '../../../../ipc/handler/IPCMessage';
-import {IPCEvent} from '../../../../ipc/handler/IPCEvent';
-import {LoadDocRequest} from '../LoadDocRequest';
-import {Directories} from '../../../../datastore/Directories';
-import {MainAppController} from '../../MainAppController';
-import {FilePaths} from '../../../../util/FilePaths';
+import {IPCHandler} from '../../../../../../ipc/handler/IPCHandler';
+import {IPCMessage} from '../../../../../../ipc/handler/IPCMessage';
+import {IPCEvent} from '../../../../../../ipc/handler/IPCEvent';
+import {LoadDocRequest} from '../../../../doc_loaders/LoadDocRequest';
+import {Directories} from '../../../../../../datastore/Directories';
+import {MainAppController} from '../../../../MainAppController';
+import {FilePaths} from '../../../../../../util/FilePaths';
 
 export class LoadDocHandler  extends IPCHandler<LoadDocRequest> {
 

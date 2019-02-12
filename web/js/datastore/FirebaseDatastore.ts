@@ -494,7 +494,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getDocMetaFiles(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
 
         const uid = this.getUserID();
 

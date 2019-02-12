@@ -174,8 +174,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.synchronizeDocs(...docMetaRefs);
     }
 
-    public getDocMetaFiles(): Promise<DocMetaRef[]> {
-        return this.datastore.getDocMetaFiles();
+    public getDocMetaRefs(): Promise<DocMetaRef[]> {
+        return this.datastore.getDocMetaRefs();
     }
 
     /**

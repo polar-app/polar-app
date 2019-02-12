@@ -105,8 +105,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         return this.delegate.contains(fingerprint);
     }
 
-    public getDocMetaFiles(): Promise<DocMetaRef[]> {
-        return this.delegate.getDocMetaFiles();
+    public getDocMetaRefs(): Promise<DocMetaRef[]> {
+        return this.delegate.getDocMetaRefs();
     }
 
     public snapshot(listener: DocMetaSnapshotEventListener,

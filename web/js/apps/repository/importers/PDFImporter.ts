@@ -1,7 +1,6 @@
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from '../../../util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
-import {FileLoader} from '../../main/loaders/FileLoader';
 import {Logger} from '../../../logger/Logger';
 import {PDFMetadata} from './PDFMetadata';
 import {Optional} from '../../../util/ts/Optional';
