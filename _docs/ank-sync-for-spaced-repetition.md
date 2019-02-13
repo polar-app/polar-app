@@ -7,7 +7,7 @@ permalink: /docs/anki-sync-for-spaced-repetition.html
 
 # Anki and Spaced Repetition
 
-Polar supports native integration with Anki via the [Polar Connect](https://ankiweb.net/shared/info/734898866) add-on
+Polar supports native integration with Anki via the [Polar Connect](https://ankiweb.net/shared/info/734898866) add-on.
 
 This allows for annotations on document and connecting flashcards to these
 annotations and then synchronizing them directly to Anki.

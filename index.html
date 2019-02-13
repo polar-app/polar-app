@@ -1,67 +1,96 @@
 ---
 
 title: POLAR - Easily manage your reading.  Tag, annotate, and highlight PDFs and web content.
-layout: default
+layout: home
 author: Kevin Burton
 image: https://getpolarized.io/assets/logo/icon.png
 ---
 
-<section class="fdb-block mb-2" data-block-type="contents" data-id="1" draggable="false">
+<style>
+    .main-hero {
+        background: #4096ee; /* Old browsers */
+        background: -moz-linear-gradient(top, #4096ee 0%, #60abf8 56%, #7abcff 100%) !important;; /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #4096ee 0%,#60abf8 56%,#7abcff 100%) !important;; /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #4096ee 0%,#60abf8 56%,#7abcff 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', endColorstr='#7abcff',GradientType=0 ); /* IE6-9 */
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col text-center">
+    }
+</style>
 
-                <h1 class="intro"> <b>POLAR</b> makes it easy to manage your reading.</h1>
+<div class="">
 
-                <div class="subtitle">
+    {%- include header.html -%}
 
-                    <h2>
+    <section class="mb-2"
+             data-block-type="contents"
+             data-id="1"
+             draggable="false">
 
-                        A <b>powerful</b> document manager for Mac, Windows, and
-                        Linux for managing web content, books, and notes -
-                        supports <b>tagging</b>, <b>annotation</b>, <b
-                        style="background-color: yellow;">highlighting</b> and
-                        keeps track of your reading progress.
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col text-center">
 
-                    </h2>
+                    <div class="">
 
-                    <a class="btn btn-success btn-lg font-weight-bold m-3" href="/download.html">DOWNLOAD FOR FREE</a>
+                        <h1 class="intro"> <b>POLAR</b> makes it easy to manage your reading.</h1>
+
+                        <div class="subtitle">
+
+                            <h2>
+
+                                A <b>powerful</b> document manager for Mac, Windows, and
+                                Linux for managing web content, books, and notes -
+                                supports <b>tagging</b>, <b>annotation</b>, <b
+                                    style="background-color: yellow;">highlighting</b> and
+                                keeps track of your reading progress.
+
+                            </h2>
+
+                            <a class="btn btn-success btn-lg font-weight-bold m-3" href="/download.html">DOWNLOAD FOR FREE</a>
+
+                        </div>
+
+                        <img alt="image" class="img-fluid mt-4 mb-4 img-shadow" src="./assets/screenshots/cnn5.png">
+
+                    </div>
+
+
+                    <div class="mt-2">
+
+                        <a href="https://github.com/burtonator/polar-bookshelf/releases">
+                            <img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>
+                        </a>
+
+                        <a href="https://discord.gg/GT8MhA6">
+                            <img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>
+                        </a>
+
+                        <a href="https://github.com/burtonator/polar-bookshelf">
+                            <img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
+                        </a>
+
+                        <a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">
+                            <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
+                        </a>
+
+                    </div>
+
+                    <div class="m-auto mb" style="max-width: 700px;">
+
+                        <iframe src="./mailchimp-iframe.html" frameborder="0" style="width: 100%; height: 150px;" scrolling="no"></iframe>
+
+                    </div>
 
                 </div>
-                <img alt="image" class="img-fluid mt-4 mb-4 img-shadow" src="./assets/screenshots/cnn5.png">
-
-                <div class="mt-2">
-
-                    <a href="https://github.com/burtonator/polar-bookshelf/releases">
-                        <img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>
-                    </a>
-
-                    <a href="https://discord.gg/GT8MhA6">
-                        <img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>
-                    </a>
-
-                    <a href="https://github.com/burtonator/polar-bookshelf">
-                        <img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
-                    </a>
-
-                    <a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">
-                        <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
-                    </a>
-
-                </div>
-
-                <div class="m-auto mb" style="max-width: 700px;">
-
-                    <iframe src="./mailchimp-iframe.html" frameborder="0" style="width: 100%; height: 150px;" scrolling="no"></iframe>
-
-                </div>
-
             </div>
         </div>
-    </div>
 
-</section>
+    </section>
+
+</div>
+
+
+
 <section class="fdb-block" data-block-type="features" data-id="1" draggable="false">
     <div class="container">
         <div class="row text-center">
@@ -230,9 +259,10 @@ image: https://getpolarized.io/assets/logo/icon.png
 
                 <div>
                     <img alt="image"
-                         class="img-fluid img-shadow"
+                         class="img-fluid img-shadow img-rounded"
                          src="./assets/screenshots/text-annotations.png"
                          style="min-width: 250px; zoom: 75%; margin: 25px;">
+
                 </div>
 
 
