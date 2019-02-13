@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = {
     // mode: 'production',
     entry: {
-        // "chrome": [ "./web/js/apps/chrome.ts"],
+        "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "login": [ "./apps/repository/js/login.ts"],
     },

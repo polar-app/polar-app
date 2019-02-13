@@ -26,13 +26,16 @@ export class ContextMenuController {
     constructor(model: Model) {
         this.model = model;
 
-        ipcRenderer.on('context-menu-command', (event: any, arg: any) => {
+        if (ipcRenderer) {
 
-            // I don't think we need to listen to these here but rather in the
-            // specific controllers.
+            ipcRenderer.on('context-menu-command', (event: any, arg: any) => {
 
-        });
+                // I don't think we need to listen to these here but rather in the
+                // specific controllers.
 
+            });
+
+        }
     }
 
     public start() {
