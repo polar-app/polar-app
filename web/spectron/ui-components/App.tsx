@@ -31,6 +31,9 @@ import {ExportButton} from '../../js/ui/export/ExportButton';
 import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
 import {AnkiReviewContent} from './AnkiReviewContent';
 import ReadingProgressTable from '../../../apps/repository/js/stats/ReadingProgressTable';
+import {ContextMenuWrapper, prepareContextMenuHandlers} from 'react-context-menu-wrapper';
+import Dropdown from 'reactstrap/lib/Dropdown';
+import {DropMenu} from './DropMenu';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -113,9 +116,128 @@ class App<P> extends React.Component<{}, IAppState> {
             {id: 'google', label: 'google'}
         ];
 
+        const contextMenuHandlers = prepareContextMenuHandlers({id: 'my-context-menu'});
+
         return (
 
             <div>
+
+                <div className="bg-dark text-white">
+                    <div className="p-1 hover-bg-primary">Menu item 1</div>
+                    <div className="p-1 hover-bg-primary">Menu item 2</div>
+                </div>
+
+                <DropMenu open={true}>
+
+                    <DropdownMenu tag="div">
+
+                        <DropdownItem tag="div">Quo Action</DropdownItem>
+
+                        <DropdownItem tag="div">
+
+                            <DropMenu open={false}>
+
+                                <DropdownMenu tag="div">
+
+                                    <DropdownItem tag="div">Quo Action</DropdownItem>
+
+                                </DropdownMenu>
+
+                            </DropMenu>
+
+                        </DropdownItem>
+
+                    </DropdownMenu>
+
+                </DropMenu>
+
+                {/*<UncontrolledDropdown direction="right">*/}
+                    {/*<DropdownToggle color="light" caret>*/}
+                        {/*Dropdown*/}
+                    {/*</DropdownToggle>*/}
+                    {/*<DropdownMenu>*/}
+                        {/*<DropdownItem header>Header</DropdownItem>*/}
+                        {/*<DropdownItem disabled>Action</DropdownItem>*/}
+                        {/*<DropdownItem>Another Action</DropdownItem>*/}
+                        {/*<DropdownItem divider />*/}
+                        {/*<DropdownItem>Another Action</DropdownItem>*/}
+
+                        {/*<DropdownItem>*/}
+
+                            {/*<UncontrolledDropdown direction="right">*/}
+                                {/*<DropdownToggle color="light" caret>*/}
+                                    {/*Dropdown*/}
+                                {/*</DropdownToggle>*/}
+                                {/*<DropdownMenu>*/}
+                                    {/*<DropdownItem header>Header</DropdownItem>*/}
+                                    {/*<DropdownItem disabled>Action</DropdownItem>*/}
+                                    {/*<DropdownItem>Another Action</DropdownItem>*/}
+                                    {/*<DropdownItem divider />*/}
+                                    {/*<DropdownItem>Another Action</DropdownItem>*/}
+
+                                    {/*<DropdownItem>*/}
+
+
+                                    {/*</DropdownItem>*/}
+
+                                {/*</DropdownMenu>*/}
+                            {/*</UncontrolledDropdown>*/}
+
+                        {/*</DropdownItem>*/}
+
+                    {/*</DropdownMenu>*/}
+                {/*</UncontrolledDropdown>*/}
+
+
+                <div {...contextMenuHandlers} >
+                    this is some content
+                    <ContextMenuWrapper id="my-context-menu">
+
+                        {/*<Dropdown isOpen={true} toggle={() => true}>*/}
+
+                            {/*<DropdownMenu>*/}
+                                {/*<DropdownItem header>Header</DropdownItem>*/}
+                                {/*<DropdownItem>Some Action</DropdownItem>*/}
+                                {/*<DropdownItem disabled>Action (disabled)</DropdownItem>*/}
+                                {/*<DropdownItem divider />*/}
+                                {/*<DropdownItem>Foo Action</DropdownItem>*/}
+                                {/*<DropdownItem>Bar Action</DropdownItem>*/}
+                                {/*<DropdownItem>Quo Action</DropdownItem>*/}
+                            {/*</DropdownMenu>*/}
+
+                        {/*</Dropdown>*/}
+
+                        {/*<div className="dropdown">*/}
+                            {/*<div className="dropdown-menu"*/}
+                                 {/*aria-labelledby="dropdownMenu2">*/}
+                                {/*<button className="dropdown-item"*/}
+                                        {/*type="button">Action*/}
+                                {/*</button>*/}
+                                {/*<button className="dropdown-item"*/}
+                                        {/*type="button">Another action*/}
+                                {/*</button>*/}
+                                {/*<button className="dropdown-item"*/}
+                                        {/*type="button">Something else here*/}
+                                {/*</button>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+
+                        {/*<div>*/}
+                              {/*asdfasdf*/}
+                        {/*</div>*/}
+
+                        {/*<div className="dropdown-menu"*/}
+                             {/*aria-labelledby="dropdownMenuButton">*/}
+                            {/*<a className="dropdown-item" href="#">Action</a>*/}
+                            {/*<a className="dropdown-item" href="#">Another*/}
+                                {/*action</a>*/}
+                            {/*<a className="dropdown-item" href="#">Something else*/}
+                                {/*here</a>*/}
+                        {/*</div>*/}
+
+                    </ContextMenuWrapper>
+
+                </div>
 
                 <br/>
                 <br/><br/><br/>

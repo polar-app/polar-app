@@ -168,6 +168,7 @@
     "prop-types": "~15.6.2",
     "raphael": "~2.2.7",
     "react": "~16.7.0",
+    "react-context-menu-wrapper": "file:../react-context-menu-wrapper",
     "react-cookie-banner": "~4.0.0",
     "react-dom": "~16.7.0",
     "react-ga": "~2.5.3",
