@@ -394,27 +394,33 @@ export class Pagemarks {
 
                 const primaryPagemark = pageMeta.pagemarks[id];
 
-                if (primaryPagemark.batch) {
+                if (primaryPagemark) {
 
-                    // if this pagemark has a batch we have to delete everything
-                    // in the same batch
+                    if (primaryPagemark.batch) {
 
-                    const pagemarksWithinBatch
-                        = this.pagemarksWithinBatch(docMeta, primaryPagemark.batch);
+                        // if this pagemark has a batch we have to delete everything
+                        // in the same batch
 
-                    pageMetaMutator = () => {
+                        const pagemarksWithinBatch
+                            = this.pagemarksWithinBatch(docMeta, primaryPagemark.batch);
 
-                        for (const pagemarkRef of pagemarksWithinBatch) {
-                            delete pagemarkRef.pageMeta.pagemarks[pagemarkRef.id];
-                        }
+                        pageMetaMutator = () => {
 
-                    };
+                            for (const pagemarkRef of pagemarksWithinBatch) {
+                                delete pagemarkRef.pageMeta.pagemarks[pagemarkRef.id];
+                            }
 
+                        };
+
+
+                    } else {
+
+                        pageMetaMutator = () => delete pageMeta.pagemarks[id];
+
+                    }
 
                 } else {
-
-                    pageMetaMutator = () => delete pageMeta.pagemarks[id];
-
+                    log.warn(`No pagemark found for id ${id} for pageNum ${pageNum}`);
                 }
 
             } else {
