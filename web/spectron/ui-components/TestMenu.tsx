@@ -24,7 +24,10 @@ export class TestMenu extends React.Component<any, any> {
 
             <div>
                 <Dropdown
-                    defaultOpen={true}
+                    open={true}
+                    onToggle={open => {
+                      // noop
+                    }}
                     onSelect={(eventKey: any) => {
                         // noop
                     }}

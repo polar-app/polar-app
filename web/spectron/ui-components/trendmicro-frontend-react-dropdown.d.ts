@@ -7,7 +7,8 @@ declare module '@trendmicro/react-dropdown' {
 
     export interface DropdownProps {
 
-        readonly onSelect: (eventKey: any) => void;
+        readonly onSelect?: (eventKey: any) => void;
+        readonly onToggle?: (open: boolean) => void;
         readonly defaultOpen?: boolean;
         readonly open?: boolean;
         readonly children?: any;
@@ -28,7 +29,6 @@ declare module '@trendmicro/react-dropdown' {
 
     export class MenuItem extends React.Component<any, any, any> {
         public readonly onSelect: (eventKey: any) => void;
-
     }
 
     export class DropdownButton extends React.Component<any, any, any> {
