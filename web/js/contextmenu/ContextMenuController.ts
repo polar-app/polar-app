@@ -114,6 +114,8 @@ export class ContextMenuController {
 
         };
 
+        // FIXME: the new context menu needs to be here...
+
         ipcRenderer.send('context-menu-trigger', TriggerEvent.create({
             point: {
                 x: event.pageX,
