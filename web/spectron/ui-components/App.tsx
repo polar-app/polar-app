@@ -34,6 +34,7 @@ import ReadingProgressTable from '../../../apps/repository/js/stats/ReadingProgr
 import {ContextMenuWrapper, prepareContextMenuHandlers} from 'react-context-menu-wrapper';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import {DropMenu} from './DropMenu';
+import {TestMenu} from './TestMenu';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -127,29 +128,31 @@ class App<P> extends React.Component<{}, IAppState> {
                     <div className="p-1 hover-bg-primary">Menu item 2</div>
                 </div>
 
-                <DropMenu open={true}>
+                <TestMenu/>
 
-                    <DropdownMenu tag="div">
+                {/*<DropMenu open={true}>*/}
 
-                        <DropdownItem tag="div">Quo Action</DropdownItem>
+                    {/*<DropdownMenu tag="div">*/}
 
-                        <DropdownItem tag="div">
+                        {/*<DropdownItem tag="div">Quo Action</DropdownItem>*/}
 
-                            <DropMenu open={false}>
+                        {/*<DropdownItem tag="div">*/}
 
-                                <DropdownMenu tag="div">
+                            {/*<DropMenu open={false}>*/}
 
-                                    <DropdownItem tag="div">Quo Action</DropdownItem>
+                                {/*<DropdownMenu tag="div">*/}
 
-                                </DropdownMenu>
+                                    {/*<DropdownItem tag="div">Quo Action</DropdownItem>*/}
 
-                            </DropMenu>
+                                {/*</DropdownMenu>*/}
 
-                        </DropdownItem>
+                            {/*</DropMenu>*/}
 
-                    </DropdownMenu>
+                        {/*</DropdownItem>*/}
 
-                </DropMenu>
+                    {/*</DropdownMenu>*/}
+
+                {/*</DropMenu>*/}
 
                 {/*<UncontrolledDropdown direction="right">*/}
                     {/*<DropdownToggle color="light" caret>*/}
@@ -190,50 +193,15 @@ class App<P> extends React.Component<{}, IAppState> {
 
 
                 <div {...contextMenuHandlers} >
+
                     this is some content
+
                     <ContextMenuWrapper id="my-context-menu">
 
-                        {/*<Dropdown isOpen={true} toggle={() => true}>*/}
+                        <div className="border" style={{backgroundColor: 'white', width: '250px'}}>
+                            thisis the div for the context menu
 
-                            {/*<DropdownMenu>*/}
-                                {/*<DropdownItem header>Header</DropdownItem>*/}
-                                {/*<DropdownItem>Some Action</DropdownItem>*/}
-                                {/*<DropdownItem disabled>Action (disabled)</DropdownItem>*/}
-                                {/*<DropdownItem divider />*/}
-                                {/*<DropdownItem>Foo Action</DropdownItem>*/}
-                                {/*<DropdownItem>Bar Action</DropdownItem>*/}
-                                {/*<DropdownItem>Quo Action</DropdownItem>*/}
-                            {/*</DropdownMenu>*/}
-
-                        {/*</Dropdown>*/}
-
-                        {/*<div className="dropdown">*/}
-                            {/*<div className="dropdown-menu"*/}
-                                 {/*aria-labelledby="dropdownMenu2">*/}
-                                {/*<button className="dropdown-item"*/}
-                                        {/*type="button">Action*/}
-                                {/*</button>*/}
-                                {/*<button className="dropdown-item"*/}
-                                        {/*type="button">Another action*/}
-                                {/*</button>*/}
-                                {/*<button className="dropdown-item"*/}
-                                        {/*type="button">Something else here*/}
-                                {/*</button>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-
-                        {/*<div>*/}
-                              {/*asdfasdf*/}
-                        {/*</div>*/}
-
-                        {/*<div className="dropdown-menu"*/}
-                             {/*aria-labelledby="dropdownMenuButton">*/}
-                            {/*<a className="dropdown-item" href="#">Action</a>*/}
-                            {/*<a className="dropdown-item" href="#">Another*/}
-                                {/*action</a>*/}
-                            {/*<a className="dropdown-item" href="#">Something else*/}
-                                {/*here</a>*/}
-                        {/*</div>*/}
+                        </div>
 
                     </ContextMenuWrapper>
 
