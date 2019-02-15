@@ -1,8 +1,7 @@
-import React from 'react';
 
 declare module '@trendmicro/react-dropdown' {
 
-    export default class Dropdown extends React.Component<DropdownProps, any, any> {
+    export default class Dropdown extends React.Component<DropdownProps> {
 
 
     }
@@ -21,13 +20,13 @@ declare module '@trendmicro/react-dropdown' {
         readonly autoOpen?: boolean;
         readonly pullRight?: boolean;
         readonly role?: string;
-        readonly rootcloseEvent?: 'click' | 'mousedown';
+        readonly rootcloseEvent?: RootCloseEvent;
 
         readonly children?: any;
 
     }
 
-    export class DropdownToggle extends React.Component<DropdownToggleProps, any, any> {
+    export class DropdownToggle extends React.Component<DropdownToggleProps> {
 
     }
 
@@ -47,9 +46,7 @@ declare module '@trendmicro/react-dropdown' {
 
     }
 
-    export class DropdownMenu extends React.Component<DropdownMenuProps, any, any> {
-
-
+    export class DropdownMenu extends React.Component<DropdownMenuProps> {
 
     }
 
@@ -60,7 +57,7 @@ declare module '@trendmicro/react-dropdown' {
         // TODO: not sure about the event object yet.
         readonly onClose?: () => void;
 
-        readonly rootcloseEvent?: 'click' | 'mousedown';
+        readonly rootcloseEvent?: RootCloseEvent;
 
         readonly children?: any;
 
@@ -70,7 +67,7 @@ declare module '@trendmicro/react-dropdown' {
 
     }
 
-    export class MenuItem extends React.Component<MenuItemProps, any, any> {
+    export class MenuItem extends React.Component<MenuItemProps> {
     }
 
     export interface MenuItemProps {
@@ -88,6 +85,6 @@ declare module '@trendmicro/react-dropdown' {
 
     }
 
-    // export type RootCloseEvent = 'click' | 'mousedown';
+    export type RootCloseEvent = 'click' | 'mousedown';
 
 }
