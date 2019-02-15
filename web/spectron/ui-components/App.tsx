@@ -128,7 +128,6 @@ class App<P> extends React.Component<{}, IAppState> {
                     <div className="p-1 hover-bg-primary">Menu item 2</div>
                 </div>
 
-                <TestMenu/>
 
                 {/*<DropMenu open={true}>*/}
 
@@ -198,10 +197,11 @@ class App<P> extends React.Component<{}, IAppState> {
 
                     <ContextMenuWrapper id="my-context-menu">
 
-                        <div className="border" style={{backgroundColor: 'white', width: '250px'}}>
-                            thisis the div for the context menu
+                        {/*<div className="border" style={{backgroundColor: 'white', width: '250px'}}>*/}
+                            {/*thisis the div for the context menu*/}
 
-                        </div>
+                        {/*</div>*/}
+                        <TestMenu/>
 
                     </ContextMenuWrapper>
 

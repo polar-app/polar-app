@@ -1,9 +1,16 @@
 declare module '@trendmicro/react-dropdown' {
 
-    export default class Dropdown extends React.Component<any, any, any> {
+    export default class Dropdown extends React.Component<DropdownProps, any, any> {
 
-        public readonly onSelect: (eventKey: any) => void;
-        public readonly children?: any;
+
+    }
+
+    export interface DropdownProps {
+
+        readonly onSelect: (eventKey: any) => void;
+        readonly defaultOpen?: boolean;
+        readonly open?: boolean;
+        readonly children?: any;
 
     }
 

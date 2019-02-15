@@ -24,15 +24,11 @@ export class TestMenu extends React.Component<any, any> {
 
             <div>
                 <Dropdown
+                    defaultOpen={true}
                     onSelect={(eventKey: any) => {
                         // noop
                     }}
                 >
-                    <DropdownToggle
-                        btnStyle="flat"
-                    >
-                        Toggler
-                    </DropdownToggle>
                     <DropdownMenu>
                         <MenuItem header>Header</MenuItem>
                         <MenuItem eventKey={1}>link</MenuItem>
