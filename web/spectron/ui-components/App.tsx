@@ -190,7 +190,6 @@ class App<P> extends React.Component<{}, IAppState> {
                     {/*</DropdownMenu>*/}
                 {/*</UncontrolledDropdown>*/}
 
-
                 <div {...contextMenuHandlers} >
 
                     this is some content

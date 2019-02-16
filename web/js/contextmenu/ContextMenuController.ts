@@ -9,6 +9,9 @@ import {TriggerEvent} from './TriggerEvent';
 import {DocDescriptor} from '../metadata/DocDescriptor';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {forDict} from '../util/Functions';
+import {ElectronContextMenus} from './electron/ElectronContextMenus';
+import {BrowserContextMenus} from './browser/BrowserContextMenus';
+import {BrowserContextMenu} from './browser/BrowserContextMenu';
 
 const log = Logger.create();
 
@@ -42,6 +45,8 @@ export class ContextMenuController {
 
         log.info("Starting ContextMenuController");
 
+        BrowserContextMenu.create();
+
         document.querySelectorAll(".page").forEach((targetElement) => {
             this.registerPageContextMenuListener(<HTMLElement> targetElement);
         });
@@ -50,8 +55,8 @@ export class ContextMenuController {
         // to assuming it's working within a .page
         //
         // document.querySelectorAll("*").forEach((targetElement) => {
-        //     this.registerDefaultContextMenuListener(<HTMLElement> targetElement);
-        // });
+        //     this.registerDefaultContextMenuListener(<HTMLElement>
+        // targetElement); });
 
     }
 
@@ -116,7 +121,7 @@ export class ContextMenuController {
 
         // FIXME: the new context menu needs to be here...
 
-        ipcRenderer.send('context-menu-trigger', TriggerEvent.create({
+        const triggerEvent = TriggerEvent.create({
             point: {
                 x: event.pageX,
                 y: event.pageY
@@ -140,7 +145,11 @@ export class ContextMenuController {
             contextMenuTypes,
             matchingSelectors,
             docDescriptor
-        }));
+        });
+
+        // ElectronContextMenus.trigger(triggerEvent);
+
+        BrowserContextMenus.trigger(triggerEvent, event);
 
     }
 
