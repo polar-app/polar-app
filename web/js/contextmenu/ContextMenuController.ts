@@ -45,7 +45,7 @@ export class ContextMenuController {
 
         log.info("Starting ContextMenuController");
 
-        BrowserContextMenu.create();
+        BrowserContextMenus.create();
 
         document.querySelectorAll(".page").forEach((targetElement) => {
             this.registerPageContextMenuListener(<HTMLElement> targetElement);

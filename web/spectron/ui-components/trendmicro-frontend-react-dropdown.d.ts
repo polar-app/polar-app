@@ -71,6 +71,7 @@ declare module '@trendmicro/react-dropdown' {
     }
 
     export interface MenuItemProps {
+        readonly onClose?: () => void;
         readonly onSelect?: (eventKey: number) => void;
         readonly eventKey?: number;
         readonly header?: boolean;
@@ -78,6 +79,12 @@ declare module '@trendmicro/react-dropdown' {
         readonly divider?: boolean;
         readonly active?: boolean;
         readonly title?: string;
+
+        /**
+         * Whether or not the dropdown submenu is visible.
+         */
+        readonly open?: boolean;
+
 
     }
 
