@@ -60,7 +60,7 @@ export class ElectronContextMenu {
 
     }
 
-    private async postContextMenuMessage(name: string, triggerEvent: TriggerEvent) {
+    public static async postContextMenuMessage(name: string, triggerEvent: TriggerEvent) {
 
         log.info("postContextMenuMessage: " + name);
 
@@ -211,7 +211,7 @@ export class ElectronContextMenu {
             new MenuItem({
                 label: 'Delete',
                 // accelerator: 'CmdOrCtrl+A',
-                click: () => this.postContextMenuMessage("delete-area-highlight", triggerEvent)
+                click: () => ElectronContextMenu.postContextMenuMessage("delete-area-highlight", triggerEvent)
             })
         ]));
 
@@ -231,7 +231,7 @@ export class ElectronContextMenu {
             return PagemarkModes.toDescriptors().map(current => {
                 return new MenuItem({
                      label: current.title,
-                     click: () => this.postContextMenuMessage("set-pagemark-mode-" + current.key, triggerEvent)
+                     click: () => ElectronContextMenu.postContextMenuMessage("set-pagemark-mode-" + current.key, triggerEvent)
                  });
             });
 
@@ -242,7 +242,7 @@ export class ElectronContextMenu {
             new MenuItem({
                 label: 'Delete Pagemark',
                 // accelerator: 'CmdOrCtrl+A',
-                click: () => this.postContextMenuMessage("delete-pagemark", triggerEvent)
+                click: () => ElectronContextMenu.postContextMenuMessage("delete-pagemark", triggerEvent)
             })
         ]));
 
@@ -284,17 +284,17 @@ export class ElectronContextMenu {
             label: 'Create Pagemark to Point',
             // accelerator: "CommandOrControl+Alt+LeftClick",
             // registerAccelerator: false,
-            click: () => this.postContextMenuMessage("create-pagemark-to-point", triggerEvent)
+            click: () => ElectronContextMenu.postContextMenuMessage("create-pagemark-to-point", triggerEvent)
         }));
 
         ctxMenu.append(new MenuItem({
             label: 'Create Pagemark Box',
-            click: () => this.postContextMenuMessage("create-pagemark", triggerEvent)
+            click: () => ElectronContextMenu.postContextMenuMessage("create-pagemark", triggerEvent)
         }));
 
         ctxMenu.append(new MenuItem({
             label: 'Create Area Highlight',
-            click: () => this.postContextMenuMessage("create-area-highlight", triggerEvent)
+            click: () => ElectronContextMenu.postContextMenuMessage("create-area-highlight", triggerEvent)
         }));
 
         // ctxMenu.append(new MenuItem({
