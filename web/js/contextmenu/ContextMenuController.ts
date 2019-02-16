@@ -51,13 +51,6 @@ export class ContextMenuController {
             this.registerPageContextMenuListener(<HTMLElement> targetElement);
         });
 
-        // TODO: this won't work because onContextMenuHandler is tightly bound
-        // to assuming it's working within a .page
-        //
-        // document.querySelectorAll("*").forEach((targetElement) => {
-        //     this.registerDefaultContextMenuListener(<HTMLElement>
-        // targetElement); });
-
     }
 
     private registerPageContextMenuListener(targetElement: HTMLElement) {

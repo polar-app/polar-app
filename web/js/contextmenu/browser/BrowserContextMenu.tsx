@@ -98,6 +98,15 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
                     </MenuItem>
 
+
+                    <MenuItem disabled={!this.state.selectionContexts.pagemark}
+                              onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-pagemark", this.state.triggerEvent!)}>
+
+                        Delete Pagemark
+
+                    </MenuItem>
+
+
                     <MenuItem divider/>
 
                     <MenuItem onSelect={() => AnnotationSidebarClient.toggleAnnotationSidebar()}>
