@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom';
 import {ContextMenu} from '../../ui/context_menu/ContextMenu';
 import Dropdown, {DropdownMenu, MenuItem} from "@trendmicro/react-dropdown";
 import {TriggerEvent} from '../TriggerEvent';
+import {ContextMenuMessages} from '../ContextMenuMessages';
 
 export class BrowserContextMenu {
 
@@ -48,7 +49,7 @@ export class BrowserContextMenu {
                         {/*link that alerts*/}
                     {/*</MenuItem>*/}
 
-                    <MenuItem onSelect={() => console.log("Creating pagemark to point")}>
+                    <MenuItem onSelect={() => ContextMenuMessages.postContextMenuMessage("create-pagemark-to-point", triggerEvent!)}>
 
                         Create Pagemark to Point
 

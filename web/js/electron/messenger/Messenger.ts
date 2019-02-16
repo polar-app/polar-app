@@ -4,7 +4,6 @@ import {Functions} from '../../util/Functions';
 import {isPresent} from '../../Preconditions';
 import {Browser} from '../../capture/Browser';
 
-
 /**
  * Messenger is a class for using postMessage within the renderer to communicate
  * with apps using web standards, and not Electron IPC. This makes our code
@@ -43,6 +42,8 @@ export class Messenger {
      * We're in the browers so we can just call the postMessage function directly.
      */
     public static async postMessageDirectly(message: any) {
+        // we have to do this JSON encode/decode trick to force
+        message = JSON.parse(JSON.stringify(message));
         window.postMessage(message, "*");
     }
 

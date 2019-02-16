@@ -90,7 +90,7 @@ export class ContextMenuController {
 
         const contextMenuTypes: ContextMenuType[] = [];
 
-        forDict(matchingSelectors, (selector: any, current: any) => {
+        forDict(matchingSelectors, (selector: string, current: MatchingSelector) => {
             if (current.elements.length > 0) {
                 contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
             }
