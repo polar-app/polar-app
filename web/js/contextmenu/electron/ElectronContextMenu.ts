@@ -157,7 +157,7 @@ export class ElectronContextMenu {
             new MenuItem({
                 label: 'Delete',
                 // accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdNotify("delete-text-highlight", triggerEvent, sender)
+                click: () => ContextMenuMessages.postContextMenuMessage("delete-text-highlight", triggerEvent)
             })
         ]));
 

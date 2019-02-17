@@ -84,6 +84,8 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
                     </MenuItem>
 
+                    {/*FIXME set pagemark mode*/}
+
                     <MenuItem disabled={!this.state.selectionContexts.page}
                               onSelect={() => ContextMenuMessages.postContextMenuMessage("create-pagemark", this.state.triggerEvent!)}>
 
@@ -103,6 +105,33 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
                               onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-pagemark", this.state.triggerEvent!)}>
 
                         Delete Pagemark
+
+                    </MenuItem>
+
+                    <MenuItem disabled={!this.state.selectionContexts.textHighlight}>
+
+                        Text Highlight
+
+                        <MenuItem disabled={!this.state.selectionContexts.textHighlight}
+                                  onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-text-highlight", this.state.triggerEvent!)}>
+
+                            Delete
+
+                        </MenuItem>
+
+                    </MenuItem>
+
+
+                    <MenuItem disabled={!this.state.selectionContexts.areaHighlight}>
+
+                        Area Highlight
+
+                        <MenuItem disabled={!this.state.selectionContexts.areaHighlight}
+                                  onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-area-highlight", this.state.triggerEvent!)}>
+
+                            Delete
+
+                        </MenuItem>
 
                     </MenuItem>
 

@@ -44,6 +44,7 @@ export class Messenger {
     public static async postMessageDirectly(message: any) {
         // we have to do this JSON encode/decode trick to force
         message = JSON.parse(JSON.stringify(message));
+
         window.postMessage(message, "*");
     }
 
