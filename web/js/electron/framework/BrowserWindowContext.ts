@@ -13,7 +13,7 @@ export class BrowserWindowContext {
 
         for (const id of browserWindowIDs) {
             const browserWindow = BrowserWindow.fromId(id);
-            await Messenger.postMessageToWindow(message, browserWindow);
+            await Messenger.postMessageWithElectronBrowserWindow(message, browserWindow);
         }
 
     }

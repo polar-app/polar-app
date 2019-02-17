@@ -547,7 +547,7 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div className="intro">
 
-                    <p className="text-center">
+                    <div className="text-center">
                         <i className="fas fa-cloud-upload-alt"
                            style={{ fontSize: '120px', margin: '20px', color: '#007bff'}}></i>
 
@@ -557,7 +557,7 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                             Polar now supports cloud sync powered by Firebase.
                         </p>
 
-                    </p>
+                    </div>
 
                     <p>
                         Cloud sync is real-time - as soon as you make a change to a
@@ -583,7 +583,7 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div className="intro">
 
-                    <p className="text-center">
+                    <div className="text-center">
 
                         <img style={{maxHeight: '200px'}} className="img-fluid" src={EmbeddedImages.POLAR_LOGO}></img>
 
@@ -593,7 +593,7 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                         <h1 className="title">Polar 1.1 - Chrome Extension Support!</h1>
 
-                    </p>
+                    </div>
 
                     <p>
                         Polar 1.1 is fresh out the door and a lot of amazing features and

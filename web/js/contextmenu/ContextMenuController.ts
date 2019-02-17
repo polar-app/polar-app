@@ -9,6 +9,9 @@ import {TriggerEvent} from './TriggerEvent';
 import {DocDescriptor} from '../metadata/DocDescriptor';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {forDict} from '../util/Functions';
+import {ElectronContextMenus} from './electron/ElectronContextMenus';
+import {BrowserContextMenus} from './browser/BrowserContextMenus';
+import {BrowserContextMenu} from './browser/BrowserContextMenu';
 
 const log = Logger.create();
 
@@ -45,16 +48,11 @@ export class ContextMenuController {
 
         log.info("Starting ContextMenuController");
 
+        BrowserContextMenus.create();
+
         document.querySelectorAll(".page").forEach((targetElement) => {
             this.registerPageContextMenuListener(<HTMLElement> targetElement);
         });
-
-        // TODO: this won't work because onContextMenuHandler is tightly bound
-        // to assuming it's working within a .page
-        //
-        // document.querySelectorAll("*").forEach((targetElement) => {
-        //     this.registerDefaultContextMenuListener(<HTMLElement> targetElement);
-        // });
 
     }
 
@@ -88,7 +86,7 @@ export class ContextMenuController {
 
         const contextMenuTypes: ContextMenuType[] = [];
 
-        forDict(matchingSelectors, (selector: any, current: any) => {
+        forDict(matchingSelectors, (selector: string, current: MatchingSelector) => {
             if (current.elements.length > 0) {
                 contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
             }
@@ -117,7 +115,7 @@ export class ContextMenuController {
 
         };
 
-        ipcRenderer.send('context-menu-trigger', TriggerEvent.create({
+        const triggerEvent = TriggerEvent.create({
             point: {
                 x: event.pageX,
                 y: event.pageY
@@ -141,7 +139,11 @@ export class ContextMenuController {
             contextMenuTypes,
             matchingSelectors,
             docDescriptor
-        }));
+        });
+
+        // ElectronContextMenus.trigger(triggerEvent);
+
+        BrowserContextMenus.trigger(triggerEvent, event);
 
     }
 

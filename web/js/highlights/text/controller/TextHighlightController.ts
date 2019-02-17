@@ -38,31 +38,6 @@ export class TextHighlightController {
     constructor(model: Model) {
         this.model = Preconditions.assertNotNull(model, "model");
         this.docFormat = DocFormatFactory.getInstance();
-
-        if (ipcRenderer) {
-
-
-            // TODO: migrate this to Messenger and postMessage so that it's easily
-            // tested outside of electron.
-            ipcRenderer.on('context-menu-command', (event: Electron.EventEmitter, arg: any) => {
-
-                switch (arg.command) {
-
-                    case "delete-text-highlight":
-                        this.onTextHighlightDeleted(arg);
-                        break;
-
-                    default:
-                        console.warn("Unhandled command: " + arg.command);
-                        break;
-                }
-
-            });
-
-        } else {
-            log.warn("No ipcRenderer");
-        }
-
     }
 
     private readonly model: Model;
@@ -121,10 +96,11 @@ export class TextHighlightController {
 
     }
 
-
     private onMessageReceived(event: any) {
 
         log.info("Received message: ", event);
+
+        const triggerEvent = event.data;
 
         switch (event.data.type) {
 
@@ -135,6 +111,14 @@ export class TextHighlightController {
                 this.doHighlight(typedMessage.value.highlightColor)
                     .catch(err => log.error("Unable to create text highlight", err));
 
+                break;
+
+            case "delete-text-highlight":
+                this.onTextHighlightDeleted(triggerEvent);
+                break;
+
+            default:
+                console.warn("Unhandled command: " + event.data.type);
                 break;
 
         }
