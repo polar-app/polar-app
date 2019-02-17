@@ -96,7 +96,6 @@ export class TextHighlightController {
 
     }
 
-
     private onMessageReceived(event: any) {
 
         log.info("Received message: ", event);
