@@ -121,7 +121,6 @@ export class TextHighlightController {
                 console.warn("Unhandled command: " + event.data.type);
                 break;
 
-
         }
 
     }

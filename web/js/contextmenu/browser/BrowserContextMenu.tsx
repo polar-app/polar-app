@@ -8,6 +8,7 @@ import {TriggerEvent} from '../TriggerEvent';
 import {ContextMenuMessages} from '../ContextMenuMessages';
 import {ContextMenuType} from '../ContextMenuType';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
+import {PagemarkModes} from '../../metadata/PagemarkModes';
 
 export class BrowserContextMenu extends React.Component<IProps, IState> {
 
@@ -41,10 +42,6 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
                 state.selectionContexts.pagemark = triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGEMARK);
             }
 
-
-            console.log(`FIXME: got event... ${eventName}`, data);
-            console.log(`FIXME: using selection contexts... ${eventName}`, this.state.selectionContexts);
-
             this.setState(state);
 
         });
@@ -53,48 +50,54 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
     public render() {
 
+        const triggerEvent = this.state.triggerEvent!;
+
+        const CreateModeSubmenuItems = () => {
+
+            return <MenuItem disabled={!this.state.selectionContexts.pagemark}>
+
+                Set Pagemark Mode
+
+                {PagemarkModes.toDescriptors().map(current => {
+
+                    return (<MenuItem key={current.key}
+                                      disabled={!this.state.selectionContexts.pagemark}
+                                      onSelect={() => ContextMenuMessages.postContextMenuMessage("set-pagemark-mode-" + current.key, triggerEvent)}>
+
+                        {current.title}
+
+                    </MenuItem>);
+                    })
+                }
+
+            </MenuItem>;
+
+        };
+
         return (
 
             <ContextMenu id={this.props.id}>
 
                 <DropdownMenu>
 
-                    {/*<MenuItem header>Header</MenuItem>*/}
-                    {/*<MenuItem eventKey={1}>link</MenuItem>*/}
-                    {/*<MenuItem divider />*/}
-                    {/*<MenuItem header>Header</MenuItem>*/}
-                    {/*<MenuItem eventKey={2}>link</MenuItem>*/}
-                    {/*<MenuItem eventKey={3} disabled>disabled</MenuItem>*/}
-                    {/*<MenuItem eventKey={4} title="link with title">*/}
-                    {/*link with title*/}
-                    {/*</MenuItem>*/}
-
-                    {/*<MenuItem eventKey={5}*/}
-                    {/*active*/}
-                    {/*onSelect={(eventKey: number) => {*/}
-                    {/*alert(`Alert from menu item.\neventKey: ${eventKey}`);*/}
-                    {/*}}>*/}
-                    {/*link that alerts*/}
-                    {/*</MenuItem>*/}
-
                     <MenuItem disabled={!this.state.selectionContexts.page}
-                              onSelect={() => ContextMenuMessages.postContextMenuMessage("create-pagemark-to-point", this.state.triggerEvent!)}>
+                              onSelect={() => ContextMenuMessages.postContextMenuMessage("create-pagemark-to-point", triggerEvent)}>
 
                         Create Pagemark to Point
 
                     </MenuItem>
 
-                    {/*FIXME set pagemark mode*/}
+                    <CreateModeSubmenuItems/>
 
                     <MenuItem disabled={!this.state.selectionContexts.page}
-                              onSelect={() => ContextMenuMessages.postContextMenuMessage("create-pagemark", this.state.triggerEvent!)}>
+                              onSelect={() => ContextMenuMessages.postContextMenuMessage("create-pagemark", triggerEvent)}>
 
                         Create Pagemark Box
 
                     </MenuItem>
 
                     <MenuItem disabled={!this.state.selectionContexts.page}
-                              onSelect={() => ContextMenuMessages.postContextMenuMessage("create-area-highlight", this.state.triggerEvent!)}>
+                              onSelect={() => ContextMenuMessages.postContextMenuMessage("create-area-highlight", triggerEvent)}>
 
                         Create Area Highlight
 
@@ -102,7 +105,7 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
 
                     <MenuItem disabled={!this.state.selectionContexts.pagemark}
-                              onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-pagemark", this.state.triggerEvent!)}>
+                              onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-pagemark", triggerEvent)}>
 
                         Delete Pagemark
 
@@ -113,7 +116,7 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
                         Text Highlight
 
                         <MenuItem disabled={!this.state.selectionContexts.textHighlight}
-                                  onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-text-highlight", this.state.triggerEvent!)}>
+                                  onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-text-highlight", triggerEvent)}>
 
                             Delete
 
@@ -127,7 +130,7 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
                         Area Highlight
 
                         <MenuItem disabled={!this.state.selectionContexts.areaHighlight}
-                                  onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-area-highlight", this.state.triggerEvent!)}>
+                                  onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-area-highlight", triggerEvent)}>
 
                             Delete
 
