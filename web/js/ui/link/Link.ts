@@ -14,7 +14,7 @@ export class Link {
         this.href = href;
         this.id = id;
 
-        if(doc) {
+        if (doc) {
             this.doc = doc;
         } else {
             this.doc = document;
@@ -43,12 +43,12 @@ export class Link {
 
         let link = this.doc.head!.querySelector("#" + this.id);
 
-        if(! link) {
+        if (! link) {
             // it's already present.
             return;
         }
 
-        if(link.parentElement) {
+        if (link.parentElement) {
             link.parentElement.removeChild(link);
         }
 

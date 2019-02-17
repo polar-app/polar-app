@@ -21,6 +21,10 @@ export class SynchronizingDocLoader {
                       filename: string,
                       hashcode?: Hashcode) {
 
+        // FIXME: what I can do here is first open the loader , then call it
+        // later after the operation is completed.  Once the tab is open
+        // I can set the link after...
+
         const persistenceLayer = this.persistenceLayerManager.get();
 
         const ref: FileRef = {

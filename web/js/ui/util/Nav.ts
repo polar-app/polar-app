@@ -6,4 +6,14 @@ export class Nav {
         return url.toString();
     }
 
+    public static openLinkWithNewTab(link: string) {
+
+        const win = window.open(link, '_blank');
+
+        if (win) {
+            win.focus();
+        }
+
+    }
+
 }

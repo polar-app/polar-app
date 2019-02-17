@@ -8,6 +8,7 @@ import {SplitBar, SplitBarLeft, SplitBarRight} from './SplitBar';
 import Button from 'reactstrap/lib/Button';
 import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
 import {DropdownItem} from 'reactstrap';
+import {Nav} from '../../../web/js/ui/util/Nav';
 
 const log = Logger.create();
 
@@ -44,7 +45,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                             <Button id="discord-button"
                                     size="sm"
                                     className="ml-1"
-                                    onClick={() => document.location!.href = 'https://discord.gg/GT8MhA6'}
+                                    onClick={() => Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')}
                                     color="light">
 
                                 <i className="fab fa-discord" style={{fontSize: '22px', marginTop: 'auto', marginBottom: 'auto'}}></i>
@@ -66,7 +67,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                             <Button id="donate-button"
                                     size="sm"
                                     className="ml-1"
-                                    onClick={() => document.location!.href = 'https://opencollective.com/polar-bookshelf'}
+                                    onClick={() => Nav.openLinkWithNewTab('https://opencollective.com/polar-bookshelf')}
                                     color="light">
 
                                 <i className="fas fa-donate" style={{fontSize: '22px'}}></i>
@@ -90,7 +91,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                             <Button id="poll-button"
                                     size="sm"
                                     className="ml-1"
-                                    onClick={() => document.location!.href = 'https://kevinburton1.typeform.com/to/u1zNWG'}
+                                    onClick={() => Nav.openLinkWithNewTab('https://kevinburton1.typeform.com/to/u1zNWG')}
                                     color="light">
 
                                 <i className="fas fa-poll-h" style={{fontSize: '22px'}}></i>
@@ -112,7 +113,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                             <Button id="help-button"
                                     size="sm"
                                     className="ml-1"
-                                    onClick={() => document.location!.href = 'https://getpolarized.io/docs/'}
+                                    onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/docs/')}
                                     color="light">
                                 <i className="fas fa-question"></i>
                             </Button>

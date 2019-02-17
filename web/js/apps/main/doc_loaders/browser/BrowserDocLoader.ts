@@ -34,14 +34,14 @@ export class BrowserDocLoader {
 
             const datastoreFile = optionalDatastoreFile.get();
 
-            console.log("FIXME: loading ", datastoreFile);
-            console.log("FIXME: loading from URL", datastoreFile.url);
-
             const viewerURL = PDFLoader.createViewerURL(datastoreFile.url, loadDocRequest.fileRef.name);
 
-            console.log("FIXME: viewerURL: " + viewerURL);
+            console.log("FIXME: viewing URL: " + viewerURL);
 
-            window.open(viewerURL, '_blank');
+            const win = window.open(viewerURL, '_blank');
+            if (win) {
+                win.focus();
+            }
 
         } else {
             log.warn("No datastore file for: ", loadDocRequest);
