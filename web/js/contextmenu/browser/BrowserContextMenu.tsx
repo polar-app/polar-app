@@ -114,6 +114,12 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
                     </MenuItem>
 
+                    <MenuItem divider hidden={!this.state.selectionContexts.pagemark}/>
+
+                    <CreateModeSubmenuItems/>
+
+                    <MenuItem divider hidden={!this.state.selectionContexts.textHighlight}/>
+
                     <MenuItem hidden={!this.state.selectionContexts.textHighlight}>
 
                         Text Highlight
@@ -127,7 +133,7 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
                     </MenuItem>
 
-                    <CreateModeSubmenuItems/>
+                    <MenuItem divider hidden={!this.state.selectionContexts.areaHighlight}/>
 
                     <MenuItem hidden={!this.state.selectionContexts.areaHighlight}>
 
