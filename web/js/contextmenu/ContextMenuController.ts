@@ -112,8 +112,6 @@ export class ContextMenuController {
 
         };
 
-        // FIXME: the new context menu needs to be here...
-
         const triggerEvent = TriggerEvent.create({
             point: {
                 x: event.pageX,
