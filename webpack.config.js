@@ -7,11 +7,6 @@ const workers = require('os').cpus().length - 1;
 
 console.log("Using N workers: " + workers);
 
-// just chrome 15s
-// all 1m6s
-// repository 54s
-// login 3s
-
 module.exports = {
     // mode: 'production',
     entry: {
@@ -43,7 +38,7 @@ module.exports = {
                             // there should be 1 cpu for the fork-ts-checker-webpack-plugin
                             workers: 15,
                             // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-                            // poolTimeout: Infinity,
+                            poolTimeout: Infinity,
                             workerParallelJobs: 100,
                             poolTimeout: 2000,
                         }
