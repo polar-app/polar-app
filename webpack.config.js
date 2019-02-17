@@ -33,33 +33,37 @@ module.exports = {
                 use: 'null-loader'
             },
             {
-                loader: 'thread-loader',
-                options: {
-                    // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                    workers,
-                    // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-                    // poolTimeout: Infinity,
-                    workerParallelJobs: 50,
-                    poolTimeout: 2000,
-
-
-                }
-            },
-            {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                loader: 'ts-loader',
-                options: {
-                    // performance: this improved performance by about 2x.
-                    // from 20s to about 10s
-                    transpileOnly: true,
-                    experimentalWatchApi: true,
 
-                    // IMPORTANT! use happyPackMode mode to speed-up
-                    // compilation and reduce errors reported to webpack
-                    happyPackMode: true
+                use: [
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: 15,
+                            // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+                            // poolTimeout: Infinity,
+                            workerParallelJobs: 100,
+                            poolTimeout: 2000,
+                        }
+                    },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            // performance: this improved performance by about 2x.
+                            // from 20s to about 10s
+                            transpileOnly: true,
+                            experimentalWatchApi: true,
 
-                }
+                            // IMPORTANT! use happyPackMode mode to speed-up
+                            // compilation and reduce errors reported to webpack
+                            happyPackMode: true
+
+                        }
+                    }
+                ]
+
             }
 
         ]
