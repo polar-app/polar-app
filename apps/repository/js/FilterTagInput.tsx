@@ -3,7 +3,7 @@ import {Tag} from '../../../web/js/tags/Tag';
 import {TagsDB} from './TagsDB';
 import Select from 'react-select';
 import {Popover, PopoverBody, Button} from 'reactstrap';
-import {Blackout} from './Blackout';
+import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {TagSelectOptions} from './TagSelectOptions';
 import {TagSelectOption} from './TagSelectOption';
 import {FilteredTags} from './FilteredTags';

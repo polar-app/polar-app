@@ -18,20 +18,11 @@ export class AppRuntime {
     }
 
     public static isElectron() {
+        return this.get().startsWith('electron-');
+    }
 
-        switch (this.get()) {
-
-            case 'electron-renderer':
-                return true;
-
-            case 'electron-main':
-                return true;
-
-            case 'browser':
-                return false;
-
-        }
-
+    public static isBrowser() {
+        return this.get() === 'browser';
     }
 
 }

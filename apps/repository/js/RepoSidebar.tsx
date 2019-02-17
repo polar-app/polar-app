@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Button, ListGroup} from 'reactstrap';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {Blackout} from './Blackout';
+import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
 import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
@@ -18,7 +18,7 @@ const Styles: IStyleMap = {
         left: 0,
         // display: 'none',
         backgroundColor: '#fff',
-        zIndex: 999,
+        zIndex: 99999,
         height: 'calc(100%)',
         width: '200px',
         paddingLeft: '1px',

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TooltipDropdown} from './TooltipDropdown';
+import {AppRuntime} from '../../../../web/js/AppRuntime';
 
 export class AddContentButton extends React.Component<IProps, IState> {
 
@@ -55,6 +56,7 @@ export class AddContentButton extends React.Component<IProps, IState> {
                     </DropdownItem>
 
                     <DropdownItem id="add-content-capture-web-page"
+                                  hidden={AppRuntime.isBrowser()}
                                   size="sm"
                                   onClick={() => this.props.captureWebPage()}>
 

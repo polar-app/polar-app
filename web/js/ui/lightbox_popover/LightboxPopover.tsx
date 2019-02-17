@@ -2,7 +2,7 @@
 import React from 'react';
 import {Button, Form, FormGroup, Input, Label, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
-import {Blackout} from '../../../../apps/repository/js/Blackout';
+import {Blackout} from '../blackout/Blackout';
 
 /**
  * Popover that functions like a normal popover but uses a lightbox to highlight

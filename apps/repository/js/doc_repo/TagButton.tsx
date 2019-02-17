@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Select from 'react-select';
 import {Button, Popover, PopoverBody} from 'reactstrap';
-import {Blackout} from '../Blackout';
+import {Blackout} from '../../../../web/js/ui/blackout/Blackout';
 import {TagSelectOption} from '../TagSelectOption';
 import {TagsDB} from '../TagsDB';
 import {TagSelectOptions} from '../TagSelectOptions';

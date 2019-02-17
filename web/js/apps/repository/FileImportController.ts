@@ -14,6 +14,7 @@ import {IProvider} from "../../util/Providers";
 import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';
 import {DocLoader} from "../main/doc_loaders/DocLoader";
 import {FileRef} from "../../datastore/Datastore";
+import {Blackout} from "../../ui/blackout/Blackout";
 
 const log = Logger.create();
 
@@ -65,20 +66,52 @@ export class FileImportController {
     }
 
     private onDragEnterOrOver(event: DragEvent) {
-        // needed to tell the browser that onDrop is supported here...
         event.preventDefault();
+
+        Blackout.enable();
+        // needed to tell the browser that onDrop is supported here...
     }
+
 
     private onDrop(event: DragEvent) {
 
+        event.preventDefault();
+
+        Blackout.disable();
+
         if (event.dataTransfer) {
 
+            console.log("FIXME1: ", event.dataTransfer.files);
+
+            for (const file of Array.from(event.dataTransfer.files)) {
+                console.log("FIXME: ", file);
+            }
+
+            // FIXME: I have to use URL.createObjectURL
+            //
+            // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+            //
+            // then use FileReader
+            //
+            // https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+            //
+            // on the data to read it out...
+
             const files = Array.from(event.dataTransfer.files)
-                .filter(file => file.path.endsWith(".pdf"))
+                .filter(file => file.name.endsWith(".pdf"))
                 .map(file => file.path);
 
-            this.onImportFiles(files)
-                .catch(err => log.error("Unable to import files: ", files));
+            // FIXME: this still maps them to path which doesn't exist except
+            // in Electron.
+
+            if (files.length > 0) {
+
+                this.onImportFiles(files)
+                    .catch(err => log.error("Unable to import files: ", files));
+
+            } else {
+                Toaster.error("Unable to upload files.  Only PDF uploads are supported.");
+            }
 
         }
 
@@ -120,6 +153,9 @@ export class FileImportController {
                     name: FilePaths.basename(path)
                 };
 
+                // FIXME: DO NOT enable this in the web UI... the upload could
+                // take forever.  It might be nice to open a tab showing the
+                // upload progress and then load the file once it's uploaded.
                 this.docLoader.create({
                     fingerprint,
                     fileRef,
@@ -136,6 +172,8 @@ export class FileImportController {
     }
 
     private async doImportFiles(files: string[]): Promise<Array<Optional<ImportedFile>>> {
+
+        // FIXME: do we need to handle these via file or blob URLs?
 
         const progress = new ProgressCalculator(files.length);
 

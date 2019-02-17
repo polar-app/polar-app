@@ -2,7 +2,7 @@
 import React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
-import {Blackout} from '../../../../apps/repository/js/Blackout';
+import {Blackout} from '../blackout/Blackout';
 import {IStyleMap} from '../../react/IStyleMap';
 
 class Styles {
