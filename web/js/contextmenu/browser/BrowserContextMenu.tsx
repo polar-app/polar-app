@@ -56,19 +56,32 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
             return <MenuItem hidden={!this.state.selectionContexts.pagemark}>
 
-                Set Pagemark Mode
+                Pagemark
 
-                {PagemarkModes.toDescriptors().map(current => {
+                <MenuItem>
 
-                    return (<MenuItem key={current.key}
-                                      hidden={!this.state.selectionContexts.pagemark}
-                                      onSelect={() => ContextMenuMessages.postContextMenuMessage("set-pagemark-mode-" + current.key, triggerEvent)}>
+                    Set Mode
 
-                        {current.title}
+                    {PagemarkModes.toDescriptors().map(current => {
+                        return (<MenuItem key={current.key}
+                                          hidden={!this.state.selectionContexts.pagemark}
+                                          onSelect={() => ContextMenuMessages.postContextMenuMessage("set-pagemark-mode-" + current.key, triggerEvent)}>
 
-                    </MenuItem>);
-                    })
-                }
+                            {current.title}
+
+                        </MenuItem>);
+                    })}
+
+                </MenuItem>
+
+                <MenuItem divider/>
+
+                <MenuItem hidden={!this.state.selectionContexts.pagemark}
+                          onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-pagemark", triggerEvent)}>
+
+                    <div className="text-danger">Delete</div>
+
+                </MenuItem>
 
             </MenuItem>;
 
@@ -87,8 +100,6 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
                     </MenuItem>
 
-                    <CreateModeSubmenuItems/>
-
                     <MenuItem hidden={!this.state.selectionContexts.page}
                               onSelect={() => ContextMenuMessages.postContextMenuMessage("create-pagemark", triggerEvent)}>
 
@@ -103,14 +114,6 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
 
                     </MenuItem>
 
-
-                    <MenuItem hidden={!this.state.selectionContexts.pagemark}
-                              onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-pagemark", triggerEvent)}>
-
-                        Delete Pagemark
-
-                    </MenuItem>
-
                     <MenuItem hidden={!this.state.selectionContexts.textHighlight}>
 
                         Text Highlight
@@ -118,12 +121,13 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
                         <MenuItem hidden={!this.state.selectionContexts.textHighlight}
                                   onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-text-highlight", triggerEvent)}>
 
-                            Delete
+                            <div className="text-danger">Delete</div>
 
                         </MenuItem>
 
                     </MenuItem>
 
+                    <CreateModeSubmenuItems/>
 
                     <MenuItem hidden={!this.state.selectionContexts.areaHighlight}>
 
@@ -132,12 +136,11 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
                         <MenuItem hidden={!this.state.selectionContexts.areaHighlight}
                                   onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-area-highlight", triggerEvent)}>
 
-                            Delete
+                            <div className="text-danger">Delete</div>
 
                         </MenuItem>
 
                     </MenuItem>
-
 
                     <MenuItem divider/>
 
