@@ -45,16 +45,16 @@ export class FileImportController {
 
     public start(): void {
 
-        if (! ipcRenderer) {
-            return;
+        if (ipcRenderer) {
+
+            ipcRenderer.on('file-import', (event: any, fileImportRequest: FileImportRequest) => {
+
+                this.onFileImportRequest(fileImportRequest)
+                    .catch(err => log.error("Unable to import: ", err));
+
+            });
+
         }
-
-        ipcRenderer.on('file-import', (event: any, fileImportRequest: FileImportRequest) => {
-
-            this.onFileImportRequest(fileImportRequest)
-                .catch(err => log.error("Unable to import: ", err));
-
-        });
 
         document.body.addEventListener('dragenter', (event) => this.onDragEnterOrOver(event));
         document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event));
