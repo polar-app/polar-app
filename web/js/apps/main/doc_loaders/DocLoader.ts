@@ -5,8 +5,9 @@ import {ElectronDocLoader} from './electron/ElectronDocLoader';
 import {BrowserDocLoader} from './browser/BrowserDocLoader';
 import {IProvider} from '../../../util/Providers';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
+import {IDocLoader, IDocLoadRequest} from './IDocLoader';
 
-export class DocLoader {
+export class DocLoader implements IDocLoader {
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
@@ -19,15 +20,14 @@ export class DocLoader {
         this.browserDocLoader = new BrowserDocLoader(persistenceLayerProvider);
     }
 
-    public async load(loadDocRequest: LoadDocRequest) {
+    public create(loadDocRequest: LoadDocRequest): IDocLoadRequest {
 
         if (DistRuntime.get() === 'electron') {
-            await this.electronDocLoader.load(loadDocRequest);
+            return this.electronDocLoader.create(loadDocRequest);
         } else {
-            await this.browserDocLoader.load(loadDocRequest);
+            return this.browserDocLoader.create(loadDocRequest);
         }
 
     }
-
 
 }

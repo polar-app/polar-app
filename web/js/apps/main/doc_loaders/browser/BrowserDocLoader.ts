@@ -3,12 +3,14 @@ import {Preconditions} from '../../../../Preconditions';
 import {IProvider} from '../../../../util/Providers';
 import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
 import {Backend} from '../../../../datastore/Backend';
-import {Logger} from '../../../..//logger/Logger';
+import {Logger} from '../../../../logger/Logger';
 import {PDFLoader} from '../../file_loaders/PDFLoader';
+import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
+import {Nav} from '../../../../ui/util/Nav';
 
 const log = Logger.create();
 
-export class BrowserDocLoader {
+export class BrowserDocLoader implements IDocLoader {
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
@@ -16,7 +18,9 @@ export class BrowserDocLoader {
         this.persistenceLayerProvider = persistenceLayerProvider;
     }
 
-    public async load(loadDocRequest: LoadDocRequest) {
+    public create(loadDocRequest: LoadDocRequest): IDocLoadRequest {
+
+        const linkLoader = Nav.createLinkLoader();
 
         Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
         Preconditions.assertPresent(loadDocRequest.fileRef, "fileRef");
@@ -24,28 +28,28 @@ export class BrowserDocLoader {
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 
-        // nwo resolve the URL for this doc.
-        // TODO: this is slow and might be nice to have this computed async on
-        // startup
-        const optionalDatastoreFile
-            = await persistenceLayer.getFile(Backend.STASH, loadDocRequest.fileRef);
+        return {
 
-        if (optionalDatastoreFile.isPresent()) {
+            async load(): Promise<void> {
 
-            const datastoreFile = optionalDatastoreFile.get();
+                const optionalDatastoreFile
+                    = await persistenceLayer.getFile(Backend.STASH, loadDocRequest.fileRef);
 
-            const viewerURL = PDFLoader.createViewerURL(datastoreFile.url, loadDocRequest.fileRef.name);
+                if (optionalDatastoreFile.isPresent()) {
 
-            console.log("FIXME: viewing URL: " + viewerURL);
+                    const datastoreFile = optionalDatastoreFile.get();
 
-            const win = window.open(viewerURL, '_blank');
-            if (win) {
-                win.focus();
+                    const viewerURL = PDFLoader.createViewerURL(datastoreFile.url, loadDocRequest.fileRef.name);
+
+                    linkLoader.load(viewerURL);
+
+                } else {
+                    log.warn("No datastore file for: ", loadDocRequest);
+                }
+
             }
 
-        } else {
-            log.warn("No datastore file for: ", loadDocRequest);
-        }
+        };
 
     }
 

@@ -120,11 +120,12 @@ export class FileImportController {
                     name: FilePaths.basename(path)
                 };
 
-                this.docLoader.load({
+                this.docLoader.create({
                     fingerprint,
                     fileRef,
                     newWindow: true
-                }).catch(err => log.error("Unable to load doc: ", err));
+                }).load()
+                  .catch(err => log.error("Unable to load doc: ", err));
 
             }
 

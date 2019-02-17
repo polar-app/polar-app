@@ -27,6 +27,17 @@ export class SynchronizingDocLoader {
 
         const persistenceLayer = this.persistenceLayerManager.get();
 
+        const fileRef: FileRef = {
+            name: filename,
+            hashcode
+        };
+
+        const docLoaderRequest = this.docLoader.create({
+             fingerprint,
+             fileRef,
+             newWindow: true
+        });
+
         const ref: FileRef = {
             name: filename,
             hashcode
@@ -43,16 +54,7 @@ export class SynchronizingDocLoader {
             log.notice("Forcing synchronization (doc not local): " + fingerprint);
         }
 
-        const fileRef: FileRef = {
-            name: filename,
-            hashcode
-        };
-
-        await this.docLoader.load({
-             fingerprint,
-             fileRef,
-             newWindow: true
-         });
+        await docLoaderRequest.load();
 
     }
 

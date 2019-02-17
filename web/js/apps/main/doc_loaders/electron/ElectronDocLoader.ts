@@ -5,11 +5,12 @@ import {LoadDocRequest} from '../LoadDocRequest';
 import {Preconditions} from '../../../../Preconditions';
 import {IProvider} from '../../../../util/Providers';
 import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
+import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 
 const ipcPipe = new ElectronIPCPipe(new ElectronRendererPipe());
 const ipcClient = new IPCClient(ipcPipe);
 
-export class ElectronDocLoader {
+export class ElectronDocLoader implements IDocLoader {
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
@@ -17,14 +18,23 @@ export class ElectronDocLoader {
         this.persistenceLayerProvider = persistenceLayerProvider;
     }
 
-    public async load(loadDocRequest: LoadDocRequest) {
+    public create(loadDocRequest: LoadDocRequest): IDocLoadRequest {
 
-        Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
-        Preconditions.assertPresent(loadDocRequest.fileRef, "fileRef");
-        Preconditions.assertPresent(loadDocRequest.fileRef.name, "fileRef.name");
+        return {
 
-        await ipcClient.execute('/main/load-doc', loadDocRequest);
+            async load(): Promise<void> {
+
+                Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
+                Preconditions.assertPresent(loadDocRequest.fileRef, "fileRef");
+                Preconditions.assertPresent(loadDocRequest.fileRef.name, "fileRef.name");
+
+                await ipcClient.execute('/main/load-doc', loadDocRequest);
+
+            }
+
+        };
 
     }
 
 }
+
