@@ -1,6 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
+const workers = require('os').cpus().length - 1;
+
+console.log("Using N workers: " + workers);
+
+// just chrome 15s
+// all 1m6s
+// repository 54s
+// login 3s
 
 module.exports = {
     // mode: 'production',
@@ -12,13 +22,31 @@ module.exports = {
     module: {
 
         rules: [
+
+            // https://github.com/webpack-contrib/cache-loader
+            //
+            // looks like with the cache loader the initial compile is about 10%
+            // longer but 2x faster once the cache is running.
+            { loader: 'cache-loader' },
             {
                 test: path.resolve(__dirname, 'node_modules/electron/index.js'),
                 use: 'null-loader'
             },
             {
+                loader: 'thread-loader',
+                options: {
+                    // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                    workers,
+                    // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+                    // poolTimeout: Infinity,
+                    workerParallelJobs: 50,
+                    poolTimeout: 2000,
+
+
+                }
+            },
+            {
                 test: /\.tsx?$/,
-                // use: 'ts-loader',
                 exclude: /node_modules/,
                 loader: 'ts-loader',
                 options: {
@@ -26,6 +54,11 @@ module.exports = {
                     // from 20s to about 10s
                     transpileOnly: true,
                     experimentalWatchApi: true,
+
+                    // IMPORTANT! use happyPackMode mode to speed-up
+                    // compilation and reduce errors reported to webpack
+                    happyPackMode: true
+
                 }
             }
 
@@ -53,14 +86,16 @@ module.exports = {
             jQuery: "jquery",
             "window.$": "jquery",
             "window.jQuery": "jquery"
-        })
+        }),
+        new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
+
     ],
     optimization: {
         minimize: true,
         usedExports: true,
-        // removeAvailableModules: false,
-        // removeEmptyChunks: false,
-        // splitChunks: false,
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false,
     }
 
 }
