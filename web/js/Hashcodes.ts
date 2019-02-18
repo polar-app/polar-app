@@ -2,6 +2,8 @@ import {Preconditions} from './Preconditions';
 import {keccak256} from 'js-sha3';
 import uuid from 'uuid';
 import stream from 'stream';
+import {InputSource} from './util/input/InputSource';
+import {InputData, InputListener, InputSources} from './util/input/InputSources';
 
 const base58check = require("base58check");
 
@@ -28,16 +30,42 @@ export class Hashcodes {
 
         return new Promise<string>((resolve, reject) => {
 
-            readableStream.on('data', chunk => {
-                hasher.update(chunk);
-            });
-
             readableStream.on('end', chunk => {
                 resolve(base58check.encode(hasher.hex()));
             });
 
             readableStream.on('error', err => {
                 reject(err);
+            });
+
+            // data resumes the paused stream so end/error have to be added
+            // first.
+            readableStream.on('data', chunk => {
+                hasher.update(chunk);
+            });
+
+        });
+
+    }
+
+    public static async createFromInputSource(inputSource: InputSource): Promise<string> {
+
+        const hasher = keccak256.create();
+
+        return new Promise<string>((resolve, reject) => {
+
+            InputSources.open(inputSource, (data: InputData | undefined, err: Error | undefined) => {
+
+                if (err) {
+                    reject(err);
+                }
+
+                if (data) {
+                    hasher.update(data);
+                } else {
+                    resolve(base58check.encode(hasher.hex()));
+                }
+
             });
 
         });

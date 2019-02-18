@@ -42,4 +42,20 @@ export class URLs {
 
     }
 
+    /**
+     * Return true if this is a URL
+     */
+    public static isURL(path: string) {
+
+        if (!path) {
+            return false;
+        }
+
+        return path.startsWith("file:") ||
+            path.startsWith("blob:") ||
+            path.startsWith("https:") ||
+            path.startsWith("https:");
+
+    }
+
 }

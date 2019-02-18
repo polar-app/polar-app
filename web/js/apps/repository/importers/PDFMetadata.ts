@@ -6,6 +6,7 @@ import {PDFJSStatic} from 'pdfjs-dist';
 import * as PDFJSDIST from 'pdfjs-dist';
 import {DOIs} from './DOIs';
 import {PathOrURLStr} from '../../../util/Strings';
+import {URLs} from '../../../util/URLs';
 
 const pdfjs: PDFJSStatic = <any> PDFJSDIST;
 
@@ -16,7 +17,7 @@ export class PDFMetadata {
 
     public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<PDFMeta> {
 
-        const isPath = ! FilePaths.isURL(docPathOrURL);
+        const isPath = ! URLs.isURL(docPathOrURL);
 
         if (isPath && ! await Files.existsAsync(docPathOrURL)) {
             throw new Error("File does not exist at path: " + docPathOrURL);
@@ -24,7 +25,7 @@ export class PDFMetadata {
 
         const toURL = (input: string) => {
 
-            if (FilePaths.isURL(input)) {
+            if (URLs.isURL(input)) {
                 return input;
             } else {
                 return url.format({

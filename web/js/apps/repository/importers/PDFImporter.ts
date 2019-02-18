@@ -12,6 +12,9 @@ import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
 import {HashAlgorithm, HashEncoding} from '../../../metadata/Hashcode';
 import {IProvider} from '../../../util/Providers';
+import {BinaryFileData} from '../../../datastore/Datastore';
+import {URLs} from '../../../util/URLs';
+import {InputSources} from '../../../util/input/InputSources';
 
 const log = Logger.create();
 
@@ -39,7 +42,7 @@ export class PDFImporter {
 
         const directories = new Directories();
 
-        const isPath = ! FilePaths.isURL(docPath);
+        const isPath = ! URLs.isURL(docPath);
 
         if (isPath && await PDFImporter.isWithinStashdir(directories.stashDir, docPath)) {
 
@@ -53,9 +56,13 @@ export class PDFImporter {
 
         const pdfMeta = await PDFMetadata.getMetadata(docPath);
 
+        console.log("FIXME1: ", pdfMeta);
+
         const persistenceLayer = this.persistenceLayerProvider.get();
 
         if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
+
+            console.log("FIXME2 already there. ");
 
             log.warn(`File already present in datastore: fingerprint=${pdfMeta.fingerprint}: ${docPath}`);
 
@@ -80,6 +87,8 @@ export class PDFImporter {
             return Optional.empty();
         }
 
+        console.log("FIXME4");
+
         // create a default title from the path which is used as sometimes the
         // filename is actually a decent first attempt at a document title.
 
@@ -96,7 +105,12 @@ export class PDFImporter {
         // datastore. This could be optimized but wait until people complain
         // about it as it's probably premature at this point.
 
+        // FIXME: this doesn't work either becasue it assumes that we can easily
+        // and cheaply read from the URL / blob URL but I guess that's true in
+        // this situation though it's assuming a FILE and not a blob URL
         const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
+
+        console.log("FIXME5");
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
 
@@ -108,16 +122,18 @@ export class PDFImporter {
         // also be danging if the user deleted the file.  Wasting space here is
         // a good thing.  Space is cheap.
 
-        // FIXME: with Firebase we can upload with a blob or a file object
-        // directly but the writeFile API doesn't really work with that but
-        // I think I could make it work with JUST firebase.
-        //
-        // FIXME: apparently we can see if the URL is a blob and them convert it
-        // to a blob easily..
-        //
-        // let blob = await fetch(url).then(r => r.blob());
+        const toData = async (): Promise<BinaryFileData> => {
 
-        const inputFileRef: FileHandle = {path: docPath};
+            // FIXME: make this into a toBlob function call
+            if (docPath.startsWith("blob:")) {
+                return await fetch(docPath).then(r => r.blob());
+            }
+
+            return <FileHandle> {path: docPath};
+
+        };
+
+        const data: BinaryFileData = await toData();
 
         const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
 
@@ -138,9 +154,15 @@ export class PDFImporter {
             hashcode: docMeta.docInfo.hashcode
         };
 
-        await persistenceLayer.writeFile(Backend.STASH, fileRef, inputFileRef);
+        console.log("FIXME5 writing file...");
+
+        await persistenceLayer.writeFile(Backend.STASH, fileRef, data);
+
+        console.log("FIXME5 writing file...done");
 
         await persistenceLayer.write(pdfMeta.fingerprint, docMeta);
+
+        console.log("FIXME6 ");
 
         return Optional.of({
             stashFilePath,
@@ -149,9 +171,11 @@ export class PDFImporter {
 
     }
 
-    private static async computeHashPrefix(path: string): Promise<FileHashMeta> {
+    private static async computeHashPrefix(docPath: string): Promise<FileHashMeta> {
 
-        const hashcode = await Hashcodes.createFromStream(Files.createReadStream(path));
+        const inputSource = await InputSources.ofValue(docPath);
+
+        const hashcode = await Hashcodes.createFromInputSource(inputSource);
         const hashPrefix = hashcode.substring(0, 10);
 
         return { hashcode, hashPrefix };

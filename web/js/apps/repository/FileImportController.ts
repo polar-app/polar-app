@@ -16,6 +16,7 @@ import {FileRef} from "../../datastore/Datastore";
 import {Blackout} from "../../ui/blackout/Blackout";
 import {FileImportRequest} from "./FileImportRequest";
 import {AddFileRequest} from "./AddFileRequest";
+import {AppRuntime} from "../../AppRuntime";
 
 const log = Logger.create();
 
@@ -88,12 +89,6 @@ export class FileImportController {
                 console.log("FIXME: ", file);
             }
 
-            // FIXME: I have to use URL.createObjectURL
-            //
-            // then use FileReader
-            // https://developer.mozilla.org/en-US/docs/Web/API/FileReader  on
-            // the data to read it out...
-
             const files: AddFileRequest[] = Array.from(event.dataTransfer.files)
                 .filter(file => file.name.endsWith(".pdf"))
                 .map(file => {
@@ -122,7 +117,7 @@ export class FileImportController {
             if (files.length > 0) {
 
                 this.onImportFiles(files)
-                    .catch(err => log.error("Unable to import files: ", files));
+                    .catch(err => log.error("Unable to import files: ", files, err));
 
             } else {
                 Toaster.error("Unable to upload files.  Only PDF uploads are supported.");
@@ -153,7 +148,10 @@ export class FileImportController {
             return;
         }
 
-        if (importedFiles.length === 1) {
+        if (AppRuntime.isElectron() && importedFiles.length === 1) {
+
+            // only automatically open the file within Electron as that's the
+            // only platform that's really fast enough.
 
             const importedFile = importedFiles[0];
 
@@ -224,7 +222,8 @@ export class FileImportController {
 
         log.info("Importing file: " + file);
 
-        const importedFileResult = await this.pdfImporter.importFile(file.docPath, file.basename);
+        const importedFileResult =
+            await this.pdfImporter.importFile(file.docPath, file.basename);
 
         importedFileResult.map(importedFile => {
             this.updatedDocInfoEventDispatcher.dispatchEvent(importedFile.docInfo);
