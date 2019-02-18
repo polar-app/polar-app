@@ -8,6 +8,7 @@ import {FileImportClient} from '../apps/repository/FileImportClient';
 import {AppLauncher} from '../apps/main/AppLauncher';
 import {Logger} from '../logger/Logger';
 import {NULL_FUNCTION} from "../util/Functions";
+import {FileImportRequests} from '../apps/repository/FileImportRequests';
 
 const log = Logger.create();
 
@@ -66,7 +67,7 @@ export class PDFDownloadHandlers {
 
                     case 'completed':
                         ToasterMessages.send({type: ToasterMessageType.SUCCESS, message});
-                        FileImportClient.send({files: [tmpPath]});
+                        FileImportClient.send(FileImportRequests.fromPath(tmpPath));
 
                         break;
 

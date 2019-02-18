@@ -1,6 +1,6 @@
 import {ipcRenderer} from "electron";
-import {FileImportRequest} from '../main/MainAppController';
 import {Broadcasters} from "../../ipc/Broadcasters";
+import {FileImportRequest} from "./FileImportRequest";
 
 /**
  * Code to send message to the FileImportController on the channel it expects.

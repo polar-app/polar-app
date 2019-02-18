@@ -16,6 +16,7 @@ import {Platform, Platforms} from '../../util/Platforms';
 import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
+import {FileImportRequests} from '../repository/FileImportRequests';
 
 const log = Logger.create();
 
@@ -65,7 +66,7 @@ export class MainAppController {
 
         // send the messages to the renderer context now so that we can bulk
         // import them into the repo.
-        FileImportClient.send({files});
+        FileImportClient.send(FileImportRequests.fromPaths(files));
 
     }
 
@@ -281,11 +282,3 @@ export class MainAppController {
 
 }
 
-export interface FileImportRequest {
-
-    /**
-     * The array of files to import.
-     */
-    readonly files: string[];
-
-}

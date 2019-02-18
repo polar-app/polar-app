@@ -27,11 +27,21 @@ export class PDFImporter {
         this.persistenceLayerProvider = persistenceLayerProvider;
     }
 
-    public async importFile(filePath: string): Promise<Optional<ImportedFile>> {
+    /**
+     *
+     * @param docPath
+     * @param basename The basename of the file - 'mydoc.pdf' without the full
+     *                 path information.  This is needed because blob URLs might
+     *                 not actually have the full metadata we need that the
+     *                 original input URL has given us.
+     */
+    public async importFile(docPath: string, basename?: string): Promise<Optional<ImportedFile>> {
 
         const directories = new Directories();
 
-        if (await PDFImporter.isWithinStashdir(directories.stashDir, filePath)) {
+        const isPath = ! FilePaths.isURL(docPath);
+
+        if (isPath && await PDFImporter.isWithinStashdir(directories.stashDir, docPath)) {
 
             // prevent the user from re-importing/opening a file that is ALREADY
             // in the stash dir.
@@ -41,13 +51,13 @@ export class PDFImporter {
 
         }
 
-        const pdfMeta = await PDFMetadata.getMetadata(filePath);
+        const pdfMeta = await PDFMetadata.getMetadata(docPath);
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 
         if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
-            log.warn(`This file is already present in the datastore with fingerprint ${pdfMeta.fingerprint}: ${filePath}`);
 
+            log.warn(`This file is already present in the datastore with fingerprint ${pdfMeta.fingerprint}: ${docPath}`);
 
             const docMeta = await persistenceLayer.getDocMeta(pdfMeta.fingerprint);
 
@@ -72,8 +82,12 @@ export class PDFImporter {
 
         // create a default title from the path which is used as sometimes the
         // filename is actually a decent first attempt at a document title.
-        const basename = FilePaths.basename(filePath);
-        const defaultTitle = basename;
+
+        if (!basename && ! docPath.startsWith("blob:")) {
+            basename = FilePaths.basename(docPath);
+        }
+
+        const defaultTitle = basename || "";
 
         // TODO: this is not particularly efficient to create the hashcode
         // first, then copy the bytes to the target location.  It would be
@@ -82,9 +96,9 @@ export class PDFImporter {
         // datastore. This could be optimized but wait until people complain
         // about it as it's probably premature at this point.
 
-        const fileHashMeta = await PDFImporter.computeHashPrefix(filePath);
+        const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
 
-        const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename);
+        const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
 
         const stashFilePath = FilePaths.join(directories.stashDir, filename);
 
@@ -93,7 +107,7 @@ export class PDFImporter {
         // data, not a symlink since that's not really portable and it would
         // also be danging if the user deleted the file.  Wasting space here is
         // a good thing.  Space is cheap.
-        const inputFileRef: FileHandle = {path: filePath};
+        const inputFileRef: FileHandle = {path: docPath};
 
         const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
 
@@ -109,6 +123,11 @@ export class PDFImporter {
             data: fileHashMeta.hashcode
         };
 
+        // FIXME: with Firebase we can upload with a blob or a file object
+        // directly but the writeFile API doesn't really work with that but
+        // I think I could make it work with JUST firebase.
+
+        // TODO: this is not portable...
         const fileRef = {
             name: filename,
             hashcode: docMeta.docInfo.hashcode

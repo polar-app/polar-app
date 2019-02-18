@@ -157,6 +157,22 @@ export class FilePaths {
     }
 
     /**
+     * Return true if this is a URL
+     */
+    public static isURL(path: string) {
+
+        if (!path) {
+            return false;
+        }
+
+        return path.startsWith("file:") ||
+               path.startsWith("blob:") ||
+               path.startsWith("https:") ||
+               path.startsWith("https:");
+
+    }
+
+    /**
      * If the file ends with .txt, .pdf, .html then return the extension.
      * @param path
      */

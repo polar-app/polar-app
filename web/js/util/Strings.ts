@@ -77,3 +77,19 @@ export class Strings {
     }
 
 }
+
+/**
+ * A string representing a URL (file URL or HTTP URL or blob URL)
+ */
+export type URLStr = string;
+
+/**
+ * A string representing a local file path.
+ */
+export type PathStr = string;
+
+/**
+ * A string whichi can contain a URL or a path.  Anything without a scheme
+ * prefix is assumed to be a path.
+ */
+export type PathOrURLStr = string;

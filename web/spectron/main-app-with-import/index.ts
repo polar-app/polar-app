@@ -19,6 +19,7 @@ import {wait} from 'dom-testing-library';
 import {AppInstance} from '../../js/electron/framework/AppInstance';
 import {AppInstances} from '../../js/electron/framework/AppInstances';
 import {AppPath} from '../../js/electron/app_path/AppPath';
+import {FileImportRequests} from '../../js/apps/repository/FileImportRequests';
 
 const log = Logger.create();
 
@@ -66,7 +67,7 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
     await AppInstances.waitForStarted('RepositoryApp');
 
     log.info("Sending file import client request...");
-    FileImportClient.send({files});
+    FileImportClient.send(FileImportRequests.fromPaths(files));
 
     log.info("Trying to find viewer...");
 

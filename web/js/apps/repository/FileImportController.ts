@@ -1,7 +1,6 @@
 import {PersistenceLayer} from "../../datastore/PersistenceLayer";
 import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
-import {FileImportRequest} from "../main/MainAppController";
 import {ImportedFile, PDFImporter} from './importers/PDFImporter';
 import {ProgressCalculator} from "../../util/ProgressCalculator";
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
@@ -15,6 +14,8 @@ import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressB
 import {DocLoader} from "../main/doc_loaders/DocLoader";
 import {FileRef} from "../../datastore/Datastore";
 import {Blackout} from "../../ui/blackout/Blackout";
+import {FileImportRequest} from "./FileImportRequest";
+import {AddFileRequest} from "./AddFileRequest";
 
 const log = Logger.create();
 
@@ -89,20 +90,34 @@ export class FileImportController {
 
             // FIXME: I have to use URL.createObjectURL
             //
-            // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
-            //
             // then use FileReader
-            //
-            // https://developer.mozilla.org/en-US/docs/Web/API/FileReader
-            //
-            // on the data to read it out...
+            // https://developer.mozilla.org/en-US/docs/Web/API/FileReader  on
+            // the data to read it out...
 
-            const files = Array.from(event.dataTransfer.files)
+            const files: AddFileRequest[] = Array.from(event.dataTransfer.files)
                 .filter(file => file.name.endsWith(".pdf"))
-                .map(file => file.path);
+                .map(file => {
 
-            // FIXME: this still maps them to path which doesn't exist except
-            // in Electron.
+                    if (file.path) {
+
+                        // On Electron we have the file path directly.
+
+                        return {
+                            docPath: file.path,
+                            basename: FilePaths.basename(file.path)
+                        };
+
+                    } else {
+
+                        // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+
+                        return {
+                            docPath: URL.createObjectURL(file),
+                            basename: file.name,
+                        };
+                    }
+
+                });
 
             if (files.length > 0) {
 
@@ -129,7 +144,7 @@ export class FileImportController {
 
     }
 
-    private async onImportFiles(files: string[]) {
+    private async onImportFiles(files: AddFileRequest[]) {
 
         const importedFiles = await this.doImportFiles(files);
 
@@ -171,7 +186,7 @@ export class FileImportController {
 
     }
 
-    private async doImportFiles(files: string[]): Promise<Array<Optional<ImportedFile>>> {
+    private async doImportFiles(files: AddFileRequest[]): Promise<Array<Optional<ImportedFile>>> {
 
         // FIXME: do we need to handle these via file or blob URLs?
 
@@ -205,11 +220,11 @@ export class FileImportController {
 
     }
 
-    private async doImportFile(file: string): Promise<Optional<ImportedFile>> {
+    private async doImportFile(file: AddFileRequest): Promise<Optional<ImportedFile>> {
 
         log.info("Importing file: " + file);
 
-        const importedFileResult = await this.pdfImporter.importFile(file);
+        const importedFileResult = await this.pdfImporter.importFile(file.docPath, file.basename);
 
         importedFileResult.map(importedFile => {
             this.updatedDocInfoEventDispatcher.dispatchEvent(importedFile.docInfo);
@@ -220,3 +235,4 @@ export class FileImportController {
     }
 
 }
+

@@ -5,6 +5,7 @@ import {Optional} from '../../../util/ts/Optional';
 import {PDFJSStatic} from 'pdfjs-dist';
 import * as PDFJSDIST from 'pdfjs-dist';
 import {DOIs} from './DOIs';
+import {PathOrURLStr} from '../../../util/Strings';
 
 const pdfjs: PDFJSStatic = <any> PDFJSDIST;
 
@@ -13,23 +14,35 @@ const pdfjs: PDFJSStatic = <any> PDFJSDIST;
 
 export class PDFMetadata {
 
-    public static async getMetadata(filePath: string): Promise<PDFMeta> {
+    public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<PDFMeta> {
 
-        if (! await Files.existsAsync(filePath)) {
-            throw new Error("File does not exist at path: " + filePath);
+        const isPath = ! FilePaths.isURL(docPathOrURL);
+
+        if (isPath && ! await Files.existsAsync(docPathOrURL)) {
+            throw new Error("File does not exist at path: " + docPathOrURL);
         }
 
-        const fileURL = url.format({
-            protocol: 'file',
-            slashes: true,
-            pathname: filePath,
-        });
+        const toURL = (input: string) => {
 
-        const doc = await pdfjs.getDocument(fileURL);
+            if (FilePaths.isURL(input)) {
+                return input;
+            } else {
+                return url.format({
+                    protocol: 'file',
+                    slashes: true,
+                    pathname: docPathOrURL,
+                });
+            }
+
+        };
+
+        const docURL = toURL(docPathOrURL);
+
+        const doc = await pdfjs.getDocument(docURL);
 
         const metaHolder = await doc.getMetadata();
 
-        const filename = FilePaths.basename(filePath);
+        const filename = FilePaths.basename(docPathOrURL);
         let title: string | undefined;
         let description: string | undefined;
         let creator: string | undefined;

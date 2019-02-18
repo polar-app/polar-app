@@ -25,6 +25,7 @@ import {FileImportClient} from '../repository/FileImportClient';
 import {RendererAnalyticsService} from '../../ga/RendererAnalyticsService';
 import {AnalyticsFileLoader} from './file_loaders/AnalyticsFileLoader';
 import {DefaultFileLoader} from './file_loaders/DefaultFileLoader';
+import {FileImportRequests} from '../repository/FileImportRequests';
 
 declare var global: any;
 
@@ -147,7 +148,7 @@ export class MainApp {
         app.on('open-file', async (event, path) => {
 
             log.info("Open file called for: ", path);
-            FileImportClient.send({files: [path]});
+            FileImportClient.send(FileImportRequests.fromPath(path));
 
         });
 
@@ -159,7 +160,7 @@ export class MainApp {
 
             if (fileArg) {
 
-                FileImportClient.send({files: [fileArg]});
+                FileImportClient.send(FileImportRequests.fromPath(fileArg));
 
             } else {
                 mainAppController.activateMainWindow();
