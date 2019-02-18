@@ -235,7 +235,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
         if (! recordHolder) {
-            log.warn("FIXME: could not get docMeta with id: " + id);
+            log.warn("Could not get docMeta with id: " + id);
             return null;
         }
 
@@ -251,6 +251,13 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
                            ref: FileRef,
                            data: BinaryFileData ,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
+
+        if (await this.containsFile(backend, ref)) {
+            // the file is already in the datastore so don't attempt to
+            // overwrite it for now.  The files are immutable and we don't
+            // accept overwrites.
+            return (await this.getFile(backend, ref)).get();
+        }
 
         const storage = this.storage!;
 
@@ -340,6 +347,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
 
+        // TODO: this code and containsFile could be unified I think.
+        // containsFile should just be getFile().isPresent()
+
         const storage = this.storage!;
 
         const storagePath = this.computeStoragePath(backend, ref);
@@ -347,10 +357,24 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const fileRef = storage.ref().child(storagePath.path);
 
         const url: string = await fileRef.getDownloadURL();
-        const metadata = await fileRef.getMetadata();
-        const meta = metadata.customMetadata;
 
-        return Optional.of({backend, ref, url, meta});
+        try {
+
+            const metadata = await fileRef.getMetadata();
+            const meta = metadata.customMetadata;
+
+            return Optional.of({ backend, ref, url, meta });
+
+        } catch (e) {
+
+            if (e.code === "storage/object-not-found") {
+                return Optional.empty();
+            }
+
+            // some other type of exception ias occurred
+            throw e;
+
+        }
 
     }
 
