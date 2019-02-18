@@ -1,4 +1,4 @@
-import {AbstractDatastore, Datastore, DatastoreConsistency, DatastoreInitOpts, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -249,7 +249,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public async writeFile(backend: Backend,
                            ref: FileRef,
-                           data: FileHandle | Buffer | string ,
+                           data: BinaryFileData ,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
         const storage = this.storage!;
@@ -269,7 +269,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             visibility: Visibility.PRIVATE
         });
 
-        const metadata: firebase.storage.UploadMetadata = {customMetadata: meta};
+        const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
 
         if (storagePath.settings) {
             metadata.contentType = storagePath.settings.contentType;
@@ -278,6 +278,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         if (typeof data === 'string') {
             uploadTask = fileRef.putString(data, 'raw', metadata);
+        } else if (data instanceof Blob) {
+            uploadTask = fileRef.put(data);
         } else {
 
             if (FileHandles.isFileHandle(data)) {
