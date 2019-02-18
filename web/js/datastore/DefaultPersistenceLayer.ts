@@ -1,4 +1,4 @@
-import {Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult} from './Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -191,7 +191,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.createBackup();
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DatastoreFile> {
         return this.datastore.writeFile(backend, ref, data, meta);
     }
 

@@ -5,10 +5,12 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult, DocMetaSnapshotEvent, FileRef,
-        DocMetaSnapshotEventListener, SnapshotResult,
-        ErrorListener,
-    Datastore} from '../Datastore';
+import {
+    DeleteResult, DocMetaSnapshotEvent, FileRef,
+    DocMetaSnapshotEventListener, SnapshotResult,
+    ErrorListener,
+    Datastore, BinaryFileData
+} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
@@ -147,7 +149,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         this.reactor.dispatchEvent(event);
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta): Promise<DatastoreFile> {
         return this.delegate.writeFile(backend, ref, data, meta);
     }
 

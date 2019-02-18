@@ -1,5 +1,5 @@
 import {
-    AbstractDatastore,
+    AbstractDatastore, BinaryFileData,
     Datastore,
     DeleteResult,
     DocMetaSnapshotEventListener,

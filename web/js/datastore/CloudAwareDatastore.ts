@@ -1,4 +1,4 @@
-import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileMeta, FileRef, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileMeta, FileRef, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -102,7 +102,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public async writeFile(backend: Backend,
                            ref: FileRef,
-                           data: Buffer | string,
+                           data: BinaryFileData,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
 

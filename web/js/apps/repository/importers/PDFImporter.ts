@@ -57,7 +57,7 @@ export class PDFImporter {
 
         if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
 
-            log.warn(`This file is already present in the datastore with fingerprint ${pdfMeta.fingerprint}: ${docPath}`);
+            log.warn(`File already present in datastore: fingerprint=${pdfMeta.fingerprint}: ${docPath}`);
 
             const docMeta = await persistenceLayer.getDocMeta(pdfMeta.fingerprint);
 
@@ -107,6 +107,16 @@ export class PDFImporter {
         // data, not a symlink since that's not really portable and it would
         // also be danging if the user deleted the file.  Wasting space here is
         // a good thing.  Space is cheap.
+
+        // FIXME: with Firebase we can upload with a blob or a file object
+        // directly but the writeFile API doesn't really work with that but
+        // I think I could make it work with JUST firebase.
+        //
+        // FIXME: apparently we can see if the URL is a blob and them convert it
+        // to a blob easily..
+        //
+        // let blob = await fetch(url).then(r => r.blob());
+
         const inputFileRef: FileHandle = {path: docPath};
 
         const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
@@ -123,11 +133,6 @@ export class PDFImporter {
             data: fileHashMeta.hashcode
         };
 
-        // FIXME: with Firebase we can upload with a blob or a file object
-        // directly but the writeFile API doesn't really work with that but
-        // I think I could make it work with JUST firebase.
-
-        // TODO: this is not portable...
         const fileRef = {
             name: filename,
             hashcode: docMeta.docInfo.hashcode

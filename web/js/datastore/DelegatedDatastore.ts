@@ -1,6 +1,8 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
-        DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
-        AbstractDatastore} from './Datastore';
+import {
+    Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
+    DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
+    AbstractDatastore, BinaryFileData
+} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -43,7 +45,7 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.delete(docMetaFileRef);
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DatastoreFile> {
         return this.delegate.writeFile(backend, ref, data, meta);
     }
 

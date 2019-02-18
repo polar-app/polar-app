@@ -2,7 +2,8 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult, DocMetaSnapshotEvent, FileRef,
         DocMetaSnapshotEventListener, SnapshotResult, ErrorListener,
         DatastoreID,
-    Datastore} from './Datastore';
+    Datastore,
+    BinaryFileData} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -65,7 +66,7 @@ export interface PersistenceLayer {
 
     writeFile(backend: Backend,
               ref: FileRef,
-              data: FileHandle | Buffer | string,
+              data: BinaryFileData,
               meta?: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>>;

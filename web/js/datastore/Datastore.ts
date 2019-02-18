@@ -192,7 +192,7 @@ interface WritableBinaryDatastore {
 
 }
 
-export type BinaryFileData = FileHandle | Buffer | string;
+export type BinaryFileData = FileHandle | Buffer | string | Blob;
 
 export interface FileRef {
 

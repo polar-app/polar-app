@@ -1,7 +1,9 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
-        DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
-        AbstractDatastore,
-    ErrorListener} from './Datastore';
+import {
+    Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
+    DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
+    AbstractDatastore,
+    ErrorListener, BinaryFileData
+} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -93,7 +95,7 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.synchronizeDocs(...docMetaRefs);
     }
 
-    public async writeFile(backend: Backend, ref: FileRef, data: FileHandle | Buffer | string, meta?: FileMeta): Promise<DatastoreFile> {
+    public async writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta?: FileMeta): Promise<DatastoreFile> {
         return this.delegate.writeFile(backend, ref, data, meta);
     }
 
