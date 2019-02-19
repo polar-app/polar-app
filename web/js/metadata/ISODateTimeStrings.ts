@@ -1,4 +1,5 @@
 import {Strings} from '../util/Strings';
+import {DurationStr, TimeDurations} from '../util/TimeDurations';
 
 export type ISODateTimeString = string;
 
@@ -14,8 +15,23 @@ export type UnixTimeMS = number;
 
 export class ISODateTimeStrings {
 
-    public static create(): ISODateTimeString {
-        return new Date().toISOString();
+    public static create(date?: Date): ISODateTimeString {
+
+        if (!date) {
+            date = new Date();
+        }
+
+        return date.toISOString();
+    }
+
+    public static adjust(datetime: ISODateTimeString, durationStr: DurationStr) {
+
+        const date = this.parse(datetime);
+
+        const unixtimeMs = date.valueOf() - TimeDurations.toMillis(durationStr);
+
+        return this.create(new Date(unixtimeMs));
+
     }
 
     public static toISODateString(date: Date): ISODateString {

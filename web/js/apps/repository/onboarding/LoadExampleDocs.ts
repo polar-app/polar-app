@@ -6,6 +6,7 @@ import {Providers} from '../../../util/Providers';
 import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from '../../../logger/Logger';
 import {Tag} from '../../../tags/Tag';
+import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -49,6 +50,7 @@ export class LoadExampleDocs {
                 google: {id: "google", label: "google"},
                 datacenters: {id: "datacenters", label: "datacenters"}
             },
+            added: ISODateTimeStrings.create(),
             pagemarkEnd: 17
         });
 
@@ -63,6 +65,8 @@ export class LoadExampleDocs {
                 bigtable: {id: "bigtable", label: "bigtable"},
                 compsci: {id: "compsci", label: "compsci"}
             },
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             pagemarkEnd: 3
         });
 
@@ -77,6 +81,8 @@ export class LoadExampleDocs {
                 mapreduce: {id: "mapreduce", label: "mapreduce"},
                 compsci: {id: "compsci", label: "compsci"}
             },
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             pagemarkEnd: 6
         });
 
@@ -99,6 +105,14 @@ export class LoadExampleDocs {
 
                 if (opts.pagemarkEnd) {
                     Pagemarks.updatePagemarksForRange(docMeta, opts.pagemarkEnd);
+                }
+
+                if (opts.added) {
+                    docMeta.docInfo.added = opts.added;
+                }
+
+                if (opts.lastUpdated) {
+                    docMeta.docInfo.lastUpdated = opts.lastUpdated;
                 }
 
                 log.info("Wrote to persistenceLayer: ", opts.title);
@@ -132,4 +146,6 @@ interface DocOpts {
     readonly title: string;
     readonly pagemarkEnd?: number;
     readonly tags?: {[id: string]: Tag};
+    readonly added?: ISODateTimeString;
+    readonly lastUpdated?: ISODateTimeString;
 }
