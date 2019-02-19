@@ -38,6 +38,7 @@ import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {Promises} from '../../util/Promises';
+import {RepositoryTour} from './RepositoryTour';
 
 const log = Logger.create();
 
@@ -159,6 +160,8 @@ export class RepositoryApp {
                 <PrioritizedSplashes/>
 
                 <SyncBar progress={syncBarProgress}/>
+
+                <RepositoryTour/>
 
                 <HashRouter hashType="noslash">
 

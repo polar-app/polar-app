@@ -35,6 +35,8 @@ import {ContextMenuWrapper, prepareContextMenuHandlers} from '@burtonator/react-
 import Dropdown from 'reactstrap/lib/Dropdown';
 import {DropMenu} from './DropMenu';
 import {TestMenu} from './TestMenu';
+import Joyride from 'react-joyride';
+
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -119,15 +121,54 @@ class App<P> extends React.Component<{}, IAppState> {
 
         const contextMenuHandlers = prepareContextMenuHandlers({id: 'my-context-menu'});
 
+        const steps = [
+            {
+                target: '.my-first-step',
+                content: 'This is my awesome feature!',
+                disableBeacon: true
+            },
+            {
+                target: '.my-other-step',
+                content: 'This another awesome feature!',
+            },
+        ];
+
         return (
 
             <div>
+
 
                 <div className="bg-dark text-white">
                     <div className="p-1 hover-bg-primary">Menu item 1</div>
                     <div className="p-1 hover-bg-primary">Menu item 2</div>
                 </div>
 
+                <div className="my-first-step">
+                    my first step
+
+                </div>
+                <div className="my-other-step">
+                    my other step
+                </div>
+
+                <Joyride
+                    steps={steps}
+                    continuous={true}
+                    run={true}
+                    showProgress={true}
+                    showSkipButton={true}
+                    styles={{
+                        options: {
+                            // arrowColor: '#e3ffeb',
+                            // backgroundColor: '#e3ffeb',
+                            // overlayColor: 'rgba(79, 26, 0, 0.4)',
+                            primaryColor: '#007bff',
+                            // textColor: '#004a14',
+                            // width: 900,
+                            // zIndex: 1000,
+                        }
+                    }}
+                    />
 
                 {/*<DropMenu open={true}>*/}
 
