@@ -94,7 +94,7 @@
     "@nivo/line": "~0.52.0",
     "@nivo/pie": "~0.52.0",
     "@sentry/electron": "~0.13.0",
-    "@trendmicro/react-dropdown": "file:../react-dropdown",
+    "@trendmicro/react-dropdown": "github:burtonator/react-dropdown",
     "@types/deep-equal": "~1.0.1",
     "@types/express": "~4.16.0",
     "@types/js-cookie": "~2.2.0",
@@ -169,7 +169,7 @@
     "prop-types": "~15.6.2",
     "raphael": "~2.2.7",
     "react": "~16.7.0",
-    "react-context-menu-wrapper": "file:../react-context-menu-wrapper",
+    "react-context-menu-wrapper": "github:burtonator/react-context-menu-wrapper",
     "react-cookie-banner": "~4.0.0",
     "react-dom": "~16.7.0",
     "react-ga": "~2.5.3",
@@ -208,4 +208,3 @@
     "url": "https://opencollective.com/polar-bookshelf"
   }
 }
-
