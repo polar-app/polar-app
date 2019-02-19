@@ -32,7 +32,7 @@ export class AdvertisingPersistenceLayer
 
         this.docInfoAdvertisementListenerService.start();
 
-        return this.delegate.init();
+        await this.delegate.init();
 
     }
 

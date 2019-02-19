@@ -64,6 +64,8 @@ export class RepoDocMetaLoader {
 
     private onPersistenceLayerChanged(persistenceLayer: PersistenceLayer) {
 
+        log.info("onPersistenceLayerChanged");
+
         const progressTrackerIndex = new ProgressTrackerIndex();
 
         persistenceLayer.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {

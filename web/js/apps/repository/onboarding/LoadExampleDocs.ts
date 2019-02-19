@@ -85,7 +85,7 @@ export class LoadExampleDocs {
     private async doDoc(relativePath: string, opts: DocOpts) {
 
         const importedFile =
-            await this.doImport(FilePaths.join('docs', 'examples', 'pdf', 'pub47492.pdf'));
+            await this.doImport(relativePath);
 
         if (importedFile.isPresent()) {
 

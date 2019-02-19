@@ -34,6 +34,10 @@ import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import EditorsPicksApp from '../../../../apps/repository/js/editors_picks/EditorsPicksApp';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from '../../util/Version';
+import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
+import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
+import {DiskDatastore} from '../../datastore/DiskDatastore';
+import {Promises} from '../../util/Promises';
 
 const log = Logger.create();
 
@@ -62,11 +66,10 @@ export class RepositoryApp {
 
         new AutoUpdatesController().start();
 
-        new CloudService(this.persistenceLayerManager)
-            .start();
-
         new ToasterService().start();
         new ProgressService().start();
+
+        await this.doLoadExampleDocs();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
@@ -181,7 +184,12 @@ export class RepositoryApp {
 
         await this.repoDocInfoLoader.start();
 
+        new CloudService(this.persistenceLayerManager)
+            .start();
+
         await this.persistenceLayerManager.start();
+
+        log.info("Started repo doc loader.");
 
         AppInstance.notifyStarted('RepositoryApp');
 
@@ -207,6 +215,22 @@ export class RepositoryApp {
 
     private sendAnalytics() {
         RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
+    }
+
+    private async doLoadExampleDocs() {
+
+        const persistenceLayer =
+            new DefaultPersistenceLayer(new DiskDatastore());
+
+        await persistenceLayer.init();
+
+        // load the eample docs in the store.. on the first load we should
+        // propably make sure this doesn't happen more than once as the user
+        // could just delete all the files in their repo. await new
+        await new LoadExampleDocs(persistenceLayer).load();
+
+        await persistenceLayer.stop();
+
     }
 
     /**

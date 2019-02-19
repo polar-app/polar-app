@@ -19,6 +19,14 @@ export class Providers {
         return () => provider.get();
     }
 
+    public static toInterface<T>(provider: Provider<T>) {
+        return {
+            get() {
+                return provider();
+            }
+        };
+    }
+
     /**
      * Return a provider using the given value.
      */

@@ -39,6 +39,8 @@ export class RemoteDatastore extends DelegatedDatastore {
      */
     public async init(errorListener?: ErrorListener): Promise<InitResult> {
 
+        await super.init();
+
         if (this.docMetaSnapshotEventDispatcher.size() > 0) {
 
             // perform a snapshot if a listener was attached...
