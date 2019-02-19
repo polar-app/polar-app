@@ -50,7 +50,8 @@ export class LoadExampleDocs {
                 google: {id: "google", label: "google"},
                 datacenters: {id: "datacenters", label: "datacenters"}
             },
-            added: ISODateTimeStrings.create(),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2h'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1h'),
             pagemarkEnd: 17
         });
 
