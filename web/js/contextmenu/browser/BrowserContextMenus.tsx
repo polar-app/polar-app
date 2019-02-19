@@ -1,13 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ContextMenuWrapper, addContextMenuEventListener} from 'react-context-menu-wrapper';
+import {showContextMenu} from '@burtonator/react-context-menu-wrapper';
 import {TriggerEvent} from '../TriggerEvent';
-import {showContextMenu} from 'react-context-menu-wrapper';
-import {ContextMenuType} from '../ContextMenuType';
-import {ContextMenu} from '../../ui/context_menu/ContextMenu';
-import Dropdown, {DropdownMenu, MenuItem} from "@trendmicro/react-dropdown";
-import {ContextMenuMessages} from '../ContextMenuMessages';
-import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
+import {DropdownMenu, MenuItem} from "@burtonator/react-dropdown";
 import {BrowserContextMenu} from './BrowserContextMenu';
 
 export class BrowserContextMenus {

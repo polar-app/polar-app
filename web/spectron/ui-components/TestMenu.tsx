@@ -1,11 +1,5 @@
 import * as React from 'react';
-import Dropdown, {
-    DropdownToggle,
-    DropdownMenu,
-    DropdownMenuWrapper,
-    MenuItem,
-    DropdownButton
-} from '@trendmicro/react-dropdown';
+import Dropdown, {DropdownButton, DropdownMenu, DropdownMenuWrapper, DropdownToggle, MenuItem} from '@burtonator/react-dropdown';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 
 export class TestMenu extends React.Component<any, any> {

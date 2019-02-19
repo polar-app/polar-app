@@ -31,7 +31,7 @@ import {ExportButton} from '../../js/ui/export/ExportButton';
 import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
 import {AnkiReviewContent} from './AnkiReviewContent';
 import ReadingProgressTable from '../../../apps/repository/js/stats/ReadingProgressTable';
-import {ContextMenuWrapper, prepareContextMenuHandlers} from 'react-context-menu-wrapper';
+import {ContextMenuWrapper, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import {DropMenu} from './DropMenu';
 import {TestMenu} from './TestMenu';
