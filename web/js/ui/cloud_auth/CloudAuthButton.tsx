@@ -97,7 +97,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                                       onCancel={() => this.changeAuthStage()}
                                       onInvite={(emailAddresses) => this.onInvitedUsers(emailAddresses)}/>
 
-                    <UncontrolledDropdown direction="down"
+                    <UncontrolledDropdown id="cloud-sync-dropdown"
+                                          direction="down"
                                           size="sm">
 
                         <DropdownToggle color="primary" caret>

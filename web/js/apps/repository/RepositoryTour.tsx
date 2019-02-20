@@ -98,7 +98,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </div>
             },
             {
-                target: '#enable-cloud-sync',
+                target: '#enable-cloud-sync, #cloud-sync-dropdown',
                 title: <Title>Cloud Sync</Title>,
                 content: <div>
                     Polar supports <Term>cloud sync</Term> which keeps all your
