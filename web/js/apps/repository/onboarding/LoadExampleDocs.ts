@@ -1,12 +1,13 @@
 import {AppPath} from '../../../electron/app_path/AppPath';
 import {FilePaths} from '../../../util/FilePaths';
-import {PDFImporter} from '../importers/PDFImporter';
+import {PDFImporter, ImportedFile} from '../importers/PDFImporter';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {Providers} from '../../../util/Providers';
 import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from '../../../logger/Logger';
 import {Tag} from '../../../tags/Tag';
 import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTimeStrings';
+import {Optional} from '../../../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -125,9 +126,13 @@ export class LoadExampleDocs {
 
     }
 
-    private async doImport(relativePath: string) {
+    private async doImport(relativePath: string): Promise<Optional<ImportedFile>> {
 
         const appPath = AppPath.get();
+
+        if (! appPath) {
+            return Optional.empty();
+        }
 
         const path = FilePaths.join(appPath, relativePath);
 
