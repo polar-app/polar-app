@@ -268,6 +268,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 switch (data.status) {
                     case STATUS.SKIPPED:
                         RendererAnalytics.event({category: 'tour', action: 'skipped'});
+                        RendererAnalytics.event({category: 'tour', action: 'skipped-at-step' + data.index});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
                         break;
