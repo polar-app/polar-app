@@ -2,6 +2,7 @@ import Joyride, {CallBackProps, Step, STATUS} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 export class RepositoryTour extends React.Component<IProps, IState> {
 
@@ -258,6 +259,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     private onCallback(data: CallBackProps): void {
 
+        RendererAnalytics.event({category: 'tour', action: 'did-step-' + data.index});
 
         if (data.status === STATUS.SKIPPED || data.status === STATUS.FINISHED) {
 
@@ -265,9 +267,13 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                 switch (data.status) {
                     case STATUS.SKIPPED:
+                        RendererAnalytics.event({category: 'tour', action: 'skipped'});
+
                         LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
                         break;
                     case STATUS.FINISHED:
+                        RendererAnalytics.event({category: 'tour', action: 'finished'});
+
                         LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED);
                         break;
                 }
