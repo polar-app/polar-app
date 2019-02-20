@@ -5,6 +5,8 @@ import {WhatsNewModal} from './WhatsNewModal';
 import {ConditionalSetting} from '../../../../../../web/js/ui/util/ConditionalSetting';
 import {RendererAnalytics} from '../../../../../../web/js/ga/RendererAnalytics';
 import * as semver from 'semver';
+import {LifecycleToggle} from '../../../../../../web/js/ui/util/LifecycleToggle';
+import {LifecycleEvents} from '../../../../../../web/js/ui/util/LifecycleEvents';
 
 const log = Logger.create();
 
@@ -50,14 +52,19 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
     private async handleVersionState() {
 
+        const hasTourTerminated =
+            LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
+
         const isNewVersion = await this.isNewVersion();
 
         if (isNewVersion) {
             RendererAnalytics.event({category: 'app', action: 'whats-new-displayed'});
         }
 
+        const open = isNewVersion && hasTourTerminated;
+
         this.setState({
-            open: isNewVersion
+            open
         });
 
     }

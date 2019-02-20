@@ -1,11 +1,14 @@
-import Joyride, {Step} from 'react-joyride';
+import Joyride, {CallBackProps, Step, STATUS} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
+import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 
 export class RepositoryTour extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onCallback = this.onCallback.bind(this);
 
         this.state = {
         };
@@ -19,7 +22,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         };
 
         const Title = (props: any) => {
-            return <h4>{props.children}</h4>;
+            return <div style={{fontSize: '22px'}}>{props.children}</div>;
         };
 
         const steps: Step[] = [
@@ -82,8 +85,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 content: <div>
                     Each document has a progress associated with it which is
                     derived from pagemarks. Pagemarks are similar to bookmarks
-                    but manually updated on each document while you read to
-                    enable you to keep track of your reading.
+                    but manually updated on each document while you read.
                 </div>,
 
                 disableBeacon: true,
@@ -103,9 +105,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '.doc-table-col-added',
                 title: <Title>Sorting</Title>,
                 content: <div>
-                    We keep track of the time a document was <Term>added</Term>
-                    and <Term>updated</Term> so you can sort by time to read the
-                    most recently added (or updated) documents first.
+                    We keep track of the time a document was <Term>added</Term> and <Term>updated</Term>
+                    so you can sort by time to read the most recently added (or updated) documents first.
                 </div>,
                 disableBeacon: true,
                 // placement: "bottom",
@@ -156,8 +157,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             {
                 target: '.doc-dropdown',
                 content:  <div>
-                    The dropdown allow you perform other action on a document
-                    including changing the title, delete documents, etc.
+                    The dropdown allow you perform other actions on a document
+                    including changing the title and deleting documents.
                 </div>,
                 disableBeacon: true,
                 // placement: "bottom",
@@ -168,7 +169,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '#toggle-flagged',
                 content: <div>The <Term>filter bar</Term> allows you to
                     configure which documents are visible.
-                    This button allows you to hide/show flagged documents.
+                    This button allows you to hide/show <Term>flagged</Term> documents.
                 </div>,
                 disableBeacon: true,
             },
@@ -176,7 +177,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             {
                 target: '#toggle-archived',
                 content: <div>
-                    Toggle archived documents (hidden by default).  It's usually
+                    Toggle <Term>archived</Term> documents (hidden by default).  It's usually
                     best to archive a document after it's been read.
                 </div>,
                 disableBeacon: true,
@@ -202,7 +203,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             <Joyride
                 steps={steps}
                 continuous={true}
-                run={! LifecycleToggle.markOnceRequested('has-repository-tour')}
+                callback={data => this.onCallback(data)}
+                run={! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED)}
                 showProgress={true}
                 showSkipButton={true}
                 styles={{
@@ -222,6 +224,30 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             />
 
         );
+
+    }
+
+    private onCallback(data: CallBackProps): void {
+
+
+        if (data.status === STATUS.SKIPPED || data.status === STATUS.FINISHED) {
+
+            try {
+
+                switch (data.status) {
+                    case STATUS.SKIPPED:
+                        LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
+                        break;
+                    case STATUS.FINISHED:
+                        LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED);
+                        break;
+                }
+
+            } finally {
+                LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
+            }
+
+        }
 
     }
 

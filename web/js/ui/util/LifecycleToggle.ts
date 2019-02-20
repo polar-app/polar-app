@@ -13,7 +13,7 @@ export class LifecycleToggle {
 
         handler();
 
-        this.markHandled(key);
+        this.mark(key);
 
     }
 
@@ -22,19 +22,33 @@ export class LifecycleToggle {
      */
     public static markOnceRequested(key: string) {
 
-        const currentValue =
-            Optional.of(window.localStorage.getItem(key)).getOrElse('false');
+        const result = this.isMarked(key);
 
-        const result = currentValue === 'true';
-
-        this.markHandled(key);
+        this.mark(key);
 
         return result;
 
     }
 
-    private static markHandled(key: string): void {
-        window.localStorage.setItem(key, 'true');
+    public static isMarked(key: string) {
+
+        const currentValue =
+            Optional.of(window.localStorage.getItem(key)).getOrElse('false');
+
+        return currentValue === 'true';
+
+    }
+
+    public static mark(key: string): void {
+        this.set(key, 'true');
+    }
+
+    public static get(key: string): Optional<string> {
+        return Optional.of(window.localStorage.getItem(key));
+    }
+
+    public static set(key: string, value: string): void {
+        window.localStorage.setItem(key, value);
     }
 
 }
