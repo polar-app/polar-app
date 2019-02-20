@@ -1,7 +1,5 @@
 export class LifecycleEvents {
 
-    public static HAS_REPOSITORY_TOUR = 'has-repository-tour';
-
     /**
      * Tour was skipped and not completed.
      */

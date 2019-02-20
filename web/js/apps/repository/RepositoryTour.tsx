@@ -33,10 +33,33 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                     <p>
                         We're going to give you a quick tour of how to use the
-                        main features in Polar.  Should only take a few moments.
+                        main features in Polar.
+                    </p>
+
+                    <p>
+                        Polar allows you to:
+                    </p>
+
+                    <ul>
+
+                        <li>Keep all your documents in one place.</li>
+
+                        <li>Easily keep track of your reading with pagemarks and stats tracking.</li>
+
+                        <li>Annotate, tag, and highlight all your documents and build a personal knowledge repository.</li>
+
+                    </ul>
+
+                    <p>
+                        The tour should take about 60 seconds.
                     </p>
 
                 </div>,
+                styles: {
+                    tooltip: {
+                        width: '650px'
+                    }
+                },
                 disableBeacon: true,
                 placement: 'center'
             },
@@ -63,9 +86,15 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '#add-content-dropdown',
                 title: <Title>Add Documents</Title>,
                 content: <div>
-                    Documents can easily be added by clicking the <Term>Add</Term> button
-                    and we can import documents individually or in bulk from
-                    a local directory.
+                    <p>
+                        Documents can easily be added by clicking the <Term>Add</Term> button
+                        and we can import documents individually or in bulk from
+                        a local directory.
+                    </p>
+                    <p>
+                        Once the tour is over you'll probably want to use this
+                        feature to add any documents you're currently reading.
+                    </p>
                 </div>
             },
             {
