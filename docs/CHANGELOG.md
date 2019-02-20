@@ -1,3 +1,9 @@
+# 1.13.0
+
+- Tour of how to use Polar for new users.
+
+- Replaced the context menu with a native React menu. 
+
 # 1.12.1
 
 - If we are given a path to a file during the writeFile datastore operation, we
@@ -5,10 +11,10 @@
   (not data blobs) and works during PDF file import to avoid duplicate disk 
   space usage.   
 
-- re-importing an exting file should now open it in polar instead of doing 
+- re-importing an existing file should now open it in polar instead of doing 
   nothing. 
 
-- starting work to disable updates for MS and Apple stores.  
+- starting work to disabled updates for MS and Apple stores.  
 
 - adding some newlines between markdown exported entries.
 
