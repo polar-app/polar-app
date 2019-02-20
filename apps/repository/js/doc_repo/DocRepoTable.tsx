@@ -348,7 +348,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                     </div>
 
-
                                     <div className="header-filter-box mr-1"
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
@@ -372,8 +371,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         </div>
 
                                     </div>
-
-
 
                                     <div className=""
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -407,6 +404,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         Header: 'Title',
                                         accessor: 'title',
+                                        className: 'doc-table-col-title',
                                         Cell: (row: any) => {
                                             const id = 'doc-repo-row-title' + row.index;
                                             return (
@@ -441,6 +439,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         show: this.state.columns.lastUpdated.selected,
                                         maxWidth: 100,
                                         defaultSortDesc: true,
+                                        className: 'doc-table-col-updated',
                                         Cell: (row: any) => (
                                             <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
                                         )
@@ -452,6 +451,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         show: this.state.columns.added.selected,
                                         maxWidth: 100,
                                         defaultSortDesc: true,
+                                        className: 'doc-table-col-added',
                                         Cell: (row: any) => (
                                             <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
                                         )
@@ -515,7 +515,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         Header: 'Tags',
                                         accessor: '',
                                         show: this.state.columns.tags.selected,
-
+                                        className: 'doc-table-col-tags',
                                         sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                                             const toSTR = (obj: any): string => {
@@ -574,6 +574,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 100,
                                         defaultSortDesc: true,
                                         resizable: false,
+                                        className: 'doc-table-col-progress',
                                         Cell: (row: any) => (
 
                                             <progress max="100" value={ row.value } style={{
@@ -588,6 +589,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 25,
                                         defaultSortDesc: true,
                                         resizable: false,
+                                        className: 'doc-table-col-mutate-tags',
                                         Cell: (row: any) => {
 
                                             const repoDocInfo: RepoDocInfo = row.original;
@@ -614,6 +616,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 25,
                                         defaultSortDesc: true,
                                         resizable: false,
+                                        className: 'doc-table-col-mutate-flags',
                                         Cell: (row: any) => {
 
                                             const title = 'Flag document';
@@ -638,6 +641,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 25,
                                         defaultSortDesc: true,
                                         resizable: false,
+                                        className: 'doc-table-col-mutate-archived',
                                         Cell: (row: any) => {
 
                                             const title = 'Archive document';

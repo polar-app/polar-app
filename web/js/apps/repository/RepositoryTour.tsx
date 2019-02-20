@@ -1,5 +1,6 @@
-import Joyride from 'react-joyride';
+import Joyride, {Step} from 'react-joyride';
 import * as React from 'react';
+import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 
 export class RepositoryTour extends React.Component<IProps, IState> {
 
@@ -13,65 +14,195 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     public render() {
 
-        const steps = [
+        const Term = (props: any) => {
+            return <b><i>{props.children}</i></b>;
+        };
+
+        const Title = (props: any) => {
+            return <h4>{props.children}</h4>;
+        };
+
+        const steps: Step[] = [
             {
                 target: 'body',
-                content: "Polar keeps all your documents in one place.  The document repository lists documents you've added.",
+                content: <div>
+                    <h2>Welcome to Polar!</h2>
+
+                    <p>
+                        We're going to give you a quick tour of how to use the
+                        main features in Polar.  Should only take a few moments.
+                    </p>
+
+                </div>,
+                disableBeacon: true,
+                placement: 'center'
+            },
+
+            {
+                // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
+                target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
+                title: <Title>Document Repository</Title>,
+                content: <div>
+
+                    <p>
+                    Your documents are kept here in the <Term>document repository</Term>.
+                    </p>
+
+                    <p>
+                        We went ahead and added some sample documents so you can see what Polar looks like in action.  You can just delete them once the tour is finished.
+                    </p>
+
+                </div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+            {
+                target: '#add-content-dropdown',
+                title: <Title>Add Documents</Title>,
+                content: <div>
+                    Documents can easily be added by clicking the <Term>Add</Term> button
+                    and we can import documents individually or in bulk from
+                    a local directory.
+                </div>
+            },
+            {
+                target: '#enable-cloud-sync',
+                title: <Title>Cloud Sync</Title>,
+                content: <div>
+                    Polar supports <Term>cloud sync</Term> which keeps all your
+                    documents securely backed up in the cloud.
+                    Enabling <Term>cloud sync</Term> also allow you to keep all your
+                    computers that run Polar fully synchronized.
+                </div>
+            },
+
+            {
+                target: '.doc-table-col-progress',
+                title: <Title>Reading Progress</Title>,
+                content: <div>
+                    Each document has a progress associated with it which is
+                    derived from pagemarks. Pagemarks are similar to bookmarks
+                    but manually updated on each document while you read to
+                    enable you to keep track of your reading.
+                </div>,
+
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+            {
+                target: '.doc-table-col-tags',
+                title: <Title>Tags</Title>,
+                content: <div>Each document can be tagged to enable
+                    filtering and allow you to easily manage your documents.
+                </div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+
+            {
+                target: '.doc-table-col-added',
+                title: <Title>Sorting</Title>,
+                content: <div>
+                    We keep track of the time a document was <Term>added</Term>
+                    and <Term>updated</Term> so you can sort by time to read the
+                    most recently added (or updated) documents first.
+                </div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+
+            // {
+            //     target: '.doc-table-col-updated',
+            //     content: 'Same thing for the updated time.  Updated allows
+            // you to sort and manage documents that you\'re actively using.',
+            // disableBeacon: true, // placement: "bottom", },
+            {
+                target: '.doc-table-col-title',
+                content: <div>
+                    The title of the document is automatically set when it's
+                    added but you can change it at any time
+                </div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+
+            {
+                target: '.doc-table-col-mutate-tags',
+                content: <div>
+                    The tag button allow you to assign new <b><i>tags</i></b> a document
+                </div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+
+            {
+                target: '.doc-table-col-mutate-flags',
+                content: <div>
+                    The <Term>flag</Term> button allow you to mark important
+                    documents.  Once flagged you can use the <Term>filter bar</Term> to
+                    show only flagged documents.
+                </div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+
+            {
+                target: '.doc-table-col-mutate-archived',
+                content: <div>This <Term>archive</Term> allow you to hide a document once read.</div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+
+            {
+                target: '.doc-dropdown',
+                content:  <div>
+                    The dropdown allow you perform other action on a document
+                    including changing the title, delete documents, etc.
+                </div>,
+                disableBeacon: true,
+                // placement: "bottom",
+            },
+
+            {
+                title: <Title>Filter Bar</Title>,
+                target: '#toggle-flagged',
+                content: <div>The <Term>filter bar</Term> allows you to
+                    configure which documents are visible.
+                    This button allows you to hide/show flagged documents.
+                </div>,
                 disableBeacon: true,
             },
 
             {
-                target: '#add-content-dropdown',
-                content: 'Documents can easily be added by clicking the "Add" button and we can import documents individually or in bulk from a local directory.'
-            }
-            // {
-            //     target: '.my-other-step',
-            //     content: 'This another awesome feature!',
-            // },
+                target: '#toggle-archived',
+                content: <div>
+                    Toggle archived documents (hidden by default).  It's usually
+                    best to archive a document after it's been read.
+                </div>,
+                disableBeacon: true,
+            },
 
+            {
+                target: '#filter-tag-input',
+                content: <div>
+                    The tag filter allows you to narrow down the
+                    list of documents by tag.</div>,
+                disableBeacon: true,
+            },
+            {
+                target: '#filter_title',
+                content: 'Filters the list of documents by title.',
+                disableBeacon: true,
+            },
 
         ];
-
-        // Let's take a quick tour of Polar.
-        //
-        //
-        //
-        //
-        //
-        //     You can login to the cloud to enable cross-device sync by clicking here.
-        //
-        //     Clicking on the column headers allows you to prioritize your reading queue.
-        //
-        //     Progress is calculated by "pagemarks" which are manually created by the user
-        // during reading.
-        //
-        //     The added and updated columns allows you to sort by the times documents were
-        // added or updated.
-        //
-        //     The filter bar allows you to hide/show documents in the repository.
-        //
-        //     Flagged documents can be used to prioritize important reading.
-        //
-        //     Documents can be archived once finished and are hidden by default.
-        //
-        // Documents can be assigned and filtered by tag.
-        //
-        //     You can find a document by title by searching by name.
-        //
-        //     Documents can be tagged by clicking here
-        //
-        // Documents can be flagged by clicking here
-        //
-        // Documents can be archived by clicking here
-
-
 
         return (
 
             <Joyride
                 steps={steps}
                 continuous={true}
-                run={true}
+                run={! LifecycleToggle.markOnceRequested('has-repository-tour')}
                 showProgress={true}
                 showSkipButton={true}
                 styles={{
@@ -83,6 +214,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         // textColor: '#004a14',
                         // width: 900,
                         // zIndex: 1000,
+                    },
+                    tooltipContainer: {
+                        textAlign: 'left',
                     }
                 }}
             />

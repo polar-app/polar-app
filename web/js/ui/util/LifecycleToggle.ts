@@ -17,10 +17,24 @@ export class LifecycleToggle {
 
     }
 
+    /**
+     * The initial value is false, After that the value is true.
+     */
+    public static markOnceRequested(key: string) {
+
+        const currentValue =
+            Optional.of(window.localStorage.getItem(key)).getOrElse('false');
+
+        const result = currentValue === 'true';
+
+        this.markHandled(key);
+
+        return result;
+
+    }
+
     private static markHandled(key: string): void {
-
         window.localStorage.setItem(key, 'true');
-
     }
 
 }
