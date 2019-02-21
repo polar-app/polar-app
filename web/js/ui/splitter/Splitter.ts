@@ -34,12 +34,19 @@ export class Splitter {
 
     }
 
-    public toggle() {
+    /**
+     * Toggle the splitter and return true if it's expanded and false if it's
+     */
+    public toggle(): SplitterState {
 
-        if (this.isCollapsed()) {
+        const collapsed = this.isCollapsed();
+
+        if (collapsed) {
             this.expand();
+            return 'expanded';
         } else {
             this.collapse();
+            return 'collapsed';
         }
 
     }
@@ -60,15 +67,20 @@ export class Splitter {
     }
 
     public isCollapsed() {
-        return Math.floor(this.split.getSizes()[1]) <= 0;
+
+        const size = this.split.getSizes()[1];
+        const floorSize = Math.floor(size);
+
+        return floorSize <= 0;
     }
 
-    private expand() {
-        this.split.setSizes(this.sizes);
-
+    public expand() {
+        this.split.setSizes(INITIAL_SIZES);
     }
 
 }
+
+export type SplitterState = 'expanded' | 'collapsed';
 
 export type Side = 'left' | 'right';
 

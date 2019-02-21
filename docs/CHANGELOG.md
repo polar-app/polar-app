@@ -1,3 +1,14 @@
+# 1.13.3
+
+- Sidebar now visible by default and the setting remembered with a local pref.
+
+- Fixed messenger and F10 and other commands that were accidentally broken in 
+  this release. 
+
+# 1.13.2
+
+- more tour changes
+
 # 1.13.0
 
 - Tour of how to use Polar for new users.
