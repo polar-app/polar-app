@@ -1,5 +1,10 @@
 # 1.13.3
 
+- Fixed problem with constraining the window sizes on smaller displays like 
+  smaller laptops.
+
+- Increased the default 
+
 - Sidebar now visible by default and the setting remembered with a local pref.
 
 - Fixed messenger and F10 and other commands that were accidentally broken in 
