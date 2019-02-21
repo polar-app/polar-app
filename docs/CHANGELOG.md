@@ -1,5 +1,8 @@
 # 1.13.3
 
+- User-Agent was not being properly tracked and this as very important to detect
+  which Operating Systems were being used.
+
 - Fixed problem with constraining the window sizes on smaller displays like 
   smaller laptops.
 

@@ -48,6 +48,10 @@ export class RendererAnalytics {
 
         // log.debug("Sending analytics event: ", args);
 
+        // FIXME: screenResolution (sr) and viewportSize (vp)
+        //
+        // https://github.com/peaksandpies/universal-analytics/blob/master/AcceptableParams.md
+
         const callback = defaultCallback;
 
         const eventParams: EventParams = {
