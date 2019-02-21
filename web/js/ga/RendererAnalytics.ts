@@ -1,11 +1,14 @@
 import ua, {EventParams} from 'universal-analytics';
 import {Logger} from '../logger/Logger';
 import {CIDs} from './CIDs';
+import {Version} from '../util/Version';
 
 // const TRACKING_ID = 'UA-122721184-1';
 const TRACKING_ID = 'UA-122721184-5';
 
 const DEBUG = false;
+
+const version = Version.get();
 
 declare var window: Window;
 
@@ -52,7 +55,8 @@ export class RendererAnalytics {
             ea: args.action,
             el: args.label,
             ev: args.value,
-            ua: userAgent
+            ua: userAgent,
+            av: version
         };
 
         visitor.event(eventParams).send(callback);
@@ -67,7 +71,8 @@ export class RendererAnalytics {
             dp: path,
             dh: hostname,
             dt: title,
-            ua: userAgent
+            ua: userAgent,
+            av: version
         };
 
         visitor.pageview(pageviewParams).send(callback);
