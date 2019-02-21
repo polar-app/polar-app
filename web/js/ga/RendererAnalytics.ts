@@ -1,4 +1,4 @@
-import ua from 'universal-analytics';
+import ua, {EventParams} from 'universal-analytics';
 import {Logger} from '../logger/Logger';
 import {CIDs} from './CIDs';
 
@@ -7,9 +7,12 @@ const TRACKING_ID = 'UA-122721184-5';
 
 const DEBUG = false;
 
+declare var window: Window;
+
+const userAgent = window.navigator.userAgent;
+
 const cid = CIDs.get();
 const headers = {
-    'User-Agent': window.navigator.userAgent
 };
 
 const visitorOptions: ua.VisitorOptions = {
@@ -21,7 +24,16 @@ const visitor = ua(TRACKING_ID, visitorOptions).debug(DEBUG);
 
 const log = Logger.create();
 
-declare var window: Window;
+const defaultCallback = (err: Error) => {
+
+    // The send method take sa callback regarding errors and this allows
+    // us to log failure.
+
+    if (err) {
+        log.warn("Unable to track analytics: ", err);
+    }
+
+};
 
 export class RendererAnalytics {
 
@@ -33,34 +45,32 @@ export class RendererAnalytics {
 
         // log.debug("Sending analytics event: ", args);
 
-        const callback = (err: Error) => {
+        const callback = defaultCallback;
 
-            // The send method take sa callback regarding errors and this allows
-            // us to log failure.
-
-            if (err) {
-                log.warn("Unable to track analytics: ", err);
-            }
-
+        const eventParams: EventParams = {
+            ec: args.category,
+            ea: args.action,
+            el: args.label,
+            ev: args.value,
+            ua: userAgent
         };
 
-        if (args.label && args.value) {
-            visitor.event(args.category, args.action, args.label, args.value).send(callback);
-        } else if (args.label) {
-            visitor.event(args.category, args.action, args.label).send(callback);
-        } else {
-            visitor.event(args.category, args.action).send(callback);
-        }
+        visitor.event(eventParams).send(callback);
 
     }
 
     public static pageview(path: string, hostname?: string, title?: string): void {
 
-        if (hostname && title) {
-            visitor.pageview(path, hostname, title).send();
-        } else {
-            visitor.pageview(path).send();
-        }
+        const callback = defaultCallback;
+
+        const pageviewParams: ua.PageviewParams = {
+            dp: path,
+            dh: hostname,
+            dt: title,
+            ua: userAgent
+        };
+
+        visitor.pageview(pageviewParams).send(callback);
 
     }
 
