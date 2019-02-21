@@ -8,10 +8,20 @@ const TRACKING_ID = 'UA-122721184-5';
 const DEBUG = false;
 
 const cid = CIDs.get();
+const headers = {
+    'User-Agent': window.navigator.userAgent
+};
 
-const visitor = ua(TRACKING_ID, {cid}).debug(DEBUG);
+const visitorOptions: ua.VisitorOptions = {
+    cid,
+    headers
+};
+
+const visitor = ua(TRACKING_ID, visitorOptions).debug(DEBUG);
 
 const log = Logger.create();
+
+declare var window: Window;
 
 export class RendererAnalytics {
 

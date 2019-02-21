@@ -4,7 +4,7 @@ import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 
 const log = Logger.create();
 
-const WIDTH = 900 * 1.2;
+const WIDTH = 900 * 1.2; // 1300 is like 80% of users
 const HEIGHT = 1100 * 1.2;
 const SIDEBAR_BUFFER = 100;
 

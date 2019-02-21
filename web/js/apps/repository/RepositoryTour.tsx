@@ -20,6 +20,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         // FIXME: if the user clicks out of the tour then the tour stops
         // and the beacon is displayed.
+        //
+        // FIXME: show them how to use the rich text area including images,
+        // HTML, etc.
 
         const Term = (props: any) => {
             return <b><i>{props.children}</i></b>;
