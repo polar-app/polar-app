@@ -89,6 +89,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
                 title: <Title>Document Repository</Title>,
                 disableBeacon: true,
+                // spotlightClicks: true,
                 styles: {
                     tooltip: {
                         width: '500px'
@@ -147,10 +148,20 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                     <img src="/web/assets/images/cloud-sync.svg" style={Styles.IMG}/>
 
+                    <p>
                     Polar supports <Term>cloud sync</Term> which keeps all your
                     documents securely backed up in the cloud.
                     Enabling <Term>cloud sync</Term> also allow you to keep all your
                     computers that run Polar fully synchronized.
+                    </p>
+
+                    <p>
+                        This works transparently and realtime across MacOS,
+                        Windows, and Linux.
+                    </p>
+
+
+
                 </div>
             },
 
@@ -187,11 +198,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 // placement: "bottom",
             },
 
-            // {
-            //     target: '.doc-table-col-updated',
-            //     content: 'Same thing for the updated time.  Updated allows
-            // you to sort and manage documents that you\'re actively using.',
-            // disableBeacon: true, // placement: "bottom", },
             {
                 target: '.doc-table-col-title',
                 disableBeacon: true,
@@ -270,42 +276,30 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 content: 'Filters the list of documents by title.',
                 disableBeacon: true,
             },
+
             // {
-            //     target: 'body',
+            //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
+            //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
+            //     title: <Title>Open a document</Title>,
+            //     disableBeacon: true,
+            //     spotlightClicks: true,
             //     content: <div>
-            //         <h2>Next steps!</h2>
+            //
+            //         <i className="fas fa-book-open text-primary"
+            //            style={{fontSize: '150px'}}></i>
             //
             //         <p>
-            //             After this you might want to:
+            //             Let's open a document.
             //         </p>
             //
             //         <p>
-            //             Polar allows you to:
-            //         </p>
-            //
-            //         <ul>
-            //
-            //             <li>Keep all your documents in one place.</li>
-            //
-            //             <li>Easily keep track of your reading with pagemarks and stats tracking.</li>
-            //
-            //             <li>Annotate, tag, and highlight all your documents and build a personal knowledge repository.</li>
-            //
-            //         </ul>
-            //
-            //         <p>
-            //             The tour should take about 60 seconds.
+            //             Go ahead and <Term>double click</Term> on the
+            //             highlighted document row and a new window will open.
             //         </p>
             //
             //     </div>,
-            //     styles: {
-            //         tooltip: {
-            //             width: '650px'
-            //         }
-            //     },
-            //     disableBeacon: true,
-            //     placement: 'center'
-            // },
+            //     // placement: "bottom",
+            // }
 
         ];
 

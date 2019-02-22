@@ -2,6 +2,7 @@ import {Logger} from '../../logger/Logger';
 import {Viewer} from '../Viewer';
 import {DocDetail} from '../../metadata/DocDetail';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {ViewerTours} from '../../apps/viewer/ViewerTours';
 
 declare var window: any;
 
@@ -14,6 +15,8 @@ export class PDFViewer extends Viewer {
         log.info("Starting PDFViewer");
 
         RendererAnalytics.pageview("/pdfviewer");
+
+        // ViewerTours.create();
 
         this.disableSidebarKeyboardHandling();
 

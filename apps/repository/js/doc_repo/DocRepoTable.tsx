@@ -302,7 +302,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                             <div style={{width: '100%'}}>
 
-                                <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                                <div id="filter-bar"
+                                    style={{display: 'flex', justifyContent: 'flex-end'}}>
 
                                     <div className="mr-2"
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
