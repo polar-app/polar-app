@@ -1,5 +1,7 @@
 # 1.13.3
 
+- GA events for cloud login and configured 
+
 - User-Agent was not being properly tracked and this as very important to detect
   which Operating Systems were being used.
 

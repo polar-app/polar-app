@@ -75,6 +75,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
                 target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
                 title: <Title>Document Repository</Title>,
+                disableBeacon: true,
                 content: <div>
 
                     <p>
@@ -86,12 +87,13 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
 
                 </div>,
-                disableBeacon: true,
                 // placement: "bottom",
             },
             {
                 target: '#add-content-dropdown',
                 title: <Title>Add Documents</Title>,
+                disableBeacon: true,
+                // spotlightClicks: true,
                 content: <div>
                     <p>
                         Documents can easily be added by clicking the <Term>Add</Term> button
@@ -107,6 +109,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             {
                 target: '#enable-cloud-sync, #cloud-sync-dropdown',
                 title: <Title>Cloud Sync</Title>,
+                disableBeacon: true,
                 content: <div>
                     Polar supports <Term>cloud sync</Term> which keeps all your
                     documents securely backed up in the cloud.
@@ -118,33 +121,33 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             {
                 target: '.doc-table-col-progress',
                 title: <Title>Reading Progress</Title>,
+                disableBeacon: true,
                 content: <div>
                     Each document has a progress associated with it which is
                     derived from pagemarks. Pagemarks are similar to bookmarks
                     but manually updated on each document while you read.
                 </div>,
 
-                disableBeacon: true,
                 // placement: "bottom",
             },
             {
                 target: '.doc-table-col-tags',
                 title: <Title>Tags</Title>,
+                disableBeacon: true,
                 content: <div>Each document can be tagged to enable
                     filtering and allow you to easily manage your documents.
                 </div>,
-                disableBeacon: true,
                 // placement: "bottom",
             },
 
             {
                 target: '.doc-table-col-added',
                 title: <Title>Sorting</Title>,
+                disableBeacon: true,
                 content: <div>
                     We keep track of the time a document was <Term>added</Term> and <Term>updated</Term>
                     so you can sort by time to read the most recently added (or updated) documents first.
                 </div>,
-                disableBeacon: true,
                 // placement: "bottom",
             },
 
@@ -155,82 +158,118 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             // disableBeacon: true, // placement: "bottom", },
             {
                 target: '.doc-table-col-title',
+                disableBeacon: true,
                 content: <div>
                     The title of the document is automatically set when it's
                     added but you can change it at any time
                 </div>,
-                disableBeacon: true,
                 // placement: "bottom",
             },
 
             {
                 target: '.doc-table-col-mutate-tags',
+                disableBeacon: true,
                 content: <div>
                     The tag button allow you to assign new <b><i>tags</i></b> a document
                 </div>,
-                disableBeacon: true,
                 // placement: "bottom",
             },
 
             {
                 target: '.doc-table-col-mutate-flags',
+                disableBeacon: true,
                 content: <div>
                     The <Term>flag</Term> button allow you to mark important
                     documents.  Once flagged you can use the <Term>filter bar</Term> to
                     show only flagged documents.
                 </div>,
-                disableBeacon: true,
                 // placement: "bottom",
             },
 
             {
                 target: '.doc-table-col-mutate-archived',
-                content: <div>This <Term>archive</Term> allow you to hide a document once read.</div>,
                 disableBeacon: true,
+                content: <div>This <Term>archive</Term> allow you to hide a document once read.</div>,
                 // placement: "bottom",
             },
 
             {
                 target: '.doc-dropdown',
+                disableBeacon: true,
                 content:  <div>
                     The dropdown allow you perform other actions on a document
                     including changing the title and deleting documents.
                 </div>,
-                disableBeacon: true,
                 // placement: "bottom",
             },
 
             {
                 title: <Title>Filter Bar</Title>,
                 target: '#toggle-flagged',
+                disableBeacon: true,
                 content: <div>The <Term>filter bar</Term> allows you to
                     configure which documents are visible.
                     This button allows you to hide/show <Term>flagged</Term> documents.
                 </div>,
-                disableBeacon: true,
             },
 
             {
                 target: '#toggle-archived',
+                disableBeacon: true,
                 content: <div>
                     Toggle <Term>archived</Term> documents (hidden by default).  It's usually
                     best to archive a document after it's been read.
                 </div>,
-                disableBeacon: true,
             },
 
             {
                 target: '#filter-tag-input',
+                disableBeacon: true,
                 content: <div>
                     The tag filter allows you to narrow down the
                     list of documents by tag.</div>,
-                disableBeacon: true,
             },
             {
                 target: '#filter_title',
                 content: 'Filters the list of documents by title.',
                 disableBeacon: true,
             },
+            // {
+            //     target: 'body',
+            //     content: <div>
+            //         <h2>Next steps!</h2>
+            //
+            //         <p>
+            //             After this you might want to:
+            //         </p>
+            //
+            //         <p>
+            //             Polar allows you to:
+            //         </p>
+            //
+            //         <ul>
+            //
+            //             <li>Keep all your documents in one place.</li>
+            //
+            //             <li>Easily keep track of your reading with pagemarks and stats tracking.</li>
+            //
+            //             <li>Annotate, tag, and highlight all your documents and build a personal knowledge repository.</li>
+            //
+            //         </ul>
+            //
+            //         <p>
+            //             The tour should take about 60 seconds.
+            //         </p>
+            //
+            //     </div>,
+            //     styles: {
+            //         tooltip: {
+            //             width: '650px'
+            //         }
+            //     },
+            //     disableBeacon: true,
+            //     placement: 'center'
+            // },
 
         ];
 
@@ -273,13 +312,13 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                 switch (data.status) {
                     case STATUS.SKIPPED:
-                        RendererAnalytics.event({category: 'tour', action: 'skipped'});
-                        RendererAnalytics.event({category: 'tour', action: 'skipped-at-step-' + data.index});
+                        RendererAnalytics.event({category: 'tour-result', action: 'skipped'});
+                        RendererAnalytics.event({category: 'tour-skip', action: 'skipped-at-step-' + data.index});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
                         break;
                     case STATUS.FINISHED:
-                        RendererAnalytics.event({category: 'tour', action: 'finished'});
+                        RendererAnalytics.event({category: 'tour-result', action: 'finished'});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED);
                         break;

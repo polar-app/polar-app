@@ -1,14 +1,5 @@
-/** disable conflicting twitter bootstrap styles */
-.polar-viewer *,
-.polar-viewer *::before,
-.polar-viewer *::after {
-    box-sizing: unset;
-}
 
-/* enable bootstrap within .twitter-bootstrap-enabled */
-
-.twitter-bootstrap-enabled *,
-.twitter-bootstrap-enabled *::before,
-.twitter-bootstrap-enabled *::after {
-    box-sizing: border-box;
+.dropdown-menu button:hover {
+    background-color: #D8D8D8;
+    background-image: none;
 }
