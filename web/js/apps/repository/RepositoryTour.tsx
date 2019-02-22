@@ -4,6 +4,19 @@ import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
+export class Styles {
+    public static IMG: React.CSSProperties = {
+        maxWidth: '450px',
+        maxHeight: '325px',
+        marginBottom: '10px',
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    };
+
+
+}
+
 export class RepositoryTour extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -76,7 +89,14 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
                 title: <Title>Document Repository</Title>,
                 disableBeacon: true,
+                styles: {
+                    tooltip: {
+                        width: '500px'
+                    }
+                },
                 content: <div>
+
+                    <img src="/web/assets/images/files.svg" style={Styles.IMG}/>
 
                     <p>
                     Your documents are kept here in the <Term>document repository</Term>.
@@ -94,7 +114,15 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 title: <Title>Add Documents</Title>,
                 disableBeacon: true,
                 // spotlightClicks: true,
+                styles: {
+                    tooltip: {
+                        width: '500px'
+                    }
+                },
                 content: <div>
+
+                    <img src="/web/assets/images/add-file.svg" style={Styles.IMG}/>
+
                     <p>
                         Documents can easily be added by clicking the <Term>Add</Term> button
                         and we can import documents individually or in bulk from
@@ -110,7 +138,15 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '#enable-cloud-sync, #cloud-sync-dropdown',
                 title: <Title>Cloud Sync</Title>,
                 disableBeacon: true,
+                styles: {
+                    tooltip: {
+                        width: '500px'
+                    }
+                },
                 content: <div>
+
+                    <img src="/web/assets/images/cloud-sync.svg" style={Styles.IMG}/>
+
                     Polar supports <Term>cloud sync</Term> which keeps all your
                     documents securely backed up in the cloud.
                     Enabling <Term>cloud sync</Term> also allow you to keep all your
