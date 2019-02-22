@@ -34,7 +34,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 
         return (
 
-            <div className="p-1">
+            <div id="new-documents-per-day-chart" className="p-1">
 
                 <StatTitle>New Documents Per Day</StatTitle>
 

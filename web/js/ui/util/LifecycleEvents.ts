@@ -17,5 +17,7 @@ export class LifecycleEvents {
 
     public static WHATS_NEW_VERSION =  'polar-whats-new-version';
 
+    public static HAS_EXAMPLE_DOCS = 'has-example-docs';
+
 }
 

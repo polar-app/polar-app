@@ -36,6 +36,10 @@ export class LoadExampleDocs {
             return;
         }
 
+        // TODO: register 10 docs.. 4 on first day, then 3, then 2...
+        // TODO: highlights and comments...
+        // TODO: flashcards
+
         // now load the files propery..
         await this.doDoc0();
         await this.doDoc1();
@@ -69,7 +73,8 @@ export class LoadExampleDocs {
             },
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
-            pagemarkEnd: 3
+            pagemarkEnd: 3,
+            flagged: true
         });
 
     }
@@ -117,6 +122,9 @@ export class LoadExampleDocs {
                     docMeta.docInfo.lastUpdated = opts.lastUpdated;
                 }
 
+                docMeta.docInfo.flagged
+                    = Optional.of(opts.flagged).getOrElse(false);
+
                 log.info("Wrote to persistenceLayer: ", opts.title);
 
                 await this.persistenceLayer.writeDocMeta(docMeta);
@@ -153,5 +161,6 @@ interface DocOpts {
     readonly pagemarkEnd?: number;
     readonly tags?: {[id: string]: Tag};
     readonly added?: ISODateTimeString;
+    readonly flagged?: boolean;
     readonly lastUpdated?: ISODateTimeString;
 }

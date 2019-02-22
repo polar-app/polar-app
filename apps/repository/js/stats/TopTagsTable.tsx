@@ -22,7 +22,7 @@ export default class TopTagsTable extends React.Component<IProps, IState> {
 
         const topTags = Statistics.computeTopTags(this.props.docInfos, 20);
 
-        return <div>
+        return <div id="top-tags-table">
             <StatTitle>Top Tags</StatTitle>
             <Table>
                 <tbody>
