@@ -304,7 +304,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
             {
                 target: 'body',
-                title: <Title>Thanks for taking the tour!</Title>,
+                // title: <Title>Thanks for taking the tour!</Title>,
                 content: <div>
 
                     <div className="text-center">
