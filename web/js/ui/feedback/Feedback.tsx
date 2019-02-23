@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Dropdown, {DropdownButton, DropdownMenu, DropdownMenuWrapper, DropdownToggle, MenuItem} from '@burtonator/react-dropdown';
-import {NULL_FUNCTION} from '../../js/util/Functions';
+import {NULL_FUNCTION} from '../../util/Functions';
 import Button from 'reactstrap/lib/Button';
-import {RendererAnalytics} from '../../js/ga/RendererAnalytics';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
-export class TourFeedback extends React.Component<IProps, IState> {
+export class Feedback extends React.Component<IProps, IState> {
 
     constructor(props: any, context: any) {
         super(props, context);

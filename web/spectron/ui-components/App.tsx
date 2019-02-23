@@ -36,7 +36,7 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import {DropMenu} from './DropMenu';
 import {TestMenu} from './TestMenu';
 import Joyride from 'react-joyride';
-import {TourFeedback} from './TourFeedback';
+import {Feedback} from '../../js/ui/feedback/Feedback';
 
 
 class App<P> extends React.Component<{}, IAppState> {
@@ -141,23 +141,23 @@ class App<P> extends React.Component<{}, IAppState> {
                 <h1 className="component">Feedback without description</h1>
 
                 <div className="text-center">
-                    <TourFeedback category="tour-feedback"
-                                  title="How likely are you to continue using Polar?"
-                                  noEvent={true}
-                                  from="Not likely"
-                                  to="Very likely"/>
+                    <Feedback category="tour-feedback"
+                              title="How likely are you to continue using Polar?"
+                              noEvent={true}
+                              from="Not likely"
+                              to="Very likely"/>
                 </div>
 
                 <h1 className="component">Feedback without description</h1>
 
                 <div className="text-center">
-                    <TourFeedback category="tour-feedback"
-                                  title="How likely are you to continue using Polar?"
-                                  description="We wanted to get your initial thoughts after taking the tour."
-                                  noEvent={true}
-                                  unsure={true}
-                                  from="Not likely"
-                                  to="Very likely"/>
+                    <Feedback category="tour-feedback"
+                              title="How likely are you to continue using Polar?"
+                              description="We wanted to get your initial thoughts after taking the tour."
+                              noEvent={true}
+                              unsure={true}
+                              from="Not likely"
+                              to="Very likely"/>
                 </div>
 
 

@@ -3,7 +3,7 @@ import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {TourFeedback} from '../../../spectron/ui-components/TourFeedback';
+import {Feedback} from '../../ui/feedback/Feedback';
 
 export class Styles {
     public static IMG: React.CSSProperties = {
@@ -308,12 +308,12 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 content: <div>
 
                     <div className="text-center">
-                        <TourFeedback category="tour-feedback"
-                                      title="How likely are you to continue using Polar?"
-                                      description="We wanted to get your initial thoughts after taking the tour."
-                                      from="Not likely"
-                                      to="Very likely"
-                                      unsure={true}/>
+                        <Feedback category="tour-feedback"
+                                  title="How likely are you to continue using Polar?"
+                                  description="We wanted to get your initial thoughts after taking the tour."
+                                  from="Not likely"
+                                  to="Very likely"
+                                  unsure={true}/>
                     </div>
 
                 </div>,
