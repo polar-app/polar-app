@@ -106,7 +106,27 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         };
 
         const Title = (props: any) => {
-            return <div style={{fontSize: '22px'}}>{props.children}</div>;
+            return <div style={{
+                fontSize: '22px',
+                marginLeft: '10px'}}>
+                {props.children}
+            </div>;
+        };
+
+        interface IconProps {
+            className: string;
+        }
+
+        const Icon = (props: IconProps) => {
+            return <div className="text-primary">
+                <i className={props.className}
+                   style={{
+                       fontSize: '175px',
+                       marginLeft: '5px',
+                   }}>
+
+                </i>
+            </div>;
         };
 
         const steps: Step[] = [
@@ -153,11 +173,15 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 title: <Title>Document Repository</Title>,
                 content: <div>
                     <p>
-                        Your documents are kept here in the <Term>document repository</Term>.
+                        Your documents are kept here in
+                        the <Term>document repository</Term> and
+                        can be opened with by <Term>double clicking</Term>.
                     </p>
 
                     <p>
-                        We went ahead and added some sample documents so you can see what Polar looks like in action.  You can just delete them once the tour is finished.
+                        We went ahead and added some sample documents so you can
+                        see what Polar looks like in action.  You can just
+                        delete them once the tour is finished.
                     </p>
                 </div>,
                 image: "/web/assets/images/files.svg"
@@ -196,7 +220,27 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
                 </div>,
                 image:
-                    <i className="fas fa-cloud-upload-alt text-primary" style={{fontSize: '175px'}}></i>
+                    <Icon className="fas fa-cloud-upload-alt"/>
+
+            }),
+
+            this.createImageStep({
+                target: '#discord-button',
+                title: <Title>Discord Chat</Title>,
+                content: <div>
+                    <p>
+                        We have a directly link to <Term>Discord chat</Term> to
+                        enable you to discuss Polar live with the developers
+                        and other users.
+                    </p>
+
+                    <p>
+                        Feel free to jump in at any time and give us feedback
+                        at any time.
+                    </p>
+                </div>,
+                image:
+                    <Icon className="fab fa-discord"/>
 
             }),
 
@@ -226,7 +270,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                 </div>,
                 image:
-                    <i className="fa fa-tag text-primary" style={{fontSize: '175px'}}/>
+                    <Icon className="fa fa-tag"/>
 
             }),
 
@@ -318,7 +362,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             },
             {
                 target: '#filter_title',
-                content: 'Filters the list of documents by title.',
+                content: 'Search the list of documents by title.',
                 disableBeacon: true,
             },
             //
