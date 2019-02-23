@@ -138,36 +138,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 placement: 'center'
             },
 
-            // {
-            //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
-            //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
-            //     title: <Title>Document Repository</Title>,
-            //     disableBeacon: true,
-            //     styles: {
-            //         tooltip: {
-            //             width: '700px'
-            //         }
-            //     },
-            //     content: <div>
-            //
-            //         <SplitLayout>
-            //
-            //             <SplitLayoutLeft>
-            //
-            //             </SplitLayoutLeft>
-            //
-            //             <SplitLayoutRight>
-            //
-            //                 <img src="/web/assets/images/files.svg" style={Styles.SPLIT_BAR_IMG}/>
-            //
-            //             </SplitLayoutRight>
-            //
-            //         </SplitLayout>
-            //
-            //     </div>,
-            //     // placement: "bottom",
-            // },
-
             this.createImageStep({
                 target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
                 title: <Title>Document Repository</Title>,
@@ -183,41 +153,23 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 image: "/web/assets/images/files.svg"
             }),
 
-            {
+            this.createImageStep({
                 target: '#add-content-dropdown',
                 title: <Title>Add Documents</Title>,
-                disableBeacon: true,
-                styles: {
-                    tooltip: {
-                        width: '700px'
-                    }
-                },
                 content: <div>
+                    <p>
+                        Documents can easily be added by clicking the <Term>Add</Term> button
+                        and we can import documents individually or in bulk from
+                        a local directory.
+                    </p>
+                    <p>
+                        Once the tour is over you'll probably want to use this
+                        feature to add any documents you're currently reading.
+                    </p>
+                </div>,
+                image: "/web/assets/images/add-file.svg"
+            }),
 
-                    <SplitLayout>
-
-                        <SplitLayoutLeft>
-                            <p>
-                                Documents can easily be added by clicking the <Term>Add</Term> button
-                                and we can import documents individually or in bulk from
-                                a local directory.
-                            </p>
-                            <p>
-                                Once the tour is over you'll probably want to use this
-                                feature to add any documents you're currently reading.
-                            </p>
-                        </SplitLayoutLeft>
-
-                        <SplitLayoutRight>
-
-                            <img src="/web/assets/images/add-file.svg" style={Styles.SPLIT_BAR_IMG}/>
-
-                        </SplitLayoutRight>
-
-                    </SplitLayout>
-
-                </div>
-            },
             {
                 target: '#enable-cloud-sync, #cloud-sync-dropdown',
                 title: <Title>Cloud Sync</Title>,
