@@ -4,8 +4,11 @@ import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Feedback} from '../../ui/feedback/Feedback';
+import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../../apps/repository/js/SplitBar';
+import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_layout/SplitLayout';
 
 export class Styles {
+
     public static IMG: React.CSSProperties = {
         maxWidth: '450px',
         maxHeight: '325px',
@@ -15,7 +18,22 @@ export class Styles {
         marginRight: 'auto',
     };
 
+    public static SPLIT_BAR_IMG: React.CSSProperties = {
+        maxWidth: '225px',
+        maxHeight: '225px',
+        marginBottom: '10px',
+        display: 'block',
+        marginLeft: '5px',
+        marginRight: '5px',
+    };
 
+}
+
+interface ImageStep {
+    readonly title: React.ReactNode;
+    readonly content: React.ReactNode;
+    readonly image: string;
+    readonly target: string;
 }
 
 export class RepositoryTour extends React.Component<IProps, IState> {
@@ -26,6 +44,41 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         this.onCallback = this.onCallback.bind(this);
 
         this.state = {
+        };
+
+    }
+
+
+    private createImageStep(step: ImageStep): Step {
+
+        return {
+            target: step.target,
+            title: step.title,
+            disableBeacon: true,
+            styles: {
+                tooltip: {
+                    width: '700px'
+                }
+            },
+            content: <div>
+
+                <SplitLayout>
+
+                    <SplitLayoutLeft>
+
+                        {step.content}
+
+                    </SplitLayoutLeft>
+
+                    <SplitLayoutRight>
+
+                        <img src={step.image} style={Styles.SPLIT_BAR_IMG}/>
+
+                    </SplitLayoutRight>
+
+                </SplitLayout>
+
+            </div>,
         };
 
     }
@@ -50,7 +103,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             {
                 target: 'body',
                 content: <div>
-                    <h2>Welcome to Polar!</h2>
+                    <h2 className="text-center">Welcome to Polar!</h2>
 
                     <p>
                         We're going to give you a quick tour of how to use the
@@ -85,55 +138,84 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 placement: 'center'
             },
 
-            {
-                // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
+            // {
+            //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
+            //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
+            //     title: <Title>Document Repository</Title>,
+            //     disableBeacon: true,
+            //     styles: {
+            //         tooltip: {
+            //             width: '700px'
+            //         }
+            //     },
+            //     content: <div>
+            //
+            //         <SplitLayout>
+            //
+            //             <SplitLayoutLeft>
+            //
+            //             </SplitLayoutLeft>
+            //
+            //             <SplitLayoutRight>
+            //
+            //                 <img src="/web/assets/images/files.svg" style={Styles.SPLIT_BAR_IMG}/>
+            //
+            //             </SplitLayoutRight>
+            //
+            //         </SplitLayout>
+            //
+            //     </div>,
+            //     // placement: "bottom",
+            // },
+
+            this.createImageStep({
                 target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
                 title: <Title>Document Repository</Title>,
-                disableBeacon: true,
-                // spotlightClicks: true,
-                styles: {
-                    tooltip: {
-                        width: '500px'
-                    }
-                },
                 content: <div>
-
-                    <img src="/web/assets/images/files.svg" style={Styles.IMG}/>
-
                     <p>
-                    Your documents are kept here in the <Term>document repository</Term>.
+                        Your documents are kept here in the <Term>document repository</Term>.
                     </p>
 
                     <p>
                         We went ahead and added some sample documents so you can see what Polar looks like in action.  You can just delete them once the tour is finished.
                     </p>
-
                 </div>,
-                // placement: "bottom",
-            },
+                image: "/web/assets/images/files.svg"
+            }),
+
             {
                 target: '#add-content-dropdown',
                 title: <Title>Add Documents</Title>,
                 disableBeacon: true,
-                // spotlightClicks: true,
                 styles: {
                     tooltip: {
-                        width: '500px'
+                        width: '700px'
                     }
                 },
                 content: <div>
 
-                    <img src="/web/assets/images/add-file.svg" style={Styles.IMG}/>
+                    <SplitLayout>
 
-                    <p>
-                        Documents can easily be added by clicking the <Term>Add</Term> button
-                        and we can import documents individually or in bulk from
-                        a local directory.
-                    </p>
-                    <p>
-                        Once the tour is over you'll probably want to use this
-                        feature to add any documents you're currently reading.
-                    </p>
+                        <SplitLayoutLeft>
+                            <p>
+                                Documents can easily be added by clicking the <Term>Add</Term> button
+                                and we can import documents individually or in bulk from
+                                a local directory.
+                            </p>
+                            <p>
+                                Once the tour is over you'll probably want to use this
+                                feature to add any documents you're currently reading.
+                            </p>
+                        </SplitLayoutLeft>
+
+                        <SplitLayoutRight>
+
+                            <img src="/web/assets/images/add-file.svg" style={Styles.SPLIT_BAR_IMG}/>
+
+                        </SplitLayoutRight>
+
+                    </SplitLayout>
+
                 </div>
             },
             {
