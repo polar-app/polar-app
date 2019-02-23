@@ -6,6 +6,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Feedback} from '../../ui/feedback/Feedback';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../../apps/repository/js/SplitBar';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_layout/SplitLayout';
+import {Button} from 'reactstrap';
 
 export class Styles {
 
@@ -32,7 +33,7 @@ export class Styles {
 interface ImageStep {
     readonly title: React.ReactNode;
     readonly content: React.ReactNode;
-    readonly image: string;
+    readonly image: string | React.ReactNode;
     readonly target: string;
 }
 
@@ -50,6 +51,15 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
 
     private createImageStep(step: ImageStep): Step {
+
+        const Image = () => {
+
+            if (typeof step.image === 'string') {
+                return <img src={step.image} style={Styles.SPLIT_BAR_IMG}/>;
+            } else {
+                return <div>{step.image}</div>;
+            }
+        };
 
         return {
             target: step.target,
@@ -72,7 +82,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                     <SplitLayoutRight>
 
-                        <img src={step.image} style={Styles.SPLIT_BAR_IMG}/>
+                        <Image/>
 
                     </SplitLayoutRight>
 
@@ -118,9 +128,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                         <li>Keep all your documents in one place.</li>
 
-                        <li>Easily keep track of your reading with pagemarks and stats tracking.</li>
+                        <li>Easily keep track of your reading with <b>pagemarks</b> and <b>stats tracking</b>.</li>
 
-                        <li>Annotate, tag, and highlight all your documents and build a personal knowledge repository.</li>
+                        <li><b>Annotate</b>, <b>tag</b>, and <span className="text-dark" style={{backgroundColor: 'yellow'}}><b>highlight</b></span> all your documents and build a personal knowledge repository.</li>
 
                     </ul>
 
@@ -169,36 +179,26 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </div>,
                 image: "/web/assets/images/add-file.svg"
             }),
-
-            {
+            this.createImageStep({
                 target: '#enable-cloud-sync, #cloud-sync-dropdown',
                 title: <Title>Cloud Sync</Title>,
-                disableBeacon: true,
-                styles: {
-                    tooltip: {
-                        width: '500px'
-                    }
-                },
                 content: <div>
-
-                    <img src="/web/assets/images/cloud-sync.svg" style={Styles.IMG}/>
-
                     <p>
-                    Polar supports <Term>cloud sync</Term> which keeps all your
-                    documents securely backed up in the cloud.
-                    Enabling <Term>cloud sync</Term> also allow you to keep all your
-                    computers that run Polar fully synchronized.
+                        Polar supports <Term>cloud sync</Term> which keeps all your
+                        documents securely backed up in the cloud.
+                        Enabling <Term>cloud sync</Term> also allow you to keep all your
+                        computers that run Polar fully synchronized.
                     </p>
 
                     <p>
                         This works transparently and realtime across MacOS,
                         Windows, and Linux.
                     </p>
+                </div>,
+                image:
+                    <i className="fas fa-cloud-upload-alt text-primary" style={{fontSize: '175px'}}></i>
 
-
-
-                </div>
-            },
+            }),
 
             {
                 target: '.doc-table-col-progress',
@@ -212,23 +212,33 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                 // placement: "bottom",
             },
-            {
+
+            this.createImageStep({
                 target: '.doc-table-col-tags',
                 title: <Title>Tags</Title>,
-                disableBeacon: true,
-                content: <div>Each document can be tagged to enable
-                    filtering and allow you to easily manage your documents.
+                content: <div>
+                    <p>
+                        Each document can be tagged to enable
+                        filtering and allow you to easily manage your documents.
+                    </p>
+
+                    <p>Tags for documents are also assigned to your annotations.</p>
+
                 </div>,
-                // placement: "bottom",
-            },
+                image:
+                    <i className="fa fa-tag text-primary" style={{fontSize: '175px'}}/>
+
+            }),
 
             {
                 target: '.doc-table-col-added',
                 title: <Title>Sorting</Title>,
                 disableBeacon: true,
                 content: <div>
-                    We keep track of the time a document was <Term>added</Term> and <Term>updated</Term>
-                    so you can sort by time to read the most recently added (or updated) documents first.
+                    We keep track of the time a document
+                    was <Term>added</Term> and <Term>updated</Term> so
+                    you can sort by time to read the most recently added (or
+                    updated) documents first.
                 </div>,
                 // placement: "bottom",
             },
@@ -247,7 +257,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '.doc-table-col-mutate-tags',
                 disableBeacon: true,
                 content: <div>
-                    The tag button allow you to assign new <b><i>tags</i></b> a document
+                    The <Term>tag</Term> button allow you to assign new <b><i>tags</i></b> a document
                 </div>,
                 // placement: "bottom",
             },
