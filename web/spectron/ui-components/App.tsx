@@ -36,6 +36,7 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import {DropMenu} from './DropMenu';
 import {TestMenu} from './TestMenu';
 import Joyride from 'react-joyride';
+import {TourFeedback} from './TourFeedback';
 
 
 class App<P> extends React.Component<{}, IAppState> {
@@ -137,6 +138,28 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <h1 className="component">Feedback without description</h1>
+
+                <div className="text-center">
+                    <TourFeedback category="tour-feedback"
+                                  title="How likely are you to continue using Polar?"
+                                  noEvent={true}
+                                  from="Not likely"
+                                  to="Very likely"/>
+                </div>
+
+                <h1 className="component">Feedback without description</h1>
+
+                <div className="text-center">
+                    <TourFeedback category="tour-feedback"
+                                  title="How likely are you to continue using Polar?"
+                                  description="We wanted to get your initial thoughts after taking the tour."
+                                  noEvent={true}
+                                  unsure={true}
+                                  from="Not likely"
+                                  to="Very likely"/>
+                </div>
+
 
                 <div className="bg-dark text-white">
                     <div className="p-1 hover-bg-primary">Menu item 1</div>
@@ -151,24 +174,24 @@ class App<P> extends React.Component<{}, IAppState> {
                     my other step
                 </div>
 
-                <Joyride
-                    steps={steps}
-                    continuous={true}
-                    run={true}
-                    showProgress={true}
-                    showSkipButton={true}
-                    styles={{
-                        options: {
-                            // arrowColor: '#e3ffeb',
-                            // backgroundColor: '#e3ffeb',
-                            // overlayColor: 'rgba(79, 26, 0, 0.4)',
-                            primaryColor: '#007bff',
-                            // textColor: '#004a14',
-                            // width: 900,
-                            // zIndex: 1000,
-                        }
-                    }}
-                    />
+                {/*<Joyride*/}
+                    {/*steps={steps}*/}
+                    {/*continuous={true}*/}
+                    {/*run={true}*/}
+                    {/*showProgress={true}*/}
+                    {/*showSkipButton={true}*/}
+                    {/*styles={{*/}
+                        {/*options: {*/}
+                            {/*// arrowColor: '#e3ffeb',*/}
+                            {/*// backgroundColor: '#e3ffeb',*/}
+                            {/*// overlayColor: 'rgba(79, 26, 0, 0.4)',*/}
+                            {/*primaryColor: '#007bff',*/}
+                            {/*// textColor: '#004a14',*/}
+                            {/*// width: 900,*/}
+                            {/*// zIndex: 1000,*/}
+                        {/*}*/}
+                    {/*}}*/}
+                    {/*/>*/}
 
                 {/*<DropMenu open={true}>*/}
 

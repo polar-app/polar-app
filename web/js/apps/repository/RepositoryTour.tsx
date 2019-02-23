@@ -3,6 +3,7 @@ import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {TourFeedback} from '../../../spectron/ui-components/TourFeedback';
 
 export class Styles {
     public static IMG: React.CSSProperties = {
@@ -276,7 +277,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 content: 'Filters the list of documents by title.',
                 disableBeacon: true,
             },
-
+            //
             // {
             //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
             //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
@@ -299,7 +300,32 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //
             //     </div>,
             //     // placement: "bottom",
-            // }
+            // },
+
+            {
+                target: 'body',
+                title: <Title>Thanks for taking the tour!</Title>,
+                content: <div>
+
+                    <div className="text-center">
+                        <TourFeedback category="tour-feedback"
+                                      title="How likely are you to continue using Polar?"
+                                      description="We wanted to get your initial thoughts after taking the tour."
+                                      from="Not likely"
+                                      to="Very likely"
+                                      unsure={true}/>
+                    </div>
+
+                </div>,
+                styles: {
+                    tooltip: {
+                        width: '650px'
+                    }
+                },
+                disableBeacon: true,
+                placement: 'center'
+            }
+
 
         ];
 
