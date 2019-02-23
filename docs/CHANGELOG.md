@@ -1,5 +1,7 @@
 # 1.13.3
 
+- New tour feedback and the end of the tour.
+
 - Only load example docs once.
 
 - GA events for cloud login and configured 
@@ -9,8 +11,6 @@
 
 - Fixed problem with constraining the window sizes on smaller displays like 
   smaller laptops.
-
-- Increased the default 
 
 - Sidebar now visible by default and the setting remembered with a local pref.
 
