@@ -47,14 +47,28 @@ export class LoadExampleDocs {
 
     }
 
+    private createTag(id: string, label?: string): Tag {
+        return {id, label: label || id};
+    }
+
+    private createTags(...labels: string[]): {[id: string]: Tag} {
+
+        const result: {[id: string]: Tag} = {};
+
+        for (const label of labels) {
+            const id = label;
+            result[id] = {id, label};
+        }
+
+        return result;
+
+    }
+
     private async doDoc0() {
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'pub47492.pdf'), {
             title: "Efficient Live Expansion for Clos Data Center Networks",
-            tags: {
-                google: {id: "google", label: "google"},
-                datacenters: {id: "datacenters", label: "datacenters"}
-            },
+            tags: this.createTags('google', 'datacenters'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2h'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1h'),
             pagemarkEnd: 17
@@ -67,9 +81,9 @@ export class LoadExampleDocs {
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'bigtable.pdf'), {
             title: "Bigtable: A Distributed Storage System for Structured Data",
             tags: {
-                google: {id: "google", label: "google"},
-                bigtable: {id: "bigtable", label: "bigtable"},
-                compsci: {id: "compsci", label: "compsci"}
+                google: this.createTag('google'),
+                bigtable: this.createTag('bigtable'),
+                compsci: this.createTag('compsci')
             },
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
@@ -84,9 +98,9 @@ export class LoadExampleDocs {
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'mapreduce.pdf'), {
             title: "MapReduce: Simplified Data Processing on Large Clusters",
             tags: {
-                google: {id: "google", label: "google"},
-                mapreduce: {id: "mapreduce", label: "mapreduce"},
-                compsci: {id: "compsci", label: "compsci"}
+                google: this.createTag('google'),
+                mapreduce: this.createTag('mapreduce'),
+                compsci: this.createTag('compsci')
             },
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
@@ -108,7 +122,13 @@ export class LoadExampleDocs {
 
             if (docMeta) {
                 docMeta.docInfo.title = opts.title;
-                docMeta.docInfo.tags = opts.tags;
+
+                // const tags = {...(opts.tags || {}),
+                //               ...this.createTags('polar:example')};
+
+                const tags = {...(opts.tags || {})};
+
+                docMeta.docInfo.tags = tags;
 
                 if (opts.pagemarkEnd) {
                     Pagemarks.updatePagemarksForRange(docMeta, opts.pagemarkEnd);

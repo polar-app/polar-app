@@ -229,13 +229,15 @@ export class RepositoryApp {
 
         await persistenceLayer.init();
 
-        LocalPref.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
+        await LocalPref.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
             // load the eample docs in the store.. on the first load we should
             // propably make sure this doesn't happen more than once as the user
             // could just delete all the files in their repo. await new
             await new LoadExampleDocs(persistenceLayer).load();
 
+        }, async () => {
+            log.debug("Docs already exist in repo");
         });
 
         await persistenceLayer.stop();

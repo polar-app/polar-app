@@ -24,11 +24,18 @@ export class LocalPref {
 
     }
 
-    public static async markOnceExecuted(key: string, handler: () => Promise<void>): Promise<void> {
+    public static async markOnceExecuted(key: string,
+                                         handler: () => Promise<void>,
+                                         otherwise?: () => Promise<void>): Promise<void> {
 
         const marked = this.isMarked(key);
 
         if (marked) {
+
+            if (otherwise) {
+                await otherwise();
+            }
+
             return;
         }
 
