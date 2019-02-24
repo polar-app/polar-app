@@ -1,3 +1,9 @@
+# 1.13.4
+
+- Preview release DID NOT load the example docs (BAD BUG)
+
+- Now targeting header in the tour to avoid scroll.
+
 # 1.13.3
 
 - New tour feedback and the end of the tour.
@@ -9,7 +15,7 @@
 - User-Agent was not being properly tracked and this as very important to detect
   which Operating Systems were being used.
 
-- Fixed problem with constraining the window sizes on smaller displays like 
+- Fixed problem with constraining the window sizes on smaller displays like                                                                                        rep
   smaller laptops.
 
 - Sidebar now visible by default and the setting remembered with a local pref.

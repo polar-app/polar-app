@@ -131,7 +131,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         const steps: Step[] = [
             {
-                target: 'body',
+                target: 'header',
                 content: <div>
                     <h2 className="text-center">Welcome to Polar!</h2>
 
@@ -179,7 +179,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
 
                     <p>
-                        We went ahead and added some sample documents so you can
+                        We went ahead and added some <b>sample documents</b> so you can
                         see what Polar looks like in action.  You can just
                         delete them once the tour is finished.
                     </p>
@@ -391,7 +391,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             // },
 
             {
-                target: 'body',
+                target: 'header',
                 // title: <Title>Thanks for taking the tour!</Title>,
                 content: <div>
 
