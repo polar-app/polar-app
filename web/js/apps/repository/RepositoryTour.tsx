@@ -554,5 +554,13 @@ export interface IState {
  * An enhanced step with a few more fields.
  */
 interface EnhancedStep extends Step {
+
     readonly id?: string;
+
+    /**
+     * True when we should advance as soon as the next step is available and use
+     * its selector to advance.
+     */
+    readonly autoAdvance?: boolean;
+
 }
