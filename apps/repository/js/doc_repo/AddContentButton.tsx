@@ -65,8 +65,8 @@ export class AddContentButton extends React.Component<IProps, IState> {
                                        show={0}
                                        placement="right">
 
-                            Capture a web page from the web and save it to
-                            Polar for annotation and long term archival.
+                            Capture a web page from the web and save it for
+                            annotation and long term archival.
 
                         </SimpleTooltip>
 
