@@ -1,4 +1,4 @@
-import Joyride, {CallBackProps, Step, STATUS} from 'react-joyride';
+import Joyride, {CallBackProps, Step, STATUS, EVENTS, ACTIONS} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
@@ -7,6 +7,10 @@ import {Feedback} from '../../ui/feedback/Feedback';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../../apps/repository/js/SplitBar';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_layout/SplitLayout';
 import {Button} from 'reactstrap';
+import {Logger} from '../../logger/Logger';
+import {AppActivities, AppActivity} from '../../util/AppActivities';
+
+const log = Logger.create();
 
 export class Styles {
 
@@ -39,16 +43,24 @@ interface ImageStep {
 
 export class RepositoryTour extends React.Component<IProps, IState> {
 
+    private callback?: CallBackProps;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.onCallback = this.onCallback.bind(this);
+        this.onAppActivity = this.onAppActivity.bind(this);
 
         this.state = {
+            run: ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED),
+            stepIndex: 0
         };
 
-    }
+        if (this.state.run) {
+            AppActivities.get().addEventListener(appActivity => this.onAppActivity(appActivity));
+        }
 
+    }
 
     private createImageStep(step: ImageStep): Step {
 
@@ -129,9 +141,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             </div>;
         };
 
-        const steps: Step[] = [
+        const steps: EnhancedStep[] = [
             {
-                target: 'body',
+                target: 'header',
                 content: <div>
                     <h2 className="text-center">Welcome to Polar!</h2>
 
@@ -389,9 +401,28 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //     </div>,
             //     // placement: "bottom",
             // },
+            {
+                id: 'expand-sidebar-for-stats',
+                target: '#toggle-sidebar',
+                content: 'Click this',
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true
+            },
+            {
+                id: 'select-sidebar',
+                target: '#sidebar-item-stats',
+                content: 'Now click this for the siebar',
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true
+            },
+
 
             {
-                target: 'body',
+                target: 'header',
                 // title: <Title>Thanks for taking the tour!</Title>,
                 content: <div>
 
@@ -423,9 +454,10 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 steps={steps}
                 continuous={true}
                 callback={data => this.onCallback(data)}
-                run={! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED)}
+                run={this.state.run}
                 showProgress={true}
                 showSkipButton={true}
+                stepIndex={this.state.stepIndex}
                 styles={{
                     options: {
                         // arrowColor: '#e3ffeb',
@@ -446,18 +478,33 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     }
 
-    private onCallback(data: CallBackProps): void {
+    private onAppActivity(appActivity: AppActivity<any>) {
 
-        RendererAnalytics.event({category: 'tour', action: 'did-step-' + data.index});
+        console.log("FIXME: onAppActivity: " , appActivity);
 
-        if (data.status === STATUS.SKIPPED || data.status === STATUS.FINISHED) {
+        this.doStep(this.callback!);
+
+        // FIXME: if the current step is
+
+
+    }
+
+    private onCallback(callback: CallBackProps): void {
+
+        console.log("FIXME: onCallback: " , callback);
+
+        this.callback = callback;
+
+        RendererAnalytics.event({category: 'tour', action: 'did-step-' + callback.index});
+
+        if (callback.status === STATUS.SKIPPED || callback.status === STATUS.FINISHED) {
 
             try {
 
-                switch (data.status) {
+                switch (callback.status) {
                     case STATUS.SKIPPED:
                         RendererAnalytics.event({category: 'tour-result', action: 'skipped'});
-                        RendererAnalytics.event({category: 'tour-skip', action: 'skipped-at-step-' + data.index});
+                        RendererAnalytics.event({category: 'tour-skip', action: 'skipped-at-step-' + callback.index});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
                         break;
@@ -472,9 +519,25 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
             }
 
+        } else if (callback.type === EVENTS.STEP_AFTER) {
+
+            this.doStep(callback);
+
+        } else if (callback.type === EVENTS.TARGET_NOT_FOUND) {
+            log.warn("Not found: ", callback);
+
+            this.doStep(callback);
         }
 
     }
+
+    private doStep(data: CallBackProps) {
+
+        this.setState({...this.state,
+                          stepIndex: this.state.stepIndex + (data.action === ACTIONS.PREV ? -1 : 1) });
+
+    }
+
 
 }
 
@@ -483,5 +546,13 @@ export interface IProps {
 }
 
 export interface IState {
+    readonly run: boolean;
+    readonly stepIndex: number;
+}
 
+/**
+ * An enhanced step with a few more fields.
+ */
+interface EnhancedStep extends Step {
+    readonly id?: string;
 }
