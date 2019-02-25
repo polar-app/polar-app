@@ -46,7 +46,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="text-right doc-dropdown-parent">
+            <div className="doc-dropdown-parent">
 
                 {/*TODO: I experimented with bringing up a tooltip after the user*/}
                 {/*selects an item but there's no way to auto-hide after it was */}
@@ -67,7 +67,9 @@ export class DocDropdown extends React.Component<IProps, IState> {
                     <DropdownToggle color="link"
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
                                     id={this.props.id + '-dropdown-toggle'}>
+
                         <i className="fas fa-ellipsis-h"></i>
+
                     </DropdownToggle>
 
                     <DropdownMenu style={Styles.DropdownMenu}>

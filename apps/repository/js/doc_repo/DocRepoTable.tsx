@@ -613,6 +613,22 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                             };
 
+                                            interface ToggleIconProps {
+                                                readonly className: string;
+                                                readonly title: string;
+                                                readonly active: boolean;
+                                            }
+
+                                            const ToggleIcon = (props: ToggleIconProps) => {
+
+                                                const activeClassName = props.active ? "doc-button-active" : "doc-button-inactive";
+
+                                                return (<i className={activeClassName + " " + props.className + " doc-button"}
+                                                           style={{fontSize: '16px'}}
+                                                           title={props.title}/>);
+
+                                            };
+
                                             const TagButton = () => {
 
                                                 const repoDocInfo: RepoDocInfo = row.original;
@@ -637,16 +653,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                                 const repoDocInfo: RepoDocInfo = row.original;
 
-                                                const title = 'Flag document';
-
-                                                // doHandleToggleField
-
-                                                const activeClassName = repoDocInfo.flagged ? "doc-button-active" : "doc-button-inactive";
-
                                                 return (<DocActionButton onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}>
 
-                                                        <i className={activeClassName + " fa fa-flag doc-button"}
-                                                           title={title}/>
+                                                    <ToggleIcon className="fa fa-flag"
+                                                                title="Flag document"
+                                                                active={repoDocInfo.flagged}/>
 
                                                     </DocActionButton>);
 
@@ -656,16 +667,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                                 const repoDocInfo: RepoDocInfo = row.original;
 
-                                                const title = 'Archive document';
-
-                                                const activeClassName = repoDocInfo.archived ? 'doc-button-active' : 'doc-button-inactive';
-
-                                                const className = `fa fa-check doc-button ${activeClassName}`;
-
-                                                return (<div className="mt-auto mb-auto ml-1 mr-1"
+                                                return (<DocActionButton
                                                          onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}>
-                                                        <i className={className} title={title}/>
-                                                    </div>);
+
+                                                        <ToggleIcon className="fa fa-check"
+                                                                    active={repoDocInfo.archived}
+                                                                    title="Archive document"/>
+
+                                                    </DocActionButton>);
 
                                             };
 
@@ -673,21 +682,18 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                                 const repoDocInfo: RepoDocInfo = row.original;
 
-                                                return (<div className="mt-auto mb-auto" style={{display: 'flex'}}>
+                                                return (<DocActionButton>
 
                                                         <DocDropdown id={'doc-dropdown-' + row.index}
                                                                      repoDocInfo={repoDocInfo}
                                                                      onDelete={this.onDocDeleted}
                                                                      onSetTitle={this.onDocSetTitle}/>
 
-                                                    </div>);
+                                                    </DocActionButton>);
 
                                             };
 
-                                            return (<div className="doc-buttons ml-auto mr-auto"
-                                                     style={{
-                                                    display: 'flex'
-                                                }}>
+                                            return (<div className="doc-buttons" style={{display: 'flex'}}>
 
                                                     <TagButton/>
 
@@ -757,6 +763,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         },
 
                                     };
+
                                 }
 
                                 if (SINGLE_CLICK_COLUMNS.includes(column.id)) {
