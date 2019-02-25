@@ -110,6 +110,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                 <section className="sidebar"
                          style={sidebarStyle}
+                         data-expanded={this.state.expanded}
                          onKeyUp={event => this.onKeyUp(event)}>
 
                     <div className="subheader p-1" style={Styles.subheader}>
@@ -141,7 +142,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          href="#stats"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-chart-line"
-                                         text="Stats"/>
+                                         text="Statistics"/>
 
                         <RepoSidebarItem id="sidebar-item-logs"
                                          href="#logs"

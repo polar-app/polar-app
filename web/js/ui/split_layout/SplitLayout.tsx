@@ -65,7 +65,7 @@ export class SplitLayoutRight extends React.PureComponent<any, any> {
 
             <div className="split-layout-right"
                  style={{
-                     marginTop: 'auto',
+                     // marginTop: 'auto',
                      marginBottom: 'auto',
                      display: 'flex',
                      justifyContent: 'flex-end',

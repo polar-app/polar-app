@@ -31,7 +31,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
         return (
 
-            <FixedNav id="doc-repository">
+            <FixedNav id="doc-repository" className="statistics-view">
 
                 <header>
 
