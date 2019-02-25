@@ -452,11 +452,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 target: '#toggle-sidebar',
                 content: <div>
 
-
-                    <h2 className="text-center">
-                        Now let's show you some cool features!
-                    </h2>
-
                     <Term>Click</Term> this button to display the sidebar.
 
                 </div>,
@@ -535,13 +530,11 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 disableBeacon: true,
             },
 
-
-            // TODO: the tags and documents added per day.
-
             {
                 target: 'header',
-                // title: <Title>Thanks for taking the tour!</Title>,
                 content: <div>
+
+                    <h2 className="text-center">Thanks for taking the tour!</h2>
 
                     <div className="text-center">
                         <Feedback category="tour-feedback"
