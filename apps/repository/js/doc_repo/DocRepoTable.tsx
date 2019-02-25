@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ReactTable from "react-table";
-import {Footer, Tips} from '../Utils';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {Strings} from '../../../../web/js/util/Strings';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
@@ -22,7 +21,6 @@ import {DocDropdown} from '../DocDropdown';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
-import {Version} from '../../../../web/js/util/Version';
 import {RepoDocInfoIndex} from '../RepoDocInfoIndex';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
@@ -33,7 +31,7 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, UncontrolledDropdown} from 'reactstrap';
+import {Input, InputGroup} from 'reactstrap';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
@@ -44,8 +42,11 @@ import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {AddContentButton} from './AddContentButton';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
-import Button from 'reactstrap/lib/Button';
 import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
+import {DocButton} from './doc_buttons/DocButton';
+import {ToggleIcon} from './doc_buttons/ToggleIcon';
+import {FlagDocButton} from './doc_buttons/FlagDocButton';
+import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
 
 const log = Logger.create();
 
@@ -282,7 +283,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         <TagButton id="tag-multiple-documents"
                                                    tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                    onSelectedTags={tags => this.onMultiTagged(tags)}/>
-
 
                                         <SimpleTooltip target="tag-multiple-documents"
                                                        placement="bottom">
@@ -597,111 +597,40 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         className: 'doc-dropdown',
                                         Cell: (row: any) => {
 
-                                            interface DocActionButtonProps {
-                                                readonly onClick?: () => void;
-                                                readonly children: any;
-                                            }
+                                            const repoDocInfo: RepoDocInfo = row.original;
 
-                                            const DocActionButton = (props: DocActionButtonProps) => {
+                                            const existingTags: Tag[]
+                                                = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
 
-                                                return (<div className="mt-auto mb-auto ml-1 mr-1"
-                                                             onClick={props.onClick || NULL_FUNCTION}>
+                                            return (<div className="doc-buttons" style={{display: 'flex'}}>
 
-                                                    {props.children}
+                                                    <DocButton>
 
-                                                </div>);
-
-                                            };
-
-                                            interface ToggleIconProps {
-                                                readonly className: string;
-                                                readonly title: string;
-                                                readonly active: boolean;
-                                            }
-
-                                            const ToggleIcon = (props: ToggleIconProps) => {
-
-                                                const activeClassName = props.active ? "doc-button-active" : "doc-button-inactive";
-
-                                                return (<i className={activeClassName + " " + props.className + " doc-button"}
-                                                           style={{fontSize: '16px'}}
-                                                           title={props.title}/>);
-
-                                            };
-
-                                            const TagButton = () => {
-
-                                                const repoDocInfo: RepoDocInfo = row.original;
-
-                                                const existingTags: Tag[]
-                                                    = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
-
-                                                return (<DocActionButton>
+                                                        {/*WARNING: making this a function breaks the layout...*/}
 
                                                         <TagInput availableTags={this.props.repoDocMetaManager!.tagsDB.tags()}
                                                                   existingTags={existingTags}
                                                                   relatedTags={this.props.repoDocMetaManager!.relatedTags}
                                                                   onChange={(tags) =>
                                                                       this.onDocTagged(repoDocInfo, tags)
-                                                                          .catch(err => log.error("Unable to update tags: ", err))} />
+                                                                          .catch(err => log.error("Unable to update tags: ", err))}/>
 
-                                                    </DocActionButton>);
+                                                    </DocButton>
 
-                                            };
+                                                    <FlagDocButton active={repoDocInfo.flagged}
+                                                                   onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}/>
 
-                                            const FlagButton = () => {
+                                                    <ArchiveDocButton active={repoDocInfo.archived}
+                                                                      onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
 
-                                                const repoDocInfo: RepoDocInfo = row.original;
-
-                                                return (<DocActionButton onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}>
-
-                                                    <ToggleIcon className="fa fa-flag"
-                                                                title="Flag document"
-                                                                active={repoDocInfo.flagged}/>
-
-                                                    </DocActionButton>);
-
-                                            };
-
-                                            const ArchiveButton = () => {
-
-                                                const repoDocInfo: RepoDocInfo = row.original;
-
-                                                return (<DocActionButton
-                                                         onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}>
-
-                                                        <ToggleIcon className="fa fa-check"
-                                                                    active={repoDocInfo.archived}
-                                                                    title="Archive document"/>
-
-                                                    </DocActionButton>);
-
-                                            };
-
-                                            const DocDropdownButton = () => {
-
-                                                const repoDocInfo: RepoDocInfo = row.original;
-
-                                                return (<DocActionButton>
+                                                    <DocButton>
 
                                                         <DocDropdown id={'doc-dropdown-' + row.index}
                                                                      repoDocInfo={repoDocInfo}
                                                                      onDelete={this.onDocDeleted}
                                                                      onSetTitle={this.onDocSetTitle}/>
 
-                                                    </DocActionButton>);
-
-                                            };
-
-                                            return (<div className="doc-buttons" style={{display: 'flex'}}>
-
-                                                    <TagButton/>
-
-                                                    <FlagButton/>
-
-                                                    <ArchiveButton/>
-
-                                                    <DocDropdownButton/>
+                                                    </DocButton>/>
 
                                                 </div>);
 

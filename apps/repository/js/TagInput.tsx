@@ -71,6 +71,7 @@ export class TagInput extends React.Component<IProps, IState> {
 
         const open = !this.state.open;
 
+        console.log("FIXME: tag input toggle open=" + open );
         Blackout.toggle(open);
 
         const tags = TagSelectOptions.fromTags(this.props.existingTags || []);
