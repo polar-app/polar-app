@@ -111,7 +111,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </SplitLayout>
 
             </div>,
-            placement: step.placement,
+            placement: step.placement || 'bottom',
             autoNext: step.autoNext
         };
 
@@ -224,149 +224,128 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             // //     placement: 'center'
             // // },
             //
-            // this.createImageStep({
-            //     target: 'header',
-            //     // title: <Title>Document Repository</Title>,
-            //     content: <div>
-            //         <h2 className="text-center">Welcome to Polar!</h2>
-            //
-            //         <p>
-            //             We're going to give you a quick tour of how to use the
-            //             main features in Polar.
-            //         </p>
-            //
-            //         <p>
-            //             Polar allows you to:
-            //         </p>
-            //
-            //         <ul>
-            //
-            //             <li>Keep all your documents in one place.</li>
-            //
-            //             <li>Easily keep track of your reading with <b>pagemarks</b> and <b>stats tracking</b>.</li>
-            //
-            //             <li><b>Annotate</b>, <b>tag</b>, and <span className="text-dark" style={{backgroundColor: 'yellow'}}><b>highlight</b></span> all your documents and build a personal knowledge repository.</li>
-            //
-            //         </ul>
-            //
-            //         <p>
-            //             The tour should take about 60 seconds.
-            //         </p>
-            //
-            //     </div>,
-            //     image: "/icon.png",
-            //     placement: 'center'
-            //
-            // }),
-            //
-            // // this.createImageStep({
-            // //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
-            // //     title: <Title>Document Repository</Title>,
-            // //     content: <div>
-            // //         <p>
-            // //             Your documents are kept here in
-            // //             the <Term>document repository</Term> and
-            // //             can be opened with by <Term>double clicking</Term>.
-            // //         </p>
-            // //
-            // //         <p>
-            // //             We went ahead and added some <b>sample documents</b> so you can
-            // //             see what Polar looks like in action.  You can just
-            // //             delete them once the tour is finished.
-            // //         </p>
-            // //     </div>,
-            // //  // image: "/web/assets/images/icon.svg",
-            // //     image: "/web/assets/images/files.svg"
-            // // }),
-            //
-            // this.createImageStep({
-            //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
-            //     title: <Title>Document Repository</Title>,
-            //     content: <div>
-            //         <p>
-            //             Your documents are kept here in
-            //             the <Term>document repository</Term> and
-            //             can be opened with by <Term>double clicking</Term>.
-            //         </p>
-            //
-            //         <p>
-            //             We went ahead and added some <b>sample documents</b> so you can
-            //             see what Polar looks like in action.  You can just
-            //             delete them once the tour is finished.
-            //         </p>
-            //     </div>,
-            //     image: "/web/assets/images/files.svg"
-            // }),
-            //
-            // this.createImageStep({
-            //     target: '#add-content-dropdown',
-            //     title: <Title>Add Documents</Title>,
-            //     content: <div>
-            //         <p>
-            //             Documents can easily be added by clicking the <Term>Add</Term> button
-            //             and we can import documents individually or in bulk from
-            //             a local directory.
-            //         </p>
-            //         <p>
-            //             Once the tour is over you'll probably want to use this
-            //             feature to add any documents you're currently reading.
-            //         </p>
-            //     </div>,
-            //     image: "/web/assets/images/add-file.svg"
-            // }),
-            // this.createImageStep({
-            //     target: '#enable-cloud-sync, #cloud-sync-dropdown',
-            //     title: <Title>Cloud Sync</Title>,
-            //     content: <div>
-            //         <p>
-            //             Polar supports <Term>cloud sync</Term> which keeps all your
-            //             documents securely backed up in the cloud.
-            //             Enabling <Term>cloud sync</Term> also allow you to keep all your
-            //             computers that run Polar fully synchronized.
-            //         </p>
-            //
-            //         <p>
-            //             This works transparently and realtime across MacOS,
-            //             Windows, and Linux.
-            //         </p>
-            //     </div>,
-            //     image:
-            //         <Icon className="fas fa-cloud-upload-alt"/>
-            //
-            // }),
-            //
-            // this.createImageStep({
-            //     target: '#discord-button',
-            //     title: <Title>Discord Chat</Title>,
-            //     content: <div>
-            //         <p>
-            //             We have a directly link to <Term>Discord chat</Term> to
-            //             enable you to discuss Polar live with the developers
-            //             and other users.
-            //         </p>
-            //
-            //         <p>
-            //             Feel free to jump in at any time and give us feedback
-            //             at any time.
-            //         </p>
-            //     </div>,
-            //     image:
-            //         <Icon className="fab fa-discord"/>
-            //
-            // }),
-            //
-            // {
-            //     target: '.doc-table-col-progress',
-            //     title: <Title>Reading Progress</Title>,
-            //     disableBeacon: true,
-            //     content: <div>
-            //         Each document has a progress associated with it which is
-            //         derived from pagemarks. Pagemarks are similar to bookmarks
-            //         but manually updated on each document while you read.
-            //     </div>,
-            //
-            //     // placement: "bottom",
-            // },
+            this.createImageStep({
+                target: 'header',
+                // title: <Title>Document Repository</Title>,
+                content: <div>
+                    <h2 className="text-center">Welcome to Polar!</h2>
+
+                    <p>
+                        We're going to give you a quick tour of how to use the
+                        main features in Polar.
+                    </p>
+
+                    <p>
+                        Polar allows you to:
+                    </p>
+
+                    <ul>
+
+                        <li>Keep all your documents in one place.</li>
+
+                        <li>Easily keep track of your reading with <b>pagemarks</b> and <b>stats tracking</b>.</li>
+
+                        <li><b>Annotate</b>, <b>tag</b>, and <span className="text-dark" style={{backgroundColor: 'yellow'}}><b>highlight</b></span> all your documents and build a personal knowledge repository.</li>
+
+                    </ul>
+
+                    <p>
+                        The tour should take about 60 seconds.
+                    </p>
+
+                </div>,
+                image: "/icon.png",
+                placement: 'center'
+
+            }),
+            this.createImageStep({
+                target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
+                title: <Title>Document Repository</Title>,
+                content: <div>
+                    <p>
+                        Your documents are kept here in
+                        the <Term>document repository</Term> and
+                        can be opened with by <Term>double clicking</Term>.
+                    </p>
+
+                    <p>
+                        We went ahead and added some <b>sample documents</b> so you can
+                        see what Polar looks like in action.  You can just
+                        delete them once the tour is finished.
+                    </p>
+                </div>,
+                image: "/web/assets/images/files.svg"
+            }),
+
+            this.createImageStep({
+                target: '#add-content-dropdown',
+                title: <Title>Add Documents</Title>,
+                content: <div>
+                    <p>
+                        Documents can easily be added by clicking the <Term>Add</Term> button
+                        and you can import documents individually or in bulk from
+                        a local directory.
+                    </p>
+                    <p>
+                        Once the tour is over you'll probably want to use this
+                        feature to add any documents you're currently reading.
+                    </p>
+                </div>,
+                image: "/web/assets/images/add-file.svg"
+            }),
+            this.createImageStep({
+                target: '#enable-cloud-sync, #cloud-sync-dropdown',
+                title: <Title>Cloud Sync</Title>,
+                content: <div>
+                    <p>
+                        Polar supports <Term>cloud sync</Term> which keeps all your
+                        documents securely backed up in the cloud.
+                        Enabling <Term>cloud sync</Term> also allow you to keep all your
+                        computers that run Polar fully synchronized.
+                    </p>
+
+                    <p>
+                        This works transparently and realtime across MacOS,
+                        Windows, and Linux.
+                    </p>
+                </div>,
+                image:
+                    <Icon className="fas fa-cloud-upload-alt"/>
+
+            }),
+
+            this.createImageStep({
+                target: '#discord-button',
+                title: <Title>Discord Chat</Title>,
+                content: <div>
+                    <p>
+                        We have a directly link to <Term>Discord chat</Term> to
+                        enable you to discuss Polar live with the developers
+                        and other users.
+                    </p>
+
+                    <p>
+                        Feel free to jump in at any time and give us feedback
+                        at any time.
+                    </p>
+                </div>,
+                image:
+                    <Icon className="fab fa-discord"/>
+
+            }),
+
+            {
+                target: '.doc-table-col-progress',
+                title: <Title>Reading Progress</Title>,
+                disableBeacon: true,
+                content: <div>
+                    Each document has a progress associated with it which is
+                    derived from pagemarks. Pagemarks are similar to bookmarks
+                    but manually updated on each document while you read.
+                </div>,
+
+                // placement: "bottom",
+            },
             //
             // this.createImageStep({
             //     target: '.doc-table-col-tags',
@@ -409,15 +388,14 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             // },
             //
 
-
             {
                 target: '.doc-dropdown',
                 disableBeacon: true,
                 content: <div>
 
                     <p>
-                        Documents can be <Term>tagged</Term>, <Term>flagged</Term>,
-                        <Term>archived</Term> and <Term>deleted</Term> by using
+                        Documents can
+                        be <Term>tagged</Term>, <Term>flagged</Term>, <Term>archived</Term> and <Term>deleted</Term> by using
                         these buttons to the right.
                     </p>
 
@@ -432,7 +410,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
 
                     <p>
-                        The <Term>archive</Term> button allow you to hide a document once read.
+                        The <Term>archive</Term> button allow you to
+                        hide a document once read.  It's usually best to
+                        archive a document once it's been read.
                     </p>
 
                 </div>,
@@ -444,6 +424,32 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 // placement: "bottom",
             },
 
+            {
+                target: '#filter-bar',
+                disableBeacon: true,
+                content: <div>
+
+                    <p>
+                        The <Term>filter bar</Term> allows you to configure
+                        which documents are visible.
+                    </p>
+
+                    <p>
+                        You can hide/show documents that are flagged, archived and
+                        also filter by tags or search by title.
+                    </p>
+
+                </div>,
+                styles: {
+                    tooltip: {
+                        width: '650px'
+                    }
+                },
+                // placement: "bottom",
+            },
+
+
+
             // {
             //     target: '.doc-dropdown',
             //     disableBeacon: true,
@@ -454,37 +460,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //     // placement: "bottom",
             // },
             //
-            // {
-            //     title: <Title>Filter Bar</Title>,
-            //     target: '#toggle-flagged',
-            //     disableBeacon: true,
-            //     content: <div>The <Term>filter bar</Term> allows you to
-            //         configure which documents are visible.
-            //         This button allows you to hide/show <Term>flagged</Term> documents.
-            //     </div>,
-            // },
             //
-            // {
-            //     target: '#toggle-archived',
-            //     disableBeacon: true,
-            //     content: <div>
-            //         Toggle <Term>archived</Term> documents (hidden by default).  It's usually
-            //         best to archive a document after it's been read.
-            //     </div>,
-            // },
-            //
-            // {
-            //     target: '#filter-tag-input',
-            //     disableBeacon: true,
-            //     content: <div>
-            //         The tag filter allows you to narrow down the
-            //         list of documents by tag.</div>,
-            // },
-            // {
-            //     target: '#filter_title',
-            //     content: 'Search the list of documents by title.',
-            //     disableBeacon: true,
-            // },
             // //
             // // {
             // //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
@@ -511,13 +487,14 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             // // },
 
 
-
-
-
             {
-                id: 'expand-sidebar-for-stats',
                 target: '#toggle-sidebar',
                 content: <div>
+
+
+                    <h2 className="text-center">
+                        Now let's show you some cool features!
+                    </h2>
 
                     <Term>Click</Term> this button to display the sidebar.
 
@@ -530,7 +507,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 autoNext: true,
             },
             {
-                id: 'select-sidebar',
                 title: <Title>Sidebar</Title>,
                 target: '.repo-sidebar section[data-expanded=true]',
                 content: <div>
@@ -569,7 +545,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 content: <div>
                     <p>
                         This is the <Term>statistics view</Term>.  It allows you to view importants
-                        statistics regarding your reading and your document repository.
+                        statistics regarding your reading, documents, and annotations.
                     </p>
                 </div>,
                 image: "/web/assets/images/statistics.svg",
@@ -640,8 +616,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     private onCallback(callbackProps: CallBackProps): void {
 
-        console.log("FIXME: onCallback: " , callbackProps);
-
         this.callback = callbackProps;
 
         RendererAnalytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
@@ -676,12 +650,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 if (nextHandler()) {
                     mutationObserver.disconnect();
 
-                    console.log("FIXME: ADVANCING and incrementing manually");
-                    // this.doStep(callbackProps);
-
                     const stepIndex = this.state.stepIndex + 1;
-
-                    console.log("FIXME: going to step indeX: " + stepIndex);
 
                     this.setState({
                         ...this.state,
@@ -750,20 +719,12 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
             }
 
-            // FIXME: we ahve to look at the index here as with auto-advance we
-            // might already be on it...
-
-            console.log("=====");
-            console.log("FIXME: ADVANCING via AFTER");
-
             this.doStep(callbackProps);
 
         } else if (callbackProps.type === EVENTS.TARGET_NOT_FOUND) {
 
             // FIXME: add a DOM event listener to wait for it to become
             // available...
-
-            console.log("FIXME: ADVANCING via TARGET_NOT_FOUND");
 
             log.warn("Not found: ", callbackProps);
 
@@ -774,9 +735,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     private doStep(callBackProps: CallBackProps) {
 
-        const stepIndex = this.state.stepIndex + (callBackProps.action === ACTIONS.PREV ? -1 : 1);
-
-        console.log("FIXME: going to stepIndex: " + stepIndex);
+        const stepIndex = callBackProps.index + (callBackProps.action === ACTIONS.PREV ? -1 : 1);
 
         this.setState({...this.state, stepIndex });
 
@@ -798,8 +757,6 @@ export interface IState {
  * An enhanced step with a few more fields.
  */
 interface EnhancedStep extends Step {
-
-    readonly id?: string;
 
     /**
      * True when we should go the next step as soon as its selector is available.

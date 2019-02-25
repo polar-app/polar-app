@@ -166,6 +166,8 @@ export class Feedback extends React.Component<IProps, IState> {
                 value: rating
             });
 
+            console.log(`Sent feedback for category ${this.props.category}: ${rating}`);
+
         }
 
         this.markCompleted();
@@ -181,9 +183,12 @@ export class Feedback extends React.Component<IProps, IState> {
                 action: `unsure`,
             });
 
+            console.log(`Sent unsure feedback for category ${this.props.category}`);
+
         }
 
         this.markCompleted();
+
     }
 
     private markCompleted() {
