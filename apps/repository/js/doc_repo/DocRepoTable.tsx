@@ -714,7 +714,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                                      onDelete={this.onDocDeleted}
                                                                      onSetTitle={this.onDocSetTitle}/>
 
-                                                    </DocButton>/>
+                                                    </DocButton>
 
                                                 </div>);
 

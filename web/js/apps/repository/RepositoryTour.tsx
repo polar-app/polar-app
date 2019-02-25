@@ -142,8 +142,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     tooltipContainer: {
                         textAlign: 'left',
                     }
-                }}
-            />
+                }}></Joyride>
 
         );
 
@@ -409,33 +408,42 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //     // placement: "bottom",
             // },
             //
-            // {
-            //     target: '.doc-table-col-mutate-tags',
-            //     disableBeacon: true,
-            //     content: <div>
-            //         The <Term>tag</Term> button allow you to assign new <b><i>tags</i></b> a document
-            //     </div>,
-            //     // placement: "bottom",
-            // },
-            //
-            // {
-            //     target: '.doc-table-col-mutate-flags',
-            //     disableBeacon: true,
-            //     content: <div>
-            //         The <Term>flag</Term> button allow you to mark important
-            //         documents.  Once flagged you can use the <Term>filter bar</Term> to
-            //         show only flagged documents.
-            //     </div>,
-            //     // placement: "bottom",
-            // },
-            //
-            // {
-            //     target: '.doc-table-col-mutate-archived',
-            //     disableBeacon: true,
-            //     content: <div>This <Term>archive</Term> allow you to hide a document once read.</div>,
-            //     // placement: "bottom",
-            // },
-            //
+
+
+            {
+                target: '.doc-dropdown',
+                disableBeacon: true,
+                content: <div>
+
+                    <p>
+                        Documents can be <Term>tagged</Term>, <Term>flagged</Term>,
+                        <Term>archived</Term> and <Term>deleted</Term> by using
+                        these buttons to the right.
+                    </p>
+
+                    <p>
+                         The <Term>tag</Term> button allow you to assign new <b><i>tags</i></b> a document
+                    </p>
+
+                    <p>
+                         The <Term>flag</Term> button allow you to mark important
+                         documents.  Once flagged you can use the <Term>filter bar</Term> to
+                         show only flagged documents.
+                    </p>
+
+                    <p>
+                        The <Term>archive</Term> button allow you to hide a document once read.
+                    </p>
+
+                </div>,
+                styles: {
+                    tooltip: {
+                        width: '650px'
+                    }
+                },
+                // placement: "bottom",
+            },
+
             // {
             //     target: '.doc-dropdown',
             //     disableBeacon: true,
