@@ -47,6 +47,8 @@ import {DocButton} from './doc_buttons/DocButton';
 import {ToggleIcon} from './doc_buttons/ToggleIcon';
 import {FlagDocButton} from './doc_buttons/FlagDocButton';
 import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
+import Form from 'reactstrap/lib/Form';
+import FormGroup from 'reactstrap/lib/FormGroup';
 
 const log = Logger.create();
 
@@ -170,7 +172,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    public selectRow(selectedIdx: number, event: MouseEvent) {
+    public selectRow(selectedIdx: number, event: MouseEvent, checkbox: boolean = false) {
 
         if (typeof selectedIdx === 'string') {
             selectedIdx = parseInt(selectedIdx);
@@ -196,7 +198,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         }
 
-        if (event.getModifierState("Control") || event.getModifierState("Meta")) {
+        const selectIndividual = (event.getModifierState("Control") || event.getModifierState("Meta")) || checkbox;
+
+        if (selectIndividual) {
 
             // one at a time
 
@@ -404,6 +408,41 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             ref={(r: any) => this.reactTable = r}
                             columns={
                                 [
+                                    {
+
+                                        id: 'doc-checkbox',
+                                        Header: '',
+                                        accessor: '',
+                                        maxWidth: 25,
+                                        defaultSortDesc: true,
+                                        resizable: false,
+                                        sortable: false,
+                                        className: 'doc-checkbox',
+                                        Cell: (row: any) => {
+
+                                            const index = row.index as number;
+
+                                            return (<div style={{lineHeight: '1em'}}>
+                                                <Input checked={this.state.selected.includes(index)}
+                                                       style={{
+                                                           marginLeft: 'auto',
+                                                           marginRight: 'auto',
+                                                           margin: 'auto',
+                                                           position: 'relative',
+                                                           top: '2px',
+                                                           width: '16px',
+                                                           height: '16px',
+                                                       }}
+                                                       className="m-auto"
+                                                       onChange={NULL_FUNCTION}
+                                                       onClick={(event) => this.selectRow(row.viewIndex as number, event.nativeEvent, true)}
+                                                       type="checkbox"/>
+
+                                                {/*<i className="far fa-square"></i>*/}
+
+                                            </div>);
+                                        }
+                                    },
                                     {
                                         Header: 'Title',
                                         accessor: 'title',
@@ -667,7 +706,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             }}
                             getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
 
-                                const SINGLE_CLICK_COLUMNS = ['tag-input', 'flagged', 'archived', 'doc-dropdown', 'doc-buttons'];
+                                const SINGLE_CLICK_COLUMNS = [
+                                    'tag-input',
+                                    'flagged',
+                                    'archived',
+                                    'doc-dropdown',
+                                    'doc-buttons',
+                                    'doc-checkbox'
+                                ];
 
                                 if (! SINGLE_CLICK_COLUMNS.includes(column.id)) {
 
