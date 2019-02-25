@@ -1,3 +1,8 @@
+# 1.13.5
+
+- Clicking flagged or archived buttons no longer select the row which was 
+  confusing.
+
 # 1.13.4
 
 - Preview release DID NOT load the example docs (BAD BUG)

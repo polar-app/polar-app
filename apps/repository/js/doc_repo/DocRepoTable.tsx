@@ -44,6 +44,8 @@ import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {AddContentButton} from './AddContentButton';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
+import Button from 'reactstrap/lib/Button';
+import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 
 const log = Logger.create();
 
@@ -578,110 +580,127 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         className: 'doc-table-col-progress',
                                         Cell: (row: any) => (
 
-                                            <progress max="100" value={ row.value } style={{
+                                            <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
                                                 width: '100%'
                                             }} />
+
                                         )
                                     },
                                     {
-                                        id: 'tag-input',
+                                        id: 'doc-buttons',
                                         Header: '',
                                         accessor: '',
-                                        maxWidth: 25,
-                                        defaultSortDesc: true,
-                                        resizable: false,
-                                        className: 'doc-table-col-mutate-tags',
-                                        Cell: (row: any) => {
-
-                                            const repoDocInfo: RepoDocInfo = row.original;
-
-                                            const existingTags: Tag[]
-                                                = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
-
-                                            return (
-                                                <TagInput availableTags={this.props.repoDocMetaManager!.tagsDB.tags()}
-                                                          existingTags={existingTags}
-                                                          relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                                          onChange={(tags) =>
-                                                              this.onDocTagged(repoDocInfo, tags)
-                                                                  .catch(err => log.error("Unable to update tags: ", err))} />
-                                            );
-
-                                        }
-                                    },
-                                    {
-                                        id: 'flagged',
-                                        Header: '',
-                                        accessor: 'flagged',
-                                        show: this.state.columns.flagged.selected,
-                                        maxWidth: 25,
-                                        defaultSortDesc: true,
-                                        resizable: false,
-                                        className: 'doc-table-col-mutate-flags',
-                                        Cell: (row: any) => {
-
-                                            const title = 'Flag document';
-
-                                            if (row.original.flagged) {
-                                                return (
-                                                    <i className="fa fa-flag doc-button doc-button-active" title={title}/>
-                                                );
-                                            } else {
-                                                return (
-                                                    <i className="fa fa-flag doc-button doc-button-inactive" title={title}/>
-                                                );
-                                            }
-
-                                        }
-                                    },
-                                    {
-                                        id: 'archived',
-                                        Header: '',
-                                        accessor: 'archived',
-                                        show: this.state.columns.archived.selected,
-                                        maxWidth: 25,
-                                        defaultSortDesc: true,
-                                        resizable: false,
-                                        className: 'doc-table-col-mutate-archived',
-                                        Cell: (row: any) => {
-
-                                            const title = 'Archive document';
-
-                                            const uiClassName = row.original.archived ? 'doc-button-active' : 'doc-button-inactive';
-
-                                            const className = `fa fa-check doc-button ${uiClassName}`;
-
-                                            return (
-                                                <i className={className} title={title}/>
-                                            );
-
-                                        }
-                                    },
-                                    {
-                                        id: 'doc-dropdown',
-                                        Header: '',
-                                        accessor: '',
-                                        maxWidth: 25,
+                                        maxWidth: 100,
                                         defaultSortDesc: true,
                                         resizable: false,
                                         sortable: false,
                                         className: 'doc-dropdown',
                                         Cell: (row: any) => {
 
-                                            const repoDocInfo: RepoDocInfo = row.original;
+                                            interface DocActionButtonProps {
+                                                readonly onClick?: () => void;
+                                                readonly children: any;
+                                            }
 
-                                            return (
-                                                <DocDropdown id={'doc-dropdown-' + row.index}
-                                                             repoDocInfo={repoDocInfo}
-                                                             onDelete={this.onDocDeleted}
-                                                             onSetTitle={this.onDocSetTitle}/>
-                                            );
+                                            const DocActionButton = (props: DocActionButtonProps) => {
+
+                                                return (<div className="mt-auto mb-auto ml-1 mr-1"
+                                                             onClick={props.onClick || NULL_FUNCTION}>
+
+                                                    {props.children}
+
+                                                </div>);
+
+                                            };
+
+                                            const TagButton = () => {
+
+                                                const repoDocInfo: RepoDocInfo = row.original;
+
+                                                const existingTags: Tag[]
+                                                    = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
+
+                                                return (<DocActionButton>
+
+                                                        <TagInput availableTags={this.props.repoDocMetaManager!.tagsDB.tags()}
+                                                                  existingTags={existingTags}
+                                                                  relatedTags={this.props.repoDocMetaManager!.relatedTags}
+                                                                  onChange={(tags) =>
+                                                                      this.onDocTagged(repoDocInfo, tags)
+                                                                          .catch(err => log.error("Unable to update tags: ", err))} />
+
+                                                    </DocActionButton>);
+
+                                            };
+
+                                            const FlagButton = () => {
+
+                                                const repoDocInfo: RepoDocInfo = row.original;
+
+                                                const title = 'Flag document';
+
+                                                // doHandleToggleField
+
+                                                const activeClassName = repoDocInfo.flagged ? "doc-button-active" : "doc-button-inactive";
+
+                                                return (<DocActionButton onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}>
+
+                                                        <i className={activeClassName + " fa fa-flag doc-button"}
+                                                           title={title}/>
+
+                                                    </DocActionButton>);
+
+                                            };
+
+                                            const ArchiveButton = () => {
+
+                                                const repoDocInfo: RepoDocInfo = row.original;
+
+                                                const title = 'Archive document';
+
+                                                const activeClassName = repoDocInfo.archived ? 'doc-button-active' : 'doc-button-inactive';
+
+                                                const className = `fa fa-check doc-button ${activeClassName}`;
+
+                                                return (<div className="mt-auto mb-auto ml-1 mr-1"
+                                                         onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}>
+                                                        <i className={className} title={title}/>
+                                                    </div>);
+
+                                            };
+
+                                            const DocDropdownButton = () => {
+
+                                                const repoDocInfo: RepoDocInfo = row.original;
+
+                                                return (<div className="mt-auto mb-auto" style={{display: 'flex'}}>
+
+                                                        <DocDropdown id={'doc-dropdown-' + row.index}
+                                                                     repoDocInfo={repoDocInfo}
+                                                                     onDelete={this.onDocDeleted}
+                                                                     onSetTitle={this.onDocSetTitle}/>
+
+                                                    </div>);
+
+                                            };
+
+                                            return (<div className="doc-buttons ml-auto mr-auto"
+                                                     style={{
+                                                    display: 'flex'
+                                                }}>
+
+                                                    <TagButton/>
+
+                                                    <FlagButton/>
+
+                                                    <ArchiveButton/>
+
+                                                    <DocDropdownButton/>
+
+                                                </div>);
 
                                         }
                                     }
-
-
-
 
                                 ]}
 
@@ -701,14 +720,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             getTrProps={(state: any, rowInfo: any) => {
                                 return {
 
-                                    onClick: (event: MouseEvent) => {
-                                        // console.log(`doc fingerprint:
-                                        // ${rowInfo.original.fingerprint} and
-                                        // filename
-                                        // ${rowInfo.original.filename}`);
-                                        this.selectRow(rowInfo.viewIndex as number, event);
-                                    },
-
                                     style: {
                                         // TODO: dark-mode.  Use CSS variable
                                         // names for colors
@@ -721,26 +732,38 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             }}
                             getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
 
-                                const singleClickColumns = ['tag-input', 'flagged', 'archived', 'doc-dropdown'];
+                                const SINGLE_CLICK_COLUMNS = ['tag-input', 'flagged', 'archived', 'doc-dropdown', 'doc-buttons'];
 
-                                if (! singleClickColumns.includes(column.id)) {
+                                if (! SINGLE_CLICK_COLUMNS.includes(column.id)) {
+
                                     return {
-                                        onDoubleClick: (e: any) => {
-                                            this.onDocumentLoadRequested(rowInfo.original.fingerprint,
-                                                                         rowInfo.original.filename,
-                                                                         rowInfo.original.hashcode);
-                                        }
+
+                                        onDoubleClick: (event: MouseEvent) => {
+
+                                            if (rowInfo) {
+                                                this.onDocumentLoadRequested(rowInfo.original.fingerprint,
+                                                                             rowInfo.original.filename,
+                                                                             rowInfo.original.hashcode);
+                                            }
+
+                                        },
+
+                                        onClick: (event: MouseEvent, handleOriginal?: () => void) => {
+
+                                            if (rowInfo) {
+                                                this.selectRow(rowInfo.viewIndex as number, event);
+                                            }
+
+                                        },
+
                                     };
                                 }
 
-                                if (singleClickColumns.includes(column.id)) {
+                                if (SINGLE_CLICK_COLUMNS.includes(column.id)) {
 
                                     return {
 
                                         onClick: ((e: any, handleOriginal?: () => void) => {
-
-                                            this.handleToggleField(rowInfo.original, column.id)
-                                                .catch(err => log.error("Could not handle toggle: ", err));
 
                                             if (handleOriginal) {
                                                 // needed for react table to
@@ -953,6 +976,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             .catch(err => log.error("Unable to load doc: ", err));
 
     }
+
+    private doHandleToggleField(repoDocInfo: RepoDocInfo, field: string) {
+
+        this.handleToggleField(repoDocInfo, field)
+            .catch(err => log.error(`Could not handle toggle on field: ${field}: `, err));
+
+    }
+
 
     private async handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
 

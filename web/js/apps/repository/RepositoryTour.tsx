@@ -568,16 +568,25 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 placement: 'center'
             }),
 
-
             {
                 title: <Title>Reading Progress</Title>,
                 target: '#reading-progress-table',
                 content: <div>
-                    The <Term>reading progress</Term> metric allows you to track
-                    how often you're reading to encourage you to hit your goals.
+                    <p>
+                        The <Term>reading progress</Term> metric allows you to track
+                        how often you're reading to encourage you to hit your goals.
+                    </p>
+
+                    <p>
+                        Each column is a week and we display 52 weeks to represent
+                        the entire year.
+                    </p>
+
                 </div>,
                 disableBeacon: true,
             },
+
+            // TODO: the tags and documents added per day.
 
             {
                 target: 'header',
