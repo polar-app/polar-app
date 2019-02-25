@@ -1,5 +1,7 @@
 # 1.13.5
 
+- buttons in the doc repo are a bit bigger for better hit targets
+
 - multi-column selection by checkbox now to make it a bit more obvious for users.
 
 - Clicking flagged or archived buttons no longer select the row which was 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable from "react-table";
+import ReactTable, {ColumnRenderProps} from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
 import {Strings} from '../../../../web/js/util/Strings';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
@@ -411,7 +411,51 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
 
                                         id: 'doc-checkbox',
-                                        Header: '',
+                                        Header: (col: ColumnRenderProps) => {
+
+                                            const checked = this.state.selected.length === col.data.length && col.data.length > 0;
+
+                                            return (<div>
+
+                                                <Input checked={checked}
+                                                       style={{
+                                                           marginLeft: 'auto',
+                                                           marginRight: 'auto',
+                                                           margin: 'auto',
+                                                           position: 'relative',
+                                                           top: '2px',
+                                                           width: '16px',
+                                                           height: '16px',
+                                                       }}
+                                                       className="m-auto"
+                                                       onChange={NULL_FUNCTION}
+                                                       onClick={() => {
+                                                           // noop... now do we
+                                                           // select ALL the
+                                                           // items in the
+                                                           // state now
+
+                                                           const computeSelected = (): ReadonlyArray<number> => {
+
+                                                               if (this.state.selected.length !== col.data.length) {
+                                                                   // all of them
+                                                                   return Numbers.range(0, col.data.length - 1);
+                                                               } else {
+                                                                   // none of them
+                                                                   return [];
+                                                               }
+
+                                                           };
+
+                                                           const selected = computeSelected();
+
+                                                           this.setState({...this.state, selected});
+
+                                                       }}
+                                                       type="checkbox"/>
+
+                                            </div>);
+                                        },
                                         accessor: '',
                                         maxWidth: 25,
                                         defaultSortDesc: true,
@@ -423,6 +467,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                             const index = row.index as number;
 
                                             return (<div style={{lineHeight: '1em'}}>
+
                                                 <Input checked={this.state.selected.includes(index)}
                                                        style={{
                                                            marginLeft: 'auto',
