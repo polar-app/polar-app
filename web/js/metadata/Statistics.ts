@@ -22,11 +22,15 @@ export class Statistics {
                const addedDate = ISODateTimeStrings.parse(docInfo.added!);
                const key = ISODateTimeStrings.toISODateString(addedDate);
 
-               const entry = Dictionaries.computeIfAbsent(result, key, () => {
-                   return {date: key, value: 0};
-               });
+               if (key) {
 
-               ++entry.value;
+                   const entry = Dictionaries.computeIfAbsent(result, key, () => {
+                       return {date: key, value: 0};
+                   });
+
+                   ++entry.value;
+
+               }
 
             }
 

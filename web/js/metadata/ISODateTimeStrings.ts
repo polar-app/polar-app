@@ -34,11 +34,19 @@ export class ISODateTimeStrings {
 
     }
 
-    public static toISODateString(date: Date): ISODateString {
+    public static toISODateString(date: Date): ISODateString | undefined {
+
+        if (!date) {
+            return undefined;
+        }
 
         const ordYear = date.getUTCFullYear();
         const ordMonth = date.getUTCMonth() + 1;
         const ordDay = date.getUTCDate();
+
+        if (! ordYear || ! ordMonth || ! ordDay) {
+            return undefined;
+        }
 
         const year = Strings.lpad(ordYear, '0', 4);
         const month = Strings.lpad(ordMonth, '0', 2);
