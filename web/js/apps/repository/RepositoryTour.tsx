@@ -7,7 +7,7 @@ import {Feedback} from '../../ui/feedback/Feedback';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_layout/SplitLayout';
 import {Logger} from '../../logger/Logger';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
-import {EnhancedStep} from '../../ui/tours/JoyrideTours';
+import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
 
 const log = Logger.create();
 
@@ -33,16 +33,6 @@ export class Styles {
 
 }
 
-interface ImageStep {
-    readonly title?: React.ReactNode;
-    readonly content: React.ReactNode;
-    readonly image: string | React.ReactNode;
-    readonly target: string;
-    readonly placement?: placement;
-    readonly autoNext?: boolean;
-    readonly hideBackButton?: boolean;
-    readonly spotlightClicks?: boolean;
-}
 
 export class RepositoryTour extends React.Component<IProps, IState> {
 
@@ -64,53 +54,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         this.state = {
             run,
             stepIndex: 0
-        };
-
-    }
-
-    private createImageStep(step: ImageStep): EnhancedStep {
-
-        const Image = () => {
-
-            if (typeof step.image === 'string') {
-                return <img src={step.image} style={Styles.SPLIT_BAR_IMG}/>;
-            } else {
-                return <div>{step.image}</div>;
-            }
-        };
-
-        return {
-            target: step.target,
-            title: step.title,
-            disableBeacon: true,
-            styles: {
-                tooltip: {
-                    width: '700px'
-                }
-            },
-            content: <div>
-
-                <SplitLayout>
-
-                    <SplitLayoutLeft>
-
-                        {step.content}
-
-                    </SplitLayoutLeft>
-
-                    <SplitLayoutRight>
-
-                        <Image/>
-
-                    </SplitLayoutRight>
-
-                </SplitLayout>
-
-            </div>,
-            placement: step.placement || 'bottom',
-            hideBackButton: step.hideBackButton || false,
-            spotlightClicks: step.spotlightClicks || false,
-            autoNext: step.autoNext
         };
 
     }
@@ -183,7 +126,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         };
 
         const steps: EnhancedStep[] = [
-            this.createImageStep({
+            JoyrideTours.createImageStep({
                 target: 'header',
                 // title: <Title>Document Repository</Title>,
                 content: <div>
@@ -217,7 +160,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 placement: 'center'
 
             }),
-            this.createImageStep({
+
+            JoyrideTours.createImageStep({
                 target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
                 title: <Title>Document Repository</Title>,
                 content: <div>
@@ -236,7 +180,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 image: "/web/assets/images/files.svg"
             }),
 
-            this.createImageStep({
+            JoyrideTours.createImageStep({
                 target: '#add-content-dropdown',
                 title: <Title>Add Documents</Title>,
                 content: <div>
@@ -252,7 +196,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </div>,
                 image: "/web/assets/images/add-file.svg"
             }),
-            this.createImageStep({
+
+            JoyrideTours.createImageStep({
                 target: '#enable-cloud-sync, #cloud-sync-dropdown',
                 title: <Title>Cloud Sync</Title>,
                 content: <div>
@@ -273,7 +218,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
             }),
 
-            this.createImageStep({
+            JoyrideTours.createImageStep({
                 target: '#discord-button',
                 title: <Title>Discord Chat</Title>,
                 content: <div>
@@ -306,7 +251,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 // placement: "bottom",
             },
 
-            this.createImageStep({
+            JoyrideTours.createImageStep({
                 target: '.doc-table-col-tags',
                 title: <Title>Tags</Title>,
                 content: <div>
@@ -398,7 +343,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 hideCloseButton: true,
                 autoNext: true,
             },
-            // TODO: needs to be positioned about a 3rd of the way down the page...
+            // TODO: needs to be positioned about a 3rd of the way down the
+            // page...
             {
                 title: <Title>Sidebar</Title>,
                 target: '.repo-sidebar section[data-expanded=true]',
@@ -433,7 +379,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 autoNext: true
             },
 
-            this.createImageStep({
+            JoyrideTours.createImageStep({
                 target: '.annotations-view header',
                 title: <Title>Annotations View</Title>,
                 content: <div>
@@ -489,7 +435,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 autoNext: true
             },
 
-            this.createImageStep({
+            JoyrideTours.createImageStep({
                 target: '.statistics-view header',
                 title: <Title>Statistics View</Title>,
                 content: <div>
@@ -565,8 +511,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 autoNext: true
             },
 
-
-            this.createImageStep({
+            JoyrideTours.createImageStep({
                 target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}']`,
                 title: <Title>Open a document</Title>,
                 content: <div>
@@ -656,37 +601,17 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //     target: '.doc-dropdown',
             //     disableBeacon: true,
             //     content:  <div>
-            //         The dropdown allow you perform other actions on a document
-            //         including changing the title and deleting documents.
-            //     </div>,
-            //     // placement: "bottom",
-            // },
-            //
-            //
-            // //
-            // // {
-            // //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
-            // //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
-            // //     title: <Title>Open a document</Title>,
-            // //     disableBeacon: true,
-            // //     spotlightClicks: true,
-            // //     content: <div>
-            // //
-            // //         <i className="fas fa-book-open text-primary"
-            // //            style={{fontSize: '150px'}}></i>
-            // //
-            // //         <p>
-            // //             Let's open a document.
-            // //         </p>
-            // //
-            // //         <p>
-            // //             Go ahead and <Term>double click</Term> on the
-            // //             highlighted document row and a new window will open.
-            // //         </p>
-            // //
-            // //     </div>,
-            // //     // placement: "bottom",
-            // // },
+            //         The dropdown allow you perform other actions on a
+            // document including changing the title and deleting documents.
+            // </div>, // placement: "bottom", },   // // { //     // target:
+            // '#doc-repo-table .rt-tbody > div:nth-child(-n+4)', //
+            // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)', //
+            //  title: <Title>Open a document</Title>, //     disableBeacon:
+            // true, //     spotlightClicks: true, //     content: <div> // //
+            //        <i className="fas fa-book-open text-primary" //
+            //  style={{fontSize: '150px'}}></i> // //         <p> //
+            //   Let's open a document. //         </p> // //         <p> //
+            //          Go ahead and <Term>double click</Term> on the //             highlighted document row and a new window will open. //         </p> // //     </div>, //     // placement: "bottom", // },
 
         ];
 

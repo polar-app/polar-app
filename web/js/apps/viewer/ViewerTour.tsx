@@ -3,6 +3,7 @@ import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {JoyrideTours} from '../../ui/tours/JoyrideTours';
 
 export class Styles {
 
@@ -40,13 +41,28 @@ export class ViewerTour extends React.Component<IProps, IState> {
         };
 
         const steps: Step[] = [
-            {
+            // {
+            //     target: '.polar-sidebar',
+            //     content: <div>
+            //         <h2>Document Viewer</h2>
+            //
+            //         <img src="/web/assets/images/doc.svg" style={Styles.IMG}/>
+            //
+            //
+            //     </div>,
+            //     styles: {
+            //         tooltip: {
+            //             width: '650px'
+            //         }
+            //     },
+            //     disableBeacon: true,
+            //     placement: 'center'
+            // },
+
+            JoyrideTours.createImageStep({
                 target: '.polar-sidebar',
+                title: <Title>Document Repository</Title>,
                 content: <div>
-                    <h2>Document Viewer</h2>
-
-                    <img src="/web/assets/images/doc.svg" style={Styles.IMG}/>
-
                     <p>
                         This is the main document viewer and allows you to both
                         view and <Term>annotate</Term> documents.
@@ -54,21 +70,15 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
                     <p>It supports the following features: </p>
 
-                    <ul>
+                    <ul style={{marginLeft: '20px'}}>
                         <li>Keeping track of your reading with pagemarks.</li>
                         <li>Highlighting text within the document</li>
                         <li>Creating comments and flashcards attached to these highlights.</li>
                     </ul>
-
                 </div>,
-                styles: {
-                    tooltip: {
-                        width: '650px'
-                    }
-                },
-                disableBeacon: true,
+                image: "/web/assets/images/doc.svg",
                 placement: 'center'
-            },
+            }),
 
             {
                 target: '.polar-sidebar',
@@ -176,18 +186,14 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
                 // switch (data.status) {
                 //     case STATUS.SKIPPED:
-                //         RendererAnalytics.event({category: 'tour-result', action: 'skipped'});
-                //         RendererAnalytics.event({category: 'tour-skip', action: 'skipped-at-step-' + data.index});
-                //
-                //         LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
-                //         break;
-                //     case STATUS.FINISHED:
-                //         RendererAnalytics.event({category: 'tour-result', action: 'finished'});
-                //
-                //         LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED);
-                //         break;
+                //         RendererAnalytics.event({category: 'tour-result',
+                // action: 'skipped'}); RendererAnalytics.event({category:
+                // 'tour-skip', action: 'skipped-at-step-' + data.index});
+                // LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED); break;
+                // case STATUS.FINISHED: RendererAnalytics.event({category:
+                // 'tour-result', action: 'finished'});
+                // LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED); break;
                 // }
-                //
 
             } finally {
                 LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
