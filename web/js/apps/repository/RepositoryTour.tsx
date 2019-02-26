@@ -1,15 +1,13 @@
-import Joyride, {CallBackProps, Step, STATUS, EVENTS, ACTIONS, placement} from 'react-joyride';
+import Joyride, {ACTIONS, CallBackProps, EVENTS, placement, STATUS} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Feedback} from '../../ui/feedback/Feedback';
-import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../../apps/repository/js/SplitBar';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_layout/SplitLayout';
-import {Button} from 'reactstrap';
 import {Logger} from '../../logger/Logger';
-import {AppActivities, AppActivity} from '../../util/AppActivities';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
+import {EnhancedStep} from '../../ui/tours/JoyrideTours';
 
 const log = Logger.create();
 
@@ -582,6 +580,10 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         highlighted document row and a new window will open.
                     </p>
 
+                    <p>
+                        This specific document has some example annotations.
+                    </p>
+
                 </div>,
                 spotlightClicks: true,
                 image:
@@ -589,10 +591,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
             }),
 
-
-
-            // TODO: auto advance to this once the document has been opened and we
-            // 've done the viewer tour and I think this should be more of a
+            // TODO: auto advance to this once the document has been opened and
+            // we 've done the viewer tour and I think this should be more of a
             // checklist.
 
             {
@@ -701,7 +701,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         RendererAnalytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
 
         // FIXME: action: close, skip isn't handled
-        // FIXME: what does close do in an un-controlled tour .. is it skip or finish?
+        // FIXME: what does close do in an un-controlled tour .. is it skip or
+        // finish?
 
         const step: EnhancedStep = callbackProps.step;
 
@@ -831,16 +832,4 @@ export interface IProps {
 export interface IState {
     readonly run: boolean;
     readonly stepIndex: number;
-}
-
-/**
- * An enhanced step with a few more fields.
- */
-interface EnhancedStep extends Step {
-
-    /**
-     * True when we should go the next step as soon as its selector is available.
-     */
-    readonly autoNext?: boolean;
-
 }

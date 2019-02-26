@@ -175,10 +175,8 @@ export class LoadExampleDocs {
             if (docMeta) {
                 docMeta.docInfo.title = opts.title;
 
-                // const tags = {...(opts.tags || {}),
-                //               ...this.createTags('polar:example')};
-
-                const tags = {...(opts.tags || {})};
+                const tags = {...(opts.tags || {}),
+                              ...this.createTags('example')};
 
                 docMeta.docInfo.tags = tags;
 
