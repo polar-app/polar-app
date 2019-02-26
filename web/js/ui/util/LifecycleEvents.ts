@@ -19,5 +19,9 @@ export class LifecycleEvents {
 
     public static HAS_EXAMPLE_DOCS = 'has-example-docs';
 
+    public static VIEWER_TOUR_SKIPPED = 'viewer-tour-skipped';
+    public static VIEWER_TOUR_FINISHED = 'viewer-tour-finished';
+    public static VIEWER_TOUR_TERMINATED = 'viewer-tour-terminated';
+
 }
 

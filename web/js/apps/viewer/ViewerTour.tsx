@@ -176,27 +176,32 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
     }
 
-    private onCallback(data: CallBackProps): void {
+    private onCallback(callbackProps: CallBackProps): void {
 
-        RendererAnalytics.event({category: 'tour', action: 'did-step-' + data.index});
+        RendererAnalytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
 
-        if (data.status === STATUS.SKIPPED || data.status === STATUS.FINISHED) {
+        if (callbackProps.status === STATUS.SKIPPED || callbackProps.status === STATUS.FINISHED) {
 
             try {
 
-                // switch (data.status) {
-                //     case STATUS.SKIPPED:
-                //         RendererAnalytics.event({category: 'tour-result',
-                // action: 'skipped'}); RendererAnalytics.event({category:
-                // 'tour-skip', action: 'skipped-at-step-' + data.index});
-                // LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED); break;
-                // case STATUS.FINISHED: RendererAnalytics.event({category:
-                // 'tour-result', action: 'finished'});
-                // LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED); break;
-                // }
+                switch (callbackProps.status) {
+
+                    case STATUS.SKIPPED:
+                        RendererAnalytics.event({category: 'viewer-tour-result', action: 'skipped'});
+                        RendererAnalytics.event({category: 'viewer-tour-skip', action: 'skipped-at-step-' + callbackProps.index});
+
+                        LifecycleToggle.mark(LifecycleEvents.VIEWER_TOUR_SKIPPED);
+                        break;
+
+                    case STATUS.FINISHED:
+                        RendererAnalytics.event({category: 'viewer-tour-result', action: 'finished'});
+
+                        LifecycleToggle.mark(LifecycleEvents.VIEWER_TOUR_FINISHED);
+                        break;
+                }
 
             } finally {
-                LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
+                LifecycleToggle.mark(LifecycleEvents.VIEWER_TOUR_TERMINATED);
             }
 
         }
