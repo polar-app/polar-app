@@ -17,3 +17,10 @@
     background-color: #D8D8D8;
     background-image: none;
 }
+
+.confirm-prompt {
+
+    min-width: 550px;
+    width: 550px;
+
+}

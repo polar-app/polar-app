@@ -49,6 +49,10 @@ import {FlagDocButton} from './doc_buttons/FlagDocButton';
 import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
 import Form from 'reactstrap/lib/Form';
 import FormGroup from 'reactstrap/lib/FormGroup';
+import {ConfirmPopover} from '../../../../web/js/ui/confirm/ConfirmPopover';
+import Button from 'reactstrap/lib/Button';
+import {ConfirmPopovers} from '../../../../web/js/ui/confirm/ConfirmPopovers';
+import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 
 const log = Logger.create();
 
@@ -87,7 +91,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.onToggleFilterArchived = this.onToggleFilterArchived.bind(this);
         this.onToggleFlaggedOnly = this.onToggleFlaggedOnly.bind(this);
 
+        this.clearSelected = this.clearSelected.bind(this);
+
         this.onMultiTagged = this.onMultiTagged.bind(this);
+        this.onMultiDeleted = this.onMultiDeleted.bind(this);
+
         this.getSelected = this.getSelected.bind(this);
 
         this.cmdImportFromDisk = this.cmdImportFromDisk.bind(this);
@@ -233,6 +241,26 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
+    private onMultiDeleted() {
+
+        const repoDocInfos = this.getSelected();
+
+        for (const repoDocInfo of repoDocInfos) {
+            this.onDocDeleted(repoDocInfo);
+        }
+
+        this.clearSelected();
+
+    }
+
+    private clearSelected() {
+
+        setTimeout(() => {
+            this.setState({...this.state, selected: []});
+        }, 1);
+
+    }
+
     private getSelected(): RepoDocInfo[] {
 
         const resolvedState = this.reactTable!.getResolvedState();
@@ -277,28 +305,36 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 <div className="mr-1"
                                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <div style={{display: this.state.selected.length <= 1 ? 'none' : 'block'}}>
+                                    <div style={{display: this.state.selected.length <= 1 ? 'none' : 'flex'}}>
 
                                         {/*<FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}*/}
                                                         {/*refresher={() => this.refresh()}*/}
                                                         {/*disabled={this.state.selected.length === 0}*/}
                                                         {/*filteredTags={this.filteredTags} />*/}
 
-                                        <TagButton id="tag-multiple-documents"
-                                                   tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                   onSelectedTags={tags => this.onMultiTagged(tags)}/>
+                                        <div>
+                                            <TagButton id="tag-multiple-documents"
+                                                       tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                       onSelectedTags={tags => this.onMultiTagged(tags)}/>
 
-                                        <SimpleTooltip target="tag-multiple-documents"
-                                                       placement="bottom">
+                                            <SimpleTooltip target="tag-multiple-documents"
+                                                           placement="bottom">
 
-                                            Tag multiple documents at once.  To
-                                            find untagged documents sort by the
-                                            'Tags' column (twice).  Once to sort
-                                            alphabetically and then second click
-                                            will reverse the sort showing
-                                            untagged documents.
+                                                Tag multiple documents at once.  To
+                                                find untagged documents sort by the
+                                                'Tags' column (twice).  Once to sort
+                                                alphabetically and then second click
+                                                will reverse the sort showing
+                                                untagged documents.
 
-                                        </SimpleTooltip>
+                                            </SimpleTooltip>
+
+                                        </div>
+
+                                        <div className="ml-1">
+                                            <MultiDeleteButton onCancel={NULL_FUNCTION}
+                                                               onConfirm={() => this.onMultiDeleted()}/>
+                                        </div>
 
                                     </div>
 
@@ -442,10 +478,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                            const computeSelected = (): ReadonlyArray<number> => {
 
                                                                if (this.state.selected.length !== col.data.length) {
-                                                                   // all of them
+                                                                   // all of
+                                                                   // them
                                                                    return Numbers.range(0, col.data.length - 1);
                                                                } else {
-                                                                   // none of them
+                                                                   // none of
+                                                                   // them
                                                                    return [];
                                                                }
 
@@ -528,7 +566,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         // accessor: (row: any) => row.added,
                                         accessor: 'lastUpdated',
                                         show: this.state.columns.lastUpdated.selected,
-                                        maxWidth: 100,
+                                        maxWidth: 85,
                                         defaultSortDesc: true,
                                         className: 'doc-table-col-updated',
                                         Cell: (row: any) => (
@@ -540,7 +578,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         Header: 'Added',
                                         accessor: 'added',
                                         show: this.state.columns.added.selected,
-                                        maxWidth: 100,
+                                        maxWidth: 85,
                                         defaultSortDesc: true,
                                         className: 'doc-table-col-added',
                                         Cell: (row: any) => (
@@ -604,6 +642,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'tags',
                                         Header: 'Tags',
+                                        width: 250,
                                         accessor: '',
                                         show: this.state.columns.tags.selected,
                                         className: 'doc-table-col-tags',

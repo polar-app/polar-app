@@ -224,17 +224,16 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
             JoyrideTours.createImageStep({
                 target: '#discord-button',
-                title: <Title>Discord Chat</Title>,
+                title: <Title>Chat</Title>,
                 content: <div>
                     <p>
-                        We have a directly link to <Term>Discord chat</Term> to
-                        enable you to discuss Polar live with the developers
-                        and other users.
+                        We have a directly link to <Term>chat</Term> to enable
+                        you to discuss Polar live with the developers and other
+                        users.
                     </p>
 
                     <p>
-                        Feel free to jump in at any time and give us feedback
-                        at any time.
+                        Feel free to jump in at any time and give us feedback.
                     </p>
                 </div>,
                 image:

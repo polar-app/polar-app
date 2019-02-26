@@ -11,11 +11,7 @@ export class ViewerTours {
 
     public static createWhenNecessary(fingerprint: string) {
 
-        console.log("FIXME1: " + fingerprint);
-        console.log("FIXME2: " + LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT);
-
         if (fingerprint === LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT) {
-            console.log("FIXME3 loading viewer tour");
             this.create();
         }
 
@@ -27,11 +23,8 @@ export class ViewerTours {
         let container = document.getElementById(id);
 
         if (container) {
-            console.log("FIXME tour already running...");
             return;
         }
-
-        console.log("FIXME: starting tour...");
 
         container = document.createElement('div');
         container.id = id;
