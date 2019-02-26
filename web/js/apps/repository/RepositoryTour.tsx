@@ -126,6 +126,10 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         };
 
         const steps: EnhancedStep[] = [
+
+            // TODO: we don't really give the user a tour through the annotations view
+            // TODO: we don't realy give them a tour through capturing web pages.
+
             JoyrideTours.createImageStep({
                 target: 'header',
                 // title: <Title>Document Repository</Title>,
@@ -390,7 +394,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
                 </div>,
                 image: "/web/assets/images/doc.svg",
-                placement: 'center'
+                placement: 'center',
+                hideBackButton: true
             }),
 
             {
@@ -448,7 +453,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </div>,
                 image: "/web/assets/images/statistics.svg",
                 hideBackButton: true,
-                placement: 'center'
+                placement: 'center',
             }),
 
             {
@@ -508,7 +513,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         zIndex: 1000
                     }
                 },
-                autoNext: true
+                autoNext: true,
+                hideBackButton: true
             },
 
             JoyrideTours.createImageStep({
@@ -531,6 +537,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                 </div>,
                 spotlightClicks: true,
+                hideBackButton: true,
                 image:
                     <Icon className="fas fa-book-open"/>
 

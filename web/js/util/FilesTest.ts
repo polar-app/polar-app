@@ -32,6 +32,7 @@ describe('Files', function() {
 
         });
 
+
         it("Test with empty dir", async function() {
 
             const path = FilePaths.join(tmpdir, 'empty-dir-with-no-files');
