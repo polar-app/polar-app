@@ -142,11 +142,6 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
         return (
 
-            // FIXME: only run when we're working with the right document.
-            // Don't just run with any document because we're going to try to
-            // highlight certain features on the document that need to be
-            // enabled.
-
             <Joyride
                 steps={steps}
                 continuous={true}
