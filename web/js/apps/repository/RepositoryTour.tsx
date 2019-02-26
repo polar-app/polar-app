@@ -168,7 +168,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     <p>
                         Your documents are kept here in
                         the <Term>document repository</Term> and
-                        can be opened with by <Term>double clicking</Term>.
+                        can be opened by <Term>double clicking</Term>.
                     </p>
 
                     <p>
