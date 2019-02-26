@@ -45,6 +45,46 @@ export class LoadExampleDocs {
         await this.doDoc1();
         await this.doDoc2();
 
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'availability.pdf'), {
+            title: "Availability in Globally Distributed Storage Systems",
+            tags: this.createTags('google', 'availability'),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
+            pagemarkEnd: 7
+        });
+
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
+            title: "Large-scale cluster management at Google with Borg",
+            tags: this.createTags('google', 'borg', 'docker'),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
+            pagemarkEnd: 2
+        });
+
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
+            title: "The Chubby lock service for loosely-coupled distributed systems",
+            tags: this.createTags('google', 'chubby'),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
+            pagemarkEnd: 2
+        });
+
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
+            title: "The Datacenter as a Computer",
+            tags: this.createTags('google', 'datacenters'),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
+            pagemarkEnd: 2
+        });
+
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
+            title: "Dremel: Interactive Analysis of Web-Scale Datasets",
+            tags: this.createTags('google', 'dremel'),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
+            pagemarkEnd: 1
+        });
+
     }
 
     private createTag(id: string, label?: string): Tag {
@@ -177,7 +217,7 @@ export class LoadExampleDocs {
 }
 
 interface DocOpts {
-    readonly title: string;
+    readonly title?: string;
     readonly pagemarkEnd?: number;
     readonly tags?: {[id: string]: Tag};
     readonly added?: ISODateTimeString;

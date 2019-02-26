@@ -53,7 +53,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onCallback = this.onCallback.bind(this);
-        this.onAppActivity = this.onAppActivity.bind(this);
         this.createSteps = this.createSteps.bind(this);
 
         this.steps = this.createSteps();
@@ -65,10 +64,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             run,
             stepIndex: 0
         };
-
-        if (this.state.run) {
-            AppActivities.get().addEventListener(appActivity => this.onAppActivity(appActivity));
-        }
 
     }
 
@@ -447,94 +442,99 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             // // //     // placement: "bottom",
             // // // },
 
-
-            {
-                target: '#toggle-sidebar',
-                content: <div>
-
-                    <Term>Click</Term> this button to display the sidebar.
-
-                </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                hideCloseButton: true,
-                autoNext: true,
-            },
-            // TODO: needs to be positioned about a 3rd of the way down the page...
-            {
-                title: <Title>Sidebar</Title>,
-                target: '.repo-sidebar section[data-expanded=true]',
-                content: <div>
-                    The <Term>sidebar</Term> allows you to select different
-                    views including
-                    the <Term>annotation</Term> and <Term>statistics</Term> views.
-                </div>,
-                disableBeacon: true,
-                placement: 'right-start',
-                offset: 10,
-                spotlightPadding: 0
-            },
-
-            {
-                title: <Title>Sidebar</Title>,
-                target: '#sidebar-item-stats',
-                content: <div>
-                    Now <Term>click here</Term> to view the <Term>statistics view</Term>.
-
-                </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                spotlightPadding: 0,
-                styles: {
-                    options: {
-                        zIndex: 1000
-                    }
-                },
-                autoNext: true
-            },
-
-            this.createImageStep({
-                target: '.statistics-view header',
-                title: <Title>Statistics View</Title>,
-                content: <div>
-                    <p>
-                        This is the <Term>statistics view</Term>.  It allows you
-                        to view importants statistics regarding your reading,
-                        documents, and annotations including the rate of new
-                        documents and statistics on your tags.
-                    </p>
-                </div>,
-                image: "/web/assets/images/statistics.svg",
-                placement: 'center'
-            }),
-
-            {
-                title: <Title>Reading Progress</Title>,
-                target: '#reading-progress-table',
-                content: <div>
-                    <p>
-                        The <Term>reading progress</Term> metric allows you to track
-                        how often you're reading to encourage you to hit your goals.
-                    </p>
-
-                    <p>
-                        Each column is one week and we display 52 weeks to
-                        represent the entire year.
-                    </p>
-
-                </div>,
-                disableBeacon: true,
-            },
+            //
+            // {
+            //     target: '#toggle-sidebar',
+            //     content: <div>
+            //
+            //         <Term>Click</Term> this button to display the sidebar.
+            //
+            //     </div>,
+            //     spotlightClicks: true,
+            //     disableBeacon: true,
+            //     placement: 'right',
+            //     hideFooter: true,
+            //     hideCloseButton: true,
+            //     autoNext: true,
+            // },
+            // // TODO: needs to be positioned about a 3rd of the way down the page...
+            // {
+            //     title: <Title>Sidebar</Title>,
+            //     target: '.repo-sidebar section[data-expanded=true]',
+            //     content: <div>
+            //         The <Term>sidebar</Term> allows you to select different
+            //         views including
+            //         the <Term>annotation</Term> and <Term>statistics</Term> views.
+            //     </div>,
+            //     disableBeacon: true,
+            //     placement: 'right-start',
+            //     offset: 10,
+            //     spotlightPadding: 0
+            // },
+            //
+            // {
+            //     title: <Title>Sidebar</Title>,
+            //     target: '#sidebar-item-stats',
+            //     content: <div>
+            //         Now <Term>click here</Term> to view the <Term>statistics view</Term>.
+            //
+            //     </div>,
+            //     spotlightClicks: true,
+            //     disableBeacon: true,
+            //     placement: 'right',
+            //     hideFooter: true,
+            //     spotlightPadding: 0,
+            //     styles: {
+            //         options: {
+            //             zIndex: 1000
+            //         }
+            //     },
+            //     autoNext: true
+            // },
+            //
+            // this.createImageStep({
+            //     target: '.statistics-view header',
+            //     title: <Title>Statistics View</Title>,
+            //     content: <div>
+            //         <p>
+            //             This is the <Term>statistics view</Term>.  It allows you
+            //             to view importants statistics regarding your reading,
+            //             documents, and annotations including the rate of new
+            //             documents and statistics on your tags.
+            //         </p>
+            //     </div>,
+            //     image: "/web/assets/images/statistics.svg",
+            //     placement: 'center'
+            // }),
+            //
+            // {
+            //     title: <Title>Reading Progress</Title>,
+            //     target: '#reading-progress-table',
+            //     content: <div>
+            //         <p>
+            //             The <Term>reading progress</Term> metric allows you to track
+            //             how often you're reading to encourage you to hit your goals.
+            //         </p>
+            //
+            //         <p>
+            //             Each column is one week and we display 52 weeks to
+            //             represent the entire year.
+            //         </p>
+            //
+            //     </div>,
+            //     disableBeacon: true,
+            // },
 
             {
                 target: 'header',
                 content: <div>
 
                     <h2 className="text-center">Thanks for taking the tour!</h2>
+
+                    <p>
+                        Now that you understand Polar your next steps are to
+                        add documents.
+                    </p>
 
                     <div className="text-center">
                         <Feedback category="tour-feedback"
@@ -559,17 +559,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         ];
 
         return steps;
-
-    }
-
-    private onAppActivity(appActivity: AppActivity<any>) {
-
-        console.log("FIXME: onAppActivity: " , appActivity);
-
-        this.doStep(this.callback!);
-
-        // FIXME: if the current step is
-
 
     }
 
