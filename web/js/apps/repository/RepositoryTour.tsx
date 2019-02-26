@@ -91,11 +91,12 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     private createSteps(): EnhancedStep[] {
 
-        // FIXME: if the user clicks out of the tour then the tour stops
-        // and the beacon is displayed.
-        //
+        // FIXME: click outside of the tour should not trigger 'next'
+
         // FIXME: show them how to use the rich text area including images,
         // HTML, etc.
+
+        // FIXME: full tour of capturing web documents
 
         const Term = (props: any) => {
             return <b><i>{props.children}</i></b>;
@@ -631,17 +632,11 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         RendererAnalytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
 
-        // FIXME: action: close, skip isn't handled
-        // FIXME: what does close do in an un-controlled tour .. is it skip or
-        // finish?
-
         const step: EnhancedStep = callbackProps.step;
 
         if (callbackProps.action === 'update' && step.autoNext) {
 
             const nextStep = this.steps[callbackProps.index + 1];
-
-            console.log("FIXME: going to do autoNext with step: " , nextStep);
 
             const nextHandler = (): boolean => {
 
@@ -735,8 +730,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         } else if (callbackProps.type === EVENTS.TARGET_NOT_FOUND) {
 
-            // FIXME: add a DOM event listener to wait for it to become
-            // available...
+            // TODO: add a DOM event listener to wait for it to become
+            // available???
 
             log.warn("Not found: ", callbackProps);
 
