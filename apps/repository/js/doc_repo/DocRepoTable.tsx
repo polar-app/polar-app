@@ -44,14 +44,8 @@ import {AddContentButton} from './AddContentButton';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
 import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 import {DocButton} from './doc_buttons/DocButton';
-import {ToggleIcon} from './doc_buttons/ToggleIcon';
 import {FlagDocButton} from './doc_buttons/FlagDocButton';
 import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
-import Form from 'reactstrap/lib/Form';
-import FormGroup from 'reactstrap/lib/FormGroup';
-import {ConfirmPopover} from '../../../../web/js/ui/confirm/ConfirmPopover';
-import Button from 'reactstrap/lib/Button';
-import {ConfirmPopovers} from '../../../../web/js/ui/confirm/ConfirmPopovers';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 
 const log = Logger.create();

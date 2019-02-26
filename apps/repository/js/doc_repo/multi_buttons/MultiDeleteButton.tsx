@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {ConfirmPopovers} from '../../../../../web/js/ui/confirm/ConfirmPopovers';
-import {NULL_FUNCTION} from '../../../../../web/js/util/Functions';
 import Button from 'reactstrap/lib/Button';
 import {SimpleTooltip} from '../../../../../web/js/ui/tooltip/SimpleTooltip';
 import {ConfirmPrompts} from '../../../../../web/js/ui/confirm/ConfirmPrompts';
