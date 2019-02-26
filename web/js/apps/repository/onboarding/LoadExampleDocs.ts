@@ -135,14 +135,19 @@ export class LoadExampleDocs {
             flagged: true
         });
 
+        if (writtenDocMeta) {
 
-        // TODO: use the correct lastUpdate and created times...
-        const docMeta = DocMetas.deserialize(JSON.stringify(BIGTABLE_DOC_META),
-                                             writtenDocMeta!.docInfo.fingerprint );
+            // TODO: use the correct lastUpdate and created times...
+            const docMeta = DocMetas.deserialize(JSON.stringify(BIGTABLE_DOC_META),
+                                                 writtenDocMeta!.docInfo.fingerprint );
 
-        docMeta.docInfo = writtenDocMeta!.docInfo;
+            docMeta.docInfo = writtenDocMeta!.docInfo;
 
-        await this.persistenceLayer.writeDocMeta(docMeta);
+            await this.persistenceLayer.writeDocMeta(docMeta);
+
+        } else {
+            // this is probably in a testing env...
+        }
 
     }
 
