@@ -21,8 +21,21 @@ function configureDownloads() {
 
 }
 
+function triggerDownload() {
+
+    if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
+        document.getElementById("download-macos-dmg").click();
+    }
+
+    if (navigator.userAgent.indexOf("Win32") !== -1) {
+        document.getElementById("download-win-64").click();
+    }
+
+}
+
 window.addEventListener('load', () => {
     configureDownloads();
+    triggerDownload();
 });
 
 

@@ -27,7 +27,7 @@ function triggerDownload() {
         document.getElementById("download-macos-dmg").click();
     }
 
-    if (navigator.userAgent.indexOf("Win32") !== -1) {
+    if (navigator.userAgent.indexOf("Win64") !== -1) {
         document.getElementById("download-win-64").click();
     }
 
