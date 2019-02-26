@@ -42,6 +42,8 @@ interface ImageStep {
     readonly target: string;
     readonly placement?: placement;
     readonly autoNext?: boolean;
+    readonly hideBackButton?: boolean;
+    readonly spotlightClicks?: boolean;
 }
 
 export class RepositoryTour extends React.Component<IProps, IState> {
@@ -108,6 +110,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
             </div>,
             placement: step.placement || 'bottom',
+            hideBackButton: step.hideBackButton || false,
+            spotlightClicks: step.spotlightClicks || false,
             autoNext: step.autoNext
         };
 
@@ -499,6 +503,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
                 </div>,
                 image: "/web/assets/images/statistics.svg",
+                hideBackButton: true,
                 placement: 'center'
             }),
 
@@ -562,15 +567,11 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 autoNext: true
             },
 
-            {
+
+            this.createImageStep({
                 target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}']`,
                 title: <Title>Open a document</Title>,
-                disableBeacon: true,
-                spotlightClicks: true,
                 content: <div>
-
-                    <i className="fas fa-book-open text-primary"
-                       style={{fontSize: '150px'}}></i>
 
                     <p>
                         Let's open a document.
@@ -582,9 +583,17 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
 
                 </div>,
-                // placement: "bottom",
-            },
+                spotlightClicks: true,
+                image:
+                    <Icon className="fas fa-book-open"/>
 
+            }),
+
+
+
+            // TODO: auto advance to this once the document has been opened and we
+            // 've done the viewer tour and I think this should be more of a
+            // checklist.
 
             {
                 target: 'header',
