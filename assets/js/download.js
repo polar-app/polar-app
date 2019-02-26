@@ -53,23 +53,27 @@ function notifyDownload() {
 
 }
 
+function sendGA(platform) {
+    ga('send', 'event', 'auto-download', platform);
+}
 
-function triggerDownloadForLink(id) {
+function triggerDownloadForLink(id, platform) {
     // TODO: send a GA event
 
     console.log("Triggering download for ID: " + id);
     document.getElementById(id).click();
     notifyDownload();
+    sendGA(platform);
 }
 
 function triggerDownload() {
 
     if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
-        triggerDownloadForLink("download-macos-dmg");
+        triggerDownloadForLink("download-macos-dmg", 'macos');
     }
 
     if (navigator.userAgent.indexOf("Win64") !== -1) {
-        triggerDownloadForLink("download-win-64");
+        triggerDownloadForLink("download-win-64", 'win64');
     }
 
 }
