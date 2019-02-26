@@ -21,14 +21,55 @@ function configureDownloads() {
 
 }
 
+function notifyDownload() {
+
+    var element = document.createElement('div');
+
+    element.innerHTML = `
+
+        <div style="display: flex">
+            <div class="p-1 pr-2">
+                <i style="font-size: 45px;" class="fas fa-arrow-alt-circle-down"></i>
+            </div>
+            <div>
+                <div><b>Starting download now!</b></div>
+                <div class="mt-1 mb-1">
+                    Open Polar below once the download has finished.
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    element.className = 'animated bounce duration-2s bg-success text-white p-3 rounded m-2';
+    element.style.position = 'absolute';
+    element.style.bottom = '0';
+    element.style.animationIterationCount='2';
+
+    document.body.appendChild(element);
+
+}
+
+
+function triggerDownloadForLink(id) {
+    // TODO: send a GA event
+
+    console.log("Triggering download for ID: " + id);
+    document.getElementById(id).click();
+    notifyDownload();
+}
+
 function triggerDownload() {
 
     if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
-        document.getElementById("download-macos-dmg").click();
+        triggerDownloadForLink("download-macos-dmg");
     }
 
-    if (navigator.userAgent.indexOf("Win32") !== -1) {
-        document.getElementById("download-win-64").click();
+    if (navigator.userAgent.indexOf("Win64") !== -1) {
+        triggerDownloadForLink("download-win-64");
     }
 
 }
