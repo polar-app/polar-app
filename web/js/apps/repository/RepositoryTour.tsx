@@ -547,36 +547,54 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             // we 've done the viewer tour and I think this should be more of a
             // checklist.
 
-            {
+
+            JoyrideTours.createImageStep({
                 target: 'header',
                 content: <div>
 
-                    <h2 className="text-center">Thanks for taking the tour!</h2>
+                    <h2>Thanks for Taking the Tour</h2>
 
                     <p>
-                        Now that you understand Polar your next steps are to
-                        add documents.
+                        From time to time we'll prompt to see if Polar is
+                        working for you and whether you have any other
+                        suggestions to improve Polar for your use case.
                     </p>
 
-                    <div className="text-center">
-                        <Feedback category="tour-feedback"
-                                  title="How likely are you to continue using Polar?"
-                                  description="We wanted to get your initial thoughts after taking the tour."
-                                  from="Not likely"
-                                  to="Very likely"
-                                  unsure={true}/>
-                    </div>
-
                 </div>,
-                styles: {
-                    tooltip: {
-                        width: '650px'
-                    }
-                },
-                disableBeacon: true,
+                image: "/icon.png",
                 placement: 'center'
-            }
 
+            }),
+
+            // {
+            //     target: 'header',
+            //     content: <div>
+            //
+            //         <h2 className="text-center">Thanks for taking the tour!</h2>
+            //
+            //         <p>
+            //             Now that you understand Polar your next steps are to
+            //             add documents.
+            //         </p>
+            //
+            //         <div className="text-center">
+            //             <Feedback category="tour-feedback"
+            //                       title="How likely are you to continue using Polar?"
+            //                       description="We wanted to get your initial thoughts after taking the tour."
+            //                       from="Not likely"
+            //                       to="Very likely"
+            //                       unsure={true}/>
+            //         </div>
+            //
+            //     </div>,
+            //     styles: {
+            //         tooltip: {
+            //             width: '650px'
+            //         }
+            //     },
+            //     disableBeacon: true,
+            //     placement: 'center'
+            // },
 
             //
             // {

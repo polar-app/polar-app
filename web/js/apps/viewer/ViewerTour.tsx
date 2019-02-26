@@ -134,11 +134,9 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
                     </p>
 
-                </div>
+                </div>,
+                placement: 'left'
             },
-
-
-
 
         ];
 
