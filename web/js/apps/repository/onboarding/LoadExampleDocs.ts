@@ -15,6 +15,8 @@ const log = Logger.create();
 
 export class LoadExampleDocs {
 
+    public static MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT = "a2887850877ae33e1e66ea24f433e30f";
+
     private readonly persistenceLayer: PersistenceLayer;
 
     private readonly pdfImporter: PDFImporter;

@@ -46,7 +46,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
         return (
 
-            <FixedNav id="doc-repository">
+            <FixedNav id="doc-repository" className="annotations-view">
 
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>

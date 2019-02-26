@@ -9,6 +9,7 @@ import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_lay
 import {Button} from 'reactstrap';
 import {Logger} from '../../logger/Logger';
 import {AppActivities, AppActivity} from '../../util/AppActivities';
+import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 
 const log = Logger.create();
 
@@ -180,350 +181,410 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         };
 
         const steps: EnhancedStep[] = [
-            // this.createImageStep({
-            //     target: 'header',
-            //     // title: <Title>Document Repository</Title>,
-            //     content: <div>
-            //         <h2 className="text-center">Welcome to Polar!</h2>
-            //
-            //         <p>
-            //             We're going to give you a quick tour of how to use the
-            //             main features in Polar.
-            //         </p>
-            //
-            //         <p>
-            //             Polar allows you to:
-            //         </p>
-            //
-            //         <ul>
-            //
-            //             <li>Keep all your documents in one place.</li>
-            //
-            //             <li>Easily keep track of your reading with <b>pagemarks</b> and <b>stats tracking</b>.</li>
-            //
-            //             <li><b>Annotate</b>, <b>tag</b>, and <span className="text-dark" style={{backgroundColor: 'yellow'}}><b>highlight</b></span> all your documents and build a personal knowledge repository.</li>
-            //
-            //         </ul>
-            //
-            //         <p>
-            //             The tour should take about 60 seconds.
-            //         </p>
-            //
-            //     </div>,
-            //     image: "/icon.png",
-            //     placement: 'center'
-            //
-            // }),
-            // this.createImageStep({
-            //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
-            //     title: <Title>Document Repository</Title>,
-            //     content: <div>
-            //         <p>
-            //             Your documents are kept here in
-            //             the <Term>document repository</Term> and
-            //             can be opened with by <Term>double clicking</Term>.
-            //         </p>
-            //
-            //         <p>
-            //             We went ahead and added some <b>sample documents</b> so you can
-            //             see what Polar looks like in action.  You can just
-            //             delete them once the tour is finished.
-            //         </p>
-            //     </div>,
-            //     image: "/web/assets/images/files.svg"
-            // }),
-            //
-            // this.createImageStep({
-            //     target: '#add-content-dropdown',
-            //     title: <Title>Add Documents</Title>,
-            //     content: <div>
-            //         <p>
-            //             Documents can easily be added by clicking the <Term>Add</Term> button
-            //             and you can import documents individually or in bulk from
-            //             a local directory.
-            //         </p>
-            //         <p>
-            //             Once the tour is over you'll probably want to use this
-            //             feature to add any documents you're currently reading.
-            //         </p>
-            //     </div>,
-            //     image: "/web/assets/images/add-file.svg"
-            // }),
-            // this.createImageStep({
-            //     target: '#enable-cloud-sync, #cloud-sync-dropdown',
-            //     title: <Title>Cloud Sync</Title>,
-            //     content: <div>
-            //         <p>
-            //             Polar supports <Term>cloud sync</Term> which keeps all your
-            //             documents securely backed up in the cloud.
-            //             Enabling <Term>cloud sync</Term> also allow you to keep all your
-            //             computers that run Polar fully synchronized.
-            //         </p>
-            //
-            //         <p>
-            //             This works transparently and realtime across MacOS,
-            //             Windows, and Linux.
-            //         </p>
-            //     </div>,
-            //     image:
-            //         <Icon className="fas fa-cloud-upload-alt"/>
-            //
-            // }),
-            //
-            // this.createImageStep({
-            //     target: '#discord-button',
-            //     title: <Title>Discord Chat</Title>,
-            //     content: <div>
-            //         <p>
-            //             We have a directly link to <Term>Discord chat</Term> to
-            //             enable you to discuss Polar live with the developers
-            //             and other users.
-            //         </p>
-            //
-            //         <p>
-            //             Feel free to jump in at any time and give us feedback
-            //             at any time.
-            //         </p>
-            //     </div>,
-            //     image:
-            //         <Icon className="fab fa-discord"/>
-            //
-            // }),
-            //
-            // {
-            //     target: '.doc-table-col-progress',
-            //     title: <Title>Reading Progress</Title>,
-            //     disableBeacon: true,
-            //     content: <div>
-            //         Each document has a progress associated with it which is
-            //         derived from pagemarks. Pagemarks are similar to bookmarks
-            //         but manually updated on each document while you read.
-            //     </div>,
-            //
-            //     // placement: "bottom",
-            // },
-            // //
-            // // this.createImageStep({
-            // //     target: '.doc-table-col-tags',
-            // //     title: <Title>Tags</Title>,
-            // //     content: <div>
-            // //         <p>
-            // //             Each document can be tagged to enable
-            // //             filtering and allow you to easily manage your documents.
-            // //         </p>
-            // //
-            // //         <p>Tags for documents are also assigned to your annotations.</p>
-            // //
-            // //     </div>,
-            // //     image:
-            // //         <Icon className="fa fa-tag"/>
-            // //
-            // // }),
-            // //
-            // // {
-            // //     target: '.doc-table-col-added',
-            // //     title: <Title>Sorting</Title>,
-            // //     disableBeacon: true,
-            // //     content: <div>
-            // //         We keep track of the time a document
-            // //         was <Term>added</Term> and <Term>updated</Term> so
-            // //         you can sort by time to read the most recently added (or
-            // //         updated) documents first.
-            // //     </div>,
-            // //     // placement: "bottom",
-            // // },
-            // //
-            // // {
-            // //     target: '.doc-table-col-title',
-            // //     disableBeacon: true,
-            // //     content: <div>
-            // //         The title of the document is automatically set when it's
-            // //         added but you can change it at any time
-            // //     </div>,
-            // //     // placement: "bottom",
-            // // },
-            // //
-            //
-            // {
-            //     target: '.doc-dropdown',
-            //     disableBeacon: true,
-            //     content: <div>
-            //
-            //         <p>
-            //             Documents can
-            //             be <Term>tagged</Term>, <Term>flagged</Term>, <Term>archived</Term> and <Term>deleted</Term> by using
-            //             these buttons to the right.
-            //         </p>
-            //
-            //         <p>
-            //              The <Term>tag</Term> button allow you to assign new <b><i>tags</i></b> a document
-            //         </p>
-            //
-            //         <p>
-            //              The <Term>flag</Term> button allow you to mark important
-            //              documents.  Once flagged you can use the <Term>filter bar</Term> to
-            //              show only flagged documents.
-            //         </p>
-            //
-            //         <p>
-            //             The <Term>archive</Term> button allow you to
-            //             hide a document once read.  It's usually best to
-            //             archive a document once it's been read.
-            //         </p>
-            //
-            //     </div>,
-            //     styles: {
-            //         tooltip: {
-            //             width: '650px'
-            //         }
-            //     },
-            //     // placement: "bottom",
-            // },
-            //
-            // {
-            //     target: '#filter-bar',
-            //     disableBeacon: true,
-            //     content: <div>
-            //
-            //         <p>
-            //             The <Term>filter bar</Term> allows you to configure
-            //             which documents are visible.
-            //         </p>
-            //
-            //         <p>
-            //             You can hide/show documents that are flagged, archived and
-            //             also filter by tags or search by title.
-            //         </p>
-            //
-            //     </div>,
-            //     styles: {
-            //         tooltip: {
-            //             width: '650px'
-            //         }
-            //     },
-            //     // placement: "bottom",
-            // },
-            //
-            //
-            //
-            // // {
-            // //     target: '.doc-dropdown',
-            // //     disableBeacon: true,
-            // //     content:  <div>
-            // //         The dropdown allow you perform other actions on a document
-            // //         including changing the title and deleting documents.
-            // //     </div>,
-            // //     // placement: "bottom",
-            // // },
-            // //
-            // //
-            // // //
-            // // // {
-            // // //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
-            // // //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
-            // // //     title: <Title>Open a document</Title>,
-            // // //     disableBeacon: true,
-            // // //     spotlightClicks: true,
-            // // //     content: <div>
-            // // //
-            // // //         <i className="fas fa-book-open text-primary"
-            // // //            style={{fontSize: '150px'}}></i>
-            // // //
-            // // //         <p>
-            // // //             Let's open a document.
-            // // //         </p>
-            // // //
-            // // //         <p>
-            // // //             Go ahead and <Term>double click</Term> on the
-            // // //             highlighted document row and a new window will open.
-            // // //         </p>
-            // // //
-            // // //     </div>,
-            // // //     // placement: "bottom",
-            // // // },
+            this.createImageStep({
+                target: 'header',
+                // title: <Title>Document Repository</Title>,
+                content: <div>
+                    <h2 className="text-center">Welcome to Polar!</h2>
 
-            //
-            // {
-            //     target: '#toggle-sidebar',
-            //     content: <div>
-            //
-            //         <Term>Click</Term> this button to display the sidebar.
-            //
-            //     </div>,
-            //     spotlightClicks: true,
-            //     disableBeacon: true,
-            //     placement: 'right',
-            //     hideFooter: true,
-            //     hideCloseButton: true,
-            //     autoNext: true,
-            // },
-            // // TODO: needs to be positioned about a 3rd of the way down the page...
-            // {
-            //     title: <Title>Sidebar</Title>,
-            //     target: '.repo-sidebar section[data-expanded=true]',
-            //     content: <div>
-            //         The <Term>sidebar</Term> allows you to select different
-            //         views including
-            //         the <Term>annotation</Term> and <Term>statistics</Term> views.
-            //     </div>,
-            //     disableBeacon: true,
-            //     placement: 'right-start',
-            //     offset: 10,
-            //     spotlightPadding: 0
-            // },
-            //
-            // {
-            //     title: <Title>Sidebar</Title>,
-            //     target: '#sidebar-item-stats',
-            //     content: <div>
-            //         Now <Term>click here</Term> to view the <Term>statistics view</Term>.
-            //
-            //     </div>,
-            //     spotlightClicks: true,
-            //     disableBeacon: true,
-            //     placement: 'right',
-            //     hideFooter: true,
-            //     spotlightPadding: 0,
-            //     styles: {
-            //         options: {
-            //             zIndex: 1000
-            //         }
-            //     },
-            //     autoNext: true
-            // },
-            //
-            // this.createImageStep({
-            //     target: '.statistics-view header',
-            //     title: <Title>Statistics View</Title>,
-            //     content: <div>
-            //         <p>
-            //             This is the <Term>statistics view</Term>.  It allows you
-            //             to view importants statistics regarding your reading,
-            //             documents, and annotations including the rate of new
-            //             documents and statistics on your tags.
-            //         </p>
-            //     </div>,
-            //     image: "/web/assets/images/statistics.svg",
-            //     placement: 'center'
-            // }),
-            //
-            // {
-            //     title: <Title>Reading Progress</Title>,
-            //     target: '#reading-progress-table',
-            //     content: <div>
-            //         <p>
-            //             The <Term>reading progress</Term> metric allows you to track
-            //             how often you're reading to encourage you to hit your goals.
-            //         </p>
-            //
-            //         <p>
-            //             Each column is one week and we display 52 weeks to
-            //             represent the entire year.
-            //         </p>
-            //
-            //     </div>,
-            //     disableBeacon: true,
-            // },
+                    <p>
+                        We're going to give you a quick tour of how to use the
+                        main features in Polar.
+                    </p>
+
+                    <p>
+                        Polar allows you to:
+                    </p>
+
+                    <ul>
+
+                        <li>Keep all your documents in one place.</li>
+
+                        <li>Easily keep track of your reading with <b>pagemarks</b> and <b>stats tracking</b>.</li>
+
+                        <li><b>Annotate</b>, <b>tag</b>, and <span className="text-dark" style={{backgroundColor: 'yellow'}}><b>highlight</b></span> all your documents and build a personal knowledge repository.</li>
+
+                    </ul>
+
+                    <p>
+                        The tour should take about 60 seconds.
+                    </p>
+
+                </div>,
+                image: "/icon.png",
+                placement: 'center'
+
+            }),
+            this.createImageStep({
+                target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
+                title: <Title>Document Repository</Title>,
+                content: <div>
+                    <p>
+                        Your documents are kept here in
+                        the <Term>document repository</Term> and
+                        can be opened with by <Term>double clicking</Term>.
+                    </p>
+
+                    <p>
+                        We went ahead and added some <b>sample documents</b> so you can
+                        see what Polar looks like in action.  You can just
+                        delete them once the tour is finished.
+                    </p>
+                </div>,
+                image: "/web/assets/images/files.svg"
+            }),
+
+            this.createImageStep({
+                target: '#add-content-dropdown',
+                title: <Title>Add Documents</Title>,
+                content: <div>
+                    <p>
+                        Documents can easily be added by clicking the <Term>Add</Term> button
+                        and you can import documents individually or in bulk from
+                        a local directory.
+                    </p>
+                    <p>
+                        Once the tour is over you'll probably want to use this
+                        feature to add any documents you're currently reading.
+                    </p>
+                </div>,
+                image: "/web/assets/images/add-file.svg"
+            }),
+            this.createImageStep({
+                target: '#enable-cloud-sync, #cloud-sync-dropdown',
+                title: <Title>Cloud Sync</Title>,
+                content: <div>
+                    <p>
+                        Polar supports <Term>cloud sync</Term> which keeps all your
+                        documents securely backed up in the cloud.
+                        Enabling <Term>cloud sync</Term> also allow you to keep all your
+                        computers that run Polar fully synchronized.
+                    </p>
+
+                    <p>
+                        This works transparently and realtime across MacOS,
+                        Windows, and Linux.
+                    </p>
+                </div>,
+                image:
+                    <Icon className="fas fa-cloud-upload-alt"/>
+
+            }),
+
+            this.createImageStep({
+                target: '#discord-button',
+                title: <Title>Discord Chat</Title>,
+                content: <div>
+                    <p>
+                        We have a directly link to <Term>Discord chat</Term> to
+                        enable you to discuss Polar live with the developers
+                        and other users.
+                    </p>
+
+                    <p>
+                        Feel free to jump in at any time and give us feedback
+                        at any time.
+                    </p>
+                </div>,
+                image:
+                    <Icon className="fab fa-discord"/>
+
+            }),
+
+            {
+                target: '.doc-table-col-progress',
+                title: <Title>Reading Progress</Title>,
+                disableBeacon: true,
+                content: <div>
+                    Each document has a progress associated with it which is
+                    derived from pagemarks. Pagemarks are similar to bookmarks
+                    but manually updated on each document while you read.
+                </div>,
+
+                // placement: "bottom",
+            },
+
+            this.createImageStep({
+                target: '.doc-table-col-tags',
+                title: <Title>Tags</Title>,
+                content: <div>
+                    <p>
+                        Each document can be tagged to enable
+                        filtering and allow you to easily manage your documents.
+                    </p>
+
+                    <p>Tags for documents are also assigned to your annotations.</p>
+
+                </div>,
+                image:
+                    <Icon className="fa fa-tag"/>
+
+            }),
+
+
+            {
+                target: '.doc-dropdown',
+                disableBeacon: true,
+                content: <div>
+
+                    <p>
+                        Documents can
+                        be <Term>tagged</Term>, <Term>flagged</Term>, <Term>archived</Term> and <Term>deleted</Term> by using
+                        these buttons to the right.
+                    </p>
+
+                    <p>
+                         The <Term>tag</Term> button allow you to assign new <b><i>tags</i></b> a document
+                    </p>
+
+                    <p>
+                         The <Term>flag</Term> button allow you to mark important
+                         documents.  Once flagged you can use the <Term>filter bar</Term> to
+                         show only flagged documents.
+                    </p>
+
+                    <p>
+                        The <Term>archive</Term> button allow you to
+                        hide a document once read.  It's usually best to
+                        archive a document once it's been read.
+                    </p>
+
+                </div>,
+                styles: {
+                    tooltip: {
+                        width: '650px'
+                    }
+                },
+                // placement: "bottom",
+            },
+
+            {
+                target: '#filter-bar',
+                disableBeacon: true,
+                content: <div>
+
+                    <p>
+                        The <Term>filter bar</Term> allows you to configure
+                        which documents are visible.
+                    </p>
+
+                    <p>
+                        You can hide/show documents that are flagged, archived and
+                        also filter by tags or search by title.
+                    </p>
+
+                </div>,
+                styles: {
+                    tooltip: {
+                        width: '650px'
+                    }
+                },
+            },
+
+
+            {
+                target: '#toggle-sidebar',
+                content: <div>
+
+                    <Term>Click</Term> this button to display the sidebar.
+
+                </div>,
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true,
+                hideCloseButton: true,
+                autoNext: true,
+            },
+            // TODO: needs to be positioned about a 3rd of the way down the page...
+            {
+                title: <Title>Sidebar</Title>,
+                target: '.repo-sidebar section[data-expanded=true]',
+                content: <div>
+                    The <Term>sidebar</Term> allows you to select different
+                    views including
+                    the <Term>annotation</Term> and <Term>statistics</Term> views.
+                </div>,
+                disableBeacon: true,
+                placement: 'right-start',
+                offset: 10,
+                spotlightPadding: 0,
+                hideBackButton: true
+            },
+            {
+                title: <Title>Annotations</Title>,
+                target: 'section[data-expanded=true] #sidebar-item-annotations',
+                content: <div>
+                    Now <Term>click here</Term> to view the <Term>annotations view</Term>.
+
+                </div>,
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true,
+                spotlightPadding: 0,
+                styles: {
+                    options: {
+                        zIndex: 1000
+                    }
+                },
+                autoNext: true
+            },
+
+            this.createImageStep({
+                target: '.annotations-view header',
+                title: <Title>Annotations View</Title>,
+                content: <div>
+                    <p>
+                        This is the <Term>annotations view</Term>.  It allows you
+                        to view all your annotations including highlights,
+                        comments, and flashcards.
+                    </p>
+                </div>,
+                image: "/web/assets/images/doc.svg",
+                placement: 'center'
+            }),
+
+            {
+                target: '#toggle-sidebar',
+                content: <div>
+
+                    <p>
+                        Now let's go to the <Term>statistics view.</Term>
+                    </p>
+
+                    <p>
+                        <Term>Click</Term> this button to display the sidebar.
+                    </p>
+
+                </div>,
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true,
+                hideCloseButton: true,
+                autoNext: true,
+            },
+
+
+            {
+                title: <Title>Sidebar</Title>,
+                target: 'section[data-expanded=true] #sidebar-item-stats',
+                content: <div>
+                    Now <Term>click here</Term> to view the <Term>statistics view</Term>.
+
+                </div>,
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true,
+                spotlightPadding: 0,
+                styles: {
+                    options: {
+                        zIndex: 1000
+                    }
+                },
+                autoNext: true
+            },
+
+            this.createImageStep({
+                target: '.statistics-view header',
+                title: <Title>Statistics View</Title>,
+                content: <div>
+                    <p>
+                        This is the <Term>statistics view</Term>.  It allows you
+                        to view importants statistics regarding your reading,
+                        documents, and annotations including the rate of new
+                        documents and statistics on your tags.
+                    </p>
+                </div>,
+                image: "/web/assets/images/statistics.svg",
+                placement: 'center'
+            }),
+
+            {
+                title: <Title>Reading Progress</Title>,
+                target: '#reading-progress-table',
+                content: <div>
+                    <p>
+                        The <Term>reading progress</Term> metric allows you to track
+                        how often you're reading to encourage you to hit your goals.
+                    </p>
+
+                    <p>
+                        Each column is one week and we display 52 weeks to
+                        represent the entire year.
+                    </p>
+
+                </div>,
+                disableBeacon: true,
+            },
+
+            {
+                target: '#toggle-sidebar',
+                content: <div>
+
+                    <p>
+                        Now let's go back to the <Term>documents view.</Term>
+                    </p>
+
+                    <p>
+                        <Term>Click</Term> this button to display the sidebar.
+                    </p>
+
+                </div>,
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true,
+                hideCloseButton: true,
+                autoNext: true,
+            },
+
+
+            {
+                title: <Title>Select documents view...</Title>,
+                target: 'section[data-expanded=true] #sidebar-item-documents',
+                content: <div>
+                    Now <Term>click</Term> to view the <Term>documents view</Term>.
+
+                </div>,
+                spotlightClicks: true,
+                disableBeacon: true,
+                placement: 'right',
+                hideFooter: true,
+                spotlightPadding: 0,
+                styles: {
+                    options: {
+                        zIndex: 1000
+                    }
+                },
+                autoNext: true
+            },
+
+            {
+                target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}']`,
+                title: <Title>Open a document</Title>,
+                disableBeacon: true,
+                spotlightClicks: true,
+                content: <div>
+
+                    <i className="fas fa-book-open text-primary"
+                       style={{fontSize: '150px'}}></i>
+
+                    <p>
+                        Let's open a document.
+                    </p>
+
+                    <p>
+                        Go ahead and <Term>double click</Term> on the
+                        highlighted document row and a new window will open.
+                    </p>
+
+                </div>,
+                // placement: "bottom",
+            },
+
 
             {
                 target: 'header',
@@ -555,6 +616,68 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 placement: 'center'
             }
 
+
+            //
+            // {
+            //     target: '.doc-table-col-added',
+            //     title: <Title>Sorting</Title>,
+            //     disableBeacon: true,
+            //     content: <div>
+            //         We keep track of the time a document
+            //         was <Term>added</Term> and <Term>updated</Term> so
+            //         you can sort by time to read the most recently added (or
+            //         updated) documents first.
+            //     </div>,
+            //     // placement: "bottom",
+            // },
+            //
+            // {
+            //     target: '.doc-table-col-title',
+            //     disableBeacon: true,
+            //     content: <div>
+            //         The title of the document is automatically set when it's
+            //         added but you can change it at any time
+            //     </div>,
+            //     // placement: "bottom",
+            // },
+            //
+
+
+            // {
+            //     target: '.doc-dropdown',
+            //     disableBeacon: true,
+            //     content:  <div>
+            //         The dropdown allow you perform other actions on a document
+            //         including changing the title and deleting documents.
+            //     </div>,
+            //     // placement: "bottom",
+            // },
+            //
+            //
+            // //
+            // // {
+            // //     // target: '#doc-repo-table .rt-tbody > div:nth-child(-n+4)',
+            // //     target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
+            // //     title: <Title>Open a document</Title>,
+            // //     disableBeacon: true,
+            // //     spotlightClicks: true,
+            // //     content: <div>
+            // //
+            // //         <i className="fas fa-book-open text-primary"
+            // //            style={{fontSize: '150px'}}></i>
+            // //
+            // //         <p>
+            // //             Let's open a document.
+            // //         </p>
+            // //
+            // //         <p>
+            // //             Go ahead and <Term>double click</Term> on the
+            // //             highlighted document row and a new window will open.
+            // //         </p>
+            // //
+            // //     </div>,
+            // //     // placement: "bottom",
+            // // },
 
         ];
 

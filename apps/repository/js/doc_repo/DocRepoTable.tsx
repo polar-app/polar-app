@@ -743,6 +743,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             getTrProps={(state: any, rowInfo: any) => {
                                 return {
 
+                                    // include the doc fingerprint in the table
+                                    // so that the tour can use
+                                    'data-doc-fingerprint': ((rowInfo || {}).original || {}).fingerprint || '',
+
                                     style: {
                                         // TODO: dark-mode.  Use CSS variable
                                         // names for colors

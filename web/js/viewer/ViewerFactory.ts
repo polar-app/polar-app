@@ -14,7 +14,7 @@ export class ViewerFactory {
                 return new HTMLViewer(model);
 
             case "pdf":
-                return new PDFViewer();
+                return new PDFViewer(model);
 
             default:
                 throw new Error("Unknown doc format: " + format);

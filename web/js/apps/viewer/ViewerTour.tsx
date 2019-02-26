@@ -41,7 +41,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
         const steps: Step[] = [
             {
-                target: 'body',
+                target: '.polar-sidebar',
                 content: <div>
                     <h2>Document Viewer</h2>
 
@@ -75,6 +75,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
                 title: <Title>Annotation Sidebar</Title>,
                 disableBeacon: true,
                 placement: 'left-start',
+                spotlightPadding: 0,
                 content: <div>
 
                     <p>
@@ -90,6 +91,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
                 target: '#polar-progress',
                 title: <Title>Progress Bar</Title>,
                 disableBeacon: true,
+                spotlightPadding: 0,
                 content: <div>
 
                     <p>
@@ -103,6 +105,28 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
                 </div>
             },
+
+            {
+                target: '.annotation-sidebar .text-highlight',
+                title: <Title>Text Highlights</Title>,
+                disableBeacon: true,
+                spotlightPadding: 5,
+                content: <div>
+
+                    <p>
+                        <Term>Text highlights</Term> are stored for easy
+                        reference on the annotation sidebar.
+                    </p>
+
+                    <p>
+                        This includes both
+                        associated <Term>comments</Term> and <Term>flashcards</Term>.
+
+                    </p>
+
+                </div>
+            },
+
 
 
 

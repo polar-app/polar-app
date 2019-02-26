@@ -3,6 +3,7 @@ import {Viewer} from '../Viewer';
 import {DocDetail} from '../../metadata/DocDetail';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ViewerTours} from '../../apps/viewer/ViewerTours';
+import {Model} from '../../model/Model';
 
 declare var window: any;
 
@@ -10,13 +11,22 @@ const log = Logger.create();
 
 export class PDFViewer extends Viewer {
 
+    private readonly model: Model;
+
+    constructor(model: Model) {
+        super();
+        this.model = model;
+    }
+
     public start() {
 
         log.info("Starting PDFViewer");
 
         RendererAnalytics.pageview("/pdfviewer");
 
-        // ViewerTours.create();
+        this.model.registerListenerForDocumentLoaded(event => {
+            ViewerTours.createWhenNecessary(event.fingerprint);
+        });
 
         this.disableSidebarKeyboardHandling();
 
