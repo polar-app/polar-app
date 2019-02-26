@@ -468,11 +468,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         className: 'doc-checkbox',
                                         Cell: (row: any) => {
 
-                                            const index = row.index as number;
+                                            const viewIndex = row.viewIndex as number;
 
                                             return (<div style={{lineHeight: '1em'}}>
 
-                                                <Input checked={this.state.selected.includes(index)}
+                                                <Input checked={this.state.selected.includes(viewIndex)}
                                                        style={{
                                                            marginLeft: 'auto',
                                                            marginRight: 'auto',
@@ -484,7 +484,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                        }}
                                                        className="m-auto"
                                                        onChange={NULL_FUNCTION}
-                                                       onClick={(event) => this.selectRow(row.viewIndex as number, event.nativeEvent, true)}
+                                                       onClick={(event) => this.selectRow(viewIndex, event.nativeEvent, true)}
                                                        type="checkbox"/>
 
                                                 {/*<i className="far fa-square"></i>*/}
