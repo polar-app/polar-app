@@ -5,7 +5,7 @@ import {Premium} from './Premium';
 export class PremiumRef extends ConditionalPrioritizedComponentRef {
 
     constructor() {
-        super('survey', 40);
+        super('premium', 40);
     }
 
     public create(): JSX.Element {

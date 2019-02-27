@@ -4,7 +4,7 @@ import {PrioritizedComponentManager, PrioritizedComponentRef} from '../../../../
 import {WhatsNewRef} from './splashes/whats_new/WhatsNewRef';
 import {SurveyRef} from './splashes/survey/SurveyRef';
 import {PremiumRef} from './splashes/premium/PremiumRef';
-// import {JoinDiscordRef} from './splashes/discord/JoinDiscordRef';
+import {ChromeExtensionReviewRef} from './splashes/chrome_extension_review/ChromeExtensionReviewRef';
 
 const log = Logger.create();
 
@@ -13,7 +13,8 @@ const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     new WhatsNewRef(),
     // new GithubStarsRef(),
     new PremiumRef(),
-    new SurveyRef()
+    new SurveyRef(),
+    new ChromeExtensionReviewRef(),
 ];
 
 export class PrioritizedSplashes extends React.Component<IProps, IState> {

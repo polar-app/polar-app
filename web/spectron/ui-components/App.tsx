@@ -39,6 +39,7 @@ import Joyride from 'react-joyride';
 import {Feedback} from '../../js/ui/feedback/Feedback';
 import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey';
 import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premium';
+import {ChromeExtensionReview} from '../../../apps/repository/js/splash/splashes/chrome_extension_review/ChromeExtensionReview';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -139,7 +140,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <Premium settingKey={'premium-key'}/>
+                <ChromeExtensionReview settingKey={'asdf'}/>
+
+                {/*<Premium settingKey={'premium-key'}/>*/}
 
                 <h1 className="component">Feedback without description</h1>
 
