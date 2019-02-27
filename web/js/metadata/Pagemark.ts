@@ -61,6 +61,9 @@ export class Pagemark extends Annotation {
      */
     public batch?: string;
 
+    // TODO: add an 'inactive' field so that the user can toggle the pagemarks
+    // active and inactive easily.
+
     constructor(val: any) {
 
         super(val);

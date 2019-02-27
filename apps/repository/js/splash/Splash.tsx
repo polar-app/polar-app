@@ -34,6 +34,37 @@ export class Splash extends React.Component<IProps, IState> {
 
     public render() {
 
+        const CloseButton = () => {
+
+            if (this.props.disableClose) {
+                return (<div/>);
+            } else {
+                return (<Button color="primary"
+                                size="sm"
+                                onClick={() => this.onClose()}>Close</Button>);
+            }
+
+        };
+
+        const DontShowAgain = () => {
+
+            if (this.props.disableDontShowAgain) {
+                return (<div/>);
+            } else {
+                return (<FormGroup check>
+                    <Label check style={Styles.label}>
+
+                        <Input type="checkbox"
+                               onChange={(event) => this.onDoNotShowAgain(!this.doNotShowAgain)}/>
+
+                        Don't show again
+
+                    </Label>
+                </FormGroup>);
+            }
+
+        };
+
         return (
 
             <LargeModal isOpen={this.state.open}>
@@ -46,25 +77,14 @@ export class Splash extends React.Component<IProps, IState> {
 
                 <ModalFooter>
 
-                    <FormGroup check>
-                        <Label check style={Styles.label}>
-
-                            <Input type="checkbox"
-                                   onChange={(event) => this.onDoNotShowAgain(! this.doNotShowAgain)} />
-
-                            Don't show again
-
-                        </Label>
-                    </FormGroup>
+                    <DontShowAgain/>
 
                     {/*TODO: make later show up a week later...*/}
                     <Button color="secondary"
                             size="sm"
                             onClick={() => this.onLater()}>Later</Button>
 
-                    <Button color="primary"
-                            size="sm"
-                            onClick={() => this.onClose()}>Close</Button>
+                    <CloseButton/>
 
                 </ModalFooter>
 
@@ -110,7 +130,10 @@ export class Splash extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    settingKey: string;
+    readonly settingKey: string;
+
+    readonly disableDontShowAgain?: boolean;
+    readonly disableClose?: boolean;
 }
 
 interface IState {
