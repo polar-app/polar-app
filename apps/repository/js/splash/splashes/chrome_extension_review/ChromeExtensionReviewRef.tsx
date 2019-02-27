@@ -7,7 +7,7 @@ export class ChromeExtensionReviewRef extends ConditionalPrioritizedComponentRef
     public readonly id = 'chrome-extension-review';
 
     constructor() {
-        super('chrome-extension-review', 30);
+        super('chrome-extension-review', 30, 'active');
     }
 
     public create(): JSX.Element {

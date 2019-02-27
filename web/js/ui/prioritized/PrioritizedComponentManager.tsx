@@ -36,10 +36,12 @@ export class PrioritizedComponentManager extends React.Component<IProps, IState>
             return <NullComponent/>;
         }
 
+        const datastoreOverview = this.props.datastoreOverview;
+
         const sorted =
             [...this.props.prioritizedComponentRefs]
-                .filter(current => current.priority() !== undefined)
-                .sort((o1, o2) => Numbers.compare(o1.priority(), o2.priority()) * -1);
+                .filter(current => current.priority(datastoreOverview) !== undefined)
+                .sort((o1, o2) => Numbers.compare(o1.priority(datastoreOverview), o2.priority(datastoreOverview)) * -1);
 
         if (sorted.length === 0 || document.location!.hash !== '') {
             // return an empty div if we have no splashes OR if we have a
@@ -92,7 +94,7 @@ export interface PrioritizedComponentRef {
      * Return undefined if the component should not be displayed.  This can be
      * used if the user has already performed a given action.
      */
-    priority(): number | undefined;
+    priority(datastoreOverview: DatastoreOverview): number | undefined;
 
     /**
      * Create the component when we're ready for it.

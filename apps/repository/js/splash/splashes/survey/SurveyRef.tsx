@@ -7,7 +7,7 @@ export class SurveyRef extends ConditionalPrioritizedComponentRef {
     public readonly id = 'survey';
 
     constructor() {
-        super('survey', 30);
+        super('survey', 30, 'active');
     }
 
     public create(): JSX.Element {

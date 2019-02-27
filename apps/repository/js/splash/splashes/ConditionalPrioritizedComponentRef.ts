@@ -1,5 +1,10 @@
 import {ConditionalSetting} from '../../../../../web/js/ui/util/ConditionalSetting';
 import {PrioritizedComponentRef} from '../../../../../web/js/ui/prioritized/PrioritizedComponentManager';
+import {DatastoreOverview} from '../../../../../web/js/datastore/Datastore';
+import {DatastoreOverviewPolicies, UserLevel} from './DatastoreOverviewPolicies';
+import {Logger} from '../../../../../web/js/logger/Logger';
+
+const log = Logger.create();
 
 export abstract class ConditionalPrioritizedComponentRef implements PrioritizedComponentRef {
 
@@ -9,14 +14,22 @@ export abstract class ConditionalPrioritizedComponentRef implements PrioritizedC
 
     protected readonly defaultPriority: number;
 
-    constructor(settingKey: string, defaultPriority: number) {
+    protected readonly userLevel: UserLevel | undefined;
+
+    constructor(settingKey: string, defaultPriority: number, userLevel?: UserLevel) {
         this.settingKey = settingKey;
         this.defaultPriority = defaultPriority;
+        this.userLevel = userLevel;
     }
 
-    public priority(): number | undefined {
+    public priority(datastoreOverview: DatastoreOverview): number | undefined {
 
         const conditionalSetting = new ConditionalSetting(this.settingKey);
+
+        if (this.userLevel && ! DatastoreOverviewPolicies.isLevel(this.userLevel, datastoreOverview)) {
+            log.info("User is not at user level: " + this.userLevel);
+            return undefined;
+        }
 
         if (conditionalSetting.get().getOrElse('') === 'do-not-show-again') {
             return undefined;

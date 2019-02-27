@@ -27,6 +27,14 @@ export class TimeDurations {
 
     }
 
+    public static hasExceeded(since: Date, duration: DurationStr) {
+
+        const durationMS = this.toMillis(duration);
+
+        return ((Date.now() + durationMS) > since.getTime());
+
+    }
+
 }
 
 /**

@@ -51,27 +51,35 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
 
     private doUpdate() {
 
-        const persistenceLayer = this.props.persistenceLayerManager.get();
+        this.props.persistenceLayerManager.addEventListener(event => {
 
-        const datastore = persistenceLayer.datastore;
+            if (event.state === 'changed') {
 
-        datastore.overview()
-            .then(datastoreOverview => {
+                const persistenceLayer = this.props.persistenceLayerManager.get();
 
-                this.setState({
-                    datastoreOverview,
-                    lastUpdated: Date.now()
-                });
+                const datastore = persistenceLayer.datastore;
 
-                log.info("Datastore overview updated");
+                datastore.overview()
+                    .then(datastoreOverview => {
 
-                this.scheduleNextUpdate();
+                        this.setState({
+                                          datastoreOverview,
+                                          lastUpdated: Date.now()
+                                      });
 
-            })
-            .catch(err => {
-                log.error("Unable to get datastore overview: ", err);
-                this.scheduleNextUpdate();
-            });
+                        log.info("Datastore overview updated");
+
+                        this.scheduleNextUpdate();
+
+                    })
+                    .catch(err => {
+                        log.error("Unable to get datastore overview: ", err);
+                        this.scheduleNextUpdate();
+                    });
+
+            }
+
+        });
 
     }
 

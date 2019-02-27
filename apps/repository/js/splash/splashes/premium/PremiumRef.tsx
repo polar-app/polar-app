@@ -7,7 +7,7 @@ export class PremiumRef extends ConditionalPrioritizedComponentRef {
     public readonly id = 'premium';
 
     constructor() {
-        super('premium', 40);
+        super('premium', 40, 'premium');
     }
 
     public create(): JSX.Element {

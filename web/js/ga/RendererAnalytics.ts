@@ -6,7 +6,7 @@ import {Version} from '../util/Version';
 // const TRACKING_ID = 'UA-122721184-1';
 const TRACKING_ID = 'UA-122721184-5';
 
-const DEBUG = false;
+const DEBUG = true;
 
 const version = Version.get();
 
@@ -27,7 +27,7 @@ const visitor = ua(TRACKING_ID, visitorOptions).debug(DEBUG);
 
 const log = Logger.create();
 
-const defaultCallback = (err: Error) => {
+const defaultCallback = (err: Error, response: any, body: any) => {
 
     // The send method take sa callback regarding errors and this allows
     // us to log failure.

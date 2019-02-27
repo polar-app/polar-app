@@ -8,6 +8,7 @@ import {Providers} from '../../../../../../web/js/util/Providers';
 import {LifecycleToggle} from '../../../../../../web/js/ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../../../../../web/js/ui/util/LifecycleEvents';
 import * as semver from 'semver';
+import {DatastoreOverview} from '../../../../../../web/js/datastore/Datastore';
 
 export class WhatsNewRef implements PrioritizedComponentRef {
 
@@ -17,7 +18,7 @@ export class WhatsNewRef implements PrioritizedComponentRef {
         this.priority = Providers.memoize(this.priority.bind(this));
     }
 
-    public priority(): number | undefined {
+    public priority(datastoreOverview: DatastoreOverview): number | undefined {
 
         const hasTourTerminated = this.hasTourTerminated();
 

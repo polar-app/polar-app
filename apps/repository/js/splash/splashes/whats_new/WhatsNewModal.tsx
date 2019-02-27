@@ -34,6 +34,7 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
                     </ModalFooter>
 
                 </Modal>
+
             </div>
 
         );
