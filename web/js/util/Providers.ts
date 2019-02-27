@@ -1,3 +1,5 @@
+import {DurationStr, TimeDurations} from "./TimeDurations";
+
 /**
  * A Provider is just a function that returns a given type.
  */
@@ -35,7 +37,8 @@ export class Providers {
     }
 
     /**
-     * Memoize the given function to improve its performance or make it optional.
+     * Memoize the given function to improve its performance or make it
+     * optional.
      */
     public static memoize<T>(provider: Provider<T>): Provider<T> {
 
@@ -74,6 +77,52 @@ export class Providers {
         };
 
     }
+
+    /**
+     * Cache the given function to avoid continually fetching the underlying
+     * value.
+     */
+    public static cached<T>(duration: DurationStr,
+                            provider: Provider<T>): Provider<T> {
+
+        const durationMS = TimeDurations.toMillis(duration);
+
+        let lastUpdated: number = 0;
+
+        // an error that the provider threw
+        let err: Error | undefined;
+
+        // the value that the provider returned.
+        let value: T | undefined;
+
+        return () => {
+
+            if (Date.now() - lastUpdated < durationMS) {
+
+                if (err) {
+                    throw err;
+                }
+
+                return value!;
+
+            }
+
+            try {
+
+                value = provider();
+                return value!;
+
+            } catch (e) {
+                err = e;
+                throw e;
+            } finally {
+                lastUpdated = Date.now();
+            }
+
+        };
+
+    }
+
 
 }
 
@@ -124,4 +173,5 @@ export class AsyncProviders {
         };
 
     }
+
 }

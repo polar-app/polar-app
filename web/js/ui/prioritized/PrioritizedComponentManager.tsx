@@ -12,6 +12,7 @@ import {SplashLifecycle} from '../../../../apps/repository/js/splash/SplashLifec
 import {LifecycleEvents} from '../util/LifecycleEvents';
 import {LocalPrefs} from '../util/LocalPrefs';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {DatastoreOverview} from '../../datastore/Datastore';
 
 export class PrioritizedComponentManager extends React.Component<IProps, IState> {
 
@@ -102,10 +103,11 @@ export interface PrioritizedComponentRef {
 
 export interface IProps {
 
-    prioritizedComponentRefs: ReadonlyArray<PrioritizedComponentRef>;
+    readonly prioritizedComponentRefs: ReadonlyArray<PrioritizedComponentRef>;
+
+    readonly datastoreOverview: DatastoreOverview;
 
 }
-
 
 export interface IState {
 

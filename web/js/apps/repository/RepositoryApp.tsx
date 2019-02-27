@@ -159,7 +159,7 @@ export class RepositoryApp {
 
             <div style={{height: '100%'}}>
 
-                <PrioritizedSplashes/>
+                <PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>
 
                 <SyncBar progress={syncBarProgress}/>
 
