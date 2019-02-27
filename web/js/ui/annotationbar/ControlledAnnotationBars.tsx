@@ -136,7 +136,7 @@ export class ControlledAnnotationBars {
         annotationBar.addEventListener('mouseup', (event) => event.stopPropagation());
         annotationBar.addEventListener('mousedown', (event) => event.stopPropagation());
 
-        const style = `position: absolute; top: ${position.y}px; left: ${position.x}px; z-index: 9999;`;
+        const style = `position: absolute; top: ${position.y}px; left: ${position.x}px; z-index: 10000;`;
         annotationBar.setAttribute('style', style);
 
         pageElement.insertBefore(annotationBar, pageElement.firstChild);
