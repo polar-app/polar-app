@@ -1,5 +1,8 @@
 # 1.13.5
 
+- I think I fixed a bug with tracking not working due to including 'app version'
+  in the analytics data.
+
 - multi-delete button for bulk deleting documents
 
 - buttons in the doc repo are a bit bigger for better hit targets

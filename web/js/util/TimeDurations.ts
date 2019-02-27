@@ -27,7 +27,7 @@ export class TimeDurations {
 
     }
 
-    public static hasExceeded(since: Date, duration: DurationStr) {
+    public static hasExpired(since: Date, duration: DurationStr) {
 
         const durationMS = this.toMillis(duration);
 

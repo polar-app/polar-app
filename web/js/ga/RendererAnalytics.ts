@@ -6,7 +6,7 @@ import {Version} from '../util/Version';
 // const TRACKING_ID = 'UA-122721184-1';
 const TRACKING_ID = 'UA-122721184-5';
 
-const DEBUG = true;
+const DEBUG = false;
 
 const version = Version.get();
 
@@ -54,13 +54,14 @@ export class RendererAnalytics {
 
         const callback = defaultCallback;
 
+        // WARNING: I think enabling version (or 'av') is breaking tracking!
         const eventParams: EventParams = {
             ec: args.category,
             ea: args.action,
             el: args.label,
             ev: args.value,
             ua: userAgent,
-            av: version
+            // av: version
         };
 
         visitor.event(eventParams).send(callback);
@@ -71,23 +72,18 @@ export class RendererAnalytics {
 
         const callback = defaultCallback;
 
+        // WARNING: I think enabling version (or 'av') is breaking tracking!
         const pageviewParams: ua.PageviewParams = {
             dp: path,
             dh: hostname,
             dt: title,
             ua: userAgent,
-            av: version
+            // av: version
         };
 
         visitor.pageview(pageviewParams).send(callback);
 
     }
-
-    // public static modalview(name: string, trackerNames?: TrackerNames): void
-    // {
-        // ReactGA.modalview(name, trackerNames);
-        // visitor.
-    // }
 
     public static set(fieldsObject: IFieldsObject): void {
 
@@ -97,11 +93,6 @@ export class RendererAnalytics {
         }
 
     }
-
-    // public static outboundLink(args: OutboundLinkArgs, hitCallback?: () =>
-    // void, trackerNames?: TrackerNames): void {  if (!hitCallback) { //
-    // noinspection TsLint hitCallback = () => {}; }
-    // ReactGA.outboundLink(args, hitCallback, trackerNames);  }
 
 }
 
@@ -117,3 +108,4 @@ export interface IEventArgs {
 export interface IFieldsObject {
     [i: string]: any;
 }
+

@@ -1,13 +1,18 @@
 import {DatastoreOverview} from '../../../../../web/js/datastore/Datastore';
 import {TimeDurations} from '../../../../../web/js/util/TimeDurations';
 import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
+import {Logger} from '../../../../../web/js/logger/Logger';
+import {Preconditions} from '../../../../../web/js/Preconditions';
 
+const log = Logger.create();
 
 // TODO: we need events for these on startup... it would be nice to see how many
 // users were onboarded
 export class DatastoreOverviewPolicies {
 
     public static isLevel(level: UserLevel, datastoreOverview: DatastoreOverview) {
+
+        Preconditions.assertPresent(datastoreOverview, 'datastoreOverview');
 
         switch (level) {
 
@@ -17,7 +22,17 @@ export class DatastoreOverviewPolicies {
             case 'premium':
                 return this.isPremium(datastoreOverview);
 
+            case '24h':
+                return this.is24H(datastoreOverview);
+
         }
+
+    }
+
+    public static is24H(datastoreOverview: DatastoreOverview) {
+
+        const since = ISODateTimeStrings.parse(datastoreOverview.created);
+        return TimeDurations.hasExpired(since, '1d');
 
     }
 
@@ -27,20 +42,28 @@ export class DatastoreOverviewPolicies {
     public static isActive(datastoreOverview: DatastoreOverview) {
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
-        return TimeDurations.hasExceeded(since, '1w') && datastoreOverview.nrDocs > 5;
+        return TimeDurations.hasExpired(since, '1w') && datastoreOverview.nrDocs > 5;
 
     }
 
     /**
-     * The user is at a premium level but may or may not have converted to premium.
+     * The user is at a premium level but may or may not have converted to
+     * premium.
      */
     public static isPremium(datastoreOverview: DatastoreOverview) {
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
-        return TimeDurations.hasExceeded(since, '2w') && datastoreOverview.nrDocs > 25;
+        const expired = TimeDurations.hasExpired(since, '2w');
+        const hasMinDocs = datastoreOverview.nrDocs > 25;
+
+        const result = expired && hasMinDocs;
+
+        log.info(`since: ${since}, expired: ${expired}, hasMinDocs: ${hasMinDocs}, result: ${result}`);
+
+        return result;
 
     }
 
 }
 
-export type UserLevel = 'active' | 'premium';
+export type UserLevel = '24h' | 'active' | 'premium';

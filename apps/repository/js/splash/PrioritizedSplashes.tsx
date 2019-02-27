@@ -62,12 +62,16 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
                 datastore.overview()
                     .then(datastoreOverview => {
 
-                        this.setState({
-                                          datastoreOverview,
-                                          lastUpdated: Date.now()
-                                      });
+                        if (datastoreOverview) {
 
-                        log.info("Datastore overview updated");
+                            this.setState({
+                                datastoreOverview,
+                                lastUpdated: Date.now()
+                            });
+
+                            log.info("Datastore overview updated");
+
+                        }
 
                         this.scheduleNextUpdate();
 
