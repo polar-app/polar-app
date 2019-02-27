@@ -196,12 +196,12 @@ export class Premium extends React.Component<IProps, IState> {
                 <div className="mt-2 mb-3" style={{display: 'flex'}}>
 
                     <PurchaseLink href="https://opencollective.com/polar-bookshelf/contribute/tier/6659-bronze"
-                                  eventCategory="polar-premium-bronze">
+                                  eventCategory="splash-polar-premium-bronze">
                         Purchase Bronze $4.99 per month
                     </PurchaseLink>
 
                     <PurchaseLink href="https://opencollective.com/polar-bookshelf/contribute/tier/6661-silver"
-                                  eventCategory="polar-premium-silver">
+                                  eventCategory="splash-polar-premium-silver">
                         Purchase Silver $7.99 per month
                     </PurchaseLink>
 

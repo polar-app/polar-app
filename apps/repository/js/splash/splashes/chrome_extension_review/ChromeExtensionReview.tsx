@@ -45,7 +45,7 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
                         <p className="text-center m-2">
 
                             <EventTrackedLink className=""
-                                              eventCategory='chrome-extension-review'
+                                              eventCategory='splash-chrome-extension-review'
                                               eventAction='clicked'
                                               href={LINK}>
 

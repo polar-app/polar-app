@@ -3,6 +3,7 @@ import React from 'react';
 import {Splash} from '../../Splash';
 import {EmbeddedImages} from '../whats_new/EmbeddedImages';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayout';
+import {CallToActionLink} from '../CallToActionLink';
 
 const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/u1zNWG';
 
@@ -35,7 +36,12 @@ export class Survey extends React.Component<IProps, IState> {
                         </p>
 
                         <p className="text-center mt-4">
-                            <a className="btn btn-success btn-lg" href={SURVEY_LINK} role="button">Provide Feedback</a>
+
+
+                            <CallToActionLink href={SURVEY_LINK} eventCategory='splash-survey'>
+                                Provide Feedback
+                            </CallToActionLink>
+
                         </p>
 
                     </SplitLayoutLeft>
