@@ -3,6 +3,7 @@ import React from 'react';
 import {Splash} from '../../Splash';
 import {EmbeddedImages} from '../whats_new/EmbeddedImages';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayout';
+import {CallToActionLink} from '../CallToActionLink';
 
 const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/u1zNWG';
 
@@ -57,15 +58,23 @@ export class Premium extends React.Component<IProps, IState> {
 
         };
 
-        const PurchaseLink = (props: any) => {
+        interface PurchaseLinkProps {
+            readonly eventCategory: string;
+            readonly href: string;
+            readonly children: any;
+        }
 
-            return (<a className="btn btn-success btn-lg ml-auto mr-auto"
-                       href={props.href}
-                       role="button">
+        const PurchaseLink = (props: PurchaseLinkProps) => {
 
-                {props.children}
+            return (<div className="ml-auto mr-auto">
 
-                </a>);
+                <CallToActionLink eventCategory={props.eventCategory}
+                                  href={props.href}>
+
+                    {props.children}
+
+                </CallToActionLink>
+            </div>);
 
         };
 
@@ -186,11 +195,13 @@ export class Premium extends React.Component<IProps, IState> {
 
                 <div className="mt-2 mb-3" style={{display: 'flex'}}>
 
-                    <PurchaseLink href="https://opencollective.com/polar-bookshelf/contribute/tier/6659-bronze">
+                    <PurchaseLink href="https://opencollective.com/polar-bookshelf/contribute/tier/6659-bronze"
+                                  eventCategory="polar-premium-bronze">
                         Purchase Bronze $4.99 per month
                     </PurchaseLink>
 
-                    <PurchaseLink href="https://opencollective.com/polar-bookshelf/contribute/tier/6661-silver">
+                    <PurchaseLink href="https://opencollective.com/polar-bookshelf/contribute/tier/6661-silver"
+                                  eventCategory="polar-premium-silver">
                         Purchase Silver $7.99 per month
                     </PurchaseLink>
 

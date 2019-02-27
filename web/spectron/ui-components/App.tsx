@@ -140,9 +140,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <ChromeExtensionReview settingKey={'asdf'}/>
+                {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
 
-                {/*<Premium settingKey={'premium-key'}/>*/}
+                <Premium settingKey={'premium-key'}/>
 
                 <h1 className="component">Feedback without description</h1>
 
