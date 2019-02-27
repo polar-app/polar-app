@@ -1,4 +1,5 @@
 import {Optional} from '../../util/ts/Optional';
+import {DurationStr, TimeDurations} from '..//../util/TimeDurations';
 
 export class LocalPref {
 
@@ -51,6 +52,34 @@ export class LocalPref {
             this.get(key).getOrElse('false');
 
         return currentValue === 'true';
+
+    }
+
+    public static isDelayed(key: string, duration: DurationStr) {
+
+        const durationMS = TimeDurations.toMillis(duration);
+
+        const pref = this.get(key).getOrUndefined();
+
+        if (pref && pref.match(/[0-9]+/)) {
+
+            if (Date.now() > parseInt(pref, 10)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+    }
+
+    public static markDelayed(key: string, duration: DurationStr) {
+
+        const durationMS = TimeDurations.toMillis(duration);
+        const until = Date.now() + durationMS;
+        this.set(key, `${until}`);
 
     }
 
