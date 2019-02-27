@@ -1,7 +1,12 @@
-# 1.13.5
+
+# 1.13.6
+
+- Splash messages should be delivered to users at the right times now.
 
 - I think I fixed a bug with tracking not working due to including 'app version'
   in the analytics data.
+
+# 1.13.5
 
 - multi-delete button for bulk deleting documents
 
