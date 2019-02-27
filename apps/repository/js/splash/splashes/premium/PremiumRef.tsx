@@ -4,6 +4,8 @@ import {Premium} from './Premium';
 
 export class PremiumRef extends ConditionalPrioritizedComponentRef {
 
+    public readonly id = 'premium';
+
     constructor() {
         super('premium', 40);
     }

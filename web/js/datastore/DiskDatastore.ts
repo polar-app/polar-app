@@ -7,7 +7,8 @@ import {
     FileMeta,
     FileRef,
     InitResult,
-    SnapshotResult
+    SnapshotResult,
+    DatastoreOverview
 } from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
@@ -29,6 +30,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Strings} from '../util/Strings';
+import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -338,6 +340,18 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
         // noop now
+    }
+
+    public async overview(): Promise<DatastoreOverview> {
+
+        const stat = await Files.statAsync(this.dataDir);
+
+        const docMetaRefs = await this.getDocMetaRefs();
+
+        const created = ISODateTimeStrings.create(stat.ctime);
+
+        return {nrDocs: docMetaRefs.length, created};
+
     }
 
     private async createDatastoreFile(backend: Backend,

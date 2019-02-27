@@ -3,7 +3,7 @@ import React from 'react';
 import {Splash} from '../../Splash';
 import {EmbeddedImages} from '../whats_new/EmbeddedImages';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayout';
-import {CallToActionLink} from '../CallToActionLink';
+import {CallToActionLink} from '../components/CallToActionLink';
 
 const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/u1zNWG';
 

@@ -11,6 +11,8 @@ import * as semver from 'semver';
 
 export class WhatsNewRef implements PrioritizedComponentRef {
 
+    public readonly id = 'whats-new';
+
     constructor() {
         this.priority = Providers.memoize(this.priority.bind(this));
     }

@@ -4,6 +4,8 @@ import {Survey} from './Survey';
 
 export class SurveyRef extends ConditionalPrioritizedComponentRef {
 
+    public readonly id = 'survey';
+
     constructor() {
         super('survey', 30);
     }

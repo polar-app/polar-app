@@ -5,6 +5,8 @@ import {WhatsNewRef} from './splashes/whats_new/WhatsNewRef';
 import {SurveyRef} from './splashes/survey/SurveyRef';
 import {PremiumRef} from './splashes/premium/PremiumRef';
 import {ChromeExtensionReviewRef} from './splashes/chrome_extension_review/ChromeExtensionReviewRef';
+import {LocalPrefs} from '../../../../web/js/ui/util/LocalPrefs';
+import {SplashLifecycle} from './SplashLifecycle';
 
 const log = Logger.create();
 
@@ -25,37 +27,14 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
 
     public render() {
 
-        if (SplashLifecycle.canShow()) {
+        // FIXME: setup a background thread to bring up the splashes in the
+        // background by setting the state in a background thread when the
+        // splash shown has expired.
 
-            // FIXME: I need to break apart app for now..
-            // SplashLifecycle.markShown();
+        return (
+            <PrioritizedComponentManager prioritizedComponentRefs={prioritizedComponentRefs}/>
+        );
 
-            return (
-                <PrioritizedComponentManager prioritizedComponentRefs={prioritizedComponentRefs}/>
-            );
-
-        } else {
-
-            return (
-                <div/>
-            );
-
-        }
-
-    }
-
-}
-
-export class SplashLifecycle {
-
-    private static KEY = 'splash-shown';
-
-    public static canShow(): boolean {
-        return window.sessionStorage.getItem(this.KEY) !== 'true';
-    }
-
-    public static markShown() {
-        window.sessionStorage.setItem(this.KEY, 'true');
     }
 
 }

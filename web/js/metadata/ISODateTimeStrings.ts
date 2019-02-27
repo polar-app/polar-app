@@ -15,7 +15,21 @@ export type UnixTimeMS = number;
 
 export class ISODateTimeStrings {
 
-    public static create(date?: Date): ISODateTimeString {
+    public static create(value?: Date | number): ISODateTimeString {
+
+        let date: Date | undefined;
+
+        if (value !== undefined) {
+
+            if (value instanceof Date) {
+                date = value;
+            }
+
+            if (typeof value === 'number') {
+                date = new Date(value);
+            }
+
+        }
 
         if (!date) {
             date = new Date();

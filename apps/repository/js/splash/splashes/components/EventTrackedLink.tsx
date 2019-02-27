@@ -1,6 +1,6 @@
 import React from 'react';
-import {RendererAnalytics} from '../../../../../web/js/ga/RendererAnalytics';
-import {Optional} from '../../../../../web/js/util/ts/Optional';
+import {RendererAnalytics} from '../../../../../../web/js/ga/RendererAnalytics';
+import {Optional} from '../../../../../../web/js/util/ts/Optional';
 
 /**
  * A simple button that also supports sending an event when clicked.

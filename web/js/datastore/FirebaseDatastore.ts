@@ -1,4 +1,4 @@
-import {AbstractDatastore, Datastore, DatastoreConsistency, DeleteResult, DocMetaMutation, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult} from './Datastore';
+import {AbstractDatastore, Datastore, DatastoreConsistency, DeleteResult, DocMetaMutation, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult, DatastoreOverview} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -432,6 +432,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             // noop for now
         }
 
+    }
+
+    public async overview(): Promise<DatastoreOverview> {
+        throw new Error("Not implemented");
     }
 
     /**

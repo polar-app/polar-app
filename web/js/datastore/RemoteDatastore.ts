@@ -1,4 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult, ErrorListener, DatastoreID} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult, ErrorListener, DatastoreID, DatastoreOverview} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';

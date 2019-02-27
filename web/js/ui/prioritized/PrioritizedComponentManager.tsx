@@ -8,6 +8,10 @@ import {HighlightColor} from '../../metadata/BaseHighlight';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {EventListener} from '../../reactor/EventListener';
 import {Numbers} from '../../util/Numbers';
+import {SplashLifecycle} from '../../../../apps/repository/js/splash/SplashLifecycle';
+import {LifecycleEvents} from '../util/LifecycleEvents';
+import {LocalPrefs} from '../util/LocalPrefs';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 export class PrioritizedComponentManager extends React.Component<IProps, IState> {
 
@@ -17,6 +21,19 @@ export class PrioritizedComponentManager extends React.Component<IProps, IState>
     }
 
     public render() {
+
+        const NullComponent = () => {
+            return (<div></div>);
+        };
+
+        if (! LocalPrefs.isMarked(LifecycleEvents.TOUR_TERMINATED)) {
+            // no splashes unless we have the tour.
+            return <NullComponent/>;
+        }
+
+        if (! SplashLifecycle.canShow()) {
+            return <NullComponent/>;
+        }
 
         const sorted =
             [...this.props.prioritizedComponentRefs]
@@ -28,11 +45,20 @@ export class PrioritizedComponentManager extends React.Component<IProps, IState>
             // specific hash URL to load.  The splashes should only go on the
             // home page on load.
 
-            return (<div></div>);
+            return <NullComponent/>;
         }
 
+        // mark this as shown so that we delay the next splash, even on refresh
+        SplashLifecycle.markShown();
+
+        RendererAnalytics.event({category: 'splashes', action: 'shown'});
+
+        const prioritizedComponentRef = sorted[0];
+
+        RendererAnalytics.event({category: 'splashes-shown', action: prioritizedComponentRef.id});
+
         // return the top ranking element.
-        return sorted[0].create();
+        return prioritizedComponentRef.create();
 
     }
 
@@ -55,6 +81,8 @@ export interface PrioritizedComponent {
 }
 
 export interface PrioritizedComponentRef {
+
+    id: string;
 
     /**
      * Allows the component to determine its priority.  This could be used

@@ -3,6 +3,8 @@ import {PrioritizedComponentRef} from '../../../../../web/js/ui/prioritized/Prio
 
 export abstract class ConditionalPrioritizedComponentRef implements PrioritizedComponentRef {
 
+    public abstract id: string;
+
     protected readonly settingKey: string;
 
     protected readonly defaultPriority: number;
