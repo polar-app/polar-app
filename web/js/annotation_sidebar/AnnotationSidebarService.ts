@@ -2,7 +2,7 @@ import {DocumentLoadedEvent, Model} from '../model/Model';
 import {AnnotationSidebars} from './AnnotationSidebars';
 import {Logger} from '../logger/Logger';
 import {Splitter} from '../ui/splitter/Splitter';
-import {LocalPref} from '../ui/util/LocalPref';
+import {LocalPrefs} from '../ui/util/LocalPrefs';
 
 const log = Logger.create();
 
@@ -24,10 +24,10 @@ export class AnnotationSidebarService {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        if (! LocalPref.defined(PREF_SIDEBAR_OPEN)) {
+        if (! LocalPrefs.defined(PREF_SIDEBAR_OPEN)) {
             // make the sidebar open by default now so we can make this feature
             // more discoverable.
-            LocalPref.mark(PREF_SIDEBAR_OPEN);
+            LocalPrefs.mark(PREF_SIDEBAR_OPEN);
         }
 
         return this;
@@ -39,7 +39,7 @@ export class AnnotationSidebarService {
         log.debug("Creating annotation sidebar");
         this.splitter = AnnotationSidebars.create(event.docMeta);
 
-        if (LocalPref.isMarked(PREF_SIDEBAR_OPEN)) {
+        if (LocalPrefs.isMarked(PREF_SIDEBAR_OPEN)) {
             this.splitter.expand();
         } else {
             this.splitter.collapse();
@@ -66,9 +66,9 @@ export class AnnotationSidebarService {
         const state = this.splitter!.toggle();
 
         if (state === 'expanded') {
-            LocalPref.mark(PREF_SIDEBAR_OPEN);
+            LocalPrefs.mark(PREF_SIDEBAR_OPEN);
         } else {
-            LocalPref.mark(PREF_SIDEBAR_OPEN, false);
+            LocalPrefs.mark(PREF_SIDEBAR_OPEN, false);
         }
     }
 

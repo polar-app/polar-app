@@ -1,7 +1,7 @@
 import {Optional} from '../../util/ts/Optional';
 import {DurationStr, TimeDurations} from '..//../util/TimeDurations';
 
-export class LocalPref {
+export class LocalPrefs {
 
     public static mark(key: string, value: boolean = true): void {
 

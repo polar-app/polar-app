@@ -1,7 +1,7 @@
 import {Optional} from '../../util/ts/Optional';
-import {LocalPref} from './LocalPref';
+import {LocalPrefs} from './LocalPrefs';
 
-export class LifecycleToggle extends LocalPref {
+export class LifecycleToggle extends LocalPrefs {
 
     public static toggle(key: string, handler: () => void): void {
 

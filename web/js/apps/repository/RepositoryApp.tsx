@@ -39,7 +39,7 @@ import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {Promises} from '../../util/Promises';
 import {RepositoryTour} from './RepositoryTour';
-import {LocalPref} from '../../ui/util/LocalPref';
+import {LocalPrefs} from '../../ui/util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 
 const log = Logger.create();
@@ -229,7 +229,7 @@ export class RepositoryApp {
 
         await persistenceLayer.init();
 
-        await LocalPref.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
+        await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
             // load the eample docs in the store.. on the first load we should
             // propably make sure this doesn't happen more than once as the user
