@@ -1,5 +1,5 @@
 import {dialog} from 'electron';
-import {autoUpdater, UpdateInfo, UpdateCheckResult} from 'electron-updater';
+import {autoUpdater, UpdateCheckResult, UpdateInfo} from 'electron-updater';
 import {ProgressInfo} from "builder-util-runtime";
 import {Logger} from '../logger/Logger';
 
@@ -113,9 +113,10 @@ autoUpdater.on('error', (error) => {
 
     log.info('update error:', error);
 
-    if (Updates.updateRequestedManually) {
-        dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString());
-    }
+    ToasterMessages.send({
+        type: ToasterMessageType.ERROR,
+        message: 'Error: ' + error == null ? "unknown" : (error.stack || error).toString()
+    });
 
     Updates.updateRequestedManually = false;
 
@@ -132,12 +133,9 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
 
     log.info("update-available: ", info);
 
-    let message = 'Found updates, do you want update now?';
-
     if (info && info.version) {
         const fromVersion = Version.get();
         const toVersion = info.version;
-        message = `Found updates, do you want update from ${fromVersion} to ${toVersion} now?`;
 
         const appUpdate: AppUpdate = {
             fromVersion,
@@ -147,49 +145,20 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
 
         Broadcasters.send("app-update:available", appUpdate);
 
-    }
-
-    const doUpdate = () => {
-
-        autoUpdater.downloadUpdate()
-            .then(async () => {
-
-                log.info("Updated downloaded.");
-
-            })
-            .catch(err => log.error("Error handling updates: " + err));
-
-    };
-
-    if (Updates.updateRequestedManually) {
-
-        const options = {
-            type: 'info',
-            title: 'Found Updates',
-            message,
-            buttons: ['Yes', 'No']
-        };
-
-        dialog.showMessageBox(options, (buttonIndex) => {
-
-            if (buttonIndex === 0) {
-
-                doUpdate();
-
-            } else {
-
-                if (updater) {
-                    updater!.enabled = true;
-                    updater = null;
-                }
-
-            }
-
+        ToasterMessages.send({
+            type: ToasterMessageType.INFO,
+            message: `Downloading app update to version ${toVersion}`
         });
 
-    } else {
-        doUpdate();
     }
+
+    autoUpdater.downloadUpdate()
+        .then(async () => {
+
+            log.info("Update downloaded.");
+
+        })
+        .catch(err => log.error("Error handling updates: " + err));
 
     Updates.updateRequestedManually = false;
 
@@ -201,12 +170,16 @@ autoUpdater.on('update-not-available', () => {
 
     if (Updates.updateRequestedManually) {
 
-        const options = {
-            title: 'No Updates',
-            message: 'Current version is up-to-date.'
-        };
+        ToasterMessages.send({
+            type: ToasterMessageType.INFO,
+            title: 'No update available',
+            message: 'The current version of Polar is up-to-date',
+            options: {
+                requiresAcknowledgment: true,
+                preventDuplicates: true
+            }
+        });
 
-        dialog.showMessageBox(options);
         updater!.enabled = true;
         updater = null;
 
@@ -220,30 +193,15 @@ autoUpdater.on('update-downloaded', () => {
 
     log.info('update-downloaded');
 
-    if (Updates.updateRequestedManually) {
-
-        const options = {
-            title: 'Install Updates',
-            message: 'Updates downloaded, application will be quit for update...'
-        };
-
-        dialog.showMessageBox(options, () => {
-            setImmediate(() => autoUpdater.quitAndInstall());
-        });
-
-    } else {
-
-        ToasterMessages.send({
-            type: ToasterMessageType.SUCCESS,
-            title: 'Update downloaded',
-            message: 'A new update for Polar was downloaded.  Please restart Polar to apply update.',
-            options: {
-                requiresAcknowledgment: true,
-                preventDuplicates: true
-            }
-        });
-
-    }
+    ToasterMessages.send({
+        type: ToasterMessageType.SUCCESS,
+        title: 'Update downloaded',
+        message: 'A new update for Polar was downloaded.  Please restart Polar to apply update.',
+        options: {
+            requiresAcknowledgment: true,
+            preventDuplicates: true
+        }
+    });
 
     Updates.updateRequestedManually = false;
     Updates.performingUpdate = false;

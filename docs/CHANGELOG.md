@@ -9,6 +9,8 @@
     - don't allow ddouble update... if and update check is still pending and 
       another is requested on top of it then abort...      
 
+    - FIXME: the downloader can re-download the same update version multiple times. 
+
 - Don't rely on GA to determine the OS.  Record it ourselves.
 
 - Enabling auto-updates in this release to keep everyone on the latest so I can
