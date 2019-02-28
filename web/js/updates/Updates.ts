@@ -107,6 +107,14 @@ export class Updates {
 
     }
 
+    public static hasUpdated() {
+        return this.updatedVersion !== undefined;
+    }
+
+    public static quitAndInstall() {
+        autoUpdater.quitAndInstall();
+    }
+
 }
 
 let updater: Electron.MenuItem | null;
@@ -255,15 +263,6 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 });
 
 ipcMain.on('app-update:quit-and-install', () => {
-});
-
-app.on('before-quit', () => {
-
-    if (Updates.updatedVersion !== undefined) {
-        log.info("Doing quit and install since app updated.");
-        autoUpdater.quitAndInstall();
-    }
-
 });
 
 if (ENABLE_AUTO_UPDATE && Updates.platformSupportsUpdates()) {

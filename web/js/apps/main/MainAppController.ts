@@ -16,6 +16,7 @@ import {Platform, Platforms} from '../../util/Platforms';
 import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
+import {Updates} from '../../updates/Updates';
 
 const log = Logger.create();
 
@@ -146,7 +147,14 @@ export class MainAppController {
 
         if (doAppQuit) {
             log.info("Quitting app...");
-            app.quit();
+
+            if (Updates.hasUpdated()) {
+                log.info("Quitting for update with quitAndInstall");
+                Updates.quitAndInstall();
+            } else {
+                app.quit();
+            }
+
             log.info("Quitting app...done");
         }
 
