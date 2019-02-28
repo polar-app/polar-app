@@ -60,7 +60,7 @@ export class RendererAnalytics {
             ea: args.action,
             el: args.label,
             ev: args.value,
-            ua: userAgent,
+            // ua: userAgent,
             // av: version
         };
 
@@ -77,7 +77,7 @@ export class RendererAnalytics {
             dp: path,
             dh: hostname,
             dt: title,
-            ua: userAgent,
+            // ua: userAgent,
             // av: version
         };
 
