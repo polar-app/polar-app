@@ -436,7 +436,7 @@ export class MainAppMenu {
                     // only show on Windows and MacOS as all other platforms
                     // have their own dist system (for now).
                     visible: this.platformSupportsUpdates(),
-                    click: Updates.checkForUpdates,
+                    click: (item: Electron.MenuItem) => Updates.checkForUpdates(item),
                 },
 
                 {type: 'separator'},
