@@ -33,6 +33,9 @@ autoUpdater.autoDownload = false;
 // this is so that we can
 autoUpdater.allowPrerelease = process.env.POLAR_AUTO_UPDATER_ALLOW_PRERELEASE === 'true';
 
+// we need to auto install it if we quit
+autoUpdater.autoInstallOnAppQuit = true;
+
 log.info("Allowing pre-releases for auto-updates: " + autoUpdater.allowPrerelease);
 
 export class Updates {
@@ -218,12 +221,14 @@ autoUpdater.on('update-downloaded', () => {
     ToasterMessages.send({
         type: ToasterMessageType.SUCCESS,
         title: 'Update downloaded',
-        message: 'A new update for Polar was downloaded.  Please restart Polar to apply update.',
+        message: 'A new update for Polar was downloaded.  Please restart.',
         options: {
             requiresAcknowledgment: true,
             preventDuplicates: true
         }
     });
+
+    autoUpdater.quitAndInstall()
 
     Updates.updateRequestedManually = false;
     Updates.performingUpdate = false;

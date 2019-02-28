@@ -11,6 +11,8 @@
 
     - FIXME: the downloader can re-download the same update version multiple times. 
 
+    - FIXME: it takes 2x restarts to aply the version update.
+
 - Don't rely on GA to determine the OS.  Record it ourselves.
 
 - Enabling auto-updates in this release to keep everyone on the latest so I can
