@@ -13,7 +13,7 @@ import {ToasterMessageType} from '../ui/toaster/Toaster';
 const ENABLE_AUTO_UPDATE = true;
 
 const AUTO_UPDATE_DELAY_INITIAL = 2 * 60 * 1000;
-const AUTO_UPDATE_DELAY_RECHECK = 5 * 60 * 1000;
+const AUTO_UPDATE_DELAY_RECHECK = 60 * 60 * 1000;
 
 // borrowed from here and ported to typescript:
 //
