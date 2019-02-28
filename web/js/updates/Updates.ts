@@ -26,7 +26,9 @@ const AUTO_UPDATE_DELAY_RECHECK = TimeDurations.toMillis('1h');
 
 const log = Logger.create();
 
-autoUpdater.autoDownload = true;
+// autoDownload has to be false becuase we look at the version number we're
+// downloading to avoid downloading it multiple times.
+autoUpdater.autoDownload = false;
 
 // this is so that we can
 autoUpdater.allowPrerelease = process.env.POLAR_AUTO_UPDATER_ALLOW_PRERELEASE === 'true';
@@ -38,6 +40,11 @@ export class Updates {
     public static updateRequestedManually: boolean = false;
 
     public static performingUpdate: boolean = false;
+
+    /**
+     * The current version that was updated to prevent duplicate updates.
+     */
+    public static updatedVersion?: string | undefined;
 
     // export this to MenuItem click callback
     public static checkForUpdates(menuItem: Electron.MenuItem) {
@@ -131,36 +138,51 @@ autoUpdater.on('update-cancelled', (info: UpdateInfo) => {
 
 autoUpdater.on('update-available', (info: UpdateInfo) => {
 
-    log.info("update-available: ", info);
+    try {
 
-    if (info && info.version) {
-        const fromVersion = Version.get();
-        const toVersion = info.version;
+        log.info("update-available: ", info);
 
-        const appUpdate: AppUpdate = {
-            fromVersion,
-            toVersion,
-            automatic: ! Updates.updateRequestedManually
-        };
+        if (info && info.version) {
+            const fromVersion = Version.get();
+            const toVersion = info.version;
 
-        Broadcasters.send("app-update:available", appUpdate);
+            if (Updates.updatedVersion === toVersion) {
+                log.warn(`Already updated to version ${toVersion} (not re-downloading)`);
+                return;
+            }
 
-        ToasterMessages.send({
-            type: ToasterMessageType.INFO,
-            message: `Downloading app update to version ${toVersion}`
-        });
+            Updates.updatedVersion = toVersion;
 
+            const appUpdate: AppUpdate = {
+                fromVersion,
+                toVersion,
+                automatic: ! Updates.updateRequestedManually
+            };
+
+            Broadcasters.send("app-update:available", appUpdate);
+
+            ToasterMessages.send({
+                type: ToasterMessageType.INFO,
+                message: `Downloading app update to version ${toVersion}`
+            });
+
+            log.info("Downloading update: " + toVersion, info);
+
+        }
+
+        autoUpdater.downloadUpdate()
+            .then(async () => {
+
+                log.info("Update downloaded.");
+
+            })
+            .catch(err => log.error("Error handling updates: " + err));
+
+
+
+    } finally {
+        Updates.updateRequestedManually = false;
     }
-
-    autoUpdater.downloadUpdate()
-        .then(async () => {
-
-            log.info("Update downloaded.");
-
-        })
-        .catch(err => log.error("Error handling updates: " + err));
-
-    Updates.updateRequestedManually = false;
 
 });
 
