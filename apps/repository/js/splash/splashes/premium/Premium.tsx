@@ -109,7 +109,7 @@ export class Premium extends React.Component<IProps, IState> {
                     </SplitLayoutLeft>
 
                     <SplitLayoutRight>
-                        <img style={{maxHeight: '200px'}} src="/icon.png"/>
+                        <img style={{maxHeight: '175px'}} src="/icon.png"/>
                     </SplitLayoutRight>
 
                 </SplitLayout>
