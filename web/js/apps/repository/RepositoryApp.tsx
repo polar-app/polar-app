@@ -41,6 +41,7 @@ import {Promises} from '../../util/Promises';
 import {RepositoryTour} from './RepositoryTour';
 import {LocalPrefs} from '../../ui/util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
+import {Platforms} from '../../util/Platforms';
 
 const log = Logger.create();
 
@@ -219,7 +220,13 @@ export class RepositoryApp {
     }
 
     private sendAnalytics() {
-        RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
+
+        const version = Version.get();
+        const platform = Platforms.get();
+
+        RendererAnalytics.event({category: 'app', action: 'version-' + version});
+        RendererAnalytics.event({category: 'platform', action: `${platform}`});
+
     }
 
     private async doLoadExampleDocs() {

@@ -1,6 +1,8 @@
 
 # 1.13.8
 
+- Don't rely on GA to determine the OS.  Record it ourselves.
+
 - Enabling auto-updates in this release to keep everyone on the latest so I can
   iterate faster.
 
