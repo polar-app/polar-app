@@ -37,14 +37,14 @@ export class Updates {
 
     public static updateRequestedManually: boolean = false;
 
-    private static checkingForUpdate: boolean = false;
+    public static performingUpdate: boolean = false;
 
     // export this to MenuItem click callback
     public static checkForUpdates(menuItem: Electron.MenuItem) {
 
         Updates.updateRequestedManually = true;
 
-        if (this.checkingForUpdate) {
+        if (this.performingUpdate) {
             return;
         }
 
@@ -83,19 +83,12 @@ export class Updates {
 
     public static async doCheckForUpdates(): Promise<UpdateCheckResult | undefined> {
 
-        if (this.checkingForUpdate) {
+        if (this.performingUpdate) {
             log.warn("Update already running. Skipping.");
             return undefined;
         }
 
-        try {
-
-            this.checkingForUpdate = true;
-            return await autoUpdater.checkForUpdates();
-
-        } finally {
-            this.checkingForUpdate = false;
-        }
+        return await autoUpdater.checkForUpdates();
 
     }
 
@@ -109,6 +102,13 @@ export class Updates {
 
 let updater: Electron.MenuItem | null;
 
+// export declare type UpdaterEvents = "login" | "checking-for-update" | "update-available" | "update-cancelled" | "download-progress" | "update-downloaded" | "error";
+
+
+autoUpdater.on('checking-for-update', (info: UpdateInfo) => {
+    Updates.performingUpdate = true;
+});
+
 autoUpdater.on('error', (error) => {
 
     log.info('update error:', error);
@@ -119,6 +119,13 @@ autoUpdater.on('error', (error) => {
 
     Updates.updateRequestedManually = false;
 
+    Updates.performingUpdate = false;
+
+});
+
+autoUpdater.on('update-cancelled', (info: UpdateInfo) => {
+    log.info('update-cancelled');
+    Updates.performingUpdate = false;
 });
 
 autoUpdater.on('update-available', (info: UpdateInfo) => {
@@ -239,6 +246,7 @@ autoUpdater.on('update-downloaded', () => {
     }
 
     Updates.updateRequestedManually = false;
+    Updates.performingUpdate = false;
 
 });
 
@@ -269,3 +277,5 @@ if (ENABLE_AUTO_UPDATE && Updates.platformSupportsUpdates()) {
 } else {
     log.info("Auto updates disabled.");
 }
+
+
