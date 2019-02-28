@@ -1,6 +1,11 @@
 
 # 1.13.8
 
+- FIXME: verify that auto update works on MacOS before this release...
+
+    - make sure progress still works
+    - make sure the auto-update works on startup... 
+
 - Don't rely on GA to determine the OS.  Record it ourselves.
 
 - Enabling auto-updates in this release to keep everyone on the latest so I can

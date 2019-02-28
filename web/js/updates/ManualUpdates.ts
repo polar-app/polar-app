@@ -16,8 +16,6 @@ const ENABLE_AUTO_UPDATE = true;
 
 const log = Logger.create();
 
-let updateRequestedManually: boolean = false;
-
 autoUpdater.autoDownload = true;
 
 // this is so that we can
@@ -27,10 +25,12 @@ log.info("Allowing pre-releases for auto-updates: " + autoUpdater.allowPrereleas
 
 export class ManualUpdates {
 
+    public static updateRequestedManually: boolean = false;
+
     // export this to MenuItem click callback
     public static checkForUpdates(menuItem: Electron.MenuItem) {
 
-        updateRequestedManually = true;
+        ManualUpdates.updateRequestedManually = true;
 
         updater = menuItem;
         updater.enabled = false;
@@ -45,17 +45,19 @@ let updater: Electron.MenuItem | null;
 
 autoUpdater.on('error', (error) => {
 
-    if (updateRequestedManually) {
+    log.info('update error:', error);
+
+    if (ManualUpdates.updateRequestedManually) {
         dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString());
     }
 
-    updateRequestedManually = false;
+    ManualUpdates.updateRequestedManually = false;
 
 });
 
 autoUpdater.on('update-available', (info: UpdateInfo) => {
 
-    log.info("Found new update: ", info);
+    log.info("update-available: ", info);
 
     let message = 'Found updates, do you want update now?';
 
@@ -67,7 +69,7 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
         const appUpdate: AppUpdate = {
             fromVersion,
             toVersion,
-            automatic: ! updateRequestedManually
+            automatic: ! ManualUpdates.updateRequestedManually
         };
 
         Broadcasters.send("app-update:available", appUpdate);
@@ -88,35 +90,32 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
             autoUpdater.downloadUpdate()
                 .then(async () => {
 
-                    try {
-
-                        // await GA.getInstance().event('updates',
-                        // 'manual-update'); await
-                        // GA.getInstance().event('updates', 'manual-update-' +
-                        // Version.get());
-
-                    } catch (e) {
-                        log.error("Unable to send event data: ", e);
-                    }
+                    log.info("Updated downloaded.");
 
                 })
                 .catch(err => log.error("Error handling updates: " + err));
 
         } else {
-            updater!.enabled = true;
-            updater = null;
+
+            if (updater) {
+                updater!.enabled = true;
+                updater = null;
+            }
+
         }
 
     });
 
 
-    updateRequestedManually = false;
+    ManualUpdates.updateRequestedManually = false;
 
 });
 
 autoUpdater.on('update-not-available', () => {
 
-    if (updateRequestedManually) {
+    log.info('update-not-available');
+
+    if (ManualUpdates.updateRequestedManually) {
 
         const options = {
             title: 'No Updates',
@@ -129,13 +128,15 @@ autoUpdater.on('update-not-available', () => {
 
     }
 
-    updateRequestedManually = false;
+    ManualUpdates.updateRequestedManually = false;
 
 });
 
 autoUpdater.on('update-downloaded', () => {
 
-    if (updateRequestedManually) {
+    log.info('update-downloaded');
+
+    if (ManualUpdates.updateRequestedManually) {
 
         const options = {
             title: 'Install Updates',
@@ -148,7 +149,7 @@ autoUpdater.on('update-downloaded', () => {
 
     }
 
-    updateRequestedManually = false;
+    ManualUpdates.updateRequestedManually = false;
 
 });
 
