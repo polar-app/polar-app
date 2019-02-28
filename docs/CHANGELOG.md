@@ -1,4 +1,11 @@
 
+# 1.13.7
+
+- quick release to disable another GA feature which could be greaking our 
+  analytics
+  
+- Fixed Premium splash layout on smaller screens...
+
 # 1.13.6
 
 - Splash messages should be delivered to users at the right times now.

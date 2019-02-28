@@ -168,7 +168,7 @@ export class Premium extends React.Component<IProps, IState> {
                             As a Premium member, you’ll gain access to an
                             exclusive Polar members-only community.  We will
                             prioritize features and feedback from this
-                            community since they're directly supporting Polar.
+                            community since it directly supports Polar.
                         </FeatureText>
 
                     </Feature>
