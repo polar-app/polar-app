@@ -5,7 +5,7 @@ import {Version} from '../../util/Version';
 import {AppLauncher} from './AppLauncher';
 import {Logger} from '../../logger/Logger';
 import {Promises} from '../../util/Promises';
-import {ManualUpdates} from '../../updates/ManualUpdates';
+import {Updates} from '../../updates/Updates';
 import {Platform, Platforms} from '../../util/Platforms';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
@@ -436,7 +436,7 @@ export class MainAppMenu {
                     // only show on Windows and MacOS as all other platforms
                     // have their own dist system (for now).
                     visible: this.platformSupportsUpdates(),
-                    click: ManualUpdates.checkForUpdates,
+                    click: Updates.checkForUpdates,
                 },
 
                 {type: 'separator'},

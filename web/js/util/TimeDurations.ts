@@ -27,6 +27,18 @@ export class TimeDurations {
 
     }
 
+    /**
+     * Compute a random duration based on the given duration.
+     * @param duration
+     */
+    public static toRandom(duration: DurationStr): DurationMS {
+
+        const durationMS = this.toMillis(duration);
+
+        return Math.random() * durationMS;
+
+    }
+
     public static hasExpired(since: Date, duration: DurationStr) {
 
         const durationMS = this.toMillis(duration);

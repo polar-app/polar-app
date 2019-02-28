@@ -3,12 +3,13 @@
 
 - FIXME: verify that auto update works on MacOS before this release...
 
-    - make sure progress still works
     - remaining auto-update problems
 
     - FIXME: I think I should randomize the update over a 1 week period so 
       I don't update all the clients at once if I break something.
-    
+
+    - don't allow ddouble update... if and update check is still pending and 
+      another is requested on top of it then abort...      
 
 - Don't rely on GA to determine the OS.  Record it ourselves.
 

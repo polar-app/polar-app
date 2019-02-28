@@ -1,5 +1,5 @@
 import {dialog} from 'electron';
-import {autoUpdater, UpdateInfo} from 'electron-updater';
+import {autoUpdater, UpdateInfo, UpdateCheckResult} from 'electron-updater';
 import {ProgressInfo} from "builder-util-runtime";
 import {Logger} from '../logger/Logger';
 
@@ -9,11 +9,14 @@ import {Version} from '../util/Version';
 import {AppUpdate} from './AppUpdate';
 import {ToasterMessages} from '../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../ui/toaster/Toaster';
+import {TimeDurations} from '../util/TimeDurations';
 
 const ENABLE_AUTO_UPDATE = true;
 
-const AUTO_UPDATE_DELAY_INITIAL = 2 * 60 * 1000;
-const AUTO_UPDATE_DELAY_RECHECK = 60 * 60 * 1000;
+const MIN_UPDATE_DELAY = TimeDurations.toRandom('3d');
+
+const AUTO_UPDATE_DELAY_INITIAL = TimeDurations.toMillis('2m');
+const AUTO_UPDATE_DELAY_RECHECK = TimeDurations.toMillis('1h');
 
 // borrowed from here and ported to typescript:
 //
@@ -28,19 +31,69 @@ autoUpdater.allowPrerelease = process.env.POLAR_AUTO_UPDATER_ALLOW_PRERELEASE ==
 
 log.info("Allowing pre-releases for auto-updates: " + autoUpdater.allowPrerelease);
 
-export class ManualUpdates {
+export class Updates {
 
     public static updateRequestedManually: boolean = false;
+
+    private static checkingForUpdate: boolean = false;
 
     // export this to MenuItem click callback
     public static checkForUpdates(menuItem: Electron.MenuItem) {
 
-        ManualUpdates.updateRequestedManually = true;
+        Updates.updateRequestedManually = true;
+
+        if (this.checkingForUpdate) {
+            return;
+        }
 
         updater = menuItem;
         updater.enabled = false;
-        autoUpdater.checkForUpdates()
+        this.doCheckForUpdates()
             .catch(err => log.error("Error handling updates: " + err ));
+
+    }
+
+    public static scheduleAutoUpdate(delay: number = AUTO_UPDATE_DELAY_RECHECK) {
+
+        log.info("Scheduling auto update for N ms: " + delay);
+
+        setTimeout(() => this.doAutoUpdate(), delay);
+
+    }
+
+    public static doAutoUpdate() {
+
+        log.info("Checking for updates...");
+
+        this.doCheckForUpdates()
+            .then((updateCheckResult) => {
+
+                log.info("Update result: ", updateCheckResult);
+                this.scheduleAutoUpdate();
+
+            })
+            .catch(err => {
+                log.error("Failed to check for updates: ", err);
+                this.scheduleAutoUpdate();
+            });
+
+    }
+
+    public static async doCheckForUpdates(): Promise<UpdateCheckResult | undefined> {
+
+        if (this.checkingForUpdate) {
+            log.warn("Update already running. Skipping.");
+            return undefined;
+        }
+
+        try {
+
+            this.checkingForUpdate = true;
+            return await autoUpdater.checkForUpdates();
+
+        } finally {
+            this.checkingForUpdate = false;
+        }
 
     }
 
@@ -52,11 +105,11 @@ autoUpdater.on('error', (error) => {
 
     log.info('update error:', error);
 
-    if (ManualUpdates.updateRequestedManually) {
+    if (Updates.updateRequestedManually) {
         dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString());
     }
 
-    ManualUpdates.updateRequestedManually = false;
+    Updates.updateRequestedManually = false;
 
 });
 
@@ -74,7 +127,7 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
         const appUpdate: AppUpdate = {
             fromVersion,
             toVersion,
-            automatic: ! ManualUpdates.updateRequestedManually
+            automatic: ! Updates.updateRequestedManually
         };
 
         Broadcasters.send("app-update:available", appUpdate);
@@ -93,7 +146,7 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
 
     };
 
-    if (ManualUpdates.updateRequestedManually) {
+    if (Updates.updateRequestedManually) {
 
         const options = {
             type: 'info',
@@ -123,7 +176,7 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
         doUpdate();
     }
 
-    ManualUpdates.updateRequestedManually = false;
+    Updates.updateRequestedManually = false;
 
 });
 
@@ -131,7 +184,7 @@ autoUpdater.on('update-not-available', () => {
 
     log.info('update-not-available');
 
-    if (ManualUpdates.updateRequestedManually) {
+    if (Updates.updateRequestedManually) {
 
         const options = {
             title: 'No Updates',
@@ -144,7 +197,7 @@ autoUpdater.on('update-not-available', () => {
 
     }
 
-    ManualUpdates.updateRequestedManually = false;
+    Updates.updateRequestedManually = false;
 
 });
 
@@ -152,7 +205,7 @@ autoUpdater.on('update-downloaded', () => {
 
     log.info('update-downloaded');
 
-    if (ManualUpdates.updateRequestedManually) {
+    if (Updates.updateRequestedManually) {
 
         const options = {
             title: 'Install Updates',
@@ -177,7 +230,7 @@ autoUpdater.on('update-downloaded', () => {
 
     }
 
-    ManualUpdates.updateRequestedManually = false;
+    Updates.updateRequestedManually = false;
 
 });
 
@@ -201,32 +254,8 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 
 });
 
-function scheduleAutoUpdate(delay: number = AUTO_UPDATE_DELAY_RECHECK) {
-
-    log.info("Scheduling auto update for N ms: " + delay);
-
-    setTimeout(() => doAutoUpdate(), delay);
-
-}
-
-function doAutoUpdate() {
-
-    log.info("Checking for updates...");
-
-    autoUpdater.checkForUpdates()
-        .then((updateCheckResult) => {
-            log.info("Update result: ", updateCheckResult);
-            scheduleAutoUpdate();
-        })
-        .catch(err => {
-            log.error("Failed to check for updates: ", err);
-            scheduleAutoUpdate();
-        });
-
-}
-
 if (ENABLE_AUTO_UPDATE) {
     log.info("Auto updates enabled.");
 
-    scheduleAutoUpdate(AUTO_UPDATE_DELAY_INITIAL);
+    Updates.scheduleAutoUpdate(AUTO_UPDATE_DELAY_INITIAL);
 }
