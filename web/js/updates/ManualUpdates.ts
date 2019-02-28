@@ -7,6 +7,8 @@ import process from 'process';
 import {Broadcasters} from '../ipc/Broadcasters';
 import {Version} from '../util/Version';
 import {AppUpdate} from './AppUpdate';
+import {ToasterMessages} from '../ui/toaster/ToasterMessages';
+import {ToasterMessageType} from '../ui/toaster/Toaster';
 
 const ENABLE_AUTO_UPDATE = true;
 
@@ -150,6 +152,14 @@ autoUpdater.on('update-downloaded', () => {
             setImmediate(() => autoUpdater.quitAndInstall());
         });
 
+    } else {
+
+        ToasterMessages.send({
+            type: ToasterMessageType.SUCCESS,
+            title: 'Update downloaded',
+            message: 'A new update for Polar was downloaded.  Please restart Polar to apply update.',
+        });
+
     }
 
     ManualUpdates.updateRequestedManually = false;
@@ -188,8 +198,9 @@ function doAutoUpdate() {
 
     log.info("Checking for updates...");
 
-    autoUpdater.checkForUpdatesAndNotify()
-        .then(() => {
+    autoUpdater.checkForUpdates()
+        .then((updateCheckResult) => {
+            log.info("Update result: ", updateCheckResult);
             scheduleAutoUpdate();
         })
         .catch(err => {

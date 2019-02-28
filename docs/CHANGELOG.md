@@ -9,9 +9,8 @@
         
         - the download prompt is triggered on startup... which is a bad time.  
           we should wait until the app has been running for a bit.
-        
-        - do I need to use setTimeout to continually check for updates in the 
-          background   
+
+        - 
     
 
 - Don't rely on GA to determine the OS.  Record it ourselves.
