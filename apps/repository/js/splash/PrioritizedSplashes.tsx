@@ -9,6 +9,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {DatastoreOverview} from '../../../../web/js/datastore/Datastore';
 import {Provider, Providers} from '../../../../web/js/util/Providers';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
+import {AlternativeToReviewRef} from './splashes/alternativeto_review/AlternativeToReviewRef';
 
 const log = Logger.create();
 
@@ -19,6 +20,7 @@ const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     new PremiumRef(),
     new SurveyRef(),
     new ChromeExtensionReviewRef(),
+    new AlternativeToReviewRef()
 ];
 
 export class PrioritizedSplashes extends React.Component<IProps, IState> {

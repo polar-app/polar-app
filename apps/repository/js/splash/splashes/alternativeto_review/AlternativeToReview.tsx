@@ -6,10 +6,10 @@ import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../
 import {CallToActionLink} from '../components/CallToActionLink';
 import {EventTrackedLink} from '../components/EventTrackedLink';
 
-const LINK = 'https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/';
-const EVENT_CATEGORY = 'splash-chrome-extension-review';
+const LINK = 'https://alternativeto.net/discussions/AddThread/?urlName=applications&itemId=e992e321-70ca-4d8f-aa59-d5a2be633787&type=review';
+const EVENT_CATEGORY = 'splash-alternative-to-review';
 
-export class ChromeExtensionReview extends React.Component<IProps, IState> {
+export class AlternativeToReview extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -24,19 +24,15 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
 
                     <SplitLayoutLeft>
 
-                        <h2>Rate our Chrome Extension?</h2>
+                        <h2>Could You Review us on AlternativeTo?</h2>
 
                         <p className="h5">
-                            How do you like Polar?  Could you take <b>1 minute</b> to
-                            rate our Chrome extension?
+                            Could you take <b>1 minute</b> and leave us a review on AlternativeTo?
                         </p>
 
                         <p className="h5">
-                            These ratings greatly help other users discover Polar.
-                        </p>
-
-                        <p className="h5">
-                            Just click the link below and then select <i>Reviews</i> then click <i>Write a Review</i>.
+                            Many users use this site to discover new software and
+                            we think they could benefit from using Polar.
                         </p>
 
                         <p className="text-center mt-4">
@@ -44,7 +40,9 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
                             <EventTrackedLink eventCategory={EVENT_CATEGORY}
                                               eventAction='clicked-cta'
                                               href={LINK}>
-                                Rate Chrome Extension
+
+                                Review Polar
+
                             </EventTrackedLink>
 
                         </p>
@@ -56,11 +54,11 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
                         <p className="text-center m-2">
 
                             <EventTrackedLink className=""
-                                              eventCategory='splash-chrome-extension-review'
+                                              eventCategory={EVENT_CATEGORY}
                                               eventAction='clicked-image'
                                               href={LINK}>
 
-                                <img style={{maxHeight: '250px'}} src={EmbeddedImages.CHROME_LOGO}/>
+                                <i style={{fontSize: '125px'}} className="fas fa-vote-yea"></i>
 
                             </EventTrackedLink>
 

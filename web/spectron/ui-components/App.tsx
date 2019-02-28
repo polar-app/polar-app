@@ -40,6 +40,7 @@ import {Feedback} from '../../js/ui/feedback/Feedback';
 import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey';
 import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premium';
 import {ChromeExtensionReview} from '../../../apps/repository/js/splash/splashes/chrome_extension_review/ChromeExtensionReview';
+import {AlternativeToReview} from '../../../apps/repository/js/splash/splashes/alternativeto_review/AlternativeToReview';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -142,7 +143,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
 
-                <Premium settingKey={'premium-key'}/>
+                <AlternativeToReview settingKey={'asdf'}/>
+
+                {/*<Premium settingKey='premium-key'/>*/}
 
                 <h1 className="component">Feedback without description</h1>
 
