@@ -1,4 +1,9 @@
 
+# 1.13.8
+
+- Enabling auto-updates in this release to keep everyone on the latest so I can
+  iterate faster.
+
 # 1.13.7
 
 - quick release to disable another GA feature which could be greaking our 
