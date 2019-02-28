@@ -165,13 +165,10 @@ export class Premium extends React.Component<IProps, IState> {
                         <FeatureTitle>Members-Only Lounge</FeatureTitle>
 
                         <FeatureText>
-                            As a Premium member, you’ll gain access to
-                            an exclusive Polar community. This
-                            new society is a gathering
-                            of people from all walks of life with one
-                            key characteristic in common – Polar.
-                            {/*Some*/}
-                            {/*say it also holds many secrets.*/}
+                            As a Premium member, you’ll gain access to an
+                            exclusive Polar members-only community.  We will
+                            prioritize features and feedback from this
+                            community since they're directly supporting Polar.
                         </FeatureText>
 
                     </Feature>
