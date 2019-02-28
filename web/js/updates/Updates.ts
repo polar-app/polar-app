@@ -1,4 +1,4 @@
-import {dialog} from 'electron';
+import {app} from 'electron';
 import {autoUpdater, UpdateCheckResult, UpdateInfo} from 'electron-updater';
 import {ProgressInfo} from "builder-util-runtime";
 import {Logger} from '../logger/Logger';
@@ -30,11 +30,10 @@ const log = Logger.create();
 // downloading to avoid downloading it multiple times.
 autoUpdater.autoDownload = false;
 
+autoUpdater.autoInstallOnAppQuit = true;
+
 // this is so that we can
 autoUpdater.allowPrerelease = process.env.POLAR_AUTO_UPDATER_ALLOW_PRERELEASE === 'true';
-
-// we need to auto install it if we quit
-autoUpdater.autoInstallOnAppQuit = true;
 
 log.info("Allowing pre-releases for auto-updates: " + autoUpdater.allowPrerelease);
 
@@ -228,8 +227,6 @@ autoUpdater.on('update-downloaded', () => {
         }
     });
 
-    autoUpdater.quitAndInstall()
-
     Updates.updateRequestedManually = false;
     Updates.performingUpdate = false;
 
@@ -262,5 +259,4 @@ if (ENABLE_AUTO_UPDATE && Updates.platformSupportsUpdates()) {
 } else {
     log.info("Auto updates disabled.");
 }
-
 
