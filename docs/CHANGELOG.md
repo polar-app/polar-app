@@ -3,8 +3,6 @@
 
 - FIXME: verify that auto update works on MacOS before this release...
 
-    - remaining auto-update problems
-
     - FIXME: I think I should randomize the update over a 1 week period so 
       I don't update all the clients at once if I break something.
 
