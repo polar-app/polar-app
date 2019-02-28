@@ -30,8 +30,6 @@ const log = Logger.create();
 // downloading to avoid downloading it multiple times.
 autoUpdater.autoDownload = false;
 
-autoUpdater.autoInstallOnAppQuit = true;
-
 // this is so that we can
 autoUpdater.allowPrerelease = process.env.POLAR_AUTO_UPDATER_ALLOW_PRERELEASE === 'true';
 
