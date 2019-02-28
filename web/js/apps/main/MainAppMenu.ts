@@ -125,13 +125,6 @@ export class MainAppMenu {
 
     }
 
-
-    private platformSupportsUpdates() {
-
-        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && DistConfig.ENABLE_UPDATES;
-
-    }
-
     private createAboutMessage() {
 
         const dataDir = Directories.getDataDir().path;
@@ -435,7 +428,7 @@ export class MainAppMenu {
                     label: 'Check for updates',
                     // only show on Windows and MacOS as all other platforms
                     // have their own dist system (for now).
-                    visible: this.platformSupportsUpdates(),
+                    visible: Updates.platformSupportsUpdates(),
                     click: (item: Electron.MenuItem) => Updates.checkForUpdates(item),
                 },
 

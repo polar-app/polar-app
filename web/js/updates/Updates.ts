@@ -10,6 +10,8 @@ import {AppUpdate} from './AppUpdate';
 import {ToasterMessages} from '../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../ui/toaster/Toaster';
 import {TimeDurations} from '../util/TimeDurations';
+import {Platform, Platforms} from '../util/Platforms';
+import {DistConfig} from '../dist_config/DistConfig';
 
 const ENABLE_AUTO_UPDATE = true;
 
@@ -94,6 +96,12 @@ export class Updates {
         } finally {
             this.checkingForUpdate = false;
         }
+
+    }
+
+    public static platformSupportsUpdates() {
+
+        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && DistConfig.ENABLE_UPDATES;
 
     }
 
@@ -254,8 +262,10 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 
 });
 
-if (ENABLE_AUTO_UPDATE) {
+if (ENABLE_AUTO_UPDATE && Updates.platformSupportsUpdates()) {
     log.info("Auto updates enabled.");
 
     Updates.scheduleAutoUpdate(AUTO_UPDATE_DELAY_INITIAL);
+} else {
+    log.info("Auto updates disabled.");
 }
