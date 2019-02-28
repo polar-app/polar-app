@@ -20,7 +20,7 @@ export class Premium extends React.Component<IProps, IState> {
             return (
 
                 <div className="text-primary m-3">
-                    <i style={{fontSize: '115px'}}
+                    <i style={{fontSize: '85px'}}
                        className={props.className}></i>
                 </div>
 
@@ -40,7 +40,7 @@ export class Premium extends React.Component<IProps, IState> {
 
         const Feature = (props: any) => {
 
-            return (<div className="text-center ml-auto mr-auto p-1" style={{maxWidth: '350px'}}>
+            return (<div className="text-center ml-auto mr-auto p-1" style={{maxWidth: '33%'}}>
 
                 {props.children}
 
@@ -98,7 +98,7 @@ export class Premium extends React.Component<IProps, IState> {
 
                         <h1 className="mb-4">Upgrade to <b>Polar Premium!</b></h1>
 
-                        <p className="h4">
+                        <p className="h5">
                             <b>Polar Premium</b> gives you extended <i>cloud
                             storage</i>, special benefits, and directly supports
                             future Polar development. The more Polar is
@@ -109,12 +109,12 @@ export class Premium extends React.Component<IProps, IState> {
                     </SplitLayoutLeft>
 
                     <SplitLayoutRight>
-                        <img style={{maxHeight: '225px'}} src="file:///home/burton/projects/polar-bookshelf/icon.png"/>
+                        <img style={{maxHeight: '200px'}} src="/icon.png"/>
                     </SplitLayoutRight>
 
                 </SplitLayout>
 
-                <h2 className="text-left mt-0 mb-2">
+                <h2 className="text-left mt-0 mb-1">
                     Here's what you get with Polar Premium:
                 </h2>
 
@@ -169,18 +169,19 @@ export class Premium extends React.Component<IProps, IState> {
                             an exclusive Polar community. This
                             new society is a gathering
                             of people from all walks of life with one
-                            key characteristic in common – Polar. Some
-                            say it also holds many secrets.
+                            key characteristic in common – Polar.
+                            {/*Some*/}
+                            {/*say it also holds many secrets.*/}
                         </FeatureText>
 
                     </Feature>
 
                 </div>
 
-                <div className="mb-5 ml-auto mr-auto" style={{display: 'flex'}}>
+                <div className="mb-1 ml-auto mr-auto" style={{display: 'flex'}}>
 
                     <div>
-                        <div className="mt-1 mb-3">
+                        <div className="mt-1 mb-2">
                             <h3>Additional Features Include:</h3>
                         </div>
 
@@ -193,7 +194,7 @@ export class Premium extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="mt-2 mb-3" style={{display: 'flex'}}>
+                <div className="mt-2 mb-2" style={{display: 'flex'}}>
 
                     <PurchaseLink href="https://opencollective.com/polar-bookshelf/contribute/tier/6659-bronze"
                                   eventCategory="splash-polar-premium-bronze">
