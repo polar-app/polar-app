@@ -31,7 +31,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
         return (
 
-            <FixedNav id="doc-repository">
+            <FixedNav id="doc-repository" className="statistics-view">
 
                 <header>
 
@@ -61,7 +61,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
 
                         </div>
 
-                        <div className="row mt-2">
+                        <div className="row mt-2 tag-statistics">
 
                             <div className="col-lg-8">
                                 <TopTagsChart docInfos={docInfos}/>

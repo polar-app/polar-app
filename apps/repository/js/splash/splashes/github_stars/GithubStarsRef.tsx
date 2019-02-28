@@ -4,8 +4,10 @@ import {ConditionalPrioritizedComponentRef} from '../ConditionalPrioritizedCompo
 
 export class GithubStarsRef extends ConditionalPrioritizedComponentRef {
 
+    public readonly id = 'github-stars';
+
     constructor() {
-        super('github-stars', 20);
+        super('github-stars', 20, 'active');
     }
 
     public create(): JSX.Element {

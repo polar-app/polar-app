@@ -60,7 +60,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
         const from = `${fromYear}-01-02`;
         const to = `${fromYear}-12-30`;
 
-        return <div>
+        return <div id="reading-progress-table">
 
             <StatTitle>Reading Progress</StatTitle>
 

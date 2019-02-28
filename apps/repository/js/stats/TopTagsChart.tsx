@@ -31,7 +31,7 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="p-1">
+            <div id="top-tags-chart" className="p-1">
 
                 <StatTitle>Top Tags</StatTitle>
 

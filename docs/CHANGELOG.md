@@ -1,3 +1,72 @@
+
+# 1.13.8
+
+- Don't rely on GA to determine the OS.  Record it ourselves.
+
+- Enabling auto-updates in this release to keep everyone on the latest so I can
+  iterate faster.
+
+# 1.13.7
+
+- quick release to disable another GA feature which could be greaking our 
+  analytics
+  
+- Fixed Premium splash layout on smaller screens...
+
+# 1.13.6
+
+- Splash messages should be delivered to users at the right times now.
+
+- I think I fixed a bug with tracking not working due to including 'app version'
+  in the analytics data.
+
+# 1.13.5
+
+- multi-delete button for bulk deleting documents
+
+- buttons in the doc repo are a bit bigger for better hit targets
+
+- multi-column selection by checkbox now to make it a bit more obvious for 
+  users to select multiple documents
+
+- Clicking flagged or archived buttons no longer select the row which was 
+  confusing.
+
+# 1.13.4
+
+- Preview release DID NOT load the example docs (BAD BUG)
+
+- Now targeting header in the tour to avoid scroll.
+
+# 1.13.3
+
+- New tour feedback and the end of the tour.
+
+- Only load example docs once.
+
+- GA events for cloud login and configured 
+
+- User-Agent was not being properly tracked and this as very important to detect
+  which Operating Systems were being used.
+
+- Fixed problem with constraining the window sizes on smaller displays like                                                                                        rep
+  smaller laptops.
+
+- Sidebar now visible by default and the setting remembered with a local pref.
+
+- Fixed messenger and F10 and other commands that were accidentally broken in 
+  this release. 
+
+# 1.13.2
+
+- more tour changes
+
+# 1.13.0
+
+- Tour of how to use Polar for new users.
+
+- Replaced the context menu with a native React menu. 
+
 # 1.12.1
 
 - If we are given a path to a file during the writeFile datastore operation, we
@@ -5,10 +74,10 @@
   (not data blobs) and works during PDF file import to avoid duplicate disk 
   space usage.   
 
-- re-importing an exting file should now open it in polar instead of doing 
+- re-importing an existing file should now open it in polar instead of doing 
   nothing. 
 
-- starting work to disable updates for MS and Apple stores.  
+- starting work to disabled updates for MS and Apple stores.  
 
 - adding some newlines between markdown exported entries.
 

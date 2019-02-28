@@ -1,11 +1,12 @@
-import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents} from "electron";
+import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents, screen} from "electron";
 import {Logger} from '../../logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 
 const log = Logger.create();
 
-const WIDTH = 900 * 1.2;
+const WIDTH = 900 * 1.2; // 1300 is like 80% of users
 const HEIGHT = 1100 * 1.2;
+const SIDEBAR_BUFFER = 100;
 
 const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/home/default.html');
 
@@ -15,9 +16,7 @@ export const APP_ICON = ResourcePaths.resourceURLFromRelativeURL('./icon.png');
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = Object.freeze({
     backgroundColor: '#FFF',
-    minWidth: WIDTH * 0.4,
-    minHeight: HEIGHT * 0.4,
-    width: WIDTH,
+    width: WIDTH + SIDEBAR_BUFFER,
     height: HEIGHT,
     show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
@@ -72,6 +71,39 @@ export class MainAppBrowserWindowFactory {
             // nothing happened or that the new window replaced the old one.
             browserWindowOptions.x = position.x;
             browserWindowOptions.y = position.y;
+        }
+
+        const display = screen.getPrimaryDisplay();
+
+        // make sure minHeight, maxHeight, width, and height are NOT larger
+        // than the current screen dimensions.
+
+        interface DimensionMapping {
+            readonly original: 'minWidth' | 'minHeight' | 'width' | 'height';
+            readonly dimension: 'width' | 'height';
+            readonly defaultValue?: number;
+        }
+
+        const MIN_FACTOR = 0.4;
+
+        const dimensionMappings: DimensionMapping[] = [
+
+            {original: 'minHeight', dimension: 'height', defaultValue: display.size.width * MIN_FACTOR},
+            {original: 'minWidth', dimension: 'width', defaultValue: display.size.height * MIN_FACTOR},
+
+            {original: 'height', dimension: 'height'},
+            {original: 'width', dimension: 'width'}
+
+        ];
+
+        for (const dimensionMapping of dimensionMappings) {
+
+            const current = browserWindowOptions[dimensionMapping.original]! || dimensionMapping.defaultValue!;
+            const max = display.size[dimensionMapping.dimension];
+
+            browserWindowOptions[dimensionMapping.original]
+                = Math.min(current, max);
+
         }
 
         log.info(`Creating window for URL: ${url} in partition ${browserWindowOptions.webPreferences!.partition}`);

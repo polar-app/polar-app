@@ -1,6 +1,6 @@
-import {ContextMenuWrapper} from 'react-context-menu-wrapper';
+import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
 import * as React from 'react';
-import Dropdown, {DropdownMenu} from "@trendmicro/react-dropdown";
+import Dropdown, {DropdownMenu} from "@burtonator/react-dropdown";
 import {NULL_FUNCTION} from '../../util/Functions';
 
 /**

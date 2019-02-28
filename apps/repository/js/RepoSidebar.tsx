@@ -7,6 +7,7 @@ import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
 import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
 import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
+import {AppActivities} from '../../../web/js/util/AppActivities';
 
 const log = Logger.create();
 
@@ -109,6 +110,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                 <section className="sidebar"
                          style={sidebarStyle}
+                         data-expanded={this.state.expanded}
                          onKeyUp={event => this.onKeyUp(event)}>
 
                     <div className="subheader p-1" style={Styles.subheader}>
@@ -140,7 +142,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          href="#stats"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-chart-line"
-                                         text="Stats"/>
+                                         text="Statistics"/>
 
                         <RepoSidebarItem id="sidebar-item-logs"
                                          href="#logs"
@@ -221,7 +223,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
     private onKeyUp(event: React.KeyboardEvent<HTMLElement>) {
 
-        console.log("got event", event);
+        // noop
 
     }
 
@@ -234,8 +236,15 @@ export class RepoSidebar extends React.Component<IProps, IState> {
         this.setState({
             expanded
         });
+
+        // AppActivities.get().dispatchEvent({name: 'sidebar-toggled', data: {expanded}});
+
     }
 
+}
+
+export interface SidebarStatus {
+    readonly expanded: boolean;
 }
 
 interface IProps {
@@ -244,3 +253,4 @@ interface IProps {
 interface IState {
     readonly expanded: boolean;
 }
+

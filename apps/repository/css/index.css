@@ -82,6 +82,11 @@ footer .buttons .button {
   padding: 5px;
   display: inline;
 }
+
+.doc-button {
+    font-size: 16px;
+}
+
 .doc-button:hover {
   cursor: pointer;
 }

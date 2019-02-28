@@ -11,7 +11,8 @@ if [ "${CSC_KEY_PASSWORD}" == "" ]; then
     exit 1
 fi
 
-export CSC_LINK=${WINDOWS_CSC_DIR}/spinn3r.p12
+#export CSC_LINK=${WINDOWS_CSC_DIR}/spinn3r.p12
+export CSC_LINK=/root/windows-csc/spinn3r.p12
 
 # Error: Cannot extract publisher name from code signing certificate, please
 # file issue. As workaround, set win.publisherName: Error: Exit code: 1. Command

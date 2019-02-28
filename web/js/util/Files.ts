@@ -4,6 +4,8 @@ import {Logger} from '../logger/Logger';
 import ErrnoException = NodeJS.ErrnoException;
 import {isPresent, Preconditions} from "../Preconditions";
 import {FilePaths} from "./FilePaths";
+import {Providers} from "./Providers";
+import {DurationStr, TimeDurations} from './TimeDurations';
 
 const log = Logger.create();
 
@@ -35,12 +37,19 @@ export class Files {
      * Go through the given directory path recursively call the callback
      * function for each file.
      *
+     * @param aborter If the aborder returns true we abort recursively following
+     *                directories.
      */
     public static async recursively(path: string,
-                                    listener: (path: string) => Promise<void>) {
+                                    listener: (path: string) => Promise<void>,
+                                    aborter: Aborter = Providers.of(false)) {
 
         // TODO: provide a function that returns true if we should abort the
         // recursive find operation.
+
+        if (aborter()) {
+            return;
+        }
 
         if (! await this.existsAsync(path)) {
             throw new Error("Path does not exist: " + path);
@@ -52,9 +61,17 @@ export class Files {
                                   await Files.fileType(path),
                                   'Path had invalid type: ' + path);
 
+        if (aborter()) {
+            return;
+        }
+
         const dirEntries = await this.readdirAsync(path);
 
         for (const dirEntry of dirEntries) {
+
+            if (aborter()) {
+                return;
+            }
 
             const dirEntryPath = FilePaths.join(path, dirEntry);
             const dirEntryType = await this.fileType(dirEntryPath);
@@ -67,7 +84,6 @@ export class Files {
 
                 await listener(dirEntryPath);
 
-
             } else {
                 throw new Error(`Unable to handle dir entry: ${dirEntryPath} of type ${dirEntryType}`);
             }
@@ -79,7 +95,8 @@ export class Files {
     /**
      * Create a recursive directory snapshot of files using hard links.
      *
-     * @param filter Accept any files that pass the filter predicate (return true).
+     * @param filter Accept any files that pass the filter predicate (return
+     *     true).
      *
      */
     public static async createDirectorySnapshot(path: string,
@@ -608,3 +625,22 @@ export type DirectorySnapshotPredicate = (path: string, targetPath: string) => b
 
 export const ACCEPT_ALL: DirectorySnapshotPredicate = () => true;
 
+export type Aborter = () => boolean;
+
+export class Aborters {
+
+    /**
+     * Return a function that aborts after a given time.
+     */
+    public static maxTime(duration: DurationStr = "1m"): () => boolean {
+
+        const durationMS = TimeDurations.toMillis(duration);
+        const started = Date.now();
+
+        return (): boolean => {
+            return (Date.now() - started) > durationMS;
+        };
+
+    }
+
+}

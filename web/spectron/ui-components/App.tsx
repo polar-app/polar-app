@@ -31,10 +31,15 @@ import {ExportButton} from '../../js/ui/export/ExportButton';
 import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
 import {AnkiReviewContent} from './AnkiReviewContent';
 import ReadingProgressTable from '../../../apps/repository/js/stats/ReadingProgressTable';
-import {ContextMenuWrapper, prepareContextMenuHandlers} from 'react-context-menu-wrapper';
+import {ContextMenuWrapper, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import {DropMenu} from './DropMenu';
 import {TestMenu} from './TestMenu';
+import Joyride from 'react-joyride';
+import {Feedback} from '../../js/ui/feedback/Feedback';
+import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey';
+import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premium';
+import {ChromeExtensionReview} from '../../../apps/repository/js/splash/splashes/chrome_extension_review/ChromeExtensionReview';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -119,15 +124,80 @@ class App<P> extends React.Component<{}, IAppState> {
 
         const contextMenuHandlers = prepareContextMenuHandlers({id: 'my-context-menu'});
 
+        const steps = [
+            {
+                target: '.my-first-step',
+                content: 'This is my awesome feature!',
+                disableBeacon: true
+            },
+            {
+                target: '.my-other-step',
+                content: 'This another awesome feature!',
+            },
+        ];
+
         return (
 
             <div>
+
+                {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
+
+                <Premium settingKey={'premium-key'}/>
+
+                <h1 className="component">Feedback without description</h1>
+
+                <div className="text-center">
+                    <Feedback category="tour-feedback"
+                              title="How likely are you to continue using Polar?"
+                              noEvent={true}
+                              from="Not likely"
+                              to="Very likely"/>
+                </div>
+
+                <h1 className="component">Feedback without description</h1>
+
+                <div className="text-center">
+                    <Feedback category="tour-feedback"
+                              title="How likely are you to continue using Polar?"
+                              description="We wanted to get your initial thoughts after taking the tour."
+                              noEvent={true}
+                              unsure={true}
+                              from="Not likely"
+                              to="Very likely"/>
+                </div>
+
 
                 <div className="bg-dark text-white">
                     <div className="p-1 hover-bg-primary">Menu item 1</div>
                     <div className="p-1 hover-bg-primary">Menu item 2</div>
                 </div>
 
+                <div className="my-first-step">
+                    my first step
+
+                </div>
+                <div className="my-other-step">
+                    my other step
+                </div>
+
+                {/*<Joyride*/}
+                    {/*steps={steps}*/}
+                    {/*continuous={true}*/}
+                    {/*run={true}*/}
+                    {/*showProgress={true}*/}
+                    {/*showSkipButton={true}*/}
+                    {/*styles={{*/}
+                        {/*options: {*/}
+                            {/*// arrowColor: '#e3ffeb',*/}
+                            {/*// backgroundColor: '#e3ffeb',*/}
+                            {/*// overlayColor: 'rgba(79, 26, 0, 0.4)',*/}
+                            {/*primaryColor: '#007bff',*/}
+                            {/*// textColor: '#004a14',*/}
+                            {/*// width: 900,*/}
+                            {/*// zIndex: 1000,*/}
+                        {/*}*/}
+                    {/*}}*/}
+                    {/*/>*/}
 
                 {/*<DropMenu open={true}>*/}
 

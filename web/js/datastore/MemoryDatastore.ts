@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult} from './Datastore';
+import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult, DatastoreOverview} from './Datastore';
 import {isPresent, Preconditions} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from '../logger/Logger';
@@ -14,12 +14,15 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DiskInitResult} from './DiskDatastore';
+import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
 export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'memory';
+
+    private readonly created: ISODateTimeString;
 
     protected readonly docMetas: {[fingerprint: string]: string} = {};
 
@@ -29,6 +32,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
         super();
 
         this.docMetas = {};
+        this.created = ISODateTimeStrings.create();
 
     }
 
@@ -159,6 +163,14 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
         // noop now
+    }
+
+    public async overview(): Promise<DatastoreOverview> {
+
+        const docMetaRefs = await this.getDocMetaRefs();
+
+        return {nrDocs: docMetaRefs.length, created: this.created};
+
     }
 
     private toFileRefKey(backend: Backend, fileRef: FileRef) {

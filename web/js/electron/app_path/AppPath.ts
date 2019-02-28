@@ -4,7 +4,9 @@ import {ElectronContextTypes} from '../context/ElectronContextTypes';
 
 declare var global: any;
 
-global.appPath = app.getAppPath();
+if (app) {
+    global.appPath = app.getAppPath();
+}
 
 /**
  * Provides a more reliable way to set the 'appPath' that Electron uses to

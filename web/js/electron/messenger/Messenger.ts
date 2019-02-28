@@ -4,6 +4,8 @@ import {Functions} from '../../util/Functions';
 import {isPresent} from '../../Preconditions';
 import {Browser} from '../../capture/Browser';
 
+declare var window: Window;
+
 /**
  * Messenger is a class for using postMessage within the renderer to communicate
  * with apps using web standards, and not Electron IPC. This makes our code
@@ -19,7 +21,7 @@ export class Messenger {
 
         postMessageRequest = new PostMessageRequest(postMessageRequest);
 
-        if (window) {
+        if (typeof window !== 'undefined') {
             await this.postMessageDirectly(postMessageRequest.message);
             return;
         }

@@ -18,6 +18,7 @@ import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
+import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -72,6 +73,12 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      */
     deactivate(): Promise<void>;
 
+    /**
+     * Get an overview of the datastore including the time it was created as
+     * well as other stats including the number of docs.
+     */
+    overview(): Promise<DatastoreOverview>;
+
     // TODO: we need a new method with the following semantics:
 
     // - we can add it AFTER the init()
@@ -84,6 +91,20 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     //
     // - this is VERY similar (but somewhat different) than the firebase
     // snapshot support
+
+}
+
+export interface DatastoreOverview {
+
+    /**
+     * The time the datastore was created.
+     */
+    readonly created: ISODateTimeString;
+
+    /**
+     * The number of documents in the datastore.
+     */
+    readonly nrDocs: number;
 
 }
 

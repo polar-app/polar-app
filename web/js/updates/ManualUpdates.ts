@@ -6,6 +6,9 @@ import {Logger} from '../logger/Logger';
 import process from 'process';
 import {Broadcasters} from '../ipc/Broadcasters';
 import {Version} from '../util/Version';
+import {AppUpdate} from './AppUpdate';
+
+const ENABLE_AUTO_UPDATE = true;
 
 // borrowed from here and ported to typescript:
 //
@@ -13,7 +16,9 @@ import {Version} from '../util/Version';
 
 const log = Logger.create();
 
-autoUpdater.autoDownload = false;
+let updateRequestedManually: boolean = false;
+
+autoUpdater.autoDownload = true;
 
 // this is so that we can
 autoUpdater.allowPrerelease = process.env.POLAR_AUTO_UPDATER_ALLOW_PRERELEASE === 'true';
@@ -24,10 +29,14 @@ export class ManualUpdates {
 
     // export this to MenuItem click callback
     public static checkForUpdates(menuItem: Electron.MenuItem) {
+
+        updateRequestedManually = true;
+
         updater = menuItem;
         updater.enabled = false;
         autoUpdater.checkForUpdates()
             .catch(err => log.error("Error handling updates: " + err ));
+
     }
 
 }
@@ -35,7 +44,13 @@ export class ManualUpdates {
 let updater: Electron.MenuItem | null;
 
 autoUpdater.on('error', (error) => {
-    dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString());
+
+    if (updateRequestedManually) {
+        dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString());
+    }
+
+    updateRequestedManually = false;
+
 });
 
 autoUpdater.on('update-available', (info: UpdateInfo) => {
@@ -48,6 +63,15 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
         const fromVersion = Version.get();
         const toVersion = info.version;
         message = `Found updates, do you want update from ${fromVersion} to ${toVersion} now?`;
+
+        const appUpdate: AppUpdate = {
+            fromVersion,
+            toVersion,
+            automatic: ! updateRequestedManually
+        };
+
+        Broadcasters.send("app-update:available", appUpdate);
+
     }
 
     const options = {
@@ -66,15 +90,17 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
 
                     try {
 
-                        // await GA.getInstance().event('updates', 'manual-update');
-                        // await GA.getInstance().event('updates', 'manual-update-' + Version.get());
+                        // await GA.getInstance().event('updates',
+                        // 'manual-update'); await
+                        // GA.getInstance().event('updates', 'manual-update-' +
+                        // Version.get());
 
                     } catch (e) {
                         log.error("Unable to send event data: ", e);
                     }
 
                 })
-                .catch(err => log.error("Error handling updates: " + err ));
+                .catch(err => log.error("Error handling updates: " + err));
 
         } else {
             updater!.enabled = true;
@@ -83,31 +109,46 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
 
     });
 
+
+    updateRequestedManually = false;
+
 });
 
 autoUpdater.on('update-not-available', () => {
 
-    const options = {
-        title: 'No Updates',
-        message: 'Current version is up-to-date.'
-    };
+    if (updateRequestedManually) {
 
-    dialog.showMessageBox(options);
-    updater!.enabled = true;
-    updater = null;
+        const options = {
+            title: 'No Updates',
+            message: 'Current version is up-to-date.'
+        };
+
+        dialog.showMessageBox(options);
+        updater!.enabled = true;
+        updater = null;
+
+    }
+
+    updateRequestedManually = false;
 
 });
 
 autoUpdater.on('update-downloaded', () => {
 
-    const options = {
-        title: 'Install Updates',
-        message: 'Updates downloaded, application will be quit for update...'
-    };
+    if (updateRequestedManually) {
 
-    dialog.showMessageBox(options, () => {
-        setImmediate(() => autoUpdater.quitAndInstall());
-    });
+        const options = {
+            title: 'Install Updates',
+            message: 'Updates downloaded, application will be quit for update...'
+        };
+
+        dialog.showMessageBox(options, () => {
+            setImmediate(() => autoUpdater.quitAndInstall());
+        });
+
+    }
+
+    updateRequestedManually = false;
 
 });
 
@@ -125,6 +166,13 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
     // running there, listening for the messages on download progress updates
     // and then display the appropriate UI.
 
+    Broadcasters.send("app-update:download-progress", progress);
+
     Broadcasters.send("download-progress", progress);
 
 });
+
+if (ENABLE_AUTO_UPDATE) {
+    log.info("Auto updates enabled");
+    autoUpdater.checkForUpdatesAndNotify();
+}

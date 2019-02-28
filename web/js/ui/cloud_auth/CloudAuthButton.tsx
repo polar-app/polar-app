@@ -29,10 +29,12 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
         let stage: AuthStage | undefined;
 
         if (document.location!.hash === '#login') {
+            RendererAnalytics.event({category: 'cloud', action: 'login'});
             stage = 'login';
         }
 
         if (document.location!.hash === "#configured") {
+            RendererAnalytics.event({category: 'cloud', action: 'configured'});
             stage = 'configured';
         }
 
@@ -98,7 +100,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                                       onCancel={() => this.changeAuthStage()}
                                       onInvite={(emailAddresses) => this.onInvitedUsers(emailAddresses)}/>
 
-                    <UncontrolledDropdown direction="down"
+                    <UncontrolledDropdown id="cloud-sync-dropdown"
+                                          direction="down"
                                           size="sm">
 
                         <DropdownToggle color="primary" caret>

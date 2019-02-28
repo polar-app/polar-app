@@ -42,14 +42,14 @@ export class AddContentButton extends React.Component<IProps, IState> {
                                   onClick={() => this.props.importFromDisk()}>
 
                         <i className="fas fa-hdd"></i>
-                        &nbsp; Import from Disk
+                        &nbsp; Import Files from Disk
 
                         <SimpleTooltip target="add-content-import-from-disk"
                                        show={0}
                                        placement="right">
 
-                            Import PDFs from disk in bulk.  Select
-                            one PDF or multiple PDFs at once.
+                            Import PDF files from disk in bulk.  Select one PDF
+                            or multiple PDFs at once.
 
                         </SimpleTooltip>
 
@@ -67,9 +67,8 @@ export class AddContentButton extends React.Component<IProps, IState> {
                                        show={0}
                                        placement="right">
 
-                            Capture a web page from the Internet and
-                            save it to Polar for annotation and long
-                            term archival.
+                            Capture a web page from the web and save it for
+                            annotation and long term archival.
 
                         </SimpleTooltip>
 

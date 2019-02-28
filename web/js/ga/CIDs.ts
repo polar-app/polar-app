@@ -54,6 +54,10 @@ export class CIDs {
     }
 
     private static create(): string {
+        // The cid must be UUID v4, using a UUID v1 will not work, the doc is
+        // misleading there because it states that it should use v4, not that it
+        // must. Google doesn't handle the v1 and generates its own uuid which
+        // messes totally the whole thing.
         return uuid();
     }
 

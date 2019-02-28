@@ -1,4 +1,4 @@
-import {AbstractDatastore, BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileMeta, FileRef, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileMeta, FileRef, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore, DatastoreOverview} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -468,6 +468,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public async deactivate() {
         await firebase.auth().signOut();
+    }
+
+    public overview(): Promise<DatastoreOverview> {
+        return this.local.overview();
     }
 
 }

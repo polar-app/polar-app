@@ -1,6 +1,5 @@
 import * as React from 'react';
-import ReactTable from "react-table";
-import {Footer, Tips} from '../Utils';
+import ReactTable, {ColumnRenderProps} from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
 import {Strings} from '../../../../web/js/util/Strings';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
@@ -22,7 +21,6 @@ import {DocDropdown} from '../DocDropdown';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
-import {Version} from '../../../../web/js/util/Version';
 import {RepoDocInfoIndex} from '../RepoDocInfoIndex';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
@@ -33,7 +31,7 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, UncontrolledDropdown} from 'reactstrap';
+import {Input, InputGroup} from 'reactstrap';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
@@ -44,6 +42,11 @@ import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {AddContentButton} from './AddContentButton';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
+import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
+import {DocButton} from './doc_buttons/DocButton';
+import {FlagDocButton} from './doc_buttons/FlagDocButton';
+import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
+import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 
 const log = Logger.create();
 
@@ -82,7 +85,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.onToggleFilterArchived = this.onToggleFilterArchived.bind(this);
         this.onToggleFlaggedOnly = this.onToggleFlaggedOnly.bind(this);
 
+        this.clearSelected = this.clearSelected.bind(this);
+
         this.onMultiTagged = this.onMultiTagged.bind(this);
+        this.onMultiDeleted = this.onMultiDeleted.bind(this);
+
         this.getSelected = this.getSelected.bind(this);
 
         this.cmdImportFromDisk = this.cmdImportFromDisk.bind(this);
@@ -167,7 +174,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    public selectRow(selectedIdx: number, event: MouseEvent) {
+    public selectRow(selectedIdx: number, event: MouseEvent, checkbox: boolean = false) {
 
         if (typeof selectedIdx === 'string') {
             selectedIdx = parseInt(selectedIdx);
@@ -193,7 +200,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         }
 
-        if (event.getModifierState("Control") || event.getModifierState("Meta")) {
+        const selectIndividual = (event.getModifierState("Control") || event.getModifierState("Meta")) || checkbox;
+
+        if (selectIndividual) {
 
             // one at a time
 
@@ -223,6 +232,26 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 .catch(err => log.error(err));
 
         }
+
+    }
+
+    private onMultiDeleted() {
+
+        const repoDocInfos = this.getSelected();
+
+        for (const repoDocInfo of repoDocInfos) {
+            this.onDocDeleted(repoDocInfo);
+        }
+
+        this.clearSelected();
+
+    }
+
+    private clearSelected() {
+
+        setTimeout(() => {
+            this.setState({...this.state, selected: []});
+        }, 1);
 
     }
 
@@ -270,29 +299,36 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 <div className="mr-1"
                                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <div style={{display: this.state.selected.length <= 1 ? 'none' : 'block'}}>
+                                    <div style={{display: this.state.selected.length <= 1 ? 'none' : 'flex'}}>
 
                                         {/*<FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}*/}
                                                         {/*refresher={() => this.refresh()}*/}
                                                         {/*disabled={this.state.selected.length === 0}*/}
                                                         {/*filteredTags={this.filteredTags} />*/}
 
-                                        <TagButton id="tag-multiple-documents"
-                                                   tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                   onSelectedTags={tags => this.onMultiTagged(tags)}/>
+                                        <div>
+                                            <TagButton id="tag-multiple-documents"
+                                                       tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                       onSelectedTags={tags => this.onMultiTagged(tags)}/>
 
+                                            <SimpleTooltip target="tag-multiple-documents"
+                                                           placement="bottom">
 
-                                        <SimpleTooltip target="tag-multiple-documents"
-                                                       placement="bottom">
+                                                Tag multiple documents at once.  To
+                                                find untagged documents sort by the
+                                                'Tags' column (twice).  Once to sort
+                                                alphabetically and then second click
+                                                will reverse the sort showing
+                                                untagged documents.
 
-                                            Tag multiple documents at once.  To
-                                            find untagged documents sort by the
-                                            'Tags' column (twice).  Once to sort
-                                            alphabetically and then second click
-                                            will reverse the sort showing
-                                            untagged documents.
+                                            </SimpleTooltip>
 
-                                        </SimpleTooltip>
+                                        </div>
+
+                                        <div className="ml-1">
+                                            <MultiDeleteButton onCancel={NULL_FUNCTION}
+                                                               onConfirm={() => this.onMultiDeleted()}/>
+                                        </div>
 
                                     </div>
 
@@ -300,9 +336,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                             </div>
 
-                            <div style={{width: '100%'}}>
+                            <div style={{marginLeft: 'auto'}}>
 
-                                <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                                <div id="filter-bar"
+                                    style={{
+                                        display: 'flex',
+                                        marginLeft: 'auto',
+                                        justifyContent: 'flex-end'
+                                    }}>
 
                                     <div className="mr-2"
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -348,7 +389,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                     </div>
 
-
                                     <div className="header-filter-box mr-1"
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
@@ -372,8 +412,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         </div>
 
                                     </div>
-
-
 
                                     <div className=""
                                          style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -405,8 +443,91 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             columns={
                                 [
                                     {
+
+                                        id: 'doc-checkbox',
+                                        Header: (col: ColumnRenderProps) => {
+
+                                            const checked = this.state.selected.length === col.data.length && col.data.length > 0;
+
+                                            return (<div>
+
+                                                <Input checked={checked}
+                                                       style={{
+                                                           marginLeft: 'auto',
+                                                           marginRight: 'auto',
+                                                           margin: 'auto',
+                                                           position: 'relative',
+                                                           top: '2px',
+                                                           width: '16px',
+                                                           height: '16px',
+                                                       }}
+                                                       className="m-auto"
+                                                       onChange={NULL_FUNCTION}
+                                                       onClick={() => {
+                                                           // noop... now do we
+                                                           // select ALL the
+                                                           // items in the
+                                                           // state now
+
+                                                           const computeSelected = (): ReadonlyArray<number> => {
+
+                                                               if (this.state.selected.length !== col.data.length) {
+                                                                   // all of
+                                                                   // them
+                                                                   return Numbers.range(0, col.data.length - 1);
+                                                               } else {
+                                                                   // none of
+                                                                   // them
+                                                                   return [];
+                                                               }
+
+                                                           };
+
+                                                           const selected = computeSelected();
+
+                                                           this.setState({...this.state, selected});
+
+                                                       }}
+                                                       type="checkbox"/>
+
+                                            </div>);
+                                        },
+                                        accessor: '',
+                                        maxWidth: 25,
+                                        defaultSortDesc: true,
+                                        resizable: false,
+                                        sortable: false,
+                                        className: 'doc-checkbox',
+                                        Cell: (row: any) => {
+
+                                            const viewIndex = row.viewIndex as number;
+
+                                            return (<div style={{lineHeight: '1em'}}>
+
+                                                <Input checked={this.state.selected.includes(viewIndex)}
+                                                       style={{
+                                                           marginLeft: 'auto',
+                                                           marginRight: 'auto',
+                                                           margin: 'auto',
+                                                           position: 'relative',
+                                                           top: '2px',
+                                                           width: '16px',
+                                                           height: '16px',
+                                                       }}
+                                                       className="m-auto"
+                                                       onChange={NULL_FUNCTION}
+                                                       onClick={(event) => this.selectRow(viewIndex, event.nativeEvent, true)}
+                                                       type="checkbox"/>
+
+                                                {/*<i className="far fa-square"></i>*/}
+
+                                            </div>);
+                                        }
+                                    },
+                                    {
                                         Header: 'Title',
                                         accessor: 'title',
+                                        className: 'doc-table-col-title',
                                         Cell: (row: any) => {
                                             const id = 'doc-repo-row-title' + row.index;
                                             return (
@@ -439,8 +560,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         // accessor: (row: any) => row.added,
                                         accessor: 'lastUpdated',
                                         show: this.state.columns.lastUpdated.selected,
-                                        maxWidth: 100,
+                                        maxWidth: 85,
                                         defaultSortDesc: true,
+                                        className: 'doc-table-col-updated',
                                         Cell: (row: any) => (
                                             <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
                                         )
@@ -450,8 +572,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         Header: 'Added',
                                         accessor: 'added',
                                         show: this.state.columns.added.selected,
-                                        maxWidth: 100,
+                                        maxWidth: 85,
                                         defaultSortDesc: true,
+                                        className: 'doc-table-col-added',
                                         Cell: (row: any) => (
                                             <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
                                         )
@@ -513,9 +636,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'tags',
                                         Header: 'Tags',
+                                        width: 250,
                                         accessor: '',
                                         show: this.state.columns.tags.selected,
-
+                                        className: 'doc-table-col-tags',
                                         sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                                             const toSTR = (obj: any): string => {
@@ -574,89 +698,20 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 100,
                                         defaultSortDesc: true,
                                         resizable: false,
+                                        className: 'doc-table-col-progress',
                                         Cell: (row: any) => (
 
-                                            <progress max="100" value={ row.value } style={{
+                                            <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
                                                 width: '100%'
                                             }} />
+
                                         )
                                     },
                                     {
-                                        id: 'tag-input',
+                                        id: 'doc-buttons',
                                         Header: '',
                                         accessor: '',
-                                        maxWidth: 25,
-                                        defaultSortDesc: true,
-                                        resizable: false,
-                                        Cell: (row: any) => {
-
-                                            const repoDocInfo: RepoDocInfo = row.original;
-
-                                            const existingTags: Tag[]
-                                                = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
-
-                                            return (
-                                                <TagInput availableTags={this.props.repoDocMetaManager!.tagsDB.tags()}
-                                                          existingTags={existingTags}
-                                                          relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                                          onChange={(tags) =>
-                                                              this.onDocTagged(repoDocInfo, tags)
-                                                                  .catch(err => log.error("Unable to update tags: ", err))} />
-                                            );
-
-                                        }
-                                    },
-                                    {
-                                        id: 'flagged',
-                                        Header: '',
-                                        accessor: 'flagged',
-                                        show: this.state.columns.flagged.selected,
-                                        maxWidth: 25,
-                                        defaultSortDesc: true,
-                                        resizable: false,
-                                        Cell: (row: any) => {
-
-                                            const title = 'Flag document';
-
-                                            if (row.original.flagged) {
-                                                return (
-                                                    <i className="fa fa-flag doc-button doc-button-active" title={title}/>
-                                                );
-                                            } else {
-                                                return (
-                                                    <i className="fa fa-flag doc-button doc-button-inactive" title={title}/>
-                                                );
-                                            }
-
-                                        }
-                                    },
-                                    {
-                                        id: 'archived',
-                                        Header: '',
-                                        accessor: 'archived',
-                                        show: this.state.columns.archived.selected,
-                                        maxWidth: 25,
-                                        defaultSortDesc: true,
-                                        resizable: false,
-                                        Cell: (row: any) => {
-
-                                            const title = 'Archive document';
-
-                                            const uiClassName = row.original.archived ? 'doc-button-active' : 'doc-button-inactive';
-
-                                            const className = `fa fa-check doc-button ${uiClassName}`;
-
-                                            return (
-                                                <i className={className} title={title}/>
-                                            );
-
-                                        }
-                                    },
-                                    {
-                                        id: 'doc-dropdown',
-                                        Header: '',
-                                        accessor: '',
-                                        maxWidth: 25,
+                                        maxWidth: 100,
                                         defaultSortDesc: true,
                                         resizable: false,
                                         sortable: false,
@@ -665,18 +720,43 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                             const repoDocInfo: RepoDocInfo = row.original;
 
-                                            return (
-                                                <DocDropdown id={'doc-dropdown-' + row.index}
-                                                             repoDocInfo={repoDocInfo}
-                                                             onDelete={this.onDocDeleted}
-                                                             onSetTitle={this.onDocSetTitle}/>
-                                            );
+                                            const existingTags: Tag[]
+                                                = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
+
+                                            return (<div className="doc-buttons" style={{display: 'flex'}}>
+
+                                                    <DocButton>
+
+                                                        {/*WARNING: making this a function breaks the layout...*/}
+
+                                                        <TagInput availableTags={this.props.repoDocMetaManager!.tagsDB.tags()}
+                                                                  existingTags={existingTags}
+                                                                  relatedTags={this.props.repoDocMetaManager!.relatedTags}
+                                                                  onChange={(tags) =>
+                                                                      this.onDocTagged(repoDocInfo, tags)
+                                                                          .catch(err => log.error("Unable to update tags: ", err))}/>
+
+                                                    </DocButton>
+
+                                                    <FlagDocButton active={repoDocInfo.flagged}
+                                                                   onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}/>
+
+                                                    <ArchiveDocButton active={repoDocInfo.archived}
+                                                                      onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
+
+                                                    <DocButton>
+
+                                                        <DocDropdown id={'doc-dropdown-' + row.index}
+                                                                     repoDocInfo={repoDocInfo}
+                                                                     onDelete={this.onDocDeleted}
+                                                                     onSetTitle={this.onDocSetTitle}/>
+
+                                                    </DocButton>
+
+                                                </div>);
 
                                         }
                                     }
-
-
-
 
                                 ]}
 
@@ -696,13 +776,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             getTrProps={(state: any, rowInfo: any) => {
                                 return {
 
-                                    onClick: (event: MouseEvent) => {
-                                        // console.log(`doc fingerprint:
-                                        // ${rowInfo.original.fingerprint} and
-                                        // filename
-                                        // ${rowInfo.original.filename}`);
-                                        this.selectRow(rowInfo.viewIndex as number, event);
-                                    },
+                                    // include the doc fingerprint in the table
+                                    // so that the tour can use
+                                    'data-doc-fingerprint': ((rowInfo || {}).original || {}).fingerprint || '',
 
                                     style: {
                                         // TODO: dark-mode.  Use CSS variable
@@ -716,26 +792,46 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             }}
                             getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
 
-                                const singleClickColumns = ['tag-input', 'flagged', 'archived', 'doc-dropdown'];
+                                const SINGLE_CLICK_COLUMNS = [
+                                    'tag-input',
+                                    'flagged',
+                                    'archived',
+                                    'doc-dropdown',
+                                    'doc-buttons',
+                                    'doc-checkbox'
+                                ];
 
-                                if (! singleClickColumns.includes(column.id)) {
+                                if (! SINGLE_CLICK_COLUMNS.includes(column.id)) {
+
                                     return {
-                                        onDoubleClick: (e: any) => {
-                                            this.onDocumentLoadRequested(rowInfo.original.fingerprint,
-                                                                         rowInfo.original.filename,
-                                                                         rowInfo.original.hashcode);
-                                        }
+
+                                        onDoubleClick: (event: MouseEvent) => {
+
+                                            if (rowInfo) {
+                                                this.onDocumentLoadRequested(rowInfo.original.fingerprint,
+                                                                             rowInfo.original.filename,
+                                                                             rowInfo.original.hashcode);
+                                            }
+
+                                        },
+
+                                        onClick: (event: MouseEvent, handleOriginal?: () => void) => {
+
+                                            if (rowInfo) {
+                                                this.selectRow(rowInfo.viewIndex as number, event);
+                                            }
+
+                                        },
+
                                     };
+
                                 }
 
-                                if (singleClickColumns.includes(column.id)) {
+                                if (SINGLE_CLICK_COLUMNS.includes(column.id)) {
 
                                     return {
 
                                         onClick: ((e: any, handleOriginal?: () => void) => {
-
-                                            this.handleToggleField(rowInfo.original, column.id)
-                                                .catch(err => log.error("Could not handle toggle: ", err));
 
                                             if (handleOriginal) {
                                                 // needed for react table to
@@ -948,6 +1044,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             .catch(err => log.error("Unable to load doc: ", err));
 
     }
+
+    private doHandleToggleField(repoDocInfo: RepoDocInfo, field: string) {
+
+        this.handleToggleField(repoDocInfo, field)
+            .catch(err => log.error(`Could not handle toggle on field: ${field}: `, err));
+
+    }
+
 
     private async handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
 
