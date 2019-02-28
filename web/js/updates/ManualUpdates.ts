@@ -10,6 +10,9 @@ import {AppUpdate} from './AppUpdate';
 
 const ENABLE_AUTO_UPDATE = true;
 
+const AUTO_UPDATE_DELAY_INITIAL = 2 * 60 * 1000;
+const AUTO_UPDATE_DELAY_RECHECK = 5 * 60 * 1000;
+
 // borrowed from here and ported to typescript:
 //
 // https://github.com/electron-userland/electron-builder/blob/docs/encapsulated%20manual%20update%20via%20menu.js
@@ -173,7 +176,31 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 
 });
 
+function scheduleAutoUpdate(delay: number = AUTO_UPDATE_DELAY_RECHECK) {
+
+    log.info("Scheduling auto update for N ms: " + delay);
+
+    setTimeout(() => doAutoUpdate(), delay);
+
+}
+
+function doAutoUpdate() {
+
+    log.info("Checking for updates...");
+
+    autoUpdater.checkForUpdatesAndNotify()
+        .then(() => {
+            scheduleAutoUpdate();
+        })
+        .catch(err => {
+            log.error("Failed to check for updates: ", err);
+            scheduleAutoUpdate();
+        });
+
+}
+
 if (ENABLE_AUTO_UPDATE) {
-    log.info("Auto updates enabled");
-    autoUpdater.checkForUpdatesAndNotify();
+    log.info("Auto updates enabled.");
+
+    scheduleAutoUpdate(AUTO_UPDATE_DELAY_INITIAL);
 }
