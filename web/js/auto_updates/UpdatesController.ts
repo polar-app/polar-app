@@ -6,13 +6,17 @@ import {DeterminateProgressBar} from "../ui/progress_bar/DeterminateProgressBar"
 
 const log = Logger.create();
 
-export class AutoUpdatesController {
+export class UpdatesController {
 
     public start(): void {
 
-        ipcRenderer.on('download-progress', (event: any, progress: ProgressInfo) => {
-            this.onProgressInfo(progress);
-        });
+        if (ipcRenderer) {
+
+            ipcRenderer.on('app-update:download-progress', (event: any, progress: ProgressInfo) => {
+                this.onProgressInfo(progress);
+            });
+
+        }
 
     }
 

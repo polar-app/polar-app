@@ -1,6 +1,6 @@
 productName: Polar Bookshelf
 # TODO: unfortunately this needs to be set.  Not sure why but it reverted to
-# using nightly versions when not set.  It should use package.json youwwou
+# using nightly versions when not set.  It should use package.json
 electronVersion: 3.0.8
 appId: io.inputneuron/polar
 compression: normal
@@ -23,6 +23,8 @@ mac:
       role: Viewer
 
 linux:
+  # TODO: consider using a custom productName here of polar-bookshelf to fix
+  # a bug on Linux with the application windows.
   artifactName: ${name}-${version}-${arch}.${ext}
   synopsis: Polar Bookshelf
   description: Polar Bookshelf

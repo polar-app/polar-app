@@ -6,12 +6,12 @@
     - FIXME: I think I should randomize the update over a 1 week period so 
       I don't update all the clients at once if I break something.
 
-    - don't allow ddouble update... if and update check is still pending and 
-      another is requested on top of it then abort...      
-
-    - FIXME: the downloader can re-download the same update version multiple times. 
-
     - FIXME: it takes 2x restarts to aply the version update.
+    
+    - FIXME: I need to call quitAndRestart NOT just quit becuase:
+        - the user needs to manually restart it and this is annoying.
+        
+    - FIXME: the UpdatesController needs autoUpdates.quitAndInstall() button. 
 
 - Don't rely on GA to determine the OS.  Record it ourselves.
 

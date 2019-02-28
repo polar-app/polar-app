@@ -16,7 +16,7 @@ import AnnotationRepoApp from '../../../../apps/repository/js/annotation_repo/An
 import {RepoDocInfos} from '../../../../apps/repository/js/RepoDocInfos';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from '../../logger/Logger';
-import {AutoUpdatesController} from '../../auto_updates/AutoUpdatesController';
+import {UpdatesController} from '../../auto_updates/UpdatesController';
 import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
@@ -68,7 +68,7 @@ export class RepositoryApp {
         new DocRepoAnkiSyncController(this.persistenceLayerManager, syncBarProgress)
             .start();
 
-        new AutoUpdatesController().start();
+        new UpdatesController().start();
 
         new ToasterService().start();
         new ProgressService().start();

@@ -41,6 +41,13 @@ import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey'
 import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premium';
 import {ChromeExtensionReview} from '../../../apps/repository/js/splash/splashes/chrome_extension_review/ChromeExtensionReview';
 import {AlternativeToReview} from '../../../apps/repository/js/splash/splashes/alternativeto_review/AlternativeToReview';
+import Button from 'reactstrap/lib/Button';
+import {ToasterMessages} from '../../js/ui/toaster/ToasterMessages';
+import {Toaster, ToasterMessageType} from '../../js/ui/toaster/Toaster';
+import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../js/ui/split_layout/SplitLayout';
+
+import {autoUpdater} from 'electron-updater';
+import ipcRenderer = Electron.ipcRenderer;
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -136,6 +143,11 @@ class App<P> extends React.Component<{}, IAppState> {
                 content: 'This another awesome feature!',
             },
         ];
+        Toaster.success('A new update for Polar was downloaded.  Please restart.', 'Update downloaded', {
+                 requiresAcknowledgment: true,
+                 preventDuplicates: true
+             });
+
 
         return (
 
@@ -143,7 +155,51 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
 
-                <AlternativeToReview settingKey={'asdf'}/>
+                <div style={{
+                        width: '500px',
+                        position: 'fixed',
+                        right: 10,
+                        bottom: 10,
+                        zIndex: 9999,
+                    }}
+                    className="border rounded shadow p-3 m-2 bg-white">
+
+                    <div style={{display: 'flex'}}>
+
+                        <div className="mr-2 text-success">
+
+                            <i style={{fontSize: '50px'}}
+                               className="fas fa-arrow-circle-down"></i>
+
+                        </div>
+
+                        <div>
+                            <div className="mb-1" style={{fontWeight: 'bold'}}>
+                                Updated downloaded
+                            </div>
+
+                            <div className="mb-1">
+                                A new update was downloaded.  Please restart.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div className="text-center">
+                            <Button size="lg"
+                                    onClick={() => ipcRenderer.send('app-update:quit-and-install')}
+                                    color="primary">Restart</Button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                {/*<AlternativeToReview settingKey={'asdf'}/>*/}
 
                 {/*<Premium settingKey='premium-key'/>*/}
 

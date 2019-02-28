@@ -1,4 +1,4 @@
-import {app} from 'electron';
+import {app, ipcMain} from 'electron';
 import {autoUpdater, UpdateCheckResult, UpdateInfo} from 'electron-updater';
 import {ProgressInfo} from "builder-util-runtime";
 import {Logger} from '../logger/Logger';
@@ -227,6 +227,8 @@ autoUpdater.on('update-downloaded', () => {
         }
     });
 
+    Broadcasters.send("app-update:update-downloaded", {status: true} );
+
     Updates.updateRequestedManually = false;
     Updates.performingUpdate = false;
 
@@ -249,6 +251,18 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
     Broadcasters.send("app-update:download-progress", progress);
 
     Broadcasters.send("download-progress", progress);
+
+});
+
+ipcMain.on('app-update:quit-and-install', () => {
+});
+
+app.on('before-quit', () => {
+
+    if (Updates.updatedVersion !== undefined) {
+        log.info("Doing quit and install since app updated.");
+        autoUpdater.quitAndInstall();
+    }
 
 });
 
