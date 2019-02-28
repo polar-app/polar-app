@@ -4,13 +4,10 @@
 - FIXME: verify that auto update works on MacOS before this release...
 
     - make sure progress still works
-    - make sure the auto-update works on startup... 
     - remaining auto-update problems
-        
-        - the download prompt is triggered on startup... which is a bad time.  
-          we should wait until the app has been running for a bit.
 
-        - 
+    - FIXME: I think I should randomize the update over a 1 week period so 
+      I don't update all the clients at once if I break something.
     
 
 - Don't rely on GA to determine the OS.  Record it ourselves.

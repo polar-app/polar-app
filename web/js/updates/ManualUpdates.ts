@@ -81,36 +81,47 @@ autoUpdater.on('update-available', (info: UpdateInfo) => {
 
     }
 
-    const options = {
-        type: 'info',
-        title: 'Found Updates',
-        message,
-        buttons: ['Yes', 'No']
+    const doUpdate = () => {
+
+        autoUpdater.downloadUpdate()
+            .then(async () => {
+
+                log.info("Updated downloaded.");
+
+            })
+            .catch(err => log.error("Error handling updates: " + err));
+
     };
 
-    dialog.showMessageBox(options, (buttonIndex) => {
+    if (ManualUpdates.updateRequestedManually) {
 
-        if (buttonIndex === 0) {
+        const options = {
+            type: 'info',
+            title: 'Found Updates',
+            message,
+            buttons: ['Yes', 'No']
+        };
 
-            autoUpdater.downloadUpdate()
-                .then(async () => {
+        dialog.showMessageBox(options, (buttonIndex) => {
 
-                    log.info("Updated downloaded.");
+            if (buttonIndex === 0) {
 
-                })
-                .catch(err => log.error("Error handling updates: " + err));
+                doUpdate();
 
-        } else {
+            } else {
 
-            if (updater) {
-                updater!.enabled = true;
-                updater = null;
+                if (updater) {
+                    updater!.enabled = true;
+                    updater = null;
+                }
+
             }
 
-        }
+        });
 
-    });
-
+    } else {
+        doUpdate();
+    }
 
     ManualUpdates.updateRequestedManually = false;
 
@@ -158,6 +169,10 @@ autoUpdater.on('update-downloaded', () => {
             type: ToasterMessageType.SUCCESS,
             title: 'Update downloaded',
             message: 'A new update for Polar was downloaded.  Please restart Polar to apply update.',
+            options: {
+                requiresAcknowledgment: true,
+                preventDuplicates: true
+            }
         });
 
     }
