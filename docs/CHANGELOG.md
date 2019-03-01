@@ -1,6 +1,8 @@
 
 # 1.13.8
 
+- I inverted the splash time cutoff in this release.   
+
 - Fixed bad bug with pagemarks where they would pool up and we wouldn't properly
   remove the old ones.
 

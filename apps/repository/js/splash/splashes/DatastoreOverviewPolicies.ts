@@ -32,7 +32,7 @@ export class DatastoreOverviewPolicies {
     public static is24H(datastoreOverview: DatastoreOverview) {
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
-        return TimeDurations.hasExpired(since, '1d');
+        return TimeDurations.hasElapsed(since, '1d');
 
     }
 
@@ -42,7 +42,7 @@ export class DatastoreOverviewPolicies {
     public static isActive(datastoreOverview: DatastoreOverview) {
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
-        return TimeDurations.hasExpired(since, '1w') && datastoreOverview.nrDocs > 5;
+        return TimeDurations.hasElapsed(since, '1w') && datastoreOverview.nrDocs > 5;
 
     }
 
@@ -53,12 +53,12 @@ export class DatastoreOverviewPolicies {
     public static isPremium(datastoreOverview: DatastoreOverview) {
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
-        const expired = TimeDurations.hasExpired(since, '2w');
+        const elapsed = TimeDurations.hasElapsed(since, '2w');
         const hasMinDocs = datastoreOverview.nrDocs > 25;
 
-        const result = expired && hasMinDocs;
+        const result = elapsed && hasMinDocs;
 
-        log.info(`since: ${since}, expired: ${expired}, hasMinDocs: ${hasMinDocs}, result: ${result}`);
+        log.info(`since: ${since}, expired: ${elapsed}, hasMinDocs: ${hasMinDocs}, result: ${result}`);
 
         return result;
 
