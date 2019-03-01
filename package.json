@@ -122,7 +122,7 @@
     "adm-zip": "~0.4.13",
     "babel-preset-es2017": "~6.24.1",
     "base58check": "~2.0.0",
-    "bootstrap": "~4.1.1",
+    "bootstrap": "^4.3.1",
     "codemirror": "~5.38.0",
     "convert-stream": "~1.0.2",
     "debug-stream": "~3.0.1",
