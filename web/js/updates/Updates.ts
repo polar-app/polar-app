@@ -226,15 +226,15 @@ autoUpdater.on('update-downloaded', () => {
 
     log.info('update-downloaded');
 
-    ToasterMessages.send({
-        type: ToasterMessageType.SUCCESS,
-        title: 'Update downloaded',
-        message: 'A new update for Polar was downloaded.  Please restart.',
-        options: {
-            requiresAcknowledgment: true,
-            preventDuplicates: true
-        }
-    });
+    // ToasterMessages.send({
+    //     type: ToasterMessageType.SUCCESS,
+    //     title: 'Update downloaded',
+    //     message: 'A new update for Polar was downloaded.  Please restart.',
+    //     options: {
+    //         requiresAcknowledgment: true,
+    //         preventDuplicates: true
+    //     }
+    // });
 
     Broadcasters.send("app-update:update-downloaded", {status: true} );
 

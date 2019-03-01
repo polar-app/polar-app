@@ -1,12 +1,14 @@
 
 # 1.13.8
 
-- I inverted the splash time cutoff in this release.   
+- I inverted the splash time cutoff in this previous previous release and it
+  should be fixed now.   
 
 - Fixed bad bug with pagemarks where they would pool up and we wouldn't properly
   remove the old ones.
 
-- Auto updated implemented for MacOS and Windows.
+- Auto updated implemented for MacOS and Windows.  There is a random delay of 
+  3 days to prevent breaking clients in the wild.
 
 - Don't rely on GA to determine the OS.  Record it ourselves.
 
