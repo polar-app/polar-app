@@ -1,6 +1,8 @@
 
 # 1.13.8
 
+- Should be the right amount of splashes now. 
+
 - Analytics for the add content button. Not sure if people are capturing pages
   or not.
 
