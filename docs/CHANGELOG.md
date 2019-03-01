@@ -1,4 +1,8 @@
 
+# 1.13.9
+
+- upgrade to latest reactstrap and bootstrap versions.
+
 # 1.13.8
 
 - Should be the right amount of splashes now. 
