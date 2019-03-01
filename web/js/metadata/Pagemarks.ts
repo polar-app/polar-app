@@ -147,8 +147,6 @@ export class Pagemarks {
 
                     const pagemark = Pagemarks.create({created, rect, batch});
 
-                    // log.info(`FIXME: creating pagemark on pageNum: ${pageNum}: `, pagemark);
-
                     Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
 
                     result.push({pageNum, pagemark});
