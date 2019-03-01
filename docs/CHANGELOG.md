@@ -1,6 +1,9 @@
 
 # 1.13.8
 
+- Fixed bad bug with pagemarks where they would pool up and we wouldn't properly
+  remove the old ones.
+
 - Auto updated implemented for MacOS and Windows.
 
 - Don't rely on GA to determine the OS.  Record it ourselves.
