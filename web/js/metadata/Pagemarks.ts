@@ -142,6 +142,8 @@ export class Pagemarks {
 
                 if (rect) {
                     const pagemark = Pagemarks.create({created, rect, batch});
+
+                    Pagemarks.deletePagemark(docMeta, pageNum);
                     Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
 
                     result.push({pageNum, pagemark});

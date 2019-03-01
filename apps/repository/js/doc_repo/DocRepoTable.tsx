@@ -1094,20 +1094,24 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private cmdImportFromDisk() {
 
-        const mainAppController = remote.getGlobal('mainAppController');
+        RendererAnalytics.event({category: 'add-content', action: 'import-from-disk'});
 
-        mainAppController.cmdImport()
+        this.getController().cmdImport()
             .catch((err: Error) => log.error("Could not import from disk: ", err));
 
     }
 
     private cmdCaptureWebPage() {
 
-        const mainAppController = remote.getGlobal('mainAppController');
+        RendererAnalytics.event({category: 'add-content', action: 'capture-web-page'});
 
-        mainAppController.cmdCaptureWebPageWithBrowser()
+        this.getController().cmdCaptureWebPageWithBrowser()
             .catch((err: Error) => log.error("Could not capture page: ", err));
 
+    }
+
+    private getController(): IMainAppController {
+        return remote.getGlobal('mainAppController');
     }
 
 }
@@ -1129,4 +1133,9 @@ interface IState {
     readonly selected: ReadonlyArray<number>;
 }
 
+interface IMainAppController {
 
+    cmdImport(): Promise<void>;
+
+    cmdCaptureWebPageWithBrowser(): Promise<void>;
+}
