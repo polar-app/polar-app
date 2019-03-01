@@ -12,11 +12,9 @@ import {Capture} from '../../capture/Capture';
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
 import {CaptureOpts} from '../../capture/CaptureOpts';
-import {Platform, Platforms} from '../../util/Platforms';
-import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
-import {Updates} from '../../updates/Updates';
+import MenuItem = Electron.MenuItem;
 
 const log = Logger.create();
 
@@ -148,12 +146,7 @@ export class MainAppController {
         if (doAppQuit) {
             log.info("Quitting app...");
 
-            if (Updates.hasUpdated()) {
-                log.info("Quitting for update with quitAndInstall");
-                Updates.quitAndInstall();
-            } else {
-                app.quit();
-            }
+            app.quit();
 
             log.info("Quitting app...done");
         }

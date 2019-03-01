@@ -264,6 +264,7 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 });
 
 ipcMain.on('app-update:quit-and-install', () => {
+    autoUpdater.quitAndInstall();
 });
 
 if (ENABLE_AUTO_UPDATE && Updates.platformSupportsUpdates()) {

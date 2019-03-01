@@ -10,6 +10,7 @@ import BrowserRegistry from '../../capture/BrowserRegistry';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 import {BackgroundFrameResizer} from '../../viewer/html/BackgroundFrameResizer';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -148,6 +149,8 @@ export class BrowserApp {
     }
 
     private onTriggerCapture() {
+
+        RendererAnalytics.event({category: 'content-capture', action: 'triggered'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
 
