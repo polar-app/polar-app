@@ -34,6 +34,7 @@ import {Feedback} from '../../js/ui/feedback/Feedback';
 import Button from 'reactstrap/lib/Button';
 import {Toaster} from '../../js/ui/toaster/Toaster';
 import {ipcRenderer} from 'electron';
+import {AlternativeToReview} from '../../../apps/repository/js/splash/splashes/alternativeto_review/AlternativeToReview';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -129,15 +130,15 @@ class App<P> extends React.Component<{}, IAppState> {
                 content: 'This another awesome feature!',
             },
         ];
-        Toaster.success('A new update for Polar was downloaded.  Please restart.', 'Update downloaded', {
-                 requiresAcknowledgment: true,
-                 preventDuplicates: true
-             });
-
-        Toaster.info('X A new update for Polar was downloaded.  Please restart.', 'Update downloaded', {
-            requiresAcknowledgment: true,
-            preventDuplicates: true
-        });
+        // Toaster.success('A new update for Polar was downloaded.  Please restart.', 'Update downloaded', {
+        //          requiresAcknowledgment: true,
+        //          preventDuplicates: true
+        //      });
+        //
+        // Toaster.info('X A new update for Polar was downloaded.  Please restart.', 'Update downloaded', {
+        //     requiresAcknowledgment: true,
+        //     preventDuplicates: true
+        // });
 
         return (
 
@@ -145,62 +146,62 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
 
-                <div style={{
-                        width: '500px',
-                        position: 'fixed',
-                        right: 10,
-                        bottom: 10,
-                        zIndex: 9999,
-                    }}
-                    className="border rounded shadow p-3 m-2 text-white bg-dark">
+                {/*<div style={{*/}
+                        {/*width: '500px',*/}
+                        {/*position: 'fixed',*/}
+                        {/*right: 10,*/}
+                        {/*bottom: 10,*/}
+                        {/*zIndex: 9999,*/}
+                    {/*}}*/}
+                    {/*className="border rounded shadow p-3 m-2 text-white bg-dark">*/}
 
-                    <div style={{
-                            display: 'flex',
-                            verticalAlign: 'middle'
-                        }}
-                        className="mb-3">
+                    {/*<div style={{*/}
+                            {/*display: 'flex',*/}
+                            {/*verticalAlign: 'middle'*/}
+                        {/*}}*/}
+                        {/*className="mb-3">*/}
 
-                        <div className="mr-3 text-success mt-auto mb-auto">
+                        {/*<div className="mr-3 text-success mt-auto mb-auto">*/}
 
-                            <i style={{fontSize: '50px'}} className="fas fa-check"></i>
+                            {/*<i style={{fontSize: '50px'}} className="fas fa-check"></i>*/}
 
-                        </div>
+                        {/*</div>*/}
 
-                        <div className="mt-1 mb-1">
+                        {/*<div className="mt-1 mb-1">*/}
 
-                            <div className="mb-1" style={{fontSize: '18px'}}>
-                                <b>Update available.</b> Please restart.
-                            </div>
+                            {/*<div className="mb-1" style={{fontSize: '18px'}}>*/}
+                                {/*<b>Update available.</b> Please restart.*/}
+                            {/*</div>*/}
 
-                            <div className="mt-1 mb-1 h6">
-                                An update was downloaded and ready to be
-                                installed. Please restart to install the latest
-                                version.
-                            </div>
+                            {/*<div className="mt-1 mb-1 h6">*/}
+                                {/*An update was downloaded and ready to be*/}
+                                {/*installed. Please restart to install the latest*/}
+                                {/*version.*/}
+                            {/*</div>*/}
 
-                        </div>
+                        {/*</div>*/}
 
-                    </div>
+                    {/*</div>*/}
 
-                    <div>
+                    {/*<div>*/}
 
-                        <div className="text-center text-white">
-                            <Button onClick={() => ipcRenderer.send('app-update:quit-and-install')}
-                                    style={{
-                                        fontWeight: 'bold'
-                                    }}
-                                    size="lg"
-                                    color="success">
-                                Restart
-                            </Button>
-                        </div>
+                        {/*<div className="text-center text-white">*/}
+                            {/*<Button onClick={() => ipcRenderer.send('app-update:quit-and-install')}*/}
+                                    {/*style={{*/}
+                                        {/*fontWeight: 'bold'*/}
+                                    {/*}}*/}
+                                    {/*size="lg"*/}
+                                    {/*color="success">*/}
+                                {/*Restart*/}
+                            {/*</Button>*/}
+                        {/*</div>*/}
 
-                    </div>
+                    {/*</div>*/}
 
 
-                </div>
+                {/*</div>*/}
 
-                {/*<AlternativeToReview settingKey={'asdf'}/>*/}
+                <AlternativeToReview settingKey={'asdf'}/>
 
                 {/*<Premium settingKey='premium-key'/>*/}
 

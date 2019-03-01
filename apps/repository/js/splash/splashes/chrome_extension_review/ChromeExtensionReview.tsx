@@ -44,7 +44,7 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
                             <EventTrackedLink eventCategory={EVENT_CATEGORY}
                                               eventAction='clicked-cta'
                                               href={LINK}>
-                                Rate Chrome Extension
+                                Review Polar Chrome Extension
                             </EventTrackedLink>
 
                         </p>

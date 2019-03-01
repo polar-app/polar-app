@@ -20,36 +20,26 @@ export class AlternativeToReview extends React.Component<IProps, IState> {
 
             <Splash settingKey={this.props.settingKey}>
 
-                <SplitLayout>
+                <div style={{
+                    display: 'flex'
+                    }}>
 
-                    <SplitLayoutLeft>
+                    <div className="w-100">
 
-                        <h2>Could You Review us on AlternativeTo?</h2>
+                        <h2>Could You Review Polar on AlternativeTo?</h2>
 
                         <p className="h5">
-                            Could you take <b>1 minute</b> and leave us a review on AlternativeTo?
+                            Could you take <b>1 minute</b> and leave us a review?
                         </p>
 
-                        <p className="h5">
+                        <p>
                             Many users use this site to discover new software and
                             we think they could benefit from using Polar.
                         </p>
 
-                        <p className="text-center mt-4">
+                    </div>
 
-                            <EventTrackedLink eventCategory={EVENT_CATEGORY}
-                                              eventAction='clicked-cta'
-                                              href={LINK}>
-
-                                Review Polar
-
-                            </EventTrackedLink>
-
-                        </p>
-
-                    </SplitLayoutLeft>
-
-                    <SplitLayoutRight>
+                    <div>
 
                         <p className="text-center m-2">
 
@@ -64,9 +54,22 @@ export class AlternativeToReview extends React.Component<IProps, IState> {
 
                         </p>
 
-                    </SplitLayoutRight>
+                    </div>
 
-                </SplitLayout>
+
+                </div>
+
+                <p className="text-center mt-4 p-2">
+
+                    <EventTrackedLink eventCategory={EVENT_CATEGORY}
+                                      eventAction='clicked-cta'
+                                      href={LINK}>
+
+                        Review Polar on AlternativeTo
+
+                    </EventTrackedLink>
+
+                </p>
 
             </Splash>
 
