@@ -1,17 +1,7 @@
 
 # 1.13.8
 
-- FIXME: verify that auto update works on MacOS before this release...
-
-    - FIXME: I think I should randomize the update over a 1 week period so 
-      I don't update all the clients at once if I break something.
-
-    - FIXME: it takes 2x restarts to aply the version update.
-    
-    - FIXME: I need to call quitAndRestart NOT just quit becuase:
-        - the user needs to manually restart it and this is annoying.
-        
-    - FIXME: the UpdatesController needs autoUpdates.quitAndInstall() button. 
+- Auto updated implemented for MacOS and Windows.
 
 - Don't rely on GA to determine the OS.  Record it ourselves.
 

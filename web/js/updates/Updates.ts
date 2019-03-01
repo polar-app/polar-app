@@ -15,10 +15,13 @@ import {DistConfig} from '../dist_config/DistConfig';
 
 const ENABLE_AUTO_UPDATE = true;
 
-const MIN_UPDATE_DELAY = TimeDurations.toRandom('3d');
+const RANDOM_DELAY = TimeDurations.toRandom('3d');
 
-const AUTO_UPDATE_DELAY_INITIAL = TimeDurations.toMillis('2m');
-const AUTO_UPDATE_DELAY_RECHECK = TimeDurations.toMillis('1h');
+// const AUTO_UPDATE_DELAY_INITIAL = TimeDurations.toMillis('2m');
+// const AUTO_UPDATE_DELAY_RECHECK = TimeDurations.toMillis('1h');
+
+const AUTO_UPDATE_DELAY_INITIAL = RANDOM_DELAY;
+const AUTO_UPDATE_DELAY_RECHECK = RANDOM_DELAY;
 
 // borrowed from here and ported to typescript:
 //
