@@ -8,7 +8,8 @@ import {
     FileRef,
     InitResult,
     SnapshotResult,
-    DatastoreOverview
+    DatastoreOverview,
+    DatastoreInfo, DocMetaSnapshotEvent
 } from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
@@ -31,6 +32,8 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Strings} from '../util/Strings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {DocMeta} from '../metadata/DocMeta';
+import {Stopwatches} from '../util/Stopwatches';
 
 const log = Logger.create();
 
@@ -68,7 +71,68 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     }
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<DiskInitResult> {
-        return await this.directories.init();
+
+        const diskInitResult = await this.directories.init();
+
+        const doInitInfo = async () => {
+
+            const hasDatastoreInfo = async () => {
+
+                const datastoreInfo = await this.info();
+
+                return datastoreInfo.isPresent();
+
+            };
+
+            if (await hasDatastoreInfo()) {
+                // we're already done.
+                return;
+            }
+
+            const stopwatch = Stopwatches.create();
+
+            const docMetaRefs = await this.getDocMetaRefs();
+
+            const addedValues: string[] = [];
+
+            for (const docMetaRef of docMetaRefs) {
+
+                const data = await this.getDocMeta(docMetaRef.fingerprint);
+
+                if (data) {
+
+                    try {
+                        const docMeta: DocMeta = JSON.parse(data);
+
+                        if (docMeta && docMeta.docInfo && docMeta.docInfo.added) {
+                            addedValues.push(docMeta.docInfo.added);
+                        }
+
+                    } catch (e) {
+                        log.warn("Unable to parse doc meta with fingerprint: " + docMetaRef.fingerprint);
+                    }
+
+                }
+
+            }
+
+            const created = addedValues.length > 0 ? addedValues.sort()[0] : ISODateTimeStrings.create();
+
+            const datastoreInfo: DatastoreInfo = {created};
+
+            const msg = "Writing new datastore info: " + JSON.stringify(datastoreInfo);
+
+            log.info(msg);
+
+            await this.writeInfo(datastoreInfo);
+
+            log.info(msg + " ... " + stopwatch.stop());
+
+        };
+
+        await doInitInfo();
+
+        return diskInitResult;
     }
 
     public async stop() {
@@ -342,13 +406,55 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         // noop now
     }
 
-    public async overview(): Promise<DatastoreOverview> {
+    /**
+     * Get the info from the datastore.
+     */
+    public async info(): Promise<Optional<DatastoreInfo>> {
 
-        const stat = await Files.statAsync(this.dataDir);
+        const infoPath = FilePaths.join(this.dataDir, 'info.json');
+
+        if (await Files.existsAsync(infoPath)) {
+
+            const data = await Files.readFileAsync(infoPath);
+
+            try {
+
+                const result = <DatastoreInfo> JSON.parse(data.toString('utf-8'));
+
+                return Optional.of(result);
+
+            } catch (e) {
+
+                // data is invalid so delete it so it's re-created later
+                await Files.deleteAsync(infoPath);
+
+                log.warn("Unable to read info.json file.");
+                return Optional.empty();
+
+            }
+
+        }
+
+        return Optional.empty();
+    }
+
+    private async writeInfo(datastoreInfo: DatastoreInfo) {
+
+        const infoPath = FilePaths.join(this.dataDir, 'info.json');
+
+        const json = JSON.stringify(datastoreInfo, null, "  ");
+
+        await Files.writeFileAsync(infoPath, json);
+
+    }
+
+    public async overview(): Promise<DatastoreOverview> {
 
         const docMetaRefs = await this.getDocMetaRefs();
 
-        const created = ISODateTimeStrings.create(stat.ctime);
+        const datastoreInfo = await this.info();
+
+        const created = datastoreInfo.map(info => info.created).getOrUndefined();
 
         return {nrDocs: docMetaRefs.length, created};
 

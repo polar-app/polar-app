@@ -31,6 +31,10 @@ export class DatastoreOverviewPolicies {
 
     public static is24H(datastoreOverview: DatastoreOverview) {
 
+        if (! datastoreOverview.created) {
+            return false;
+        }
+
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
         return TimeDurations.hasElapsed(since, '1d');
 
@@ -40,6 +44,10 @@ export class DatastoreOverviewPolicies {
      * The user has onboarded and has been using the app for a while.
      */
     public static isActive(datastoreOverview: DatastoreOverview) {
+
+        if (! datastoreOverview.created) {
+            return false;
+        }
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
         return TimeDurations.hasElapsed(since, '1w') && datastoreOverview.nrDocs > 5;
@@ -51,6 +59,10 @@ export class DatastoreOverviewPolicies {
      * premium.
      */
     public static isPremium(datastoreOverview: DatastoreOverview) {
+
+        if (! datastoreOverview.created) {
+            return false;
+        }
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
         const elapsed = TimeDurations.hasElapsed(since, '2w');
