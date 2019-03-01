@@ -138,16 +138,16 @@ export class Pagemarks {
 
             for (const pageNum of Numbers.range(start, end)) {
 
-                const rect = createPagemarkRect(pageNum,
-                                                pageNum === end ? percentage : 100);
+                const rectPercentage =
+                    pageNum === end ? percentage : 100;
+
+                const rect = createPagemarkRect(pageNum, rectPercentage);
 
                 if (rect) {
 
                     const pagemark = Pagemarks.create({created, rect, batch});
 
-                    if (pagemark.percentage >= 100) {
-                        Pagemarks.deletePagemark(docMeta, pageNum);
-                    }
+                    // log.info(`FIXME: creating pagemark on pageNum: ${pageNum}: `, pagemark);
 
                     Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
 
