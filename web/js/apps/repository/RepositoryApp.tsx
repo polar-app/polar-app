@@ -222,7 +222,7 @@ export class RepositoryApp {
     private sendAnalytics() {
 
         const version = Version.get();
-        const platform = Platforms.get();
+        const platform = Platforms.toSymbol(Platforms.get());
 
         RendererAnalytics.event({category: 'app', action: 'version-' + version});
         RendererAnalytics.event({category: 'platform', action: `${platform}`});

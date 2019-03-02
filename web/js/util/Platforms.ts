@@ -31,11 +31,18 @@ export class Platforms {
 
     }
 
+    /**
+     * Get the symbol name for the enum.
+     */
+    public static toSymbol<T>(value: Platform.WINDOWS | Platform.MACOS | Platform.LINUX | Platform.UNKNOWN) {
+        return Platform[value];
+    }
+
 }
 
 export enum Platform {
     MACOS,
     WINDOWS,
     LINUX,
-    UNKNOWN,
+    UNKNOWN
 }
