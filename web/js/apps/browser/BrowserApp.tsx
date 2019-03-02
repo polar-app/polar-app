@@ -144,6 +144,9 @@ export class BrowserApp {
         log.debug("Loading URL: " + value);
 
         this.loadedURL = true;
+
+        RendererAnalytics.event({category: 'content-capture', action: 'loaded-url'});
+
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.PROVIDE_URL, value);
 
     }
@@ -159,6 +162,8 @@ export class BrowserApp {
     private onBrowserChanged(browserName: string) {
 
         const browser = BrowserRegistry[browserName];
+
+        RendererAnalytics.event({category: 'content-capture', action: 'browser-changed'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.CONFIGURE_WINDOW, browser);
 
