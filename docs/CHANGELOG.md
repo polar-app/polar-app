@@ -1,5 +1,20 @@
 
+# 1.13.9
+
+- upgrade to latest reactstrap and bootstrap versions.
+
 # 1.13.8
+
+- Should be the right amount of splashes now. 
+
+- Analytics for the add content button. Not sure if people are capturing pages
+  or not.
+
+- I inverted the splash time cutoff in this previous previous release and it
+  should be fixed now.   
+
+- Auto app update implemented for MacOS and Windows.  There is a random delay of 
+  3 days to prevent breaking clients in the wild.
 
 - Don't rely on GA to determine the OS.  Record it ourselves.
 

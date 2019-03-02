@@ -7,13 +7,6 @@ export class SplashLifecycle {
 
     public static canShow(): boolean {
 
-        // if (! LocalPrefs.get(SplashLifecycle.KEY).isPresent()) {
-        //     // require the delay on first startup so not to annoy people with
-        //     // too many splashes on the first startup.
-        //     this.markShown();
-        //     return false;
-        // }
-
         return ! LocalPrefs.isDelayed(SplashLifecycle.KEY, SplashLifecycle.DELAY);
 
     }

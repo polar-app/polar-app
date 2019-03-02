@@ -7,6 +7,7 @@ import {CallToActionLink} from '../components/CallToActionLink';
 import {EventTrackedLink} from '../components/EventTrackedLink';
 
 const LINK = 'https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/';
+const EVENT_CATEGORY = 'splash-chrome-extension-review';
 
 export class ChromeExtensionReview extends React.Component<IProps, IState> {
 
@@ -39,7 +40,13 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
                         </p>
 
                         <p className="text-center mt-4">
-                            <a className="btn btn-success btn-lg" href={LINK} role="button">Rate Chrome Extension</a>
+
+                            <EventTrackedLink eventCategory={EVENT_CATEGORY}
+                                              eventAction='clicked-cta'
+                                              href={LINK}>
+                                Review Polar Chrome Extension
+                            </EventTrackedLink>
+
                         </p>
 
                     </SplitLayoutLeft>
@@ -50,7 +57,7 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
 
                             <EventTrackedLink className=""
                                               eventCategory='splash-chrome-extension-review'
-                                              eventAction='clicked'
+                                              eventAction='clicked-image'
                                               href={LINK}>
 
                                 <img style={{maxHeight: '250px'}} src={EmbeddedImages.CHROME_LOGO}/>

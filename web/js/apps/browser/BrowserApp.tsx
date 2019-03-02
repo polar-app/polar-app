@@ -10,6 +10,7 @@ import BrowserRegistry from '../../capture/BrowserRegistry';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 import {BackgroundFrameResizer} from '../../viewer/html/BackgroundFrameResizer';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -143,11 +144,16 @@ export class BrowserApp {
         log.debug("Loading URL: " + value);
 
         this.loadedURL = true;
+
+        RendererAnalytics.event({category: 'content-capture', action: 'loaded-url'});
+
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.PROVIDE_URL, value);
 
     }
 
     private onTriggerCapture() {
+
+        RendererAnalytics.event({category: 'content-capture', action: 'triggered'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
 
@@ -156,6 +162,8 @@ export class BrowserApp {
     private onBrowserChanged(browserName: string) {
 
         const browser = BrowserRegistry[browserName];
+
+        RendererAnalytics.event({category: 'content-capture', action: 'browser-changed'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.CONFIGURE_WINDOW, browser);
 

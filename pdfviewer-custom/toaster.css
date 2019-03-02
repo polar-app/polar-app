@@ -13,3 +13,6 @@
     opacity: 1 !important;
 }
 
+.toast {
+    width: 400px;
+}

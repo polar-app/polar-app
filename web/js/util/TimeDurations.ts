@@ -27,11 +27,34 @@ export class TimeDurations {
 
     }
 
-    public static hasExpired(since: Date, duration: DurationStr) {
+    /**
+     * Compute a random duration based on the given duration.
+     * @param duration
+     */
+    public static toRandom(duration: DurationStr): DurationMS {
 
         const durationMS = this.toMillis(duration);
 
-        return ((Date.now() + durationMS) > since.getTime());
+        return Math.random() * durationMS;
+
+    }
+
+    /**
+     * Return true if the amount of time in the given duration has elapsed
+     * since the given date.
+     *
+     * @param since
+     * @param duration
+     */
+    public static hasElapsed(since: Date, duration: DurationStr, now: Date = new Date()) {
+
+        const durationMS = this.toMillis(duration);
+
+        const nowMS = now.getTime();
+
+        const cutoffMS = since.getTime() + durationMS;
+
+        return (nowMS > cutoffMS);
 
     }
 

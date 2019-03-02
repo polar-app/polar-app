@@ -63,7 +63,10 @@ export class LocalPrefs {
 
         if (pref && pref.match(/[0-9]+/)) {
 
-            if (Date.now() > parseInt(pref, 10)) {
+            const until = parseInt(pref, 10);
+            const now = Date.now();
+
+            if (now < until) {
                 return true;
             } else {
                 return false;

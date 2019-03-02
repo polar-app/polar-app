@@ -5,7 +5,7 @@ import {Version} from '../../util/Version';
 import {AppLauncher} from './AppLauncher';
 import {Logger} from '../../logger/Logger';
 import {Promises} from '../../util/Promises';
-import {ManualUpdates} from '../../updates/ManualUpdates';
+import {Updates} from '../../updates/Updates';
 import {Platform, Platforms} from '../../util/Platforms';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
@@ -125,13 +125,6 @@ export class MainAppMenu {
 
     }
 
-
-    private platformSupportsUpdates() {
-
-        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && DistConfig.ENABLE_UPDATES;
-
-    }
-
     private createAboutMessage() {
 
         const dataDir = Directories.getDataDir().path;
@@ -191,7 +184,7 @@ export class MainAppMenu {
                 {
                     label: 'Quit',
                     accelerator: 'CmdOrCtrl+Q',
-                    click: this.mainAppController.cmdExit.bind(this.mainAppController)
+                    click: () => this.mainAppController.cmdExit()
                 },
             ]
         };
@@ -435,8 +428,8 @@ export class MainAppMenu {
                     label: 'Check for updates',
                     // only show on Windows and MacOS as all other platforms
                     // have their own dist system (for now).
-                    visible: this.platformSupportsUpdates(),
-                    click: ManualUpdates.checkForUpdates,
+                    visible: Updates.platformSupportsUpdates(),
+                    click: (item: Electron.MenuItem) => Updates.checkForUpdates(item),
                 },
 
                 {type: 'separator'},

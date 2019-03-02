@@ -157,6 +157,12 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </ul>
 
                     <p>
+                        Additionally, Polar supports <b>not just PDF</b> documents
+                        but capturing <b>web content</b> and storing
+                        it offline in your archive in perpetuity.
+                    </p>
+
+                    <p>
                         The tour should take about 60 seconds.
                     </p>
 

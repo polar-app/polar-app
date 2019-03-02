@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.13.7",
+  "version": "1.13.8",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -125,7 +125,7 @@
     "adm-zip": "~0.4.13",
     "babel-preset-es2017": "~6.24.1",
     "base58check": "~2.0.0",
-    "bootstrap": "~4.1.1",
+    "bootstrap": "^4.3.1",
     "codemirror": "~5.38.0",
     "convert-stream": "~1.0.2",
     "debug-stream": "~3.0.1",
@@ -184,7 +184,7 @@
     "react-select": "~2.1.2",
     "react-summernote": "~2.0.0",
     "react-table": "~6.8.6",
-    "reactstrap": "~6.5.0",
+    "reactstrap": "^7.1.0",
     "reflect-metadata": "~0.1.12",
     "requirejs": "~2.3.5",
     "rimraf": "~2.6.2",

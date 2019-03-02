@@ -147,7 +147,9 @@ export class MainAppController {
 
         if (doAppQuit) {
             log.info("Quitting app...");
+
             app.quit();
+
             log.info("Quitting app...done");
         }
 

@@ -111,30 +111,38 @@ export class PagemarkCoverageEventListener {
 
     private async onContextMenuCreatePagemarkToPoint(triggerEvent: TriggerEvent) {
 
-        const pageElement = this.docFormat.getPageElementFromPageNum(triggerEvent.pageNum);
-        const pageNum = triggerEvent.pageNum;
-        const verticalOffsetWithinPageElement = triggerEvent.points.pageOffset.y;
+        try {
 
-        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement)
-            .catch(err => log.error(err));
+            const pageElement = this.docFormat.getPageElementFromPageNum(triggerEvent.pageNum);
+            const pageNum = triggerEvent.pageNum;
+            const verticalOffsetWithinPageElement = triggerEvent.points.pageOffset.y;
 
-        RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
+            this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement)
+                .catch(err => log.error("Failed to create pagemark: ", err));
+
+        } finally {
+            RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
+        }
 
     }
 
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
     private async onMouseEventCreatePagemarkToPoint(event: MouseEvent) {
 
-        // this should always be .page since we're using currentTarget
-        const pageElement = Elements.untilRoot(<HTMLElement> event.currentTarget, ".page");
-        const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-        const eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
-        const verticalOffsetWithinPageElement = eventTargetOffset.top + event.offsetY;
+        try {
 
-        this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement)
-            .catch(err => log.error(err));
+            // this should always be .page since we're using currentTarget
+            const pageElement = Elements.untilRoot(<HTMLElement> event.currentTarget, ".page");
+            const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+            const eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
+            const verticalOffsetWithinPageElement = eventTargetOffset.top + event.offsetY;
 
-        RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
+            this.createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement)
+                .catch(err => log.error("Failed to create pagemark: ", err));
+
+        } finally {
+            RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
+        }
 
     }
 
@@ -149,6 +157,7 @@ export class PagemarkCoverageEventListener {
         log.info("percentage for pagemark: ", percentage);
 
         this.model.erasePagemark(pageNum);
+
         await this.model.createPagemarksForRange(pageNum, percentage);
 
     }

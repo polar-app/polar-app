@@ -129,6 +129,13 @@ export class ControlledAnnotationBars {
             y: -50
         };
 
+
+        // TODO use the mouseDirection on the activeSelectionEvent and place
+        // with top/bottom
+
+        // TODO: we have to compute the position above or below based on the
+        // direction of the mouse movement.
+
         const position = this.computePosition(pageElement, point, offset);
 
         const annotationBar = document.createElement('div');

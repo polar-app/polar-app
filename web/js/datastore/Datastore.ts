@@ -94,12 +94,23 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
 
 }
 
-export interface DatastoreOverview {
+export interface DatastoreInfo {
 
     /**
      * The time the datastore was created.
      */
     readonly created: ISODateTimeString;
+
+}
+
+export interface DatastoreOverview {
+
+    /**
+     * The time the datastore was created.  Right now we don't always know
+     * when the datastore was created due to adding this feature later (storing
+     * the creation time) later.
+     */
+    readonly created?: ISODateTimeString;
 
     /**
      * The number of documents in the datastore.
