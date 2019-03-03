@@ -1,10 +1,7 @@
 
 # 1.13.9
 
-- FIXME: escape in the tag select no longer works.
-
-- FIXME: I need DEDICATED filters for the annotation view. not re-used ones...
-
+- Fixed escape so the filtered tag input goes away.
 
 - Fixed bugs with deleting items when they were not selected.
 
