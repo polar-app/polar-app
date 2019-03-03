@@ -264,6 +264,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         const result: RepoDocInfo[] =
             this.state.selected
                 .map(selectedIdx => sortedData[selectedIdx])
+                .filter(item => isPresent(item))
                 .map(item => item._original);
 
         return result;

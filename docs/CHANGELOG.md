@@ -1,6 +1,8 @@
 
 # 1.13.9
 
+- Fixed bugs with deleting items when they were not selected.
+
 - added metrics for anki sync and the nr of successful and failed tasks.
 
 - Track screen resolution size and platform name properly  

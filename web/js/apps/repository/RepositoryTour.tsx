@@ -523,8 +523,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 hideBackButton: true
             },
 
+
             JoyrideTours.createImageStep({
-                target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}']`,
+                target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}'], #doc-table div`,
                 title: <Title>Open a document</Title>,
                 content: <div>
 
