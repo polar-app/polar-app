@@ -7,6 +7,12 @@ export class SplashLifecycle {
 
     public static canShow(): boolean {
 
+        if (! navigator.onLine) {
+            // almost all the splashes (possibly all of them) require the user
+            // to be online.
+            return false;
+        }
+
         return ! LocalPrefs.isDelayed(SplashLifecycle.KEY, SplashLifecycle.DELAY);
 
     }

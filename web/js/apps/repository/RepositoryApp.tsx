@@ -32,7 +32,6 @@ import {Version} from '../../util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
-import {Promises} from '../../util/Promises';
 import {RepositoryTour} from './RepositoryTour';
 import {LocalPrefs} from '../../ui/util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
@@ -220,10 +219,12 @@ export class RepositoryApp {
     private sendAnalytics() {
 
         const version = Version.get();
-        const platform = Platforms.get();
+        const platform = Platforms.toSymbol(Platforms.get());
+        const screen = `${window.screen.width}x${window.screen.height}`;
 
         RendererAnalytics.event({category: 'app', action: 'version-' + version});
         RendererAnalytics.event({category: 'platform', action: `${platform}`});
+        RendererAnalytics.event({category: 'screen', action: screen});
 
     }
 

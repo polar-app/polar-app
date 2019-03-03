@@ -132,7 +132,7 @@ export class DocMetas {
             docMeta = MetadataSerializer.deserialize(docMeta, data);
 
             if (docMeta.docInfo && !docMeta.docInfo.filename) {
-                log.warn("DocMeta has no filename: " + docMeta.docInfo.fingerprint);
+                // log.warn("DocMeta has no filename: " + docMeta.docInfo.fingerprint);
             }
 
             return DocMetas.upgrade(docMeta);
@@ -155,19 +155,19 @@ export class DocMetas {
         // an upgrade function for each object type...
 
         if (!docMeta.annotationInfo) {
-            log.debug("No annotation info.. Adding default.");
+            // log.debug("No annotation info.. Adding default.");
             docMeta.annotationInfo = AnnotationInfos.create();
         }
 
         if (!docMeta.attachments) {
-            log.debug("No attachments. Adding empty map.");
+            // log.debug("No attachments. Adding empty map.");
             docMeta.attachments = {};
         }
 
         if (docMeta.docInfo) {
 
             if (!docMeta.docInfo.pagemarkType) {
-                log.debug("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
+                // log.debug("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
                 docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
             }
 

@@ -9,7 +9,6 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tag';
-import {FilterTagInput} from '../FilterTagInput';
 import {FilteredTags} from '../FilteredTags';
 import {isPresent} from '../../../../web/js/Preconditions';
 import {Sets} from '../../../../web/js/util/Sets';
@@ -30,8 +29,7 @@ import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
-import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {Input, InputGroup} from 'reactstrap';
+import {Input} from 'reactstrap';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
@@ -47,6 +45,8 @@ import {DocButton} from './doc_buttons/DocButton';
 import {FlagDocButton} from './doc_buttons/FlagDocButton';
 import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
+import {DocRepoFilterBar} from './DocRepoFilterBar';
+import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
 
 const log = Logger.create();
 
@@ -58,17 +58,13 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly filteredTags = new FilteredTags();
-
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
-    private filterArchived = true;
-
-    private filterFlaggedOnly = false;
-
     private reactTable: any;
+
+    private readonly filteredRepoDocInfoIndex: FilteredRepoDocInfoIndex;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -80,8 +76,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
-        this.onFilterByTitle = this.onFilterByTitle.bind(this);
 
+        this.onFilterByTitle = this.onFilterByTitle.bind(this);
         this.onToggleFilterArchived = this.onToggleFilterArchived.bind(this);
         this.onToggleFlaggedOnly = this.onToggleFlaggedOnly.bind(this);
 
@@ -101,11 +97,17 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             selected: []
         };
 
+        const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
+
+        const repoDocInfosProvider = () => Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex);
+
+        this.filteredRepoDocInfoIndex =
+            new FilteredRepoDocInfoIndex(onRefreshed, repoDocInfosProvider);
+
         this.init();
 
         this.initAsync()
             .catch(err => log.error("Could not init: ", err));
-
 
     }
 
@@ -264,6 +266,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         const result: RepoDocInfo[] =
             this.state.selected
                 .map(selectedIdx => sortedData[selectedIdx])
+                .filter(item => isPresent(item))
                 .map(item => item._original);
 
         return result;
@@ -338,96 +341,26 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                             <div style={{marginLeft: 'auto'}}>
 
-                                <div id="filter-bar"
-                                    style={{
-                                        display: 'flex',
-                                        marginLeft: 'auto',
-                                        justifyContent: 'flex-end'
-                                    }}>
+                                <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
+                                                  onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
+                                                  onFilterByTitle={(title) => this.onFilterByTitle(title)}
+                                                  tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                  refresher={() => this.refresh()}
+                                                  filteredTags={this.filteredRepoDocInfoIndex.filters.filteredTags}
+                                                  right={
+                                               <div className=""
+                                                    style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <div className="mr-2"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <div className="checkbox-group">
-
-                                            <ToggleButton id="toggle-flagged"
-                                                          label="flagged"
-                                                          initialValue={false}
-                                                          onChange={value => this.onToggleFlaggedOnly(value)}/>
-
-                                            <SimpleTooltip target="toggle-flagged">Toggle showing flagged documents</SimpleTooltip>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className="header-filter-box mr-1"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <div className="checkbox-group">
-
-                                            <ToggleButton id="toggle-archived"
-                                                          label="archived"
-                                                          initialValue={false}
-                                                          onChange={value => this.onToggleFilterArchived(!value)}/>
-
-                                            <SimpleTooltip target="toggle-archived">Toggle showing archived documents</SimpleTooltip>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className="header-filter-box header-filter-tags mr-1"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <FilterTagInput id="filter-tag-input"
-                                                        tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                        refresher={() => this.refresh()}
-                                                        filteredTags={this.filteredTags} />
-
-                                        <SimpleTooltip target="filter-tag-input">Filter the document list by a specific tag.</SimpleTooltip>
-
-                                    </div>
-
-                                    <div className="header-filter-box mr-1"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <div className="header-filter-box">
-
-                                            <InputGroup size="sm">
-
-                                                {/*<InputGroupAddon addonType="prepend">*/}
-                                                {/*A*/}
-                                                {/*</InputGroupAddon>*/}
-
-                                                <Input id="filter_title"
-                                                       type="text"
-                                                       placeholder="Filter by title"
-                                                       onChange={() => this.onFilterByTitle()}/>
-
-                                                <SimpleTooltip target="filter_title">Filter the document list by the title of the document.</SimpleTooltip>
-
-                                            </InputGroup>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className=""
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <DocRepoTableDropdown id="table-dropdown"
-                                                              options={Object.values(this.state.columns)}
-                                                              onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
-                                    </div>
-
-                                </div>
+                                                   <DocRepoTableDropdown id="table-dropdown"
+                                                                         options={Object.values(this.state.columns)}
+                                                                         onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
+                                               </div>
+                                           }
+                                />
 
                             </div>
 
                         </div>
-
-
 
                     </div>
 
@@ -923,16 +856,15 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
 
-    private onFilterByTitle() {
+    private onFilterByTitle(title: string) {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
-
-        this.refresh();
+        this.filteredRepoDocInfoIndex.onFilterByTitle(title);
 
     }
 
-    public refresh() {
-        this.doRefresh(this.filter(Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex)));
+    private refresh() {
+        this.filteredRepoDocInfoIndex.refresh();
     }
 
     /**
@@ -949,90 +881,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             this.setState(state);
 
         }, 1);
-
-    }
-
-    private filter(repoDocInfos: RepoDocInfo[]): RepoDocInfo[] {
-
-        // always filter valid to make sure nothing corrupts the state.  Some
-        // other bug might inject a problem otherwise.
-        repoDocInfos = this.doFilterValid(repoDocInfos);
-        repoDocInfos = this.doFilterByTitle(repoDocInfos);
-        repoDocInfos = this.doFilterFlaggedOnly(repoDocInfos);
-        repoDocInfos = this.doFilterHideArchived(repoDocInfos);
-        repoDocInfos = this.doFilterByTags(repoDocInfos);
-
-        return repoDocInfos;
-
-    }
-
-    private doFilterValid(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-        return repoDocs.filter(current => RepoDocInfos.isValid(current));
-    }
-
-    private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        const filterElement = document.querySelector("#filter_title") as HTMLInputElement;
-
-        const filterText = filterElement.value;
-
-        if (! Strings.empty(filterText)) {
-
-            return repoDocs.filter(current => current.title &&
-                current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 );
-
-        }
-
-        return repoDocs;
-
-    }
-
-    private doFilterFlaggedOnly(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        if (this.filterFlaggedOnly) {
-            return repoDocs.filter(current => current.flagged);
-        }
-
-        return repoDocs;
-
-    }
-
-    private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        if (this.filterArchived) {
-            log.info("Applying archived filter");
-            return repoDocs.filter(current => !current.archived);
-        }
-
-        return repoDocs;
-
-    }
-
-    private doFilterByTags(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
-
-        const tags = Tags.toIDs(this.filteredTags.get());
-
-        return repoDocs.filter(current => {
-
-            if (tags.length === 0) {
-                // there is no filter in place...
-                return true;
-            }
-
-            if (! isPresent(current.docInfo.tags)) {
-                // the document we're searching over has not tags.
-                return false;
-            }
-
-            const intersection =
-                Sets.intersection(tags, Tags.toIDs(Object.values(current.docInfo.tags!)));
-
-            return intersection.length === tags.length;
-
-
-        });
 
     }
 
@@ -1083,13 +931,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
     private onToggleFlaggedOnly(value: boolean) {
-        this.filterFlaggedOnly = value;
-        this.refresh();
+        this.filteredRepoDocInfoIndex.onToggleFlaggedOnly(value);
     }
 
     private onToggleFilterArchived(value: boolean) {
-        this.filterArchived = value;
-        this.refresh();
+        this.filteredRepoDocInfoIndex.onToggleFilterArchived(value);
     }
 
     private cmdImportFromDisk() {

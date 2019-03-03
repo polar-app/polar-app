@@ -27,16 +27,12 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
                         <h2>Rate our Chrome Extension?</h2>
 
                         <p className="h5">
-                            How do you like Polar?  Could you take <b>1 minute</b> to
-                            rate our Chrome extension?
+                            Could you please take <b>1 minute</b> to rate our
+                            Chrome Extension?
                         </p>
 
                         <p className="h5">
                             These ratings greatly help other users discover Polar.
-                        </p>
-
-                        <p className="h5">
-                            Just click the link below and then select <i>Reviews</i> then click <i>Write a Review</i>.
                         </p>
 
                         <p className="text-center mt-4">
@@ -49,22 +45,30 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
 
                         </p>
 
+                        <p className="text-center text-muted">
+                            Just select <i>Reviews</i> then click <i>Write a Review</i> on the review page.
+                        </p>
+
                     </SplitLayoutLeft>
 
                     <SplitLayoutRight>
 
-                        <p className="text-center m-2">
+                        <div className="text-center m-2">
 
-                            <EventTrackedLink className=""
-                                              eventCategory='splash-chrome-extension-review'
-                                              eventAction='clicked-image'
-                                              href={LINK}>
+                            <div className="img-shadow">
 
-                                <img style={{maxHeight: '250px'}} src={EmbeddedImages.CHROME_LOGO}/>
+                                <EventTrackedLink className=""
+                                                  eventCategory='splash-chrome-extension-review'
+                                                  eventAction='clicked-image'
+                                                  href={LINK}>
 
-                            </EventTrackedLink>
+                                    <img style={{maxHeight: '250px'}} src={EmbeddedImages.CHROME_LOGO}/>
 
-                        </p>
+                                </EventTrackedLink>
+
+                            </div>
+
+                        </div>
 
                     </SplitLayoutRight>
 

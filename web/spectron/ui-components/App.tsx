@@ -35,6 +35,8 @@ import Button from 'reactstrap/lib/Button';
 import {Toaster} from '../../js/ui/toaster/Toaster';
 import {ipcRenderer} from 'electron';
 import {AlternativeToReview} from '../../../apps/repository/js/splash/splashes/alternativeto_review/AlternativeToReview';
+import {ChromeExtensionReview} from '../../../apps/repository/js/splash/splashes/chrome_extension_review/ChromeExtensionReview';
+import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -130,21 +132,19 @@ class App<P> extends React.Component<{}, IAppState> {
                 content: 'This another awesome feature!',
             },
         ];
-        // Toaster.success('A new update for Polar was downloaded.  Please restart.', 'Update downloaded', {
-        //          requiresAcknowledgment: true,
-        //          preventDuplicates: true
-        //      });
-        //
-        // Toaster.info('X A new update for Polar was downloaded.  Please restart.', 'Update downloaded', {
-        //     requiresAcknowledgment: true,
-        //     preventDuplicates: true
-        // });
+        // Toaster.success('A new update for Polar was downloaded.  Please
+        // restart.', 'Update downloaded', { requiresAcknowledgment: true,
+        // preventDuplicates: true });  Toaster.info('X A new update for Polar
+        // was downloaded.  Please restart.', 'Update downloaded', {
+        // requiresAcknowledgment: true, preventDuplicates: true });
 
         return (
 
             <div>
 
-                {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
+                <ChromeExtensionReview settingKey={'asdf'}/>
+
+                <Survey settingKey={'asdf'}/>
 
                 {/*<div style={{*/}
                         {/*width: '500px',*/}
@@ -201,7 +201,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</div>*/}
 
-                <AlternativeToReview settingKey={'asdf'}/>
+                {/*<AlternativeToReview settingKey={'asdf'}/>*/}
 
                 {/*<Premium settingKey='premium-key'/>*/}
 

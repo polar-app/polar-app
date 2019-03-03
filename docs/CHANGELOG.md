@@ -1,7 +1,17 @@
 
 # 1.13.9
 
-- upgrade to latest reactstrap and bootstrap versions.
+- Fixed escape so the filtered tag input goes away.
+
+- Fixed bugs with deleting items when they were not selected.
+
+- added metrics for anki sync and the nr of successful and failed tasks.
+
+- Track screen resolution size and platform name properly  
+
+- Only show splashes when the user is online
+
+- Upgrade to latest reactstrap and bootstrap versions.
 
 # 1.13.8
 

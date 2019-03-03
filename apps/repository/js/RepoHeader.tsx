@@ -127,6 +127,35 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         </div>
 
+                        {/*<UncontrolledDropdown size="sm">*/}
+
+                            {/*<DropdownToggle color="light">*/}
+                                {/*<i className="fas fa-ellipsis-v"></i>*/}
+                            {/*</DropdownToggle>*/}
+
+                            {/*<DropdownMenu className="shadow" right>*/}
+
+                                {/*<DropdownItem id="discord-button"*/}
+                                        {/*size="sm"*/}
+                                        {/*onClick={() => document.location!.href = 'https://discord.gg/GT8MhA6'}>*/}
+
+                                    {/*<i className="fab fa-discord"></i>*/}
+
+                                    {/*&nbsp; Chat with other Polar users*/}
+
+                                    {/*<SimpleTooltip target="discord-button"*/}
+                                                   {/*placement="left">*/}
+
+                                        {/*Chat with other Polar users live on Discord.*/}
+
+                                    {/*</SimpleTooltip>*/}
+
+                                {/*</DropdownItem>*/}
+                            {/*</DropdownMenu>*/}
+
+
+                        {/*</UncontrolledDropdown>*/}
+
                     </SplitBarRight>
 
                 </SplitBar>

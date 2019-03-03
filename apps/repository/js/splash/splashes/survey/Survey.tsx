@@ -22,17 +22,11 @@ export class Survey extends React.Component<IProps, IState> {
 
                     <SplitLayoutLeft>
 
-                        <h2>How's Polar working for you?</h2>
+                        <h2>What do you think of Polar?</h2>
 
                         <p className="h5">
-                            Could you take <b>2 minutes</b> and <a href={SURVEY_LINK}>answer 10 questions
-                        </a> about
+                            Could you take <b>2 minutes</b> and answer 10 questions about
                             your use of Polar?
-                        </p>
-
-                        <p className="h5">
-                            We read <i>every</i> response and your feedback is
-                            critical to the success of Polar!
                         </p>
 
                         <p className="text-center mt-4">
@@ -42,6 +36,11 @@ export class Survey extends React.Component<IProps, IState> {
                                 Provide Feedback
                             </CallToActionLink>
 
+                        </p>
+
+                        <p className="text-center text-muted">
+                            We read <i>every</i> response and your feedback is
+                            critical to the success of Polar!
                         </p>
 
                     </SplitLayoutLeft>

@@ -15,6 +15,7 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
+import {FilteredRepoDocInfoIndex, RefreshedCallback} from '../doc_repo/FilteredRepoDocInfoIndex';
 
 const log = Logger.create();
 
@@ -55,7 +56,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     public onSelected(selected: number,
                       repoAnnotation: RepoAnnotation) {
 
-        this.setState({...this.state, selected});
+        this.setState({...this.state, selected, repoAnnotation});
         this.props.onSelected(repoAnnotation);
 
     }
@@ -235,6 +236,12 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
     private doRefresh(data: RepoAnnotation[]) {
 
+        // const selected = data.length > 0 ? 0 | undefined;
+
+        // if (selected) {
+        //     // this.props.onSelected(data[0]);
+        // }
+
         const state: IState = {...this.state, data};
 
         setTimeout(() => {
@@ -266,5 +273,7 @@ interface IProps {
 interface IState extends IReactTableState {
 
     data: RepoAnnotation[];
+
+    repoAnnotation?: RepoAnnotation;
 
 }

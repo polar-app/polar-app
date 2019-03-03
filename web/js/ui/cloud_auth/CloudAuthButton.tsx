@@ -109,7 +109,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
                             Cloud Sync
                         </DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu className="shadow" right>
                             <DropdownItem id="cloud-sync-invite-users"
                                           size="sm"
                                           onClick={() => this.changeAuthStage('invite')}>

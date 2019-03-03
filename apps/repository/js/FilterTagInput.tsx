@@ -89,6 +89,7 @@ export class FilterTagInput extends React.Component<IProps, IState> {
                         </div>
 
                         <Select
+                            escapeClearsValue
                             isMulti
                             isClearable
                             autoFocus

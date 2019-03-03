@@ -2,6 +2,7 @@ import * as React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TooltipDropdown} from './TooltipDropdown';
+import {Blackout} from '../Blackout';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 
 export class AddContentButton extends React.Component<IProps, IState> {
@@ -35,7 +36,7 @@ export class AddContentButton extends React.Component<IProps, IState> {
                     <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
                 </DropdownToggle>
 
-                <DropdownMenu>
+                <DropdownMenu className="shadow">
 
                     <DropdownItem id="add-content-import-from-disk"
                                   size="sm"
@@ -79,14 +80,6 @@ export class AddContentButton extends React.Component<IProps, IState> {
             </TooltipDropdown>
 
         );
-
-        {/*TODO: can't enable this as it fights with the */}
-        {/*dropdown toggle.*/}
-        {/*<Tooltip target="add-content-button">*/}
-        {/*Quickly add content including PDFs from*/}
-        {/*your local drive or web pages captured*/}
-        {/*from the web.*/}
-        {/*</Tooltip>*/}
 
     }
 
