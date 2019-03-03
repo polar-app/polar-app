@@ -11,6 +11,36 @@ import {remote} from 'electron';
 
 declare var document: HTMLDocument;
 
+export function injectApp(scriptSrc: string, fallbackLoader: () => void) {
+
+    if (typeof require === 'function') {
+        console.log("Loading via fallbackLoader");
+        fallbackLoader();
+    } else {
+        console.log("Loading via script");
+        injectScript(scriptSrc);
+    }
+
+}
+
+export function injectScript(src: string, type?: string) {
+
+    const script = document.createElement('script');
+    script.src = src;
+
+    // loading async is ugly but we're going to move to webpack and clean this
+    // up eventually.
+    script.async = false;
+    script.defer = false;
+
+    if (type) {
+        script.type = type;
+    }
+
+    document.body.appendChild(script);
+
+}
+
 /**
  * Work around for the issue of loading modules with require in Electron when
  * loading file URLs and needing to access the filesystem.
@@ -25,9 +55,10 @@ export function load(loadPath: string) {
      * name as returned by uname(3). For example 'Linux' on Linux, 'Darwin' on
      * macOS and 'Windows_NT' on Windows.
      */
-    const os_type = os.type();
+    const osType = os.type();
 
-    return _loadFromHref(document.location!.href, loadPath, os_type);
+    return _loadFromHref(document.location!.href, loadPath, osType);
+
 }
 
 export function loadFromAppPath(relativePath: string) {
@@ -40,11 +71,11 @@ export function loadFromAppPath(relativePath: string) {
  *
  * @param href The URL we're currently working with in the browser.
  * @param loadPath The path we want to load.
- * @param os_type  The os_type we're running under.
+ * @param osType  The os_type we're running under.
  * @private
  */
-export function _loadFromHref(href: string, loadPath: string, os_type: string) {
-    const resolvedPath = _resolveFromHref(href, loadPath, os_type);
+export function _loadFromHref(href: string, loadPath: string, osType: string) {
+    const resolvedPath = _resolveFromHref(href, loadPath, osType);
     require(resolvedPath);
 }
 
@@ -77,7 +108,7 @@ export function _toPath(href: string, loadPath: string, os_type: string): string
 //
 // }
 
-export function _toPathFromFileURL(href: string, os_type: string): string {
+export function _toPathFromFileURL(href: string, osType: string): string {
 
     let result = href;
 
@@ -92,7 +123,7 @@ export function _toPathFromFileURL(href: string, os_type: string): string {
 
     // os.type is 'Windows_NT' on Windows
 
-    if (os_type === 'Windows_NT') {
+    if (osType === 'Windows_NT') {
 
         // on Windows there's a / prefix on file names.
         result = result.substring(1);
@@ -135,14 +166,14 @@ export function _resolveURL(from: string, to: string) {
  *
  * @param href {string} The document.location.href
  * @param loadPath {string} The path expression to load.
- * @param os_type The os we're running under.
+ * @param osType The os we're running under.
  * @private
  */
-export function _resolveFromHref(href: string, loadPath: string, os_type: string) {
+export function _resolveFromHref(href: string, loadPath: string, osType: string) {
 
     const resolvedURL = _resolveURL(href, loadPath);
 
-    const resolvedPath = _toPath(resolvedURL, loadPath, os_type);
+    const resolvedPath = _toPath(resolvedURL, loadPath, osType);
 
     if (! fs.existsSync(resolvedPath)) {
         throw new Error(`Could not find ${loadPath} (not found): ${resolvedPath}`);

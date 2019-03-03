@@ -74,9 +74,17 @@ export class ResourcePaths {
 
         } else {
 
-            const base = window.location.href ?
-                URLs.toBase(window.location.href) :
-                "http://localhost:8500";
+            const computeBase = () => {
+
+                if (typeof window !== 'undefined' && window.location) {
+                    return URLs.toBase(window.location.href);
+                }
+
+                return "http://localhost:8500";
+
+            };
+
+            const base = computeBase();
 
             return base + relativeURL;
 
