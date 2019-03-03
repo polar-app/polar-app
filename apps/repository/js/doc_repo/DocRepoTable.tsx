@@ -63,10 +63,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
-    private filterArchived = true;
-
-    private filterFlaggedOnly = false;
-
     private reactTable: any;
 
     private readonly filters: Filters;
@@ -346,7 +342,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             <div style={{marginLeft: 'auto'}}>
 
                                 <FilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
-                                           onToggleFilterArchived={value => this.onToggleFilterArchived(!value)}
+                                           onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
                                            onFilterByTitle={(title) => this.onFilterByTitle(title)}
                                            tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                            refresher={() => this.refresh()}
@@ -897,8 +893,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         // other bug might inject a problem otherwise.
         repoDocInfos = this.doFilterValid(repoDocInfos);
         repoDocInfos = this.doFilterByTitle(repoDocInfos);
-        repoDocInfos = this.doFilterFlaggedOnly(repoDocInfos);
-        repoDocInfos = this.doFilterHideArchived(repoDocInfos);
+        repoDocInfos = this.doFilterFlagged(repoDocInfos);
+        repoDocInfos = this.doFilterArchived(repoDocInfos);
         repoDocInfos = this.doFilterByTags(repoDocInfos);
 
         return repoDocInfos;
@@ -922,9 +918,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private doFilterFlaggedOnly(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterFlagged(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
-        if (this.filterFlaggedOnly) {
+        if (this.filters.flagged) {
             return repoDocs.filter(current => current.flagged);
         }
 
@@ -932,10 +928,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
-        if (this.filterArchived) {
-            log.info("Applying archived filter");
+        if (! this.filters.archived) {
             return repoDocs.filter(current => !current.archived);
         }
 
@@ -1018,12 +1013,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
     private onToggleFlaggedOnly(value: boolean) {
-        this.filterFlaggedOnly = value;
+        this.filters.flagged = value;
         this.refresh();
     }
 
     private onToggleFilterArchived(value: boolean) {
-        this.filterArchived = value;
+        this.filters.archived = value;
         this.refresh();
     }
 
@@ -1076,7 +1071,17 @@ interface IMainAppController {
 }
 
 interface Filters {
+
+    /**
+     * When true, only show flagged documents.
+     */
     flagged: boolean;
+
+    /**
+     *  When true, show both archived and non-archived documents.
+     */
     archived: boolean;
+
     title: string;
+
 }

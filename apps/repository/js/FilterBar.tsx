@@ -56,7 +56,7 @@ export class FilterBar extends React.Component<IProps, IState> {
                                       initialValue={false}
                                       onChange={value => this.props.onToggleFlaggedOnly(value)}/>
 
-                        <SimpleTooltip target="toggle-flagged">Toggle showing flagged documents</SimpleTooltip>
+                        <SimpleTooltip target="toggle-flagged">Only show flagged documents when active.</SimpleTooltip>
 
                     </div>
 
@@ -70,9 +70,9 @@ export class FilterBar extends React.Component<IProps, IState> {
                         <ToggleButton id="toggle-archived"
                                       label="archived"
                                       initialValue={false}
-                                      onChange={value => this.props.onToggleFilterArchived(!value)}/>
+                                      onChange={value => this.props.onToggleFilterArchived(value)}/>
 
-                        <SimpleTooltip target="toggle-archived">Toggle showing archived documents</SimpleTooltip>
+                        <SimpleTooltip target="toggle-archived">Also show archived documents.  Archived documents are hidden by default.</SimpleTooltip>
 
                     </div>
 
