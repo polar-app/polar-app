@@ -135,7 +135,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         }
 
         if (type === 'cloud') {
-            return FirebasePersistenceLayerFactory.create();
+            return CloudPersistenceLayerFactory.create();
         }
 
         throw new Error("Unknown type: " + type);

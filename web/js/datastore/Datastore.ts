@@ -157,6 +157,7 @@ export abstract class AbstractDatastore {
     public async createBackup(): Promise<void> {
 
         // only supported with the disk datastore.
+        // TODO (webapp) I think this needs to be enabled for Firebase?
         // throw new Error("Not supported with this datatore");
 
     }

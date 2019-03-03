@@ -59,21 +59,48 @@ export class FileImportController {
 
         }
 
-        document.body.addEventListener('dragenter', (event) => this.onDragEnterOrOver(event));
-        document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event));
+        this.handleBlackout();
+
+        document.body.addEventListener('dragenter', (event) => this.onDragEnterOrOver(event), false);
+        document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event), false);
+
         document.body.addEventListener('drop', event => this.onDrop(event));
 
         log.info("File import controller started");
 
     }
 
-    private onDragEnterOrOver(event: DragEvent) {
-        event.preventDefault();
+    private handleBlackout() {
 
-        Blackout.enable();
-        // needed to tell the browser that onDrop is supported here...
+        // https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
+
+        let depth = 0;
+
+        document.body.addEventListener('dragenter', () => {
+
+            if (depth === 0) {
+                Blackout.enable();
+            }
+
+            ++depth;
+
+        });
+
+        document.body.addEventListener('dragleave', () => {
+
+            --depth;
+
+            if (depth === 0) {
+                Blackout.disable();
+            }
+
+        });
+
     }
 
+    private onDragEnterOrOver(event: DragEvent) {
+        event.preventDefault();
+    }
 
     private onDrop(event: DragEvent) {
 

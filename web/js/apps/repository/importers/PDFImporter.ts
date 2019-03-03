@@ -99,9 +99,9 @@ export class PDFImporter {
         // datastore. This could be optimized but wait until people complain
         // about it as it's probably premature at this point.
 
-        // FIXME: this doesn't work either becasue it assumes that we can easily
-        // and cheaply read from the URL / blob URL but I guess that's true in
-        // this situation though it's assuming a FILE and not a blob URL
+        // TODO(webapp): this doesn't work either becasue it assumes that we can
+        // easily and cheaply read from the URL / blob URL but I guess that's
+        // true in this situation though it's assuming a FILE and not a blob URL
         const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
@@ -116,7 +116,7 @@ export class PDFImporter {
 
         const toData = async (): Promise<BinaryFileData> => {
 
-            // FIXME: make this into a toBlob function call
+            // TODO(webapp): make this into a toBlob function call
             if (docPath.startsWith("blob:")) {
                 return await fetch(docPath).then(r => r.blob());
             }
