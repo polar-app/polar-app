@@ -47,6 +47,7 @@ import {DocButton} from './doc_buttons/DocButton';
 import {FlagDocButton} from './doc_buttons/FlagDocButton';
 import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
+import {FilterBar} from '../FilterBar';
 
 const log = Logger.create();
 
@@ -339,96 +340,25 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                             <div style={{marginLeft: 'auto'}}>
 
-                                <div id="filter-bar"
-                                    style={{
-                                        display: 'flex',
-                                        marginLeft: 'auto',
-                                        justifyContent: 'flex-end'
-                                    }}>
+                                <FilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
+                                           onToggleFilterArchived={value => this.onToggleFilterArchived(!value)}
+                                           onFilterByTitle={() => this.onFilterByTitle()}
+                                           tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                           refresher={() => this.refresh()}
+                                           filteredTags={this.filteredTags}
+                                           right={
+                                               <div className=""
+                                                    style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <div className="mr-2"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <div className="checkbox-group">
-
-                                            <ToggleButton id="toggle-flagged"
-                                                          label="flagged"
-                                                          initialValue={false}
-                                                          onChange={value => this.onToggleFlaggedOnly(value)}/>
-
-                                            <SimpleTooltip target="toggle-flagged">Toggle showing flagged documents</SimpleTooltip>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className="header-filter-box mr-1"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <div className="checkbox-group">
-
-                                            <ToggleButton id="toggle-archived"
-                                                          label="archived"
-                                                          initialValue={false}
-                                                          onChange={value => this.onToggleFilterArchived(!value)}/>
-
-                                            <SimpleTooltip target="toggle-archived">Toggle showing archived documents</SimpleTooltip>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className="header-filter-box header-filter-tags mr-1"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <FilterTagInput id="filter-tag-input"
-                                                        tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                        refresher={() => this.refresh()}
-                                                        filteredTags={this.filteredTags} />
-
-                                        <SimpleTooltip target="filter-tag-input">Filter the document list by a specific tag.</SimpleTooltip>
-
-                                    </div>
-
-                                    <div className="header-filter-box mr-1"
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <div className="header-filter-box">
-
-                                            <InputGroup size="sm">
-
-                                                {/*<InputGroupAddon addonType="prepend">*/}
-                                                {/*A*/}
-                                                {/*</InputGroupAddon>*/}
-
-                                                <Input id="filter_title"
-                                                       type="text"
-                                                       placeholder="Filter by title"
-                                                       onChange={() => this.onFilterByTitle()}/>
-
-                                                <SimpleTooltip target="filter_title">Filter the document list by the title of the document.</SimpleTooltip>
-
-                                            </InputGroup>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className=""
-                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                        <DocRepoTableDropdown id="table-dropdown"
-                                                              options={Object.values(this.state.columns)}
-                                                              onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
-                                    </div>
-
-                                </div>
+                                                   <DocRepoTableDropdown id="table-dropdown"
+                                                                         options={Object.values(this.state.columns)}
+                                                                         onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
+                                               </div>}
+                                />
 
                             </div>
 
                         </div>
-
-
 
                     </div>
 
