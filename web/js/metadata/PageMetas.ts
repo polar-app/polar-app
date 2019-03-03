@@ -19,14 +19,14 @@ export class PageMetas {
         forDict(pageMetas, (key, pageMeta) => {
 
             if (! isPresent(pageMeta.textHighlights)) {
-                log.debug("No textHighlights.  Assigning default.");
+                // log.debug("No textHighlights.  Assigning default.");
                 pageMeta.textHighlights = {};
             }
 
             // make sure legacy / old text highlights are given IDs.
             forDict(pageMeta.textHighlights, (_, textHighlight) => {
                 if (! textHighlight.id) {
-                    log.debug("Text highlight given ID");
+                    // log.debug("Text highlight given ID");
                     textHighlight.id = Hashcodes.createID(textHighlight.rects);
                 }
             });
@@ -34,37 +34,37 @@ export class PageMetas {
             // TODO: too much boilerplate here.
 
             if (! isPresent(pageMeta.areaHighlights)) {
-                log.debug("No areaHighlights.  Assigning default.");
+                // log.debug("No areaHighlights.  Assigning default.");
                 pageMeta.areaHighlights = {};
             }
 
             if (!pageMeta.pagemarks) {
-                log.debug("No pagemarks.  Assigning default (empty map)");
+                // log.debug("No pagemarks.  Assigning default (empty map)");
                 pageMeta.pagemarks = {};
             }
 
             if (!pageMeta.screenshots) {
-                log.debug("No screenshots.  Assigning default (empty map)");
+                // log.debug("No screenshots.  Assigning default (empty map)");
                 pageMeta.screenshots = {};
             }
 
             if (!pageMeta.notes) {
-                log.debug("No notes.  Assigning default (empty map)");
+                // log.debug("No notes.  Assigning default (empty map)");
                 pageMeta.notes = {};
             }
 
             if (!pageMeta.comments) {
-                log.debug("No comments.  Assigning default (empty map)");
+                // log.debug("No comments.  Assigning default (empty map)");
                 pageMeta.comments = {};
             }
 
             if (!pageMeta.questions) {
-                log.debug("No questions.  Assigning default (empty map)");
+                // log.debug("No questions.  Assigning default (empty map)");
                 pageMeta.questions = {};
             }
 
             if (!pageMeta.readingProgress) {
-                log.debug("No readingProgressLog.  Assigning default (empty map)");
+                // log.debug("No readingProgressLog.  Assigning default (empty map)");
                 pageMeta.readingProgress = {};
             }
 

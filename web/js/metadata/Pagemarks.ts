@@ -284,17 +284,17 @@ export class Pagemarks {
             }
 
             if (! pagemark.id) {
-                log.debug("Pagemark given ID");
+                // log.debug("Pagemark given ID");
                 pagemark.id = key;
             }
 
             if ( ! pagemark.mode) {
-                log.debug("Using default pagemark mode.");
+                // log.debug("Using default pagemark mode.");
                 pagemark.mode = PagemarkMode.READ;
             }
 
             if ( ! isPresent(pagemark.percentage)) {
-                log.debug("No pagemark percentage. Assigning zero.");
+                // log.debug("No pagemark percentage. Assigning zero.");
                 pagemark.percentage = 0;
             }
 
