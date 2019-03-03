@@ -25,7 +25,6 @@ export class FilterBar extends React.Component<IProps, IState> {
 
     }
 
-
     public render() {
 
         const Right = () => {
@@ -105,7 +104,7 @@ export class FilterBar extends React.Component<IProps, IState> {
                             <Input id="filter_title"
                                    type="text"
                                    placeholder="Filter by title"
-                                   onChange={() => this.props.onFilterByTitle()}/>
+                                   onChange={(value) => this.props.onFilterByTitle(value.target.value)}/>
 
                             <SimpleTooltip target="filter_title">Filter the document list by the title of the document.</SimpleTooltip>
 
@@ -140,9 +139,10 @@ export interface IProps {
     readonly onToggleFilterArchived: ToggleCallback;
 
     /**
-     * Called when the title is filtered.
+     * Called when the title is filtered with the current value of the title to
+     * filter by.  When the title is "" then no filter is applied.
      */
-    readonly onFilterByTitle: () => void;
+    readonly onFilterByTitle: (title: string) => void;
 
     /**
      * An index of the currently available tags.

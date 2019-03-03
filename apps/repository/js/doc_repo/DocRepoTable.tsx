@@ -9,7 +9,6 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tag';
-import {FilterTagInput} from '../FilterTagInput';
 import {FilteredTags} from '../FilteredTags';
 import {isPresent} from '../../../../web/js/Preconditions';
 import {Sets} from '../../../../web/js/util/Sets';
@@ -30,8 +29,7 @@ import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
-import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {Input, InputGroup} from 'reactstrap';
+import {Input} from 'reactstrap';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
@@ -71,6 +69,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private reactTable: any;
 
+    private readonly filters: Filters;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -102,11 +102,16 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             selected: []
         };
 
+        this.filters = {
+            flagged: false,
+            archived: false,
+            title: ""
+        };
+
         this.init();
 
         this.initAsync()
             .catch(err => log.error("Could not init: ", err));
-
 
     }
 
@@ -342,7 +347,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                 <FilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
                                            onToggleFilterArchived={value => this.onToggleFilterArchived(!value)}
-                                           onFilterByTitle={() => this.onFilterByTitle()}
+                                           onFilterByTitle={(title) => this.onFilterByTitle(title)}
                                            tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                            refresher={() => this.refresh()}
                                            filteredTags={this.filteredTags}
@@ -353,7 +358,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                    <DocRepoTableDropdown id="table-dropdown"
                                                                          options={Object.values(this.state.columns)}
                                                                          onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
-                                               </div>}
+                                               </div>
+                                           }
                                 />
 
                             </div>
@@ -854,9 +860,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
 
-    private onFilterByTitle() {
+    private onFilterByTitle(title: string) {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
+
+        this.filters.title = title;
 
         this.refresh();
 
@@ -903,14 +911,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
-        const filterElement = document.querySelector("#filter_title") as HTMLInputElement;
-
-        const filterText = filterElement.value;
-
-        if (! Strings.empty(filterText)) {
+        if (! Strings.empty(this.filters.title)) {
 
             return repoDocs.filter(current => current.title &&
-                current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 );
+                current.title.toLowerCase().indexOf(this.filters.title.toLowerCase()) >= 0);
 
         }
 
@@ -1069,4 +1073,10 @@ interface IMainAppController {
     cmdImport(): Promise<void>;
 
     cmdCaptureWebPageWithBrowser(): Promise<void>;
+}
+
+interface Filters {
+    flagged: boolean;
+    archived: boolean;
+    title: string;
 }
