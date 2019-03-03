@@ -83,12 +83,6 @@ export class FileImportController {
 
         if (event.dataTransfer) {
 
-            console.log("FIXME1: ", event.dataTransfer.files);
-
-            for (const file of Array.from(event.dataTransfer.files)) {
-                console.log("FIXME: ", file);
-            }
-
             const files: AddFileRequest[] = Array.from(event.dataTransfer.files)
                 .filter(file => file.name.endsWith(".pdf"))
                 .map(file => {
@@ -166,9 +160,10 @@ export class FileImportController {
                     name: FilePaths.basename(path)
                 };
 
-                // FIXME: DO NOT enable this in the web UI... the upload could
-                // take forever.  It might be nice to open a tab showing the
-                // upload progress and then load the file once it's uploaded.
+                // TODO(webapp): DO NOT enable this in the web UI... the upload
+                // could take forever.  It might be nice to open a tab showing
+                // the upload progress and then load the file once it's
+                // uploaded.
                 this.docLoader.create({
                     fingerprint,
                     fileRef,
@@ -185,8 +180,6 @@ export class FileImportController {
     }
 
     private async doImportFiles(files: AddFileRequest[]): Promise<Array<Optional<ImportedFile>>> {
-
-        // FIXME: do we need to handle these via file or blob URLs?
 
         const progress = new ProgressCalculator(files.length);
 

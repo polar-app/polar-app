@@ -56,13 +56,9 @@ export class PDFImporter {
 
         const pdfMeta = await PDFMetadata.getMetadata(docPath);
 
-        console.log("FIXME1: ", pdfMeta);
-
         const persistenceLayer = this.persistenceLayerProvider.get();
 
         if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
-
-            console.log("FIXME2 already there. ");
 
             log.warn(`File already present in datastore: fingerprint=${pdfMeta.fingerprint}: ${docPath}`);
 
@@ -87,8 +83,6 @@ export class PDFImporter {
             return Optional.empty();
         }
 
-        console.log("FIXME4");
-
         // create a default title from the path which is used as sometimes the
         // filename is actually a decent first attempt at a document title.
 
@@ -109,8 +103,6 @@ export class PDFImporter {
         // and cheaply read from the URL / blob URL but I guess that's true in
         // this situation though it's assuming a FILE and not a blob URL
         const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
-
-        console.log("FIXME5");
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
 
@@ -154,15 +146,9 @@ export class PDFImporter {
             hashcode: docMeta.docInfo.hashcode
         };
 
-        console.log("FIXME5 writing file...");
-
         await persistenceLayer.writeFile(Backend.STASH, fileRef, data);
 
-        console.log("FIXME5 writing file...done");
-
         await persistenceLayer.write(pdfMeta.fingerprint, docMeta);
-
-        console.log("FIXME6 ");
 
         return Optional.of({
             stashFilePath,

@@ -73,8 +73,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
     public async init(errorListener: ErrorListener = NULL_FUNCTION,
                       opts: DatastoreInitOpts = {}): Promise<InitResult> {
 
-        console.log("FIXME: starting init");
-
         if (this.initialized) {
             return {};
         }
