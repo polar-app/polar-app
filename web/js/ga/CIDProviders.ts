@@ -2,6 +2,8 @@ import {remote} from 'electron';
 import {CIDProvider} from './CIDProvider';
 import {Logger} from '../logger/Logger';
 import {isPresent, Preconditions} from '../Preconditions';
+import {Optional} from '../util/ts/Optional';
+import {Providers} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -15,28 +17,38 @@ export class CIDProviders {
         if (remote) {
             return remote.getGlobal('cidProvider');
         } else {
-            return new CIDProvider("__none__");
+            return Optional.of(window.localStorage.getItem('cidProvider'))
+                .map(value => new CIDProvider(value))
+                .getOrNull();
         }
 
     }
 
     public static setInstance(provider: CIDProvider) {
 
-/*
-        Preconditions.assertPresent(provider, "provider");
+        if (remote) {
 
-        if (! isPresent(remote.getGlobal('cidProvider'))) {
-            log.warn("No global cid provider in remote");
-            // note that we can't track anything at this point but we might be
-            // in a testing framework which hasn't defined the variable we need
-            // within main.
-            return;
+            Preconditions.assertPresent(provider, "provider");
+
+            if (! isPresent(remote.getGlobal('cidProvider'))) {
+                log.warn("No global cid provider in remote");
+                // note that we can't track anything at this point but we might
+                // be in a testing framework which hasn't defined the variable
+                // we need within main.
+                return;
+            }
+
+            remote.getGlobal('cidProvider').value = provider.get();
+
+        } else {
+
+            const value = provider.get();
+
+            if (value) {
+                window.localStorage.setItem('cidProvider', value);
+            }
+
         }
-
-        remote.getGlobal('cidProvider').value = provider.get();
-
-        // log.debug("value is now: " + JSON.stringify(this.getInstance()));
-*/
 
     }
 
