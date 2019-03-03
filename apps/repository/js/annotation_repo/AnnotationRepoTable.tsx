@@ -15,6 +15,7 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
+import {FilteredRepoDocInfoIndex, RefreshedCallback} from '../doc_repo/FilteredRepoDocInfoIndex';
 
 const log = Logger.create();
 

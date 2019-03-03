@@ -1,6 +1,11 @@
 
 # 1.13.9
 
+- FIXME: escape in the tag select no longer works.
+
+- FIXME: I need DEDICATED filters for the annotation view. not re-used ones...
+
+
 - Fixed bugs with deleting items when they were not selected.
 
 - added metrics for anki sync and the nr of successful and failed tasks.

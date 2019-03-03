@@ -46,7 +46,7 @@ import {FlagDocButton} from './doc_buttons/FlagDocButton';
 import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {FilterBar} from '../FilterBar';
-import {FilteredRepoDocInfoIndex, RefreshedCallback} from '../FilteredRepoDocInfoIndex';
+import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
 
 const log = Logger.create();
 

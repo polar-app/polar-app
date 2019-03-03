@@ -1,12 +1,12 @@
-import {RepoDocInfo} from './RepoDocInfo';
-import {RepoDocInfos} from './RepoDocInfos';
-import {Strings} from '../../../web/js/util/Strings';
-import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
-import {Tags} from '../../../web/js/tags/Tags';
-import {isPresent} from '../../../web/js/Preconditions';
-import {Sets} from '../../../web/js/util/Sets';
-import {FilteredTags} from './FilteredTags';
-import {Provider} from '../../../web/js/util/Providers';
+import {RepoDocInfo} from '../RepoDocInfo';
+import {RepoDocInfos} from '../RepoDocInfos';
+import {Strings} from '../../../../web/js/util/Strings';
+import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
+import {Tags} from '../../../../web/js/tags/Tags';
+import {isPresent} from '../../../../web/js/Preconditions';
+import {Sets} from '../../../../web/js/util/Sets';
+import {FilteredTags} from '../FilteredTags';
+import {Provider} from '../../../../web/js/util/Providers';
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have
