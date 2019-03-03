@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {Logger} from '../../../web/js/logger/Logger';
-import {ToggleButton} from '../../../web/js/ui/ToggleButton';
-import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
-import {FilterTagInput} from './FilterTagInput';
+import {Logger} from '../../../../web/js/logger/Logger';
+import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
+import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
+import {FilterTagInput} from '../FilterTagInput';
 import {Input, InputGroup} from 'reactstrap';
-import {DocRepoTableDropdown} from './doc_repo/DocRepoTableDropdown';
-import {TagsDB} from './TagsDB';
-import {FilteredTags} from './FilteredTags';
+import {DocRepoTableDropdown} from './DocRepoTableDropdown';
+import {TagsDB} from '../TagsDB';
+import {FilteredTags} from '../FilteredTags';
 
 const log = Logger.create();
 
@@ -15,7 +15,7 @@ class Styles {
 
 }
 
-export class FilterBar extends React.Component<IProps, IState> {
+export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -56,7 +56,7 @@ export class FilterBar extends React.Component<IProps, IState> {
                                       initialValue={false}
                                       onChange={value => this.props.onToggleFlaggedOnly(value)}/>
 
-                        <SimpleTooltip target="toggle-flagged">Only show flagged documents when active.</SimpleTooltip>
+                        <SimpleTooltip target="toggle-flagged">Only show flagged documents.</SimpleTooltip>
 
                     </div>
 
@@ -72,7 +72,7 @@ export class FilterBar extends React.Component<IProps, IState> {
                                       initialValue={false}
                                       onChange={value => this.props.onToggleFilterArchived(value)}/>
 
-                        <SimpleTooltip target="toggle-archived">Also show archived documents.  Archived documents are hidden by default.</SimpleTooltip>
+                        <SimpleTooltip target="toggle-archived">Show both archived and unarchived documents.  Archived documents are hidden by default.</SimpleTooltip>
 
                     </div>
 

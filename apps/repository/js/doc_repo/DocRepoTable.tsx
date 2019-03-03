@@ -45,7 +45,7 @@ import {DocButton} from './doc_buttons/DocButton';
 import {FlagDocButton} from './doc_buttons/FlagDocButton';
 import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
-import {FilterBar} from '../FilterBar';
+import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
 
 const log = Logger.create();
@@ -341,13 +341,13 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                             <div style={{marginLeft: 'auto'}}>
 
-                                <FilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
-                                           onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
-                                           onFilterByTitle={(title) => this.onFilterByTitle(title)}
-                                           tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                           refresher={() => this.refresh()}
-                                           filteredTags={this.filteredRepoDocInfoIndex.filters.filteredTags}
-                                           right={
+                                <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
+                                                  onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
+                                                  onFilterByTitle={(title) => this.onFilterByTitle(title)}
+                                                  tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                  refresher={() => this.refresh()}
+                                                  filteredTags={this.filteredRepoDocInfoIndex.filters.filteredTags}
+                                                  right={
                                                <div className=""
                                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
