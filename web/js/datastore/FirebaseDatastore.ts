@@ -1,4 +1,19 @@
-import {AbstractDatastore, BinaryFileData,, Datastore, DatastoreConsistency, DatastoreInitOpts, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, SnapshotResult, DatastoreOverview} from './Datastore';
+import {AbstractDatastore,
+        BinaryFileData,
+        Datastore,
+        DatastoreConsistency,
+        DatastoreInitOpts,
+        DeleteResult,
+        DocMetaMutation,
+        DocMetaSnapshotEvent,
+        DocMetaSnapshotEventListener,
+        ErrorListener,
+        FileMeta,
+        FileRef,
+        InitResult,
+        MutationType,
+        SnapshotResult,
+        DatastoreOverview} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';

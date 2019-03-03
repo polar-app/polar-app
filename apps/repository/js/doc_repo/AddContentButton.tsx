@@ -2,7 +2,6 @@ import * as React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TooltipDropdown} from './TooltipDropdown';
-import {Blackout} from '../Blackout';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 
 export class AddContentButton extends React.Component<IProps, IState> {

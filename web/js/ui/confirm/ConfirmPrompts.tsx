@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Blackout} from '../../../../apps/repository/js/Blackout';
 import {ConfirmPrompt, ConfirmPromptProps} from './ConfirmPrompt';
+import {Blackout} from '../blackout/Blackout';
 
 const ID = 'confirm-popover-container';
 
