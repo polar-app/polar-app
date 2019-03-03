@@ -25,19 +25,19 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" href="../../node_modules/summernote/dist/summernote-bs4.css">
-    <link rel="stylesheet" href="../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.css">
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 
-    <link rel="stylesheet" href="../../node_modules/@burtonator/react-buttons/dist/react-buttons.css">
-    <link rel="stylesheet" href="../../node_modules/@burtonator/react-dropdown/dist/react-dropdown.css">
+    <link rel="stylesheet" href="/node_modules/@burtonator/react-buttons/dist/react-buttons.css">
+    <link rel="stylesheet" href="/node_modules/@burtonator/react-dropdown/dist/react-dropdown.css">
 
     <!-- TODO: these need to load locally before we enable firebase in production -->
-    <script src="../../node_modules/firebase/firebase.js"></script>
-    <script src="../../node_modules/firebaseui/dist/firebaseui.js"></script>
-    <link rel="stylesheet" href="../../node_modules/firebaseui/dist/firebaseui.css" />
+    <script src="/node_modules/firebase/firebase.js"></script>
+    <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
+    <link rel="stylesheet" href="/node_modules/firebaseui/dist/firebaseui.css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="google" content="notranslate">
@@ -51,37 +51,41 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <meta name="polar-doc-format" content="pdf">
 
-    <link rel="stylesheet" href="../../node_modules/toastr/build/toastr.min.css">
+    <link rel="stylesheet" href="/node_modules/toastr/build/toastr.min.css">
 
-    <!--<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
-    <!--<link rel="stylesheet" href="../../web/css/bootswatch-slate.min.css">-->
+    <link rel="stylesheet" href="/pdfviewer-custom/polar.css">
 
-    <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
+    <script>
 
-    <script src="../../web/dist/chrome-bundle.js" ></script>
+      const loader = require('loader');
 
-    <!--<script>-->
+      const fallbackLoader = () => {
 
-        <!--// REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when-->
-        <!--// loading over HTTP we can't find node_modules until we require().  We can-->
-        <!--// only find standard modules like 'fs' and 'electron' but not custom-->
-        <!--// modules so we have to just have these four lines repeated over and over-->
-        <!--// for each of our main apps.  In the future we should try to track down-->
-        <!--// why this is happening but I spent 1-2 hours on trying to figure out-->
-        <!--// the root cause with no resolution and this is a temporary workaround.-->
 
-        <!--if (typeof require === 'function') {-->
+          // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
+          // loading over HTTP we can't find node_modules until we require().  We can
+          // only find standard modules like 'fs' and 'electron' but not custom
+          // modules so we have to just have these four lines repeated over and over
+          // for each of our main apps.  In the future we should try to track down
+          // why this is happening but I spent 1-2 hours on trying to figure out
+          // the root cause with no resolution and this is a temporary workaround.
 
-            <!--const {remote} = require('electron');-->
-            <!--const path = require('path');-->
-            <!--const appPath = remote.getGlobal("appPath");-->
+          if (typeof require === 'function') {
 
-            <!--require(path.join(appPath, "web", "js", "apps", "electron.js"));-->
-        <!--} else {-->
-            <!--console.warn("Not running within Electron");-->
-        <!--}-->
+              const {remote} = require('electron');
+              const path = require('path');
+              const appPath = remote.getGlobal("appPath");
 
-    <!--</script>-->
+              require(path.join(appPath, "web", "js", "apps", "electron.js"));
+          } else {
+              console.warn("Not running within Electron");
+          }
+
+      }
+
+      loader.injectApp('/web/dist/chrome-bundle.js', fallbackLoader);
+
+    </script>
 
     <!-- END polar customization -->
 
