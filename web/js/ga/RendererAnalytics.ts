@@ -85,6 +85,11 @@ export class RendererAnalytics {
 
     }
 
+    public static timing(category: string, variable: string, time: string | number): void {
+        const callback = defaultCallback;
+        visitor.timing(category, variable, time).send(callback);
+    }
+
     public static set(fieldsObject: IFieldsObject): void {
 
         for (const key of Object.keys(fieldsObject)) {

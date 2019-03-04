@@ -150,7 +150,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                         // ['fontname', ['fontname']],
                         // ['para', ['ul', 'ol', 'paragraph']],
                         ['para', ['paragraph']],
-                        // ['table', ['table']],
+                        ['table', ['table']],
                         // ['insert', ['link', 'picture', 'video']],
                         ['insert', ['link', 'picture']],
                         ['view', []]

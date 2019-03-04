@@ -61,7 +61,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
             JoyrideTours.createImageStep({
                 target: '.polar-sidebar',
-                title: <Title>Document Repository</Title>,
+                title: <Title>Document Viewer</Title>,
                 content: <div>
                     <p>
                         This is the main document viewer and allows you to both
@@ -146,7 +146,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
                 steps={steps}
                 continuous={true}
                 callback={data => this.onCallback(data)}
-                run={! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED)}
+                run={! LifecycleToggle.isMarked(LifecycleEvents.VIEWER_TOUR_TERMINATED)}
                 showProgress={true}
                 showSkipButton={true}
                 styles={{
@@ -171,7 +171,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
     private onCallback(callbackProps: CallBackProps): void {
 
-        RendererAnalytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
+        RendererAnalytics.event({category: 'viewer-tour-steps', action: 'did-step-' + callbackProps.index});
 
         if (callbackProps.status === STATUS.SKIPPED || callbackProps.status === STATUS.FINISHED) {
 
