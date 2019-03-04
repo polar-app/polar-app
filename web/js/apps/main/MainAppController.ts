@@ -66,7 +66,9 @@ export class MainAppController {
 
         // send the messages to the renderer context now so that we can bulk
         // import them into the repo.
-        FileImportClient.send(FileImportRequests.fromPaths(files));
+        if (files) {
+            FileImportClient.send(FileImportRequests.fromPaths(files));
+        }
 
     }
 
@@ -258,11 +260,11 @@ export class MainAppController {
     /**
      * Open a dialog box for a PDF file.
      */
-    private async promptImportDocs(): Promise<string[]> {
+    private async promptImportDocs(): Promise<string[] | undefined> {
 
         const downloadsDir = app.getPath('downloads');
 
-        return new Promise<string[]>((resolve) => {
+        return new Promise<string[] | undefined>((resolve) => {
 
             dialog.showOpenDialog({
                   title: "Import Document",

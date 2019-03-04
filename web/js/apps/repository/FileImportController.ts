@@ -157,7 +157,7 @@ export class FileImportController {
 
         if (! isPresent(fileImportRequest.files) || fileImportRequest.files.length === 0) {
             // do not attempt an import if no files are given.  This way the
-            // progress bar doesn't flash \and then vanish again.
+            // progress bar doesn't flash and then vanish again.
             return;
         }
 
