@@ -1,6 +1,8 @@
 
 # 1.13.9
 
+- improved document links
+
 - Fixed bug where the viewer tour kept coming up.
 
 - Fixed nasty bug where the comment and flashcard text was hidden behind the 

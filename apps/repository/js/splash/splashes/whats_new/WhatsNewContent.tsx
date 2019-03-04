@@ -18,6 +18,86 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
+                    <h3>Polar 1.13.9</h3>
+
+                    <div className="intro">
+
+                        <p>
+                            Lots of polish in the 1.13.x series of releases.
+                            Enable support for a new user tour during onboarding
+                            and a great deal of bug fixes and usability
+                            enhancements.
+                        </p>
+
+                        <ul>
+
+                            <li>Drag and drop of whole directories works now... Including a UI showing the files being imported.  I need to include a timeout though.</li>
+                            <li>A number of changes needed for the webapp are now merged into master.</li>
+                            <li>Blackout when dragging files onto polar and drag to import now works.</li>
+                            <li>Fixed escape so the filtered tag input goes away.</li>
+                            <li>Fixed bugs with deleting items when they were not selected.</li>
+                            <li>added metrics for anki sync and the nr of successful and failed tasks.</li>
+                            <li>Track screen resolution size and platform name properly</li>
+                            <li>Only show splashes when the user is online</li>
+                            <li>Upgrade to latest reactstrap and bootstrap versions.</li>
+
+                        </ul>
+
+                        <h4>1.13.8</h4>
+
+                        <ul>
+                            <li>Should be the right amount of splashes now.</li>
+                            <li>Analytics for the add content button. Not sure if people are capturing pages or not.</li>
+                            <li>I inverted the splash time cutoff in this previous previous release and it should be fixed now.</li>
+                            <li>Auto app update implemented for MacOS and Windows.  There is a random delay of 3 days to prevent breaking clients in the wild.</li>
+                            <li>Don't rely on GA to determine the OS.  Record it ourselves.</li>
+                            <li>Enabling auto-updates in this release to keep everyone on the latest so I can iterate faster.</li>
+                        </ul>
+
+                        <h4>1.13.7</h4>
+
+                        <ul>
+                            <li>quick release to disable another GA feature which could be breaking our analytics</li>
+                            <li>Fixed Premium splash layout on smaller screens...</li>
+                        </ul>
+
+                        <h4>1.13.6</h4>
+
+                        <ul>
+                            <li>Splash messages should be delivered to users at the right times now.</li>
+                            <li>I think I fixed a bug with tracking not working due to including 'app version' in the analytics data.</li>
+                        </ul>
+
+                        <h4>1.13.5</h4>
+
+                        <ul>
+                            <li>multi-delete button for bulk deleting documents</li>
+                            <li>buttons in the doc repo are a bit bigger for better hit targets</li>
+                            <li>multi-column selection by checkbox now to make it a bit more obvious for users to select multiple documents</li>
+                            <li>Clicking flagged or archived buttons no longer select the row which was confusing.</li>
+                        </ul>
+
+                        <h4>1.13.4</h4>
+
+                        <ul>
+                            <li>Preview release DID NOT load the example docs (BAD BUG)</li>
+                            <li>Now targeting header in the tour to avoid scroll.</li>
+                        </ul>
+
+                        <h4>1.13.3</h4>
+
+                        <ul>
+                            <li>New tour feedback and the end of the tour.</li>
+                            <li>Only load example docs once.</li>
+                            <li>GA events for cloud login and configured</li>
+                            <li>User-Agent was not being properly tracked and this as very important to detect which Operating Systems were being used.</li>
+                            <li>Fixed problem with constraining the window sizes on smaller displays like smaller laptops.</li>
+                            <li>Sidebar now visible by default and the setting remembered with a local pref.</li>
+                            <li>Fixed messenger and F10 and other commands that were accidentally broken in this release.</li>
+                        </ul>
+
+                    </div>
+
                     <h3>Polar 1.12</h3>
 
                     <div className="intro">
@@ -33,12 +113,6 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                             per day and an integrated calendar chart showing
                             this visually in the stats page.
                         </p>
-
-
-                        <ul>
-
-
-                        </ul>
 
                     </div>
 
