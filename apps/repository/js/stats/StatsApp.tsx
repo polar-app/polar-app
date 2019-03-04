@@ -7,7 +7,7 @@ import TopTagsChart from './TopTagsChart';
 import TopTagsTable from './TopTagsTable';
 import {MessageBanner} from '../MessageBanner';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../RepoHeader';
+import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import ReadingProgressTable from './ReadingProgressTable';
 

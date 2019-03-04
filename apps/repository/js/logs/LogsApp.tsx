@@ -5,7 +5,7 @@ import LogsContent from './LogsContent';
 import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 import ClearLogsButton from './ClearLogsButton';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../RepoHeader';
+import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
 const log = Logger.create();

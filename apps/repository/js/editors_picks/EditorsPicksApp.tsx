@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {EditorsPicksContent} from './EditorsPicksContent';
-import {RepoHeader} from '../RepoHeader';
+import {RepoHeader} from '../repo_header/RepoHeader';
 import {MessageBanner} from '../MessageBanner';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 

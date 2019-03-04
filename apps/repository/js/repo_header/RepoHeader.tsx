@@ -1,14 +1,16 @@
 import * as React from 'react';
-import {Logger} from '../../../web/js/logger/Logger';
-import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
-import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
-import {RepoSidebar} from './RepoSidebar';
-import {SplitBar, SplitBarLeft, SplitBarRight} from './SplitBar';
+import {Logger} from '../../../../web/js/logger/Logger';
+import {IStyleMap} from '../../../../web/js/react/IStyleMap';
+import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
+import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {RepoSidebar} from '../RepoSidebar';
+import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
 import Button from 'reactstrap/lib/Button';
-import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
-import {DropdownItem} from 'reactstrap';
-import {Nav} from '../../../web/js/ui/util/Nav';
+import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
+import {DropdownItem, UncontrolledDropdown} from 'reactstrap';
+import {Nav} from '../../../../web/js/ui/util/Nav';
+import DropdownToggle from 'reactstrap/lib/DropdownToggle';
+import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 
 const log = Logger.create();
 
@@ -127,34 +129,36 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         </div>
 
-                        {/*<UncontrolledDropdown size="sm">*/}
+                        <UncontrolledDropdown size="sm">
 
-                            {/*<DropdownToggle color="light">*/}
-                                {/*<i className="fas fa-ellipsis-v"></i>*/}
-                            {/*</DropdownToggle>*/}
+                            <DropdownToggle color="light" caret>
+                                <i className="fas fa-link"></i>
+                            </DropdownToggle>
 
-                            {/*<DropdownMenu className="shadow" right>*/}
+                            <DropdownMenu className="shadow" right>
 
-                                {/*<DropdownItem id="discord-button"*/}
-                                        {/*size="sm"*/}
-                                        {/*onClick={() => document.location!.href = 'https://discord.gg/GT8MhA6'}>*/}
+                                <DropdownItem header>Social Media</DropdownItem>
 
-                                    {/*<i className="fab fa-discord"></i>*/}
+                                <DropdownItem id="discord-button"
+                                        size="sm"
+                                        onClick={() => Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')}>
 
-                                    {/*&nbsp; Chat with other Polar users*/}
+                                    <i className="fab fa-discord"></i>
 
-                                    {/*<SimpleTooltip target="discord-button"*/}
-                                                   {/*placement="left">*/}
+                                    &nbsp; Disord
 
-                                        {/*Chat with other Polar users live on Discord.*/}
+                                    <SimpleTooltip target="discord-button"
+                                                   placement="left">
 
-                                    {/*</SimpleTooltip>*/}
+                                        Chat with other Polar users live on Discord.
 
-                                {/*</DropdownItem>*/}
-                            {/*</DropdownMenu>*/}
+                                    </SimpleTooltip>
+
+                                </DropdownItem>
+                            </DropdownMenu>
 
 
-                        {/*</UncontrolledDropdown>*/}
+                        </UncontrolledDropdown>
 
                     </SplitBarRight>
 

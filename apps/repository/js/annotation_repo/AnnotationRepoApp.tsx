@@ -9,7 +9,7 @@ import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import AnnotationRepoTable from './AnnotationRepoTable';
 import {Footer, Tips} from '../Utils';
-import {RepoHeader} from '../RepoHeader';
+import {RepoHeader} from '../repo_header/RepoHeader';
 import {MessageBanner} from '../MessageBanner';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';

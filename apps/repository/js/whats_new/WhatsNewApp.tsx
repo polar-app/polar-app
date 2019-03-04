@@ -3,7 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
 import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../RepoHeader';
+import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
 const log = Logger.create();

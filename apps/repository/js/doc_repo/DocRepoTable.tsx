@@ -35,7 +35,7 @@ import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TagButton} from './TagButton';
-import {RepoHeader} from '../RepoHeader';
+import {RepoHeader} from '../repo_header/RepoHeader';
 import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {AddContentButton} from './AddContentButton';
