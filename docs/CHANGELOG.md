@@ -1,6 +1,9 @@
 
 # 1.13.9
 
+- Drag and drop of whole directories works now... Including a UI showing the 
+  files being imported.  I need to include a timeout though.  
+
 - A number of changes needed for the webapp are now merged into master.  
 
 - Blackout when dragging files onto polar and drag to import now works.

@@ -37,6 +37,8 @@ import {ipcRenderer} from 'electron';
 import {AlternativeToReview} from '../../../apps/repository/js/splash/splashes/alternativeto_review/AlternativeToReview';
 import {ChromeExtensionReview} from '../../../apps/repository/js/splash/splashes/chrome_extension_review/ChromeExtensionReview';
 import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey';
+import {ProgressToaster} from '../../js/ui/progress_toaster/ProgressToaster';
+import {ProgressToasters} from '../../js/ui/progress_toaster/ProgressToasters';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -138,13 +140,18 @@ class App<P> extends React.Component<{}, IAppState> {
         // was downloaded.  Please restart.', 'Update downloaded', {
         // requiresAcknowledgment: true, preventDuplicates: true });
 
+        ProgressToasters.create()
+            .then(progressUpdater => {
+                progressUpdater.update({title: "Finding files (5) ... ", status: '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
+            });
+
         return (
 
             <div>
 
-                <ChromeExtensionReview settingKey={'asdf'}/>
+                {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
 
-                <Survey settingKey={'asdf'}/>
+                {/*<Survey settingKey={'asdf'}/>*/}
 
                 {/*<div style={{*/}
                         {/*width: '500px',*/}

@@ -42,14 +42,10 @@ export class Files {
      */
     public static async recursively(path: string,
                                     listener: (path: string) => Promise<void>,
-                                    aborter: Aborter = Providers.of(false)) {
+                                    aborter: Aborter = new Aborter(Providers.of(false))) {
 
-        // TODO: provide a function that returns true if we should abort the
-        // recursive find operation.
 
-        if (aborter()) {
-            return;
-        }
+        aborter.verify();
 
         if (! await this.existsAsync(path)) {
             throw new Error("Path does not exist: " + path);
@@ -61,24 +57,24 @@ export class Files {
                                   await Files.fileType(path),
                                   'Path had invalid type: ' + path);
 
-        if (aborter()) {
-            return;
-        }
+        aborter.verify();
 
         const dirEntries = await this.readdirAsync(path);
 
         for (const dirEntry of dirEntries) {
 
-            if (aborter()) {
-                return;
-            }
+            aborter.verify();
 
             const dirEntryPath = FilePaths.join(path, dirEntry);
             const dirEntryType = await this.fileType(dirEntryPath);
 
+            aborter.verify();
+
             if (dirEntryType === 'directory') {
 
-                await this.recursively(dirEntryPath, listener);
+                // since the aborter is passed this will throw and exception if
+                // it aborts
+                await this.recursively(dirEntryPath, listener, aborter);
 
             } else if (dirEntryType === 'file') {
 
@@ -625,22 +621,67 @@ export type DirectorySnapshotPredicate = (path: string, targetPath: string) => b
 
 export const ACCEPT_ALL: DirectorySnapshotPredicate = () => true;
 
-export type Aborter = () => boolean;
+/**
+ * Return true if we aborted due to using an aborter.
+ */
+export interface RecursionResult {
+    readonly aborted: boolean;
+}
+
+// I don't care of this class name is politically incorrect.  Let's be adults
+// here
+export type AbortionProvider = () => boolean;
+
+export class Aborter {
+
+    private aborted: boolean = false;
+
+    constructor(private provider: AbortionProvider) {
+    }
+
+    protected hasAborted(): boolean {
+        return this.provider();
+    }
+
+    /**
+     * Verify that we haven't yet aborted
+     */
+    public verify() {
+
+        if (this.hasAborted()) {
+            this.aborted = true;
+            throw new AbortionError("Operation terminated: ");
+        }
+
+    }
+
+    /**
+     * Return true if a caller actually aborted during operation in the past.
+     * Does not reflect the current state.
+     */
+    public wasMarkedAborted(): boolean {
+        return this.aborted;
+    }
+
+}
+
 
 export class Aborters {
 
     /**
      * Return a function that aborts after a given time.
      */
-    public static maxTime(duration: DurationStr = "1m"): () => boolean {
+    public static maxTime(duration: DurationStr = "1m"): Aborter {
 
         const durationMS = TimeDurations.toMillis(duration);
         const started = Date.now();
 
-        return (): boolean => {
-            return (Date.now() - started) > durationMS;
-        };
+        return new Aborter(() => (Date.now() - started) > durationMS);
 
     }
+
+}
+
+export class AbortionError extends Error {
 
 }

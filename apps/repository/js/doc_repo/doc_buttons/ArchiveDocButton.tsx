@@ -17,7 +17,7 @@ export class ArchiveDocButton extends React.Component<IProps, IState> {
         return (<DocButton onClick={() => this.props.onClick()}>
 
             <ToggleIcon className="fa fa-check"
-                        title="Flag document"
+                        title="Archive document"
                         active={this.props.active}/>
 
         </DocButton>);

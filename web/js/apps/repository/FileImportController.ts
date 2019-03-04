@@ -17,6 +17,10 @@ import {Blackout} from "../../ui/blackout/Blackout";
 import {FileImportRequest} from "./FileImportRequest";
 import {AddFileRequest} from "./AddFileRequest";
 import {AppRuntime} from "../../AppRuntime";
+import {PathStr} from '../../util/Strings';
+import {Files, Aborters} from "../../util/Files";
+import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
+import {AddFileRequests} from "./AddFileRequests";
 
 const log = Logger.create();
 
@@ -60,13 +64,18 @@ export class FileImportController {
         }
 
         this.handleBlackout();
+        this.handleDragAndDropFiles();
+
+        log.info("File import controller started");
+
+    }
+
+    private handleDragAndDropFiles() {
 
         document.body.addEventListener('dragenter', (event) => this.onDragEnterOrOver(event), false);
         document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event), false);
 
         document.body.addEventListener('drop', event => this.onDrop(event));
-
-        log.info("File import controller started");
 
     }
 
@@ -86,17 +95,20 @@ export class FileImportController {
 
         });
 
-        document.body.addEventListener('dragleave', () => {
-
+        const leaveOrDropHandler = () => {
             --depth;
 
             if (depth === 0) {
                 Blackout.disable();
             }
 
-        });
+        };
+
+        document.body.addEventListener('dragleave', leaveOrDropHandler);
+        document.body.addEventListener('drop', leaveOrDropHandler);
 
     }
+
 
     private onDragEnterOrOver(event: DragEvent) {
         event.preventDefault();
@@ -108,37 +120,30 @@ export class FileImportController {
 
         Blackout.disable();
 
+        this.handleDrop(event)
+            .catch(err => log.error("Unable to import: ", err));
+
+    }
+
+    private async handleDrop(event: DragEvent) {
+
+        // we have to do three main things here:
+
         if (event.dataTransfer) {
 
-            const files: AddFileRequest[] = Array.from(event.dataTransfer.files)
-                .filter(file => file.name.endsWith(".pdf"))
-                .map(file => {
+            const filesRecursively = await AddFileRequests.computeRecursively(event);
 
-                    if (file.path) {
+            const filesDirectly = AddFileRequests.computeDirectly(event.dataTransfer.files);
 
-                        // On Electron we have the file path directly.
-
-                        return {
-                            docPath: file.path,
-                            basename: FilePaths.basename(file.path)
-                        };
-
-                    } else {
-
-                        // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
-
-                        return {
-                            docPath: URL.createObjectURL(file),
-                            basename: file.name,
-                        };
-                    }
-
-                });
+            const files = [...filesDirectly, ...filesRecursively.getOrElse([])];
 
             if (files.length > 0) {
 
-                this.onImportFiles(files)
-                    .catch(err => log.error("Unable to import files: ", files, err));
+                try {
+                    await this.onImportFiles(files);
+                } catch (e) {
+                    log.error("Unable to import files: ", files, e);
+                }
 
             } else {
                 Toaster.error("Unable to upload files.  Only PDF uploads are supported.");

@@ -61,7 +61,7 @@ export class DocRepoTableDropdown extends React.Component<IProps, IState> {
                         <i className="fas fa-ellipsis-h"></i>
                     </DropdownToggle>
 
-                    <DropdownMenu style={Styles.DropdownMenu} right>
+                    <DropdownMenu className="shadow" style={Styles.DropdownMenu} right>
 
                         <DropdownItem onClick={() => this.select('change-columns')}>
                             Change Columns
