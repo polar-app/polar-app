@@ -149,6 +149,17 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+
+                <div style={{
+                    height: '300px',
+                    backgroundColor: 'red'
+                }}>
+
+
+                    <div className="fas fa-link" style={{fontSize: '17px', marginTop: 'auto', marginBottom: 'auto', display: 'inline-block'}}></div>
+
+                </div>
+
                 {/*<ChromeExtensionReview settingKey={'asdf'}/>*/}
 
                 {/*<Survey settingKey={'asdf'}/>*/}

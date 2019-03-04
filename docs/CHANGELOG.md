@@ -1,7 +1,7 @@
 
 # 1.13.9
 
-- Fixed bug where the tour viewer tour kept coming up.
+- Fixed bug where the viewer tour kept coming up.
 
 - Fixed nasty bug where the comment and flashcard text was hidden behind the 
   toolbar.

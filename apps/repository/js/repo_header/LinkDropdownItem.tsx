@@ -19,13 +19,27 @@ export class LinkDropdownItem extends React.Component<IProps, IState> {
                           size="sm"
                           onClick={() => this.onClick()}>
 
-                <i className={this.props.icon}
-                   style={{
-                       fontSize: '20px',
-                       marginTop: '3px',
-                   }}></i>
+                <div style={{
+                    display: 'flex'
+                }}>
 
-                &nbsp; {this.props.title}
+                    <div style={{
+                        width: '22px',
+                        display: 'flex'
+                    }}>
+
+                        <i className={this.props.icon}
+                           style={{
+                               fontSize: '20px',
+                               margin: 'auto',
+                           }}></i>
+
+                    </div>
+
+                    &nbsp; {this.props.title}
+
+                </div>
+
 
                 <SimpleTooltip target={this.props.id}
                                show={0}
