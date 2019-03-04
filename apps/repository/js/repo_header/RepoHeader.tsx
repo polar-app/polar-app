@@ -11,6 +11,7 @@ import {DropdownItem, UncontrolledDropdown} from 'reactstrap';
 import {Nav} from '../../../../web/js/ui/util/Nav';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import {LinkDropdownItem} from './LinkDropdownItem';
 
 const log = Logger.create();
 
@@ -129,7 +130,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         </div>
 
-                        <UncontrolledDropdown size="sm">
+                        <UncontrolledDropdown size="sm" id="links-dropdown">
 
                             <DropdownToggle color="light" caret>
                                 <i className="fas fa-link"></i>
@@ -139,24 +140,36 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                                 <DropdownItem header>Social Media</DropdownItem>
 
-                                <DropdownItem id="discord-button"
-                                        size="sm"
-                                        onClick={() => Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')}>
+                                <LinkDropdownItem id="discord-link"
+                                                  title="Discord"
+                                                  tooltip="Chat with other Polar users live on Discord."
+                                                  link="https://discord.gg/GT8MhA6"
+                                                  icon="fab fa-discord"/>
 
-                                    <i className="fab fa-discord"></i>
+                                <LinkDropdownItem id="reddit-link"
+                                                  title="Reddit"
+                                                  tooltip="Discuss Polar on the in the PolarBookshelf subreddit."
+                                                  link="https://www.reddit.com/r/PolarBookshelf/"
+                                                  icon="fab fa-reddit"/>
 
-                                    &nbsp; Disord
+                                {/*<DropdownItem header>Please Review Polar</DropdownItem>*/}
 
-                                    <SimpleTooltip target="discord-button"
-                                                   placement="left">
+                                {/*<LinkDropdownItem id="discord-link"*/}
+                                                  {/*title="Discord"*/}
+                                                  {/*tooltip="Chat with other Polar users live on Discord."*/}
+                                                  {/*link="https://discord.gg/GT8MhA6"*/}
+                                                  {/*icon="fab fa-discord"/>*/}
 
-                                        Chat with other Polar users live on Discord.
-
-                                    </SimpleTooltip>
-
-                                </DropdownItem>
                             </DropdownMenu>
 
+                            {/*TODO: use the dropdown tooltip code*/}
+
+                            {/*<SimpleTooltip target="links-dropdown"*/}
+                                           {/*placement="bottom">*/}
+
+                                {/*External links for additional information about Polar.*/}
+
+                            {/*</SimpleTooltip>*/}
 
                         </UncontrolledDropdown>
 
