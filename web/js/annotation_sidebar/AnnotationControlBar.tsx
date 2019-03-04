@@ -145,13 +145,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 </NullCollapse>
 
-                <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'flashcard'}>
+
+                <NullCollapse open={this.state.activeInputComponent === 'flashcard'}>
 
                     <AnnotationFlashcardBox id={annotation.id}
                                             onCancel={() => this.toggleActiveInputComponent('none')}
                                             onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>
 
-                </Collapse>
+                </NullCollapse>
 
             </div>
 
