@@ -1,10 +1,13 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
-NOTE: Polar is supported by community donations.  Bug reports and features are prioritized for people who make a donation: https://opencollective.com/polar-bookshelf
+**Bug reports and features are prioritized for people who make a donation or purchase Polar Premium** https://opencollective.com/polar-bookshelf
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
