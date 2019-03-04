@@ -133,7 +133,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                         <UncontrolledDropdown size="sm" id="links-dropdown">
 
                             <DropdownToggle color="light" caret>
-                                <i className="fas fa-link"></i>
+                                <i className="fas fa-link" style={{fontSize: '17px'}}></i>
                             </DropdownToggle>
 
                             <DropdownMenu className="shadow" right>
