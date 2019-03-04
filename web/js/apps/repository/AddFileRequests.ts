@@ -21,31 +21,37 @@ export class AddFileRequests {
 
     }
 
-    public static computeDirectly(files: FileList): AddFileRequest[] {
+    public static computeDirectly(event: DragEvent): AddFileRequest[] {
 
-        return Array.from(files)
-            .filter(file => file.name.endsWith(".pdf"))
-            .map(file => {
+        if (event.dataTransfer && event.dataTransfer.files) {
 
-                if (file.path) {
+            return Array.from(event.dataTransfer.files)
+                .filter(file => file.name.endsWith(".pdf"))
+                .map(file => {
 
-                    // On Electron we have the file path directly.
-                    return {
-                        docPath: file.path,
-                        basename: FilePaths.basename(file.path)
-                    };
+                    if (file.path) {
 
-                } else {
+                        // On Electron we have the file path directly.
+                        return {
+                            docPath: file.path,
+                            basename: FilePaths.basename(file.path)
+                        };
 
-                    // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+                    } else {
 
-                    return {
-                        docPath: URL.createObjectURL(file),
-                        basename: file.name,
-                    };
-                }
+                        // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
 
-            });
+                        return {
+                            docPath: URL.createObjectURL(file),
+                            basename: file.name,
+                        };
+                    }
+
+                });
+
+        } else {
+            return [];
+        }
 
     }
 

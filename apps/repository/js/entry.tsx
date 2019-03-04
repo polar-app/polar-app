@@ -9,10 +9,6 @@ async function start() {
 
     await Logging.init();
 
-    const timeout = setTimeout(() => console.log('asdf'), 10);
-
-
-
     await new RepositoryApp().start();
 
 }

@@ -131,9 +131,9 @@ export class FileImportController {
 
         if (event.dataTransfer) {
 
-            const filesRecursively = await AddFileRequests.computeRecursively(event);
+            const filesDirectly = AddFileRequests.computeDirectly(event);
 
-            const filesDirectly = AddFileRequests.computeDirectly(event.dataTransfer.files);
+            const filesRecursively = await AddFileRequests.computeRecursively(event);
 
             const files = [...filesDirectly, ...filesRecursively.getOrElse([])];
 
