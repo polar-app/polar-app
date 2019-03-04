@@ -116,15 +116,6 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         </Button>
 
-                        {/*<a className="text-muted ml-2"*/}
-                           {/*title="Jump to annotation contet"*/}
-                           {/*style={Styles.button}*/}
-                           {/*href="#" */}
-                           {/*onClick={() => this.onContext(annotation)}>*/}
-                            {/*<i style={Styles.icon}*/}
-                               {/*className="fas fa-bullseye"></i>*/}
-                        {/*</a>*/}
-
                         <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
                                             annotation={annotation}
                                             onDelete={() => this.onDelete(annotation)}

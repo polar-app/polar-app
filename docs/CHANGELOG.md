@@ -1,6 +1,11 @@
 
 # 1.13.9
 
+- Fixed bug where the tour viewer tour kept coming up.
+
+- Fixed nasty bug where the comment and flashcard text was hidden behind the 
+  toolbar.
+
 - Drag and drop of whole directories works now... Including a UI showing the 
   files being imported.  I need to include a timeout though.  
 
