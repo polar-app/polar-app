@@ -1,6 +1,8 @@
 
 # 1.13.9
 
+- A number of changes needed for the webapp are now merged into master.  
+
 - Blackout when dragging files onto polar and drag to import now works.
 
 - Fixed escape so the filtered tag input goes away.
