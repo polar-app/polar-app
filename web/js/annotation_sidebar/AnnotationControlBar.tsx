@@ -20,6 +20,7 @@ import {Flashcard} from '../metadata/Flashcard';
 import {Functions} from '../util/Functions';
 import {ClozeFields, FrontAndBackFields} from './flashcard_input/FlashcardInput';
 import {Logger} from '../logger/Logger';
+import {NullCollapse} from '../ui/null_collapse/NullCollapse';
 
 const log = Logger.create();
 
@@ -136,13 +137,13 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 </div>
 
-                <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'comment'}>
+                <NullCollapse open={this.state.activeInputComponent === 'comment'}>
 
                     <AnnotationCommentBox id={annotation.id}
                                           onCancel={() => this.toggleActiveInputComponent('none')}
                                           onCommentCreated={(html) => this.onCommentCreated(html)}/>
 
-                </Collapse>
+                </NullCollapse>
 
                 <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'flashcard'}>
 

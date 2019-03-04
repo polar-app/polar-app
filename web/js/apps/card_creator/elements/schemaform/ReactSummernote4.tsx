@@ -100,6 +100,10 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
 
         }
 
+        if (this.props.autofocus) {
+            this.editor.summernote('focus');
+        }
+
     }
 
     public componentWillReceiveProps(nextProps: any) {
