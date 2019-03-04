@@ -1,10 +1,19 @@
 ---
 name: Bug report
 about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
-NOTE: Polar is supported by community donations.  Bug reports and features are prioritized for people who make a donation: https://opencollective.com/polar-bookshelf
+**DONATE OR PURCHASE POLAR PREMIUM FOR PRIORITIZED SUPPORT AND FEATURES **
+
+**DONATE OR PURCHASE POLAR PREMIUM FOR PRIORITIZED SUPPORT AND FEATURES **
+
+https://opencollective.com/polar-bookshelf
+
+
 
 **Describe the bug**
 A clear and concise description of what the bug is.
