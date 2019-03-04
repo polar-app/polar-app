@@ -1,1 +1,1 @@
-const polar_release = '1.13.5';
+const polar_release = '1.13.8';

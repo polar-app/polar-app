@@ -167,18 +167,22 @@
 <p>This allows for annotations on document and connecting flashcards to these
 annotations and then synchronizing them directly to Anki.</p>
 
-<p>Polar supports a robust annotation system internally with features like text
-and highlights, and allowing comments and flashcards to be attached directly 
-to the text highlights.</p>
+<p>Polar supports a robust annotation system internally with features like text and
+area highlights, and allowing comments and flashcards to be attached directly to
+the highlights.</p>
 
 <p>This allows you to create flashcards but keep <em>context</em> associated with the 
 flashcards.</p>
+
+<p>The context is important.  When using spaced repetition you don’t want to forget 
+the context in the future.  You might forget about a topic or want to review
+and knowing the context is extremely important.</p>
 
 <h1 id="deck-mapping">Deck mapping</h1>
 
 <p>By default Polar stores all Anki cards in the ‘Default’ deck.</p>
 
-<p>You can change the deck per document by setting a tag with a ‘deck:’ prefix.</p>
+<p>You can change the deck per document by setting a tag with a <em>deck:</em> prefix.</p>
 
 <p>For example, if you want to store things in the ‘Technology’ deck you just 
 tag the document you’re reading as ‘deck:Technology’.</p>
@@ -186,6 +190,12 @@ tag the document you’re reading as ‘deck:Technology’.</p>
 <p>NOTE: In Polar versions prior to 1.8.0 we used a ‘deck per doc’ strategy where
 a new deck was created per document.  Not many users liked this and we removed
 it in 1.8.0. Technically it’s still supported but needs to be re-enabled.</p>
+
+<h1 id="card-types">Card Types</h1>
+
+<p>Both cloze deletion and front/back card types are supported.</p>
+
+<p>Cards also support rich text formatting (bold, italic, etc) as well as images.</p>
 
 <h1 id="setup">Setup</h1>
 
@@ -195,7 +205,15 @@ and restart Anki.  At this point Polar can sync to Anki properly.</p>
 <p>Note that we used to recommend Anki Connect but we suggest you install Polar
 Connect now which will have more functionality.</p>
 
-<h1 id="international-users">International Users!</h1>
+<h1 id="issues">Issues</h1>
+
+<h2 id="firewall">Firewall</h2>
+
+<p>If you have any issues connecting Anki make sure you don’t have a firewall in 
+place.  Polar Connect runs Anki on a specific port and Polar needs to connect
+via TCP to sync your flashcards.</p>
+
+<h2 id="international-users">International Users!</h2>
 
 <p><strong>*IMPORTANT</strong> If you’re using an non-English version of Anki you have to
 create note types for “Basic” and “Cloze” otherwise sync will fail.  Changing
@@ -204,15 +222,12 @@ on a fix for this issue.</p>
 
 <h1 id="usage">Usage</h1>
 
-<p>Once Polar Connect is running, go to <code class="highlighter-rouge">Tools | Sync Flashcards to Anki</code> from 
+<p>Once Polar Connect is running, go to <em>Tools | Sync Flashcards to Anki</em> from 
 within the Document Repository.</p>
 
 <h1 id="limitations">Limitations</h1>
 
 <ul>
-  <li>
-    <p>Only front/back cards for now.  We will implement more card types in the future.</p>
-  </li>
   <li>
     <p>No current ability to update flashcards.  Polar currently lacks a flashcard 
 update UI so this needs to be added to Polar before we can implement this in 
