@@ -59,8 +59,6 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <script>
 
-      const loader = require('polar-loader');
-
       const fallbackLoader = () => {
 
           // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
@@ -84,7 +82,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 
       }
 
-      loader.injectApp('/web/dist/chrome-bundle.js', fallbackLoader);
+      injectApp('/web/dist/chrome-bundle.js', fallbackLoader);
 
     </script>
 
