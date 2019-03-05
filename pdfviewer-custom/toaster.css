@@ -1,5 +1,5 @@
 
-.polar-viewer div#toast-container {
+.polar-viewer div#toastr-container {
     position: fixed;
     z-index: 9999999;
     top: 90px;
@@ -8,11 +8,11 @@
     font-size: 14px;
 }
 
-.toast-message,
-.toast {
+.toastr-message,
+.toastr {
     opacity: 1 !important;
 }
 
-.toast {
+.toastr {
     width: 400px !important;
 }
