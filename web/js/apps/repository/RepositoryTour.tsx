@@ -200,6 +200,12 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         and you can import documents individually or in bulk from
                         a local directory.
                     </p>
+
+                    <p>
+                        You can also just drag and drop files onto the document
+                        repository as well.
+                    </p>
+
                     <p>
                         Once the tour is over you'll probably want to use this
                         feature to add any documents you're currently reading.

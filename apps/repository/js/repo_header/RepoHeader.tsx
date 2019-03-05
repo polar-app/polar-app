@@ -130,7 +130,9 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         </div>
 
-                        <UncontrolledDropdown size="sm" id="links-dropdown">
+                        <UncontrolledDropdown className="ml-1"
+                                              size="sm"
+                                              id="links-dropdown">
 
                             <DropdownToggle color="light" caret>
 
