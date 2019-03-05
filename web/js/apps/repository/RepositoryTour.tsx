@@ -78,7 +78,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         primaryColor: '#007bff',
                         // textColor: '#004a14',
                         // width: 900,
-                        // zIndex: 1000,
+                        zIndex: 1000,
                     },
                     tooltipContainer: {
                         textAlign: 'left',
@@ -91,12 +91,12 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     private createSteps(): EnhancedStep[] {
 
-        // FIXME: click outside of the tour should not trigger 'next'
-
-        // FIXME: show them how to use the rich text area including images,
+        // TODO: show them how to use the rich text area including images,
         // HTML, etc.
 
-        // FIXME: full tour of capturing web documents
+        // TODO: full tour of capturing web documents
+
+        // TODO:
 
         const Term = (props: any) => {
             return <b><i>{props.children}</i></b>;
