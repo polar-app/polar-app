@@ -236,21 +236,19 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             }),
 
             JoyrideTours.createImageStep({
-                target: '#discord-button',
-                title: <Title>Chat</Title>,
+                target: '#links-dropdown',
+                title: <Title>Links</Title>,
                 content: <div>
                     <p>
-                        We have a directly link to <Term>chat</Term> to enable
-                        you to discuss Polar live with the developers and other
-                        users.
+                        We include direct links to additional tools including
+                        our <Term>Chrome Extension</Term> and <Term>chat</Term> to
+                        enable you to discuss Polar live with the developers and
+                        other users.
                     </p>
 
-                    <p>
-                        Feel free to jump in at any time and give us feedback.
-                    </p>
                 </div>,
                 image:
-                    <Icon className="fab fa-discord"/>
+                    <Icon className="fas fa-link"/>
 
             }),
 
