@@ -100,9 +100,6 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
 
     }
 
-    private onClick() {
-
-    }
 
 }
 

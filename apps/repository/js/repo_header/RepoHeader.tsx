@@ -13,6 +13,7 @@ import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {LinkDropdownItem} from './LinkDropdownItem';
 import {LinkDropdown} from './LinkDropdown';
+import {HelpDropdown} from './HelpDropdown';
 
 const log = Logger.create();
 
@@ -44,94 +45,9 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
 
-                        <div>
-
-                            <Button id="discord-button"
-                                    size="sm"
-                                    className="ml-1"
-                                    onClick={() => Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')}
-                                    color="light">
-
-                                <i className="fab fa-discord" style={{fontSize: '22px', marginTop: 'auto', marginBottom: 'auto'}}></i>
-
-                            </Button>
-
-                            <SimpleTooltip target="discord-button"
-                                           placement="bottom">
-
-                                Chat with other Polar users live on Discord.
-
-                            </SimpleTooltip>
-
-                        </div>
-
-
-                        <div>
-
-                            <Button id="donate-button"
-                                    size="sm"
-                                    className="ml-1"
-                                    onClick={() => Nav.openLinkWithNewTab('https://opencollective.com/polar-bookshelf')}
-                                    color="light">
-
-                                <i className="fas fa-donate" style={{fontSize: '22px'}}></i>
-
-                            </Button>
-
-                            <SimpleTooltip target="donate-button"
-                                           placement="bottom">
-
-                                Donate to support Polar.  Polar donations are
-                                very low and development can't continue without
-                                your support.
-
-                            </SimpleTooltip>
-
-                        </div>
-
-
-                        <div>
-
-                            <Button id="poll-button"
-                                    size="sm"
-                                    className="ml-1"
-                                    onClick={() => Nav.openLinkWithNewTab('https://kevinburton1.typeform.com/to/u1zNWG')}
-                                    color="light">
-
-                                <i className="fas fa-poll-h" style={{fontSize: '22px'}}></i>
-
-                            </Button>
-
-                            <SimpleTooltip target="poll-button"
-                                           placement="bottom">
-
-                                Take a quick survey about your usage of Polar
-                                to help us prioritize our feature roadmap.
-
-                            </SimpleTooltip>
-
-                        </div>
-
-                        <div>
-
-                            <Button id="help-button"
-                                    size="sm"
-                                    className="ml-1"
-                                    onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/docs/')}
-                                    color="light">
-                                <i className="fas fa-question"></i>
-                            </Button>
-
-                            <SimpleTooltip target="help-button"
-                                           placement="bottom">
-
-                                Read documentation about Polar.
-
-                            </SimpleTooltip>
-
-                        </div>
-
                         <LinkDropdown/>
+
+                        <HelpDropdown/>
 
                     </SplitBarRight>
 

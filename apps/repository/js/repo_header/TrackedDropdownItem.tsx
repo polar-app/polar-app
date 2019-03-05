@@ -28,7 +28,7 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
                         display: 'flex'
                     }}>
 
-                        <i className={this.props.icon}
+                        <i className={this.props.icon + ' text-muted'}
                            style={{
                                fontSize: '20px',
                                margin: 'auto',
