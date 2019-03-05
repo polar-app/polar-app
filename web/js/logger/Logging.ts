@@ -34,13 +34,11 @@ export class Logging {
      */
     public static async init() {
 
-        // const level = this.configuredLevel();
+        const level = this.configuredLevel();
 
-        // const target: ILogger = await this.createTarget(level);
+        const target: ILogger = await this.createTarget(level);
 
-        LoggerDelegate.set(new ConsoleLogger());
-
-        // await this.initWithTarget(target);
+        await this.initWithTarget(target);
 
     }
 
@@ -127,21 +125,17 @@ export class Logging {
 
         const loggingConfig = await this.loggingConfig();
 
-        // if (loggingConfig.target === LoggerTarget.CONSOLE) {
-        //     return new ConsoleLogger();
-        // } else {
-        //     throw new Error("Invalid target: " + loggingConfig.target);
-        // }
-
+        if (loggingConfig.target === LoggerTarget.CONSOLE) {
         return new ConsoleLogger();
+        } else {
+            throw new Error("Invalid target: " + loggingConfig.target);
+        }
 
     }
 
     private static async loggingConfig(): Promise<LoggingConfig> {
 
         if (AppRuntime.isElectron()) {
-
-            console.log("FIXME: loading config since we're in electron.");
 
             const directories = await new Directories().init();
 

@@ -9,10 +9,7 @@ export class Callers {
             throw new Error("No stack on error");
         }
 
-        console.log("FIXME: stack ", e.stack);
-
         const frame = stack.split("\n")[3];
-        console.log("FIXME: trying to parse caller from frame: " + frame);
 
         const result = Callers._parse(frame);
 
