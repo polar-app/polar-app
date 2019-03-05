@@ -1,6 +1,12 @@
 
 # 1.13.10
 
+- Fixed bad bug that broke capture (sorry)
+
+- More components are PureComponent now for faster performance.
+
+- New buttons at the top for cleaner nav.
+
 # 1.13.9
 
 - improved document links
