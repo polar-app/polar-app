@@ -51,6 +51,14 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       link="https://discord.gg/GT8MhA6"
                                       icon="fab fa-discord"/>
 
+                    <HelpDropdownItem id="create-issue-link"
+                                      title="Create Issue"
+                                      tooltip="Create an issue (bug or feature) for the developer to investigate."
+                                      link="https://github.com/burtonator/polar-bookshelf/issues/new/choose"
+                                      icon="fas fa-bug"/>
+
+                    <DropdownItem divider/>
+
                     <HelpDropdownItem id="donate-link"
                                       title="Donate"
                                       tooltip="Donate to Polar to support development."
