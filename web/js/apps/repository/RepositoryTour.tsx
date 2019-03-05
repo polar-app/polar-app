@@ -525,7 +525,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
 
             JoyrideTours.createImageStep({
-                target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}'], #doc-table div`,
+                target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}']`,
                 title: <Title>Open a document</Title>,
                 content: <div>
 
@@ -546,8 +546,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 spotlightClicks: true,
                 hideBackButton: true,
                 image:
-                    <Icon className="fas fa-book-open"/>
-
+                    <Icon className="far fa-file-pdf"/>
             }),
 
             // TODO: auto advance to this once the document has been opened and

@@ -71,7 +71,7 @@ export interface ImageStep {
     readonly title?: React.ReactNode;
     readonly content: React.ReactNode;
     readonly image: string | React.ReactNode;
-    readonly target: string;
+    readonly target: string | HTMLElement;
     readonly placement?: placement;
     readonly autoNext?: boolean;
     readonly hideBackButton?: boolean;
