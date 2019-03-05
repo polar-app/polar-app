@@ -10,9 +10,9 @@ console.log("Using N workers: " + workers);
 module.exports = {
     // mode: 'production',
     entry: {
-        "chrome": [ "./web/js/apps/chrome.ts"],
+        // "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
-        "login": [ "./apps/repository/js/login.ts"],
+        // "login": [ "./apps/repository/js/login.ts"],
     },
     module: {
 
