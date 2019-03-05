@@ -25,6 +25,8 @@ export class UpdatesController {
 
         }
 
+        log.info("started");
+
     }
 
     private onProgressInfo(progress: ProgressInfo) {

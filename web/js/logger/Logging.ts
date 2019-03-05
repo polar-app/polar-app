@@ -34,11 +34,13 @@ export class Logging {
      */
     public static async init() {
 
-        const level = this.configuredLevel();
+        // const level = this.configuredLevel();
 
-        const target: ILogger = await this.createTarget(level);
+        // const target: ILogger = await this.createTarget(level);
 
-        await this.initWithTarget(target);
+        LoggerDelegate.set(new ConsoleLogger());
+
+        // await this.initWithTarget(target);
 
     }
 
@@ -125,17 +127,21 @@ export class Logging {
 
         const loggingConfig = await this.loggingConfig();
 
-        if (loggingConfig.target === LoggerTarget.CONSOLE) {
-            return new ConsoleLogger();
-        } else {
-            throw new Error("Invalid target: " + loggingConfig.target);
-        }
+        // if (loggingConfig.target === LoggerTarget.CONSOLE) {
+        //     return new ConsoleLogger();
+        // } else {
+        //     throw new Error("Invalid target: " + loggingConfig.target);
+        // }
+
+        return new ConsoleLogger();
 
     }
 
     private static async loggingConfig(): Promise<LoggingConfig> {
 
         if (AppRuntime.isElectron()) {
+
+            console.log("FIXME: loading config since we're in electron.");
 
             const directories = await new Directories().init();
 
@@ -153,8 +159,10 @@ export class Logging {
                     // this is very clean though and wish there was a better way
                     // to do this.
 
-                    config = { level: LogLevels.fromName(config.level),
-                        target: config.target };
+                    config = {
+                        level: LogLevels.fromName(config.level),
+                        target: config.target
+                    };
 
                 }
 

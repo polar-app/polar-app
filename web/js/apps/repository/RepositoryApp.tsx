@@ -68,6 +68,7 @@ export class RepositoryApp {
         new UpdatesController().start();
 
         new ToasterService().start();
+
         new ProgressService().start();
 
         await this.doLoadExampleDocs();
