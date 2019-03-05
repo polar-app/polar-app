@@ -14,16 +14,21 @@ export class Platforms {
      */
     public static get(): Platform {
 
-        switch (process.platform.toLowerCase()) {
+        // this only works (right now) on node.
+        if (process && process.platform) {
 
-            case 'win32':
-                return Platform.WINDOWS;
+            switch (process.platform.toLowerCase()) {
 
-            case 'darwin':
-                return Platform.MACOS;
+                case 'win32':
+                    return Platform.WINDOWS;
 
-            case 'linux':
-                return Platform.LINUX;
+                case 'darwin':
+                    return Platform.MACOS;
+
+                case 'linux':
+                    return Platform.LINUX;
+
+            }
 
         }
 

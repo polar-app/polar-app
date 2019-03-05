@@ -45,8 +45,6 @@
 
   <script>
 
-      const loader = require('polar-loader');
-
       const fallbackLoader = () => {
 
           // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
@@ -63,7 +61,7 @@
 
       }
 
-      loader.injectApp('/web/dist/login-bundle.js', fallbackLoader);
+      injectApp('/web/dist/login-bundle.js', fallbackLoader);
 
   </script>
 

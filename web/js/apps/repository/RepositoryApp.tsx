@@ -37,6 +37,7 @@ import {LocalPrefs} from '../../ui/util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Platforms} from '../../util/Platforms';
 import {AppOrigin} from '../AppOrigin';
+import {AppRuntime} from '../../AppRuntime';
 
 const log = Logger.create();
 
@@ -231,23 +232,30 @@ export class RepositoryApp {
 
     private async doLoadExampleDocs() {
 
-        const persistenceLayer =
-            new DefaultPersistenceLayer(new DiskDatastore());
+        if (AppRuntime.isElectron()) {
 
-        await persistenceLayer.init();
+            // TODO: right now this only works on electron but we need a
+            // solution for working in the browser.
 
-        await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
+            const persistenceLayer =
+                new DefaultPersistenceLayer(new DiskDatastore());
 
-            // load the eample docs in the store.. on the first load we should
-            // propably make sure this doesn't happen more than once as the user
-            // could just delete all the files in their repo. await new
-            await new LoadExampleDocs(persistenceLayer).load();
+            await persistenceLayer.init();
 
-        }, async () => {
-            log.debug("Docs already exist in repo");
-        });
+            await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
-        await persistenceLayer.stop();
+                // load the eample docs in the store.. on the first load we should
+                // propably make sure this doesn't happen more than once as the user
+                // could just delete all the files in their repo. await new
+                await new LoadExampleDocs(persistenceLayer).load();
+
+            }, async () => {
+                log.debug("Docs already exist in repo");
+            });
+
+            await persistenceLayer.stop();
+
+        }
 
     }
 
