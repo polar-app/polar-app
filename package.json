@@ -160,7 +160,7 @@
     "js-cookie": "~2.2.0",
     "js-sha3": "~0.8.0",
     "jszip": "~3.1.5",
-    "loader": "file:./web/loader",
+    "polar-loader": "1.0.3",
     "lodash": "~4.17.10",
     "markdown-plus": "~2.5.2",
     "micromodal": "~0.3.2",

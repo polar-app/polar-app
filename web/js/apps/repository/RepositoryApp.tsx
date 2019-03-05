@@ -306,7 +306,7 @@ export class RepositoryApp {
         };
 
         handleUpdatedDocInfo()
-            .catch(err => log.error("Unable to update doc info: ", err));
+            .catch(err => log.error("Unable to update doc info with fingerprint: " + docInfo.fingerprint, err));
 
     }
 

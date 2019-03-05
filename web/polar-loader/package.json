@@ -1,6 +1,6 @@
 {
-  "name": "loader",
-  "version": "1.0.2",
+  "name": "polar-loader",
+  "version": "1.0.3",
   "description": "Simple Electron Package Loader",
   "main": "index.js",
   "scripts": {
