@@ -9,6 +9,13 @@ export class TimeDurations {
 
         const val = parseInt(duration.replace(/[smhw]/g, ""), 10);
 
+        // TODO: I don't think we handle 1m30s right now.
+
+        // TODO: would be nice to only accept a limited vocabulary so I could have
+        // type checking work. I could take the durations as varargs like
+
+        // '1m', '30s' and sum them.
+
         if (duration.endsWith("w")) {
             return sign * val * 7 * 24 * 60 * 60 * 1000;
         } else if (duration.endsWith("d")) {
@@ -42,6 +49,7 @@ export class TimeDurations {
     /**
      * Return true if the amount of time in the given duration has elapsed
      * since the given date.
+     *
      *
      * @param since
      * @param duration

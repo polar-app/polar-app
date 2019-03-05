@@ -66,7 +66,7 @@ export class DatastoreOverviewPolicies {
 
         const since = ISODateTimeStrings.parse(datastoreOverview.created);
         const elapsed = TimeDurations.hasElapsed(since, '2w');
-        const hasMinDocs = datastoreOverview.nrDocs > 25;
+        const hasMinDocs = datastoreOverview.nrDocs > 15;
 
         const result = elapsed && hasMinDocs;
 
