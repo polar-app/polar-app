@@ -6,7 +6,7 @@ import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
-export class DateTimeTableCell extends React.Component<IProps, any> {
+export class DateTimeTableCell extends React.PureComponent<IProps, any> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

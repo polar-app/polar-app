@@ -379,6 +379,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         id: 'doc-checkbox',
                                         Header: (col: ColumnRenderProps) => {
+                                            // TODO: move to a PureComponent to improve performance
 
                                             const checked = this.state.selected.length === col.data.length && col.data.length > 0;
 
@@ -432,6 +433,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         sortable: false,
                                         className: 'doc-checkbox',
                                         Cell: (row: any) => {
+                                            // TODO: move to a PureComponent to improve performance
 
                                             const viewIndex = row.viewIndex as number;
 
@@ -600,6 +602,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         },
                                         Cell: (row: any) => {
+                                            // TODO: move to a PureComponent to improve performance
 
                                             const tags: {[id: string]: Tag} = row.original.tags;
 
@@ -633,6 +636,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         resizable: false,
                                         className: 'doc-table-col-progress',
                                         Cell: (row: any) => (
+                                            // TODO: move to a PureComponent to improve performance
 
                                             <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
                                                 width: '100%'
@@ -650,6 +654,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         sortable: false,
                                         className: 'doc-dropdown',
                                         Cell: (row: any) => {
+
+                                            // TODO: move to a PureComponent to improve performance
 
                                             const repoDocInfo: RepoDocInfo = row.original;
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from '../../../../../web/js/util/Functions';
 
-export class DocButton extends React.Component<IProps, IState> {
+export class DocButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

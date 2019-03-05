@@ -2,7 +2,7 @@ import * as React from 'react';
 import {DocButton} from './DocButton';
 import {ToggleIcon} from './ToggleIcon';
 
-export class FlagDocButton extends React.Component<IProps, IState> {
+export class FlagDocButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
