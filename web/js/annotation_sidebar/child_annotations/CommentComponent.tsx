@@ -5,6 +5,8 @@ import {AnnotationDropdown} from '../AnnotationDropdown';
 import {CommentDropdown} from './CommentDropdown';
 import {Logger} from '../../logger/Logger';
 import {IStyleMap} from '../../react/IStyleMap';
+import {EditButton} from './EditButton';
+import {Comment} from '../../metadata/Comment';
 
 const log = Logger.create();
 
@@ -37,6 +39,8 @@ export class CommentComponent extends React.Component<IProps, IState> {
     public render() {
         const { comment } = this.props;
 
+        const original = comment.original as Comment;
+
         const key = 'comment-' + comment.id;
 
         return (
@@ -46,6 +50,9 @@ export class CommentComponent extends React.Component<IProps, IState> {
                 <div key={key} className="comment">
 
                     <div className="pb-1 pt-1">
+
+                        {/*TODO: based on the state determine if we should be*/}
+                        {/*editing or just displaying the comment*/}
 
                         <span dangerouslySetInnerHTML={{__html: comment.html!}}>
 
@@ -65,6 +72,10 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                         <div style={Styles.barChild} className="flexbar-right">
 
+                            <EditButton id={'annotation-edit-button-' + comment.id}
+                                        onClick={() => this.onEdit()}
+                                        type="comment"/>
+
                             <CommentDropdown id={'comment-dropdown-' + comment.id}
                                              comment={comment}
                                              onDelete={() => this.onDelete(comment)}/>
@@ -83,6 +94,10 @@ export class CommentComponent extends React.Component<IProps, IState> {
     private onDelete(comment: DocAnnotation) {
         log.info("Comment deleted: ", comment);
         delete comment.pageMeta.comments[comment.id];
+    }
+
+    private onEdit() {
+
     }
 
 }

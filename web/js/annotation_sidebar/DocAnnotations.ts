@@ -14,6 +14,7 @@ import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
+import {text} from 'body-parser';
 
 export class DocAnnotations {
 
@@ -56,6 +57,7 @@ export class DocAnnotations {
             children: [],
             comments: [],
             ref: flashcard.ref,
+            original: flashcard
 
         };
 
@@ -78,6 +80,7 @@ export class DocAnnotations {
             children: [],
             comments: [],
             ref: comment.ref,
+            original: comment
 
         };
 
@@ -100,7 +103,8 @@ export class DocAnnotations {
             created: areaHighlight.created,
             pageMeta,
             children: [],
-            comments: []
+            comments: [],
+            original: areaHighlight
         };
 
     }
@@ -148,7 +152,8 @@ export class DocAnnotations {
             created: textHighlight.created,
             pageMeta,
             children: [],
-            comments: []
+            comments: [],
+            original: textHighlight
         };
 
     }

@@ -101,7 +101,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
         if (this.props.comment) {
 
             if (this.props.onCommentChanged) {
-                this.props.onCommentChanged(this.html);
+                this.props.onCommentChanged(this.html, this.props.comment);
             }
 
         } else {
@@ -137,7 +137,7 @@ export interface IProps {
      */
     comment?: Comment;
     onCommentCreated?: (html: string) => void;
-    onCommentChanged?: (html: string) => void;
+    onCommentChanged?: (html: string, comment: Comment) => void;
     onCancel?: () => void;
 }
 

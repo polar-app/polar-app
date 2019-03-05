@@ -4,6 +4,7 @@ import {Arrays} from '../util/Arrays';
 import {DocAnnotationIndexes} from './DocAnnotationIndexes';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {assertJSON} from '../test/Assertions';
+import {TextHighlights} from '../metadata/TextHighlights';
 
 describe('DocAnnotationIndexes', function() {
 
@@ -62,7 +63,8 @@ describe('DocAnnotationIndexes', function() {
             }
         ];
 
-        assertJSON(rebuiltDocAnnotationIndex.sortedDocAnnotation, expected);
+        const result = Arrays.first(rebuiltDocAnnotationIndex.sortedDocAnnotation)!;
+        assertJSON(result, expected);
 
     });
 
@@ -133,6 +135,8 @@ function createAnnotation(id: string,
                           x: number,
                           y: number): DocAnnotation {
 
+    const textHighlight = TextHighlights.createMockTextHighlight();
+
     return {
         id,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
@@ -144,7 +148,8 @@ function createAnnotation(id: string,
         created: '2009-06-15T13:45:30',
         pageMeta: null!,
         children: [],
-        comments: []
+        comments: [],
+        original: textHighlight
     };
 
 }
