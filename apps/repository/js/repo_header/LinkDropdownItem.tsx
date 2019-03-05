@@ -6,7 +6,7 @@ import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 
 /**
  */
-export class LinkDropdownItem extends React.Component<IProps, IState> {
+export class LinkDropdownItem extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
