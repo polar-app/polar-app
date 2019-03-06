@@ -51,7 +51,7 @@ const Styles: IStyleMap = {
 };
 
 
-export class TagInput extends React.Component<IProps, IState> {
+export class TagInput extends React.PureComponent<IProps, IState> {
 
     private readonly id = "popover-" + SEQUENCE++;
 
@@ -143,8 +143,9 @@ export class TagInput extends React.Component<IProps, IState> {
                 <Popover placement="auto"
                          isOpen={this.state.open}
                          target={this.id}
+                         trigger="legacy"
                          toggle={this.toggle}
-                         className="tag-input-popover">
+                         className="tag-input-popover shadow">
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
 
                     {/*style={{borderWidth: '1px', backgroundColor: true ? "#b94a48" : "#aaa"}}*/}

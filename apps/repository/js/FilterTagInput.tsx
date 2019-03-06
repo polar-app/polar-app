@@ -29,7 +29,7 @@ const Styles: IStyleMap = {
 
 };
 
-export class FilterTagInput extends React.Component<IProps, IState> {
+export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
     private readonly id: string;
 
@@ -38,6 +38,7 @@ export class FilterTagInput extends React.Component<IProps, IState> {
 
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
+
         this.state = {
             popoverOpen: false,
             defaultValue: []
@@ -65,7 +66,7 @@ export class FilterTagInput extends React.Component<IProps, IState> {
                         id={this.id}
                         size="sm"
                         disabled={this.props.disabled}
-                        onClick={this.toggle}
+                        onClick={() => this.toggle()}
 
                         className="header-filter-clickable p-1 pl-2 pr-2 border">
 
@@ -79,10 +80,11 @@ export class FilterTagInput extends React.Component<IProps, IState> {
                 <Popover placement="bottom"
                          isOpen={this.state.popoverOpen}
                          target={this.id}
-                         toggle={this.toggle}
+                         trigger="legacy"
+                         toggle={() => this.toggle()}
                          className="tag-input-popover">
 
-                    <PopoverBody>
+                    <PopoverBody className="shadow">
 
                         <div className="pt-1 pb-1">
                             <strong>Filter documents by tag:</strong>
@@ -125,16 +127,12 @@ export class FilterTagInput extends React.Component<IProps, IState> {
 
     private toggle() {
 
-        this.state = Object.assign(this.state, {
+        this.state = {
+            ...this.state,
             popoverOpen: !this.state.popoverOpen
-        });
+        };
 
-        if (this.state.popoverOpen) {
-            Blackout.enable();
-        } else {
-            Blackout.disable();
-
-        }
+        Blackout.toggle(this.state.popoverOpen);
 
         this.setState(this.state);
 
