@@ -1,6 +1,12 @@
 
 # 1.13.10
 
+- A number of changes needed to get the webapp version of Polar to work.
+
+- FilePaths.basename works in the browser context now. 
+
+# 1.13.10
+
 - Fixed bad bug that broke capture (sorry)
 
 - More components are PureComponent now for faster performance.
