@@ -1,6 +1,25 @@
 
 # 1.13.10
 
+- FIXME: test all file upload strategies
+    - MacOS
+        - electron drag and drop
+        - electron upload file
+        - browser drag and drop
+        - browser add file
+    - Linux  
+        - electron drag and drop
+        - electron upload file
+        - browser drag and drop
+        - browser add file
+    - Windows  
+        - electron drag and drop
+        - electron upload file
+        - browser drag and drop
+        - browser add file
+
+
+
 - A number of changes needed to get the webapp version of Polar to work.
 
 - FilePaths.basename works in the browser context now. 

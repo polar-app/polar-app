@@ -247,10 +247,12 @@ export class RepositoryApp {
         const version = Version.get();
         const platform = Platforms.toSymbol(Platforms.get());
         const screen = `${window.screen.width}x${window.screen.height}`;
+        const runtime = AppRuntime.type();
 
         RendererAnalytics.event({category: 'app', action: 'version-' + version});
         RendererAnalytics.event({category: 'platform', action: `${platform}`});
         RendererAnalytics.event({category: 'screen', action: screen});
+        RendererAnalytics.event({category: 'runtime', action: runtime});
 
     }
 

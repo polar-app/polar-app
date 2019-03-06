@@ -118,7 +118,7 @@ export class TextHighlightController {
                 break;
 
             default:
-                console.warn("Unhandled command: " + event.data.type);
+                console.warn("Unhandled message: " + event.data.type, event.data);
                 break;
 
         }
