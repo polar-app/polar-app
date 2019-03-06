@@ -10,9 +10,9 @@ console.log("Using N workers: " + workers);
 module.exports = {
     mode: 'development',
     entry: {
-        // "chrome": [ "./web/js/apps/chrome.ts"],
+        "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
-        // "login": [ "./apps/repository/js/login.ts"],
+        "login": [ "./apps/repository/js/login.ts"],
     },
     module: {
 
@@ -96,6 +96,14 @@ module.exports = {
         removeAvailableModules: false,
         removeEmptyChunks: false,
         splitChunks: false,
+    },
+    devServer: {
+        publicPath: 'web/dist',
+        contentBase: path.join(__dirname, '.'),
+        compress: true,
+        port: 443,
+        watchContentBase: true,
+        host: 'localapp.getpolarized.io'
     }
 
 }

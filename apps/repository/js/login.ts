@@ -16,9 +16,6 @@ window.addEventListener('load', async () => {
 
         FirebaseUIAuth.login({signInSuccessUrl});
 
-        // bring up the UI so that we can login.
-        FirebaseUIAuth.login();
-
     }
 
 });

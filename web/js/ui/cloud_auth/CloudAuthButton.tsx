@@ -166,8 +166,13 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         this.props.persistenceLayerManager.reset();
 
-        window.location.href = Nav.createHashURL('logout');
-        window.location.reload();
+        firebase.auth().signOut()
+            .then(() => {
+
+                window.location.href = Nav.createHashURL('logout');
+                window.location.reload();
+
+            });
 
     }
 

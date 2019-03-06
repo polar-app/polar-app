@@ -9,6 +9,8 @@ import {Screenshots} from '../metadata/Screenshots';
 import {ImageType} from '../metadata/ImageType';
 import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
 import {remote} from 'electron';
+import {AppRuntime} from '../AppRuntime';
+import {Optional} from '../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -30,7 +32,11 @@ export class CapturedScreenshots {
      *         with scaleFactor as an option.
      *
      */
-    public static async capture(target: CaptureTarget, opts: CaptureOpts = {}): Promise<CapturedScreenshot> {
+    public static async capture(target: CaptureTarget, opts: CaptureOpts = {}): Promise<Optional<CapturedScreenshot>> {
+
+        if ( ! AppRuntime.isElectron()) {
+            return Optional.empty();
+        }
 
         const screenshotRequest = await this.doCapture(target, opts);
 
@@ -40,7 +46,7 @@ export class CapturedScreenshots {
 
         const id = this.getWebContentsID();
 
-        return await this.getRemoteDelegate().capture(id, screenshotRequest);
+        return Optional.of(await this.getRemoteDelegate().capture(id, screenshotRequest));
 
     }
 

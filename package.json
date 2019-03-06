@@ -28,7 +28,8 @@
     "postinstall": "opencollective-postinstall",
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
     "webpack": "npx webpack --config=webpack.config.js",
-    "webpack-watch": "npx webpack --config=webpack.config.js --watch"
+    "webpack-watch": "npx webpack --config=webpack.config.js --watch",
+    "webpack-dev-server": "webpack-dev-server --https"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
@@ -88,7 +89,8 @@
     "wait-for-expect": "~1.1.0",
     "webpack": "^4.28.4",
     "webpack-bundle-analyzer": "^3.0.3",
-    "webpack-cli": "^3.2.1"
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
     "@burtonator/react-context-menu-wrapper": "~1.0.10",

@@ -47,6 +47,8 @@ import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
+import {AppRuntime} from '../../../../web/js/AppRuntime';
+import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 
 const log = Logger.create();
 
@@ -602,7 +604,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         },
                                         Cell: (row: any) => {
-                                            // TODO: move to a PureComponent to improve performance
+                                            // TODO: move to a PureComponent to
+                                            // improve performance
 
                                             const tags: {[id: string]: Tag} = row.original.tags;
 
@@ -893,6 +896,15 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     private onDocumentLoadRequested(fingerprint: string,
                                     filename: string,
                                     hashcode?: Hashcode) {
+
+        if (! AppRuntime.isElectron() && filename.endsWith(".phz")) {
+
+            const message = `Captured web pages (phz files) are only supported in the web preview version of Polar (please use the desktop version).`;
+            const title = "Captured web pages not supported.";
+
+            Toaster.error(message, title);
+            return;
+        }
 
         this.synchronizingDocLoader.load(fingerprint, filename, hashcode)
             .catch(err => log.error("Unable to load doc: ", err));
