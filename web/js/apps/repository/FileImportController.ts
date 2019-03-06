@@ -65,6 +65,7 @@ export class FileImportController {
 
         this.handleBlackout();
         this.handleDragAndDropFiles();
+        this.handleFileUpload();
 
         log.info("File import controller started");
 
@@ -76,6 +77,53 @@ export class FileImportController {
         document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event), false);
 
         document.body.addEventListener('drop', event => this.onDrop(event));
+
+    }
+
+    private handleFileUpload() {
+
+        const handleFileUploaded = () => {
+
+            const target = document.querySelector('#file-upload');
+
+            if (target) {
+
+                const fileUpload = <HTMLInputElement> target;
+
+                if (fileUpload.files !== null) {
+
+                    const addFileRequests = AddFileRequests.computeFromFileList(fileUpload.files);
+
+                    this.handleAddFileRequests(addFileRequests)
+                        .catch(err => log.error("Could not add files: ", err));
+
+                } else {
+                    // noop
+                }
+
+            } else {
+                log.warn("No file upload input");
+            }
+
+        };
+
+        const handleMessage = (event: MessageEvent) => {
+
+            if (event.data.type === 'file-uploaded') {
+                handleFileUploaded();
+            }
+
+        };
+
+        window.addEventListener("message", event => {
+
+            try {
+                handleMessage(event);
+            } catch (e) {
+                log.error("Unable to handle message: ", e);
+            }
+
+        });
 
     }
 
@@ -131,24 +179,29 @@ export class FileImportController {
 
         if (event.dataTransfer) {
 
-            const filesDirectly = AddFileRequests.computeDirectly(event);
+            const directly = AddFileRequests.computeDirectly(event);
+            const recursively = await AddFileRequests.computeRecursively(event);
 
-            const filesRecursively = await AddFileRequests.computeRecursively(event);
+            const addFileRequests = [...directly, ...recursively.getOrElse([])];
 
-            const files = [...filesDirectly, ...filesRecursively.getOrElse([])];
+            await this.handleAddFileRequests(addFileRequests);
 
-            if (files.length > 0) {
+        }
 
-                try {
-                    await this.onImportFiles(files);
-                } catch (e) {
-                    log.error("Unable to import files: ", files, e);
-                }
+    }
 
-            } else {
-                Toaster.error("Unable to upload files.  Only PDF uploads are supported.");
+    private async handleAddFileRequests(addFileRequests: AddFileRequest[]) {
+
+        if (addFileRequests.length > 0) {
+
+            try {
+                await this.onImportFiles(addFileRequests);
+            } catch (e) {
+                log.error("Unable to import files: ", addFileRequests, e);
             }
 
+        } else {
+            Toaster.error("Unable to upload files.  Only PDF uploads are supported.");
         }
 
     }
@@ -170,6 +223,7 @@ export class FileImportController {
         const importedFiles = await this.doImportFiles(files);
 
         if (importedFiles.length === 0) {
+            log.warn("No files given to upload");
             // nothing to do here...
             return;
         }
@@ -185,11 +239,10 @@ export class FileImportController {
 
                 const file = importedFile.get();
                 const fingerprint = file.docInfo.fingerprint;
-                const path = file.stashFilePath;
 
                 // TODO we should ideally have the hashcode built here.
                 const fileRef: FileRef = {
-                    name: FilePaths.basename(path)
+                    name: file.basename
                 };
 
                 // TODO(webapp): DO NOT enable this in the web UI... the upload

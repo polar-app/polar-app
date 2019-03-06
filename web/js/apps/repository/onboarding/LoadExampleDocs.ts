@@ -222,8 +222,9 @@ export class LoadExampleDocs {
         }
 
         const path = FilePaths.join(appPath, relativePath);
+        const basename = FilePaths.basename(relativePath);
 
-        return await this.pdfImporter.importFile(path);
+        return await this.pdfImporter.importFile(path, basename);
 
     }
 

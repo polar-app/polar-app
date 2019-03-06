@@ -38,6 +38,8 @@ import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Platforms} from '../../util/Platforms';
 import {AppOrigin} from '../AppOrigin';
 import {AppRuntime} from '../../AppRuntime';
+import {AuthHandlers} from './auth_handler/AuthHandler';
+import Input from 'reactstrap/lib/Input';
 
 const log = Logger.create();
 
@@ -55,6 +57,13 @@ export class RepositoryApp {
     public async start() {
 
         AppOrigin.configure();
+
+        const authHandler = AuthHandlers.get();
+
+        if (await authHandler.status() === 'needs-authentication') {
+            await authHandler.authenticate();
+            return;
+        }
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
@@ -179,6 +188,15 @@ export class RepositoryApp {
 
                 </HashRouter>
 
+                {/*Used for file uploads.  This has to be on the page and can't be*/}
+                {/*selectively hidden by components.*/}
+                <Input type="file"
+                       id="file-upload"
+                       name="file-upload"
+                       accept=".pdf"
+                       onChange={() => this.onFileUpload()}
+                       style={{display: 'none'}}/>
+
             </div>,
 
             document.getElementById('root') as HTMLElement
@@ -197,6 +215,12 @@ export class RepositoryApp {
         log.info("Started repo doc loader.");
 
         AppInstance.notifyStarted('RepositoryApp');
+
+    }
+
+    private onFileUpload() {
+
+        window.postMessage({type: 'file-uploaded'}, '*');
 
     }
 
@@ -244,9 +268,10 @@ export class RepositoryApp {
 
             await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
-                // load the eample docs in the store.. on the first load we should
-                // propably make sure this doesn't happen more than once as the user
-                // could just delete all the files in their repo. await new
+                // load the eample docs in the store.. on the first load we
+                // should propably make sure this doesn't happen more than once
+                // as the user could just delete all the files in their repo.
+                // await new
                 await new LoadExampleDocs(persistenceLayer).load();
 
             }, async () => {
