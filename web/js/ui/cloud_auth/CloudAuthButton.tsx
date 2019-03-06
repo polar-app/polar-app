@@ -172,7 +172,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                 window.location.href = Nav.createHashURL('logout');
                 window.location.reload();
 
-            });
+            })
+            .catch(err => log.error("Unable to logout: ", err));
 
     }
 

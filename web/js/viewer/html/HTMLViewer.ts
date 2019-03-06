@@ -259,7 +259,8 @@ export class HTMLViewer extends Viewer {
         const height = parseInt(this.content.getAttribute('data-original-height')!);
         const newHeight = height * scale;
 
-        this.frameResizer!.resize(true, newHeight);
+        this.frameResizer!.resize(true, newHeight)
+            .catch(err => log.error("Unable to change scale: ", err));
 
     }
 

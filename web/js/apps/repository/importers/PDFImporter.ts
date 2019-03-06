@@ -44,6 +44,8 @@ export class PDFImporter {
 
         const isPath = ! URLs.isURL(docPath);
 
+        log.info(`Working with document: ${docPath}: ${isPath}`);
+
         if (isPath && await PDFImporter.isWithinStashdir(directories.stashDir, docPath)) {
 
             // prevent the user from re-importing/opening a file that is ALREADY

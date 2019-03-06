@@ -29,7 +29,8 @@
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
     "webpack": "npx webpack --config=webpack.config.js",
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
-    "webpack-dev-server": "webpack-dev-server --https"
+    "webpack-dev-server": "webpack-dev-server --https",
+    "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron' | grep -v 'web/test'"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [

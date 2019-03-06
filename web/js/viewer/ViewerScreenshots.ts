@@ -47,7 +47,8 @@ export class ViewerScreenshots {
         CapturedScreenshots.capture(<HTMLElement> document.querySelector(".page"), captureOpts)
             .then(screenshot => {
                 console.log("FIXME: got screnshot", screenshot);
-            });
+            })
+            .catch(err => console.error("Unable to capture screenshot: ", err));
 
     }
 
