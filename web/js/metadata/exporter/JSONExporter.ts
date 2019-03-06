@@ -23,10 +23,10 @@ export class JSONExporter extends AbstractExporter {
 
     }
 
-    private async onItem(writer: Writable) {
+    private async onItem() {
 
         if (this.hasItem) {
-            await writer.write(",\n");
+            await this.writer!.write(",\n");
         }
 
         this.hasItem = true;
@@ -34,18 +34,22 @@ export class JSONExporter extends AbstractExporter {
     }
 
     protected async writeAreaHighlight(areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
+        await this.onItem();
         await this.writer!.write(this.toRecord(areaHighlight));
     }
 
     protected async writeTextHighlight(textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
+        await this.onItem();
         await this.writer!.write(this.toRecord(textHighlight));
     }
 
     protected async writeComment(comment: Comment, exportable: AnnotationHolder): Promise<void> {
+        await this.onItem();
         await this.writer!.write(this.toRecord(comment));
     }
 
     protected async writeFlashcard(flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
+        await this.onItem();
         await this.writer!.write(this.toRecord(Flashcard));
     }
 
