@@ -6,6 +6,7 @@ import {DropdownItem, UncontrolledDropdown} from 'reactstrap';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {LinkDropdownItem} from './LinkDropdownItem';
+import {AppRuntime} from '../../../../web/js/AppRuntime';
 
 export class LinkDropdown extends React.PureComponent<IProps, IState> {
 
@@ -39,6 +40,7 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
                                       icon="fab fa-chrome"/>
 
                     <LinkDropdownItem id="polar-connect"
+                                      hidden={AppRuntime.isBrowser()}
                                       title="Polar Connect for Anki Sync"
                                       tooltip="Install the Polar Connect Anki add-on for syncing flashcards to Anki."
                                       link="https://ankiweb.net/shared/info/734898866"

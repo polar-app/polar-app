@@ -71,6 +71,7 @@ export interface GenericDropdownItemProps {
     readonly title: string;
     readonly tooltip: string;
     readonly icon: string;
+    readonly hidden?: boolean;
 }
 
 export interface TrackedDropdownItemProps extends GenericDropdownItemProps {
