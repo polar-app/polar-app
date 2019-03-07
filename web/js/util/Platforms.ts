@@ -87,7 +87,7 @@ export class Platforms {
     /**
      * Get the symbol name for the enum.
      */
-    public static toSymbol<T>(value: Platform.WINDOWS | Platform.MACOS | Platform.LINUX | Platform.UNKNOWN) {
+    public static toSymbol<T>(value: PlatformEnumType) {
         return Platform[value];
     }
 
@@ -101,5 +101,13 @@ export enum Platform {
     IOS,
     UNKNOWN
 }
+
+export type PlatformEnumType
+    = Platform.WINDOWS |
+      Platform.MACOS |
+      Platform.LINUX |
+      Platform.ANDROID |
+      Platform.IOS |
+      Platform.UNKNOWN;
 
 export type PlatformType = 'desktop' | 'mobile' | 'tablet' | 'unknown';
