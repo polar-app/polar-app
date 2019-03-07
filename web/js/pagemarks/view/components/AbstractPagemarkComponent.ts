@@ -253,6 +253,10 @@ export class AbstractPagemarkComponent extends Component {
      */
     private createInternalDiv(pagemarkElement: HTMLElement) {
 
+        // FIXME: this works BUG we have a problem now with the context menu
+        // not showing that the pagemark is selected...  I think I have to use
+        // elementsAtPoint to reconstruct that this is on a pagemark.
+
         const createInternalDiv = () => {
 
             const internalDiv = document.createElement('div');
