@@ -8,7 +8,7 @@ import Moment from 'react-moment';
 import {FormattedTags} from '../FormattedTags';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
-import {Button} from 'reactstrap';
+import Button from 'reactstrap/lib/Button';
 
 const log = Logger.create();
 

@@ -2,12 +2,14 @@ import * as React from 'react';
 import {Tag} from '../../../web/js/tags/Tag';
 import {TagsDB} from './TagsDB';
 import Select from 'react-select';
-import {Popover, PopoverBody, Button} from 'reactstrap';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {TagSelectOptions} from './TagSelectOptions';
 import {TagSelectOption} from './TagSelectOption';
 import {FilteredTags} from './FilteredTags';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
+import Button from 'reactstrap/lib/Button';
+import Popover from 'reactstrap/lib/Popover';
+import PopoverBody from 'reactstrap/lib/PopoverBody';
 // import {SyntheticKeyboardEvent} from 'react-dom';
 
 const Styles: IStyleMap = {

@@ -3,10 +3,11 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {FilterTagInput} from '../FilterTagInput';
-import {Input, InputGroup} from 'reactstrap';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
 import {TagsDB} from '../TagsDB';
 import {FilteredTags} from '../FilteredTags';
+import InputGroup from 'reactstrap/lib/InputGroup';
+import Input from 'reactstrap/lib/Input';
 
 const log = Logger.create();
 
