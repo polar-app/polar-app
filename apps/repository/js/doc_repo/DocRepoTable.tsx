@@ -308,6 +308,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                         {/*filteredTags={this.filteredTags} />*/}
 
                                         <div>
+
                                             <TagButton id="tag-multiple-documents"
                                                        tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                        onSelectedTags={tags => this.onMultiTagged(tags)}/>
