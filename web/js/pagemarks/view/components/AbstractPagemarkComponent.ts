@@ -229,9 +229,11 @@ export class AbstractPagemarkComponent extends Component {
         const pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
 
         if (this.type === 'primary') {
-            // console.log("FIXME: placementRect: " , placementRect);
-            // console.log("FIXME: pagemarkRect (overlay rect): " ,
-            // pagemarkRect);
+
+            if (pagemarkElement.children.length === 0) {
+                this.createInternalDiv(pagemarkElement);
+            }
+
         }
 
         // TODO: what I need is a generic way to cover an element and place
@@ -242,6 +244,105 @@ export class AbstractPagemarkComponent extends Component {
         pagemarkElement.style.width = `${pagemarkRect.width}px`;
         pagemarkElement.style.height = `${pagemarkRect.height}px`;
         pagemarkElement.style.zIndex = '9';
+
+    }
+
+    /**
+     * Create an internal div that allows us to turn off pointer-events
+     */
+    private createInternalDiv(pagemarkElement: HTMLElement) {
+
+        console.log("FIXME: creating internal div");
+        const internalDiv = document.createElement('div');
+
+        internalDiv.style.width = 'calc(100%)';
+        internalDiv.style.height = '25px';
+        internalDiv.style.marginTop = 'auto';
+        internalDiv.style.backgroundColor = 'pink';
+        internalDiv.style.pointerEvents = 'none';
+
+        type PointerEvents = 'auto' | 'none';
+
+        let pointerEvents: PointerEvents = 'auto';
+
+        // FIXME: this strategy won't work because when the pointerEvents CSS
+        // selector is changed we re-send the events and have no idea if this
+        // is a NEW change or an existing one.
+        //
+        // I thought we might be able to detect if we're leaving the div or not
+        // to see if we're being called from within the it while changing=true
+        // but that doesn't seem to work.
+        //
+        // one idea could be to do this via setTimeout where we flag:
+        //
+        // changing=true
+        //
+        // I think the only way we could do this is to change the value, then
+        // set changing=true, then come back again with a timeout and set it to
+        // false otherwise the event handlers will be fired again.
+        //
+        // RESULT: this doesn't work either...
+        //
+        // FIXME: the core problem here is that when we set pointerEvents = none
+        // then we don't even get enter/leave anymore
+        //
+        //
+        // FIXME: actually a CORE issue is once we set the inner div to
+        // pointerEvents=none then we will never get mouseLeave...
+
+
+        let changing: boolean = false;
+
+        const doChangePointerEvents = (newValue: PointerEvents) => {
+
+            changing = true;
+
+            if (pointerEvents !== newValue) {
+
+                console.log(`FIXME: changing the pointer event style to ${newValue} from ${pointerEvents}`);
+
+                //
+                //
+                // [pagemarkElement, internalDiv]
+                //     .forEach(element => element.style.pointerEvents = newValue);
+
+                [pagemarkElement]
+                    .forEach(element => element.style.pointerEvents = newValue);
+
+                // internalDiv.style.pointerEvents = 'none';
+
+                pointerEvents = newValue;
+
+            }
+
+        };
+
+        console.log("FIXME: registering on enter/leave");
+
+        // FIXME: when we change pointer-events on this element we get new
+        // event sent to us so changing this value isn't really possible in
+        // practice
+
+        internalDiv.addEventListener('mouseenter', (event) => {
+            doChangePointerEvents('auto');
+            event.preventDefault();
+
+            console.log("FIXME: enter ====");
+            console.log(event.target);
+            console.log(event.currentTarget);
+
+        });
+
+        internalDiv.addEventListener('mouseleave', (event) => {
+
+            console.log("FIXME: leave ====: changing: " + changing);
+
+            doChangePointerEvents('none');
+            event.preventDefault();
+
+        });
+
+        pagemarkElement.appendChild(internalDiv);
 
     }
 
@@ -307,6 +408,8 @@ export class AbstractPagemarkComponent extends Component {
         const pagemarkElement = document.getElementById(this.createID());
 
         if (pagemarkElement) {
+
+            pagemarkElement.innerHTML = '';
 
             if (pagemarkElement.parentElement) {
                 pagemarkElement.parentElement.removeChild(pagemarkElement);
