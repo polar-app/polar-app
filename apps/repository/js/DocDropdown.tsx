@@ -13,6 +13,7 @@ import DropdownItem from 'reactstrap/lib/DropdownItem';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import {AppRuntime} from '../../../web/js/AppRuntime';
 
 const log = Logger.create();
 
@@ -88,11 +89,13 @@ export class DocDropdown extends React.Component<IProps, IState> {
                         </DropdownItem>
 
                         <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                                      hidden={AppRuntime.isBrowser()}
                                       onClick={() => this.onShowFile(this.props.repoDocInfo.filename!)}>
                             Show File
                         </DropdownItem>
 
                         <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                                      hidden={AppRuntime.isBrowser()}
                                       onClick={() => this.onCopyFilePath(this.props.repoDocInfo.filename!)}>
                             Copy File Path
                         </DropdownItem>
