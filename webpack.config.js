@@ -8,7 +8,7 @@ const workers = require('os').cpus().length - 1;
 console.log("Using N workers: " + workers);
 
 module.exports = {
-    mode: 'development',
+    // mode: 'development',
     entry: {
         "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
@@ -67,7 +67,7 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     // devtool: "source-map",
-    devtool: "inline-source-map",
+    // devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname, 'web/dist'),
         filename: '[name]-bundle.js',

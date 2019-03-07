@@ -39,6 +39,8 @@ copy node_modules/bootstrap "*"
 copy node_modules/react-table "*"
 copy node_modules/firebaseui "*"
 copy node_modules/firebase "*"
+copy node_modules/summernote "*"
+copy node_modules/@burtonator "*"
 
 cp *.ico dist/public
 cp *.png dist/public
