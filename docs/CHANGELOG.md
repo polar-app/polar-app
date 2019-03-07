@@ -18,6 +18,8 @@
         - browser drag and drop
         - browser add file
 
+- Fixed bugs with multi-select not being able to properly pick the right 
+
 - Tour now only works on Electron.  
 
 - Update to Electron 3.1.5 
