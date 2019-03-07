@@ -13,6 +13,7 @@ module.exports = {
         "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "login": [ "./apps/repository/js/login.ts"],
+        // "both": [ "./web/js/apps/chrome.ts", "./apps/repository/js/entry.tsx"],
     },
     module: {
 
