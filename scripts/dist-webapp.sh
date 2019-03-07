@@ -46,3 +46,4 @@ cp *.ico dist/public
 cp *.png dist/public
 cp *.svg dist/public
 
+cp manifest.json dist/public
