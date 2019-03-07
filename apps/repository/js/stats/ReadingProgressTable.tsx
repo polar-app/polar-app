@@ -1,14 +1,11 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {Statistics} from '../../../../web/js/metadata/Statistics';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
-import {ResponsivePie} from '@nivo/pie';
 import StatTitle from './StatTitle';
-import {Table} from 'reactstrap';
-import { ResponsiveCalendar, Calendar } from '@nivo/calendar';
+import {ResponsiveCalendar} from '@nivo/calendar';
 import {HitMap} from '../../../../web/js/util/HitMap';
 import {Dictionaries} from '../../../../web/js/util/Dictionaries';
-import {ISODateTimeStrings, ISODateString} from '../../../../web/js/metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from '../../../../web/js/metadata/ISODateTimeStrings';
 import {Reducers} from '../../../../web/js/util/Reducers';
 import {Numbers} from '../../../../web/js/util/Numbers';
 

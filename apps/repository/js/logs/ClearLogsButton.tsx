@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
-import {Button} from 'reactstrap';
+import Button from 'reactstrap/lib/Button';
 
 const log = Logger.create();
 

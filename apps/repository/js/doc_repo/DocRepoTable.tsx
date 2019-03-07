@@ -1,17 +1,13 @@
 import * as React from 'react';
 import ReactTable, {ColumnRenderProps} from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
-import {Strings} from '../../../../web/js/util/Strings';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocInfo} from '../RepoDocInfo';
-import {RepoDocInfos} from '../RepoDocInfos';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tag';
-import {FilteredTags} from '../FilteredTags';
 import {isPresent} from '../../../../web/js/Preconditions';
-import {Sets} from '../../../../web/js/util/Sets';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
@@ -29,7 +25,6 @@ import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
-import {Input} from 'reactstrap';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
@@ -49,6 +44,7 @@ import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
+import Input from 'reactstrap/lib/Input';
 
 const log = Logger.create();
 
@@ -381,7 +377,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         id: 'doc-checkbox',
                                         Header: (col: ColumnRenderProps) => {
-                                            // TODO: move to a PureComponent to improve performance
+                                            // TODO: move to a PureComponent to
+                                            // improve performance
 
                                             const checked = this.state.selected.length === col.data.length && col.data.length > 0;
 
@@ -435,7 +432,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         sortable: false,
                                         className: 'doc-checkbox',
                                         Cell: (row: any) => {
-                                            // TODO: move to a PureComponent to improve performance
+                                            // TODO: move to a PureComponent to
+                                            // improve performance
 
                                             const viewIndex = row.viewIndex as number;
 
@@ -639,7 +637,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         resizable: false,
                                         className: 'doc-table-col-progress',
                                         Cell: (row: any) => (
-                                            // TODO: move to a PureComponent to improve performance
+                                            // TODO: move to a PureComponent to
+                                            // improve performance
 
                                             <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
                                                 width: '100%'
@@ -658,7 +657,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         className: 'doc-dropdown',
                                         Cell: (row: any) => {
 
-                                            // TODO: move to a PureComponent to improve performance
+                                            // TODO: move to a PureComponent to
+                                            // improve performance
 
                                             const repoDocInfo: RepoDocInfo = row.original;
 

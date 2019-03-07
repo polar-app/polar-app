@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Tooltip} from 'reactstrap';
 import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
 import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {RepoDocInfo} from './RepoDocInfo';
@@ -10,6 +9,10 @@ import {Directories} from '../../../web/js/datastore/Directories';
 import {FilePaths} from '../../../web/js/util/FilePaths';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {Clipboards} from '../../../web/js/util/system/clipboard/Clipboards';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
+import DropdownToggle from 'reactstrap/lib/DropdownToggle';
+import Dropdown from 'reactstrap/lib/Dropdown';
+import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 
 const log = Logger.create();
 

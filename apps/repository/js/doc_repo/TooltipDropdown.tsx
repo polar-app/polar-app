@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown, UncontrolledTooltip} from 'reactstrap';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import Dropdown, {Direction} from 'reactstrap/lib/Dropdown';
 import Tooltip from 'reactstrap/lib/Tooltip';
 
@@ -24,7 +22,7 @@ export class TooltipDropdown extends React.Component<IProps, IState> {
         };
 
         this.show = this.props.tooltip.show !== undefined ? this.props.tooltip.show : 500;
-        
+
     }
 
     public render() {

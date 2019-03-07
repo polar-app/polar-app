@@ -1,12 +1,10 @@
 import * as React from 'react';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {Nav} from '../../../../web/js/ui/util/Nav';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {DropdownItem, UncontrolledDropdown} from 'reactstrap';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {LinkDropdownItem} from './LinkDropdownItem';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
+import {UncontrolledDropdown} from 'reactstrap';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
 
 export class LinkDropdown extends React.PureComponent<IProps, IState> {
 

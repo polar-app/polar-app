@@ -5,13 +5,6 @@ import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton'
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoSidebar} from '../RepoSidebar';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
-import Button from 'reactstrap/lib/Button';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {DropdownItem, UncontrolledDropdown} from 'reactstrap';
-import {Nav} from '../../../../web/js/ui/util/Nav';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import {LinkDropdownItem} from './LinkDropdownItem';
 import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
 
