@@ -98,7 +98,7 @@ export class TextHighlightController {
 
     private onMessageReceived(event: any) {
 
-        log.info("Received message: ", event);
+        // log.info("Received message: ", event);
 
         const triggerEvent = event.data;
 
@@ -118,7 +118,7 @@ export class TextHighlightController {
                 break;
 
             default:
-                console.warn("Unhandled message: " + event.data.type, event.data);
+                // log.warn("Unhandled message: " + event.data.type, event.data);
                 break;
 
         }
