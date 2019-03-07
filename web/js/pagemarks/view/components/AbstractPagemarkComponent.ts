@@ -244,6 +244,7 @@ export class AbstractPagemarkComponent extends Component {
         pagemarkElement.style.width = `${pagemarkRect.width}px`;
         pagemarkElement.style.height = `${pagemarkRect.height}px`;
         pagemarkElement.style.zIndex = '9';
+        pagemarkElement.style.pointerEvents = 'none';
 
     }
 
@@ -259,7 +260,7 @@ export class AbstractPagemarkComponent extends Component {
         internalDiv.style.height = '25px';
         internalDiv.style.marginTop = 'auto';
         internalDiv.style.backgroundColor = 'pink';
-        internalDiv.style.pointerEvents = 'none';
+        internalDiv.style.pointerEvents = 'auto';
 
         type PointerEvents = 'auto' | 'none';
 
