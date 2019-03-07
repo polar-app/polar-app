@@ -31,6 +31,7 @@ copy pdfviewer-custom "*.css"
 copy web/dist "*.js"
 copy web "*.svg"
 
+copy node_modules/font-awesome "*"
 copy node_modules/@fortawesome "*"
 
 copy node_modules/toastr "*"
@@ -38,4 +39,8 @@ copy node_modules/bootstrap "*"
 copy node_modules/react-table "*"
 copy node_modules/firebaseui "*"
 copy node_modules/firebase "*"
+
+cp *.ico dist/public
+cp *.png dist/public
+cp *.svg dist/public
 
