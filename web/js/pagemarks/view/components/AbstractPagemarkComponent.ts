@@ -253,11 +253,11 @@ export class AbstractPagemarkComponent extends Component {
      */
     private createInternalDiv(pagemarkElement: HTMLElement) {
 
-        const createInternalDiv = (margin: string) => {
+        const createInternalDiv = () => {
 
             const internalDiv = document.createElement('div');
 
-            internalDiv.style.backgroundColor = 'pink';
+            // internalDiv.style.backgroundColor = 'pink';
             internalDiv.style.pointerEvents = 'auto';
             internalDiv.style.position = 'absolute';
 
@@ -265,9 +265,9 @@ export class AbstractPagemarkComponent extends Component {
 
         };
 
-        const createHorizontalInternalDiv = (margin: string) => {
+        const createHorizontalInternalDiv = () => {
 
-            const internalDiv = createInternalDiv(margin);
+            const internalDiv = createInternalDiv();
 
             internalDiv.style.width = '100%';
             internalDiv.style.height = '2mm';
@@ -276,9 +276,9 @@ export class AbstractPagemarkComponent extends Component {
 
         };
 
-        const createVerticalInternalDiv = (margin: string) => {
+        const createVerticalInternalDiv = () => {
 
-            const internalDiv = createInternalDiv(margin);
+            const internalDiv = createInternalDiv();
 
             internalDiv.style.width = '2mm';
             internalDiv.style.height = '100%';
@@ -289,21 +289,21 @@ export class AbstractPagemarkComponent extends Component {
 
         const createInternalDivs = () => {
 
-            // margin is 'top right bottom left'
+            // TODO: this could be cleaned up a bit by passing position directly
 
-            const left = createVerticalInternalDiv('0 auto 0 0');
+            const left = createVerticalInternalDiv();
             left.style.left = '0';
             left.style.top = '0';
 
-            const right = createVerticalInternalDiv('0 0 0 auto');
+            const right = createVerticalInternalDiv();
             right.style.right = '0';
             right.style.top = '0';
 
-            const top = createHorizontalInternalDiv('0 0 auto 0');
+            const top = createHorizontalInternalDiv();
             top.style.left = '0';
             top.style.top = '0';
 
-            const bottom = createHorizontalInternalDiv('auto 0 0 0');
+            const bottom = createHorizontalInternalDiv();
             bottom.style.bottom = '0';
             bottom.style.left = '0';
 
