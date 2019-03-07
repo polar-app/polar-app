@@ -1,6 +1,12 @@
 {
   "hosting": {
     "target": "app.getpolarized.io",
-    "public": "dist/public"
+    "public": "dist/public",
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/apps/repository/index.html"
+      }
+    ]
   }
 }
