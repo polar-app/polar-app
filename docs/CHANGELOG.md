@@ -23,7 +23,7 @@
 - Update to Electron 3.1.5 
 
 - Pagemarks now allow you to work through them and still can highlight and 
-  create + delete annotations now.
+  create + delete annotations now without the pagemarks getting in the way.
 
 - A number of changes needed to get the webapp version of Polar to work.
 

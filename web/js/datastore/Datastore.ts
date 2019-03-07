@@ -240,7 +240,13 @@ export interface FileRef {
 }
 
 // noinspection TsLint
-export type FileMeta = {[key: string]: string};
+export type FileMeta = {
+    // TODO: I should also include the StorageSettings from Firebase here to
+    // give it a set of standardized fields like contentType as screenshots
+    // needs to be added with a file type.
+
+    [key: string]: string
+};
 
 /**
  *

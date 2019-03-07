@@ -9,6 +9,7 @@
     "publish-linux-snapcraft": "snapcraft push --release stable ./dist/polar-bookshelf-${npm_package_version}-amd64.snap",
     "publish-linux": "electron-builder --config=electron-builder.yml --linux snap appimage deb tar.gz --publish always",
     "publish-macos": "electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
+    "publish-webapp": "npx webpack && ./scripts/dist-webapp.sh && firebase deploy",
     "__publish-win": "electron-builder --config=electron-builder.yml --win nsis --publish never",
     "publish-win": "./scripts/dist-win.sh",
     "make-linux-targz": "electron-builder --config=electron-builder.yml --linux tar.gz",

@@ -14,8 +14,9 @@ export class Platforms {
      */
     public static get(): Platform {
 
-        // this only works (right now) on node.
-        if (process && process.platform) {
+        if (typeof process !== 'undefined' && process.platform) {
+
+            // NodeJS and Electron
 
             switch (process.platform.toLowerCase()) {
 
@@ -32,7 +33,54 @@ export class Platforms {
 
         }
 
+        if (typeof navigator !== 'undefined') {
+
+            if (navigator.platform) {
+
+                if (navigator.platform.startsWith("MacIntel")) {
+                    return Platform.MACOS;
+                } else if (navigator.platform.startsWith("MacPPC")) {
+                    return Platform.MACOS;
+                } else if (navigator.platform.startsWith("Linux")) {
+                    return Platform.LINUX;
+                } else if (navigator.platform.startsWith("Win32")) {
+                    return Platform.WINDOWS;
+                } else if (navigator.platform.startsWith("Win64")) {
+                    return Platform.WINDOWS;
+                } else if (navigator.platform.startsWith("Android")) {
+                    return Platform.ANDROID;
+                } else if (navigator.platform.startsWith("iPhone")) {
+                    return Platform.IOS;
+                } else if (navigator.platform.startsWith("iPad")) {
+                    return Platform.IOS;
+                }
+
+            }
+
+        }
+
+        // otherwise get it from the user agent.
+
         return Platform.UNKNOWN;
+
+    }
+
+    /**
+     * Return the platform type (desktop or mobile)
+     */
+    public static type() {
+
+        const platform = this.get();
+
+        if ([Platform.MACOS, Platform.WINDOWS, Platform.LINUX].includes(platform)) {
+            return 'desktop';
+        }
+
+        if ([Platform.ANDROID, Platform.IOS].includes(platform)) {
+            return 'mobile';
+        }
+
+        return 'unknown';
 
     }
 
@@ -49,5 +97,9 @@ export enum Platform {
     MACOS,
     WINDOWS,
     LINUX,
+    ANDROID,
+    IOS,
     UNKNOWN
 }
+
+export type PlatformType = 'desktop' | 'mobile' | 'tablet' | 'unknown';
