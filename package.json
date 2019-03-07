@@ -69,7 +69,7 @@
     "chai": "~4.2.0",
     "chai-diff": "~1.0.1",
     "dtsmake": "0.0.10",
-    "electron": "^3.1.3",
+    "electron": "^3.1.5",
     "electron-builder": "~20.34.0",
     "electron-mocha": "~6.0.4",
     "fork-ts-checker-webpack-plugin": "^0.5.2",

@@ -18,6 +18,8 @@
         - browser drag and drop
         - browser add file
 
+- Update to Electron 3.1.5 
+
 - Pagemarks now allow you to work through them and still can highlight and 
   create + delete annotations now.
 
