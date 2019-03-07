@@ -18,6 +18,8 @@
         - browser drag and drop
         - browser add file
 
+- Tour now only works on Electron.  
+
 - Update to Electron 3.1.5 
 
 - Pagemarks now allow you to work through them and still can highlight and 

@@ -8,6 +8,7 @@ import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_lay
 import {Logger} from '../../logger/Logger';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
+import {AppRuntime} from '../../AppRuntime';
 
 const log = Logger.create();
 
@@ -48,8 +49,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         this.steps = this.createSteps();
 
-        // true if the tour should be running.
-        const run = ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
+        const run =
+            ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED) &&
+            AppRuntime.isElectron();
 
         this.state = {
             run,

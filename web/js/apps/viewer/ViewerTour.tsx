@@ -4,6 +4,7 @@ import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {JoyrideTours} from '../../ui/tours/JoyrideTours';
+import {AppRuntime} from '../../AppRuntime';
 
 export class Styles {
 
@@ -25,7 +26,12 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
         this.onCallback = this.onCallback.bind(this);
 
+        const run =
+            ! LifecycleToggle.isMarked(LifecycleEvents.VIEWER_TOUR_TERMINATED) &&
+            AppRuntime.isElectron();
+
         this.state = {
+            run
         };
 
     }
@@ -146,7 +152,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
                 steps={steps}
                 continuous={true}
                 callback={data => this.onCallback(data)}
-                run={! LifecycleToggle.isMarked(LifecycleEvents.VIEWER_TOUR_TERMINATED)}
+                run={this.state.run}
                 showProgress={true}
                 showSkipButton={true}
                 styles={{
@@ -208,5 +214,5 @@ export interface IProps {
 }
 
 export interface IState {
-
+    readonly run: boolean;
 }
