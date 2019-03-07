@@ -18,7 +18,8 @@
         - browser drag and drop
         - browser add file
 
-
+- Pagemarks now allow you to work through them and still can highlight and 
+  create + delete annotations now.
 
 - A number of changes needed to get the webapp version of Polar to work.
 
