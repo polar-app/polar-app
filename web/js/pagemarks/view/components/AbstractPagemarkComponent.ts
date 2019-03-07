@@ -253,97 +253,94 @@ export class AbstractPagemarkComponent extends Component {
      */
     private createInternalDiv(pagemarkElement: HTMLElement) {
 
-        console.log("FIXME: creating internal div");
-        const internalDiv = document.createElement('div');
+        const createInternalDiv = (margin: string) => {
 
-        internalDiv.style.width = 'calc(100%)';
-        internalDiv.style.height = '25px';
-        internalDiv.style.marginTop = 'auto';
-        internalDiv.style.backgroundColor = 'pink';
-        internalDiv.style.pointerEvents = 'auto';
+            const internalDiv = document.createElement('div');
+
+            internalDiv.style.backgroundColor = 'pink';
+            internalDiv.style.pointerEvents = 'auto';
+            internalDiv.style.position = 'absolute';
+
+            return internalDiv;
+
+        };
+
+        const createHorizontalInternalDiv = (margin: string) => {
+
+            const internalDiv = createInternalDiv(margin);
+
+            internalDiv.style.width = '100%';
+            internalDiv.style.height = '2mm';
+
+            return internalDiv;
+
+        };
+
+        const createVerticalInternalDiv = (margin: string) => {
+
+            const internalDiv = createInternalDiv(margin);
+
+            internalDiv.style.width = '2mm';
+            internalDiv.style.height = '100%';
+
+            return internalDiv;
+
+        };
+
+        const createInternalDivs = () => {
+
+            // margin is 'top right bottom left'
+
+            const left = createVerticalInternalDiv('0 auto 0 0');
+            left.style.left = '0';
+            left.style.top = '0';
+
+            const right = createVerticalInternalDiv('0 0 0 auto');
+            right.style.right = '0';
+            right.style.top = '0';
+
+            const top = createHorizontalInternalDiv('0 0 auto 0');
+            top.style.left = '0';
+            top.style.top = '0';
+
+            const bottom = createHorizontalInternalDiv('auto 0 0 0');
+            bottom.style.bottom = '0';
+            bottom.style.left = '0';
+
+            return [ left, right, top, bottom];
+
+        };
+
+        const internalDivs = createInternalDivs();
 
         type PointerEvents = 'auto' | 'none';
 
         let pointerEvents: PointerEvents = 'auto';
 
-        // FIXME: this strategy won't work because when the pointerEvents CSS
-        // selector is changed we re-send the events and have no idea if this
-        // is a NEW change or an existing one.
-        //
-        // I thought we might be able to detect if we're leaving the div or not
-        // to see if we're being called from within the it while changing=true
-        // but that doesn't seem to work.
-        //
-        // one idea could be to do this via setTimeout where we flag:
-        //
-        // changing=true
-        //
-        // I think the only way we could do this is to change the value, then
-        // set changing=true, then come back again with a timeout and set it to
-        // false otherwise the event handlers will be fired again.
-        //
-        // RESULT: this doesn't work either...
-        //
-        // FIXME: the core problem here is that when we set pointerEvents = none
-        // then we don't even get enter/leave anymore
-        //
-        //
-        // FIXME: actually a CORE issue is once we set the inner div to
-        // pointerEvents=none then we will never get mouseLeave...
-
-
-        let changing: boolean = false;
-
         const doChangePointerEvents = (newValue: PointerEvents) => {
 
-            changing = true;
-
             if (pointerEvents !== newValue) {
-
-                console.log(`FIXME: changing the pointer event style to ${newValue} from ${pointerEvents}`);
-
-                //
-                //
-                // [pagemarkElement, internalDiv]
-                //     .forEach(element => element.style.pointerEvents = newValue);
-
-                [pagemarkElement]
-                    .forEach(element => element.style.pointerEvents = newValue);
-
-                // internalDiv.style.pointerEvents = 'none';
-
+                pagemarkElement.style.pointerEvents = newValue;
                 pointerEvents = newValue;
-
             }
 
         };
 
-        console.log("FIXME: registering on enter/leave");
+        for (const internalDiv of internalDivs) {
 
-        // FIXME: when we change pointer-events on this element we get new
-        // event sent to us so changing this value isn't really possible in
-        // practice
+            internalDiv.addEventListener('mouseenter', (event) => {
+                doChangePointerEvents('auto');
+                event.preventDefault();
+            });
 
-        internalDiv.addEventListener('mouseenter', (event) => {
-            doChangePointerEvents('auto');
-            event.preventDefault();
+            internalDiv.addEventListener('mouseleave', (event) => {
+                doChangePointerEvents('none');
+                event.preventDefault();
+            });
 
-            console.log("FIXME: enter ====");
-            console.log(event.target);
-            console.log(event.currentTarget);
+            pagemarkElement.appendChild(internalDiv);
 
-        });
-
-        internalDiv.addEventListener('mouseleave', (event) => {
-
-            console.log("FIXME: leave ====: changing: " + changing);
-
-            doChangePointerEvents('none');
-            event.preventDefault();
-
-        });
-
-        pagemarkElement.appendChild(internalDiv);
+        }
 
     }
 
