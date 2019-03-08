@@ -27,7 +27,7 @@ export class Preconditions {
      * number.
      *
      */
-    static assertEqual<T>(value: T, expected: T, name: string): T {
+    public static assertEqual<T>(value: T, expected: T, name: string): T {
 
         if(value !== expected) {
             throw new Error(`Value of ${value} !==- ${expected}`);

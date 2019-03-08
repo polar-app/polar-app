@@ -1,3 +1,5 @@
+import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {Preconditions} from '../Preconditions';
 
 export class TimeDurations {
 
@@ -63,6 +65,22 @@ export class TimeDurations {
         const cutoffMS = since.getTime() + durationMS;
 
         return (nowMS > cutoffMS);
+
+    }
+
+    public static inWeeks(since: Date | ISODateTimeString, now: Date = new Date()) {
+
+        if (typeof since === 'string') {
+            since = ISODateTimeStrings.parse(since);
+        }
+
+        Preconditions.assert(since, value => value instanceof Date, "since not Date");
+
+        const delta = now.getTime() - since.getTime();
+
+        const nrWeeks = Math.floor(delta / this.toMillis('1w'));
+
+        return `${nrWeeks}w`;
 
     }
 
