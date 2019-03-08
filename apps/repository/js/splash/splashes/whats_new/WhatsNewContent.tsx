@@ -21,10 +21,37 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                     <h3>Polar 1.13.11</h3>
 
                     <div className="intro">
+                        <p>
+                        This is a small release from perspective of desktop
+                        users but this also adds support for the new web app
+                        which is actually live now but I'm not yet ready to
+                        give out the URL just yet.
+                        </p>
 
-
+                        <p>
+                            The biggest change is that you can now create
+                            highlights through pagemarks without them
+                            interfering in your workflow.  Only the corners
+                            are resizable now but other than that you can
+                            work directly with the document.
+                        </p>
 
                     </div>
+
+                    <ul>
+                        <li>Fixed bugs with multi-select not being able to
+                        properly pick the right tags or create tags</li>
+
+                        <li>Update to Electron 3.1.5</li>
+
+                        <li>Pagemarks now allow you to work through them and
+                        still can highlight and create + delete annotations now
+                        without the pagemarks getting in the way.</li>
+
+                        <li>A number of changes needed to get the webapp version
+                        of Polar to work.</li>
+
+                    </ul>
 
                 </div>
 
