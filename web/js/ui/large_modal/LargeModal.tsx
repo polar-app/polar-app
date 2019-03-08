@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
+import {NULL_FUNCTION} from '../../util/Functions';
 
 /**
  * Modal that is large and fits nearly the full screen. Must use this with a
@@ -19,6 +20,7 @@ export class LargeModal extends React.Component<IProps, IState> {
             <Modal isOpen={this.props.isOpen}
                    size="lg"
                    fade={false}
+                   toggle={this.props.toggle ? this.props.toggle : NULL_FUNCTION}
                    style={{overflowY: 'initial', minWidth: '90%'}}>
 
                 {this.props.children}
@@ -32,6 +34,7 @@ export class LargeModal extends React.Component<IProps, IState> {
 interface IProps {
 
     isOpen: boolean;
+    toggle?: () => void;
 
 }
 

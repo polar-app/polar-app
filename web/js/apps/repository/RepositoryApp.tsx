@@ -40,6 +40,7 @@ import {AppOrigin} from '../AppOrigin';
 import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
+import {PreviewDisclaimers} from './PreviewDisclaimers';
 
 const log = Logger.create();
 
@@ -82,6 +83,8 @@ export class RepositoryApp {
         new ProgressService().start();
 
         await this.doLoadExampleDocs();
+
+        PreviewDisclaimers.createWhenNecessary();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);

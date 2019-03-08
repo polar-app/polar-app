@@ -39,6 +39,7 @@ import {ChromeExtensionReview} from '../../../apps/repository/js/splash/splashes
 import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey';
 import {ProgressToaster} from '../../js/ui/progress_toaster/ProgressToaster';
 import {ProgressToasters} from '../../js/ui/progress_toaster/ProgressToasters';
+import {PreviewDisclaimer} from '../../../web/js/apps/repository/PreviewDisclaimer';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -149,6 +150,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <PreviewDisclaimer/>
 
                 <div style={{
                     height: '300px',

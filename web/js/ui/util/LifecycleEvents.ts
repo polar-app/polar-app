@@ -23,5 +23,7 @@ export class LifecycleEvents {
     public static VIEWER_TOUR_FINISHED = 'viewer-tour-finished';
     public static VIEWER_TOUR_TERMINATED = 'viewer-tour-terminated';
 
+    public static WEBAPP_PREVIEW_WARNING_SHOWN = 'webapp-preview-warning-shown';
+
 }
 
