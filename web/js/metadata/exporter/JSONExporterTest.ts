@@ -8,6 +8,10 @@ import {TestingTime} from '../../test/TestingTime';
 
 describe('JSONExporter', function() {
 
+    beforeEach(function() {
+        Comments.SEQUENCE = 0;
+    });
+
     it("basic with one item", async function() {
 
         TestingTime.freeze();
