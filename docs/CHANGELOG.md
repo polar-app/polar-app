@@ -1,21 +1,6 @@
 
 # 1.13.10
 
-- FIXME: test all file upload strategies
-    - MacOS
-        - electron drag and drop
-        - electron upload file
-        - browser drag and drop
-        - browser add file
-    - Linux  
-        - browser drag and drop
-        - browser add file
-    - Windows  
-        - electron drag and drop
-        - electron upload file
-        - browser drag and drop
-        - browser add file
-
 - Fixed bugs with multi-select not being able to properly pick the right 
 
 - Tour now only works on Electron.  
