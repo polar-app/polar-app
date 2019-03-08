@@ -32,6 +32,7 @@ export class LightboxPopover extends React.Component<IProps, IState> {
                      isOpen={this.props.open}
                      className={this.props.className}
                      target={this.props.target}
+                     trigger="legacy"
                      style={this.props.style}>
 
                 {this.props.children}

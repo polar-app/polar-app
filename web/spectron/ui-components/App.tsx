@@ -150,7 +150,32 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <PreviewDisclaimer/>
+                <div>
+
+                    <Button className="rounded-circle border border-primary"
+                            style={{
+                                borderWidth: '2px !important',
+                                padding: '2px'
+                            }}
+                            size="sm"
+                            color="light">
+
+                        <img className="rounded-circle"
+                             style={{maxHeight: '50px'}}
+                             src="https://yt3.ggpht.com/-b4nK9nmcX9s/AAAAAAAAAAI/AAAAAAAAAAA/LKdHcpzMesw/s88-c-k-no-mo-rj-c0xffffff/photo.jpg"/>
+
+                    </Button>
+
+                </div>
+
+                <br/>
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                {/*<PreviewDisclaimer/>*/}
 
                 <div style={{
                     height: '300px',
