@@ -727,8 +727,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         // TODO: dark-mode.  Use CSS variable
                                         // names for colors
 
-                                        background: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? '#00afec' : 'white',
-                                        color: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'white' : 'black',
+                                        background: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-background-color)' : 'var(--primary-background-color)',
+                                        color: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-text-color)' : 'var(--primary-text-color)',
                                     }
 
                                 };

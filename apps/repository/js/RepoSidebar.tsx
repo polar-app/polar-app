@@ -76,9 +76,11 @@ export class RepoSidebar extends React.Component<IProps, IState> {
         const sidebarStyle = Object.assign({}, Styles.sidebar, {display});
 
         const NavButtons = () => (
+
             <div style={{display: 'flex'}}>
 
                 <div id="toggle-sidebar"
+                     className="mr-1"
                      style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <Button color='light'
                             onClick={() => this.toggle()}>
