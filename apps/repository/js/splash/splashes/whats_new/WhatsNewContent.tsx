@@ -18,6 +18,18 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
+                    <h3>Polar 1.13.11</h3>
+
+                    <div className="intro">
+
+
+
+                    </div>
+
+                </div>
+
+                <div>
+
                     <h3>Polar 1.13.9</h3>
 
                     <div className="intro">

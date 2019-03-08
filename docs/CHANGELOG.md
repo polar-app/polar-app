@@ -8,8 +8,6 @@
         - browser drag and drop
         - browser add file
     - Linux  
-        - electron drag and drop
-        - electron upload file
         - browser drag and drop
         - browser add file
     - Windows  
