@@ -1,4 +1,15 @@
 
+# 1.13.12
+
+- New AuthHandler system so that we can show user account information when 
+  using Firebase auth.
+
+- Cut down memory usage of the webapp from 1GB to about 200MB.  The gmail app
+  is about 120MB so this isn't far off from being 'reasonable' in terms of 
+  memory usage.
+
+- Upgraded to latest versions of Firebase and Webpack
+
 # 1.13.11
 
 - Fixed bugs with multi-select not being able to properly pick the right 

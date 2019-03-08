@@ -58,7 +58,6 @@ export class PreviewDisclaimer extends React.PureComponent<IProps, IState> {
                     <ul>
 
                         <li>Only PDF documents work for now. Captured web content doesn't yet work.</li>
-                        <li>It's a bit slow due to some issues with Firebase.  Documents take about a second to load.</li>
                         <li>Won't work on mobile just yet.  The UI doesn't adjust to a smaller display but we're working on reworking this.</li>
                         <li>The Chrome Extension doesn't yet work with the webapp.</li>
                         <li>Anki sync won't work and is desktop specific (won't ever work on the webapp).</li>

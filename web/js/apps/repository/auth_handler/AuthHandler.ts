@@ -2,12 +2,15 @@ import {URLs} from '../../../util/URLs';
 import {Firebase} from '../../../firebase/Firebase';
 import * as firebase from '../../../firebase/lib/firebase';
 import {AppRuntime} from '../../../AppRuntime';
+import {Optional} from '../../../util/ts/Optional';
 
 export interface AuthHandler {
 
     authenticate(): Promise<void>;
 
     status(): Promise<AuthStatus>;
+
+    userInfo(): Promise<Optional<UserInfo>>;
 
 }
 
@@ -42,6 +45,10 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
     }
 
+    public async userInfo(): Promise<Optional<UserInfo>> {
+        return Optional.empty();
+    }
+
     public abstract status(): Promise<AuthStatus>;
 
 }
@@ -57,6 +64,24 @@ export class BrowserAuthHandler extends DefaultAuthHandler {
         }
 
         return undefined;
+
+    }
+
+    public async userInfo(): Promise<Optional<UserInfo>> {
+
+        const user = await this.currentUser();
+
+        if (user === null) {
+            return Optional.empty();
+        }
+
+        return Optional.of({
+            displayName: Optional.of(user.displayName).getOrUndefined(),
+            email: Optional.of(user.email).getOrUndefined(),
+            emailVerified: user.emailVerified,
+            photoURL: Optional.of(user.photoURL).getOrUndefined(),
+            uid: user.uid
+        });
 
     }
 
@@ -90,6 +115,18 @@ export class ElectronAuthHandler extends DefaultAuthHandler {
 
 }
 
-
 export type AuthStatus = 'needs-authentication' |  undefined;
 
+/**
+ * A generic UserInfo object for this auth handler. If there's no email the user
+ * is anonymous and hasn't yet created an account.
+ */
+export interface UserInfo {
+
+    readonly displayName?: string;
+    readonly email?: string;
+    readonly emailVerified: boolean;
+    readonly photoURL?: string;
+    readonly uid: string;
+
+}
