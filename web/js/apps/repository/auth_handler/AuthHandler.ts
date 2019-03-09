@@ -20,6 +20,8 @@ export class AuthHandlers {
 
         if (AppRuntime.isElectron()) {
 
+            // TODO: Electron can acutally use the BrowserAuthHandler
+            // just fine...
             return new ElectronAuthHandler();
 
         } else if (AppRuntime.isBrowser()) {

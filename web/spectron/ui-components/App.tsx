@@ -40,6 +40,9 @@ import {Survey} from '../../../apps/repository/js/splash/splashes/survey/Survey'
 import {ProgressToaster} from '../../js/ui/progress_toaster/ProgressToaster';
 import {ProgressToasters} from '../../js/ui/progress_toaster/ProgressToasters';
 import {PreviewDisclaimer} from '../../../web/js/apps/repository/PreviewDisclaimer';
+import {AccountControlBar} from '../../../web/js/ui/cloud_auth/AccountControlBar';
+import {NULL_FUNCTION} from '../../js/util/Functions';
+import {AccountControlDropdown} from '../../../web/js/ui/cloud_auth/AccountControlDropdown';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -149,6 +152,33 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <div style={{width: '400px'}} className="border border-danger">
+
+                    <AccountControlBar
+                        userInfo={{
+                            displayName: 'Kevin Burton',
+                            email: 'burton@inputneuron.io',
+                            photoURL: "https://yt3.ggpht.com/-b4nK9nmcX9s/AAAAAAAAAAI/AAAAAAAAAAA/LKdHcpzMesw/s88-c-k-no-mo-rj-c0xffffff/photo.jpg",
+                            emailVerified: true,
+                            uid: '10101'
+                        }}
+                        onLogout={NULL_FUNCTION}
+                        onInvite={NULL_FUNCTION}/>
+
+                </div>
+
+
+                <AccountControlDropdown
+                    userInfo={{
+                        displayName: 'Kevin Burton',
+                        email: 'burton@inputneuron.io',
+                        photoURL: "https://yt3.ggpht.com/-b4nK9nmcX9s/AAAAAAAAAAI/AAAAAAAAAAA/LKdHcpzMesw/s88-c-k-no-mo-rj-c0xffffff/photo.jpg",
+                        emailVerified: true,
+                        uid: '10101'
+                    }}
+                    onLogout={NULL_FUNCTION}
+                    onInvite={NULL_FUNCTION}/>
 
                 <div>
 

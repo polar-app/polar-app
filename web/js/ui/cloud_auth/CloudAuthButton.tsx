@@ -18,6 +18,10 @@ import {SimpleTooltip} from '../tooltip/SimpleTooltip';
 import {URLs} from '../../util/URLs';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';
+import {AuthHandler, AuthHandlers, UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
+import {Simulate} from 'react-dom/test-utils';
+import canPlayThrough = Simulate.canPlayThrough;
+import {AccountControlDropdown} from './AccountControlDropdown';
 
 const log = Logger.create();
 
@@ -57,6 +61,23 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
     public render() {
 
+        const AccountButton = () => {
+
+            if (this.state.userInfo) {
+
+                return <AccountControlDropdown userInfo={this.state.userInfo}
+                                               onInvite={() => this.changeAuthStage('invite')}
+                                               onLogout={() => this.logout()}/>;
+
+            } else {
+
+                return <AccountDropdown onInvite={() => this.changeAuthStage('invite')}
+                                        onLogout={() => this.logout()}/>;
+
+            }
+
+        };
+
         if (this.state.mode === 'needs-auth') {
             return (
                 <div>
@@ -87,8 +108,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                                       onCancel={() => this.changeAuthStage()}
                                       onInvite={(emailAddresses) => this.onInvitedUsers(emailAddresses)}/>
 
-                    <AccountDropdown onInvite={() => this.changeAuthStage('invite')}
-                                     onLogout={() => this.logout()}/>
+                    <AccountButton/>
 
                 </div>
 
@@ -161,15 +181,23 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
     private onAuth(user: firebase.User | null) {
 
-        let mode: AuthMode = 'needs-auth';
+        AuthHandlers.get().userInfo()
+            .then((userInfo) => {
 
-        if (user) {
-            mode = 'authenticated';
-        }
+                let mode: AuthMode = 'needs-auth';
 
-        this.setState({
-              mode,
-          });
+                if (user) {
+                    mode = 'authenticated';
+                }
+
+                this.setState({
+                    mode,
+                    userInfo: userInfo.getOrUndefined()
+                });
+
+
+            })
+            .catch(err => log.error("Unable to get user info: ", err));
 
     }
 
@@ -186,6 +214,7 @@ interface IProps {
 interface IState {
     readonly mode: AuthMode;
     readonly stage?: AuthStage;
+    readonly userInfo?: UserInfo;
 }
 
 type AuthMode = 'none' | 'needs-auth' | 'authenticated';

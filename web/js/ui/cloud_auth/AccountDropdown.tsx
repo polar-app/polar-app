@@ -6,7 +6,7 @@ import {SimpleTooltip} from '../tooltip/SimpleTooltip';
 
 const log = Logger.create();
 
-export class AccountDropdown extends React.Component<IProps, IState> {
+export class AccountDropdown extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -17,6 +17,7 @@ export class AccountDropdown extends React.Component<IProps, IState> {
 
         return (
             <div>
+
                 <UncontrolledDropdown id="cloud-sync-dropdown"
                                       direction="down"
                                       size="sm">
@@ -38,7 +39,7 @@ export class AccountDropdown extends React.Component<IProps, IState> {
 
                             <SimpleTooltip target="cloud-sync-invite-users"
                                            show={0}
-                                           placement="left">
+                                           placement="bottom">
                                 Invite users to Polar. If they sign up and
                                 use cloud sync we will give you a free month
                                 of cloud sync.
@@ -58,7 +59,7 @@ export class AccountDropdown extends React.Component<IProps, IState> {
 
                             <SimpleTooltip target="cloud-sync-logout"
                                            show={0}
-                                           placement="left">
+                                           placement="bottom">
 
                                 Logout of cloud sync. Your data will no
                                 longer be synchronized between your devices.

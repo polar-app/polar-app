@@ -19,7 +19,7 @@ import {URLs} from '../../util/URLs';
 
 const log = Logger.create();
 
-export class EnableCloudSyncButton extends React.Component<IProps, IState> {
+export class EnableCloudSyncButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
