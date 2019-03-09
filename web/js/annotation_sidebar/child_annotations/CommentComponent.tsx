@@ -76,9 +76,11 @@ export class CommentComponent extends React.Component<IProps, IState> {
                                         onClick={() => this.onEdit()}
                                         type="comment"/>
 
-                            <CommentDropdown id={'comment-dropdown-' + comment.id}
-                                             comment={comment}
-                                             onDelete={() => this.onDelete(comment)}/>
+                            <div className="ml-1">
+                                <CommentDropdown id={'comment-dropdown-' + comment.id}
+                                                 comment={comment}
+                                                 onDelete={() => this.onDelete(comment)}/>
+                            </div>
 
                         </div>
 

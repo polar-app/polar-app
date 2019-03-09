@@ -4,6 +4,7 @@ import {DropdownItem} from 'reactstrap';
 import {Nav} from '../../../../web/js/ui/util/Nav';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import Button from 'reactstrap/lib/Button';
+import {EditIcon} from '../../../../web/js/ui/standard_icons/EditIcon';
 
 /**
  */
@@ -18,29 +19,13 @@ export class EditButton extends React.PureComponent<IProps, IState> {
         return (
 
             <Button id={this.props.id}
-                    className="text-muted"
+                    className="text-muted p-1"
                     size="sm"
                     color="light"
                     title={'Edit ' + this.props.type}
                     onClick={() => this.onClick()}>
 
-                <div style={{
-                    display: 'flex'
-                }}>
-
-                    <div style={{
-                        width: '22px',
-                        display: 'flex'
-                    }}>
-                        <i className="far fa-edit"
-                           style={{
-                               fontSize: '20px',
-                               margin: 'auto',
-                           }}></i>
-
-                    </div>
-
-                </div>
+                <EditIcon/>
 
             </Button>
         );

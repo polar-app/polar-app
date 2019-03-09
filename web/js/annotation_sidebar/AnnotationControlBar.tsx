@@ -35,14 +35,6 @@ const Styles: IStyleMap = {
         // width: '350px'
     },
 
-    icon: {
-        fontSize: '16px',
-        color: '#a4a4a4'
-
-        // minWidth: '350px',
-        // width: '350px'
-    },
-
     barBody: {
         display: 'flex'
     },
@@ -94,7 +86,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        <Button className="text-muted"
+                        <Button className="text-muted p-1"
                                 title="Create comment"
                                 size="sm"
                                 color="light"
@@ -105,7 +97,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         </Button>
 
-                        <Button className="text-muted"
+                        <Button className="ml-1 text-muted p-1"
                                 title="Create flashcard"
                                 style={Styles.button}
                                 size="sm"
@@ -116,13 +108,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         </Button>
 
-                        <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
-                                            annotation={annotation}
-                                            onDelete={() => this.onDelete(annotation)}
-                                            onCreateComment={() => this.toggleActiveInputComponent('comment')}
-                                            onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
-                                            onJumpToContext={() => this.onJumpToContext(annotation)}/>
-
+                        <div className="ml-1">
+                            <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
+                                                annotation={annotation}
+                                                onDelete={() => this.onDelete(annotation)}
+                                                onCreateComment={() => this.toggleActiveInputComponent('comment')}
+                                                onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
+                                                onJumpToContext={() => this.onJumpToContext(annotation)}/>
+                        </div>
 
                     </div>
 

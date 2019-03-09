@@ -4,7 +4,7 @@ import {HighlightColor} from '../../metadata/BaseHighlight';
 
 /**
  */
-export class HighlighterIcon extends React.Component<IProps, IState> {
+export class HighlighterIcon extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
