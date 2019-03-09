@@ -1,6 +1,8 @@
 
 # 1.13.12
 
+- We had the wrong link to the documentation.
+
 - Update to Electron 3.1.6
 
 - New AuthHandler system so that we can show user account information when 

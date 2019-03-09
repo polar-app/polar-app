@@ -8,6 +8,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {Arrays} from '../util/Arrays';
 import {Elements} from '../util/Elements';
+import {ReadingProgressResume} from './ReadingProgressResume';
 
 const log = Logger.create();
 
@@ -108,31 +109,7 @@ export class WebView extends View {
 
         document.querySelector("#polar-header")!.addEventListener('dblclick', () => {
 
-            const pagemarks = Array.from(document.querySelectorAll(".page .pagemark"));
-            const last = <HTMLElement> Arrays.last(pagemarks);
-
-            if (last) {
-
-                last.scrollIntoView({block: 'end'});
-
-                let scrollParent = <HTMLElement> Elements.getScrollParent(last); // html mode
-
-                if (this.docFormat.name === 'pdf') {
-                    scrollParent = <HTMLElement> document.querySelector("#viewerContainer");
-                }
-
-                if (scrollParent) {
-
-                    const scrollDelta = window.innerHeight * (2 / 3);
-                    const scrollTop = scrollParent.scrollTop;
-
-                    const newScrollTop = scrollTop + scrollDelta;
-
-                    scrollParent.scrollTop = newScrollTop;
-
-                }
-
-            }
+            ReadingProgressResume.resume();
 
         });
 

@@ -4,6 +4,7 @@ import {DocDetail} from '../../metadata/DocDetail';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ViewerTours} from '../../apps/viewer/ViewerTours';
 import {Model} from '../../model/Model';
+import {Stopwatches} from '../../util/Stopwatches';
 
 declare var window: any;
 
@@ -24,8 +25,14 @@ export class PDFViewer extends Viewer {
 
         RendererAnalytics.pageview("/pdfviewer");
 
+        const stopwatch = Stopwatches.create();
+
         this.model.registerListenerForDocumentLoaded(event => {
+
             ViewerTours.createWhenNecessary(event.fingerprint);
+
+            log.notice("Document load time: " + stopwatch.stop());
+
         });
 
         this.disableSidebarKeyboardHandling();
