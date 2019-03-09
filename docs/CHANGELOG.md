@@ -1,7 +1,8 @@
 
 # 1.13.12
 
-- Proof of concept of auto-resume when loading.  
+- Proof of concept of auto-resume when loading but not enabled yet as I need 
+  to figure out what to do for onboarding and disabling this feature.  
 
 - Fixed bug with PDF scroll into view where we wouldn't properly scroll to the 
   proper position. Now we just scroll to the page that was last pagemarked.

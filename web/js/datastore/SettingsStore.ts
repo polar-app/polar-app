@@ -5,6 +5,7 @@ import {Optional} from '../util/ts/Optional';
 import {Settings, DefaultSettings} from './Settings';
 import {Logger} from '../logger/Logger';
 import {AppRuntime} from '../AppRuntime';
+import {Provider, Providers} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -12,7 +13,7 @@ export class SettingsStore {
 
     private static readonly directories = new Directories();
 
-    public static async load(): Promise<Settings> {
+    public static async load(): Promise<Provider<Settings>> {
 
         if (AppRuntime.isElectron()) {
 
@@ -21,12 +22,13 @@ export class SettingsStore {
             if (await Files.existsAsync(settingsPath)) {
                 log.info("Loaded settings from: " + settingsPath);
                 const data = await Files.readFileAsync(settingsPath);
-                return JSON.parse(data.toString("UTF-8"));
+                const settings = <Settings> JSON.parse(data.toString("UTF-8"));
+                return Providers.of(settings);
             }
 
         }
 
-        return new DefaultSettings();
+        return Providers.of(new DefaultSettings());
 
 
     }
