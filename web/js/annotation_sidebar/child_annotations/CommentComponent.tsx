@@ -99,12 +99,13 @@ export class CommentComponent extends React.Component<IProps, IState> {
     }
 
     private onEdit() {
-
+        this.props.onEdit();
     }
 
 }
 interface IProps {
     comment: DocAnnotation;
+    onEdit: () => void;
 }
 
 interface IState {
