@@ -12,6 +12,10 @@ export class LocalPrefs {
         }
     }
 
+    public static toggle(key: string) {
+        this.mark(key, ! this.isMarked(key));
+    }
+
     /**
      * The initial value is false, After that the value is true.
      */
@@ -46,10 +50,10 @@ export class LocalPrefs {
 
     }
 
-    public static isMarked(key: string) {
+    public static isMarked(key: string, defaultValue: boolean = false) {
 
         const currentValue =
-            this.get(key).getOrElse('false');
+            this.get(key).getOrElse(`${defaultValue}`);
 
         return currentValue === 'true';
 

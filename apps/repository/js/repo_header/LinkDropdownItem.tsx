@@ -1,18 +1,19 @@
 import * as React from 'react';
-import {GenericDropdownItemProps, TrackedDropdownItem} from './TrackedDropdownItem';
+import {TrackedDropdownLink} from './TrackedDropdownLink';
 
 /**
  */
-export class LinkDropdownItem extends React.PureComponent<GenericDropdownItemProps, IState> {
+export class LinkDropdownItem extends React.PureComponent<IProps, IState> {
 
-    constructor(props: GenericDropdownItemProps, context: any) {
+    constructor(props: IProps, context: any) {
         super(props, context);
     }
 
     public render() {
 
         return (
-            <TrackedDropdownItem trackingCategory='links-dropdown-click'
+
+            <TrackedDropdownLink trackingCategory='links-dropdown-click'
                                  id={this.props.id}
                                  link={this.props.link}
                                  title={this.props.title}
@@ -21,6 +22,18 @@ export class LinkDropdownItem extends React.PureComponent<GenericDropdownItemPro
         );
 
     }
+
+}
+
+export interface IProps {
+
+    readonly id: string;
+    readonly title: string;
+    readonly tooltip: string;
+    readonly icon: string;
+    readonly hidden?: boolean;
+
+    readonly link: string;
 
 }
 

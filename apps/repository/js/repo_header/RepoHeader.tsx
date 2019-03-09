@@ -7,6 +7,7 @@ import {RepoSidebar} from '../RepoSidebar';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
 import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
+import {SettingsDropdown} from './SettingsDropdown';
 
 const log = Logger.create();
 
@@ -41,6 +42,8 @@ export class RepoHeader extends React.Component<IProps, IState> {
                         <LinkDropdown/>
 
                         <HelpDropdown/>
+
+                        <SettingsDropdown/>
 
                     </SplitBarRight>
 
