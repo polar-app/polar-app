@@ -47,10 +47,10 @@ export class Launcher {
 
         const model = new Model(persistenceLayer);
 
+        new PagemarkView(model).start();
         new WebView(model).start();
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
-        new PagemarkView(model).start();
         new AnnotationSidebarService(model).start();
 
         // if (AppRuntime.isElectron()) {

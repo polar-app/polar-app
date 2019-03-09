@@ -1,4 +1,4 @@
-import {Model} from '../model/Model';
+import {DocumentLoadedEvent, Model} from '../model/Model';
 import {View} from './View';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocFormat} from '../docformat/DocFormat';
@@ -29,7 +29,7 @@ export class WebView extends View {
 
     public start() {
 
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        this.model.registerListenerForDocumentLoaded(event => this.onDocumentLoaded(event));
 
         return this;
 
@@ -96,20 +96,27 @@ export class WebView extends View {
     /**
      * Setup a document once we detect that a new one has been loaded.
      */
-    private onDocumentLoaded() {
+    private onDocumentLoaded(event: DocumentLoadedEvent) {
 
-        log.info("WebView.onDocumentLoaded: ", this.model.docMeta);
+        const autoResume = false;
+        const docMeta = event.docMeta;
+
+        log.info("WebView.onDocumentLoaded: ", docMeta);
 
         this.updateProgress();
-        this.handleProgressDoubleClick();
+        this.handleProgressDoubleClick(docMeta);
+
+        if (autoResume) {
+            ReadingProgressResume.resume(docMeta);
+        }
 
     }
 
-    private handleProgressDoubleClick() {
+    private handleProgressDoubleClick(docMeta: DocMeta) {
 
         document.querySelector("#polar-header")!.addEventListener('dblclick', () => {
 
-            ReadingProgressResume.resume();
+            ReadingProgressResume.resume(docMeta);
 
         });
 

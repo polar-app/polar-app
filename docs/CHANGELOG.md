@@ -1,6 +1,11 @@
 
 # 1.13.12
 
+- Proof of concept of auto-resume when loading.  
+
+- Fixed bug with PDF scroll into view where we wouldn't properly scroll to the 
+  proper position. Now we just scroll to the page that was last pagemarked.
+
 - We had the wrong link to the documentation.
 
 - Update to Electron 3.1.6
