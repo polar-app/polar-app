@@ -1,5 +1,5 @@
 import {Optional} from '../../util/ts/Optional';
-import {DurationStr, TimeDurations} from '..//../util/TimeDurations';
+import {DurationStr, TimeDurations} from '../../util/TimeDurations';
 
 export class LocalPrefs {
 
@@ -102,3 +102,6 @@ export class LocalPrefs {
     }
 
 }
+
+
+

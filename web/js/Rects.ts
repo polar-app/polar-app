@@ -341,7 +341,7 @@ export class Rects {
      * @param rect {Rect | Object}
      * @return {Rect}
      */
-    static createFromBasicRect(rect: any): Rect {
+    public static createFromBasicRect(rect: any): Rect {
 
         rect = new Rect(rect);
 

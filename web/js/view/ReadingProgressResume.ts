@@ -3,6 +3,9 @@ import {Elements} from '../util/Elements';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocMeta} from '../metadata/DocMeta';
 import {Pagemark} from '../metadata/Pagemark';
+import {Rects} from '../Rects';
+import {sort} from 'semver';
+import {Reducers} from '../util/Reducers';
 
 export class ReadingProgressResume {
 
@@ -10,7 +13,7 @@ export class ReadingProgressResume {
 
         if (this.scrollToPage(docMeta)) {
 
-            this.scrollToLastPagemark();
+            // this.scrollToLastPagemark();
 
         }
 
@@ -26,9 +29,90 @@ export class ReadingProgressResume {
 
         const pages = document.querySelectorAll(".page");
 
-        const page = pages[targetPagemark.pageNum - 1];
+        const pageNum = targetPagemark.pageNum;
 
-        page.scrollIntoView();
+        const pageElement = <HTMLElement> pages[pageNum - 1];
+
+        const scrollParent = this.getScrollParent(pageElement);
+
+        const pageOffset = Elements.getRelativeOffsetRect(pageElement, scrollParent);
+
+        const pageTop = pageOffset.top;
+        const pageHeight = Math.floor(pageElement.clientHeight);
+
+        const computePagemarkHeight = (): number => {
+
+            const docFormat = DocFormatFactory.getInstance();
+
+            if (docFormat.name === 'pdf') {
+
+                const pagemarkBottom
+                    = Math.floor(Rects.createFromBasicRect(targetPagemark.pagemark.rect).bottom);
+
+                const pagemarkBottomPerc = pagemarkBottom / 100;
+
+                return pageHeight * pagemarkBottomPerc;
+
+            } else {
+
+                const pagemarkElements
+                    = Array.from(pageElement.querySelectorAll(".pagemark"));
+
+                const pagemarkElement =
+                    pagemarkElements.sort((a, b) => a.getBoundingClientRect().bottom - b.getBoundingClientRect().bottom)
+                        .reduce(Reducers.LAST);
+
+                if (pagemarkElement) {
+
+                    // in HTML mode or PDFs with smaller
+
+                    return pagemarkElement.clientHeight;
+
+                } else {
+                    throw new Error("No pagemarkElement");
+                }
+
+            }
+
+        };
+
+        // now compute the height of the pagemark so that we scroll to that
+        // point.
+        const pagemarkHeight = computePagemarkHeight();
+
+        // but adjust it a bit so that the bottom portion of the pagemark is
+        // visible
+        const windowDelta = window.innerHeight * (0.2);
+
+        scrollParent.scrollTop = pageOffset.top + pagemarkHeight - windowDelta;
+
+        // scrollParent.scrollTop = pageTop + pagemarkHeight;
+        // scrollParent.scrollTop = pageOffset.top + pagemarkHeight;
+
+        // scrollParent.scrollTop = pageOffset.top ;
+
+        // FIXME: some if these values are wrong for pagemarks... try to find
+        // out why...
+
+
+        // FIXME: record the ideal values..
+
+        // FIXME: teh pagemark is too tall.. it should be a function of the
+        // client Height but it.s not... .. for HTML mode resort to getting the
+        // raw pagemark clientHeight.
+
+
+
+        // scrollParent.scrollTop = pageOffset.top + (pageHeight * 0.55);
+        console.log(`FIXME: windowDelta: ${windowDelta}`);
+
+        console.log(`FIXME: state: `, JSON.stringify({
+            pageNum,
+            pageTop,
+            pageHeight,
+            windowDelta,
+            pagemarkHeight
+        }, null, "  "));
 
         return true;
 
@@ -50,13 +134,7 @@ export class ReadingProgressResume {
 
             last.scrollIntoView({block: 'end'});
 
-            const scrollParent = <HTMLElement> Elements.getScrollParent(last); // html
-                                                                             // mode
-
-            // TODO: re-enable this until we can figure out how we can await scrolling.
-            // if (docFormat.name === 'pdf') {
-            //     scrollParent = <HTMLElement> document.querySelector("#viewerContainer");
-            // }
+            const scrollParent = this.getScrollParent(last);
 
             if (scrollParent) {
 
@@ -70,6 +148,18 @@ export class ReadingProgressResume {
             }
 
         }
+
+    }
+
+    private static getScrollParent(element: HTMLElement) {
+
+        const docFormat = DocFormatFactory.getInstance();
+
+        if (docFormat.name === 'pdf') {
+            return <HTMLElement> document.querySelector("#viewerContainer");
+        }
+
+        return  <HTMLElement> Elements.getScrollParent(element);
 
     }
 
@@ -103,13 +193,41 @@ export class ReadingProgressResume {
 
         let result: PagemarkHolder | undefined;
 
+        /**
+         * Compare two pagemarks and return the one that is farthest down the
+         * page.
+         */
+        const comparePagemarks = (p0: PagemarkHolder | undefined, p1: PagemarkHolder) => {
+
+            if (!p0) {
+                return p1;
+            }
+
+            if (p0.pageNum < p1.pageNum) {
+                return p1;
+            }
+
+            if (p0.pageNum === p1.pageNum) {
+
+                // FIXME this should be based on TIME and nto position.  This
+                // way the user can jump around properly
+
+                if (Rects.createFromBasicRect(p0.pagemark.rect).bottom <
+                    Rects.createFromBasicRect(p1.pagemark.rect).bottom) {
+
+                    return p1;
+
+                }
+
+            }
+
+            return p0;
+
+        };
+
         for (const pagemarkHolder of pagemarkHolders) {
 
-            // TODO: we don't really care about which pagemark just as long as
-            // its the max page.
-            if (! result || pagemarkHolder.pageNum > result.pageNum) {
-                result = pagemarkHolder;
-            }
+            result = comparePagemarks(result, pagemarkHolder);
 
         }
 
@@ -127,3 +245,4 @@ interface PagemarkHolder {
     readonly pageNum: number;
     readonly pagemark: Pagemark;
 }
+
