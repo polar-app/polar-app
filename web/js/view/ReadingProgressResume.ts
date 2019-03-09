@@ -11,16 +11,6 @@ export class ReadingProgressResume {
 
     public static resume(docMeta: DocMeta) {
 
-        if (this.scrollToPage(docMeta)) {
-
-            // this.scrollToLastPagemark();
-
-        }
-
-    }
-
-    private static scrollToPage(docMeta: DocMeta): boolean {
-
         const targetPagemark = this.computeTargetPagemark(docMeta);
 
         if (! targetPagemark) {
@@ -58,6 +48,7 @@ export class ReadingProgressResume {
                 const pagemarkElements
                     = Array.from(pageElement.querySelectorAll(".pagemark"));
 
+                // TODO: should be by time and not by position.
                 const pagemarkElement =
                     pagemarkElements.sort((a, b) => a.getBoundingClientRect().bottom - b.getBoundingClientRect().bottom)
                         .reduce(Reducers.LAST);
@@ -81,73 +72,12 @@ export class ReadingProgressResume {
         const pagemarkHeight = computePagemarkHeight();
 
         // but adjust it a bit so that the bottom portion of the pagemark is
-        // visible
+        // visible by computing the height of the window and shifting it
         const windowDelta = window.innerHeight * (0.2);
 
         scrollParent.scrollTop = pageOffset.top + pagemarkHeight - windowDelta;
 
-        // scrollParent.scrollTop = pageTop + pagemarkHeight;
-        // scrollParent.scrollTop = pageOffset.top + pagemarkHeight;
-
-        // scrollParent.scrollTop = pageOffset.top ;
-
-        // FIXME: some if these values are wrong for pagemarks... try to find
-        // out why...
-
-
-        // FIXME: record the ideal values..
-
-        // FIXME: teh pagemark is too tall.. it should be a function of the
-        // client Height but it.s not... .. for HTML mode resort to getting the
-        // raw pagemark clientHeight.
-
-
-
-        // scrollParent.scrollTop = pageOffset.top + (pageHeight * 0.55);
-        console.log(`FIXME: windowDelta: ${windowDelta}`);
-
-        console.log(`FIXME: state: `, JSON.stringify({
-            pageNum,
-            pageTop,
-            pageHeight,
-            windowDelta,
-            pagemarkHeight
-        }, null, "  "));
-
         return true;
-
-    }
-
-    private static scrollToLastPagemark() {
-
-        const docFormat = DocFormatFactory.getInstance();
-
-        if (docFormat.name === 'pdf') {
-            // TODO: right now we can't scroll to the last pagemark in pdf mocde
-            return;
-        }
-
-        const pagemarks = Array.from(document.querySelectorAll(".page .pagemark"));
-        const last = <HTMLElement> Arrays.last(pagemarks);
-
-        if (last) {
-
-            last.scrollIntoView({block: 'end'});
-
-            const scrollParent = this.getScrollParent(last);
-
-            if (scrollParent) {
-
-                const scrollDelta = window.innerHeight * (2 / 3);
-                const scrollTop = scrollParent.scrollTop;
-
-                const newScrollTop = scrollTop + scrollDelta;
-
-                scrollParent.scrollTop = newScrollTop;
-
-            }
-
-        }
 
     }
 
@@ -209,8 +139,7 @@ export class ReadingProgressResume {
 
             if (p0.pageNum === p1.pageNum) {
 
-                // FIXME this should be based on TIME and nto position.  This
-                // way the user can jump around properly
+                // TODO: should be by time and not by position.
 
                 if (Rects.createFromBasicRect(p0.pagemark.rect).bottom <
                     Rects.createFromBasicRect(p1.pagemark.rect).bottom) {
@@ -225,10 +154,9 @@ export class ReadingProgressResume {
 
         };
 
+        // TODO: this could be cleaner via a sort + reduce/last
         for (const pagemarkHolder of pagemarkHolders) {
-
             result = comparePagemarks(result, pagemarkHolder);
-
         }
 
         return result;
