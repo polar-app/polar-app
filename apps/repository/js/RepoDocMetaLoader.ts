@@ -78,7 +78,11 @@ export class RepoDocMetaLoader {
 
                 const minProgress = progressTrackerIndex.min();
 
-                DeterminateProgressBar.update(minProgress);
+                if (minProgress.isPresent()) {
+                    DeterminateProgressBar.update(minProgress.get());
+                } else {
+                    DeterminateProgressBar.update(100);
+                }
 
                 const mutations: RepoDocMetaMutation[] = [];
 

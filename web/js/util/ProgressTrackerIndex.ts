@@ -1,6 +1,7 @@
-import {Progress, ProgressTracker, Percentage} from "./ProgressTracker";
-import {Reducers} from './Reducers';
+import {Progress} from "./ProgressTracker";
 import {isPresent} from '../Preconditions';
+import {Reducers} from "./Reducers";
+import {Optional} from "./ts/Optional";
 
 export class ProgressTrackerIndex {
 
@@ -20,17 +21,17 @@ export class ProgressTrackerIndex {
 
     }
 
-    public min(defaultValue: number = 100): number {
+    public min(defaultValue: number = 100): Optional<Progress> {
 
         if (Object.keys(this.index).length === 0) {
             // no entries so we're done.
-            return defaultValue;
+            return Optional.empty();
+
         }
 
-        const percs = Object.values(this.index)
-            .map(current => current.progress);
-
-        return Math.min(...percs);
+        return Optional.of(Object.values(this.index)
+                               .sort((a, b) => a.progress - b.progress)
+                               .reduce(Reducers.FIRST));
 
     }
 

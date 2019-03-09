@@ -33,7 +33,7 @@ export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
     }
 
     private onClick() {
-        LocalPrefs.toggle(this.props.name);
+        LocalPrefs.toggle(this.props.name, this.props.defaultValue);
     }
 
 }
@@ -46,9 +46,10 @@ interface IProps {
     readonly defaultValue: boolean;
 
     readonly title: string;
-    readonly tooltip: string;
-    readonly hidden?: boolean;
 
+    readonly tooltip: string;
+
+    readonly hidden?: boolean;
 
 }
 

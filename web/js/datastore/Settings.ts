@@ -13,6 +13,8 @@ export interface Settings {
 
     readonly documentRepository: DocumentRepositorySettings;
 
+    [key: string]: any;
+
 }
 
 export interface DocumentRepositorySettings {

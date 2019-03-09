@@ -12,8 +12,8 @@ export class LocalPrefs {
         }
     }
 
-    public static toggle(key: string) {
-        this.mark(key, ! this.isMarked(key));
+    public static toggle(key: string, value: boolean = false) {
+        this.mark(key, ! this.isMarked(key, value));
     }
 
     /**

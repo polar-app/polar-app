@@ -1,6 +1,7 @@
 import {Progress} from '../../util/ProgressTracker';
 import {Logger} from '../../logger/Logger';
 import {Optional} from '../../util/ts/Optional';
+import {Preconditions} from '../../Preconditions';
 
 const ID = 'polar-determinate-progress-bar';
 
@@ -22,6 +23,7 @@ export class DeterminateProgressBar {
             typeof value === 'number' ? value : value.progress;
 
         if (! progress || progress < 0 || progress > 100) {
+            // this is an invalid value...
             return;
         }
 
@@ -31,6 +33,15 @@ export class DeterminateProgressBar {
                 return;
             }
 
+        }
+
+        if (progress === 100 && ! this.get().isPresent()) {
+            // there's nothing that needs to be actually done here.  We've been
+            // told something was completed but we never actually logged that
+            // it was processing which might happen sometimes if we're given
+            // the last job.  Either way even if it's a programmers error there
+            // is no need to update the UI here.
+            return;
         }
 
         const progressElement = this.getOrCreate();

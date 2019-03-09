@@ -4,6 +4,7 @@ import {ProgressMessages} from "./ProgressMessages";
 import {ProgressBar} from './ProgressBar';
 import {DeterminateProgressBar} from './DeterminateProgressBar';
 import {Logger} from '../../logger/Logger';
+import {Preconditions} from '../../Preconditions';
 
 const log = Logger.create();
 
@@ -19,7 +20,7 @@ export class ProgressService {
             ipcRenderer.on(ProgressMessages.CHANNEL, (event: Electron.EventEmitter,
                                                       progressMessage: ProgressMessage) => {
 
-                DeterminateProgressBar.update(progressMessage.progress);
+                DeterminateProgressBar.update(progressMessage);
 
             });
 

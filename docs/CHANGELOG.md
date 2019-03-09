@@ -1,6 +1,9 @@
 
 # 1.13.12
 
+- We now longer show background progress updates that complete very quickly. 
+  This was often distracting when the app was working in the background. 
+
 - Proof of concept of auto-resume when loading but not enabled yet as I need 
   to figure out what to do for onboarding and disabling this feature.  
 

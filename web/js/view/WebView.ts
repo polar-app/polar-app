@@ -9,6 +9,7 @@ import {Logger} from '../logger/Logger';
 import {Arrays} from '../util/Arrays';
 import {Elements} from '../util/Elements';
 import {ReadingProgressResume} from './ReadingProgressResume';
+import {LocalPrefs} from '../ui/util/LocalPrefs';
 
 const log = Logger.create();
 
@@ -98,7 +99,9 @@ export class WebView extends View {
      */
     private onDocumentLoaded(event: DocumentLoadedEvent) {
 
+        // const autoResume = LocalPrefs.isMarked('settings-auto-resume', true);
         const autoResume = false;
+
         const docMeta = event.docMeta;
 
         log.info("WebView.onDocumentLoaded: ", docMeta);

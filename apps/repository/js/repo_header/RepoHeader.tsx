@@ -43,7 +43,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         <HelpDropdown/>
 
-                        <SettingsDropdown/>
+                        {/*<SettingsDropdown/>*/}
 
                     </SplitBarRight>
 
