@@ -67,13 +67,13 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
 
                                 Invite Users
 
-                                <SimpleTooltip target="cloud-sync-invite-users"
-                                               show={0}
-                                               placement="left">
-                                    Invite users to Polar. If they sign up and
-                                    use cloud sync we will give you a free month
-                                    of cloud sync.
-                                </SimpleTooltip>
+                                {/*<SimpleTooltip target="cloud-sync-invite-users"*/}
+                                               {/*show={0}*/}
+                                               {/*placement="bottom">*/}
+                                    {/*Invite users to Polar. If they sign up and*/}
+                                    {/*use cloud sync we will give you a free month*/}
+                                    {/*of cloud sync.*/}
+                                {/*</SimpleTooltip>*/}
 
                             </Button>
 
@@ -88,13 +88,13 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
 
                                 Logout
 
-                                <SimpleTooltip target="cloud-sync-logout"
-                                               show={0}
-                                               placement="left">
+                                {/*<SimpleTooltip target="cloud-sync-logout"*/}
+                                               {/*show={0}*/}
+                                               {/*placement="left">*/}
 
-                                    Logout of Polar.
+                                    {/*Logout of Polar.*/}
 
-                                </SimpleTooltip>
+                                {/*</SimpleTooltip>*/}
 
                             </Button>
 
