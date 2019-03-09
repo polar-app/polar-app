@@ -16,6 +16,12 @@ import {InviteUsersModal} from './InviteUsersModal';
 import {Invitations} from '../../datastore/Invitations';
 import {SimpleTooltip} from '../tooltip/SimpleTooltip';
 import {URLs} from '../../util/URLs';
+import {EnableCloudSyncButton} from './EnableCloudSyncButton';
+import {AccountDropdown} from './AccountDropdown';
+import {AuthHandler, AuthHandlers, UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
+import {Simulate} from 'react-dom/test-utils';
+import canPlayThrough = Simulate.canPlayThrough;
+import {AccountControlDropdown} from './AccountControlDropdown';
 
 const log = Logger.create();
 
@@ -55,26 +61,28 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
     public render() {
 
+        const AccountButton = () => {
+
+            if (this.state.userInfo) {
+
+                return <AccountControlDropdown userInfo={this.state.userInfo}
+                                               onInvite={() => this.changeAuthStage('invite')}
+                                               onLogout={() => this.logout()}/>;
+
+            } else {
+
+                return <AccountDropdown onInvite={() => this.changeAuthStage('invite')}
+                                        onLogout={() => this.logout()}/>;
+
+            }
+
+        };
+
         if (this.state.mode === 'needs-auth') {
             return (
                 <div>
 
-                    <Button id="enable-cloud-sync"
-                            color="primary"
-                            size="sm"
-                            onClick={() => this.enableCloudSync()}>
-
-                        <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
-
-                        Enable Cloud Sync
-
-                    </Button>
-
-                    <SimpleTooltip target="enable-cloud-sync">
-                        Cloud sync enables synchronizing your repository across
-                        multiple computers.  Files are distributed in real time
-                        and always up to date.
-                    </SimpleTooltip>
+                    <EnableCloudSyncButton onClick={() => this.enableCloudSync()}/>
 
                     <CloudLoginModal isOpen={this.state.stage === 'login'}
                                      onCancel={() => this.changeAuthStage()}/>
@@ -100,57 +108,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                                       onCancel={() => this.changeAuthStage()}
                                       onInvite={(emailAddresses) => this.onInvitedUsers(emailAddresses)}/>
 
-                    <UncontrolledDropdown id="cloud-sync-dropdown"
-                                          direction="down"
-                                          size="sm">
-
-                        <DropdownToggle color="primary" caret>
-                            <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
-
-                            Cloud Sync
-                        </DropdownToggle>
-                        <DropdownMenu className="shadow" right>
-                            <DropdownItem id="cloud-sync-invite-users"
-                                          size="sm"
-                                          onClick={() => this.changeAuthStage('invite')}>
-
-                                <i className="fas fa-user-plus mr-1"></i>
-
-                                Invite Users
-
-                                <SimpleTooltip target="cloud-sync-invite-users"
-                                               show={0}
-                                               placement="left">
-                                    Invite users to Polar. If they sign up and
-                                    use cloud sync we will give you a free month
-                                    of cloud sync.
-                                </SimpleTooltip>
-
-                            </DropdownItem>
-                            <DropdownItem divider />
-
-                            <DropdownItem id="cloud-sync-logout"
-                                          size="sm"
-                                          onClick={() => this.logout()}
-                                          className="text-danger">
-
-                                <i className="fas fa-sign-out-alt mr-1"></i>
-
-                                Logout
-
-                                <SimpleTooltip target="cloud-sync-logout"
-                                               show={0}
-                                               placement="left">
-
-                                    Logout of cloud sync. Your data will no
-                                    longer be synchronized between your devices.
-
-                                </SimpleTooltip>
-
-                            </DropdownItem>
-
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
+                    <AccountButton/>
 
                 </div>
 
@@ -166,8 +124,14 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         this.props.persistenceLayerManager.reset();
 
-        window.location.href = Nav.createHashURL('logout');
-        window.location.reload();
+        firebase.auth().signOut()
+            .then(() => {
+
+                window.location.href = Nav.createHashURL('logout');
+                window.location.reload();
+
+            })
+            .catch(err => log.error("Unable to logout: ", err));
 
     }
 
@@ -217,15 +181,23 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
     private onAuth(user: firebase.User | null) {
 
-        let mode: AuthMode = 'needs-auth';
+        AuthHandlers.get().userInfo()
+            .then((userInfo) => {
 
-        if (user) {
-            mode = 'authenticated';
-        }
+                let mode: AuthMode = 'needs-auth';
 
-        this.setState({
-              mode,
-          });
+                if (user) {
+                    mode = 'authenticated';
+                }
+
+                this.setState({
+                    mode,
+                    userInfo: userInfo.getOrUndefined()
+                });
+
+
+            })
+            .catch(err => log.error("Unable to get user info: ", err));
 
     }
 
@@ -242,6 +214,7 @@ interface IProps {
 interface IState {
     readonly mode: AuthMode;
     readonly stage?: AuthStage;
+    readonly userInfo?: UserInfo;
 }
 
 type AuthMode = 'none' | 'needs-auth' | 'authenticated';

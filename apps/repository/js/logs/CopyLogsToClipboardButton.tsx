@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
-import {Button} from 'reactstrap';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {Clipboards} from '../../../../web/js/util/system/clipboard/Clipboards';
+import Button from 'reactstrap/lib/Button';
 
 const log = Logger.create();
 

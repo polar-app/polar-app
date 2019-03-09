@@ -4,7 +4,7 @@ import {Statistics} from '../../../../web/js/metadata/Statistics';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {ResponsivePie} from '@nivo/pie';
 import StatTitle from './StatTitle';
-import {Table} from 'reactstrap';
+import Table from 'reactstrap/lib/Table';
 
 const log = Logger.create();
 

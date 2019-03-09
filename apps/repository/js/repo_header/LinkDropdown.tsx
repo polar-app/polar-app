@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {Nav} from '../../../../web/js/ui/util/Nav';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {DropdownItem, UncontrolledDropdown} from 'reactstrap';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {LinkDropdownItem} from './LinkDropdownItem';
+import {AppRuntime} from '../../../../web/js/AppRuntime';
+import {UncontrolledDropdown} from 'reactstrap';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {Platforms} from '../../../../web/js/util/Platforms';
 
 export class LinkDropdown extends React.PureComponent<IProps, IState> {
 
@@ -39,10 +39,18 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
                                       icon="fab fa-chrome"/>
 
                     <LinkDropdownItem id="polar-connect"
+                                      hidden={AppRuntime.isBrowser()}
                                       title="Polar Connect for Anki Sync"
                                       tooltip="Install the Polar Connect Anki add-on for syncing flashcards to Anki."
                                       link="https://ankiweb.net/shared/info/734898866"
                                       icon="fas fa-bolt"/>
+
+                    <LinkDropdownItem id="download-desktop"
+                                      hidden={! (AppRuntime.isBrowser() && Platforms.type() === 'desktop')}
+                                      title="Download Polar Desktop"
+                                      tooltip="Download Polar for the Desktop"
+                                      link="https://getpolarized.io/download.html"
+                                      icon="fas fa-file-download"/>
 
                     {/*<LinkDropdownItem id="reddit-link"*/}
                                       {/*title="Reddit"*/}

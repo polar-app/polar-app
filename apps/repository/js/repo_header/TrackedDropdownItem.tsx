@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {DropdownItem} from 'reactstrap';
 import {Nav} from '../../../../web/js/ui/util/Nav';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
 
 /**
  */
@@ -71,6 +71,7 @@ export interface GenericDropdownItemProps {
     readonly title: string;
     readonly tooltip: string;
     readonly icon: string;
+    readonly hidden?: boolean;
 }
 
 export interface TrackedDropdownItemProps extends GenericDropdownItemProps {

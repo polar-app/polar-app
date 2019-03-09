@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button, ListGroup} from 'reactstrap';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
@@ -7,7 +6,8 @@ import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
 import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
 import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
-import {AppActivities} from '../../../web/js/util/AppActivities';
+import Button from 'reactstrap/lib/Button';
+import ListGroup from 'reactstrap/lib/ListGroup';
 
 const log = Logger.create();
 
@@ -76,9 +76,11 @@ export class RepoSidebar extends React.Component<IProps, IState> {
         const sidebarStyle = Object.assign({}, Styles.sidebar, {display});
 
         const NavButtons = () => (
+
             <div style={{display: 'flex'}}>
 
                 <div id="toggle-sidebar"
+                     className="mr-1"
                      style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <Button color='light'
                             onClick={() => this.toggle()}>
@@ -237,7 +239,8 @@ export class RepoSidebar extends React.Component<IProps, IState> {
             expanded
         });
 
-        // AppActivities.get().dispatchEvent({name: 'sidebar-toggled', data: {expanded}});
+        // AppActivities.get().dispatchEvent({name: 'sidebar-toggled', data:
+        // {expanded}});
 
     }
 

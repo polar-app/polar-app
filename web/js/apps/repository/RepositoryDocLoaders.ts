@@ -36,7 +36,7 @@ export class RepositoryDocLoaders {
 
         for (const path of paths) {
 
-            Files.recursively(path, async docPath => {
+            await Files.recursively(path, async docPath => {
 
                 if (docPath.endsWith(".pdf")) {
                     docPaths.push(docPath);

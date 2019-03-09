@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import {Blackout} from '../../../../web/js/ui/blackout/Blackout';
 import {TagSelectOption} from '../TagSelectOption';
@@ -59,10 +59,11 @@ export class TagButton extends React.Component<IProps, IState> {
                          isOpen={this.state.popoverOpen}
                          target={this.id}
                          toggle={this.toggle}
+                         trigger="legacy"
                          className="tag-input-popover">
 
                     <PopoverBody>
-                        <Select
+                        <CreatableSelect
                             isMulti
                             isClearable
                             autoFocus

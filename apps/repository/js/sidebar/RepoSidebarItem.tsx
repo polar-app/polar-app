@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ListGroupItem} from 'reactstrap';
+import ListGroupItem from 'reactstrap/lib/ListGroupItem';
 
 /**
  * Simple header for the repository which supports arbitrary children.

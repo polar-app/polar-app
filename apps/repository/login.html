@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
 
+    <link rel="manifest" href="/manifest.json">
+
     <!-- TODO: these need to load locally before we enable firebase in production -->
     <script src="/node_modules/firebase/firebase.js"></script>
     <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
@@ -45,8 +47,6 @@
 
   <script>
 
-      const loader = require('polar-loader');
-
       const fallbackLoader = () => {
 
           // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
@@ -63,7 +63,7 @@
 
       }
 
-      loader.injectApp('/web/dist/login-bundle.js', fallbackLoader);
+      injectApp('/web/dist/login-bundle.js', fallbackLoader);
 
   </script>
 

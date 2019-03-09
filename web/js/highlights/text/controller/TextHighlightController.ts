@@ -98,7 +98,7 @@ export class TextHighlightController {
 
     private onMessageReceived(event: any) {
 
-        log.info("Received message: ", event);
+        // log.info("Received message: ", event);
 
         const triggerEvent = event.data;
 
@@ -118,7 +118,7 @@ export class TextHighlightController {
                 break;
 
             default:
-                console.warn("Unhandled command: " + event.data.type);
+                // log.warn("Unhandled message: " + event.data.type, event.data);
                 break;
 
         }
@@ -349,15 +349,23 @@ export class TextHighlightController {
 
         const capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
 
-        const screenshot = this.toScreenshot(screenshotID,
-                                             capturedScreenshot.dataURL,
-                                             'screenshot',
-                                             screenshotDimensions);
+        const dataURL = capturedScreenshot
+            .map(current => current.dataURL)
+            .getOrUndefined();
 
-        // TODO: this has to be written as a binary file and then a reference to
-        // the screenshot added
+        if (dataURL) {
 
-        // pageMeta.screenshots[screenshot.id] = screenshot;
+            const screenshot = this.toScreenshot(screenshotID,
+                                                 dataURL,
+                                                 'screenshot',
+                                                 screenshotDimensions);
+
+            // TODO: this has to be written as a binary file and then a reference to
+            // the screenshot added
+
+            // pageMeta.screenshots[screenshot.id] = screenshot;
+
+        }
 
         return textHighlightRecord;
 
@@ -434,3 +442,5 @@ export class TextHighlightController {
     }
 
 }
+
+

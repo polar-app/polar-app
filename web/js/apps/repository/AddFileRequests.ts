@@ -25,33 +25,39 @@ export class AddFileRequests {
 
         if (event.dataTransfer && event.dataTransfer.files) {
 
-            return Array.from(event.dataTransfer.files)
-                .filter(file => file.name.endsWith(".pdf"))
-                .map(file => {
-
-                    if (file.path) {
-
-                        // On Electron we have the file path directly.
-                        return {
-                            docPath: file.path,
-                            basename: FilePaths.basename(file.path)
-                        };
-
-                    } else {
-
-                        // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
-
-                        return {
-                            docPath: URL.createObjectURL(file),
-                            basename: file.name,
-                        };
-                    }
-
-                });
+            return this.computeFromFileList(event.dataTransfer.files);
 
         } else {
             return [];
         }
+
+    }
+
+    public static computeFromFileList(files: FileList): AddFileRequest[] {
+
+        return Array.from(files)
+            .filter(file => file.name.endsWith(".pdf"))
+            .map(file => {
+
+                if (file.path) {
+
+                    // On Electron we have the file path directly.
+                    return {
+                        docPath: file.path,
+                        basename: FilePaths.basename(file.path)
+                    };
+
+                } else {
+
+                    // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+
+                    return {
+                        docPath: URL.createObjectURL(file),
+                        basename: file.name,
+                    };
+                }
+
+            });
 
     }
 

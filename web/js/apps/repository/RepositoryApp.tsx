@@ -37,6 +37,10 @@ import {LocalPrefs} from '../../ui/util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Platforms} from '../../util/Platforms';
 import {AppOrigin} from '../AppOrigin';
+import {AppRuntime} from '../../AppRuntime';
+import {AuthHandlers} from './auth_handler/AuthHandler';
+import Input from 'reactstrap/lib/Input';
+import {PreviewDisclaimers} from './PreviewDisclaimers';
 
 const log = Logger.create();
 
@@ -55,6 +59,13 @@ export class RepositoryApp {
 
         AppOrigin.configure();
 
+        const authHandler = AuthHandlers.get();
+
+        if (await authHandler.status() === 'needs-authentication') {
+            await authHandler.authenticate();
+            return;
+        }
+
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
         const syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
@@ -68,9 +79,12 @@ export class RepositoryApp {
         new UpdatesController().start();
 
         new ToasterService().start();
+
         new ProgressService().start();
 
         await this.doLoadExampleDocs();
+
+        PreviewDisclaimers.createWhenNecessary();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
@@ -177,6 +191,15 @@ export class RepositoryApp {
 
                 </HashRouter>
 
+                {/*Used for file uploads.  This has to be on the page and can't be*/}
+                {/*selectively hidden by components.*/}
+                <Input type="file"
+                       id="file-upload"
+                       name="file-upload"
+                       accept=".pdf"
+                       onChange={() => this.onFileUpload()}
+                       style={{display: 'none'}}/>
+
             </div>,
 
             document.getElementById('root') as HTMLElement
@@ -195,6 +218,12 @@ export class RepositoryApp {
         log.info("Started repo doc loader.");
 
         AppInstance.notifyStarted('RepositoryApp');
+
+    }
+
+    private onFileUpload() {
+
+        window.postMessage({type: 'file-uploaded'}, '*');
 
     }
 
@@ -221,32 +250,42 @@ export class RepositoryApp {
         const version = Version.get();
         const platform = Platforms.toSymbol(Platforms.get());
         const screen = `${window.screen.width}x${window.screen.height}`;
+        const runtime = AppRuntime.type();
 
         RendererAnalytics.event({category: 'app', action: 'version-' + version});
         RendererAnalytics.event({category: 'platform', action: `${platform}`});
         RendererAnalytics.event({category: 'screen', action: screen});
+        RendererAnalytics.event({category: 'runtime', action: runtime});
 
     }
 
     private async doLoadExampleDocs() {
 
-        const persistenceLayer =
-            new DefaultPersistenceLayer(new DiskDatastore());
+        if (AppRuntime.isElectron()) {
 
-        await persistenceLayer.init();
+            // TODO: right now this only works on electron but we need a
+            // solution for working in the browser.
 
-        await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
+            const persistenceLayer =
+                new DefaultPersistenceLayer(new DiskDatastore());
 
-            // load the eample docs in the store.. on the first load we should
-            // propably make sure this doesn't happen more than once as the user
-            // could just delete all the files in their repo. await new
-            await new LoadExampleDocs(persistenceLayer).load();
+            await persistenceLayer.init();
 
-        }, async () => {
-            log.debug("Docs already exist in repo");
-        });
+            await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
-        await persistenceLayer.stop();
+                // load the eample docs in the store.. on the first load we
+                // should propably make sure this doesn't happen more than once
+                // as the user could just delete all the files in their repo.
+                // await new
+                await new LoadExampleDocs(persistenceLayer).load();
+
+            }, async () => {
+                log.debug("Docs already exist in repo");
+            });
+
+            await persistenceLayer.stop();
+
+        }
 
     }
 

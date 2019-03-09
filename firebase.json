@@ -1,0 +1,25 @@
+{
+  "hosting": {
+    "target": "app.getpolarized.io",
+    "public": "dist/public",
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/index.html",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/login.html",
+        "destination": "/apps/repository/login.html"
+      },
+
+      {
+        "source": "/pdfjsWorker-bundle.js",
+        "destination": "/web/dist/pdfjsWorker-bundle.js"
+      }
+    ]
+  }
+}

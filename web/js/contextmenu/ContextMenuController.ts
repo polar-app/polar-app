@@ -147,14 +147,65 @@ export class ContextMenuController {
 
     }
 
-    public static elementsFromEvent(event: any) {
+    /**
+     * Pagemarks have pointer-events: none and they don't show up when using
+     * elementsFromPoint so we have to temporarily enable them.
+     */
+    private static withActivePagemarks<T>(closure: () => T) {
 
-        // the point must be relative to the viewport
-        const point = {x: event.clientX, y: event.clientY};
+        interface ElementStyleRestore {
+            readonly element: HTMLElement;
+            readonly pointerEvents: string | null;
+        }
 
-        const doc = event.target.ownerDocument;
+        const elements =
+            <HTMLElement[]> Array.from(document.querySelectorAll(".pagemark"));
 
-        return doc.elementsFromPoint(point.x, point.y);
+        const elementStyleRestores: ElementStyleRestore[] = [];
+
+        for (const element of elements) {
+
+            elementStyleRestores.push({
+                element, pointerEvents: element.style.pointerEvents
+            });
+
+            element.style.pointerEvents = 'auto';
+
+        }
+
+        const result = closure();
+
+        for (const restore of elementStyleRestores) {
+            restore.element.style.pointerEvents = restore.pointerEvents;
+        }
+
+        return result;
+
+    }
+
+
+    public static elementsFromEvent(event: MouseEvent) {
+
+        // https://stackoverflow.com/questions/14176988/why-is-document-elementfrompoint-affected-by-pointer-events-none
+
+        if (event.target instanceof HTMLElement) {
+
+            // the point must be relative to the viewport
+            const point = {x: event.clientX, y: event.clientY};
+
+            const doc = event.target.ownerDocument;
+
+            if (doc) {
+
+                return this.withActivePagemarks(() => {
+                    return <HTMLElement[]> doc.elementsFromPoint(point.x, point.y);
+                });
+
+            }
+
+        }
+
+        return [];
 
     }
 
@@ -172,7 +223,8 @@ export class ContextMenuController {
      * @param event
      * @param selectors
      */
-     public static elementsFromEventMatchingSelectors(event: any, selectors: string[]): MatchingSelectorMap {
+     public static elementsFromEventMatchingSelectors(event: MouseEvent,
+                                                      selectors: string[]): MatchingSelectorMap {
 
         const result: MatchingSelectorMap = {};
 

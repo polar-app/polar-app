@@ -40,6 +40,8 @@ export class DocRepoAnkiSyncController {
 
         }
 
+        log.info("started");
+
     }
 
     private async onStartSync() {

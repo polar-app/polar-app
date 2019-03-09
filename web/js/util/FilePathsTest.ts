@@ -1,11 +1,42 @@
 import {assert} from 'chai';
-import {FilePaths} from './FilePaths';
+import {BrowserFilePaths, FilePaths} from './FilePaths';
 import {Files} from './Files';
 import {URLs} from './URLs';
 import fetch from './Fetch';
 import {isPresent} from '../Preconditions';
+import {Browser} from '../capture/Browser';
 
 describe('FilePaths', function() {
+
+    describe('BrowserFilePaths', function() {
+
+        it("basename", function() {
+
+            const assertEqual = (path: string, ext?: string) => {
+                const actual = FilePaths.basename(path, ext);
+                const expected = BrowserFilePaths.basename(path, ext);
+                assert.equal(actual, expected);
+            };
+
+            assertEqual('/foo/cat.txt', '.txt');
+
+            assertEqual('cat.txt', '.txt');
+
+            assertEqual('none');
+            assertEqual('/foo/bar.txt');
+            assertEqual('/foo/cat.txt');
+            assertEqual('/bar.txt');
+
+            BrowserFilePaths.SEP = '\\';
+
+            assert.equal(BrowserFilePaths.basename('c:\\foo\\cat.txt', '.txt'), 'cat');
+            assert.equal(BrowserFilePaths.basename('none'), 'none');
+
+            assert.equal(BrowserFilePaths.basename('c:\\foo\\bar.txt'), 'bar.txt');
+
+        });
+
+    });
 
     xdescribe('toWindowsPath', () => {
 
@@ -86,5 +117,6 @@ describe('FilePaths', function() {
         });
 
     });
+
 
 });

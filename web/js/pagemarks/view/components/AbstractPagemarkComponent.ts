@@ -229,9 +229,11 @@ export class AbstractPagemarkComponent extends Component {
         const pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
 
         if (this.type === 'primary') {
-            // console.log("FIXME: placementRect: " , placementRect);
-            // console.log("FIXME: pagemarkRect (overlay rect): " ,
-            // pagemarkRect);
+
+            if (pagemarkElement.children.length === 0) {
+                this.createInternalDiv(pagemarkElement);
+            }
+
         }
 
         // TODO: what I need is a generic way to cover an element and place
@@ -242,6 +244,107 @@ export class AbstractPagemarkComponent extends Component {
         pagemarkElement.style.width = `${pagemarkRect.width}px`;
         pagemarkElement.style.height = `${pagemarkRect.height}px`;
         pagemarkElement.style.zIndex = '9';
+        pagemarkElement.style.pointerEvents = 'none';
+
+    }
+
+    /**
+     * Create an internal div that allows us to turn off pointer-events
+     */
+    private createInternalDiv(pagemarkElement: HTMLElement) {
+
+        // FIXME: this works BUG we have a problem now with the context menu
+        // not showing that the pagemark is selected...  I think I have to use
+        // elementsAtPoint to reconstruct that this is on a pagemark.
+
+        const createInternalDiv = () => {
+
+            const internalDiv = document.createElement('div');
+
+            // internalDiv.style.backgroundColor = 'pink';
+            internalDiv.style.pointerEvents = 'auto';
+            internalDiv.style.position = 'absolute';
+
+            return internalDiv;
+
+        };
+
+        const createHorizontalInternalDiv = () => {
+
+            const internalDiv = createInternalDiv();
+
+            internalDiv.style.width = '100%';
+            internalDiv.style.height = '2mm';
+
+            return internalDiv;
+
+        };
+
+        const createVerticalInternalDiv = () => {
+
+            const internalDiv = createInternalDiv();
+
+            internalDiv.style.width = '2mm';
+            internalDiv.style.height = '100%';
+
+            return internalDiv;
+
+        };
+
+        const createInternalDivs = () => {
+
+            // TODO: this could be cleaned up a bit by passing position directly
+
+            const left = createVerticalInternalDiv();
+            left.style.left = '0';
+            left.style.top = '0';
+
+            const right = createVerticalInternalDiv();
+            right.style.right = '0';
+            right.style.top = '0';
+
+            const top = createHorizontalInternalDiv();
+            top.style.left = '0';
+            top.style.top = '0';
+
+            const bottom = createHorizontalInternalDiv();
+            bottom.style.bottom = '0';
+            bottom.style.left = '0';
+
+            return [ left, right, top, bottom];
+
+        };
+
+        const internalDivs = createInternalDivs();
+
+        type PointerEvents = 'auto' | 'none';
+
+        let pointerEvents: PointerEvents = 'auto';
+
+        const doChangePointerEvents = (newValue: PointerEvents) => {
+
+            if (pointerEvents !== newValue) {
+                pagemarkElement.style.pointerEvents = newValue;
+                pointerEvents = newValue;
+            }
+
+        };
+
+        for (const internalDiv of internalDivs) {
+
+            internalDiv.addEventListener('mouseenter', (event) => {
+                doChangePointerEvents('auto');
+                event.preventDefault();
+            });
+
+            internalDiv.addEventListener('mouseleave', (event) => {
+                doChangePointerEvents('none');
+                event.preventDefault();
+            });
+
+            pagemarkElement.appendChild(internalDiv);
+
+        }
 
     }
 
@@ -307,6 +410,8 @@ export class AbstractPagemarkComponent extends Component {
         const pagemarkElement = document.getElementById(this.createID());
 
         if (pagemarkElement) {
+
+            pagemarkElement.innerHTML = '';
 
             if (pagemarkElement.parentElement) {
                 pagemarkElement.parentElement.removeChild(pagemarkElement);

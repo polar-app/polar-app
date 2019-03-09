@@ -3,6 +3,7 @@ import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from '
 import {Logger} from '../../logger/Logger';
 import {ExportFormat} from '../../metadata/exporter/Exporters';
 import {remote} from 'electron';
+import {AppRuntime} from '../../AppRuntime';
 
 const log = Logger.create();
 
@@ -21,6 +22,7 @@ export class ExportButton extends React.Component<IProps, IState> {
             <div>
 
                 <UncontrolledDropdown direction="down"
+                                      hidden={AppRuntime.isBrowser()}
                                       size="sm">
 
                     <DropdownToggle color="primary" caret style={{fontSize: '14px'}}>

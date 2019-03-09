@@ -1,6 +1,7 @@
 import {CapturedScreenshots} from '../../../screenshots/CapturedScreenshots';
 import {IFrames} from '../../../util/dom/IFrames';
 import {CapturedScreenshot} from '../../../screenshots/CapturedScreenshot';
+import {Optional} from '../../../util/ts/Optional';
 
 /**
  * Remove the selection, take a screenshot, then restore it.
@@ -54,6 +55,6 @@ export interface SelectionScreenshot {
      */
     readonly clientRect: ClientRect;
 
-    readonly capturedScreenshotPromise: Promise<CapturedScreenshot>;
+    readonly capturedScreenshotPromise: Promise<Optional<CapturedScreenshot>>;
 
 }

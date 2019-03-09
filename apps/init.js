@@ -33,6 +33,6 @@ function injectScript(src, type) {
         script.type = type;
     }
 
-    document.body.appendChild(script);
+    document.documentElement.appendChild(script);
 
 }

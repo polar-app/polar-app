@@ -79,11 +79,17 @@ export class FilePaths {
      * Note that this behaves differently on Windows vs Linux.  The path
      * separator is changed and different values are returned for the platform.
      *
-     * @param p the path to evaluate.
+     * @param path the path to evaluate.
      * @param ext optionally, an extension to remove from the result.
      */
-    public static basename(p: string, ext?: string) {
-        return libpath.basename(p, ext);
+    public static basename(path: string, ext?: string) {
+
+        if (libpath) {
+            return libpath.basename(path, ext);
+        } else {
+            return BrowserFilePaths.basename(path, ext);
+        }
+
     }
 
     public static dirname(path: string) {
@@ -173,6 +179,51 @@ export class FilePaths {
         }
 
         return Optional.empty();
+
+    }
+
+}
+
+export class BrowserContext {
+
+    public static separator() {
+        const isWindows = ["Win32", "Win64"].includes(navigator.platform);
+        return isWindows ? "\\" : "/";
+    }
+
+}
+
+/**
+ * Browser implementations of some functions in node.
+ */
+export class BrowserFilePaths {
+
+    public static SEP =
+        typeof navigator !== 'undefined' && navigator.platform ? BrowserContext.separator() : '/';
+
+    /**
+     *
+     * @param path
+     * @param ext
+     * @param sep Use a specific separator when given (not determined by platform)
+     */
+    public static basename(path: string, ext?: string) {
+
+        const lastIndexOf = path.lastIndexOf(this.SEP);
+
+        const result = lastIndexOf >= 0 ? path.substring(lastIndexOf + 1) : path;
+
+        if (ext) {
+
+            if (result.endsWith(ext)) {
+                return result.substring(0, result.length - ext.length);
+            } else {
+                return result;
+            }
+
+        } else {
+            return result;
+        }
 
     }
 

@@ -8,6 +8,7 @@ import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../ui/split_lay
 import {Logger} from '../../logger/Logger';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
+import {AppRuntime} from '../../AppRuntime';
 
 const log = Logger.create();
 
@@ -48,8 +49,9 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         this.steps = this.createSteps();
 
-        // true if the tour should be running.
-        const run = ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
+        const run =
+            ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED) &&
+            AppRuntime.isElectron();
 
         this.state = {
             run,
@@ -236,21 +238,19 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             }),
 
             JoyrideTours.createImageStep({
-                target: '#discord-button',
-                title: <Title>Chat</Title>,
+                target: '#links-dropdown',
+                title: <Title>Links</Title>,
                 content: <div>
                     <p>
-                        We have a directly link to <Term>chat</Term> to enable
-                        you to discuss Polar live with the developers and other
-                        users.
+                        We include direct links to additional tools including
+                        our <Term>Chrome Extension</Term> and <Term>chat</Term> to
+                        enable you to discuss Polar live with the developers and
+                        other users.
                     </p>
 
-                    <p>
-                        Feel free to jump in at any time and give us feedback.
-                    </p>
                 </div>,
                 image:
-                    <Icon className="fab fa-discord"/>
+                    <Icon className="fas fa-link"/>
 
             }),
 

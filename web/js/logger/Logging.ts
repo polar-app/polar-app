@@ -126,7 +126,7 @@ export class Logging {
         const loggingConfig = await this.loggingConfig();
 
         if (loggingConfig.target === LoggerTarget.CONSOLE) {
-            return new ConsoleLogger();
+        return new ConsoleLogger();
         } else {
             throw new Error("Invalid target: " + loggingConfig.target);
         }
@@ -153,8 +153,10 @@ export class Logging {
                     // this is very clean though and wish there was a better way
                     // to do this.
 
-                    config = { level: LogLevels.fromName(config.level),
-                        target: config.target };
+                    config = {
+                        level: LogLevels.fromName(config.level),
+                        target: config.target
+                    };
 
                 }
 

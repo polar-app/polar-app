@@ -1,0 +1,20 @@
+{
+  "short_name": "Polar",
+  "name": "Polar Bookshelf",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/icon.svg",
+      "type": "image/svg",
+      "sizes": ["64x64", "128x128", "256x256", "512x512"]
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "scope": "/"
+}

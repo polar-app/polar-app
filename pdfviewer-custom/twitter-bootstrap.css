@@ -24,3 +24,8 @@
     width: 550px;
 
 }
+
+.popover {
+    /* the default max width is too small */
+    max-width: 500px !important;
+}

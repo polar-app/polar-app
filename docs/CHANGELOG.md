@@ -1,5 +1,39 @@
 
+# 1.13.12
+
+- Update to Electron 3.1.6
+
+- New AuthHandler system so that we can show user account information when 
+  using Firebase auth.
+
+- Cut down memory usage of the webapp from 1GB to about 200MB.  The gmail app
+  is about 120MB so this isn't far off from being 'reasonable' in terms of 
+  memory usage.
+
+- Upgraded to latest versions of Firebase and Webpack
+
+# 1.13.11
+
+- Fixed bugs with multi-select not being able to properly pick the right 
+
+- Tour now only works on Electron.  
+
+- Update to Electron 3.1.5 
+
+- Pagemarks now allow you to work through them and still can highlight and 
+  create + delete annotations now without the pagemarks getting in the way.
+
+- A number of changes needed to get the webapp version of Polar to work.
+
+- FilePaths.basename works in the browser context now. 
+
 # 1.13.10
+
+- Fixed bad bug that broke capture (sorry)
+
+- More components are PureComponent now for faster performance.
+
+- New buttons at the top for cleaner nav.
 
 # 1.13.9
 

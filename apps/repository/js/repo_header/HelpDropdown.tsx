@@ -2,11 +2,12 @@ import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {Nav} from '../../../../web/js/ui/util/Nav';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {DropdownItem, UncontrolledDropdown} from 'reactstrap';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {LinkDropdownItem} from './LinkDropdownItem';
 import {HelpDropdownItem} from './HelpDropdownItem';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {UncontrolledDropdown} from 'reactstrap';
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -50,6 +51,14 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       tooltip="Chat with other Polar users live via chat (Discord)"
                                       link="https://discord.gg/GT8MhA6"
                                       icon="fab fa-discord"/>
+
+                    <HelpDropdownItem id="create-issue-link"
+                                      title="Create Issue"
+                                      tooltip="Create an issue (bug or feature) for the developer to investigate."
+                                      link="https://github.com/burtonator/polar-bookshelf/issues/new/choose"
+                                      icon="fas fa-bug"/>
+
+                    <DropdownItem divider/>
 
                     <HelpDropdownItem id="donate-link"
                                       title="Donate"

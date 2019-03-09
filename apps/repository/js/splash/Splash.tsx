@@ -1,10 +1,14 @@
 import * as React from 'react';
-import {Button, FormGroup, Input, Label, ModalFooter} from 'reactstrap';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {LargeModal} from '../../../../web/js/ui/large_modal/LargeModal';
 import {LargeModalBody} from '../../../../web/js/ui/large_modal/LargeModalBody';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {ConditionalSetting} from '../../../../web/js/ui/util/ConditionalSetting';
+import Button from 'reactstrap/lib/Button';
+import Label from 'reactstrap/lib/Label';
+import FormGroup from 'reactstrap/lib/FormGroup';
+import Input from 'reactstrap/lib/Input';
+import ModalFooter from 'reactstrap/lib/ModalFooter';
 
 const log = Logger.create();
 

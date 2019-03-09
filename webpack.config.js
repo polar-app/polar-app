@@ -8,11 +8,12 @@ const workers = require('os').cpus().length - 1;
 console.log("Using N workers: " + workers);
 
 module.exports = {
-    // mode: 'production',
+    // mode: 'development',
     entry: {
-        // "chrome": [ "./web/js/apps/chrome.ts"],
+        "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
-        // "login": [ "./apps/repository/js/login.ts"],
+        "login": [ "./apps/repository/js/login.ts"],
+        // "both": [ "./web/js/apps/chrome.ts", "./apps/repository/js/entry.tsx"],
     },
     module: {
 
@@ -57,6 +58,7 @@ module.exports = {
 
                         }
                     }
+
                 ]
 
             }
@@ -66,7 +68,8 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    devtool: "source-map",
+    // devtool: "source-map",
+    // devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname, 'web/dist'),
         filename: '[name]-bundle.js',
@@ -95,6 +98,14 @@ module.exports = {
         removeAvailableModules: false,
         removeEmptyChunks: false,
         splitChunks: false,
+    },
+    devServer: {
+        publicPath: 'web/dist',
+        contentBase: path.join(__dirname, '.'),
+        compress: true,
+        port: 443,
+        watchContentBase: true,
+        host: 'localapp.getpolarized.io'
     }
 
 }

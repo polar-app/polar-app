@@ -38,19 +38,24 @@ export class PDFImporter {
      *                 not actually have the full metadata we need that the
      *                 original input URL has given us.
      */
-    public async importFile(docPath: string, basename?: string): Promise<Optional<ImportedFile>> {
-
-        const directories = new Directories();
+    public async importFile(docPath: string, basename: string): Promise<Optional<ImportedFile>> {
 
         const isPath = ! URLs.isURL(docPath);
 
-        if (isPath && await PDFImporter.isWithinStashdir(directories.stashDir, docPath)) {
+        log.info(`Working with document: ${docPath}: ${isPath}`);
 
-            // prevent the user from re-importing/opening a file that is ALREADY
-            // in the stash dir.
+        if (isPath) {
 
-            log.warn("Skipping import of file that's already in the stashdir.");
-            return Optional.empty();
+            const directories = new Directories();
+
+            if (await PDFImporter.isWithinStashdir(directories.stashDir, docPath)) {
+
+                // prevent the user from re-importing/opening a file that is ALREADY
+                // in the stash dir.
+
+                log.warn("Skipping import of file that's already in the stashdir.");
+                return Optional.empty();
+            }
 
         }
 
@@ -70,9 +75,9 @@ export class PDFImporter {
 
                     // return the existing doc meta information.
 
-                    const stashFilePath = FilePaths.join(directories.stashDir, docMeta.docInfo.filename);
+                    const basename = FilePaths.basename(docMeta.docInfo.filename);
                     return Optional.of({
-                        stashFilePath,
+                        basename,
                         docInfo: docMeta.docInfo
                     });
 
@@ -105,8 +110,6 @@ export class PDFImporter {
         const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
-
-        const stashFilePath = FilePaths.join(directories.stashDir, filename);
 
         // always read from a stream here as some of the PDFs we might want to
         // import could be rather large.  Also this needs to be a COPY of the
@@ -151,7 +154,7 @@ export class PDFImporter {
         await persistenceLayer.write(pdfMeta.fingerprint, docMeta);
 
         return Optional.of({
-            stashFilePath,
+            basename,
             docInfo: docMeta.docInfo
         });
 
@@ -188,9 +191,9 @@ export interface ImportedFile {
     docInfo: DocInfo;
 
     /**
-     * The full path of the file that we imported and where it is in the stash.
+     * The basename of the file imported.
      */
-    stashFilePath: string;
+    basename: string;
 
 }
 

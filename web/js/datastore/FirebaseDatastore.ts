@@ -282,12 +282,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         // TODO: we need to compute visibility for this for the future.
 
+        const uid = this.getUserID();
+
         // stick the uid into the metadata which we use for authorization of the
         // blob when not public.
-        meta = Object.assign(meta, {
-            uid: this.getUserID(),
-            visibility: Visibility.PRIVATE
-        });
+        meta = {...meta, uid, visibility: Visibility.PRIVATE};
 
         const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
 
@@ -299,7 +298,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         if (typeof data === 'string') {
             uploadTask = fileRef.putString(data, 'raw', metadata);
         } else if (data instanceof Blob) {
-            uploadTask = fileRef.put(data);
+            uploadTask = fileRef.put(data, metadata);
         } else {
 
             if (FileHandles.isFileHandle(data)) {
@@ -369,11 +368,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         const fileRef = storage.ref().child(storagePath.path);
 
-        const url: string = await fileRef.getDownloadURL();
-
         try {
 
             const metadata = await fileRef.getMetadata();
+
+            const url: string = await fileRef.getDownloadURL();
+
             const meta = metadata.customMetadata;
 
             return Optional.of({ backend, ref, url, meta });
@@ -583,7 +583,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const uid = this.getUserID();
 
         if (fileRef.hashcode) {
-
 
             key = {
 

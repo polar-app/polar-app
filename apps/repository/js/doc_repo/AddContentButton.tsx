@@ -1,8 +1,11 @@
 import * as React from 'react';
-import {DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TooltipDropdown} from './TooltipDropdown';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
+import Input from 'reactstrap/lib/Input';
+import DropdownToggle from 'reactstrap/lib/DropdownToggle';
+import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
 
 export class AddContentButton extends React.Component<IProps, IState> {
 
@@ -38,17 +41,37 @@ export class AddContentButton extends React.Component<IProps, IState> {
                 <DropdownMenu className="shadow">
 
                     <DropdownItem id="add-content-import-from-disk"
+                                  hidden={AppRuntime.isBrowser()}
                                   size="sm"
                                   onClick={() => this.props.importFromDisk()}>
 
                         <i className="fas fa-hdd"></i>
-                        &nbsp; Import Files from Disk
+                        &nbsp; Add Files from Disk
 
                         <SimpleTooltip target="add-content-import-from-disk"
                                        show={0}
                                        placement="right">
 
-                            Import PDF files from disk in bulk.  Select one PDF
+                            Add PDF files from disk in bulk.  Select one PDF
+                            or multiple PDFs at once.
+
+                        </SimpleTooltip>
+
+                    </DropdownItem>
+
+                    <DropdownItem id="add-content-import-from-disk-via-file-upload"
+                                  hidden={AppRuntime.isElectron()}
+                                  onClick={() => this.triggerFileUpload()}
+                                  size="sm">
+
+                        <i className="fas fa-hdd"></i>
+                        &nbsp; Upload Files from Disk
+
+                        <SimpleTooltip target="add-content-import-from-disk-via-file-upload"
+                                       show={0}
+                                       placement="right">
+
+                            Upload PDF files from disk in bulk.  Select one PDF
                             or multiple PDFs at once.
 
                         </SimpleTooltip>
@@ -80,6 +103,10 @@ export class AddContentButton extends React.Component<IProps, IState> {
 
         );
 
+    }
+
+    private triggerFileUpload() {
+        document.getElementById('file-upload')!.click();
     }
 
     private toggle(): void {

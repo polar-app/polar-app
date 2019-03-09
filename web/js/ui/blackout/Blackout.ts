@@ -4,17 +4,17 @@ const ID = 'polar-blackout';
 
 export class Blackout {
 
-    public static toggle(value: boolean) {
+    public static toggle(value: boolean, opts: BlackoutOpts = {}) {
 
         if (value) {
-            this.enable();
+            this.enable(opts);
         } else {
             this.disable();
         }
 
     }
 
-    public static enable() {
+    public static enable(opts: BlackoutOpts = {}) {
 
         // always make sure the blackout element is removed so we don't double
         // enable it...
@@ -34,6 +34,10 @@ export class Blackout {
         blackoutElement.style.opacity = '0.3';
 
         blackoutElement.style.zIndex = '999';
+
+        if (opts.noPointerEvents) {
+            blackoutElement.style.pointerEvents = 'none';
+        }
 
         document.body.appendChild(blackoutElement);
 
@@ -72,8 +76,9 @@ export interface BlackoutOpts {
     readonly element?: HTMLElement;
 
     /**
-     * When true, enable or disable the blackout.
+     * Prevents the blackout from receiving pointer events and allows them
+     * to go through to the elements it covers.
      */
-    readonly enabled?: boolean;
+    readonly noPointerEvents?: boolean;
 
 }
