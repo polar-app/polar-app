@@ -55,6 +55,15 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
 export class BrowserAuthHandler extends DefaultAuthHandler {
 
+    public async authenticate(): Promise<void> {
+
+        const base = URLs.toBase(document.location!.href);
+        const newLocation = new URL('/login.html', base).toString();
+
+        window.location.href = newLocation;
+
+    }
+
     public async status(): Promise<AuthStatus> {
 
         Firebase.init();
