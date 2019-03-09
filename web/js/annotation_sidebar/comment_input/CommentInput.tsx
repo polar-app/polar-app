@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {Logger} from '../logger/Logger';
-import {DocAnnotation} from './DocAnnotation';
-import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichTextEditor4';
+import {Logger} from '../../logger/Logger';
+import {DocAnnotation} from '../DocAnnotation';
+import {RichTextEditor4} from '../../apps/card_creator/elements/schemaform/RichTextEditor4';
 import Button from 'reactstrap/lib/Button';
-import {RichTextArea} from "./RichTextArea";
+import {RichTextArea} from "../RichTextArea";
 
 const log = Logger.create();
 
-export class AnnotationCommentBox extends React.Component<IProps, IState> {
+export class CommentInput extends React.Component<IProps, IState> {
 
     private html: string = "";
 
@@ -98,10 +98,10 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
     private onComment(): void {
 
-        if (this.props.comment) {
+        if (this.props.existingComment) {
 
-            if (this.props.onCommentChanged) {
-                this.props.onCommentChanged(this.html, this.props.comment);
+            if (this.props.onCommentUpdated) {
+                this.props.onCommentUpdated(this.html, this.props.existingComment);
             }
 
         } else {
@@ -135,9 +135,9 @@ export interface IProps {
     /**
      * When given a comment we're editing an existing comment.
      */
-    comment?: Comment;
+    existingComment?: Comment;
     onCommentCreated?: (html: string) => void;
-    onCommentChanged?: (html: string, comment: Comment) => void;
+    onCommentUpdated?: (html: string, existingComment: Comment) => void;
     onCancel?: () => void;
 }
 

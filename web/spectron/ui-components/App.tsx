@@ -22,7 +22,7 @@ import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
 import {AnnotationFlashcardBox} from '../../js/annotation_sidebar/flashcard_input/AnnotationFlashcardBox';
 import {FlashcardInputForCloze} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForFrontAndBack';
-import {AnnotationCommentBox} from '../../js/annotation_sidebar/AnnotationCommentBox';
+import {CommentInput} from '../../js/annotation_sidebar/comment_input/CommentInput';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {ExportButton} from '../../js/ui/export/ExportButton';
 import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
@@ -461,7 +461,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <h1 className="component">AnnotationCommentBox</h1>
 
-                <AnnotationCommentBox id={'test-comment-box'}/>
+                <CommentInput id={'test-comment-box'}/>
 
                 <h1 className="component">FlashcardInputForCloze</h1>
 
