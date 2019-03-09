@@ -37,7 +37,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                     <HelpDropdownItem id="documentation-link"
                                       title="Documentation"
                                       tooltip="Documentation on Polar"
-                                      link="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/"
+                                      link="https://getpolarized.io/docs/"
                                       icon="fas fa-book"/>
 
                     <HelpDropdownItem id="feedback-link"
