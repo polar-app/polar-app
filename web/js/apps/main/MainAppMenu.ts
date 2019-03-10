@@ -425,7 +425,7 @@ export class MainAppMenu {
                     click: () => shell.openExternal('https://getpolarized.io/docs/') },
                 {
                     id: 'check-for-updates',
-                    label: 'Check for updates',
+                    label: 'Check for Updates',
                     // only show on Windows and MacOS as all other platforms
                     // have their own dist system (for now).
                     visible: Updates.platformSupportsUpdates(),

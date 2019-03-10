@@ -8,6 +8,10 @@ import {LinkDropdownItem} from './LinkDropdownItem';
 import {HelpDropdownItem} from './HelpDropdownItem';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {UncontrolledDropdown} from 'reactstrap';
+import {AppRuntime} from '../../../../web/js/AppRuntime';
+import {TrackedDropdownItem} from './TrackedDropdownItem';
+import {ipcRenderer} from 'electron';
+import {Updates} from '../../../../web/js/updates/Updates';
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -16,6 +20,8 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
     }
 
     public render() {
+
+        const updatesEnabled = AppRuntime.isElectron() && Updates.platformSupportsUpdates();
 
         return (
             <UncontrolledDropdown className="ml-1"
@@ -65,6 +71,16 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       tooltip="Donate to Polar to support development."
                                       link="https://opencollective.com/polar-bookshelf"
                                       icon="fas fa-donate"/>
+
+                    <DropdownItem divider hidden={!updatesEnabled}/>
+
+                    <TrackedDropdownItem id="electron-check-for-update"
+                                         title="Check For App Update"
+                                         tooltip="Check for a new update of the Polar Desktop app."
+                                         icon="fas fa-file-download"
+                                         trackingCategory="help-check-for-update"
+                                         hidden={!updatesEnabled}
+                                         onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
 
                 </DropdownMenu>
 

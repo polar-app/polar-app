@@ -52,14 +52,25 @@ export class Updates {
     // export this to MenuItem click callback
     public static checkForUpdates(menuItem: Electron.MenuItem) {
 
-        Updates.updateRequestedManually = true;
-
         if (this.performingUpdate) {
             return;
         }
 
         updater = menuItem;
         updater.enabled = false;
+
+        this.checkForUpdatesManually();
+
+    }
+
+    public static checkForUpdatesManually() {
+
+        if (this.performingUpdate) {
+            return;
+        }
+
+        Updates.updateRequestedManually = true;
+
         this.doCheckForUpdates()
             .catch(err => log.error("Error handling updates: " + err ));
 
@@ -261,6 +272,10 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 
     Broadcasters.send("download-progress", progress);
 
+});
+
+ipcMain.on('app-update:check-for-update', () => {
+    Updates.checkForUpdatesManually();
 });
 
 ipcMain.on('app-update:quit-and-install', () => {

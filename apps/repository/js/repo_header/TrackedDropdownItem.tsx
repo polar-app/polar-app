@@ -2,6 +2,7 @@ import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {Optional} from '../../../../web/js/util/ts/Optional';
 
 /**
  */
@@ -17,6 +18,7 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
 
             <DropdownItem id={this.props.id}
                           size="sm"
+                          hidden={Optional.of(this.props.hidden).getOrElse(false)}
                           onClick={() => this.onClick()}>
 
                 <div style={{
