@@ -271,6 +271,8 @@ export class RepositoryApp {
 
             await persistenceLayer.init();
 
+            // TODO: also use system prefs for this too.
+
             await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
                 // load the eample docs in the store.. on the first load we
