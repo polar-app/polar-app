@@ -1,11 +1,13 @@
 
 # 1.13.12
 
+- new auto-resume of reading which is now enabled by default.
+
+- new prefs system for disk datastore and cloud and defaults to localstorage in
+  the browser.
+
 - We now longer show background progress updates that complete very quickly. 
   This was often distracting when the app was working in the background. 
-
-- Proof of concept of auto-resume when loading but not enabled yet as I need 
-  to figure out what to do for onboarding and disabling this feature.  
 
 - Fixed bug with PDF scroll into view where we wouldn't properly scroll to the 
   proper position. Now we just scroll to the page that was last pagemarked.
