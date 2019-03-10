@@ -221,8 +221,10 @@ autoUpdater.on('update-not-available', () => {
             }
         });
 
-        updater!.enabled = true;
-        updater = null;
+        if (updater) {
+            updater!.enabled = true;
+            updater = null;
+        }
 
     }
 
