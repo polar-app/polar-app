@@ -20,6 +20,7 @@ export class TrackedDropdownLink extends React.PureComponent<TrackedDropdownLink
                                  trackingCategory={this.props.trackingCategory}
                                  icon={this.props.icon}
                                  tooltip={this.props.tooltip}
+                                 hidden={this.props.hidden}
                                  onClick={() => this.onClick()}/>
         );
 

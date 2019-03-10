@@ -17,6 +17,7 @@ export class LinkDropdownItem extends React.PureComponent<IProps, IState> {
                                  id={this.props.id}
                                  link={this.props.link}
                                  title={this.props.title}
+                                 hidden={this.props.hidden}
                                  tooltip={this.props.tooltip}
                                  icon={this.props.icon}/>
         );
