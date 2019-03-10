@@ -12,6 +12,7 @@ import {ToasterMessageType} from '../ui/toaster/Toaster';
 import {TimeDurations} from '../util/TimeDurations';
 import {Platform, Platforms} from '../util/Platforms';
 import {DistConfig} from '../dist_config/DistConfig';
+import {AppUpdates} from './AppUpdates';
 
 const ENABLE_AUTO_UPDATE = true;
 
@@ -112,12 +113,6 @@ export class Updates {
         }
 
         return await autoUpdater.checkForUpdates();
-
-    }
-
-    public static platformSupportsUpdates() {
-
-        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && DistConfig.ENABLE_UPDATES;
 
     }
 
@@ -284,7 +279,7 @@ ipcMain.on('app-update:quit-and-install', () => {
     autoUpdater.quitAndInstall();
 });
 
-if (ENABLE_AUTO_UPDATE && Updates.platformSupportsUpdates()) {
+if (ENABLE_AUTO_UPDATE && AppUpdates.platformSupportsUpdates()) {
     log.info("Auto updates enabled.");
 
     Updates.scheduleAutoUpdate(AUTO_UPDATE_DELAY_INITIAL);

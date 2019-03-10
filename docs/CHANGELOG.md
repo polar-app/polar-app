@@ -1,4 +1,6 @@
 
+# 1.13.13
+
 # 1.13.12
 
 - new auto-resume of reading which is now enabled by default.

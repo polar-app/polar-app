@@ -1,17 +1,13 @@
 import * as React from 'react';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {Nav} from '../../../../web/js/ui/util/Nav';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import {LinkDropdownItem} from './LinkDropdownItem';
 import {HelpDropdownItem} from './HelpDropdownItem';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {UncontrolledDropdown} from 'reactstrap';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {ipcRenderer} from 'electron';
-import {Updates} from '../../../../web/js/updates/Updates';
+import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -21,7 +17,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-        const updatesEnabled = AppRuntime.isElectron() && Updates.platformSupportsUpdates();
+        const updatesEnabled = AppRuntime.isElectron() && AppUpdates.platformSupportsUpdates();
 
         return (
             <UncontrolledDropdown className="ml-1"
