@@ -18,6 +18,7 @@
     "dist-linux": "npm run-script compile && npm run-script publish-linux && npm run-script publish-linux-snapcraft",
     "dist-macos": "npm run-script compile && npm run-script publish-macos",
     "dist-win": "npm run-script compile && npm run-script publish-win",
+    "dist-webapp": "npm run-script publish-webapp",
     "dist-prepare": "",
     "compile": "tsc",
     "compile-watch": "tsc --watch",
