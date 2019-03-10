@@ -29,17 +29,81 @@
 
     <title>Polar: Document Repository</title>
 
+    <style>
+
+      html, body {
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        height: 100%;
+        width: 100%;
+      }
+
+      body {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7abcff+0,60abf8+44,4096ee+100;Blue+3D+%2314 */
+        background: #7abcff; /* Old browsers */
+        background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #7abcff 0%,#60abf8 44%,#4096ee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 ); /* IE6-9 */
+      }
+
+      #root {
+        display: flex;
+        height:  100%;
+      }
+
+      #auth-box {
+        margin: auto;
+        height: 500px;
+        width: 450px;
+        background-color: #ffffff;
+      }
+
+      h1 {
+        color: #303030;
+      }
+
+    </style>
+
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div id="root"></div>
 
-    <br>
-    <br>
+    <div id="root">
 
-    <div id="firebaseui-auth-container"></div>
+      <div id="auth-box" class="rounded border shadow p-1">
+
+        <div class="text-center">
+
+          <!--<h1>-->
+            <!--Login to Polar-->
+          <!--</h1>-->
+
+          <!--<h4 class="text-muted">-->
+            <!--Let's get started-->
+          <!--</h4>-->
+
+          <!--<img src="/icon.svg" width="125" height="125">-->
+
+          <img src="/icon.svg" width="125" height="125">
+
+          <h1>
+            Login to Polar
+          </h1>
+
+        </div>
+
+        <div id="firebaseui-auth-container" ></div>
+
+      </div>
+
+
+    </div>
 
   </body>
 
