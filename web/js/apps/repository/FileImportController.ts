@@ -241,21 +241,21 @@ export class FileImportController {
                 const file = importedFile.get();
                 const fingerprint = file.docInfo.fingerprint;
 
-                // TODO we should ideally have the hashcode built here.
-                const fileRef: FileRef = {
-                    name: file.basename
-                };
+                if (AppRuntime.isElectron()) {
 
-                // TODO(webapp): DO NOT enable this in the web UI... the upload
-                // could take forever.  It might be nice to open a tab showing
-                // the upload progress and then load the file once it's
-                // uploaded.
-                this.docLoader.create({
-                    fingerprint,
-                    fileRef,
-                    newWindow: true
-                }).load()
-                  .catch(err => log.error("Unable to load doc: ", err));
+                    // DO NOT enable this in the web UI... the upload could take
+                    // forever.  It might be nice to open a tab showing the
+                    // upload progress and then load the file once it's
+                    // uploaded.
+
+                    this.docLoader.create({
+                        fingerprint,
+                        fileRef: file.fileRef,
+                        newWindow: true
+                    }).load()
+                      .catch(err => log.error("Unable to load doc: ", err));
+
+                }
 
             }
 
@@ -282,7 +282,6 @@ export class FileImportController {
                     log.error("Failed to import file: " + file, e);
                 } finally {
                     DeterminateProgressBar.update(progressTracker.incr());
-
                 }
 
             }

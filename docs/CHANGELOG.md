@@ -6,7 +6,7 @@
 - new prefs system for disk datastore and cloud and defaults to localstorage in
   the browser.
 
-- We now longer show background progress updates that complete very quickly. 
+- We no longer show background progress updates that complete very quickly. 
   This was often distracting when the app was working in the background. 
 
 - Fixed bug with PDF scroll into view where we wouldn't properly scroll to the 

@@ -12,7 +12,7 @@ import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
 import {HashAlgorithm, HashEncoding} from '../../../metadata/Hashcode';
 import {IProvider} from '../../../util/Providers';
-import {BinaryFileData} from '../../../datastore/Datastore';
+import {BinaryFileData, FileRef} from '../../../datastore/Datastore';
 import {URLs} from '../../../util/URLs';
 import {InputSources} from '../../../util/input/InputSources';
 
@@ -50,8 +50,8 @@ export class PDFImporter {
 
             if (await PDFImporter.isWithinStashdir(directories.stashDir, docPath)) {
 
-                // prevent the user from re-importing/opening a file that is ALREADY
-                // in the stash dir.
+                // prevent the user from re-importing/opening a file that is
+                // ALREADY in the stash dir.
 
                 log.warn("Skipping import of file that's already in the stashdir.");
                 return Optional.empty();
@@ -75,10 +75,16 @@ export class PDFImporter {
 
                     // return the existing doc meta information.
 
+                    const fileRef = {
+                        name: docMeta.docInfo.filename,
+                        hashcode: docMeta.docInfo.hashcode
+                    };
+
                     const basename = FilePaths.basename(docMeta.docInfo.filename);
                     return Optional.of({
                         basename,
-                        docInfo: docMeta.docInfo
+                        docInfo: docMeta.docInfo,
+                        fileRef
                     });
 
                 }
@@ -155,7 +161,8 @@ export class PDFImporter {
 
         return Optional.of({
             basename,
-            docInfo: docMeta.docInfo
+            docInfo: docMeta.docInfo,
+            fileRef
         });
 
     }
@@ -194,6 +201,8 @@ export interface ImportedFile {
      * The basename of the file imported.
      */
     basename: string;
+
+    fileRef: FileRef;
 
 }
 
