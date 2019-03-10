@@ -1,5 +1,5 @@
 import {Optional} from '../../util/ts/Optional';
-import {LocalPrefs} from './LocalPrefs';
+import {LocalPrefs} from '../../util/LocalPrefs';
 
 export class LifecycleToggle extends LocalPrefs {
 

@@ -48,7 +48,7 @@ export class Launcher {
         const model = new Model(persistenceLayer);
 
         new PagemarkView(model).start();
-        new WebView(model).start();
+        new WebView(model, persistenceLayer.datastore.getPrefs()).start();
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
         new AnnotationSidebarService(model).start();

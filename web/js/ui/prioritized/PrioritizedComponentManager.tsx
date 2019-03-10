@@ -10,7 +10,7 @@ import {EventListener} from '../../reactor/EventListener';
 import {Numbers} from '../../util/Numbers';
 import {SplashLifecycle} from '../../../../apps/repository/js/splash/SplashLifecycle';
 import {LifecycleEvents} from '../util/LifecycleEvents';
-import {LocalPrefs} from '../util/LocalPrefs';
+import {LocalPrefs} from '../../util/LocalPrefs';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {DatastoreOverview} from '../../datastore/Datastore';
 

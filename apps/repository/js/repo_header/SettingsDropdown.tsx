@@ -1,12 +1,9 @@
 import * as React from 'react';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import {LinkDropdownItem} from './LinkDropdownItem';
-import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {UncontrolledDropdown} from 'reactstrap';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
-import {Platforms} from '../../../../web/js/util/Platforms';
 import {SettingsDropdownItem} from './SettingsDropdownItem';
+import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 
 export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 
@@ -33,6 +30,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 
                     <SettingsDropdownItem name="settings-auto-resume"
                                           defaultValue={true}
+                                          prefs={this.props.prefs}
                                           title="Automatically Resume Reading Position"
                                           tooltip="Automatically resume the current reading position when opening documents."/>
 
@@ -47,6 +45,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
+    readonly prefs: () => Prefs | undefined;
 }
 
 interface IState {

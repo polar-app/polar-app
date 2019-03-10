@@ -1,9 +1,11 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult, DocMetaSnapshotEvent, FileRef,
-        DocMetaSnapshotEventListener, SnapshotResult, ErrorListener,
-        DatastoreID,
+import {
+    DeleteResult, DocMetaSnapshotEvent, FileRef,
+    DocMetaSnapshotEventListener, SnapshotResult, ErrorListener,
+    DatastoreID,
     Datastore,
-    BinaryFileData} from './Datastore';
+    BinaryFileData, PrefsProvider
+} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';

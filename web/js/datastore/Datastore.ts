@@ -19,6 +19,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
+import {Prefs} from '../util/prefs/Prefs';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -78,6 +79,12 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      * well as other stats including the number of docs.
      */
     overview(): Promise<DatastoreOverview>;
+
+    /**
+     * Get a Prefs object that supports reading and writing key/values to a
+     * simple prefs store.
+     */
+    getPrefs(): PrefsProvider;
 
     // TODO: we need a new method with the following semantics:
 
@@ -611,4 +618,13 @@ export type DatastoreID = string;
 
 export interface DatastoreInitOpts {
     readonly noInitialSnapshot?: boolean;
+}
+
+export interface PrefsProvider {
+
+    /**
+     * Get the latest copy of the prefs we're using.
+     */
+    get(): Prefs;
+
 }

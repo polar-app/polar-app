@@ -1,7 +1,7 @@
 import React from 'react';
 import {PreviewDisclaimer} from './PreviewDisclaimer';
 import {ReactInjector} from '../../ui/util/ReactInjector';
-import {LocalPrefs} from '../../ui/util/LocalPrefs';
+import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {AppRuntime} from '../../AppRuntime';
 

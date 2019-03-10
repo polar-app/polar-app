@@ -6,7 +6,7 @@ import {LargeModal} from '../../ui/large_modal/LargeModal';
 import {Button, ModalFooter, ModalHeader} from 'reactstrap';
 import {LargeModalBody} from '../../ui/large_modal/LargeModalBody';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
-import {LocalPrefs} from '../../ui/util/LocalPrefs';
+import {LocalPrefs} from '../../util/LocalPrefs';
 
 export class PreviewDisclaimer extends React.PureComponent<IProps, IState> {
 

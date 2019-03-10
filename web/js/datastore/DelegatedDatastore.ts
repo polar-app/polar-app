@@ -1,6 +1,8 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
-        DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
-        AbstractDatastore, BinaryFileData, DatastoreOverview} from './Datastore';
+import {
+    Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
+    DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
+    AbstractDatastore, BinaryFileData, DatastoreOverview, PrefsProvider
+} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -97,6 +99,10 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
 
     public async overview(): Promise<DatastoreOverview> {
         return await this.delegate.overview();
+    }
+
+    public getPrefs(): PrefsProvider {
+        return this.delegate.getPrefs();
     }
 
 }

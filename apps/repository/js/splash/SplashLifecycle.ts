@@ -1,4 +1,4 @@
-import {LocalPrefs} from '../../../../web/js/ui/util/LocalPrefs';
+import {LocalPrefs} from '../../../../web/js/util/LocalPrefs';
 
 export class SplashLifecycle {
 

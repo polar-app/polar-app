@@ -1,19 +1,21 @@
-import {AbstractDatastore,
-        BinaryFileData,
-        Datastore,
-        DatastoreConsistency,
-        DatastoreInitOpts,
-        DeleteResult,
-        DocMetaMutation,
-        DocMetaSnapshotEvent,
-        DocMetaSnapshotEventListener,
-        ErrorListener,
-        FileMeta,
-        FileRef,
-        InitResult,
-        MutationType,
-        SnapshotResult,
-        DatastoreOverview} from './Datastore';
+import {
+    AbstractDatastore,
+    BinaryFileData,
+    Datastore,
+    DatastoreConsistency,
+    DatastoreInitOpts,
+    DeleteResult,
+    DocMetaMutation,
+    DocMetaSnapshotEvent,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    FileMeta,
+    FileRef,
+    InitResult,
+    MutationType,
+    SnapshotResult,
+    DatastoreOverview, PrefsProvider
+} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -31,11 +33,12 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
-import {AsyncProviders} from '../util/Providers';
+import {AsyncProviders, Providers} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
 import {FileHandle, FileHandles, Files} from '../util/Files';
 import {UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
+import {LocalStoragePrefs} from '../util/prefs/Prefs';
 
 const log = Logger.create();
 
@@ -495,6 +498,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public async overview(): Promise<DatastoreOverview> {
         throw new Error("Not implemented");
+    }
+
+    public getPrefs(): PrefsProvider {
+        return Providers.toInterface(() => new LocalStoragePrefs());
     }
 
     /**

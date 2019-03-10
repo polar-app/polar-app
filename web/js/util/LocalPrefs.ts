@@ -1,6 +1,8 @@
-import {Optional} from '../../util/ts/Optional';
-import {DurationStr, TimeDurations} from '../../util/TimeDurations';
+import {Optional} from './ts/Optional';
 
+/**
+ * @Deprecated use the new IPrefs systems
+ */
 export class LocalPrefs {
 
     public static mark(key: string, value: boolean = true): void {
@@ -106,3 +108,5 @@ export class LocalPrefs {
     }
 
 }
+
+import {DurationStr, TimeDurations} from './TimeDurations';

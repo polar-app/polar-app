@@ -33,7 +33,7 @@ import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {RepositoryTour} from './RepositoryTour';
-import {LocalPrefs} from '../../ui/util/LocalPrefs';
+import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Platforms} from '../../util/Platforms';
 import {AppOrigin} from '../AppOrigin';

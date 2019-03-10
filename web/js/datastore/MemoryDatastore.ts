@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult, DatastoreOverview} from './Datastore';
+import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult, DatastoreOverview, PrefsProvider} from './Datastore';
 import {isPresent, Preconditions} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from '../logger/Logger';
@@ -15,6 +15,8 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {DictionaryPrefs} from '../util/prefs/Prefs';
+import {Providers} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -27,6 +29,8 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     protected readonly docMetas: {[fingerprint: string]: string} = {};
 
     protected readonly files: {[key: string]: FileData} = {};
+
+    private readonly prefs = new DictionaryPrefs();
 
     constructor() {
         super();
@@ -175,6 +179,10 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     private toFileRefKey(backend: Backend, fileRef: FileRef) {
         return `${backend}:${fileRef.name}`;
+    }
+
+    public getPrefs(): PrefsProvider {
+        return Providers.toInterface(() => this.prefs);
     }
 
 }

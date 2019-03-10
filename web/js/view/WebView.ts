@@ -9,7 +9,9 @@ import {Logger} from '../logger/Logger';
 import {Arrays} from '../util/Arrays';
 import {Elements} from '../util/Elements';
 import {ReadingProgressResume} from './ReadingProgressResume';
-import {LocalPrefs} from '../ui/util/LocalPrefs';
+import {LocalPrefs} from '../util/LocalPrefs';
+import {Prefs} from '../util/prefs/Prefs';
+import {PrefsProvider} from '../datastore/Datastore';
 
 const log = Logger.create();
 
@@ -17,13 +19,16 @@ export class WebView extends View {
 
     private readonly docFormat: DocFormat;
 
+    private readonly prefsProvider: PrefsProvider;
+
     /**
      *
      * @param model {Model}
      */
-    constructor(model: Model) {
+    constructor(model: Model, prefsProvider: PrefsProvider) {
         super(model);
 
+        this.prefsProvider = prefsProvider;
         this.docFormat = DocFormatFactory.getInstance();
 
     }
@@ -99,8 +104,8 @@ export class WebView extends View {
      */
     private onDocumentLoaded(event: DocumentLoadedEvent) {
 
-        // const autoResume = LocalPrefs.isMarked('settings-auto-resume', true);
-        const autoResume = false;
+        const autoResume
+            = this.prefsProvider.get().isMarked('settings-auto-resume', true);
 
         const docMeta = event.docMeta;
 

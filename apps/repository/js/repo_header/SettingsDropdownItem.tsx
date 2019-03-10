@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {TrackedDropdownItem} from './TrackedDropdownItem';
-import {LocalPrefs} from '../../../../web/js/ui/util/LocalPrefs';
+import {LocalPrefs} from '../../../../web/js/util/LocalPrefs';
+import {PrefsProvider} from '../../../../web/js/datastore/Datastore';
+import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 
 const ICON_ON = "fas fa-check text-primary";
 const ICON_OFF = "fas fa-minus";
@@ -15,9 +17,17 @@ export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-        const marked = LocalPrefs.isMarked(this.props.name, this.props.defaultValue);
+        const prefs = this.props.prefs();
 
-        const icon = marked ? ICON_ON : ICON_OFF;
+        const hidden = prefs === undefined;
+
+        let marked: boolean = false;
+        let icon: string = ICON_OFF;
+
+        if (prefs) {
+            marked = prefs.isMarked(this.props.name, this.props.defaultValue);
+            icon = marked ? ICON_ON : ICON_OFF;
+        }
 
         return (
 
@@ -26,6 +36,7 @@ export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
                                  title={this.props.title}
                                  tooltip={this.props.tooltip}
                                  icon={icon}
+                                 hidden={hidden}
                                  onClick={() => this.onClick()}/>
 
         );
@@ -33,7 +44,8 @@ export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
     }
 
     private onClick() {
-        LocalPrefs.toggle(this.props.name, this.props.defaultValue);
+        const prefs = this.props.prefs()!;
+        prefs.toggle(this.props.name, this.props.defaultValue);
     }
 
 }
@@ -50,6 +62,8 @@ interface IProps {
     readonly tooltip: string;
 
     readonly hidden?: boolean;
+
+    readonly prefs: () => Prefs | undefined;
 
 }
 
