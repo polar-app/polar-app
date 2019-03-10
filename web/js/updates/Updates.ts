@@ -69,6 +69,8 @@ export class Updates {
             return;
         }
 
+        log.info("Checking for updates manually.");
+
         Updates.updateRequestedManually = true;
 
         this.doCheckForUpdates()
