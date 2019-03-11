@@ -73,6 +73,36 @@ service firebase.storage {
 
 ```
 
+## March 10 , 2019
+
+I think we're going to change the rules to allow read if the visibility is public
+
+I've confirmed that the storage of the metadata key is actually 'visibility' 
+(lowercase) and that the string is actually 'public' (lowercase) 
+
+```
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+
+      // Allow read and write when the resource is missing OR the user is the 
+      // owner of the resource. Note that it's important to allow both reads
+      // and writes if the document is missing. If it's missing then want the 
+      // user to create it and then own it.  If it is present then we want 
+      // validate against the existing uid.  
+      
+      allow read: if request.auth != null && (resource == null || request.auth.uid == resource.metadata.uid || resource.metadata.visibility == 'public');
+      allow write: if request.auth != null && (resource == null || request.auth.uid == resource.metadata.uid);
+      
+    }
+  }
+}
+
+      
+```
+
+      
 
 ## Default rules 
 

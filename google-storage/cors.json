@@ -1,0 +1,6 @@
+[
+  {
+    "origin": ["https://getpolarized.io", "https://localapp.getpolarized.io", "https://app.getpolarized.io"],
+    "method": ["GET", "HEAD"]
+  }
+]
