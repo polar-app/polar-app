@@ -3,7 +3,36 @@ import {Base64} from '../Base64';
 
 export class Mailchimp {
 
-    public static async subscribe(email: string, firstName: string, lastName: string) {
+    /**
+     * Mailchimp has a horrible / nonexistant API so we're just going to hack
+     * this for now.
+     *
+     */
+    public static async subscribe(email: string) {
+
+        // curl 'https://spinn3r.us10.list-manage.com/subscribe/post-json?u=0b1739813ebf118e92faf8fc3&id=ad3d53e837&c=jQuery19009624483455377628_1552327454263&EMAIL=burtonator%2Btest4%40gmail.com&b_0b1739813ebf118e92faf8fc3_ad3d53e837=&subscribe=&_=1552327454264'
+        // -H 'Referer: https://getpolarized.io/mailchimp-iframe.html'
+        // -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'
+        // -H 'DNT: 1' --compressed
+
+        const emailEncoded = encodeURIComponent(email);
+        const url = `https://spinn3r.us10.list-manage.com/subscribe/post-json?u=0b1739813ebf118e92faf8fc3&id=ad3d53e837&c=callback&EMAIL=${emailEncoded}&b_0b1739813ebf118e92faf8fc3_ad3d53e837=&subscribe=&_=1552327454264`;
+
+        const response = await fetch(url);
+
+        const text = await response.text();
+
+        if (text.indexOf('success') === -1 && text.indexOf('already subscribed') === -1) {
+            throw new Error("Invalid result: " + text);
+        }
+
+        if (response.status !== 200) {
+            throw new Error("Failed request: " + response.status + ": " + response.statusText);
+        }
+
+    }
+
+    public static async subscribeViaAPI(email: string, firstName: string, lastName: string) {
 
         const body = {
             "email_address": email,
