@@ -23,6 +23,7 @@ import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
+import {Stopwatches} from '../util/Stopwatches';
 
 const log = Logger.create();
 
@@ -358,7 +359,99 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     }
 
+    public async getFileMeta(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+
+        const stopwatch = Stopwatches.create();
+
+        const id = this.createFileMetaID(backend, ref);
+
+        const snapshot = await this.firestore!
+            .collection(DatastoreCollection.DOC_FILE_META)
+            .doc(id)
+            .get();
+
+        const recordHolder = <RecordHolder<DocFileMeta> | undefined> snapshot.data();
+
+        console.log( "FIXME got file data in : " + stopwatch.stop());
+
+        if (! recordHolder) {
+            return Optional.empty();
+        }
+
+        return Optional.of(recordHolder.value);
+
+    }
+
+    public async writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta) {
+
+        const id = this.createFileMetaID(backend, ref);
+
+        const recordHolder: RecordHolder<DocFileMeta> = {
+            uid: this.getUserID(),
+            id,
+            visibility: Visibility.PRIVATE,
+            value: docFileMeta
+        };
+
+        await this.firestore!
+            .collection(DatastoreCollection.DOC_FILE_META)
+            .doc(id)
+            .set(recordHolder);
+
+    }
+
+    public async deleteFileMeta(backend: Backend, ref: FileRef) {
+
+        const id = this.createFileMetaID(backend, ref);
+
+        await this.firestore!
+            .collection(DatastoreCollection.DOC_FILE_META)
+            .doc(id)
+            .delete();
+
+    }
+
+    private createFileMetaID(backend: Backend, ref: FileRef) {
+        const storagePath = this.computeStoragePath(backend, ref);
+        return Hashcodes.create(storagePath.path);
+    }
+
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+
+        let result = await this.getFileFromFileMeta(backend, ref);
+
+        if (! result.isPresent()) {
+
+            console.log("FIXME: not present in doc_file_meta");
+
+            result = await this.getFileFromStorage(backend, ref);
+
+            console.log("FIXME: got from storage");
+
+            if (result.isPresent()) {
+                // write it to doc_file_meta so that next time we have it
+                // available
+
+                await this.writeFileMeta(backend, ref, result.get());
+                console.log("FIXME: wrote to doc_file_meta");
+
+            }
+
+            return result;
+
+        } else {
+
+            console.log("FIXME: got from doc_file_meta");
+            return result;
+        }
+
+    }
+
+    private async getFileFromFileMeta(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+        return await this.getFileMeta(backend, ref);
+    }
+
+    private async getFileFromStorage(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         // TODO: this code and containsFile could be unified I think.
         // containsFile should just be getFile().isPresent()
@@ -397,6 +490,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         // TODO: we should have some cache here to avoid checking the server too
         // often but I don't think this is goign to be used often.
 
+        // TODO: this is slow when referencing the storage path directly we should
+        // instead use the doc_file_meta but not all files have this yet.
+
         const storagePath = this.computeStoragePath(backend, ref);
 
         const storage = this.storage!;
@@ -420,27 +516,34 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
-        try {
+        const deleteFileFromStorage = async () => {
 
-            const storage = this.storage!;
+            try {
 
-            const storagePath = this.computeStoragePath(backend, ref);
+                const storage = this.storage!;
 
-            const fileRef = storage.ref().child(storagePath.path);
-            await fileRef.delete();
+                const storagePath = this.computeStoragePath(backend, ref);
 
-        } catch (e) {
+                const fileRef = storage.ref().child(storagePath.path);
+                await fileRef.delete();
 
-            if (e.code === "storage/object-not-found") {
-                // this is acceptable for now as we want deletes to be
-                // idempotent
-                return;
+            } catch (e) {
+
+                if (e.code === "storage/object-not-found") {
+                    // this is acceptable for now as we want deletes to be
+                    // idempotent
+                    return;
+                }
+
+                // some other type of exception ias occurred
+                throw e;
+
             }
 
-            // some other type of exception ias occurred
-            throw e;
+        };
 
-        }
+        await deleteFileFromStorage();
+        await this.deleteFileMeta(backend, ref);
 
     }
 
@@ -951,7 +1054,9 @@ export enum DatastoreCollection {
 
     DOC_INFO = "doc_info",
 
-    DOC_META = "doc_meta"
+    DOC_META = "doc_meta",
+
+    DOC_FILE_META = "doc_file_meta"
 
 }
 
