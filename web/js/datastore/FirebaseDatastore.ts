@@ -1,24 +1,6 @@
-import {
-    AbstractDatastore,
-    BinaryFileData,
-    Datastore,
-    DatastoreConsistency,
-    DatastoreInitOpts,
-    DeleteResult,
-    DocMetaMutation,
-    DocMetaSnapshotEvent,
-    DocMetaSnapshotEventListener,
-    ErrorListener,
-    FileMeta,
-    FileRef,
-    InitResult,
-    MutationType,
-    SnapshotResult,
-    DatastoreOverview, PrefsProvider
-} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
@@ -32,13 +14,15 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
-import {ProgressTracker} from '../util/ProgressTracker';
+import {Percentage, ProgressTracker} from '../util/ProgressTracker';
 import {AsyncProviders, Providers} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
 import {FileHandle, FileHandles, Files} from '../util/Files';
 import {UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {LocalStoragePrefs} from '../util/prefs/Prefs';
+import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
+import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 
 const log = Logger.create();
 
@@ -323,17 +307,31 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         const started = Date.now();
 
+        const task = ProgressTracker.createNonce();
+
         uploadTask.on('state_changed', (snapshotData: any) => {
+
+            const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
 
             const now = Date.now();
             const duration = now - started;
 
-            const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
+            const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
+            log.notice('Upload is ' + percentage + '%// done');
 
-            const progress = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-            log.notice('Upload is ' + progress + '%// done');
+            const progress: ProgressMessage = {
+                id: 'firebase-upload',
+                task,
+                completed: snapshot.bytesTransferred,
+                total: snapshot.totalBytes,
+                duration,
+                progress: <Percentage> percentage
+            };
+
+            ProgressMessages.broadcast(progress);
 
             switch (snapshot.state) {
+
                 case firebase.storage.TaskState.PAUSED:
                     // or 'paused'
                     // console.log('Upload is paused');

@@ -59,7 +59,7 @@ export class PDFDownloadHandlers {
             downloadItem.once('done', (event, state) => {
 
                 // send the final progress event.
-                ProgressMessages.send(progressTracker.terminate());
+                ProgressMessages.broadcast(progressTracker.terminate());
 
                 const message = `PDF download ${state} for ${basename}`;
 
@@ -88,7 +88,7 @@ export class PDFDownloadHandlers {
             downloadItem.on('updated', () => {
 
                 const progress = progressTracker.abs(downloadItem.getReceivedBytes());
-                ProgressMessages.send(progress);
+                ProgressMessages.broadcast(progress);
 
             });
 

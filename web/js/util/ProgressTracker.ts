@@ -37,7 +37,7 @@ export class ProgressTracker {
      * that aren't deltas but are absolute values.
      *
      */
-    public abs(value: number) {
+    public abs(value: number): Readonly<Progress> {
         this.state.completed = value;
         this.state.progress = this.calculate();
         this.state.duration = Date.now() - this.epoch;
@@ -85,6 +85,10 @@ export class ProgressTracker {
 
         return <Percentage> result;
 
+    }
+
+    public static createNonce() {
+        return NONCE++;
     }
 
 }
