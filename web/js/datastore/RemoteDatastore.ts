@@ -4,7 +4,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';

@@ -3,7 +3,7 @@ import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Directories} from './Directories';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
@@ -212,7 +212,7 @@ interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
-    getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>>;
+    getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
 
 }
 
@@ -226,7 +226,7 @@ interface WritableBinaryDatastore {
     writeFile(backend: Backend,
               ref: FileRef,
               data: BinaryFileData,
-              meta?: FileMeta): Promise<DatastoreFile>;
+              meta?: FileMeta): Promise<DocFileMeta>;
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
 

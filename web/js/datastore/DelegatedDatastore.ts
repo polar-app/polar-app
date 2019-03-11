@@ -8,7 +8,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
@@ -45,7 +45,7 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.delete(docMetaFileRef);
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DocFileMeta> {
         return this.delegate.writeFile(backend, ref, data, meta);
     }
 
@@ -53,7 +53,7 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
         return this.delegate.getFile(backend, ref);
     }
 

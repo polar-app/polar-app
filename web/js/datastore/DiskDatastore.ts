@@ -22,7 +22,7 @@ import fs from 'fs';
 import os from 'os';
 
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "../util/Platforms";
@@ -247,7 +247,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
-                           meta: FileMeta = {}): Promise<DatastoreFile> {
+                           meta: FileMeta = {}): Promise<DocFileMeta> {
 
         DatastoreFiles.assertSanitizedFileName(ref);
 
@@ -264,7 +264,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         DatastoreFiles.assertSanitizedFileName(ref);
 
@@ -481,7 +481,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     private async createDatastoreFile(backend: Backend,
                                       ref: FileRef,
-                                      fileReference: DiskFileReference): Promise<DatastoreFile> {
+                                      fileReference: DiskFileReference): Promise<DocFileMeta> {
 
         const fileURL = FilePaths.toFileURL(fileReference.path);
         const url = new URL(fileURL);

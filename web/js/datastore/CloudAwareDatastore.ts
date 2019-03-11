@@ -2,7 +2,7 @@ import {AbstractDatastore, BinaryFileData, Datastore, DeleteResult, DocMetaSnaps
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
@@ -104,7 +104,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: BinaryFileData,
-                           meta: FileMeta = {}): Promise<DatastoreFile> {
+                           meta: FileMeta = {}): Promise<DocFileMeta> {
 
 
         const result = this.local.writeFile(backend, ref, data, meta);
@@ -119,7 +119,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
         return this.local.getFile(backend, ref);
     }
 

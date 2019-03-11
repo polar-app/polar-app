@@ -17,7 +17,7 @@ import {IDocInfo} from '../metadata/DocInfo';
 import {Dictionaries} from '../util/Dictionaries';
 import {isPresent} from "../Preconditions";
 import {Optional} from "../util/ts/Optional";
-import {DatastoreFile} from "./DatastoreFile";
+import {DocFileMeta} from "./DocFileMeta";
 import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
 
@@ -153,7 +153,7 @@ export class PersistenceLayers {
 
             if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
 
-                let optionalFile: Optional<DatastoreFile>;
+                let optionalFile: Optional<DocFileMeta>;
 
                 try {
                     optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);

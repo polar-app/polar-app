@@ -9,7 +9,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo, DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
@@ -63,7 +63,7 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.getDocMetaRefs();
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
         return this.delegate.getFile(backend, ref);
     }
 
@@ -95,7 +95,7 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.synchronizeDocs(...docMetaRefs);
     }
 
-    public async writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta?: FileMeta): Promise<DatastoreFile> {
+    public async writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta?: FileMeta): Promise<DocFileMeta> {
         return this.delegate.writeFile(backend, ref, data, meta);
     }
 

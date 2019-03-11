@@ -2,7 +2,7 @@ import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, Data
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {Firestore} from '../firebase/Firestore';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
@@ -250,7 +250,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: BinaryFileData ,
-                           meta: FileMeta = {}): Promise<DatastoreFile> {
+                           meta: FileMeta = {}): Promise<DocFileMeta> {
 
         if (await this.containsFile(backend, ref)) {
             // the file is already in the datastore so don't attempt to
@@ -358,7 +358,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         // TODO: this code and containsFile could be unified I think.
         // containsFile should just be getFile().isPresent()

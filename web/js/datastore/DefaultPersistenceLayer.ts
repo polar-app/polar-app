@@ -8,7 +8,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {PersistenceLayer} from './PersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {Reducers} from '../util/Reducers';
 import {DocInfo} from '../metadata/DocInfo';
@@ -191,7 +191,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.createBackup();
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DocFileMeta> {
         return this.datastore.writeFile(backend, ref, data, meta);
     }
 
@@ -199,7 +199,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
         return this.datastore.getFile(backend, ref);
     }
 

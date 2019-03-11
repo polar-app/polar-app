@@ -7,7 +7,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from '../logger/Logger';
 import {FileHandle, Files} from '../util/Files';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
@@ -80,7 +80,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
-                           meta: FileMeta = {}): Promise<DatastoreFile> {
+                           meta: FileMeta = {}): Promise<DocFileMeta> {
 
         const key = this.toFileRefKey(backend, ref);
 
@@ -100,7 +100,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         const key = this.toFileRefKey(backend, ref);
 

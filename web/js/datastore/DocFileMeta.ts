@@ -1,7 +1,7 @@
 import {FileMeta, FileRef} from './Datastore';
 import {Backend} from './Backend';
 
-export interface DatastoreFile {
+export interface DocFileMeta {
 
     readonly backend: Backend;
 

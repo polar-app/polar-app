@@ -8,7 +8,7 @@ import {
 } from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {FileMeta} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
@@ -69,9 +69,9 @@ export interface PersistenceLayer {
     writeFile(backend: Backend,
               ref: FileRef,
               data: BinaryFileData,
-              meta?: FileMeta): Promise<DatastoreFile>;
+              meta?: FileMeta): Promise<DocFileMeta>;
 
-    getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>>;
+    getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
