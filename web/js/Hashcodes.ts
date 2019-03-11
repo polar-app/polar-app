@@ -5,6 +5,7 @@ import stream from 'stream';
 import {InputSource} from './util/input/InputSource';
 import {InputData, InputListener, InputSources} from './util/input/InputSources';
 
+// TODO: migrate this to use types.
 const base58check = require("base58check");
 
 /**
