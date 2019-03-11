@@ -7,6 +7,8 @@ import CardBody from 'reactstrap/lib/CardBody';
 
 const log = Logger.create();
 
+const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
+
 export default class SurveyCard extends React.Component<any, any> {
 
     constructor(props: any, context: any) {
@@ -26,14 +28,14 @@ export default class SurveyCard extends React.Component<any, any> {
 
                         <p className="text-center">
 
-                        <a href="https://kevinburton1.typeform.com/to/u1zNWG">
+                        <a href={SURVEY_LINK}>
                         <img src={EmbeddedImages.SURVEY}></img>
                         </a>
 
                         </p>
 
                         <p>
-                        Could you take 2 minutes and <a href="https://kevinburton1.typeform.com/to/u1zNWG">answer 10 questions
+                        Could you take 2 minutes and <a href={SURVEY_LINK}>answer 10 questions
                         </a> about
                         your use of Polar?  We're trying to focus on the most
                         important features for our user base and your feedback

@@ -5,7 +5,9 @@ import {EmbeddedImages} from '../whats_new/EmbeddedImages';
 import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayout';
 import {CallToActionLink} from '../components/CallToActionLink';
 
-const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/u1zNWG';
+const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
+
+// https://kevinburton1.typeform.com/to/BuX1Ef
 
 export class Survey extends React.Component<IProps, IState> {
 

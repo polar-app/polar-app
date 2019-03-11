@@ -9,6 +9,8 @@ import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 
+const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
+
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -45,7 +47,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                     <HelpDropdownItem id="feedback-link"
                                       title="Feedback"
                                       tooltip="Provide feedback to help us improve the App"
-                                      link="https://kevinburton1.typeform.com/to/u1zNWG"
+                                      link={SURVEY_LINK}
                                       icon="fas fa-poll-h"/>
 
                     <HelpDropdownItem id="chat-link"
