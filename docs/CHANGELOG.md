@@ -1,6 +1,9 @@
 
 # 1.13.13
 
+- Firebase can now send progress notifications to the desktop during file 
+  uploads to the cloud.
+
 - Fixed bug with link not being hidden on desktop electron.
 
 - New button on the top right so that users can find app updates easier.
