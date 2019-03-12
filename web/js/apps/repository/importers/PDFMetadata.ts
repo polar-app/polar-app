@@ -28,11 +28,13 @@ export class PDFMetadata {
             if (URLs.isURL(input)) {
                 return input;
             } else {
+
                 return url.format({
                     protocol: 'file',
                     slashes: true,
-                    pathname: docPathOrURL,
+                    pathname: FilePaths.resolve(docPathOrURL),
                 });
+
             }
 
         };

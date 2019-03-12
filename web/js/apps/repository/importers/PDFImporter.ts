@@ -10,7 +10,7 @@ import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
-import {HashAlgorithm, HashEncoding} from '../../../metadata/Hashcode';
+import {HashAlgorithm, Hashcode, HashEncoding} from '../../../metadata/Hashcode';
 import {IProvider} from '../../../util/Providers';
 import {BinaryFileData, FileRef} from '../../../datastore/Datastore';
 import {URLs} from '../../../util/URLs';
@@ -164,6 +164,20 @@ export class PDFImporter {
             docInfo: docMeta.docInfo,
             fileRef
         });
+
+    }
+
+    public static async computeHashcode(docPath: string): Promise<Hashcode> {
+
+        const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
+
+        const hashcode: Hashcode = {
+            enc: HashEncoding.BASE58CHECK,
+            alg: HashAlgorithm.KECCAK256,
+            data: fileHashMeta.hashcode
+        };
+
+        return hashcode;
 
     }
 

@@ -198,6 +198,7 @@ export class LoadExampleDocs {
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/mapreduce.pdf",
             nrPages: 13
         });
+
     }
 
     private async doDoc(relativePath: string, opts: DocOpts): Promise<DocMeta | undefined> {
@@ -225,6 +226,12 @@ export class LoadExampleDocs {
                 }
 
             } else {
+
+                const docMeta = DocMetas.create(opts.fingerprint, opts.nrPages);
+
+                const ref: FileRef = {
+                    name: FilePaths.basename(opts.url)
+                };
 
                 // DocMetas.create();
                 throw new Error("Not supported yet.");
