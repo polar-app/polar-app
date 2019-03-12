@@ -16,6 +16,9 @@ import {DocFileMeta} from '../../../datastore/DocFileMeta';
 import {AppRuntime} from '../../../AppRuntime';
 import {FileRef} from '../../../datastore/Datastore';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
+import {Hashcode} from '../../../metadata/Hashcode';
+import {HashAlgorithm} from '../../../metadata/Hashcode';
+import {HashEncoding} from '../../../metadata/Hashcode';
 
 const log = Logger.create();
 
@@ -67,7 +70,13 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
             pagemarkEnd: 7,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf",
-            nrPages: 14
+            nrPages: 14,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "12Ji9JDcRnZT27jeckr4HusYY29QVwj4Wv2J6iYc5YXjtzn3ZJT"
+            }
+
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
@@ -78,7 +87,13 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/borg.pdf",
-            nrPages: 17
+            nrPages: 17,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "19YRZoEqfbhmY2GqQVKcbjfgbm1hZc5TwKdfUo3QW3TVz126bH"
+            }
+
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
@@ -89,7 +104,12 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
             pagemarkEnd: 2,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf",
-            nrPages: 16
+            nrPages: 16,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "12dVEYTS8znhWJNCYUcGHSfWKQqfifBmbShRLxbLvNVYX5BK3sS"
+            }
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
@@ -100,7 +120,12 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf",
-            nrPages: 120
+            nrPages: 120,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "12gk1XzeM8rCLbSmPnHSNYqWPkJ4V4LQW7WLo1MFJfGJMQVVQzU"
+            }
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
@@ -111,7 +136,12 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 1,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf",
-            nrPages: 10
+            nrPages: 10,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "13e69EGrqZdoaAcKdzECCYwVkEAZ3HVsjh9UNccSjEcmTNCSRz"
+            }
         });
 
     }
@@ -143,7 +173,12 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1h'),
             pagemarkEnd: 17,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/pub47492.pdf",
-            nrPages: 20
+            nrPages: 20,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "1h62ktMPhAXXYgnFaDckCht164co4HcDR24WXu8xsvXV2RB1HA"
+            }
         });
 
     }
@@ -163,7 +198,12 @@ export class LoadExampleDocs {
             // pagemarkEnd: 3,
             flagged: true,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/bigtable.pdf",
-            nrPages: 14
+            nrPages: 14,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "1ag3DiKsWirunzx8s81iUL988AefnKouGa2DN2TMZxdZj9yZ4F"
+            }
         });
 
         if (writtenDocMeta) {
@@ -196,7 +236,12 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             pagemarkEnd: 6,
             url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/mapreduce.pdf",
-            nrPages: 13
+            nrPages: 13,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "12PBhYxGA587Ap4D59ac1hNRXtKcj1uyWi9t3hTuRTQofbQTr3q"
+            }
         });
 
     }
@@ -230,11 +275,19 @@ export class LoadExampleDocs {
                 const docMeta = DocMetas.create(opts.fingerprint, opts.nrPages);
 
                 const ref: FileRef = {
-                    name: FilePaths.basename(opts.url)
+                    name: FilePaths.basename(opts.url),
+                    hashcode: opts.hashcode
                 };
 
-                // DocMetas.create();
-                throw new Error("Not supported yet.");
+                docMeta.docInfo.filename = ref.name;
+                docMeta.docInfo.hashcode = ref.hashcode;
+
+                await this.persistenceLayer.writeDocMeta(docMeta);
+
+                return {
+                    docMeta,
+                    ref
+                };
 
             }
 
@@ -347,6 +400,8 @@ interface DocOpts {
     readonly nrPages: number;
 
     readonly url: string;
+
+    readonly hashcode: Hashcode;
 
 }
 
