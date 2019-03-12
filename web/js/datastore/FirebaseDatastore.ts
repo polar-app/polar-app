@@ -361,24 +361,38 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    public async getFileMeta(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+    public async getFileMeta(backend: Backend,
+                             ref: FileRef,
+                             source: 'cache' | 'server' = 'server'): Promise<Optional<DocFileMeta>> {
 
         const stopwatch = Stopwatches.create();
 
         const id = this.createFileMetaID(backend, ref);
 
-        const snapshot = await this.firestore!
-            .collection(DatastoreCollection.DOC_FILE_META)
-            .doc(id)
-            .get();
+        try {
 
-        const recordHolder = <RecordHolder<DocFileMeta> | undefined> snapshot.data();
+            const snapshot = await this.firestore!
+                .collection(DatastoreCollection.DOC_FILE_META)
+                .doc(id)
+                .get({ source });
 
-        if (! recordHolder) {
+            const recordHolder = <RecordHolder<DocFileMeta> | undefined> snapshot.data();
+
+            if (!recordHolder) {
+                return Optional.empty();
+            }
+
+            return Optional.of(recordHolder.value);
+
+        } catch (e) {
+
+            if (source !== 'cache') {
+                throw e;
+            }
+
             return Optional.empty();
-        }
 
-        return Optional.of(recordHolder.value);
+        }
 
     }
 
@@ -400,7 +414,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    public async deleteFileMeta(backend: Backend, ref: FileRef) {
+    private async deleteFileMeta(backend: Backend, ref: FileRef) {
 
         const id = this.createFileMetaID(backend, ref);
 
@@ -410,6 +424,22 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             .delete();
 
     }
+
+    /**
+     * Force prefetching the file meta from the server if it's not in the cache.
+     */
+    private async prefetchFileMeta(backend: Backend, ref: FileRef) {
+
+        const fileMeta = await this.getFileMeta(backend, ref, 'cache');
+
+        if (! fileMeta.isPresent()) {
+            await await this.getFileMeta(backend, ref, 'server');
+        } else {
+            // noop
+        }
+
+    }
+
 
     private createFileMetaID(backend: Backend, ref: FileRef) {
         const storagePath = this.computeStoragePath(backend, ref);
@@ -441,7 +471,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     private async getFileFromFileMeta(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return await this.getFileMeta(backend, ref);
+        return await this.getFileMeta(backend, ref, 'cache');
     }
 
     private async getFileFromStorage(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {

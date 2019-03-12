@@ -197,6 +197,7 @@ export class RepositoryApp {
                        id="file-upload"
                        name="file-upload"
                        accept=".pdf"
+                       multiple
                        onChange={() => this.onFileUpload()}
                        style={{display: 'none'}}/>
 

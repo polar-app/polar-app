@@ -1,6 +1,13 @@
 
 # 1.13.13
 
+- Webapp users now properly get a default set of documents.
+
+- Tour now works on webapp
+
+- Number of fixes for the webapp including progress uploads (which also work for
+desktop sync too) and multiple file uploads.  
+
 - Cancel button for when the user tries to login but wants to back out.
 
 - Cloze deletion flashcards now have cloze counter incremented.
