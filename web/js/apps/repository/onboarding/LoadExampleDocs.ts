@@ -72,7 +72,7 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 1,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf",
             nrPages: 10,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
@@ -90,7 +90,7 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf",
             nrPages: 120,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
@@ -108,7 +108,7 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
             pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf",
             nrPages: 16,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
@@ -126,7 +126,7 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/borg.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/borg.pdf",
             nrPages: 17,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
@@ -145,7 +145,7 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
             pagemarkEnd: 7,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf",
             nrPages: 14,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
@@ -182,7 +182,7 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2h'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1h'),
             pagemarkEnd: 17,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/pub47492.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/pub47492.pdf",
             nrPages: 20,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
@@ -207,7 +207,7 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             // pagemarkEnd: 3,
             flagged: true,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/bigtable.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/bigtable.pdf",
             nrPages: 14,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
@@ -245,7 +245,7 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             pagemarkEnd: 6,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/mapreduce.pdf",
+            url: "https://storage.googleapis.com/polar-32b0f.appspot.com/public/mapreduce.pdf",
             nrPages: 13,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
