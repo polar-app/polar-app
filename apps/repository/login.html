@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="/pdfviewer-custom/progress.css">
     <link rel="stylesheet" href="/pdfviewer-custom/typography.css">
 
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="/apps/repository/css/index.css">
 
     <title>Polar: Document Repository</title>
 
@@ -69,6 +69,9 @@
         font-size: 35px;
       }
 
+      #cancel-button {
+        font-size: 14px;
+      }
 
     </style>
 
@@ -78,22 +81,50 @@
       You need to enable JavaScript to run this app.
     </noscript>
 
+    <script>
+
+      function doCancel() {
+
+        if (document.location.href.startsWith('https://app.getpolarized.io')) {
+          document.location.href = 'https://app.getpolarized.io';
+        } else {
+          document.location.href = '/apps/repository/index.html';
+        }
+
+      }
+
+    </script>
+
     <div id="root">
 
-      <div id="auth-box" class="rounded border p-1">
+      <div id="auth-box">
 
+        <div class="rounded border p-1">
 
-        <div class="text-center login-banner mb-1">
+          <div class="text-center login-banner mb-1">
 
-          <img src="/icon.svg" width="175" height="175">
+            <img src="/icon.svg" width="175" height="175">
 
-          <h1>
-            Login to Polar
-          </h1>
+            <h1>
+              Login to Polar
+            </h1>
+
+          </div>
+
+          <div id="firebaseui-auth-container" ></div>
 
         </div>
 
-        <div id="firebaseui-auth-container" ></div>
+        <div class="text-right mt-1" id="auth-footer">
+
+          <button id="cancel-button"
+                  type="button"
+                  onclick="doCancel()"
+                  class="btn btn-small btn-light p-1 text-muted">
+            Cancel
+          </button>
+
+        </div>
 
       </div>
 

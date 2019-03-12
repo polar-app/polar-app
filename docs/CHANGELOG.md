@@ -1,6 +1,10 @@
 
 # 1.13.13
 
+- Cancel button for when the user tries to login but wants to back out.
+
+- Cloze deletion flashcards now have cloze counter incremented.
+
 - Firebase can now send progress notifications to the desktop during file 
   uploads to the cloud.
 

@@ -3,6 +3,7 @@ import {AnnotationSidebars} from './AnnotationSidebars';
 import {Logger} from '../logger/Logger';
 import {Splitter} from '../ui/splitter/Splitter';
 import {LocalPrefs} from '../util/LocalPrefs';
+import {AppRuntime} from '../AppRuntime';
 
 const log = Logger.create();
 
@@ -70,6 +71,19 @@ export class AnnotationSidebarService {
         } else {
             LocalPrefs.mark(PREF_SIDEBAR_OPEN, false);
         }
+
+        this.sendResizeEvent();
+
+    }
+
+    private sendResizeEvent() {
+
+        if (AppRuntime.isBrowser()) {
+            const resizeEvent = window.document.createEvent('UIEvents');
+            resizeEvent .initUIEvent('resize', true, false, window, 0);
+            window.dispatchEvent(resizeEvent);
+        }
+
     }
 
 }

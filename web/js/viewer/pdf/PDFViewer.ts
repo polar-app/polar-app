@@ -5,6 +5,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ViewerTours} from '../../apps/viewer/ViewerTours';
 import {Model} from '../../model/Model';
 import {Stopwatches} from '../../util/Stopwatches';
+import {AppRuntime} from '../../AppRuntime';
 
 declare var window: any;
 
@@ -32,6 +33,7 @@ export class PDFViewer extends Viewer {
             ViewerTours.createWhenNecessary(event.fingerprint);
 
             log.notice("Document load time: " + stopwatch.stop());
+            this.sendResizeEvent();
 
         });
 
@@ -76,6 +78,16 @@ export class PDFViewer extends Viewer {
 
             return window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
 
+        }
+
+    }
+
+    private sendResizeEvent() {
+
+        if (AppRuntime.isBrowser()) {
+            const resizeEvent = window.document.createEvent('UIEvents');
+            resizeEvent .initUIEvent('resize', true, false, window, 0);
+            window.dispatchEvent(resizeEvent);
         }
 
     }

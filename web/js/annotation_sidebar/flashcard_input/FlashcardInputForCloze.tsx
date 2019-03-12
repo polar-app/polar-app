@@ -21,6 +21,8 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
     private richTextMutator?: RichTextMutator;
 
+    private counter: number = 1;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -105,7 +107,9 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
             return;
         }
 
-        const prefix = document.createTextNode('{{c1::');
+        const c = this.counter++;
+
+        const prefix = document.createTextNode(`{{c${c}::`);
         const suffix = document.createTextNode('}}');
 
         const firstNode = textNodes[0];

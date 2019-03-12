@@ -56,9 +56,9 @@ export class Model {
 
         log.notice("Document loaded with fingerprint: " + fingerprint);
 
-        let docMeta: DocMeta | undefined;
+        let docMeta = await this.persistenceLayer.getDocMeta(fingerprint);
 
-        if (! await this.persistenceLayer.contains(fingerprint)) {
+        if (!docMeta) {
 
             console.warn("New document found. Creating initial DocMeta");
 
@@ -76,8 +76,6 @@ export class Model {
             // asking for a race condition.
 
         }
-
-        docMeta = await this.persistenceLayer.getDocMeta(fingerprint);
 
         if (docMeta === undefined) {
             throw new Error("Unable to load DocMeta: " + fingerprint);
