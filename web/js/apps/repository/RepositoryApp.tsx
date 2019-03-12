@@ -271,7 +271,10 @@ export class RepositoryApp {
                 // should propably make sure this doesn't happen more than once
                 // as the user could just delete all the files in their repo.
                 // await new
-                await new LoadExampleDocs(this.persistenceLayerManager.get()).load();
+                const loadExampleDocs = new LoadExampleDocs(this.persistenceLayerManager.get());
+                await loadExampleDocs.load(docInfo => {
+                    this.onUpdatedDocInfo(docInfo);
+                });
 
             }, async () => {
                 log.debug("Docs already exist in repo");

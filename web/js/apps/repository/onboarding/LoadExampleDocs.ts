@@ -10,15 +10,16 @@ import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTi
 import {Optional} from '../../../util/ts/Optional';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
-import {FirebaseDatastore} from '../../../datastore/FirebaseDatastore';
 import {Backend} from '../../../datastore/Backend';
 import {DocFileMeta} from '../../../datastore/DocFileMeta';
 import {AppRuntime} from '../../../AppRuntime';
 import {FileRef} from '../../../datastore/Datastore';
+import {WritableBinaryMetaDatastore} from '../../../datastore/Datastore';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
 import {Hashcode} from '../../../metadata/Hashcode';
 import {HashAlgorithm} from '../../../metadata/Hashcode';
 import {HashEncoding} from '../../../metadata/Hashcode';
+import {DocInfo} from '../../../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -41,7 +42,7 @@ export class LoadExampleDocs {
 
     }
 
-    public async load() {
+    public async load(onLoaded: (docInfo: DocInfo) => void) {
 
         if (await this.hasDocs()) {
             // we're done as there already docs in the repo
@@ -51,7 +52,7 @@ export class LoadExampleDocs {
 
         // Must use promise.all on firebase as this is much faster.  Locally
         // it really doesn't matter.
-        await Promise.all([
+        const promises = [
             this.doDoc0(),
             this.doDoc1(),
             this.doDoc2(),
@@ -60,12 +61,29 @@ export class LoadExampleDocs {
             this.doDoc5(),
             this.doDoc6(),
             this.doDoc7()
-        ]);
+        ];
+
+        for (const promise of promises) {
+
+            promise
+                .then(docMeta => {
+
+                    if (docMeta) {
+                        onLoaded(docMeta.docInfo);
+                    } else {
+                        log.warn("Unable to load docMeta");
+                    }
+
+            }).catch(err => log.error("Unable to load docInfo: ", err));
+
+        }
+
+        await Promise.all(promises);
 
     }
 
     private async doDoc7() {
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
+        return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
             fingerprint: "69cf32b9ffbb82056a3ac0eadea447de",
             title: "Dremel: Interactive Analysis of Web-Scale Datasets",
             tags: this.createTags('google', 'dremel'),
@@ -83,7 +101,7 @@ export class LoadExampleDocs {
     }
 
     private async doDoc6() {
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
+        return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
             fingerprint: "a81fe1c43148c3448e1a4133a5c8005e",
             title: "The Datacenter as a Computer",
             tags: this.createTags('google', 'datacenters'),
@@ -101,7 +119,7 @@ export class LoadExampleDocs {
     }
 
     private async doDoc5() {
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
+        return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
             fingerprint: "c29bc1717788b1602a3cf4ed28ddfbcd",
             title: "The Chubby lock service for loosely-coupled distributed systems",
             tags: this.createTags('google', 'chubby'),
@@ -119,7 +137,7 @@ export class LoadExampleDocs {
     }
 
     private async doDoc4() {
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
+        return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
             fingerprint: "3417be32534083dea66d733604d36d75",
             title: "Large-scale cluster management at Google with Borg",
             tags: this.createTags('google', 'borg', 'docker'),
@@ -138,7 +156,7 @@ export class LoadExampleDocs {
     }
 
     private async doDoc3() {
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'availability.pdf'), {
+        return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'availability.pdf'), {
             fingerprint: "39b730b6e9d281b0eae91b2c2c29b842",
             title: "Availability in Globally Distributed Storage Systems",
             tags: this.createTags('google', 'availability'),
@@ -175,7 +193,7 @@ export class LoadExampleDocs {
 
     private async doDoc0() {
 
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'pub47492.pdf'), {
+        return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'pub47492.pdf'), {
             fingerprint: "6ea16525b2e4eab7b946f68419a345a6",
             title: "Efficient Live Expansion for Clos Data Center Networks",
             tags: this.createTags('google', 'datacenters'),
@@ -226,15 +244,18 @@ export class LoadExampleDocs {
 
             await this.persistenceLayer.writeDocMeta(docMeta);
 
+            return docMeta;
+
         } else {
             // this is probably in a testing env...
+            return undefined;
         }
 
     }
 
     private async doDoc2() {
 
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'mapreduce.pdf'), {
+        return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'mapreduce.pdf'), {
             fingerprint: "9012f59fe537f2bb5fb802e31bb40e83",
             title: "MapReduce: Simplified Data Processing on Large Clusters",
             tags: {
@@ -340,7 +361,7 @@ export class LoadExampleDocs {
 
             const datastore = this.persistenceLayer.datastore;
 
-            if (datastore instanceof FirebaseDatastore) {
+            if (datastore.id === 'firebase') {
 
                 // with Firebase we need to tell it how to get access to
                 // the data files
@@ -355,7 +376,9 @@ export class LoadExampleDocs {
                     meta: {}
                 };
 
-                await datastore.writeFileMeta(backend, ref, docFileMeta);
+                const binaryDatastore = <WritableBinaryMetaDatastore> <any> datastore;
+
+                await binaryDatastore.writeFileMeta(backend, ref, docFileMeta);
 
             }
 

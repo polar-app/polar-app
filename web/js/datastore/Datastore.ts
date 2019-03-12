@@ -216,7 +216,7 @@ interface ReadableBinaryDatastore {
 
 }
 
-interface WritableBinaryDatastore {
+export interface WritableBinaryDatastore {
 
     /**
      * Add file data to the datastore.  This is used for binary data or other
@@ -230,6 +230,10 @@ interface WritableBinaryDatastore {
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
 
+}
+
+export interface WritableBinaryMetaDatastore {
+    writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void>;
 }
 
 export type BinaryFileData = FileHandle | Buffer | string | Blob;

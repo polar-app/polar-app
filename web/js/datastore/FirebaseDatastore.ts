@@ -24,6 +24,7 @@ import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
+import {WritableBinaryMetaDatastore} from './Datastore';
 
 const log = Logger.create();
 
@@ -35,7 +36,8 @@ const log = Logger.create();
 // in the future. Or, an anonymous user can link a Facebook account and then,
 // later, sign in with Facebook to continue using your app.
 
-export class FirebaseDatastore extends AbstractDatastore implements Datastore {
+// @ts-ignore
+export class FirebaseDatastore extends AbstractDatastore implements Datastore, WritableBinaryMetaDatastore {
 
     public readonly id = 'firebase';
 
