@@ -590,8 +590,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    public async overview(): Promise<DatastoreOverview> {
-        throw new Error("Not implemented");
+    public async overview(): Promise<DatastoreOverview | undefined> {
+        return undefined;
     }
 
     public getPrefs(): PrefsProvider {

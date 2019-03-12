@@ -445,16 +445,6 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         return Optional.empty();
     }
 
-    private async writeInfo(datastoreInfo: DatastoreInfo) {
-
-        const infoPath = FilePaths.join(this.dataDir, 'info.json');
-
-        const json = JSON.stringify(datastoreInfo, null, "  ");
-
-        await Files.writeFileAsync(infoPath, json);
-
-    }
-
     public async overview(): Promise<DatastoreOverview> {
 
         const docMetaRefs = await this.getDocMetaRefs();
@@ -464,6 +454,16 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const created = datastoreInfo.map(info => info.created).getOrUndefined();
 
         return {nrDocs: docMetaRefs.length, created};
+
+    }
+
+    private async writeInfo(datastoreInfo: DatastoreInfo) {
+
+        const infoPath = FilePaths.join(this.dataDir, 'info.json');
+
+        const json = JSON.stringify(datastoreInfo, null, "  ");
+
+        await Files.writeFileAsync(infoPath, json);
 
     }
 

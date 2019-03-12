@@ -78,7 +78,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      * Get an overview of the datastore including the time it was created as
      * well as other stats including the number of docs.
      */
-    overview(): Promise<DatastoreOverview>;
+    overview(): Promise<DatastoreOverview | undefined>;
 
     /**
      * Get a Prefs object that supports reading and writing key/values to a

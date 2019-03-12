@@ -472,7 +472,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         await firebase.auth().signOut();
     }
 
-    public overview(): Promise<DatastoreOverview> {
+    public overview(): Promise<DatastoreOverview | undefined> {
         return this.local.overview();
     }
 
