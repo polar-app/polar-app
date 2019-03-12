@@ -12,6 +12,8 @@ import {AppRuntime} from '../../AppRuntime';
 
 const log = Logger.create();
 
+const Z_INDEX = 100000;
+
 export class Styles {
 
     public static IMG: React.CSSProperties = {
@@ -79,7 +81,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         primaryColor: '#007bff',
                         // textColor: '#004a14',
                         // width: 900,
-                        zIndex: 1000,
+                        zIndex: Z_INDEX,
                     },
                     tooltipContainer: {
                         textAlign: 'left',
@@ -423,7 +425,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 spotlightPadding: 0,
                 styles: {
                     options: {
-                        zIndex: 1000
+                        zIndex: Z_INDEX
                     }
                 },
                 autoNext: true
@@ -480,7 +482,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 spotlightPadding: 0,
                 styles: {
                     options: {
-                        zIndex: 1000
+                        zIndex: Z_INDEX
                     }
                 },
                 autoNext: true
@@ -503,7 +505,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             }),
 
             {
-                title: <Title>Reading Progress</Title>,
+                title: <Title>Daily Reading Progress</Title>,
                 target: '#reading-progress-table',
                 content: <div>
                     <p>
@@ -556,7 +558,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 spotlightPadding: 0,
                 styles: {
                     options: {
-                        zIndex: 1000
+                        zIndex: Z_INDEX
                     }
                 },
                 autoNext: true,
@@ -601,7 +603,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     <h2>Thanks for Taking the Tour</h2>
 
                     <p>
-                        From time to time we'll prompt to see if Polar is
+                        From time to time we'll check-in to see if Polar is
                         working for you and whether you have any other
                         suggestions to improve Polar for your use case.
                     </p>
