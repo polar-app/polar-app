@@ -21,7 +21,7 @@ export class Firebase {
             projectId: "polar-32b0f",
             storageBucket: "polar-32b0f.appspot.com",
             messagingSenderId: "919499255851",
-            timestampsInSnapshots: true
+            // timestampsInSnapshots: true
         };
 
         return this.app = firebase.initializeApp(config);

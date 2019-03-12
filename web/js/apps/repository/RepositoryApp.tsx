@@ -261,15 +261,7 @@ export class RepositoryApp {
 
     private async doLoadExampleDocs() {
 
-        if (AppRuntime.isElectron()) {
-
-            // TODO: right now this only works on electron but we need a
-            // solution for working in the browser.
-
-            const persistenceLayer =
-                new DefaultPersistenceLayer(new DiskDatastore());
-
-            await persistenceLayer.init();
+        const doLoad = async () => {
 
             // TODO: also use system prefs for this too.
 
@@ -279,15 +271,24 @@ export class RepositoryApp {
                 // should propably make sure this doesn't happen more than once
                 // as the user could just delete all the files in their repo.
                 // await new
-                await new LoadExampleDocs(persistenceLayer).load();
+                await new LoadExampleDocs(this.persistenceLayerManager.get()).load();
 
             }, async () => {
                 log.debug("Docs already exist in repo");
             });
 
-            await persistenceLayer.stop();
+        };
 
-        }
+        this.persistenceLayerManager.addEventListener(event => {
+
+            if (event.state === 'initialized') {
+
+                doLoad()
+                    .catch(err => log.error("Unable to load example docs: ", err));
+
+            }
+
+        });
 
     }
 
