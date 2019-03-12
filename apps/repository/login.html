@@ -69,7 +69,7 @@
         font-size: 35px;
       }
 
-      #cancel-button {
+      #auth-box .btn {
         font-size: 14px;
       }
 
@@ -80,20 +80,6 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-
-    <script>
-
-      function doCancel() {
-
-        if (document.location.href.startsWith('https://app.getpolarized.io')) {
-          document.location.href = 'https://app.getpolarized.io';
-        } else {
-          document.location.href = '/apps/repository/index.html';
-        }
-
-      }
-
-    </script>
 
     <div id="root">
 
@@ -124,12 +110,47 @@
             Cancel
           </button>
 
+          <button id="download-button"
+                  type="button"
+                  onclick="doDownloadDesktop()"
+                  style="display: none;"
+                  class="btn btn-small btn-light p-1 text-primary ml-1">
+            Download Desktop
+          </button>
+
         </div>
 
       </div>
 
-
     </div>
+
+    <script>
+
+      function doCancel() {
+
+        if (document.location.href.startsWith('https://app.getpolarized.io')) {
+          document.location.href = 'https://app.getpolarized.io';
+        } else {
+          document.location.href = '/apps/repository/index.html';
+        }
+
+      }
+
+      function doDownloadDesktop() {
+        document.location.href = 'https://getpolarized.io/download.html';
+      }
+
+      function doInit() {
+
+        if (document.location.href.indexOf(".getpolarized.io") !== -1) {
+          document.getElementById("download-button").style.display = 'inline-block';
+        }
+
+      }
+
+      doInit();
+
+    </script>
 
   </body>
 
