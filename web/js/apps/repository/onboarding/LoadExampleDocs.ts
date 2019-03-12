@@ -13,6 +13,8 @@ import {DocMetas} from '../../../metadata/DocMetas';
 import {FirebaseDatastore} from '../../../datastore/FirebaseDatastore';
 import {Backend} from '../../../datastore/Backend';
 import {DocFileMeta} from '../../../datastore/DocFileMeta';
+import {AppRuntime} from '../../../AppRuntime';
+import {FileRef} from '../../../datastore/Datastore';
 
 const log = Logger.create();
 
@@ -62,7 +64,8 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
             pagemarkEnd: 7,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf",
+            nrPages: 14
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
@@ -71,7 +74,8 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/borg.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/borg.pdf",
+            nrPages: 17
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
@@ -80,7 +84,8 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
             pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf",
+            nrPages: 16
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
@@ -89,7 +94,8 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf",
+            nrPages: 120
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
@@ -98,7 +104,8 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 1,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf",
+            nrPages: 10
         });
 
     }
@@ -128,7 +135,8 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2h'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1h'),
             pagemarkEnd: 17,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/pub47492.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/pub47492.pdf",
+            nrPages: 20
         });
 
     }
@@ -146,7 +154,8 @@ export class LoadExampleDocs {
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             // pagemarkEnd: 3,
             flagged: true,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/bigtable.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/bigtable.pdf",
+            nrPages: 14
         });
 
         if (writtenDocMeta) {
@@ -177,76 +186,102 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             pagemarkEnd: 6,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/mapreduce.pdf"
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/mapreduce.pdf",
+            nrPages: 13
         });
     }
 
     private async doDoc(relativePath: string, opts: DocOpts): Promise<DocMeta | undefined> {
 
-        const importedFile =
-            await this.doImport(relativePath);
+        const doImport = async (): Promise<ImportedDoc> => {
 
-        if (importedFile.isPresent()) {
+            if (AppRuntime.isElectron()) {
 
-            const docInfo = importedFile.get().docInfo;
+                const importedFile =
+                    await this.doImport(relativePath);
 
-            const docMeta = await this.persistenceLayer.getDocMeta(docInfo.fingerprint);
+                if (importedFile.isPresent()) {
 
-            if (docMeta) {
-                docMeta.docInfo.title = opts.title;
-
-                const tags = {...(opts.tags || {}),
-                              ...this.createTags('example')};
-
-                docMeta.docInfo.tags = tags;
-
-                if (opts.pagemarkEnd) {
-                    Pagemarks.updatePagemarksForRange(docMeta, opts.pagemarkEnd);
-                }
-
-                if (opts.added) {
-                    docMeta.docInfo.added = opts.added;
-                }
-
-                if (opts.lastUpdated) {
-                    docMeta.docInfo.lastUpdated = opts.lastUpdated;
-                }
-
-                docMeta.docInfo.flagged
-                    = Optional.of(opts.flagged).getOrElse(false);
-
-                log.info("Wrote to persistenceLayer: ", opts.title);
-
-                await this.persistenceLayer.writeDocMeta(docMeta);
-
-                const datastore = this.persistenceLayer.datastore;
-
-                if (datastore instanceof FirebaseDatastore) {
-
-                    // with Firebase we need to tell it how to get access to
-                    // the data files
-
-                    const backend = Backend.STASH;
+                    const docInfo = importedFile.get().docInfo;
+                    const docMeta = await this.persistenceLayer.getDocMeta(docInfo.fingerprint);
                     const ref = importedFile.get().fileRef;
 
-                    const docFileMeta: DocFileMeta = {
-                        backend,
-                        ref,
-                        url: opts.url,
-                        meta: {}
+                    return {
+                        docMeta: docMeta!,
+                        ref
                     };
 
-                    await datastore.writeFileMeta(backend, ref, docFileMeta);
-
+                } else {
+                    throw new Error("Unable to do local import");
                 }
+
+            } else {
+
+                // DocMetas.create();
+                throw new Error("Not supported yet.");
 
             }
 
-            return docMeta;
+        };
+
+        const importedDoc = await doImport();
+
+        const docInfo = importedDoc.docMeta.docInfo;
+
+        const docMeta = importedDoc.docMeta;
+
+        if (docMeta) {
+            docMeta.docInfo.title = opts.title;
+
+            const tags = {...(opts.tags || {}),
+                          ...this.createTags('example')};
+
+            docMeta.docInfo.tags = tags;
+
+            if (opts.pagemarkEnd) {
+                Pagemarks.updatePagemarksForRange(docMeta, opts.pagemarkEnd);
+            }
+
+            if (opts.added) {
+                docMeta.docInfo.added = opts.added;
+            }
+
+            if (opts.lastUpdated) {
+                docMeta.docInfo.lastUpdated = opts.lastUpdated;
+            }
+
+            docMeta.docInfo.flagged
+                = Optional.of(opts.flagged).getOrElse(false);
+
+            log.info("Wrote to persistenceLayer: ", opts.title);
+
+            await this.persistenceLayer.writeDocMeta(docMeta);
+
+            const datastore = this.persistenceLayer.datastore;
+
+            if (datastore instanceof FirebaseDatastore) {
+
+                // with Firebase we need to tell it how to get access to
+                // the data files
+
+                const backend = Backend.STASH;
+                const ref = importedDoc.ref;
+
+                const docFileMeta: DocFileMeta = {
+                    backend,
+                    ref,
+                    url: opts.url,
+                    meta: {}
+                };
+
+                await datastore.writeFileMeta(backend, ref, docFileMeta);
+
+            }
 
         }
 
-        return undefined;
+        return docMeta;
+
 
     }
 
@@ -274,14 +309,33 @@ export class LoadExampleDocs {
 }
 
 interface DocOpts {
-    readonly title?: string;
+
+    readonly title: string;
+
     readonly pagemarkEnd?: number;
+
     readonly tags?: {[id: string]: Tag};
+
     readonly added?: ISODateTimeString;
+
     readonly flagged?: boolean;
+
     readonly lastUpdated?: ISODateTimeString;
 
+    /**
+     * Requires so that we can create the DocMeta in cases wherwe we're adding
+     * with an explit/external URL.
+     */
+    readonly nrPages: number;
+
     readonly url: string;
+
+}
+
+interface ImportedDoc {
+
+    readonly docMeta: DocMeta;
+    readonly ref: FileRef;
 
 }
 
