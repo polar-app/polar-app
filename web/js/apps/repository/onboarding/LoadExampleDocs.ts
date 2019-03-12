@@ -49,36 +49,76 @@ export class LoadExampleDocs {
             return;
         }
 
-        // TODO: register 10 docs.. 4 on first day, then 3, then 2...
-        // TODO: highlights and comments...
-        // TODO: flashcards
+        // Must use promise.all on firebase as this is much faster.  Locally
+        // it really doesn't matter.
+        await Promise.all([
+            this.doDoc0(),
+            this.doDoc1(),
+            this.doDoc2(),
+            this.doDoc3(),
+            this.doDoc4(),
+            this.doDoc5(),
+            this.doDoc6(),
+            this.doDoc7()
+        ]);
 
-        // now load the files propery..
-        await this.doDoc0();
-        await this.doDoc1();
-        await this.doDoc2();
+    }
 
-        // http://storage.googleapis.com/polar-32b0f.appspot.com/public/p761-thompson.pdf
-        // http://storage.googleapis.com/polar-32b0f.appspot.com/public/distributed-transactions.pdf
-        //
-
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'availability.pdf'), {
-            fingerprint: "39b730b6e9d281b0eae91b2c2c29b842",
-            title: "Availability in Globally Distributed Storage Systems",
-            tags: this.createTags('google', 'availability'),
+    private async doDoc7() {
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
+            fingerprint: "69cf32b9ffbb82056a3ac0eadea447de",
+            title: "Dremel: Interactive Analysis of Web-Scale Datasets",
+            tags: this.createTags('google', 'dremel'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
-            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
-            pagemarkEnd: 7,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf",
-            nrPages: 14,
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
+            pagemarkEnd: 1,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf",
+            nrPages: 10,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
                 alg: HashAlgorithm.KECCAK256,
-                data: "12Ji9JDcRnZT27jeckr4HusYY29QVwj4Wv2J6iYc5YXjtzn3ZJT"
+                data: "13e69EGrqZdoaAcKdzECCYwVkEAZ3HVsjh9UNccSjEcmTNCSRz"
             }
-
         });
+    }
 
+    private async doDoc6() {
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
+            fingerprint: "a81fe1c43148c3448e1a4133a5c8005e",
+            title: "The Datacenter as a Computer",
+            tags: this.createTags('google', 'datacenters'),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
+            pagemarkEnd: 2,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf",
+            nrPages: 120,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "12gk1XzeM8rCLbSmPnHSNYqWPkJ4V4LQW7WLo1MFJfGJMQVVQzU"
+            }
+        });
+    }
+
+    private async doDoc5() {
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
+            fingerprint: "c29bc1717788b1602a3cf4ed28ddfbcd",
+            title: "The Chubby lock service for loosely-coupled distributed systems",
+            tags: this.createTags('google', 'chubby'),
+            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
+            pagemarkEnd: 2,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf",
+            nrPages: 16,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: "12dVEYTS8znhWJNCYUcGHSfWKQqfifBmbShRLxbLvNVYX5BK3sS"
+            }
+        });
+    }
+
+    private async doDoc4() {
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
             fingerprint: "3417be32534083dea66d733604d36d75",
             title: "Large-scale cluster management at Google with Borg",
@@ -95,55 +135,25 @@ export class LoadExampleDocs {
             }
 
         });
+    }
 
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
-            fingerprint: "c29bc1717788b1602a3cf4ed28ddfbcd",
-            title: "The Chubby lock service for loosely-coupled distributed systems",
-            tags: this.createTags('google', 'chubby'),
-            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
-            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
-            pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf",
-            nrPages: 16,
-            hashcode: {
-                enc: HashEncoding.BASE58CHECK,
-                alg: HashAlgorithm.KECCAK256,
-                data: "12dVEYTS8znhWJNCYUcGHSfWKQqfifBmbShRLxbLvNVYX5BK3sS"
-            }
-        });
-
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
-            fingerprint: "a81fe1c43148c3448e1a4133a5c8005e",
-            title: "The Datacenter as a Computer",
-            tags: this.createTags('google', 'datacenters'),
+    private async doDoc3() {
+        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'availability.pdf'), {
+            fingerprint: "39b730b6e9d281b0eae91b2c2c29b842",
+            title: "Availability in Globally Distributed Storage Systems",
+            tags: this.createTags('google', 'availability'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
-            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
-            pagemarkEnd: 2,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf",
-            nrPages: 120,
+            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
+            pagemarkEnd: 7,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf",
+            nrPages: 14,
             hashcode: {
                 enc: HashEncoding.BASE58CHECK,
                 alg: HashAlgorithm.KECCAK256,
-                data: "12gk1XzeM8rCLbSmPnHSNYqWPkJ4V4LQW7WLo1MFJfGJMQVVQzU"
+                data: "12Ji9JDcRnZT27jeckr4HusYY29QVwj4Wv2J6iYc5YXjtzn3ZJT"
             }
-        });
 
-        await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
-            fingerprint: "69cf32b9ffbb82056a3ac0eadea447de",
-            title: "Dremel: Interactive Analysis of Web-Scale Datasets",
-            tags: this.createTags('google', 'dremel'),
-            added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
-            lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
-            pagemarkEnd: 1,
-            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf",
-            nrPages: 10,
-            hashcode: {
-                enc: HashEncoding.BASE58CHECK,
-                alg: HashAlgorithm.KECCAK256,
-                data: "13e69EGrqZdoaAcKdzECCYwVkEAZ3HVsjh9UNccSjEcmTNCSRz"
-            }
         });
-
     }
 
     private createTag(id: string, label?: string): Tag {
@@ -282,7 +292,9 @@ export class LoadExampleDocs {
                 docMeta.docInfo.filename = ref.name;
                 docMeta.docInfo.hashcode = ref.hashcode;
 
-                await this.persistenceLayer.writeDocMeta(docMeta);
+                // note that we do NOt need to write to the datastore here
+                // as we will write below and Firebase is a bit slower for
+                // writes so we want to keep things as fast as possible.
 
                 return {
                     docMeta,
