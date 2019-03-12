@@ -50,8 +50,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
         this.steps = this.createSteps();
 
         const run =
-            ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED) &&
-            AppRuntime.isElectron();
+            ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
 
         this.state = {
             run,
@@ -172,6 +171,41 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 image: "/icon.png",
                 placement: 'center'
 
+            }),
+
+            JoyrideTours.createImageStep({
+                target: 'header',
+                title: <Title>Web, Desktop and Cloud.</Title>,
+                content: <div>
+
+                    <p>
+                        You're using the <b>web</b> version of Polar.
+                    </p>
+
+                    <p>
+                        Polar supports works on both the desktop (MacOS,
+                        Windows, and Linux) as well as the web (Chrome, Firefox,
+                        and major browsers) and is <b>fully cloud aware</b>.
+                    </p>
+
+                    <p>
+                        If you use the desktop version of Polar you can enable
+                        cloud sync which will <b>keep all your documents in
+                        sync</b> across all your devices and the web - and in
+                        near realtime!
+                    </p>
+
+                    <p>
+                        Note that the web version is missing a few features
+                        including Anki sync and web page capture and only
+                        supports PDF documents at the moment.
+                    </p>
+
+
+                </div>,
+                image: "/web/assets/images/web.svg",
+                placement: 'center',
+                disabled: AppRuntime.isElectron()
             }),
 
             JoyrideTours.createImageStep({
@@ -652,7 +686,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         ];
 
-        return steps;
+        return steps.filter(current => ! current.disabled);
 
     }
 

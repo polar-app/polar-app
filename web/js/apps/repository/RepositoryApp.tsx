@@ -84,7 +84,7 @@ export class RepositoryApp {
 
         await this.doLoadExampleDocs();
 
-        PreviewDisclaimers.createWhenNecessary();
+        // PreviewDisclaimers.createWhenNecessary();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
