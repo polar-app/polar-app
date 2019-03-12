@@ -1,6 +1,6 @@
 import {AppPath} from '../../../electron/app_path/AppPath';
 import {FilePaths} from '../../../util/FilePaths';
-import {PDFImporter, ImportedFile} from '../importers/PDFImporter';
+import {ImportedFile, PDFImporter} from '../importers/PDFImporter';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {Providers} from '../../../util/Providers';
 import {Pagemarks} from '../../../metadata/Pagemarks';
@@ -10,6 +10,9 @@ import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTi
 import {Optional} from '../../../util/ts/Optional';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
+import {FirebaseDatastore} from '../../../datastore/FirebaseDatastore';
+import {Backend} from '../../../datastore/Backend';
+import {DocFileMeta} from '../../../datastore/DocFileMeta';
 
 const log = Logger.create();
 
@@ -49,12 +52,17 @@ export class LoadExampleDocs {
         await this.doDoc1();
         await this.doDoc2();
 
+        // http://storage.googleapis.com/polar-32b0f.appspot.com/public/p761-thompson.pdf
+        // http://storage.googleapis.com/polar-32b0f.appspot.com/public/distributed-transactions.pdf
+        //
+
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'availability.pdf'), {
             title: "Availability in Globally Distributed Storage Systems",
             tags: this.createTags('google', 'availability'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
-            pagemarkEnd: 7
+            pagemarkEnd: 7,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/availability.pdf"
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
@@ -62,7 +70,8 @@ export class LoadExampleDocs {
             tags: this.createTags('google', 'borg', 'docker'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
-            pagemarkEnd: 2
+            pagemarkEnd: 2,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/borg.pdf"
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
@@ -70,7 +79,8 @@ export class LoadExampleDocs {
             tags: this.createTags('google', 'chubby'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
-            pagemarkEnd: 2
+            pagemarkEnd: 2,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/chubby.pdf"
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
@@ -78,7 +88,8 @@ export class LoadExampleDocs {
             tags: this.createTags('google', 'datacenters'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
-            pagemarkEnd: 2
+            pagemarkEnd: 2,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/datacenter-as-a-computer.pdf"
         });
 
         await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
@@ -86,7 +97,8 @@ export class LoadExampleDocs {
             tags: this.createTags('google', 'dremel'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
-            pagemarkEnd: 1
+            pagemarkEnd: 1,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/dremel.pdf"
         });
 
     }
@@ -115,7 +127,8 @@ export class LoadExampleDocs {
             tags: this.createTags('google', 'datacenters'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2h'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1h'),
-            pagemarkEnd: 17
+            pagemarkEnd: 17,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/pub47492.pdf"
         });
 
     }
@@ -132,7 +145,8 @@ export class LoadExampleDocs {
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             // pagemarkEnd: 3,
-            flagged: true
+            flagged: true,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/bigtable.pdf"
         });
 
         if (writtenDocMeta) {
@@ -162,7 +176,8 @@ export class LoadExampleDocs {
             },
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
-            pagemarkEnd: 6
+            pagemarkEnd: 6,
+            url: "http://storage.googleapis.com/polar-32b0f.appspot.com/public/mapreduce.pdf"
         });
     }
 
@@ -203,6 +218,28 @@ export class LoadExampleDocs {
                 log.info("Wrote to persistenceLayer: ", opts.title);
 
                 await this.persistenceLayer.writeDocMeta(docMeta);
+
+                const datastore = this.persistenceLayer.datastore;
+
+                if (datastore instanceof FirebaseDatastore) {
+
+                    // with Firebase we need to tell it how to get access to
+                    // the data files
+
+                    const backend = Backend.STASH;
+                    const ref = importedFile.get().fileRef;
+
+                    const docFileMeta: DocFileMeta = {
+                        backend,
+                        ref,
+                        url: opts.url,
+                        meta: {}
+                    };
+
+                    await datastore.writeFileMeta(backend, ref, docFileMeta);
+
+                }
+
             }
 
             return docMeta;
@@ -243,6 +280,9 @@ interface DocOpts {
     readonly added?: ISODateTimeString;
     readonly flagged?: boolean;
     readonly lastUpdated?: ISODateTimeString;
+
+    readonly url: string;
+
 }
 
 const BIGTABLE_DOC_META = {

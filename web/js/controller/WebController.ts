@@ -54,8 +54,10 @@ export class WebController extends Controller {
         await this.listenForKeyBindings();
 
         // new MouseTracer(document).start();
-        this.detectDocumentLoaded('start');
 
+        if (this.docFormat.name === 'pdf') {
+            this.detectDocumentLoaded('start');
+        }
 
     }
 

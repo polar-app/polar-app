@@ -59,9 +59,9 @@ export class HTMLViewer extends Viewer {
 
         // *** start the resizer and initializer before setting the iframe
 
-        $(document).ready(async () => {
+        this.requestParams = this._requestParams();
 
-            this.requestParams = this._requestParams();
+        $(document).ready(async () => {
 
             this._captureBrowserZoom();
 
