@@ -54,13 +54,12 @@ export class HTMLFormat extends DocFormat {
     /**
      * Get the current state of the doc.
      */
-    currentState(event: any) {
+    public currentState() {
 
         return {
             nrPages: 1,
             currentPageNumber: 1,
-            pageElement: <HTMLElement>document.querySelector(".page")
-        }
+        };
 
     }
 

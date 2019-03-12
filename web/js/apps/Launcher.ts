@@ -61,19 +61,29 @@ export class Launcher {
         new AnnotationBarService(model).start();
 
         const viewer = ViewerFactory.create(model);
-        viewer.start();
         await new WebController(model, viewer).start();
+
+        viewer.start();
 
     }
 
     public async launch() {
 
         if (document.readyState === "interactive" || document.readyState === "complete") {
+
             log.info("Already completed loading.");
             await this.trigger();
+
         } else {
+
             log.info("Waiting for DOM content to load");
-            document.addEventListener('DOMContentLoaded', this.trigger.bind(this), true);
+
+            document.addEventListener('DOMContentLoaded', () => {
+
+                this.trigger()
+                    .catch(err => log.error("Failed to trigger: ", err));
+
+            }, true);
         }
 
     }
