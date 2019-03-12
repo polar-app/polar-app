@@ -372,8 +372,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         const recordHolder = <RecordHolder<DocFileMeta> | undefined> snapshot.data();
 
-        console.log( "FIXME got file data in : " + stopwatch.stop());
-
         if (! recordHolder) {
             return Optional.empty();
         }
@@ -422,26 +420,19 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         if (! result.isPresent()) {
 
-            console.log("FIXME: not present in doc_file_meta");
-
             result = await this.getFileFromStorage(backend, ref);
-
-            console.log("FIXME: got from storage");
 
             if (result.isPresent()) {
                 // write it to doc_file_meta so that next time we have it
                 // available
 
                 await this.writeFileMeta(backend, ref, result.get());
-                console.log("FIXME: wrote to doc_file_meta");
 
             }
 
             return result;
 
         } else {
-
-            console.log("FIXME: got from doc_file_meta");
             return result;
         }
 

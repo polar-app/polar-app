@@ -45,6 +45,8 @@ export class SynchronizingDocLoader {
 
         if (AppRuntime.isElectron()) {
 
+            // TODO: this is only need when using the cloud aware datastore.
+
             // NOTE: these operations execute locally first, so it's a quick
             // way to verify that the file needs to be synchronized.
             const requiresSynchronize =
@@ -59,8 +61,6 @@ export class SynchronizingDocLoader {
         }
 
         await docLoaderRequest.load();
-
-        console.log("FIXME: too X to load: " + stopwatch.stop());
 
     }
 
