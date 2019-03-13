@@ -46,7 +46,7 @@ export class PDFViewer extends Viewer {
 
         return {
             fingerprint: this.currentDocFingerprint(),
-            title: window.PDFViewerApplication.pdfDocument.pdfInfo.title,
+            title: window.PDFViewerApplication.pdfDocument._pdfInfo.title,
             nrPages: window.PDFViewerApplication.pagesCount,
             filename: this.getFilename()
         };
@@ -74,10 +74,10 @@ export class PDFViewer extends Viewer {
 
         if (window.PDFViewerApplication &&
             window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != null) {
+            window.PDFViewerApplication.pdfDocument._pdfInfo &&
+            window.PDFViewerApplication.pdfDocument._pdfInfo.fingerprint != null) {
 
-            return window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
+            return window.PDFViewerApplication.pdfDocument._pdfInfo.fingerprint;
 
         }
 

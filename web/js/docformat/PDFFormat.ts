@@ -1,5 +1,6 @@
 import {CurrentDocState, DocFormat} from './DocFormat';
 import {Preconditions} from '../Preconditions';
+import {Optional} from '../util/ts/Optional';
 
 declare var window: any;
 
@@ -14,16 +15,18 @@ export class PDFFormat extends DocFormat {
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    public currentDocFingerprint() {
+    public currentDocFingerprint(): string | undefined {
 
         if (window.PDFViewerApplication &&
             window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != null) {
+            window.PDFViewerApplication.pdfDocument._pdfInfo &&
+            window.PDFViewerApplication.pdfDocument._pdfInfo.fingerprint != null) {
 
-            return window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
+            return Optional.of(window.PDFViewerApplication.pdfDocument._pdfInfo.fingerprint).getOrUndefined();
 
         }
+
+        return undefined;
 
     }
 

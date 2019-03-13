@@ -23,6 +23,24 @@ See https://github.com/adobe-type-tools/cmap-resources
 <html dir="ltr" mozdisallowselectionprint>
   <head>
     <meta charset="utf-8">
+
+    <link rel="icon" href="/icon.ico">
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.css">
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
+    <!--<link rel="stylesheet" href="/node_modules/@burtonator/react-buttons/dist/react-buttons.css">-->
+    <link rel="stylesheet" href="/node_modules/@burtonator/react-dropdown/dist/react-dropdown.css">
+
+    <!-- TODO: these need to load locally before we enable firebase in production -->
+    <script src="/node_modules/firebase/firebase.js"></script>
+    <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
+    <link rel="stylesheet" href="/node_modules/firebaseui/dist/firebaseui.css" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="google" content="notranslate">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,18 +49,59 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <link rel="stylesheet" href="viewer.css">
 
+    <!-- BEGIN polar customization -->
 
-<!-- This snippet is used in production (included from viewer.html) -->
-<link rel="resource" type="application/l10n" href="locale/locale.properties">
-<script src="../build/pdf.js"></script>
+    <meta name="polar-doc-format" content="pdf">
+
+    <link rel="stylesheet" href="/node_modules/toastr/build/toastr.min.css">
+
+    <link rel="stylesheet" href="/pdfviewer-custom/polar.css">
+
+    <script src="/apps/init.js"></script>
+
+    <script>
+
+      const fallbackLoader = () => {
+
+        // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
+        // loading over HTTP we can't find node_modules until we require().  We can
+        // only find standard modules like 'fs' and 'electron' but not custom
+        // modules so we have to just have these four lines repeated over and over
+        // for each of our main apps.  In the future we should try to track down
+        // why this is happening but I spent 1-2 hours on trying to figure out
+        // the root cause with no resolution and this is a temporary workaround.
+
+        if (typeof require === 'function') {
+
+          const {remote} = require('electron');
+          const path = require('path');
+          const appPath = remote.getGlobal("appPath");
+
+          require(path.join(appPath, "web", "js", "apps", "electron.js"));
+        } else {
+          console.warn("Not running within Electron");
+        }
+
+      }
+
+      injectApp('/web/dist/chrome-bundle.js', fallbackLoader);
+
+    </script>
+
+    <!-- END polar customization -->
+
+
+    <!-- This snippet is used in production (included from viewer.html) -->
+    <link rel="resource" type="application/l10n" href="locale/locale.properties">
+    <script src="../build/pdf.js"></script>
 
 
     <script src="viewer.js"></script>
 
   </head>
 
-  <body tabindex="1" class="loadingInProgress">
-    <div id="outerContainer">
+  <body tabindex="1" class="loadingInProgress polar-pdfviewer">
+    <div id="outerContainer" class="polar-viewer split split-horizontal">
 
       <div id="sidebarContainer">
         <div id="toolbarSidebar">
@@ -280,9 +339,46 @@ See https://github.com/adobe-type-tools/cmap-resources
                     data-l10n-id="page_rotate_ccw"></menuitem>
         </menu>
 
+
+
+
         <div id="viewerContainer" tabindex="0">
-          <div id="viewer" class="pdfViewer"></div>
+          <!-- BEGIN polar customization -->
+          <div id="polar-header" class="polar-pdf-header" style="display: none;">
+
+            <div id="polar-header-body">
+
+              <div id="polar-progress">
+                <progress value="0.0"></progress>
+              </div>
+
+              <div id="set-title">
+                <div id="set-title-form">
+                  <input id="set-title-input" type="text" placeholder="Untitled" autocomplete="false">
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- END polar customization -->
+
+          <div>
+            <div id="viewer" class="pdfViewer"></div>
+          </div>
+
+
+          <!-- BEGIN polar customization -->
+          <div id="polar-footer" style="display: none;">
+            <div id="polar-doc-overview"></div>
+          </div>
+          <!-- END polar customization -->
+
+
         </div>
+
 
         <div id="errorWrapper" hidden='true'>
           <div id="errorMessageLeft">
@@ -389,6 +485,11 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
+
+    <div style="display: none;" class="polar-sidebar split split-horizontal">
+      <div></div>
+    </div>
+
   </body>
 </html>
 
