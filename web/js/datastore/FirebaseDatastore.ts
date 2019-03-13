@@ -125,8 +125,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             try {
 
                 const consistency = this.toConsistency(snapshot);
-
-                console.log("FIXME: got with consistency: " + consistency);
                 const batchID = batchIDs[consistency];
 
                 this.handleDocInfoSnapshot(snapshot, docMetaSnapshotEventListener, batchID);
