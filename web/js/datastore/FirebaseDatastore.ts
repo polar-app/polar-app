@@ -458,7 +458,15 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 // write it to doc_file_meta so that next time we have it
                 // available
 
-                await this.writeFileMeta(backend, ref, result.get());
+                const docFileMeta: DocFileMeta = result.get();
+
+                if (! docFileMeta.ref.hashcode) {
+                    // Firebase doesn't support file names with 'undefined'
+                    // values.
+                    delete (<any> docFileMeta.ref).hashcode;
+                }
+
+                await this.writeFileMeta(backend, ref, docFileMeta);
 
             }
 

@@ -19,7 +19,7 @@ class Styles {
         width: '450px',
         bottom: '10px',
         right: '15px',
-        zIndex: 9999,
+        zIndex: 999999,
         backgroundColor: '#ced4da',
 
     };

@@ -158,7 +158,7 @@ export class PersistenceLayers {
                 try {
                     optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
                 } catch (e) {
-                    console.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef);
+                    log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef, e);
                     throw e;
                 }
 
