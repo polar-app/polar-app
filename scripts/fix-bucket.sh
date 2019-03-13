@@ -1,6 +1,6 @@
 #! /bin/bash
 PROJECT="polar-32b0f"
-BUCKET="stash"
+BUCKET="public"
 
 # Set bucket ACLs
 # This will enable storage functions to deploy again

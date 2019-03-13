@@ -20,7 +20,33 @@ I'll try to update this post as some of these new features come onnline.
 
 ## New Features
 
+### First priority (easy)
+
+- Restore of pagemarks when opening up new documents when resuming and I have
+  to improve performance here. 
+
+- Tour of the pagemarks as this is important and one of our main selling points.
+
 - Ability to edit flashcards inline without having to delete and recreate them.
+
+- Support for area highlights on the sidebar now and storing them in the 
+  datastore as binary screenshots.
+
+- Annotation bar changes for highlighting text: https://github.com/burtonator/polar-bookshelf/issues/651
+
+- Toggle pagemarks visually on/off.  For now / key binding and context menu
+  options but we need to create a menu bar for some of this functionality.
+
+- Button to toggle/the annotation sidebar
+
+- Button to toggle the pagemarks
+
+- Automatic resume of position from last time document was opened: https://github.com/burtonator/polar-bookshelf/issues/673
+
+- (done) Missing padding in the comment box confusing to users:  https://github.com/burtonator/polar-bookshelf/issues/662
+
+### Secondary priority
+
 
 - Make inviting users to Polar a top level feature so we can hopefully encourage
 people to invite their colleagues.
@@ -35,9 +61,6 @@ user and potentially allow them to abort.
 
 - (done) Enable feature to create tables within notes    
 
-- Toggle pagemarks visually on/off.  For now / key binding and context menu
-  options but we need to create a menu bar for some of this functionality.
-
 - New menu / dropdown system on the top right for key buttons.  
 
     - Tasks
@@ -49,21 +72,17 @@ user and potentially allow them to abort.
             - Repair Repository
             - Check for Update   
 
-- Support for area highlights on the sidebar now and storing them in the 
-  datastore as binary screenshots.
+- Highlight 'mode' to create highlights automatically when the text is selected.  
+  The model should be popup by default and 'by selection when the user picks 
+  the dropdown 
 
 - Search + filtering of of the annotations view with a filter bar like we have
   in the documents view.
 
 - Display comments on annotations in the annotation view like they are in the sidebar.
   
-- Automatic resume of position from last time document was opened: https://github.com/burtonator/polar-bookshelf/issues/673
       
-- Annotation bar changes to highlighting text: https://github.com/burtonator/polar-bookshelf/issues/651
-
 - Delete annotations from annotation view: https://github.com/burtonator/polar-bookshelf/issues/645
-
-- (done) Missing padding in the comment box confusing to users:  https://github.com/burtonator/polar-bookshelf/issues/662
 
 - Slow loading PDF: https://github.com/burtonator/polar-bookshelf/issues/661 
 
