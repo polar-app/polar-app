@@ -6,6 +6,7 @@ import {ViewerTours} from '../../apps/viewer/ViewerTours';
 import {Model} from '../../model/Model';
 import {Stopwatches} from '../../util/Stopwatches';
 import {AppRuntime} from '../../AppRuntime';
+import {WindowEvents} from '../../util/dom/WindowEvents';
 
 declare var window: any;
 
@@ -85,9 +86,7 @@ export class PDFViewer extends Viewer {
     private sendResizeEvent() {
 
         if (AppRuntime.isBrowser()) {
-            const resizeEvent = window.document.createEvent('UIEvents');
-            resizeEvent .initUIEvent('resize', true, false, window, 0);
-            window.dispatchEvent(resizeEvent);
+            WindowEvents.sendResizeEvent();
         }
 
     }
