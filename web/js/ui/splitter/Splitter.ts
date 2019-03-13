@@ -29,6 +29,8 @@ export class Splitter {
             sizes: INITIAL_SIZES,
             minSize: 0,
             gutterSize: 7,
+            // TODO: this probably shouldn't be here as we added it for resizing
+            // but this is only needed by the annotation sidebar for now..
             onDrag: () => this.onDrag()
         });
 
