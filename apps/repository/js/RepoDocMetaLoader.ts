@@ -23,6 +23,7 @@ import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
+import doc = Mocha.reporters.doc;
 
 const log = Logger.create();
 
@@ -69,6 +70,8 @@ export class RepoDocMetaLoader {
         const progressTrackerIndex = new ProgressTrackerIndex();
 
         persistenceLayer.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
+
+            console.log("FIXME: got doc meta snapshot event at consistency: "  + docMetaSnapshotEvent.consistency);
 
             const eventHandler = async () => {
 

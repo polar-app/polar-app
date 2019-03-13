@@ -25,6 +25,7 @@ import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
 import {WritableBinaryMetaDatastore} from './Datastore';
+import {AppRuntime} from '../AppRuntime';
 
 const log = Logger.create();
 
@@ -124,6 +125,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             try {
 
                 const consistency = this.toConsistency(snapshot);
+
+                console.log("FIXME: got with consistency: " + consistency);
                 const batchID = batchIDs[consistency];
 
                 this.handleDocInfoSnapshot(snapshot, docMetaSnapshotEventListener, batchID);
@@ -141,6 +144,21 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             log.error("Could not handle snapshot: ", err);
             errorListener(err);
         };
+
+
+        if (this.preferredSource() === 'cache') {
+
+            try {
+
+                const cachedSnapshot = await query.get({ source: 'cache' });
+
+                onNextForSnapshot(cachedSnapshot);
+
+            } catch (e) {
+                // no cached snapshot
+            }
+
+        }
 
         const unsubscribe =
             query.onSnapshot({includeMetadataChanges: true}, onNextForSnapshot, onSnapshotError);
@@ -233,7 +251,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 
-        const snapshot = await ref.get();
+        const snapshot = await ref.get({ source: this.preferredSource() });
 
         const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
@@ -1030,7 +1048,19 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
     }
 
+    private preferredSource(): FirestoreSource {
+
+        if (AppRuntime.isBrowser()) {
+            return 'cache';
+        } else {
+            return 'default';
+        }
+
+    }
+
 }
+
+type FirestoreSource = 'default' | 'server' | 'cache';
 
 /**
  * Holds a data object literal by value. This contains the high level
