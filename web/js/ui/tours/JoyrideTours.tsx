@@ -47,7 +47,8 @@ export class JoyrideTours {
             placement: step.placement || 'bottom',
             hideBackButton: step.hideBackButton || false,
             spotlightClicks: step.spotlightClicks || false,
-            autoNext: step.autoNext
+            autoNext: step.autoNext,
+            disabled: step.disabled
         };
 
     }
@@ -65,6 +66,11 @@ export interface EnhancedStep extends Step {
      */
     readonly autoNext?: boolean;
 
+    /**
+     * True if we should disable this step of the tour.
+     */
+    readonly disabled?: boolean;
+
 }
 
 export interface ImageStep {
@@ -76,4 +82,5 @@ export interface ImageStep {
     readonly autoNext?: boolean;
     readonly hideBackButton?: boolean;
     readonly spotlightClicks?: boolean;
+    readonly disabled?: boolean;
 }

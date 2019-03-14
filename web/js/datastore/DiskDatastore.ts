@@ -9,7 +9,7 @@ import {
     InitResult,
     SnapshotResult,
     DatastoreOverview,
-    DatastoreInfo, DocMetaSnapshotEvent
+    DatastoreInfo, DocMetaSnapshotEvent, PrefsProvider
 } from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
@@ -22,7 +22,7 @@ import fs from 'fs';
 import os from 'os';
 
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "../util/Platforms";
@@ -34,6 +34,9 @@ import {Strings} from '../util/Strings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
+import {Settings} from './Settings';
+import {Providers} from '../util/Providers';
+import {DictionaryPrefs, Prefs, StringToStringDict} from '../util/prefs/Prefs';
 
 const log = Logger.create();
 
@@ -53,6 +56,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     public readonly directories: Directories;
 
+    private readonly diskPrefsStore: DiskPrefsStore;
+
     constructor() {
 
         super();
@@ -67,6 +72,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         this.stashDir = this.directories.stashDir;
         this.filesDir = this.directories.filesDir;
         this.logsDir = this.directories.logsDir;
+        this.diskPrefsStore = new DiskPrefsStore(this.directories);
 
     }
 
@@ -131,6 +137,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         };
 
         await doInitInfo();
+        await this.diskPrefsStore.init();
 
         return diskInitResult;
     }
@@ -240,7 +247,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
-                           meta: FileMeta = {}): Promise<DatastoreFile> {
+                           meta: FileMeta = {}): Promise<DocFileMeta> {
 
         DatastoreFiles.assertSanitizedFileName(ref);
 
@@ -257,7 +264,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         DatastoreFiles.assertSanitizedFileName(ref);
 
@@ -438,16 +445,6 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         return Optional.empty();
     }
 
-    private async writeInfo(datastoreInfo: DatastoreInfo) {
-
-        const infoPath = FilePaths.join(this.dataDir, 'info.json');
-
-        const json = JSON.stringify(datastoreInfo, null, "  ");
-
-        await Files.writeFileAsync(infoPath, json);
-
-    }
-
     public async overview(): Promise<DatastoreOverview> {
 
         const docMetaRefs = await this.getDocMetaRefs();
@@ -460,9 +457,31 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
+    private async writeInfo(datastoreInfo: DatastoreInfo) {
+
+        const infoPath = FilePaths.join(this.dataDir, 'info.json');
+
+        const json = JSON.stringify(datastoreInfo, null, "  ");
+
+        await Files.writeFileAsync(infoPath, json);
+
+    }
+
+    public getPrefs(): PrefsProvider {
+
+        const diskPrefsStore = this.diskPrefsStore;
+
+        return {
+            get() {
+                return diskPrefsStore.getPrefs();
+            }
+        };
+
+    }
+
     private async createDatastoreFile(backend: Backend,
                                       ref: FileRef,
-                                      fileReference: DiskFileReference): Promise<DatastoreFile> {
+                                      fileReference: DiskFileReference): Promise<DocFileMeta> {
 
         const fileURL = FilePaths.toFileURL(fileReference.path);
         const url = new URL(fileURL);
@@ -706,5 +725,84 @@ export interface InitOptions {
      * Perform a snapshot on init if
      */
     readonly initialSnapshotRequired: boolean;
+
+}
+
+export class DiskPrefsStore {
+
+    private prefs: DiskPrefs;
+
+    private readonly directories: Directories;
+
+    private readonly path: string;
+
+    constructor(directories: Directories) {
+        this.directories = directories;
+        this.prefs = new DiskPrefs(this);
+        this.path = FilePaths.create(this.directories.configDir, "prefs.json");
+    }
+
+    public async init() {
+
+        if (await Files.existsAsync(this.path)) {
+            log.info("Loaded prefs from: " + this.path);
+            const data = await Files.readFileAsync(this.path);
+            const prefs = JSON.parse(data.toString("UTF-8"));
+            this.prefs.update(prefs);
+        }
+
+    }
+
+    public getPrefs() {
+        return this.prefs;
+    }
+
+    public async commit(): Promise<void> {
+
+        const data = JSON.stringify(this.prefs.toDict(), null, "  ");
+        await Files.writeFileAsync(this.path, data);
+
+    }
+
+}
+
+/**
+ * Prefs object just backed by a local dictionary.
+ */
+export class DiskPrefs extends Prefs {
+
+    private readonly delegate: StringToStringDict = {};
+
+    private readonly diskPrefsStore: DiskPrefsStore;
+
+    constructor(diskPrefsStore: DiskPrefsStore) {
+        super();
+        this.diskPrefsStore = diskPrefsStore;
+    }
+
+    public get(key: string): Optional<string> {
+        return Optional.of(this.delegate[key]);
+    }
+
+    public set(key: string, value: string): void {
+        this.delegate[key] = value;
+
+        this.diskPrefsStore.commit()
+            .catch(err => log.error("Unable to write prefs: ", err));
+
+    }
+
+    public update(dict: StringToStringDict) {
+
+        for (const key of Object.keys(dict)) {
+            const value = dict[key];
+            this.delegate[key] = value;
+        }
+
+    }
+
+    public toDict(): StringToStringDict {
+        return {...this.delegate};
+    }
 
 }

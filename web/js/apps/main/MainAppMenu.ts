@@ -13,7 +13,7 @@ import {Menus} from './Menus';
 import {isPresent} from '../../Preconditions';
 import {Directories} from '../../datastore/Directories';
 import {Messenger} from '../../electron/messenger/Messenger';
-import {DistConfig} from '../../dist_config/DistConfig';
+import {AppUpdates} from '../../updates/AppUpdates';
 
 const log = Logger.create();
 
@@ -425,10 +425,10 @@ export class MainAppMenu {
                     click: () => shell.openExternal('https://getpolarized.io/docs/') },
                 {
                     id: 'check-for-updates',
-                    label: 'Check for updates',
+                    label: 'Check for Updates',
                     // only show on Windows and MacOS as all other platforms
                     // have their own dist system (for now).
-                    visible: Updates.platformSupportsUpdates(),
+                    visible: AppUpdates.platformSupportsUpdates(),
                     click: (item: Electron.MenuItem) => Updates.checkForUpdates(item),
                 },
 

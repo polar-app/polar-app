@@ -12,6 +12,7 @@ import {ToasterMessageType} from '../ui/toaster/Toaster';
 import {TimeDurations} from '../util/TimeDurations';
 import {Platform, Platforms} from '../util/Platforms';
 import {DistConfig} from '../dist_config/DistConfig';
+import {AppUpdates} from './AppUpdates';
 
 const ENABLE_AUTO_UPDATE = true;
 
@@ -52,14 +53,27 @@ export class Updates {
     // export this to MenuItem click callback
     public static checkForUpdates(menuItem: Electron.MenuItem) {
 
-        Updates.updateRequestedManually = true;
-
         if (this.performingUpdate) {
             return;
         }
 
         updater = menuItem;
         updater.enabled = false;
+
+        this.checkForUpdatesManually();
+
+    }
+
+    public static checkForUpdatesManually() {
+
+        if (this.performingUpdate) {
+            return;
+        }
+
+        log.info("Checking for updates manually.");
+
+        Updates.updateRequestedManually = true;
+
         this.doCheckForUpdates()
             .catch(err => log.error("Error handling updates: " + err ));
 
@@ -99,12 +113,6 @@ export class Updates {
         }
 
         return await autoUpdater.checkForUpdates();
-
-    }
-
-    public static platformSupportsUpdates() {
-
-        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()) && DistConfig.ENABLE_UPDATES;
 
     }
 
@@ -213,8 +221,10 @@ autoUpdater.on('update-not-available', () => {
             }
         });
 
-        updater!.enabled = true;
-        updater = null;
+        if (updater) {
+            updater!.enabled = true;
+            updater = null;
+        }
 
     }
 
@@ -263,11 +273,15 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 
 });
 
+ipcMain.on('app-update:check-for-update', () => {
+    Updates.checkForUpdatesManually();
+});
+
 ipcMain.on('app-update:quit-and-install', () => {
     autoUpdater.quitAndInstall();
 });
 
-if (ENABLE_AUTO_UPDATE && Updates.platformSupportsUpdates()) {
+if (ENABLE_AUTO_UPDATE && AppUpdates.platformSupportsUpdates()) {
     log.info("Auto updates enabled.");
 
     Updates.scheduleAutoUpdate(AUTO_UPDATE_DELAY_INITIAL);

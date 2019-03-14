@@ -1,4 +1,4 @@
-import {Model} from '../../../model/Model';
+import {DocumentLoadedEvent, Model} from '../../../model/Model';
 import {DocFormat} from '../../../docformat/DocFormat';
 import {Logger} from '../../../logger/Logger';
 import {Preconditions} from '../../../Preconditions';
@@ -40,19 +40,19 @@ export class AreaHighlightController {
 
     }
 
-    onDocumentLoaded() {
-        log.info("onDocumentLoaded: ", this.model.docMeta);
-    }
+    public start() {
 
-    start() {
-
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        this.model.registerListenerForDocumentLoaded((event) => this.onDocumentLoaded(event));
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
     }
 
-    onMessageReceived(event: MessageEvent) {
+    private onDocumentLoaded(event: DocumentLoadedEvent) {
+        log.info("onDocumentLoaded: ", event.docMeta);
+    }
+
+    private onMessageReceived(event: MessageEvent) {
 
         if (event.data && event.data.type === "create-area-highlight") {
             this.onCreateAreaHighlight(event.data);
@@ -64,9 +64,6 @@ export class AreaHighlightController {
 
     }
 
-    /**
-     *
-     */
     private onCreateAreaHighlight(contextMenuLocation: ContextMenuLocation) {
 
         log.info("Creating area highlight: ", contextMenuLocation);

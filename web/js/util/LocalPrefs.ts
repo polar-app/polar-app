@@ -1,6 +1,8 @@
-import {Optional} from '../../util/ts/Optional';
-import {DurationStr, TimeDurations} from '..//../util/TimeDurations';
+import {Optional} from './ts/Optional';
 
+/**
+ * @Deprecated use the new IPrefs systems
+ */
 export class LocalPrefs {
 
     public static mark(key: string, value: boolean = true): void {
@@ -10,6 +12,10 @@ export class LocalPrefs {
         } else {
             this.set(key, 'false');
         }
+    }
+
+    public static toggle(key: string, value: boolean = false) {
+        this.mark(key, ! this.isMarked(key, value));
     }
 
     /**
@@ -46,10 +52,10 @@ export class LocalPrefs {
 
     }
 
-    public static isMarked(key: string) {
+    public static isMarked(key: string, defaultValue: boolean = false) {
 
         const currentValue =
-            this.get(key).getOrElse('false');
+            this.get(key).getOrElse(`${defaultValue}`);
 
         return currentValue === 'true';
 
@@ -102,3 +108,5 @@ export class LocalPrefs {
     }
 
 }
+
+import {DurationStr, TimeDurations} from './TimeDurations';

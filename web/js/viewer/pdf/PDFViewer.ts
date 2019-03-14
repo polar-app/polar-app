@@ -4,6 +4,9 @@ import {DocDetail} from '../../metadata/DocDetail';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ViewerTours} from '../../apps/viewer/ViewerTours';
 import {Model} from '../../model/Model';
+import {Stopwatches} from '../../util/Stopwatches';
+import {AppRuntime} from '../../AppRuntime';
+import {WindowEvents} from '../../util/dom/WindowEvents';
 
 declare var window: any;
 
@@ -24,8 +27,15 @@ export class PDFViewer extends Viewer {
 
         RendererAnalytics.pageview("/pdfviewer");
 
+        const stopwatch = Stopwatches.create();
+
         this.model.registerListenerForDocumentLoaded(event => {
+
             ViewerTours.createWhenNecessary(event.fingerprint);
+
+            log.notice("Document load time: " + stopwatch.stop());
+            this.sendResizeEvent();
+
         });
 
         this.disableSidebarKeyboardHandling();
@@ -69,6 +79,14 @@ export class PDFViewer extends Viewer {
 
             return window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
 
+        }
+
+    }
+
+    private sendResizeEvent() {
+
+        if (AppRuntime.isBrowser()) {
+            WindowEvents.sendResizeEvent();
         }
 
     }

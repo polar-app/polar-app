@@ -1,4 +1,4 @@
-import {Model} from '../model/Model';
+import {DocumentLoadedEvent, Model} from '../model/Model';
 import {View} from './View';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocFormat} from '../docformat/DocFormat';
@@ -8,6 +8,10 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {Arrays} from '../util/Arrays';
 import {Elements} from '../util/Elements';
+import {ReadingProgressResume} from './ReadingProgressResume';
+import {LocalPrefs} from '../util/LocalPrefs';
+import {Prefs} from '../util/prefs/Prefs';
+import {PrefsProvider} from '../datastore/Datastore';
 
 const log = Logger.create();
 
@@ -15,20 +19,23 @@ export class WebView extends View {
 
     private readonly docFormat: DocFormat;
 
+    private readonly prefsProvider: PrefsProvider;
+
     /**
      *
      * @param model {Model}
      */
-    constructor(model: Model) {
+    constructor(model: Model, prefsProvider: PrefsProvider) {
         super(model);
 
+        this.prefsProvider = prefsProvider;
         this.docFormat = DocFormatFactory.getInstance();
 
     }
 
     public start() {
 
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        this.model.registerListenerForDocumentLoaded(event => this.onDocumentLoaded(event));
 
         return this;
 
@@ -95,44 +102,29 @@ export class WebView extends View {
     /**
      * Setup a document once we detect that a new one has been loaded.
      */
-    private onDocumentLoaded() {
+    private onDocumentLoaded(event: DocumentLoadedEvent) {
 
-        log.info("WebView.onDocumentLoaded: ", this.model.docMeta);
+        const autoResume
+            = this.prefsProvider.get().isMarked('settings-auto-resume', true);
+
+        const docMeta = event.docMeta;
+
+        log.info("WebView.onDocumentLoaded: ", docMeta);
 
         this.updateProgress();
-        this.handleProgressDoubleClick();
+        this.handleProgressDoubleClick(docMeta);
+
+        if (autoResume) {
+            ReadingProgressResume.resume(docMeta);
+        }
 
     }
 
-    private handleProgressDoubleClick() {
+    private handleProgressDoubleClick(docMeta: DocMeta) {
 
         document.querySelector("#polar-header")!.addEventListener('dblclick', () => {
 
-            const pagemarks = Array.from(document.querySelectorAll(".page .pagemark"));
-            const last = <HTMLElement> Arrays.last(pagemarks);
-
-            if (last) {
-
-                last.scrollIntoView({block: 'end'});
-
-                let scrollParent = <HTMLElement> Elements.getScrollParent(last); // html mode
-
-                if (this.docFormat.name === 'pdf') {
-                    scrollParent = <HTMLElement> document.querySelector("#viewerContainer");
-                }
-
-                if (scrollParent) {
-
-                    const scrollDelta = window.innerHeight * (2 / 3);
-                    const scrollTop = scrollParent.scrollTop;
-
-                    const newScrollTop = scrollTop + scrollDelta;
-
-                    scrollParent.scrollTop = newScrollTop;
-
-                }
-
-            }
+            ReadingProgressResume.resume(docMeta);
 
         });
 

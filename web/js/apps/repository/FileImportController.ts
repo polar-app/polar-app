@@ -21,6 +21,7 @@ import {PathStr} from '../../util/Strings';
 import {Files, Aborters} from "../../util/Files";
 import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
 import {AddFileRequests} from "./AddFileRequests";
+import {ProgressTracker} from '../../util/ProgressTracker';
 
 const log = Logger.create();
 
@@ -240,21 +241,21 @@ export class FileImportController {
                 const file = importedFile.get();
                 const fingerprint = file.docInfo.fingerprint;
 
-                // TODO we should ideally have the hashcode built here.
-                const fileRef: FileRef = {
-                    name: file.basename
-                };
+                if (AppRuntime.isElectron()) {
 
-                // TODO(webapp): DO NOT enable this in the web UI... the upload
-                // could take forever.  It might be nice to open a tab showing
-                // the upload progress and then load the file once it's
-                // uploaded.
-                this.docLoader.create({
-                    fingerprint,
-                    fileRef,
-                    newWindow: true
-                }).load()
-                  .catch(err => log.error("Unable to load doc: ", err));
+                    // DO NOT enable this in the web UI... the upload could take
+                    // forever.  It might be nice to open a tab showing the
+                    // upload progress and then load the file once it's
+                    // uploaded.
+
+                    this.docLoader.create({
+                        fingerprint,
+                        fileRef: file.fileRef,
+                        newWindow: true
+                    }).load()
+                      .catch(err => log.error("Unable to load doc: ", err));
+
+                }
 
             }
 
@@ -266,7 +267,7 @@ export class FileImportController {
 
     private async doImportFiles(files: AddFileRequest[]): Promise<Array<Optional<ImportedFile>>> {
 
-        const progress = new ProgressCalculator(files.length);
+        const progressTracker = new ProgressTracker(files.length, 'import-files');
 
         const result: Array<Optional<ImportedFile>> = [];
 
@@ -280,10 +281,7 @@ export class FileImportController {
                 } catch (e) {
                     log.error("Failed to import file: " + file, e);
                 } finally {
-                    progress.incr();
-
-                    DeterminateProgressBar.update(progress.percentage());
-
+                    DeterminateProgressBar.update(progressTracker.incr());
                 }
 
             }

@@ -33,7 +33,7 @@ import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {RepositoryTour} from './RepositoryTour';
-import {LocalPrefs} from '../../ui/util/LocalPrefs';
+import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Platforms} from '../../util/Platforms';
 import {AppOrigin} from '../AppOrigin';
@@ -84,7 +84,7 @@ export class RepositoryApp {
 
         await this.doLoadExampleDocs();
 
-        PreviewDisclaimers.createWhenNecessary();
+        // PreviewDisclaimers.createWhenNecessary();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
@@ -197,6 +197,7 @@ export class RepositoryApp {
                        id="file-upload"
                        name="file-upload"
                        accept=".pdf"
+                       multiple
                        onChange={() => this.onFileUpload()}
                        style={{display: 'none'}}/>
 
@@ -261,15 +262,9 @@ export class RepositoryApp {
 
     private async doLoadExampleDocs() {
 
-        if (AppRuntime.isElectron()) {
+        const doLoad = async () => {
 
-            // TODO: right now this only works on electron but we need a
-            // solution for working in the browser.
-
-            const persistenceLayer =
-                new DefaultPersistenceLayer(new DiskDatastore());
-
-            await persistenceLayer.init();
+            // TODO: also use system prefs for this too.
 
             await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
@@ -277,15 +272,27 @@ export class RepositoryApp {
                 // should propably make sure this doesn't happen more than once
                 // as the user could just delete all the files in their repo.
                 // await new
-                await new LoadExampleDocs(persistenceLayer).load();
+                const loadExampleDocs = new LoadExampleDocs(this.persistenceLayerManager.get());
+                await loadExampleDocs.load(docInfo => {
+                    this.onUpdatedDocInfo(docInfo);
+                });
 
             }, async () => {
                 log.debug("Docs already exist in repo");
             });
 
-            await persistenceLayer.stop();
+        };
 
-        }
+        this.persistenceLayerManager.addEventListener(event => {
+
+            if (event.state === 'initialized') {
+
+                doLoad()
+                    .catch(err => log.error("Unable to load example docs: ", err));
+
+            }
+
+        });
 
     }
 

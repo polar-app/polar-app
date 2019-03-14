@@ -116,7 +116,18 @@ export class ViewerTour extends React.Component<IProps, IState> {
                     </p>
 
                     <p>
-                        Pagemarks are manually created while reading documents.
+                        Pagemarks are manually created by the user while reading documents.
+                    </p>
+
+                    <p>
+                        To create a pagemark just <Term>right click</Term> and
+                        select <Term>Create Pagemark to Point</Term>.
+                    </p>
+
+                    <p>
+                        Also, when using pagemarks we will automatically resume
+                        your reading by jumping to the point where you last left
+                        off.
                     </p>
 
                 </div>

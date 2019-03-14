@@ -1,13 +1,15 @@
 import * as React from 'react';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {Nav} from '../../../../web/js/ui/util/Nav';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import {LinkDropdownItem} from './LinkDropdownItem';
 import {HelpDropdownItem} from './HelpDropdownItem';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {UncontrolledDropdown} from 'reactstrap';
+import {AppRuntime} from '../../../../web/js/AppRuntime';
+import {TrackedDropdownItem} from './TrackedDropdownItem';
+import {ipcRenderer} from 'electron';
+import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
+
+const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -16,6 +18,8 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
     }
 
     public render() {
+
+        const updatesEnabled = AppRuntime.isElectron() && AppUpdates.platformSupportsUpdates();
 
         return (
             <UncontrolledDropdown className="ml-1"
@@ -37,13 +41,13 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                     <HelpDropdownItem id="documentation-link"
                                       title="Documentation"
                                       tooltip="Documentation on Polar"
-                                      link="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/"
+                                      link="https://getpolarized.io/docs/"
                                       icon="fas fa-book"/>
 
                     <HelpDropdownItem id="feedback-link"
                                       title="Feedback"
                                       tooltip="Provide feedback to help us improve the App"
-                                      link="https://kevinburton1.typeform.com/to/u1zNWG"
+                                      link={SURVEY_LINK}
                                       icon="fas fa-poll-h"/>
 
                     <HelpDropdownItem id="chat-link"
@@ -65,6 +69,16 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       tooltip="Donate to Polar to support development."
                                       link="https://opencollective.com/polar-bookshelf"
                                       icon="fas fa-donate"/>
+
+                    <DropdownItem divider hidden={!updatesEnabled}/>
+
+                    <TrackedDropdownItem id="electron-check-for-update"
+                                         title="Check For App Update"
+                                         tooltip="Check for a new update of the Polar Desktop app."
+                                         icon="fas fa-file-download"
+                                         trackingCategory="help-check-for-update"
+                                         hidden={!updatesEnabled}
+                                         onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
 
                 </DropdownMenu>
 

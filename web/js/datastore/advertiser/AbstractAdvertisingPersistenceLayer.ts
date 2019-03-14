@@ -13,7 +13,7 @@ import {
 } from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
-import {DatastoreFile} from '../DatastoreFile';
+import {DocFileMeta} from '../DocFileMeta';
 import {FileMeta} from '../Datastore';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
@@ -149,7 +149,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         this.reactor.dispatchEvent(event);
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta): Promise<DocFileMeta> {
         return this.delegate.writeFile(backend, ref, data, meta);
     }
 
@@ -157,7 +157,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         return this.delegate.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
         return this.delegate.getFile(backend, ref);
     }
 

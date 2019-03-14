@@ -45,6 +45,7 @@ import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfo
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import Input from 'reactstrap/lib/Input';
+import {Settings} from '../../../../web/js/datastore/Settings';
 
 const log = Logger.create();
 
@@ -140,11 +141,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private async initAsync(): Promise<void> {
 
-        const settings = await SettingsStore.load();
+        const settingProvider = await SettingsStore.load();
 
-        log.info("Settings loaded: ", settings);
+        log.info("Settings loaded: ", settingProvider);
 
-        Optional.of(settings.documentRepository)
+        Optional.of(settingProvider().documentRepository)
             .map(current => current.columns)
             .when(columns => {
 
@@ -847,10 +848,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         // would be better practice to keep them immutable.
 
         SettingsStore.load()
-            .then((settings) => {
+            .then((settingsProvider) => {
 
-                settings = {
-                    ...settings,
+                const currentSettings = settingsProvider();
+
+                const settings: Settings = {
+                    ...currentSettings,
                     documentRepository: {
                         columns: this.state.columns
                     }

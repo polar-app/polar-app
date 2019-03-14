@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {Nav} from '../../../../web/js/ui/util/Nav';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {Optional} from '../../../../web/js/util/ts/Optional';
 
 /**
  */
@@ -15,20 +15,23 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
     public render() {
 
         return (
+
             <DropdownItem id={this.props.id}
                           size="sm"
+                          hidden={Optional.of(this.props.hidden).getOrElse(false)}
                           onClick={() => this.onClick()}>
 
                 <div style={{
                     display: 'flex'
                 }}>
 
-                    <div style={{
-                        width: '22px',
-                        display: 'flex'
-                    }}>
+                    <div className="text-muted"
+                         style={{
+                             width: '22px',
+                             display: 'flex'
+                         }}>
 
-                        <i className={this.props.icon + ' text-muted'}
+                        <i className={this.props.icon}
                            style={{
                                fontSize: '20px',
                                margin: 'auto',
@@ -59,23 +62,24 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
         const action = this.props.title.replace(/ /g, '').toLowerCase();
         RendererAnalytics.event({category: this.props.trackingCategory, action});
 
-        Nav.openLinkWithNewTab(this.props.link);
+        this.props.onClick();
 
     }
 
 }
 
-export interface GenericDropdownItemProps {
+export interface TrackedDropdownItemProps {
+
     readonly id: string;
-    readonly link: string;
     readonly title: string;
     readonly tooltip: string;
     readonly icon: string;
     readonly hidden?: boolean;
-}
+    readonly className?: string;
 
-export interface TrackedDropdownItemProps extends GenericDropdownItemProps {
     readonly trackingCategory: string;
+    readonly onClick: () => void;
+
 }
 
 interface IState {

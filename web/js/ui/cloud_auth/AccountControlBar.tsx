@@ -20,11 +20,16 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
         const UserImage = () => {
 
             if (this.props.userInfo.photoURL) {
-                return <img className="rounded border"
+
+                return <div style={{height: '100px', width: '100px'}}>
+
+                    <img className="rounded border m-auto"
                             style={{
-                                maxHeight: '100px'
+                                maxHeight: '100px',
+                                maxWidth: '100px'
                             }}
-                            src={this.props.userInfo.photoURL}/>;
+                            src={this.props.userInfo.photoURL}/>
+                </div>;
             } else {
                 return <div/>;
             }

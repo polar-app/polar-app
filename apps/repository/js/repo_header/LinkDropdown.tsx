@@ -52,6 +52,13 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
                                       link="https://getpolarized.io/download.html"
                                       icon="fas fa-file-download"/>
 
+                    <LinkDropdownItem id="link-use-webapp"
+                                      hidden={! AppRuntime.isElectron()}
+                                      title="Use Polar Webapp"
+                                      tooltip="Load the Polar webapp"
+                                      link="https://app.getpolarized.io/"
+                                      icon="fab fa-html5"/>
+
                     {/*<LinkDropdownItem id="reddit-link"*/}
                                       {/*title="Reddit"*/}
                                       {/*tooltip="Discuss Polar on the in the PolarBookshelf subreddit."*/}

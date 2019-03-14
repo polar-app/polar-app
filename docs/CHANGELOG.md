@@ -1,5 +1,38 @@
 
+# 1.13.13
+
+- Webapp users now properly get a default set of documents.
+
+- Tour now works on webapp
+
+- Number of fixes for the webapp including progress uploads (which also work for
+desktop sync too) and multiple file uploads.  
+
+- Cancel button for when the user tries to login but wants to back out.
+
+- Cloze deletion flashcards now have cloze counter incremented.
+
+- Firebase can now send progress notifications to the desktop during file 
+  uploads to the cloud.
+
+- Fixed bug with link not being hidden on desktop electron.
+
+- New button on the top right so that users can find app updates easier.
+
 # 1.13.12
+
+- new auto-resume of reading which is now enabled by default.
+
+- new prefs system for disk datastore and cloud and defaults to localstorage in
+  the browser.
+
+- We no longer show background progress updates that complete very quickly. 
+  This was often distracting when the app was working in the background. 
+
+- Fixed bug with PDF scroll into view where we wouldn't properly scroll to the 
+  proper position. Now we just scroll to the page that was last pagemarked.
+
+- We had the wrong link to the documentation.
 
 - Update to Electron 3.1.6
 

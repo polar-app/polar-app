@@ -18,7 +18,10 @@ export class Firestore {
 
         const result = firebase.firestore();
 
-        const settings = {timestampsInSnapshots: true};
+        const settings = {
+            // timestampsInSnapshots: true
+        };
+
         result.settings(settings);
 
         if (opts.enablePersistence) {

@@ -1,4 +1,5 @@
 import Split from 'split.js';
+import {WindowEvents} from '../../util/dom/WindowEvents';
 
 const INITIAL_SIZES: number[] = [70, 30];
 
@@ -27,7 +28,10 @@ export class Splitter {
         this.split = Split([this.left, this.right], {
             sizes: INITIAL_SIZES,
             minSize: 0,
-            gutterSize: 7
+            gutterSize: 7,
+            // TODO: this probably shouldn't be here as we added it for resizing
+            // but this is only needed by the annotation sidebar for now..
+            onDrag: () => this.onDrag()
         });
 
         this.sizes = INITIAL_SIZES;
@@ -64,6 +68,8 @@ export class Splitter {
             this.split.collapse(1);
         }
 
+        this.forceResize();
+
     }
 
     public isCollapsed() {
@@ -76,6 +82,15 @@ export class Splitter {
 
     public expand() {
         this.split.setSizes(INITIAL_SIZES);
+        this.forceResize();
+    }
+
+    private forceResize() {
+        WindowEvents.sendResizeEvent();
+    }
+
+    private onDrag() {
+        this.forceResize();
     }
 
 }

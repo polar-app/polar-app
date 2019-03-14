@@ -60,9 +60,9 @@ export class FrameInitializer {
     private onLoad() {
 
         log.info("Frame loaded.  Sending pagesinit on .page");
-        this.dispatchPagesInit();
         this.startEventBridge();
         this.updateDocTitle();
+        this.dispatchPagesInit();
 
     }
 

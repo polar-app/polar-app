@@ -2,7 +2,7 @@ import {DocumentLoadedEvent, Model} from '../model/Model';
 import {AnnotationSidebars} from './AnnotationSidebars';
 import {Logger} from '../logger/Logger';
 import {Splitter} from '../ui/splitter/Splitter';
-import {LocalPrefs} from '../ui/util/LocalPrefs';
+import {LocalPrefs} from '../util/LocalPrefs';
 
 const log = Logger.create();
 
@@ -70,6 +70,7 @@ export class AnnotationSidebarService {
         } else {
             LocalPrefs.mark(PREF_SIDEBAR_OPEN, false);
         }
+
     }
 
 }

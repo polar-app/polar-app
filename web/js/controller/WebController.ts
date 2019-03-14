@@ -55,6 +55,10 @@ export class WebController extends Controller {
 
         // new MouseTracer(document).start();
 
+        if (this.docFormat.name === 'pdf') {
+            this.detectDocumentLoaded('start');
+        }
+
     }
 
     public async dispatchDocumentLoaded(fingerprint: string,
@@ -132,28 +136,30 @@ export class WebController extends Controller {
 
         const container = notNull(document.getElementById('viewerContainer'));
 
-        container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
-        container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
+        for (const eventName of ['pagesinit', 'updateviewarea']) {
+            container.addEventListener(eventName, (event) => this.detectDocumentLoaded(eventName));
+
+        }
 
         // run manually the first time in case we get lucky of we're running HTML
         // this.detectDocumentLoadedEventListener();
 
     }
 
-    public detectDocumentLoadedEventListener(event: Event) {
+    private detectDocumentLoaded(eventName: string) {
 
-        // FIXME: technically we're detecting a new document LOADING not LOADED...
+        // TODO: technically we're detecting a new document LOADING not LOADED...
         // fix this so that I get a distinct onDocumentLoaded event too...
 
         const currentDocFingerprint = this.docFormat.currentDocFingerprint();
 
         if (currentDocFingerprint !== undefined && currentDocFingerprint !== this.docFingerprint) {
 
-            log.info("controller: New document loaded!");
+            log.info("controller: New document loaded: " + eventName);
 
             const newDocumentFingerprint = currentDocFingerprint;
 
-            const currentDocState = this.docFormat.currentState(event);
+            const currentDocState = this.docFormat.currentState();
 
             this.onNewDocumentFingerprint(newDocumentFingerprint, currentDocState.nrPages, currentDocState.currentPageNumber);
 
@@ -172,7 +178,6 @@ export class WebController extends Controller {
 
     }
 
-    // FIXME: remake this binding to CreatePagemarkEntirePage
     public async keyBindingPagemarkEntirePage(event: KeyboardEvent) {
 
         log.info("Marking entire page as read.");
@@ -230,6 +235,7 @@ export class WebController extends Controller {
             }
 
         } else {
+            // noop
         }
 
     }

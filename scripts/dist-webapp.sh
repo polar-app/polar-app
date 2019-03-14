@@ -13,6 +13,9 @@ copy() {
 
 set -e
 
+## make sure we're running the latest code.
+npm install
+
 mkdir -p dist/public
 
 copy apps "*.html"

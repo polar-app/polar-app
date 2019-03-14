@@ -110,19 +110,19 @@ export class Dictionaries {
      *
      * @param dict
      */
-    static onlyDefinedProperties(dict: any): any {
+    public static onlyDefinedProperties(dict: any): any {
 
-        if(dict === undefined || dict === null) {
+        if (dict === undefined || dict === null) {
             // nothing to do here.
             return dict;
         }
 
-        if(! (typeof dict === 'object')) {
+        if (! (typeof dict === 'object')) {
             // if we're not a dictionary we're done
             return dict;
         }
 
-        let result: any = {};
+        const result: any = {};
 
         for (const key of Object.keys(dict).sort()) {
             const value = dict[key];

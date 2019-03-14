@@ -1,5 +1,4 @@
 import {PolarDataDir} from '../../../test/PolarDataDir';
-import {Files} from '../../../util/Files';
 import {DiskDatastore} from '../../../datastore/DiskDatastore';
 import {LoadExampleDocs} from './LoadExampleDocs';
 import {AppPath} from '../../../electron/app_path/AppPath';
@@ -22,7 +21,9 @@ describe('LoadExampleDocs', function() {
         const persistenceLayer = new DefaultPersistenceLayer(new DiskDatastore());
         const loader = new LoadExampleDocs(persistenceLayer);
 
-        await loader.load();
+        await loader.load(docInfo => {
+            console.log("Loaded: ", docInfo);
+        });
 
     });
 

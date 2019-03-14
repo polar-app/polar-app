@@ -18,6 +18,61 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
+                    <h3>Polar 1.13.12</h3>
+
+                    <div className="intro">
+                        <p>
+                            This release moves us farther towards improving
+                            usability as well as having a production web version
+                            of Polar.
+                        </p>
+
+                        <p>
+                            A big new feature here is automatic-resume of your
+                            reading from the last pagemark position.
+                        </p>
+
+                    </div>
+
+                    <ul>
+                        <li>
+                            <p>new auto-resume of reading which is now enabled by default.</p>
+                        </li>
+                        <li>
+                            <p>new prefs system for disk datastore and cloud and defaults to localstorage in
+                                the browser.</p>
+                        </li>
+                        <li>
+                            <p>We no longer show background progress updates that complete very quickly.
+                                This was often distracting when the app was working in the background.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bug with PDF scroll into view where we wouldn't properly scroll to the
+                                proper position. Now we just scroll to the page that was last pagemarked.</p>
+                        </li>
+                        <li>
+                            <p>We had the wrong link to the documentation.</p>
+                        </li>
+                        <li>
+                            <p>Update to Electron 3.1.6</p>
+                        </li>
+                        <li>
+                            <p>New AuthHandler system so that we can show user account information when
+                                using Firebase auth.</p>
+                        </li>
+                        <li>
+                            <p>Cut down memory usage of the webapp from 1GB to about 200MB.  The gmail app
+                                is about 120MB so this isn't far off from being 'reasonable' in terms of
+                                memory usage.</p>
+                        </li>
+                        <li>
+                            <p>Upgraded to latest versions of Firebase and Webpack</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+
                     <h3>Polar 1.13.11</h3>
 
                     <div className="intro">

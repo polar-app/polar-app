@@ -3,7 +3,7 @@ import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Directories} from './Directories';
 import {Backend} from './Backend';
-import {DatastoreFile} from './DatastoreFile';
+import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
@@ -19,6 +19,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
+import {Prefs} from '../util/prefs/Prefs';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -77,7 +78,13 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      * Get an overview of the datastore including the time it was created as
      * well as other stats including the number of docs.
      */
-    overview(): Promise<DatastoreOverview>;
+    overview(): Promise<DatastoreOverview | undefined>;
+
+    /**
+     * Get a Prefs object that supports reading and writing key/values to a
+     * simple prefs store.
+     */
+    getPrefs(): PrefsProvider;
 
     // TODO: we need a new method with the following semantics:
 
@@ -205,11 +212,11 @@ interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
-    getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>>;
+    getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
 
 }
 
-interface WritableBinaryDatastore {
+export interface WritableBinaryDatastore {
 
     /**
      * Add file data to the datastore.  This is used for binary data or other
@@ -219,10 +226,14 @@ interface WritableBinaryDatastore {
     writeFile(backend: Backend,
               ref: FileRef,
               data: BinaryFileData,
-              meta?: FileMeta): Promise<DatastoreFile>;
+              meta?: FileMeta): Promise<DocFileMeta>;
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
 
+}
+
+export interface WritableBinaryMetaDatastore {
+    writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void>;
 }
 
 export type BinaryFileData = FileHandle | Buffer | string | Blob;
@@ -611,4 +622,13 @@ export type DatastoreID = string;
 
 export interface DatastoreInitOpts {
     readonly noInitialSnapshot?: boolean;
+}
+
+export interface PrefsProvider {
+
+    /**
+     * Get the latest copy of the prefs we're using.
+     */
+    get(): Prefs;
+
 }

@@ -72,15 +72,15 @@ export class AnnotationsController {
 
         log.info("Sending annotation descriptor...");
 
-        let annotationDescriptors
+        const annotationDescriptors
             = AnnotationTriggerEvents.getAnnotationDescriptors(triggerEvent);
 
-        if(annotationDescriptors.length == 0) {
-            log.warn("No annotation descriptors.")
+        if (annotationDescriptors.length === 0) {
+            log.warn("No annotation descriptors.");
             return;
         }
 
-        let annotationDescriptor = annotationDescriptors[0];
+        const annotationDescriptor = annotationDescriptors[0];
 
         await this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor);
 
