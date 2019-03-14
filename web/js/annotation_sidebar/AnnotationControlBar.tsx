@@ -22,6 +22,7 @@ import {Logger} from '../logger/Logger';
 import {NullCollapse} from '../ui/null_collapse/NullCollapse';
 import {Comment} from "../metadata/Comment";
 import {CreateComment} from "./child_annotations/comments/CreateComment";
+import {CommentActions} from "./child_annotations/comments/CommentActions";
 
 const log = Logger.create();
 
@@ -122,14 +123,10 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 </div>
 
-                <NullCollapse open={this.state.activeInputComponent === 'comment'}>
-
-                    <CreateComment id={annotation.id}
-                                   onCancel={() => this.toggleActiveInputComponent('none')}
-                                   onComment={(html) => this.onComment(html)}/>
-
-                </NullCollapse>
-
+                <CreateComment id={annotation.id}
+                               active={this.state.activeInputComponent === 'comment'}
+                               onCancel={() => this.toggleActiveInputComponent('none')}
+                               onComment={(html) => this.onComment(html)}/>
 
                 <NullCollapse open={this.state.activeInputComponent === 'flashcard'}>
 
@@ -180,11 +177,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const {annotation} = this.props;
 
-        const ref = Refs.createFromAnnotationType(annotation.id,
-                                                  annotation.annotationType);
-
-        const comment = Comments.createHTMLComment(html, ref);
-        annotation.pageMeta.comments[comment.id] = comment;
+        CommentActions.create(annotation, html);
 
         this.setState({
             activeInputComponent: 'none'

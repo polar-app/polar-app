@@ -3,7 +3,7 @@ import {EditComment} from "./EditComment";
 import {CancelButton} from "../CancelButton";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 
-export class CreateComment extends React.Component<IProps, IState> {
+export class CreateComment extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -20,7 +20,7 @@ export class CreateComment extends React.Component<IProps, IState> {
 
         const cancelButton = <CancelButton onClick={() => this.onCancel()}/>;
 
-        return <NullCollapse open={this.state.active}>
+        return <NullCollapse open={this.props.active}>
 
             <EditComment id={'edit-comment-for' + this.props.id}
                          onComment={(html) => this.props.onComment(html)}
@@ -31,19 +31,18 @@ export class CreateComment extends React.Component<IProps, IState> {
     }
 
     private onCancel() {
-        this.setState({active: false});
+        this.props.onCancel();
     }
 
 }
 interface IProps {
     readonly id: string;
-    readonly active?: boolean;
+    readonly active: boolean;
     readonly onComment: (html: string) => void;
     readonly onCancel: () => void;
 }
 
 interface IState {
-    readonly active: boolean;
 }
 
 

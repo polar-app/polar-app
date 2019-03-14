@@ -30,7 +30,7 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 
                 result.push (<ViewOrEditComment key={child.id}
                                                 id={child.id}
-                                                onComment={(html, existingComment) => CommentActions.update(this.props.docMeta, child, html, existingComment)}
+                                                onComment={(html, existingComment) => CommentActions.update(this.props.docMeta, this.props.parent, html, existingComment)}
                                                 comment={child}/>);
 
             } else {
@@ -49,6 +49,8 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 interface IProps {
 
     readonly docMeta: DocMeta;
+
+    readonly parent: DocAnnotation;
 
     readonly children: DocAnnotation[];
 

@@ -50,6 +50,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     <div className="comments">
                         <ChildAnnotationSection docMeta={this.props.docMeta}
+                                                parent={annotation}
                                                 children={annotation.children}/>
                     </div>
 
