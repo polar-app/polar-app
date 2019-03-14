@@ -36,6 +36,8 @@ export class PDFViewer extends Viewer {
             log.notice("Document load time: " + stopwatch.stop());
             this.sendResizeEvent();
 
+            this.handleChromeSelectionFix();
+
         });
 
         this.disableSidebarKeyboardHandling();
@@ -88,6 +90,54 @@ export class PDFViewer extends Viewer {
         if (AppRuntime.isBrowser()) {
             WindowEvents.sendResizeEvent();
         }
+
+    }
+
+    private handleChromeSelectionFix() {
+
+        // TODO: this code works BUT I still can't cancel the selection
+        // in the pdfjs viewer for some reason - I think because it has its
+        // own handlers setup to do selection manually.
+
+        document.getElementById("viewer")!.addEventListener('mousemove', (event) => {
+
+            if (event.target instanceof HTMLElement) {
+
+                const hasActiveSelection = (): boolean => {
+
+                    const sel = window.getSelection();
+
+                    if (sel.rangeCount === 1 ) {
+                        const range = window.getSelection().getRangeAt(0);
+                        return ! range.collapsed;
+                    }
+
+                    return false;
+
+                };
+
+                const hasJumped = () => {
+
+                    if (event.target instanceof HTMLElement) {
+                        return Array.from(event.target.classList).includes("endOfContent");
+                    }
+
+                    return false;
+
+                };
+
+                if (hasJumped()) {
+
+                    if (hasActiveSelection()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+
+                }
+
+            }
+
+        });
 
     }
 
