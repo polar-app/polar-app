@@ -4,7 +4,6 @@ import {DocAnnotation} from '../../DocAnnotation';
 import {CommentDropdown} from '../CommentDropdown';
 import {Logger} from '../../../logger/Logger';
 import {IStyleMap} from '../../../react/IStyleMap';
-import {EditButton} from '../EditButton';
 import {Comment} from '../../../metadata/Comment';
 
 const log = Logger.create();
@@ -71,9 +70,7 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                         <div style={Styles.barChild} className="flexbar-right">
 
-                            <EditButton id={'annotation-edit-button-' + comment.id}
-                                        onClick={() => this.onEdit()}
-                                        type="comment"/>
+                            {this.props.editButton}
 
                             <div className="ml-1">
                                 <CommentDropdown id={'comment-dropdown-' + comment.id}
@@ -97,14 +94,10 @@ export class ViewComment extends React.Component<IProps, IState> {
         delete comment.pageMeta.comments[comment.id];
     }
 
-    private onEdit() {
-        this.props.onEdit();
-    }
-
 }
 interface IProps {
     comment: DocAnnotation;
-    onEdit: () => void;
+    editButton: JSX.Element;
 }
 
 interface IState {
