@@ -10,11 +10,16 @@ export class ViewOrEdit extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.state = {
+            mode: this.props.mode || 'view'
+        };
+
     }
 
     public render() {
 
-        switch (this.props.mode) {
+        switch (this.state.mode) {
 
             case 'view':
                 return this.props.view;
@@ -29,12 +34,13 @@ export class ViewOrEdit extends React.PureComponent<IProps, IState> {
 }
 
 export interface IProps {
-    readonly mode: Mode;
+    readonly mode?: Mode;
     readonly view: JSX.Element;
     readonly edit: JSX.Element;
 }
 
 export interface IState {
+    readonly mode: Mode;
 }
 
 export type Mode = 'view' | 'edit';

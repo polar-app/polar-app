@@ -2,7 +2,7 @@ import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
 import Collapse from 'reactstrap/lib/Collapse';
-import {CommentInput} from './comment_input/CommentInput';
+import {EditComment} from './comment_input/EditComment';
 import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
 import {Refs} from '../metadata/Refs';
@@ -123,9 +123,9 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <NullCollapse open={this.state.activeInputComponent === 'comment'}>
 
-                    <CommentInput id={annotation.id}
-                                  onCancel={() => this.toggleActiveInputComponent('none')}
-                                  onCommentCreated={(html) => this.onCommentCreated(html)}/>
+                    <EditComment id={annotation.id}
+                                 onCancel={() => this.toggleActiveInputComponent('none')}
+                                 onCommentCreated={(html) => this.onCommentCreated(html)}/>
 
                 </NullCollapse>
 

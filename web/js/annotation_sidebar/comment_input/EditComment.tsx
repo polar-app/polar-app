@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {Logger} from '../../logger/Logger';
-import {DocAnnotation} from '../DocAnnotation';
-import {RichTextEditor4} from '../../apps/card_creator/elements/schemaform/RichTextEditor4';
 import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from "../RichTextArea";
 
 const log = Logger.create();
 
-export class CommentInput extends React.Component<IProps, IState> {
+export class EditComment extends React.Component<IProps, IState> {
 
     private html: string = "";
 
