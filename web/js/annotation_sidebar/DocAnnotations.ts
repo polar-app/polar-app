@@ -14,7 +14,6 @@ import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
-import {text} from 'body-parser';
 
 export class DocAnnotations {
 
