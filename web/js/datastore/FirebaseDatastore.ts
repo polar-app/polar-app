@@ -249,7 +249,33 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 
-        const snapshot = await ref.get({ source: this.preferredSource() });
+        const createSnapshot = async () => {
+
+            // TODO: lift this out into its own method.
+
+            const preferredSource = this.preferredSource();
+
+            if (preferredSource === 'cache') {
+
+                // go cache first, then server if we don't have it in the
+                // cache only then do we fail which would be when we're not
+                // online.
+
+                try {
+                    return await ref.get({ source: this.preferredSource() });
+                } catch (e) {
+                    return await ref.get({ source: 'server' });
+                }
+
+            } else {
+                // now revert to checking the server, then cache if we're
+                // offline.
+                return await ref.get();
+            }
+
+        };
+
+        const snapshot = createSnapshot();
 
         const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
