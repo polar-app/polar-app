@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Logger} from '../../logger/Logger';
+import {Logger} from '../../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {RichTextArea} from "../RichTextArea";
+import {RichTextArea} from "../../RichTextArea";
 
 const log = Logger.create();
 

@@ -22,7 +22,7 @@ import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
 import {AnnotationFlashcardBox} from '../../js/annotation_sidebar/flashcard_input/AnnotationFlashcardBox';
 import {FlashcardInputForCloze} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from '../../js/annotation_sidebar/flashcard_input/FlashcardInputForFrontAndBack';
-import {EditComment} from '../../js/annotation_sidebar/comment_input/EditComment';
+import {EditComment} from '../../js/annotation_sidebar/child_annotations/comments/EditComment';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {ExportButton} from '../../js/ui/export/ExportButton';
 import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';

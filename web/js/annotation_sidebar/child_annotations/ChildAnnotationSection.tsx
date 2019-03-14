@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ViewComment} from './ViewComment';
+import {ViewComment} from './comments/ViewComment';
 import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationType} from '../../metadata/AnnotationType';
 import {FlashcardComponent} from './FlashcardComponent';

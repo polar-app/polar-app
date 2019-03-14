@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {AnnotationType} from '../../js/metadata/AnnotationType';
-import {ViewComment} from '../../js/annotation_sidebar/child_annotations/ViewComment';
+import {ViewComment} from '../../js/annotation_sidebar/child_annotations/comments/ViewComment';
 import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
 import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';

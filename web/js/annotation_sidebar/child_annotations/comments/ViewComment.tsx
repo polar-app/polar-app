@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import {DocAnnotation} from '../DocAnnotation';
-import {CommentDropdown} from './CommentDropdown';
-import {Logger} from '../../logger/Logger';
-import {IStyleMap} from '../../react/IStyleMap';
-import {EditButton} from './EditButton';
-import {Comment} from '../../metadata/Comment';
+import {DocAnnotation} from '../../DocAnnotation';
+import {CommentDropdown} from '../CommentDropdown';
+import {Logger} from '../../../logger/Logger';
+import {IStyleMap} from '../../../react/IStyleMap';
+import {EditButton} from '../EditButton';
+import {Comment} from '../../../metadata/Comment';
 
 const log = Logger.create();
 
