@@ -5,6 +5,7 @@ import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {Comments} from "../../js/metadata/Comments";
 import {ViewOrEditComment} from "../../js/annotation_sidebar/child_annotations/comments/ViewOrEditComment";
+import {NULL_FUNCTION} from "../../js/util/Functions";
 
 export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
 
@@ -40,7 +41,7 @@ export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
 
             <div>
 
-                <ViewOrEditComment id='test' comment={commentDocAnnotation}/>
+                <ViewOrEditComment id='test' comment={commentDocAnnotation} onComment={NULL_FUNCTION}/>
 
             </div>
 
