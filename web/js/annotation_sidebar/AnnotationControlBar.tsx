@@ -1,9 +1,7 @@
 import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
-import {EditComment} from './child_annotations/comments/EditComment';
 import Moment from 'react-moment';
-import {Comments} from '../metadata/Comments';
 import {Refs} from '../metadata/Refs';
 import {AnnotationFlashcardBox} from './flashcard_input/AnnotationFlashcardBox';
 import {Flashcards} from '../metadata/Flashcards';

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import Button from 'reactstrap/lib/Button';
-import {EditIcon} from '../../../../web/js/ui/standard_icons/EditIcon';
 
 /**
  */

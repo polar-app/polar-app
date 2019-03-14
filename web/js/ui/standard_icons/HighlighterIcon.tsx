@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button} from 'reactstrap';
 import {HighlightColor} from '../../metadata/BaseHighlight';
 
 /**

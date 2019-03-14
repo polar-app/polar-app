@@ -37,8 +37,6 @@ export class ViewComment extends React.Component<IProps, IState> {
     public render() {
         const { comment } = this.props;
 
-        const original = comment.original as Comment;
-
         const key = 'comment-' + comment.id;
 
         return (
