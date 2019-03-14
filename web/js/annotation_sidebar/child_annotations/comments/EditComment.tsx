@@ -62,7 +62,7 @@ export class EditComment extends React.Component<IProps, IState> {
                                 className="mt-2"
                                 onClick={() => this.onComment()}>
 
-                            Comment
+                            {this.props.existingComment ? 'Update' : 'Comment'}
 
                         </Button>
 
