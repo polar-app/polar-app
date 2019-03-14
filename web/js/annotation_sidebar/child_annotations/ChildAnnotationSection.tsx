@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {CommentComponent} from './CommentComponent';
+import {ViewComment} from './ViewComment';
 import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationType} from '../../metadata/AnnotationType';
 import {FlashcardComponent} from './FlashcardComponent';
@@ -25,7 +25,7 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
         children.map(child => {
 
             if (child.annotationType === AnnotationType.COMMENT) {
-                result.push (<CommentComponent key={child.id} comment={child}/>);
+                result.push (<ViewComment key={child.id} comment={child}/>);
             } else {
                 result.push (<FlashcardComponent key={child.id} flashcard={child}></FlashcardComponent>);
             }

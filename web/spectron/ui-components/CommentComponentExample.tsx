@@ -1,15 +1,7 @@
 import * as React from 'react';
-import {Ref, Refs} from '../../js/metadata/Refs';
 import {AnnotationType} from '../../js/metadata/AnnotationType';
-import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/CommentComponent';
+import {ViewComment} from '../../js/annotation_sidebar/child_annotations/ViewComment';
 import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
-import {HTMLString} from '../../js/util/HTMLString';
-import {Screenshot} from '../../js/metadata/Screenshot';
-import {Point} from '../../js/Point';
-import {ISODateTimeString} from '../../js/metadata/ISODateTimeStrings';
-import {Comment} from '../../js/metadata/Comment';
-import {HighlightColor} from '../../js/metadata/BaseHighlight';
-import {PageMeta} from '../../js/metadata/PageMeta';
 import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 
@@ -42,7 +34,7 @@ export class CommentComponentExample extends React.Component<IProps, IState> {
 
             <div>
 
-                <CommentComponent comment={comment}/>
+                <ViewComment comment={comment}/>
 
             </div>
 

@@ -25,7 +25,7 @@ const Styles: IStyleMap = {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export class CommentComponent extends React.Component<IProps, IState> {
+export class ViewComment extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

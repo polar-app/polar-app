@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/CommentComponent';
 import {FilePaths} from '../../js/util/FilePaths';
 
 class Styles {
