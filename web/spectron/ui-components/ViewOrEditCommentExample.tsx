@@ -16,13 +16,15 @@ export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
 
         const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
 
-        const comment = Comments.createHTMLComment('hello', 'page:1');
+        const html = 'This is <b>the</b> comment.';
+
+        const comment = Comments.createHTMLComment(html, 'page:1');
 
         const commentDocAnnotation: DocAnnotation = {
 
             id: '01010101',
             annotationType: AnnotationType.COMMENT,
-            html: 'This is <b>the</b> comment.',
+            html,
             pageNum: 1,
             position: {x: 0, y: 0 },
             created: "2018-10-23T21:06:22+00:00",

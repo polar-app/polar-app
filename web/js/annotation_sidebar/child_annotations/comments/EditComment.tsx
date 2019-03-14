@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Logger} from '../../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from "../../RichTextArea";
+import {Comment} from '../../../metadata/Comment';
 
 const log = Logger.create();
 
@@ -13,7 +14,10 @@ export class EditComment extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onComment = this.onComment.bind(this);
-        this.onCancel = this.onCancel.bind(this);
+
+        if (this.props.existingComment) {
+            this.html = this.props.existingComment.content.HTML!;
+        }
 
         this.state = {
             iter: 0
@@ -51,20 +55,15 @@ export class EditComment extends React.Component<IProps, IState> {
 
                     <div className="flexbar-right">
 
-                        {/*onClick={this.handleComment}*/}
-
-                        <Button color="secondary"
-                                size="sm"
-                                className="mt-2 mr-1"
-                                onClick={() => this.onCancel()}>
-                            Cancel
-                        </Button>
+                        {this.props.cancelButton}
 
                         <Button color="primary"
                                 size="sm"
                                 className="mt-2"
                                 onClick={() => this.onComment()}>
+
                             Comment
+
                         </Button>
 
                     </div>
@@ -116,18 +115,11 @@ export class EditComment extends React.Component<IProps, IState> {
 
     }
 
-    private onCancel(): void {
-
-        this.html = "";
-
-        if (this.props.onCancel) {
-            this.props.onCancel();
-        }
-    }
 
 }
 
 export interface IProps {
+
     id: string;
 
     /**
@@ -136,7 +128,8 @@ export interface IProps {
     existingComment?: Comment;
     onCommentCreated?: (html: string) => void;
     onCommentUpdated?: (html: string, existingComment: Comment) => void;
-    onCancel?: () => void;
+    cancelButton: JSX.Element;
+
 }
 
 export interface IState {
