@@ -40,7 +40,6 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
 interface IProps {
     id: string;
     comment: DocAnnotation;
-    onEdit: () => void;
 }
 
 interface IState {

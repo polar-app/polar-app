@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {AnnotationType} from '../../js/metadata/AnnotationType';
-import {ViewComment} from '../../js/annotation_sidebar/child_annotations/comments/ViewComment';
 import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
 import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
+import {Comments} from "../../js/metadata/Comments";
+import {ViewOrEditComment} from "../../js/annotation_sidebar/child_annotations/comments/ViewOrEditComment";
 
-export class CommentComponentExample extends React.Component<IProps, IState> {
+export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -15,7 +16,9 @@ export class CommentComponentExample extends React.Component<IProps, IState> {
 
         const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
 
-        const comment: DocAnnotation = {
+        const comment = Comments.createHTMLComment('hello', 'page:1');
+
+        const commentDocAnnotation: DocAnnotation = {
 
             id: '01010101',
             annotationType: AnnotationType.COMMENT,
@@ -27,14 +30,15 @@ export class CommentComponentExample extends React.Component<IProps, IState> {
             // the reference to a parent annotation if this is a child
             // annotation.
             children: [],
-            pageMeta: docMeta.pageMetas[1]
+            pageMeta: docMeta.pageMetas[1],
+            original: comment
         };
 
         return (
 
             <div>
 
-                <ViewComment comment={comment}/>
+                <ViewOrEditComment id='test' comment={commentDocAnnotation}/>
 
             </div>
 

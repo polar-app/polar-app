@@ -7,7 +7,7 @@ import {Proxies} from '../../js/proxies/Proxies';
 import {Rect} from '../../js/Rect';
 import {TextRect} from '../../js/metadata/TextRect';
 import {TextHighlightRecords} from '../../js/metadata/TextHighlightRecords';
-import {CommentComponentExample} from './CommentComponentExample';
+import {ViewOrEditCommentExample} from './ViewOrEditCommentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
 import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
 import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
@@ -568,7 +568,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <h1 className="component">Comment component</h1>
 
-                <CommentComponentExample/>
+                <ViewOrEditCommentExample/>
 
                 <h1 className="component">Flashcard component</h1>
 
