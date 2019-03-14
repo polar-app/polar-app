@@ -36,7 +36,7 @@ export class PDFViewer extends Viewer {
             log.notice("Document load time: " + stopwatch.stop());
             this.sendResizeEvent();
 
-            this.handleChromeSelectionFix();
+            // this.handleChromeSelectionFix();
 
         });
 
@@ -95,11 +95,19 @@ export class PDFViewer extends Viewer {
 
     private handleChromeSelectionFix() {
 
+        // TODO: this doesn't seem to work.  Both FF and Chrome now seem to have
+        // similar bugs when selecting text and the selection window just jumps
+        // wildly to other parts of the DOM and seemingly gets the start and end
+        // ranges mixed up.
+
+        // Also, it SAY the even is cancelled but that doesn't actually seem to
+        // be the case.
+
         // TODO: this code works BUT I still can't cancel the selection
         // in the pdfjs viewer for some reason - I think because it has its
         // own handlers setup to do selection manually.
 
-        document.getElementById("viewer")!.addEventListener('mousemove', (event) => {
+        document.body.addEventListener('mousemove', (event) => {
 
             if (event.target instanceof HTMLElement) {
 
@@ -130,12 +138,23 @@ export class PDFViewer extends Viewer {
 
                     if (hasActiveSelection()) {
                         event.preventDefault();
-                        event.stopPropagation();
+
+                        // console.log("FIXME: preventing");
+
+                        // event.stopPropagation();
+                        // event.stopImmediatePropagation();
+                    } else {
+                        // console.log("FIXME: no active selection");
                     }
 
+                } else {
+                    // console.log("FIXME: allowing on: " + event.target.innerText, event.target );
                 }
 
+            } else {
+                // console.log("FIXME: not an element");
             }
+
 
         });
 
