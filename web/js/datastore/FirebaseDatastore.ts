@@ -275,7 +275,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-        const snapshot = createSnapshot();
+        const snapshot = await createSnapshot();
 
         const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
