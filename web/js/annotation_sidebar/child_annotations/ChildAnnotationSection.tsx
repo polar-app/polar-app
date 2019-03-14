@@ -3,6 +3,8 @@ import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationType} from '../../metadata/AnnotationType';
 import {FlashcardComponent} from './FlashcardComponent';
 import {ViewOrEditComment} from "./comments/ViewOrEditComment";
+import {CommentActions} from "./comments/CommentActions";
+import {DocMeta} from "../../metadata/DocMeta";
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -28,6 +30,7 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 
                 result.push (<ViewOrEditComment key={child.id}
                                                 id={child.id}
+                                                onComment={(html, existingComment) => CommentActions.update(this.props.docMeta, child, html, existingComment)}
                                                 comment={child}/>);
 
             } else {
@@ -42,8 +45,13 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
     }
 
 }
+
 interface IProps {
-    children: DocAnnotation[];
+
+    readonly docMeta: DocMeta;
+
+    readonly children: DocAnnotation[];
+
 }
 
 interface IState {

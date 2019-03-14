@@ -31,8 +31,8 @@ export class CommentActions {
 
     public static update(docMeta: DocMeta,
                          annotation: DocAnnotation,
-                         existingComment: Comment,
-                         html: string) {
+                         html: string,
+                         existingComment: Comment) {
 
         const ref = Refs.createFromAnnotationType(annotation.id,
                                                   annotation.annotationType);

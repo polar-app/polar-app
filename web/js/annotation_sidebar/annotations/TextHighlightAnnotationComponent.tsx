@@ -4,7 +4,7 @@ import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
-import {IStyleMap} from '../../react/IStyleMap';
+import {DocMeta} from "../../metadata/DocMeta";
 
 
 /**
@@ -49,7 +49,8 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
                     <AnnotationControlBar annotation={annotation}/>
 
                     <div className="comments">
-                        <ChildAnnotationSection children={annotation.children}/>
+                        <ChildAnnotationSection docMeta={this.props.docMeta}
+                                                children={annotation.children}/>
                     </div>
 
                 </div>
@@ -60,7 +61,9 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
 }
 interface IProps {
-    annotation: DocAnnotation;
+    readonly docMeta: DocMeta;
+    readonly annotation: DocAnnotation;
+
 }
 
 interface IState {
