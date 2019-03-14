@@ -37,6 +37,7 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
 
         } else {
             return <EditComment id={'edit-comment-for' + this.props.id}
+                                onComment={(html) => this.props.onComment(html, existingComment)}
                                 existingComment={existingComment}
                                 cancelButton={cancelButton}/>;
         }
@@ -55,6 +56,7 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
 interface IProps {
     readonly id: string;
     readonly comment: DocAnnotation;
+    readonly onComment: (html: string, existingComment: Comment) => void;
 }
 
 interface IState {

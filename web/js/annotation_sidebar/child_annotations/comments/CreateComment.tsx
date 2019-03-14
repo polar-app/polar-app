@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {DocAnnotation} from '../../DocAnnotation';
 import {EditComment} from "./EditComment";
 import {CancelButton} from "../CancelButton";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
@@ -21,11 +20,10 @@ export class CreateComment extends React.Component<IProps, IState> {
 
         const cancelButton = <CancelButton onClick={() => this.onCancel()}/>;
 
-        // FIXME: this needs to have a create/update button
-
         return <NullCollapse open={this.state.active}>
 
             <EditComment id={'edit-comment-for' + this.props.id}
+                         onComment={(html) => this.props.onComment(html)}
                          cancelButton={cancelButton}/>;
 
         </NullCollapse>;
@@ -39,8 +37,9 @@ export class CreateComment extends React.Component<IProps, IState> {
 }
 interface IProps {
     readonly id: string;
-    readonly comment: DocAnnotation;
     readonly active?: boolean;
+    readonly onComment: (html: string) => void;
+    readonly onCancel: () => void;
 }
 
 interface IState {

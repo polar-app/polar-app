@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
-import Collapse from 'reactstrap/lib/Collapse';
 import {EditComment} from './child_annotations/comments/EditComment';
 import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
@@ -21,6 +20,8 @@ import {Functions} from '../util/Functions';
 import {ClozeFields, FrontAndBackFields} from './flashcard_input/FlashcardInput';
 import {Logger} from '../logger/Logger';
 import {NullCollapse} from '../ui/null_collapse/NullCollapse';
+import {Comment} from "../metadata/Comment";
+import {CreateComment} from "./child_annotations/comments/CreateComment";
 
 const log = Logger.create();
 
@@ -53,7 +54,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onCommentCreated.bind(this);
+        this.onComment = this.onComment.bind(this);
 
         this.state = {
             activeInputComponent: 'none'
@@ -123,9 +124,9 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <NullCollapse open={this.state.activeInputComponent === 'comment'}>
 
-                    <EditComment id={annotation.id}
-                                 onCancel={() => this.toggleActiveInputComponent('none')}
-                                 onCommentCreated={(html) => this.onCommentCreated(html)}/>
+                    <CreateComment id={annotation.id}
+                                   onCancel={() => this.toggleActiveInputComponent('none')}
+                                   onComment={(html) => this.onComment(html)}/>
 
                 </NullCollapse>
 
@@ -165,7 +166,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         });
     }
 
-    private onCommentCreated(html: string) {
+    private onComment(html: string, existingComment?: Comment) {
 
         RendererAnalytics.event({category: 'annotations', action: 'comment-created'});
 
