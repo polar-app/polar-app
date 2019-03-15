@@ -1,4 +1,4 @@
-import {ISODateTimeString} from "../metadata/ISODateTimeStrings";
+import {ISODateString, ISODateTimeString} from "../metadata/ISODateTimeStrings";
 
 // FIXME: do this in a namespace so not everything has to have 'search' in front of it.
 
@@ -19,6 +19,8 @@ export interface SearchEngine {
 export interface SearchResults {
 
     // http://export.arxiv.org/api/query?search_query=all:electron
+
+    // https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL
 
     /**
      * The total number of results available.
@@ -44,14 +46,30 @@ export interface SearchResults {
 }
 
 export interface SearchPage {
+
     readonly entries: ReadonlyArray<SearchEngine>;
+
 }
 
 export interface SearchEntry {
+
+    /**
+     * Unique ID for this search result entry.
+     */
     readonly id: string;
-    readonly updated: ISODateTimeString;
-    readonly published: ISODateTimeString;
-    readonly summary: ContentStr;
+
+    readonly updated?: ISODateTimeString | ISODateString;
+
+    readonly published: ISODateTimeString | ISODateString;
+
+    readonly summary?: ContentStr;
+
+    readonly publisher?: string;
+
+    readonly links: ReadonlyArray<DocLink>;
+
+    readonly doi?: DOIStr;
+
 }
 
 /**
@@ -61,6 +79,7 @@ export interface SearchEntry {
 export interface ContentStr {
 
     readonly type: ContentStrType;
+
     readonly value: string;
 
 }
@@ -68,15 +87,32 @@ export interface ContentStr {
 export type ContentStrType = 'text' | 'html';
 
 export interface Author {
+
     readonly displayName: string;
+
     readonly firstName?: string;
+
     readonly lastName?: string;
+
     readonly affiliation: string;
+
 }
 
 export interface DocLink {
     readonly contentType: DocContentType;
     readonly href: string;
+    readonly rel?: DocLinkRel;
 }
 
 export type DocContentType = 'application/pdf' | 'text/html';
+
+/**
+ * Used so that we know what type of link this is.  Is it for downloading the
+ * paper, a landing page for more information, etc.
+ */
+export type DocLinkRel = 'download' | 'landing';
+
+/**
+ * A string formatted as a DOI 10.1038/nature12373
+ */
+export type DOIStr = string;
