@@ -18,6 +18,8 @@ export interface SearchEngine {
  */
 export interface SearchResults {
 
+    // Example APIs that we should support.
+
     // http://export.arxiv.org/api/query?search_query=all:electron
 
     // https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL
@@ -70,6 +72,8 @@ export interface SearchEntry {
 
     readonly doi?: DOIStr;
 
+    readonly pmid?: PMIDStr;
+
 }
 
 /**
@@ -116,3 +120,8 @@ export type DocLinkRel = 'download' | 'landing';
  * A string formatted as a DOI 10.1038/nature12373
  */
 export type DOIStr = string;
+
+/**
+ * PubMed ID string.
+ */
+export type PMIDStr = string;

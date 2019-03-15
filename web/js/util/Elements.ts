@@ -194,8 +194,13 @@ export class Elements {
             return undefined;
         }
 
-        if (element.scrollHeight > element.clientHeight) {
+        const scrollHeight = element.scrollHeight;
+        const clientHeight = element.clientHeight;
+
+        if (scrollHeight > clientHeight) {
+            // console.log("scroll parent based on: ", {scrollHeight, clientHeight});
             return element;
+
         } else {
             return this.getScrollParent(element.parentElement);
         }
