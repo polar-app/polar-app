@@ -2,16 +2,44 @@ import {ISODateString, ISODateTimeString} from "../metadata/ISODateTimeStrings";
 
 namespace search {
 
+    /**
+     * Responsible for creating search engines by matching the query to the
+     * implementation.
+     */
+    export interface IEngineFactory {
+
+        /**
+         * Get engines that can execute the given query.  The engine is created
+         * but doesn't yet have a search executed.
+         */
+        getEngines(query: QueryStr): Promise<ReadonlyArray<Engine>>;
+
+    }
+
     export interface Engine {
+
+        /**
+         * A unique id for the search engine.
+         */
+        id: EngineIDStr;
 
         /**
          * Run a search and provide a results object to allow us to iterate
          * through the results.
          *
+         * The query is given to the Engine from the IEngineFactory.
+         *
          */
-        query(searchQuery: string): Promise<Results>;
+        executeQuery(): Promise<Results>;
 
     }
+
+    export type EngineIDStr = string;
+
+    /**
+     * A basic query string.
+     */
+    export type QueryStr = string;
 
     /**
      *
@@ -39,6 +67,11 @@ namespace search {
          * Advanced the results to the next page.
          */
         next(): Promise<Page | undefined>;
+
+        /**
+         * Return true if the search result has a current page.
+         */
+        hasCurrent(): Promise<boolean>;
 
         /**
          * True if we have another page of results.
