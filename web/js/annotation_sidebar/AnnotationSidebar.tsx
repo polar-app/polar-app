@@ -21,11 +21,11 @@ import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js
 
 const log = Logger.create();
 
-export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, AnnotationSidebarState> {
+export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private docAnnotationIndex: DocAnnotationIndex = new DocAnnotationIndex();
 
-    constructor(props: AnnotationSidebarProps, context: any) {
+    constructor(props: IProps, context: any) {
         super(props, context);
 
         this.scrollToAnnotation = this.scrollToAnnotation.bind(this);
@@ -222,7 +222,9 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         const result: any = [];
 
         annotations.map(annotation => {
-            result.push (<DocAnnotationComponent key={annotation.id} annotation={annotation}/>);
+            result.push (<DocAnnotationComponent key={annotation.id}
+                                                 annotation={annotation}
+                                                 docMeta={this.props.docMeta}/>);
         });
 
         return result;
@@ -289,13 +291,12 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
 }
 
-export interface AnnotationSidebarState {
-
-    annotations: DocAnnotation[];
-}
-
-
-export interface AnnotationSidebarProps {
+interface IProps {
     readonly docMeta: DocMeta;
 }
+
+interface IState {
+    readonly annotations: DocAnnotation[];
+}
+
 

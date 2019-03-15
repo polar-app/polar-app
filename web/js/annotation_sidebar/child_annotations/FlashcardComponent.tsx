@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Moment from 'react-moment';
 import {DocAnnotation} from '../DocAnnotation';
-import {CommentDropdown} from './CommentDropdown';
 import {FlashcardDropdown} from './FlashcardDropdown';
 import {Logger} from '../../logger/Logger';
 import {IStyleMap} from '../../react/IStyleMap';

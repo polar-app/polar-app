@@ -1,10 +1,7 @@
 import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
-import Collapse from 'reactstrap/lib/Collapse';
-import {AnnotationCommentBox} from './AnnotationCommentBox';
 import Moment from 'react-moment';
-import {Comments} from '../metadata/Comments';
 import {Refs} from '../metadata/Refs';
 import {AnnotationFlashcardBox} from './flashcard_input/AnnotationFlashcardBox';
 import {Flashcards} from '../metadata/Flashcards';
@@ -21,6 +18,9 @@ import {Functions} from '../util/Functions';
 import {ClozeFields, FrontAndBackFields} from './flashcard_input/FlashcardInput';
 import {Logger} from '../logger/Logger';
 import {NullCollapse} from '../ui/null_collapse/NullCollapse';
+import {Comment} from "../metadata/Comment";
+import {CreateComment} from "./child_annotations/comments/CreateComment";
+import {CommentActions} from "./child_annotations/comments/CommentActions";
 
 const log = Logger.create();
 
@@ -30,14 +30,6 @@ const Styles: IStyleMap = {
         paddingTop: '4px',
         color: 'red !important',
         fontSize: '15px'
-
-        // minWidth: '350px',
-        // width: '350px'
-    },
-
-    icon: {
-        fontSize: '16px',
-        color: '#a4a4a4'
 
         // minWidth: '350px',
         // width: '350px'
@@ -61,7 +53,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onCommentCreated.bind(this);
+        this.onComment = this.onComment.bind(this);
 
         this.state = {
             activeInputComponent: 'none'
@@ -94,7 +86,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        <Button className="text-muted"
+                        <Button className="text-muted p-1"
                                 title="Create comment"
                                 size="sm"
                                 color="light"
@@ -105,7 +97,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         </Button>
 
-                        <Button className="text-muted"
+                        <Button className="ml-1 text-muted p-1"
                                 title="Create flashcard"
                                 style={Styles.button}
                                 size="sm"
@@ -116,26 +108,23 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         </Button>
 
-                        <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
-                                            annotation={annotation}
-                                            onDelete={() => this.onDelete(annotation)}
-                                            onCreateComment={() => this.toggleActiveInputComponent('comment')}
-                                            onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
-                                            onJumpToContext={() => this.onJumpToContext(annotation)}/>
-
+                        <div className="ml-1">
+                            <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
+                                                annotation={annotation}
+                                                onDelete={() => this.onDelete(annotation)}
+                                                onCreateComment={() => this.toggleActiveInputComponent('comment')}
+                                                onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
+                                                onJumpToContext={() => this.onJumpToContext(annotation)}/>
+                        </div>
 
                     </div>
 
                 </div>
 
-                <NullCollapse open={this.state.activeInputComponent === 'comment'}>
-
-                    <AnnotationCommentBox id={annotation.id}
-                                          onCancel={() => this.toggleActiveInputComponent('none')}
-                                          onCommentCreated={(html) => this.onCommentCreated(html)}/>
-
-                </NullCollapse>
-
+                <CreateComment id={annotation.id}
+                               active={this.state.activeInputComponent === 'comment'}
+                               onCancel={() => this.toggleActiveInputComponent('none')}
+                               onComment={(html) => this.onComment(html)}/>
 
                 <NullCollapse open={this.state.activeInputComponent === 'flashcard'}>
 
@@ -172,7 +161,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         });
     }
 
-    private onCommentCreated(html: string) {
+    private onComment(html: string, existingComment?: Comment) {
 
         RendererAnalytics.event({category: 'annotations', action: 'comment-created'});
 
@@ -186,11 +175,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const {annotation} = this.props;
 
-        const ref = Refs.createFromAnnotationType(annotation.id,
-                                                  annotation.annotationType);
-
-        const comment = Comments.createHTMLComment(html, ref);
-        annotation.pageMeta.comments[comment.id] = comment;
+        CommentActions.create(annotation, html);
 
         this.setState({
             activeInputComponent: 'none'

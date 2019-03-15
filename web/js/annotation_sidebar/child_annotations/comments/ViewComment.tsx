@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import {DocAnnotation} from '../DocAnnotation';
-import {AnnotationDropdown} from '../AnnotationDropdown';
-import {CommentDropdown} from './CommentDropdown';
-import {Logger} from '../../logger/Logger';
-import {IStyleMap} from '../../react/IStyleMap';
+import {DocAnnotation} from '../../DocAnnotation';
+import {CommentDropdown} from '../CommentDropdown';
+import {Logger} from '../../../logger/Logger';
+import {IStyleMap} from '../../../react/IStyleMap';
+import {Comment} from '../../../metadata/Comment';
 
 const log = Logger.create();
 
@@ -24,7 +24,7 @@ const Styles: IStyleMap = {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export class CommentComponent extends React.Component<IProps, IState> {
+export class ViewComment extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -47,6 +47,9 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                     <div className="pb-1 pt-1">
 
+                        {/*TODO: based on the state determine if we should be*/}
+                        {/*editing or just displaying the comment*/}
+
                         <span dangerouslySetInnerHTML={{__html: comment.html!}}>
 
                         </span>
@@ -65,9 +68,13 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                         <div style={Styles.barChild} className="flexbar-right">
 
-                            <CommentDropdown id={'comment-dropdown-' + comment.id}
-                                             comment={comment}
-                                             onDelete={() => this.onDelete(comment)}/>
+                            {this.props.editButton}
+
+                            <div className="ml-1">
+                                <CommentDropdown id={'comment-dropdown-' + comment.id}
+                                                 comment={comment}
+                                                 onDelete={() => this.onDelete(comment)}/>
+                            </div>
 
                         </div>
 
@@ -88,6 +95,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
 }
 interface IProps {
     comment: DocAnnotation;
+    editButton: JSX.Element;
 }
 
 interface IState {
