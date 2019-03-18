@@ -22,7 +22,7 @@
     "dist-prepare": "",
     "compile": "tsc",
     "compile-watch": "tsc --watch",
-    "test": "scripts/test-runner.sh",
+    "test": "./scripts/test-runner.sh",
     "e2e": "find web/spectron -name 'spec.js' | xargs mocha-parallel-tests --timeout 30000 --max-parallel=1 --exit",
     "e2e-mocha": "npx mocha --exit --log-timer-events --recursive 'web/spectron/**/spec.js'",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
