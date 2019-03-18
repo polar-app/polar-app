@@ -75,10 +75,12 @@ export class ReadingProgressResume {
 
         const newScrollTop = Math.floor(pageTop + pagemarkHeight - windowDelta);
 
-        setTimeout(() => {
-            // the latest pdf.js seems to need this to happen in the background.
-            scrollParent.scrollTop = newScrollTop;
-        }, 1);
+        // setTimeout(() => {
+        //     // the latest pdf.js seems to need this to happen in the background.
+        //     scrollParent.scrollTop = newScrollTop;
+        // }, 1);
+
+        scrollParent.scrollTop = newScrollTop;
 
         return true;
 
