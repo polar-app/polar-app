@@ -75,14 +75,24 @@ export class ReadingProgressResume {
 
         const newScrollTop = Math.floor(pageTop + pagemarkHeight - windowDelta);
 
-        // setTimeout(() => {
-        //     // the latest pdf.js seems to need this to happen in the background.
-        //     scrollParent.scrollTop = newScrollTop;
-        // }, 1);
+        if (this.pdfjsVersion() === "2.0.511") {
+            scrollParent.scrollTop = newScrollTop;
+        } else {
 
-        scrollParent.scrollTop = newScrollTop;
+            setTimeout(() => {
+                // the latest pdf.js seems to need this to happen in the background.
+                scrollParent.scrollTop = newScrollTop;
+            }, 1);
+
+        }
 
         return true;
+
+    }
+
+    private static pdfjsVersion() {
+
+        return ((<any> window).pdfjsLib.version);
 
     }
 
