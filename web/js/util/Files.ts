@@ -7,6 +7,8 @@ import {FilePaths} from "./FilePaths";
 import {Providers} from "./Providers";
 import {DurationStr, TimeDurations} from './TimeDurations';
 
+const ENABLE_ATOMIC_WRITES = false;
+
 const log = Logger.create();
 
 // noinspection TsLint
@@ -382,7 +384,9 @@ export class Files {
         const targetPath: string = path;
         let failed: boolean = false;
 
-        if (options.atomic) {
+        const atomic = ENABLE_ATOMIC_WRITES && options.atomic;
+
+        if (atomic) {
             path = FilePaths.join(FilePaths.dirname(path), "." + FilePaths.basename(path));
         }
 
@@ -437,7 +441,7 @@ export class Files {
 
         } finally {
 
-            if (options.atomic && ! failed) {
+            if (atomic && ! failed) {
                 await Files.renameAsync(path, targetPath);
             }
 
