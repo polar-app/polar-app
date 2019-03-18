@@ -1,11 +1,11 @@
-/**
- *
- */
 import {Broadcasters} from '../../ipc/Broadcasters';
 import {ProgressMessage} from './ProgressMessage';
 import {AppRuntime} from '../../AppRuntime';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export class ProgressMessages {
 
@@ -25,9 +25,9 @@ export class ProgressMessages {
                 value: progressMessage
             };
 
-            Messenger.postMessage({
-                message
-          });
+            Messenger.postMessage({message})
+                .catch(err => log.error("Could not send message: ", err));
+
         }
 
     }
