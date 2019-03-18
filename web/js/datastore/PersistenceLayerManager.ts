@@ -1,8 +1,5 @@
-import {PersistenceLayer} from "./PersistenceLayer";
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {SynchronizationEvent} from './Datastore';
 import {RemotePersistenceLayerFactory} from './factories/RemotePersistenceLayerFactory';
-import {CloudAwareDatastore} from './CloudAwareDatastore';
 import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFactory";
 import {IProvider} from "../util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
@@ -125,8 +122,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
     private createPersistenceLayer(type: PersistenceLayerType): ListenablePersistenceLayer {
 
-        if (AppRuntime.isBrowser()) {
-            // we are ALWAYs using firebase when in the browser.
+        if (type === 'firebase') {
             return FirebasePersistenceLayerFactory.create();
         }
 
@@ -158,7 +154,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
 }
 
-export type PersistenceLayerType = 'local' | 'cloud';
+export type PersistenceLayerType = 'local' | 'cloud' | 'firebase';
 
 /**
  * The state of the persistence layer.
@@ -189,6 +185,12 @@ export class PersistenceLayerTypes {
     private static readonly KEY = 'polar-persistence-layer';
 
     public static get(): PersistenceLayerType {
+
+        if (AppRuntime.isBrowser()) {
+            // we are ALWAYS using firebase when in the browser and there is no
+            // other option.
+            return 'firebase';
+        }
 
         const currentType = window.localStorage.getItem(this.KEY);
 

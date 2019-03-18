@@ -7,7 +7,7 @@ import {HighlighterIcon} from './HighlighterIcon';
 
 /**
  */
-export class AnnotationIcon extends React.Component<IProps, IState> {
+export class AnnotationIcon extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

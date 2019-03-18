@@ -1,13 +1,9 @@
 import * as React from 'react';
-import {Logger} from '../logger/Logger';
-import {DocAnnotation} from './DocAnnotation';
-import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichTextEditor4';
 import Button from 'reactstrap/lib/Button';
-import {RichTextArea} from "./RichTextArea";
+import {RichTextArea} from "../../RichTextArea";
+import {Comment} from '../../../metadata/Comment';
 
-const log = Logger.create();
-
-export class AnnotationCommentBox extends React.Component<IProps, IState> {
+export class EditComment extends React.Component<IProps, IState> {
 
     private html: string = "";
 
@@ -15,7 +11,10 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onComment = this.onComment.bind(this);
-        this.onCancel = this.onCancel.bind(this);
+
+        if (this.props.existingComment) {
+            this.html = this.props.existingComment.content.HTML!;
+        }
 
         this.state = {
             iter: 0
@@ -53,20 +52,15 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
                     <div className="flexbar-right">
 
-                        {/*onClick={this.handleComment}*/}
-
-                        <Button color="secondary"
-                                size="sm"
-                                className="mt-2 mr-1"
-                                onClick={() => this.onCancel()}>
-                            Cancel
-                        </Button>
+                        {this.props.cancelButton}
 
                         <Button color="primary"
                                 size="sm"
                                 className="mt-2"
                                 onClick={() => this.onComment()}>
-                            Comment
+
+                            {this.props.existingComment ? 'Update' : 'Comment'}
+
                         </Button>
 
                     </div>
@@ -98,19 +92,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
     private onComment(): void {
 
-        if (this.props.comment) {
-
-            if (this.props.onCommentChanged) {
-                this.props.onCommentChanged(this.html);
-            }
-
-        } else {
-
-            if (this.props.onCommentCreated) {
-                this.props.onCommentCreated(this.html);
-            }
-
-        }
+        this.props.onComment(this.html, this.props.existingComment);
 
         this.setState({
             iter: this.state.iter + 1
@@ -118,30 +100,32 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
     }
 
-    private onCancel(): void {
-
-        this.html = "";
-
-        if (this.props.onCancel) {
-            this.props.onCancel();
-        }
-    }
-
 }
 
 export interface IProps {
-    id: string;
+
+    readonly id: string;
 
     /**
      * When given a comment we're editing an existing comment.
      */
-    comment?: Comment;
-    onCommentCreated?: (html: string) => void;
-    onCommentChanged?: (html: string) => void;
-    onCancel?: () => void;
+    readonly existingComment?: Comment;
+
+    /**
+     * Called when we have a created or updated an existing comment.  If the
+     * 'existingComment' is specified when we're doing an update.
+     */
+    readonly onComment: (html: string, existingComment?: Comment) => void;
+
+    /**
+     *
+     */
+    readonly cancelButton: JSX.Element;
+
 }
 
 export interface IState {
-    iter: number;
+    readonly iter: number;
 }
+
 

@@ -1,18 +1,4 @@
 import * as React from 'react';
-import {Ref} from '../../js/metadata/Refs';
-import {AnnotationType} from '../../js/metadata/AnnotationType';
-import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/CommentComponent';
-import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
-import {HTMLString} from '../../js/util/HTMLString';
-import {Screenshot} from '../../js/metadata/Screenshot';
-import {Point} from '../../js/Point';
-import {ISODateTimeString} from '../../js/metadata/ISODateTimeStrings';
-import {Comment} from '../../js/metadata/Comment';
-import {HighlightColor} from '../../js/metadata/BaseHighlight';
-import {PageMeta} from '../../js/metadata/PageMeta';
-import {Proxies} from '../../js/proxies/Proxies';
-import {MockDocMetas} from '../../js/metadata/DocMetas';
-import {FlashcardComponent} from '../../js/annotation_sidebar/child_annotations/FlashcardComponent';
 import Button from 'reactstrap/lib/Button';
 
 export class AnkiReviewContent extends React.Component<IProps, IState> {
