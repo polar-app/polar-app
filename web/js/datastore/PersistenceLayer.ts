@@ -1,20 +1,20 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {
-    DeleteResult, DocMetaSnapshotEvent, FileRef,
-    DocMetaSnapshotEventListener, SnapshotResult, ErrorListener,
-    DatastoreID,
+    BinaryFileData,
     Datastore,
-    BinaryFileData, PrefsProvider
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    FileMeta,
+    FileRef,
+    SnapshotResult
 } from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
-import {FileMeta} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
-import {FileHandle} from '../util/Files';
 import {DatastoreMutation} from './DatastoreMutation';
-import {NULL_FUNCTION} from '../util/Functions';
 
 export interface PersistenceLayer {
 

@@ -7,6 +7,9 @@ import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {PageMeta} from '../metadata/PageMeta';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from '../metadata/Refs';
+import {Flashcard} from '../metadata/Flashcard';
+import {AreaHighlight} from '../metadata/AreaHighlight';
+import {TextHighlight} from '../metadata/TextHighlight';
 
 export interface DocAnnotation {
 
@@ -29,9 +32,11 @@ export interface DocAnnotation {
      * The color for highlights.  When undefined there is no color (which would
      * work for comments, etc)
      */
-    color?: HighlightColor;
+    readonly color?: HighlightColor;
 
-    pageMeta: PageMeta;
+    readonly pageMeta: PageMeta;
+
+    readonly original: Comment | Flashcard | AreaHighlight | TextHighlight;
 
 }
 

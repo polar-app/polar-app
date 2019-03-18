@@ -1,21 +1,9 @@
 import * as React from 'react';
-import {Button} from 'reactstrap';
-import {HighlightColor} from '../../metadata/BaseHighlight';
-import {IStyleMap} from '../../react/IStyleMap';
-
-const Styles: IStyleMap = {
-
-    icon: {
-        fontSize: '16px',
-        color: '#a4a4a4',
-        width: '16px'
-    }
-
-};
+import {IconStyles} from './IconStyles';
 
 /**
  */
-export class FlashcardIcon extends React.Component<IProps, IState> {
+export class FlashcardIcon extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -25,7 +13,7 @@ export class FlashcardIcon extends React.Component<IProps, IState> {
 
         return (
 
-            <i style={Styles.icon} className="fas fa-bolt"></i>
+            <i style={IconStyles.ICON} className="fas fa-bolt"></i>
 
         );
 

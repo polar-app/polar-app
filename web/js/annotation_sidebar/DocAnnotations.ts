@@ -56,6 +56,7 @@ export class DocAnnotations {
             children: [],
             comments: [],
             ref: flashcard.ref,
+            original: flashcard
 
         };
 
@@ -78,6 +79,7 @@ export class DocAnnotations {
             children: [],
             comments: [],
             ref: comment.ref,
+            original: comment
 
         };
 
@@ -100,7 +102,8 @@ export class DocAnnotations {
             created: areaHighlight.created,
             pageMeta,
             children: [],
-            comments: []
+            comments: [],
+            original: areaHighlight
         };
 
     }
@@ -148,7 +151,8 @@ export class DocAnnotations {
             created: textHighlight.created,
             pageMeta,
             children: [],
-            comments: []
+            comments: [],
+            original: textHighlight
         };
 
     }

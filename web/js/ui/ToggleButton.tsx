@@ -1,18 +1,4 @@
 import * as React from 'react';
-import {Ref} from '../metadata/Refs';
-import {AnnotationType} from '../metadata/AnnotationType';
-import {CommentComponent} from '../annotation_sidebar/child_annotations/CommentComponent';
-import {DocAnnotation} from '../annotation_sidebar/DocAnnotation';
-import {HTMLString} from '../util/HTMLString';
-import {Screenshot} from '../metadata/Screenshot';
-import {Point} from '../Point';
-import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
-import {Comment} from '../metadata/Comment';
-import {HighlightColor} from '../metadata/BaseHighlight';
-import {PageMeta} from '../metadata/PageMeta';
-import {Proxies} from '../proxies/Proxies';
-import {MockDocMetas} from '../metadata/DocMetas';
-import {FlashcardComponent} from '../annotation_sidebar/child_annotations/FlashcardComponent';
 import Button from 'reactstrap/lib/Button';
 
 export class ToggleButton extends React.Component<IProps, IState> {

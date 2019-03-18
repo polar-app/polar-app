@@ -37,11 +37,9 @@ export class Refs {
 
         }
 
-        throw new Error("Not handled yet");
+        throw new Error("Not handled yet: " + type);
 
     }
-
-
 
 }
 

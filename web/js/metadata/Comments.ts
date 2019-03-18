@@ -1,4 +1,4 @@
-import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {Comment} from './Comment';
 import {Hashcodes} from '../Hashcodes';
 import {TextType} from './TextType';
@@ -21,13 +21,22 @@ export class Comments {
 
     }
 
-    public static createHTMLComment(text: string, ref: Ref) {
+    public static createHTMLComment(text: string,
+                                    ref: Ref,
+                                    created?: ISODateTimeString,
+                                    lastUpdated?: ISODateTimeString ) {
 
         const content = Texts.create(text, TextType.HTML);
 
         const id = Hashcodes.createID(this.SEQUENCE++);
-        const created = ISODateTimeStrings.create();
-        const lastUpdated = created;
+
+        if (! created) {
+            created = ISODateTimeStrings.create();
+        }
+
+        if (! lastUpdated) {
+            lastUpdated = created;
+        }
 
         return new Comment({content, id, guid: id, created, lastUpdated, ref });
 
