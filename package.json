@@ -78,6 +78,7 @@
     "jsdom": "~13.1.0",
     "mocha": "~5.2.0",
     "mocha-isolation": "~0.1.5",
+    "mocha-junit-reporter": "^1.18.0",
     "mocha-parallel-tests": "~2.0.6-alpha.3",
     "null-loader": "^0.1.1",
     "recursive-readdir": "~2.2.2",
