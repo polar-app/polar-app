@@ -92,7 +92,13 @@ export class ReadingProgressResume {
 
     private static pdfjsVersion() {
 
-        return ((<any> window).pdfjsLib.version);
+        const win = (<any> window);
+
+        if (win && win.pdfjsLib) {
+            return (win.pdfjsLib.version);
+        }
+
+        return undefined;
 
     }
 
