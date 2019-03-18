@@ -73,9 +73,12 @@ export class ReadingProgressResume {
         // visible by computing the height of the window and shifting it
         const windowDelta = window.innerHeight * (0.2);
 
-        const newScrollTop = pageTop + pagemarkHeight - windowDelta;
+        const newScrollTop = Math.floor(pageTop + pagemarkHeight - windowDelta);
 
-        scrollParent.scrollTop = newScrollTop;
+        setTimeout(() => {
+            // the latest pdf.js seems to need this to happen in the background.
+            scrollParent.scrollTop = newScrollTop;
+        }, 1);
 
         return true;
 
