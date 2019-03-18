@@ -258,7 +258,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         await Files.writeFileAsync(fileReference.path, data, {existing: 'link'});
 
-        await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '));
+        await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '), {atomic: true});
 
         return this.createDatastoreFile(backend, ref, fileReference);
 
@@ -334,7 +334,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         // state.json.new, then delete state.json, then move state.json.new to
         // state.json..  This way we can create backups using hard links easily.
 
-        const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
+        const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8', atomic: true});
 
         this.datastoreMutations.handle(result, datastoreMutation, () => true);
 
@@ -463,7 +463,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         const json = JSON.stringify(datastoreInfo, null, "  ");
 
-        await Files.writeFileAsync(infoPath, json);
+        await Files.writeFileAsync(infoPath, json, {atomic: true});
 
     }
 
@@ -760,7 +760,7 @@ export class DiskPrefsStore {
     public async commit(): Promise<void> {
 
         const data = JSON.stringify(this.prefs.toDict(), null, "  ");
-        await Files.writeFileAsync(this.path, data);
+        await Files.writeFileAsync(this.path, data, {atomic: true});
 
     }
 

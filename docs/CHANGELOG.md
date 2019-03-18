@@ -1,6 +1,13 @@
 
 # 1.13.13
 
+- sidebar and viewer properly resized nwo
+
+- Comments can now be edited, not just viewed. 
+
+- The DiskDatastore now performs more atomic operations when working with state 
+  files for more reliable operations.
+
 - Webapp users now properly get a default set of documents.
 
 - Tour now works on webapp

@@ -14,6 +14,7 @@ class Promised {
 
     public readFileAsync = promisify(fs.readFile);
     public writeFileAsync = promisify(fs.writeFile);
+    public rename = promisify(fs.rename);
     public mkdirAsync = promisify(fs.mkdir);
     public accessAsync = promisify(fs.access);
     public statAsync = promisify(fs.stat);
@@ -377,49 +378,71 @@ export class Files {
                                        data: FileHandle | NodeJS.ReadableStream | Buffer | string,
                                        options: WriteFileAsyncOptions = {}) {
 
+        // copy of the original when we are doing atomic writes.
+        const targetPath: string = path;
 
-        if (data instanceof Buffer || typeof data === 'string') {
+        if (options.atomic) {
+            path = FilePaths.join(FilePaths.dirname(path), "." + FilePaths.basename(path));
+        }
 
-            return this.withProperException(() => this.promised.writeFileAsync(path, data, options));
+        try {
 
-        } else if ( FileHandles.isFileHandle(data) ) {
+            if (data instanceof Buffer || typeof data === 'string') {
 
-            const existing = options.existing ? options.existing : 'copy';
+                return this.withProperException(() => this.promised.writeFileAsync(path, data, options));
 
-            const fileRef = <FileHandle> data;
+            } else if (FileHandles.isFileHandle(data)) {
 
-            if (existing === 'link') {
+                const existing = options.existing ? options.existing : 'copy';
 
-                // try to create a hard link first, then revert to a regular
-                // file copy if necessary.
+                const fileRef = <FileHandle> data;
 
-                if (await Files.existsAsync(path)) {
-                    // in the link mode an existing files has to be removed
-                    // before it can be linked.  Normally writeFileAsync would
-                    // overwrite existing files.
-                    await Files.unlinkAsync(path);
+                if (existing === 'link') {
+
+                    // try to create a hard link first, then revert to a regular
+                    // file copy if necessary.
+
+                    if (await Files.existsAsync(path)) {
+                        // in the link mode an existing files has to be removed
+                        // before it can be linked.  Normally writeFileAsync would
+                        // overwrite existing files.
+                        await Files.unlinkAsync(path);
+                    }
+
+                    const src = fileRef.path;
+                    const dest = path;
+
+                    try {
+                        await Files.linkAsync(src, dest);
+                        return;
+                    } catch (e) {
+                        log.warn(`Unable to create hard link from ${src} to ${dest} (reverting to copy)`);
+                    }
+
                 }
 
-                const src = fileRef.path;
-                const dest = path;
+                Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
 
-                try {
-                    await Files.linkAsync(src, dest);
-                    return;
-                } catch (e) {
-                    log.warn(`Unable to create hard link from ${src} to ${dest} (reverting to copy)`);
-                }
+            } else {
+
+                const readableStream = <NodeJS.ReadableStream> data;
+                readableStream.pipe(fs.createWriteStream(path));
+            }
+
+        } finally {
+
+            if (options.atomic) {
+
+                await Files.renameAsync(path, targetPath);
 
             }
 
-            Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
-
-        } else {
-
-            const readableStream = <NodeJS.ReadableStream> data;
-            readableStream.pipe(fs.createWriteStream(path));
         }
 
+    }
+
+    public static async renameAsync(oldPath: string, newPath: string) {
+        return this.withProperException(() => this.promised.rename(oldPath, newPath));
     }
 
     public static async statAsync(path: string): Promise<Stats> {
@@ -544,10 +567,16 @@ export interface WriteFileAsyncOptions {
     readonly flag?: string;
 
     /**
-     * Startegy for how to handle existing files.  Copy is just a copy of the
+     * Strategy for how to handle existing files.  Copy is just a copy of the
      * original file but link creates a hard link.
      */
     readonly existing?: 'link' | 'copy';
+
+    /**
+     * When true, we write atomically by creating a temp file, writing to the
+     * temp file, then doing a rename of the temp file to the target file.
+     */
+    readonly atomic?: boolean;
 
 }
 
