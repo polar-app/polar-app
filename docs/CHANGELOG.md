@@ -1,7 +1,7 @@
 
 # 1.13.13
 
-- sidebar and viewer properly resized nwo
+- sidebar and viewer properly resized now
 
 - Comments can now be edited, not just viewed. 
 
