@@ -14,6 +14,7 @@ class Promised {
 
     public readFileAsync = promisify(fs.readFile);
     public writeFileAsync = promisify(fs.writeFile);
+    public rename = promisify(fs.rename);
     public mkdirAsync = promisify(fs.mkdir);
     public accessAsync = promisify(fs.access);
     public statAsync = promisify(fs.stat);
@@ -420,6 +421,10 @@ export class Files {
             readableStream.pipe(fs.createWriteStream(path));
         }
 
+    }
+
+    public static async renameAsync(oldPath: string, newPath: string) {
+        return this.withProperException(() => this.promised.rename(oldPath, newPath));
     }
 
     public static async statAsync(path: string): Promise<Stats> {

@@ -192,6 +192,51 @@ describe('Files', function() {
 
     });
 
+    describe('renameAsync', function() {
+
+        const tmpdir: string = os.tmpdir();
+
+        it("basic", async function() {
+
+            const targetPath = FilePaths.join(tmpdir, "rename-to-non-existing-file.txt");
+
+            // make sure it's always missing.
+            await Files.removeAsync(targetPath);
+
+            assert.ok(! await Files.existsAsync(targetPath));
+
+            const sourcePath = FilePaths.join(tmpdir, "rename-source.txt");
+            await Files.writeFileAsync(sourcePath, "hello");
+
+            await Files.renameAsync(sourcePath, targetPath);
+
+            assert.ok(await Files.existsAsync(targetPath));
+
+        });
+
+        it("with existing file", async function() {
+
+            const targetPath = FilePaths.join(tmpdir, "rename-to-existing-file.txt");
+            await Files.writeFileAsync(targetPath, "target-data");
+            assert.ok(await Files.existsAsync(targetPath));
+
+            const sourcePath = FilePaths.join(tmpdir, "rename-source.txt");
+            await Files.writeFileAsync(sourcePath, "source-data");
+            assert.ok(await Files.existsAsync(sourcePath));
+
+            await Files.renameAsync(sourcePath, targetPath);
+
+            assert.ok(await Files.existsAsync(targetPath));
+
+            const data = await Files.readFileAsync(targetPath);
+
+            assert.equal(data.toString('utf-8'), 'source-data');
+
+        });
+
+
+    });
+
     describe('writeFileAsync', function() {
         const tmpdir: string = os.tmpdir();
 
