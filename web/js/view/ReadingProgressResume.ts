@@ -7,7 +7,7 @@ import {Reducers} from '../util/Reducers';
 
 export class ReadingProgressResume {
 
-    private static resume(docMeta: DocMeta) {
+    public static resume(docMeta: DocMeta) {
         setTimeout(() => this.doResume(docMeta), 1);
     }
 
