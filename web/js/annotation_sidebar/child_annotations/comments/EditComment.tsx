@@ -50,13 +50,13 @@ export class EditComment extends React.Component<IProps, IState> {
 
                     {/*</div>*/}
 
-                    <div className="flexbar-right">
+                    <div className="flexbar-right mt-1 mb-1">
 
                         {this.props.cancelButton}
 
                         <Button color="primary"
                                 size="sm"
-                                className="mt-2"
+                                className="ml-1"
                                 onClick={() => this.onComment()}>
 
                             {this.props.existingComment ? 'Update' : 'Comment'}

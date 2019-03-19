@@ -15,7 +15,7 @@ export class CancelButton extends React.PureComponent<IProps, IState> {
 
             <Button color="secondary"
                     size="sm"
-                    className="mt-2 mr-1"
+                    className="ml-1"
                     onClick={() => this.onClick()}>
 
                 Cancel
