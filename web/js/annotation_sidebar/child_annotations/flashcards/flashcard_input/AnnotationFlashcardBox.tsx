@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {Logger} from '../../logger/Logger';
-import {FlashcardType} from '../../metadata/FlashcardType';
+import {Logger} from '../../../../logger/Logger';
+import {FlashcardType} from '../../../../metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './FlashcardInput';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
 
 const log = Logger.create();
-
 
 export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationType} from '../../metadata/AnnotationType';
-import {FlashcardComponent} from './FlashcardComponent';
+import {FlashcardComponent} from './flashcards/FlashcardComponent';
 import {ViewOrEditComment} from "./comments/ViewOrEditComment";
 import {CommentActions} from "./comments/CommentActions";
 import {DocMeta} from "../../metadata/DocMeta";

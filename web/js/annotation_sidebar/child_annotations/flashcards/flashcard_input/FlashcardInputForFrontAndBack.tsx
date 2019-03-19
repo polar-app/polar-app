@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {Logger} from '../../logger/Logger';
+import {Logger} from '../../../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {FlashcardType} from '../../metadata/FlashcardType';
+import {FlashcardType} from '../../../../metadata/FlashcardType';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
-import {RichTextArea} from '../RichTextArea';
-import {RichTextMutator} from '../../apps/card_creator/elements/schemaform/RichTextMutator';
-import {Elements} from '../../util/Elements';
+import {RichTextArea} from '../../../RichTextArea';
+import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
+import {Elements} from '../../../../util/Elements';
 import {FlashcardInputFieldsType, Styles, ClozeFields, FrontAndBackFields} from './FlashcardInput';
 
 const log = Logger.create();

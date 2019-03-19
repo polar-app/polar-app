@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import {DocAnnotation} from '../DocAnnotation';
+import {DocAnnotation} from '../../DocAnnotation';
 import {FlashcardDropdown} from './FlashcardDropdown';
-import {Logger} from '../../logger/Logger';
-import {IStyleMap} from '../../react/IStyleMap';
+import {Logger} from '../../../logger/Logger';
+import {IStyleMap} from '../../../react/IStyleMap';
 
 const log = Logger.create();
 
@@ -23,7 +23,7 @@ const Styles: IStyleMap = {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export class FlashcardComponent extends React.Component<IProps, IState> {
+export class FlashcardComponent extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {Logger} from '../../logger/Logger';
-import {IStyleMap} from '../../react/IStyleMap';
-import {DocAnnotation} from '../DocAnnotation';
-import {ConfirmPopover} from '../../ui/confirm/ConfirmPopover';
+import {Logger} from '../../../logger/Logger';
+import {IStyleMap} from '../../../react/IStyleMap';
+import {DocAnnotation} from '../../DocAnnotation';
+import {ConfirmPopover} from '../../../ui/confirm/ConfirmPopover';
 
 const log = Logger.create();
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Logger} from '../../logger/Logger';
-import {FlashcardType} from '../../metadata/FlashcardType';
+import {Logger} from '../../../../logger/Logger';
+import {FlashcardType} from '../../../../metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
 
 const log = Logger.create();
