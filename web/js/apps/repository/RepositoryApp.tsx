@@ -30,8 +30,6 @@ import EditorsPicksApp from '../../../../apps/repository/js/editors_picks/Editor
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from '../../util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
-import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
-import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {RepositoryTour} from './RepositoryTour';
 import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
@@ -40,7 +38,6 @@ import {AppOrigin} from '../AppOrigin';
 import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
-import {PreviewDisclaimers} from './PreviewDisclaimers';
 
 const log = Logger.create();
 
@@ -56,6 +53,8 @@ export class RepositoryApp {
     }
 
     public async start() {
+
+        log.info("Running with Polar version: " + Version.get());
 
         AppOrigin.configure();
 
