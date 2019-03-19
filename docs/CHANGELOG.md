@@ -4,8 +4,6 @@
 
 - Now running latest version of pdf.js (from dec)
 
-# 1.13.14
-
 - flashcards can now be edited properly
 
 - flashcards and comments are now in ascending order not descending
