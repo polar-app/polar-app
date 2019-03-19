@@ -35,8 +35,6 @@ export class PDFFormat extends DocFormat {
      */
     public currentState(): CurrentDocState {
 
-        Preconditions.assertNotNull(event, "event");
-
         return {
             nrPages: window.PDFViewerApplication.pagesCount,
             currentPageNumber: window.PDFViewerApplication.pdfViewer.currentPageNumber,

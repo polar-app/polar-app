@@ -121,8 +121,12 @@
                   onclick="doDownloadDesktop()"
                   style="display: none;"
                   title="We also have a desktop version of Polar that runs on Windows, MacOS, or Linux."
-                  class="btn btn-small btn-light p-1 text-primary ml-1">
+                  class="btn btn-small btn-light p-1 text-primary ml-1 border">
+
+            <i class="fas fa-download"></i>
+
             Download Desktop
+
           </button>
 
         </div>
@@ -152,7 +156,7 @@
       }
 
       function doDownloadDesktop() {
-        document.location.href = 'https://getpolarized.io/download.html';
+        document.location.href = 'https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=login-download-button&utm_medium=site';
       }
 
       function doInit() {

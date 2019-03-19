@@ -1,3 +1,8 @@
+# 1.13.14
+
+- Fixed bug in FF with the webapp no longer working.
+
+- Now running latest version of pdf.js (from dec)
 
 # 1.13.14
 
