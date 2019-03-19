@@ -23,7 +23,7 @@ const Styles: IStyleMap = {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export class FlashcardComponent extends React.PureComponent<IProps, IState> {
+export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -112,6 +112,9 @@ export class FlashcardComponent extends React.PureComponent<IProps, IState> {
                     </div>
 
                     <div style={Styles.barChild} className="flexbar-right">
+
+                        {this.props.editButton}
+
                         <FlashcardDropdown id={'flashcard-dropdown-' + flashcard.id}
                                            flashcard={flashcard}
                                            onDelete={() => this.onDelete(flashcard)}/>
@@ -131,7 +134,8 @@ export class FlashcardComponent extends React.PureComponent<IProps, IState> {
 
 }
 interface IProps {
-    flashcard: DocAnnotation;
+    readonly flashcard: DocAnnotation;
+    readonly editButton: JSX.Element;
 }
 
 interface IState {

@@ -29,7 +29,6 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onCreate = this.onCreate.bind(this);
-        this.onCancel = this.onCancel.bind(this);
 
         this.state = {
             iter: 0,
@@ -83,7 +82,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
                     <div style={FlashcardStyles.BottomBarItemRight}
                          className="text-right">
 
-                        <FlashcardButtons onCancel={() => this.onCancel()}
+                        <FlashcardButtons cancelButton={this.props.cancelButton}
                                           onCreate={() => this.onCreate()}/>
 
                     </div>
@@ -147,40 +146,45 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
     private onCreate(): void {
 
-        if (this.props.onFlashcardCreated) {
-            this.props.onFlashcardCreated(this.flashcardType, this.fields);
+        if (this.props.onFlashcard) {
+            this.props.onFlashcard(this.flashcardType, this.fields);
         }
 
-        this.reset();
+        // this.reset();
 
         this.setState({
             iter: this.state.iter + 1
         });
 
     }
-
-    private onCancel(): void {
-
-        if (this.props.onCancel) {
-            this.props.onCancel();
-        }
-
-        this.reset();
-
-    }
-
-    private reset(): void {
-        this.fields = {text: ""};
-    }
+    //
+    // private onCancel(): void {
+    //
+    //     if (this.props.onCancel) {
+    //         this.props.onCancel();
+    //     }
+    //
+    //     this.reset();
+    //
+    // }
+    //
+    // private reset(): void {
+    //     this.fields = {text: ""};
+    // }
 
 
 }
 
 export interface IProps {
+
     readonly id: string;
-    readonly onFlashcardCreated: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
+
+    readonly onFlashcard: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
+
     readonly onFlashcardChangeType: (flashcardType: FlashcardType) => void;
-    readonly onCancel?: () => void;
+
+    readonly cancelButton: JSX.Element;
+
 }
 
 export interface IState {

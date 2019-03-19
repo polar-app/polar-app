@@ -24,12 +24,7 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 
             <div>
 
-                <Button color="secondary"
-                        size="sm"
-                        className=""
-                        onClick={() => this.props.onCancel()}>
-                    Cancel
-                </Button>
+                {this.props.cancelButton}
 
                 <Button color="primary"
                         size="sm"
@@ -47,8 +42,10 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 }
 
 export interface IProps {
-    readonly onCancel: () => void;
     readonly onCreate: () => void;
+
+    readonly cancelButton: JSX.Element;
+
 }
 
 export interface IState {

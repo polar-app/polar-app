@@ -94,8 +94,8 @@ export class ViewComment extends React.Component<IProps, IState> {
 
 }
 interface IProps {
-    comment: DocAnnotation;
-    editButton: JSX.Element;
+    readonly comment: DocAnnotation;
+    readonly editButton: JSX.Element;
 }
 
 interface IState {

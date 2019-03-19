@@ -22,7 +22,6 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
         super(props, context);
 
         this.onCreate = this.onCreate.bind(this);
-        this.onCancel = this.onCancel.bind(this);
 
         this.state = {
             iter: 0,
@@ -67,7 +66,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
                     <div style={FlashcardStyles.BottomBarItemRight}
                          className="text-right">
 
-                        <FlashcardButtons onCancel={() => this.onCancel()}
+                        <FlashcardButtons cancelButton={this.props.cancelButton}
                                           onCreate={() => this.onCreate()}/>
 
                     </div>
@@ -95,7 +94,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
             this.props.onFlashcardCreated(this.flashcardType, this.fields);
         }
 
-        this.reset();
+        // this.reset();
 
         this.setState({
             iter: this.state.iter + 1
@@ -103,20 +102,19 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
     }
 
-    private onCancel(): void {
-
-        if (this.props.onCancel) {
-            this.props.onCancel();
-        }
-
-        this.reset();
-
-    }
-
-    private reset(): void {
-        this.fields = {front: "", back: ""};
-    }
-
+    // private onCancel(): void {
+    //
+    //     if (this.props.onCancel) {
+    //         this.props.onCancel();
+    //     }
+    //
+    //     this.reset();
+    //
+    // }
+    //
+    // private reset(): void {
+    //     this.fields = {front: "", back: ""};
+    // }
 
 }
 
@@ -125,6 +123,7 @@ export interface IProps {
     readonly onFlashcardCreated: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
     readonly onFlashcardChangeType: (flashcardType: FlashcardType) => void;
     readonly onCancel?: () => void;
+    readonly cancelButton: JSX.Element;
 }
 
 export interface IState {

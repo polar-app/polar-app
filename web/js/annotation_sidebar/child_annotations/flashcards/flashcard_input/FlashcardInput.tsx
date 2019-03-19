@@ -4,16 +4,17 @@ import {FlashcardType} from '../../../../metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './FlashcardInputTypes';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
+import {Flashcard} from '../../../../metadata/Flashcard';
+import {Comment} from '../../../../metadata/Comment';
 
 const log = Logger.create();
 
-export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
+export class FlashcardInput extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onFlashcardCreated = this.onFlashcardCreated.bind(this);
-        this.onCancel = this.onCancel.bind(this);
+        this.onFlashcard = this.onFlashcard.bind(this);
 
         this.state = {
             iter: 0,
@@ -30,15 +31,15 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
         if (this.state.flashcardType === FlashcardType.BASIC_FRONT_BACK) {
 
             return ( <FlashcardInputForFrontAndBack id={this.props.id}
-                                                    onCancel={() => this.props.onCancel()}
-                                                    onFlashcardCreated={(flashcardType, fields) => this.onFlashcardCreated(flashcardType, fields)}
+                                                    cancelButton={this.props.cancelButton}
+                                                    onFlashcardCreated={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
                                                     onFlashcardChangeType={flashcardType => this.onFlashcardChangeType(flashcardType)}/> );
 
         } else {
 
             return ( <FlashcardInputForCloze id={this.props.id}
-                                             onCancel={() => this.props.onCancel()}
-                                             onFlashcardCreated={(flashcardType, fields) => this.onFlashcardCreated(flashcardType, fields)}
+                                             cancelButton={this.props.cancelButton}
+                                             onFlashcard={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
                                              onFlashcardChangeType={flashcardType => this.onFlashcardChangeType(flashcardType)}/> );
 
         }
@@ -72,9 +73,10 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
         window.localStorage.setItem('default-flashcard-type', flashcardType);
     }
 
-    private onFlashcardCreated(flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>): void {
+    private onFlashcard(flashcardType: FlashcardType,
+                        fields: Readonly<FlashcardInputFieldsType>): void {
 
-        this.props.onFlashcardCreated(flashcardType, fields);
+        this.props.onFlashcard(flashcardType, fields, this.props.existingFlashcard);
 
         this.setState({
             iter: this.state.iter + 1
@@ -82,22 +84,27 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
     }
 
-    private onCancel(): void {
-
-        this.props.onCancel();
-
-    }
-
 }
 
 export interface IProps {
+
     readonly id: string;
+
     readonly flashcardType?: FlashcardType;
-    readonly onFlashcardCreated: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
-    readonly onCancel: () => void;
+
+    readonly onFlashcard: FlashcardCallback;
+
+    readonly cancelButton: JSX.Element;
+
+    readonly existingFlashcard?: Flashcard;
+
 }
 
 export interface IState {
     readonly iter: number;
     readonly flashcardType: FlashcardType;
 }
+
+export type FlashcardCallback = (flashcardType: FlashcardType,
+                                 fields: Readonly<FlashcardInputFieldsType>,
+                                 existingFlashcard?: Flashcard) => void;

@@ -3,7 +3,7 @@ import {AnnotationType} from '../../js/metadata/AnnotationType';
 import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
 import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
-import {FlashcardComponent} from '../../js/annotation_sidebar/child_annotations/flashcards/FlashcardComponent';
+import {ViewFlashcard} from '../../js/annotation_sidebar/child_annotations/flashcards/ViewFlashcard';
 
 export class FlashcardComponentExample extends React.Component<IProps, IState> {
 

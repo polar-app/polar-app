@@ -42,7 +42,7 @@ export class FlashcardDropdown extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="text-right">
+            <div className="text-right ml-1">
 
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 

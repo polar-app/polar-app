@@ -19,7 +19,7 @@ import {Tag} from '../../../web/js/tags/Tag';
 import {RelatedTags} from '../../js/tags/related/RelatedTags';
 import {CommentIcon} from '../../js/ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
-import {AnnotationFlashcardBox} from '../../js/annotation_sidebar/child_annotations/flashcards/flashcard_input/AnnotationFlashcardBox';
+import {FlashcardInput} from '../../js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInput';
 import {FlashcardInputForCloze} from '../../js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from '../../js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInputForFrontAndBack';
 import {EditComment} from '../../js/annotation_sidebar/child_annotations/comments/EditComment';

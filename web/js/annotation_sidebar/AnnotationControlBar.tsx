@@ -3,7 +3,7 @@ import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
 import Moment from 'react-moment';
 import {Refs} from '../metadata/Refs';
-import {AnnotationFlashcardBox} from './child_annotations/flashcards/flashcard_input/AnnotationFlashcardBox';
+import {FlashcardInput} from './child_annotations/flashcards/flashcard_input/FlashcardInput';
 import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
@@ -21,6 +21,8 @@ import {NullCollapse} from '../ui/null_collapse/NullCollapse';
 import {Comment} from "../metadata/Comment";
 import {CreateComment} from "./child_annotations/comments/CreateComment";
 import {CommentActions} from "./child_annotations/comments/CommentActions";
+import {CreateFlashcard} from './child_annotations/flashcards/CreateFlashcard';
+import {FlashcardActions} from './child_annotations/flashcards/FlashcardActions';
 
 const log = Logger.create();
 
@@ -126,13 +128,9 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                                onCancel={() => this.toggleActiveInputComponent('none')}
                                onComment={(html) => this.onComment(html)}/>
 
-                <NullCollapse open={this.state.activeInputComponent === 'flashcard'}>
-
-                    <AnnotationFlashcardBox id={annotation.id}
-                                            onCancel={() => this.toggleActiveInputComponent('none')}
-                                            onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>
-
-                </NullCollapse>
+                <CreateFlashcard id={annotation.id}
+                                 active={this.state.activeInputComponent === 'flashcard'}
+                                 onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>
 
             </div>
 
@@ -173,9 +171,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         // which I need to fix in the HTML sanitizer.
         // html = HTMLSanitizer.sanitize(html);
 
-        const {annotation} = this.props;
-
-        CommentActions.create(annotation, html);
+        CommentActions.create(this.props.annotation, html);
 
         this.setState({
             activeInputComponent: 'none'
@@ -187,45 +183,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         RendererAnalytics.event({category: 'annotations', action: 'flashcard-created'});
 
+        FlashcardActions.create(this.props.annotation, type, fields);
+
         this.setState({
             activeInputComponent: 'none'
         });
-
-        Functions.withTimeout(() => {
-
-            // TODO: right now it seems to strip important CSS styles and data
-            // URLs which I need to fix in the HTML sanitizer. html =
-            // HTMLSanitizer.sanitize(html);
-
-            const {annotation} = this.props;
-
-            const ref = Refs.createFromAnnotationType(annotation.id, annotation.annotationType);
-
-            let flashcard: Flashcard | undefined;
-
-            if (type === FlashcardType.BASIC_FRONT_BACK) {
-
-                const frontAndBackFields = fields as FrontAndBackFields;
-                const {front, back} = frontAndBackFields;
-
-                flashcard = Flashcards.createFrontBack(front, back, ref);
-
-            }
-
-            if (type === FlashcardType.CLOZE) {
-
-                const clozeFields = fields as ClozeFields;
-                const {text} = clozeFields;
-
-                flashcard = Flashcards.createCloze(text, ref);
-
-            }
-
-            if (flashcard) {
-                annotation.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
-            }
-
-        }).catch(err => log.error(err));
 
     }
 
