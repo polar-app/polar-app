@@ -32,6 +32,8 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 
         const { children } = this.props;
 
+        children.sort((a, b) => a.created.localeCompare(b.created));
+
         const result: any = [];
 
         children.map(child => {
