@@ -24,7 +24,7 @@ export class CreateComment extends React.PureComponent<IProps, IState> {
 
             <EditComment id={'edit-comment-for' + this.props.id}
                          onComment={(html) => this.props.onComment(html)}
-                         cancelButton={cancelButton}/>;
+                         cancelButton={cancelButton}/>
 
         </NullCollapse>;
 

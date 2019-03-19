@@ -65,7 +65,6 @@ export class EditComment extends React.Component<IProps, IState> {
 
                     </div>
 
-
                 </div>
 
             </div>
