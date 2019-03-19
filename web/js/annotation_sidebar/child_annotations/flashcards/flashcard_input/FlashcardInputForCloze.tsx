@@ -7,11 +7,12 @@ import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
 import {Elements} from '../../../../util/Elements';
-import {FlashcardInputFieldsType, ClozeFields} from './FlashcardInputTypes';
+import {FlashcardInputFieldsType, ClozeFields} from './FlashcardInputs';
 import {UncontrolledTooltip} from 'reactstrap';
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {FlashcardStyles} from './FlashcardStyles';
+import {FlashcardInputs} from './FlashcardInputs';
 
 const log = Logger.create();
 
@@ -40,11 +41,14 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
         const { id } = this.props;
 
+        const text = FlashcardInputs.fieldToString('text', this.props.existingFlashcard);
+
         return (
 
             <div id="annotation-flashcard-box" className="">
 
                 <RichTextArea id={`text-${this.props.id}`}
+                              value={text}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onRichTextMutator={richTextMutator => this.richTextMutator = richTextMutator}

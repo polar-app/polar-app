@@ -7,10 +7,11 @@ import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
 import {Elements} from '../../../../util/Elements';
-import {FlashcardInputFieldsType, ClozeFields, FrontAndBackFields} from './FlashcardInputTypes';
+import {FlashcardInputFieldsType, ClozeFields, FrontAndBackFields, FlashcardInputs} from './FlashcardInputs';
 import {FlashcardStyles} from './FlashcardStyles';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {Optional} from '../../../../util/ts/Optional';
+import {FlashcardInputs} from './FlashcardInputs';
 
 const log = Logger.create();
 
@@ -35,22 +36,8 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
         const { id } = this.props;
 
-        const fieldValueStr = (name: string, existingFlashcard?: Flashcard) => {
-
-            if (existingFlashcard) {
-
-                if (existingFlashcard.fields[name]) {
-                    return existingFlashcard.fields[name].HTML;
-                }
-
-            }
-
-            return "";
-
-        };
-
-        const front = fieldValueStr('front', this.props.existingFlashcard);
-        const back = fieldValueStr('back', this.props.existingFlashcard);
+        const front = FlashcardInputs.fieldToString('front', this.props.existingFlashcard);
+        const back = FlashcardInputs.fieldToString('back', this.props.existingFlashcard);
 
         return (
 

@@ -8,7 +8,7 @@ import {DocMeta} from "../../metadata/DocMeta";
 import {ViewOrEditFlashcard} from './flashcards/ViewOrEditFlashcard';
 import {Comment} from '../../metadata/Comment';
 import {FlashcardType} from '../../metadata/FlashcardType';
-import {FlashcardInputFieldsType} from './flashcards/flashcard_input/FlashcardInputTypes';
+import {FlashcardInputFieldsType} from './flashcards/flashcard_input/FlashcardInputs';
 import {FlashcardActions} from './flashcards/FlashcardActions';
 import {Flashcard} from '../../metadata/Flashcard';
 
