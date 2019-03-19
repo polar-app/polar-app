@@ -23,9 +23,9 @@ export class CreateFlashcard extends React.PureComponent<IProps, IState> {
 
         return <NullCollapse open={this.props.active}>
 
-            return <FlashcardInput id={'edit-flashcard-for' + this.props.id}
-                                   onFlashcard={this.props.onFlashcardCreated}
-                                   cancelButton={cancelButton}/>;
+            <FlashcardInput id={'edit-flashcard-for' + this.props.id}
+                            onFlashcard={this.props.onFlashcardCreated}
+                            cancelButton={cancelButton}/>;
 
         </NullCollapse>;
 

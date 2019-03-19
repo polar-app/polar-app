@@ -32,13 +32,15 @@ export class FlashcardInput extends React.Component<IProps, IState> {
 
             return ( <FlashcardInputForFrontAndBack id={this.props.id}
                                                     cancelButton={this.props.cancelButton}
-                                                    onFlashcardCreated={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
+                                                    existingFlashcard={this.props.existingFlashcard}
+                                                    onFlashcard={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
                                                     onFlashcardChangeType={flashcardType => this.onFlashcardChangeType(flashcardType)}/> );
 
         } else {
 
             return ( <FlashcardInputForCloze id={this.props.id}
                                              cancelButton={this.props.cancelButton}
+                                             existingFlashcard={this.props.existingFlashcard}
                                              onFlashcard={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
                                              onFlashcardChangeType={flashcardType => this.onFlashcardChangeType(flashcardType)}/> );
 

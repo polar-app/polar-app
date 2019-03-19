@@ -185,6 +185,8 @@ export interface IProps {
 
     readonly cancelButton: JSX.Element;
 
+    readonly existingFlashcard?: Flashcard;
+
 }
 
 export interface IState {

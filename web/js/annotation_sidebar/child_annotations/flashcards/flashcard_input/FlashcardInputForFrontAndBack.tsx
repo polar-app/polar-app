@@ -9,6 +9,8 @@ import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform
 import {Elements} from '../../../../util/Elements';
 import {FlashcardInputFieldsType, ClozeFields, FrontAndBackFields} from './FlashcardInputTypes';
 import {FlashcardStyles} from './FlashcardStyles';
+import {Flashcard} from '../../../../metadata/Flashcard';
+import {Optional} from '../../../../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -33,13 +35,30 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
         const { id } = this.props;
 
+        const fieldValueStr = (name: string, existingFlashcard?: Flashcard) => {
+
+            if (existingFlashcard) {
+
+                if (existingFlashcard.fields[name]) {
+                    return existingFlashcard.fields[name].HTML;
+                }
+
+            }
+
+            return "";
+
+        };
+
+        const front = fieldValueStr('front', this.props.existingFlashcard);
+        const back = fieldValueStr('back', this.props.existingFlashcard);
+
         return (
 
             <div id="annotation-flashcard-box" className="">
 
-
                 <RichTextArea label="front"
                               id={`front-${this.props.id}`}
+                              value={front}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.fields.front = html}
@@ -47,6 +66,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                 <RichTextArea label="back"
                               id={`back-${this.props.id}`}
+                              value={back}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.fields.back = html}
                 />
@@ -90,8 +110,8 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
     private onCreate(): void {
 
-        if (this.props.onFlashcardCreated) {
-            this.props.onFlashcardCreated(this.flashcardType, this.fields);
+        if (this.props.onFlashcard) {
+            this.props.onFlashcard(this.flashcardType, this.fields);
         }
 
         // this.reset();
@@ -119,11 +139,19 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 }
 
 export interface IProps {
+
     readonly id: string;
-    readonly onFlashcardCreated: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
+
+    readonly onFlashcard: (flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>) => void;
+
     readonly onFlashcardChangeType: (flashcardType: FlashcardType) => void;
+
     readonly onCancel?: () => void;
+
     readonly cancelButton: JSX.Element;
+
+    readonly existingFlashcard?: Flashcard;
+
 }
 
 export interface IState {

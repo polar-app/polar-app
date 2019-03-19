@@ -45,17 +45,17 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
                     <div className="pb-1 pt-1">
 
-                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
+                        <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
 
-                            </span>
+                        </span>
 
                     </div>
 
                     <div className="pb-1 pt-1 border-top">
 
-                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
+                        <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
 
-                            </span>
+                        </span>
 
                     </div>
 
