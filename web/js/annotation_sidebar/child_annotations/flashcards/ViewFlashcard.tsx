@@ -43,7 +43,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
             return (
                 <div>
 
-                    <div className="pb-1 pt-1">
+                    <div className="pb-2 pt-2">
 
                         <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
 
@@ -51,7 +51,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
                     </div>
 
-                    <div className="pb-1 pt-1 border-top">
+                    <div className="pb-2 pt-2 border-top">
 
                         <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
 
@@ -68,7 +68,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
             return (
                 <div>
-                    <div className="pb-1 pt-1">
+                    <div className="pb-2 pt-2">
                         <span dangerouslySetInnerHTML={{__html: flashcard.fields!.text}}>
                         </span>
                     </div>

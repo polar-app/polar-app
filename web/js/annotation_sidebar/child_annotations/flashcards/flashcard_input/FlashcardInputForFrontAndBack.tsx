@@ -1,17 +1,13 @@
 import * as React from 'react';
 import {Logger} from '../../../../logger/Logger';
-import Button from 'reactstrap/lib/Button';
 import {FlashcardType} from '../../../../metadata/FlashcardType';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
-import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
-import {Elements} from '../../../../util/Elements';
-import {FlashcardInputFieldsType, ClozeFields, FrontAndBackFields, FlashcardInputs} from './FlashcardInputs';
+import {FlashcardInputFieldsType, FlashcardInputs, FrontAndBackFields} from './FlashcardInputs';
 import {FlashcardStyles} from './FlashcardStyles';
 import {Flashcard} from '../../../../metadata/Flashcard';
-import {Optional} from '../../../../util/ts/Optional';
-import {FlashcardInputs} from './FlashcardInputs';
+import {ClozeFields} from './FlashcardInputs';
 
 const log = Logger.create();
 
@@ -30,14 +26,15 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
             iter: 0,
         };
 
+        this.fields = this.toFields();
+
     }
 
     public render() {
 
         const { id } = this.props;
 
-        const front = FlashcardInputs.fieldToString('front', this.props.existingFlashcard);
-        const back = FlashcardInputs.fieldToString('back', this.props.existingFlashcard);
+        const fields = this.toFields();
 
         return (
 
@@ -45,7 +42,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                 <RichTextArea label="front"
                               id={`front-${this.props.id}`}
-                              value={front}
+                              value={fields.front}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.fields.front = html}
@@ -53,7 +50,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                 <RichTextArea label="back"
                               id={`back-${this.props.id}`}
-                              value={back}
+                              value={fields.back}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.fields.back = html}
                 />
@@ -74,6 +71,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
                          className="text-right">
 
                         <FlashcardButtons cancelButton={this.props.cancelButton}
+                                          existingFlashcard={this.props.existingFlashcard}
                                           onCreate={() => this.onCreate()}/>
 
                     </div>
@@ -86,6 +84,14 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
     }
 
+    private toFields(): FrontAndBackFields {
+
+        const front = FlashcardInputs.fieldToString('front', this.props.existingFlashcard);
+        const back = FlashcardInputs.fieldToString('back', this.props.existingFlashcard);
+
+        return {front, back};
+
+    }
 
     private onKeyDown(event: KeyboardEvent) {
 

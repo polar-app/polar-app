@@ -14,12 +14,12 @@ export interface FrontAndBackFields {
 
 export class FlashcardInputs {
 
-    public static fieldToString(name: string, existingFlashcard?: Flashcard) {
+    public static fieldToString(name: string, existingFlashcard?: Flashcard): string {
 
         if (existingFlashcard) {
 
-            if (existingFlashcard.fields[name]) {
-                return existingFlashcard.fields[name].HTML;
+            if (existingFlashcard.fields[name] && existingFlashcard.fields[name].HTML) {
+                return existingFlashcard.fields[name].HTML!;
             }
 
         }

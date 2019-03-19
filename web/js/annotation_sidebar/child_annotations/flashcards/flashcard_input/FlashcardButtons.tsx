@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
+import {Flashcard} from '../../../../metadata/Flashcard';
 
 const log = Logger.create();
 
@@ -30,7 +31,9 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
                         size="sm"
                         className="ml-1"
                         onClick={() => this.props.onCreate()}>
-                    Create
+
+                    {this.props.existingFlashcard ? 'Update' : 'Create'}
+
                 </Button>
 
             </div>
@@ -42,9 +45,12 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 }
 
 export interface IProps {
+
     readonly onCreate: () => void;
 
     readonly cancelButton: JSX.Element;
+
+    readonly existingFlashcard?: Flashcard;
 
 }
 
