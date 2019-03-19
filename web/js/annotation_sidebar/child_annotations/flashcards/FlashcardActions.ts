@@ -36,12 +36,7 @@ export class FlashcardActions {
                          fields: FrontAndBackFields | ClozeFields,
                          existingFlashcard?: Flashcard) {
 
-
-        console.log("FIXME with existingFlashcard: ", existingFlashcard);
-
         const flashcard = this.newInstance(annotation, type, fields);
-
-        console.log("FIXME with flashcard: ", flashcard);
 
         if (flashcard) {
 
@@ -49,11 +44,9 @@ export class FlashcardActions {
 
                 if (existingFlashcard) {
                     delete annotation.pageMeta.flashcards[existingFlashcard.id];
-                    console.log("FIXME2");
                 }
 
                 annotation.pageMeta.flashcards[flashcard.id] = <Flashcard> {...flashcard};
-                console.log("FIXME3");
 
             });
 
