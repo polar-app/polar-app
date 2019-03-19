@@ -7,9 +7,11 @@ import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
 import {Elements} from '../../../../util/Elements';
-import {FlashcardInputFieldsType, Styles, ClozeFields} from './FlashcardInput';
+import {FlashcardInputFieldsType, ClozeFields} from './FlashcardInputTypes';
 import {UncontrolledTooltip} from 'reactstrap';
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
+import {Flashcard} from '../../../../metadata/Flashcard';
+import {FlashcardStyles} from './FlashcardStyles';
 
 const log = Logger.create();
 
@@ -51,9 +53,9 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                 {/*- quote annotation ... to copy the annotation text.*/}
 
-                <div style={Styles.BottomBar}>
+                <div style={FlashcardStyles.BottomBar}>
 
-                    <div style={Styles.BottomBarItem}>
+                    <div style={FlashcardStyles.BottomBarItem}>
 
                         <FlashcardTypeSelector
                             flashcardType={this.flashcardType}
@@ -61,7 +63,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div style={Styles.BottomBarItem} className="ml-1">
+                    <div style={FlashcardStyles.BottomBarItem} className="ml-1">
 
                         <Button id={`button-${this.props.id}`}
                                 color="light"
@@ -78,7 +80,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
                     </div>
 
 
-                    <div style={Styles.BottomBarItemRight}
+                    <div style={FlashcardStyles.BottomBarItemRight}
                          className="text-right">
 
                         <FlashcardButtons onCancel={() => this.onCancel()}

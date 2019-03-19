@@ -7,7 +7,8 @@ import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
 import {Elements} from '../../../../util/Elements';
-import {FlashcardInputFieldsType, Styles, ClozeFields, FrontAndBackFields} from './FlashcardInput';
+import {FlashcardInputFieldsType, ClozeFields, FrontAndBackFields} from './FlashcardInputTypes';
+import {FlashcardStyles} from './FlashcardStyles';
 
 const log = Logger.create();
 
@@ -53,9 +54,9 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                 {/*- quote annotation ... to copy the annotation text.*/}
 
-                <div style={Styles.BottomBar}>
+                <div style={FlashcardStyles.BottomBar}>
 
-                    <div style={Styles.BottomBarItem}>
+                    <div style={FlashcardStyles.BottomBarItem}>
 
                         <FlashcardTypeSelector
                             flashcardType={this.flashcardType}
@@ -63,7 +64,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                     </div>
 
-                    <div style={Styles.BottomBarItemRight}
+                    <div style={FlashcardStyles.BottomBarItemRight}
                          className="text-right">
 
                         <FlashcardButtons onCancel={() => this.onCancel()}

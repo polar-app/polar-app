@@ -15,7 +15,7 @@ import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from '../metadata/FlashcardType';
 import {Flashcard} from '../metadata/Flashcard';
 import {Functions} from '../util/Functions';
-import {ClozeFields, FrontAndBackFields} from './child_annotations/flashcards/flashcard_input/FlashcardInput';
+import {ClozeFields, FrontAndBackFields} from './child_annotations/flashcards/flashcard_input/FlashcardInputTypes';
 import {Logger} from '../logger/Logger';
 import {NullCollapse} from '../ui/null_collapse/NullCollapse';
 import {Comment} from "../metadata/Comment";

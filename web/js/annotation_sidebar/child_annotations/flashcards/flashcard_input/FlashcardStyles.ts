@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class Styles {
+export class FlashcardStyles {
 
     public static BottomBar: React.CSSProperties = {
         display: 'flex'
@@ -18,19 +18,3 @@ export class Styles {
     };
 
 }
-
-export type HtmlString = string;
-
-export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
-
-export interface ClozeFields {
-    text: HtmlString;
-}
-
-export interface FrontAndBackFields {
-    front: HtmlString;
-    back: HtmlString;
-}
-
-
-

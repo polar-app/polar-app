@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../logger/Logger';
 import {FlashcardType} from '../../../../metadata/FlashcardType';
-import {FlashcardInputFieldsType} from './FlashcardInput';
+import {FlashcardInputFieldsType} from './FlashcardInputTypes';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
 

@@ -78,6 +78,8 @@ export class Strings {
 
 }
 
+export type HTMLStr = string;
+
 /**
  * A string representing a URL (file URL or HTTP URL or blob URL)
  */
