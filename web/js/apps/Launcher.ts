@@ -38,32 +38,38 @@ export class Launcher {
      */
     public async trigger() {
 
-        console.log("Running with app runtime: " + AppRuntime.get());
+        if (this.shouldTrigger()) {
 
-        const persistenceLayer = await this.persistenceLayerFactory();
-        await persistenceLayer.init();
+            log.notice("Running with app runtime: " + AppRuntime.get());
 
-        await Logging.init();
+            const persistenceLayer = await this.persistenceLayerFactory();
+            await persistenceLayer.init();
 
-        const model = new Model(persistenceLayer);
+            await Logging.init();
 
-        new PagemarkView(model).start();
-        new WebView(model, persistenceLayer.datastore.getPrefs()).start();
-        new TextHighlightView2(model).start();
-        new AreaHighlightView(model).start();
-        new AnnotationSidebarService(model).start();
+            const model = new Model(persistenceLayer);
 
-        // if (AppRuntime.isElectron()) {
-        //     new PageSearchController(model).start();
-        // }
+            new PagemarkView(model).start();
+            new WebView(model, persistenceLayer.datastore.getPrefs()).start();
+            new TextHighlightView2(model).start();
+            new AreaHighlightView(model).start();
+            new AnnotationSidebarService(model).start();
 
-        new CommentsController(model).start();
-        new AnnotationBarService(model).start();
+            // if (AppRuntime.isElectron()) {
+            //     new PageSearchController(model).start();
+            // }
 
-        const viewer = ViewerFactory.create(model);
-        await new WebController(model, viewer).start();
+            new CommentsController(model).start();
+            new AnnotationBarService(model).start();
 
-        viewer.start();
+            const viewer = ViewerFactory.create(model);
+            await new WebController(model, viewer).start();
+
+            viewer.start();
+
+        } else {
+            log.info("Not triggering viewer.");
+        }
 
     }
 
@@ -86,6 +92,15 @@ export class Launcher {
             }, true);
         }
 
+    }
+
+    /**
+     * Return true if we should trigger the viewer.  In some situations we're
+     * just previewing the PDF so we might not want to
+     */
+    private shouldTrigger(): boolean {
+        const url = new URL(document.location!.href);
+        return url.searchParams.get('preview') !== 'true';
     }
 
 }
