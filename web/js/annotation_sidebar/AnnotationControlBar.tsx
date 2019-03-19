@@ -130,6 +130,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <CreateFlashcard id={annotation.id}
                                  active={this.state.activeInputComponent === 'flashcard'}
+                                 onCancel={() => this.toggleActiveInputComponent('none')}
                                  onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>
 
             </div>

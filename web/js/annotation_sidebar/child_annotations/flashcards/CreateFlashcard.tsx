@@ -32,9 +32,11 @@ export class CreateFlashcard extends React.PureComponent<IProps, IState> {
     }
 
     private onCancel() {
+
         if (this.props.onCancel) {
             this.props.onCancel();
         }
+
     }
 
 }
