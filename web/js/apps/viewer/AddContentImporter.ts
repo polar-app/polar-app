@@ -12,6 +12,9 @@ import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceL
 import {InjectedComponent} from '../../ui/util/ReactInjector';
 import {Toaster} from '../../ui/toaster/Toaster';
 import {PreviewURLs} from './PreviewURLs';
+import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
+import {LoginURLs} from './LoginURLs';
+import {log} from 'util';
 
 export interface AddContentImporter {
 
@@ -58,9 +61,24 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
     }
 
-    public async doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>) {
+    public async doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>): Promise<Optional<ImportedFile>> {
 
         try {
+
+
+            if (! this.isAuthenticated()) {
+
+                // If we aren't logged in here, we need to redirect to the
+                // proper login path and create an auto-add URL
+
+                const successURL = PreviewURLs.createAutoAdd(document.location!.href);
+                const loginURL = LoginURLs.create(successURL);
+
+                document.location!.href = loginURL;
+
+                return Optional.empty();
+
+            }
 
             await this.latch.get();
 
@@ -90,6 +108,11 @@ export class DefaultAddContentImporter  implements AddContentImporter {
             throw e;
         }
 
+    }
+
+    private async isAuthenticated(): Promise<boolean> {
+        const authHandler = AuthHandlers.get();
+        return (await authHandler.userInfo()).isPresent();
     }
 
     private updateURL(importedFile: ImportedFile) {
