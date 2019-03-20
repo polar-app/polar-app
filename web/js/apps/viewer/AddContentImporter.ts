@@ -10,6 +10,7 @@ import {Latches} from '../../util/Latches';
 import {Latch} from '../../util/Latch';
 import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
+import {Toaster} from '../../ui/toaster/Toaster';
 
 export interface AddContentImporter {
 
@@ -50,24 +51,33 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
     public async doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>) {
 
-        await this.latch.get();
+        try {
 
-        this.overlay!.destroy();
+            await this.latch.get();
 
-        const url = this.getURL();
+            this.overlay!.destroy();
 
-        const basename = FilePaths.basename(url);
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const blobURL = URL.createObjectURL(blob);
+            const url = this.getURL();
 
-        const pdfImporter = new PDFImporter(persistenceLayerProvider);
+            const basename = FilePaths.basename(url);
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const blobURL = URL.createObjectURL(blob);
 
-        const importedFile = await pdfImporter.importFile(blobURL, basename);
+            const pdfImporter = new PDFImporter(persistenceLayerProvider);
 
-        importedFile.map(this.updateURL);
+            const importedFile = await pdfImporter.importFile(blobURL, basename);
 
-        return importedFile;
+            importedFile.map(this.updateURL);
+
+            Toaster.success('File successfully added to document repository');
+
+            return importedFile;
+
+        } catch (e) {
+            Toaster.error('Unable to add to document repository: ' + e.message);
+            throw e;
+        }
 
     }
 

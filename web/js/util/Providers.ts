@@ -21,11 +21,23 @@ export class Providers {
         return () => provider.get();
     }
 
-    public static toInterface<T>(provider: Provider<T>): IProvider<T> {
+    public static toInterface<T>(provider: Provider<T> | T): IProvider<T> {
+
+        const toFunction = (): Provider<T> => {
+
+            if (typeof provider !== 'function') {
+                return () => provider;
+            }
+
+            return <Provider<T>> provider;
+
+        };
+
+        const func = toFunction();
 
         return {
             get() {
-                return provider();
+                return func();
             }
         };
 

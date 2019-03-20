@@ -52,6 +52,15 @@ describe('Providers', function() {
 
     });
 
+    it('toInterface', function() {
+
+        assert.equal('101', Providers.toInterface('101').get());
+
+        assert.equal('101', Providers.toInterface(() => '101').get());
+
+    });
+
+
 });
 
 

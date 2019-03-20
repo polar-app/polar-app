@@ -7,9 +7,6 @@ import {TypedMessage} from '../../util/TypedMessage';
 
 const log = Logger.create();
 
-/**
- *
- */
 export class ProgressService {
 
     public start(): void {

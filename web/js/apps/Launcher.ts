@@ -8,16 +8,12 @@ import {PagemarkView} from '../pagemarks/view/PagemarkView';
 import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {TextHighlightView2} from '../highlights/text/view/TextHighlightView2';
 import {AnnotationSidebarService} from '../annotation_sidebar/AnnotationSidebarService';
-import {PageSearchController} from '../page_search/PageSearchController';
 import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
 import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
-import {AppRuntime} from '../AppRuntime';
-import {AddContentButtonOverlays} from './viewer/AddContentButtonOverlays';
-import {Latches} from '../util/Latches';
-import {Latch} from '../util/Latch';
 import {AddContentImporters} from './viewer/AddContentImporters';
 import {Providers} from '../util/Providers';
+import {ProgressService} from '../ui/progress_bar/ProgressService';
 
 const log = Logger.create();
 
@@ -43,6 +39,8 @@ export class Launcher {
      */
     public async trigger() {
 
+        new ProgressService().start();
+
         const addContentImporter = AddContentImporters.create();
 
         await addContentImporter.prepare();
@@ -52,12 +50,7 @@ export class Launcher {
 
         await Logging.init();
 
-        const imported =
-            await addContentImporter.doImport(Providers.toInterface(() => persistenceLayer));
-
-        console.log("FIXME: importeD: ", imported);
-
-        // TODO: now we have to fget a blob() to add to the persistence layer.
+        await addContentImporter.doImport(Providers.toInterface(persistenceLayer));
 
         const model = new Model(persistenceLayer);
 
