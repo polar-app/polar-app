@@ -11,6 +11,7 @@ import {Latch} from '../../util/Latch';
 import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
 import {Toaster} from '../../ui/toaster/Toaster';
+import {PreviewURLs} from './PreviewURLs';
 
 export interface AddContentImporter {
 
@@ -37,15 +38,23 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
     private overlay?: InjectedComponent;
 
-
     public async prepare(): Promise<void> {
 
-        this.overlay = await AddContentButtonOverlays.create(() => {
+        if (PreviewURLs.isAutoAdd()) {
 
-            // resolve the latch so we can move forward.
+            // the user is now auto-adding this URL so we don't need to prompt.
             this.latch.resolve(true);
 
-        });
+        } else {
+
+            this.overlay = await AddContentButtonOverlays.create(() => {
+
+                // resolve the latch so we can move forward.
+                this.latch.resolve(true);
+
+            });
+
+        }
 
     }
 
@@ -55,7 +64,9 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
             await this.latch.get();
 
-            this.overlay!.destroy();
+            if (this.overlay) {
+                this.overlay.destroy();
+            }
 
             const url = this.getURL();
 
