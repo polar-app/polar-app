@@ -26,7 +26,8 @@ export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState
                         direction="down"
                         style={{
                             fontWeight: 'bold',
-                            fontSize: '16px'
+                            fontSize: '16px',
+                            fontFamily: 'sans-serif'
                         }}
                         color="success"
                         className="btn-lg shadow"
