@@ -14,12 +14,13 @@ export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState
 
         return (
 
-            <div style={{
-                position: 'fixed',
-                top: '70px',
-                right: '60px',
-                zIndex: 100
-            }}>
+            <div className=""
+                 style={{
+                     position: 'fixed',
+                     top: '70px',
+                     right: '60px',
+                     zIndex: 100
+                 }}>
 
                 <Button id="add-content-overlay"
                         direction="down"
