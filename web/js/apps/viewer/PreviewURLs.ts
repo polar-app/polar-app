@@ -20,6 +20,16 @@ export class PreviewURLs {
         return url.searchParams.get('auto-add') === 'true';
     }
 
+    public static isFromExtension(link: string = document.location!.href): boolean {
+        const url = new URL(link);
+        return url.searchParams.get('from') === 'true';
+    }
+
+    public static getDesktopAppState(link: string = document.location!.href): string {
+        const url = new URL(link);
+        return url.searchParams.get('desktop-app') || 'inactive';
+    }
+
     public static createAutoAdd(link: string): string {
         const url = new URL(link);
         url.searchParams.set('auto-add', 'true');

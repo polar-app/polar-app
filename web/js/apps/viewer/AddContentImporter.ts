@@ -54,20 +54,22 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
             this.overlay = await AddContentButtonOverlays.create(() => {
 
-                if (authenticated) {
+                if (PreviewURLs.getDesktopAppState() === 'active') {
 
-                    // resolve the latch so we can move forward.
-                    this.latch.resolve(true);
+                    // see if we prefer to resolve this by adding to the desktop
+                    this.completeImportViaDesktopApp();
 
                 } else {
 
-                    // If we aren't logged in here, we need to redirect to the
-                    // proper login path and create an auto-add URL
+                    if (authenticated) {
 
-                    const successURL = PreviewURLs.createAutoAdd(document.location!.href);
-                    const loginURL = LoginURLs.create(successURL);
+                        this.completeImportViaWebApp();
 
-                    document.location!.href = loginURL;
+                    } else {
+
+                        this.completeImportViaWebAppLogin();
+
+                    }
 
                 }
 
@@ -79,6 +81,48 @@ export class DefaultAddContentImporter  implements AddContentImporter {
         // has asked to add because after this we might do other things like
         // init the datastore.
         await this.latch.get();
+
+    }
+
+    private completeImportViaWebApp() {
+
+        // resolve the latch so we can move forward.
+        this.latch.resolve(true);
+
+    }
+
+    private completeImportViaWebAppLogin() {
+
+        // If we aren't logged in here, we need to redirect to the
+        // proper login path and create an auto-add URL
+
+        const successURL = PreviewURLs.createAutoAdd(document.location!.href);
+        const loginURL = LoginURLs.create(successURL);
+
+        document.location!.href = loginURL;
+
+    }
+
+    private completeImportViaDesktopApp() {
+
+        const message = {
+            type: 'polar-extension-import-content',
+            link: this.getURL(),
+            contentType: 'application/pdf'
+        };
+
+        const extensionIDs = [
+            "nplbojledjdlbankapinifindadkdpnj", // dev
+            "jkfdkjomocoaljglgddnmhcbolldcafd"  // prod
+        ];
+
+        if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
+
+            for (const extensionID of extensionIDs) {
+                chrome.runtime.sendMessage(extensionID, message);
+            }
+
+        }
 
     }
 

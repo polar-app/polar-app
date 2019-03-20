@@ -71,7 +71,7 @@ export class MainAPI {
 
         const path = "/rest/v1/ping";
 
-        this.webRequestHandler.get(path, (req: express.Request, res: express.Response) => {
+        this.webRequestHandler.post(path, (req: express.Request, res: express.Response) => {
 
             res.header('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
 
