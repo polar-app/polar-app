@@ -21,12 +21,14 @@ export class Providers {
         return () => provider.get();
     }
 
-    public static toInterface<T>(provider: Provider<T>) {
+    public static toInterface<T>(provider: Provider<T>): IProvider<T> {
+
         return {
             get() {
                 return provider();
             }
         };
+
     }
 
     /**

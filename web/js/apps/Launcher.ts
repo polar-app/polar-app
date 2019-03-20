@@ -13,6 +13,11 @@ import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
 import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
 import {AppRuntime} from '../AppRuntime';
+import {AddContentButtonOverlays} from './viewer/AddContentButtonOverlays';
+import {Latches} from '../util/Latches';
+import {Latch} from '../util/Latch';
+import {AddContentImporters} from './viewer/AddContentImporters';
+import {Providers} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -38,38 +43,38 @@ export class Launcher {
      */
     public async trigger() {
 
-        if (this.shouldTrigger()) {
+        const addContentImporter = AddContentImporters.create();
 
-            log.notice("Running with app runtime: " + AppRuntime.get());
+        await addContentImporter.prepare();
 
-            const persistenceLayer = await this.persistenceLayerFactory();
-            await persistenceLayer.init();
+        const persistenceLayer = await this.persistenceLayerFactory();
+        await persistenceLayer.init();
 
-            await Logging.init();
+        await Logging.init();
 
-            const model = new Model(persistenceLayer);
+        await addContentImporter.doImport(Providers.toInterface(() => persistenceLayer));
 
-            new PagemarkView(model).start();
-            new WebView(model, persistenceLayer.datastore.getPrefs()).start();
-            new TextHighlightView2(model).start();
-            new AreaHighlightView(model).start();
-            new AnnotationSidebarService(model).start();
+        // TODO: now we have to fget a blob() to add to the persistence layer.
 
-            // if (AppRuntime.isElectron()) {
-            //     new PageSearchController(model).start();
-            // }
+        const model = new Model(persistenceLayer);
 
-            new CommentsController(model).start();
-            new AnnotationBarService(model).start();
+        new PagemarkView(model).start();
+        new WebView(model, persistenceLayer.datastore.getPrefs()).start();
+        new TextHighlightView2(model).start();
+        new AreaHighlightView(model).start();
+        new AnnotationSidebarService(model).start();
 
-            const viewer = ViewerFactory.create(model);
-            await new WebController(model, viewer).start();
+        // if (AppRuntime.isElectron()) {
+        //     new PageSearchController(model).start();
+        // }
 
-            viewer.start();
+        new CommentsController(model).start();
+        new AnnotationBarService(model).start();
 
-        } else {
-            log.info("Not triggering viewer.");
-        }
+        const viewer = ViewerFactory.create(model);
+        await new WebController(model, viewer).start();
+
+        viewer.start();
 
     }
 
@@ -92,15 +97,6 @@ export class Launcher {
             }, true);
         }
 
-    }
-
-    /**
-     * Return true if we should trigger the viewer.  In some situations we're
-     * just previewing the PDF so we might not want to
-     */
-    private shouldTrigger(): boolean {
-        const url = new URL(document.location!.href);
-        return url.searchParams.get('preview') !== 'true';
     }
 
 }
