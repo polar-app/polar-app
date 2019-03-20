@@ -59,6 +59,8 @@ export class BrowserAuthHandler extends DefaultAuthHandler {
 
     public async authenticate(): Promise<void> {
 
+        Firebase.init();
+
         const base = URLs.toBase(document.location!.href);
         const newLocation = new URL('/login.html', base).toString();
 
@@ -80,6 +82,8 @@ export class BrowserAuthHandler extends DefaultAuthHandler {
 
     public async userInfo(): Promise<Optional<UserInfo>> {
 
+        Firebase.init();
+
         const user = await this.currentUser();
 
         if (user === null) {
@@ -97,6 +101,8 @@ export class BrowserAuthHandler extends DefaultAuthHandler {
     }
 
     private async currentUser(): Promise<firebase.User | null> {
+
+        Firebase.init();
 
         return new Promise<firebase.User | null>((resolve, reject) => {
 

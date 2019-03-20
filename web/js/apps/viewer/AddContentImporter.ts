@@ -50,14 +50,35 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
         } else {
 
+            const authenticated = await this.isAuthenticated();
+
             this.overlay = await AddContentButtonOverlays.create(() => {
 
-                // resolve the latch so we can move forward.
-                this.latch.resolve(true);
+                if (authenticated) {
+
+                    // resolve the latch so we can move forward.
+                    this.latch.resolve(true);
+
+                } else {
+
+                    // If we aren't logged in here, we need to redirect to the
+                    // proper login path and create an auto-add URL
+
+                    const successURL = PreviewURLs.createAutoAdd(document.location!.href);
+                    const loginURL = LoginURLs.create(successURL);
+
+                    document.location!.href = loginURL;
+
+                }
 
             });
 
         }
+
+        // we have to await our own latch here so to fully wait until the user
+        // has asked to add because after this we might do other things like
+        // init the datastore.
+        await this.latch.get();
 
     }
 
@@ -65,20 +86,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
         try {
 
-
-            if (! this.isAuthenticated()) {
-
-                // If we aren't logged in here, we need to redirect to the
-                // proper login path and create an auto-add URL
-
-                const successURL = PreviewURLs.createAutoAdd(document.location!.href);
-                const loginURL = LoginURLs.create(successURL);
-
-                document.location!.href = loginURL;
-
-                return Optional.empty();
-
-            }
+            Toaster.info("Importing file into Polar document repository...");
 
             await this.latch.get();
 
@@ -111,8 +119,13 @@ export class DefaultAddContentImporter  implements AddContentImporter {
     }
 
     private async isAuthenticated(): Promise<boolean> {
+
         const authHandler = AuthHandlers.get();
-        return (await authHandler.userInfo()).isPresent();
+
+        const userInfo = await authHandler.userInfo();
+
+        return userInfo.isPresent();
+
     }
 
     private updateURL(importedFile: ImportedFile) {

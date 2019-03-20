@@ -14,6 +14,7 @@ import * as https from "https";
 import {Capture} from '../../capture/Capture';
 import {CaptureOpts} from '../../capture/CaptureOpts';
 import {PathParams} from 'express-serve-static-core';
+import {FilePaths} from '../../util/FilePaths';
 
 const log = Logger.create();
 
@@ -58,6 +59,19 @@ export class Webserver implements WebRequestHandler {
 
         // TODO: add infinite caching if the files are woff2 web fonts...
         this.app.use(serveStatic(this.webserverConfig.dir, {immutable: true}));
+
+        for (const page of ['login.html', 'index.html']) {
+
+            // handle explicit paths of /login.html and /index.html like we
+            // do in the webapp.
+
+            const pagePath =
+                FilePaths.join(this.webserverConfig.dir, 'apps', 'repository', page);
+
+            this.app.use(`/${page}`,
+                         serveStatic(pagePath, {immutable: true}));
+
+        }
 
         this.app.use(express.json());
         this.app.use(express.urlencoded());
