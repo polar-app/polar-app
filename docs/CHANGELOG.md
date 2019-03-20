@@ -1,5 +1,7 @@
 # 1.13.14
 
+- Added 'preview' support to the webapp so that we can easily preview URLs
+
 - Fixed bug in FF with the webapp no longer working.
 
 - Now running latest version of pdf.js (from dec)
