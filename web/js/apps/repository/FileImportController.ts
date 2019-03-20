@@ -16,6 +16,7 @@ import {AddFileRequest} from "./AddFileRequest";
 import {AppRuntime} from "../../AppRuntime";
 import {AddFileRequests} from "./AddFileRequests";
 import {ProgressTracker} from '../../util/ProgressTracker';
+import {remote} from 'electron';
 
 const log = Logger.create();
 
@@ -215,6 +216,8 @@ export class FileImportController {
 
     private async onImportFiles(files: AddFileRequest[]) {
 
+        this.forceWindowFocus();
+
         const importedFiles = await this.doImportFiles(files);
 
         if (importedFiles.length === 0) {
@@ -255,6 +258,14 @@ export class FileImportController {
 
         } else {
             Toaster.success(`Imported ${files.length} files successfully.`);
+        }
+
+    }
+
+    private forceWindowFocus() {
+
+        if (remote) {
+            remote.getCurrentWindow().focus();
         }
 
     }
