@@ -9,6 +9,7 @@ import {AddContentButtonOverlays} from './AddContentButtonOverlays';
 import {Latches} from '../../util/Latches';
 import {Latch} from '../../util/Latch';
 import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
+import {InjectedComponent} from '../../ui/util/ReactInjector';
 
 export interface AddContentImporter {
 
@@ -33,9 +34,12 @@ export class DefaultAddContentImporter  implements AddContentImporter {
     // document was added.
     private latch = new Latch<boolean>();
 
+    private overlay?: InjectedComponent;
+
+
     public async prepare(): Promise<void> {
 
-        AddContentButtonOverlays.create(() => {
+        this.overlay = await AddContentButtonOverlays.create(() => {
 
             // resolve the latch so we can move forward.
             this.latch.resolve(true);
@@ -46,9 +50,11 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
     public async doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>) {
 
-        const url = this.getURL();
-
         await this.latch.get();
+
+        this.overlay!.destroy();
+
+        const url = this.getURL();
 
         const basename = FilePaths.basename(url);
         const response = await fetch(url);
@@ -57,7 +63,21 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
         const pdfImporter = new PDFImporter(persistenceLayerProvider);
 
-        return await pdfImporter.importFile(blobURL, basename);
+        const importedFile = await pdfImporter.importFile(blobURL, basename);
+
+        importedFile.map(this.updateURL);
+
+        return importedFile;
+
+    }
+
+    private updateURL(importedFile: ImportedFile) {
+
+        const url = new URL(document.location!.href);
+        url.searchParams.delete('preview');
+        url.searchParams.set('filename', importedFile.fileRef.name);
+
+        history.pushState({}, document.title, url.toString());
 
     }
 

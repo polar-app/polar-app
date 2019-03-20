@@ -52,7 +52,10 @@ export class Launcher {
 
         await Logging.init();
 
-        await addContentImporter.doImport(Providers.toInterface(() => persistenceLayer));
+        const imported =
+            await addContentImporter.doImport(Providers.toInterface(() => persistenceLayer));
+
+        console.log("FIXME: importeD: ", imported);
 
         // TODO: now we have to fget a blob() to add to the persistence layer.
 
