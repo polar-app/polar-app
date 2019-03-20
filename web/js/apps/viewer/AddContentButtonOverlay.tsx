@@ -32,7 +32,7 @@ export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState
                         onClick={() => this.props.onClick()}
                         size="lg">
 
-                    <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
+                    <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add to Polar
 
                 </Button>
 
