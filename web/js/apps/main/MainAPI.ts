@@ -5,6 +5,8 @@ import {Logger} from '../../logger/Logger';
 import {Capture} from '../../capture/Capture';
 import {MainAppController} from './MainAppController';
 import {Version} from '../../util/Version';
+import {FileImportClient} from '../repository/FileImportClient';
+import {FileImportRequests} from '../repository/FileImportRequests';
 
 const log = Logger.create();
 
@@ -53,10 +55,18 @@ export class MainAPI {
 
             const captureOpts = <Partial<CaptureOpts>> req.body;
 
-            res.status(200).send({});
+            if (captureOpts.contentType === 'application/pdf') {
 
-            this.mainAppController.cmdCaptureWebPageWithBrowser(captureOpts)
-                .catch(err => log.error("Unable to capture page: ", err));
+                FileImportClient.send(FileImportRequests.fromURLs([captureOpts.link!]));
+
+            } else {
+
+                this.mainAppController.cmdCaptureWebPageWithBrowser(captureOpts)
+                    .catch(err => log.error("Unable to capture page: ", err));
+
+            }
+
+            res.status(200).send({});
 
         });
 

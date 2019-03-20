@@ -119,7 +119,22 @@ export class DefaultAddContentImporter  implements AddContentImporter {
         if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
 
             for (const extensionID of extensionIDs) {
-                chrome.runtime.sendMessage(extensionID, message);
+
+                const responseCallback = (message: any) => {
+
+                    if (message.success !== undefined) {
+
+                        if (message.success) {
+                            Toaster.success("Successfully imported into Polar Desktop");
+                        } else {
+                            Toaster.error("Failed to import into Polar Desktop: " + message.message);
+                        }
+
+                    }
+
+                };
+
+                chrome.runtime.sendMessage(extensionID, message, responseCallback);
             }
 
         }

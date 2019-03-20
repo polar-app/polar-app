@@ -273,7 +273,7 @@ export class FileImportController {
                     const importedFile = await this.doImportFile(file);
                     result.push(importedFile);
                 } catch (e) {
-                    log.error("Failed to import file: " + file, e);
+                    log.error("Failed to import file: ", file, e);
                 } finally {
                     DeterminateProgressBar.update(progressTracker.incr());
                 }

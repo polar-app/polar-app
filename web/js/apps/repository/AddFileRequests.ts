@@ -1,4 +1,3 @@
-import {FileImportRequest} from './FileImportRequest';
 import {FilePaths} from '../../util/FilePaths';
 import {AddFileRequest} from './AddFileRequest';
 import {Optional} from '../../util/ts/Optional';
@@ -6,11 +5,43 @@ import {PathStr} from '../../util/Strings';
 import {AppRuntime} from '../../AppRuntime';
 import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
 import {Aborters, Files} from '../../util/Files';
+import {isPresent} from '../../Preconditions';
+import {Reducers} from '../../util/Reducers';
 
 const TOASTER_DESTROY_DELAY = 500;
 const MAX_RECURSIVE_DIRECTORY_SCAN_DURATION = "30s";
 
 export class AddFileRequests {
+
+    public static fromURL(url: string): AddFileRequest {
+
+        const toBasename = (input: string): string => {
+            input = input.replace( /[?#].*$/, '');
+            return FilePaths.basename(input);
+        };
+
+        // compute a sane basename
+
+        const parsedURL = new URL(url);
+
+        const basenames = [];
+
+        if (parsedURL.searchParams.get('url')) {
+            basenames.push(toBasename(parsedURL.searchParams.get('url')!));
+        }
+
+        basenames.push(toBasename(url));
+
+        const basename =
+            basenames.filter(current => isPresent(current))
+                     .reduce(Reducers.FIRST);
+
+        return {
+            docPath: url,
+            basename
+        };
+
+    }
 
     public static fromPath(path: string): AddFileRequest {
 

@@ -12,17 +12,10 @@ export class InputSources {
 
         if (typeof value === 'string') {
 
-            if (value.startsWith("blob:")) {
+            if (URLs.isURL(value)) {
                 const response = await fetch(value);
                 const blob = await response.blob();
                 return this.ofBlob(blob, basename);
-            }
-
-            // TODO: parse a file: URL so that we then have the path and read
-            // it directly from the path.
-
-            if (URLs.isURL(value)) {
-                throw new Error("Not implemented yet");
             }
 
             // this is a file path not a URL or a blob URL so open it as a file

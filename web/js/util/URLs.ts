@@ -53,7 +53,7 @@ export class URLs {
 
         return path.startsWith("file:") ||
             path.startsWith("blob:") ||
-            path.startsWith("https:") ||
+            path.startsWith("http:") ||
             path.startsWith("https:");
 
     }

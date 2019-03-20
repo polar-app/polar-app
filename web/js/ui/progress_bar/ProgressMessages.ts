@@ -13,8 +13,7 @@ export class ProgressMessages {
 
     public static broadcast(progressMessage: ProgressMessage) {
 
-        // TODO: we should really unify how we send these ...
-        if (AppRuntime.isElectron()) {
+        if (AppRuntime.get() === 'electron-main') {
 
             Broadcasters.send(this.CHANNEL, progressMessage);
 

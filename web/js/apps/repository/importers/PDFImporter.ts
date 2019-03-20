@@ -15,6 +15,10 @@ import {IProvider} from '../../../util/Providers';
 import {BinaryFileData, FileRef} from '../../../datastore/Datastore';
 import {URLs} from '../../../util/URLs';
 import {InputSources} from '../../../util/input/InputSources';
+import {AppRuntime} from '../../../AppRuntime';
+import base = Mocha.reporters.base;
+
+import fs from 'fs';
 
 const log = Logger.create();
 
@@ -30,6 +34,56 @@ export class PDFImporter {
         this.persistenceLayerProvider = persistenceLayerProvider;
     }
 
+    private async prefetch(docPath: string, basename: string): Promise<string> {
+
+        if (AppRuntime.isElectron() && URLs.isURL(docPath) && URLs.isWebScheme(docPath)) {
+
+            const url = docPath;
+            const downloadPath = FilePaths.join(FilePaths.tmpdir(), basename);
+
+            log.info(`Prefetching URL ${url} to: ${downloadPath}`);
+
+            const response = await fetch(url);
+
+            if (response.body) {
+
+                const reader = response.body.getReader();
+
+                let writeStream: fs.WriteStream | undefined;
+
+                try {
+
+                    writeStream = Files.createWriteStream(downloadPath);
+
+                    while (true) {
+
+                        const { done, value } = await reader.read();
+
+                        if (done) {
+                            break;
+                        }
+
+                        writeStream.write(value);
+
+                    }
+
+                } finally {
+
+                    if (writeStream) {
+                        writeStream.close();
+                    }
+
+                }
+
+                return downloadPath;
+            }
+
+        }
+
+        return docPath;
+
+    }
+
     /**
      *
      * @param docPath
@@ -39,6 +93,8 @@ export class PDFImporter {
      *                 original input URL has given us.
      */
     public async importFile(docPath: string, basename: string): Promise<Optional<ImportedFile>> {
+
+        docPath = await this.prefetch(docPath, basename);
 
         const isPath = ! URLs.isURL(docPath);
 
@@ -126,8 +182,10 @@ export class PDFImporter {
         const toData = async (): Promise<BinaryFileData> => {
 
             // TODO(webapp): make this into a toBlob function call
-            if (docPath.startsWith("blob:")) {
-                return await fetch(docPath).then(r => r.blob());
+            if (URLs.isURL(docPath)) {
+                const response = await fetch(docPath);
+                const blob = await response.blob();
+                return blob;
             }
 
             return <FileHandle> {path: docPath};
