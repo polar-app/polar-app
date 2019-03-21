@@ -416,14 +416,28 @@ export class TextHighlightController {
 
         let result = "";
 
-        $(selector).each(function() {
+        const elements: HTMLElement[]
+            = Array.from(document.querySelectorAll(selector));
 
-            // TODO: we should include the x/y and width + height of every text
-            // selection so that we have where it was placed in the document.
+        if (elements.length === 0) {
+            return "";
+        }
 
-            result += "\n" + $(this).text();
+        let bottom: number | undefined;
 
-        });
+        for (const element of Array.from(elements)) {
+
+            const rect = element.getBoundingClientRect();
+
+            if (bottom !== undefined && rect.bottom !== bottom) {
+                result += "\n";
+            }
+
+            result += element.innerText;
+
+            bottom = rect.bottom;
+
+        }
 
         return result;
 

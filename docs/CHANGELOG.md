@@ -1,3 +1,10 @@
+# 1.15.1
+
+- New text extraction algorithm for PDFs to pull out the text without excess 
+  spacing.
+
+- Fixed bug with highlights showing up on the wrong page.
+
 # 1.15.0
 
 - New major release milestone to highlight the webapp and new polar chrome 
