@@ -1,6 +1,6 @@
 import {ISODateString, ISODateTimeString} from "../metadata/ISODateTimeStrings";
 
-namespace search {
+export namespace search {
 
     /**
      * Responsible for creating search engines by matching the query to the
@@ -52,6 +52,8 @@ namespace search {
 
         // https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL
 
+        // TODO: scihub, ncbi
+
         /**
          * The total number of results available.
          */
@@ -96,9 +98,11 @@ namespace search {
          */
         readonly id: string;
 
+        readonly published: ISODateTimeString | ISODateString;
+
         readonly updated?: ISODateTimeString | ISODateString;
 
-        readonly published: ISODateTimeString | ISODateString;
+        readonly title?: string;
 
         readonly summary?: ContentStr;
 
@@ -139,9 +143,9 @@ namespace search {
     }
 
     export interface DocLink {
-        readonly contentType: DocContentType;
+        readonly type: DocContentType;
         readonly href: string;
-        readonly rel?: DocLinkRel;
+        readonly disposition?: DocLinkDisposition;
     }
 
     export type DocContentType = 'application/pdf' | 'text/html';
@@ -150,7 +154,7 @@ namespace search {
      * Used so that we know what type of link this is.  Is it for downloading the
      * paper, a landing page for more information, etc.
      */
-    export type DocLinkRel = 'download' | 'landing';
+    export type DocLinkDisposition = 'download' | 'landing';
 
     /**
      * A string formatted as a DOI 10.1038/nature12373
@@ -161,5 +165,44 @@ namespace search {
      * PubMed ID string.
      */
     export type PMIDStr = string;
+
+    /**
+     * Simple single page of results.
+     */
+    export class SinglePageResults implements Results {
+
+        public readonly total: number;
+
+        private currentPage?: Page;
+
+        private nextPage?: Page;
+
+        constructor(private readonly page: Page) {
+            this.total = page.entries.length;
+            this.nextPage = page;
+        }
+
+        public async current(): Promise<search.Page | undefined> {
+            return this.currentPage;
+        }
+
+        public async hasCurrent(): Promise<boolean> {
+            return this.currentPage !== undefined;
+        }
+
+        public async hasNext(): Promise<boolean> {
+            return this.nextPage !== undefined;
+        }
+
+        public async next(): Promise<search.Page | undefined> {
+
+            this.currentPage = this.nextPage;
+            this.nextPage = undefined;
+
+            return this.currentPage;
+
+        }
+
+    }
 
 }
