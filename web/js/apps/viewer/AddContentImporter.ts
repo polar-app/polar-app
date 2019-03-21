@@ -1,12 +1,9 @@
-import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {PDFImporter} from '../repository/importers/PDFImporter';
+import {ImportedFile} from '../repository/importers/PDFImporter';
 import {IProvider} from '../../util/Providers';
 import {FilePaths} from '../../util/FilePaths';
-import base = Mocha.reporters.base;
-import {ImportedFile} from '../repository/importers/PDFImporter';
 import {Optional} from '../../util/ts/Optional';
 import {AddContentButtonOverlays} from './AddContentButtonOverlays';
-import {Latches} from '../../util/Latches';
 import {Latch} from '../../util/Latch';
 import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
@@ -14,7 +11,9 @@ import {Toaster} from '../../ui/toaster/Toaster';
 import {PreviewURLs} from './PreviewURLs';
 import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
 import {LoginURLs} from './LoginURLs';
-import {log} from 'util';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export interface AddContentImporter {
 
@@ -122,14 +121,22 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
                 const responseCallback = (message: any) => {
 
-                    if (message.success !== undefined) {
+                    if (message) {
 
-                        if (message.success) {
-                            Toaster.success("Successfully imported into Polar Desktop");
-                        } else {
-                            Toaster.error("Failed to import into Polar Desktop: " + message.message);
+                        if (message.success !== undefined) {
+
+                            if (message.success) {
+                                Toaster.success("Successfully imported into Polar Desktop");
+                            } else {
+                                Toaster.error("Failed to import into Polar Desktop: " + message.message);
+                            }
+
                         }
 
+                    } else {
+                        // we don't always get a callback and it will be null
+                        // when nothing saw the message if the extension isn't
+                        // present.
                     }
 
                 };

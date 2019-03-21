@@ -19,6 +19,7 @@ import {AppRuntime} from '../../../AppRuntime';
 import base = Mocha.reporters.base;
 
 import fs from 'fs';
+import {Toaster} from '../../../ui/toaster/Toaster';
 
 const log = Logger.create();
 
@@ -40,6 +41,8 @@ export class PDFImporter {
 
             const url = docPath;
             const downloadPath = FilePaths.join(FilePaths.tmpdir(), basename);
+
+            Toaster.info(`Downloading ${basename} ...`);
 
             log.info(`Prefetching URL ${url} to: ${downloadPath}`);
 
