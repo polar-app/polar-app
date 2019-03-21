@@ -62,6 +62,16 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
      */
     public async change(type: PersistenceLayerType) {
 
+        if (AppRuntime.isBrowser() && this.persistenceLayer) {
+            // TODO: this is a workaround for the browser.  We should ideally
+            // support some type of class of datastores and (local and cloud)
+            // and their actual implementation (remote, firebase, cloud-aware).
+            // Then toggle on the actual implementation and only change it when
+            // the impl changes.
+            log.warn("Only Firebase persistence layer supported in browsers");
+            return false;
+        }
+
         if (this.current === type) {
             return false;
         }
@@ -121,6 +131,15 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
     }
 
     private createPersistenceLayer(type: PersistenceLayerType): ListenablePersistenceLayer {
+
+        if (AppRuntime.isBrowser()) {
+
+            if (type !== 'firebase') {
+                log.warn("Only firebase type supported in browsers (forcing).");
+                type = 'firebase';
+            }
+
+        }
 
         if (type === 'firebase') {
             return FirebasePersistenceLayerFactory.create();
@@ -187,6 +206,7 @@ export class PersistenceLayerTypes {
     public static get(): PersistenceLayerType {
 
         if (AppRuntime.isBrowser()) {
+
             // we are ALWAYS using firebase when in the browser and there is no
             // other option.
             return 'firebase';
