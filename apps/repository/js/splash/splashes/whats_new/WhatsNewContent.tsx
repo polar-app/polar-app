@@ -18,11 +18,11 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
-                    <h3>Polar 1.5.0</h3>
+                    <h3>Polar 1.15.0</h3>
 
                     <div className="intro">
                         <p>
-                            Polar 1.5.0 is a big release for us.  We're calling
+                            Polar 1.15.0 is a big release for us.  We're calling
                             the webapp production ready at this point but also
                             we've shipped an updated version of the Chrome
                             Extension which supports automatic preview of PDFs

@@ -1,4 +1,4 @@
-# 1.5.0
+# 1.15.0
 
 - New major release milestone to highlight the webapp and new polar chrome 
   extensions.  
