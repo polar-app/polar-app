@@ -49,7 +49,7 @@ export class SplitBarLeft extends React.PureComponent<any, any> {
         return (
 
             <div className="split-bar-left"
-                 style={{marginTop: 'auto', marginBottom: 'auto', width: '250px'}}>
+                 style={{marginTop: 'auto', marginBottom: 'auto', width: '250px', whiteSpace: 'nowrap'}}>
 
                 {this.props.children}
 

@@ -1,4 +1,10 @@
-# 1.13.14
+# 1.5.0
+
+- New major release milestone to highlight the webapp and new polar chrome 
+  extensions.  
+
+- Updated "Save to Polar" extension which uses the webapp to preview and save 
+  apps as well as integrate properly with the web application and desktop. 
 
 - Added 'preview' support to the webapp so that we can easily preview URLs
 
@@ -6,9 +12,9 @@
 
 - Now running latest version of pdf.js (from dec)
 
-- flashcards can now be edited properly
+- Flashcards can now be edited properly
 
-- flashcards and comments are now in ascending order not descending
+- Flashcards and comments are now in ascending order not descending
 
 # 1.13.13
 

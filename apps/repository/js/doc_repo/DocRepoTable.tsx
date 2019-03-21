@@ -499,7 +499,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         show: this.state.columns.lastUpdated.selected,
                                         maxWidth: 85,
                                         defaultSortDesc: true,
-                                        className: 'doc-table-col-updated',
+                                        className: 'doc-table-col-updated d-none-mobile',
                                         Cell: (row: any) => (
                                             <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
                                         )
@@ -511,7 +511,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         show: this.state.columns.added.selected,
                                         maxWidth: 85,
                                         defaultSortDesc: true,
-                                        className: 'doc-table-col-added',
+                                        className: 'doc-table-col-added d-none-mobile',
                                         Cell: (row: any) => (
                                             <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
                                         )
@@ -523,6 +523,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         // show: false,
                                         maxWidth: 200,
                                         sortable: false,
+                                        className: "d-none-mobile",
                                         sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                                             const toSTR = (doc?: RepoDocInfo): string => {
@@ -576,7 +577,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         width: 250,
                                         accessor: '',
                                         show: this.state.columns.tags.selected,
-                                        className: 'doc-table-col-tags',
+                                        className: 'doc-table-col-tags d-none-mobile',
                                         sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                                             const toSTR = (obj: any): string => {
@@ -628,6 +629,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         show: this.state.columns.nrAnnotations.selected,
                                         defaultSortDesc: true,
                                         resizable: false,
+                                        className: "d-none-mobile",
                                     },
                                     {
                                         id: 'progress',
@@ -637,7 +639,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 100,
                                         defaultSortDesc: true,
                                         resizable: false,
-                                        className: 'doc-table-col-progress',
+                                        className: 'doc-table-col-progress d-none-mobile',
                                         Cell: (row: any) => (
                                             // TODO: move to a PureComponent to
                                             // improve performance
@@ -656,7 +658,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         defaultSortDesc: true,
                                         resizable: false,
                                         sortable: false,
-                                        className: 'doc-dropdown',
+                                        className: 'doc-dropdown d-none-mobile',
                                         Cell: (row: any) => {
 
                                             // TODO: move to a PureComponent to

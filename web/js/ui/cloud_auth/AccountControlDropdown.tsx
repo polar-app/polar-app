@@ -57,7 +57,9 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
 
                     <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
 
-                    {AppRuntime.isBrowser() ? 'Account' : 'Cloud Sync'}
+                    <span className="d-none-mobile">
+                        {AppRuntime.isBrowser() ? 'Account' : 'Cloud Sync'}
+                    </span>
 
                     <div className="text-white" style={Styles.dropdownChevron}></div>
 

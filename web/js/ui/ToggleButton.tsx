@@ -33,7 +33,7 @@ export class ToggleButton extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div className="p-1"
+                    <div className="p-1 d-none-mobile"
                          style={{verticalAlign: 'middle'}}>
                         &nbsp;{this.props.label}
                     </div>

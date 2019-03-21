@@ -41,7 +41,7 @@ export class NavLogo extends React.PureComponent<IProps, IState> {
                 </div>
 
                 <div style={Styles.child}>
-                    <div style={Styles.textLogo}>POLAR</div>
+                    <div className="d-none-mobile" style={Styles.textLogo}>POLAR</div>
                 </div>
             </div>
         );

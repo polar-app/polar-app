@@ -29,3 +29,12 @@
     /* the default max width is too small */
     max-width: 500px !important;
 }
+
+/* custom CSS for mobile devices */
+@media only screen and (max-device-width: 480px) {
+
+    .d-none-mobile {
+        display: none;
+    }
+
+}
