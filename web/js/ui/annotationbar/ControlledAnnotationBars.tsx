@@ -129,7 +129,6 @@ export class ControlledAnnotationBars {
             y: -50
         };
 
-
         // TODO use the mouseDirection on the activeSelectionEvent and place
         // with top/bottom
 

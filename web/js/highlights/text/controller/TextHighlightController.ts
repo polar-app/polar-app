@@ -1,6 +1,5 @@
 import {Model} from '../../../model/Model';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
-import {ipcRenderer} from 'electron';
 import {Logger} from '../../../logger/Logger';
 import {TextHighlightRow} from './TextHighlightRow';
 import {notNull, Preconditions} from '../../../Preconditions';
@@ -22,10 +21,10 @@ import {TextHighlights} from '../../../metadata/TextHighlights';
 import {Screenshots} from '../../../metadata/Screenshots';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {Optional} from '../../../util/ts/Optional';
-import {PagemarkMode} from '../../../metadata/PagemarkMode';
 import {TypedMessage} from '../../../util/TypedMessage';
 import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from '../../../metadata/BaseHighlight';
+import {Elements} from '../../../util/Elements';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -76,13 +75,47 @@ export class TextHighlightController {
 
             if (event.code) {
 
+                const getPageNum = () => {
+
+                    const sel = window.getSelection();
+
+                    if (sel.rangeCount >= 1) {
+
+                        const range = sel.getRangeAt(0);
+
+                        const startElement = range.startContainer instanceof Element ?
+                            range.startContainer :
+                            range.startContainer.parentElement;
+
+                        if (startElement && startElement instanceof HTMLElement) {
+
+                            const pageElement = Elements.untilRoot(startElement, ".page");
+
+                            if (pageElement) {
+                                return parseInt(pageElement.getAttribute("data-page-number"), 10);
+                            }
+
+                        }
+
+                    }
+
+                    return undefined;
+
+                };
+
+                const pageNum = getPageNum();
+
                 switch (event.code) {
 
                     // TODO: we should not use 'code' but should use 'key'... The
                     // problem is that on OS X the key code returned 'Dead' but was
                     // working before.  Not sure why it started breaking.
                     case "KeyT":
-                        await this.doHighlight();
+
+                        if (pageNum) {
+                            await this.doHighlight(pageNum);
+                        }
+
                         break;
 
                     default:
@@ -108,7 +141,10 @@ export class TextHighlightController {
 
                 const typedMessage: TypedMessage<HighlightCreatedEvent> = event.data;
 
-                this.doHighlight(typedMessage.value.highlightColor)
+                const highlightColor = typedMessage.value.highlightColor;
+                const pageNum = typedMessage.value.pageNum;
+
+                this.doHighlight(pageNum, typedMessage.value.highlightColor)
                     .catch(err => log.error("Unable to create text highlight", err));
 
                 break;
@@ -125,34 +161,35 @@ export class TextHighlightController {
 
     }
 
-    private async doHighlight(highlightColor: HighlightColor = 'yellow') {
+    private async doHighlight(pageNum: number,
+                              highlightColor: HighlightColor = 'yellow') {
 
         if (this.docFormat.name === "html") {
-            await this.doHighlightModern(highlightColor);
+            await this.doHighlightModern(highlightColor, pageNum);
         } else {
-            this.doHighlightLegacy(highlightColor);
+            this.doHighlightLegacy(highlightColor, pageNum);
         }
 
     }
 
-    public doHighlightLegacy(highlightColor: HighlightColor) {
+    public doHighlightLegacy(highlightColor: HighlightColor, pageNum: number) {
 
-        const textHighlighter = this.createLegacyTextHighlighter(highlightColor);
+        const textHighlighter = this.createLegacyTextHighlighter(highlightColor, pageNum);
         textHighlighter.doHighlight();
 
     }
 
-    public async doHighlightModern(highlightColor: HighlightColor) {
+    public async doHighlightModern(highlightColor: HighlightColor, pageNum: number) {
 
         log.info("Doing modern text highlight");
-        await this.onTextHighlightCreatedModern(highlightColor);
+        await this.onTextHighlightCreatedModern(highlightColor, pageNum);
 
     }
 
     /**
      * Set text highlighting in the current document with the highlighter.
      */
-    public createLegacyTextHighlighter(highlightColor: HighlightColor) {
+    public createLegacyTextHighlighter(highlightColor: HighlightColor, pageNum: number) {
 
         let sequence = 0;
 
@@ -185,7 +222,7 @@ export class TextHighlightController {
 
                 (async () =>  {
 
-                    await controller.onTextHighlightCreatedLegacy("." + highlightClazz, highlightColor);
+                    await controller.onTextHighlightCreatedLegacy("." + highlightClazz, highlightColor, pageNum);
 
                     // the underlying <span> highlights need to be removed now.
 
@@ -216,9 +253,11 @@ export class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    private async onTextHighlightCreatedLegacy(selector: string, highlightColor: HighlightColor) {
+    private async onTextHighlightCreatedLegacy(selector: string,
+                                               highlightColor: HighlightColor,
+                                               pageNum: number) {
 
-        await this.createTextHighlight(async () => {
+        await this.createTextHighlight(pageNum, async () => {
 
             // FIXME: get the new highlighter working FIRST without text and without
             // rows , or other advanced features.
@@ -249,12 +288,13 @@ export class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    private async onTextHighlightCreatedModern(highlightColor: HighlightColor) {
+    private async onTextHighlightCreatedModern(highlightColor: HighlightColor,
+                                               pageNum: number) {
 
         // FIXME: get the new highlighter working FIRST without text and without
         // rows , or other advanced features.
 
-        await this.createTextHighlight(async () => {
+        await this.createTextHighlight(pageNum, async () => {
 
             const win = notNull(this.docFormat.targetDocument()).defaultView!;
 
@@ -302,7 +342,8 @@ export class TextHighlightController {
 
     }
 
-    public async createTextHighlight(factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
+    public async createTextHighlight(pageNum: number,
+                                     factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
 
         // TODO: this really needs to be reworked so I can test it properly with
         // some sort of screenshot provider
@@ -336,9 +377,9 @@ export class TextHighlightController {
 
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
-        const currentPageMeta = this.docFormat.getCurrentPageDetail();
+        // const currentPageMeta = this.docFormat.getCurrentPageDetail();
 
-        const pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+        const pageMeta = this.model.docMeta.getPageMeta(pageNum);
 
         log.info("Added text highlight to model");
 
