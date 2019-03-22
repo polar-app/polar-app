@@ -181,8 +181,8 @@ export class DatastoreTester {
                     "foo": "bar"
                 };
 
-                await datastore.writeFile(Backend.IMAGE, fileRef, data, meta);
-                await datastore.writeFile(Backend.IMAGE, fileRef, data, meta);
+                await datastore.writeFile(Backend.IMAGE, fileRef, data, {meta});
+                await datastore.writeFile(Backend.IMAGE, fileRef, data, {meta});
 
                 assert.ok(await datastore.containsFile(Backend.IMAGE, fileRef));
 

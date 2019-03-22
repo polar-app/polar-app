@@ -1,20 +1,10 @@
-import {
-    AbstractDatastore, BinaryFileData,
-    Datastore,
-    DeleteResult,
-    DocMetaSnapshotEventListener,
-    ErrorListener,
-    FileMeta,
-    FileRef,
-    InitResult,
-    SnapshotResult,
-    DatastoreOverview,
-    DatastoreInfo, DocMetaSnapshotEvent, PrefsProvider
-} from './Datastore';
+import {AbstractDatastore, Datastore, DatastoreInfo, DatastoreOverview, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {Visibility} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, FileHandle, FileHandles, Files} from '../util/Files';
+import {FileDeleted, FileHandle, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 
@@ -34,9 +24,8 @@ import {Strings} from '../util/Strings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
-import {Settings} from './Settings';
-import {Providers} from '../util/Providers';
-import {DictionaryPrefs, Prefs, StringToStringDict} from '../util/prefs/Prefs';
+import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
+import {DefaultWriteFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -247,7 +236,9 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
-                           meta: FileMeta = {}): Promise<DocFileMeta> {
+                           opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
+
+        const meta = opts.meta || {};
 
         DatastoreFiles.assertSanitizedFileName(ref);
 

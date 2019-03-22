@@ -21,6 +21,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation'
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Logger} from '../../logger/Logger';
 import {Releaseable} from '../../reactor/EventListener';
+import {WriteFileOpts} from '../Datastore';
 
 const log = Logger.create();
 
@@ -149,8 +150,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         this.reactor.dispatchEvent(event);
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta): Promise<DocFileMeta> {
-        return this.delegate.writeFile(backend, ref, data, meta);
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
+        return this.delegate.writeFile(backend, ref, data, opts);
     }
 
     public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {

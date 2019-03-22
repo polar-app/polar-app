@@ -226,10 +226,20 @@ export interface WritableBinaryDatastore {
     writeFile(backend: Backend,
               ref: FileRef,
               data: BinaryFileData,
-              meta?: FileMeta): Promise<DocFileMeta>;
+              opts?: WriteFileOpts): Promise<DocFileMeta>;
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
 
+}
+
+export interface WriteFileOpts {
+    meta?: FileMeta;
+    visibility?: Visibility;
+}
+
+export class DefaultWriteFileOpts implements WriteFileOpts {
+    public readonly meta: FileMeta = {};
+    public readonly visibility = Visibility.PRIVATE;
 }
 
 export interface WritableBinaryMetaDatastore {
@@ -251,13 +261,18 @@ export interface FileRef {
 }
 
 // noinspection TsLint
-export type FileMeta = {
+/**
+ * Arbitrary settings for files specific to each storage layer.  Firebase uses
+ * visibility and uid.
+ */
+export interface FileMeta {
+
     // TODO: I should also include the StorageSettings from Firebase here to
     // give it a set of standardized fields like contentType as screenshots
     // needs to be added with a file type.
+    [key: string]: string;
 
-    [key: string]: string
-};
+}
 
 /**
  *
@@ -630,5 +645,24 @@ export interface PrefsProvider {
      * Get the latest copy of the prefs we're using.
      */
     get(): Prefs;
+
+}
+
+export enum Visibility {
+
+    /**
+     * Only visible for the user.
+     */
+    PRIVATE = 'private', /* or 0 */
+
+    /**
+     * Only to users that this user is following.
+     */
+    FOLLOWING = 'following', /* or 1 */
+
+    /**
+     * To anyone on the service.
+     */
+    PUBLIC = 'public' /* or 2 */
 
 }

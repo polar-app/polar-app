@@ -10,6 +10,7 @@ import {Tag} from '../tags/Tag';
 import {Hashcode} from './Hashcode';
 import {UUID} from './UUID';
 import {ReadingOverview} from './ReadingOverview';
+import {Visibility} from '../datastore/Datastore';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -44,6 +45,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public published?: ISODateString | ISODateTimeString;
     public doi?: string;
     public readingPerDay?: ReadingOverview;
+    public visibility?: Visibility;
 
     constructor(val: IDocInfo) {
 
@@ -233,6 +235,11 @@ export interface IDocInfo {
 
     readingPerDay?: ReadingOverview;
 
+    /**
+     * The visiblity of this document (private or public).  The default is
+     * private.
+     */
+    visibility?: Visibility;
 }
 
 /**

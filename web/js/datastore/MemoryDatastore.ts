@@ -17,6 +17,8 @@ import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DictionaryPrefs} from '../util/prefs/Prefs';
 import {Providers} from '../util/Providers';
+import {WriteFileOpts} from './Datastore';
+import {DefaultWriteFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -80,7 +82,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
-                           meta: FileMeta = {}): Promise<DocFileMeta> {
+                           opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
 
         const key = this.toFileRefKey(backend, ref);
 
@@ -93,6 +95,8 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
         } else {
             buff = await Files.readFileAsync(data.path);
         }
+
+        const meta = opts.meta || {};
 
         this.files[key] = {buffer: buff!, meta};
 

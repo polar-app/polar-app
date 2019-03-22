@@ -18,6 +18,7 @@ import {AsyncFunction} from '../util/AsyncWorkQueue';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {LocalStoragePrefs} from '../util/prefs/Prefs';
+import {WriteFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -104,15 +105,15 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: BinaryFileData,
-                           meta: FileMeta = {}): Promise<DocFileMeta> {
+                           opts?: WriteFileOpts): Promise<DocFileMeta> {
 
 
-        const result = this.local.writeFile(backend, ref, data, meta);
+        const result = this.local.writeFile(backend, ref, data, opts);
 
         // don't await the cloud write.  Once it's written locally we're fine
         // if it's not in the cloud we get an error logged and we should also
         // have task progress in the future.
-        this.cloud.writeFile(backend, ref, data, meta)
+        this.cloud.writeFile(backend, ref, data, opts)
             .catch(err => log.error("Unable to write file to cloud: ", err));
 
         return result;

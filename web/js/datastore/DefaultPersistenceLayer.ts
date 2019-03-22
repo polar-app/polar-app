@@ -16,6 +16,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
+import {WriteFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -191,8 +192,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.createBackup();
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DocFileMeta> {
-        return this.datastore.writeFile(backend, ref, data, meta);
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
+        return this.datastore.writeFile(backend, ref, data, opts);
     }
 
     public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {

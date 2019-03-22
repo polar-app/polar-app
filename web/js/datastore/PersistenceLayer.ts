@@ -15,6 +15,7 @@ import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
+import {WriteFileOpts} from './Datastore';
 
 export interface PersistenceLayer {
 
@@ -69,7 +70,7 @@ export interface PersistenceLayer {
     writeFile(backend: Backend,
               ref: FileRef,
               data: BinaryFileData,
-              meta?: FileMeta): Promise<DocFileMeta>;
+              opts?: WriteFileOpts): Promise<DocFileMeta>;
 
     getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
 

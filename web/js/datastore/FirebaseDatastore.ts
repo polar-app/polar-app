@@ -1,4 +1,6 @@
-import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult, Visibility} from './Datastore';
+import {WritableBinaryMetaDatastore} from './Datastore';
+import {WriteFileOpts} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -24,8 +26,8 @@ import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
-import {WritableBinaryMetaDatastore} from './Datastore';
 import {AppRuntime} from '../AppRuntime';
+import {DefaultWriteFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -37,7 +39,6 @@ const log = Logger.create();
 // in the future. Or, an anonymous user can link a Facebook account and then,
 // later, sign in with Facebook to continue using your app.
 
-// @ts-ignore
 export class FirebaseDatastore extends AbstractDatastore implements Datastore, WritableBinaryMetaDatastore {
 
     public readonly id = 'firebase';
@@ -58,7 +59,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     constructor() {
         super();
-
     }
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION,
@@ -295,7 +295,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: BinaryFileData ,
-                           meta: FileMeta = {}): Promise<DocFileMeta> {
+                           opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
+
+        let meta = opts.meta || {};
+        const visibility = opts.visibility || Visibility.PRIVATE;
 
         if (await this.containsFile(backend, ref)) {
             // the file is already in the datastore so don't attempt to
@@ -318,7 +321,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         // stick the uid into the metadata which we use for authorization of the
         // blob when not public.
-        meta = {...meta, uid, visibility: Visibility.PRIVATE};
+        meta = {...meta, uid, visibility};
 
         const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
 
@@ -563,8 +566,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // TODO: we should have some cache here to avoid checking the server too
         // often but I don't think this is goign to be used often.
 
-        // TODO: this is slow when referencing the storage path directly we should
-        // instead use the doc_file_meta but not all files have this yet.
+        // TODO: this is slow when referencing the storage path directly we
+        // should instead use the doc_file_meta but not all files have this
+        // yet.
 
         const storagePath = this.computeStoragePath(backend, ref);
 
@@ -651,8 +655,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const batch = this.firestore!.batch();
 
-            batch.set(docMetaRef, this.createDocForDocMeta(docInfo, data));
-            batch.set(docInfoRef, this.createDocForDocInfo(docInfo));
+            batch.set(docMetaRef, this.createDocForDocMeta(docInfo, data, docInfo.visibility));
+            batch.set(docInfoRef, this.createDocForDocInfo(docInfo, docInfo.visibility));
 
             await batch.commit();
 
@@ -681,7 +685,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     /**
      * Create the document that we will store in for the DocMeta
      */
-    private createDocForDocMeta(docInfo: DocInfo, docMeta: string) {
+    private createDocForDocMeta(docInfo: DocInfo,
+                                docMeta: string,
+                                visibility: Visibility = Visibility.PRIVATE) {
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docInfo.fingerprint);
@@ -694,7 +700,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const recordHolder: RecordHolder<DocMetaHolder> = {
             uid,
             id,
-            visibility: Visibility.PRIVATE,
+            visibility,
             value: docMetaHolder
         };
 
@@ -702,7 +708,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private createDocForDocInfo(docInfo: DocInfo) {
+    private createDocForDocInfo(docInfo: DocInfo,
+                                visibility: Visibility = Visibility.PRIVATE) {
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docInfo.fingerprint);
@@ -1112,26 +1119,6 @@ export interface DocMetaHolder {
     readonly docInfo: IDocInfo;
 
     readonly value: string;
-
-}
-
-
-export enum Visibility {
-
-    /**
-     * Only visible for the user.
-     */
-    PRIVATE = 'private', /* or 0 */
-
-    /**
-     * Only to users that this user is following.
-     */
-    FOLLOWING = 'following', /* or 1 */
-
-    /**
-     * To anyone on the service.
-     */
-    PUBLIC = 'public' /* or 2 */
 
 }
 
