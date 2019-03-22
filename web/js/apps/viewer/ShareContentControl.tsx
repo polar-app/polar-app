@@ -5,6 +5,7 @@ import Button from 'reactstrap/lib/Button';
 import {Visibility} from '../../datastore/Datastore';
 import Input from 'reactstrap/lib/Input';
 import {SocialLinks} from '../../util/SocialLinks';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -29,6 +30,8 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
         this.onPrivate = this.onPrivate.bind(this);
         this.onPublic = this.onPublic.bind(this);
         this.onChanged = this.onChanged.bind(this);
+        this.onDone = this.onDone.bind(this);
+        this.sharedVia = this.sharedVia.bind(this);
 
         this.state = {
             // the current visibility or private by default.
@@ -97,18 +100,21 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
                         <a target="_new"
                            style={Styles.ShareButton}
+                           onClick={() => this.sharedVia('twitter')}
                            href={SocialLinks.createForTwitter(shareLink)}>
                             <i className="fab fa-twitter"></i>
                         </a>
 
                         <a target="_new"
                            style={Styles.ShareButton}
+                           onClick={() => this.sharedVia('gmail')}
                            href={SocialLinks.createForGMail(shareLink)}>
                             <img src="/assets/logos/gmail.svg"/>
                         </a>
 
                         <a target="_new"
                            style={Styles.ShareButton}
+                           onClick={() => this.sharedVia('facebook')}
                            href={SocialLinks.createForFacebook(shareLink)}>
                             <i className="fab fa-facebook"></i>
                         </a>
@@ -181,7 +187,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                             <Button id="sharing-button-ok"
                                     color="secondary"
                                     size="sm"
-                                    onClick={() => this.props.onDone()}
+                                    onClick={() => this.onDone()}
                                     className="ml-1">
 
                                 Done
@@ -214,6 +220,15 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
         this.props.onChanged(this.state.visibility);
     }
 
+    private sharedVia(platform: SharePlatform) {
+        RendererAnalytics.event({category: 'shared-via', action: platform});
+    }
+
+    private onDone() {
+        RendererAnalytics.event({category: 'sharing', action: this.state.visibility});
+        this.props.onDone();
+    }
+
 }
 
 interface IProps {
@@ -232,3 +247,5 @@ interface IProps {
 interface IState {
     readonly visibility: Visibility;
 }
+
+export type SharePlatform = 'twitter' | 'facebook' | 'gmail';
