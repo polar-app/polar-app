@@ -10,7 +10,6 @@ import Input from 'reactstrap/lib/Input';
 
 const log = Logger.create();
 
-
 class Styles {
 
 }
