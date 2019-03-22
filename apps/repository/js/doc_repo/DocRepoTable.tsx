@@ -33,12 +33,12 @@ import {TagButton} from './TagButton';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {AddContentButton} from './AddContentButton';
+import {AddContentButton} from '../ui/AddContentButton';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
 import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
-import {DocButton} from './doc_buttons/DocButton';
-import {FlagDocButton} from './doc_buttons/FlagDocButton';
-import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
+import {DocButton} from '../ui/DocButton';
+import {FlagDocButton} from '../ui/FlagDocButton';
+import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
@@ -46,6 +46,7 @@ import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import Input from 'reactstrap/lib/Input';
 import {Settings} from '../../../../web/js/datastore/Settings';
+import {AddContentActions} from '../ui/AddContentActions';
 
 const log = Logger.create();
 
@@ -86,9 +87,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.onMultiDeleted = this.onMultiDeleted.bind(this);
 
         this.getSelected = this.getSelected.bind(this);
-
-        this.cmdImportFromDisk = this.cmdImportFromDisk.bind(this);
-        this.cmdCaptureWebPage = this.cmdCaptureWebPage.bind(this);
 
         this.state = {
             data: [],
@@ -296,8 +294,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                          marginBottom: 'auto'
                                      }}>
 
-                                    <AddContentButton importFromDisk={() => this.cmdImportFromDisk()}
-                                                      captureWebPage={this.cmdCaptureWebPage}/>
+                                    <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}
+                                                      captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
 
                                 </div>
 
@@ -966,28 +964,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.filteredRepoDocInfoIndex.onToggleFilterArchived(value);
     }
 
-    private cmdImportFromDisk() {
-
-        RendererAnalytics.event({category: 'add-content', action: 'import-from-disk'});
-
-        this.getController().cmdImport()
-            .catch((err: Error) => log.error("Could not import from disk: ", err));
-
-    }
-
-    private cmdCaptureWebPage() {
-
-        RendererAnalytics.event({category: 'add-content', action: 'capture-web-page'});
-
-        this.getController().cmdCaptureWebPageWithBrowser()
-            .catch((err: Error) => log.error("Could not capture page: ", err));
-
-    }
-
-    private getController(): IMainAppController {
-        return remote.getGlobal('mainAppController');
-    }
-
 }
 
 interface IProps {
@@ -1007,9 +983,4 @@ interface IState {
     readonly selected: ReadonlyArray<number>;
 }
 
-interface IMainAppController {
 
-    cmdImport(): Promise<void>;
-
-    cmdCaptureWebPageWithBrowser(): Promise<void>;
-}

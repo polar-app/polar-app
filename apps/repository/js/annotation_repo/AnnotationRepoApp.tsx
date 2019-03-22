@@ -17,7 +17,7 @@ import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
 import {RepoSidebar} from '../RepoSidebar';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {AddContentButton} from '../doc_repo/AddContentButton';
+import {AddContentButton} from '../ui/AddContentButton';
 import {TagButton} from '../doc_repo/TagButton';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {MultiDeleteButton} from '../doc_repo/multi_buttons/MultiDeleteButton';
@@ -25,6 +25,7 @@ import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 import {DocRepoFilterBar} from '../doc_repo/DocRepoFilterBar';
 import {DocRepoTableDropdown} from '../doc_repo/DocRepoTableDropdown';
 import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
+import {AddContentActions} from '../ui/AddContentActions';
 
 const log = Logger.create();
 
@@ -71,8 +72,8 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                                      display: 'flex'
                                  }}>
 
-                                <AddContentButton importFromDisk={() => this.cmdImportFromDisk()}
-                                                  captureWebPage={this.cmdCaptureWebPage}/>
+                                <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}
+                                                  captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
 
                             </div>
 
