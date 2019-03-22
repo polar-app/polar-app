@@ -288,10 +288,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    // TODO: the cloud storage operations are possibly unsafe and could
-    // leave local files in place or too many remote files but this is good
-    // for a first MVP pass.
-
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: BinaryFileData ,
@@ -312,6 +308,18 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const storagePath = this.computeStoragePath(backend, ref);
 
         const fileRef = storage.ref().child(storagePath.path);
+
+        if (data === null && opts.updateMeta) {
+
+            meta = {...meta, visibility};
+
+            await fileRef.updateMetadata(meta);
+
+            log.info("File metadata updated with: ", meta);
+
+            return (await this.getFile(backend, ref)).get();
+
+        }
 
         let uploadTask: firebase.storage.UploadTask;
 
