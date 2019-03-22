@@ -290,7 +290,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                  style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto', display: 'flex'}}>
 
                                 <div className="mr-1"
-                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                                     style={{
+                                         whiteSpace: 'nowrap',
+                                         marginTop: 'auto',
+                                         marginBottom: 'auto'
+                                     }}>
 
                                     <AddContentButton importFromDisk={() => this.cmdImportFromDisk()}
                                                       captureWebPage={this.cmdCaptureWebPage}/>

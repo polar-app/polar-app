@@ -15,7 +15,7 @@ class Styles {
 
 }
 
-export class DocRepoFilterBar extends React.Component<IProps, IState> {
+export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
