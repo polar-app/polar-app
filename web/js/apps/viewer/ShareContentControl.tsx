@@ -42,7 +42,14 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
         const visibility = this.state.visibility;
 
-        const shareLink = document.location!.href;
+        const createShareLink = () => {
+
+            const href = document.location!.href;
+            return href.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
+
+        };
+
+        const shareLink = createShareLink();
 
         // FIXME include the tags for the document too this way when people
         // search via Twitter or Facebook these tags show up and so will the
