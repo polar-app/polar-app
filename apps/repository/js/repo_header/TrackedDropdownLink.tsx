@@ -27,6 +27,15 @@ export class TrackedDropdownLink extends React.PureComponent<TrackedDropdownLink
     }
 
     private onClick() {
+
+        if (this.props.link.startsWith("#")) {
+
+            // this is an in-app link
+            document.location!.href = this.props.link;
+            return;
+
+        }
+
         Nav.openLinkWithNewTab(this.props.link);
     }
 

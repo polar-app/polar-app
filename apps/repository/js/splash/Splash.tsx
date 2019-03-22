@@ -113,6 +113,8 @@ export class Splash extends React.Component<IProps, IState> {
 
         this.setState({open: false});
 
+        document.location!.href = '#';
+
     }
 
 
