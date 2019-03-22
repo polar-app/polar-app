@@ -63,7 +63,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private reactTable: any;
 
-    private readonly filteredRepoDocInfoIndex: DocRepoFilters;
+    private readonly docRepoFilters: DocRepoFilters;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -97,7 +97,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         const repoDocInfosProvider = () => Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex);
 
-        this.filteredRepoDocInfoIndex =
+        this.docRepoFilters =
             new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
         this.init();
@@ -347,7 +347,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                   onFilterByTitle={(title) => this.onFilterByTitle(title)}
                                                   tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                   refresher={() => this.refresh()}
-                                                  filteredTags={this.filteredRepoDocInfoIndex.filters.filteredTags}
+                                                  filteredTags={this.docRepoFilters.filters.filteredTags}
                                                   right={
                                                <div className=""
                                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -875,12 +875,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     private onFilterByTitle(title: string) {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
-        this.filteredRepoDocInfoIndex.onFilterByTitle(title);
+        this.docRepoFilters.onFilterByTitle(title);
 
     }
 
     private refresh() {
-        this.filteredRepoDocInfoIndex.refresh();
+        this.docRepoFilters.refresh();
     }
 
     /**
@@ -956,11 +956,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
     private onToggleFlaggedOnly(value: boolean) {
-        this.filteredRepoDocInfoIndex.onToggleFlaggedOnly(value);
+        this.docRepoFilters.onToggleFlaggedOnly(value);
     }
 
     private onToggleFilterArchived(value: boolean) {
-        this.filteredRepoDocInfoIndex.onToggleFilterArchived(value);
+        this.docRepoFilters.onToggleFilterArchived(value);
     }
 
 }
