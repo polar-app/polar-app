@@ -1,41 +1,17 @@
 import * as React from 'react';
-import {ListOptionType, ListSelector} from '../../js/ui/list_selector/ListSelector';
-import {DocRepoTableDropdown} from '../../../apps/repository/js/doc_repo/DocRepoTableDropdown';
-import {AnnotationSidebar} from '../../js/annotation_sidebar/AnnotationSidebar';
+import {ListOptionType} from '../../js/ui/list_selector/ListSelector';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {Proxies} from '../../js/proxies/Proxies';
 import {Rect} from '../../js/Rect';
 import {TextRect} from '../../js/metadata/TextRect';
 import {TextHighlightRecords} from '../../js/metadata/TextHighlightRecords';
 import {ViewOrEditCommentExample} from './ViewOrEditCommentExample';
-import {FlashcardComponentExample} from './FlashcardComponentExample';
-import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
-import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
-import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
-import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
-import {ToggleButton} from '../../js/ui/ToggleButton';
-import {TagInput} from '../../../apps/repository/js/TagInput';
 import {Tag} from '../../../web/js/tags/Tag';
 import {RelatedTags} from '../../js/tags/related/RelatedTags';
-import {CommentIcon} from '../../js/ui/standard_icons/CommentIcon';
-import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
-import {FlashcardInput} from '../../js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInput';
-import {FlashcardInputForCloze} from '../../js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInputForCloze';
-import {FlashcardInputForFrontAndBack} from '../../js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInputForFrontAndBack';
-import {EditComment} from '../../js/annotation_sidebar/child_annotations/comments/EditComment';
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
-import {ExportButton} from '../../js/ui/export/ExportButton';
-import {EditorsPicksContent} from '../../../apps/repository/js/editors_picks/EditorsPicksContent';
-import {AnkiReviewContent} from './AnkiReviewContent';
-import ReadingProgressTable from '../../../apps/repository/js/stats/ReadingProgressTable';
-import {ContextMenuWrapper, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
-import {TestMenu} from './TestMenu';
-import {Feedback} from '../../js/ui/feedback/Feedback';
-import Button from 'reactstrap/lib/Button';
-import {ProgressToasters} from '../../js/ui/progress_toaster/ProgressToasters';
-import {AccountControlBar} from '../../../web/js/ui/cloud_auth/AccountControlBar';
+import {prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import {NULL_FUNCTION} from '../../js/util/Functions';
-import {AccountControlDropdown} from '../../../web/js/ui/cloud_auth/AccountControlDropdown';
+import {ShareContentControl} from '../../js/apps/viewer/ShareContentControl';
+import {Visibility} from '../../js/datastore/Datastore';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -145,7 +121,15 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <ShareContentControl onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+
+                <ShareContentControl visibility={Visibility.PRIVATE} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+
+                <ShareContentControl visibility={Visibility.PUBLIC} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+
                 <ViewOrEditCommentExample/>
+
             </div>
 
         );

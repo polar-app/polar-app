@@ -1,5 +1,8 @@
 # 1.15.1
 
+- New link to Polar Premium directly in the app pull down menu so that users
+  can discover it easier.
+
 - New text extraction algorithm for PDFs to pull out the text without excess 
   spacing.
 
