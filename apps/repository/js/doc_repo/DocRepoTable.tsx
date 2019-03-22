@@ -31,7 +31,6 @@ import {Numbers} from '../../../../web/js/util/Numbers';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TagButton} from './TagButton';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {AddContentButton} from '../ui/AddContentButton';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
