@@ -101,6 +101,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                         <a target="_new"
                            style={Styles.ShareButton}
                            onClick={() => this.sharedVia('twitter')}
+                           title="Twitter"
                            href={SocialLinks.createForTwitter(shareLink)}>
                             <i className="fab fa-twitter"></i>
                         </a>
@@ -108,6 +109,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                         <a target="_new"
                            style={Styles.ShareButton}
                            onClick={() => this.sharedVia('gmail')}
+                           title="GMail"
                            href={SocialLinks.createForGMail(shareLink)}>
                             <img src="/assets/logos/gmail.svg"/>
                         </a>
@@ -115,6 +117,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                         <a target="_new"
                            style={Styles.ShareButton}
                            onClick={() => this.sharedVia('facebook')}
+                           title="Facebook"
                            href={SocialLinks.createForFacebook(shareLink)}>
                             <i className="fab fa-facebook"></i>
                         </a>
@@ -164,7 +167,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                                     outline={outlines._public}
                                     size="md"
                                     onClick={() => this.onPublic()}
-                                    className="ml-1">
+                                    className="ml-2">
 
                                 <span className="mr-1">
                                     <i className="fas fa-lock-open"></i>
