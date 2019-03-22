@@ -20,7 +20,7 @@ export class ToggleButton extends React.Component<IProps, IState> {
         return (
 
             <Button id={this.props.id || ""}
-                    color="light p-0 pr-1 border rounded"
+                    color="light p-0 pr-0 border rounded"
                     onClick={() => this.toggle()}
                     size="sm">
 
@@ -33,7 +33,7 @@ export class ToggleButton extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div className="p-1 d-none-mobile"
+                    <div className="p-1 pr-2 d-none-mobile"
                          style={{verticalAlign: 'middle'}}>
                         &nbsp;{this.props.label}
                     </div>
