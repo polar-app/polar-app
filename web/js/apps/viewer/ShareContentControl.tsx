@@ -14,7 +14,9 @@ class Styles {
         fontSize: '35px',
         marginTop: 'auto',
         marginBottom: 'auto',
-        marginRight: '10px'
+        marginRight: '10px',
+        maxHeight: '35px',
+        maxWidth: '35px',
     };
 
 }
@@ -23,12 +25,21 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.onPrivate = this.onPrivate.bind(this);
+        this.onPublic = this.onPublic.bind(this);
+        this.onChanged = this.onChanged.bind(this);
+
+        this.state = {
+            // the current visibility or private by default.
+            visibility: this.props.visibility || Visibility.PRIVATE
+        };
+
     }
 
     public render() {
 
-        // the current visibility or private by default.
-        const visibility = this.props.visibility || Visibility.PRIVATE;
+        const visibility = this.state.visibility;
 
         const shareLink = document.location!.href;
 
@@ -131,8 +142,8 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                             <Button id="sharing-button-private"
                                     color="primary"
                                     outline={outlines._private}
-                                    size="sm"
-                                    onClick={() => this.props.onChanged(Visibility.PRIVATE)}>
+                                    size="md"
+                                    onClick={() => this.onPrivate()}>
 
                                 <span className="mr-1">
                                     <i className="fas fa-lock"></i>
@@ -145,8 +156,8 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                             <Button id="sharing-button-public"
                                     color="primary"
                                     outline={outlines._public}
-                                    size="sm"
-                                    onClick={() => this.props.onChanged(Visibility.PUBLIC)}
+                                    size="md"
+                                    onClick={() => this.onPublic()}
                                     className="ml-1">
 
                                 <span className="mr-1">
@@ -189,6 +200,20 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
     }
 
+    private onPrivate() {
+        this.setState({visibility: Visibility.PRIVATE});
+        this.onChanged();
+    }
+
+    private onPublic() {
+        this.setState({visibility: Visibility.PUBLIC});
+        this.onChanged();
+    }
+
+    private onChanged() {
+        this.props.onChanged(this.state.visibility);
+    }
+
 }
 
 interface IProps {
@@ -205,4 +230,5 @@ interface IProps {
 }
 
 interface IState {
+    readonly visibility: Visibility;
 }
