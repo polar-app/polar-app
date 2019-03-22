@@ -2,6 +2,20 @@
 
 We use the uid field right now to determine if a record can be written.
 
+## New proposed rules... 
+
+```
+// Allow read/write access on all documents to any user signed in to the application
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read: if request.auth != null && (resource == null || request.auth.uid == resource.data.uid || resource.data.visibility == 'public');
+      allow write: if request.auth != null && (resource == null || request.auth.uid == resource.data.uid);
+    }
+  }
+}
+```
+
 ## Current Rules
 
 ```
