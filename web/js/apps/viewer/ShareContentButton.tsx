@@ -13,9 +13,9 @@ import {ShareContentControl} from './ShareContentControl';
 
 const log = Logger.create();
 
-const Styles: IStyleMap = {
+class Styles {
 
-    dropdownChevron: {
+    public static dropdownChevron: React.CSSProperties = {
 
         display: 'inline-block',
         width: 0,
@@ -28,23 +28,31 @@ const Styles: IStyleMap = {
         borderLeft: '.3em solid transparent',
         color: 'var(--secondary)'
 
-    }
+    };
 
-};
+    public static shareControlButtonParent: React.CSSProperties = {
+
+        position: 'absolute',
+        top: '50px',
+        right: '60px',
+        zIndex: 100
+
+    };
+
+}
 
 export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-
-
     }
 
     public render() {
 
         return (
 
-            <div>
+            <div style={Styles.shareControlButtonParent}
+                 className="twitter-bootstrap-enabled twitter-bootstrap-content">
 
                 <Button color="primary"
                         id="share-control-button"
@@ -63,7 +71,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
                 <UncontrolledPopover trigger="legacy"
                                      placement="bottom"
-                                     target="account-control-button"
+                                     target="share-control-button"
+                                     className="twitter-bootstrap-enabled twitter-bootstrap-content"
                                      style={{maxWidth: '600px'}}>
 
                     <PopoverBody className="shadow">
@@ -85,7 +94,7 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
 interface IProps {
 
-    readonly visibility: Visibility;
+    readonly visibility?: Visibility;
 
     readonly onChanged: (visibility: Visibility) => void;
 

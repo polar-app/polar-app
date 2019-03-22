@@ -16,8 +16,6 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         marginRight: '10px',
-        maxHeight: '35px',
-        maxWidth: '35px',
     };
 
 }
@@ -111,7 +109,13 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                            onClick={() => this.sharedVia('gmail')}
                            title="GMail"
                            href={SocialLinks.createForGMail(shareLink)}>
-                            <img src="/assets/logos/gmail.svg"/>
+
+                            <img style={{
+                                     maxHeight: '35px',
+                                     maxWidth: '35px',
+                                 }}
+                                 src="/web/assets/logos/gmail.svg"/>
+
                         </a>
 
                         <a target="_new"

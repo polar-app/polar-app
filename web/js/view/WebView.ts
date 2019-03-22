@@ -12,6 +12,8 @@ import {ReadingProgressResume} from './ReadingProgressResume';
 import {LocalPrefs} from '../util/LocalPrefs';
 import {Prefs} from '../util/prefs/Prefs';
 import {PrefsProvider} from '../datastore/Datastore';
+import {ShareContentButtons} from '../apps/viewer/ShareContentButtons';
+import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
@@ -117,6 +119,9 @@ export class WebView extends View {
         if (autoResume) {
             ReadingProgressResume.resume(docMeta);
         }
+
+        ShareContentButtons.create(docMeta.docInfo,
+                                   (visibility) => docMeta.docInfo.visibility = visibility);
 
     }
 
