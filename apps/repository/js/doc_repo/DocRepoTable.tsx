@@ -41,7 +41,7 @@ import {FlagDocButton} from '../ui/FlagDocButton';
 import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
-import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
+import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import Input from 'reactstrap/lib/Input';
@@ -64,7 +64,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private reactTable: any;
 
-    private readonly filteredRepoDocInfoIndex: FilteredRepoDocInfoIndex;
+    private readonly filteredRepoDocInfoIndex: DocRepoFilters;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -99,7 +99,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         const repoDocInfosProvider = () => Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex);
 
         this.filteredRepoDocInfoIndex =
-            new FilteredRepoDocInfoIndex(onRefreshed, repoDocInfosProvider);
+            new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
         this.init();
 
