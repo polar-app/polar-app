@@ -64,6 +64,14 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <DropdownItem divider/>
 
+                    <HelpDropdownItem id="upgrade-to-premium-link"
+                                      title="Upgrade to Polar Premium"
+                                      tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
+                                      link="#premium"
+                                      icon="fas fa-money-bill-wave"/>
+
+                    <DropdownItem divider/>
+
                     <HelpDropdownItem id="donate-link"
                                       title="Donate"
                                       tooltip="Donate to Polar to support development."

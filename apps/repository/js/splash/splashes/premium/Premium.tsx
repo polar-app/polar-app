@@ -84,9 +84,11 @@ export class Premium extends React.Component<IProps, IState> {
 
         };
 
+        const settingKey = this.props.settingKey || 'premium';
+
         return (
 
-            <Splash settingKey={this.props.settingKey}
+            <Splash settingKey={settingKey}
                     disableClose={true}
                     disableDontShowAgain={true}>
 
@@ -211,7 +213,7 @@ export class Premium extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly settingKey: string;
+    readonly settingKey?: string;
 }
 
 interface IState {

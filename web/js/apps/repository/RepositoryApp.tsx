@@ -38,6 +38,7 @@ import {AppOrigin} from '../AppOrigin';
 import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
+import {Premium} from '../../../../apps/repository/js/splash/splashes/premium/Premium';
 
 const log = Logger.create();
 
@@ -138,6 +139,10 @@ export class RepositoryApp {
             return ( <EditorsPicksApp persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
+        const premium = () => {
+            return (<Premium/>);
+        };
+
         const onNavChange = () => {
 
             try {
@@ -179,7 +184,7 @@ export class RepositoryApp {
                 <HashRouter hashType="noslash">
 
                     <Switch>
-                        <Route exact path='/(logout|overview|login|configured|invite)?' render={renderDocRepoApp}/>
+                        <Route exact path='/(logout|overview|login|configured|invite|premium)?' render={renderDocRepoApp}/>
                         <Route exact path='/annotations' render={renderAnnotationRepoApp}/>
                         <Route exact path='/whats-new' render={renderWhatsNew}/>
                         <Route exact path='/community' render={renderCommunity}/>
@@ -189,6 +194,15 @@ export class RepositoryApp {
                     </Switch>
 
                 </HashRouter>
+
+                <HashRouter hashType="noslash">
+
+                    <Switch>
+                        <Route exact path='/premium' render={premium}/>
+                    </Switch>
+
+                </HashRouter>
+
 
                 {/*Used for file uploads.  This has to be on the page and can't be*/}
                 {/*selectively hidden by components.*/}
