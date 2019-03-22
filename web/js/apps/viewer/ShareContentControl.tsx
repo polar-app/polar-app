@@ -223,7 +223,7 @@ interface IProps {
     /**
      * Called when the visibility for this content has chagned.
      */
-    readonly onChanged: (visibility?: Visibility) => void;
+    readonly onChanged: (visibility: Visibility) => void;
 
     readonly onDone: () => void;
 

@@ -9,6 +9,7 @@ import {IStyleMap} from '../../react/IStyleMap';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {AppRuntime} from '../../AppRuntime';
 import {Visibility} from '../../datastore/Datastore';
+import {ShareContentControl} from './ShareContentControl';
 
 const log = Logger.create();
 
@@ -67,9 +68,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        {/*<AccountControlBar userInfo={this.props.userInfo}*/}
-                                           {/*onInvite={this.props.onInvite}*/}
-                                           {/*onLogout={this.props.onLogout}/>*/}
+                        <ShareContentControl onChanged={visibility => this.props.onChanged(visibility)}
+                                             onDone={() => this.props.onDone()}/>
 
                     </PopoverBody>
 
@@ -88,6 +88,8 @@ interface IProps {
     readonly visibility: Visibility;
 
     readonly onChanged: (visibility: Visibility) => void;
+
+    readonly onDone: () => void;
 
 }
 
