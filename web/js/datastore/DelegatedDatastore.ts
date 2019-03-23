@@ -14,6 +14,8 @@ import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {WriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -100,6 +102,10 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
 
     public async overview(): Promise<DatastoreOverview | undefined> {
         return await this.delegate.overview();
+    }
+
+    public capabilities(): DatastoreCapabilities {
+        return this.delegate.capabilities();
     }
 
     public getPrefs(): PrefsProvider {

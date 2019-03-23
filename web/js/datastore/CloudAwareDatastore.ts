@@ -19,6 +19,8 @@ import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {WriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
 
 const log = Logger.create();
 
@@ -475,6 +477,18 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public overview(): Promise<DatastoreOverview | undefined> {
         return this.local.overview();
+    }
+
+    public capabilities(): DatastoreCapabilities {
+
+        // we support both 'local' and 'web' here since this is a combination
+        // of both firebase and the disk datastore.
+        const networkLayers = new Set<NetworkLayer>(['local', 'web']);
+
+        return {
+            networkLayers
+        };
+
     }
 
     public getPrefs(): PrefsProvider {

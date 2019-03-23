@@ -19,6 +19,8 @@ import {DictionaryPrefs} from '../util/prefs/Prefs';
 import {Providers} from '../util/Providers';
 import {WriteFileOpts} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
 
 const log = Logger.create();
 
@@ -178,6 +180,16 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
         const docMetaRefs = await this.getDocMetaRefs();
 
         return {nrDocs: docMetaRefs.length, created: this.created};
+
+    }
+
+    public capabilities(): DatastoreCapabilities {
+
+        const networkLayers = new Set<NetworkLayer>(['local']);
+
+        return {
+            networkLayers
+        };
 
     }
 

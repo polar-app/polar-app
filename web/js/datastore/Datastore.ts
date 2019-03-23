@@ -99,6 +99,17 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     // - this is VERY similar (but somewhat different) than the firebase
     // snapshot support
 
+    capabilities(): DatastoreCapabilities;
+
+}
+
+export interface DatastoreCapabilities {
+
+    /**
+     * Provides callers with the available network layers for this datastore.
+     */
+    readonly networkLayers: ReadonlySet<NetworkLayer>;
+
 }
 
 export interface DatastoreInfo {
@@ -677,3 +688,27 @@ export enum Visibility {
     PUBLIC = 'public' /* or 2 */
 
 }
+
+/**
+ * The network layer specifies the access to a resource based on the network
+ * type.  By default each datastore figures out the ideal network layer to
+ * return file references from but based on the capabilities the caller
+ * can specify a specific layer.
+ *
+ * The following types are supported:
+ *
+ * local: Access via the local disk.
+ *    - pros:
+ *      - VERY fast
+ *    - cons:
+ *      - Not sharable with others
+ *
+ * web: Access is available via the public web.
+ *    - pros:
+ *       - sharing works
+ *       - access across multiple devices
+ *    - cons:
+ *       - may not be usable for certain people (classified information, etC).
+ *
+ */
+export type NetworkLayer = 'local' | 'web';

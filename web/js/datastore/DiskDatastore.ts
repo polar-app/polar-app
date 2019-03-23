@@ -26,6 +26,8 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
 import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
 
 const log = Logger.create();
 
@@ -445,6 +447,16 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const created = datastoreInfo.map(info => info.created).getOrUndefined();
 
         return {nrDocs: docMetaRefs.length, created};
+
+    }
+
+    public capabilities(): DatastoreCapabilities {
+
+        const networkLayers = new Set<NetworkLayer>(['local']);
+
+        return {
+            networkLayers
+        };
 
     }
 

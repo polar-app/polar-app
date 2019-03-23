@@ -28,6 +28,8 @@ import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
 import {DefaultWriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
 
 const log = Logger.create();
 
@@ -684,6 +686,16 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async overview(): Promise<DatastoreOverview | undefined> {
         return undefined;
+    }
+
+    public capabilities(): DatastoreCapabilities {
+
+        const networkLayers = new Set<NetworkLayer>(['web']);
+
+        return {
+            networkLayers
+        };
+
     }
 
     public getPrefs(): PrefsProvider {
