@@ -18,6 +18,11 @@ class Styles {
         marginRight: '10px',
     };
 
+    public static ShareImage: React.CSSProperties = {
+        maxHeight: '35px',
+        maxWidth: '35px',
+    };
+
 }
 
 export class ShareContentControl extends React.PureComponent<IProps, IState> {
@@ -108,7 +113,10 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                            onClick={() => this.sharedVia('twitter')}
                            title="Twitter"
                            href={SocialLinks.createForTwitter(shareLink)}>
-                            <i className="fab fa-twitter"></i>
+
+                            <img style={Styles.ShareImage}
+                                 src="/web/assets/logos/twitter.svg"/>
+
                         </a>
 
                         <a target="_new"
@@ -117,10 +125,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                            title="GMail"
                            href={SocialLinks.createForGMail(shareLink)}>
 
-                            <img style={{
-                                     maxHeight: '35px',
-                                     maxWidth: '35px',
-                                 }}
+                            <img style={Styles.ShareImage}
                                  src="/web/assets/logos/gmail.svg"/>
 
                         </a>
@@ -130,7 +135,10 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                            onClick={() => this.sharedVia('facebook')}
                            title="Facebook"
                            href={SocialLinks.createForFacebook(shareLink)}>
-                            <i className="fab fa-facebook"></i>
+
+                            <img style={Styles.ShareImage}
+                                 src="/web/assets/logos/facebook.svg"/>
+
                         </a>
 
                     </div>
