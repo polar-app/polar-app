@@ -47,20 +47,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
         const visibility = this.state.visibility;
 
-        const createShareLink = () => {
-
-            // FIXME: we need to actually use the backend datastore to get the
-            // file here as without it we're dead in the water and we're going
-            // to compute the wrong URL.  We need to get the file at the
-            // web network layer and with the cloud datastore we're local by
-            // default since it's much faster.
-
-            const href = document.location!.href;
-            return href.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
-
-        };
-
-        const shareLink = createShareLink();
+        const shareLink = this.props.createShareLink();
 
         // FIXME include the tags for the document too this way when people
         // search via Twitter or Facebook these tags show up and so will the
@@ -258,6 +245,12 @@ interface IProps {
     readonly datastoreCapabilities: DatastoreCapabilities;
 
     readonly visibility?: Visibility;
+
+    /**
+     * Function used to create the link when we're sharing the document
+     * publicly.
+     */
+    readonly createShareLink: () => string;
 
     /**
      * Called when the visibility for this content has chagned.

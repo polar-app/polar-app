@@ -121,13 +121,35 @@ export class WebView extends View {
             ReadingProgressResume.resume(docMeta);
         }
 
+        this.handleSharing(docMeta);
+
+    }
+
+    private handleSharing(docMeta: DocMeta) {
+
         const onVisibilityChanged = (visibility: Visibility) => {
             docMeta.docInfo.visibility = visibility;
         };
 
         const datastoreCapabilities = this.model.persistenceLayer.capabilities();
 
-        ShareContentButtons.create(docMeta.docInfo, datastoreCapabilities, onVisibilityChanged);
+        const createShareLink = () => {
+
+            // FIXME: we need to actually use the backend datastore to get the
+            // file here as without it we're dead in the water and we're going
+            // to compute the wrong URL.  We need to get the file at the
+            // web network layer and with the cloud datastore we're local by
+            // default since it's much faster.
+
+            const href = document.location!.href;
+            return href.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
+
+        };
+
+        ShareContentButtons.create(docMeta.docInfo,
+                                   datastoreCapabilities,
+                                   createShareLink,
+                                   onVisibilityChanged);
 
     }
 

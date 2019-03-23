@@ -12,6 +12,8 @@ import {prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {ShareContentControl} from '../../js/apps/viewer/ShareContentControl';
 import {Visibility} from '../../js/datastore/Datastore';
+import {DatastoreCapabilities} from '../../js/datastore/Datastore';
+import {NetworkLayer} from '../../js/datastore/Datastore';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -118,15 +120,34 @@ class App<P> extends React.Component<{}, IAppState> {
         //         progressUpdater.update({title: "Finding files (5) ... ", status: '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
         //     });
 
+        const datastoreCapabilities: DatastoreCapabilities = {
+            networkLayers: new Set<NetworkLayer>(['local'])
+        };
+
+        const createShareLink = () => {
+            return 'http://example.com';
+        };
+
         return (
 
             <div>
 
-                {/*<ShareContentControl onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
+                <ShareContentControl datastoreCapabilities={datastoreCapabilities}
+                                     createShareLink={createShareLink}
+                                     onChanged={NULL_FUNCTION}
+                                     onDone={NULL_FUNCTION}/>
 
-                {/*<ShareContentControl visibility={Visibility.PRIVATE} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
+                <ShareContentControl datastoreCapabilities={datastoreCapabilities}
+                                     createShareLink={createShareLink}
+                                     visibility={Visibility.PRIVATE}
+                                     onChanged={NULL_FUNCTION}
+                                     onDone={NULL_FUNCTION}/>
 
-                {/*<ShareContentControl visibility={Visibility.PUBLIC} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
+                <ShareContentControl datastoreCapabilities={datastoreCapabilities}
+                                     createShareLink={createShareLink}
+                                     visibility={Visibility.PUBLIC}
+                                     onChanged={NULL_FUNCTION}
+                                     onDone={NULL_FUNCTION}/>
 
                 <ViewOrEditCommentExample/>
 

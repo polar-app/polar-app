@@ -91,6 +91,7 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
                     <PopoverBody className="shadow">
 
                         <ShareContentControl datastoreCapabilities={this.props.datastoreCapabilities}
+                                             createShareLink={this.props.createShareLink}
                                              visibility={this.state.visibility}
                                              onChanged={visibility => this.onChanged(visibility)}
                                              onDone={() => this.onDone()}/>
@@ -124,6 +125,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 interface IProps {
 
     readonly datastoreCapabilities: DatastoreCapabilities;
+
+    readonly createShareLink: () => string;
 
     readonly visibility?: Visibility;
 
