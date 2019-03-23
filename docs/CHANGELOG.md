@@ -1,5 +1,7 @@
 # 1.15.1
 
+- Fixed bug with filtered tag input just dropping the tags not giving a warning.
+
 - New text extraction algorithm for PDFs to pull out the text without excess 
   spacing.
 
