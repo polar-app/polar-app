@@ -14,9 +14,14 @@ export class ShareContentButtons {
                          onChanged: (visiblity: Visibility) => void,
                          onDone: () => void = NULL_FUNCTION) {
 
-        ReactInjector.inject(<ShareContentButton visibility={docInfo.visibility}
+        const viewer = document.getElementById('mainContainer')!;
+        const container = document.createElement('div');
+
+        viewer.appendChild(container);
+
+        ReactInjector.create(<ShareContentButton visibility={docInfo.visibility}
                                                  onChanged={onChanged}
-                                                 onDone={onDone}/> );
+                                                 onDone={onDone}/>, container);
 
     }
 

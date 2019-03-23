@@ -1,13 +1,10 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Logger} from '../../logger/Logger';
-import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {UncontrolledPopover} from 'reactstrap';
-import {IStyleMap} from '../../react/IStyleMap';
 import {NULL_FUNCTION} from '../../util/Functions';
-import {AppRuntime} from '../../AppRuntime';
 import {Visibility} from '../../datastore/Datastore';
 import {ShareContentControl} from './ShareContentControl';
 
@@ -33,9 +30,11 @@ class Styles {
     public static shareControlButtonParent: React.CSSProperties = {
 
         position: 'absolute',
-        top: '50px',
-        right: '60px',
-        zIndex: 100
+        top: '90px',
+        right: '50px',
+        zIndex: 10,
+
+        // marginLeft: '5px'
 
     };
 
@@ -49,23 +48,28 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
     public render() {
 
+        const visibility = this.props.visibility || Visibility.PRIVATE;
+
+        const buttonIconClass = this.props.visibility === Visibility.PRIVATE ? "fas fa-lock" : "fas fa-lock-open";
+
         return (
 
             <div style={Styles.shareControlButtonParent}
-                 className="twitter-bootstrap-enabled twitter-bootstrap-content">
+                 className="twitter-bootstrap-enabled twitter-bootstrap-content shadow">
 
                 <Button color="primary"
                         id="share-control-button"
                         size="lg"
                         onClick={() => NULL_FUNCTION}
-                        className="header-filter-clickable p-1 pl-2 pr-2 border">
+                        className="header-filter-clickable">
 
-                    <i className="fas fa-lock-open" style={{marginRight: '5px'}}></i>
-                    <span>
+                    <i className={buttonIconClass} style={{marginRight: '5px'}}></i>
+
+                    <span className="">
                         Share
                     </span>
 
-                    <div className="text-white" style={Styles.dropdownChevron}></div>
+                    <span className="text-white" style={Styles.dropdownChevron}></span>
 
                 </Button>
 
