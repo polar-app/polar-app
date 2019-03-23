@@ -17,6 +17,7 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
 import {WriteFileOpts} from './Datastore';
+import {GetFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -200,8 +201,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return this.datastore.getFile(backend, ref);
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+        return this.datastore.getFile(backend, ref, opts);
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {

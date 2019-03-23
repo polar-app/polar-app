@@ -22,6 +22,7 @@ import {NULL_FUNCTION} from '../../util/Functions';
 import {Logger} from '../../logger/Logger';
 import {Releaseable} from '../../reactor/EventListener';
 import {WriteFileOpts} from '../Datastore';
+import {GetFileOpts} from '../Datastore';
 
 const log = Logger.create();
 
@@ -158,8 +159,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         return this.delegate.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return this.delegate.getFile(backend, ref);
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+        return this.delegate.getFile(backend, ref, opts);
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {

@@ -16,6 +16,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {WriteFileOpts} from './Datastore';
+import {GetFileOpts} from './Datastore';
 
 export interface PersistenceLayer {
 
@@ -72,7 +73,7 @@ export interface PersistenceLayer {
               data: BinaryFileData,
               opts?: WriteFileOpts): Promise<DocFileMeta>;
 
-    getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
+    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>>;
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 

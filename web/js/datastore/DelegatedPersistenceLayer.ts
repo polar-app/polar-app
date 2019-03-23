@@ -19,6 +19,7 @@ import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {FileHandle} from '../util/Files';
 import {WriteFileOpts} from './Datastore';
+import {GetFileOpts} from './Datastore';
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.
@@ -64,8 +65,8 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.getDocMetaRefs();
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return this.delegate.getFile(backend, ref);
+    public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+        return this.delegate.getFile(backend, ref, opts);
     }
 
     public async init(errorListener?: ErrorListener): Promise<void> {

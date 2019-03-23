@@ -16,6 +16,7 @@ import {Datastores} from './Datastores';
 import {WriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
+import {GetFileOpts} from './Datastore';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -56,8 +57,8 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return this.delegate.getFile(backend, ref);
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+        return this.delegate.getFile(backend, ref, opts);
     }
 
     public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
