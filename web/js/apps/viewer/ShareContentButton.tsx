@@ -3,8 +3,7 @@ import React from 'react';
 import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
-import {UncontrolledPopover, Popover} from 'reactstrap';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {Popover} from 'reactstrap';
 import {Visibility} from '../../datastore/Datastore';
 import {ShareContentControl} from './ShareContentControl';
 
@@ -105,7 +104,6 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
     }
 
     private toggle(open: boolean) {
-        console.log("FIXME toggled.");
         this.setState({open});
     }
 
