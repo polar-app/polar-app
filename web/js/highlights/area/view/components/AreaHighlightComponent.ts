@@ -184,6 +184,8 @@ export class AreaHighlightComponent extends Component {
 
             highlightElement.style.zIndex = '1';
 
+            (highlightElement.style as any).mixBlendMode = 'multiply';
+
         });
 
     }

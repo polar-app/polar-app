@@ -1,5 +1,8 @@
 # 1.15.1
 
+- New mixBlendMode thanks to @TracyPoff that properly makes texts black instead 
+  of a shade of blue applied.
+
 - Fixed bug with filtered tag input just dropping the tags not giving a warning.
 
 - New text extraction algorithm for PDFs to pull out the text without excess 
