@@ -144,14 +144,9 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
         };
 
-        const outlines = {
-            _private: visibility !== Visibility.PRIVATE,
-            _public: visibility !== Visibility.PUBLIC,
-        };
+        const WebSharing = () => {
 
-        return (
-
-            <div>
+            return <div>
 
                 <div style={{
                     display: 'flex',
@@ -218,9 +213,24 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
                 </div>
 
-            </div>
+            </div>;
 
-        );
+        };
+
+        const NoSharingEnabled = () => {
+            return <div></div>;
+        };
+
+        const outlines = {
+            _private: visibility !== Visibility.PRIVATE,
+            _public: visibility !== Visibility.PUBLIC,
+        };
+
+        if (this.props.datastoreCapabilities.networkLayers.has('web')) {
+            return <WebSharing/>;
+        } else {
+            return <NoSharingEnabled/>;
+        }
 
     }
 
