@@ -124,7 +124,7 @@ class App<P> extends React.Component<{}, IAppState> {
             networkLayers: new Set<NetworkLayer>(['local', 'web'])
         };
 
-        const createShareLink = () => {
+        const createShareLink = async (): Promise<string | undefined> => {
             return 'http://example.com';
         };
 

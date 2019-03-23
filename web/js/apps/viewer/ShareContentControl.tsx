@@ -44,13 +44,20 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
             visibility: this.props.visibility || Visibility.PRIVATE
         };
 
+        this.props.createShareLink()
+            .then((shareLink) => {
+                log.info("Share link resolved to: " + shareLink);
+                this.setState({...this.state, shareLink});
+            })
+            .catch(err => log.error("Unable to create share link: ", err));
+
     }
 
     public render() {
 
         const visibility = this.state.visibility;
 
-        const shareLink = this.props.createShareLink();
+        const shareLink = this.state.shareLink || "";
 
         // FIXME include the tags for the document too this way when people
         // search via Twitter or Facebook these tags show up and so will the
@@ -284,7 +291,7 @@ interface IProps {
      * Function used to create the link when we're sharing the document
      * publicly.
      */
-    readonly createShareLink: () => string;
+    readonly createShareLink: () => Promise<string | undefined>;
 
     /**
      * Called when the visibility for this content has chagned.
@@ -296,7 +303,12 @@ interface IProps {
 }
 
 interface IState {
+
     readonly visibility: Visibility;
+
+    // the resolved share link
+    readonly shareLink?: string;
+
 }
 
 export type SharePlatform = 'twitter' | 'facebook' | 'gmail';

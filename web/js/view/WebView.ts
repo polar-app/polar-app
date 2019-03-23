@@ -15,6 +15,9 @@ import {PrefsProvider} from '../datastore/Datastore';
 import {ShareContentButtons} from '../apps/viewer/ShareContentButtons';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Visibility} from '../datastore/Datastore';
+import {Datastores} from '../datastore/Datastores';
+import {Backend} from '../datastore/Backend';
+import doc = Mocha.reporters.doc;
 
 const log = Logger.create();
 
@@ -131,18 +134,39 @@ export class WebView extends View {
             docMeta.docInfo.visibility = visibility;
         };
 
-        const datastoreCapabilities = this.model.persistenceLayer.capabilities();
+        const persistenceLayer = this.model.persistenceLayer;
+        const datastoreCapabilities = persistenceLayer.capabilities();
 
-        const createShareLink = () => {
+        // TODO: use a latch for this though and only fetch it ONCE because it
+        // takes about 1s but it never changes for the user.
 
-            // FIXME: we need to actually use the backend datastore to get the
-            // file here as without it we're dead in the water and we're going
-            // to compute the wrong URL.  We need to get the file at the
-            // web network layer and with the cloud datastore we're local by
-            // default since it's much faster.
+        const createShareLink = async (): Promise<string | undefined> => {
 
-            const href = document.location!.href;
-            return href.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
+            const fileRef = Datastores.toFileRef(docMeta);
+
+            if (fileRef) {
+
+                const docFileMeta = await persistenceLayer.getFile(Backend.STASH, fileRef, {networkLayer: 'web'});
+
+                if (docFileMeta.isPresent()) {
+
+                    const href = document.location!.href;
+                    const rawURL = href.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
+
+                    // we have to now replace the 'file' param with the proper URL.
+
+                    const file = docFileMeta.get().url;
+
+                    const parsedURL = new URL(rawURL);
+                    parsedURL.searchParams.set('file', file);
+
+                    return parsedURL.toString();
+
+                }
+
+            }
+
+            return undefined;
 
         };
 

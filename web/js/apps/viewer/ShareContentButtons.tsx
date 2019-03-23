@@ -10,7 +10,7 @@ export class ShareContentButtons {
 
     public static create(docInfo: IDocInfo,
                          datastoreCapabilities: DatastoreCapabilities,
-                         createShareLink: () => string,
+                         createShareLink: () => Promise<string | undefined>,
                          onChanged: (visiblity: Visibility) => void,
                          onDone: () => void = NULL_FUNCTION) {
 

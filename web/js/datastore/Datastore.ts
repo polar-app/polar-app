@@ -727,3 +727,13 @@ export enum Visibility {
  *
  */
 export type NetworkLayer = 'local' | 'web';
+
+export class NetworkLayers {
+
+    public static LOCAL = new Set<NetworkLayer>(['local']);
+
+    public static LOCAL_AND_WEB = new Set<NetworkLayer>(['local', 'web']);
+
+    public static WEB = new Set<NetworkLayer>(['web']);
+
+}

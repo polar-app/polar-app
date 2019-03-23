@@ -15,6 +15,9 @@ import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {NetworkLayer} from './Datastore';
+import {FileRef} from './Datastore';
+import {FilePaths} from '../util/FilePaths';
+import {Optional} from '../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -32,6 +35,29 @@ export class Datastores {
         }
 
         return new DiskDatastore();
+
+    }
+
+    public static toFileRef(docMeta: DocMeta): FileRef | undefined {
+
+        if (docMeta) {
+
+            if (docMeta.docInfo.filename) {
+
+                // return the existing doc meta information.
+
+                const fileRef: FileRef = {
+                    name: docMeta.docInfo.filename,
+                    hashcode: docMeta.docInfo.hashcode
+                };
+
+                return fileRef;
+
+            }
+
+        }
+
+        return undefined;
 
     }
 
@@ -242,7 +268,7 @@ export class Datastores {
         const capabilities = datastore.capabilities();
 
         if (! capabilities.networkLayers.has(networkLayer)) {
-            throw new Error(`Datastore ${datastore.id} does not support ${networkLayer} only ${capabilities.networkLayers}`);
+            throw new Error(`Datastore '${datastore.id}' does not support ${networkLayer} only ${capabilities.networkLayers}`);
         }
 
     }

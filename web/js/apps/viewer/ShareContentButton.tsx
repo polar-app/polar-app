@@ -126,7 +126,7 @@ interface IProps {
 
     readonly datastoreCapabilities: DatastoreCapabilities;
 
-    readonly createShareLink: () => string;
+    readonly createShareLink: () => Promise<string | undefined>;
 
     readonly visibility?: Visibility;
 
