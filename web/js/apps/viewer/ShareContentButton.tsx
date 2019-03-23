@@ -3,7 +3,7 @@ import React from 'react';
 import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
-import {UncontrolledPopover} from 'reactstrap';
+import {UncontrolledPopover, Popover} from 'reactstrap';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Visibility} from '../../datastore/Datastore';
 import {ShareContentControl} from './ShareContentControl';
@@ -44,6 +44,14 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.toggle = this.toggle.bind(this);
+        this.onDone = this.onDone.bind(this);
+
+        this.state = {
+            open: false
+        };
+
     }
 
     public render() {
@@ -60,7 +68,7 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
                 <Button color="primary"
                         id="share-control-button"
                         size="lg"
-                        onClick={() => NULL_FUNCTION}
+                        onClick={() => this.toggle(true)}
                         className="header-filter-clickable">
 
                     <i className={buttonIconClass} style={{marginRight: '5px'}}></i>
@@ -73,25 +81,37 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
                 </Button>
 
-                <UncontrolledPopover trigger="legacy"
-                                     placement="bottom"
-                                     target="share-control-button"
-                                     className="twitter-bootstrap-enabled twitter-bootstrap-content"
-                                     style={{maxWidth: '600px'}}>
+                <Popover trigger="legacy"
+                         placement="bottom"
+                         isOpen={this.state.open}
+                         toggle={() => this.toggle(false)}
+                         target="share-control-button"
+                         className="twitter-bootstrap-enabled twitter-bootstrap-content"
+                         style={{maxWidth: '600px'}}>
 
                     <PopoverBody className="shadow">
 
                         <ShareContentControl onChanged={visibility => this.props.onChanged(visibility)}
-                                             onDone={() => this.props.onDone()}/>
+                                             onDone={() => this.onDone()}/>
 
                     </PopoverBody>
 
-                </UncontrolledPopover>
+                </Popover>
 
             </div>
 
         );
 
+    }
+
+    private toggle(open: boolean) {
+        console.log("FIXME toggled.");
+        this.setState({open});
+    }
+
+    private onDone() {
+        this.toggle(false);
+        this.props.onDone();
     }
 
 }
@@ -107,4 +127,5 @@ interface IProps {
 }
 
 interface IState {
+    readonly open: boolean;
 }

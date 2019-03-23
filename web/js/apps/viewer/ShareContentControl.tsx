@@ -96,7 +96,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                                    fontSize: '14px'
                                 }}
                                onFocus={(event) => event.target.select()}
-                               value={shareLink}></Input>
+                               defaultValue={shareLink}></Input>
                     </div>
 
                     <div className="mt-2"
