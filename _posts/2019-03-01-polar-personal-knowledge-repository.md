@@ -2,10 +2,10 @@
 title: Polar as a Personal Knowledge Repository  
 date: 2019-03-01 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/open-library.jpg
+large_image: https://getpolarized.io/assets/images/open-library-scaled.jpg
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/open-library.jpg">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/open-library-scaled.jpg">
 
 # Polar as a Personal Knowledge Repository
 

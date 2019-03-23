@@ -2,10 +2,10 @@
 title:  Building Cloud Document Sync with Google Firebase
 date:   2019-01-03 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/firebase-sync.jpg
+large_image: https://getpolarized.io/assets/images/firebase-sync-scaled.jpg
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/firebase-sync.jpg">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/firebase-sync-scaled.jpg">
 
 # Building Cloud Document Sync with Google Firebase
 
@@ -48,7 +48,7 @@ Firebase seemed like an almost perfect fit for our model. AppSync and GraphQL
 seem great if you're planning on using DynamoDB or have a complex (and legacy) 
 backend with connectivity to a lot of different datasources.
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/mvp.jpg">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/mvp-scaled.jpg">
 
 Firebase is almost brilliantly designed for knocking out a MVP (minimum viable
 product).  They seem to focus on the key features needed to get an app off the
@@ -71,7 +71,7 @@ be nice if this was a native feature in Firebase.
 
 ## Authentication
 
-<img class="img-fluid" src="/assets/images/firebase-auth.jpg">
+<img class="img-fluid" src="/assets/images/firebase-auth-scaled.jpg">
 
 Clearly the first hurdle would be authentication.  We actually used
 this as smoke test to see which platforms were easiest to implement.

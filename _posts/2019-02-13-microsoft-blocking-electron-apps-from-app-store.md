@@ -2,11 +2,11 @@
 title: Microsoft Blocking Electron Apps from the App Store
 date: 2019-02-13 06:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/electron.jpg
+large_image: https://getpolarized.io/assets/images/electron-scaled.jpg
 description: Microsoft Blocking Electron Apps from the App Store - This rejection really makes me nervous.  Turns out my app is blocked as I'm not using the right web components.   
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/electron.jpg">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/electron-scaled.jpg">
 
 # Microsoft Blocking Electron Apps from the App Store
 

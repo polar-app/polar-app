@@ -2,10 +2,10 @@
 title: Polar Usability Milestone  
 date: 2019-03-06 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/usability.jpg
+large_image: https://getpolarized.io/assets/images/usability-scaled.jpg
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/usability.jpg">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/usability-scaled.jpg">
 
 # Polar Usability Milestone
 

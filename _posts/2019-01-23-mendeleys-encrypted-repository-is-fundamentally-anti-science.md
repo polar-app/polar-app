@@ -2,11 +2,11 @@
 title: Mendeley's Encrypted Repository is Fundamentally Anti-Science
 date: 2019-01-23 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/anti-science.jpeg
+large_image: https://getpolarized.io/assets/images/anti-science-scaled.jpg
 description: Hacker News ran a story the other day highlighting Mendeley locking in users to their product by encrypting their own data preventing external apps from easily exporting their data. 
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/anti-science.jpeg">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/anti-science-scaled.jpg">
 
 # Mendeley's Encrypted Repository is Fundamentally Anti-Science 
 
