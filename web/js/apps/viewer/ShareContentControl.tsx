@@ -30,8 +30,6 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.onPrivate = this.onPrivate.bind(this);
-        this.onPublic = this.onPublic.bind(this);
         this.onChanged = this.onChanged.bind(this);
         this.onDone = this.onDone.bind(this);
         this.sharedVia = this.sharedVia.bind(this);
@@ -171,7 +169,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                                     color="primary"
                                     outline={outlines._private}
                                     size="md"
-                                    onClick={() => this.onPrivate()}>
+                                    onClick={() => this.onChanged(Visibility.PRIVATE)}>
 
                                 <span className="mr-1">
                                     <i className="fas fa-lock"></i>
@@ -185,7 +183,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                                     color="primary"
                                     outline={outlines._public}
                                     size="md"
-                                    onClick={() => this.onPublic()}
+                                    onClick={() => this.onChanged(Visibility.PUBLIC)}
                                     className="ml-2">
 
                                 <span className="mr-1">
@@ -228,18 +226,9 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
     }
 
-    private onPrivate() {
-        this.setState({visibility: Visibility.PRIVATE});
-        this.onChanged();
-    }
-
-    private onPublic() {
-        this.setState({visibility: Visibility.PUBLIC});
-        this.onChanged();
-    }
-
-    private onChanged() {
-        this.props.onChanged(this.state.visibility);
+    private onChanged(visibility: Visibility) {
+        this.setState({visibility});
+        this.props.onChanged(visibility);
     }
 
     private sharedVia(platform: SharePlatform) {

@@ -14,6 +14,7 @@ import {Prefs} from '../util/prefs/Prefs';
 import {PrefsProvider} from '../datastore/Datastore';
 import {ShareContentButtons} from '../apps/viewer/ShareContentButtons';
 import {NULL_FUNCTION} from '../util/Functions';
+import {Visibility} from '../datastore/Datastore';
 
 const log = Logger.create();
 
@@ -120,8 +121,11 @@ export class WebView extends View {
             ReadingProgressResume.resume(docMeta);
         }
 
-        ShareContentButtons.create(docMeta.docInfo,
-                                   (visibility) => docMeta.docInfo.visibility = visibility);
+        const onVisibilityChanged = (visibility: Visibility) => {
+            docMeta.docInfo.visibility = visibility;
+        };
+
+        ShareContentButtons.create(docMeta.docInfo, onVisibilityChanged);
 
     }
 

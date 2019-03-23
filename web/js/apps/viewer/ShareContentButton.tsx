@@ -48,16 +48,15 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
         this.onDone = this.onDone.bind(this);
 
         this.state = {
-            open: false
+            open: false,
+            visibility: this.props.visibility || Visibility.PRIVATE
         };
 
     }
 
     public render() {
 
-        const visibility = this.props.visibility || Visibility.PRIVATE;
-
-        const buttonIconClass = this.props.visibility === Visibility.PRIVATE ? "fas fa-lock" : "fas fa-lock-open";
+        const buttonIconClass = this.state.visibility === Visibility.PRIVATE ? "fas fa-lock" : "fas fa-lock-open";
 
         return (
 
@@ -90,7 +89,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <ShareContentControl onChanged={visibility => this.props.onChanged(visibility)}
+                        <ShareContentControl visibility={this.state.visibility}
+                                             onChanged={visibility => this.onChanged(visibility)}
                                              onDone={() => this.onDone()}/>
 
                     </PopoverBody>
@@ -104,7 +104,12 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
     }
 
     private toggle(open: boolean) {
-        this.setState({open});
+        this.setState({...this.state, open});
+    }
+
+    private onChanged(visibility: Visibility) {
+        this.setState({...this.state, visibility});
+        this.props.onChanged(visibility);
     }
 
     private onDone() {
@@ -126,4 +131,5 @@ interface IProps {
 
 interface IState {
     readonly open: boolean;
+    readonly visibility: Visibility;
 }
