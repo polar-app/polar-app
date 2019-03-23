@@ -125,7 +125,9 @@ export class WebView extends View {
             docMeta.docInfo.visibility = visibility;
         };
 
-        ShareContentButtons.create(docMeta.docInfo, onVisibilityChanged);
+        const datastoreCapabilities = this.model.persistenceLayer.capabilities();
+
+        ShareContentButtons.create(docMeta.docInfo, datastoreCapabilities, onVisibilityChanged);
 
     }
 

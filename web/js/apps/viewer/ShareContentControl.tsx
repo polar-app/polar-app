@@ -6,6 +6,8 @@ import {Visibility} from '../../datastore/Datastore';
 import Input from 'reactstrap/lib/Input';
 import {SocialLinks} from '../../util/SocialLinks';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {PersistenceLayer} from '../../datastore/PersistenceLayer';
+import {DatastoreCapabilities} from '../../datastore/Datastore';
 
 const log = Logger.create();
 
@@ -46,6 +48,12 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
         const visibility = this.state.visibility;
 
         const createShareLink = () => {
+
+            // FIXME: we need to actually use the backend datastore to get the
+            // file here as without it we're dead in the water and we're going
+            // to compute the wrong URL.  We need to get the file at the
+            // web network layer and with the cloud datastore we're local by
+            // default since it's much faster.
 
             const href = document.location!.href;
             return href.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
@@ -113,6 +121,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                            href={SocialLinks.createForTwitter(shareLink)}>
 
                             <img style={Styles.ShareImage}
+                                 alt="twitter"
                                  src="/web/assets/logos/twitter.svg"/>
 
                         </a>
@@ -124,6 +133,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                            href={SocialLinks.createForGMail(shareLink)}>
 
                             <img style={Styles.ShareImage}
+                                 alt="GMail"
                                  src="/web/assets/logos/gmail.svg"/>
 
                         </a>
@@ -135,6 +145,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                            href={SocialLinks.createForFacebook(shareLink)}>
 
                             <img style={Styles.ShareImage}
+                                 alt="Facebook"
                                  src="/web/assets/logos/facebook.svg"/>
 
                         </a>
@@ -243,6 +254,8 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
+
+    readonly datastoreCapabilities: DatastoreCapabilities;
 
     readonly visibility?: Visibility;
 

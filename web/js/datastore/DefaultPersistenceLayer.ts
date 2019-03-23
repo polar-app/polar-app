@@ -1,4 +1,8 @@
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult} from './Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {GetFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {DatastoreOverview} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -16,8 +20,6 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
-import {WriteFileOpts} from './Datastore';
-import {GetFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -181,8 +183,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
     }
 
     /**
-     * Get a current snapshot of the internal state of the Datastore by receiving
-     * DocMetaSnapshotEvent on the initial state.
+     * Get a current snapshot of the internal state of the Datastore by
+     * receiving DocMetaSnapshotEvent on the initial state.
      */
     public snapshot(listener: DocMetaSnapshotEventListener,
                     errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
@@ -207,6 +209,14 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
         this.datastore.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
+    }
+
+    public async overview(): Promise<DatastoreOverview | undefined> {
+        return await this.datastore.overview();
+    }
+
+    public capabilities(): DatastoreCapabilities {
+        return this.datastore.capabilities();
     }
 
     public async deactivate() {

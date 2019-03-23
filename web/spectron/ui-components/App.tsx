@@ -122,11 +122,11 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <ShareContentControl onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+                {/*<ShareContentControl onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
 
-                <ShareContentControl visibility={Visibility.PRIVATE} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+                {/*<ShareContentControl visibility={Visibility.PRIVATE} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
 
-                <ShareContentControl visibility={Visibility.PUBLIC} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+                {/*<ShareContentControl visibility={Visibility.PUBLIC} onChanged={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
 
                 <ViewOrEditCommentExample/>
 

@@ -5,6 +5,7 @@ import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
 import {Visibility} from '../../datastore/Datastore';
+import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {ShareContentControl} from './ShareContentControl';
 
 const log = Logger.create();
@@ -89,7 +90,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <ShareContentControl visibility={this.state.visibility}
+                        <ShareContentControl datastoreCapabilities={this.props.datastoreCapabilities}
+                                             visibility={this.state.visibility}
                                              onChanged={visibility => this.onChanged(visibility)}
                                              onDone={() => this.onDone()}/>
 
@@ -120,6 +122,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
+
+    readonly datastoreCapabilities: DatastoreCapabilities;
 
     readonly visibility?: Visibility;
 

@@ -26,7 +26,7 @@ export class Model {
     // TODO: we create a fake document which is eventually replaced.
     public docMeta: DocMeta = NULL_DOC_META;
 
-    private readonly persistenceLayer: ListenablePersistenceLayer;
+    public readonly persistenceLayer: ListenablePersistenceLayer;
 
     private readonly modelPersisterFactory: ModelPersisterFactory;
 

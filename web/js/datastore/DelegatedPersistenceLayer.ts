@@ -20,6 +20,8 @@ import {DocMeta} from '../metadata/DocMeta';
 import {FileHandle} from '../util/Files';
 import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
+import {DatastoreOverview} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.
@@ -99,6 +101,14 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
 
     public async writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
         return this.delegate.writeFile(backend, ref, data, opts);
+    }
+
+    public async overview(): Promise<DatastoreOverview | undefined> {
+        return await this.delegate.overview();
+    }
+
+    public capabilities(): DatastoreCapabilities {
+        return this.delegate.capabilities();
     }
 
 }

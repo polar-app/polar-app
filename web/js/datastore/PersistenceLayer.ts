@@ -17,6 +17,8 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
+import {DatastoreOverview} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
 
 export interface PersistenceLayer {
 
@@ -80,6 +82,10 @@ export interface PersistenceLayer {
     addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;
 
     deactivate(): Promise<void>;
+
+    overview(): Promise<DatastoreOverview  | undefined>;
+
+    capabilities(): DatastoreCapabilities;
 
 }
 

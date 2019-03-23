@@ -23,6 +23,8 @@ import {Logger} from '../../logger/Logger';
 import {Releaseable} from '../../reactor/EventListener';
 import {WriteFileOpts} from '../Datastore';
 import {GetFileOpts} from '../Datastore';
+import {DatastoreOverview} from '../Datastore';
+import {DatastoreCapabilities} from '../Datastore';
 
 const log = Logger.create();
 
@@ -168,6 +170,14 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
     }
 
     protected abstract broadcastEvent(event: PersistenceLayerEvent): void;
+
+    public async overview(): Promise<DatastoreOverview | undefined> {
+        return await this.delegate.overview();
+    }
+
+    public capabilities(): DatastoreCapabilities {
+        return this.delegate.capabilities();
+    }
 
     public async deactivate() {
         await this.delegate.deactivate();
