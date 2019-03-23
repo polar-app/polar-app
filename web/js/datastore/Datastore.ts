@@ -20,6 +20,8 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Prefs} from '../util/prefs/Prefs';
+import Network = chrome.privacy.Network;
+import {assert} from 'expect';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -223,7 +225,20 @@ interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
-    getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
+    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>>;
+
+}
+
+/**
+ * Options for getFile
+ */
+export interface GetFileOpts {
+
+    /**
+     * Allows the caller to specify a more specific network layer for the
+     * file operation and returning a more specific URL.
+     */
+    readonly networkLayer?: NetworkLayer;
 
 }
 

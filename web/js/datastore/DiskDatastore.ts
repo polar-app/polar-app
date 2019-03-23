@@ -28,6 +28,7 @@ import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
+import {GetFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -257,7 +258,9 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+    public async getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+
+        Datastores.assertNetworkLayer(this, opts.networkLayer);
 
         DatastoreFiles.assertSanitizedFileName(ref);
 

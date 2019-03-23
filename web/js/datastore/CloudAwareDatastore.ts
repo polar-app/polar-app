@@ -21,6 +21,8 @@ import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {WriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
+import {Datastores} from './Datastores';
+import {GetFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -122,8 +124,16 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return this.local.getFile(backend, ref);
+    public async getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+
+        Datastores.assertNetworkLayer(this, opts.networkLayer);
+
+        if (! opts.networkLayer || opts.networkLayer === 'local') {
+            return this.local.getFile(backend, ref);
+        } else {
+            return this.cloud.getFile(backend, ref);
+        }
+
     }
 
     public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {

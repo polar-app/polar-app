@@ -30,6 +30,8 @@ import {AppRuntime} from '../AppRuntime';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
+import {GetFileOpts} from './Datastore';
+import {Datastores} from './Datastores';
 
 const log = Logger.create();
 
@@ -501,7 +503,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         return Hashcodes.create(storagePath.path);
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+    public async getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+
+        Datastores.assertNetworkLayer(this, opts.networkLayer);
 
         let result = await this.getFileFromFileMeta(backend, ref);
 

@@ -14,12 +14,14 @@ import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
+import {NetworkLayer} from './Datastore';
 
 const log = Logger.create();
 
 const ENV_POLAR_DATASTORE = 'POLAR_DATASTORE';
 
 export class Datastores {
+
     public static create(): Datastore {
 
         const name = process.env[ENV_POLAR_DATASTORE];
@@ -226,6 +228,25 @@ export class Datastores {
         return result;
 
     }
+
+    /**
+     * Assert that the specified network layer is supported by this datastore.
+     */
+    public static assertNetworkLayer(datastore: Datastore, networkLayer?: NetworkLayer) {
+
+        if (! networkLayer) {
+            // we support this because it's not specified.
+            return;
+        }
+
+        const capabilities = datastore.capabilities();
+
+        if (! capabilities.networkLayers.has(networkLayer)) {
+            throw new Error(`Datastore ${datastore.id} does not support ${networkLayer} only ${capabilities.networkLayers}`);
+        }
+
+    }
+
 
 }
 
