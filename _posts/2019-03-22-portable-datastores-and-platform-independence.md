@@ -1,6 +1,6 @@
 ---
 title: Portable Datastores and Platform Independence  
-date: 2019-22-06 09:00:00 -0800
+date: 2019-03-22 09:00:00 -0800
 layout: post
 large_image: https://getpolarized.io/assets/images/cloud-design.png
 ---
