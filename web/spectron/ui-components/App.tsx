@@ -121,7 +121,7 @@ class App<P> extends React.Component<{}, IAppState> {
         //     });
 
         const datastoreCapabilities: DatastoreCapabilities = {
-            networkLayers: new Set<NetworkLayer>(['local'])
+            networkLayers: new Set<NetworkLayer>(['local', 'web'])
         };
 
         const createShareLink = () => {

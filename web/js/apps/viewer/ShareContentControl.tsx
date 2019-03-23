@@ -8,6 +8,9 @@ import {SocialLinks} from '../../util/SocialLinks';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
+import {SplitLayout} from '../../ui/split_layout/SplitLayout';
+import {SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
+import {SplitLayoutRight} from '../../ui/split_layout/SplitLayout';
 
 const log = Logger.create();
 
@@ -218,7 +221,28 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
         };
 
         const NoSharingEnabled = () => {
-            return <div></div>;
+            return <div>
+
+                <SplitLayout>
+
+                    <SplitLayoutLeft>
+
+                        <h3>Enable Cloud Sync</h3>
+
+                        <p>
+                            Cloud Sync must be enabled for the Polar desktop app to work
+                            with sharing.
+                        </p>
+
+                    </SplitLayoutLeft>
+
+                    <SplitLayoutRight>
+                        <i className="fas fa-unlink text-danger" style={{fontSize: '75px'}}></i>
+                    </SplitLayoutRight>
+
+                </SplitLayout>
+
+            </div>;
         };
 
         const outlines = {
