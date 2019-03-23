@@ -2,11 +2,11 @@
 title: "Dear App Stores: Don't Block Apps - Lead With the Carrot Instead!"
 date: 2019-02-28 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/app-store.png
+large_image: https://getpolarized.io/assets/images/app-store.jpg
 description: Microsoft blocked Polar from the App Store after I spent 2 weeks implementing the changes needed for their platform. My crime? I didn't use MS Edge for rendering web content - I used Electron.  
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/app-store.png">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/app-store.jpg">
 
 # Dear App Stores: Don't Block Apps - Lead With the Carrot Instead!
 
