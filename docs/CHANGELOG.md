@@ -1,5 +1,7 @@
 # 1.15.1
 
+- Significantly improved annotation view including tab nav and filter bar.
+
 - Improved presentation of the UX of the annotation bar by placing the 'hr' at
   the bottom not the top.
 
