@@ -87,12 +87,8 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
                             <div style={{marginLeft: 'auto'}}>
 
-                                <AnnotationRepoFilterBar onToggleFlaggedOnly={value => NULL_FUNCTION}
-                                                         onToggleFilterArchived={value => NULL_FUNCTION}
-                                                         onFilterByTitle={(title) => NULL_FUNCTION}
-                                                         tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                         refresher={(repoAnnotations) => this.refreshedCallback(repoAnnotations)}
-                                                         filteredTags={new FilteredTags()}
+                                <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                         onFiltered={NULL_FUNCTION}
                                                          right={
                                                              <div/>
                                                           }

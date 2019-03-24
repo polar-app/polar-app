@@ -16,7 +16,7 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
 import {DocRepoFilters} from '../doc_repo/DocRepoFilters';
-import {AnnotationRepoFilters, RefreshedCallback} from './AnnotationRepoFilters';
+import {AnnotationRepoFiltersHandler, FilteredCallback} from './AnnotationRepoFiltersHandler';
 import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
 
 const log = Logger.create();
@@ -38,7 +38,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
             data: [],
         };
 
-        const onRefreshed: RefreshedCallback = repoAnnotations => this.doRefresh([...repoAnnotations]);
+        const onRefreshed: FilteredCallback = repoAnnotations => this.doRefresh([...repoAnnotations]);
 
         this.props.setRefreshedCallback(onRefreshed);
 
