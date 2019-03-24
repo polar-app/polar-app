@@ -1,5 +1,8 @@
 # 1.15.1
 
+- Fixed bug with FilteredTagInput not properly yielding after selecting tags
+  to filter the repository.
+
 - New mixBlendMode thanks to @TracyPoff that properly makes texts black instead 
   of a shade of blue applied.
 
