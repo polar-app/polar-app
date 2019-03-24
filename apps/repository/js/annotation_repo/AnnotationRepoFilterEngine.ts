@@ -36,7 +36,11 @@ export class AnnotationRepoFilterEngine {
     }
 
     private doUpdate() {
-        this.onUpdated(this.filter(this.repoAnnotationsProvider()));
+        const repoAnnotations = this.repoAnnotationsProvider();
+
+        console.log("FIXME: working with repoAnnotations: ", repoAnnotations);
+
+        this.onUpdated(this.filter(repoAnnotations));
     }
 
     private filter(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
