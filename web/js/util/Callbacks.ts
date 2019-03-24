@@ -1,31 +1,15 @@
 import {NULL_FUNCTION} from './Functions';
 
-export class Callback {
-
-    private target: () => void = NULL_FUNCTION;
-
-    public set(target: () => void) {
-        this.target = target;
-    }
-
-    public call() {
-        this.target();
-    }
-
-}
-
-export interface Callable {
-    call(): void;
-}
-
-export interface Writable {
-
-}
-
-
 /**
  * Simple mechanism that allows callers to write functions together without
- * passing refs around.
+ * passing refs around.  The setCallback function can be passed to one component
+ * and the callback function can be passed to another and one is for executing
+ * and the other is for updating.  This way the writer can never execute and
+ * the executor can never write.
+ *
+ * This is null save so that if you call it BEFORE it's setup nothing happens
+ * which is fine for UI components which aren't shown until they are ready since
+ * by that time they will be wired together properly.
  */
 export class Callbacks {
 

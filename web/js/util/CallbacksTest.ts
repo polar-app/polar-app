@@ -1,4 +1,4 @@
-import {Callbacks} from "./Callback";
+import {Callbacks} from "./Callbacks";
 import {assert} from 'chai';
 
 describe('Callbacks', function() {
