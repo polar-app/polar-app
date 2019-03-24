@@ -10,6 +10,10 @@ import {NULL_FUNCTION} from './Functions';
  * This is null save so that if you call it BEFORE it's setup nothing happens
  * which is fine for UI components which aren't shown until they are ready since
  * by that time they will be wired together properly.
+ *
+ * This also doesn't need any type of GC or reference counting to unwire them
+ * because since no object are updated they are just all GCd together and the
+ * wiring goes away.
  */
 export class Callbacks {
 
