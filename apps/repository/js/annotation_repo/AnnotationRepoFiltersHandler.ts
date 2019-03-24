@@ -1,12 +1,4 @@
-import {Strings} from '../../../../web/js/util/Strings';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {Tags} from '../../../../web/js/tags/Tags';
-import {isPresent} from '../../../../web/js/Preconditions';
-import {Sets} from '../../../../web/js/util/Sets';
 import {FilteredTags} from '../FilteredTags';
-import {Provider} from '../../../../web/js/util/Providers';
-import {RepoAnnotation} from '../RepoAnnotation';
-import {RepoAnnotations} from '../RepoAnnotations';
 
 /**
  * Keeps track of the filters so that we can just call a function updating
