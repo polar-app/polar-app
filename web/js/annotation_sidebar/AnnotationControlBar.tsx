@@ -68,10 +68,10 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="annotation-control-bar">
+            <div className="annotation-control-bar mb-3">
 
                 <div style={Styles.barBody}
-                     className="flexbar annotation-buttons border-top pt-1 pb-2">
+                     className="flexbar annotation-buttons border-bottom pt-0 pb-0">
 
                     <div style={Styles.barChild}
                          className="text-muted annotation-context-link">
