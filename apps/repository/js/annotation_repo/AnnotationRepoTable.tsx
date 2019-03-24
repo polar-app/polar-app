@@ -38,7 +38,10 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         };
 
         const onUpdated: UpdatedCallback =
-                repoAnnotations => this.doRefresh([...repoAnnotations]);
+            repoAnnotations => {
+                console.log("FIXME: got onUpdated: ", repoAnnotations);
+                this.doRefresh([...repoAnnotations]);
+            };
 
         const repoAnnotationsProvider =
             () => this.state.data;
@@ -248,12 +251,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     }
 
     private doRefresh(data: RepoAnnotation[]) {
-
-        // const selected = data.length > 0 ? 0 | undefined;
-
-        // if (selected) {
-        //     // this.props.onSelected(data[0]);
-        // }
 
         const state: IState = {...this.state, data};
 
