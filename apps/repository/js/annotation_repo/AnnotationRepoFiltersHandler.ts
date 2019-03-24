@@ -17,14 +17,7 @@ export class AnnotationRepoFiltersHandler {
     public readonly filters: AnnotationRepoFilters;
 
     constructor(private onFiltered: FilteredCallback) {
-
-        this.filters = {
-            flagged: false,
-            archived: false,
-            text: "",
-            filteredTags: new FilteredTags()
-        };
-
+        this.filters = new DefaultAnnotationRepoFilters();
     }
 
     public onToggleFlaggedOnly(value: boolean) {
@@ -70,6 +63,18 @@ export interface AnnotationRepoFilters {
     text: string;
 
     filteredTags: FilteredTags;
+
+}
+
+export class DefaultAnnotationRepoFilters implements AnnotationRepoFilters {
+
+    public readonly archived: boolean = false;
+
+    public readonly filteredTags: FilteredTags = new FilteredTags();
+
+    public readonly flagged: boolean = false;
+
+    public readonly text: string = "";
 
 }
 

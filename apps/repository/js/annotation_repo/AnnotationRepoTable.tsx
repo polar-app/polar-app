@@ -18,6 +18,7 @@ import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIco
 import {DocRepoFilters} from '../doc_repo/DocRepoFilters';
 import {AnnotationRepoFiltersHandler, FilteredCallback} from './AnnotationRepoFiltersHandler';
 import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
+import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 
 const log = Logger.create();
 
@@ -39,6 +40,11 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         };
 
         const onRefreshed: FilteredCallback = repoAnnotations => this.doRefresh([...repoAnnotations]);
+
+        // FIXME: we need to wire up the callbakc and also get us a provider for
+        // the repoAnnotations used in the filter engine...
+
+        const filterEngine = new AnnotationRepoFilterEngine(() => );
 
         this.props.setRefreshedCallback(onRefreshed);
 

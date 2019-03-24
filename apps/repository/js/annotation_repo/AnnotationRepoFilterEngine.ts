@@ -3,51 +3,66 @@ import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {isPresent} from '../../../../web/js/Preconditions';
 import {Sets} from '../../../../web/js/util/Sets';
-import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotations} from '../RepoAnnotations';
-import {FilteredCallback} from './AnnotationRepoFiltersHandler';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 
 /**
  * The actual engine that applies the filters once they are updated.
  */
 export class AnnotationRepoFilterEngine {
 
-    constructor(private repoAnnotationsProvider: Provider<RepoAnnotation[]>) {
+    private filters: AnnotationRepoFilters = new DefaultAnnotationRepoFilters();
+
+    constructor(private repoAnnotationsProvider: Provider<ReadonlyArray<RepoAnnotation>>,
+                private onRefreshed: (repoAnnotations: ReadonlyArray<RepoAnnotation>) => void) {
 
     }
 
     public onFiltered(filters: AnnotationRepoFilters) {
-        return this.filter(filters, this.repoAnnotationsProvider());
+        this.filters = filters;
+        this.doUpdate();
     }
 
-    private filter(filters: AnnotationRepoFilters, repoAnnotations: RepoAnnotation[]): RepoAnnotation[] {
+    /**
+     * Called when the data in the provider has been updated and we should
+     * re-apply the filters and call onRefershed again.
+     */
+    public onProviderUpdated() {
+        this.doUpdate();
+    }
+
+    private doUpdate() {
+        this.onRefreshed(this.filter(this.repoAnnotationsProvider()));
+    }
+
+    private filter(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
         repoAnnotations = this.doFilterValid(repoAnnotations);
-        repoAnnotations = this.doFilterByTitle(filters, repoAnnotations);
-        repoAnnotations = this.doFilterFlagged(filters, repoAnnotations);
-        repoAnnotations = this.doFilterArchived(filters, repoAnnotations);
-        repoAnnotations = this.doFilterByTags(filters, repoAnnotations);
+        repoAnnotations = this.doFilterByTitle(repoAnnotations);
+        repoAnnotations = this.doFilterFlagged(repoAnnotations);
+        repoAnnotations = this.doFilterArchived(repoAnnotations);
+        repoAnnotations = this.doFilterByTags(repoAnnotations);
 
         return repoAnnotations;
 
     }
 
-    private doFilterValid(repoAnnotations: RepoAnnotation[]): RepoAnnotation[] {
+    private doFilterValid(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
         return repoAnnotations.filter(current => RepoAnnotations.isValid(current));
     }
 
-    private doFilterByTitle(filters: AnnotationRepoFilters, repoAnnotations: RepoAnnotation[]): RepoAnnotation[] {
+    private doFilterByTitle(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        if (! Strings.empty(filters.text)) {
+        if (! Strings.empty(this.filters.text)) {
 
             return repoAnnotations
                 .filter(current => isPresent(current.text))
-                .filter(current => current.text!.toLowerCase().indexOf(filters.text.toLowerCase()) >= 0);
+                .filter(current => current.text!.toLowerCase().indexOf(this.filters.text.toLowerCase()) >= 0);
 
         }
 
@@ -55,10 +70,9 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterFlagged(filters: AnnotationRepoFilters,
-                            repoAnnotations: RepoAnnotation[]): RepoAnnotation[] {
+    private doFilterFlagged(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        if (filters.flagged) {
+        if (this.filters.flagged) {
             return repoAnnotations.filter(current => current.docInfo.flagged);
         }
 
@@ -66,10 +80,9 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterArchived(filters: AnnotationRepoFilters,
-                             repoAnnotations: RepoAnnotation[]): RepoAnnotation[] {
+    private doFilterArchived(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        if (! filters.archived) {
+        if (! this.filters.archived) {
             return repoAnnotations.filter(current => !current.docInfo.archived);
         }
 
@@ -77,12 +90,11 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterByTags(filters: AnnotationRepoFilters,
-                           repoAnnotations: RepoAnnotation[]): RepoAnnotation[] {
+    private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
 
-        const tags = Tags.toIDs(filters.filteredTags.get());
+        const tags = Tags.toIDs(this.filters.filteredTags.get());
 
         return repoAnnotations.filter(current => {
 
