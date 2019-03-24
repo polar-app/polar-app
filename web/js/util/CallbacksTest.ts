@@ -5,21 +5,21 @@ describe('Callbacks', function() {
 
     it('should call', function() {
 
-        const [callback, setCallback] = Callbacks.create();
+        const [callback, setCallback] = Callbacks.create<string>();
 
         // make sure we can call it with no op now...
-        callback();
+        callback('yo');
 
-        let called: boolean = false;
+        let message: string | undefined;
 
-        assert.equal(called, false);
-        callback();
+        assert.equal(message, undefined);
+        callback('hey');
 
-        setCallback(() => called = true);
+        setCallback((value) => message = value);
 
-        callback();
+        callback('sup');
 
-        assert.equal(called, true);
+        assert.equal(message, 'sup');
 
     });
 

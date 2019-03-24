@@ -17,16 +17,18 @@ import {NULL_FUNCTION} from './Functions';
  */
 export class Callbacks {
 
-    public static create(): [CallbackFunction, SetCallbackFunction] {
+    public static create<T>(): [CallbackFunction<T>, SetCallbackFunction<T>] {
 
-        let target: CallbackFunction = NULL_FUNCTION;
+        let target: CallbackFunction<T> = (value: T) => {
+            // noop by default and we do nothing with the value.
+        };
 
-        const setCallback: SetCallbackFunction = (actual: () => void): void => {
+        const setCallback: SetCallbackFunction<T> = (actual: (value: T) => void): void => {
             target = actual;
         };
 
-        const callback = (): void => {
-            target();
+        const callback = (value: T): void => {
+            target(value);
         };
 
         return [callback, setCallback];
@@ -35,6 +37,6 @@ export class Callbacks {
 
 }
 
-export type CallbackFunction = () => void;
+export type CallbackFunction<T> = (value: T) => void;
 
-export type SetCallbackFunction = (actual: () => void) => void;
+export type SetCallbackFunction<T> = (actual: (value: T) => void) => void;
