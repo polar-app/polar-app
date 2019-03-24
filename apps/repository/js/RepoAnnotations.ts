@@ -8,8 +8,6 @@ import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Flashcard} from '../../../web/js/metadata/Flashcard';
 import {Text} from '../../../web/js/metadata/Text';
 import {Texts} from '../../../web/js/metadata/Texts';
-import {RepoDocInfo} from './RepoDocInfo';
-import {isPresent} from '../../../web/js/Preconditions';
 
 export class RepoAnnotations {
 

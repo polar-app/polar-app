@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 
 export class ToggleIcon extends React.Component<IProps, IState> {
 
