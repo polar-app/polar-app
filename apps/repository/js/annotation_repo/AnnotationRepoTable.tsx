@@ -37,35 +37,48 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
             data: [],
         };
 
-        const onUpdated: UpdatedCallback =
-            repoAnnotations => {
-                console.log("FIXME: got onUpdated: ", repoAnnotations);
-                this.doRefresh([...repoAnnotations]);
-            };
-
-        const repoAnnotationsProvider =
-            () => this.state.data;
-
-        const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
-
-        this.props.setFilteredCallback(filters => filterEngine.onFiltered(filters));
-
         this.init();
-        this.refresh();
 
     }
 
     public init() {
 
+
+        const onUpdated: UpdatedCallback =
+            repoAnnotations => {
+
+                const state = {...this.state, data: repoAnnotations};
+
+                setTimeout(() => {
+
+                    // The react table will not update when I change the state from
+                    // within the event listener
+                    this.setState(state);
+
+                }, 1);
+
+            };
+
+        const repoAnnotationsProvider =
+            () => Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
+
+        const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
+
+        // this will trigger the filter engine to be run which will then call
+        // onUpdated which then calls setState
+        this.props.setFilteredCallback(filters => filterEngine.onFiltered(filters));
+
+        const doRefresh = () => filterEngine.onProviderUpdated();
+
         PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
 
             this.releaser.register(
-                persistenceLayer.addEventListener(() => this.refresh()));
+                persistenceLayer.addEventListener(() => doRefresh()));
 
         });
 
         this.releaser.register(
-            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => this.refresh()));
+            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => doRefresh()));
 
     }
 
@@ -87,7 +100,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                 <div id="doc-table">
 
                     <ReactTable
-                        data={data}
+                        data={[...data]}
                         columns={
                             [
                                 {
@@ -241,29 +254,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         );
     }
 
-    public refresh() {
-        const data = Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
-        this.doRefresh(this.filter(data));
-    }
-
-    private filter(data: RepoAnnotation[]): RepoAnnotation[] {
-        return data;
-    }
-
-    private doRefresh(data: RepoAnnotation[]) {
-
-        const state: IState = {...this.state, data};
-
-        setTimeout(() => {
-
-            // The react table will not update when I change the state from
-            // within the event listener
-            this.setState(state);
-
-        }, 1);
-
-    }
-
 }
 
 interface IProps {
@@ -284,8 +274,11 @@ interface IProps {
 
 interface IState extends IReactTableState {
 
-    data: RepoAnnotation[];
+    data: ReadonlyArray<RepoAnnotation>;
 
+    /**
+     * The currently selected repo annotation.
+     */
     repoAnnotation?: RepoAnnotation;
 
 }
