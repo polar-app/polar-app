@@ -80,6 +80,9 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         this.releaser.register(
             RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => doRefresh()));
 
+        // do an initial refresh to get the first batch of data.
+        doRefresh();
+
     }
 
     public onSelected(selected: number,
