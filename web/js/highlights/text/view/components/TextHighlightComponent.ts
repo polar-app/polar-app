@@ -106,6 +106,8 @@ export class TextHighlightComponent extends Component {
             highlightElement.className = `text-highlight annotation text-highlight-${textHighlight.id}`;
 
             highlightElement.style.position = "absolute";
+            (highlightElement.style as any).mixBlendMode = 'multiply';
+
             // highlightElement.style.backgroundColor = `yellow`;
             // highlightElement.style.opacity = `0.5`;
 
