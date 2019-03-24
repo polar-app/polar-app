@@ -7,7 +7,7 @@
   to filter the repository.
 
 - New mixBlendMode thanks to @TracyPoff that properly makes texts black instead 
-  of a shade of blue applied.
+  of a shade of blue applied or tinted by area/text highlights.
 
 - Fixed bug with filtered tag input just dropping the tags not giving a warning.
 
