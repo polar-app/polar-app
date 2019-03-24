@@ -26,6 +26,8 @@ import {DocRepoFilterBar} from '../doc_repo/DocRepoFilterBar';
 import {DocRepoTableDropdown} from '../doc_repo/DocRepoTableDropdown';
 import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
 import {AddContentActions} from '../ui/AddContentActions';
+import {CallbackFunction, Callbacks} from '../../../../web/js/util/Callbacks';
+import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
 
 const log = Logger.create();
 
@@ -39,12 +41,18 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
     private readonly filteredTags = new FilteredTags();
 
+    private readonly refreshedCallback: CallbackFunction;
+
+    private readonly setRefreshedCallback: SetCallbackFunction;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
         this.docRepository = new RepoDocMetaManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
+
+        [this.refreshedCallback, this.setRefreshedCallback] = Callbacks.create();
 
         this.state = {
         };
@@ -83,7 +91,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                                                          onToggleFilterArchived={value => NULL_FUNCTION}
                                                          onFilterByTitle={(title) => NULL_FUNCTION}
                                                          tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                         refresher={() => NULL_FUNCTION}
+                                                         refresher={() => this.refreshedCallback()}
                                                          filteredTags={new FilteredTags()}
                                                          right={
                                                              <div/>
@@ -111,6 +119,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                                                  updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
                                                  repoDocMetaManager={this.props.repoDocMetaManager}
                                                  repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                                 setRefreshedCallback={this.setRefreshedCallback}
                                                  onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
 
                         </div>
