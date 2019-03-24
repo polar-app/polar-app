@@ -47,17 +47,19 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         const onUpdated: UpdatedCallback =
             repoAnnotations => {
 
-                const state = {...this.state, data: repoAnnotations};
+            console.log("FIXME: filter applied with annotations: ", repoAnnotations);
 
-                setTimeout(() => {
+            const state = {...this.state, data: repoAnnotations};
 
-                    // The react table will not update when I change the state from
-                    // within the event listener
-                    this.setState(state);
+            setTimeout(() => {
 
-                }, 1);
+                // The react table will not update when I change the state from
+                // within the event listener
+                this.setState(state);
 
-            };
+            }, 1);
+
+        };
 
         const repoAnnotationsProvider =
             () => Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);

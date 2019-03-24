@@ -109,7 +109,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
                             <Input id="filter_title"
                                    type="text"
-                                   placeholder="Filter by title"
+                                   placeholder="Filter by text"
                                    onChange={(value) => this.handler.onFilterByText(value.target.value)}/>
 
                             <SimpleTooltip target="filter_title">Filter the annotations by the text of the annotation..</SimpleTooltip>
