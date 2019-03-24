@@ -22,6 +22,7 @@ export class AnnotationRepoFilterEngine {
     }
 
     public onFiltered(filters: AnnotationRepoFilters) {
+        console.log("FIXME: got filters: ", filters);
         this.filters = filters;
         this.doUpdate();
     }

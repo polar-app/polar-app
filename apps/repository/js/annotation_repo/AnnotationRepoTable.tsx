@@ -15,8 +15,7 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
-import {DocRepoFilters} from '../doc_repo/DocRepoFilters';
-import {AnnotationRepoFiltersHandler, FilteredCallback} from './AnnotationRepoFiltersHandler';
+import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {UpdatedCallback} from './AnnotationRepoFilterEngine';
@@ -46,10 +45,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
         const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
 
-        this.props.setRefreshedCallback(onRefreshed);
-
-        // this.annotationRepoFilters =
-        //     new AnnotationRepoFilters(onRefreshed, repoDocInfosProvider);
+        this.props.setFilteredCallback(filters => filterEngine.onFiltered(filters));
 
         this.init();
         this.refresh();
@@ -285,7 +281,7 @@ interface IProps {
 
     readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
 
-    readonly setRefreshedCallback: SetCallbackFunction<ReadonlyArray<RepoAnnotation>>;
+    readonly setFilteredCallback: SetCallbackFunction<AnnotationRepoFilters>;
 
 }
 
