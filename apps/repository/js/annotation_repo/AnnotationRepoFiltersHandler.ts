@@ -35,7 +35,8 @@ export class AnnotationRepoFiltersHandler {
         this.dispatch();
     }
 
-    public onFilterByTags() {
+    public onFilterByTags(filteredTags: FilteredTags) {
+        this.filters.filteredTags = filteredTags;
         this.dispatch();
     }
 

@@ -22,7 +22,6 @@ export class AnnotationRepoFilterEngine {
     }
 
     public onFiltered(filters: AnnotationRepoFilters) {
-        console.log("FIXME: got filters: ", filters);
         this.filters = filters;
         this.doUpdate();
     }
@@ -37,9 +36,6 @@ export class AnnotationRepoFilterEngine {
 
     private doUpdate() {
         const repoAnnotations = this.repoAnnotationsProvider();
-
-        console.log("FIXME: working with repoAnnotations: ", repoAnnotations);
-
         this.onUpdated(this.filter(repoAnnotations));
     }
 
@@ -97,9 +93,11 @@ export class AnnotationRepoFilterEngine {
 
     private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
+        RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
 
         const tags = Tags.toIDs(this.filters.filteredTags.get());
+
+        console.log("FIXME: filtering by tags: " , tags);
 
         return repoAnnotations.filter(current => {
 
