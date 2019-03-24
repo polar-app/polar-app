@@ -69,7 +69,7 @@ export interface AnnotationRepoFilters {
 
 export class DefaultAnnotationRepoFilters implements AnnotationRepoFilters {
 
-    public readonly archived: boolean = false;
+    public readonly archived: boolean = true;
 
     public readonly filteredTags: FilteredTags = new FilteredTags();
 

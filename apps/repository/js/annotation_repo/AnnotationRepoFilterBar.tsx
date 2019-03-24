@@ -52,7 +52,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                      justifyContent: 'flex-end'
                  }}>
 
-                <div className="mr-2"
+                <div className="mr-2 d-none"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                     <div className="checkbox-group">
@@ -68,7 +68,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
                 </div>
 
-                <div className="header-filter-box mr-1"
+                <div className="header-filter-box mr-1 d-none"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                     <div className="checkbox-group">

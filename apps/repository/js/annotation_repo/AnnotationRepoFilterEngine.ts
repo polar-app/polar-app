@@ -97,8 +97,6 @@ export class AnnotationRepoFilterEngine {
 
         const tags = Tags.toIDs(this.filters.filteredTags.get());
 
-        console.log("FIXME: filtering by tags: " , tags);
-
         return repoAnnotations.filter(current => {
 
             if (tags.length === 0) {
