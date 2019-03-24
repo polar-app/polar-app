@@ -41,9 +41,9 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
     private readonly filteredTags = new FilteredTags();
 
-    private readonly refreshedCallback: CallbackFunction;
+    private readonly refreshedCallback: CallbackFunction<ReadonlyArray<RepoAnnotation>>;
 
-    private readonly setRefreshedCallback: SetCallbackFunction;
+    private readonly setRefreshedCallback: SetCallbackFunction<ReadonlyArray<RepoAnnotation>>;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -91,7 +91,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                                                          onToggleFilterArchived={value => NULL_FUNCTION}
                                                          onFilterByTitle={(title) => NULL_FUNCTION}
                                                          tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                         refresher={() => this.refreshedCallback()}
+                                                         refresher={(repoAnnotations) => this.refreshedCallback(repoAnnotations)}
                                                          filteredTags={new FilteredTags()}
                                                          right={
                                                              <div/>

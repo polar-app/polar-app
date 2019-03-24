@@ -38,9 +38,9 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
             data: [],
         };
 
-        const onRefreshed: RefreshedCallback = repoAnnotations => this.doRefresh(repoAnnotations);
+        const onRefreshed: RefreshedCallback = repoAnnotations => this.doRefresh([...repoAnnotations]);
 
-        // this.props.setRefreshedCallback(onRefreshed);
+        this.props.setRefreshedCallback(onRefreshed);
 
         // this.annotationRepoFilters =
         //     new AnnotationRepoFilters(onRefreshed, repoDocInfosProvider);
@@ -279,7 +279,7 @@ interface IProps {
 
     readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
 
-    readonly setRefreshedCallback: SetCallbackFunction;
+    readonly setRefreshedCallback: SetCallbackFunction<ReadonlyArray<RepoAnnotation>>;
 
 }
 

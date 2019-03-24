@@ -151,5 +151,5 @@ interface CurrentAnnotationFilters {
 
 }
 
-export type RefreshedCallback = (repoAnnotations: RepoAnnotation[]) => void;
+export type RefreshedCallback = (repoAnnotations: ReadonlyArray<RepoAnnotation>) => void;
 

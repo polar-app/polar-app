@@ -7,6 +7,7 @@ import {TagsDB} from '../TagsDB';
 import {FilteredTags} from '../FilteredTags';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
+import {RepoAnnotation} from '../RepoAnnotation';
 
 const log = Logger.create();
 
@@ -151,7 +152,7 @@ export interface IProps {
     /**
      * A function to refresh the table when new results have been selected.
      */
-    readonly refresher: () => void;
+    readonly refresher: (repoAnnotations: ReadonlyArray<RepoAnnotation>) => void;
 
     /**
      * A provider that can be updated with the filtered tags that are currently
