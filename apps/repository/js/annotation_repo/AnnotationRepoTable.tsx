@@ -19,6 +19,7 @@ import {DocRepoFilters} from '../doc_repo/DocRepoFilters';
 import {AnnotationRepoFiltersHandler, FilteredCallback} from './AnnotationRepoFiltersHandler';
 import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
+import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 
 const log = Logger.create();
 
@@ -27,8 +28,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
-
-    // private readonly annotationRepoFilters: AnnotationRepoFilters;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -39,12 +38,13 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
             data: [],
         };
 
-        const onRefreshed: FilteredCallback = repoAnnotations => this.doRefresh([...repoAnnotations]);
+        const onUpdated: UpdatedCallback =
+                repoAnnotations => this.doRefresh([...repoAnnotations]);
 
-        // FIXME: we need to wire up the callbakc and also get us a provider for
-        // the repoAnnotations used in the filter engine...
+        const repoAnnotationsProvider =
+            () => this.state.data;
 
-        const filterEngine = new AnnotationRepoFilterEngine(() => );
+        const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
 
         this.props.setRefreshedCallback(onRefreshed);
 

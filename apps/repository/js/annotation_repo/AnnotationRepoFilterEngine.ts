@@ -17,7 +17,7 @@ export class AnnotationRepoFilterEngine {
     private filters: AnnotationRepoFilters = new DefaultAnnotationRepoFilters();
 
     constructor(private repoAnnotationsProvider: Provider<ReadonlyArray<RepoAnnotation>>,
-                private onRefreshed: (repoAnnotations: ReadonlyArray<RepoAnnotation>) => void) {
+                private onUpdated: UpdatedCallback) {
 
     }
 
@@ -35,7 +35,7 @@ export class AnnotationRepoFilterEngine {
     }
 
     private doUpdate() {
-        this.onRefreshed(this.filter(this.repoAnnotationsProvider()));
+        this.onUpdated(this.filter(this.repoAnnotationsProvider()));
     }
 
     private filter(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
@@ -119,3 +119,6 @@ export class AnnotationRepoFilterEngine {
     }
 
 }
+
+export type UpdatedCallback = (repoAnnotations: ReadonlyArray<RepoAnnotation>) => void;
+
