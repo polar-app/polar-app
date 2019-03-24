@@ -15,6 +15,8 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
+import {DocRepoFilters} from '../doc_repo/DocRepoFilters';
+import {AnnotationRepoFilters, RefreshedCallback} from './AnnotationRepoFilters';
 
 const log = Logger.create();
 
@@ -24,6 +26,8 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
+    // private readonly annotationRepoFilters: AnnotationRepoFilters;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -32,6 +36,11 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         this.state = {
             data: [],
         };
+
+        const onRefreshed: RefreshedCallback = repoAnnotations => this.doRefresh(repoAnnotations);
+
+        // this.annotationRepoFilters =
+        //     new AnnotationRepoFilters(onRefreshed, repoDocInfosProvider);
 
         this.init();
         this.refresh();
@@ -196,12 +205,12 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                         //
                                         // this.handleToggleField(rowInfo.original,
                                         // column.id) .catch(err =>
-                                        // log.error("Could not handle toggle: ",
-                                        // err));
+                                        // log.error("Could not handle toggle:
+                                        // ", err));
 
                                         if (handleOriginal) {
-                                            // needed for react table to function
-                                            // properly.
+                                            // needed for react table to
+                                            // function properly.
                                             handleOriginal();
                                         }
 
