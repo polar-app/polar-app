@@ -144,8 +144,13 @@ class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
-            <div>
-                <ViewOrEditCommentExample/>
+            <div tabIndex={0}
+                 onMouseDown={(event) => event.currentTarget.focus()}
+                 onKeyPress={() => console.log("key press")}
+                 onKeyDown={() => console.log("key down")}>
+
+                hello worldasdfasdf
+
             </div>
 
         );

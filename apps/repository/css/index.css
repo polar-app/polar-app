@@ -154,3 +154,7 @@ footer .buttons .button {
 b, strong {
     font-weight: bold;
 }
+
+:focus {
+    outline: none;
+}

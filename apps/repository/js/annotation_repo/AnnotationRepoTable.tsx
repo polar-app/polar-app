@@ -190,13 +190,35 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                         //     desc: true
                         // }]}
                         getTrProps={(state: any, rowInfo: any) => {
+
+                            const doSelect = () => {
+
+                                if (rowInfo && rowInfo.original) {
+                                    const repoAnnotation = rowInfo.original as RepoAnnotation;
+                                    this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
+                                } else {
+                                    // this is not a row with data and just an
+                                    // empty row and we have to handle this or
+                                    // we will get an exception.
+                                }
+
+                            };
+
                             return {
 
                                 onClick: (e: any) => {
+                                    doSelect();
+                                },
 
-                                    const repoAnnotation = rowInfo.original as RepoAnnotation;
-                                    this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
+                                onFocus: () => {
+                                    doSelect();
+                                },
 
+                                tabIndex: rowInfo ? rowInfo.viewIndex as number : undefined,
+
+                                onKeyDown: (e: any) => {
+                                    // this works but I need to handle the arrow keys properly...
+                                    // console.log("on key press: ");
                                 },
 
                                 style: {
@@ -208,11 +230,11 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                         }}
                         getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
 
-
                             const singleClickColumns: string[] = [];
 
                             if (! singleClickColumns.includes(column.id)) {
                                 return {
+
                                     onDoubleClick: (e: any) => {
                                         // this.onDocumentLoadRequested(rowInfo.original.fingerprint,
                                         // rowInfo.original.filename,

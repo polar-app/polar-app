@@ -60,7 +60,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    <div id="header-filter">
+                    <div id="header-filter" className="mt-1">
 
                         <div style={{display: 'flex'}}>
 
