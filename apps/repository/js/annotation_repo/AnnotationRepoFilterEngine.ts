@@ -44,7 +44,7 @@ export class AnnotationRepoFilterEngine {
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
         repoAnnotations = this.doFilterValid(repoAnnotations);
-        repoAnnotations = this.doFilterByTitle(repoAnnotations);
+        repoAnnotations = this.doFilterByText(repoAnnotations);
         repoAnnotations = this.doFilterFlagged(repoAnnotations);
         repoAnnotations = this.doFilterArchived(repoAnnotations);
         repoAnnotations = this.doFilterByTags(repoAnnotations);
@@ -57,9 +57,11 @@ export class AnnotationRepoFilterEngine {
         return repoAnnotations.filter(current => RepoAnnotations.isValid(current));
     }
 
-    private doFilterByTitle(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByText(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
         if (! Strings.empty(this.filters.text)) {
+
+            RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-text'});
 
             return repoAnnotations
                 .filter(current => isPresent(current.text))
@@ -93,9 +95,11 @@ export class AnnotationRepoFilterEngine {
 
     private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
-
         const tags = Tags.toIDs(this.filters.filteredTags.get());
+
+        if (tags.length > 0) {
+            RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
+        }
 
         return repoAnnotations.filter(current => {
 
