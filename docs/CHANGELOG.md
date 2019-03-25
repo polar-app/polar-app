@@ -1,5 +1,10 @@
 # 1.15.1
 
+- Changed to a bottom bar for the comment and flashcard views.
+
+- Fixed a bug where editing an existing flashcard type use the previous type 
+  properly and a cloze could become a front/back card and vice versa.  
+
 - Significantly improved annotation view including tab nav and filter bar.
 
 - Improved presentation of the UX of the annotation bar by placing the 'hr' at

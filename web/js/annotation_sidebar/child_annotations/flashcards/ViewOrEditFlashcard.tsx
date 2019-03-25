@@ -39,6 +39,7 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
 
         } else {
             return <FlashcardInput id={'edit-flashcard-for' + this.props.id}
+                                   flashcardType={existingFlashcard.type}
                                    onFlashcard={this.props.onFlashcard}
                                    existingFlashcard={existingFlashcard}
                                    cancelButton={cancelButton}/>;
