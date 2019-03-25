@@ -4,6 +4,7 @@ import {Resources} from './Resources';
 import {ResourceEntry} from './ResourceEntry';
 import {Files} from '../util/Files';
 import {CompressedReader} from './CompressedReader';
+import {PathStr} from '../util/Strings';
 
 export class PHZReader implements CompressedReader {
 
@@ -19,11 +20,13 @@ export class PHZReader implements CompressedReader {
      * Init must be called to load the entries which we can work with.
      *
      */
-    public async init(path: string) {
+    public async init(source: PathStr | Blob) {
 
-        // FIXME: migrate this to fs.createReadStream even though this is async it reads all
-        // the data into memory. Make sure this method is completely async though.
-        const data = await Files.readFileAsync(path);
+        // TODO: migrate this to fs.createReadStream even though this is async
+        // it reads all the data into memory. Make sure this method is
+        // completely async though.
+
+        const data = source instanceof Blob ? source : await Files.readFileAsync(source) ;
 
         this.zip = new JSZip();
         // this.zip.support = {

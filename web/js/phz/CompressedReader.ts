@@ -1,9 +1,10 @@
 import {Resources} from './Resources';
 import {ResourceEntry} from './ResourceEntry';
+import {PathStr} from '../util/Strings';
 
 export interface CompressedReader {
 
-    init(path: string): Promise<void>;
+    init(source: PathStr | Blob): Promise<void>;
 
     /**
      * Get the metadata about this reader.
