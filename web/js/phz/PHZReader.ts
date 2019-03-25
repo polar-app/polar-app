@@ -5,6 +5,7 @@ import {ResourceEntry} from './ResourceEntry';
 import {Files} from '../util/Files';
 import {CompressedReader} from './CompressedReader';
 import {PathStr} from '../util/Strings';
+import {Captured} from '../capture/renderer/Captured';
 
 export class PHZReader implements CompressedReader {
 
@@ -40,7 +41,8 @@ export class PHZReader implements CompressedReader {
 
     }
 
-    public async getMetadata(): Promise<any | null> {
+    // TODO use the proper type here not 'any'
+    public async getMetadata(): Promise<Captured | null> {
 
         try {
             return await this.getCached("metadata.json", "metadata");
