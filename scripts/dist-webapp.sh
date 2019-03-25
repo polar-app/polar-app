@@ -34,6 +34,16 @@ copy pdfviewer-custom "*.css"
 copy web/dist "*.js"
 copy web "*.svg"
 
+# TODO these are going to be too many resources for the app that we're not
+# actually going to use but part of the problem is that they might @import
+# other resources like CSS.  This is why webpack is really helpful!!!
+#
+# We're also going to need THREE PWAs I think.
+#
+# - one for the document repository
+# - one for the pdf viewer
+# - one for the html viewer
+
 copy node_modules/font-awesome "*"
 copy node_modules/@fortawesome "*"
 
@@ -50,3 +60,5 @@ cp *.png dist/public
 cp *.svg dist/public
 
 cp manifest.json dist/public
+
+# sw-precache --root=dist --static-file-globs='dist/**/*.html'

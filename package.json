@@ -84,6 +84,7 @@
     "recursive-readdir": "~2.2.2",
     "spectron": "github:dsabanin/spectron",
     "summernote-typescript": "~0.8.9",
+    "sw-precache": "^5.2.1",
     "thread-loader": "^2.1.2",
     "timekeeper": "~2.1.2",
     "ts-loader": "^5.3.3",

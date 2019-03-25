@@ -1,6 +1,9 @@
 # 1.15.2
 
-- we had no analytics for the login page.
+- Fixed bad bug where text couldn't be extracted on annotations that were in 
+  PDFs with large numbers of individual elements. 
+
+- We had no analytics for the login page.
 
 # 1.15.1
 
