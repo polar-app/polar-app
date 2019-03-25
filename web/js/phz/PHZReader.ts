@@ -41,7 +41,6 @@ export class PHZReader implements CompressedReader {
 
     }
 
-    // TODO use the proper type here not 'any'
     public async getMetadata(): Promise<Captured | null> {
 
         try {
@@ -100,6 +99,9 @@ export class PHZReader implements CompressedReader {
         return await this._readAsStream(resourceEntry.path);
     }
 
+    public async getResourceAsBlob(resourceEntry: ResourceEntry): Promise<Blob> {
+        return await this._readAsBlob(resourceEntry.path);
+    }
 
     public async close() {
         // we just have to let it GC
@@ -116,18 +118,19 @@ export class PHZReader implements CompressedReader {
     private async _readAsBuffer(path: string): Promise<Buffer> {
 
         const zipFile = await this.getZipFile(path);
-
         const arrayBuffer = await zipFile.async('arraybuffer');
         return Buffer.from(arrayBuffer);
 
     }
 
     private async _readAsStream(path: string): Promise<NodeJS.ReadableStream> {
-
         const zipFile = await this.getZipFile(path);
-
         return await zipFile.nodeStream();
+    }
 
+    private async _readAsBlob(path: string): Promise<Blob> {
+        const zipFile = await this.getZipFile(path);
+        return await zipFile.async('blob');
     }
 
     private async getZipFile(path: string): Promise<JSZip.JSZipObject>  {
