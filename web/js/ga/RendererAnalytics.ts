@@ -68,6 +68,20 @@ export class RendererAnalytics {
 
     }
 
+    public static pageviewFromLocation() {
+
+        const url = new URL(document.location!.href);
+
+        const path = url.pathname + url.hash || "";
+        const hostname = url.hostname;
+        const title = document.title;
+
+        log.info("Created pageview for: ", { path, hostname, title });
+
+        RendererAnalytics.pageview(path, hostname, document.title);
+
+    }
+
     public static pageview(path: string, hostname?: string, title?: string): void {
 
         const callback = defaultCallback;
