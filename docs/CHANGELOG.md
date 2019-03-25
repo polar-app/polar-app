@@ -1,5 +1,7 @@
 # 1.15.1
 
+- Fixed CSS wrap on text in GDPR notice. 
+
 - The sidebar in the annotation view can now be viewed when the table scrolls
   and improved CSS padding + margins so that the layout is consistent.  
 
