@@ -45,8 +45,8 @@ export class AnnotationRepoFilterEngine {
         // other bug might inject a problem otherwise.
         repoAnnotations = this.doFilterValid(repoAnnotations);
         repoAnnotations = this.doFilterByText(repoAnnotations);
-        repoAnnotations = this.doFilterFlagged(repoAnnotations);
-        repoAnnotations = this.doFilterArchived(repoAnnotations);
+        // repoAnnotations = this.doFilterFlagged(repoAnnotations);
+        // repoAnnotations = this.doFilterArchived(repoAnnotations);
         repoAnnotations = this.doFilterByTags(repoAnnotations);
 
         return repoAnnotations;
