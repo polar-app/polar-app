@@ -5,7 +5,7 @@
 
 - We had no analytics for the login page.
 
-# 1.15.1
+# 1.15.1     
 
 - Fixed CSS wrap on text in GDPR notice. 
 
