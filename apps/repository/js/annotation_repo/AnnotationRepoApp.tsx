@@ -97,11 +97,13 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody>
 
                     <div style={{display: 'flex'}}>
 
-                        <div style={{width: 'calc(100% - 350px)'}}>
+                        <div className="ml-1"
+                             style={{width: 'calc(100% - 350px)'}}>
+
+                            <FixedNavBody>
 
                             <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                                  updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
@@ -110,9 +112,12 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                                                  setFilteredCallback={this.setFilteredCallback}
                                                  onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
 
+                            </FixedNavBody>
+
                         </div>
 
-                        <div className="mt-2" style={{width: '350px'}}>
+                        <div className="mt-2 pl-1 pr-1"
+                             style={{width: '350px'}}>
                             <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
                                                     repoAnnotation={this.state.repoAnnotation}/>
                         </div>
@@ -120,7 +125,6 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
                     </div>
 
-                </FixedNavBody>
 
             </FixedNav>
 

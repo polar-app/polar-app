@@ -370,7 +370,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 </header>
 
                 <FixedNavBody>
-                    <div id="doc-table" style={{height: '100%'}}>
+                    <div id="doc-table" className="ml-1" style={{height: '100%'}}>
                         <ReactTable
                             data={data}
                             ref={(r: any) => this.reactTable = r}

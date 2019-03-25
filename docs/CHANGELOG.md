@@ -1,5 +1,8 @@
 # 1.15.1
 
+- The sidebar in the annotation view can now be viewed when the table scrolls
+  and improved CSS padding + margins so that the layout is consistent.  
+
 - Changed to a bottom bar for the comment and flashcard views.
 
 - Fixed a bug where editing an existing flashcard type use the previous type 
