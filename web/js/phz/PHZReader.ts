@@ -7,8 +7,6 @@ import {CompressedReader} from './CompressedReader';
 
 export class PHZReader implements CompressedReader {
 
-    public path: string;
-
     public zip?: JSZip;
 
     public metadata: any = {};
@@ -17,19 +15,15 @@ export class PHZReader implements CompressedReader {
 
     private cache: {[key: string]: any} = {};
 
-    constructor(path: string) {
-        this.path = path;
-    }
-
     /**
      * Init must be called to load the entries which we can work with.
      *
      */
-    public async init() {
+    public async init(path: string) {
 
         // FIXME: migrate this to fs.createReadStream even though this is async it reads all
         // the data into memory. Make sure this method is completely async though.
-        const data = await Files.readFileAsync(this.path);
+        const data = await Files.readFileAsync(path);
 
         this.zip = new JSZip();
         // this.zip.support = {

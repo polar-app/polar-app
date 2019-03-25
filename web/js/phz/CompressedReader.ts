@@ -3,7 +3,7 @@ import {ResourceEntry} from './ResourceEntry';
 
 export interface CompressedReader {
 
-    init(): Promise<void>;
+    init(path: string): Promise<void>;
 
     /**
      * Get the metadata about this reader.

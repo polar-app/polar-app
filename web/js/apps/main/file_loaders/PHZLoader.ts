@@ -11,9 +11,6 @@ import {FilePaths} from '../../../util/FilePaths';
 
 const log = Logger.create();
 
-/**
- *
- */
 export class PHZLoader extends FileLoader {
 
     private readonly cacheRegistry: CacheRegistry;
