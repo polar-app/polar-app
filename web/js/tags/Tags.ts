@@ -106,6 +106,7 @@ export class Tags {
      * We support foo:bar values in tags so that we can have typed tags.
      * For example: type:book or deck:fun or something along those lines.
      *
+     * We also support / to denote hierarchy, like deck:main/sub
      */
     public static stripTypedLabel(label: string): Optional<string> {
 
@@ -115,8 +116,15 @@ export class Tags {
             return Optional.empty();
         }
 
-        return Optional.of(label.replace(/^#([^:/]+):([^:]+)$/g, '#$1$2'));
+        // Remove any single lonely slashes
+        const noslashes = label.replace(/([^\/])\/([^\/])/g, '$1$2');
 
+        // If there are any slashes left, we don't like it.
+        if (noslashes.match(/\//g)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(noslashes.replace(/^#([^:/]+):([^:]+)$/g, '#$1$2'));
     }
 
     public static parseTypedTag(value: string): Optional<TypedTag> {
@@ -126,10 +134,8 @@ export class Tags {
 
         return Optional.of({
             name: split[0],
-            value: split[1]
+            value: split[1].split("/")
         });
-
     }
-
 }
 

@@ -102,9 +102,8 @@ export class AnkiSyncEngine implements SyncEngine {
                 .map(tag => Tags.parseTypedTag(tag.label))
                 .filter(typedTag => typedTag.isPresent())
                 .map(typedTag => typedTag.get())
-                .map(typedTag => typedTag.value)
+                .map(typedTag => typedTag.value.join("::"))
                 .pop();
-
         }
 
         if (! deckName) {
