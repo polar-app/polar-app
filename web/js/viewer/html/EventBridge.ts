@@ -52,7 +52,11 @@ export class EventBridge {
 
         iframe.contentDocument.body.addEventListener("mouseup", this.mouseListener.bind(this));
         iframe.contentDocument.body.addEventListener("mousedown", this.mouseListener.bind(this));
-        iframe.contentDocument.body.addEventListener("contextmenu", this.mouseListener.bind(this));
+
+        iframe.contentDocument.body.addEventListener("contextmenu", (event) => {
+            this.mouseListener(event);
+            event.preventDefault();
+        });
 
         iframe.contentDocument.body.addEventListener("click", event => {
 
@@ -88,9 +92,9 @@ export class EventBridge {
 
     private mouseListener(event: any) {
 
-        let eventPoints = FrameEvents.calculatePoints(this.iframe, event);
+        const eventPoints = FrameEvents.calculatePoints(this.iframe, event);
 
-        let newEvent = new event.constructor(event.type, event);
+        const newEvent = new event.constructor(event.type, event);
 
         // TODO: the issue now , I think, is that these values need to be updated
         // vs the current scroll.x and scroll.y
@@ -104,7 +108,7 @@ export class EventBridge {
         Object.defineProperty(newEvent, "offsetX", {value: eventPoints.offset.x});
         Object.defineProperty(newEvent, "offsetY", {value: eventPoints.offset.y});
 
-        if(newEvent.pageX !== eventPoints.page.x) {
+        if (newEvent.pageX !== eventPoints.page.x) {
             throw new Error("Define of properties failed");
         }
 
