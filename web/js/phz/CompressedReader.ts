@@ -21,4 +21,5 @@ export interface CompressedReader {
     getResourceAsStream(resourceEntry: ResourceEntry): Promise<NodeJS.ReadableStream>;
 
     close(): Promise<void>;
+
 }

@@ -9,7 +9,7 @@ export class IFrames {
 
             function timer() {
 
-                if(iframe.contentDocument && iframe.contentDocument!.location!.href !== options.currentURL) {
+                if (iframe.contentDocument && iframe.contentDocument!.location!.href !== options.currentURL) {
                     resolve(iframe.contentDocument);
                     return;
                 }
@@ -32,16 +32,16 @@ export class IFrames {
      */
     public static computeTopLevelClientRect(clientRect: ClientRect, win: Window): ClientRect {
 
-        while(isPresent(win.frameElement)) {
+        while (isPresent(win.frameElement)) {
 
-            let iframeClientRect = win.frameElement.getBoundingClientRect();
+            const iframeClientRect = win.frameElement.getBoundingClientRect();
 
-            let left = clientRect.left + iframeClientRect.left;
-            let top = clientRect.top + iframeClientRect.top;
-            let width = clientRect.width;
-            let height = clientRect.height;
-            let bottom = top + height;
-            let right = left + width;
+            const left = clientRect.left + iframeClientRect.left;
+            const top = clientRect.top + iframeClientRect.top;
+            const width = clientRect.width;
+            const height = clientRect.height;
+            const bottom = top + height;
+            const right = left + width;
 
             clientRect = { left, top, width, height, bottom, right };
 

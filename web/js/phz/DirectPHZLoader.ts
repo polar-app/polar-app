@@ -12,6 +12,7 @@ import {Resources} from './Resources';
 import {Reducers} from '../util/Reducers';
 import {Blobs} from '../util/Blobs';
 import {ResourceEntry} from './ResourceEntry';
+import {Optional} from '../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -24,7 +25,7 @@ export class DirectPHZLoader {
 
     }
 
-    public async load() {
+    public async load(): Promise<Optional<Captured>> {
 
         if (this.metadata) {
 
@@ -32,8 +33,11 @@ export class DirectPHZLoader {
 
             await this.loadDocument(url, this.resources);
 
+            return Optional.of(this.metadata);
+
         } else {
             log.warn("Document has no metadata: " + this.resource);
+            return Optional.empty();
         }
 
     }
