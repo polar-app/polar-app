@@ -1,5 +1,8 @@
 # 1.15.2
 
+- Portable implementation of PHZs that works in the browser and handles the 
+  PHZ directly within the HTMLViewer without Electron components needed.
+
 - Fixed bad bug where text couldn't be extracted on annotations that were in 
   PDFs with large numbers of individual elements. 
 
