@@ -17,7 +17,53 @@ const log = Logger.create();
 
 export class DirectPHZLoader {
 
-    public static async load(resource: PathStr | URLStr) {
+    constructor(private resource: PathStr | URLStr,
+                private phzReader: PHZReader,
+                private resources: Resources,
+                private metadata: Captured | null) {
+
+    }
+
+    public async load() {
+
+        if (this.metadata) {
+
+            const url = this.metadata.url;
+
+            await this.loadDocument(url, this.resources);
+
+        } else {
+            console.log("FIXME4");
+            log.warn("Document has no metadata: " + this.resource);
+        }
+
+    }
+
+    private getResourceEntry(url: string): ResourceEntry | undefined {
+
+        return Object.values(this.resources.entries)
+            .filter(current => current.resource.url === url)
+            .reduce(Reducers.FIRST, undefined);
+
+    }
+
+    private async loadDocument(url: string,
+                               resources: Resources) {
+
+        const primaryResourceEntry = this.getResourceEntry(url);
+
+        if (primaryResourceEntry) {
+
+            const iframe = <HTMLIFrameElement> document.getElementById('content');
+            await this.loadResource(primaryResourceEntry, iframe);
+
+        } else {
+            console.log("FIXME5");
+            log.warn("No primary resource found for: " + url);
+        }
+
+    }
+    public static async create(resource: PathStr | URLStr) {
 
         console.log("FIXME2");
 
@@ -42,50 +88,17 @@ export class DirectPHZLoader {
         };
 
         const phzReader = await toPHZReader();
-
         const metadata = await phzReader.getMetadata();
+        const resources = await phzReader.getResources();
 
-        if (metadata) {
-            const resources = await phzReader.getResources();
-
-            const url = metadata.url;
-
-            await this.loadDocument(phzReader, url, resources);
-
-        } else {
-            console.log("FIXME4");
-
-            log.warn("Document has no metadata: " + resource);
-        }
-
+        return new DirectPHZLoader(resource, phzReader, resources, metadata);
 
     }
 
-    private static async loadDocument(phzReader: PHZReader,
-                                      url: string,
-                                      resources: Resources) {
+    private async loadResource(resourceEntry: ResourceEntry,
+                               iframe: HTMLIFrameElement) {
 
-        const primaryResource = Object.values(resources.entries)
-            .filter(current => current.resource.url === url)
-            .reduce(Reducers.FIRST);
-
-        if (primaryResource) {
-
-            const iframe = <HTMLIFrameElement> document.getElementById('content');
-            await this.loadResource(phzReader, primaryResource, iframe);
-
-        } else {
-            console.log("FIXME5");
-            log.warn("No primary resource found for: " + url);
-        }
-
-    }
-
-    private static async loadResource(phzReader: PHZReader,
-                                      resourceEntry: ResourceEntry,
-                                      iframe: HTMLIFrameElement) {
-
-        const blob = await phzReader.getResourceAsBlob(resourceEntry);
+        const blob = await this.phzReader.getResourceAsBlob(resourceEntry);
 
         // now that we have the blob, which should be HTML , parse it into
         // its own document object.
@@ -98,9 +111,23 @@ export class DirectPHZLoader {
 
         iframe.contentDocument!.documentElement!.replaceWith(doc.documentElement!);
 
-        // FIXME: now we need to cleanup here and:
-        // fix the iframe resources
-        // the target properly...
+        await this.loadIFrames(iframes);
+
+    }
+
+    private async loadIFrames(iframeRefs: IFrameRef[]) {
+
+        for (const iframeRef of iframeRefs) {
+
+            const resourceEntry = this.getResourceEntry(iframeRef.src);
+
+            if (resourceEntry) {
+                await this.loadResource(resourceEntry, iframeRef.iframe);
+            } else {
+                log.warn("No resource entry for URL: " + iframeRef.src);
+            }
+
+        }
 
     }
 
@@ -108,7 +135,7 @@ export class DirectPHZLoader {
      * Al through all the iframes in this doc and fix them so that they don't
      * load as we are going to load them manually.
      */
-    private static neutralizeIFrames(doc: Document) {
+    private neutralizeIFrames(doc: Document) {
 
         const result: IFrameRef[] = [];
 
@@ -131,6 +158,8 @@ export class DirectPHZLoader {
 
         }
 
+        return result;
+
     }
 
 
@@ -140,3 +169,4 @@ interface IFrameRef {
     readonly src: string;
     readonly iframe: HTMLIFrameElement;
 }
+
