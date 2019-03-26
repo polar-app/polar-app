@@ -27,7 +27,7 @@ export class PHZReader implements CompressedReader {
         // it reads all the data into memory. Make sure this method is
         // completely async though.
 
-        const data = source instanceof Blob ? source : await Files.readFileAsync(source) ;
+        const data = typeof source === 'string' ? await Files.readFileAsync(source) : source;
 
         this.zip = new JSZip();
         // this.zip.support = {

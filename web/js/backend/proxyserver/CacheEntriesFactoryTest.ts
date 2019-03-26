@@ -167,7 +167,7 @@ describe('CacheEntriesFactory', function() {
                 "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2"
             ];
 
-            assertJSON(Object.keys(cacheEntriesHolder.cacheEntries), expected)
+            assertJSON(Object.keys(cacheEntriesHolder.cacheEntries), expected);
 
             expected = {
                 "method": "GET",
@@ -195,10 +195,10 @@ describe('CacheEntriesFactory', function() {
                         "title": "Unit testing node applications with TypeScript — using mocha and chai",
                     }
                 }
-            }
+            };
 
             assertJSON(Dictionaries.sorted(cacheEntriesHolder.cacheEntries["https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2"]),
-                       Dictionaries.sorted(expected))
+                       Dictionaries.sorted(expected));
 
             expected = {
                 "method": "GET",
