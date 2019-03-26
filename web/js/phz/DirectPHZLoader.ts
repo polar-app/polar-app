@@ -1,7 +1,3 @@
-/**
- * Loads PHZs directly by opening them, decompressing them, and parsing the HTML
- * and then replacing the iframes directly.
- */
 import {PathStr} from '../util/Strings';
 import {URLStr} from '../util/Strings';
 import {URLs} from '../util/URLs';
@@ -17,6 +13,10 @@ import {Latch} from '../util/Latch';
 
 const log = Logger.create();
 
+/**
+ * Loads PHZs directly by opening them, decompressing them, and parsing the HTML
+ * and then replacing the iframes directly.
+ */
 export class DirectPHZLoader {
 
     private readonly linkPromises: LinkPromise[] = [];
