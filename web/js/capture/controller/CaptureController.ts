@@ -11,6 +11,7 @@ import {StartCaptureMessage} from './CaptureClient';
 import {Directories} from '../../datastore/Directories';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {PHZLoader} from "../../apps/main/file_loaders/PHZLoader";
+import {FileRegistry} from '../../backend/webserver/FileRegistry';
 
 const log = Logger.create();
 
@@ -18,15 +19,12 @@ export class CaptureController {
 
     private readonly directories: Directories = new Directories();
 
-    private readonly cacheRegistry: CacheRegistry;
-
     private readonly phzLoader: PHZLoader;
 
-    constructor(cacheRegistry: CacheRegistry) {
+    constructor(private readonly cacheRegistry: CacheRegistry,
+                private readonly fileRegistry: FileRegistry) {
 
-        this.cacheRegistry = cacheRegistry;
-
-        this.phzLoader = new PHZLoader({cacheRegistry: this.cacheRegistry});
+        this.phzLoader = new PHZLoader(cacheRegistry, fileRegistry);
 
     }
 
