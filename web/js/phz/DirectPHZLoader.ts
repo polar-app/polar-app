@@ -33,7 +33,6 @@ export class DirectPHZLoader {
             await this.loadDocument(url, this.resources);
 
         } else {
-            console.log("FIXME4");
             log.warn("Document has no metadata: " + this.resource);
         }
 
@@ -58,14 +57,11 @@ export class DirectPHZLoader {
             await this.loadResource(primaryResourceEntry, iframe);
 
         } else {
-            console.log("FIXME5");
             log.warn("No primary resource found for: " + url);
         }
 
     }
     public static async create(resource: PathStr | URLStr) {
-
-        console.log("FIXME2");
 
         const toPHZReader = async () => {
 
