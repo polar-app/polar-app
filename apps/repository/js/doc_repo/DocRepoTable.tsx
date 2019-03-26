@@ -904,15 +904,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     filename: string,
                                     hashcode?: Hashcode) {
 
-        if (! AppRuntime.isElectron() && filename.endsWith(".phz")) {
-
-            const message = `Captured web pages (phz files) are only supported in the web preview version of Polar (please use the desktop version).`;
-            const title = "Captured web pages not supported.";
-
-            Toaster.error(message, title);
-            return;
-        }
-
         this.synchronizingDocLoader.load(fingerprint, filename, hashcode)
             .catch(err => log.error("Unable to load doc: ", err));
 
