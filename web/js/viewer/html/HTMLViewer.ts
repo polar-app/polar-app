@@ -64,8 +64,6 @@ export class HTMLViewer extends Viewer {
 
         this.loadStrategy = LoadStrategies.loadStrategy();
 
-        console.log("FIXME: loadStrategy: " + this.loadStrategy);
-
         const onReady = async () => {
 
             this._captureBrowserZoom();
@@ -75,8 +73,6 @@ export class HTMLViewer extends Viewer {
             this.frameResizer = new FrameResizer(this.contentParent, this.content);
 
             const onIFrameLoaded = () => {
-
-                console.log("FIXME: iframe loaded!");
 
                 log.info("Loading page now...");
 
@@ -96,10 +92,17 @@ export class HTMLViewer extends Viewer {
 
             };
 
-            new IFrameWatcher(this.content, () => onIFrameLoaded())
-                .start();
+            if (this.loadStrategy === 'portable') {
+                // we load it manually in the portable strategy so we don't need
+                // the iframe watcher.
 
-            onIFrameLoaded(); // FIXME
+                // TODO: move this to the strategy object.
+
+                onIFrameLoaded();
+            } else {
+                new IFrameWatcher(this.content, () => onIFrameLoaded())
+                    .start();
+            }
 
             window.addEventListener("resize", () => {
                 this.doZoom();
@@ -265,7 +268,7 @@ export class HTMLViewer extends Viewer {
 
         // iframeParentElement.removeChild(iframe);
 
-        // FIXME: run an algorithm to make sure there are no elements between
+        // TODO: run an algorithm to make sure there are no elements between
         // two paths in the DOM that have any scrollHeight > their height.
 
         const contentParent = notNull(document.querySelector("#content-parent"));
@@ -392,9 +395,6 @@ class LoadStrategies {
         const url = new URL(window.location.href);
 
         const filename = Optional.of(url.searchParams.get("filename")).getOrElse("");
-
-        console.log("FIXME: file: " + filename);
-        console.log("FIXME: endswith " + filename.endsWith(".phz"));
 
         return filename.endsWith(".phz") ? 'portable' : 'electron';
 
