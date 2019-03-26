@@ -18,19 +18,22 @@ export class DirectPHZLoader {
 
     public static async load(resource: PathStr | URLStr) {
 
+        console.log("FIXME2");
+
         const toPHZReader = async () => {
 
             const phzReader = new PHZReader();
 
             if (URLs.isURL(resource)) {
+
                 const response = await fetch(resource);
                 const blob = await response.blob();
 
-                phzReader.init(blob);
+                await phzReader.init(blob);
 
             } else {
                 // this is a path string.
-                phzReader.init(resource);
+                await phzReader.init(resource);
             }
 
             return phzReader;
@@ -43,7 +46,12 @@ export class DirectPHZLoader {
 
         if (metadata) {
             const resources = await phzReader.getResources();
+
+            await this.doDocumentLoad(phzReader, metadata, resources);
+
         } else {
+            console.log("FIXME4");
+
             log.warn("Document has no metadata: " + resource);
         }
 
@@ -60,6 +68,8 @@ export class DirectPHZLoader {
 
         if (primaryResource) {
 
+            console.log("FIXME6");
+
             const blob = await phzReader.getResourceAsBlob(primaryResource);
 
             // now that we have the blob, which should be HTML , parse it into
@@ -69,11 +79,19 @@ export class DirectPHZLoader {
 
             const doc = new DOMParser().parseFromString(str, 'text/html');
 
+            console.log("FUXME loaded");
+
+            const iframe = <HTMLIFrameElement> document.getElementById('content');
+
+            iframe.contentDocument!.documentElement!.replaceWith(doc.documentElement!);
+
             // FIXME: now we need to cleanup here and:
             // fix the iframe resources
             // the target properly...
 
         } else {
+            console.log("FIXME5");
+
             log.warn("No primary resource found for: " + url);
         }
 
