@@ -447,21 +447,6 @@ class ElectronStrategyHandler extends StrategyHandler  {
         return this.docDetail();
     }
 
-    // /**
-    //  * Get the request params as a dictionary.
-    //  */
-    // public requestParams(): RequestParams {
-    //
-    //     const url = new URL(window.location.href);
-    //
-    //     return {
-    //         file: notNull(url.searchParams.get("file")),
-    //         descriptor: JSON.parse(notNull(url.searchParams.get("descriptor"))),
-    //         fingerprint: notNull(url.searchParams.get("fingerprint"))
-    //     };
-    //
-    // }
-
     public docDetail(): ExtendedDocDetail {
 
         const url = new URL(window.location.href);

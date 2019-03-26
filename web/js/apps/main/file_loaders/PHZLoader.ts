@@ -24,8 +24,6 @@ export class PHZLoader extends FileLoader {
 
     public async registerForLoad(path: string): Promise<LoadedFile> {
 
-        console.log("FIXME: regsiterForLoad: " + path);
-
         Preconditions.assertNotNull(this.cacheRegistry);
         Preconditions.assertNotNull(this.fileRegistry);
 
@@ -42,10 +40,6 @@ export class PHZLoader extends FileLoader {
         const filename = FilePaths.basename(path);
 
         const fileMeta = this.fileRegistry.registerFile(path);
-
-        // FIXME: this isn't the correct path for some reason...
-
-        console.log("FIXME: file meta URL: " + fileMeta.url);
 
         const appURL = PHZLoader.createViewerURL(fileMeta.url, filename);
 

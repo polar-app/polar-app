@@ -19,8 +19,6 @@ export class PDFLoader extends FileLoader {
 
     public async registerForLoad(path: string): Promise<LoadedFile> {
 
-        console.log("FIXME: regsiterForLoad: " + path);
-
         const filename = FilePaths.basename(path);
 
         const fileMeta = this.fileRegistry.registerFile(path);
@@ -36,6 +34,7 @@ export class PDFLoader extends FileLoader {
     public static createViewerURL(fileURL: string, filename: string) {
         const fileParam = encodeURIComponent(fileURL);
         const filenameParam = encodeURIComponent(filename);
+
         return ResourcePaths.resourceURLFromRelativeURL(`/pdfviewer/web/index.html?file=${fileParam}&filename=${filenameParam}&zoom=page-width`, false);
     }
 
