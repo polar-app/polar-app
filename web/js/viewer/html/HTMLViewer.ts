@@ -19,6 +19,7 @@ import {DirectPHZLoader} from '../../phz/DirectPHZLoader';
 import {LoadStrategy} from '../../apps/main/file_loaders/PHZLoader';
 import {Optional} from '../../util/ts/Optional';
 import {Captured} from '../../capture/renderer/Captured';
+import {IFrames} from '../../util/dom/IFrames';
 
 const log = Logger.create();
 
@@ -422,6 +423,7 @@ abstract class StrategyHandler {
 class PortableStrategyHandler extends StrategyHandler {
 
     public async doLoad(content: HTMLIFrameElement, file: string): Promise<ExtendedDocDetail> {
+
         const loader = await DirectPHZLoader.create(file);
         const captured = await loader.load();
 
@@ -429,10 +431,14 @@ class PortableStrategyHandler extends StrategyHandler {
             throw new Error("Unable to load page (no captured data)");
         }
 
+        const url = captured.get().url;
+
+        IFrames.markLoadedManually(content, url);
+
         return {
             fingerprint: this.getFingerprint(),
             title: captured.get().title,
-            url: captured.get().url,
+            url,
             nrPages: 1,
             filename: this.getFilename(),
             metadata: captured.get()

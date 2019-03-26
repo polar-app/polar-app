@@ -1,25 +1,64 @@
 import {isPresent} from '../../Preconditions';
+import {URLStr} from '../Strings';
 
 export class IFrames {
 
     public static async waitForContentDocument(iframe: HTMLIFrameElement,
-                                               options: WaitForContentDocumentOptions = { currentURL: 'about:blank'}): Promise<HTMLDocument> {
+                                               options: WaitForContentDocumentOptions = { initialURL: 'about:blank'}): Promise<HTMLDocument> {
 
         return new Promise<HTMLDocument>(resolve => {
 
-            function timer() {
+            const timer = () => {
 
-                if (iframe.contentDocument && iframe.contentDocument!.location!.href !== options.currentURL) {
-                    resolve(iframe.contentDocument);
-                    return;
+                if (iframe.contentDocument) {
+
+                    const currentURL = this.getURL(iframe);
+
+                    if (currentURL !== options.initialURL) {
+                        resolve(iframe.contentDocument);
+                        return;
+                    }
+
                 }
 
                 setTimeout(timer, 100);
-            }
+
+            };
 
             timer();
 
         });
+
+    }
+
+    /**
+     * Mark the frame as loaded manually by specifying a data attribute.
+     * @param iframe
+     * @param url
+     */
+    public static markLoadedManually(iframe: HTMLIFrameElement, url: URLStr) {
+
+        iframe.setAttribute('data-loaded-src', url);
+
+    }
+
+    public static getURL(iframe: HTMLIFrameElement): string | undefined {
+
+        if (! iframe) {
+            return undefined;
+        }
+
+        const loadedSrc = iframe.getAttribute('data-loaded-src');
+
+        if (loadedSrc) {
+            return loadedSrc;
+        }
+
+        if (iframe.contentDocument && iframe.contentDocument!.location) {
+            return iframe.contentDocument!.location!.href;
+        }
+
+        return undefined;
 
     }
 
@@ -56,5 +95,5 @@ export class IFrames {
 }
 
 interface WaitForContentDocumentOptions {
-    readonly currentURL: string;
+    readonly initialURL: string;
 }
