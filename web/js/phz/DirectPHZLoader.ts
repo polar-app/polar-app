@@ -148,6 +148,12 @@ export class DirectPHZLoader {
                 latch.resolve(true);
             });
 
+            link.addEventListener("error", () => {
+                // we're just waiting for them to be completed not their actual
+                // status.
+                latch.resolve(true);
+            });
+
         });
 
         return promises;
