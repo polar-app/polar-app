@@ -20,6 +20,7 @@ import {LoadStrategy} from '../../apps/main/file_loaders/PHZLoader';
 import {Optional} from '../../util/ts/Optional';
 import {Captured} from '../../capture/renderer/Captured';
 import {IFrames} from '../../util/dom/IFrames';
+import {Documents} from './Documents';
 
 const log = Logger.create();
 
@@ -89,7 +90,7 @@ export class HTMLViewer extends Viewer {
 
                 this.startHandlingZoom();
 
-                this._configurePageWidth(docDetail);
+                this.configurePageDimensions(docDetail);
 
             };
 
@@ -182,7 +183,7 @@ export class HTMLViewer extends Viewer {
      *
      * Otherwise, use the defaults.
      */
-    private _configurePageWidth(docDetail: ExtendedDocDetail) {
+    private configurePageDimensions(docDetail: ExtendedDocDetail) {
 
         log.info("Loading with descriptor: ", docDetail.metadata);
 

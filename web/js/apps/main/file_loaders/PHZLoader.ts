@@ -12,8 +12,8 @@ import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 
 const log = Logger.create();
 
-// const LOAD_STRATEGY: LoadStrategy = 'portable';
-const LOAD_STRATEGY: LoadStrategy = 'electron';
+const LOAD_STRATEGY: LoadStrategy = 'portable';
+// const LOAD_STRATEGY: LoadStrategy = 'electron';
 
 export class PHZLoader extends FileLoader {
 
