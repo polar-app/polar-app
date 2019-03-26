@@ -93,17 +93,8 @@ export class HTMLViewer extends Viewer {
 
             };
 
-            if (this.loadStrategy === 'portable') {
-                // we load it manually in the portable strategy so we don't need
-                // the iframe watcher.
-
-                // TODO: move this to the strategy object.
-
-                onIFrameLoaded();
-            } else {
-                new IFrameWatcher(this.content, () => onIFrameLoaded())
-                    .start();
-            }
+            new IFrameWatcher(this.content, () => onIFrameLoaded())
+                .start();
 
             window.addEventListener("resize", () => {
                 this.doZoom();
@@ -395,9 +386,8 @@ class LoadStrategies {
 
         const url = new URL(window.location.href);
 
-        const filename = Optional.of(url.searchParams.get("filename")).getOrElse("");
-
-        return filename.endsWith(".phz") ? 'portable' : 'electron';
+        const strategy = url.searchParams.get("strategy");
+        return <LoadStrategy> Optional.of(strategy).getOrElse("electron");
 
     }
 

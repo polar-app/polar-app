@@ -33,8 +33,6 @@ export class IFrames {
 
     /**
      * Mark the frame as loaded manually by specifying a data attribute.
-     * @param iframe
-     * @param url
      */
     public static markLoadedManually(iframe: HTMLIFrameElement, url: URLStr) {
 

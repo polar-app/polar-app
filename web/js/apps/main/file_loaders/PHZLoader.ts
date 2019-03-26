@@ -12,7 +12,8 @@ import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 
 const log = Logger.create();
 
-const LOAD_STRATEGY: LoadStrategy = 'portable';
+// const LOAD_STRATEGY: LoadStrategy = 'portable';
+const LOAD_STRATEGY: LoadStrategy = 'electron';
 
 export class PHZLoader extends FileLoader {
 
@@ -64,7 +65,8 @@ export class PHZLoader extends FileLoader {
             fingerprint
         };
 
-        return ResourcePaths.resourceURLFromRelativeURL(`/htmlviewer/index.html?file=${params.file}&filename=${params.filename}&fingerprint=${params.fingerprint}&zoom=page-width`, false);
+        return ResourcePaths.resourceURLFromRelativeURL(`/htmlviewer/index.html?file=${params.file}&filename=${params.filename}&fingerprint=${params.fingerprint}&zoom=page-width&strategy=${LOAD_STRATEGY}`, false);
+
     }
 
     private async doElectron(path: string) {
