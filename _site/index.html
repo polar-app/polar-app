@@ -59,6 +59,8 @@
     }
   </style>
 
+  <script src="/assets/js/site.js"></script>
+
   <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 
   
@@ -177,7 +179,9 @@
 
         <!--<a class="btn btn-success font-weight-bold ml-md-3" href="/download.html">Download</a>-->
 
-        <a class="btn btn-outline-secondary font-weight-bold ml-md-3" href="https://app.getpolarized.io">Sign Up</a>
+        <a class="btn btn-outline-secondary font-weight-bold ml-md-3"
+           onclick="sendEvent('main-cta', 'navbar-signup')"
+           href="https://app.getpolarized.io">Sign Up</a>
 
       </div>
     </nav>
@@ -210,9 +214,13 @@
 
                             <div class="mt-3 mb-1">
 
-                                <a class="btn btn-outline-secondary btn-lg font-weight-bold m-3" href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta&utm_medium=site">Download Desktop App</a>
+                                <a class="btn btn-outline-secondary btn-lg font-weight-bold m-3"
+                                   onclick="sendEvent('main-cta', 'download-desktop-app')"
+                                   href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta&utm_medium=site">Download Desktop App</a>
 
-                                <a class="btn btn-success btn-lg font-weight-bold m-3" href="https://app.getpolarized.io">Open Polar in Your Browser</a>
+                                <a class="btn btn-success btn-lg font-weight-bold m-3"
+                                   onclick="sendEvent('main-cta', 'open-polar-in-browser')"
+                                   href="https://app.getpolarized.io">Open Polar in Your Browser</a>
 
                             </div>
 
@@ -671,9 +679,14 @@
 
                 <div class="mt-1 mb-1">
 
-                    <a class="btn btn-outline-secondary btn-lg font-weight-bold m-3" href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta-bottom&utm_medium=site">Download Desktop App</a>
 
-                    <a class="btn btn-success btn-lg font-weight-bold m-3" href="https://app.getpolarized.io">Open Polar in your Browser</a>
+                    <a class="btn btn-outline-secondary btn-lg font-weight-bold m-3"
+                       onclick="sendEvent('main-cta', 'download-desktop-app-bottom')"
+                       href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta-bottom&utm_medium=site">Download Desktop App</a>
+
+                    <a class="btn btn-success btn-lg font-weight-bold m-3"
+                       onclick="sendEvent('main-cta', 'open-polar-in-browser-bottom')"
+                       href="https://app.getpolarized.io">Open Polar in your Browser</a>
 
                 </div>
 

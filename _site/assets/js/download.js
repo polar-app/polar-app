@@ -53,8 +53,12 @@ function notifyDownload() {
 
 }
 
-function sendGA(platform) {
-    ga('send', 'event', 'auto-download', platform);
+function sendDownloadEvent(platform) {
+
+    gtag('event', platform, {
+        'event_category': 'auto-download'
+    });
+
 }
 
 function triggerDownloadForLink(id, platform) {
@@ -63,7 +67,7 @@ function triggerDownloadForLink(id, platform) {
     console.log("Triggering download for ID: " + id);
     document.getElementById(id).click();
     notifyDownload();
-    sendGA(platform);
+    sendDownloadEvent(platform);
 }
 
 function triggerDownload() {

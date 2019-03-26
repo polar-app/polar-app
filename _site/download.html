@@ -54,6 +54,8 @@
     }
   </style>
 
+  <script src="/assets/js/site.js"></script>
+
   <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 
   
@@ -157,7 +159,9 @@
 
         <!--<a class="btn btn-success font-weight-bold ml-md-3" href="/download.html">Download</a>-->
 
-        <a class="btn btn-outline-secondary font-weight-bold ml-md-3" href="https://app.getpolarized.io">Sign Up</a>
+        <a class="btn btn-outline-secondary font-weight-bold ml-md-3"
+           onclick="sendEvent('main-cta', 'navbar-signup')"
+           href="https://app.getpolarized.io">Sign Up</a>
 
       </div>
     </nav>
@@ -297,6 +301,12 @@
                             <a id="download-linux-appimage" class="btn btn-success btn-lg m-2" href="#">
                                 <i class="fas fa-cloud-download-alt"></i> Download AppImage
                             </a>
+
+                            <p>
+                                <a href="https://snapcraft.io/polar-bookshelf" rel="nofollow">
+                                    <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
+                                </a>
+                            </p>
 
                             <p>
                                 We provide .deb (Ubuntu and Debian) packages. AppImage for easy
