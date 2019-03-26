@@ -27,3 +27,11 @@ flashcards and comments.
 #### Create Cloze Deletion for Flashcard
 
 **Control+Shift+R** Will take highlighted text and make it a cloze deletion.
+
+#### Navigate to next annotation
+
+** tab in annotation view
+
+#### Create Text Hightlight on Selected Text
+
+Control + Alt + T
