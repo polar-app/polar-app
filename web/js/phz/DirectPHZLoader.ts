@@ -30,19 +30,29 @@ export class DirectPHZLoader {
 
     public async load(): Promise<Optional<Captured>> {
 
-        if (this.metadata) {
+        try {
 
-            const url = this.metadata.url;
+            if (this.metadata) {
 
-            await this.loadDocument(url, this.resources);
+                const url = this.metadata.url;
 
-            return Optional.of(this.metadata);
+                await this.loadDocument(url, this.resources);
 
-        } else {
-            log.warn("Document has no metadata: " + this.resource);
-            return Optional.empty();
+                return Optional.of(this.metadata);
+
+            } else {
+                log.warn("Document has no metadata: " + this.resource);
+                return Optional.empty();
+            }
+
+        } finally {
+            await this.phzReader.close();
         }
 
+    }
+
+    public async close() {
+        this.phzReader.close();
     }
 
     private getResourceEntry(url: string): ResourceEntry | undefined {
