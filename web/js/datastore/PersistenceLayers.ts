@@ -289,7 +289,7 @@ export class PersistenceLayers {
                 try {
                     await handleSyncDoc(sourceSyncDoc, targetSyncDoc);
                 } catch (e) {
-                    log.error("Unable to sync between source and target: ", {sourceSyncDoc, targetSyncDoc});
+                    log.error("Unable to sync between source and target: ", {sourceSyncDoc, targetSyncDoc}, e);
                 }
 
             };
