@@ -10,6 +10,7 @@ import {Blobs} from '../util/Blobs';
 import {ResourceEntry} from './ResourceEntry';
 import {Optional} from '../util/ts/Optional';
 import {Latch} from '../util/Latch';
+import {DOM} from '../util/DOM';
 
 const log = Logger.create();
 
@@ -129,7 +130,9 @@ export class DirectPHZLoader {
 
         const iframes = this.neutralizeIFrames(doc);
 
-        iframe.contentDocument!.documentElement!.replaceWith(doc.documentElement!);
+        DOM.removeChildNodes(iframe.contentDocument!.documentElement!);
+
+        DOM.appendChildNodes(doc.documentElement!, iframe.contentDocument!.documentElement!);
 
         await this.loadIFrames(iframes);
 
