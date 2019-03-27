@@ -1,3 +1,9 @@
+# 1.15.3
+
+- didn't include pdfjs-dist with the webapp..
+
+- some basic new code for a direct loader for the PHZ mode
+
 # 1.15.2
 
 - Fixed bad bug where text couldn't be extracted on annotations that were in 

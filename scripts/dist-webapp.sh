@@ -54,6 +54,7 @@ copy node_modules/firebaseui "*"
 copy node_modules/firebase "*"
 copy node_modules/summernote "*"
 copy node_modules/@burtonator "*"
+copy node_modules/pdfjs-dist "*"
 
 cp *.ico dist/public
 cp *.png dist/public
