@@ -134,7 +134,7 @@ export class Tags {
 
         return Optional.of({
             name: split[0],
-            value: split[1].split("/")
+            value: split[1]
         });
     }
 }

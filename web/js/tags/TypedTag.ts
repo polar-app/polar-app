@@ -9,7 +9,7 @@ export interface TypedTag {
 
     /**
      */
-    readonly value: string[];
+    readonly value: string;
 
 }
 
