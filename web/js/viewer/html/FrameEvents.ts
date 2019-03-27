@@ -6,26 +6,26 @@ export class FrameEvents {
      * Calculate the points of an mouseEvent in the current window relative to the
      * frame which originated the mouseEvent.
      */
-    static calculatePoints(iframe: HTMLIFrameElement, mouseEvent: MouseEvent): any {
+    public static calculatePoints(iframe: HTMLIFrameElement, mouseEvent: MouseEvent): any {
 
         // FIXME: make sure the mouseEvent ACTUALLY happened in the iframe because
         // if it didn't then the calculations here won't make any sense.
 
         Preconditions.assertNotNull(iframe, "iframe");
 
-        if( ! mouseEvent.target) {
+        if (!mouseEvent.target) {
             throw new Error("No target");
         }
 
         // right now we're forcing the cast to element as there's some sort of
         // issue with instanceof and HTMLElement returning false.
-        let targetElement = <HTMLElement>mouseEvent.target;
+        const targetElement = <HTMLElement> mouseEvent.target;
 
-        if(targetElement.ownerDocument !== iframe.contentDocument) {
+        if (targetElement.ownerDocument !== iframe.contentDocument) {
             throw new Error("Event did not occur in specified iframe");
         }
 
-        let result = {
+        const result = {
 
             page: {
                 x: 0,
@@ -51,12 +51,15 @@ export class FrameEvents {
 
         result.client.x = mouseEvent.screenX - window.screenX;
 
-        let electronScreen = <any>window.screen;
+        const electronScreen = <any> window.screen;
+
+        const availTop = electronScreen.availTop;
 
         // we have to adjust by window.screen.availTop to account for the electron
         // navbar.  This isn't standardized though and might not be portable in
         // the future but it works for now.
-        result.client.y = mouseEvent.screenY - window.screenY - electronScreen.availTop;
+
+        result.client.y = mouseEvent.screenY - window.screenY - availTop;
 
         // FIXME: removing these two below fixes pagemarks for PHZ files but
         // I'm pretty sure that scrollX MUST be used to get the right position.
