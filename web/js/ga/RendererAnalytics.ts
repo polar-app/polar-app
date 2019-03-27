@@ -12,9 +12,23 @@ const version = Version.get();
 
 declare var window: Window;
 
-const userAgent = window.navigator.userAgent;
+const isBrowserContext = typeof window !== 'undefined';
 
-const cid = CIDs.get();
+function getUserAgent() {
+
+    if (isBrowserContext && window && window.navigator) {
+        return window.navigator.userAgent;
+    }
+
+    return "none";
+
+}
+
+
+const userAgent = getUserAgent();
+
+const cid =  isBrowserContext ? CIDs.get() : 'none';
+
 const headers = {
 };
 
