@@ -1,6 +1,9 @@
 # 1.15.3
 
-- didn't include pdfjs-dist with the webapp..
+- New GA logger to incorporate errors as events that can be tracked by custom 
+  category.
+
+- Didn't include pdfjs-dist with the webapp..
 
 - some basic new code for a direct loader for the PHZ mode
 
