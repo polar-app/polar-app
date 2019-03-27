@@ -1,8 +1,10 @@
-# 1.15.3
+# 1.15.4
 
 - New PHZ loader that's web friendly and doesn't require Electron.  The new 
   loader is now the default and means that the webapp can read (but not 
   currently) write PHZ files.  
+
+# 1.15.3
 
 - Merged PR to support wayland via X-wayland for ubuntu and other distributions. 
 
