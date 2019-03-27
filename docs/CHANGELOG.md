@@ -1,3 +1,9 @@
+# 1.15.5
+
+- In Electron, the viewer window and the app repo now share the same session and
+  the this means that we can use the cloud or firebase datastore... whichever 
+  we are configured for...  
+
 # 1.15.4
 
 - New PHZ loader that's web friendly and doesn't require Electron.  The new 

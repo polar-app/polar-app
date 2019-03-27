@@ -33,13 +33,10 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
         // zoomFactor: 1.0
 
         /**
-         *
-         *
          * Use a persistent cookie session between restarts.  This is used so
          * that we keep user cookies including Google Analytics cookies.
          */
-        // partition: "persist:polar"
-
+        partition: 'persist:polar-app'
     }
 
 };
