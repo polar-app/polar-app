@@ -1,5 +1,7 @@
 # 1.15.3
 
+- Merged PR to support wayland via X-wayland for ubuntu and other distributions. 
+
 - New GA logger to incorporate errors as events that can be tracked by custom 
   category.
 
