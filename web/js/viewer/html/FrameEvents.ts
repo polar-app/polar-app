@@ -1,4 +1,6 @@
 import {Preconditions} from '../../Preconditions';
+import {Optional} from '../../util/ts/Optional';
+import {IPoint} from '../../Point';
 
 export class FrameEvents {
 
@@ -6,7 +8,7 @@ export class FrameEvents {
      * Calculate the points of an mouseEvent in the current window relative to the
      * frame which originated the mouseEvent.
      */
-    public static calculatePoints(iframe: HTMLIFrameElement, mouseEvent: MouseEvent): any {
+    public static calculatePoints(iframe: HTMLIFrameElement, mouseEvent: MouseEvent): FramePoints {
 
         // FIXME: make sure the mouseEvent ACTUALLY happened in the iframe because
         // if it didn't then the calculations here won't make any sense.
@@ -53,7 +55,8 @@ export class FrameEvents {
 
         const electronScreen = <any> window.screen;
 
-        const availTop = electronScreen.availTop;
+        // availTop is not part of any standards so we have to use it properly
+        const availTop = Optional.of(electronScreen.availTop).getOrElse(0);
 
         // we have to adjust by window.screen.availTop to account for the electron
         // navbar.  This isn't standardized though and might not be portable in
@@ -61,7 +64,7 @@ export class FrameEvents {
 
         result.client.y = mouseEvent.screenY - window.screenY - availTop;
 
-        // FIXME: removing these two below fixes pagemarks for PHZ files but
+        // TODO: removing these two below fixes pagemarks for PHZ files but
         // I'm pretty sure that scrollX MUST be used to get the right position.
         // it might be that my code is incorrect here.
 
@@ -70,8 +73,8 @@ export class FrameEvents {
         // result.page.x = result.client.x + window.scrollX;
         // result.page.y = result.client.y + window.scrollY;
 
-        // FIXME: this is better but if we then click on a element within the parent
-        // window like a text highlight
+        // TODO: this is better but if we then click on a element within the
+        // parent window like a text highlight
 
         result.page.x = result.client.x;
         result.page.y = result.client.y;
@@ -85,5 +88,43 @@ export class FrameEvents {
         return result;
 
     }
+
+}
+
+// https://stackoverflow.com/questions/6073505/what-is-the-difference-between-screenx-y-clientx-y-and-pagex-y
+
+// pageX, pageY, screenX, screenY, clientX, and clientY returns a number which
+// indicates the number of physical “CSS pixels” a point is from the reference
+// point. The event point is where the user clicked, the reference point is a
+// point in the upper left. These properties return the horizontal and vertical
+// distance from that reference point.
+//
+// pageX and pageY:
+
+// Relative to the top left of the fully rendered content area in the browser.
+// This reference point is below the URL bar and back button in the upper left.
+// This point could be anywhere in the browser window and can actually change
+// location if there are embedded scrollable pages embedded within pages and the
+// user moves a scrollbar.
+//
+// screenX and screenY:
+
+// Relative to the top left of the physical screen/monitor, this reference point
+// only moves if you increase or decrease the number of monitors or the monitor
+// resolution.
+//
+// clientX and clientY:
+
+// Relative to the upper left edge of the content area (the viewport) of the
+// browser window. This point does not move even if the user moves a scrollbar
+// from within the browser.
+
+export interface FramePoints {
+
+    readonly page: IPoint;
+
+    readonly client: IPoint;
+
+    readonly offset: IPoint;
 
 }
