@@ -1,3 +1,8 @@
+# 1.15.5
+
+- Fix to webapp to disable the context menu default when we intercept with our
+  own context menu.
+
 # 1.15.4
 
 - New PHZ loader that's web friendly and doesn't require Electron.  The new 
