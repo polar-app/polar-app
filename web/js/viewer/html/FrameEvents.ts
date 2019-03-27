@@ -57,9 +57,11 @@ export class FrameEvents {
         // browser tabs of the event will be offset in the Y axis.
         const browserNavHeight = window.outerHeight - window.innerHeight;
 
-        // TODO: this is still wrong on FF but the chrome nav height stuff is
-        // right and FF is only off by about 20-30px so not really the end of
-        // the world.  We can fix that later.
+        // TODO: this is still wrong on Firefox but the chrome nav height stuff
+        // is right and FF is only off by about 20-30px so not really the end of
+        // the world.  We can fix that later.  Note that computing the
+        // browserNavHeight is actually CORRECT so it must be screenY being
+        // calculated incorrectly for Firefox.
 
         // we have to adjust by browserNavHeight to account for the navbar.
         result.client.y = mouseEvent.screenY - window.screenY - browserNavHeight;
