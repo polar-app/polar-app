@@ -1,5 +1,9 @@
 # 1.15.3
 
+- New PHZ loader that's web friendly and doesn't require Electron.  The new 
+  loader is now the default and means that the webapp can read (but not 
+  currently) write PHZ files.  
+
 - Merged PR to support wayland via X-wayland for ubuntu and other distributions. 
 
 - New GA logger to incorporate errors as events that can be tracked by custom 

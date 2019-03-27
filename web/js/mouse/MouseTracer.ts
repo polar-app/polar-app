@@ -26,6 +26,7 @@ export class MouseTracer {
                     MouseTracer.startWithinIFrame(iframe);
                 });
 
+                MouseTracer.startWithinIFrame(iframe);
             }
 
         });
