@@ -1,4 +1,52 @@
-# 1.15.1
+# 1.15.3
+
+- New PHZ loader that's web friendly and doesn't require Electron.  The new 
+  loader is now the default and means that the webapp can read (but not 
+  currently) write PHZ files.  
+
+- Merged PR to support wayland via X-wayland for ubuntu and other distributions. 
+
+- New GA logger to incorporate errors as events that can be tracked by custom 
+  category.
+
+- Didn't include pdfjs-dist with the webapp..
+
+- some basic new code for a direct loader for the PHZ mode
+
+# 1.15.2
+
+- Portable implementation of PHZs that works in the browser and handles the 
+  PHZ directly within the HTMLViewer without Electron components needed.
+
+- Fixed bad bug where text couldn't be extracted on annotations that were in 
+  PDFs with large numbers of individual elements. 
+
+- We had no analytics for the login page.
+
+# 1.15.1     
+
+- Fixed CSS wrap on text in GDPR notice. 
+
+- The sidebar in the annotation view can now be viewed when the table scrolls
+  and improved CSS padding + margins so that the layout is consistent.  
+
+- Changed to a bottom bar for the comment and flashcard views.
+
+- Fixed a bug where editing an existing flashcard type use the previous type 
+  properly and a cloze could become a front/back card and vice versa.  
+
+- Significantly improved annotation view including tab nav and filter bar.
+
+- Improved presentation of the UX of the annotation bar by placing the 'hr' at
+  the bottom not the top.
+
+- Fixed bug with FilteredTagInput not properly yielding after selecting tags
+  to filter the repository.
+
+- New mixBlendMode thanks to @TracyPoff that properly makes texts black instead 
+  of a shade of blue applied or tinted by area/text highlights.
+
+- Fixed bug with filtered tag input just dropping the tags not giving a warning.
 
 - New link to Polar Premium directly in the app pull down menu so that users
   can discover it easier.

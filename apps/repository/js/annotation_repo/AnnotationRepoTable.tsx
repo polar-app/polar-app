@@ -15,7 +15,10 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
-import {FilteredRepoDocInfoIndex, RefreshedCallback} from '../doc_repo/FilteredRepoDocInfoIndex';
+import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
+import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
+import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 
 const log = Logger.create();
 
@@ -35,21 +38,50 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         };
 
         this.init();
-        this.refresh();
 
     }
 
     public init() {
 
+
+        const onUpdated: UpdatedCallback =
+            repoAnnotations => {
+
+            const state = {...this.state, data: repoAnnotations};
+
+            setTimeout(() => {
+
+                // The react table will not update when I change the state from
+                // within the event listener
+                this.setState(state);
+
+            }, 1);
+
+        };
+
+        const repoAnnotationsProvider =
+            () => Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
+
+        const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
+
+        // this will trigger the filter engine to be run which will then call
+        // onUpdated which then calls setState
+        this.props.setFilteredCallback(filters => filterEngine.onFiltered(filters));
+
+        const doRefresh = () => filterEngine.onProviderUpdated();
+
         PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
 
             this.releaser.register(
-                persistenceLayer.addEventListener(() => this.refresh()));
+                persistenceLayer.addEventListener(() => doRefresh()));
 
         });
 
         this.releaser.register(
-            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => this.refresh()));
+            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => doRefresh()));
+
+        // do an initial refresh to get the first batch of data.
+        doRefresh();
 
     }
 
@@ -71,7 +103,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                 <div id="doc-table">
 
                     <ReactTable
-                        data={data}
+                        data={[...data]}
                         columns={
                             [
                                 {
@@ -158,13 +190,35 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                         //     desc: true
                         // }]}
                         getTrProps={(state: any, rowInfo: any) => {
+
+                            const doSelect = () => {
+
+                                if (rowInfo && rowInfo.original) {
+                                    const repoAnnotation = rowInfo.original as RepoAnnotation;
+                                    this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
+                                } else {
+                                    // this is not a row with data and just an
+                                    // empty row and we have to handle this or
+                                    // we will get an exception.
+                                }
+
+                            };
+
                             return {
 
                                 onClick: (e: any) => {
+                                    doSelect();
+                                },
 
-                                    const repoAnnotation = rowInfo.original as RepoAnnotation;
-                                    this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
+                                onFocus: () => {
+                                    doSelect();
+                                },
 
+                                tabIndex: rowInfo ? rowInfo.viewIndex as number : undefined,
+
+                                onKeyDown: (e: any) => {
+                                    // this works but I need to handle the arrow keys properly...
+                                    // console.log("on key press: ");
                                 },
 
                                 style: {
@@ -176,11 +230,11 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                         }}
                         getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
 
-
                             const singleClickColumns: string[] = [];
 
                             if (! singleClickColumns.includes(column.id)) {
                                 return {
+
                                     onDoubleClick: (e: any) => {
                                         // this.onDocumentLoadRequested(rowInfo.original.fingerprint,
                                         // rowInfo.original.filename,
@@ -197,12 +251,12 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                         //
                                         // this.handleToggleField(rowInfo.original,
                                         // column.id) .catch(err =>
-                                        // log.error("Could not handle toggle: ",
-                                        // err));
+                                        // log.error("Could not handle toggle:
+                                        // ", err));
 
                                         if (handleOriginal) {
-                                            // needed for react table to function
-                                            // properly.
+                                            // needed for react table to
+                                            // function properly.
                                             handleOriginal();
                                         }
 
@@ -225,35 +279,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         );
     }
 
-    public refresh() {
-        const data = Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
-        this.doRefresh(this.filter(data));
-    }
-
-    private filter(data: RepoAnnotation[]): RepoAnnotation[] {
-        return data;
-    }
-
-    private doRefresh(data: RepoAnnotation[]) {
-
-        // const selected = data.length > 0 ? 0 | undefined;
-
-        // if (selected) {
-        //     // this.props.onSelected(data[0]);
-        // }
-
-        const state: IState = {...this.state, data};
-
-        setTimeout(() => {
-
-            // The react table will not update when I change the state from
-            // within the event listener
-            this.setState(state);
-
-        }, 1);
-
-    }
-
 }
 
 interface IProps {
@@ -268,12 +293,17 @@ interface IProps {
 
     readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
 
+    readonly setFilteredCallback: SetCallbackFunction<AnnotationRepoFilters>;
+
 }
 
 interface IState extends IReactTableState {
 
-    data: RepoAnnotation[];
+    data: ReadonlyArray<RepoAnnotation>;
 
+    /**
+     * The currently selected repo annotation.
+     */
     repoAnnotation?: RepoAnnotation;
 
 }

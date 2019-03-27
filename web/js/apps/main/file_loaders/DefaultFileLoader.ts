@@ -20,7 +20,7 @@ export class DefaultFileLoader extends FileLoader {
         this.fileRegistry = fileRegistry;
         this.cacheRegistry = cacheRegistry;
         this.pdfLoader = new PDFLoader(fileRegistry);
-        this.phzLoader = new PHZLoader({cacheRegistry});
+        this.phzLoader = new PHZLoader(cacheRegistry, fileRegistry);
     }
 
     public async registerForLoad(path: string): Promise<LoadedFile> {

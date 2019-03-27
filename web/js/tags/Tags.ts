@@ -98,7 +98,7 @@ export class Tags {
 
     }
 
-    public static toIDs(tags: Tag[]) {
+    public static toIDs(tags: ReadonlyArray<Tag>) {
         return tags.map(current => current.id);
     }
 

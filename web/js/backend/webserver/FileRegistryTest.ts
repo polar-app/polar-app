@@ -12,18 +12,18 @@ describe('FileRegistry', function() {
 
     describe('create', function() {
 
-        it("basic", async function () {
+        it("basic", async function() {
 
-            let fileRegistry = new FileRegistry(webserverConfig);
+            const fileRegistry = new FileRegistry(webserverConfig);
 
             assert.equal(fileRegistry.hasKey("0x0001"), false);
 
-            let path = FilePaths.tmpfile('file-registry.html');
+            const path = FilePaths.tmpfile('file-registry.html');
             await Files.writeFileAsync(path, 'hello world');
 
-            let registerData = fileRegistry.register("0x0001", path);
+            const registerData = fileRegistry.register("0x0001", path);
 
-            let expected = {
+            const expected = {
                 "key": "0x0001",
                 "filename": path,
                 "url": "http://127.0.0.1:8080/files/0x0001"
@@ -35,8 +35,16 @@ describe('FileRegistry', function() {
 
         });
 
-        it("registerFile", async function () {
+        it("register with PHZ", async function() {
+            const fileRegistry = new FileRegistry(webserverConfig);
 
+            const path = "/home/burton/.polar/stash/12EEqbAeuX-YC_s_Essential_Startup_Advice.phz";
+
+            const filename = FilePaths.basename(path);
+
+            const fileMeta = fileRegistry.register(path, filename);
+
+            console.log(fileMeta);
 
         });
 

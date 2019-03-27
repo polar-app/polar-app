@@ -12,9 +12,23 @@ const version = Version.get();
 
 declare var window: Window;
 
-const userAgent = window.navigator.userAgent;
+const isBrowserContext = typeof window !== 'undefined';
 
-const cid = CIDs.get();
+function getUserAgent() {
+
+    if (isBrowserContext && window && window.navigator) {
+        return window.navigator.userAgent;
+    }
+
+    return "none";
+
+}
+
+
+const userAgent = getUserAgent();
+
+const cid =  isBrowserContext ? CIDs.get() : 'none';
+
 const headers = {
 };
 
@@ -65,6 +79,20 @@ export class RendererAnalytics {
         };
 
         visitor.event(eventParams).send(callback);
+
+    }
+
+    public static pageviewFromLocation() {
+
+        const url = new URL(document.location!.href);
+
+        const path = url.pathname + url.hash || "";
+        const hostname = url.hostname;
+        const title = document.title;
+
+        log.info("Created pageview for: ", { path, hostname, title });
+
+        RendererAnalytics.pageview(path, hostname, document.title);
 
     }
 

@@ -42,7 +42,7 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
         this.handleChange = this.handleChange.bind(this);
 
         this.state = {
-            popoverOpen: false,
+            open: false,
             defaultValue: []
         };
 
@@ -68,7 +68,7 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
                         id={this.id}
                         size="sm"
                         disabled={this.props.disabled}
-                        onClick={() => this.toggle()}
+                        onClick={() => this.toggle(true)}
 
                         className="header-filter-clickable p-1 pl-2 pr-2 border">
 
@@ -80,10 +80,10 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
                 </Button>
 
                 <Popover placement="bottom"
-                         isOpen={this.state.popoverOpen}
+                         isOpen={this.state.open}
                          target={this.id}
                          trigger="legacy"
-                         toggle={() => this.toggle()}
+                         toggle={() => this.toggle(false)}
                          className="tag-input-popover">
 
                     <PopoverBody className="shadow">
@@ -118,25 +118,19 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
         if (event.key.toLowerCase() === "escape") {
-            this.toggle();
+            this.toggle(false);
         }
 
         if (event.getModifierState("Control") && event.key.toLowerCase() === "enter") {
-            this.toggle();
+            this.toggle(false);
         }
 
     }
 
-    private toggle() {
+    private toggle(open: boolean) {
 
-        this.state = {
-            ...this.state,
-            popoverOpen: !this.state.popoverOpen
-        };
-
-        Blackout.toggle(this.state.popoverOpen);
-
-        this.setState(this.state);
+        Blackout.toggle(open);
+        this.setState({...this.state, open});
 
     }
 
@@ -144,19 +138,14 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
         // as so as we handle the change we toggle off
 
-        this.toggle();
-
-        const defaultValue: TagSelectOptions[] = selectedOptions;
-
-        this.state = Object.assign(this.state, {
-            defaultValue
-        });
+        const defaultValue: TagSelectOption[] = selectedOptions;
 
         this.props.filteredTags.set(TagSelectOptions.toTags(selectedOptions));
 
         this.props.refresher();
 
-        this.setState(this.state);
+        Blackout.disable();
+        this.setState({defaultValue, open: false});
 
     }
 
@@ -177,7 +166,7 @@ interface IProps {
 }
 
 interface IState {
-    readonly popoverOpen: boolean;
+    readonly open: boolean;
     readonly defaultValue: TagSelectOption[];
 }
 

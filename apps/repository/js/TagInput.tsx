@@ -12,6 +12,7 @@ import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 import Button from 'reactstrap/lib/Button';
 import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
+import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 
 let SEQUENCE = 0;
 
@@ -220,6 +221,17 @@ export class TagInput extends React.PureComponent<IProps, IState> {
 
         const validTags = Tags.findValidTags(...tags);
         const invalidTags = Tags.findInvalidTags(...tags);
+
+        if (invalidTags.length !== 0) {
+
+            const invalidTagsStr =
+                invalidTags.map(current => current.label)
+                    .join(", ");
+
+            Toaster.warning("Some tags were excluded - spaces and other control characters not supported: " + invalidTagsStr,
+                            "Invalid tags");
+
+        }
 
         this.setState({...this.state, tags: TagSelectOptions.fromTags(validTags)});
 

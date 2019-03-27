@@ -28,7 +28,7 @@ html, body {
 }
 
 #doc-table {
-  margin: 5px;
+  /*margin: 5px;*/
 }
 
 #doc-repository header {
@@ -153,4 +153,8 @@ footer .buttons .button {
 
 b, strong {
     font-weight: bold;
+}
+
+:focus {
+    outline: none;
 }

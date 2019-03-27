@@ -42,6 +42,10 @@ export class URLs {
 
     }
 
+    public static absolute(url: string, base: string) {
+        return new URL(url, base).toString();
+    }
+
     /**
      * Return true if this is a URL
      */

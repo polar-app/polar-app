@@ -31,21 +31,21 @@ import {Numbers} from '../../../../web/js/util/Numbers';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TagButton} from './TagButton';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {remote} from 'electron';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {AddContentButton} from './AddContentButton';
+import {AddContentButton} from '../ui/AddContentButton';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
 import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
-import {DocButton} from './doc_buttons/DocButton';
-import {FlagDocButton} from './doc_buttons/FlagDocButton';
-import {ArchiveDocButton} from './doc_buttons/ArchiveDocButton';
+import {DocButton} from '../ui/DocButton';
+import {FlagDocButton} from '../ui/FlagDocButton';
+import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
-import {FilteredRepoDocInfoIndex, RefreshedCallback} from './FilteredRepoDocInfoIndex';
+import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import Input from 'reactstrap/lib/Input';
 import {Settings} from '../../../../web/js/datastore/Settings';
+import {AddContentActions} from '../ui/AddContentActions';
 
 const log = Logger.create();
 
@@ -63,7 +63,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private reactTable: any;
 
-    private readonly filteredRepoDocInfoIndex: FilteredRepoDocInfoIndex;
+    private readonly docRepoFilters: DocRepoFilters;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -87,9 +87,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         this.getSelected = this.getSelected.bind(this);
 
-        this.cmdImportFromDisk = this.cmdImportFromDisk.bind(this);
-        this.cmdCaptureWebPage = this.cmdCaptureWebPage.bind(this);
-
         this.state = {
             data: [],
             columns: new DocRepoTableColumns(),
@@ -100,8 +97,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         const repoDocInfosProvider = () => Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex);
 
-        this.filteredRepoDocInfoIndex =
-            new FilteredRepoDocInfoIndex(onRefreshed, repoDocInfosProvider);
+        this.docRepoFilters =
+            new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
         this.init();
 
@@ -290,10 +287,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                  style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto', display: 'flex'}}>
 
                                 <div className="mr-1"
-                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                                     style={{
+                                         whiteSpace: 'nowrap',
+                                         marginTop: 'auto',
+                                         marginBottom: 'auto'
+                                     }}>
 
-                                    <AddContentButton importFromDisk={() => this.cmdImportFromDisk()}
-                                                      captureWebPage={this.cmdCaptureWebPage}/>
+                                    <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}
+                                                      captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
 
                                 </div>
 
@@ -346,7 +347,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                   onFilterByTitle={(title) => this.onFilterByTitle(title)}
                                                   tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                   refresher={() => this.refresh()}
-                                                  filteredTags={this.filteredRepoDocInfoIndex.filters.filteredTags}
+                                                  filteredTags={this.docRepoFilters.filters.filteredTags}
                                                   right={
                                                <div className=""
                                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -369,7 +370,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 </header>
 
                 <FixedNavBody>
-                    <div id="doc-table" style={{height: '100%'}}>
+                    <div id="doc-table" className="ml-1" style={{height: '100%'}}>
                         <ReactTable
                             data={data}
                             ref={(r: any) => this.reactTable = r}
@@ -874,12 +875,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     private onFilterByTitle(title: string) {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
-        this.filteredRepoDocInfoIndex.onFilterByTitle(title);
+        this.docRepoFilters.onFilterByTitle(title);
 
     }
 
     private refresh() {
-        this.filteredRepoDocInfoIndex.refresh();
+        this.docRepoFilters.refresh();
     }
 
     /**
@@ -902,15 +903,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     private onDocumentLoadRequested(fingerprint: string,
                                     filename: string,
                                     hashcode?: Hashcode) {
-
-        if (! AppRuntime.isElectron() && filename.endsWith(".phz")) {
-
-            const message = `Captured web pages (phz files) are only supported in the web preview version of Polar (please use the desktop version).`;
-            const title = "Captured web pages not supported.";
-
-            Toaster.error(message, title);
-            return;
-        }
 
         this.synchronizingDocLoader.load(fingerprint, filename, hashcode)
             .catch(err => log.error("Unable to load doc: ", err));
@@ -955,33 +947,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
     private onToggleFlaggedOnly(value: boolean) {
-        this.filteredRepoDocInfoIndex.onToggleFlaggedOnly(value);
+        this.docRepoFilters.onToggleFlaggedOnly(value);
     }
 
     private onToggleFilterArchived(value: boolean) {
-        this.filteredRepoDocInfoIndex.onToggleFilterArchived(value);
-    }
-
-    private cmdImportFromDisk() {
-
-        RendererAnalytics.event({category: 'add-content', action: 'import-from-disk'});
-
-        this.getController().cmdImport()
-            .catch((err: Error) => log.error("Could not import from disk: ", err));
-
-    }
-
-    private cmdCaptureWebPage() {
-
-        RendererAnalytics.event({category: 'add-content', action: 'capture-web-page'});
-
-        this.getController().cmdCaptureWebPageWithBrowser()
-            .catch((err: Error) => log.error("Could not capture page: ", err));
-
-    }
-
-    private getController(): IMainAppController {
-        return remote.getGlobal('mainAppController');
+        this.docRepoFilters.onToggleFilterArchived(value);
     }
 
 }
@@ -1003,9 +973,4 @@ interface IState {
     readonly selected: ReadonlyArray<number>;
 }
 
-interface IMainAppController {
 
-    cmdImport(): Promise<void>;
-
-    cmdCaptureWebPageWithBrowser(): Promise<void>;
-}

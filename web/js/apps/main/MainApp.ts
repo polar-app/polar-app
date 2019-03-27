@@ -67,7 +67,7 @@ export class MainApp {
 
         const directories = new Directories();
 
-        const captureController = new CaptureController(cacheRegistry);
+        const captureController = new CaptureController(cacheRegistry, fileRegistry);
 
         const dialogWindowService = new DialogWindowService();
 

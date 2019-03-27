@@ -97,4 +97,8 @@ export class RepoAnnotations {
 
     }
 
+    public static isValid(repoAnnotation: RepoAnnotation) {
+        return true;
+    }
+
 }

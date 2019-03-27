@@ -5,6 +5,7 @@ import * as firebase from '../../../web/js/firebase/lib/firebase';
 import {URLs} from '../../../web/js/util/URLs';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Optional} from '../../../web/js/util/ts/Optional';
+import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
 class SignInSuccessURLs {
 
@@ -43,8 +44,6 @@ class SignInSuccessURLs {
 
 }
 
-
-
 window.addEventListener('load', async () => {
 
     Firebase.init();
@@ -56,6 +55,8 @@ window.addEventListener('load', async () => {
         FirebaseUIAuth.login({signInSuccessUrl});
 
     }
+
+    RendererAnalytics.pageviewFromLocation();
 
 });
 

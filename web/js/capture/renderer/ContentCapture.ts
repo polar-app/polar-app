@@ -170,7 +170,7 @@ export class ContentCapture {
             throw new Error("No cloneDoc");
         }
 
-        // FIXME: include a fingerprint in the output JSON which should probably
+        // TODO: include a fingerprint in the output JSON which should probably
         // be based on the URL.
 
         // TODO: store many of these fields in the HTML too because the iframes

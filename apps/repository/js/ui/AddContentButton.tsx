@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {TooltipDropdown} from './TooltipDropdown';
+import {TooltipDropdown} from '../doc_repo/TooltipDropdown';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';

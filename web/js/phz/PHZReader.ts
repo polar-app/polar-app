@@ -4,10 +4,10 @@ import {Resources} from './Resources';
 import {ResourceEntry} from './ResourceEntry';
 import {Files} from '../util/Files';
 import {CompressedReader} from './CompressedReader';
+import {PathStr} from '../util/Strings';
+import {Captured} from '../capture/renderer/Captured';
 
 export class PHZReader implements CompressedReader {
-
-    public path: string;
 
     public zip?: JSZip;
 
@@ -17,19 +17,17 @@ export class PHZReader implements CompressedReader {
 
     private cache: {[key: string]: any} = {};
 
-    constructor(path: string) {
-        this.path = path;
-    }
-
     /**
      * Init must be called to load the entries which we can work with.
      *
      */
-    public async init() {
+    public async init(source: PathStr | Blob) {
 
-        // FIXME: migrate this to fs.createReadStream even though this is async it reads all
-        // the data into memory. Make sure this method is completely async though.
-        const data = await Files.readFileAsync(this.path);
+        // TODO: migrate this to fs.createReadStream even though this is async
+        // it reads all the data into memory. Make sure this method is
+        // completely async though.
+
+        const data = typeof source === 'string' ? await Files.readFileAsync(source) : source;
 
         this.zip = new JSZip();
         // this.zip.support = {
@@ -43,7 +41,7 @@ export class PHZReader implements CompressedReader {
 
     }
 
-    public async getMetadata(): Promise<any | null> {
+    public async getMetadata(): Promise<Captured | null> {
 
         try {
             return await this.getCached("metadata.json", "metadata");
@@ -101,6 +99,9 @@ export class PHZReader implements CompressedReader {
         return await this._readAsStream(resourceEntry.path);
     }
 
+    public async getResourceAsBlob(resourceEntry: ResourceEntry): Promise<Blob> {
+        return await this._readAsBlob(resourceEntry.path);
+    }
 
     public async close() {
         // we just have to let it GC
@@ -117,18 +118,19 @@ export class PHZReader implements CompressedReader {
     private async _readAsBuffer(path: string): Promise<Buffer> {
 
         const zipFile = await this.getZipFile(path);
-
         const arrayBuffer = await zipFile.async('arraybuffer');
         return Buffer.from(arrayBuffer);
 
     }
 
     private async _readAsStream(path: string): Promise<NodeJS.ReadableStream> {
-
         const zipFile = await this.getZipFile(path);
-
         return await zipFile.nodeStream();
+    }
 
+    private async _readAsBlob(path: string): Promise<Blob> {
+        const zipFile = await this.getZipFile(path);
+        return await zipFile.async('blob');
     }
 
     private async getZipFile(path: string): Promise<JSZip.JSZipObject>  {

@@ -221,6 +221,8 @@ export class AbstractPagemarkComponent extends Component {
         pagemarkElement.style.backgroundColor = pagemarkColor.backgroundColor;
         pagemarkElement.style.opacity = "" + pagemarkColor.opacity;
 
+        (pagemarkElement.style as any).mixBlendMode = 'multiply';
+
         pagemarkElement.style.position = "absolute";
 
         // TODO: we don't actually need the placement rect.. just the dimensions

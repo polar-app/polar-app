@@ -4,24 +4,30 @@ import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {FilterTagInput} from '../FilterTagInput';
 import {TagsDB} from '../TagsDB';
-import {FilteredTags} from '../FilteredTags';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
+import {AnnotationRepoFilters, AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
+import {FilteredTags} from '../FilteredTags';
 
 const log = Logger.create();
-
 
 class Styles {
 
 }
 
-export class DocRepoFilterBar extends React.Component<IProps, IState> {
+export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
+
+    private handler: AnnotationRepoFiltersHandler;
+
+    private filteredTags: FilteredTags = new FilteredTags();
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.state = {
         };
+
+        this.handler = new AnnotationRepoFiltersHandler(filters => this.props.onFiltered(filters));
 
     }
 
@@ -46,7 +52,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                      justifyContent: 'flex-end'
                  }}>
 
-                <div className="mr-2"
+                <div className="mr-2 d-none"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                     <div className="checkbox-group">
@@ -54,7 +60,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                         <ToggleButton id="toggle-flagged"
                                       label="flagged"
                                       initialValue={false}
-                                      onChange={value => this.props.onToggleFlaggedOnly(value)}/>
+                                      onChange={value => this.handler.onToggleFlaggedOnly(value)}/>
 
                         <SimpleTooltip target="toggle-flagged">Only show flagged documents.</SimpleTooltip>
 
@@ -62,7 +68,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="header-filter-box mr-1"
+                <div className="header-filter-box mr-1 d-none"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                     <div className="checkbox-group">
@@ -70,7 +76,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                         <ToggleButton id="toggle-archived"
                                       label="archived"
                                       initialValue={false}
-                                      onChange={value => this.props.onToggleFilterArchived(value)}/>
+                                      onChange={value => this.handler.onToggleFilterArchived(value)}/>
 
                         <SimpleTooltip target="toggle-archived">Show both archived and unarchived documents.  Archived documents are hidden by default.</SimpleTooltip>
 
@@ -83,10 +89,10 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                     <FilterTagInput id="filter-tag-input"
                                     tagsDBProvider={this.props.tagsDBProvider}
-                                    refresher={this.props.refresher}
-                                    filteredTags={this.props.filteredTags} />
+                                    refresher={() => this.handler.onFilterByTags(this.filteredTags)}
+                                    filteredTags={this.filteredTags} />
 
-                    <SimpleTooltip target="filter-tag-input">Filter the document list by a specific tag.</SimpleTooltip>
+                    <SimpleTooltip target="filter-tag-input">Filter the annotation list by a specific tag.</SimpleTooltip>
 
                 </div>
 
@@ -103,10 +109,10 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                             <Input id="filter_title"
                                    type="text"
-                                   placeholder="Filter by title"
-                                   onChange={(value) => this.props.onFilterByTitle(value.target.value)}/>
+                                   placeholder="Filter by text"
+                                   onChange={(value) => this.handler.onFilterByText(value.target.value)}/>
 
-                            <SimpleTooltip target="filter_title">Filter the document list by the title of the document.</SimpleTooltip>
+                            <SimpleTooltip target="filter_title">Filter the annotations by the text of the annotation..</SimpleTooltip>
 
                         </InputGroup>
 
@@ -129,36 +135,11 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 export interface IProps {
 
     /**
-     * Called when the flagged toggle is enabled/disabled
-     */
-    readonly onToggleFlaggedOnly: ToggleCallback;
-
-    /**
-     * Called when the archive toggle is enabled/disabled
-     */
-    readonly onToggleFilterArchived: ToggleCallback;
-
-    /**
-     * Called when the title is filtered with the current value of the title to
-     * filter by.  When the title is "" then no filter is applied.
-     */
-    readonly onFilterByTitle: (title: string) => void;
-
-    /**
      * An index of the currently available tags.
      */
     readonly tagsDBProvider: () => TagsDB;
 
-    /**
-     * A function to refresh the table when new results have been selected.
-     */
-    readonly refresher: () => void;
-
-    /**
-     * A provider that can be updated with the filtered tags that are currently
-     * being used.
-     */
-    readonly filteredTags: FilteredTags;
+    readonly onFiltered: (filters: AnnotationRepoFilters) => void;
 
     /**
      * When defined, a JSX element to display on the right of the

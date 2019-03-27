@@ -21,6 +21,7 @@ class Styles {
         right: '15px',
         zIndex: 999999,
         backgroundColor: '#ced4da',
+        whiteSpace: 'initial'
 
     };
 
@@ -34,8 +35,6 @@ class Styles {
 
 }
 
-/**
- */
 export class GDPRNotice extends React.Component<any, IState> {
 
     constructor(props: any) {
@@ -55,7 +54,7 @@ export class GDPRNotice extends React.Component<any, IState> {
 
         return (
 
-            <div style={{display}}>
+            <div id="gdpr-notice" style={{display}}>
 
                 <div className="p-3 m-2 rounded" style={Styles.notice}>
 
