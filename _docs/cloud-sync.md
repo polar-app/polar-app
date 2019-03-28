@@ -42,7 +42,7 @@ most of their data in the cloud.
 ## Pricing
 
 Right now cloud sync is free for all users.  We plan on making Polar cloud sync
-free for 95% users and the remaining 5% have the added 1benefit of supporting
+free for 95% users and the remaining 5% have the added benefit of supporting
 Polar with their monthly subscription fee.            
 
 We expect cloud sync to cost $7.99 per month for users with the largest document 

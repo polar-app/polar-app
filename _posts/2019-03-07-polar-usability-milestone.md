@@ -22,12 +22,11 @@ I'll try to update this post as some of these new features come onnline.
 
 ### First priority (easy)
 
-- Restore of pagemarks when opening up new documents when resuming and I have
-  to improve performance here. 
+- ~~ Restore of pagemarks when opening up new documents when resuming and I have to improve performance here.~~ 
 
 - Tour of the pagemarks as this is important and one of our main selling points.
 
-- Ability to edit flashcards inline without having to delete and recreate them.
+- ~~Ability to edit flashcards inline without having to delete and recreate them.~~
 
 - Support for area highlights on the sidebar now and storing them in the 
   datastore as binary screenshots.
@@ -41,15 +40,14 @@ I'll try to update this post as some of these new features come onnline.
 
 - Button to toggle the pagemarks
 
-- Automatic resume of position from last time document was opened: https://github.com/burtonator/polar-bookshelf/issues/673
+- ~~Automatic resume of position from last time document was opened: https://github.com/burtonator/polar-bookshelf/issues/673~~
 
-- (done) Missing padding in the comment box confusing to users:  https://github.com/burtonator/polar-bookshelf/issues/662
+- ~~Missing padding in the comment box confusing to users:  https://github.com/burtonator/polar-bookshelf/issues/662~~
 
 ### Secondary priority
 
 
-- Make inviting users to Polar a top level feature so we can hopefully encourage
-people to invite their colleagues.
+- Make inviting users to Polar a top level feature so we can hopefully encourage people to invite their colleagues.
 
 - Include document information in exported annotations 
 
@@ -76,11 +74,9 @@ user and potentially allow them to abort.
   The model should be popup by default and 'by selection when the user picks 
   the dropdown 
 
-- Search + filtering of of the annotations view with a filter bar like we have
-  in the documents view.
+- ~~Search + filtering of of the annotations view with a filter bar like we have in the documents view.~~
 
 - Display comments on annotations in the annotation view like they are in the sidebar.
-  
       
 - Delete annotations from annotation view: https://github.com/burtonator/polar-bookshelf/issues/645
 
@@ -91,7 +87,7 @@ user and potentially allow them to abort.
 
 ## Changes to the Tour
 
-The tour has proven very valuable with 75% of people using Polar completing the 
+The tour has proven very valuable with ~~75%~~ 50% of people using Polar completing the 
 tour on first install.  
 
 I want to improve on this by expanding on the tour to highlight more key Polar
