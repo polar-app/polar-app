@@ -302,7 +302,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 <div className="mr-1"
                                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <div style={{display: this.state.selected.length <= 1 ? 'none' : 'flex'}}>
+                                    <div style={{display: 'flex'}}>
 
                                         {/*<FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}*/}
                                                         {/*refresher={() => this.refresh()}*/}
@@ -312,6 +312,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         <div>
 
                                             <TagButton id="tag-multiple-documents"
+                                                       disabled={this.state.selected.length <= 0}
                                                        tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                        onSelectedTags={tags => this.onMultiTagged(tags)}/>
 
@@ -331,6 +332,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         <div className="ml-1">
                                             <MultiDeleteButton onCancel={NULL_FUNCTION}
+                                                               disabled={this.state.selected.length <= 0}
                                                                onConfirm={() => this.onMultiDeleted()}/>
                                         </div>
 

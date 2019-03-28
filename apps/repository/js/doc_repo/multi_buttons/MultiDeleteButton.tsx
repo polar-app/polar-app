@@ -21,6 +21,7 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
                     size="sm"
                     color="light"
                     className="border"
+                    disabled={this.props.disabled}
                     onClick={() => this.onClick()}>
 
                 <span className="text-danger">
@@ -42,6 +43,10 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
 
     private onClick() {
 
+        if (this.props.disabled) {
+            return;
+        }
+
         ConfirmPrompts.create({
             target: '#multi-delete-button',
             title: "Are you sure you want to delete these documents?",
@@ -56,6 +61,7 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    readonly disabled?: boolean;
     readonly onCancel: () => void;
     readonly onConfirm: () => void;
 }

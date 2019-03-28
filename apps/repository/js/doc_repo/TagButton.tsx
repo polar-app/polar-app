@@ -97,6 +97,10 @@ export class TagButton extends React.Component<IProps, IState> {
 
     private toggle() {
 
+        if (this.props.disabled) {
+            return;
+        }
+
         const popoverOpen = ! this.state.popoverOpen;
 
         if (popoverOpen) {

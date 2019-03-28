@@ -1,5 +1,10 @@
 # 1.15.6
 
+- Always show the multi-delete and multi-tag buttons even if just one is 
+  selected as it will still work just fine.
+
+- Make the top buttons for tagging and delete 
+
 - Added a couple key metrics for Firebase performance via tracer.
 
 - RendererAnalytics now safer if accidentally called from the Node context.
