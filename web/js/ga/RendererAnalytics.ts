@@ -142,6 +142,18 @@ export class RendererAnalytics {
     }
 
     public static createTimer(category: string, variable: string): Timer {
+        // TODO: consider refactoring this to include some data about the
+        // runtime including the device type (mobile vs desktop),
+        // the network type (3g vs 4g), etc.  If this system supported tags
+        // that would definitely improve things.
+        //
+        // major tags should include:
+        //
+        // network (3g, 4g, etc)
+        // device type (mobile|desktop)
+        // OS (macos, windows, linux, android)
+        // browser (electron, chrome, firefox, etc)
+
         return new DefaultTimer(category, variable);
     }
 
