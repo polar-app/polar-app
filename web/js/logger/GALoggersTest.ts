@@ -29,4 +29,17 @@ describe('GALoggers', function() {
 
     });
 
+    it("toEvent with long string", function() {
+
+        assert.isTrue(GALoggers.toEvent(undefined) === undefined);
+
+        const error = new Error("This is my error This is my error This is my error This is my error This is my error This is my error This is my error This is my error");
+        assertJSON(GALoggers.toEvent(error), {
+            "action": "this-is-my-error-this-is-my-error-this-is-my-error-this-is-my-error-this-is-my-e",
+            "category": "error"
+        });
+
+    });
+
+
 });
