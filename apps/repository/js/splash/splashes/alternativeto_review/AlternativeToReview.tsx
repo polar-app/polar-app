@@ -1,9 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Splash} from '../../Splash';
-import {EmbeddedImages} from '../whats_new/EmbeddedImages';
-import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayout';
-import {CallToActionLink} from '../components/CallToActionLink';
 import {EventTrackedLink} from '../components/EventTrackedLink';
 
 const LINK = 'https://alternativeto.net/discussions/AddThread/?urlName=applications&itemId=e992e321-70ca-4d8f-aa59-d5a2be633787&type=review';

@@ -36,6 +36,7 @@ import {ProgressToasters} from '../../js/ui/progress_toaster/ProgressToasters';
 import {AccountControlBar} from '../../../web/js/ui/cloud_auth/AccountControlBar';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {AccountControlDropdown} from '../../../web/js/ui/cloud_auth/AccountControlDropdown';
+import {RichTextFeatureIntro} from '../../../web/js/annotation_sidebar/RichTextFeatureIntro';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -139,18 +140,24 @@ class App<P> extends React.Component<{}, IAppState> {
 
         // ProgressToasters.create()
         //     .then(progressUpdater => {
-        //         progressUpdater.update({title: "Finding files (5) ... ", status: '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
-        //     });
+        //         progressUpdater.update({title: "Finding files (5) ... ",
+        // status:
+        // '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
+        // });
 
         return (
+            //
+            // <div tabIndex={0}
+            //      onMouseDown={(event) => event.currentTarget.focus()}
+            //      onKeyPress={() => console.log("key press")}
+            //      onKeyDown={() => console.log("key down")}>
+            //
+            //     hello worldasdfasdf
+            //
+            // </div>
 
-            <div tabIndex={0}
-                 onMouseDown={(event) => event.currentTarget.focus()}
-                 onKeyPress={() => console.log("key press")}
-                 onKeyDown={() => console.log("key down")}>
-
-                hello worldasdfasdf
-
+            <div>
+                <RichTextFeatureIntro/>
             </div>
 
         );
