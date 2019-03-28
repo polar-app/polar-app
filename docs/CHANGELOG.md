@@ -1,5 +1,12 @@
 # 1.15.6
 
+- Added a couple key metrics for Firebase performance via tracer.
+
+- RendererAnalytics now safer if accidentally called from the Node context.
+
+- RendererAnalytics now supports using a stopwatch so we can track the times 
+  of important operations.
+
 - Improved CSS of annotation sidebar and included instructions on how to create
   your first annotation.
 

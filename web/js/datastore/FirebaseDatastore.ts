@@ -1,4 +1,5 @@
 import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult} from './Datastore';
+import {WritableBinaryMetaDatastore} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -24,10 +25,12 @@ import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
-import {WritableBinaryMetaDatastore} from './Datastore';
 import {AppRuntime} from '../AppRuntime';
+import {RendererAnalytics} from '../ga/RendererAnalytics';
 
 const log = Logger.create();
+
+const tracer = RendererAnalytics.createTracer('firebase');
 
 // You can allow users to sign in to your app using multiple authentication
 // providers by linking auth provider credentials to an existing user account.
@@ -244,47 +247,51 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
 
-        const uid = this.getUserID();
-        const id = this.computeDocMetaID(uid, fingerprint);
+        return await tracer.traceAsync('getDocMeta', async () => {
 
-        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
+            const uid = this.getUserID();
+            const id = this.computeDocMetaID(uid, fingerprint);
 
-        const createSnapshot = async () => {
+            const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 
-            // TODO: lift this out into its own method.
+            const createSnapshot = async () => {
 
-            const preferredSource = this.preferredSource();
+                // TODO: lift this out into its own method.
 
-            if (preferredSource === 'cache') {
+                const preferredSource = this.preferredSource();
 
-                // go cache first, then server if we don't have it in the
-                // cache only then do we fail which would be when we're not
-                // online.
+                if (preferredSource === 'cache') {
 
-                try {
-                    return await ref.get({ source: this.preferredSource() });
-                } catch (e) {
-                    return await ref.get({ source: 'server' });
+                    // go cache first, then server if we don't have it in the
+                    // cache only then do we fail which would be when we're not
+                    // online.
+
+                    try {
+                        return await ref.get({ source: this.preferredSource() });
+                    } catch (e) {
+                        return await ref.get({ source: 'server' });
+                    }
+
+                } else {
+                    // now revert to checking the server, then cache if we're
+                    // offline.
+                    return await ref.get();
                 }
 
-            } else {
-                // now revert to checking the server, then cache if we're
-                // offline.
-                return await ref.get();
+            };
+
+            const snapshot = await createSnapshot();
+
+            const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
+
+            if (! recordHolder) {
+                log.warn("Could not get docMeta with id: " + id);
+                return null;
             }
 
-        };
+            return recordHolder.value.value;
 
-        const snapshot = await createSnapshot();
-
-        const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
-
-        if (! recordHolder) {
-            log.warn("Could not get docMeta with id: " + id);
-            return null;
-        }
-
-        return recordHolder.value.value;
+        });
 
     }
 
@@ -297,109 +304,113 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                            data: BinaryFileData ,
                            meta: FileMeta = {}): Promise<DocFileMeta> {
 
-        if (await this.containsFile(backend, ref)) {
-            // the file is already in the datastore so don't attempt to
-            // overwrite it for now.  The files are immutable and we don't
-            // accept overwrites.
-            return (await this.getFile(backend, ref)).get();
-        }
+        return await tracer.traceAsync('writeFile', async () => {
 
-        const storage = this.storage!;
+            if (await this.containsFile(backend, ref)) {
+                // the file is already in the datastore so don't attempt to
+                // overwrite it for now.  The files are immutable and we don't
+                // accept overwrites.
+                return (await this.getFile(backend, ref)).get();
+            }
 
-        const storagePath = this.computeStoragePath(backend, ref);
+            const storage = this.storage!;
 
-        const fileRef = storage.ref().child(storagePath.path);
+            const storagePath = this.computeStoragePath(backend, ref);
 
-        let uploadTask: firebase.storage.UploadTask;
+            const fileRef = storage.ref().child(storagePath.path);
 
-        // TODO: we need to compute visibility for this for the future.
+            let uploadTask: firebase.storage.UploadTask;
 
-        const uid = this.getUserID();
+            // TODO: we need to compute visibility for this for the future.
 
-        // stick the uid into the metadata which we use for authorization of the
-        // blob when not public.
-        meta = {...meta, uid, visibility: Visibility.PRIVATE};
+            const uid = this.getUserID();
 
-        const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
+            // stick the uid into the metadata which we use for authorization of the
+            // blob when not public.
+            meta = { ...meta, uid, visibility: Visibility.PRIVATE };
 
-        if (storagePath.settings) {
-            metadata.contentType = storagePath.settings.contentType;
-            metadata.cacheControl = storagePath.settings.cacheControl;
-        }
+            const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
 
-        if (typeof data === 'string') {
-            uploadTask = fileRef.putString(data, 'raw', metadata);
-        } else if (data instanceof Blob) {
-            uploadTask = fileRef.put(data, metadata);
-        } else {
+            if (storagePath.settings) {
+                metadata.contentType = storagePath.settings.contentType;
+                metadata.cacheControl = storagePath.settings.cacheControl;
+            }
 
-            if (FileHandles.isFileHandle(data)) {
+            if (typeof data === 'string') {
+                uploadTask = fileRef.putString(data, 'raw', metadata);
+            } else if (data instanceof Blob) {
+                uploadTask = fileRef.put(data, metadata);
+            } else {
 
-                // MEMORY_ALLOCATION_ISSUE migrate this to a streaming API to
-                // help with huge PDFs.
+                if (FileHandles.isFileHandle(data)) {
 
-                // it's not a buffer but convert it to one...
-                const fileHandle = <FileHandle> data;
-                data = await Files.readFileAsync(fileHandle.path);
+                    // MEMORY_ALLOCATION_ISSUE migrate this to a streaming API to
+                    // help with huge PDFs.
+
+                    // it's not a buffer but convert it to one...
+                    const fileHandle = <FileHandle> data;
+                    data = await Files.readFileAsync(fileHandle.path);
+
+                }
+
+                uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
 
             }
 
-            uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
+            // TODO: we can get progress from the uploadTask here.
 
-        }
+            const started = Date.now();
 
-        // TODO: we can get progress from the uploadTask here.
+            const task = ProgressTracker.createNonce();
 
-        const started = Date.now();
+            uploadTask.on('state_changed', (snapshotData: any) => {
 
-        const task = ProgressTracker.createNonce();
+                const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
 
-        uploadTask.on('state_changed', (snapshotData: any) => {
+                const now = Date.now();
+                const duration = now - started;
 
-            const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
+                const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
+                log.notice('Upload is ' + percentage + '%// done');
 
-            const now = Date.now();
-            const duration = now - started;
+                const progress: ProgressMessage = {
+                    id: 'firebase-upload',
+                    task,
+                    completed: snapshot.bytesTransferred,
+                    total: snapshot.totalBytes,
+                    duration,
+                    progress: <Percentage> percentage
+                };
 
-            const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-            log.notice('Upload is ' + percentage + '%// done');
+                ProgressMessages.broadcast(progress);
 
-            const progress: ProgressMessage = {
-                id: 'firebase-upload',
-                task,
-                completed: snapshot.bytesTransferred,
-                total: snapshot.totalBytes,
-                duration,
-                progress: <Percentage> percentage
+                switch (snapshot.state) {
+
+                    case firebase.storage.TaskState.PAUSED:
+                        // or 'paused'
+                        // console.log('Upload is paused');
+                        break;
+
+                    case firebase.storage.TaskState.RUNNING:
+                        // or 'running'
+                        // console.log('Upload is running');
+                        break;
+                }
+
+            });
+
+            const uploadTaskSnapshot = await uploadTask;
+
+            const downloadURL = uploadTaskSnapshot.downloadURL;
+
+            return {
+                backend,
+                ref,
+                url: downloadURL!,
+                meta
             };
 
-            ProgressMessages.broadcast(progress);
-
-            switch (snapshot.state) {
-
-                case firebase.storage.TaskState.PAUSED:
-                    // or 'paused'
-                    // console.log('Upload is paused');
-                    break;
-
-                case firebase.storage.TaskState.RUNNING:
-                    // or 'running'
-                    // console.log('Upload is running');
-                    break;
-            }
-
         });
-
-        const uploadTaskSnapshot = await uploadTask;
-
-        const downloadURL = uploadTaskSnapshot.downloadURL;
-
-        return {
-            backend,
-            ref,
-            url: downloadURL!,
-            meta
-        };
 
     }
 
