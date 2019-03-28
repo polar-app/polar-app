@@ -209,25 +209,27 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const docMetaRef = this.firestore!
-            .collection(DatastoreCollection.DOC_META)
-            .doc(id);
-
         const docInfoRef = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
+            .doc(id);
+
+        const docMetaRef = this.firestore!
+            .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
         try {
 
             this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const commitPromise = this.waitForCommit(docMetaRef);
-            await docMetaRef.delete();
+            const commitPromise = Promise.all([
+                this.waitForCommit(docMetaRef),
+                this.waitForCommit(docInfoRef)
+            ]);
 
             const batch = this.firestore!.batch();
 
-            batch.delete(docMetaRef);
             batch.delete(docInfoRef);
+            batch.delete(docMetaRef);
 
             await batch.commit();
 
@@ -660,7 +662,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const docMetaCommitPromise = this.waitForCommit(docMetaRef);
+            const commitPromise = Promise.all([
+                this.waitForCommit(docMetaRef),
+                this.waitForCommit(docInfoRef)
+            ]);
 
             log.debug("Setting...");
 
@@ -676,7 +681,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             // we need to make sure that we only return when it's committed
             // remotely...
             log.debug("Waiting for promise...");
-            await docMetaCommitPromise;
+            await commitPromise;
             log.debug("Waiting for promise...done");
 
         } finally {
