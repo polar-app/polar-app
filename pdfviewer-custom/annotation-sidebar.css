@@ -1,5 +1,14 @@
 @import url('./flexbar.css');
 
+.annotation-sidebar p {
+    line-height: 1.5;
+}
+
+.annotation-sidebar h4 {
+    font-size: 24px;
+    line-height: 1.2;
+}
+
 .annotation-sidebar ::selection {
     background-color: #3297FD;
 }

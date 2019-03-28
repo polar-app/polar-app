@@ -1,5 +1,8 @@
 # 1.15.6
 
+- Improved CSS of annotation sidebar and included instructions on how to create
+  your first annotation.
+
 - Use the sidebar area to explain how to create annotations.
 
 # 1.15.5
