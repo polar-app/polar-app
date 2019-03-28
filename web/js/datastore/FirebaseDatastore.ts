@@ -501,33 +501,37 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
-        let result = await this.getFileFromFileMeta(backend, ref);
+        return await tracer.traceAsync('getFile', async () => {
 
-        if (! result.isPresent()) {
+            let result = await this.getFileFromFileMeta(backend, ref);
 
-            result = await this.getFileFromStorage(backend, ref);
+            if (! result.isPresent()) {
 
-            if (result.isPresent()) {
-                // write it to doc_file_meta so that next time we have it
-                // available
+                result = await this.getFileFromStorage(backend, ref);
 
-                const docFileMeta: DocFileMeta = result.get();
+                if (result.isPresent()) {
+                    // write it to doc_file_meta so that next time we have it
+                    // available
 
-                if (! docFileMeta.ref.hashcode) {
-                    // Firebase doesn't support file names with 'undefined'
-                    // values.
-                    delete (<any> docFileMeta.ref).hashcode;
+                    const docFileMeta: DocFileMeta = result.get();
+
+                    if (! docFileMeta.ref.hashcode) {
+                        // Firebase doesn't support file names with 'undefined'
+                        // values.
+                        delete (<any> docFileMeta.ref).hashcode;
+                    }
+
+                    await this.writeFileMeta(backend, ref, docFileMeta);
+
                 }
 
-                await this.writeFileMeta(backend, ref, docFileMeta);
+                return result;
 
+            } else {
+                return result;
             }
 
-            return result;
-
-        } else {
-            return result;
-        }
+        });
 
     }
 

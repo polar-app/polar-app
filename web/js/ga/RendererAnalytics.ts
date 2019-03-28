@@ -262,3 +262,15 @@ class DefaultTracer implements Tracer {
     }
 
 }
+
+export class NullTracer implements Tracer {
+
+    public trace<T>(variable: string, closure: () => T): T {
+        return closure();
+    }
+
+    public async traceAsync<T>(variable: string, closure: () => Promise<T>): Promise<T> {
+        return await closure();
+    }
+
+}
