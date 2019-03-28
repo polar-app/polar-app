@@ -141,16 +141,16 @@ export class RendererAnalytics {
         visitor.timing(category, variable, time).send(callback);
     }
 
-    public static createStopwatch(category: string, variable: string): TimingStopwatch {
-        return new DefaultTimingStopwatch(category, variable);
+    public static createTimer(category: string, variable: string): Timer {
+        return new DefaultTimer(category, variable);
     }
 
     /**
-     * Perform the operation with a stopwatch to record the duration.
+     * Perform the operation with a timer to record the duration.
      */
-    public static withStopwatch<T>(category: string, variable: string, closure: () => T ): T {
+    public static withTimer<T>(category: string, variable: string, closure: () => T ): T {
 
-        const stopwatch = this.createStopwatch(category, variable);
+        const stopwatch = this.createTimer(category, variable);
 
         try {
 
@@ -164,16 +164,12 @@ export class RendererAnalytics {
 
     }
 
-    public static createTracer(category: string): Tracer {
-        return new DefaultTracer(category);
-    }
-
     /**
      * Perform the operation with a stopwatch to record the duration.
      */
-    public static async withStopwatchAsync<T>(category: string, variable: string, closure: () => Promise<T> ): Promise<T> {
+    public static async withTimerAsync<T>(category: string, variable: string, closure: () => Promise<T> ): Promise<T> {
 
-        const stopwatch = this.createStopwatch(category, variable);
+        const stopwatch = this.createTimer(category, variable);
 
         try {
 
@@ -184,6 +180,10 @@ export class RendererAnalytics {
             stopwatch.stop();
         }
 
+    }
+
+    public static createTracer(category: string): Tracer {
+        return new DefaultTracer(category);
     }
 
     public static set(fieldsObject: IFieldsObject): void {
@@ -210,17 +210,19 @@ export interface IFieldsObject {
     [i: string]: any;
 }
 
-export interface TimingStopwatch {
+export interface Timer {
 
     /**
-     * Stop the stopwatch and record the amount of time it took to perform the
+     * Stop the timer and record the amount of time it took to perform the
      * operation.
      */
     stop(): void;
 
 }
 
-class DefaultTimingStopwatch implements TimingStopwatch {
+class DefaultTimer implements Timer {
+
+    private stopped: boolean = false;
 
     constructor(private readonly category: string,
                 private readonly variable: string,
@@ -229,8 +231,19 @@ class DefaultTimingStopwatch implements TimingStopwatch {
     }
 
     public stop() {
+
+        if (this.stopped) {
+            log.warn("Stop called twice");
+            // only allow this to be stopped once as a bug with subsequent
+            // stop calls would yield incorrect metrics.
+            return;
+        }
+
         const duration = this.stopwatch.stop();
         RendererAnalytics.timing(this.category, this.variable, duration.durationMS);
+
+        this.stopped = true;
+
     }
 
 }
@@ -254,11 +267,11 @@ class DefaultTracer implements Tracer {
     }
 
     public trace<T>(variable: string, closure: () => T ): T {
-        return RendererAnalytics.withStopwatch(this.category, variable, closure);
+        return RendererAnalytics.withTimer(this.category, variable, closure);
     }
 
     public async traceAsync<T>(variable: string, closure: () => Promise<T> ): Promise<T> {
-        return await RendererAnalytics.withStopwatchAsync(this.category, variable, closure);
+        return await RendererAnalytics.withTimerAsync(this.category, variable, closure);
     }
 
 }
