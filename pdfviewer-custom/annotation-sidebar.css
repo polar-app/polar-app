@@ -54,17 +54,6 @@
     margin-top: 5px;
 }
 
-#annotation-manager .annotations:empty:before {
-    content: "No annotations";
-    height: 100px;
-    text-align: center;
-    font-size: 20px;
-    color: grey;
-    width: 100%;
-    display: block;
-    margin: 10px;
-}
-
 .annotation-sidebar .text-highlight blockquote {
     margin-bottom: 5px !important;
 }

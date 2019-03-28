@@ -1,3 +1,7 @@
+# 1.15.6
+
+- Use the sidebar area to explain how to create annotations.
+
 # 1.15.5
 
 - Fix to webapp to disable the context menu default when we intercept with our
