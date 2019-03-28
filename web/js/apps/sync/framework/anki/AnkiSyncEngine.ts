@@ -102,7 +102,7 @@ export class AnkiSyncEngine implements SyncEngine {
                 .map(tag => Tags.parseTypedTag(tag.label))
                 .filter(typedTag => typedTag.isPresent())
                 .map(typedTag => typedTag.get())
-                .map(typedTag => typedTag.value.replace("/\//g", "::"))
+                .map(typedTag => typedTag.value.replace(/\//g, "::"))
                 .pop();
         }
 
