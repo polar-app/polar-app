@@ -1,5 +1,8 @@
 # 1.15.6
 
+- Fixed bag bug where Firebase batches weren't used properly and we had a 
+  delete outside of the batch which could leave FB inconsistent. 
+
 - Always show the multi-delete and multi-tag buttons even if just one is 
   selected as it will still work just fine.
 

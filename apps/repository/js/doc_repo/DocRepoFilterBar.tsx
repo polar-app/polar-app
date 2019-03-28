@@ -90,7 +90,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="header-filter-box mr-1"
+                <div className="header-filter-box mr-1 d-none-mobile"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                     <div className="header-filter-box">

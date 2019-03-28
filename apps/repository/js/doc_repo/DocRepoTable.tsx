@@ -351,7 +351,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                   refresher={() => this.refresh()}
                                                   filteredTags={this.docRepoFilters.filters.filteredTags}
                                                   right={
-                                               <div className=""
+                                               <div className="d-mobile-none"
                                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                                                    <DocRepoTableDropdown id="table-dropdown"
