@@ -21,10 +21,10 @@ export class SimpleTooltip extends React.Component<IProps, IState> {
         return (
 
             <UncontrolledTooltip style={{
-                maxWidth: '325px',
-                textAlign: 'justify',
-                ...this.props.style || {}
-            }}
+                                     maxWidth: '325px',
+                                     textAlign: 'justify',
+                                     ...this.props.style || {}
+                                 }}
                                  placement={placement}
                                  delay={{show, hide: 0}}
                                  target={this.props.target}>
