@@ -134,6 +134,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          text="Documents"/>
 
                         <RepoSidebarItem id="sidebar-item-annotations"
+                                         tooltip="Manage all annotations of all your documents in one central view."
                                          href="#annotations"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-layer-group"
@@ -145,72 +146,34 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          {/*text="Editors Picks"/>*/}
 
                         <RepoSidebarItem id="sidebar-item-stats"
+                                         tooltip="Show stats on your usage of Polar including stats on tags, rate of document addition, etc."
                                          href="#stats"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-chart-line"
                                          text="Statistics"/>
 
                         <RepoSidebarItem id="sidebar-item-logs"
+                                         tooltip="Show logs on internal activity during background operations like cloud activity and sync."
                                          href="#logs"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-info-circle"
                                          text="Logs"/>
 
                         <RepoSidebarItem id="sidebar-item-community"
+                                         tooltip="Find community resources including links to discussions around Polar."
                                          href="#community"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-hands-helping"
                                          text="Community"/>
 
                         <RepoSidebarItem id="sidebar-item-whatsnew"
+                                         tooltip="Find out what's new with each Polar release."
                                          href="#whats-new"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-bullhorn"
                                          text="Whats New"/>
 
                     </ListGroup>
-
-                    <SimpleTooltip target="sidebar-item-annotations"
-                                   show={0}
-                                   placement="right">
-
-                        Manage all annotations of all your documents in one central view.
-
-                    </SimpleTooltip>
-
-                    <SimpleTooltip target="sidebar-item-stats"
-                                   show={0}
-                                   placement="right">
-
-                        Show stats on your usage of Polar including stats on tags,
-                        rate of document addition, etc.
-
-                    </SimpleTooltip>
-
-                    <SimpleTooltip target="sidebar-item-logs"
-                                   show={0}
-                                   placement="right">
-
-                        Show logs on internal activity during background operations
-                        like cloud activity and sync.
-
-                    </SimpleTooltip>
-
-                    <SimpleTooltip target="sidebar-item-community"
-                                   show={0}
-                                   placement="right">
-
-                        Find community resources including links to discussions around Polar.
-
-                    </SimpleTooltip>
-
-                    <SimpleTooltip target="sidebar-item-whatsnew"
-                                   show={0}
-                                   placement="right">
-
-                        Find out what's new with each Polar release.
-
-                    </SimpleTooltip>
 
                 </section>
             </div>
