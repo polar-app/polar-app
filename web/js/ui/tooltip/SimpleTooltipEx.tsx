@@ -1,12 +1,15 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import Tooltip from 'reactstrap/lib/Tooltip';
+import {Optional} from '../../util/ts/Optional';
 
 export class SimpleTooltipEx extends React.Component<IProps, IState> {
 
     private timeout?: number;
 
     private id: string;
+
+    private show: number;
 
     constructor(props: IProps) {
         super(props);
@@ -24,6 +27,7 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
 
         this.trigger = this.trigger.bind(this);
 
+        this.show = Optional.of(this.props.show).getOrElse(500);
 
     }
 
@@ -69,6 +73,10 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
 
     private onMouseMove() {
 
+        if (this.show === 0) {
+            return;
+        }
+
         if (this.state.open) {
             this.setState({open: false});
         } else {
@@ -78,17 +86,27 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
     }
 
     private onMouseLeave() {
-        window.clearTimeout(this.timeout);
-        this.setState({open: false});
-    }
-
-    private schedule() {
 
         if (this.timeout) {
             window.clearTimeout(this.timeout);
         }
 
-        this.timeout = window.setTimeout(() => this.trigger(), this.props.show || 500);
+        this.setState({open: false});
+    }
+
+    private schedule() {
+
+        if (this.show === 0) {
+            this.trigger();
+            return;
+        }
+
+        if (this.timeout) {
+            window.clearTimeout(this.timeout);
+        }
+
+        this.timeout = window.setTimeout(() => this.trigger(), this.show);
+
     }
 
     private trigger() {
