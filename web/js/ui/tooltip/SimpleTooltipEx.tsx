@@ -31,8 +31,6 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
 
         const placement = this.props.placement || 'bottom';
 
-        const show = this.props.show !== undefined ? this.props.show : 500;
-
         return (
 
             <div className="d-mobile-none"
@@ -52,7 +50,7 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
                          isOpen={this.state.open}
                          className="d-mobile-none"
                          placement={placement}
-                         delay={{show, hide: 0}}
+                         delay={{show: 0, hide: 0}}
                          target={this.id}>
 
                     {this.props.text}
