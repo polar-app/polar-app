@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {TooltipDropdown} from '../doc_repo/TooltipDropdown';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {ManualDropdown} from '../doc_repo/ManaulDropdown';
+import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 
 export class AddContentButton extends React.PureComponent<IProps, IState> {
 
@@ -24,17 +25,18 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <TooltipDropdown id="add-content-dropdown"
-                             tooltip={{
-                                 text: "Add content by importing PDFs from your local drive or capturing web pages from the Internet.",
-                                 placement: 'bottom'
-                             }}
-                             direction="down"
-                             size="sm">
+            <ManualDropdown id="add-content-dropdown"
+                            direction="down"
+                            size="sm">
 
-                <DropdownToggle style={{fontWeight: 'bold'}} color="success" caret>
-                    <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
-                </DropdownToggle>
+                <SimpleTooltipEx text="Add content by importing PDFs from your local drive or capturing web pages from the Internet."
+                                 placement="bottom">
+
+                    <DropdownToggle size="sm" style={{fontWeight: 'bold'}} color="success" caret>
+                        <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
+                    </DropdownToggle>
+
+                </SimpleTooltipEx>
 
                 <DropdownMenu className="shadow">
 
@@ -97,7 +99,7 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
 
                 </DropdownMenu>
 
-            </TooltipDropdown>
+            </ManualDropdown>
 
         );
 

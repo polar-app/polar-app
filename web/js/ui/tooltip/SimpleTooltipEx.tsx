@@ -23,6 +23,8 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
         this.onMouseEnter = this.onMouseEnter.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
+        this.deactivate = this.deactivate.bind(this);
+
         this.schedule = this.schedule.bind(this);
 
         this.trigger = this.trigger.bind(this);
@@ -40,7 +42,9 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
             <div className=""
                  onMouseEnter={() => this.onMouseEnter()}
                  onMouseMove={() => this.onMouseMove()}
-                 onMouseLeave={() => this.onMouseLeave()}>
+                 onMouseLeave={() => this.onMouseLeave()}
+                 onClick={() => this.deactivate()}
+                 onContextMenu={() => this.deactivate()}>
 
                 <div id={this.id}>
                     {this.props.children}
@@ -86,12 +90,17 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
     }
 
     private onMouseLeave() {
+        this.deactivate();
+    }
+
+    private deactivate() {
 
         if (this.timeout) {
             window.clearTimeout(this.timeout);
         }
 
         this.setState({open: false});
+
     }
 
     private schedule() {
