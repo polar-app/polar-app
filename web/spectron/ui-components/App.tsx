@@ -37,6 +37,7 @@ import {AccountControlBar} from '../../../web/js/ui/cloud_auth/AccountControlBar
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {AccountControlDropdown} from '../../../web/js/ui/cloud_auth/AccountControlDropdown';
 import {RichTextFeatureIntro} from '../../../web/js/annotation_sidebar/RichTextFeatureIntro';
+import {SimpleTooltip} from '../../js/ui/tooltip/SimpleTooltip';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -157,7 +158,13 @@ class App<P> extends React.Component<{}, IAppState> {
             // </div>
 
             <div>
-                <RichTextFeatureIntro/>
+
+                <div id="test-with-tooltip">
+                    thisi smy div
+                </div>
+
+                <SimpleTooltip target="test-with-tooltip"/>
+
             </div>
 
         );
