@@ -498,6 +498,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         Header: 'Updated',
                                         // accessor: (row: any) => row.added,
+                                        headerClassName: "d-none-mobile",
                                         accessor: 'lastUpdated',
                                         show: this.state.columns.lastUpdated.selected,
                                         maxWidth: 85,
@@ -511,6 +512,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         Header: 'Added',
                                         accessor: 'added',
+                                        headerClassName: "d-none-mobile",
                                         show: this.state.columns.added.selected,
                                         maxWidth: 85,
                                         defaultSortDesc: true,
@@ -522,6 +524,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         Header: 'Site',
                                         accessor: 'site',
+                                        headerClassName: "d-none-mobile",
                                         show: (this.state.columns.site || {}).selected || false,
                                         // show: false,
                                         maxWidth: 200,
@@ -577,6 +580,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'tags',
                                         Header: 'Tags',
+                                        headerClassName: "d-none-mobile",
                                         width: 250,
                                         accessor: '',
                                         show: this.state.columns.tags.selected,
@@ -627,6 +631,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'nrAnnotations',
                                         Header: 'Annotations',
+                                        headerClassName: "d-none-mobile",
                                         accessor: 'nrAnnotations',
                                         maxWidth: 110,
                                         show: this.state.columns.nrAnnotations.selected,
@@ -637,6 +642,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'progress',
                                         Header: 'Progress',
+                                        headerClassName: "d-none-mobile",
                                         accessor: 'progress',
                                         show: this.state.columns.progress.selected,
                                         maxWidth: 100,
@@ -656,6 +662,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'doc-buttons',
                                         Header: '',
+                                        headerClassName: "d-none-mobile",
                                         accessor: '',
                                         maxWidth: 100,
                                         defaultSortDesc: true,
