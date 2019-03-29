@@ -33,7 +33,7 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="d-mobile-none"
+            <div className=""
                  onMouseEnter={() => this.onMouseEnter()}
                  onMouseMove={() => this.onMouseMove()}
                  onMouseLeave={() => this.onMouseLeave()}>
@@ -48,7 +48,7 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
                             ...this.props.style || {}
                          }}
                          isOpen={this.state.open}
-                         className="d-mobile-none"
+                         className=""
                          placement={placement}
                          delay={{show: 0, hide: 0}}
                          target={this.id}>
