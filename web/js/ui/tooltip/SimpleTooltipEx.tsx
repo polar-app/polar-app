@@ -68,7 +68,13 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
     }
 
     private onMouseMove() {
-        this.schedule();
+
+        if (this.state.open) {
+            this.setState({open: false});
+        } else {
+            this.schedule();
+        }
+
     }
 
     private onMouseLeave() {
@@ -82,7 +88,7 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
             window.clearTimeout(this.timeout);
         }
 
-        this.timeout = window.setTimeout(() => this.trigger(), this.props.show || 1000);
+        this.timeout = window.setTimeout(() => this.trigger(), this.props.show || 500);
     }
 
     private trigger() {
