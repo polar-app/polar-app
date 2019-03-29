@@ -46,6 +46,7 @@ import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import Input from 'reactstrap/lib/Input';
 import {Settings} from '../../../../web/js/datastore/Settings';
 import {AddContentActions} from '../ui/AddContentActions';
+import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 
 const log = Logger.create();
 
@@ -311,22 +312,21 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         <div>
 
-                                            <TagButton id="tag-multiple-documents"
-                                                       disabled={this.state.selected.length <= 0}
-                                                       tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                       onSelectedTags={tags => this.onMultiTagged(tags)}/>
+                                            <SimpleTooltipEx text={`
+                                                             Tag multiple documents at once.  To
+                                                             find untagged documents sort by the
+                                                             'Tags' column (twice).  Once to sort
+                                                             alphabetically and then second click
+                                                             will reverse the sort showing
+                                                             untagged documents.`}
+                                                             placement="bottom">
 
-                                            <SimpleTooltip target="tag-multiple-documents"
-                                                           placement="bottom">
+                                                <TagButton id="tag-multiple-documents"
+                                                           disabled={this.state.selected.length <= 0}
+                                                           tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                           onSelectedTags={tags => this.onMultiTagged(tags)}/>
 
-                                                Tag multiple documents at once.  To
-                                                find untagged documents sort by the
-                                                'Tags' column (twice).  Once to sort
-                                                alphabetically and then second click
-                                                will reverse the sort showing
-                                                untagged documents.
-
-                                            </SimpleTooltip>
+                                            </SimpleTooltipEx>
 
                                         </div>
 

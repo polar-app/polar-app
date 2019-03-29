@@ -1,6 +1,9 @@
 # 1.15.6
 
-- Inline app message that styling with rich HTML is supported.
+- A ton of improvement to tooltips needed for mobile support but also the fact 
+  that having them popup bothered a lot of users.
+
+- Inline app message that styling with rich HTML is supported for new users.
 
 - More improvements for mobile.
 

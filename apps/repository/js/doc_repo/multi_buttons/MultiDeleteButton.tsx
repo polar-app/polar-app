@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {SimpleTooltip} from '../../../../../web/js/ui/tooltip/SimpleTooltip';
 import {ConfirmPrompts} from '../../../../../web/js/ui/confirm/ConfirmPrompts';
+import {SimpleTooltipEx} from '../../../../../web/js/ui/tooltip/SimpleTooltipEx';
 
 export class MultiDeleteButton extends React.Component<IProps, IState> {
 
@@ -17,25 +18,23 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
 
         return (<div>
 
-            <Button id="multi-delete-button"
-                    size="sm"
-                    color="light"
-                    className="border"
-                    disabled={this.props.disabled}
-                    onClick={() => this.onClick()}>
+            <SimpleTooltipEx text="Delete multiple documents at once."
+                             placement="bottom">
 
-                <span className="text-danger">
-                    <i className="fas fa-trash-alt"></i>
-                </span>
+                <Button id="multi-delete-button"
+                        size="sm"
+                        color="light"
+                        className="border"
+                        disabled={this.props.disabled}
+                        onClick={() => this.onClick()}>
 
-            </Button>
+                    <span className="text-danger">
+                        <i className="fas fa-trash-alt"></i>
+                    </span>
 
-            <SimpleTooltip target="multi-delete-button"
-                           placement="bottom">
+                </Button>
 
-                Delete multiple documents at once.
-
-            </SimpleTooltip>
+            </SimpleTooltipEx>
 
         </div>);
 
