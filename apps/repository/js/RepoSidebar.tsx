@@ -8,6 +8,7 @@ import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
 import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 import Button from 'reactstrap/lib/Button';
 import ListGroup from 'reactstrap/lib/ListGroup';
+import {SimpleTooltipEx} from '../../../web/js/ui/tooltip/SimpleTooltipEx';
 
 const log = Logger.create();
 
@@ -79,16 +80,18 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
             <div style={{display: 'flex'}}>
 
-                <div id="toggle-sidebar"
-                     className="mr-1"
-                     style={{marginTop: 'auto', marginBottom: 'auto'}}>
-                    <Button color='light'
-                            onClick={() => this.toggle()}>
-                        <i className="fas fa-bars"></i>
-                    </Button>
-                </div>
+                <SimpleTooltipEx text="Toggle showing the sidebar">
 
-                <SimpleTooltip target="toggle-sidebar">Toggle showing the sidebar</SimpleTooltip>
+                    <div id="toggle-sidebar"
+                         className="mr-1"
+                         style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                        <Button color='light'
+                                onClick={() => this.toggle()}>
+                            <i className="fas fa-bars"></i>
+                        </Button>
+                    </div>
+
+                </SimpleTooltipEx>
 
                 <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <NavLogo/>
@@ -124,6 +127,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                     <ListGroup flush>
 
                         <RepoSidebarItem id="sidebar-item-documents"
+                                         tooltip="Manage all documents you're reading including filtering and sorting."
                                          href="#"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-archive"
@@ -165,14 +169,6 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          text="Whats New"/>
 
                     </ListGroup>
-
-                    <SimpleTooltip target="sidebar-item-documents"
-                                   show={0}
-                                   placement="right">
-
-                        Manage all documents you're reading including filtering and sorting.
-
-                    </SimpleTooltip>
 
                     <SimpleTooltip target="sidebar-item-annotations"
                                    show={0}
