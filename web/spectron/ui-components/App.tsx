@@ -38,6 +38,7 @@ import {NULL_FUNCTION} from '../../js/util/Functions';
 import {AccountControlDropdown} from '../../../web/js/ui/cloud_auth/AccountControlDropdown';
 import {RichTextFeatureIntro} from '../../../web/js/annotation_sidebar/RichTextFeatureIntro';
 import {SimpleTooltip} from '../../js/ui/tooltip/SimpleTooltip';
+import {SimpleTooltipEx} from '../../js/ui/tooltip/SimpleTooltipEx';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -159,11 +160,28 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <div id="test-with-tooltip">
-                    thisi smy div
+
+                <SimpleTooltipEx text={`
+                                 This is the text for the tooltip
+                                 `}>
+
+                    <div>
+                        this is code for the new tooltip
+                    </div>
+
+                </SimpleTooltipEx>
+
+                <div id="old-tooltip-example">
+                    this is code for the old tooltip
                 </div>
 
-                <SimpleTooltip target="test-with-tooltip"/>
+
+                <SimpleTooltip target="old-tooltip-example">
+
+                    this is an old tooltip.
+
+                </SimpleTooltip>
+
 
             </div>
 
