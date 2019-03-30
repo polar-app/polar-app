@@ -270,24 +270,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     public render() {
         const { data } = this.state;
 
-        interface CellContextMenuProps {
-            readonly repoDocInfo: RepoDocInfo;
-            readonly children: any;
-        }
-
-        const CellContextMenu = (props: CellContextMenuProps) => {
-
-            const {repoDocInfo} = props;
-
-            return <DocContextMenu id={'context-menu-' + repoDocInfo.fingerprint}
-                                   repoDocInfo={repoDocInfo}
-                                   onDelete={this.onDocDeleted}
-                                   onSetTitle={this.onDocSetTitle}>
-
-                {props.children}
-
-            </DocContextMenu>;
-
+        const contextMenuProps = {
+            onDelete: this.onDocDeleted,
+            onSetTitle: this.onDocSetTitle
         };
 
         return (
@@ -483,14 +468,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                                 <div id={id}>
 
-                                                    {/*<CellContextMenu repoDocInfo={repoDocInfo}>*/}
-                                                        {/*<div>{row.value}</div>*/}
-                                                    {/*</CellContextMenu>*/}
-
-                                                    <DocContextMenu id={'context-menu-' + row.index}
-                                                                    repoDocInfo={repoDocInfo}
-                                                                    onDelete={this.onDocDeleted}
-                                                                    onSetTitle={this.onDocSetTitle}>
+                                                    <DocContextMenu {...contextMenuProps}
+                                                                    id={'context-menu-' + row.index}
+                                                                    repoDocInfo={repoDocInfo}>
 
                                                         <div>{row.value}</div>
 
@@ -511,9 +491,22 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 85,
                                         defaultSortDesc: true,
                                         className: 'doc-table-col-updated d-none-mobile',
-                                        Cell: (row: any) => (
-                                            <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
-                                        )
+                                        Cell: (row: any) => {
+
+                                            const repoDocInfo: RepoDocInfo = row.original;
+
+                                            return (
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+
+                                                    <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
+
+                                                </DocContextMenu>
+
+                                            );
+                                        }
 
                                     },
                                     {
@@ -524,9 +517,22 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         maxWidth: 85,
                                         defaultSortDesc: true,
                                         className: 'doc-table-col-added d-none-mobile',
-                                        Cell: (row: any) => (
-                                            <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
-                                        )
+                                        Cell: (row: any) => {
+
+                                            const repoDocInfo: RepoDocInfo = row.original;
+
+                                            return (
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+
+                                                    <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
+
+                                                </DocContextMenu>
+
+                                            );
+                                        }
                                     },
                                     {
                                         Header: 'Site',
@@ -629,8 +635,16 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                 .sort()
                                                 .join(", ");
 
+                                            const repoDocInfo: RepoDocInfo = row.original;
+
                                             return (
-                                                <div>{formatted}</div>
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+                                                    <div>{formatted}</div>
+                                                </DocContextMenu>
+
                                             );
 
                                         }
@@ -656,15 +670,26 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         defaultSortDesc: true,
                                         resizable: false,
                                         className: 'doc-table-col-progress d-none-mobile',
-                                        Cell: (row: any) => (
-                                            // TODO: move to a PureComponent to
-                                            // improve performance
+                                        Cell: (row: any) => {
 
-                                            <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
-                                                width: '100%'
-                                            }} />
+                                            const repoDocInfo: RepoDocInfo = row.original;
 
-                                        )
+                                            return (
+                                                // TODO: move to a PureComponent to
+                                                // improve performance
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+
+                                                    <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
+                                                        width: '100%'
+                                                    }} />
+
+                                                </DocContextMenu>
+
+                                            );
+                                        }
                                     },
                                     {
                                         id: 'doc-buttons',
