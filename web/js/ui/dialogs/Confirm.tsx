@@ -18,10 +18,6 @@ class Styles {
         fontSize: "14px"
     };
 
-    public static popover: React.CSSProperties = {
-        // TOD: width isn't working right now.
-    };
-
 }
 
 export class Confirm extends React.PureComponent<ConfirmProps, IState> {

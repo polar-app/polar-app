@@ -43,6 +43,7 @@ import {ContextMenu} from '../../js/ui/context_menu/ContextMenu';
 import {MenuItem} from '@burtonator/react-dropdown';
 import {ContextMenuMessages} from '../../js/contextmenu/ContextMenuMessages';
 import {DocContextMenu} from './DocContextMenu';
+import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -148,6 +149,8 @@ class App<P> extends React.Component<{}, IAppState> {
         // status:
         // '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
         // });
+
+        Dialogs.prompt({title: 'What is the name of your widget?', placeholder: 'give me something', onCancel: NULL_FUNCTION, onDone: NULL_FUNCTION });
 
         return (
             //
