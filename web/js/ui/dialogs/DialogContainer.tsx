@@ -1,6 +1,5 @@
 import React from 'react';
 import {NullCollapse} from '../null_collapse/NullCollapse';
-import {Blackout} from '../blackout/Blackout';
 
 /**
  * Used to hold a dialog and to center it on the screen and so forth.
@@ -13,8 +12,6 @@ export class DialogContainer extends React.PureComponent<ConfirmProps, IState> {
     }
 
     public render() {
-
-        Blackout.toggle(this.props.open);
 
         return (
 

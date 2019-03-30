@@ -42,28 +42,34 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
         return (
 
             <div>
-                <DropdownItem onClick={() => this.onSetTitleRequested()}>
+
+                <DropdownItem toggle={this.props.toggle}
+                              onClick={() => this.onSetTitleRequested()}>
                     Set Title
                 </DropdownItem>
 
-                <DropdownItem disabled={! this.props.repoDocInfo.url}
+                <DropdownItem toggle={this.props.toggle}
+                              disabled={! this.props.repoDocInfo.url}
                               onClick={() => this.onCopyURL(this.props.repoDocInfo.url!)}>
                     Copy Original URL
                 </DropdownItem>
 
-                <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                <DropdownItem toggle={this.props.toggle}
+                              disabled={! this.props.repoDocInfo.filename}
                               hidden={AppRuntime.isBrowser()}
                               onClick={() => this.onShowFile(this.props.repoDocInfo.filename!)}>
                     Show File
                 </DropdownItem>
 
-                <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                <DropdownItem toggle={this.props.toggle}
+                              disabled={! this.props.repoDocInfo.filename}
                               hidden={AppRuntime.isBrowser()}
                               onClick={() => this.onCopyFilePath(this.props.repoDocInfo.filename!)}>
                     Copy File Path
                 </DropdownItem>
 
-                <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                <DropdownItem toggle={this.props.toggle}
+                              disabled={! this.props.repoDocInfo.filename}
                               onClick={() => this.onCopyText(this.props.repoDocInfo.fingerprint, "Document ID copied to clipboard")}>
                     Copy Document ID
                 </DropdownItem>
@@ -72,7 +78,9 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 
                 <DropdownItem divider />
 
-                <DropdownItem className="text-danger" onClick={() => this.onDeleteRequested()}>
+                <DropdownItem toggle={this.props.toggle}
+                              className="text-danger"
+                              onClick={() => this.onDeleteRequested()}>
                     Delete
                 </DropdownItem>
 
@@ -141,10 +149,11 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    id: string;
-    repoDocInfo: RepoDocInfo;
-    onDelete: (repoDocInfo: RepoDocInfo) => void;
-    onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
+    readonly id: string;
+    readonly repoDocInfo: RepoDocInfo;
+    readonly toggle: boolean;
+    readonly onDelete: (repoDocInfo: RepoDocInfo) => void;
+    readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
 }
 
 interface IState {

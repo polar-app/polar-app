@@ -47,6 +47,11 @@ import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
 
+interface DropdownContext {
+    toggle: () => void;
+}
+
+
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
@@ -57,6 +62,12 @@ class App<P> extends React.Component<{}, IAppState> {
         this.state = {
             dropdownOpen: false,
             splitButtonOpen: false
+        };
+    }
+
+    public getChildContext(): DropdownContext {
+        return {
+            toggle: NULL_FUNCTION
         };
     }
 
@@ -222,17 +233,17 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 asdf
 
-                <Dropdown isOpen={true} toggle={NULL_FUNCTION}>
+                {/*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*/}
 
                     <DropdownItem header>Header</DropdownItem>
-                    <DropdownItem>Some Action</DropdownItem>
+                    <DropdownItem onClick={NULL_FUNCTION}>Some Action</DropdownItem>
                     <DropdownItem disabled>Action (disabled)</DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem>Foo Action</DropdownItem>
                     <DropdownItem>Bar Action</DropdownItem>
                     <DropdownItem>Quo Action</DropdownItem>
 
-                </Dropdown>
+                {/*</Dropdown>*/}
 
             </div>
 

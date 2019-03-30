@@ -11,6 +11,7 @@ import DropdownItem from 'reactstrap/lib/DropdownItem';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import {DropdownToggle} from 'reactstrap';
+import Button from 'reactstrap/lib/Button';
 
 let sequence: number = 0;
 const Styles: IStyleMap = {
@@ -39,9 +40,20 @@ export class DocContextMenu2 extends React.Component<IProps, IState> {
 
     public render() {
 
+        class ToggleContext {
+            public toggle() {
+                // noop
+            }
+        }
+
+        const Context = React.createContext(new ToggleContext());
+
         return (
 
             <div>
+
+                <Context.Provider value={new ToggleContext()}>
+
 
                 <div {...this.contextMenuHandlers}>
                     {this.props.children}
@@ -52,11 +64,15 @@ export class DocContextMenu2 extends React.Component<IProps, IState> {
                     <div className="border shadow pt-2 pb-2"
                          style={{backgroundColor: 'white'}}>
 
-                        <DropdownItem onClick={() => NULL_FUNCTION}>
-                            Set Title
-                        </DropdownItem>
+                        <Button type="button"
+                                role="menuitem"
+                                onClick={() => console.log("set title")}
+                                className="dropdown-item">
+                                Set Title
+                        </Button>
 
-                        <DropdownItem disabled={false}
+                        <DropdownItem toggle={false}
+                                      disabled={false}
                                       onClick={() => NULL_FUNCTION}>
                             Copy Original URL
                         </DropdownItem>
@@ -89,6 +105,7 @@ export class DocContextMenu2 extends React.Component<IProps, IState> {
                     </div>
 
                 </ContextMenuWrapper>
+                </Context.Provider>
 
             </div>
 

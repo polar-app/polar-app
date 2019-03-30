@@ -40,7 +40,7 @@ export class DocContextMenu extends React.Component<IProps, IState> {
                     <div className="border shadow rounded pt-2 pb-2"
                          style={{backgroundColor: 'white'}}>
 
-                        <DocDropdownItems {...this.props}/>
+                        <DocDropdownItems toggle={false} {...this.props}/>
 
                     </div>
 

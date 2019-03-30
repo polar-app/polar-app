@@ -269,6 +269,27 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     public render() {
         const { data } = this.state;
+
+        interface CellContextMenuProps {
+            readonly repoDocInfo: RepoDocInfo;
+            readonly children: any;
+        }
+
+        const CellContextMenu = (props: CellContextMenuProps) => {
+
+            const {repoDocInfo} = props;
+
+            return <DocContextMenu id={'context-menu-' + repoDocInfo.fingerprint}
+                                   repoDocInfo={repoDocInfo}
+                                   onDelete={this.onDocDeleted}
+                                   onSetTitle={this.onDocSetTitle}>
+
+                {props.children}
+
+            </DocContextMenu>;
+
+        };
+
         return (
 
             <FixedNav id="doc-repo-table">
@@ -461,6 +482,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                             return (
 
                                                 <div id={id}>
+
+                                                    {/*<CellContextMenu repoDocInfo={repoDocInfo}>*/}
+                                                        {/*<div>{row.value}</div>*/}
+                                                    {/*</CellContextMenu>*/}
 
                                                     <DocContextMenu id={'context-menu-' + row.index}
                                                                     repoDocInfo={repoDocInfo}

@@ -1,7 +1,5 @@
 import React from 'react';
 import {Button} from 'reactstrap';
-import {NullCollapse} from '../null_collapse/NullCollapse';
-import {Blackout} from '../blackout/Blackout';
 import {DialogContainer} from './DialogContainer';
 
 class Styles {
@@ -30,17 +28,13 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
         this.onCancel = this.onCancel.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
 
-        this.state = {
-            open: true
-        };
-
     }
 
     public render() {
 
         return (
 
-            <DialogContainer open={this.state.open}>
+            <DialogContainer open={true}>
 
                 <div onKeyDown={(event) => this.onKeyDown(event)}>
 
@@ -85,12 +79,10 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
     }
 
     private onConfirm(): void {
-        this.setState({open: false});
         this.props.onConfirm();
     }
 
     private onCancel(): void {
-        this.setState({open: false});
         this.props.onCancel();
     }
 
@@ -108,6 +100,5 @@ export interface ConfirmProps {
 }
 
 export interface IState {
-    readonly open: boolean;
 
 }

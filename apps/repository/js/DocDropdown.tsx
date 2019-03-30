@@ -63,7 +63,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
                     <DropdownMenu className="shadow"
                                   style={Styles.DropdownMenu}>
 
-                        <DocDropdownItems {...this.props}/>
+                        <DocDropdownItems toggle={true} {...this.props}/>
 
                     </DropdownMenu>
 

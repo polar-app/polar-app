@@ -1,16 +1,13 @@
 import React from 'react';
 import {Button} from 'reactstrap';
-import {NullCollapse} from '../null_collapse/NullCollapse';
-import {Blackout} from '../blackout/Blackout';
 import Label from 'reactstrap/lib/Label';
 import Input from 'reactstrap/lib/Input';
 import {DialogContainer} from './DialogContainer';
-import {PopoverBody} from 'reactstrap';
 
 /**
  * Ask the user for a text string
  */
-export class Prompt extends React.Component<PromptProps, IState> {
+export class Prompt extends React.PureComponent<PromptProps, IState> {
 
     private value: string = '';
 
@@ -21,10 +18,6 @@ export class Prompt extends React.Component<PromptProps, IState> {
         this.onDone = this.onDone.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
 
-        this.state = {
-            open: true
-        };
-
     }
 
     public render() {
@@ -33,7 +26,7 @@ export class Prompt extends React.Component<PromptProps, IState> {
 
         return (
 
-            <DialogContainer open={this.state.open}>
+            <DialogContainer open={true}>
 
                 <Label className="font-weight-bold"
                        for={id}>{this.props.title}</Label>
@@ -83,12 +76,10 @@ export class Prompt extends React.Component<PromptProps, IState> {
     }
 
     private onCancel(): void {
-        this.setState({open: false});
         this.props.onCancel();
     }
 
     private onDone(value: string): void {
-        this.setState({open: false});
         this.props.onDone(value);
     }
 
@@ -103,6 +94,5 @@ export interface PromptProps {
 }
 
 interface IState {
-    readonly open: boolean;
 }
 

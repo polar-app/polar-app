@@ -3,6 +3,7 @@ import * as React from 'react';
 import {ReactInjector} from '../util/ReactInjector';
 import {InjectedComponent} from '../util/ReactInjector';
 import {Prompt, PromptProps} from './Prompt';
+import {Blackout} from '../blackout/Blackout';
 
 export class Dialogs {
 
@@ -10,13 +11,20 @@ export class Dialogs {
 
         let injected: InjectedComponent | undefined;
 
-        const onCancel = () => {
+        Blackout.enable();
+
+        const cleanup = () => {
+            Blackout.disable();
             injected!.destroy();
+        };
+
+        const onCancel = () => {
+            cleanup();
             opts.onCancel();
         };
 
         const onConfirm = () => {
-            injected!.destroy();
+            cleanup();
             opts.onConfirm();
         };
 
@@ -28,13 +36,20 @@ export class Dialogs {
 
         let injected: InjectedComponent | undefined;
 
-        const onCancel = () => {
+        Blackout.enable();
+
+        const cleanup = () => {
+            Blackout.disable();
             injected!.destroy();
+        };
+
+        const onCancel = () => {
+            cleanup();
             opts.onCancel();
         };
 
         const onDone = (value: string) => {
-            injected!.destroy();
+            cleanup();
             opts.onDone(value);
         };
 
