@@ -1,10 +1,8 @@
 import * as React from 'react';
-import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
-import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {clipboard, shell} from 'electron';
+import {shell} from 'electron';
 import {Directories} from '../../../web/js/datastore/Directories';
 import {FilePaths} from '../../../web/js/util/FilePaths';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
@@ -31,23 +29,20 @@ const Styles: IStyleMap = {
 export class DocDropdown extends React.Component<IProps, IState> {
 
     private open: boolean = false;
-    private selected: SelectedOption = 'none';
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
-        this.select = this.select.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onSetTitle = this.onSetTitle.bind(this);
         this.onCopyURL = this.onCopyURL.bind(this);
 
         this.onDeleteRequested = this.onDeleteRequested.bind(this);
-        this.onDelete = this.onDelete.bind(this);
+        this.onSetTitleRequested = this.onSetTitleRequested.bind(this);
 
         this.state = {
             open: this.open,
-            selected: this.selected,
         };
 
     }
@@ -84,7 +79,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                     <DropdownMenu style={Styles.DropdownMenu}>
 
-                        <DropdownItem onClick={() => this.select('set-title')}>
+                        <DropdownItem onClick={() => this.onSetTitleRequested()}>
                             Set Title
                         </DropdownItem>
 
@@ -123,15 +118,17 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                 </Dropdown>
 
-                <TextInputPopover open={this.state.selected === 'set-title'}
-                                  target={this.props.id + '-dropdown-toggle'}
-                                  title="Enter title for document:"
-                                  defaultValue={this.props.repoDocInfo.title}
-                                  onCancel={() => this.select('none')}
-                                  onComplete={this.onSetTitle}/>
-
             </div>
         );
+
+    }
+
+    private onSetTitleRequested() {
+
+        Dialogs.prompt({title: "Enter a new title for the docucment:",
+                        defaultValue: this.props.repoDocInfo.title,
+                        onCancel: NULL_FUNCTION,
+                        onDone: (value) => this.onSetTitle(value)});
 
     }
 
@@ -175,38 +172,25 @@ export class DocDropdown extends React.Component<IProps, IState> {
     }
 
     private copyText(text: string) {
-
         Clipboards.getInstance().writeText(text);
-
     }
 
     private onSetTitle(title: string) {
-        this.select('none');
         this.props.onSetTitle(this.props.repoDocInfo, title);
     }
 
     private toggle() {
 
-        if (this.selected !== 'none') {
-            this.open = false;
-        } else {
-            this.open = ! this.state.open;
-        }
+        this.open = ! this.state.open;
 
         this.refresh();
 
-    }
-
-    private select(selected: SelectedOption) {
-        this.selected = selected;
-        this.refresh();
     }
 
     private refresh() {
 
         this.setState({
             open: this.open,
-            selected: this.selected
         });
 
     }
@@ -223,10 +207,7 @@ interface IProps {
 interface IState {
 
     open: boolean;
-    selected: SelectedOption;
     message?: string;
 
 }
-
-type SelectedOption = 'set-title' | 'delete' | 'none';
 

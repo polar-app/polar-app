@@ -72,7 +72,7 @@ export class Prompt extends React.Component<PromptProps, IState> {
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
         if (event.key === "Enter") {
-            this.props.onDone(this.value);
+            this.onDone(this.value);
         }
 
     }
