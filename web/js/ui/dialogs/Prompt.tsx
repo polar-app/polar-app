@@ -19,6 +19,7 @@ export class Prompt extends React.Component<PromptProps, IState> {
 
         this.onCancel = this.onCancel.bind(this);
         this.onDone = this.onDone.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
 
         this.state = {
             open: true
@@ -73,6 +74,10 @@ export class Prompt extends React.Component<PromptProps, IState> {
 
         if (event.key === "Enter") {
             this.onDone(this.value);
+        }
+
+        if (event.key === "Escape") {
+            this.onCancel();
         }
 
     }

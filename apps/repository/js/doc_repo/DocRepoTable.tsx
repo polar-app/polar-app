@@ -28,7 +28,6 @@ import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TagButton} from './TagButton';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {FixedNav, FixedNavBody} from '../FixedNav';
@@ -41,12 +40,10 @@ import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
-import {AppRuntime} from '../../../../web/js/AppRuntime';
-import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import Input from 'reactstrap/lib/Input';
 import {Settings} from '../../../../web/js/datastore/Settings';
 import {AddContentActions} from '../ui/AddContentActions';
-import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
+import {DocContextMenu} from '../DocContextMenu';
 
 const log = Logger.create();
 
@@ -459,24 +456,20 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         className: 'doc-table-col-title',
                                         Cell: (row: any) => {
                                             const id = 'doc-repo-row-title' + row.index;
+
+                                            const repoDocInfo: RepoDocInfo = row.original;
                                             return (
+
                                                 <div id={id}>
 
-                                                    <div>{row.value}</div>
+                                                    <DocContextMenu id={'context-menu-' + row.index}
+                                                                    repoDocInfo={repoDocInfo}
+                                                                    onDelete={this.onDocDeleted}
+                                                                    onSetTitle={this.onDocSetTitle}>
 
-                                                    {/*TODO: this doesn't reliably work as*/}
-                                                    {/*moving the mouse horizontally within*/}
-                                                    {/*the target doesn't close the tooltip.*/}
+                                                        <div>{row.value}</div>
 
-                                                    {/*<UncontrolledTooltip style={{maxWidth: '1000px'}}*/}
-                                                    {/*placement="bottom"*/}
-                                                    {/*delay={{show: 750, hide: 0}}*/}
-                                                    {/*target={id}>*/}
-                                                    {/*<Collapse timeout={{ enter: 0, exit: 0 }} >*/}
-                                                    {/*{row.value}*/}
-                                                    {/*</Collapse>*/}
-
-                                                    {/*</UncontrolledTooltip>*/}
+                                                    </DocContextMenu>
 
                                                 </div>
 
@@ -748,6 +741,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                 if (! SINGLE_CLICK_COLUMNS.includes(column.id)) {
 
+                                    const handleSelect = (event: MouseEvent) => {
+                                        if (rowInfo) {
+                                            this.selectRow(rowInfo.viewIndex as number, event);
+                                        }
+                                    };
+
                                     return {
 
                                         onDoubleClick: (event: MouseEvent) => {
@@ -760,12 +759,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         },
 
+                                        onContextMenu: (event: MouseEvent) => {
+                                            handleSelect(event);
+                                        },
+
                                         onClick: (event: MouseEvent, handleOriginal?: () => void) => {
-
-                                            if (rowInfo) {
-                                                this.selectRow(rowInfo.viewIndex as number, event);
-                                            }
-
+                                            handleSelect(event);
                                         },
 
                                     };

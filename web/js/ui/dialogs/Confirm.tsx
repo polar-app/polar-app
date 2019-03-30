@@ -28,6 +28,7 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
 
         this.state = {
             open: true
@@ -41,33 +42,45 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
             <DialogContainer open={this.state.open}>
 
-                <div className="w-100 p-1" style={Styles.title}>
-                    {this.props.title}
-                </div>
+                <div onKeyDown={(event) => this.onKeyDown(event)}>
 
-                <div className="w-100 p-1 text-muted" style={Styles.subtitle}>
-                    {this.props.subtitle || ""}
-                </div>
+                    <div className="w-100 p-1" style={Styles.title}>
+                        {this.props.title}
+                    </div>
 
-                <div className="text-right mt-1">
+                    <div className="w-100 p-1 text-muted" style={Styles.subtitle}>
+                        {this.props.subtitle || ""}
+                    </div>
 
-                    <Button color="secondary"
-                            style={Styles.button}
-                            size="sm"
-                            className="m-1"
-                            onClick={() => this.onCancel()}>Cancel</Button>
+                    <div className="text-right mt-1">
 
-                    <Button color="danger"
-                            style={Styles.button}
-                            size="sm"
-                            className="m-1"
-                            onClick={() => this.onConfirm()}>Confirm</Button>
+                        <Button color="secondary"
+                                style={Styles.button}
+                                size="sm"
+                                className="m-1"
+                                onClick={() => this.onCancel()}>Cancel</Button>
+
+                        <Button color="danger"
+                                style={Styles.button}
+                                size="sm"
+                                className="m-1"
+                                onClick={() => this.onConfirm()}>Confirm</Button>
+
+                    </div>
 
                 </div>
 
             </DialogContainer>
 
         );
+
+    }
+
+    private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+
+        if (event.key === "Escape") {
+            this.onCancel();
+        }
 
     }
 

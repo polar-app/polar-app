@@ -9,6 +9,8 @@ import {AppRuntime} from '../../js/AppRuntime';
 import {IStyleMap} from '../../js/react/IStyleMap';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import Dropdown from 'reactstrap/lib/Dropdown';
+import {DropdownToggle} from 'reactstrap';
 
 let sequence: number = 0;
 const Styles: IStyleMap = {
@@ -47,7 +49,8 @@ export class DocContextMenu2 extends React.Component<IProps, IState> {
 
                 <ContextMenuWrapper id={this.id}>
 
-                    <DropdownMenu style={Styles.DropdownMenu}>
+                    <div className="border shadow pt-2 pb-2"
+                         style={{backgroundColor: 'white'}}>
 
                         <DropdownItem onClick={() => NULL_FUNCTION}>
                             Set Title
@@ -83,7 +86,7 @@ export class DocContextMenu2 extends React.Component<IProps, IState> {
                             Delete
                         </DropdownItem>
 
-                    </DropdownMenu>
+                    </div>
 
                 </ContextMenuWrapper>
 
@@ -97,7 +100,6 @@ export class DocContextMenu2 extends React.Component<IProps, IState> {
 
 
 interface IProps {
-    onSetTitle: () => void;
 }
 
 interface IState {

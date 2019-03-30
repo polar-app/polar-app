@@ -45,6 +45,7 @@ import {ContextMenuMessages} from '../../js/contextmenu/ContextMenuMessages';
 import {DocContextMenu} from './DocContextMenu';
 import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
+import Dropdown from 'reactstrap/lib/Dropdown';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -151,9 +152,11 @@ class App<P> extends React.Component<{}, IAppState> {
         // '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
         // });
 
-        Dialogs.prompt({title: 'What is the name of your widget?', placeholder: 'give me something', onCancel: NULL_FUNCTION, onDone: NULL_FUNCTION });
-        // Dialogs.confirm({title: 'Are you sure you want to destroy the
-        // planet?', onCancel: NULL_FUNCTION, onConfirm: NULL_FUNCTION });
+        // Dialogs.prompt({title: 'What is the name of your widget?',
+        // placeholder: 'give me something', onCancel: NULL_FUNCTION, onDone:
+        // NULL_FUNCTION }); Dialogs.confirm({title: 'Are you sure you want to
+        // destroy the planet?', onCancel: NULL_FUNCTION, onConfirm:
+        // NULL_FUNCTION });
 
         return (
             //
@@ -167,7 +170,6 @@ class App<P> extends React.Component<{}, IAppState> {
             // </div>
 
             <div>
-
 
                 <SimpleTooltipEx text={`
                                  This is the text for the tooltip
@@ -196,13 +198,41 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 </DocContextMenu>
 
-                <DocContextMenu2 onSetTitle={() => console.log("set title")}>
+                <DocContextMenu2 >
 
                     <div>
                         Right click or long-tap on this box
                     </div>
 
                 </DocContextMenu2>
+
+                {/*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*/}
+                    {/*<DropdownToggle tag="div">*/}
+                    {/*</DropdownToggle>*/}
+                    {/*<DropdownMenu>*/}
+                        {/*<DropdownItem header>Header</DropdownItem>*/}
+                        {/*<DropdownItem>Some Action</DropdownItem>*/}
+                        {/*<DropdownItem disabled>Action (disabled)</DropdownItem>*/}
+                        {/*<DropdownItem divider />*/}
+                        {/*<DropdownItem>Foo Action</DropdownItem>*/}
+                        {/*<DropdownItem>Bar Action</DropdownItem>*/}
+                        {/*<DropdownItem>Quo Action</DropdownItem>*/}
+                    {/*</DropdownMenu>*/}
+                {/*</Dropdown>*/}
+
+                asdf
+
+                <Dropdown isOpen={true} toggle={NULL_FUNCTION}>
+
+                    <DropdownItem header>Header</DropdownItem>
+                    <DropdownItem>Some Action</DropdownItem>
+                    <DropdownItem disabled>Action (disabled)</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem>Foo Action</DropdownItem>
+                    <DropdownItem>Bar Action</DropdownItem>
+                    <DropdownItem>Quo Action</DropdownItem>
+
+                </Dropdown>
 
             </div>
 

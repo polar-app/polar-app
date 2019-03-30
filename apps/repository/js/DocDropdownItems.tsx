@@ -8,13 +8,9 @@ import {FilePaths} from '../../../web/js/util/FilePaths';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {Clipboards} from '../../../web/js/util/system/clipboard/Clipboards';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import Dropdown from 'reactstrap/lib/Dropdown';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from '../../../web/js/util/Functions';
-import {DocDropdownItems} from './DocDropdownItems';
 
 const log = Logger.create();
 
@@ -27,14 +23,11 @@ const Styles: IStyleMap = {
 
 };
 
-export class DocDropdown extends React.Component<IProps, IState> {
-
-    private open: boolean = false;
+export class DocDropdownItems extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.toggle = this.toggle.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onSetTitle = this.onSetTitle.bind(this);
         this.onCopyURL = this.onCopyURL.bind(this);
@@ -42,38 +35,49 @@ export class DocDropdown extends React.Component<IProps, IState> {
         this.onDeleteRequested = this.onDeleteRequested.bind(this);
         this.onSetTitleRequested = this.onSetTitleRequested.bind(this);
 
-        this.state = {
-            open: this.open,
-        };
-
     }
 
     public render() {
 
         return (
 
-            <div className="doc-dropdown-parent">
+            <div>
+                <DropdownItem onClick={() => this.onSetTitleRequested()}>
+                    Set Title
+                </DropdownItem>
 
-                <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
+                <DropdownItem disabled={! this.props.repoDocInfo.url}
+                              onClick={() => this.onCopyURL(this.props.repoDocInfo.url!)}>
+                    Copy Original URL
+                </DropdownItem>
 
-                    <DropdownToggle color="link"
-                                    className="doc-dropdown-button btn text-muted pl-1 pr-1"
-                                    id={this.props.id + '-dropdown-toggle'}>
+                <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                              hidden={AppRuntime.isBrowser()}
+                              onClick={() => this.onShowFile(this.props.repoDocInfo.filename!)}>
+                    Show File
+                </DropdownItem>
 
-                        <i className="fas fa-ellipsis-h"></i>
+                <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                              hidden={AppRuntime.isBrowser()}
+                              onClick={() => this.onCopyFilePath(this.props.repoDocInfo.filename!)}>
+                    Copy File Path
+                </DropdownItem>
 
-                    </DropdownToggle>
+                <DropdownItem disabled={! this.props.repoDocInfo.filename}
+                              onClick={() => this.onCopyText(this.props.repoDocInfo.fingerprint, "Document ID copied to clipboard")}>
+                    Copy Document ID
+                </DropdownItem>
 
-                    <DropdownMenu style={Styles.DropdownMenu}>
+                {/*TODO: maybe load original URL too?*/}
 
-                        <DocDropdownItems {...this.props}/>
+                <DropdownItem divider />
 
-                    </DropdownMenu>
-
-
-                </Dropdown>
+                <DropdownItem className="text-danger" onClick={() => this.onDeleteRequested()}>
+                    Delete
+                </DropdownItem>
 
             </div>
+
         );
 
     }
@@ -134,35 +138,16 @@ export class DocDropdown extends React.Component<IProps, IState> {
         this.props.onSetTitle(this.props.repoDocInfo, title);
     }
 
-    private toggle() {
-
-        this.open = ! this.state.open;
-
-        this.refresh();
-
-    }
-
-    private refresh() {
-
-        this.setState({
-            open: this.open,
-        });
-
-    }
-
 }
 
 interface IProps {
-    readonly id: string;
-    readonly repoDocInfo: RepoDocInfo;
-    readonly onDelete: (repoDocInfo: RepoDocInfo) => void;
-    readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
+    id: string;
+    repoDocInfo: RepoDocInfo;
+    onDelete: (repoDocInfo: RepoDocInfo) => void;
+    onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
 }
 
 interface IState {
-
-    readonly open: boolean;
-    readonly message?: string;
 
 }
 
