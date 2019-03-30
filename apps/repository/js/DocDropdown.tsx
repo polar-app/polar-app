@@ -53,20 +53,6 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
             <div className="doc-dropdown-parent">
 
-                {/*TODO: I experimented with bringing up a tooltip after the user*/}
-                {/*selects an item but there's no way to auto-hide after it was */}
-                {/*selected with a display.  I might be able to implement one*/}
-                {/*that auto-hides itself with componentWillReceiveProps and then */}
-                {/*give it a message and then show and then hide the tooltip after */}
-                {/*this event but this will take a while.*/}
-                {/*<Tooltip placement="left"*/}
-                         {/*isOpen={this.state.open && this.state.message !== undefined}*/}
-                         {/*autohide={true}*/}
-                         {/*hide={4000}*/}
-                         {/*target={this.props.id}>*/}
-                    {/*Hello world!*/}
-                {/*</Tooltip>*/}
-
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 
                     <DropdownToggle color="link"
