@@ -44,6 +44,7 @@ import {MenuItem} from '@burtonator/react-dropdown';
 import {ContextMenuMessages} from '../../js/contextmenu/ContextMenuMessages';
 import {DocContextMenu} from './DocContextMenu';
 import {Dialogs} from '../../js/ui/dialogs/Dialogs';
+import {DocContextMenu2} from './DocContextMenu2';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -151,7 +152,8 @@ class App<P> extends React.Component<{}, IAppState> {
         // });
 
         Dialogs.prompt({title: 'What is the name of your widget?', placeholder: 'give me something', onCancel: NULL_FUNCTION, onDone: NULL_FUNCTION });
-        // Dialogs.confirm({title: 'Are you sure you want to destroy the planet?', onCancel: NULL_FUNCTION, onConfirm: NULL_FUNCTION });
+        // Dialogs.confirm({title: 'Are you sure you want to destroy the
+        // planet?', onCancel: NULL_FUNCTION, onConfirm: NULL_FUNCTION });
 
         return (
             //
@@ -193,6 +195,14 @@ class App<P> extends React.Component<{}, IAppState> {
                     </div>
 
                 </DocContextMenu>
+
+                <DocContextMenu2 onSetTitle={() => console.log("set title")}>
+
+                    <div>
+                        Right click or long-tap on this box
+                    </div>
+
+                </DocContextMenu2>
 
             </div>
 
