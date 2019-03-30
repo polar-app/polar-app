@@ -312,21 +312,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         <div>
 
-                                            <SimpleTooltipEx text={`
-                                                             Tag multiple documents at once.  To
-                                                             find untagged documents sort by the
-                                                             'Tags' column (twice).  Once to sort
-                                                             alphabetically and then second click
-                                                             will reverse the sort showing
-                                                             untagged documents.`}
-                                                             placement="bottom">
-
-                                                <TagButton id="tag-multiple-documents"
-                                                           disabled={this.state.selected.length <= 0}
-                                                           tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                           onSelectedTags={tags => this.onMultiTagged(tags)}/>
-
-                                            </SimpleTooltipEx>
+                                            <TagButton id="tag-multiple-documents"
+                                                       disabled={this.state.selected.length <= 0}
+                                                       tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                       onSelectedTags={tags => this.onMultiTagged(tags)}/>
 
                                         </div>
 

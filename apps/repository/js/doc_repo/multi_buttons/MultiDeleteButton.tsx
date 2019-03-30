@@ -19,6 +19,7 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
         return (<div>
 
             <SimpleTooltipEx text="Delete multiple documents at once."
+                             disabled={this.props.disabled}
                              placement="bottom">
 
                 <Button id="multi-delete-button"

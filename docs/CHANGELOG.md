@@ -1,5 +1,8 @@
 # 1.15.6
 
+- Fixed bad bug in the webapp where we wouldn't ever fetch the latest docs from
+  firebase.
+
 - A ton of improvement to tooltips needed for mobile support but also the fact 
   that having them popup bothered a lot of users.
 

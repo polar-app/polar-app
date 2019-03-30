@@ -119,6 +119,11 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
     }
 
     private trigger() {
+
+        if (this.props.disabled) {
+            return;
+        }
+
         this.setState({open: true});
     }
 
@@ -129,6 +134,7 @@ interface IProps {
     readonly placement?: 'bottom' | 'top' | 'right' | 'left';
     readonly show?: number;
     readonly style?: React.CSSProperties;
+    readonly disabled?: boolean;
 }
 
 interface IState {
