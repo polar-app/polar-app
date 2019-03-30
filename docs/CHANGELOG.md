@@ -1,5 +1,7 @@
 # 1.15.6
 
+- The doc repo now supports a context menu for each row
+
 - Fixed bad bug in the webapp where we wouldn't ever fetch the latest docs from
   firebase.
 
