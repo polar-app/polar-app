@@ -14,6 +14,8 @@ import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {AppRuntime} from '../../../web/js/AppRuntime';
+import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
+import {NULL_FUNCTION} from '../../../web/js/util/Functions';
 
 const log = Logger.create();
 
@@ -39,6 +41,9 @@ export class DocDropdown extends React.Component<IProps, IState> {
         this.onDelete = this.onDelete.bind(this);
         this.onSetTitle = this.onSetTitle.bind(this);
         this.onCopyURL = this.onCopyURL.bind(this);
+
+        this.onDeleteRequested = this.onDeleteRequested.bind(this);
+        this.onDelete = this.onDelete.bind(this);
 
         this.state = {
             open: this.open,
@@ -109,7 +114,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                         <DropdownItem divider />
 
-                        <DropdownItem className="text-danger" onClick={() => this.select('delete')}>
+                        <DropdownItem className="text-danger" onClick={() => this.onDeleteRequested()}>
                             Delete
                         </DropdownItem>
 
@@ -125,16 +130,21 @@ export class DocDropdown extends React.Component<IProps, IState> {
                                   onCancel={() => this.select('none')}
                                   onComplete={this.onSetTitle}/>
 
-                <ConfirmPopover open={this.state.selected === 'delete'}
-                                target={this.props.id + '-dropdown-toggle'}
-                                title="Are you sure you want to delete this document? "
-                                subtitle="The document and all annotations will be lost."
-                                onCancel={() => this.select('none')}
-                                onConfirm={this.onDelete}/>
-
             </div>
         );
 
+    }
+
+    private onDeleteRequested() {
+
+        Dialogs.confirm({title: "Are you sure you want to delete this document? ",
+                         subtitle: "The document and all annotations will be lost.",
+                         onCancel: NULL_FUNCTION,
+                         onConfirm: () => this.onDelete()});
+    }
+
+    private onDelete() {
+        this.props.onDelete(this.props.repoDocInfo);
     }
 
     private onShowFile(filename: string) {
@@ -174,12 +184,6 @@ export class DocDropdown extends React.Component<IProps, IState> {
         this.select('none');
         this.props.onSetTitle(this.props.repoDocInfo, title);
     }
-
-    private onDelete() {
-        this.select('none');
-        this.props.onDelete(this.props.repoDocInfo);
-    }
-
 
     private toggle() {
 
