@@ -5,6 +5,7 @@ import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
 import {ContextMenu} from '../../js/ui/context_menu/ContextMenu';
 import Dropdown, {DropdownMenu, MenuItem} from '@burtonator/react-dropdown';
 import {NULL_FUNCTION} from '../../js/util/Functions';
+import {KeyBoundMenuItem} from './KeyBoundMenuItem';
 
 let sequence: number = 0;
 
@@ -17,7 +18,7 @@ export class DocContextMenu extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.id = 'my-context-menu-' + sequence++;
+        this.id = 'doc-context-menu-' + sequence++;
 
         this.contextMenuHandlers = prepareContextMenuHandlers({id: this.id});
 
@@ -42,8 +43,17 @@ export class DocContextMenu extends React.Component<IProps, IState> {
                         <DropdownMenu>
 
                             <MenuItem onSelect={() => this.props.onSetTitle()}>
-                                Set Title
+
+                                <KeyBoundMenuItem text="Set Title" keyBinding="C-t"/>
+
                             </MenuItem>
+
+                            <MenuItem onSelect={() => this.props.onSetTitle()}>
+
+                                <KeyBoundMenuItem text="Do something else" keyBinding="C-f"/>
+
+                            </MenuItem>
+
 
                             <MenuItem onSelect={() => this.props.onSetTitle()}>
 
