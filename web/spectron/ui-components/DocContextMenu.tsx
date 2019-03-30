@@ -25,7 +25,6 @@ export class DocContextMenu extends React.Component<IProps, IState> {
 
     public render() {
 
-
         return (
 
             <div>
@@ -43,8 +42,14 @@ export class DocContextMenu extends React.Component<IProps, IState> {
                         <DropdownMenu>
 
                             <MenuItem onSelect={() => this.props.onSetTitle()}>
-
                                 Set Title
+                            </MenuItem>
+
+                            <MenuItem onSelect={() => this.props.onSetTitle()}>
+
+                                <div className="text-danger">
+                                    Delete
+                                </div>
 
                             </MenuItem>
 
