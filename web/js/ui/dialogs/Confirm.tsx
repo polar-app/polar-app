@@ -2,6 +2,7 @@ import React from 'react';
 import {Button} from 'reactstrap';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 import {Blackout} from '../blackout/Blackout';
+import {DialogContainer} from './DialogContainer';
 
 class Styles {
 
@@ -36,54 +37,35 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
     public render() {
 
-        Blackout.toggle(this.state.open);
-
         return (
 
-            <NullCollapse open={this.state.open}>
+            <DialogContainer open={this.state.open}>
 
-                <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100vw',
-                        height: '100vh',
-                        display: 'flex'
-                    }}>
-
-                    <div className="rounded border p-2"
-                         style={{
-                            margin: 'auto',
-                            minHeight: '100px',
-                            zIndex: 1000000,
-                            backgroundColor: 'var(--white)'
-                         }}>
-
-                        <div className="w-100 p-1" style={Styles.title}>
-                            {this.props.title}
-                        </div>
-
-                        <div className="w-100 p-1 text-muted" style={Styles.subtitle}>
-                            {this.props.subtitle || ""}
-                        </div>
-
-                        <div className="text-right">
-                            <Button color="secondary"
-                                    style={Styles.button}
-                                    size="sm"
-                                    className="m-1"
-                                    onClick={() => this.onCancel()}>Cancel</Button>
-
-                            <Button color="danger"
-                                    style={Styles.button}
-                                    size="sm"
-                                    className="m-1"
-                                    onClick={() => this.onConfirm()}>Confirm</Button>
-                        </div>
-                    </div>
+                <div className="w-100 p-1" style={Styles.title}>
+                    {this.props.title}
                 </div>
 
-            </NullCollapse>
+                <div className="w-100 p-1 text-muted" style={Styles.subtitle}>
+                    {this.props.subtitle || ""}
+                </div>
+
+                <div className="text-right mt-1">
+
+                    <Button color="secondary"
+                            style={Styles.button}
+                            size="sm"
+                            className="m-1"
+                            onClick={() => this.onCancel()}>Cancel</Button>
+
+                    <Button color="danger"
+                            style={Styles.button}
+                            size="sm"
+                            className="m-1"
+                            onClick={() => this.onConfirm()}>Confirm</Button>
+
+                </div>
+
+            </DialogContainer>
 
         );
 
@@ -91,13 +73,11 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
     private onConfirm(): void {
         this.setState({open: false});
-        Blackout.disable();
         this.props.onConfirm();
     }
 
     private onCancel(): void {
         this.setState({open: false});
-        Blackout.disable();
         this.props.onCancel();
     }
 

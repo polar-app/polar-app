@@ -150,7 +150,8 @@ class App<P> extends React.Component<{}, IAppState> {
         // '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
         // });
 
-        Dialogs.prompt({title: 'What is the name of your widget?', placeholder: 'give me something', onCancel: NULL_FUNCTION, onDone: NULL_FUNCTION });
+        // Dialogs.prompt({title: 'What is the name of your widget?', placeholder: 'give me something', onCancel: NULL_FUNCTION, onDone: NULL_FUNCTION });
+        Dialogs.confirm({title: 'Are you sure you want to destroy the planet?', onCancel: NULL_FUNCTION, onConfirm: NULL_FUNCTION });
 
         return (
             //

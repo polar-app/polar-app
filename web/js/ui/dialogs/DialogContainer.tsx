@@ -40,6 +40,7 @@ export class DialogContainer extends React.PureComponent<ConfirmProps, IState> {
                         {this.props.children}
 
                     </div>
+
                 </div>
 
             </NullCollapse>
