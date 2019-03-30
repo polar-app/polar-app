@@ -27,6 +27,7 @@ import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {Promises} from '../util/Promises';
 
 const log = Logger.create();
 
@@ -149,6 +150,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         if (this.preferredSource() === 'cache') {
 
+            // Try to get the FIRST snapshot from the cache if possible and then
+            // continue after that working with server snapshots and updated
+            // data
+
             try {
 
                 const cachedSnapshot = await query.get({ source: 'cache' });
@@ -156,7 +161,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 onNextForSnapshot(cachedSnapshot);
 
             } catch (e) {
-                // no cached snapshot
+                // no cached snapshot is available and that's ok.
             }
 
         }
@@ -264,15 +269,23 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 if (preferredSource === 'cache') {
 
-                    // go cache first, then server if we don't have it in the
-                    // cache only then do we fail which would be when we're not
-                    // online.
+                    // Firebase supports three cache strategies.  The first
+                    // (default) is server with fall back to cache but what we
+                    // need is the reverse.  We need cache but server refresh to
+                    // pull the up-to-date copy.
+                    //
+                    // What we now do is we get two promises, then return the
+                    // first that works or throw an error if both fail.
+                    //
+                    // In this situation we ALWAYs go to the server though
+                    // because we need to get the up-to-date copy to refresh
+                    // BUT we can get the initial version FASTER since we
+                    // can resolve it from cache.
 
-                    try {
-                        return await ref.get({ source: this.preferredSource() });
-                    } catch (e) {
-                        return await ref.get({ source: 'server' });
-                    }
+                    const cachePromise = ref.get({ source: 'cache' });
+                    const serverPromise = ref.get({ source: 'server' });
+
+                    return Promises.any(cachePromise, serverPromise);
 
                 } else {
                     // now revert to checking the server, then cache if we're
