@@ -39,6 +39,10 @@ import {AccountControlDropdown} from '../../../web/js/ui/cloud_auth/AccountContr
 import {RichTextFeatureIntro} from '../../../web/js/annotation_sidebar/RichTextFeatureIntro';
 import {SimpleTooltip} from '../../js/ui/tooltip/SimpleTooltip';
 import {SimpleTooltipEx} from '../../js/ui/tooltip/SimpleTooltipEx';
+import {ContextMenu} from '../../js/ui/context_menu/ContextMenu';
+import {MenuItem} from '@burtonator/react-dropdown';
+import {ContextMenuMessages} from '../../js/contextmenu/ContextMenuMessages';
+import {DocContextMenu} from './DocContextMenu';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -121,8 +125,6 @@ class App<P> extends React.Component<{}, IAppState> {
             {id: 'google', label: 'google'}
         ];
 
-        const contextMenuHandlers = prepareContextMenuHandlers({id: 'my-context-menu'});
-
         const steps = [
             {
                 target: '.my-first-step',
@@ -177,11 +179,16 @@ class App<P> extends React.Component<{}, IAppState> {
 
 
                 <SimpleTooltip target="old-tooltip-example">
-
                     this is an old tooltip.
-
                 </SimpleTooltip>
 
+                <DocContextMenu onSetTitle={() => console.log("set title")}>
+
+                    <div>
+                        Right click or long-tap on this box
+                    </div>
+
+                </DocContextMenu>
 
             </div>
 
