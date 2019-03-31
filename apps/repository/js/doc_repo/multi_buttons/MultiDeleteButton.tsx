@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
-import {SimpleTooltip} from '../../../../../web/js/ui/tooltip/SimpleTooltip';
-import {ConfirmPrompts} from '../../../../../web/js/ui/confirm/ConfirmPrompts';
 import {SimpleTooltipEx} from '../../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {Dialogs} from '../../../../../web/js/ui/dialogs/Dialogs';
 
