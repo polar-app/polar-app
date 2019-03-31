@@ -1,4 +1,4 @@
-import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult, Visibility} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -33,6 +33,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {Datastores} from './Datastores';
+import {WriteFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -323,7 +324,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                            opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
 
         return await tracer.traceAsync('writeFile', async () => {
-            return await this.writeFile0(backend, ref, data, meta);
+            return await this.writeFile0(backend, ref, data, opts);
         });
 
     }

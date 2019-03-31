@@ -3,14 +3,13 @@ import React from 'react';
 import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import {Visibility} from '../../datastore/Datastore';
+import {DatastoreCapabilities} from '../../datastore/Datastore';
 import Input from 'reactstrap/lib/Input';
 import {SocialLinks} from '../../util/SocialLinks';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {PersistenceLayer} from '../../datastore/PersistenceLayer';
-import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {SplitLayout} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
-import {SplitLayoutRight} from '../../ui/split_layout/SplitLayout';
+import {SplitLayoutRight} from '../../ui/split_layout/SplitLayoutRight';
 
 const log = Logger.create();
 
