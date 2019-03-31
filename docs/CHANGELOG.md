@@ -1,8 +1,57 @@
-# 1.15.3
+# 1.16.0
+
+- Multi-delete button now uses the confirm prompt properly.
+
+- The doc repo now supports a context menu for each row
+
+- Fixed major performance issue with the datastore on Electron as it was going 
+  through the IPC process for the datastore data reads and this was amazingly 
+  slow. Moving it into the renderer process speeds up reads by about 10x.
+
+- Fixed bad bug in the webapp where we wouldn't ever fetch the latest docs from
+  firebase.
+
+- A ton of improvement to tooltips needed for mobile support but also the fact 
+  that having them popup bothered a lot of users.
+
+- Inline app message that styling with rich HTML is supported for new users.
+
+- More improvements for mobile.
+
+- Fixed bag bug where Firebase batches weren't used properly and we had a 
+  delete outside of the batch which could leave FB inconsistent. 
+
+- Always show the multi-delete and multi-tag buttons even if just one is 
+  selected as it will still work just fine.
+
+- Make the top buttons for tagging and delete permanently displayed not hidden. 
+
+- Added a couple key metrics for Firebase performance via tracer so that we can
+  verify real-world behavior.
+
+- RendererAnalytics now safer if accidentally called from the Node context and 
+  just silently fails.
+
+- RendererAnalytics now supports using a stopwatch so we can track the times 
+  of important operations.
+
+- Improved CSS of annotation sidebar and included instructions on how to create
+  your first annotation.
+
+- Use the sidebar area to explain how to create annotations.
+
+# 1.15.5
+
+- Fix to webapp to disable the context menu default when we intercept with our
+  own context menu.
+
+# 1.15.4
 
 - New PHZ loader that's web friendly and doesn't require Electron.  The new 
   loader is now the default and means that the webapp can read (but not 
   currently) write PHZ files.  
+
+# 1.15.3
 
 - Merged PR to support wayland via X-wayland for ubuntu and other distributions. 
 

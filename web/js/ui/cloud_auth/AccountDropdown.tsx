@@ -3,6 +3,7 @@ import React from 'react';
 import {Logger} from '../../logger/Logger';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {SimpleTooltip} from '../tooltip/SimpleTooltip';
+import {SimpleTooltipEx} from '../tooltip/SimpleTooltipEx';
 
 const log = Logger.create();
 
@@ -29,44 +30,45 @@ export class AccountDropdown extends React.PureComponent<IProps, IState> {
                     </DropdownToggle>
                     <DropdownMenu className="shadow" right>
 
-                        <DropdownItem id="cloud-sync-invite-users"
-                                      size="sm"
-                                      onClick={() => this.props.onInvite()}>
+                        <SimpleTooltipEx placement="left"
+                                         show={0}
+                                         text={`Invite users to Polar. If they
+                                                sign up and use cloud sync we
+                                                will give you a free month of
+                                                cloud sync.`}>
 
-                            <i className="fas fa-user-plus mr-1"></i>
+                            <DropdownItem id="cloud-sync-invite-users"
+                                          size="sm"
+                                          onClick={() => this.props.onInvite()}>
 
-                            Invite Users
+                                <i className="fas fa-user-plus mr-1"></i>
 
-                            <SimpleTooltip target="cloud-sync-invite-users"
-                                           show={0}
-                                           placement="bottom">
-                                Invite users to Polar. If they sign up and
-                                use cloud sync we will give you a free month
-                                of cloud sync.
-                            </SimpleTooltip>
+                                Invite Users
 
-                        </DropdownItem>
+                            </DropdownItem>
+
+                        </SimpleTooltipEx>
+
                         <DropdownItem divider />
 
-                        <DropdownItem id="cloud-sync-logout"
-                                      size="sm"
-                                      onClick={() => this.props.onLogout()}
-                                      className="text-danger">
+                        <SimpleTooltipEx placement="left"
+                                         show={0}
+                                         text={`Logout of cloud sync. Your data
+                                                will no longer be synchronized
+                                                between your devices.`}>
 
-                            <i className="fas fa-sign-out-alt mr-1"></i>
+                            <DropdownItem id="cloud-sync-logout"
+                                          size="sm"
+                                          onClick={() => this.props.onLogout()}
+                                          className="text-danger">
 
-                            Logout
+                                <i className="fas fa-sign-out-alt mr-1"></i>
 
-                            <SimpleTooltip target="cloud-sync-logout"
-                                           show={0}
-                                           placement="bottom">
+                                Logout
 
-                                Logout of cloud sync. Your data will no
-                                longer be synchronized between your devices.
+                            </DropdownItem>
 
-                            </SimpleTooltip>
-
-                        </DropdownItem>
+                        </SimpleTooltipEx>
 
                     </DropdownMenu>
                 </UncontrolledDropdown>

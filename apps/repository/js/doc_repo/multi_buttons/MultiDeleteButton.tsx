@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
-import {SimpleTooltip} from '../../../../../web/js/ui/tooltip/SimpleTooltip';
-import {ConfirmPrompts} from '../../../../../web/js/ui/confirm/ConfirmPrompts';
+import {SimpleTooltipEx} from '../../../../../web/js/ui/tooltip/SimpleTooltipEx';
+import {Dialogs} from '../../../../../web/js/ui/dialogs/Dialogs';
 
 export class MultiDeleteButton extends React.Component<IProps, IState> {
 
@@ -17,24 +17,24 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
 
         return (<div>
 
-            <Button id="multi-delete-button"
-                    size="sm"
-                    color="light"
-                    className="border"
-                    onClick={() => this.onClick()}>
+            <SimpleTooltipEx text="Delete multiple documents at once."
+                             disabled={this.props.disabled}
+                             placement="bottom">
 
-                <span className="text-danger">
-                    <i className="fas fa-trash-alt"></i>
-                </span>
+                <Button id="multi-delete-button"
+                        size="sm"
+                        color="light"
+                        className="border"
+                        disabled={this.props.disabled}
+                        onClick={() => this.onClick()}>
 
-            </Button>
+                    <span className="text-danger">
+                        <i className="fas fa-trash-alt"></i>
+                    </span>
 
-            <SimpleTooltip target="multi-delete-button"
-                           placement="bottom">
+                </Button>
 
-                Delete multiple documents at once.
-
-            </SimpleTooltip>
+            </SimpleTooltipEx>
 
         </div>);
 
@@ -42,11 +42,13 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
 
     private onClick() {
 
-        ConfirmPrompts.create({
-            target: '#multi-delete-button',
+        if (this.props.disabled) {
+            return;
+        }
+
+        Dialogs.confirm({
             title: "Are you sure you want to delete these documents?",
             subtitle: "This is a permanent operation and can't be undone.",
-            placement: 'bottom',
             onCancel: () => this.props.onCancel(),
             onConfirm: () => this.props.onConfirm(),
         });
@@ -56,6 +58,7 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    readonly disabled?: boolean;
     readonly onCancel: () => void;
     readonly onConfirm: () => void;
 }

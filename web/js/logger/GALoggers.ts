@@ -20,7 +20,7 @@ export class GALoggers {
 
         const action =
             error.message.replace(/[^a-zA-Z]+/g, "-")
-                .substring(0, 500)
+                .substring(0, 80)
                 .toLowerCase();
 
         return {category: 'error', action};

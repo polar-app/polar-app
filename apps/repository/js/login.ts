@@ -44,6 +44,35 @@ class SignInSuccessURLs {
 
 }
 
+class InitialLogin {
+
+    public static get() {
+
+        const key = "has-login";
+
+        const result = localStorage.getItem(key) !== 'true';
+
+        localStorage.setItem(key, 'true');
+
+        return result;
+
+    }
+
+    public static sentAnalytics() {
+
+        if (this.get()) {
+
+            const runtime = AppRuntime.type();
+            const category = runtime + '-login';
+            RendererAnalytics.event({category, action: 'initial'});
+
+        }
+
+    }
+
+}
+
+
 window.addEventListener('load', async () => {
 
     Firebase.init();
@@ -57,6 +86,8 @@ window.addEventListener('load', async () => {
     }
 
     RendererAnalytics.pageviewFromLocation();
+
+    InitialLogin.sentAnalytics();
 
 });
 

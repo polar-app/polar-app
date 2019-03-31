@@ -17,7 +17,10 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {Visibility} from '../datastore/Datastore';
 import {Datastores} from '../datastore/Datastores';
 import {Backend} from '../datastore/Backend';
-import doc = Mocha.reporters.doc;
+import {ReadingProgressResume} from './ReadingProgressResume';
+import {PrefsProvider} from '../datastore/Datastore';
+import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {Timer} from '../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -43,8 +46,15 @@ export class WebView extends View {
 
         this.model.registerListenerForDocumentLoaded(event => this.onDocumentLoaded(event));
 
+        this.createTimer();
+
         return this;
 
+    }
+
+    private createTimer() {
+        const documentLoadTimer = RendererAnalytics.createTimer('document', 'loaded');
+        this.model.registerListenerForDocumentLoaded(event => documentLoadTimer.stop());
     }
 
     /**
