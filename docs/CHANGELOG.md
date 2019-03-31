@@ -1,5 +1,9 @@
 # 1.15.6
 
+- Fixed major performance issue with the datastore on Electron as it was going 
+  through the IPC process for the datastore data reads and this was amazingly 
+  slow. Moving it into the renderer process speeds up reads by about 10x.
+
 - Fixed bad bug in the webapp where we wouldn't ever fetch the latest docs from
   firebase.
 
