@@ -1,4 +1,6 @@
 import {Objects} from "../util/Objects";
+import {Timeouts} from '../util/Timeouts';
+import {Timeout} from '../util/Timeouts';
 
 /**
  * Throttles a set of operations to a max of N operations at once or T
@@ -12,7 +14,7 @@ export class Throttler {
 
     private nrRequestsOutstanding: number = 0;
 
-    private timeout?: TimeoutID;
+    private timeout?: Timeout;
 
     private lastExecuted: number = 0;
 
@@ -41,7 +43,7 @@ export class Throttler {
             if (this.timeout === undefined) {
 
                 this.timeout =
-                    window.setTimeout(() => this.doExecViaTimeout(), this.opts.maxTimeout);
+                    Timeouts.setTimeout(() => this.doExecViaTimeout(), this.opts.maxTimeout);
 
             }
 
@@ -73,7 +75,7 @@ export class Throttler {
         } finally {
 
             if (this.timeout !== undefined) {
-                window.clearTimeout(this.timeout);
+                this.timeout.clear();
                 this.timeout = undefined;
             }
 
@@ -112,5 +114,3 @@ class DefaultThrottlerOpts implements ThrottlerOpts {
     public readonly maxRequests = 50;
     public readonly maxTimeout = 250;
 }
-
-export type TimeoutID = number;
