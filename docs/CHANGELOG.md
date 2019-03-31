@@ -1,5 +1,7 @@
 # 1.16.0
 
+- Multi-delete button now uses the confirm prompt properly.
+
 - The doc repo now supports a context menu for each row
 
 - Fixed major performance issue with the datastore on Electron as it was going 
