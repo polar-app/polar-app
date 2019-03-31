@@ -3,6 +3,7 @@ import Button from 'reactstrap/lib/Button';
 import {SimpleTooltip} from '../../../../../web/js/ui/tooltip/SimpleTooltip';
 import {ConfirmPrompts} from '../../../../../web/js/ui/confirm/ConfirmPrompts';
 import {SimpleTooltipEx} from '../../../../../web/js/ui/tooltip/SimpleTooltipEx';
+import {Dialogs} from '../../../../../web/js/ui/dialogs/Dialogs';
 
 export class MultiDeleteButton extends React.Component<IProps, IState> {
 
@@ -47,11 +48,9 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
             return;
         }
 
-        ConfirmPrompts.create({
-            target: '#multi-delete-button',
+        Dialogs.confirm({
             title: "Are you sure you want to delete these documents?",
             subtitle: "This is a permanent operation and can't be undone.",
-            placement: 'bottom',
             onCancel: () => this.props.onCancel(),
             onConfirm: () => this.props.onConfirm(),
         });
