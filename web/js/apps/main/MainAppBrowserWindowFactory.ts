@@ -50,7 +50,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
          * that we keep user cookies including Google Analytics cookies.
          */
         //
-        partition: "persist:polar"
+        partition: 'persist:polar-app'
 
     }
 
@@ -105,8 +105,6 @@ export class MainAppBrowserWindowFactory {
                 = Math.min(current, max);
 
         }
-
-        log.info(`Creating window for URL: ${url} in partition ${browserWindowOptions.webPreferences!.partition}`);
 
         // Create the browser window.
         const browserWindow = new BrowserWindow(browserWindowOptions);

@@ -111,11 +111,11 @@ export class MainApp {
         //
         // });
 
-        const cacheInterceptorService =
-            new CachingStreamInterceptorService(cacheRegistry, mainSession.protocol);
+        // const cacheInterceptorService =
+        //     new CachingStreamInterceptorService(cacheRegistry, mainSession.protocol);
 
-        await cacheInterceptorService.start()
-            .catch(err => log.error(err));
+        // await cacheInterceptorService.start()
+        //     .catch(err => log.error(err));
 
         await captureController.start();
 
