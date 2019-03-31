@@ -47,11 +47,6 @@ import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
 
-interface DropdownContext {
-    toggle: () => void;
-}
-
-
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
@@ -62,12 +57,6 @@ class App<P> extends React.Component<{}, IAppState> {
         this.state = {
             dropdownOpen: false,
             splitButtonOpen: false
-        };
-    }
-
-    public getChildContext(): DropdownContext {
-        return {
-            toggle: NULL_FUNCTION
         };
     }
 
