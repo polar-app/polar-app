@@ -6,6 +6,7 @@ import {RemoteDatastores} from '../RemoteDatastores';
 import {CloudAwareDatastore} from '../CloudAwareDatastore';
 import {FirebaseDatastore} from '../FirebaseDatastore';
 import {LazyWriteListenablePersistenceLayer} from '../LazyWriteListenablePersistenceLayer';
+import {HybridRemoteDatastores} from '../HybridRemoteDatastores';
 
 const log = Logger.create();
 
@@ -15,7 +16,7 @@ export class CloudPersistenceLayerFactory {
 
         log.info("Using remote persistence layer and cloud aware data store");
 
-        const local = RemoteDatastores.create();
+        const local = HybridRemoteDatastores.create();
         const cloud = new FirebaseDatastore();
 
         const datastore = new CloudAwareDatastore(local, cloud);
