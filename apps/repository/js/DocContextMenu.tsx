@@ -7,6 +7,7 @@ import {NULL_FUNCTION} from '../../../web/js/util/Functions';
 import {DocDropdownItems} from './DocDropdownItems';
 import {RepoDocInfo} from './RepoDocInfo';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
+import deepEqual = require('deep-equal');
 
 let sequence: number = 0;
 
@@ -23,6 +24,10 @@ export class DocContextMenu extends React.Component<IProps, IState> {
 
         this.contextMenuHandlers = prepareContextMenuHandlers({id: this.id});
 
+    }
+
+    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
+        return ! deepEqual(this.props.repoDocInfo, nextProps.repoDocInfo);
     }
 
     public render() {

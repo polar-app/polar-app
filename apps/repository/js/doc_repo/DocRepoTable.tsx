@@ -461,9 +461,10 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         accessor: 'title',
                                         className: 'doc-table-col-title',
                                         Cell: (row: any) => {
-                                            const id = 'doc-repo-row-title' + row.index;
 
+                                            const id = 'doc-repo-row-title' + row.index;
                                             const repoDocInfo: RepoDocInfo = row.original;
+
                                             return (
 
                                                 <div id={id}>
@@ -675,8 +676,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                             const repoDocInfo: RepoDocInfo = row.original;
 
                                             return (
-                                                // TODO: move to a PureComponent to
-                                                // improve performance
 
                                                 <DocContextMenu {...contextMenuProps}
                                                                 id={'context-menu-' + row.index}
@@ -702,9 +701,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         sortable: false,
                                         className: 'doc-dropdown d-none-mobile',
                                         Cell: (row: any) => {
-
-                                            // TODO: move to a PureComponent to
-                                            // improve performance
 
                                             const repoDocInfo: RepoDocInfo = row.original;
 
