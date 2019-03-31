@@ -2,7 +2,8 @@
 import React from 'react';
 import {Splash} from '../../Splash';
 import {EmbeddedImages} from '../whats_new/EmbeddedImages';
-import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayout';
+import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
+import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
 import {CallToActionLink} from '../components/CallToActionLink';
 
 const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';

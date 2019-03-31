@@ -13,7 +13,7 @@
     box-sizing: border-box;
 }
 
-.dropdown-menu button:hover {
+button.dropdown-item:hover {
     background-color: #D8D8D8;
     background-image: none;
 }

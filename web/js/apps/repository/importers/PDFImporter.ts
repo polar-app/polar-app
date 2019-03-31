@@ -182,10 +182,11 @@ export class PDFImporter {
         // also be danging if the user deleted the file.  Wasting space here is
         // a good thing.  Space is cheap.
 
-        const toData = async (): Promise<BinaryFileData> => {
+        const toBinaryFileData = async (): Promise<BinaryFileData> => {
 
             // TODO(webapp): make this into a toBlob function call
             if (URLs.isURL(docPath)) {
+                log.info("Reading data from URL: ", docPath);
                 const response = await fetch(docPath);
                 const blob = await response.blob();
                 return blob;
@@ -195,7 +196,7 @@ export class PDFImporter {
 
         };
 
-        const data: BinaryFileData = await toData();
+        const binaryFileData: BinaryFileData = await toBinaryFileData();
 
         const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
 
@@ -216,7 +217,7 @@ export class PDFImporter {
             hashcode: docMeta.docInfo.hashcode
         };
 
-        await persistenceLayer.writeFile(Backend.STASH, fileRef, data);
+        await persistenceLayer.writeFile(Backend.STASH, fileRef, binaryFileData);
 
         await persistenceLayer.write(pdfMeta.fingerprint, docMeta);
 

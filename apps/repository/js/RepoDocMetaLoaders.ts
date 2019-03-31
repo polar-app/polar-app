@@ -5,10 +5,9 @@ import {Releaseable} from '../../../web/js/reactor/EventListener';
 export class RepoDocMetaLoaders {
 
     /**
-     * Add an EventListener to the RepoDocMetaLoader that's throttled
+     * Add an EventListener to the RepoDocMetaLoader that's throttled so that
+     * we get periodic updates for performance reasons.
      *
-     * @param repoDocMetaLoader
-     * @param callback
      */
     public static addThrottlingEventListener(repoDocMetaLoader: RepoDocMetaLoader,
                                              callback: () => void): Releaseable {
@@ -35,7 +34,7 @@ export class RepoDocMetaLoaders {
         // here too so that this flush behavior couldn't be triggered too often
         // but maybe we're overthinking here (for now).
 
-        const throttlerOpts = { maxRequests: 100, maxTimeout: 300 };
+        const throttlerOpts = { maxRequests: 250, maxTimeout: 500 };
 
         const refreshThrottler = new Throttler(() => callback(), throttlerOpts);
 

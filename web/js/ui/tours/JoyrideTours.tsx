@@ -1,7 +1,8 @@
 import {placement, Step} from 'react-joyride';
 import * as React from 'react';
-import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../split_layout/SplitLayout';
+import {SplitLayout, SplitLayoutLeft} from '../split_layout/SplitLayout';
 import {Styles} from '../../apps/repository/RepositoryTour';
+import {SplitLayoutRight} from '../split_layout/SplitLayoutRight';
 
 export class JoyrideTours {
 
@@ -62,7 +63,8 @@ export class JoyrideTours {
 export interface EnhancedStep extends Step {
 
     /**
-     * True when we should go the next step as soon as its selector is available.
+     * True when we should go the next step as soon as its selector is
+     * available.
      */
     readonly autoNext?: boolean;
 

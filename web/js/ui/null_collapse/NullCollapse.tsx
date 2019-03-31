@@ -24,7 +24,8 @@ export class NullCollapse extends React.Component<IProps, IState> {
         if (this.props.open) {
             return this.props.children;
         } else {
-            return <div/>;
+            // return an empty array to not change the DOM at all.
+            return [];
         }
 
     }

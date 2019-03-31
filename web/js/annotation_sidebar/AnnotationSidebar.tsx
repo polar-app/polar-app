@@ -250,7 +250,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             return (
 
-
                 <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1">
 
                     <SplitBar>
@@ -274,15 +273,60 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         };
 
+        const NoAnnotations = () => {
+            return (
+                <div className="p-2">
+
+                    <h4 className="text-center text-muted">
+                        No Annotations
+                    </h4>
+
+                    <p className="text-muted"
+                       style={{fontSize: '16px'}}>
+
+                        No annotations have yet been created. To create new
+                        annotations create a
+                        new <span style={{backgroundColor: "rgba(255,255,0,0.3)"}}>highlight</span> by
+                        selecting text in the document.
+                    </p>
+
+                    <p className="text-muted"
+                       style={{fontSize: '16px'}}>
+
+                        The highlight will then be shown here and you can
+                        then easily attach comments and flashcards to it
+                        directly.
+                    </p>
+
+                </div>
+            );
+        };
+
+        const AnnotationsBlock = () => {
+
+            if (annotations.length > 0) {
+                return this.createItems(annotations);
+            } else {
+                return <NoAnnotations/>;
+            }
+
+        };
+
+        const Annotations = () => {
+
+            return <div className="annotations">
+                <AnnotationsBlock/>
+            </div>;
+
+        };
+
         return (
 
             <div id="annotation-manager" className="annotation-sidebar">
 
                 <AnnotationHeader/>
 
-                <div className="annotations">
-                    {this.createItems(annotations)}
-                </div>
+                <Annotations/>
 
             </div>
 

@@ -1,3 +1,5 @@
+import {NULL_FUNCTION} from './util/Functions';
+
 export class Preconditions {
 
     /**
@@ -88,10 +90,30 @@ export class Preconditions {
      * @param name
      * @return value
      */
-    public static assertTypeOf(value: any, type: string, name: string): any {
+    public static assertTypeOf(value: any, type: string, name: string, handler: () => void = NULL_FUNCTION): any {
 
         if (typeof value !== type) {
-            throw new Error(`Precondition for typeof '${name}' was not ${type} but actually: ` + typeof value);
+
+            handler();
+
+            const toValueType = () => {
+
+                if (value === null) {
+                    return "null";
+                }
+
+                if (value === undefined) {
+                    return "undefined";
+                }
+
+                return typeof value;
+
+            };
+
+            const valueType = toValueType();
+
+            throw new Error(`Precondition for typeof '${name}' was not ${type} but actually: ` + valueType);
+
         }
 
         return value;
@@ -101,7 +123,7 @@ export class Preconditions {
     /**
      * @deprecated Use assertPresent instead
      */
-    static assertNotNull<T>(value: T | null, name?: string): NonNullable<T> {
+    public static assertNotNull<T>(value: T | null, name?: string): NonNullable<T> {
         return Preconditions.assertPresent(value, name);
     }
 

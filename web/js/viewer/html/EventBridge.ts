@@ -53,7 +53,7 @@ export class EventBridge {
         iframe.contentDocument.body.addEventListener("mouseup", this.mouseListener.bind(this));
         iframe.contentDocument.body.addEventListener("mousedown", this.mouseListener.bind(this));
 
-        iframe.contentDocument.body.addEventListener("contextmenu", (event) => {
+        iframe.contentDocument.body.addEventListener('contextmenu', (event) => {
             this.mouseListener(event);
             event.preventDefault();
         });
