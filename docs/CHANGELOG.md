@@ -1,4 +1,4 @@
-# 1.15.6
+# 1.16.0
 
 - The doc repo now supports a context menu for each row
 
@@ -22,11 +22,13 @@
 - Always show the multi-delete and multi-tag buttons even if just one is 
   selected as it will still work just fine.
 
-- Make the top buttons for tagging and delete 
+- Make the top buttons for tagging and delete permanently displayed not hidden. 
 
-- Added a couple key metrics for Firebase performance via tracer.
+- Added a couple key metrics for Firebase performance via tracer so that we can
+  verify real-world behavior.
 
-- RendererAnalytics now safer if accidentally called from the Node context.
+- RendererAnalytics now safer if accidentally called from the Node context and 
+  just silently fails.
 
 - RendererAnalytics now supports using a stopwatch so we can track the times 
   of important operations.
