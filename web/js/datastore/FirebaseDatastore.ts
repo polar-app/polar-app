@@ -18,7 +18,7 @@ import {Percentages} from '../util/Percentages';
 import {Percentage, ProgressTracker} from '../util/ProgressTracker';
 import {AsyncProviders, Providers} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
-import {FileHandle, FileHandles, Files} from '../util/Files';
+import {FileHandle, FileHandles} from '../util/Files';
 import {UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {LocalStoragePrefs} from '../util/prefs/Prefs';
@@ -28,6 +28,7 @@ import {Stopwatches} from '../util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
+import {URLs} from '../util/URLs';
 
 const log = Logger.create();
 
@@ -359,16 +360,18 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 if (FileHandles.isFileHandle(data)) {
 
-                    // MEMORY_ALLOCATION_ISSUE migrate this to a streaming API to
-                    // help with huge PDFs.
-
-                    // it's not a buffer but convert it to one...
+                    // It's not a buffer but convert it to one... this only
+                    // happens in the desktop app so we can read file URLs to
+                    // blobs.
                     const fileHandle = <FileHandle> data;
-                    data = await Files.readFileAsync(fileHandle.path);
 
+                    const fileURL = FilePaths.toURL(fileHandle.path);
+                    const blob = await URLs.toBlob(fileURL);
+                    uploadTask = fileRef.put(blob, metadata);
+
+                } else {
+                    uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
                 }
-
-                uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
 
             }
 

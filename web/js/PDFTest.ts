@@ -9,10 +9,10 @@ const pdfjs: PDFJSStatic = <any> PDFJSDIST;
 
 xdescribe('PDF', function() {
 
-    xit("basic", async function () {
+    xit("basic", async function() {
 
         const buffer = await Files.readFileAsync("/home/burton/Downloads/1010.3003v1.pdf")
-        const uint8 = toArray(buffer)
+        const uint8 = toArray(buffer);
 
         // const url = "file:///home/burton/Downloads/1010.3003v1.pdf";
         // const url = "file:///home/burton/incremental-reading/A%20Crypto%20Incubator%20or%20Accelerator%20Can%20Make%20A%20Safe%20ICO%20_%20Crypto%20Briefing.pdf";

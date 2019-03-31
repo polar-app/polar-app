@@ -6,7 +6,7 @@ import {Strings} from './Strings';
 
 export class URLs {
 
-    public static async toStream(url: string): Promise<Buffer> {
+    public static async toBuffer(url: string): Promise<Buffer> {
 
         const response = await fetch(url);
         const blob = await response.blob();
@@ -14,6 +14,11 @@ export class URLs {
         const buffer = ArrayBuffers.toBuffer(arrayBuffer);
         return buffer;
 
+    }
+
+    public static async toBlob(url: string): Promise<Blob> {
+        const response = await fetch(url);
+        return await response.blob();
     }
 
     /**
