@@ -24,7 +24,6 @@ export class WebView extends View {
 
     /**
      *
-     * @param model {Model}
      */
     constructor(model: Model, prefsProvider: PrefsProvider) {
         super(model);
@@ -132,7 +131,7 @@ export class WebView extends View {
 
     private handleSharing(docMeta: DocMeta) {
 
-        const persistenceLayer = this.model.persistenceLayer;
+        const persistenceLayer = this.model.persistenceLayerProvider();
 
         const onVisibilityChanged = async (visibility: Visibility) => {
             return await Datastores.changeVisibility(persistenceLayer, docMeta, visibility);

@@ -91,3 +91,4 @@ export interface PersistenceLayer {
 
 export type PersistenceLayerID = string;
 
+export type PersistenceLayerProvider = () => PersistenceLayer;

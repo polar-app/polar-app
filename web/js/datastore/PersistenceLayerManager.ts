@@ -7,6 +7,7 @@ import {Logger} from "../logger/Logger";
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {FirebasePersistenceLayerFactory} from './factories/FirebasePersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
+import {PersistenceLayer} from './PersistenceLayer';
 
 const log = Logger.create();
 
@@ -85,7 +86,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
             log.info("Stopping persistence layer...");
 
-            this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'stopping'});
+            this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopping'});
 
             // Create a backup first.  This only applies to the DiskDatastore
             // but this way we have a backup before we go online to the cloud
@@ -96,7 +97,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
             log.info("Stopped persistence layer...");
 
-            this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'stopped'});
+            this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopped'});
 
         }
 
@@ -104,13 +105,13 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         this.persistenceLayer = this.createPersistenceLayer(type);
 
-        this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'changed'});
+        this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'changed'});
 
         log.info("Changed to persistence layer: " + type);
 
         await this.persistenceLayer.init();
 
-        this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'initialized'});
+        this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
         log.info("Initialized persistence layer: " + type);
 
@@ -164,7 +165,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
                             fireWithExisting?: 'changed' | 'initialized') {
 
         if (fireWithExisting && this.get()) {
-            listener({type: this.current!, persistenceLayer: this.get(), state: fireWithExisting});
+            listener({persistenceLayer: this.get(), state: fireWithExisting});
         }
 
         return this.persistenceLayerManagerEventDispatcher.addEventListener(listener);
@@ -229,8 +230,8 @@ export type PersistenceLayerState = 'changed' | 'initialized' | 'stopping' | 'st
 
 export interface PersistenceLayerManagerEvent {
 
-    readonly type: PersistenceLayerType;
     readonly state: PersistenceLayerState;
+
     readonly persistenceLayer: ListenablePersistenceLayer;
 
 }
@@ -266,6 +267,49 @@ export class PersistenceLayerTypes {
 
     public static set(type: PersistenceLayerType) {
         window.localStorage.setItem(this.KEY, type);
+    }
+
+}
+
+/**
+ * Lightweight version of the PersistenceLayer without destructive methods
+ * like start or change.
+ */
+export interface PersistenceLayerHandler {
+
+    get(): ListenablePersistenceLayer;
+
+    addEventListener(listener: PersistenceLayerManagerEventListener,
+                     fireWithExisting?: 'changed' | 'initialized'): void;
+
+}
+
+/**
+ *
+ *
+ */
+export class DefaultPersistenceLayerHandler implements PersistenceLayerHandler {
+
+    constructor(private readonly persistenceLayer: ListenablePersistenceLayer) {
+
+    }
+
+    public addEventListener(listener: PersistenceLayerManagerEventListener,
+                            fireWithExisting?: "changed" | "initialized"): void {
+
+        if (! fireWithExisting || fireWithExisting === 'changed') {
+
+            listener({
+                persistenceLayer: this.persistenceLayer,
+                state: 'changed'
+            });
+
+        }
+
+    }
+
+    public get(): ListenablePersistenceLayer {
+        return this.persistenceLayer;
     }
 
 }

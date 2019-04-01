@@ -1,8 +1,5 @@
-/**
- *
- */
 import {PersistenceLayerManager, PersistenceLayerState} from './PersistenceLayerManager';
-import {PersistenceLayer} from './PersistenceLayer';
+import {PersistenceLayerHandler} from './PersistenceLayerManager';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 
 export class PersistenceLayerManagers {
@@ -15,9 +12,9 @@ export class PersistenceLayerManagers {
      * but also when a new PersistenceLayer is changed.
      *
      * @param state Call the callback again when we've changed to the given
-     *     state
+     *     state.
      */
-    public static onPersistenceManager(persistenceLayerManager: PersistenceLayerManager,
+    public static onPersistenceManager(persistenceLayerManager: PersistenceLayerManager | PersistenceLayerHandler,
                                        callback: PersistenceLayerCallback,
                                        state: PersistenceLayerState = 'changed' ) {
 
