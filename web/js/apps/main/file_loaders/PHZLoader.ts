@@ -8,19 +8,61 @@ import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
 import {LoadedFile} from './LoadedFile';
 import {Descriptors} from '../../../viewer/html/Descriptors';
 import {FilePaths} from '../../../util/FilePaths';
+import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 
 const log = Logger.create();
 
+const LOAD_STRATEGY: LoadStrategy = 'portable';
+
 export class PHZLoader extends FileLoader {
 
-    private readonly cacheRegistry: CacheRegistry;
-
-    constructor(opts: IPHZLoaderOptions) {
+    constructor(private cacheRegistry: CacheRegistry,
+                private fileRegistry: FileRegistry) {
         super();
-        this.cacheRegistry = Preconditions.assertNotNull(opts.cacheRegistry);
     }
 
     public async registerForLoad(path: string): Promise<LoadedFile> {
+
+        Preconditions.assertNotNull(this.cacheRegistry);
+        Preconditions.assertNotNull(this.fileRegistry);
+
+        if (LOAD_STRATEGY === 'portable') {
+            return await this.doPortable(path);
+        } else {
+            return await this.doElectron(path);
+        }
+
+    }
+
+    private doPortable(path: string) {
+
+        const filename = FilePaths.basename(path);
+
+        const fileMeta = this.fileRegistry.registerFile(path);
+
+        const appURL = PHZLoader.createViewerURL(fileMeta.url, filename);
+
+        return {
+            webResource: WebResource.createURL(appURL)
+        };
+
+    }
+
+    public static createViewerURL(fileURL: string, filename: string) {
+
+        const fingerprint = Fingerprints.create(filename);
+
+        const params = {
+            file: encodeURIComponent(fileURL),
+            filename: encodeURIComponent(filename),
+            fingerprint
+        };
+
+        return ResourcePaths.resourceURLFromRelativeURL(`/htmlviewer/index.html?file=${params.file}&filename=${params.filename}&fingerprint=${params.fingerprint}&zoom=page-width&strategy=${LOAD_STRATEGY}`, false);
+
+    }
+
+    private async doElectron(path: string) {
 
         const filename = FilePaths.basename(path);
 
@@ -67,8 +109,7 @@ export class PHZLoader extends FileLoader {
 
     }
 
+
 }
 
-export interface IPHZLoaderOptions {
-    readonly cacheRegistry: CacheRegistry;
-}
+export type LoadStrategy = 'electron' | 'portable';

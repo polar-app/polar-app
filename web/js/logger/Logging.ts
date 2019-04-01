@@ -22,6 +22,7 @@ import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {AppRuntime} from '../AppRuntime';
+import {GALogger} from './GALogger';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -96,6 +97,12 @@ export class Logging {
             // use a ToasterLogger when running in the renderer context so that
             // we can bring up error messages for the user.
             loggers.push(new ToasterLogger());
+        }
+
+        if (['electron-renderer', 'browser'].includes(AppRuntime.get())) {
+            // use a ToasterLogger when running in the renderer context so that
+            // we can bring up error messages for the user.
+            loggers.push(new GALogger());
         }
 
         if (electronContext === ElectronContextType.RENDERER) {

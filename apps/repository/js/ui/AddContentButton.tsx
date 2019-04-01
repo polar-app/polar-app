@@ -1,10 +1,12 @@
 import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {TooltipDropdown} from '../doc_repo/TooltipDropdown';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {ManualDropdown} from '../doc_repo/ManaulDropdown';
+import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
+import {AddContentDropdownItem} from './AddContentDropdownItem';
 
 export class AddContentButton extends React.PureComponent<IProps, IState> {
 
@@ -24,80 +26,54 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <TooltipDropdown id="add-content-dropdown"
-                             tooltip={{
-                                 text: "Add content by importing PDFs from your local drive or capturing web pages from the Internet.",
-                                 placement: 'bottom'
-                             }}
-                             direction="down"
-                             size="sm">
+            <ManualDropdown id="add-content-dropdown"
+                            direction="down"
+                            size="sm">
 
-                <DropdownToggle style={{fontWeight: 'bold'}} color="success" caret>
-                    <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
-                </DropdownToggle>
+                <SimpleTooltipEx text="Add content by importing PDFs from your local drive or capturing web pages from the Internet."
+                                 placement="bottom">
+
+                    <DropdownToggle size="sm" style={{fontWeight: 'bold'}} color="success" caret>
+                        <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add &nbsp;
+                    </DropdownToggle>
+
+                </SimpleTooltipEx>
 
                 <DropdownMenu className="shadow">
 
-                    <DropdownItem id="add-content-import-from-disk"
-                                  hidden={AppRuntime.isBrowser()}
-                                  size="sm"
-                                  onClick={() => this.props.importFromDisk()}>
+                    <AddContentDropdownItem id="add-content-import-from-disk"
+                                            hidden={AppRuntime.isBrowser()}
+                                            tooltip="Add PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
+                                            onClick={() => this.props.importFromDisk()}>
 
                         <i className="fas fa-hdd"></i>
                         &nbsp; Add Files from Disk
 
-                        <SimpleTooltip target="add-content-import-from-disk"
-                                       show={0}
-                                       placement="right">
+                    </AddContentDropdownItem>
 
-                            Add PDF files from disk in bulk.  Select one PDF
-                            or multiple PDFs at once.
-
-                        </SimpleTooltip>
-
-                    </DropdownItem>
-
-                    <DropdownItem id="add-content-import-from-disk-via-file-upload"
-                                  hidden={AppRuntime.isElectron()}
-                                  onClick={() => this.triggerFileUpload()}
-                                  size="sm">
+                    <AddContentDropdownItem id="add-content-import-from-disk-via-file-upload"
+                                            hidden={AppRuntime.isElectron()}
+                                            tooltip="Upload PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
+                                            onClick={() => this.triggerFileUpload()}>
 
                         <i className="fas fa-hdd"></i>
                         &nbsp; Upload Files from Disk
 
-                        <SimpleTooltip target="add-content-import-from-disk-via-file-upload"
-                                       show={0}
-                                       placement="right">
+                    </AddContentDropdownItem>
 
-                            Upload PDF files from disk in bulk.  Select one PDF
-                            or multiple PDFs at once.
-
-                        </SimpleTooltip>
-
-                    </DropdownItem>
-
-                    <DropdownItem id="add-content-capture-web-page"
-                                  hidden={AppRuntime.isBrowser()}
-                                  size="sm"
-                                  onClick={() => this.props.captureWebPage()}>
+                    <AddContentDropdownItem id="add-content-capture-web-page"
+                                            hidden={AppRuntime.isBrowser()}
+                                            tooltip="Capture a web page from the web and save it for annotation and long term archival."
+                                            onClick={() => this.props.captureWebPage()}>
 
                         <i className="fab fa-chrome"></i>
                         &nbsp; Capture Web Page
 
-                        <SimpleTooltip target="add-content-capture-web-page"
-                                       show={0}
-                                       placement="right">
-
-                            Capture a web page from the web and save it for
-                            annotation and long term archival.
-
-                        </SimpleTooltip>
-
-                    </DropdownItem>
+                    </AddContentDropdownItem>
 
                 </DropdownMenu>
 
-            </TooltipDropdown>
+            </ManualDropdown>
 
         );
 

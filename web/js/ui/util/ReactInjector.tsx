@@ -1,5 +1,4 @@
 import * as ReactDOM from 'react-dom';
-import {ConfirmPrompt} from '../confirm/ConfirmPrompt';
 import * as React from 'react';
 
 /**

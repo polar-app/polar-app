@@ -303,7 +303,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                        docInfo: DocInfo,
                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
-        Preconditions.assertTypeOf(data, "string", "data");
+        Preconditions.assertPresent(data, "data");
+        Preconditions.assertTypeOf(data, "string", "data", () => log.error("Failed with data: ", data));
 
         if (data.length === 0) {
             throw new Error("Invalid data");

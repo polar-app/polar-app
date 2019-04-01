@@ -64,6 +64,7 @@ export class ContextMenuController {
                                                ".area-highlight",
                                                ".pagemark",
                                                ".page"] );
+            event.preventDefault();
 
         });
 
@@ -74,6 +75,7 @@ export class ContextMenuController {
         targetElement.addEventListener('contextmenu', (event) => {
 
             this.onContextMenuHandler(event, [ "*" ] );
+            event.preventDefault();
 
         });
 

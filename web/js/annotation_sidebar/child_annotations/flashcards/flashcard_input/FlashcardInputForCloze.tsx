@@ -46,7 +46,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="annotation-flashcard-box" className="">
+            <div id="annotation-flashcard-box" className="mt-1">
 
                 <RichTextArea id={`text-${this.props.id}`}
                               value={fields.text}
@@ -75,7 +75,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
                                 onClick={() => this.onClozeDelete()}
                                 className="ml-1 p-1 border">[…]</Button>
 
-                        <UncontrolledTooltip placement="auto"
+                        <UncontrolledTooltip placement="bottom"
                                              delay={{show: 750, hide: 0}}
                                              target={`button-${this.props.id}`}>
                             Create cloze deletion for text <span className="text-muted">Control+Shift+C</span>

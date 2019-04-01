@@ -2,6 +2,8 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from "../../RichTextArea";
 import {Comment} from '../../../metadata/Comment';
+import {NullCollapse} from '../../../ui/null_collapse/NullCollapse';
+import {RichTextFeatureIntro} from '../../RichTextFeatureIntro';
 
 export class EditComment extends React.Component<IProps, IState> {
 
@@ -27,45 +29,42 @@ export class EditComment extends React.Component<IProps, IState> {
         const id = 'rich-text-editor-' + this.props.id;
 
         return (
+            <div>
+                <RichTextFeatureIntro/>
 
-            <div id="annotation-comment-box" className="">
+                <div id="annotation-comment-box" className="mt-1">
 
-                <div className="">
+                    <div className="">
 
-                    <RichTextArea id={id}
-                                  value={this.html}
-                                  autofocus={true}
-                                  onKeyDown={event => this.onKeyDown(event)}
-                                  onChange={(html) => this.onChange(html)}/>
+                        <RichTextArea id={id}
+                                      value={this.html}
+                                      autofocus={true}
+                                      onKeyDown={event => this.onKeyDown(event)}
+                                      onChange={(html) => this.onChange(html)}/>
 
-                </div>
+                    </div>
 
-                <div className="flexbar w-100">
+                    <div className="flexbar w-100">
 
-                    {/*<div className="text-muted m-1 p-1">*/}
+                        <div className="flexbar-right mt-1 mb-1">
 
-                        {/*<i className="fab fa-html5" style={{fontSize: '20px'}}></i>*/}
-                        {/*&nbsp;*/}
-                        {/*HTML styling supported*/}
+                            {this.props.cancelButton}
 
-                    {/*</div>*/}
+                            <Button color="primary"
+                                    size="sm"
+                                    className="ml-1"
+                                    onClick={() => this.onComment()}>
 
-                    <div className="flexbar-right mt-1 mb-1">
+                                {this.props.existingComment ? 'Update' : 'Comment'}
 
-                        {this.props.cancelButton}
+                            </Button>
 
-                        <Button color="primary"
-                                size="sm"
-                                className="ml-1"
-                                onClick={() => this.onComment()}>
-
-                            {this.props.existingComment ? 'Update' : 'Comment'}
-
-                        </Button>
+                        </div>
 
                     </div>
 
                 </div>
+
 
             </div>
 

@@ -28,7 +28,6 @@ import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {TagButton} from './TagButton';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {FixedNav, FixedNavBody} from '../FixedNav';
@@ -41,11 +40,10 @@ import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
-import {AppRuntime} from '../../../../web/js/AppRuntime';
-import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import Input from 'reactstrap/lib/Input';
 import {Settings} from '../../../../web/js/datastore/Settings';
 import {AddContentActions} from '../ui/AddContentActions';
+import {DocContextMenu} from '../DocContextMenu';
 
 const log = Logger.create();
 
@@ -271,6 +269,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     public render() {
         const { data } = this.state;
+
+        const contextMenuProps = {
+            onDelete: this.onDocDeleted,
+            onSetTitle: this.onDocSetTitle
+        };
+
         return (
 
             <FixedNav id="doc-repo-table">
@@ -302,7 +306,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                 <div className="mr-1"
                                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                    <div style={{display: this.state.selected.length <= 1 ? 'none' : 'flex'}}>
+                                    <div style={{display: 'flex'}}>
 
                                         {/*<FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}*/}
                                                         {/*refresher={() => this.refresh()}*/}
@@ -312,25 +316,15 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         <div>
 
                                             <TagButton id="tag-multiple-documents"
+                                                       disabled={this.state.selected.length <= 0}
                                                        tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                        onSelectedTags={tags => this.onMultiTagged(tags)}/>
-
-                                            <SimpleTooltip target="tag-multiple-documents"
-                                                           placement="bottom">
-
-                                                Tag multiple documents at once.  To
-                                                find untagged documents sort by the
-                                                'Tags' column (twice).  Once to sort
-                                                alphabetically and then second click
-                                                will reverse the sort showing
-                                                untagged documents.
-
-                                            </SimpleTooltip>
 
                                         </div>
 
                                         <div className="ml-1">
                                             <MultiDeleteButton onCancel={NULL_FUNCTION}
+                                                               disabled={this.state.selected.length <= 0}
                                                                onConfirm={() => this.onMultiDeleted()}/>
                                         </div>
 
@@ -349,7 +343,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                   refresher={() => this.refresh()}
                                                   filteredTags={this.docRepoFilters.filters.filteredTags}
                                                   right={
-                                               <div className=""
+                                               <div className="d-mobile-none"
                                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                                                    <DocRepoTableDropdown id="table-dropdown"
@@ -467,25 +461,21 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         accessor: 'title',
                                         className: 'doc-table-col-title',
                                         Cell: (row: any) => {
+
                                             const id = 'doc-repo-row-title' + row.index;
+                                            const repoDocInfo: RepoDocInfo = row.original;
+
                                             return (
+
                                                 <div id={id}>
 
-                                                    <div>{row.value}</div>
+                                                    <DocContextMenu {...contextMenuProps}
+                                                                    id={'context-menu-' + row.index}
+                                                                    repoDocInfo={repoDocInfo}>
 
-                                                    {/*TODO: this doesn't reliably work as*/}
-                                                    {/*moving the mouse horizontally within*/}
-                                                    {/*the target doesn't close the tooltip.*/}
+                                                        <div>{row.value}</div>
 
-                                                    {/*<UncontrolledTooltip style={{maxWidth: '1000px'}}*/}
-                                                    {/*placement="bottom"*/}
-                                                    {/*delay={{show: 750, hide: 0}}*/}
-                                                    {/*target={id}>*/}
-                                                    {/*<Collapse timeout={{ enter: 0, exit: 0 }} >*/}
-                                                    {/*{row.value}*/}
-                                                    {/*</Collapse>*/}
-
-                                                    {/*</UncontrolledTooltip>*/}
+                                                    </DocContextMenu>
 
                                                 </div>
 
@@ -496,30 +486,59 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         Header: 'Updated',
                                         // accessor: (row: any) => row.added,
+                                        headerClassName: "d-none-mobile",
                                         accessor: 'lastUpdated',
                                         show: this.state.columns.lastUpdated.selected,
                                         maxWidth: 85,
                                         defaultSortDesc: true,
                                         className: 'doc-table-col-updated d-none-mobile',
-                                        Cell: (row: any) => (
-                                            <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
-                                        )
+                                        Cell: (row: any) => {
+
+                                            const repoDocInfo: RepoDocInfo = row.original;
+
+                                            return (
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+
+                                                    <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
+
+                                                </DocContextMenu>
+
+                                            );
+                                        }
 
                                     },
                                     {
                                         Header: 'Added',
                                         accessor: 'added',
+                                        headerClassName: "d-none-mobile",
                                         show: this.state.columns.added.selected,
                                         maxWidth: 85,
                                         defaultSortDesc: true,
                                         className: 'doc-table-col-added d-none-mobile',
-                                        Cell: (row: any) => (
-                                            <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
-                                        )
+                                        Cell: (row: any) => {
+
+                                            const repoDocInfo: RepoDocInfo = row.original;
+
+                                            return (
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+
+                                                    <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
+
+                                                </DocContextMenu>
+
+                                            );
+                                        }
                                     },
                                     {
                                         Header: 'Site',
                                         accessor: 'site',
+                                        headerClassName: "d-none-mobile",
                                         show: (this.state.columns.site || {}).selected || false,
                                         // show: false,
                                         maxWidth: 200,
@@ -575,6 +594,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'tags',
                                         Header: 'Tags',
+                                        headerClassName: "d-none-mobile",
                                         width: 250,
                                         accessor: '',
                                         show: this.state.columns.tags.selected,
@@ -616,8 +636,16 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                 .sort()
                                                 .join(", ");
 
+                                            const repoDocInfo: RepoDocInfo = row.original;
+
                                             return (
-                                                <div>{formatted}</div>
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+                                                    <div>{formatted}</div>
+                                                </DocContextMenu>
+
                                             );
 
                                         }
@@ -625,6 +653,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'nrAnnotations',
                                         Header: 'Annotations',
+                                        headerClassName: "d-none-mobile",
                                         accessor: 'nrAnnotations',
                                         maxWidth: 110,
                                         show: this.state.columns.nrAnnotations.selected,
@@ -635,25 +664,36 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     {
                                         id: 'progress',
                                         Header: 'Progress',
+                                        headerClassName: "d-none-mobile",
                                         accessor: 'progress',
                                         show: this.state.columns.progress.selected,
                                         maxWidth: 100,
                                         defaultSortDesc: true,
                                         resizable: false,
                                         className: 'doc-table-col-progress d-none-mobile',
-                                        Cell: (row: any) => (
-                                            // TODO: move to a PureComponent to
-                                            // improve performance
+                                        Cell: (row: any) => {
 
-                                            <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
-                                                width: '100%'
-                                            }} />
+                                            const repoDocInfo: RepoDocInfo = row.original;
 
-                                        )
+                                            return (
+
+                                                <DocContextMenu {...contextMenuProps}
+                                                                id={'context-menu-' + row.index}
+                                                                repoDocInfo={repoDocInfo}>
+
+                                                    <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
+                                                        width: '100%'
+                                                    }} />
+
+                                                </DocContextMenu>
+
+                                            );
+                                        }
                                     },
                                     {
                                         id: 'doc-buttons',
                                         Header: '',
+                                        headerClassName: "d-none-mobile",
                                         accessor: '',
                                         maxWidth: 100,
                                         defaultSortDesc: true,
@@ -661,9 +701,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         sortable: false,
                                         className: 'doc-dropdown d-none-mobile',
                                         Cell: (row: any) => {
-
-                                            // TODO: move to a PureComponent to
-                                            // improve performance
 
                                             const repoDocInfo: RepoDocInfo = row.original;
 
@@ -750,6 +787,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                 if (! SINGLE_CLICK_COLUMNS.includes(column.id)) {
 
+                                    const handleSelect = (event: MouseEvent) => {
+                                        if (rowInfo) {
+                                            this.selectRow(rowInfo.viewIndex as number, event);
+                                        }
+                                    };
+
                                     return {
 
                                         onDoubleClick: (event: MouseEvent) => {
@@ -762,12 +805,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         },
 
+                                        onContextMenu: (event: MouseEvent) => {
+                                            handleSelect(event);
+                                        },
+
                                         onClick: (event: MouseEvent, handleOriginal?: () => void) => {
-
-                                            if (rowInfo) {
-                                                this.selectRow(rowInfo.viewIndex as number, event);
-                                            }
-
+                                            handleSelect(event);
                                         },
 
                                     };
@@ -903,15 +946,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     private onDocumentLoadRequested(fingerprint: string,
                                     filename: string,
                                     hashcode?: Hashcode) {
-
-        if (! AppRuntime.isElectron() && filename.endsWith(".phz")) {
-
-            const message = `Captured web pages (phz files) are only supported in the web preview version of Polar (please use the desktop version).`;
-            const title = "Captured web pages not supported.";
-
-            Toaster.error(message, title);
-            return;
-        }
 
         this.synchronizingDocLoader.load(fingerprint, filename, hashcode)
             .catch(err => log.error("Unable to load doc: ", err));

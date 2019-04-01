@@ -1,4 +1,5 @@
 import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult} from './Datastore';
+import {WritableBinaryMetaDatastore} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -24,10 +25,13 @@ import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
-import {WritableBinaryMetaDatastore} from './Datastore';
 import {AppRuntime} from '../AppRuntime';
+import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {Promises} from '../util/Promises';
 
 const log = Logger.create();
+
+const tracer = RendererAnalytics.createTracer('firebase');
 
 // You can allow users to sign in to your app using multiple authentication
 // providers by linking auth provider credentials to an existing user account.
@@ -146,6 +150,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         if (this.preferredSource() === 'cache') {
 
+            // Try to get the FIRST snapshot from the cache if possible and then
+            // continue after that working with server snapshots and updated
+            // data
+
             try {
 
                 const cachedSnapshot = await query.get({ source: 'cache' });
@@ -153,7 +161,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 onNextForSnapshot(cachedSnapshot);
 
             } catch (e) {
-                // no cached snapshot
+                // no cached snapshot is available and that's ok.
             }
 
         }
@@ -206,25 +214,27 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const docMetaRef = this.firestore!
-            .collection(DatastoreCollection.DOC_META)
-            .doc(id);
-
         const docInfoRef = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
+            .doc(id);
+
+        const docMetaRef = this.firestore!
+            .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
         try {
 
             this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const commitPromise = this.waitForCommit(docMetaRef);
-            await docMetaRef.delete();
+            const commitPromise = Promise.all([
+                this.waitForCommit(docMetaRef),
+                this.waitForCommit(docInfoRef)
+            ]);
 
             const batch = this.firestore!.batch();
 
-            batch.delete(docMetaRef);
             batch.delete(docInfoRef);
+            batch.delete(docMetaRef);
 
             await batch.commit();
 
@@ -244,6 +254,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
 
+        return await tracer.traceAsync('getDocMeta', async () => {
+            return await this.getDocMeta0(fingerprint);
+        });
+
+    }
+
+    private async getDocMeta0(fingerprint: string): Promise<string | null> {
+
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
 
@@ -257,15 +275,23 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             if (preferredSource === 'cache') {
 
-                // go cache first, then server if we don't have it in the
-                // cache only then do we fail which would be when we're not
-                // online.
+                // Firebase supports three cache strategies.  The first
+                // (default) is server with fall back to cache but what we
+                // need is the reverse.  We need cache but server refresh to
+                // pull the up-to-date copy.
+                //
+                // What we now do is we get two promises, then return the
+                // first that works or throw an error if both fail.
+                //
+                // In this situation we ALWAYs go to the server though
+                // because we need to get the up-to-date copy to refresh
+                // BUT we can get the initial version FASTER since we
+                // can resolve it from cache.
 
-                try {
-                    return await ref.get({ source: this.preferredSource() });
-                } catch (e) {
-                    return await ref.get({ source: 'server' });
-                }
+                const cachePromise = ref.get({ source: 'cache' });
+                const serverPromise = ref.get({ source: 'server' });
+
+                return Promises.any(cachePromise, serverPromise);
 
             } else {
                 // now revert to checking the server, then cache if we're
@@ -297,6 +323,17 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                            data: BinaryFileData ,
                            meta: FileMeta = {}): Promise<DocFileMeta> {
 
+        return await tracer.traceAsync('writeFile', async () => {
+            return await this.writeFile0(backend, ref, data, meta);
+        });
+
+    }
+
+    private async writeFile0(backend: Backend,
+                             ref: FileRef,
+                             data: BinaryFileData ,
+                             meta: FileMeta = {}): Promise<DocFileMeta> {
+
         if (await this.containsFile(backend, ref)) {
             // the file is already in the datastore so don't attempt to
             // overwrite it for now.  The files are immutable and we don't
@@ -318,7 +355,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         // stick the uid into the metadata which we use for authorization of the
         // blob when not public.
-        meta = {...meta, uid, visibility: Visibility.PRIVATE};
+        meta = { ...meta, uid, visibility: Visibility.PRIVATE };
 
         const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
 
@@ -402,6 +439,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         };
 
     }
+
 
     public async getFileMeta(backend: Backend,
                              ref: FileRef,
@@ -489,6 +527,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+
+        return await tracer.traceAsync('getFile', async () => {
+            return await this.getFile0(backend, ref);
+        });
+
+    }
+
+    private async getFile0(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         let result = await this.getFileFromFileMeta(backend, ref);
 
@@ -645,7 +691,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const docMetaCommitPromise = this.waitForCommit(docMetaRef);
+            const commitPromise = Promise.all([
+                this.waitForCommit(docMetaRef),
+                this.waitForCommit(docInfoRef)
+            ]);
 
             log.debug("Setting...");
 
@@ -661,7 +710,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             // we need to make sure that we only return when it's committed
             // remotely...
             log.debug("Waiting for promise...");
-            await docMetaCommitPromise;
+            await commitPromise;
             log.debug("Waiting for promise...done");
 
         } finally {

@@ -18,6 +18,90 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
+                    <h3>Polar 1.16.0</h3>
+
+                    <div className="intro">
+
+                        <p>A number of major changes went into Polar 1.16.0 but
+                            the big highlights include a big performance bump
+                            for the desktop app on startup, an updated
+                            chrome extension to improve stability during
+                            loading PDFs, and a new context menu for the
+                            document repository.</p>
+
+                        <p>
+                            This also includes a new timing system which allows
+                            us to detect slow operations in Polar to help improve
+                            performance over time.  The plan is to keep an
+                            eye on these metrics to help track down any performance
+                            regressions and also to improve performance over time.
+                        </p>
+
+                    </div>
+
+                    <ul>
+                        <li>
+                            <p>Multi-delete button now uses the confirm prompt properly.</p>
+                        </li>
+                        <li>
+                            <p>The doc repo now supports a context menu for each row</p>
+                        </li>
+                        <li>
+                            <p>Fixed major performance issue with the datastore on Electron as it was going
+                                through the IPC process for the datastore data reads and this was amazingly
+                                slow. Moving it into the renderer process speeds up reads by about 10x.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bad bug in the webapp where we wouldn't ever fetch the latest docs from
+                                firebase.</p>
+                        </li>
+                        <li>
+                            <p>A ton of improvement to tooltips needed for mobile support but also the fact
+                                that having them popup bothered a lot of users.</p>
+                        </li>
+                        <li>
+                            <p>Inline app message that styling with rich HTML is supported for new users.</p>
+                        </li>
+                        <li>
+                            <p>More improvements for mobile.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bag bug where Firebase batches weren't used properly and we had a
+                                delete outside of the batch which could leave FB inconsistent.</p>
+                        </li>
+                        <li>
+                            <p>Always show the multi-delete and multi-tag buttons even if just one is
+                                selected as it will still work just fine.</p>
+                        </li>
+                        <li>
+                            <p>Make the top buttons for tagging and delete permanently displayed not hidden.</p>
+                        </li>
+                        <li>
+                            <p>Added a couple key metrics for Firebase performance via tracer so that we can
+                                verify real-world behavior.</p>
+                        </li>
+                        <li>
+                            <p>RendererAnalytics now safer if accidentally called from the Node context and
+                                just silently fails.</p>
+                        </li>
+                        <li>
+                            <p>RendererAnalytics now supports using a stopwatch so we can track the times
+                                of important operations.</p>
+                        </li>
+                        <li>
+                            <p>Improved CSS of annotation sidebar and included instructions on how to create
+                                your first annotation.</p>
+                        </li>
+                        <li>
+                            <p>Use the sidebar area to explain how to create annotations.</p>
+                        </li>
+                    </ul>
+
+                </div>
+
+
+                <div>
+
                     <h3>Polar 1.15.0</h3>
 
                     <div className="intro">

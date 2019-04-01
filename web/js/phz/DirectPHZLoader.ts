@@ -1,7 +1,3 @@
-/**
- * Loads PHZs directly by opening them, decompressing them, and parsing the HTML
- * and then replacing the iframes directly.
- */
 import {PathStr} from '../util/Strings';
 import {URLStr} from '../util/Strings';
 import {URLs} from '../util/URLs';
@@ -12,10 +8,19 @@ import {Resources} from './Resources';
 import {Reducers} from '../util/Reducers';
 import {Blobs} from '../util/Blobs';
 import {ResourceEntry} from './ResourceEntry';
+import {Optional} from '../util/ts/Optional';
+import {Latch} from '../util/Latch';
+import {DOM} from '../util/DOM';
 
 const log = Logger.create();
 
+/**
+ * Loads PHZs directly by opening them, decompressing them, and parsing the HTML
+ * and then replacing the iframes directly.
+ */
 export class DirectPHZLoader {
+
+    private readonly linkPromises: LinkPromise[] = [];
 
     constructor(private resource: PathStr | URLStr,
                 private phzReader: PHZReader,
@@ -24,18 +29,31 @@ export class DirectPHZLoader {
 
     }
 
-    public async load() {
+    public async load(): Promise<Optional<Captured>> {
 
-        if (this.metadata) {
+        try {
 
-            const url = this.metadata.url;
+            if (this.metadata) {
 
-            await this.loadDocument(url, this.resources);
+                const url = this.metadata.url;
 
-        } else {
-            log.warn("Document has no metadata: " + this.resource);
+                await this.loadDocument(url, this.resources);
+
+                return Optional.of(this.metadata);
+
+            } else {
+                log.warn("Document has no metadata: " + this.resource);
+                return Optional.empty();
+            }
+
+        } finally {
+            await this.phzReader.close();
         }
 
+    }
+
+    public async close() {
+        this.phzReader.close();
     }
 
     private getResourceEntry(url: string): ResourceEntry | undefined {
@@ -55,6 +73,8 @@ export class DirectPHZLoader {
 
             const iframe = <HTMLIFrameElement> document.getElementById('content');
             await this.loadResource(primaryResourceEntry, iframe);
+
+            await Promise.all(this.linkPromises);
 
         } else {
             log.warn("No primary resource found for: " + url);
@@ -94,6 +114,7 @@ export class DirectPHZLoader {
     private async loadResource(resourceEntry: ResourceEntry,
                                iframe: HTMLIFrameElement) {
 
+
         const blob = await this.phzReader.getResourceAsBlob(resourceEntry);
 
         // now that we have the blob, which should be HTML , parse it into
@@ -103,11 +124,42 @@ export class DirectPHZLoader {
 
         const doc = new DOMParser().parseFromString(str, 'text/html');
 
+        const newLinkPromises = this.createLinkPromises(doc);
+
+        this.linkPromises.push(...newLinkPromises);
+
         const iframes = this.neutralizeIFrames(doc);
 
-        iframe.contentDocument!.documentElement!.replaceWith(doc.documentElement!);
+        DOM.removeChildNodes(iframe.contentDocument!.documentElement!);
+
+        DOM.appendChildNodes(doc.documentElement!, iframe.contentDocument!.documentElement!);
 
         await this.loadIFrames(iframes);
+
+    }
+
+    private createLinkPromises(doc: Document): ReadonlyArray<LinkPromise> {
+
+        const promises: LinkPromise[] = [];
+
+        doc.querySelectorAll("link[rel=stylesheet]").forEach((link) => {
+
+            const latch = new Latch<boolean>();
+            promises.push(latch.get());
+
+            link.addEventListener("load", () => {
+                latch.resolve(true);
+            });
+
+            link.addEventListener("error", () => {
+                // we're just waiting for them to be completed not their actual
+                // status.
+                latch.resolve(true);
+            });
+
+        });
+
+        return promises;
 
     }
 
@@ -118,7 +170,9 @@ export class DirectPHZLoader {
             const resourceEntry = this.getResourceEntry(iframeRef.src);
 
             if (resourceEntry) {
+
                 await this.loadResource(resourceEntry, iframeRef.iframe);
+
             } else {
                 log.warn("No resource entry for URL: " + iframeRef.src);
             }
@@ -160,6 +214,8 @@ export class DirectPHZLoader {
 
 
 }
+
+export type LinkPromise = Promise<boolean>;
 
 interface IFrameRef {
     readonly src: string;
