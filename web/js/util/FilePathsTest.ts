@@ -103,7 +103,7 @@ describe('FilePaths', function() {
             const data = 'hello world';
             await Files.writeFileAsync(path, data);
 
-            const url = FilePaths.toFileURL(path);
+            const url = FilePaths.toURL(path);
 
             console.log("URL: " + url);
 
@@ -118,5 +118,32 @@ describe('FilePaths', function() {
 
     });
 
+    describe('toURL', async function() {
+
+        it('spaces and special chars but valid.', async function() {
+
+            const special = "This is a special name UPPER, (17) [test 10.11] -- foo (1)";
+
+            const dir = FilePaths.resolve(FilePaths.tmpdir(), special);
+            const path = FilePaths.resolve(dir, special + ".pdf");
+
+            await Files.removeDirectoryRecursivelyAsync(dir);
+
+            await Files.mkdirAsync(dir);
+            await Files.writeFileAsync(path, "fake data");
+
+            assert.ok(await Files.existsAsync(path));
+
+            const url = FilePaths.toURL(path);
+
+            const decodedPath = FilePaths.fromURL(url);
+
+            // the decoded path value doesn't matter just as long as we can
+            // get it before and after.
+            assert.ok(await Files.existsAsync(decodedPath));
+
+        });
+
+    });
 
 });

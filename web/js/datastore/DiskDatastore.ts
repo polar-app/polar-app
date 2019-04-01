@@ -484,7 +484,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                                       ref: FileRef,
                                       fileReference: DiskFileReference): Promise<DocFileMeta> {
 
-        const fileURL = FilePaths.toFileURL(fileReference.path);
+        const fileURL = FilePaths.toURL(fileReference.path);
         const url = new URL(fileURL);
 
         let meta = {};
