@@ -1,4 +1,10 @@
-import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult, Visibility} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult, Visibility} from './Datastore';
+import {WritableBinaryMetaDatastore} from './Datastore';
+import {DefaultWriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
+import {GetFileOpts} from './Datastore';
+import {WriteFileOpts} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -24,17 +30,11 @@ import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
-import {WritableBinaryMetaDatastore} from './Datastore';
 import {AppRuntime} from '../AppRuntime';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
-import {DefaultWriteFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayer} from './Datastore';
-import {GetFileOpts} from './Datastore';
 import {Datastores} from './Datastores';
-import {WriteFileOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -388,9 +388,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             if (FileHandles.isFileHandle(data)) {
 
-                // It's not a buffer but convert it to one... this only
-                // happens in the desktop app so we can read file URLs to
-                // blobs.
+                // This only happens in the desktop app so we can read file URLs
+                // to blobs and otherwise it converts URLs to files.
                 const fileHandle = <FileHandle> data;
 
                 const fileURL = FilePaths.toURL(fileHandle.path);
