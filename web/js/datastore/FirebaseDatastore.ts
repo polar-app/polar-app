@@ -35,6 +35,7 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
+import {isPresent} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -338,29 +339,39 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         let meta = opts.meta || {};
         const visibility = opts.visibility || Visibility.PRIVATE;
 
-        if (await this.containsFile(backend, ref)) {
-            // the file is already in the datastore so don't attempt to
-            // overwrite it for now.  The files are immutable and we don't
-            // accept overwrites.
-            return (await this.getFile(backend, ref)).get();
-        }
-
         const storage = this.storage!;
 
         const storagePath = this.computeStoragePath(backend, ref);
 
         const fileRef = storage.ref().child(storagePath.path);
 
-        if (data === null && opts.updateMeta) {
+        if (! isPresent(data)) {
 
-            meta = {...meta, visibility};
+            if (opts.updateMeta) {
 
-            await fileRef.updateMetadata(meta);
+                meta = { ...meta, visibility };
 
-            log.info("File metadata updated with: ", meta);
+                await fileRef.updateMetadata(meta);
 
+                log.info("File metadata updated with: ", meta);
+
+                // TODO: I don't like having to call getFile again but hopefully
+                // it should be cached at this point.
+                return (await this.getFile(backend, ref)).get();
+
+            } else {
+                // when the caller specifies null they mean that there's a
+                // metadata update which needs to be applied.
+                throw new Error("No data present");
+            }
+
+        }
+
+        if (await this.containsFile(backend, ref)) {
+            // the file is already in the datastore so don't attempt to
+            // overwrite it for now.  The files are immutable and we don't
+            // accept overwrites.
             return (await this.getFile(backend, ref)).get();
-
         }
 
         let uploadTask: firebase.storage.UploadTask;
