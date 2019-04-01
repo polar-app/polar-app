@@ -21,9 +21,8 @@ export class ChromeExtensionInstallation {
     /**
      * Trigger the online installation of the extension.
      */
-    public static doInstall(event: MouseEvent,
-                            successCallback: () => void,
-                            failureCallback: () => void) {
+    public static doInstall(successCallback: () => void,
+                            failureCallback: (error: string, errorCode?: string) => void) {
 
         RendererAnalytics.event({category: 'chrome-extension', action: 'inline-installation-triggered'});
 
@@ -40,7 +39,7 @@ export class ChromeExtensionInstallation {
                 RendererAnalytics.event({category: 'chrome-extension-failures', action: errorCode});
             }
 
-            failureCallback();
+            failureCallback(error, errorCode);
         };
 
         chrome.webstore.install(EXTENSION_URL, handleSuccess, handleFailure);
