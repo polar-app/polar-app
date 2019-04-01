@@ -1,3 +1,19 @@
+
+function createCommonGlobsForStaticAssetsAtPath(path) {
+
+    const exts = ["css", "html", "png", "svg", "ico", "woff2"];
+
+    const result = [];
+
+    for (const ext of exts) {
+        result.push(path + "/**/*." + ext);
+    }
+
+    return result;
+
+}
+
+
 function createCommonGlobsForPath(path) {
 
     const exts = ["css", "js", "html", "png", "svg", "ico", "woff2"];
@@ -14,8 +30,7 @@ function createCommonGlobsForPath(path) {
 
 const staticFileGlobs = [
 
-    // FIXME: adding apps adds like 3MB ... which is just wrong
-    ...createCommonGlobsForPath('apps'),
+    ...createCommonGlobsForStaticAssetsAtPath('apps'),
     ...createCommonGlobsForPath('htmlviewer'),
     // ...createCommonGlobsForPath('pdfviewer'),
     ...createCommonGlobsForPath('pdfviewer-custom'),
