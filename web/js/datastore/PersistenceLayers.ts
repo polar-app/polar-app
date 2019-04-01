@@ -164,28 +164,16 @@ export class PersistenceLayers {
 
                 if (optionalFile.isPresent()) {
 
-                    // TODO: it would be better if we could make these streams
-                    // in the future to avoid reading these files into memory.
-                    // Some people might have PDF files that are >100MB.
-
-                    // TODO: I think part of this is that we can't transfer a
-                    // stream to the 'remote' worker that's performing the
-                    // actual writes to the DiskStore.
-
-                    // TODO: additionally, we're going to need a way to report
-                    // progress of this operation between the process
-                    // boundaries. We need to have callbacks work so that we
-                    // can determine the throughput of some of the larger
-                    // attachments.
-
-                    // FIXME: make this a dedicated function to transfer between
-                    // do datastores... or at least a dedicated function to
-                    // read it in as a buffer
+                    // TODO: make this a dedicated function to transfer between
+                    // do datastores... or at least a dedicated function to read
+                    // it in as a buffe but this might be less of an issue now
+                    // that I know that both firebase and the disk datastore
+                    // can easily convert URLs to blobs and work with them.
 
                     const file = optionalFile.get();
-                    const buffer = await URLs.toStream(file.url);
+                    const blob = await URLs.toBlob(file.url);
 
-                    await target.datastore.writeFile(file.backend, fileRef, buffer, file.meta);
+                    await target.datastore.writeFile(file.backend, fileRef, blob, file.meta);
 
                     ++result.files.writes;
 

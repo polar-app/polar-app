@@ -182,6 +182,21 @@ export class FilePaths {
 
     }
 
+    /**
+     * Convert this path to a file URL so that we can use it in an API that
+     * expects a URL.
+     */
+    public static toURL(path: string) {
+
+        return url.format({
+            protocol: 'file',
+            slashes: true,
+            pathname: path,
+        });
+
+    }
+
+
 }
 
 export class BrowserContext {
