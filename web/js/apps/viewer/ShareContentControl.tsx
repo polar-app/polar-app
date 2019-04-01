@@ -34,7 +34,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.onChanged = this.onChanged.bind(this);
+        this.onVisibilityChanged = this.onVisibilityChanged.bind(this);
         this.onDone = this.onDone.bind(this);
         this.sharedVia = this.sharedVia.bind(this);
 
@@ -171,7 +171,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                                     color="primary"
                                     outline={outlines._private}
                                     size="md"
-                                    onClick={() => this.onChanged(Visibility.PRIVATE)}>
+                                    onClick={() => this.onVisibilityChanged(Visibility.PRIVATE)}>
 
                                 <span className="mr-1">
                                     <i className="fas fa-lock"></i>
@@ -185,7 +185,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                                     color="primary"
                                     outline={outlines._public}
                                     size="md"
-                                    onClick={() => this.onChanged(Visibility.PUBLIC)}
+                                    onClick={() => this.onVisibilityChanged(Visibility.PUBLIC)}
                                     className="ml-2">
 
                                 <span className="mr-1">
@@ -227,7 +227,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
         };
 
         const NoSharingEnabled = () => {
-            return <div>
+            return <div className="p-2">
 
                 <SplitLayout>
 
@@ -264,9 +264,11 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
     }
 
-    private onChanged(visibility: Visibility) {
+    private onVisibilityChanged(visibility: Visibility) {
         this.setState({visibility});
-        this.props.onChanged(visibility);
+
+        this.props.onVisibilityChanged(visibility)
+            .catch(err => log.error("Unable to change visibility: ", err));
     }
 
     private sharedVia(platform: SharePlatform) {
@@ -295,7 +297,7 @@ interface IProps {
     /**
      * Called when the visibility for this content has chagned.
      */
-    readonly onChanged: (visibility: Visibility) => void;
+    readonly onVisibilityChanged: (visibility: Visibility) => Promise<void>;
 
     readonly onDone: () => void;
 

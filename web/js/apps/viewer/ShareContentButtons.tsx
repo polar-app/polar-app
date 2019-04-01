@@ -11,7 +11,7 @@ export class ShareContentButtons {
     public static create(docInfo: IDocInfo,
                          datastoreCapabilities: DatastoreCapabilities,
                          createShareLink: () => Promise<string | undefined>,
-                         onChanged: (visiblity: Visibility) => void,
+                         onVisibilityChanged: (visiblity: Visibility) => Promise<void>,
                          onDone: () => void = NULL_FUNCTION) {
 
         const viewer = document.getElementById('mainContainer')!;
@@ -22,7 +22,7 @@ export class ShareContentButtons {
         ReactInjector.create(<ShareContentButton datastoreCapabilities={datastoreCapabilities}
                                                  createShareLink={createShareLink}
                                                  visibility={docInfo.visibility}
-                                                 onChanged={onChanged}
+                                                 onVisibilityChanged={onVisibilityChanged}
                                                  onDone={onDone}/>, container);
 
     }

@@ -6,19 +6,13 @@ import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from '../util/Functions';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
-import {Arrays} from '../util/Arrays';
-import {Elements} from '../util/Elements';
-import {LocalPrefs} from '../util/LocalPrefs';
-import {Prefs} from '../util/prefs/Prefs';
 import {ShareContentButtons} from '../apps/viewer/ShareContentButtons';
-import {NULL_FUNCTION} from '../util/Functions';
 import {Visibility} from '../datastore/Datastore';
+import {PrefsProvider} from '../datastore/Datastore';
 import {Datastores} from '../datastore/Datastores';
 import {Backend} from '../datastore/Backend';
 import {ReadingProgressResume} from './ReadingProgressResume';
-import {PrefsProvider} from '../datastore/Datastore';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {Timer} from '../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -138,17 +132,22 @@ export class WebView extends View {
 
     private handleSharing(docMeta: DocMeta) {
 
-        const onVisibilityChanged = (visibility: Visibility) => {
-            docMeta.docInfo.visibility = visibility;
+        const persistenceLayer = this.model.persistenceLayer;
+
+        const onVisibilityChanged = async (visibility: Visibility) => {
+            return await Datastores.changeVisibility(persistenceLayer, docMeta, visibility);
         };
 
-        const persistenceLayer = this.model.persistenceLayer;
         const datastoreCapabilities = persistenceLayer.capabilities();
 
         // TODO: use a latch for this though and only fetch it ONCE because it
         // takes about 1s but it never changes for the user.
 
         const createShareLink = async (): Promise<string | undefined> => {
+
+            if (! datastoreCapabilities.networkLayers.has('web')) {
+                return undefined;
+            }
 
             const fileRef = Datastores.toFileRef(docMeta);
 
