@@ -17,9 +17,6 @@ export class FilePaths {
      */
     public static readonly SEP = libpath.sep;
 
-    // FIXME: THIS is the bug.. Windows just needs to die!  We're not properly
-    // building URI paths due to this issue now...
-
     /**
      * Create a path from the given parts regardless of their structure.
      *
