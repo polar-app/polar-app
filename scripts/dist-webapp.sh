@@ -43,6 +43,8 @@ copy web "*.svg"
 # - one for the document repository
 # - one for the pdf viewer
 # - one for the html viewer
+#
+# - the solution here is to JUST cache apps, htmlviewer, pdfviewer
 
 copy node_modules/font-awesome "*"
 copy node_modules/@fortawesome "*"
@@ -62,4 +64,4 @@ cp *.svg dist/public
 
 cp manifest.json dist/public
 
-# sw-precache --root=dist --static-file-globs='dist/**/*.html'
+# sw-precache --config=sw-precache-config.js
