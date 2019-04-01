@@ -13,14 +13,32 @@ function createCommonGlobsForPath(path) {
 }
 
 const staticFileGlobs = [
+
     ...createCommonGlobsForPath('apps'),
     ...createCommonGlobsForPath('htmlviewer'),
     ...createCommonGlobsForPath('pdfviewer'),
+    ...createCommonGlobsForPath('pdfviewer-custom'),
     ...createCommonGlobsForPath('web/dist'),
     ...createCommonGlobsForPath('web/assets'),
     'icon.ico',
     'icon.png',
-    'icon.svg'
+    'icon.svg',
+
+    // now the custom specified resources that we need for the webapp to
+    // function (scripts and CSS)
+    //
+    '/node_modules/firebase/firebase.js',
+    '/node_modules/firebaseui/dist/firebaseui.js',
+    '/node_modules/firebaseui/dist/firebaseui.css',
+    '/node_modules/react-table/react-table.css',
+    '/node_modules/bootstrap/dist/css/bootstrap.min.css',
+    '/node_modules/bootstrap/dist/css/bootstrap-grid.min.css',
+    '/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css',
+    '/node_modules/toastr/build/toastr.min.css',
+    '/node_modules/@fortawesome/fontawesome-free/css/all.min.css',
+    '/node_modules/@burtonator/react-dropdown/dist/react-dropdown.css',
+    '/node_modules/summernote/dist/summernote-bs4.css',
+
 ];
 
 console.log("Using static file globs: \n ", staticFileGlobs.join("\n  "));
@@ -35,3 +53,9 @@ module.exports = {
     //     handler: 'networkFirst'
     // }]
 };
+
+
+
+
+
+
