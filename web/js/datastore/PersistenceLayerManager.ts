@@ -45,6 +45,9 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         await this.change(type);
 
+        // now we have to listen and auto-change if we've switched in another
+        this.listenForPersistenceLayerChange();
+
     }
 
     public get(): ListenablePersistenceLayer {
@@ -169,6 +172,41 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
     private dispatchEvent(event: PersistenceLayerManagerEvent): void {
         this.persistenceLayerManagerEventDispatcher.dispatchEvent(event);
+    }
+
+    private listenForPersistenceLayerChange() {
+
+        const whenChanged = (callback: (type: PersistenceLayerType) => void) => {
+
+            let type = PersistenceLayerTypes.get();
+
+            window.addEventListener('storage', () => {
+
+                const newType = PersistenceLayerTypes.get();
+
+                if (newType !== type) {
+
+                    try {
+
+                        callback(newType);
+
+                    } finally {
+                        type = newType;
+                    }
+
+                }
+
+            });
+
+        };
+
+        whenChanged((type) => {
+
+            this.change(type)
+                .catch(err => log.error("Unable to change to type: " + type));
+
+        });
+
     }
 
 }
