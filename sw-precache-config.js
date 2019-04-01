@@ -28,11 +28,29 @@ function createCommonGlobsForPath(path) {
 
 }
 
+function createPDFJSGlobs() {
+
+    return [
+
+        'build/pdf.js',
+        'build/pdf.worker.js',
+        'web/viewer.js',
+        'web/viewer.css',
+        'web/index.html',
+        'web/locale/en/viewer.properties',
+        ...createCommonGlobsForPath('pdfviewer/web/images'),
+
+    ];
+
+}
+
 const staticFileGlobs = [
 
     ...createCommonGlobsForStaticAssetsAtPath('apps'),
     ...createCommonGlobsForPath('htmlviewer'),
-    // ...createCommonGlobsForPath('pdfviewer'),
+
+    ...createPDFJSGlobs(),
+
     ...createCommonGlobsForPath('pdfviewer-custom'),
     ...createCommonGlobsForPath('web/dist'),
     ...createCommonGlobsForPath('web/assets'),
