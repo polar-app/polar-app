@@ -14,9 +14,10 @@ function createCommonGlobsForPath(path) {
 
 const staticFileGlobs = [
 
+    // FIXME: adding apps adds like 3MB ... which is just wrong
     ...createCommonGlobsForPath('apps'),
     ...createCommonGlobsForPath('htmlviewer'),
-    ...createCommonGlobsForPath('pdfviewer'),
+    // ...createCommonGlobsForPath('pdfviewer'),
     ...createCommonGlobsForPath('pdfviewer-custom'),
     ...createCommonGlobsForPath('web/dist'),
     ...createCommonGlobsForPath('web/assets'),
@@ -26,7 +27,6 @@ const staticFileGlobs = [
 
     // now the custom specified resources that we need for the webapp to
     // function (scripts and CSS)
-    //
     '/node_modules/firebase/firebase.js',
     '/node_modules/firebaseui/dist/firebaseui.js',
     '/node_modules/firebaseui/dist/firebaseui.css',
