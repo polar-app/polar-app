@@ -24,6 +24,7 @@ copy apps "*.png"
 copy apps "*.css"
 
 copy apps "init.js"
+copy apps "service-worker-registration.js"
 
 copy htmlviewer "*.html"
 copy htmlviewer "*.css"
@@ -64,4 +65,4 @@ cp *.svg dist/public
 
 cp manifest.json dist/public
 
-# sw-precache --config=sw-precache-config.js
+sw-precache --config=sw-precache-config.js
