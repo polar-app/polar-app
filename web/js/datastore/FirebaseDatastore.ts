@@ -256,58 +256,62 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getDocMeta(fingerprint: string): Promise<string | null> {
 
         return await tracer.traceAsync('getDocMeta', async () => {
+            return await this.getDocMeta0(fingerprint);
+        });
 
-            const uid = this.getUserID();
-            const id = this.computeDocMetaID(uid, fingerprint);
+    }
 
-            const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
+    private async getDocMeta0(fingerprint: string): Promise<string | null> {
 
-            const createSnapshot = async () => {
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, fingerprint);
 
-                // TODO: lift this out into its own method.
+        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 
-                const preferredSource = this.preferredSource();
+        const createSnapshot = async () => {
 
-                if (preferredSource === 'cache') {
+            // TODO: lift this out into its own method.
 
-                    // Firebase supports three cache strategies.  The first
-                    // (default) is server with fall back to cache but what we
-                    // need is the reverse.  We need cache but server refresh to
-                    // pull the up-to-date copy.
-                    //
-                    // What we now do is we get two promises, then return the
-                    // first that works or throw an error if both fail.
-                    //
-                    // In this situation we ALWAYs go to the server though
-                    // because we need to get the up-to-date copy to refresh
-                    // BUT we can get the initial version FASTER since we
-                    // can resolve it from cache.
+            const preferredSource = this.preferredSource();
 
-                    const cachePromise = ref.get({ source: 'cache' });
-                    const serverPromise = ref.get({ source: 'server' });
+            if (preferredSource === 'cache') {
 
-                    return Promises.any(cachePromise, serverPromise);
+                // Firebase supports three cache strategies.  The first
+                // (default) is server with fall back to cache but what we
+                // need is the reverse.  We need cache but server refresh to
+                // pull the up-to-date copy.
+                //
+                // What we now do is we get two promises, then return the
+                // first that works or throw an error if both fail.
+                //
+                // In this situation we ALWAYs go to the server though
+                // because we need to get the up-to-date copy to refresh
+                // BUT we can get the initial version FASTER since we
+                // can resolve it from cache.
 
-                } else {
-                    // now revert to checking the server, then cache if we're
-                    // offline.
-                    return await ref.get();
-                }
+                const cachePromise = ref.get({ source: 'cache' });
+                const serverPromise = ref.get({ source: 'server' });
 
-            };
+                return Promises.any(cachePromise, serverPromise);
 
-            const snapshot = await createSnapshot();
-
-            const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
-
-            if (! recordHolder) {
-                log.warn("Could not get docMeta with id: " + id);
-                return null;
+            } else {
+                // now revert to checking the server, then cache if we're
+                // offline.
+                return await ref.get();
             }
 
-            return recordHolder.value.value;
+        };
 
-        });
+        const snapshot = await createSnapshot();
+
+        const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
+
+        if (! recordHolder) {
+            log.warn("Could not get docMeta with id: " + id);
+            return null;
+        }
+
+        return recordHolder.value.value;
 
     }
 
@@ -321,116 +325,124 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                            meta: FileMeta = {}): Promise<DocFileMeta> {
 
         return await tracer.traceAsync('writeFile', async () => {
-
-            if (await this.containsFile(backend, ref)) {
-                // the file is already in the datastore so don't attempt to
-                // overwrite it for now.  The files are immutable and we don't
-                // accept overwrites.
-                return (await this.getFile(backend, ref)).get();
-            }
-
-            const storage = this.storage!;
-
-            const storagePath = this.computeStoragePath(backend, ref);
-
-            const fileRef = storage.ref().child(storagePath.path);
-
-            let uploadTask: firebase.storage.UploadTask;
-
-            // TODO: we need to compute visibility for this for the future.
-
-            const uid = this.getUserID();
-
-            // stick the uid into the metadata which we use for authorization of the
-            // blob when not public.
-            meta = { ...meta, uid, visibility: Visibility.PRIVATE };
-
-            const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
-
-            if (storagePath.settings) {
-                metadata.contentType = storagePath.settings.contentType;
-                metadata.cacheControl = storagePath.settings.cacheControl;
-            }
-
-            if (typeof data === 'string') {
-                uploadTask = fileRef.putString(data, 'raw', metadata);
-            } else if (data instanceof Blob) {
-                uploadTask = fileRef.put(data, metadata);
-            } else {
-
-                if (FileHandles.isFileHandle(data)) {
-
-                    // It's not a buffer but convert it to one... this only
-                    // happens in the desktop app so we can read file URLs to
-                    // blobs.
-                    const fileHandle = <FileHandle> data;
-
-                    const fileURL = FilePaths.toURL(fileHandle.path);
-                    const blob = await URLs.toBlob(fileURL);
-                    uploadTask = fileRef.put(blob, metadata);
-
-                } else {
-                    uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
-                }
-
-            }
-
-            // TODO: we can get progress from the uploadTask here.
-
-            const started = Date.now();
-
-            const task = ProgressTracker.createNonce();
-
-            uploadTask.on('state_changed', (snapshotData: any) => {
-
-                const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
-
-                const now = Date.now();
-                const duration = now - started;
-
-                const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-                log.notice('Upload is ' + percentage + '%// done');
-
-                const progress: ProgressMessage = {
-                    id: 'firebase-upload',
-                    task,
-                    completed: snapshot.bytesTransferred,
-                    total: snapshot.totalBytes,
-                    duration,
-                    progress: <Percentage> percentage
-                };
-
-                ProgressMessages.broadcast(progress);
-
-                switch (snapshot.state) {
-
-                    case firebase.storage.TaskState.PAUSED:
-                        // or 'paused'
-                        // console.log('Upload is paused');
-                        break;
-
-                    case firebase.storage.TaskState.RUNNING:
-                        // or 'running'
-                        // console.log('Upload is running');
-                        break;
-                }
-
-            });
-
-            const uploadTaskSnapshot = await uploadTask;
-
-            const downloadURL = uploadTaskSnapshot.downloadURL;
-
-            return {
-                backend,
-                ref,
-                url: downloadURL!,
-                meta
-            };
-
+            return await this.writeFile0(backend, ref, data, meta);
         });
 
     }
+
+    private async writeFile0(backend: Backend,
+                             ref: FileRef,
+                             data: BinaryFileData ,
+                             meta: FileMeta = {}): Promise<DocFileMeta> {
+
+        if (await this.containsFile(backend, ref)) {
+            // the file is already in the datastore so don't attempt to
+            // overwrite it for now.  The files are immutable and we don't
+            // accept overwrites.
+            return (await this.getFile(backend, ref)).get();
+        }
+
+        const storage = this.storage!;
+
+        const storagePath = this.computeStoragePath(backend, ref);
+
+        const fileRef = storage.ref().child(storagePath.path);
+
+        let uploadTask: firebase.storage.UploadTask;
+
+        // TODO: we need to compute visibility for this for the future.
+
+        const uid = this.getUserID();
+
+        // stick the uid into the metadata which we use for authorization of the
+        // blob when not public.
+        meta = { ...meta, uid, visibility: Visibility.PRIVATE };
+
+        const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
+
+        if (storagePath.settings) {
+            metadata.contentType = storagePath.settings.contentType;
+            metadata.cacheControl = storagePath.settings.cacheControl;
+        }
+
+        if (typeof data === 'string') {
+            uploadTask = fileRef.putString(data, 'raw', metadata);
+        } else if (data instanceof Blob) {
+            uploadTask = fileRef.put(data, metadata);
+        } else {
+
+            if (FileHandles.isFileHandle(data)) {
+
+                // It's not a buffer but convert it to one... this only
+                // happens in the desktop app so we can read file URLs to
+                // blobs.
+                const fileHandle = <FileHandle> data;
+
+                const fileURL = FilePaths.toURL(fileHandle.path);
+                const blob = await URLs.toBlob(fileURL);
+                uploadTask = fileRef.put(blob, metadata);
+
+            } else {
+                uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
+            }
+
+        }
+
+        // TODO: we can get progress from the uploadTask here.
+
+        const started = Date.now();
+
+        const task = ProgressTracker.createNonce();
+
+        uploadTask.on('state_changed', (snapshotData: any) => {
+
+            const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
+
+            const now = Date.now();
+            const duration = now - started;
+
+            const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
+            log.notice('Upload is ' + percentage + '%// done');
+
+            const progress: ProgressMessage = {
+                id: 'firebase-upload',
+                task,
+                completed: snapshot.bytesTransferred,
+                total: snapshot.totalBytes,
+                duration,
+                progress: <Percentage> percentage
+            };
+
+            ProgressMessages.broadcast(progress);
+
+            switch (snapshot.state) {
+
+                case firebase.storage.TaskState.PAUSED:
+                    // or 'paused'
+                    // console.log('Upload is paused');
+                    break;
+
+                case firebase.storage.TaskState.RUNNING:
+                    // or 'running'
+                    // console.log('Upload is running');
+                    break;
+            }
+
+        });
+
+        const uploadTaskSnapshot = await uploadTask;
+
+        const downloadURL = uploadTaskSnapshot.downloadURL;
+
+        return {
+            backend,
+            ref,
+            url: downloadURL!,
+            meta
+        };
+
+    }
+
 
     public async getFileMeta(backend: Backend,
                              ref: FileRef,
@@ -520,36 +532,40 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         return await tracer.traceAsync('getFile', async () => {
+            return await this.getFile0(backend, ref);
+        });
 
-            let result = await this.getFileFromFileMeta(backend, ref);
+    }
 
-            if (! result.isPresent()) {
+    private async getFile0(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
-                result = await this.getFileFromStorage(backend, ref);
+        let result = await this.getFileFromFileMeta(backend, ref);
 
-                if (result.isPresent()) {
-                    // write it to doc_file_meta so that next time we have it
-                    // available
+        if (! result.isPresent()) {
 
-                    const docFileMeta: DocFileMeta = result.get();
+            result = await this.getFileFromStorage(backend, ref);
 
-                    if (! docFileMeta.ref.hashcode) {
-                        // Firebase doesn't support file names with 'undefined'
-                        // values.
-                        delete (<any> docFileMeta.ref).hashcode;
-                    }
+            if (result.isPresent()) {
+                // write it to doc_file_meta so that next time we have it
+                // available
 
-                    await this.writeFileMeta(backend, ref, docFileMeta);
+                const docFileMeta: DocFileMeta = result.get();
 
+                if (! docFileMeta.ref.hashcode) {
+                    // Firebase doesn't support file names with 'undefined'
+                    // values.
+                    delete (<any> docFileMeta.ref).hashcode;
                 }
 
-                return result;
+                await this.writeFileMeta(backend, ref, docFileMeta);
 
-            } else {
-                return result;
             }
 
-        });
+            return result;
+
+        } else {
+            return result;
+        }
 
     }
 
