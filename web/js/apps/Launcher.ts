@@ -14,6 +14,7 @@ import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
 import {AddContentImporters} from './viewer/AddContentImporters';
 import {Providers} from '../util/Providers';
 import {ProgressService} from '../ui/progress_bar/ProgressService';
+import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
 
 const log = Logger.create();
 
@@ -24,14 +25,11 @@ const log = Logger.create();
  */
 export class Launcher {
 
-    private readonly persistenceLayerFactory: PersistenceLayerFactory;
-
     /**
      * Launch the app with the given launch function.
      *
      */
-    constructor(persistenceLayerFactory: PersistenceLayerFactory) {
-        this.persistenceLayerFactory = persistenceLayerFactory;
+    constructor() {
     }
 
     /**
@@ -45,8 +43,8 @@ export class Launcher {
 
         await addContentImporter.prepare();
 
-        const persistenceLayer = await this.persistenceLayerFactory();
-        await persistenceLayer.init();
+        const persistenceLayerManager = new PersistenceLayerManager();
+        persistenceLayerManager.start();
 
         await Logging.init();
 
@@ -55,7 +53,10 @@ export class Launcher {
         const model = new Model(persistenceLayer);
 
         new PagemarkView(model).start();
-        new WebView(model, persistenceLayer.datastore.getPrefs()).start();
+
+        const prefsProvider = () => persistenceLayerManager.get().datastore.getPrefs();
+
+        new WebView(model, prefsProvider).start();
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
         new AnnotationSidebarService(model).start();

@@ -7,17 +7,6 @@ import {RemotePersistenceLayerFactory} from '../datastore/factories/RemotePersis
 
 const log = Logger.create();
 
-async function persistenceLayerFactory(): Promise<ListenablePersistenceLayer> {
-
-    // let electronPersistenceLayer = ElectronPersistenceLayerFactory.create();
-    // return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);
-
-    const persistenceLayer = RemotePersistenceLayerFactory.create();
-    await persistenceLayer.init();
-    return persistenceLayer;
-
-}
-
-new Launcher(persistenceLayerFactory).launch()
+new Launcher().launch()
     .then(() => log.info("App now loaded."))
     .catch(err => log.error(err));
