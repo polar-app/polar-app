@@ -55,8 +55,17 @@ appx:
 win:
   artifactName: ${name}-${version}-${arch}.${ext}
   target:
+
+    # Building on Linux requires nsis packages and they're built in a
+    # docker container for windows.
+
     - target: nsis
-    #- target: appx
+
+    # appx packages are built for Windows on Windows and are designed
+    # for the windows store.
+
+    - target: appx
+
     #- target: portable
   icon: ./icons/icon-512x512.png
   fileAssociations:

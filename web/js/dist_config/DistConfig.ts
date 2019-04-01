@@ -5,6 +5,9 @@
  */
 export class DistConfig {
 
+    /**
+     * Enable updates but only if the underlying platform supports it.
+     */
     public static readonly ENABLE_UPDATES: boolean = true;
 
 }

@@ -1,8 +1,14 @@
 # 1.17.0
 
+- Fixed ugly bug with handling special chars in filenames within the browser.
+
 - In Electron, the viewer window and the app repo now share the same session and
   the this means that we can use the cloud or firebase datastore... whichever 
   we are configured for...  
+
+# 1.16.1
+
+- Better link to chrome inline installation for now...
 
 # 1.16.0
 
