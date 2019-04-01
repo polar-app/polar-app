@@ -1,5 +1,6 @@
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
+import {isPresent} from '../../../web/js/Preconditions';
 
 const EXTENSION_URL = "https://chrome.google.com/webstore/detail/jkfdkjomocoaljglgddnmhcbolldcafd";
 
@@ -18,7 +19,27 @@ export class ChromeExtensionInstallation {
         return this.isSupported() && ! localStorage.getItem("skip-extension");
     }
 
+    public static isInstalled() {
+
+        // we don't have a type for this yet.
+        const anyChrome: any = chrome;
+
+        if (! anyChrome) {
+            return false;
+        }
+
+        // no typescript bindings...
+        const app: any = anyChrome.app;
+
+        if (! app) {
+            return false;
+        }
+
+        return isPresent(app.isInstalled) && app.isInstalled;
+    }
+
     /**
+     *
      * Trigger the online installation of the extension.
      */
     public static doInstall(successCallback: () => void,

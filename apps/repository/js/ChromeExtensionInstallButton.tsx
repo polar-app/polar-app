@@ -1,22 +1,9 @@
 import * as React from 'react';
-import {RepoDocInfo} from './RepoDocInfo';
 import {Logger} from '../../../web/js/logger/Logger';
-import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {shell} from 'electron';
-import {Directories} from '../../../web/js/datastore/Directories';
-import {FilePaths} from '../../../web/js/util/FilePaths';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
-import {Clipboards} from '../../../web/js/util/system/clipboard/Clipboards';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import Dropdown from 'reactstrap/lib/Dropdown';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import {AppRuntime} from '../../../web/js/AppRuntime';
-import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
-import {NULL_FUNCTION} from '../../../web/js/util/Functions';
-import {DocDropdownItems} from './DocDropdownItems';
 import Button from 'reactstrap/lib/Button';
-import {ChromeExtensionInstallation} from './ChromeExtensionInstallation';
+import {Nav} from '../../../web/js/ui/util/Nav';
+import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -37,15 +24,40 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
 
     public render() {
 
+        // const hidden = ! ChromeExtensionInstallation.isSupported() ||
+        // ChromeExtensionInstallation.isInstalled();
+
+        const hidden = false;
+
         return (
 
-            <Button onClick={() => this.onClick()}
-                    color="light"
-                    size="sm">
+            <div className="ml-1 mr-1">
 
-                Install Chrome Extension
+                <Button hidden={hidden}
+                        onClick={() => this.onClick()}
+                        color="light"
+                        className="border"
+                        size="sm">
 
-            </Button>
+                    <div style={{display: 'flex'}}>
+
+                        <div>
+                            <img style={{
+                                    height: '22px',
+                                    marginRight: '5px'
+                                 }}
+                                 src="/web/assets/images/chrome.svg" title="chrome"/>
+                        </div>
+
+                        <div>
+                            Install Chrome Extension
+                        </div>
+
+                    </div>
+
+                </Button>
+
+            </div>
 
         );
 
@@ -53,7 +65,9 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
 
     private onClick(): void {
 
-        ChromeExtensionInstallation.doInstall(() => this.onSuccess(), (error) => this.onFailure(error));
+        RendererAnalytics.event({category: 'chrome-extension', action: 'manual-installation-triggered'});
+
+        Nav.openLinkWithNewTab("https://chrome.google.com/webstore/detail/polar-pdf-web-and-documen/jkfdkjomocoaljglgddnmhcbolldcafd");
 
     }
 
