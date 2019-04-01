@@ -297,6 +297,15 @@ export interface FileRef {
 
 }
 
+/**
+ * A FileRef with a backend.
+ */
+export interface BackendFileRef extends FileRef {
+
+    readonly backend: Backend;
+
+}
+
 // noinspection TsLint
 /**
  * Arbitrary settings for files specific to each storage layer.  Firebase uses

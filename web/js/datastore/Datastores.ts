@@ -18,6 +18,9 @@ import {NetworkLayer} from './Datastore';
 import {FileRef} from './Datastore';
 import {FilePaths} from '../util/FilePaths';
 import {Optional} from '../util/ts/Optional';
+import {Visibility} from './Datastore';
+import {BackendFileRef} from './Datastore';
+import {Backend} from './Backend';
 
 const log = Logger.create();
 
@@ -38,6 +41,9 @@ export class Datastores {
 
     }
 
+    /**
+     * Get the main FileRef (PHZ or PDF).
+     */
     public static toFileRef(docMeta: DocMeta): FileRef | undefined {
 
         if (docMeta) {
@@ -58,6 +64,64 @@ export class Datastores {
         }
 
         return undefined;
+
+    }
+
+    /**
+     * Get all FileRefs for this DocMeta including the main doc but also
+     * any image, audio, or video attachments.
+     */
+    public static toBackendFileRefs(docMeta: DocMeta): ReadonlyArray<BackendFileRef> {
+
+        const result: BackendFileRef[] = [];
+
+        const fileRef = this.toFileRef(docMeta);
+
+        if (fileRef) {
+            // this is the main FileRef of the file (PHZ or PDF)
+            result.push({backend: Backend.STASH, ...fileRef});
+        }
+
+        return result;
+
+    }
+
+    /**
+     * Change visibility of the given DocMeta including setting the visiblity
+     * itself on the DocInfo but also setting the visiblity for the individual
+     * files.
+     *
+     */
+    public static async changeVisibility(datastore: Datastore,
+                                         docMeta: DocMeta,
+                                         visibility: Visibility) {
+
+        const backendFileRefs = this.toBackendFileRefs(docMeta);
+
+        const writeFileOpts = {visibility, updateMeta: true};
+
+        const toWriteFilePromise = (backendFileRef: BackendFileRef) => {
+
+            return datastore.writeFile(backendFileRef.backend,
+                                       backendFileRef,
+                                       undefined!,
+                                       writeFileOpts);
+
+        };
+
+        const writeFilePromises
+            = backendFileRefs.map(current => toWriteFilePromise(current));
+
+        // Firebase is somewhat slow/latent with these ops so do them in
+        // parallel via promises.
+
+        await Promise.all(writeFilePromises);
+
+        // and finally set the visibility on the DocMeta/DocInfo.  This should
+        // be set automatically by the mutator when we change the underlying
+        // data.
+
+        docMeta.docInfo.visibility = visibility;
 
     }
 
