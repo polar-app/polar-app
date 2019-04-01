@@ -21,6 +21,7 @@ import {Optional} from '../util/ts/Optional';
 import {Visibility} from './Datastore';
 import {BackendFileRef} from './Datastore';
 import {Backend} from './Backend';
+import {PersistenceLayer} from './PersistenceLayer';
 
 const log = Logger.create();
 
@@ -92,7 +93,7 @@ export class Datastores {
      * files.
      *
      */
-    public static async changeVisibility(datastore: Datastore,
+    public static async changeVisibility(store: Datastore | PersistenceLayer,
                                          docMeta: DocMeta,
                                          visibility: Visibility) {
 
@@ -102,10 +103,10 @@ export class Datastores {
 
         const toWriteFilePromise = (backendFileRef: BackendFileRef) => {
 
-            return datastore.writeFile(backendFileRef.backend,
-                                       backendFileRef,
-                                       undefined!,
-                                       writeFileOpts);
+            return store.writeFile(backendFileRef.backend,
+                                   backendFileRef,
+                                   undefined!,
+                                   writeFileOpts);
 
         };
 
