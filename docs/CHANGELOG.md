@@ -6,6 +6,10 @@
   the this means that we can use the cloud or firebase datastore... whichever 
   we are configured for...  
 
+# 1.16.1
+
+- Better link to chrome inline installation for now...
+
 # 1.16.0
 
 - Multi-delete button now uses the confirm prompt properly.
