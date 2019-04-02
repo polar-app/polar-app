@@ -1,8 +1,44 @@
 import {Logger} from '../logger/Logger';
+import {Latch} from './Latch';
 
 const log = Logger.create();
 
 export class Promises {
+
+    /**
+     * Return the result of ANY of these promises and prefer a successful value
+     * but reject if ALL of them fail with the first error.
+     *
+     * We require at least 1 promise but you can specify up to N
+     */
+    public static async any<T>(p0: Promise<T>, ...morePromises: Array<Promise<T>>): Promise<T> {
+
+        const promises = [p0, ...morePromises];
+
+        const latch = new Latch<T>();
+
+        const errors: Error[] = [];
+
+        const onError = (err: Error) => {
+
+            errors.push(err);
+
+            if (errors.length === promises.length) {
+                latch.reject(errors[0]);
+            }
+
+        };
+
+        for (const promise of promises) {
+
+            promise.then(value => latch.resolve(value))
+                   .catch(err => onError(err));
+
+        }
+
+        return latch.get();
+
+    }
 
     /**
      * A promise based timeout.  This just returns a promise which returns

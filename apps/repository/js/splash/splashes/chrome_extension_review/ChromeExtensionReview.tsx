@@ -2,9 +2,9 @@
 import React from 'react';
 import {Splash} from '../../Splash';
 import {EmbeddedImages} from '../whats_new/EmbeddedImages';
-import {SplitLayout, SplitLayoutLeft, SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayout';
-import {CallToActionLink} from '../components/CallToActionLink';
+import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
 import {EventTrackedLink} from '../components/EventTrackedLink';
+import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
 
 const LINK = 'https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/';
 const EVENT_CATEGORY = 'splash-chrome-extension-review';

@@ -9,17 +9,17 @@ import {Hashcode} from '../../../web/js/metadata/Hashcode';
 
 export interface RepoDocInfo {
 
-    fingerprint: string;
+    readonly fingerprint: string;
 
-    title: string;
+    readonly title: string;
 
-    progress: number;
+    readonly progress: number;
 
-    filename?: string;
+    readonly filename?: string;
 
-    added?: ISODateTimeString;
+    readonly added?: ISODateTimeString;
 
-    lastUpdated?: ISODateTimeString;
+    readonly lastUpdated?: ISODateTimeString;
 
     // lastUpdated?: string;
 
@@ -27,23 +27,23 @@ export interface RepoDocInfo {
 
     archived: boolean;
 
-    url?: string;
+    readonly url?: string;
 
     // nrComments: number;
     // nrFlashcards: number;
 
-    tags?: Readonly<{[id: string]: Tag}>;
+    readonly tags?: Readonly<{[id: string]: Tag}>;
 
-    nrAnnotations: number;
+    readonly nrAnnotations: number;
 
-    hashcode?: Hashcode;
+    readonly hashcode?: Hashcode;
 
-    site?: string;
+    readonly site?: string;
 
     /**
      * The original DocInfo used to construct this RepoDocInfo.
      */
-    docInfo: IDocInfo;
+    readonly docInfo: IDocInfo;
 
 }
 

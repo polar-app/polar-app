@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {NULL_FUNCTION} from '../../../../../web/js/util/Functions';
+import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 
 export class DocButton extends React.PureComponent<IProps, IState> {
 

@@ -91,7 +91,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
             <div key={key} className="mt-1">
 
-                <div className="flashcard card shadow-sm mb-3">
+                <div className="flashcard card shadow-sm mb-1">
 
                     <div className="card-body p-1">
 
@@ -102,7 +102,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
                 </div>
 
                 <div style={Styles.barBody}
-                     className="flexbar comment-bar border-top pt-1">
+                     className="flexbar comment-bar border-bottom pb-0 mb-2">
 
                     <div style={Styles.barChild} className="text-muted">
                         {/*TODO: make this into its own component... */}

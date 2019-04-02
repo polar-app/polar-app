@@ -16,9 +16,29 @@ export class Blobs {
                 reject(err);
             });
 
-            // TODO: add a readAsText version too...
-
             reader.readAsArrayBuffer(blob);
+
+        });
+
+    }
+
+    public static async toText(blob: Blob): Promise<string> {
+
+        return new Promise<string>((resolve, reject) => {
+
+            const reader = new FileReader();
+
+            reader.addEventListener("loadend", () => {
+                // reader.result contains the contents of blob as a typed array
+                resolve(<string> reader.result);
+            });
+
+            reader.addEventListener("error", (err) => {
+                // reader.result contains the contents of blob as a typed array
+                reject(err);
+            });
+
+            reader.readAsText(blob);
 
         });
 

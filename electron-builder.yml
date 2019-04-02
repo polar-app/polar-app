@@ -55,8 +55,17 @@ appx:
 win:
   artifactName: ${name}-${version}-${arch}.${ext}
   target:
+
+    # Building on Linux requires nsis packages and they're built in a
+    # docker container for windows.
+
     - target: nsis
-    #- target: appx
+
+    # appx packages are built for Windows on Windows and are designed
+    # for the windows store.
+
+    - target: appx
+
     #- target: portable
   icon: ./icons/icon-512x512.png
   fileAssociations:
@@ -65,7 +74,6 @@ win:
   publisherName: Spinn3r
 
 snap:
-
   confinement: "strict"
   grade: "stable"
   stagePackages:
@@ -75,6 +83,12 @@ snap:
     - home
     #- "X11"
     #- "wayland"
+    # additional plugs to pick up the GTK theme and icons from the system, mouse cursor theme still not fixed
+    - { "gtk-3-themes": { "interface": "content", "target": "$SNAP/data-dir/themes", "default-provider": "gtk-common-themes:gtk-3-themes" }, }
+    - { "icon-themes": { "interface": "content", "target": "$SNAP/data-dir/icons", "default-provider": "gtk-common-themes:icon-themes" }, }
+    - { "sound-themes": { "interface": "content", "target": "$SNAP/data-dir/sounds", "default-provider": "gtk-common-themes:sounds-themes" }, }
+  environment:
+    DISABLE_WAYLAND: 1 #use XWayland
 
 # https://www.electron.build/configuration/publish
 # https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/

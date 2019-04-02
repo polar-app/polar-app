@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {SimpleTooltip} from '../../ui/tooltip/SimpleTooltip';
 import Button from 'reactstrap/lib/Button';
+import {SimpleTooltipEx} from '../../ui/tooltip/SimpleTooltipEx';
 
 export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState> {
 
@@ -22,32 +23,30 @@ export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState
                      zIndex: 100
                  }}>
 
-                <Button id="add-content-overlay"
-                        direction="down"
-                        style={{
-                            fontWeight: 'bold',
-                            fontSize: '16px',
-                            fontFamily: 'sans-serif'
-                        }}
-                        color="success"
-                        className="btn-lg shadow"
-                        onClick={() => this.props.onClick()}
-                        size="lg">
+                <SimpleTooltipEx text="Add document to your Polar repository."
+                                 style={{
+                                     fontSize: '14px'
+                                 }}
+                                 show={0}
+                                 placement="left" >
 
-                    <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add to Polar
+                    <Button id="add-content-overlay"
+                            direction="down"
+                            style={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                fontFamily: 'sans-serif'
+                            }}
+                            color="success"
+                            className="btn-lg shadow"
+                            onClick={() => this.props.onClick()}
+                            size="lg">
 
-                </Button>
+                        <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add to Polar
 
-                <SimpleTooltip target="add-content-overlay"
-                               style={{
-                                   fontSize: '14px'
-                               }}
-                               show={0}
-                               placement="left">
+                    </Button>
 
-                    Add document to your Polar repository.
-
-                </SimpleTooltip>
+                </SimpleTooltipEx>
 
             </div>
 

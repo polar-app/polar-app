@@ -424,18 +424,47 @@ export class TextHighlightController {
         }
 
         let bottom: number | undefined;
+        let right: number | undefined;
+
+        const elementFontSizeInPixels = (element: HTMLElement): number => {
+            const computedStyle = window.getComputedStyle(element, null);
+            const fontSize = computedStyle.getPropertyValue('font-size');
+            return parseInt(fontSize);
+        };
 
         for (const element of Array.from(elements)) {
 
             const rect = element.getBoundingClientRect();
 
+            // const fontSize = elementFontSizeInPixels(element);
+
+            // First, handle spacing for the layout which mostly just applies
+            // to PDF.js but also works for html but this is almost always
+            // flowing text so pretty much always just works.  PDF.js is the
+            // outlier though.
+
             if (bottom !== undefined && rect.bottom !== bottom) {
                 result += "\n";
+            } else {
+
+                if (right !== undefined) {
+
+                    const gap = rect.left - right;
+
+                    if (gap >= 1) {
+                        result += " ";
+                    }
+
+                }
+
             }
+
+            // Second, just append the text now.
 
             result += element.innerText;
 
             bottom = rect.bottom;
+            right = rect.right;
 
         }
 

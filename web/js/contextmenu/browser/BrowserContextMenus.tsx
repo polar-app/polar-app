@@ -4,6 +4,7 @@ import {showContextMenu} from '@burtonator/react-context-menu-wrapper';
 import {TriggerEvent} from '../TriggerEvent';
 import {DropdownMenu, MenuItem} from "@burtonator/react-dropdown";
 import {BrowserContextMenu} from './BrowserContextMenu';
+import {isPresent} from '../../Preconditions';
 
 export class BrowserContextMenus {
 
@@ -32,7 +33,7 @@ export class BrowserContextMenus {
 
         showContextMenu({
             id: "viewer-context-menu",
-            event: mouseEvent,
+            // event: mouseEvent,
             data: triggerEvent,
             x: triggerEvent.point.x,
             y: triggerEvent.point.y
@@ -41,4 +42,3 @@ export class BrowserContextMenus {
     }
 
 }
-

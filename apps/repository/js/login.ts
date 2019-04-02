@@ -5,6 +5,7 @@ import * as firebase from '../../../web/js/firebase/lib/firebase';
 import {URLs} from '../../../web/js/util/URLs';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Optional} from '../../../web/js/util/ts/Optional';
+import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
 class SignInSuccessURLs {
 
@@ -43,6 +44,33 @@ class SignInSuccessURLs {
 
 }
 
+class InitialLogin {
+
+    public static get() {
+
+        const key = "has-login";
+
+        const result = localStorage.getItem(key) !== 'true';
+
+        localStorage.setItem(key, 'true');
+
+        return result;
+
+    }
+
+    public static sentAnalytics() {
+
+        if (this.get()) {
+
+            const runtime = AppRuntime.type();
+            const category = runtime + '-login';
+            RendererAnalytics.event({category, action: 'initial'});
+
+        }
+
+    }
+
+}
 
 
 window.addEventListener('load', async () => {
@@ -56,6 +84,10 @@ window.addEventListener('load', async () => {
         FirebaseUIAuth.login({signInSuccessUrl});
 
     }
+
+    RendererAnalytics.pageviewFromLocation();
+
+    InitialLogin.sentAnalytics();
 
 });
 

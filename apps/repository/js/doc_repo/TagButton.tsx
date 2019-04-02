@@ -6,6 +6,7 @@ import {TagSelectOption} from '../TagSelectOption';
 import {TagsDB} from '../TagsDB';
 import {TagSelectOptions} from '../TagSelectOptions';
 import {Tag} from '../../../../web/js/tags/Tag';
+import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 
 // import {SyntheticKeyboardEvent} from 'react-dom';
 
@@ -44,16 +45,28 @@ export class TagButton extends React.Component<IProps, IState> {
 
             <div>
 
-                <Button color="light"
-                        id={this.id}
-                        size="sm"
-                        disabled={this.props.disabled}
-                        onClick={this.toggle}
-                        className="border">
+                <SimpleTooltipEx text={`
+                                 Tag multiple documents at once.  To
+                                 find untagged documents sort by the
+                                 'Tags' column (twice).  Once to sort
+                                 alphabetically and then second click
+                                 will reverse the sort showing
+                                 untagged documents.`}
+                                 disabled={this.props.disabled}
+                                 placement="bottom">
 
-                    <i className="fa fa-tag doc-button doc-button-selectable"/>
+                    <Button color="light"
+                            id={this.id}
+                            size="sm"
+                            disabled={this.props.disabled}
+                            onClick={this.toggle}
+                            className="border">
 
-                </Button>
+                        <i className="fa fa-tag doc-button doc-button-selectable"/>
+
+                    </Button>
+
+                </SimpleTooltipEx>
 
                 <Popover placement="bottom"
                          isOpen={this.state.popoverOpen}
@@ -96,6 +109,10 @@ export class TagButton extends React.Component<IProps, IState> {
     }
 
     private toggle() {
+
+        if (this.props.disabled) {
+            return;
+        }
 
         const popoverOpen = ! this.state.popoverOpen;
 

@@ -12,7 +12,7 @@ import {Provider} from '../../../../web/js/util/Providers';
  * Keeps track of the doc index so that we can filter it in the UI and have
  * the filter events send to the index and then update component state directly.
  */
-export class FilteredRepoDocInfoIndex {
+export class DocRepoFilters {
 
     public readonly filters: Filters;
 

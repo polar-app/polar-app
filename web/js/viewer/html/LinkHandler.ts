@@ -3,6 +3,7 @@ import {IFrames} from '../../util/dom/IFrames';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
 import {Logger} from '../../logger/Logger';
 import {Events} from '../../util/dom/Events';
+import {Nav} from '../../ui/util/Nav';
 
 const log = Logger.create();
 
@@ -78,7 +79,13 @@ export class LinkHandler {
         if (anchor) {
             const href = anchor.href;
             log.info("Opening URL: " + href);
-            shell.openExternal(href);
+
+            if (shell) {
+                shell.openExternal(href);
+            } else {
+                Nav.openLinkWithNewTab(href);
+            }
+
         }
 
     }
