@@ -1,7 +1,8 @@
-import {BaseDistConfig} from './BaseDistConfig';
+import {IDistConfig} from './IDistConfig';
 
-export class DistConfig extends BaseDistConfig {
+export const DistConfig: IDistConfig = {
 
-    public static readonly ENABLE_UPDATES: boolean = false;
+    ENABLE_UPDATES: false,
+    ENABLE_PURCHASES: true
 
-}
+};
