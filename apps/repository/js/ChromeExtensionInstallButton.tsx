@@ -4,6 +4,7 @@ import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../../../web/js/ui/util/Nav';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
+import {AppRuntime} from '../../../web/js/AppRuntime';
 
 const log = Logger.create();
 
@@ -24,10 +25,8 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
 
     public render() {
 
-        // const hidden = ! ChromeExtensionInstallation.isSupported() ||
-        // ChromeExtensionInstallation.isInstalled();
-
-        const hidden = false;
+        // right now
+        const hidden = AppRuntime.isElectron();
 
         return (
 
