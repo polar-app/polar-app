@@ -11,9 +11,16 @@ module.exports = {
     // mode: 'development',
     entry: {
 
-        // chrome + repository (individually) is about 10.2MB raw and about 3.1MB compressed.
+        // chrome + repository (individually) is about:
         //
-        // chrome + repository (both) is about 5.1MB raw and about 1.6MB compressed.
+        //   10.2MB raw
+        //   3.1MB compressed
+        //   (2.4MB with brotli / 22% smaller)
+        //
+        // chrome + repository (both) is about
+
+        //   5.1MB raw and about
+        //   1.6MB compressed.
 
         "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
