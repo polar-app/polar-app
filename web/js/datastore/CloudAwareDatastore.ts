@@ -23,6 +23,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {Datastores} from './Datastores';
 import {GetFileOpts} from './Datastore';
+import {DatastoreInitOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -67,7 +68,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         this.cloud = cloud;
     }
 
-    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION,
+                      opts: DatastoreInitOpts = {noInitialSnapshot: false, noSync: false}): Promise<InitResult> {
 
         await Promise.all([
             this.cloud.init(errorListener, {noInitialSnapshot: true}),
@@ -76,7 +78,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         const snapshotListener = async (event: DocMetaSnapshotEvent) => this.docMetaSnapshotEventDispatcher.dispatchEvent(event);
 
-        this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
+        if (! opts.noSync) {
+            this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
+        }
 
         return {};
 

@@ -22,6 +22,7 @@ import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {DatastoreOverview} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
+import {DatastoreInitOpts} from './Datastore';
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.
@@ -71,8 +72,8 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.getFile(backend, ref, opts);
     }
 
-    public async init(errorListener?: ErrorListener): Promise<void> {
-        return this.delegate.init();
+    public async init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<void> {
+        return this.delegate.init(errorListener, opts);
     }
 
     public async snapshot(listener: DocMetaSnapshotEventListener, errorListener?: ErrorListener): Promise<SnapshotResult> {

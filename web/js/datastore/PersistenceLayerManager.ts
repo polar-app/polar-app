@@ -8,6 +8,7 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {FirebasePersistenceLayerFactory} from './factories/FirebasePersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
 import {PersistenceLayer} from './PersistenceLayer';
+import {DatastoreInitOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -23,6 +24,10 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
      * The current persistence type in place.
      */
     private current?: PersistenceLayerType;
+
+    constructor(private readonly opts?: DatastoreInitOpts) {
+
+    }
 
     public async start(): Promise<void> {
 
@@ -109,7 +114,9 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         log.info("Changed to persistence layer: " + type);
 
-        await this.persistenceLayer.init();
+        await this.persistenceLayer.init(err => {
+            // noop
+        }, this.opts);
 
         this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'initialized'});
 

@@ -20,6 +20,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
+import {DatastoreInitOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -42,8 +43,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         this.datastoreMutations = DatastoreMutations.create('written');
     }
 
-    public async init(errorListener: ErrorListener = NULL_FUNCTION) {
-        await this.datastore.init(errorListener);
+    public async init(errorListener: ErrorListener = NULL_FUNCTION, opts?: DatastoreInitOpts) {
+        console.log("FIXME: with opts: ", opts);
+        await this.datastore.init(errorListener, opts);
     }
 
     public async stop() {

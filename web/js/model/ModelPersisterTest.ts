@@ -9,6 +9,7 @@ import {Promises} from "../util/Promises";
 import waitForExpect from 'wait-for-expect';
 import {AdvertisingPersistenceLayer} from '../datastore/advertiser/AdvertisingPersistenceLayer';
 import {DocMeta} from "../metadata/DocMeta";
+import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
 
 describe('ModelPersister', function() {
 
@@ -45,7 +46,8 @@ describe('ModelPersister', function() {
 
         docMeta = MockDocMetas.createMockDocMeta();
 
-        modelPersister = new ModelPersister(persistenceLayer, docMeta);
+        const persistenceLayerHandler = new DefaultPersistenceLayerHandler(persistenceLayer);
+        modelPersister = new ModelPersister(persistenceLayerHandler, docMeta);
 
         docMeta = modelPersister.docMeta;
 

@@ -682,7 +682,14 @@ export type DatastoreID = string;
 
 
 export interface DatastoreInitOpts {
+
     readonly noInitialSnapshot?: boolean;
+
+    /**
+     * Disable sync and just start the datastore as a client for read/write.
+     */
+    readonly noSync?: boolean;
+
 }
 
 export interface PrefsProvider {

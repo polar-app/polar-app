@@ -25,6 +25,7 @@ import {WriteFileOpts} from '../Datastore';
 import {GetFileOpts} from '../Datastore';
 import {DatastoreOverview} from '../Datastore';
 import {DatastoreCapabilities} from '../Datastore';
+import {DatastoreInitOpts} from '../Datastore';
 
 const log = Logger.create();
 
@@ -46,8 +47,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         this.delegate = delegate;
     }
 
-    public init(errorListener?: ErrorListener): Promise<void> {
-        return this.delegate.init(errorListener);
+    public init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<void> {
+        return this.delegate.init(errorListener, opts);
     }
 
     public stop(): Promise<void> {

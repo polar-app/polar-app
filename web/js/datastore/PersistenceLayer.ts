@@ -19,6 +19,7 @@ import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {DatastoreOverview} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
+import {DatastoreInitOpts} from './Datastore';
 
 export interface PersistenceLayer {
 
@@ -29,7 +30,7 @@ export interface PersistenceLayer {
      */
     readonly datastore: Datastore;
 
-    init(errorListener?: ErrorListener): Promise<void>;
+    init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<void>;
 
     stop(): Promise<void>;
 

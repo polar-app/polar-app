@@ -16,6 +16,8 @@ import {Providers} from '../util/Providers';
 import {ProgressService} from '../ui/progress_bar/ProgressService';
 import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
 import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
+import {AppOrigin} from './AppOrigin';
+import {CloudService} from '../../../apps/repository/js/cloud/CloudService';
 
 const log = Logger.create();
 
@@ -38,13 +40,19 @@ export class Launcher {
      */
     public async trigger() {
 
+        AppOrigin.configure();
+
         new ProgressService().start();
 
         const addContentImporter = AddContentImporters.create();
 
         await addContentImporter.prepare();
 
-        const persistenceLayerManager = new PersistenceLayerManager();
+        const persistenceLayerManager = new PersistenceLayerManager({noSync: true});
+
+        new CloudService(persistenceLayerManager)
+            .start();
+
         await persistenceLayerManager.start();
 
         await Logging.init();
