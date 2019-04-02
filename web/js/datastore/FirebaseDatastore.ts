@@ -36,6 +36,7 @@ import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
 import {isPresent} from '../Preconditions';
+import {NetworkLayers} from './Datastore';
 
 const log = Logger.create();
 
@@ -759,10 +760,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public capabilities(): DatastoreCapabilities {
 
-        const networkLayers = new Set<NetworkLayer>(['web']);
-
         return {
-            networkLayers
+            networkLayers: NetworkLayers.WEB
         };
 
     }
