@@ -2,9 +2,10 @@
 title: Getting Hacker News'd Twice - Lessons Learned for Entrepreneurs
 date: 2019-04-02 05:00:00 -0800
 layout: post
-image: https://getpolarized.io/assets/logo/icon.png
+large_image: https://getpolarized.io/assets/images/hackernews-stats.png
 description: I've had my app featured on Hacker News twice in the last six months. It's been interesting to say the least and I wanted to write up my thoughts here to share my lessons learned with other entrepreneurs
 ---
+<img class="img-fluid" src="https://getpolarized.io/assets/images/hackernews-stats.png">
 
 # Getting Hacker News'd Twice - Lessons Learned for Entrepreneurs 
 
