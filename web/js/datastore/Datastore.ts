@@ -293,6 +293,14 @@ export interface BackendFileRef extends FileRef {
 
 }
 
+export class BackendFileRefs {
+
+    public static equals(b0: BackendFileRef, b1: BackendFileRef): boolean {
+        return b0.backend === b1.backend && b0.name === b1.name && b0.hashcode === b1.hashcode;
+    }
+
+}
+
 // noinspection TsLint
 /**
  * Arbitrary settings for files specific to each storage layer.  Firebase uses

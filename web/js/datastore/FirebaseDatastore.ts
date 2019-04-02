@@ -269,12 +269,18 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private async getDocMeta0(fingerprint: string): Promise<string | null> {
 
-        // FIXME: we have to figure out a way to pass the users user ID with
-        // the documetn as we're using THAT to generate the internal ID to
-        // read the doc.
-
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
+
+        return await this.getDocMetaDirectly(id);
+
+    }
+
+    /**
+     * Get the DocMeta if from teh raw ID.
+     * @param id
+     */
+    public async getDocMetaDirectly(id: string): Promise<string | null> {
 
         const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 

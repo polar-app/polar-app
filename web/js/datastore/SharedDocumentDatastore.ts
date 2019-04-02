@@ -14,15 +14,20 @@ import {DeleteResult} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {BinaryFileData} from './Datastore';
 import {WriteFileOpts} from './Datastore';
+import {BackendFileRef} from './Datastore';
+import {BackendFileRefs} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {DocMetaFileRef} from './DocMetaRef';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Backend} from './Backend';
 import {Optional} from '../util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
+import {FirebaseDatastore} from './FirebaseDatastore';
+import {DocMetas} from '../metadata/DocMetas';
+import {DocMeta} from '../metadata/DocMeta';
+import {Datastores} from './Datastores';
 
 const log = Logger.create();
 
@@ -30,10 +35,43 @@ export class SharedDocumentDatastore extends AbstractDatastore implements Datast
 
     public readonly id: DatastoreID;
 
+    private readonly delegate = new FirebaseDatastore();
+
+    private docMetaData: string | null = null;
+    private docMeta: DocMeta | undefined;
+    private docMetaRefs: DocMetaRef[] = [];
+    private backendFileRefs: ReadonlyArray<BackendFileRef> = [];
+
     public constructor(private readonly docID: string,
                        private readonly fingerprint: string) {
         super();
         this.id = 'shared-document';
+    }
+
+
+    public async init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<InitResult> {
+
+        opts = {...opts, noInitialSnapshot: true};
+
+        await this.delegate.init(errorListener, opts);
+
+        this.docMetaData = await this.delegate.getDocMetaDirectly(this.docID);
+
+        if (this.docMetaData) {
+            this.docMeta = DocMetas.deserialize(this.docMetaData!, this.fingerprint);
+            this.docMetaRefs = [
+                {
+                    fingerprint: this.fingerprint,
+                    docMeta: this.docMeta
+                }
+            ];
+
+            this.backendFileRefs = Datastores.toBackendFileRefs(this.docMeta);
+
+        }
+
+        return {};
+
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
@@ -57,32 +95,23 @@ export class SharedDocumentDatastore extends AbstractDatastore implements Datast
     }
 
     public getDocMeta(fingerprint: string): Promise<string | null> {
-        throw new Error("Not implemented yet");
+        throw this.docMeta;
     }
 
     public async getDocMetaRefs(): Promise<DocMetaRef[]> {
-        throw new Error("Not implemented yet");
+        return this.docMetaRefs;
     }
 
     public getPrefs(): PrefsProvider {
-        throw new Error("Not implemented yet");
-    }
-
-    public async init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<InitResult> {
-        return {};
+        throw this.delegate.getPrefs();
     }
 
     public async overview(): Promise<DatastoreOverview | undefined> {
-
-        return {
-            created: ISODateTimeStrings.create(),
-            nrDocs: 1
-        };
-
+        return await this.delegate.overview();
     }
 
     public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener, errorListener?: ErrorListener): Promise<SnapshotResult> {
-        throw new Error("Not implemented yet");
+        throw new Error("Not supported");
     }
 
     public async stop(): Promise<void> {
@@ -90,29 +119,23 @@ export class SharedDocumentDatastore extends AbstractDatastore implements Datast
     }
 
     public async write(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
-        throw new Error("Not implemented");
+        throw new Error("Not supported");
     }
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
 
-        // TODO: from the docMeta on this item, get the binary files its hosting
-        // into an array and see if it contains this one.
+        const backendFileRef: BackendFileRef = {backend, ...ref};
 
-        throw new Error("Not implemented yet");
-        //
-        //
-        // Datastores.toBackendFileRefs()
-        //
-        // return undefined;
+        return this.backendFileRefs.filter(current => BackendFileRefs.equals(current, backendFileRef)).length > 0;
 
     }
 
     public async delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<Readonly<DeleteResult>> {
-        throw new Error("Not implemented");
+        throw new Error("Not supported");
     }
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
-        throw new Error("Not implemented");
+        throw new Error("Not supported");
     }
 
     public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
@@ -120,11 +143,11 @@ export class SharedDocumentDatastore extends AbstractDatastore implements Datast
     }
 
     public async writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
-        throw new Error("Not implemented");
+        throw new Error("Not supported");
     }
 
     public async writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void> {
-        throw new Error("Not implemented");
+        throw new Error("Not supported");
     }
 
 }
