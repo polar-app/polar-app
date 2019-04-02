@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+no_ext() {
+    filename=${1}
+    echo ${filename} | sed -e 's/\.[^.][^.][^.][^.]*$//g'
+}
+
+for path in "$@"; do
+    basename=$(basename "${path}")
+    newBasename=$(no_ext "${basename}")
+    dest=$(dirname "${path}")/${newBasename}.webp
+    convert "${path}" -quality 100 -define webp:lossless=true "${dest}"
+
+done
+
+# strip extension from filename.
+
