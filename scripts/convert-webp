@@ -9,6 +9,12 @@ for path in "$@"; do
     basename=$(basename "${path}")
     newBasename=$(no_ext "${basename}")
     dest=$(dirname "${path}")/${newBasename}.webp
+
+    if [ -f "${dest}" ]; then
+        # the dest file already exists
+        continue
+    fi
+
     convert "${path}" -quality 100 -define webp:lossless=true "${dest}"
 
 done
