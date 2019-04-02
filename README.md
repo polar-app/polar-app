@@ -217,6 +217,10 @@ Flashcards can be created by right clicking an annotation and selecting
 "Create Flashcard".  The resulting flashcards are stored as annotations in your 
 repository.
 
+To specify the Anki deck for a document, add a tag starting with `deck:`.  Slashes are used to specify subdecks.
+For instance, to set a document to the Anki deck ML::100PageMLBook, use the Polar tag `deck:ML/100PageMLBook`.
+
+
 ## Status
 
 This is currently a beta feature and we're working on implementing Anki sync

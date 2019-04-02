@@ -53,7 +53,7 @@ export class DirectPHZLoader {
     }
 
     public async close() {
-        this.phzReader.close();
+        await this.phzReader.close();
     }
 
     private getResourceEntry(url: string): ResourceEntry | undefined {

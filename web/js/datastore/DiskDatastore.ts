@@ -209,7 +209,14 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const statePath = FilePaths.join(docDir, 'state.json');
 
         if (! await this.contains(fingerprint)) {
-            log.error("Datastore does not contain document: ", fingerprint);
+            // just return null and do not log any errors as this is an
+            // acceptable return type.  If the document is NOT in the repository
+            // here we return null.  We used to call contains() and then
+            // getDocMeta() and avoided the getDocMeta call but this actually
+            // was slow on Firebase so we just call getDocMeta but this
+            // triggered an error log here.  It's completely acceptable to
+            // call getDocMeta on something that may not exist and just get
+            // back a null value.
             return null;
         }
 

@@ -20,6 +20,7 @@ import {Sets} from '../../../../util/Sets';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
 import {FlashcardDescriptors} from './FlashcardDescriptors';
 import {AnkiConnectFetch} from './AnkiConnectFetch';
+import {Decks} from './Decks';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -102,9 +103,8 @@ export class AnkiSyncEngine implements SyncEngine {
                 .map(tag => Tags.parseTypedTag(tag.label))
                 .filter(typedTag => typedTag.isPresent())
                 .map(typedTag => typedTag.get())
-                .map(typedTag => typedTag.value)
+                .map(typedTag => Decks.toSubDeck(typedTag.value))
                 .pop();
-
         }
 
         if (! deckName) {

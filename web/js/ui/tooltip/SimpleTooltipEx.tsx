@@ -43,6 +43,8 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
                  onMouseEnter={() => this.onMouseEnter()}
                  onMouseMove={() => this.onMouseMove()}
                  onMouseLeave={() => this.onMouseLeave()}
+                 onMouseDown={() => this.deactivate()}
+                 onMouseUp={() => this.deactivate()}
                  onClick={() => this.deactivate()}
                  onContextMenu={() => this.deactivate()}>
 

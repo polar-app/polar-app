@@ -1,13 +1,8 @@
-/**
- * Handles global settings for apps so that we can enable / disable features
- * based on where they are distributed.  The Microsoft and Apple app stores
- * require different settings.
- */
-export class DistConfig {
+import {IDistConfig} from './IDistConfig';
 
-    /**
-     * Enable updates but only if the underlying platform supports it.
-     */
-    public static readonly ENABLE_UPDATES: boolean = true;
+export const DistConfig: IDistConfig = {
 
-}
+    ENABLE_UPDATES: true,
+    ENABLE_PURCHASES: true
+
+};
