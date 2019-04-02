@@ -1,3 +1,10 @@
+# 1.16.2
+
+- Fixed ugly bug which caused an error to be raised during capture which was a 
+  false positive.
+
+- Merged patch from Adam Wolf for hierarchical tags in Anki.
+
 # 1.16.1
 
 - Better link to chrome inline installation for now...
