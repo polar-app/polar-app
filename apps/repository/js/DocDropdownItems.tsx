@@ -92,7 +92,7 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 
     private onSetTitleRequested() {
 
-        Dialogs.prompt({title: "Enter a new title for the docucment:",
+        Dialogs.prompt({title: "Enter a new title for the document:",
                         defaultValue: this.props.repoDocInfo.title,
                         onCancel: NULL_FUNCTION,
                         onDone: (value) => this.onSetTitle(value)});
