@@ -1,8 +1,8 @@
 /**
  * The default config for this distribution.
  */
-export class DistConfig {
+import {BaseDistConfig} from './BaseDistConfig';
 
-    public static readonly ENABLE_UPDATES: boolean = true;
+export class DistConfig extends BaseDistConfig {
 
 }
