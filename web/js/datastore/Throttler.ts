@@ -34,6 +34,10 @@ export class Throttler {
 
         ++this.nrRequestsOutstanding;
 
+        // TODO: it might be nice to put a minTimeout here too and if we give
+        // too many requests we don't emit if BEFORE the min timeout.  This way
+        // if we give it too many results at once we wait for the minumum
+        // interval as it doesn't make sense to update too many at once.
         if (this.nrRequestsOutstanding > this.opts.maxRequests) {
             this.doExec();
         } else {

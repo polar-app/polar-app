@@ -106,6 +106,10 @@ export class Premium extends React.Component<IProps, IState> {
                             best it can be.
                         </p>
 
+                        <p className="h5">
+                            All for less than the prices of a <b>cup of coffee!</b>
+                        </p>
+
                     </SplitLayoutLeft>
 
                     <SplitLayoutRight>
