@@ -14,6 +14,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocFormats} from '../docformat/DocFormats';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
+import {PersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
 
 const log = Logger.create();
 
@@ -35,10 +36,10 @@ export class Model {
 
     private docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
 
-    constructor(persistenceLayer: ListenablePersistenceLayer) {
+    constructor(public readonly persistenceLayerHandler: PersistenceLayerHandler) {
 
-        this.persistenceLayerProvider = () => persistenceLayer;
-        this.modelPersisterFactory = new ModelPersisterFactory(new DefaultPersistenceLayerHandler(persistenceLayer));
+        this.persistenceLayerProvider = () => persistenceLayerHandler.get();
+        this.modelPersisterFactory = new ModelPersisterFactory(persistenceLayerHandler);
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');

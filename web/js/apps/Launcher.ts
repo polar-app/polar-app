@@ -15,6 +15,7 @@ import {AddContentImporters} from './viewer/AddContentImporters';
 import {Providers} from '../util/Providers';
 import {ProgressService} from '../ui/progress_bar/ProgressService';
 import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
+import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
 
 const log = Logger.create();
 
@@ -44,17 +45,26 @@ export class Launcher {
         await addContentImporter.prepare();
 
         const persistenceLayerManager = new PersistenceLayerManager();
-        persistenceLayerManager.start();
+        await persistenceLayerManager.start();
 
         await Logging.init();
 
-        await addContentImporter.doImport(Providers.toInterface(persistenceLayer));
+        // import content with the 'add content' button automatically.
 
-        const model = new Model(persistenceLayer);
+        await addContentImporter.doImport(Providers.toInterface(persistenceLayerManager.get()));
+
+        const model = new Model(persistenceLayerManager);
 
         new PagemarkView(model).start();
 
-        const prefsProvider = () => persistenceLayerManager.get().datastore.getPrefs();
+        const prefsProvider
+            = Providers.toInterface(() => {
+
+            const persistenceLayer = persistenceLayerManager.get();
+            const datastore = persistenceLayer.datastore;
+            return datastore.getPrefs().get();
+
+        });
 
         new WebView(model, prefsProvider).start();
         new TextHighlightView2(model).start();
