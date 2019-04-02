@@ -1,5 +1,8 @@
-export class DistConfig {
+import {IDistConfig} from './IDistConfig';
 
-    public static readonly ENABLE_UPDATES: boolean = false;
+export const DistConfig: IDistConfig = {
 
-}
+    ENABLE_UPDATES: false,
+    ENABLE_PURCHASES: true
+
+};

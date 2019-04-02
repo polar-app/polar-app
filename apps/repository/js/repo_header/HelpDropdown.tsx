@@ -8,6 +8,7 @@ import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
+import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 
 const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
 
@@ -64,7 +65,8 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <DropdownItem divider/>
 
-                    <HelpDropdownItem id="upgrade-to-premium-link"
+                    <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
+                                      id="upgrade-to-premium-link"
                                       title="Upgrade to Polar Premium"
                                       tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
                                       link="#premium"
@@ -72,7 +74,8 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <DropdownItem divider/>
 
-                    <HelpDropdownItem id="donate-link"
+                    <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
+                                      id="donate-link"
                                       title="Donate"
                                       tooltip="Donate to Polar to support development."
                                       link="https://opencollective.com/polar-bookshelf"
