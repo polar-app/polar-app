@@ -29,6 +29,7 @@ import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
+import {isPresent} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -240,6 +241,18 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
                            opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
+
+        if (! isPresent(data)) {
+
+            if (opts.updateMeta) {
+                return (await this.getFile(backend, ref)).get();
+            } else {
+                // when the caller specifies null they mean that there's a
+                // metadata update which needs to be applied.
+                throw new Error("No data present");
+            }
+
+        }
 
         const meta = opts.meta || {};
 

@@ -88,19 +88,6 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      */
     getPrefs(): PrefsProvider;
 
-    // TODO: we need a new method with the following semantics:
-
-    // - we can add it AFTER the init()
-    //
-    // - it starts working immediately and in offline mode and then continues
-    //   to work when we get online snapshots
-    //
-    // - it give us FULL visibility into the lifestyle of a document including
-    //   create, update, and delete.
-    //
-    // - this is VERY similar (but somewhat different) than the firebase
-    // snapshot support
-
     capabilities(): DatastoreCapabilities;
 
 }
