@@ -1,4 +1,5 @@
 import {DurationStr, TimeDurations} from "./TimeDurations";
+import {Latch} from './Latch';
 
 /**
  * A Provider is just a function that returns a given type.
@@ -160,17 +161,7 @@ export class AsyncProviders {
         // the value that the provider returned.
         let memo: T | undefined;
 
-        return async () => {
-
-            if (memoized) {
-
-                if (err) {
-                    throw err;
-                }
-
-                return memo!;
-
-            }
+        const asyncMutex = this.asyncMutex(async () => {
 
             try {
 
@@ -184,7 +175,56 @@ export class AsyncProviders {
                 memoized = true;
             }
 
+        });
+
+        return async () => {
+
+            if (memoized) {
+
+                if (err) {
+                    throw err;
+                }
+
+                return memo!;
+
+            }
+
+            return await asyncMutex;
+
         };
+
+    }
+
+    /**
+     * Typescript/JS in theory is single threaded but remote workers like Firebase
+     * or disk can come back async and we have to handle this properly.
+     *
+     *
+     * @param provider
+     */
+    private static async asyncMutex<T>(provider: AsyncProvider<T>) {
+
+        let executing: boolean = false;
+        const latch = new Latch<T>();
+
+        if (executing) {
+            return await latch.get();
+        }
+
+        try {
+
+            executing = true;
+
+            const result = await provider();
+
+            latch.resolve(result);
+
+            return result;
+
+        } catch (e) {
+            latch.reject(e);
+            throw e;
+        }
 
     }
 
