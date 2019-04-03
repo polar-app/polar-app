@@ -63,7 +63,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       link="https://github.com/burtonator/polar-bookshelf/issues/new/choose"
                                       icon="fas fa-bug"/>
 
-                    <DropdownItem divider/>
+                    <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
 
                     <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
                                       id="upgrade-to-premium-link"
@@ -72,7 +72,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       link="#premium"
                                       icon="fas fa-money-bill-wave"/>
 
-                    <DropdownItem divider/>
+                    <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
 
                     <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
                                       id="donate-link"

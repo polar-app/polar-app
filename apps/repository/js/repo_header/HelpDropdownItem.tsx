@@ -17,6 +17,7 @@ export class HelpDropdownItem extends React.PureComponent<IProps, IState> {
                                  link={this.props.link}
                                  title={this.props.title}
                                  tooltip={this.props.tooltip}
+                                 hidden={this.props.hidden}
                                  icon={this.props.icon}/>
         );
 

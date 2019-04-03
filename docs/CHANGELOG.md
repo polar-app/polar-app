@@ -1,5 +1,7 @@
 # 1.16.3
 
+- Fixed bug with hidden dropdown items not being hidden.
+
 - Firebase usage on the web about 4-10x faster due to properly using snapshots 
   instead of fetching each record individually. 
 
