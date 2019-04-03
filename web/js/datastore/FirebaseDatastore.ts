@@ -1008,6 +1008,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const result: DocMetaLookup = {};
 
+            // TODO: if we did a lookup by ID and not by fingerprint we could
+            // probably keep the data JUST within localStorage until it's
+            // requested to avoid keeping it in this in-memory map which could
+            // help with memory pressure but we should wait until this is a
+            // problem as it's a premature optimization right now.
+
             for (const docChange of docChanges) {
                 const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
                 const fingerprint = record.value.docInfo.fingerprint;
