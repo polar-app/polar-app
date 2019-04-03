@@ -982,7 +982,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         log.debug("onSnapshot... ");
 
-
         type DocMetaData = string | null;
 
         interface DocMetaLookup {
@@ -996,7 +995,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const query = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
                 .where('uid', '==', uid);
-
 
             const source = useCache ? 'cache' : 'server';
 
