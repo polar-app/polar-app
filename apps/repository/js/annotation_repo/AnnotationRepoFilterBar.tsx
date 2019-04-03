@@ -90,9 +90,8 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                     <FilterTagInput id="filter-tag-input"
                                     tagsDBProvider={this.props.tagsDBProvider}
                                     refresher={() => this.handler.onFilterByTags(this.filteredTags)}
+                                    tooltip="Filter the annotation list by a specific tag."
                                     filteredTags={this.filteredTags} />
-
-                    <SimpleTooltip target="filter-tag-input">Filter the annotation list by a specific tag.</SimpleTooltip>
 
                 </div>
 

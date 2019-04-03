@@ -90,16 +90,11 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                 <div className="header-filter-box header-filter-tags mr-1"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                    <SimpleTooltipEx text={`
-                                        Filter the document list by a specific tag.
-                                     `}>
-
-                        <FilterTagInput id="filter-tag-input"
-                                        tagsDBProvider={this.props.tagsDBProvider}
-                                        refresher={this.props.refresher}
-                                        filteredTags={this.props.filteredTags} />
-
-                    </SimpleTooltipEx>
+                    <FilterTagInput id="filter-tag-input"
+                                    tagsDBProvider={this.props.tagsDBProvider}
+                                    refresher={this.props.refresher}
+                                    tooltip="Filter the document list by a specific tag."
+                                    filteredTags={this.props.filteredTags} />
 
                 </div>
 
