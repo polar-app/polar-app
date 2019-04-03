@@ -163,7 +163,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             try {
 
+                const stopwatch = Stopwatches.create();
                 const cachedSnapshot = await query.get({ source: 'cache' });
+                log.info("Initial cached snapshot duration: ", stopwatch.stop());
 
                 onNextForSnapshot(cachedSnapshot);
 
@@ -1031,6 +1033,50 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         log.debug("onSnapshot... ");
 
+        type DocMetaData = string | null;
+
+        interface DocMetaLookup {
+            [fingerprint: string]: DocMetaData;
+        }
+
+        const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
+
+            const uid = this.getUserID();
+
+            const query = this.firestore!
+                .collection(DatastoreCollection.DOC_META)
+                .where('uid', '==', uid);
+
+            const source = useCache ? 'cache' : 'server';
+
+            const stopwatch = Stopwatches.create();
+            const snapshot = await query.get({source});
+            log.info("DocMeta lookup snapshot duration: ", stopwatch.stop());
+
+            const docChanges = snapshot.docChanges();
+
+            const result: DocMetaLookup = {};
+
+            // TODO: if we did a lookup by ID and not by fingerprint we could
+            // probably keep the data JUST within localStorage until it's
+            // requested to avoid keeping it in this in-memory map which could
+            // help with memory pressure but we should wait until this is a
+            // problem as it's a premature optimization right now.
+
+            for (const docChange of docChanges) {
+                const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
+                const fingerprint = record.value.docInfo.fingerprint;
+                const data = record.value.value;
+                result[fingerprint] = data;
+            }
+
+            return result;
+
+        };
+
+        const docMetaLookupProvider =
+            AsyncProviders.memoize(() => createDocMetaLookup(snapshot.metadata.fromCache));
+
         const docMetaMutationFromRecord = (record: RecordHolder<DocInfo>,
                                            mutationType: MutationType = 'created') => {
 
@@ -1039,7 +1085,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const docInfo = record.value;
 
             const dataProvider = async () => {
-                return await this.getDocMeta(docInfo.fingerprint);
+
+                // return await this.getDocMeta(docInfo.fingerprint);
+
+                const docMetaLookup = await docMetaLookupProvider();
+                return docMetaLookup[docInfo.fingerprint];
+
             };
 
             const docMetaProvider = AsyncProviders.memoize(async () => {
@@ -1099,14 +1150,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-
         const handleDoc = (doc: firebase.firestore.QueryDocumentSnapshot) => {
             const docMetaMutation = docMetaMutationFromDoc(doc.data());
             handleDocMetaMutation(docMetaMutation)
                 .catch(err => log.error(err));
 
         };
-
 
         const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
 
