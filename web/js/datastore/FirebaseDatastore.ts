@@ -28,6 +28,7 @@ import {Stopwatches} from '../util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
+import {DocMeta} from '../metadata/DocMeta';
 
 const log = Logger.create();
 
@@ -156,7 +157,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             try {
 
+                const stopwatch = Stopwatches.create();
                 const cachedSnapshot = await query.get({ source: 'cache' });
+                log.info("Initial cached snapshot duration: ", stopwatch.stop());
 
                 onNextForSnapshot(cachedSnapshot);
 
@@ -609,8 +612,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // TODO: we should have some cache here to avoid checking the server too
         // often but I don't think this is goign to be used often.
 
-        // TODO: this is slow when referencing the storage path directly we should
-        // instead use the doc_file_meta but not all files have this yet.
+        // TODO: this is slow when referencing the storage path directly we
+        // should instead use the doc_file_meta but not all files have this
+        // yet.
 
         const storagePath = this.computeStoragePath(backend, ref);
 
@@ -979,6 +983,48 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         log.debug("onSnapshot... ");
 
+
+        type DocMetaData = string | null;
+
+        interface DocMetaLookup {
+            [fingerprint: string]: DocMetaData;
+        }
+
+        const createDocMetaLookup = async (): Promise<DocMetaLookup> => {
+
+            const uid = this.getUserID();
+
+            const query = this.firestore!
+                .collection(DatastoreCollection.DOC_META)
+                .where('uid', '==', uid);
+
+            // FIXME: add a consistency lookup so that we're fetching from the
+            //  right source
+            const stopwatch = Stopwatches.create();
+            const snapshot = await query.get({ source: 'cache' });
+            log.info("DocMeta lookup snapshot duration: ", stopwatch.stop());
+
+            // FIXME: test this on the FIRST fetch too so that we make sure it
+            // works as it might be best to not wait until the ENTIRE snapshot
+            // before the first paint...
+
+            const docChanges = snapshot.docChanges();
+
+            const result: DocMetaLookup = {};
+
+            for (const docChange of docChanges) {
+                const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
+                const fingerprint = record.value.docInfo.fingerprint;
+                const data = record.value.value;
+                result[fingerprint] = data;
+            }
+
+            return result;
+
+        };
+
+        const docMetaLookupProvider = AsyncProviders.memoize(() => createDocMetaLookup());
+
         const docMetaMutationFromRecord = (record: RecordHolder<DocInfo>,
                                            mutationType: MutationType = 'created') => {
 
@@ -987,7 +1033,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const docInfo = record.value;
 
             const dataProvider = async () => {
-                return await this.getDocMeta(docInfo.fingerprint);
+
+                // return await this.getDocMeta(docInfo.fingerprint);
+
+                const docMetaLookup = await docMetaLookupProvider();
+                return docMetaLookup[docInfo.fingerprint];
+
             };
 
             const docMetaProvider = AsyncProviders.memoize(async () => {
@@ -1047,14 +1098,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-
         const handleDoc = (doc: firebase.firestore.QueryDocumentSnapshot) => {
             const docMetaMutation = docMetaMutationFromDoc(doc.data());
             handleDocMetaMutation(docMetaMutation)
                 .catch(err => log.error(err));
 
         };
-
 
         const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
 

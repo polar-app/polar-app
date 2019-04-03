@@ -3,7 +3,12 @@ import {Preconditions} from '../Preconditions';
 
 export class TimeDurations {
 
-    public static toMillis(duration: DurationStr): DurationMS {
+    public static toMillis(duration: Duration): DurationMS {
+
+        if (typeof duration === 'number') {
+            // we're done as this is already a number.
+            return duration;
+        }
 
         const sign = duration.startsWith('-') ? -1 : 1;
 
@@ -40,7 +45,7 @@ export class TimeDurations {
      * Compute a random duration based on the given duration.
      * @param duration
      */
-    public static toRandom(duration: DurationStr): DurationMS {
+    public static toRandom(duration: Duration): DurationMS {
 
         const durationMS = this.toMillis(duration);
 
@@ -56,7 +61,7 @@ export class TimeDurations {
      * @param since
      * @param duration
      */
-    public static hasElapsed(since: Date, duration: DurationStr, now: Date = new Date()) {
+    public static hasElapsed(since: Date, duration: Duration, now: Date = new Date()) {
 
         const durationMS = this.toMillis(duration);
 
@@ -103,3 +108,7 @@ export type DurationMS = number;
  */
 export type DurationStr = string;
 
+/**
+ * A duration in either a string form or just raw MS.
+ */
+export type Duration = DurationStr | DurationMS;
