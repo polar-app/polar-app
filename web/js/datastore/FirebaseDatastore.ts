@@ -990,7 +990,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             [fingerprint: string]: DocMetaData;
         }
 
-        const createDocMetaLookup = async (): Promise<DocMetaLookup> => {
+        const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
 
             const uid = this.getUserID();
 
@@ -998,15 +998,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 .collection(DatastoreCollection.DOC_META)
                 .where('uid', '==', uid);
 
-            // FIXME: add a consistency lookup so that we're fetching from the
-            //  right source
-            const stopwatch = Stopwatches.create();
-            const snapshot = await query.get({ source: 'cache' });
-            log.info("DocMeta lookup snapshot duration: ", stopwatch.stop());
 
-            // FIXME: test this on the FIRST fetch too so that we make sure it
-            // works as it might be best to not wait until the ENTIRE snapshot
-            // before the first paint...
+            const source = useCache ? 'cache' : 'server';
+
+            const stopwatch = Stopwatches.create();
+            const snapshot = await query.get({source});
+            log.info("DocMeta lookup snapshot duration: ", stopwatch.stop());
 
             const docChanges = snapshot.docChanges();
 
@@ -1023,7 +1020,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-        const docMetaLookupProvider = AsyncProviders.memoize(() => createDocMetaLookup());
+        const docMetaLookupProvider =
+            AsyncProviders.memoize(() => createDocMetaLookup(snapshot.metadata.fromCache));
 
         const docMetaMutationFromRecord = (record: RecordHolder<DocInfo>,
                                            mutationType: MutationType = 'created') => {
