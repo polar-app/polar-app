@@ -23,7 +23,6 @@ import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
-import {Stopwatches} from '../../../web/js/util/Stopwatches';
 
 const log = Logger.create();
 

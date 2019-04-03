@@ -28,7 +28,6 @@ import {Stopwatches} from '../util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
-import {DocMeta} from '../metadata/DocMeta';
 
 const log = Logger.create();
 
