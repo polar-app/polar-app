@@ -1,25 +1,33 @@
 import {Logger} from '../../logger/Logger';
 import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
-import {AdvertisingPersistenceLayer} from '../advertiser/AdvertisingPersistenceLayer';
 import {FirebaseDatastore} from '../FirebaseDatastore';
 import {AbstractAdvertisingPersistenceLayer} from '../advertiser/AbstractAdvertisingPersistenceLayer';
 import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
-import {ErrorListener} from '../Datastore';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {Firebase} from '../../firebase/Firebase';
+import {SharingDatastores} from '../SharingDatastores';
 
 const log = Logger.create();
 
-export class FirebasePersistenceLayerFactory {
+export class WebPersistenceLayerFactory {
 
     public static create(): ListenablePersistenceLayer {
 
-        log.info("Using firebase persistence layer");
+        const toDatastore = () => {
 
-        Firebase.init();
+            if (SharingDatastores.isSupported()) {
+                return SharingDatastores.create();
+            } else {
+                Firebase.init();
+                return new FirebaseDatastore();
+            }
 
-        const datastore = new FirebaseDatastore();
+        };
+
+        const datastore = toDatastore();
+
+        log.info("Using datastore: " + datastore.id);
 
         return new NullListenablePersistenceLayer(new DefaultPersistenceLayer(datastore));
 

@@ -5,7 +5,7 @@ import {IProvider} from "../util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "../logger/Logger";
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {FirebasePersistenceLayerFactory} from './factories/FirebasePersistenceLayerFactory';
+import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
 import {DatastoreInitOpts} from './Datastore';
 
@@ -152,7 +152,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         }
 
         if (type === 'web') {
-            return FirebasePersistenceLayerFactory.create();
+            return WebPersistenceLayerFactory.create();
         }
 
         if (type === 'local') {

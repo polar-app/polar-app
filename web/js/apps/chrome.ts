@@ -1,5 +1,4 @@
 import {Launcher} from './Launcher';
-import {FirebasePersistenceLayerFactory} from "../datastore/factories/FirebasePersistenceLayerFactory";
 import {Logger} from '../logger/Logger';
 
 const log = Logger.create();
