@@ -151,6 +151,8 @@ export class PersistenceLayers {
 
             ++result.files.total;
 
+            // FIXME: use backendFileRef not just a simple FileRef so that we
+            // can handle binary attachments.
             if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
 
                 let optionalFile: Optional<DocFileMeta>;

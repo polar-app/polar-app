@@ -591,6 +591,10 @@ export class SyncDocs {
         // file references are valid and setup properly before we write
         // (I think).
 
+        // FIXME: this needs to migrate to using
+        // Datastores and BackendFileRegs to get the underlying files and the ref for
+        // it so that we can get all the attachments in one pass.
+
         if (docInfo.filename) {
 
             const stashFile: SyncFile = {
