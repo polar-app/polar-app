@@ -111,8 +111,12 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
     }
 
     private async onVisibilityChanged(visibility: Visibility) {
+
         this.setState({...this.state, visibility});
-        this.props.onVisibilityChanged(visibility);
+
+        this.props.onVisibilityChanged(visibility)
+            .catch(err => log.error("Unable to change document visibility: ", err));
+
     }
 
     private onDone() {

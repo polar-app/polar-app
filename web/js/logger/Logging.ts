@@ -16,7 +16,6 @@ import {ElectronContextType} from '../electron/context/ElectronContextType';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
 import {ToasterLogger} from './ToasterLogger';
 import {PersistentErrorLogger} from './PersistentErrorLogger';
-import {isPresent} from '../Preconditions';
 
 import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
@@ -181,9 +180,43 @@ export class Logging {
     }
 
     private static configuredLevel(): LogLevel {
-        return Optional.of(process.env.POLAR_LOG_LEVEL)
+
+        const isRendererContext = typeof window !== 'undefined';
+
+        const fromENV = (): Optional<string> => {
+            return Optional.of(process.env.POLAR_LOG_LEVEL);
+        };
+
+        const fromStorage = (storage: Storage): Optional<string> => {
+            return Optional.of(storage.getItem("POLAR_LOG_LEVEL"));
+        };
+
+        const fromLocalStorage = (): Optional<string> => {
+
+            if (isRendererContext) {
+                return fromStorage(window.localStorage);
+            }
+
+            return Optional.empty();
+
+        };
+
+        const fromSessionStorage = (): Optional<string> => {
+
+            if (isRendererContext) {
+                return fromStorage(window.sessionStorage);
+            }
+
+            return Optional.empty();
+
+        };
+
+        const level = Optional.first(fromENV(), fromLocalStorage(), fromSessionStorage())
             .map(level => LogLevels.fromName(level))
             .getOrElse(LogLevel.WARN);
+
+        return level;
+
     }
 
 }

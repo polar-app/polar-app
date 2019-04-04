@@ -22,7 +22,7 @@ export class WebserverCerts {
      * The raw CERT data. Note that this should last ten years.
      */
     public static CERT: string =
-`-----BEGIN CERTIFICATE-----
+        `-----BEGIN CERTIFICATE-----
 MIIDKzCCAhOgAwIBAgIJAIaoSVmdM6HdMA0GCSqGSIb3DQEBCwUAMCcxCzAJBgNV
 BAYTAkNOMQswCQYDVQQIDAJHRDELMAkGA1UEBwwCU1owHhcNMTkwNDA0MDExMDM0
 WhcNMjkwNDAxMDExMDM0WjBaMQswCQYDVQQGEwJDTjELMAkGA1UECAwCR0QxCzAJ
@@ -43,7 +43,7 @@ fDAuk/wFPqShTd+JoMLZd9l7w/lJ3YJYWeiT+zBtpXejYaELaMJoHyP/RxILZ/M=
 -----END CERTIFICATE-----`;
 
     public static KEY: string =
-`-----BEGIN PRIVATE KEY-----
+        `-----BEGIN PRIVATE KEY-----
 MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDWjOUnzQ621+wL
 f48n3VXBuSol0s1VYC2St8JzzweyizpG6N1UVVGiEmk7BlDqUTq26GKIw5wdivZT
 gI3DrT9VXlWwSZKCttAROPjayqG9NN5LBLuJkShi2BtdwyZxNgPdRpH/76kiKvy5
@@ -71,3 +71,5 @@ hBsfC6m4QD/Tp9/J/vXgBpvoPIoQUBrFVxhv+8uiu/+hVtNuncZgo9f6OlukA1aJ
 jqSJ5otTQc6zIb9pQ7IgItYvgwQsGCOegpW8Qdwsgh5iUogE444ZhV6Dd2odFuoF
 x6d3DLzWWhKvGYDJ9wCKLQ==
 -----END PRIVATE KEY-----`;
+
+}

@@ -145,7 +145,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         if (AppRuntime.isBrowser()) {
 
             if (type !== 'web') {
-                log.warn(`Only web type supported in browsers (requested type=${type})`);
+                log.warn(`Only web type supported in browsers (requested type: ${type})`);
                 type = 'web';
             }
 

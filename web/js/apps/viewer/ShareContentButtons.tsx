@@ -11,7 +11,7 @@ export class ShareContentButtons {
     public static create(docInfo: IDocInfo,
                          datastoreCapabilities: DatastoreCapabilities,
                          createShareLink: () => Promise<string | undefined>,
-                         onVisibilityChanged: (visiblity: Visibility) => Promise<void>,
+                         onVisibilityChanged: (visibility: Visibility) => Promise<void>,
                          onDone: () => void = NULL_FUNCTION) {
 
         const viewer = document.getElementById('mainContainer')!;

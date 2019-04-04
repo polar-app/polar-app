@@ -59,7 +59,7 @@ export class ModelPersister {
             setTimeout(() => {
 
                 batcher.enqueue().run()
-                    .catch(err => log.error("Unable to commit to disk: ", err));
+                    .catch(err => log.error("Unable to persist: ", err));
 
             }, 0);
 

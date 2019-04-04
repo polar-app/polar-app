@@ -46,32 +46,43 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
     public constructor(private readonly docMetaID: FirebaseDocMetaID,
                        private readonly fingerprint: string) {
         super();
-        this.id = 'shared-document';
+        this.id = 'shared';
     }
 
 
     public async init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<InitResult> {
 
-        opts = {...opts, noInitialSnapshot: true};
+        try {
 
-        await this.delegate.init(errorListener, opts);
+            opts = {...opts, noInitialSnapshot: true};
 
-        this.docMetaData = await this.delegate.getDocMetaDirectly(this.docMetaID);
+            await this.delegate.init(errorListener, opts);
 
-        if (this.docMetaData) {
-            this.docMeta = DocMetas.deserialize(this.docMetaData!, this.fingerprint);
-            this.docMetaRefs = [
-                {
-                    fingerprint: this.fingerprint,
-                    docMeta: this.docMeta
-                }
-            ];
+            this.docMetaData = await this.delegate.getDocMetaDirectly(this.docMetaID);
 
-            this.backendFileRefs = Datastores.toBackendFileRefs(this.docMeta);
+            if (this.docMetaData) {
 
+                // TODO: this results in a dual deserialize which wastes a bit
+                // of time but this isn't the end of the world really.
+                this.docMeta = DocMetas.deserialize(this.docMetaData!, this.fingerprint);
+
+                this.docMetaRefs = [
+                    {
+                        fingerprint: this.fingerprint,
+                        docMeta: this.docMeta
+                    }
+                ];
+
+                this.backendFileRefs = Datastores.toBackendFileRefs(this.docMeta);
+
+            }
+
+            return {};
+
+        } catch (e) {
+            log.error("Unable to init datastore: ", e);
+            throw e;
         }
-
-        return {};
 
     }
 
@@ -95,8 +106,8 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         // noop
     }
 
-    public getDocMeta(fingerprint: string): Promise<string | null> {
-        throw this.docMeta;
+    public async getDocMeta(fingerprint: string): Promise<string | null> {
+        return this.docMetaData;
     }
 
     public async getDocMetaRefs(): Promise<DocMetaRef[]> {

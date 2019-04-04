@@ -15,9 +15,9 @@ import {AddContentImporters} from './viewer/AddContentImporters';
 import {Providers} from '../util/Providers';
 import {ProgressService} from '../ui/progress_bar/ProgressService';
 import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
-import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
 import {AppOrigin} from './AppOrigin';
 import {CloudService} from '../../../apps/repository/js/cloud/CloudService';
+import {Version} from '../util/Version';
 
 const log = Logger.create();
 
@@ -29,20 +29,17 @@ const log = Logger.create();
 export class Launcher {
 
     /**
-     * Launch the app with the given launch function.
-     *
-     */
-    constructor() {
-    }
-
-    /**
      * Trigger the launch function.
      */
     public async trigger() {
 
+        log.notice("Running with Polar version: " + Version.get());
+
         AppOrigin.configure();
 
         new ProgressService().start();
+
+        await Logging.init();
 
         const addContentImporter = AddContentImporters.create();
 
@@ -54,8 +51,6 @@ export class Launcher {
             .start();
 
         await persistenceLayerManager.start();
-
-        await Logging.init();
 
         // import content with the 'add content' button automatically.
 
@@ -115,5 +110,3 @@ export class Launcher {
     }
 
 }
-
-export type PersistenceLayerFactory = () => Promise<ListenablePersistenceLayer>;

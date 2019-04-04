@@ -44,7 +44,6 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
     }
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION, opts?: DatastoreInitOpts) {
-        console.log("FIXME: with opts: ", opts);
         await this.datastore.init(errorListener, opts);
     }
 

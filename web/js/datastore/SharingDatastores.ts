@@ -40,6 +40,7 @@ export class SharingDatastores {
 
             if (docFileMeta.isPresent()) {
 
+                // Clean the URL when running in the desktop app.
                 const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
 
                 // we have to now replace the 'file' param with the proper URL.

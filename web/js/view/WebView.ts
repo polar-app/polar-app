@@ -13,6 +13,7 @@ import {Datastores} from '../datastore/Datastores';
 import {Backend} from '../datastore/Backend';
 import {ReadingProgressResume} from './ReadingProgressResume';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {SharingDatastores} from '../datastore/SharingDatastores';
 
 const log = Logger.create();
 
@@ -134,7 +135,14 @@ export class WebView extends View {
         const persistenceLayer = this.model.persistenceLayerProvider();
 
         const onVisibilityChanged = async (visibility: Visibility) => {
-            return await Datastores.changeVisibility(persistenceLayer, docMeta, visibility);
+
+            try {
+                log.info("Changing document visibility changed to: ", visibility);
+                return await Datastores.changeVisibility(persistenceLayer, docMeta, visibility);
+            } finally {
+                log.info("Document visibility changed to: ", visibility);
+            }
+
         };
 
         const datastoreCapabilities = persistenceLayer.capabilities();
@@ -148,31 +156,7 @@ export class WebView extends View {
                 return undefined;
             }
 
-            const fileRef = Datastores.toFileRef(docMeta);
-
-            if (fileRef) {
-
-                const docFileMeta = await persistenceLayer.getFile(Backend.STASH, fileRef, {networkLayer: 'web'});
-
-                if (docFileMeta.isPresent()) {
-
-                    const href = document.location!.href;
-                    const rawURL = href.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
-
-                    // we have to now replace the 'file' param with the proper URL.
-
-                    const file = docFileMeta.get().url;
-
-                    const parsedURL = new URL(rawURL);
-                    parsedURL.searchParams.set('file', file);
-
-                    return parsedURL.toString();
-
-                }
-
-            }
-
-            return undefined;
+            return SharingDatastores.createURL(persistenceLayer, docMeta);
 
         };
 

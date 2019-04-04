@@ -282,7 +282,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      */
     public async getDocMetaDirectly(id: string): Promise<string | null> {
 
-        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
+        const ref = this.firestore!
+            .collection(DatastoreCollection.DOC_META)
+            .doc(id);
 
         const createSnapshot = async () => {
 
@@ -308,7 +310,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 const cachePromise = ref.get({ source: 'cache' });
                 const serverPromise = ref.get({ source: 'server' });
 
-                return Promises.any(cachePromise, serverPromise);
+                return await Promises.any(cachePromise, serverPromise);
 
             } else {
                 // now revert to checking the server, then cache if we're
@@ -740,8 +742,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const batch = this.firestore!.batch();
 
-            batch.set(docMetaRef, this.createDocForDocMeta(docInfo, data, docInfo.visibility));
-            batch.set(docInfoRef, this.createDocForDocInfo(docInfo, docInfo.visibility));
+            const visibility = docInfo.visibility;
+
+            log.info(`Write of doc with id ${id} and visibility: ${visibility}`);
+
+            batch.set(docMetaRef, this.createDocForDocMeta(docInfo, data, visibility));
+            batch.set(docInfoRef, this.createDocForDocInfo(docInfo, visibility));
 
             await batch.commit();
 

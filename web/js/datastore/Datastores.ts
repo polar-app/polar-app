@@ -122,6 +122,9 @@ export class Datastores {
         // be set automatically by the mutator when we change the underlying
         // data.
 
+        // TODO: we need to WAIT for this not just assume it's going to happen
+        // though which is a major problem.
+
         docMeta.docInfo.visibility = visibility;
 
     }
