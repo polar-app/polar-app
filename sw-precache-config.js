@@ -57,20 +57,22 @@ const staticFileGlobs = [
     'icon.ico',
     'icon.png',
     'icon.svg',
-
+    'manifest.json',
+    'apps/init.js',
+    'apps/service-worker-registration.js',
     // now the custom specified resources that we need for the webapp to
     // function (scripts and CSS)
-    '/node_modules/firebase/firebase.js',
-    '/node_modules/firebaseui/dist/firebaseui.js',
-    '/node_modules/firebaseui/dist/firebaseui.css',
-    '/node_modules/react-table/react-table.css',
-    '/node_modules/bootstrap/dist/css/bootstrap.min.css',
-    '/node_modules/bootstrap/dist/css/bootstrap-grid.min.css',
-    '/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css',
-    '/node_modules/toastr/build/toastr.min.css',
-    '/node_modules/@fortawesome/fontawesome-free/css/all.min.css',
-    '/node_modules/@burtonator/react-dropdown/dist/react-dropdown.css',
-    '/node_modules/summernote/dist/summernote-bs4.css',
+    'node_modules/firebase/firebase.js',
+    'node_modules/firebaseui/dist/firebaseui.js',
+    'node_modules/firebaseui/dist/firebaseui.css',
+    'node_modules/react-table/react-table.css',
+    'node_modules/bootstrap/dist/css/bootstrap.min.css',
+    'node_modules/bootstrap/dist/css/bootstrap-grid.min.css',
+    'node_modules/bootstrap/dist/css/bootstrap-reboot.min.css',
+    'node_modules/toastr/build/toastr.min.css',
+    'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
+    'node_modules/@burtonator/react-dropdown/dist/react-dropdown.css',
+    'node_modules/summernote/dist/summernote-bs4.css',
 
 ];
 

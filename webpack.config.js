@@ -10,10 +10,26 @@ console.log("Using N workers: " + workers);
 module.exports = {
     // mode: 'development',
     entry: {
+
+        // chrome + repository (individually) is about:
+        //
+        //   10.2MB raw
+        //   3.1MB compressed
+        //   (2.4MB with brotli / 22% smaller)
+        //
+        // chrome + repository (both) is about
+
+        //   5.1MB raw and about
+        //   1.6MB compressed.
+
         "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "login": [ "./apps/repository/js/login.ts"],
+
+        // "all": [ "./web/js/apps/chrome.ts", "./apps/repository/js/entry.tsx", "./apps/repository/js/login.ts"],
+
         // "both": [ "./web/js/apps/chrome.ts", "./apps/repository/js/entry.tsx"],
+
     },
     module: {
 

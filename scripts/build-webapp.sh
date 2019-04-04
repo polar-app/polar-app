@@ -14,7 +14,7 @@ copy() {
 set -e
 
 ## make sure we're running the latest code.
-npm install
+#npm install
 
 mkdir -p dist/public
 
@@ -24,6 +24,7 @@ copy apps "*.png"
 copy apps "*.css"
 
 copy apps "init.js"
+copy apps "service-worker-registration.js"
 
 copy htmlviewer "*.html"
 copy htmlviewer "*.css"
@@ -33,18 +34,6 @@ copy pdfviewer-custom "*.css"
 
 copy web/dist "*.js"
 copy web "*.svg"
-
-# TODO these are going to be too many resources for the app that we're not
-# actually going to use but part of the problem is that they might @import
-# other resources like CSS.  This is why webpack is really helpful!!!
-#
-# We're also going to need THREE PWAs I think.
-#
-# - one for the document repository
-# - one for the pdf viewer
-# - one for the html viewer
-#
-# - the solution here is to JUST cache apps, htmlviewer, pdfviewer
 
 copy node_modules/font-awesome "*"
 copy node_modules/@fortawesome "*"
@@ -64,4 +53,7 @@ cp *.svg dist/public
 
 cp manifest.json dist/public
 
-# sw-precache --config=sw-precache-config.js
+# FIXME: the remaining issue is that I need to permanently accept the TLS
+# certificate locally for my dev environment.
+
+sw-precache --config=sw-precache-config.js

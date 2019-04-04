@@ -5,7 +5,7 @@ import {FileRegistry} from '../web/js/backend/webserver/FileRegistry';
 import {WebserverCerts} from '../web/js/backend/webserver/WebserverCerts';
 
 const webserverConfig = WebserverConfig.create({
-   dir: '.',
+   dir: 'dist/public',
    port: 443,
    host: 'localhost',
    useSSL: true,
