@@ -106,7 +106,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // setup the initial snapshot so that we query for the users existing
         // data...
 
-        const uid = this.getUserID();
+        const uid = FirebaseDatastore.getUserID();
 
         // start synchronizing the datastore.  You MUST register your listeners
         // BEFORE calling init if you wish to listen to the full stream of
@@ -220,8 +220,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         }
 
-        const uid = this.getUserID();
-        const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
+       const id = FirebaseDatastore.computeDocMetaID(docMetaFileRef.fingerprint);
 
         const docInfoRef = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
@@ -271,8 +270,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private async getDocMeta0(fingerprint: string): Promise<string | null> {
 
-        const uid = this.getUserID();
-        const id = this.computeDocMetaID(uid, fingerprint);
+        const id = FirebaseDatastore.computeDocMetaID(fingerprint);
 
         return await this.getDocMetaDirectly(id);
 
@@ -391,7 +389,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         // TODO: we need to compute visibility for this for the future.
 
-        const uid = this.getUserID();
+        const uid = FirebaseDatastore.getUserID();
 
         // stick the uid into the metadata which we use for authorization of the
         // blob when not public.
@@ -521,7 +519,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const id = this.createFileMetaID(backend, ref);
 
         const recordHolder: RecordHolder<DocFileMeta> = {
-            uid: this.getUserID(),
+            uid: FirebaseDatastore.getUserID(),
             id,
             visibility: Visibility.PRIVATE,
             value: docFileMeta
@@ -721,8 +719,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
 
-            const uid = this.getUserID();
-            const id = this.computeDocMetaID(uid, fingerprint);
+            const id = FirebaseDatastore.computeDocMetaID(fingerprint);
 
             const docMetaRef = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
@@ -785,8 +782,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                                 docMeta: string,
                                 visibility: Visibility = Visibility.PRIVATE) {
 
-        const uid = this.getUserID();
-        const id = this.computeDocMetaID(uid, docInfo.fingerprint);
+        const uid = FirebaseDatastore.getUserID();
+        const id = FirebaseDatastore.computeDocMetaID(docInfo.fingerprint, uid);
 
         const docMetaHolder: DocMetaHolder = {
             docInfo,
@@ -807,13 +804,13 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     private createDocForDocInfo(docInfo: DocInfo,
                                 visibility: Visibility = Visibility.PRIVATE) {
 
-        const uid = this.getUserID();
-        const id = this.computeDocMetaID(uid, docInfo.fingerprint);
+        const uid = FirebaseDatastore.getUserID();
+        const id = FirebaseDatastore.computeDocMetaID(docInfo.fingerprint, uid);
 
         const recordHolder: RecordHolder<DocInfo> = {
             uid,
             id,
-            visibility: Visibility.PRIVATE,
+            visibility,
             value: docInfo
         };
 
@@ -823,7 +820,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaRefs(): Promise<DocMetaRef[]> {
 
-        const uid = this.getUserID();
+        const uid = FirebaseDatastore.getUserID();
 
         const snapshot = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
@@ -864,7 +861,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         let key: any;
 
-        const uid = this.getUserID();
+        const uid = FirebaseDatastore.getUserID();
 
         if (fileRef.hashcode) {
 
@@ -1044,7 +1041,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // both at the same time.
         const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
 
-            const uid = this.getUserID();
+            const uid = FirebaseDatastore.getUserID();
 
             const query = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
@@ -1098,7 +1095,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const docMetaProvider = AsyncProviders.memoize(async () => {
                 const data = await dataProvider();
-                const docMetaID = this.computeDocMetaID(this.getUserID(), docInfo.fingerprint);
+                const docMetaID = FirebaseDatastore.computeDocMetaID(docInfo.fingerprint);
                 Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
                 return DocMetas.deserialize(data!, docInfo.fingerprint);
             });
@@ -1195,7 +1192,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 id: batchID,
                 terminated: true,
             }
-        }).catch(err => log.error("Unable to dispatch event listener"));
+        }).catch(err => log.error("Unable to dispatch event listener: ", err));
 
         log.debug("onSnapshot... done");
 
@@ -1205,13 +1202,18 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         return snapshot.metadata.fromCache ? 'written' : 'committed';
     }
 
-    private computeDocMetaID(uid: UserID, fingerprint: string) {
+    public static computeDocMetaID(fingerprint: string,
+                                   uid: UserID = FirebaseDatastore.getUserID()): FirebaseDocMetaID {
+
         return Hashcodes.createID(uid + ':' + fingerprint, 32);
+
     }
 
-    private getUserID(): UserID {
+    public static getUserID(): UserID {
 
-        const auth = this.app!.auth();
+        const app = firebase.app();
+
+        const auth = app.auth();
         Preconditions.assertPresent(auth, "Not authenticated");
 
         const user = auth.currentUser;
@@ -1333,3 +1335,8 @@ interface StorageSettings {
     readonly contentType: string;
 }
 
+/**
+ * A specific type of document ID derived from the fingerprint and only available
+ * within Firebase.
+ */
+export type FirebaseDocMetaID = string;

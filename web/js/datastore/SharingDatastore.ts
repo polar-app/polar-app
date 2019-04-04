@@ -28,10 +28,11 @@ import {FirebaseDatastore} from './FirebaseDatastore';
 import {DocMetas} from '../metadata/DocMetas';
 import {DocMeta} from '../metadata/DocMeta';
 import {Datastores} from './Datastores';
+import {FirebaseDocMetaID} from './FirebaseDatastore';
 
 const log = Logger.create();
 
-export class SharedDocumentDatastore extends AbstractDatastore implements Datastore, WritableBinaryMetaDatastore {
+export class SharingDatastore extends AbstractDatastore implements Datastore, WritableBinaryMetaDatastore {
 
     public readonly id: DatastoreID;
 
@@ -42,7 +43,7 @@ export class SharedDocumentDatastore extends AbstractDatastore implements Datast
     private docMetaRefs: DocMetaRef[] = [];
     private backendFileRefs: ReadonlyArray<BackendFileRef> = [];
 
-    public constructor(private readonly docID: string,
+    public constructor(private readonly docMetaID: FirebaseDocMetaID,
                        private readonly fingerprint: string) {
         super();
         this.id = 'shared-document';
@@ -55,7 +56,7 @@ export class SharedDocumentDatastore extends AbstractDatastore implements Datast
 
         await this.delegate.init(errorListener, opts);
 
-        this.docMetaData = await this.delegate.getDocMetaDirectly(this.docID);
+        this.docMetaData = await this.delegate.getDocMetaDirectly(this.docMetaID);
 
         if (this.docMetaData) {
             this.docMeta = DocMetas.deserialize(this.docMetaData!, this.fingerprint);
