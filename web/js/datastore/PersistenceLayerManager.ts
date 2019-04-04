@@ -7,7 +7,6 @@ import {Logger} from "../logger/Logger";
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {FirebasePersistenceLayerFactory} from './factories/FirebasePersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
-import {PersistenceLayer} from './PersistenceLayer';
 import {DatastoreInitOpts} from './Datastore';
 
 const log = Logger.create();
@@ -77,7 +76,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
             // and their actual implementation (remote, firebase, cloud-aware).
             // Then toggle on the actual implementation and only change it when
             // the impl changes.
-            log.warn("Only Firebase persistence layer supported in browsers");
+            log.warn("Only 'web' persistence layers supported in browsers");
             return false;
         }
 
@@ -145,14 +144,14 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         if (AppRuntime.isBrowser()) {
 
-            if (type !== 'firebase') {
-                log.warn("Only firebase type supported in browsers (forcing).");
-                type = 'firebase';
+            if (type !== 'web') {
+                log.warn(`Only web type supported in browsers (requested type=${type})`);
+                type = 'web';
             }
 
         }
 
-        if (type === 'firebase') {
+        if (type === 'web') {
             return FirebasePersistenceLayerFactory.create();
         }
 
@@ -219,7 +218,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
 }
 
-export type PersistenceLayerType = 'local' | 'cloud' | 'firebase';
+export type PersistenceLayerType = 'local' | 'cloud' | 'web';
 
 /**
  * The state of the persistence layer.
@@ -255,7 +254,7 @@ export class PersistenceLayerTypes {
 
             // we are ALWAYS using firebase when in the browser and there is no
             // other option.
-            return 'firebase';
+            return 'web';
         }
 
         const currentType = window.localStorage.getItem(this.KEY);
