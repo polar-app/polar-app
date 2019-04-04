@@ -4,6 +4,8 @@ name) which is required for modern chrome browsers.
 
 Generated certs are stored in ```../polar-bookshelf-secrets/dev-certs```
 
+We just add ca.crt to our root certs in chrome and it works.
+
 ```bash
 openssl genrsa -out ca.key 2048
 openssl req -new -x509 -days 3650 -key ca.key -subj "/C=CN/ST=GD/L=SZ/OPolar/CN=Polar Root CA" -out ca.crt
