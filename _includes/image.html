@@ -1,0 +1,5 @@
+<picture>
+    <source srcset="{{ include.src }}" type="image/webp">
+    <source srcset="{{ include.src | replace: ".webp", ".png" }}" type="image/png">
+    <img src="{{ include.src }}">
+</picture>
