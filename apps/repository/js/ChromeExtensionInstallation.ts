@@ -5,6 +5,11 @@ import {isPresent} from '../../../web/js/Preconditions';
 const EXTENSION_URL = "https://chrome.google.com/webstore/detail/jkfdkjomocoaljglgddnmhcbolldcafd";
 
 // https://developer.chrome.com/webstore/inline_installation
+/**
+ * @Deprecated chrome inline installation no longer works so I think most of
+ * this code is pointless but we might be able to use the isInstalled feature
+ * to detect if the extension is already installed.
+ */
 export class ChromeExtensionInstallation {
 
     public static isChromeOrChromium() {
