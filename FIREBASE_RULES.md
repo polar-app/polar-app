@@ -5,12 +5,30 @@ We use the uid field right now to determine if a record can be written.
 ## Rules with public visibility 
 
 ```
-// Allow read/write access on all documents to any user signed in to the application
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read: if request.auth != null && (resource == null || request.auth.uid == resource.data.uid || (resource.data.visibility == 'public' || resource.data.visibility == 2));
+    
+      // Reads: 
+      // 
+      // - The resource is null: (doesn't exist) so that we can get a proper 404 
+      //   not found and no auth error.  We don't need to check auth because 
+      //   reading something that doesn't exist is acceptable.
+      //
+      // - The resource visibility is public (no auth is requred and we do not
+      //   care about the authentication credentials
+      //
+      // - We have credentials and they match the UID of the document so the
+      //   current logged in user is authorized to read the document.  
+    
+      allow read: if resource == null || (resource.data.visibility == 'public' || resource.data.visibility == 2) || (request.auth != null && request.auth.uid == resource.data.uid);
+      
+      // Writes: 
+      // 
+      // Writes can only be done on that are non-existant (new documents)
+      // or existing documents that are owned by the user.
       allow write: if request.auth != null && (resource == null || request.auth.uid == resource.data.uid);
+      
     }
   }
 }
