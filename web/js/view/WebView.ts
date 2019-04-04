@@ -14,6 +14,7 @@ import {Backend} from '../datastore/Backend';
 import {ReadingProgressResume} from './ReadingProgressResume';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {SharingDatastores} from '../datastore/SharingDatastores';
+import {PersistenceLayers} from '../datastore/PersistenceLayers';
 
 const log = Logger.create();
 
@@ -138,7 +139,7 @@ export class WebView extends View {
 
             try {
                 log.info("Changing document visibility changed to: ", visibility);
-                return await Datastores.changeVisibility(persistenceLayer, docMeta, visibility);
+                return await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
             } finally {
                 log.info("Document visibility changed to: ", visibility);
             }

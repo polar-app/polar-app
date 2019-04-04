@@ -87,50 +87,6 @@ export class Datastores {
 
     }
 
-    /**
-     * Change visibility of the given DocMeta including setting the visibility
-     * itself on the DocInfo but also setting the visibility for the individual
-     * files.
-     *
-     */
-    public static async changeVisibility(store: PersistenceLayer,
-                                         docMeta: DocMeta,
-                                         visibility: Visibility) {
-
-        const backendFileRefs = this.toBackendFileRefs(docMeta);
-
-        const writeFileOpts = {visibility, updateMeta: true};
-
-        const toWriteFilePromise = async (backendFileRef: BackendFileRef): Promise<void> => {
-
-            await store.writeFile(backendFileRef.backend,
-                                  backendFileRef,
-                                  undefined!,
-                                  writeFileOpts);
-
-        };
-
-        const toWriteFilePromises = (): ReadonlyArray<Promise<void>> => {
-            return backendFileRefs.map(current => toWriteFilePromise(current));
-        };
-
-        const toWriteDocMetaPromise = async (): Promise<void> => {
-
-            docMeta.docInfo.visibility = visibility;
-
-            await store.writeDocMeta(docMeta);
-
-        };
-
-        const writeFilePromises = toWriteFilePromises();
-        const writeDocMetaPromise = toWriteDocMetaPromise();
-
-        const promises = [...writeFilePromises, writeDocMetaPromise];
-
-        await Promise.all(promises);
-
-    }
-
     public static async getDocMetas(datastore: Datastore,
                                     listener: DocMetaListener,
                                     docMetaRefs?: DocMetaRef[]) {
