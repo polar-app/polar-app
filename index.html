@@ -257,10 +257,13 @@ image: https://getpolarized.io/assets/logo/icon.png
             <div class="col-12 col-md-6 col-lg-6 mb-4 mb-md-0 pl-4 pr-4 d-flex">
 
                 <div class="ml-auto" style="">
-                    <img alt="image"
-                         class="img-fluid img-shadow"
-                         src="./assets/screenshots/area-highlight-no-border.png"
-                         style="min-width: 250px; zoom: 85%; margin: 25px;">
+
+                    {%- include image.html
+                                alt="image"
+                                class="img-fluid img-shadow"
+                                src="./assets/screenshots/area-highlight-no-border.png"
+                                style="min-width: 250px; zoom: 85%; margin: 25px;" -%}
+
                 </div>
 
             </div>
@@ -277,10 +280,12 @@ image: https://getpolarized.io/assets/logo/icon.png
                 </p>
 
                 <div>
-                    <img alt="image"
-                         class="img-fluid img-shadow img-rounded"
-                         src="./assets/screenshots/text-annotations.png"
-                         style="min-width: 250px; zoom: 75%; margin: 25px;">
+
+                    {%- include image.html
+                                alt="Polar supports text annotations"
+                                class="img-fluid img-shadow img-rounded"
+                                src="./assets/screenshots/text-annotations.png"
+                                style="min-width: 250px; zoom: 75%; margin: 25px;" -%}
 
                 </div>
 
@@ -309,10 +314,11 @@ image: https://getpolarized.io/assets/logo/icon.png
             <div class="col col-lg-7 col-xs p-4 text-right">
 
                 <div style="">
-                    <img alt="image"
-                         class="img-fluid img-shadow"
-                         src="./assets/screenshots/document-repository.png"
-                         style="min-width: 450px; zoom: 100%; margin-bottom: 50px;">
+                    {%- include image.html
+                                alt="Polar Document Repository for all your PDFs and eBooks"
+                                class="img-fluid img-shadow"
+                                src="./assets/screenshots/document-repository.png"
+                                style="min-width: 450px; zoom: 100%; margin-bottom: 50px;" -%}
                 </div>
 
             </div>
@@ -333,11 +339,18 @@ image: https://getpolarized.io/assets/logo/icon.png
                     </div>
 
                     <div style="">
+
                         <figure>
-                            <img alt="image" class="img-fluid img-shadow" src="./assets/screenshots/document-repository-filter.png">
+
+                            {%- include image.html
+                                        alt="Document Repository filtering by tag"
+                                        class="img-fluid img-shadow"
+                                        src="./assets/screenshots/document-repository-filter.png" -%}
+
                             <figcaption class="m-3 muted">Filter documents by tag</figcaption>
 
                         </figure>
+
                     </div>
 
                 </div>
@@ -444,10 +457,13 @@ image: https://getpolarized.io/assets/logo/icon.png
             <div class="col col-lg-7 col-xs text-left">
 
                 <div style="">
-                    <img alt="image"
-                         class="img-fluid img-shadow"
-                         src="./assets/screenshots/captured-content-window.png"
-                         style="min-width: 450px; zoom: 100%; margin-bottom: 50px;">
+                    {%- include image.html
+                                alt="Captured Content"
+                                class="img-fluid img-shadow"
+                                src="./assets/screenshots/captured-content-window.png"
+                                style="min-width: 450px; zoom: 100%; margin-bottom: 50px;" -%}
+
+
                 </div>
 
             </div>
@@ -484,10 +500,13 @@ image: https://getpolarized.io/assets/logo/icon.png
                 </div>
 
                 <div style="">
-                    <img alt="image"
-                         class="img-fluid img-shadow"
-                         src="./assets/screenshots/annotation-sidebar.png"
-                         style="min-width: 450px; margin-bottom: 20px;">
+
+                    {%- include image.html
+                                alt="Annotation Sidebar"
+                                class="img-fluid img-shadow"
+                                src="./assets/screenshots/annotation-sidebar.png"
+                                style="min-width: 450px; margin-bottom: 20px;" -%}
+
                 </div>
 
             </div>
