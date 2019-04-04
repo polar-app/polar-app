@@ -14,7 +14,7 @@ copy() {
 set -e
 
 ## make sure we're running the latest code.
-npm install
+#npm install
 
 mkdir -p dist/public
 
@@ -53,6 +53,7 @@ cp *.svg dist/public
 
 cp manifest.json dist/public
 
-# FIXME: make one PWA per directory...
+# FIXME: the remaining issue is that I need to permanently accept the TLS
+# certificate locally for my dev environment.
 
 sw-precache --config=sw-precache-config.js
