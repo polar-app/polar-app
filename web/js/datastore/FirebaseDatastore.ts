@@ -991,6 +991,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             [fingerprint: string]: DocMetaData;
         }
 
+        // TODO: we should shave ANOTHER 500ms by hinting that this page will
+        // need BOTH the doc_meta and doc_info data (I think) by loading them
+        // both at the same time.
         const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
 
             const uid = this.getUserID();
