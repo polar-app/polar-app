@@ -88,12 +88,12 @@ export class Datastores {
     }
 
     /**
-     * Change visibility of the given DocMeta including setting the visiblity
-     * itself on the DocInfo but also setting the visiblity for the individual
+     * Change visibility of the given DocMeta including setting the visibility
+     * itself on the DocInfo but also setting the visibility for the individual
      * files.
      *
      */
-    public static async changeVisibility(store: Datastore | PersistenceLayer,
+    public static async changeVisibility(store: PersistenceLayer,
                                          docMeta: DocMeta,
                                          visibility: Visibility) {
 
@@ -101,31 +101,33 @@ export class Datastores {
 
         const writeFileOpts = {visibility, updateMeta: true};
 
-        const toWriteFilePromise = (backendFileRef: BackendFileRef) => {
+        const toWriteFilePromise = async (backendFileRef: BackendFileRef): Promise<void> => {
 
-            return store.writeFile(backendFileRef.backend,
-                                   backendFileRef,
-                                   undefined!,
-                                   writeFileOpts);
+            await store.writeFile(backendFileRef.backend,
+                                  backendFileRef,
+                                  undefined!,
+                                  writeFileOpts);
 
         };
 
-        const writeFilePromises
-            = backendFileRefs.map(current => toWriteFilePromise(current));
+        const toWriteFilePromises = (): ReadonlyArray<Promise<void>> => {
+            return backendFileRefs.map(current => toWriteFilePromise(current));
+        };
 
-        // Firebase is somewhat slow/latent with these ops so do them in
-        // parallel via promises.
+        const toWriteDocMetaPromise = async (): Promise<void> => {
 
-        await Promise.all(writeFilePromises);
+            docMeta.docInfo.visibility = visibility;
 
-        // and finally set the visibility on the DocMeta/DocInfo.  This should
-        // be set automatically by the mutator when we change the underlying
-        // data.
+            await store.writeDocMeta(docMeta);
 
-        // TODO: we need to WAIT for this not just assume it's going to happen
-        // though which is a major problem.
+        };
 
-        docMeta.docInfo.visibility = visibility;
+        const writeFilePromises = toWriteFilePromises();
+        const writeDocMetaPromise = toWriteDocMetaPromise();
+
+        const promises = [...writeFilePromises, writeDocMetaPromise];
+
+        await Promise.all(promises);
 
     }
 

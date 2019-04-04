@@ -90,6 +90,10 @@ export class Promises {
 
     }
 
+    public static async toVoidPromise(delegate: () => Promise<any>): Promise<void> {
+        await delegate();
+    }
+
     /**
      * Execute a function which is async and log any errors it generates.
      *
