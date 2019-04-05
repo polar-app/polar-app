@@ -418,9 +418,12 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
             return path.indexOf(".backup-") === -1;
         };
 
-        log.notice("Creating backup to: " + backupDir);
-
-        await Files.createDirectorySnapshot(dataDir, backupDir, acceptPredicate);
+        if (await Files.existsAsync(backupDir)) {
+            log.warn("Not creating backup.  Already exists: ", backupDir);
+        } else {
+            log.notice("Creating backup to: " + backupDir);
+            await Files.createDirectorySnapshot(dataDir, backupDir, acceptPredicate);
+        }
 
     }
 
