@@ -4,16 +4,13 @@ import {Reactor} from '../reactor/Reactor';
 import {PagemarkType} from '../metadata/PagemarkType';
 import {Preconditions} from '../Preconditions';
 import {Pagemarks} from '../metadata/Pagemarks';
-import {Objects} from '../util/Objects';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {Logger} from '../logger/Logger';
 import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
-import {DocFormats} from '../docformat/DocFormats';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
 
 const log = Logger.create();

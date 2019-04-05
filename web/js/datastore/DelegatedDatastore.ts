@@ -1,22 +1,16 @@
-import {
-    Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
-    DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
-    AbstractDatastore, BinaryFileData, DatastoreOverview, PrefsProvider
-} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreID, DatastoreOverview, DocMetaSnapshotEventListener, FileRef, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
+import {DeleteResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {GetFileOpts} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {Datastores} from './Datastores';
-import {WriteFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayer} from './Datastore';
-import {GetFileOpts} from './Datastore';
 
 /**
  * A datastore that just forwards events to the given delegate.

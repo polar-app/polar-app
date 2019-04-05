@@ -1,28 +1,18 @@
-import {
-    Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
-    DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
-    AbstractDatastore,
-    ErrorListener, BinaryFileData
-} from './Datastore';
-import {Directories} from './Directories';
-import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {BinaryFileData, Datastore, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
 import {DeleteResult} from './Datastore';
-import {Preconditions} from '../Preconditions';
-import {Backend} from './Backend';
-import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
-import {IDocInfo, DocInfo} from '../metadata/DocInfo';
-import {DatastoreMutation} from './DatastoreMutation';
-import {Datastores} from './Datastores';
-import {PersistenceLayers} from './PersistenceLayers';
-import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
-import {FileHandle} from '../util/Files';
 import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {DatastoreOverview} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {Backend} from './Backend';
+import {DocFileMeta} from './DocFileMeta';
+import {Optional} from '../util/ts/Optional';
+import {DocInfo} from '../metadata/DocInfo';
+import {DatastoreMutation} from './DatastoreMutation';
+import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
+import {DocMeta} from '../metadata/DocMeta';
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.

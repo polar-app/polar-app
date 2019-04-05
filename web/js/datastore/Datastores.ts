@@ -1,4 +1,7 @@
 import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
+import {NetworkLayer} from './Datastore';
+import {FileRef} from './Datastore';
+import {BackendFileRef} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -14,14 +17,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
-import {NetworkLayer} from './Datastore';
-import {FileRef} from './Datastore';
-import {FilePaths} from '../util/FilePaths';
-import {Optional} from '../util/ts/Optional';
-import {Visibility} from './Datastore';
-import {BackendFileRef} from './Datastore';
 import {Backend} from './Backend';
-import {PersistenceLayer} from './PersistenceLayer';
 
 const log = Logger.create();
 

@@ -1,5 +1,4 @@
 import {DocMeta} from '../metadata/DocMeta';
-import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {ModelPersister} from './ModelPersister';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
 

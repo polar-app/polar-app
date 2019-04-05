@@ -5,29 +5,20 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {
-    DeleteResult, DocMetaSnapshotEvent, FileRef,
-    DocMetaSnapshotEventListener, SnapshotResult,
-    ErrorListener,
-    Datastore, BinaryFileData
-} from '../Datastore';
-import {PersistenceEventType} from '../PersistenceEventType';
-import {Backend} from '../Backend';
-import {DocFileMeta} from '../DocFileMeta';
-import {FileMeta} from '../Datastore';
-import {Optional} from '../../util/ts/Optional';
-import {DocInfo} from '../../metadata/DocInfo';
-import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
-import {NULL_FUNCTION} from '../../util/Functions';
-import {Logger} from '../../logger/Logger';
-import {Releaseable} from '../../reactor/EventListener';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from '../Datastore';
 import {WriteFileOpts} from '../Datastore';
 import {GetFileOpts} from '../Datastore';
 import {DatastoreOverview} from '../Datastore';
 import {DatastoreCapabilities} from '../Datastore';
 import {DatastoreInitOpts} from '../Datastore';
-
-const log = Logger.create();
+import {PersistenceEventType} from '../PersistenceEventType';
+import {Backend} from '../Backend';
+import {DocFileMeta} from '../DocFileMeta';
+import {Optional} from '../../util/ts/Optional';
+import {DocInfo} from '../../metadata/DocInfo';
+import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
+import {NULL_FUNCTION} from '../../util/Functions';
+import {Releaseable} from '../../reactor/EventListener';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 

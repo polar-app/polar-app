@@ -236,7 +236,7 @@ export interface IDocInfo {
     readingPerDay?: ReadingOverview;
 
     /**
-     * The visiblity of this document (private or public).  The default is
+     * The visibility of this document (private or public).  The default is
      * private.
      */
     visibility?: Visibility;

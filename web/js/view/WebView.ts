@@ -6,15 +6,9 @@ import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from '../util/Functions';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
-import {ShareContentButtons} from '../apps/viewer/ShareContentButtons';
-import {Visibility} from '../datastore/Datastore';
 import {PrefsProvider} from '../datastore/Datastore';
-import {Datastores} from '../datastore/Datastores';
-import {Backend} from '../datastore/Backend';
 import {ReadingProgressResume} from './ReadingProgressResume';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {SharingDatastores} from '../datastore/SharingDatastores';
-import {PersistenceLayers} from '../datastore/PersistenceLayers';
 
 const log = Logger.create();
 
@@ -126,27 +120,6 @@ export class WebView extends View {
         if (autoResume) {
             ReadingProgressResume.resume(docMeta);
         }
-
-        this.handleSharing(docMeta);
-
-    }
-
-    private handleSharing(docMeta: DocMeta) {
-
-        // const persistenceLayer = this.model.persistenceLayerProvider();
-        //
-        // const onVisibilityChanged = async (visibility: Visibility) => {
-        //     await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
-        // };
-        //
-        // const createShareLink = async (): Promise<string | undefined> => {
-        //     return SharingDatastores.createURL(persistenceLayer, docMeta);
-        // };
-        //
-        // ShareContentButtons.create(docMeta.docInfo,
-        //                            persistenceLayer.capabilities(),
-        //                            createShareLink,
-        //                            onVisibilityChanged);
 
     }
 

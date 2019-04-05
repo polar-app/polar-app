@@ -220,7 +220,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         }
 
-       const id = FirebaseDatastore.computeDocMetaID(docMetaFileRef.fingerprint);
+        const id = FirebaseDatastore.computeDocMetaID(docMetaFileRef.fingerprint);
 
         const docInfoRef = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
