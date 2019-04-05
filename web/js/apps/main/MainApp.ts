@@ -121,8 +121,6 @@ export class MainApp {
 
         await dialogWindowService.start();
 
-        const userAgent = mainWindow.webContents.getUserAgent();
-
         const fileLoader = new AnalyticsFileLoader(defaultFileLoader);
 
         await new DocInfoBroadcasterService().start();
