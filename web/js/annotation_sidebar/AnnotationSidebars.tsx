@@ -5,6 +5,7 @@ import {AnnotationSidebar} from './AnnotationSidebar';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
+import {Docs} from '../metadata/Docs';
 
 const log = Logger.create();
 
@@ -20,8 +21,11 @@ export class AnnotationSidebars {
 
         splitter.collapse();
 
+        const doc = Docs.create(docMeta,
+                                persistenceLayerProvider().capabilities().permission);
+
         ReactDOM.render(
-            <AnnotationSidebar docMeta={docMeta}
+            <AnnotationSidebar doc={doc}
                                persistenceLayerProvider={persistenceLayerProvider} />,
             document.querySelector('.polar-sidebar') as HTMLElement
         );
