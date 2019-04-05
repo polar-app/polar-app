@@ -29,10 +29,10 @@ class Styles {
 
     public static shareControlButtonParent: React.CSSProperties = {
 
-        position: 'absolute',
-        top: '90px',
-        right: '50px',
-        zIndex: 10,
+        // position: 'absolute',
+        // top: '90px',
+        // right: '50px',
+        // zIndex: 10,
 
         // marginLeft: '5px'
 
@@ -62,19 +62,18 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
         return (
 
             <div style={Styles.shareControlButtonParent}
-                 className="twitter-bootstrap-enabled twitter-bootstrap-content shadow">
+                 className="twitter-bootstrap-enabled twitter-bootstrap-content shadow mr-1 ml-1">
 
                 <Button color="primary"
                         id="share-control-button"
-                        size="lg"
+                        size="sm"
+                        style={{fontSize: '14px'}}
                         onClick={() => this.toggle(true)}
                         className="header-filter-clickable">
 
                     <i className={buttonIconClass} style={{marginRight: '5px'}}></i>
 
-                    <span className="">
-                        Share
-                    </span>
+                    Share
 
                     <span className="text-white" style={Styles.dropdownChevron}></span>
 

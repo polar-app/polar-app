@@ -1,11 +1,8 @@
 import React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
-import {Logger} from '../../logger/Logger';
 import {ExportFormat} from '../../metadata/exporter/Exporters';
 import {remote} from 'electron';
 import {AppRuntime} from '../../AppRuntime';
-
-const log = Logger.create();
 
 export class ExportButton extends React.Component<IProps, IState> {
 
@@ -25,7 +22,7 @@ export class ExportButton extends React.Component<IProps, IState> {
                                       hidden={AppRuntime.isBrowser()}
                                       size="sm">
 
-                    <DropdownToggle color="primary" caret style={{fontSize: '14px'}}>
+                    <DropdownToggle color="secondary" caret style={{fontSize: '14px'}}>
 
                         <i className="fas fa-file-export" style={{marginRight: '5px'}}></i>
                         Export

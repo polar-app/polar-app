@@ -133,20 +133,20 @@ export class WebView extends View {
 
     private handleSharing(docMeta: DocMeta) {
 
-        const persistenceLayer = this.model.persistenceLayerProvider();
-
-        const onVisibilityChanged = async (visibility: Visibility) => {
-            await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
-        };
-
-        const createShareLink = async (): Promise<string | undefined> => {
-            return SharingDatastores.createURL(persistenceLayer, docMeta);
-        };
-
-        ShareContentButtons.create(docMeta.docInfo,
-                                   persistenceLayer.capabilities(),
-                                   createShareLink,
-                                   onVisibilityChanged);
+        // const persistenceLayer = this.model.persistenceLayerProvider();
+        //
+        // const onVisibilityChanged = async (visibility: Visibility) => {
+        //     await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
+        // };
+        //
+        // const createShareLink = async (): Promise<string | undefined> => {
+        //     return SharingDatastores.createURL(persistenceLayer, docMeta);
+        // };
+        //
+        // ShareContentButtons.create(docMeta.docInfo,
+        //                            persistenceLayer.capabilities(),
+        //                            createShareLink,
+        //                            onVisibilityChanged);
 
     }
 

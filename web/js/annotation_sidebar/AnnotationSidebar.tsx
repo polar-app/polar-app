@@ -19,6 +19,11 @@ import {ExportButton} from '../ui/export/ExportButton';
 import {ExportFormat, Exporters} from '../metadata/exporter/Exporters';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
+import {Visibility} from '../datastore/Datastore';
+import {PersistenceLayers} from '../datastore/PersistenceLayers';
+import {SharingDatastores} from '../datastore/SharingDatastores';
+import {ShareContentButton} from '../apps/viewer/ShareContentButton';
+import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
@@ -245,6 +250,18 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const AnnotationHeader = () => {
 
+            const persistenceLayer = this.props.persistenceLayerProvider();
+            const docMeta = this.props.docMeta;
+            const datastoreCapabilities = persistenceLayer.capabilities();
+
+            const onVisibilityChanged = async (visibility: Visibility) => {
+                await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
+            };
+
+            const createShareLink = async (): Promise<string | undefined> => {
+                return SharingDatastores.createURL(persistenceLayer, docMeta);
+            };
+
             if (annotations.length === 0) {
                 return (<div></div>);
             }
@@ -262,6 +279,13 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                         <SplitBarRight>
 
                             <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
+
+                            <ShareContentButton datastoreCapabilities={datastoreCapabilities}
+                                                createShareLink={createShareLink}
+                                                visibility={docMeta.docInfo.visibility}
+                                                onVisibilityChanged={onVisibilityChanged}
+                                                onDone={NULL_FUNCTION}/>
+
 
                         </SplitBarRight>
 
