@@ -7,6 +7,9 @@ import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {isPresent} from '../Preconditions';
 import {URLStr} from '../util/Strings';
 import {SharingDatastore} from './SharingDatastore';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class SharingDatastores {
 
@@ -31,6 +34,12 @@ export class SharingDatastores {
     public static async createURL(persistenceLayer: PersistenceLayer,
                                   docMeta: DocMeta,
                                   baseURL: URLStr = this.currentURL()) {
+
+        const datastoreCapabilities = persistenceLayer.capabilities();
+
+        if (! datastoreCapabilities.networkLayers.has('web')) {
+            return undefined;
+        }
 
         const fileRef = Datastores.toFileRef(docMeta);
 

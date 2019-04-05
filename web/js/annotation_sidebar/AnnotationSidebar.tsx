@@ -18,6 +18,7 @@ import {Flashcard} from '../metadata/Flashcard';
 import {ExportButton} from '../ui/export/ExportButton';
 import {ExportFormat, Exporters} from '../metadata/exporter/Exporters';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
+import {PersistenceLayer} from '../datastore/PersistenceLayer';
 
 const log = Logger.create();
 
@@ -337,6 +338,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly docMeta: DocMeta;
+    readonly persistenceLayerProvider: () => PersistenceLayer;
 }
 
 interface IState {

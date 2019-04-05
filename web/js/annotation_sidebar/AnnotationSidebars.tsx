@@ -4,12 +4,14 @@ import * as ReactDOM from 'react-dom';
 import {AnnotationSidebar} from './AnnotationSidebar';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
+import {PersistenceLayer} from '../datastore/PersistenceLayer';
 
 const log = Logger.create();
 
 export class AnnotationSidebars {
 
-    public static create(docMeta: DocMeta): Splitter {
+    public static create(docMeta: DocMeta,
+                         persistenceLayerProvider: () => PersistenceLayer): Splitter {
 
         const splitter = new Splitter('.polar-viewer', '.polar-sidebar');
 
@@ -19,7 +21,8 @@ export class AnnotationSidebars {
         splitter.collapse();
 
         ReactDOM.render(
-            <AnnotationSidebar docMeta={docMeta} />,
+            <AnnotationSidebar docMeta={docMeta}
+                               persistenceLayerProvider={persistenceLayerProvider} />,
             document.querySelector('.polar-sidebar') as HTMLElement
         );
 

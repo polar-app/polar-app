@@ -136,33 +136,15 @@ export class WebView extends View {
         const persistenceLayer = this.model.persistenceLayerProvider();
 
         const onVisibilityChanged = async (visibility: Visibility) => {
-
-            try {
-                log.info("Changing document visibility changed to: ", visibility);
-                await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
-            } finally {
-                log.info("Document visibility changed to: ", visibility);
-            }
-
+            await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
         };
 
-        const datastoreCapabilities = persistenceLayer.capabilities();
-
-        // TODO: use a latch for this though and only fetch it ONCE because it
-        // takes about 1s but it never changes for the user.
-
         const createShareLink = async (): Promise<string | undefined> => {
-
-            if (! datastoreCapabilities.networkLayers.has('web')) {
-                return undefined;
-            }
-
             return SharingDatastores.createURL(persistenceLayer, docMeta);
-
         };
 
         ShareContentButtons.create(docMeta.docInfo,
-                                   datastoreCapabilities,
+                                   persistenceLayer.capabilities(),
                                    createShareLink,
                                    onVisibilityChanged);
 

@@ -32,6 +32,8 @@ export class PersistenceLayers {
                                          docMeta: DocMeta,
                                          visibility: Visibility) {
 
+        log.info("Changing document visibility changed to: ", visibility);
+
         const backendFileRefs = Datastores.toBackendFileRefs(docMeta);
 
         const writeFileOpts = {visibility, updateMeta: true};
@@ -63,6 +65,8 @@ export class PersistenceLayers {
         const promises = [...writeFilePromises, writeDocMetaPromise];
 
         await Promise.all(promises);
+
+        log.info("Document visibility changed to: ", visibility);
 
     }
 
