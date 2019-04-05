@@ -66,10 +66,10 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
                 <Button color="primary"
                         id="share-control-button"
-                        size="sm"
-                        style={{fontSize: '14px'}}
+                        size="lg"
+                        style={{fontSize: '16px'}}
                         onClick={() => this.toggle(true)}
-                        className="header-filter-clickable">
+                        className="p-1 pl-2 pr-2">
 
                     <i className={buttonIconClass} style={{marginRight: '5px'}}></i>
 
