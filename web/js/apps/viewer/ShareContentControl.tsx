@@ -265,10 +265,13 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
     }
 
     private onVisibilityChanged(visibility: Visibility) {
-        this.setState({visibility});
 
         this.props.onVisibilityChanged(visibility)
+            .then(() => {
+                this.setState({visibility});
+            })
             .catch(err => log.error("Unable to change visibility: ", err));
+
     }
 
     private sharedVia(platform: SharePlatform) {
@@ -295,7 +298,7 @@ interface IProps {
     readonly createShareLink: () => Promise<string | undefined>;
 
     /**
-     * Called when the visibility for this content has chagned.
+     * Called when the visibility for this content has changed.
      */
     readonly onVisibilityChanged: (visibility: Visibility) => Promise<void>;
 

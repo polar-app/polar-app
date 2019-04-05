@@ -139,7 +139,7 @@ export class WebView extends View {
 
             try {
                 log.info("Changing document visibility changed to: ", visibility);
-                return await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
+                await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
             } finally {
                 log.info("Document visibility changed to: ", visibility);
             }

@@ -93,7 +93,7 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
                         <ShareContentControl datastoreCapabilities={this.props.datastoreCapabilities}
                                              createShareLink={this.props.createShareLink}
                                              visibility={this.state.visibility}
-                                             onVisibilityChanged={visibility => this.onVisibilityChanged(visibility)}
+                                             onVisibilityChanged={async visibility => this.onVisibilityChanged(visibility)}
                                              onDone={() => this.onDone()}/>
 
                     </PopoverBody>
@@ -112,10 +112,9 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
     private async onVisibilityChanged(visibility: Visibility) {
 
-        this.setState({...this.state, visibility});
+        await this.props.onVisibilityChanged(visibility);
 
-        this.props.onVisibilityChanged(visibility)
-            .catch(err => log.error("Unable to change document visibility: ", err));
+        this.setState({...this.state, visibility});
 
     }
 
