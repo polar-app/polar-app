@@ -1,4 +1,4 @@
-import {app, BrowserWindow, session} from 'electron';
+import {app, BrowserWindow} from 'electron';
 import {WebserverConfig} from '../../backend/webserver/WebserverConfig';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {ProxyServerConfig} from '../../backend/proxyserver/ProxyServerConfig';
@@ -16,7 +16,6 @@ import {ScreenshotService} from '../../screenshots/ScreenshotService';
 import {DocLoaderService} from './doc_loaders/electron/ipc/DocLoaderService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
-import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
 import process from "process";
 import {AppPath} from '../../electron/app_path/AppPath';
 import {MainAPI} from './MainAPI';
@@ -100,8 +99,6 @@ export class MainApp {
 
         // create a session and configure it for the polar which is persistent
         // across restarts so that we do not lose cookies, etc.
-
-        const mainSession = session.fromPartition('persist:polar');
 
         // mainSession.cookies.get({}, (err, cookies) => {
         //
