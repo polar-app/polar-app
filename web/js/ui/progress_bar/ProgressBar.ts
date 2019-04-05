@@ -1,4 +1,3 @@
-import {Percentage} from '../../util/ProgressTracker';
 import {Logger} from '../../logger/Logger';
 import {Optional} from '../../util/ts/Optional';
 
