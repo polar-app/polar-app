@@ -1,14 +1,11 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
 import {Visibility} from '../../datastore/Datastore';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {ShareContentControl} from './ShareContentControl';
-
-const log = Logger.create();
 
 class Styles {
 
@@ -62,20 +59,33 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
         return (
 
             <div style={Styles.shareControlButtonParent}
-                 className="twitter-bootstrap-enabled twitter-bootstrap-content shadow mr-1 ml-1">
+                 className="mr-1 ml-1">
 
                 <Button color="primary"
                         id="share-control-button"
-                        size="lg"
-                        style={{fontSize: '16px'}}
+                        size="sm"
                         onClick={() => this.toggle(true)}
-                        className="p-1 pl-2 pr-2">
+                        style={{fontSize: '15px'}}
+                        className="pl-2 pr-2 p-1">
 
-                    <i className={buttonIconClass} style={{marginRight: '5px'}}></i>
+                    <div style={{display: 'flex',
+                                marginTop: 'auto',
+                                marginBottom: 'auto'}}>
 
-                    Share
+                        <div className="mt-auto mb-auto">
+                            <i className={buttonIconClass}
+                               style={{marginRight: '5px'}}></i>
+                        </div>
 
-                    <span className="text-white" style={Styles.dropdownChevron}></span>
+                        <div className="mt-auto mb-auto">
+                            Share
+                        </div>
+
+                        <div className="mt-auto mb-auto">
+                            <span className="text-white" style={Styles.dropdownChevron}></span>
+                        </div>
+
+                    </div>
 
                 </Button>
 
@@ -84,7 +94,7 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
                          isOpen={this.state.open}
                          toggle={() => this.toggle(false)}
                          target="share-control-button"
-                         className="twitter-bootstrap-enabled twitter-bootstrap-content"
+                         className=""
                          style={{maxWidth: '600px'}}>
 
                     <PopoverBody className="shadow">
