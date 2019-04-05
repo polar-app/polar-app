@@ -13,7 +13,7 @@ I can understand the need to audit the code for safety since this is a
 very specific use case and apps could (and have) abused this permission. 
 
 The problem is that they take 1 week to audit your code!  This isn't just for 
-code changes but **ANY** change even if you just change a typo in your app 
+code changes but **ANY** change even if you just change a *typo* in your app 
 description.
 
 This is the 3rd change we've made and each time it's taken about a week.
@@ -29,11 +29,14 @@ need to wait ANOTHER week for that to be accepted.
 We need this permission because Polar needs to add CORS headers to allow it 
 to add PDFs to your document repository while you browse.
 
+This way if you come across a cool research paper you can easily add it to Polar
+and start highlighting and taking notes on it.
+
 It makes it super easy to stumble upon a URL and then easily add it to your 
 reading list.
 
-Some people can bypass this via extensive auditing with the ActiveTab permission
-but it doesn't apply to Polar.  
+Some developers can bypass this via extensive auditing with the ActiveTab
+permission but it doesn't apply to Polar.
 
 ## Banning Obfuscated Code
 
