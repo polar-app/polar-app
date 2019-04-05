@@ -86,7 +86,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
                            data: FileHandle | Buffer | string,
                            opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
 
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
 
         let buff: Buffer | undefined;
 
@@ -102,13 +102,13 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
         this.files[key] = {buffer: buff!, meta};
 
-        return {backend, ref, url: 'FIXME:none', meta};
+        return {backend, ref, url: 'NOT_IMPLEMENTED:none', meta};
 
     }
 
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
 
         if (!key) {
             return Optional.empty();
@@ -116,17 +116,17 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
         const fileData = this.files[key];
 
-        return Optional.of({backend, ref, url: 'FIXME:none', meta: fileData.meta});
+        return Optional.of({backend, ref, url: 'NOT_IMPLEMENTED:none', meta: fileData.meta});
 
     }
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
         return isPresent(this.files[key]);
     }
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
         delete this.files[key];
     }
 
@@ -188,12 +188,13 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
         const networkLayers = new Set<NetworkLayer>(['local']);
 
         return {
-            networkLayers
+            networkLayers,
+            permission: {mode: 'rw'}
         };
 
     }
 
-    private toFileRefKey(backend: Backend, fileRef: FileRef) {
+    private static toFileRefKey(backend: Backend, fileRef: FileRef) {
         return `${backend}:${fileRef.name}`;
     }
 

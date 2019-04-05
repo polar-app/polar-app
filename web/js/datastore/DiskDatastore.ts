@@ -414,9 +414,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         const backupDir = FilePaths.join(dataDir, `.backup-${year}-${month}-${day}`);
 
-        const acceptPredicate = (path: string, targetPath: string) => {
-            const result = path.indexOf(".backup-") === -1;
-            return result;
+        const acceptPredicate = (path: string) => {
+            return path.indexOf(".backup-") === -1;
         };
 
         log.notice("Creating backup to: " + backupDir);
@@ -478,7 +477,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const networkLayers = new Set<NetworkLayer>(['local']);
 
         return {
-            networkLayers
+            networkLayers,
+            permission: {mode: 'rw'}
         };
 
     }

@@ -485,8 +485,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                              ref: FileRef,
                              source: 'cache' | 'server' = 'server'): Promise<Optional<DocFileMeta>> {
 
-        const stopwatch = Stopwatches.create();
-
         const id = this.createFileMetaID(backend, ref);
 
         try {
@@ -772,7 +770,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public capabilities(): DatastoreCapabilities {
 
         return {
-            networkLayers: NetworkLayers.WEB
+            networkLayers: NetworkLayers.WEB,
+            permission: {mode: 'rw'}
         };
 
     }

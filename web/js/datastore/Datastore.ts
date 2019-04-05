@@ -87,12 +87,29 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
 
 }
 
+// writable, readonly , ro vs rw... readonly is better BUT that's reserved by
+// typescript
+
+export type Mode = 'rw' | 'ro';
+
+export interface DatastorePermission {
+
+    /**
+     * The high level permissions mode for this datastore. Applied to ALL
+     * access to the store not on a file by file basis.
+     */
+    readonly mode: Mode;
+
+}
+
 export interface DatastoreCapabilities {
 
     /**
      * Provides callers with the available network layers for this datastore.
      */
     readonly networkLayers: ReadonlySet<NetworkLayer>;
+
+    readonly permission: DatastorePermission;
 
 }
 

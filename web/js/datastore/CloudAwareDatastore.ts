@@ -498,7 +498,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const networkLayers = new Set<NetworkLayer>(['local', 'web']);
 
         return {
-            networkLayers
+            networkLayers,
+            permission: {mode: 'rw'}
         };
 
     }

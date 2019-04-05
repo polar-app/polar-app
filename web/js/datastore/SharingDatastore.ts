@@ -93,7 +93,8 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
     public capabilities(): DatastoreCapabilities {
 
         return {
-            networkLayers: NetworkLayers.WEB
+            networkLayers: NetworkLayers.WEB,
+            permission: {mode: 'ro'}
         };
 
     }
