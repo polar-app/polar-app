@@ -1,14 +1,11 @@
-import {AnnotationBar, AnnotationBarCallbacks, AnnotationBarTriggerEvent} from './AnnotationBar';
+import {AnnotationBarCallbacks} from './AnnotationBar';
 import * as React from 'react';
-import {ControlledPopups} from '../popup/ControlledPopups';
 import {ActiveSelectionEvent, ActiveSelections} from '../popup/ActiveSelections';
-import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {ControlledPopupProps} from '../popup/ControlledPopup';
 import {ControlledAnnotationBar} from './ControlledAnnotationBar';
 import {Elements} from '../../util/Elements';
 import {Logger} from '../../logger/Logger';
 import * as ReactDOM from 'react-dom';
-import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
 import {Point} from '../../Point';
 import {Optional} from '../../util/ts/Optional';
 import {Points} from '../../Points';

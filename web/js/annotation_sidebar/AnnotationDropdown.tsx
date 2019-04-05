@@ -52,9 +52,12 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
             <div className="text-right">
 
-                <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
+                <Dropdown id={this.props.id}
+                          isOpen={this.state.open}
+                          toggle={this.toggle}>
 
                     <DropdownToggle color="light"
+                                    disabled={this.props.disabled}
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
                                     id={toggleID}>
 
@@ -149,12 +152,13 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    id: string;
-    annotation: DocAnnotation;
-    onDelete: (annotation: DocAnnotation) => void;
-    onJumpToContext: (annotation: DocAnnotation) => void;
-    onCreateComment: (annotation: DocAnnotation) => void;
-    onCreateFlashcard: (annotation: DocAnnotation) => void;
+    readonly id: string;
+    readonly annotation: DocAnnotation;
+    readonly onDelete: (annotation: DocAnnotation) => void;
+    readonly onJumpToContext: (annotation: DocAnnotation) => void;
+    readonly onCreateComment: (annotation: DocAnnotation) => void;
+    readonly onCreateFlashcard: (annotation: DocAnnotation) => void;
+    readonly disabled?: boolean;
 }
 
 interface IState {

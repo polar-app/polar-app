@@ -4,7 +4,7 @@ import {DocAnnotation} from '../../DocAnnotation';
 import {CommentDropdown} from '../CommentDropdown';
 import {Logger} from '../../../logger/Logger';
 import {IStyleMap} from '../../../react/IStyleMap';
-import {Comment} from '../../../metadata/Comment';
+import {Doc} from '../../../metadata/Doc';
 
 const log = Logger.create();
 
@@ -72,6 +72,7 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                             <div className="ml-1">
                                 <CommentDropdown id={'comment-dropdown-' + comment.id}
+                                                 disabled={! this.props.doc.mutable}
                                                  comment={comment}
                                                  onDelete={() => this.onDelete(comment)}/>
                             </div>
@@ -94,6 +95,7 @@ export class ViewComment extends React.Component<IProps, IState> {
 
 }
 interface IProps {
+    readonly doc: Doc;
     readonly comment: DocAnnotation;
     readonly editButton: JSX.Element;
 }

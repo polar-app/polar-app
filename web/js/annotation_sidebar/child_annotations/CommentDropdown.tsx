@@ -50,6 +50,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 
                     <DropdownToggle color="light"
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
+                                    disabled={this.props.disabled}
                                     id={toggleID}>
 
                         <i className="fas fa-ellipsis-h"></i>
@@ -113,9 +114,10 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    id: string;
-    comment: DocAnnotation;
-    onDelete: (comment: DocAnnotation) => void;
+    readonly id: string;
+    readonly comment: DocAnnotation;
+    readonly onDelete: (comment: DocAnnotation) => void;
+    readonly disabled?: boolean;
 }
 
 interface IState {

@@ -39,12 +39,14 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
             if (child.annotationType === AnnotationType.COMMENT) {
 
                 result.push (<ViewOrEditComment key={child.id}
+                                                doc={this.props.doc}
                                                 id={child.id}
                                                 onComment={(html, existingComment) => this.onComment(html, existingComment)}
                                                 comment={child}/>);
 
             } else {
                 result.push (<ViewOrEditFlashcard key={child.id}
+                                                  doc={this.props.doc}
                                                   id={child.id}
                                                   onFlashcard={(flashcardType, fields, existingFlashcard) => this.onFlashcard(flashcardType, fields, existingFlashcard)}
                                                   flashcard={child}></ViewOrEditFlashcard>);

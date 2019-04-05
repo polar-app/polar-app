@@ -271,6 +271,11 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
     private onVisibilityChanged(visibility: Visibility) {
 
+        if (visibility === this.state.visibility) {
+            // already done...
+            return;
+        }
+
         this.props.onVisibilityChanged(visibility)
             .then(() => {
                 this.setState({visibility});

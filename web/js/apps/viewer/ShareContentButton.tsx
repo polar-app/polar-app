@@ -64,6 +64,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
                 <Button color="primary"
                         id="share-control-button"
                         size="sm"
+                        disabled={this.props.disabled}
+                        hidden={this.props.hidden}
                         onClick={() => this.toggle(true)}
                         style={{fontSize: '15px'}}
                         className="pl-2 pr-2 p-1">
@@ -145,6 +147,10 @@ interface IProps {
     readonly onVisibilityChanged: (visibility: Visibility) => Promise<void>;
 
     readonly onDone: () => void;
+
+    readonly disabled?: boolean;
+
+    readonly hidden?: boolean;
 
 }
 

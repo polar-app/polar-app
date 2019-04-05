@@ -12,6 +12,7 @@ import {TypedMessage} from '../../util/TypedMessage';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ControlledAnnotationBars} from './ControlledAnnotationBars';
+import {Docs} from '../../metadata/Docs';
 
 const log = Logger.create();
 
@@ -124,7 +125,12 @@ export class AnnotationBarService {
             onComment
         };
 
-        ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
+        const persistenceLayer = this.model.persistenceLayerProvider();
+        const doc = Docs.create(event.docMeta, persistenceLayer.capabilities().permission);
+
+        if (doc.mutable) {
+            ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
+        }
 
     }
 

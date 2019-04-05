@@ -47,6 +47,7 @@ export class FlashcardDropdown extends React.Component<IProps, IState> {
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 
                     <DropdownToggle color="light"
+                                    disabled={this.props.disabled}
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
                                     id={toggleID}>
 
@@ -113,9 +114,10 @@ export class FlashcardDropdown extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    id: string;
-    flashcard: DocAnnotation;
-    onDelete: (flashcard: DocAnnotation) => void;
+    readonly id: string;
+    readonly disabled?: boolean;
+    readonly flashcard: DocAnnotation;
+    readonly onDelete: (flashcard: DocAnnotation) => void;
 }
 
 interface IState {

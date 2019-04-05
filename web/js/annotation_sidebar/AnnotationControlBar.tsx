@@ -106,6 +106,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         <div className="ml-1">
                             <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
+                                                disabled={! this.props.doc.mutable}
                                                 annotation={annotation}
                                                 onDelete={() => this.onDelete(annotation)}
                                                 onCreateComment={() => this.toggleActiveInputComponent('comment')}
