@@ -1,25 +1,16 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {
-    BinaryFileData,
-    Datastore,
-    DeleteResult,
-    DocMetaSnapshotEventListener,
-    ErrorListener,
-    FileMeta,
-    FileRef,
-    SnapshotResult
-} from './Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {GetFileOpts} from './Datastore';
+import {DatastoreOverview} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {DatastoreInitOpts} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {WriteFileOpts} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {DatastoreOverview} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
 
 export interface PersistenceLayer {
 
@@ -93,3 +84,4 @@ export interface PersistenceLayer {
 export type PersistenceLayerID = string;
 
 export type PersistenceLayerProvider = () => PersistenceLayer;
+

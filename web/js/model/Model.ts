@@ -11,7 +11,7 @@ import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {PersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
+import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 
 const log = Logger.create();
 

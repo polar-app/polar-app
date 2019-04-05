@@ -1,15 +1,13 @@
 import {MockAdvertisingPersistenceLayer} from "../datastore/advertiser/MockAdvertisingPersistenceLayer";
 import {DefaultPersistenceLayer} from '../datastore/DefaultPersistenceLayer';
 import {MemoryDatastore} from '../datastore/MemoryDatastore';
-import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {ModelPersister} from './ModelPersister';
-import {MockDocMetas, DocMetas} from '../metadata/DocMetas';
+import {DocMetas, MockDocMetas} from '../metadata/DocMetas';
 import {assert} from 'chai';
 import {Promises} from "../util/Promises";
 import waitForExpect from 'wait-for-expect';
-import {AdvertisingPersistenceLayer} from '../datastore/advertiser/AdvertisingPersistenceLayer';
 import {DocMeta} from "../metadata/DocMeta";
-import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
+import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 
 describe('ModelPersister', function() {
 

@@ -1,12 +1,11 @@
 import {DocMeta} from '../metadata/DocMeta';
-import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from '../logger/Logger';
 import {DocInfo} from '../metadata/DocInfo';
 import {Proxies} from '../proxies/Proxies';
-import {PersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
 import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
+import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 
 const log = Logger.create();
 

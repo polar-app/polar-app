@@ -1,6 +1,6 @@
 import {DocMeta} from '../metadata/DocMeta';
 import {ModelPersister} from './ModelPersister';
-import {PersistenceLayerHandler} from '../datastore/PersistenceLayerManager';
+import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 
 export class ModelPersisterFactory {
 

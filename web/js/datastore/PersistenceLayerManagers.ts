@@ -1,6 +1,6 @@
 import {PersistenceLayerManager, PersistenceLayerState} from './PersistenceLayerManager';
-import {PersistenceLayerHandler} from './PersistenceLayerManager';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
+import {PersistenceLayerHandler} from './PersistenceLayerHandler';
 
 export class PersistenceLayerManagers {
 
