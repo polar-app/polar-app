@@ -14,7 +14,7 @@ export class ShareContentButtons {
                          onVisibilityChanged: (visibility: Visibility) => Promise<void>,
                          onDone: () => void = NULL_FUNCTION) {
 
-        const viewer = document.getElementById('mainContainer')!;
+        const viewer = document.querySelector('#mainContainer, #content-parent')!;
         const container = document.createElement('div');
 
         viewer.appendChild(container);

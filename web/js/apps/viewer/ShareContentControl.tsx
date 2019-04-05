@@ -168,8 +168,8 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                              className="mt-2 mb-2">
 
                             <Button id="sharing-button-private"
-                                    color="primary"
-                                    outline={outlines._private}
+                                    color={colors.PRIVATE}
+                                    outline={outlines.PRIVATE}
                                     size="md"
                                     onClick={() => this.onVisibilityChanged(Visibility.PRIVATE)}>
 
@@ -182,8 +182,8 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                             </Button>
 
                             <Button id="sharing-button-public"
-                                    color="primary"
-                                    outline={outlines._public}
+                                    color={colors.PUBLIC}
+                                    outline={outlines.PUBLIC}
                                     size="md"
                                     onClick={() => this.onVisibilityChanged(Visibility.PUBLIC)}
                                     className="ml-2">
@@ -252,8 +252,13 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
         };
 
         const outlines = {
-            _private: visibility !== Visibility.PRIVATE,
-            _public: visibility !== Visibility.PUBLIC,
+            PRIVATE: visibility !== Visibility.PRIVATE,
+            PUBLIC: visibility !== Visibility.PUBLIC,
+        };
+
+        const colors = {
+            PRIVATE: visibility === Visibility.PRIVATE ? 'primary' : 'secondary',
+            PUBLIC: visibility === Visibility.PUBLIC ? 'primary' : 'secondary'
         };
 
         if (this.props.datastoreCapabilities.networkLayers.has('web')) {
