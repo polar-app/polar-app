@@ -2,9 +2,6 @@ import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
 import Moment from 'react-moment';
-import {Refs} from '../metadata/Refs';
-import {FlashcardInput} from './child_annotations/flashcards/flashcard_input/FlashcardInput';
-import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from '../metadata/AnnotationType';
@@ -13,18 +10,13 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {CommentIcon} from '../ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from '../metadata/FlashcardType';
-import {Flashcard} from '../metadata/Flashcard';
-import {Functions} from '../util/Functions';
 import {ClozeFields, FrontAndBackFields} from './child_annotations/flashcards/flashcard_input/FlashcardInputs';
-import {Logger} from '../logger/Logger';
-import {NullCollapse} from '../ui/null_collapse/NullCollapse';
 import {Comment} from "../metadata/Comment";
 import {CreateComment} from "./child_annotations/comments/CreateComment";
 import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {CreateFlashcard} from './child_annotations/flashcards/CreateFlashcard';
 import {FlashcardActions} from './child_annotations/flashcards/FlashcardActions';
-
-const log = Logger.create();
+import {Doc} from '../metadata/Doc';
 
 const Styles: IStyleMap = {
 
@@ -93,6 +85,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                                 size="sm"
                                 color="light"
                                 style={Styles.button}
+                                disabled={! this.props.doc.mutable}
                                 onClick={() => this.toggleActiveInputComponent('comment')}>
 
                             <CommentIcon/>
@@ -104,6 +97,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                                 style={Styles.button}
                                 size="sm"
                                 color="light"
+                                disabled={! this.props.doc.mutable}
                                 onClick={() => this.toggleActiveInputComponent('flashcard')}>
 
                             <FlashcardIcon/>
@@ -194,7 +188,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
 }
 interface IProps {
-    annotation: DocAnnotation;
+    readonly doc: Doc;
+    readonly annotation: DocAnnotation;
 }
 
 interface IState {

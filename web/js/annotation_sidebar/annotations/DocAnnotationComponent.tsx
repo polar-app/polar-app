@@ -5,7 +5,7 @@ import {Logger} from '../../logger/Logger';
 import {AnnotationType} from '../../metadata/AnnotationType';
 import {AreaHighlightAnnotationComponent} from './AreaHighlightAnnotationComponent';
 import {TextHighlightAnnotationComponent} from './TextHighlightAnnotationComponent';
-import {DocMeta} from "../../metadata/DocMeta";
+import {Doc} from '../../metadata/Doc';
 
 const log = Logger.create();
 
@@ -48,7 +48,7 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
             return (
                 <TextHighlightAnnotationComponent key={key}
                                                   annotation={annotation}
-                                                  docMeta={this.props.docMeta}/>
+                                                  doc={this.props.doc}/>
             );
 
         }
@@ -58,8 +58,11 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
 
 }
 interface IProps {
+
     readonly annotation: DocAnnotation;
-    readonly docMeta: DocMeta;
+
+    readonly doc: Doc;
+
 }
 
 interface IState {
