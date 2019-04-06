@@ -120,6 +120,10 @@ describe('FilePaths', function() {
 
         it('spaces and special chars but still valid.', async function() {
 
+            const assertPathExists = async (path: string) => {
+                assert.ok(await Files.existsAsync(path), "Path does not exist: " + path);
+            };
+
             const special = "This is a special name UPPER, (17) [test 10.11] -- foo (1)";
 
             const dir = FilePaths.resolve(FilePaths.tmpdir(), special);
@@ -130,15 +134,15 @@ describe('FilePaths', function() {
             await Files.mkdirAsync(dir);
             await Files.writeFileAsync(path, "fake data");
 
-            assert.ok(await Files.existsAsync(path), "Path does not exist: " + path);
+            await assertPathExists(path);
 
             const url = FilePaths.toURL(path);
 
             const decodedPath = FilePaths.fromURL(url);
 
-            // the decoded path value doesn't matter just as long as we can
-            // get it before and after.
-            assert.ok(await Files.existsAsync(decodedPath), "Decoded path does not exist: " + path);
+            await assertPathExists(FilePaths.dirname(FilePaths.dirname(decodedPath)));
+            await assertPathExists(FilePaths.dirname(decodedPath));
+            await assertPathExists(decodedPath);
 
         });
 
