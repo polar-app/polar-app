@@ -188,6 +188,9 @@ export class FilePaths {
 
     }
 
+    // Encoded URL is: file:///C:/Users/admin/AppData/Local/Temp/This%20is%20a%20special%20name%20UPPER,%20(17)%20%5Btest%2010.11%5D%20--%20foo%20(1)/This%20is%20a%20special%20name%20UPPER,%20(17)%20%5Btest%2010.11%5D%20--%20foo%20(1).pdf
+    // Decoded path is: \C:\Users\admin\AppData\Local\Temp\This is a special name UPPER, (17) [test 10.11] -- foo (1)\This is a special name UPPER, (17) [test 10.11] -- foo (1).pdf
+
     public static fromURL(url: string) {
 
         if (! url.startsWith("file:")) {
@@ -201,11 +204,11 @@ export class FilePaths {
         // other path encoding issues.
         const pathname = decodeURIComponent(parsedURL.pathname);
 
-        // TODO: I think the drive name has to be handled properly.
-
+        // Replace the forward slash in the URL (which is safe because forward
+        // slash is always the
         let path = pathname.replace(/\//g, this.SEP);
 
-        if (this.SEP === '\\' && path.search(/^\\[C-Z]:/)) {
+        if (this.SEP === '\\' && path.match(/^\\[C-Z]:/)) {
 
             // this is a windows file path and file URLs on windows look like
             //
