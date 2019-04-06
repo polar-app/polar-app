@@ -107,7 +107,11 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
                     <div style={Styles.barChild} className="text-muted">
                         {/*TODO: make this into its own component... */}
-                        <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
+                        <Moment style={{
+                                    fontSize: '12px'
+                                }}
+                                withTitle={true}
+                                titleFormat="D MMM YYYY hh:MM A" fromNow>
                             {flashcard.created}
                         </Moment>
                     </div>

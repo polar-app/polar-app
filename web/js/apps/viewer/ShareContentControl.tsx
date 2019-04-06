@@ -155,7 +155,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
         const WebSharing = () => {
 
-            return <div>
+            return <div className="twitter-bootstrap-content">
 
                 <div style={{
                     display: 'flex',
@@ -227,7 +227,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
         };
 
         const NoSharingEnabled = () => {
-            return <div className="p-2">
+            return <div className="twitter-bootstrap-content p-2">
 
                 <SplitLayout>
 

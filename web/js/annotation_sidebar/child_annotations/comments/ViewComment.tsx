@@ -61,7 +61,11 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                         <div style={Styles.barChild} className="text-muted">
                             {/*TODO: make this into its own component... */}
-                            <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
+                            <Moment style={{
+                                        fontSize: '12px'
+                                    }}
+                                    withTitle={true}
+                                    titleFormat="D MMM YYYY hh:MM A" fromNow>
                                 {comment.created}
                             </Moment>
                         </div>

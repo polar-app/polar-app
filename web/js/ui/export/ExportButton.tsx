@@ -22,14 +22,13 @@ export class ExportButton extends React.Component<IProps, IState> {
                                       hidden={AppRuntime.isBrowser()}
                                       size="sm">
 
-                    <DropdownToggle color="secondary" caret style={{fontSize: '14px'}}>
+                    <DropdownToggle color="secondary" caret style={{fontSize: '16px'}}>
 
                         <i className="fas fa-file-export" style={{marginRight: '5px'}}></i>
-                        Export
 
                     </DropdownToggle>
 
-                    <DropdownMenu>
+                    <DropdownMenu className="shadow">
                         <DropdownItem size="sm" onClick={() => this.doExport('markdown')}>Markdown</DropdownItem>
                         {/*<DropdownItem size="sm" onClick={() => this.doExport('html')}>HTML</DropdownItem>*/}
                         <DropdownItem size="sm" onClick={() => this.doExport('json')}>JSON</DropdownItem>

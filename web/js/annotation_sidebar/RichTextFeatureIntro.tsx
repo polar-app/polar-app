@@ -12,7 +12,7 @@ export class RichTextFeatureIntro extends React.Component<IProps, IState> {
 
         return <FeatureIntro itemName='rich-text-input'>
 
-            <div>
+            <div className="text-xs p-1">
                 Styling with rich text is supported including <b>bold</b> and <i>italics</i> but also images and copy and pasting
                 to and from local applications.
             </div>

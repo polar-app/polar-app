@@ -33,7 +33,7 @@ export class FeatureIntro extends React.Component<IProps, IState> {
 
                     <SplitLayoutLeft>
                         <div className="p-1">
-                            <span className="text-muted"
+                            <span className="text-muted text-xs"
                                   onClick={() => this.onDone()}
                                   style={{float: 'right', fontSize: '15px', cursor: 'pointer'}}>
                                 <i className="fas fa-times-circle"></i>
