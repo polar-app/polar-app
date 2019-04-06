@@ -195,7 +195,11 @@ export class FilePaths {
         }
 
         const parsedURL = new URL(url);
-        return decodeURIComponent(parsedURL.pathname);
+        const pathname = decodeURIComponent(parsedURL.pathname);
+        const path = pathname.replace('/', this.SEP);
+
+        return path;
+
     }
 
 }
