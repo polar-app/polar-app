@@ -266,18 +266,18 @@ image: https://getpolarized.io/assets/logo/icon.png
     <div class="container-fluid">
         <div class="row align-items-top">
 
-            <div class="col col-xs text-center pt-5 pb-5">
+            <div class="col col-xs text-center pb-5">
 
-                <div class="m-auto" style="">
+                <div class="m-auto subtitle" style="">
 
                     <h2>Manage your Reading Queue with Incremental Reading</h2>
 
-                    <div class="subtitle overview text-justify">
+                    <p>
                         Your queue can be managed by <b>both flags and tags</b>.  The
                         document repository shows the progress of each document
                         and you can filter by tags to narrow down what you want
                         to read next.
-                    </div>
+                    </p>
 
                     <div class="mt-5" style="">
 
@@ -422,30 +422,30 @@ image: https://getpolarized.io/assets/logo/icon.png
     <div class="container-fluid">
         <div class="row align-items-top">
 
-            <div class="col col-lg-5 col-xs text-center pt-3" style="">
+            <div class="col text-center" style="">
 
-                <div style="min-width: 300px; max-width: 600px;" class="m-auto">
+                <div class="subtitle">
 
-                    <h2>Web Content</h2>
+                    <h2>Captured (and Offline) Web Content</h2>
 
-                    <div class="subtitle p-4 overview text-justify">
+                    <p>
                         Polar supports reading and <b>annotating HTML documents</b>.  We
                         call this process 'capturing' content and we store the document
                         permanently in your own private archive.
-                    </div>
+                    </p>
 
-                    <div class="subtitle p-4 overview text-justify">
+                    <p>
                         Since most
                         pages aren't designed for reading and have ads, chrome, and other
                         annoyances within the page, we <b>render the content as a tablet
                         device</b> to make the content more readable.
-                    </div>
+                    </p>
 
-                    <div class="feature-list-vertical ml-5 mr-5" style="max-width: 700px;">
+                    <div class="feature-list-vertical ml-auto mr-auto" style="max-width: 700px;">
 
                         <div class="row text-left">
 
-                            <div class="col-3">
+                            <div class="col-3 text-center">
                                 <i class="fab fa-chrome fa-4x"></i>
                             </div>
 
@@ -463,11 +463,11 @@ image: https://getpolarized.io/assets/logo/icon.png
 
                     </div>
 
-                    <div class="feature-list-vertical ml-5 mr-5" style="max-width: 700px;">
+                    <div class="feature-list-vertical ml-auto mr-auto" style="max-width: 700px;">
 
                         <div class="row text-left">
 
-                            <div class="col-3">
+                            <div class="col-3 text-center">
                                 <i class="fas fa-archive fa-4x"></i>
                             </div>
 
@@ -499,15 +499,22 @@ image: https://getpolarized.io/assets/logo/icon.png
 
             </div>
 
-            <div class="col col-lg-7 col-xs text-left">
+        </div>
+        <div class="row align-items-top">
 
-                <div style="">
-                    {%- include image.html
-                                alt="Captured Content"
-                                class="img-fluid img-shadow"
-                                src="./assets/screenshots/captured-content-window.png"
-                                style="min-width: 450px; margin-bottom: 50px;" -%}
+            <div class="col text-center">
 
+                <div class="img-shadow-wrapper p-3 pb-5">
+
+                    <div style="">
+                        {%- include image.html
+                        alt="Captured Content"
+                        class="img-fluid img-shadow"
+                        src="./assets/screenshots/capture-browser-narrow.png"
+                        style="" -%}
+
+
+                    </div>
 
                 </div>
 
@@ -532,25 +539,25 @@ image: https://getpolarized.io/assets/logo/icon.png
 <section id="integrated-annotations" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
     <div class="container-fluid">
         <div class="row align-items-top">
-            <div class="col col-lg p-4 text-center">
+            <div class="col subtitle">
 
-                <h1>Integrated Annotations</h1>
+                <h2>Integrated Annotations Sidebar</h2>
 
-                <div class="subtitle lead" style="max-width: 750px; margin-bottom: 60px;">
+                <p>
 
                     All annotations are easily accessible in the sidebar.  You can create
                     flashcards, add comments, and <b>jump to any text highlight</b> in the main
                     document at any time.
 
-                </div>
+                </p>
 
-                <div style="">
+                <div class="img-shadow-wrapper p-3 pb-5">
 
                     {%- include image.html
                                 alt="Annotation Sidebar"
                                 class="img-fluid img-shadow"
-                                src="./assets/screenshots/annotation-sidebar.png"
-                                style="min-width: 450px; margin-bottom: 20px;" -%}
+                                src="./assets/screenshots/annotation-sidebar-zoomed.png"
+                                style="" -%}
 
                 </div>
 
@@ -579,7 +586,6 @@ image: https://getpolarized.io/assets/logo/icon.png
                 </div>
 
                 <div class="mt-1 mb-1">
-
 
                     <a class="btn btn-outline-secondary btn-lg font-weight-bold m-3"
                        onclick="sendEvent('main-cta', 'download-desktop-app-bottom')"
