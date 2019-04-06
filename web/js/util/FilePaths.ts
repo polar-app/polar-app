@@ -195,8 +195,13 @@ export class FilePaths {
         }
 
         const parsedURL = new URL(url);
+
+        // the URI pathname component is NOT decoded for us and we have to
+        // do this manually otherwise we will have '%20' instead of ' ' and
+        // other path encoding issues.
         const pathname = decodeURIComponent(parsedURL.pathname);
-        const path = pathname.replace('/', this.SEP);
+
+        const path = pathname.replace(/\//g, this.SEP);
 
         return path;
 
