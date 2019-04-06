@@ -2,7 +2,6 @@ import * as React from 'react';
 import {DocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
-import {Comment} from '../../../metadata/Comment';
 import {ViewFlashcard} from './ViewFlashcard';
 import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {FlashcardCallback} from './flashcard_input/FlashcardInput';

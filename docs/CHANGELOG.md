@@ -1,5 +1,12 @@
 # 1.17.0
 
+- New initial document sharing in Polar.  Shares both the document and the 
+  annotations associated with it.
+
+- New logging feature to change the log level via session or local storage.  We
+  can use this in the future to let users change their polar log level on the 
+  fly from within Polar.
+
 - Fixed ugly bug with handling special chars in filenames within the browser.
 
 - In Electron, the viewer window and the app repo now share the same session and

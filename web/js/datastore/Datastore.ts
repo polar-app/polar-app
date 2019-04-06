@@ -259,17 +259,17 @@ export interface WritableBinaryDatastore {
 
 export interface WriteFileOpts {
 
-    meta?: FileMeta;
+    readonly meta?: FileMeta;
 
     /**
      * Set the file visibility.  Default is private.
      */
-    visibility?: Visibility;
+    readonly visibility?: Visibility;
 
     /**
      * Only update metadata.  Don't actually write data.
      */
-    updateMeta?: boolean;
+    readonly updateMeta?: boolean;
 
 }
 

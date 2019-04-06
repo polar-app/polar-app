@@ -49,7 +49,7 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
                                                   doc={this.props.doc}
                                                   id={child.id}
                                                   onFlashcard={(flashcardType, fields, existingFlashcard) => this.onFlashcard(flashcardType, fields, existingFlashcard)}
-                                                  flashcard={child}></ViewOrEditFlashcard>);
+                                                  flashcard={child}/>);
             }
 
 
