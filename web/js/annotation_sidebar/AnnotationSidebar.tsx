@@ -250,6 +250,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const persistenceLayer = this.props.persistenceLayerProvider();
         const capabilities = persistenceLayer.capabilities();
 
+        const sharingEnabled =
+            this.props.doc.mutable &&
+            sessionStorage.getItem('sharing-enabled') === "true";
+
         const AnnotationHeader = () => {
 
             const docMeta = this.props.doc.docMeta;
@@ -285,12 +289,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                             <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
 
-                            {/*<ShareContentButton hidden={! this.props.doc.mutable}*/}
-                                                {/*datastoreCapabilities={capabilities}*/}
-                                                {/*createShareLink={createShareLink}*/}
-                                                {/*visibility={docMeta.docInfo.visibility}*/}
-                                                {/*onVisibilityChanged={onVisibilityChanged}*/}
-                                                {/*onDone={NULL_FUNCTION}/>*/}
+                            <ShareContentButton hidden={! sharingEnabled}
+                                                datastoreCapabilities={capabilities}
+                                                createShareLink={createShareLink}
+                                                visibility={docMeta.docInfo.visibility}
+                                                onVisibilityChanged={onVisibilityChanged}
+                                                onDone={NULL_FUNCTION}/>
 
 
                         </SplitBarRight>
