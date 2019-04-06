@@ -98,6 +98,7 @@ interface IProps {
     readonly repoDocInfo: RepoDocInfo;
     readonly onDelete: (repoDocInfo: RepoDocInfo) => void;
     readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
+    readonly onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => void;
 }
 
 interface IState {

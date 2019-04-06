@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {RepoDocInfo} from './RepoDocInfo';
-import {Logger} from '../../../web/js/logger/Logger';
-import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {shell} from 'electron';
 import {Directories} from '../../../web/js/datastore/Directories';
 import {FilePaths} from '../../../web/js/util/FilePaths';
@@ -11,17 +9,6 @@ import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from '../../../web/js/util/Functions';
-
-const log = Logger.create();
-
-const Styles: IStyleMap = {
-
-    DropdownMenu: {
-        zIndex: 999,
-        fontSize: '14px'
-    },
-
-};
 
 export class DocDropdownItems extends React.Component<IProps, IState> {
 
@@ -42,6 +29,11 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
         return (
 
             <div>
+
+                <DropdownItem toggle={this.props.toggle}
+                              onClick={() => this.props.onDocumentLoadRequested(this.props.repoDocInfo)}>
+                    Open Document
+                </DropdownItem>
 
                 <DropdownItem toggle={this.props.toggle}
                               onClick={() => this.onSetTitleRequested()}>
@@ -154,6 +146,7 @@ interface IProps {
     readonly toggle: boolean;
     readonly onDelete: (repoDocInfo: RepoDocInfo) => void;
     readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
+    readonly onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => void;
 }
 
 interface IState {

@@ -272,7 +272,15 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         const contextMenuProps = {
             onDelete: this.onDocDeleted,
-            onSetTitle: this.onDocSetTitle
+            onSetTitle: this.onDocSetTitle,
+            onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => {
+
+                this.onDocumentLoadRequested(repoDocInfo.fingerprint,
+                                             repoDocInfo.filename!,
+                                             repoDocInfo.hashcode);
+
+            }
+
         };
 
         return (
@@ -733,7 +741,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                                         <DocDropdown id={'doc-dropdown-' + row.index}
                                                                      repoDocInfo={repoDocInfo}
                                                                      onDelete={this.onDocDeleted}
-                                                                     onSetTitle={this.onDocSetTitle}/>
+                                                                     onSetTitle={this.onDocSetTitle}
+                                                                     onDocumentLoadRequested={contextMenuProps.onDocumentLoadRequested}/>
 
                                                     </DocButton>
 
