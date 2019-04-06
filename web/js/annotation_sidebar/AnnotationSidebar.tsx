@@ -285,12 +285,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                             <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
 
-                            <ShareContentButton hidden={! this.props.doc.mutable}
-                                                datastoreCapabilities={capabilities}
-                                                createShareLink={createShareLink}
-                                                visibility={docMeta.docInfo.visibility}
-                                                onVisibilityChanged={onVisibilityChanged}
-                                                onDone={NULL_FUNCTION}/>
+                            {/*<ShareContentButton hidden={! this.props.doc.mutable}*/}
+                                                {/*datastoreCapabilities={capabilities}*/}
+                                                {/*createShareLink={createShareLink}*/}
+                                                {/*visibility={docMeta.docInfo.visibility}*/}
+                                                {/*onVisibilityChanged={onVisibilityChanged}*/}
+                                                {/*onDone={NULL_FUNCTION}/>*/}
 
 
                         </SplitBarRight>
