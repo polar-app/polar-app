@@ -1,5 +1,7 @@
 # 1.17.0
 
+- Title search now works if the substring is in the filename
+
 - New initial document sharing in Polar.  Shares both the document and the 
   annotations associated with it.
 

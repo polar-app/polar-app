@@ -7,6 +7,7 @@ import {isPresent} from '../../../../web/js/Preconditions';
 import {Sets} from '../../../../web/js/util/Sets';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
+import {Optional} from '../../../../web/js/util/ts/Optional';
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have
@@ -70,8 +71,25 @@ export class DocRepoFilters {
 
         if (! Strings.empty(this.filters.title)) {
 
-            return repoDocs.filter(current => current.title &&
-                current.title.toLowerCase().indexOf(this.filters.title.toLowerCase()) >= 0);
+            // the string we are searching for
+            const toSTR = (value: string | undefined): string => {
+
+                return Optional.of(value)
+                    .getOrElse("")
+                    .toLowerCase();
+
+            };
+
+            const searchString = toSTR(this.filters.title);
+
+            return repoDocs.filter(current => {
+
+                const title = toSTR(current.title);
+                const filename = toSTR(current.filename);
+
+                return title.includes(searchString) || filename.includes(searchString);
+
+            });
 
         }
 
