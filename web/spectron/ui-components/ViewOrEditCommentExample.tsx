@@ -41,7 +41,7 @@ export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
 
             <div>
 
-                <ViewOrEditComment id='test' comment={commentDocAnnotation} onComment={NULL_FUNCTION}/>
+                {/*<ViewOrEditComment id='test' comment={commentDocAnnotation} onComment={NULL_FUNCTION}/>*/}
 
             </div>
 

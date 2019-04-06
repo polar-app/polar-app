@@ -66,14 +66,28 @@ body {
 /*}*/
 
 #polar-header-body {
-    width: calc(100% - 10px);
-    margin-left: 5px;
+    /*width: calc(100% - 10px);*/
+    /*margin-left: 5px;*/
+}
+
+
+#polar-header-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#polar-header-body #polar-progress {
+    margin: auto 5px;
+    padding-right: 10px;
 }
 
 #polar-progress {
-    margin-top: 10px;
-    margin-bottom: 10px;
     width: 100%;
+}
+
+#polar-progress progress {
+    border: none;
 }
 
 #polar-header progress {

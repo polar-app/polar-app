@@ -6,10 +6,9 @@ import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from '../util/Functions';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
-import {ReadingProgressResume} from './ReadingProgressResume';
 import {PrefsProvider} from '../datastore/Datastore';
+import {ReadingProgressResume} from './ReadingProgressResume';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {Timer} from '../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -21,7 +20,6 @@ export class WebView extends View {
 
     /**
      *
-     * @param model {Model}
      */
     constructor(model: Model, prefsProvider: PrefsProvider) {
         super(model);

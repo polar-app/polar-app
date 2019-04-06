@@ -1,13 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult, ErrorListener, DatastoreID, DatastoreOverview} from './Datastore';
-import {Directories} from './Directories';
-import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
-import {Preconditions} from '../Preconditions';
-import {Backend} from './Backend';
-import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
-import {IDocInfo} from '../metadata/DocInfo';
-import {DatastoreMutation} from './DatastoreMutation';
+import {Datastore, DatastoreID, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, InitResult, SnapshotResult} from './Datastore';
 import {Datastores} from './Datastores';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
@@ -62,3 +53,4 @@ export class RemoteDatastore extends DelegatedDatastore {
     }
 
 }
+

@@ -2,11 +2,11 @@ import * as React from 'react';
 import {DocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
-import {Comment} from '../../../metadata/Comment';
 import {ViewFlashcard} from './ViewFlashcard';
 import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {FlashcardCallback} from './flashcard_input/FlashcardInput';
 import {Flashcard} from '../../../metadata/Flashcard';
+import {Doc} from '../../../metadata/Doc';
 
 export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
 
@@ -25,8 +25,9 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
     public render() {
 
         const editButton = <EditButton id={'edit-button-for-' + this.props.id}
-                                        onClick={() => this.onEdit()}
-                                        type="flashcard"/>;
+                                       disabled={! this.props.doc.mutable}
+                                       onClick={() => this.onEdit()}
+                                       type="flashcard"/>;
 
         const cancelButton = <CancelButton onClick={() => this.onCancel()}/>;
 
@@ -35,6 +36,7 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
         if (this.state.mode === 'view') {
 
             return <ViewFlashcard flashcard={this.props.flashcard}
+                                  doc={this.props.doc}
                                   editButton={editButton}/>;
 
         } else {
@@ -58,6 +60,7 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
 }
 interface IProps {
     readonly id: string;
+    readonly doc: Doc;
     readonly flashcard: DocAnnotation;
     readonly onFlashcard: FlashcardCallback;
 }

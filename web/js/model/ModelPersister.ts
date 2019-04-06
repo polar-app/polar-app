@@ -1,30 +1,28 @@
 import {DocMeta} from '../metadata/DocMeta';
-import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from '../logger/Logger';
 import {DocInfo} from '../metadata/DocInfo';
 import {Proxies} from '../proxies/Proxies';
+import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
+import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 
 const log = Logger.create();
 
 export class ModelPersister {
 
-    public readonly docMeta: DocMeta;
-
     public nrWrites: number = 0;
 
     public nrDeferredWrites: number = 0;
 
-    private readonly persistenceLayer: ListenablePersistenceLayer;
-
-    constructor(persistenceLayer: ListenablePersistenceLayer, docMeta: DocMeta) {
-        this.persistenceLayer = persistenceLayer;
-        this.docMeta = docMeta;
+    constructor(private readonly persistenceLayerHandler: PersistenceLayerHandler,
+                public readonly docMeta: DocMeta) {
 
         const batcher = new Batcher(async () => {
 
-            await this.persistenceLayer.write(this.docMeta.docInfo.fingerprint, this.docMeta);
+            const persistenceLayer = this.persistenceLayerHandler.get();
+
+            await persistenceLayer.write(this.docMeta.docInfo.fingerprint, this.docMeta);
             ++this.nrWrites;
             this.nrDeferredWrites = 0;
 
@@ -60,7 +58,7 @@ export class ModelPersister {
             setTimeout(() => {
 
                 batcher.enqueue().run()
-                    .catch(err => log.error("Unable to commit to disk: ", err));
+                    .catch(err => log.error("Unable to persist: ", err));
 
             }, 0);
 
@@ -68,19 +66,23 @@ export class ModelPersister {
 
         });
 
-        // only accept DocInfo updates from the document we've opened.
-        this.persistenceLayer.addEventListenerForDoc(this.docMeta.docInfo.fingerprint, event => {
+        PersistenceLayerManagers.onPersistenceManager(this.persistenceLayerHandler, (persistenceLayer) => {
 
-            log.debug("Received updated DocInfo.");
+            // only accept DocInfo updates from the document we've opened.
+            persistenceLayer.addEventListenerForDoc(this.docMeta.docInfo.fingerprint, event => {
 
-            if (this.docMeta.docInfo.fingerprint !== event.docInfo.fingerprint) {
-                const detail = `${this.docMeta.docInfo.fingerprint} vs ${event.docInfo.fingerprint}`;
-                throw new Error(`Attempt to update incorrect fingerprint: ` + detail);
-            }
+                log.debug("Received updated DocInfo.");
 
-            this.docMeta.docInfo = new DocInfo(event.docInfo);
+                if (this.docMeta.docInfo.fingerprint !== event.docInfo.fingerprint) {
+                    const detail = `${this.docMeta.docInfo.fingerprint} vs ${event.docInfo.fingerprint}`;
+                    throw new Error(`Attempt to update incorrect fingerprint: ` + detail);
+                }
 
-        });
+                this.docMeta.docInfo = new DocInfo(event.docInfo);
+
+            });
+
+        }, 'changed');
 
     }
 

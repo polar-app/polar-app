@@ -134,7 +134,7 @@ export class PDFImporter {
 
                     // return the existing doc meta information.
 
-                    const fileRef = {
+                    const fileRef: FileRef = {
                         name: docMeta.docInfo.filename,
                         hashcode: docMeta.docInfo.hashcode
                     };

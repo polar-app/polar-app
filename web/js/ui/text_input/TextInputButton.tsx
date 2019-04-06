@@ -78,9 +78,8 @@ export class TextInputButton extends React.Component<IProps, IState> {
 
     private hide() {
         this.setState({
-                          popoverOpen: false
-                      });
-
+            popoverOpen: false
+        });
     }
 
     private onCancel() {
@@ -89,8 +88,8 @@ export class TextInputButton extends React.Component<IProps, IState> {
 
     private toggle() {
         this.setState({
-                          popoverOpen: !this.state.popoverOpen
-                      });
+            popoverOpen: !this.state.popoverOpen
+        });
     }
 
 }

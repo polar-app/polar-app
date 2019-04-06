@@ -1,20 +1,9 @@
-import {
-    AbstractDatastore, BinaryFileData,
-    Datastore,
-    DeleteResult,
-    DocMetaSnapshotEventListener,
-    ErrorListener,
-    FileMeta,
-    FileRef,
-    InitResult,
-    SnapshotResult,
-    DatastoreOverview,
-    DatastoreInfo, DocMetaSnapshotEvent, PrefsProvider
-} from './Datastore';
+import {AbstractDatastore, Datastore, DatastoreInfo, DatastoreOverview, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, FileHandle, FileHandles, Files} from '../util/Files';
+import {FileDeleted, FileHandle, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 
@@ -34,9 +23,12 @@ import {Strings} from '../util/Strings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
-import {Settings} from './Settings';
-import {Providers} from '../util/Providers';
-import {DictionaryPrefs, Prefs, StringToStringDict} from '../util/prefs/Prefs';
+import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
+import {DefaultWriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
+import {GetFileOpts} from './Datastore';
+import {isPresent} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -254,7 +246,21 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
-                           meta: FileMeta = {}): Promise<DocFileMeta> {
+                           opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
+
+        if (! isPresent(data)) {
+
+            if (opts.updateMeta) {
+                return (await this.getFile(backend, ref)).get();
+            } else {
+                // when the caller specifies null they mean that there's a
+                // metadata update which needs to be applied.
+                throw new Error("No data present");
+            }
+
+        }
+
+        const meta = opts.meta || {};
 
         DatastoreFiles.assertSanitizedFileName(ref);
 
@@ -271,7 +277,9 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+    public async getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+
+        Datastores.assertNetworkLayer(this, opts.networkLayer);
 
         DatastoreFiles.assertSanitizedFileName(ref);
 
@@ -406,14 +414,16 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         const backupDir = FilePaths.join(dataDir, `.backup-${year}-${month}-${day}`);
 
-        const acceptPredicate = (path: string, targetPath: string) => {
-            const result = path.indexOf(".backup-") === -1;
-            return result;
+        const acceptPredicate = (path: string) => {
+            return path.indexOf(".backup-") === -1;
         };
 
-        log.notice("Creating backup to: " + backupDir);
-
-        await Files.createDirectorySnapshot(dataDir, backupDir, acceptPredicate);
+        if (await Files.existsAsync(backupDir)) {
+            log.warn("Not creating backup.  Already exists: ", backupDir);
+        } else {
+            log.notice("Creating backup to: " + backupDir);
+            await Files.createDirectorySnapshot(dataDir, backupDir, acceptPredicate);
+        }
 
     }
 
@@ -462,6 +472,17 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const created = datastoreInfo.map(info => info.created).getOrUndefined();
 
         return {nrDocs: docMetaRefs.length, created};
+
+    }
+
+    public capabilities(): DatastoreCapabilities {
+
+        const networkLayers = new Set<NetworkLayer>(['local']);
+
+        return {
+            networkLayers,
+            permission: {mode: 'rw'}
+        };
 
     }
 

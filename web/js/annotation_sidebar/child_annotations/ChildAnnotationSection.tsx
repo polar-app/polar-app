@@ -1,16 +1,15 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationType} from '../../metadata/AnnotationType';
-import {ViewFlashcard} from './flashcards/ViewFlashcard';
 import {ViewOrEditComment} from "./comments/ViewOrEditComment";
 import {CommentActions} from "./comments/CommentActions";
-import {DocMeta} from "../../metadata/DocMeta";
 import {ViewOrEditFlashcard} from './flashcards/ViewOrEditFlashcard';
 import {Comment} from '../../metadata/Comment';
 import {FlashcardType} from '../../metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './flashcards/flashcard_input/FlashcardInputs';
 import {FlashcardActions} from './flashcards/FlashcardActions';
 import {Flashcard} from '../../metadata/Flashcard';
+import {Doc} from '../../metadata/Doc';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -22,7 +21,6 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 
         this.onComment = this.onComment.bind(this);
         this.onFlashcard = this.onFlashcard.bind(this);
-
 
         this.state = {};
 
@@ -41,15 +39,17 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
             if (child.annotationType === AnnotationType.COMMENT) {
 
                 result.push (<ViewOrEditComment key={child.id}
+                                                doc={this.props.doc}
                                                 id={child.id}
                                                 onComment={(html, existingComment) => this.onComment(html, existingComment)}
                                                 comment={child}/>);
 
             } else {
                 result.push (<ViewOrEditFlashcard key={child.id}
+                                                  doc={this.props.doc}
                                                   id={child.id}
                                                   onFlashcard={(flashcardType, fields, existingFlashcard) => this.onFlashcard(flashcardType, fields, existingFlashcard)}
-                                                  flashcard={child}></ViewOrEditFlashcard>);
+                                                  flashcard={child}/>);
             }
 
 
@@ -60,18 +60,18 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
     }
 
     private onComment(html: string, existingComment: Comment) {
-        CommentActions.update(this.props.docMeta, this.props.parent, html, existingComment);
+        CommentActions.update(this.props.doc.docMeta, this.props.parent, html, existingComment);
     }
 
     private onFlashcard(flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>, existingFlashcard?: Flashcard) {
-        FlashcardActions.update(this.props.docMeta, this.props.parent, flashcardType, fields, existingFlashcard);
+        FlashcardActions.update(this.props.doc.docMeta, this.props.parent, flashcardType, fields, existingFlashcard);
     }
 
 }
 
 interface IProps {
 
-    readonly docMeta: DocMeta;
+    readonly doc: Doc;
 
     readonly parent: DocAnnotation;
 

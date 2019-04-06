@@ -1,29 +1,74 @@
 import {PersistenceLayer} from "./PersistenceLayer";
-import {NULL_FUNCTION, ASYNC_NULL_FUNCTION} from "../util/Functions";
-import {Percentages} from '../util/Percentages';
+import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from "../util/Functions";
 import {Backend} from './Backend';
-import {Blobs} from "../util/Blobs";
-import {ArrayBuffers} from "../util/ArrayBuffers";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
-import {DocMetaFileRefs, DocMetaRef} from "./DocMetaRef";
-import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, MutationType, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
+import {DocMetaRef} from "./DocMetaRef";
+import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
+import {BackendFileRef} from './Datastore';
+import {Visibility} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
-import {ProgressTracker, Progress, ProgressListener} from '../util/ProgressTracker';
+import {ProgressListener, ProgressTracker} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {Provider, AsyncProviders} from '../util/Providers';
 import {DocMeta} from '../metadata/DocMeta';
-import {IDocInfo} from '../metadata/DocInfo';
-import {Dictionaries} from '../util/Dictionaries';
 import {isPresent} from "../Preconditions";
 import {Optional} from "../util/ts/Optional";
 import {DocFileMeta} from "./DocFileMeta";
 import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
+import {Datastores} from './Datastores';
 
 const log = Logger.create();
 
 export class PersistenceLayers {
+
+    /**
+     * Change visibility of the given DocMeta including setting the visibility
+     * itself on the DocInfo but also setting the visibility for the individual
+     * files.
+     *
+     */
+    public static async changeVisibility(store: PersistenceLayer,
+                                         docMeta: DocMeta,
+                                         visibility: Visibility) {
+
+        log.info("Changing document visibility changed to: ", visibility);
+
+        const backendFileRefs = Datastores.toBackendFileRefs(docMeta);
+
+        const writeFileOpts = {visibility, updateMeta: true};
+
+        const toWriteFilePromise = async (backendFileRef: BackendFileRef): Promise<void> => {
+
+            await store.writeFile(backendFileRef.backend,
+                                  backendFileRef,
+                                  undefined!,
+                                  writeFileOpts);
+
+        };
+
+        const toWriteFilePromises = (): ReadonlyArray<Promise<void>> => {
+            return backendFileRefs.map(current => toWriteFilePromise(current));
+        };
+
+        const toWriteDocMetaPromise = async (): Promise<void> => {
+
+            docMeta.docInfo.visibility = visibility;
+
+            await store.writeDocMeta(docMeta);
+
+        };
+
+        const writeFilePromises = toWriteFilePromises();
+        const writeDocMetaPromise = toWriteDocMetaPromise();
+
+        const promises = [...writeFilePromises, writeDocMetaPromise];
+
+        await Promise.all(promises);
+
+        log.info("Document visibility changed to: ", visibility);
+
+    }
 
     public static toPersistenceLayer(input: Datastore ): PersistenceLayer {
         return new DefaultPersistenceLayer(input);

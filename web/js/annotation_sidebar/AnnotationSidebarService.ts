@@ -37,7 +37,8 @@ export class AnnotationSidebarService {
     private onDocumentLoaded(event: DocumentLoadedEvent) {
 
         log.debug("Creating annotation sidebar");
-        this.splitter = AnnotationSidebars.create(event.docMeta);
+        this.splitter = AnnotationSidebars.create(event.docMeta,
+                                                  this.model.persistenceLayerProvider);
 
         if (LocalPrefs.isMarked(PREF_SIDEBAR_OPEN)) {
             this.splitter.expand();

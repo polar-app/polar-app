@@ -1,18 +1,16 @@
-import {
-    Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
-    DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
-    AbstractDatastore, BinaryFileData, DatastoreOverview, PrefsProvider
-} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreID, DatastoreOverview, DocMetaSnapshotEventListener, FileRef, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
+import {DeleteResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {GetFileOpts} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {Datastores} from './Datastores';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -45,16 +43,16 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.delete(docMetaFileRef);
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DocFileMeta> {
-        return this.delegate.writeFile(backend, ref, data, meta);
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
+        return this.delegate.writeFile(backend, ref, data, opts);
     }
 
     public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
         return this.delegate.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return this.delegate.getFile(backend, ref);
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+        return this.delegate.getFile(backend, ref, opts);
     }
 
     public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
@@ -99,6 +97,10 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
 
     public async overview(): Promise<DatastoreOverview | undefined> {
         return await this.delegate.overview();
+    }
+
+    public capabilities(): DatastoreCapabilities {
+        return this.delegate.capabilities();
     }
 
     public getPrefs(): PrefsProvider {

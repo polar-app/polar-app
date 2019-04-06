@@ -1,4 +1,7 @@
 import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
+import {NetworkLayer} from './Datastore';
+import {FileRef} from './Datastore';
+import {BackendFileRef} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -14,12 +17,14 @@ import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
+import {Backend} from './Backend';
 
 const log = Logger.create();
 
 const ENV_POLAR_DATASTORE = 'POLAR_DATASTORE';
 
 export class Datastores {
+
     public static create(): Datastore {
 
         const name = process.env[ENV_POLAR_DATASTORE];
@@ -30,6 +35,51 @@ export class Datastores {
         }
 
         return new DiskDatastore();
+
+    }
+
+    /**
+     * Get the main FileRef (PHZ or PDF).
+     */
+    public static toFileRef(docMeta: DocMeta): FileRef | undefined {
+
+        if (docMeta) {
+
+            if (docMeta.docInfo.filename) {
+
+                // return the existing doc meta information.
+
+                const fileRef: FileRef = {
+                    name: docMeta.docInfo.filename,
+                    hashcode: docMeta.docInfo.hashcode
+                };
+
+                return fileRef;
+
+            }
+
+        }
+
+        return undefined;
+
+    }
+
+    /**
+     * Get all FileRefs for this DocMeta including the main doc but also
+     * any image, audio, or video attachments.
+     */
+    public static toBackendFileRefs(docMeta: DocMeta): ReadonlyArray<BackendFileRef> {
+
+        const result: BackendFileRef[] = [];
+
+        const fileRef = this.toFileRef(docMeta);
+
+        if (fileRef) {
+            // this is the main FileRef of the file (PHZ or PDF)
+            result.push({backend: Backend.STASH, ...fileRef});
+        }
+
+        return result;
 
     }
 
@@ -226,6 +276,25 @@ export class Datastores {
         return result;
 
     }
+
+    /**
+     * Assert that the specified network layer is supported by this datastore.
+     */
+    public static assertNetworkLayer(datastore: Datastore, networkLayer?: NetworkLayer) {
+
+        if (! networkLayer) {
+            // we support this because it's not specified.
+            return;
+        }
+
+        const capabilities = datastore.capabilities();
+
+        if (! capabilities.networkLayers.has(networkLayer)) {
+            throw new Error(`Datastore '${datastore.id}' does not support ${networkLayer} only ${capabilities.networkLayers}`);
+        }
+
+    }
+
 
 }
 

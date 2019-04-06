@@ -75,18 +75,18 @@ export class FeatureIntro extends React.Component<IProps, IState> {
     }
 
     private isActive() {
-        return localStorage.getItem(this.props.key) !== 'inactive';
+        return localStorage.getItem(this.props.itemName) !== 'inactive';
     }
 
     private mark() {
-        localStorage.setItem(this.props.key, 'inactive');
+        localStorage.setItem(this.props.itemName, 'inactive');
     }
 
 }
 
 export interface IProps {
 
-    readonly key: string;
+    readonly itemName: string;
 
 }
 

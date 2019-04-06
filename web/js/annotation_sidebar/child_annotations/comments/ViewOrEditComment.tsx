@@ -5,6 +5,7 @@ import {EditComment} from "./EditComment";
 import {ViewComment} from "./ViewComment";
 import {CancelButton} from "../CancelButton";
 import {Comment} from '../../../metadata/Comment';
+import {Doc} from '../../../metadata/Doc';
 
 export class ViewOrEditComment extends React.Component<IProps, IState> {
 
@@ -23,8 +24,9 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
     public render() {
 
         const editButton = <EditButton id={'edit-button-for-' + this.props.id}
-                                        onClick={() => this.onEdit()}
-                                        type="comment"/>;
+                                       disabled={! this.props.doc.mutable}
+                                       onClick={() => this.onEdit()}
+                                       type="comment"/>;
 
         const cancelButton = <CancelButton onClick={() => this.onCancel()}/>;
 
@@ -33,6 +35,7 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
         if (this.state.mode === 'view') {
 
             return <ViewComment comment={this.props.comment}
+                                doc={this.props.doc}
                                 editButton={editButton}/>;
 
         } else {
@@ -55,6 +58,7 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
 }
 interface IProps {
     readonly id: string;
+    readonly doc: Doc;
     readonly comment: DocAnnotation;
     readonly onComment: (html: string, existingComment: Comment) => void;
 }

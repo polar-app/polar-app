@@ -1,4 +1,8 @@
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult} from './Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {GetFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {DatastoreOverview} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -16,6 +20,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
+import {DatastoreInitOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -38,8 +43,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         this.datastoreMutations = DatastoreMutations.create('written');
     }
 
-    public async init(errorListener: ErrorListener = NULL_FUNCTION) {
-        await this.datastore.init(errorListener);
+    public async init(errorListener: ErrorListener = NULL_FUNCTION, opts?: DatastoreInitOpts) {
+        await this.datastore.init(errorListener, opts);
     }
 
     public async stop() {
@@ -179,8 +184,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
     }
 
     /**
-     * Get a current snapshot of the internal state of the Datastore by receiving
-     * DocMetaSnapshotEvent on the initial state.
+     * Get a current snapshot of the internal state of the Datastore by
+     * receiving DocMetaSnapshotEvent on the initial state.
      */
     public snapshot(listener: DocMetaSnapshotEventListener,
                     errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
@@ -191,20 +196,28 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.createBackup();
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, meta: FileMeta = {}): Promise<DocFileMeta> {
-        return this.datastore.writeFile(backend, ref, data, meta);
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
+        return this.datastore.writeFile(backend, ref, data, opts);
     }
 
     public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
         return this.datastore.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return this.datastore.getFile(backend, ref);
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+        return this.datastore.getFile(backend, ref, opts);
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
         this.datastore.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
+    }
+
+    public async overview(): Promise<DatastoreOverview | undefined> {
+        return await this.datastore.overview();
+    }
+
+    public capabilities(): DatastoreCapabilities {
+        return this.datastore.capabilities();
     }
 
     public async deactivate() {

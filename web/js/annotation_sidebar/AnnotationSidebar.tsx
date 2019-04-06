@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../logger/Logger';
 import {Comment} from '../metadata/Comment';
-import {DocMeta} from '../metadata/DocMeta';
 import {DocAnnotations} from './DocAnnotations';
 import {DocAnnotation} from './DocAnnotation';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
@@ -12,12 +11,19 @@ import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
 import {isPresent} from '../Preconditions';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
 import {CommentModel} from './CommentModel';
-import {Ref, Refs} from '../metadata/Refs';
+import {Refs} from '../metadata/Refs';
 import {FlashcardModel} from './FlashcardModel';
 import {Flashcard} from '../metadata/Flashcard';
 import {ExportButton} from '../ui/export/ExportButton';
-import {ExportFormat, Exporters} from '../metadata/exporter/Exporters';
+import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
+import {PersistenceLayer} from '../datastore/PersistenceLayer';
+import {Visibility} from '../datastore/Datastore';
+import {PersistenceLayers} from '../datastore/PersistenceLayers';
+import {SharingDatastores} from '../datastore/SharingDatastores';
+import {ShareContentButton} from '../apps/viewer/ShareContentButton';
+import {NULL_FUNCTION} from '../util/Functions';
+import {Doc} from '../metadata/Doc';
 
 const log = Logger.create();
 
@@ -31,7 +37,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         this.scrollToAnnotation = this.scrollToAnnotation.bind(this);
         this.onExport = this.onExport.bind(this);
 
-        const annotations = DocAnnotations.getAnnotationsForPage(props.docMeta);
+        const annotations = DocAnnotations.getAnnotationsForPage(props.doc.docMeta);
 
         this.docAnnotationIndex
             = DocAnnotationIndexes.rebuild(this.docAnnotationIndex, ...annotations);
@@ -46,7 +52,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         // TODO: remove all these listeners when the component unmounts...
 
-        new AreaHighlightModel().registerListener(this.props.docMeta, annotationEvent => {
+        new AreaHighlightModel().registerListener(this.props.doc.docMeta, annotationEvent => {
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,
@@ -59,7 +65,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         });
 
-        new TextHighlightModel().registerListener(this.props.docMeta, annotationEvent => {
+        new TextHighlightModel().registerListener(this.props.doc.docMeta, annotationEvent => {
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,
@@ -71,7 +77,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                                        docAnnotation);
         });
 
-        new CommentModel().registerListener(this.props.docMeta, annotationEvent => {
+        new CommentModel().registerListener(this.props.doc.docMeta, annotationEvent => {
 
             const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromComment(comment, annotationEvent.pageMeta);
@@ -82,7 +88,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         });
 
-        new FlashcardModel().registerListener(this.props.docMeta, annotationEvent => {
+        new FlashcardModel().registerListener(this.props.doc.docMeta, annotationEvent => {
 
             const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromFlashcard(flashcard, annotationEvent.pageMeta);
@@ -224,16 +230,15 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         annotations.map(annotation => {
             result.push (<DocAnnotationComponent key={annotation.id}
                                                  annotation={annotation}
-                                                 docMeta={this.props.docMeta}/>);
+                                                 doc={this.props.doc}/>);
         });
 
         return result;
 
     }
-
     private onExport(path: string, format: ExportFormat) {
 
-        Exporters.doExport(path, format, this.props.docMeta)
+        Exporters.doExport(path, format, this.props.doc.docMeta)
             .catch(err => log.error(err));
 
     }
@@ -242,7 +247,20 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const { annotations } = this.state;
 
+        const persistenceLayer = this.props.persistenceLayerProvider();
+        const capabilities = persistenceLayer.capabilities();
+
         const AnnotationHeader = () => {
+
+            const docMeta = this.props.doc.docMeta;
+
+            const onVisibilityChanged = async (visibility: Visibility) => {
+                await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
+            };
+
+            const createShareLink = async (): Promise<string | undefined> => {
+                return SharingDatastores.createURL(persistenceLayer, docMeta);
+            };
 
             if (annotations.length === 0) {
                 return (<div></div>);
@@ -255,12 +273,25 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                     <SplitBar>
 
                         <SplitBarLeft>
-                            <div style={{fontWeight: 'bold', fontSize: '14px'}}>Annotations</div>
+                            <div style={{
+                                    fontWeight: 'bold',
+                                    fontSize: '14px'
+                                 }}>
+                                Annotations
+                            </div>
                         </SplitBarLeft>
 
                         <SplitBarRight>
 
                             <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
+
+                            <ShareContentButton hidden={! this.props.doc.mutable}
+                                                datastoreCapabilities={capabilities}
+                                                createShareLink={createShareLink}
+                                                visibility={docMeta.docInfo.visibility}
+                                                onVisibilityChanged={onVisibilityChanged}
+                                                onDone={NULL_FUNCTION}/>
+
 
                         </SplitBarRight>
 
@@ -336,7 +367,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly docMeta: DocMeta;
+    readonly doc: Doc;
+    readonly persistenceLayerProvider: () => PersistenceLayer;
 }
 
 interface IState {

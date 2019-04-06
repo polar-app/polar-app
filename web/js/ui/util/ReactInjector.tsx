@@ -12,9 +12,10 @@ export class ReactInjector {
      * that only one component with that ID is created.
      *
      */
-    public static inject(element: JSX.Element, id?: string) {
+    public static inject(element: JSX.Element,
+                         id?: string) {
 
-        let container: HTMLElement = document.createElement('div');
+        let container = document.createElement('div');
 
         if (id) {
 
@@ -37,7 +38,7 @@ export class ReactInjector {
 
     }
 
-    private static create(element: JSX.Element, container: HTMLElement) {
+    public static create(element: JSX.Element, container: HTMLElement) {
 
         ReactDOM.render(
 

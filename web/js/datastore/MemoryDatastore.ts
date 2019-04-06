@@ -17,6 +17,10 @@ import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DictionaryPrefs} from '../util/prefs/Prefs';
 import {Providers} from '../util/Providers';
+import {WriteFileOpts} from './Datastore';
+import {DefaultWriteFileOpts} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {NetworkLayer} from './Datastore';
 
 const log = Logger.create();
 
@@ -80,9 +84,9 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: FileHandle | Buffer | string,
-                           meta: FileMeta = {}): Promise<DocFileMeta> {
+                           opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
 
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
 
         let buff: Buffer | undefined;
 
@@ -94,15 +98,17 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
             buff = await Files.readFileAsync(data.path);
         }
 
+        const meta = opts.meta || {};
+
         this.files[key] = {buffer: buff!, meta};
 
-        return {backend, ref, url: 'FIXME:none', meta};
+        return {backend, ref, url: 'NOT_IMPLEMENTED:none', meta};
 
     }
 
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
 
         if (!key) {
             return Optional.empty();
@@ -110,17 +116,17 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
         const fileData = this.files[key];
 
-        return Optional.of({backend, ref, url: 'FIXME:none', meta: fileData.meta});
+        return Optional.of({backend, ref, url: 'NOT_IMPLEMENTED:none', meta: fileData.meta});
 
     }
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
         return isPresent(this.files[key]);
     }
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
-        const key = this.toFileRefKey(backend, ref);
+        const key = MemoryDatastore.toFileRefKey(backend, ref);
         delete this.files[key];
     }
 
@@ -177,7 +183,18 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    private toFileRefKey(backend: Backend, fileRef: FileRef) {
+    public capabilities(): DatastoreCapabilities {
+
+        const networkLayers = new Set<NetworkLayer>(['local']);
+
+        return {
+            networkLayers,
+            permission: {mode: 'rw'}
+        };
+
+    }
+
+    private static toFileRefKey(backend: Backend, fileRef: FileRef) {
         return `${backend}:${fileRef.name}`;
     }
 

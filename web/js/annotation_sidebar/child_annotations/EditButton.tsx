@@ -19,6 +19,7 @@ export class EditButton extends React.PureComponent<IProps, IState> {
                     className="text-muted p-1"
                     size="sm"
                     color="light"
+                    disabled={this.props.disabled}
                     title={'Edit ' + this.props.type}
                     onClick={() => this.onClick()}>
 
@@ -45,6 +46,7 @@ interface IProps {
     readonly id: string;
     readonly onClick: () => void;
     readonly type: 'comment' | 'flashcard';
+    readonly disabled?: boolean;
 }
 
 interface IState {

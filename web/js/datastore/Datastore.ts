@@ -1,13 +1,11 @@
 // A datastore that supports ledgers and checkpoints.
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
-import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
-import {Simulate} from 'react-dom/test-utils';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
@@ -17,7 +15,6 @@ import {UUID} from '../metadata/UUID';
 import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
-import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Prefs} from '../util/prefs/Prefs';
 
@@ -69,7 +66,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;
 
     /**
-     * Deactivate using this datasource. For most datasources this is not used
+     * Deactivate using this datastore. For most datastores this is not used
      * but for cloud sources this would logout and perform other tasks.
      */
     deactivate(): Promise<void>;
@@ -86,18 +83,33 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      */
     getPrefs(): PrefsProvider;
 
-    // TODO: we need a new method with the following semantics:
+    capabilities(): DatastoreCapabilities;
 
-    // - we can add it AFTER the init()
-    //
-    // - it starts working immediately and in offline mode and then continues
-    //   to work when we get online snapshots
-    //
-    // - it give us FULL visibility into the lifestyle of a document including
-    //   create, update, and delete.
-    //
-    // - this is VERY similar (but somewhat different) than the firebase
-    // snapshot support
+}
+
+// writable, readonly , ro vs rw... readonly is better BUT that's reserved by
+// typescript
+
+export type Mode = 'rw' | 'ro';
+
+export interface DatastorePermission {
+
+    /**
+     * The high level permissions mode for this datastore. Applied to ALL
+     * access to the store not on a file by file basis.
+     */
+    readonly mode: Mode;
+
+}
+
+export interface DatastoreCapabilities {
+
+    /**
+     * Provides callers with the available network layers for this datastore.
+     */
+    readonly networkLayers: ReadonlySet<NetworkLayer>;
+
+    readonly permission: DatastorePermission;
 
 }
 
@@ -212,7 +224,20 @@ interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
-    getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
+    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>>;
+
+}
+
+/**
+ * Options for getFile
+ */
+export interface GetFileOpts {
+
+    /**
+     * Allows the caller to specify a more specific network layer for the
+     * file operation and returning a more specific URL.
+     */
+    readonly networkLayer?: NetworkLayer;
 
 }
 
@@ -226,10 +251,31 @@ export interface WritableBinaryDatastore {
     writeFile(backend: Backend,
               ref: FileRef,
               data: BinaryFileData,
-              meta?: FileMeta): Promise<DocFileMeta>;
+              opts?: WriteFileOpts): Promise<DocFileMeta>;
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
 
+}
+
+export interface WriteFileOpts {
+
+    readonly meta?: FileMeta;
+
+    /**
+     * Set the file visibility.  Default is private.
+     */
+    readonly visibility?: Visibility;
+
+    /**
+     * Only update metadata.  Don't actually write data.
+     */
+    readonly updateMeta?: boolean;
+
+}
+
+export class DefaultWriteFileOpts implements WriteFileOpts {
+    public readonly meta: FileMeta = {};
+    public readonly visibility = Visibility.PRIVATE;
 }
 
 export interface WritableBinaryMetaDatastore {
@@ -250,14 +296,36 @@ export interface FileRef {
 
 }
 
+/**
+ * A FileRef with a backend.
+ */
+export interface BackendFileRef extends FileRef {
+
+    readonly backend: Backend;
+
+}
+
+export class BackendFileRefs {
+
+    public static equals(b0: BackendFileRef, b1: BackendFileRef): boolean {
+        return b0.backend === b1.backend && b0.name === b1.name && b0.hashcode === b1.hashcode;
+    }
+
+}
+
 // noinspection TsLint
-export type FileMeta = {
+/**
+ * Arbitrary settings for files specific to each storage layer.  Firebase uses
+ * visibility and uid.
+ */
+export interface FileMeta {
+
     // TODO: I should also include the StorageSettings from Firebase here to
     // give it a set of standardized fields like contentType as screenshots
     // needs to be added with a file type.
+    [key: string]: string;
 
-    [key: string]: string
-};
+}
 
 /**
  *
@@ -625,7 +693,14 @@ export type DatastoreID = string;
 
 
 export interface DatastoreInitOpts {
+
     readonly noInitialSnapshot?: boolean;
+
+    /**
+     * Disable sync and just start the datastore as a client for read/write.
+     */
+    readonly noSync?: boolean;
+
 }
 
 export interface PrefsProvider {
@@ -634,5 +709,58 @@ export interface PrefsProvider {
      * Get the latest copy of the prefs we're using.
      */
     get(): Prefs;
+
+}
+
+export enum Visibility {
+
+    /**
+     * Only visible for the user.
+     */
+    PRIVATE = 'private', /* or 0 */
+
+    /**
+     * Only to users that this user is following.
+     */
+    FOLLOWING = 'following', /* or 1 */
+
+    /**
+     * To anyone on the service.
+     */
+    PUBLIC = 'public' /* or 2 */
+
+}
+
+/**
+ * The network layer specifies the access to a resource based on the network
+ * type.  By default each datastore figures out the ideal network layer to
+ * return file references from but based on the capabilities the caller
+ * can specify a specific layer.
+ *
+ * The following types are supported:
+ *
+ * local: Access via the local disk.
+ *    - pros:
+ *      - VERY fast
+ *    - cons:
+ *      - Not sharable with others
+ *
+ * web: Access is available via the public web.
+ *    - pros:
+ *       - sharing works
+ *       - access across multiple devices
+ *    - cons:
+ *       - may not be usable for certain people (classified information, etC).
+ *
+ */
+export type NetworkLayer = 'local' | 'web';
+
+export class NetworkLayers {
+
+    public static LOCAL = new Set<NetworkLayer>(['local']);
+
+    public static LOCAL_AND_WEB = new Set<NetworkLayer>(['local', 'web']);
+
+    public static WEB = new Set<NetworkLayer>(['web']);
 
 }

@@ -5,8 +5,9 @@ import {IProvider} from "../util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "../logger/Logger";
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {FirebasePersistenceLayerFactory} from './factories/FirebasePersistenceLayerFactory';
+import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
+import {DatastoreInitOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -22,6 +23,10 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
      * The current persistence type in place.
      */
     private current?: PersistenceLayerType;
+
+    constructor(private readonly opts?: DatastoreInitOpts) {
+
+    }
 
     public async start(): Promise<void> {
 
@@ -44,6 +49,9 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         }
 
         await this.change(type);
+
+        // now we have to listen and auto-change if we've switched in another
+        this.listenForPersistenceLayerChange();
 
     }
 
@@ -68,7 +76,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
             // and their actual implementation (remote, firebase, cloud-aware).
             // Then toggle on the actual implementation and only change it when
             // the impl changes.
-            log.warn("Only Firebase persistence layer supported in browsers");
+            log.warn("Only 'web' persistence layers supported in browsers");
             return false;
         }
 
@@ -82,7 +90,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
             log.info("Stopping persistence layer...");
 
-            this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'stopping'});
+            this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopping'});
 
             // Create a backup first.  This only applies to the DiskDatastore
             // but this way we have a backup before we go online to the cloud
@@ -93,7 +101,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
             log.info("Stopped persistence layer...");
 
-            this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'stopped'});
+            this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'stopped'});
 
         }
 
@@ -101,13 +109,15 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         this.persistenceLayer = this.createPersistenceLayer(type);
 
-        this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'changed'});
+        this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'changed'});
 
         log.info("Changed to persistence layer: " + type);
 
-        await this.persistenceLayer.init();
+        await this.persistenceLayer.init(err => {
+            // noop
+        }, this.opts);
 
-        this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'initialized'});
+        this.dispatchEvent({persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
         log.info("Initialized persistence layer: " + type);
 
@@ -134,15 +144,15 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         if (AppRuntime.isBrowser()) {
 
-            if (type !== 'firebase') {
-                log.warn("Only firebase type supported in browsers (forcing).");
-                type = 'firebase';
+            if (type !== 'web') {
+                log.warn(`Only web type supported in browsers (requested type: ${type})`);
+                type = 'web';
             }
 
         }
 
-        if (type === 'firebase') {
-            return FirebasePersistenceLayerFactory.create();
+        if (type === 'web') {
+            return WebPersistenceLayerFactory.create();
         }
 
         if (type === 'local') {
@@ -161,7 +171,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
                             fireWithExisting?: 'changed' | 'initialized') {
 
         if (fireWithExisting && this.get()) {
-            listener({type: this.current!, persistenceLayer: this.get(), state: fireWithExisting});
+            listener({persistenceLayer: this.get(), state: fireWithExisting});
         }
 
         return this.persistenceLayerManagerEventDispatcher.addEventListener(listener);
@@ -171,9 +181,44 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         this.persistenceLayerManagerEventDispatcher.dispatchEvent(event);
     }
 
+    private listenForPersistenceLayerChange() {
+
+        const whenChanged = (callback: (type: PersistenceLayerType) => void) => {
+
+            let type = PersistenceLayerTypes.get();
+
+            window.addEventListener('storage', () => {
+
+                const newType = PersistenceLayerTypes.get();
+
+                if (newType !== type) {
+
+                    try {
+
+                        callback(newType);
+
+                    } finally {
+                        type = newType;
+                    }
+
+                }
+
+            });
+
+        };
+
+        whenChanged((type) => {
+
+            this.change(type)
+                .catch(err => log.error("Unable to change to type: " + type));
+
+        });
+
+    }
+
 }
 
-export type PersistenceLayerType = 'local' | 'cloud' | 'firebase';
+export type PersistenceLayerType = 'local' | 'cloud' | 'web';
 
 /**
  * The state of the persistence layer.
@@ -191,8 +236,8 @@ export type PersistenceLayerState = 'changed' | 'initialized' | 'stopping' | 'st
 
 export interface PersistenceLayerManagerEvent {
 
-    readonly type: PersistenceLayerType;
     readonly state: PersistenceLayerState;
+
     readonly persistenceLayer: ListenablePersistenceLayer;
 
 }
@@ -209,7 +254,7 @@ export class PersistenceLayerTypes {
 
             // we are ALWAYS using firebase when in the browser and there is no
             // other option.
-            return 'firebase';
+            return 'web';
         }
 
         const currentType = window.localStorage.getItem(this.KEY);

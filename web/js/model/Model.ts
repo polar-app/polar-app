@@ -4,15 +4,14 @@ import {Reactor} from '../reactor/Reactor';
 import {PagemarkType} from '../metadata/PagemarkType';
 import {Preconditions} from '../Preconditions';
 import {Pagemarks} from '../metadata/Pagemarks';
-import {Objects} from '../util/Objects';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {Logger} from '../logger/Logger';
 import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
-import {DocFormats} from '../docformat/DocFormats';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
+import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 
 const log = Logger.create();
 
@@ -26,7 +25,7 @@ export class Model {
     // TODO: we create a fake document which is eventually replaced.
     public docMeta: DocMeta = NULL_DOC_META;
 
-    private readonly persistenceLayer: ListenablePersistenceLayer;
+    public readonly persistenceLayerProvider: () => ListenablePersistenceLayer;
 
     private readonly modelPersisterFactory: ModelPersisterFactory;
 
@@ -34,10 +33,10 @@ export class Model {
 
     private docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
 
-    constructor(persistenceLayer: ListenablePersistenceLayer) {
+    constructor(public readonly persistenceLayerHandler: PersistenceLayerHandler) {
 
-        this.persistenceLayer = persistenceLayer;
-        this.modelPersisterFactory = new ModelPersisterFactory(persistenceLayer);
+        this.persistenceLayerProvider = () => persistenceLayerHandler.get();
+        this.modelPersisterFactory = new ModelPersisterFactory(persistenceLayerHandler);
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');
@@ -56,7 +55,9 @@ export class Model {
 
         log.notice("Document loaded with fingerprint: " + fingerprint);
 
-        let docMeta = await this.persistenceLayer.getDocMeta(fingerprint);
+        const persistenceLayer = this.persistenceLayerProvider();
+
+        let docMeta = await persistenceLayer.getDocMeta(fingerprint);
 
         if (!docMeta) {
 
@@ -69,7 +70,7 @@ export class Model {
                                       Optional.of(docDetail).map(current => current.filename)
                                           .getOrUndefined());
 
-            await this.persistenceLayer.write(fingerprint, docMeta);
+            await persistenceLayer.write(fingerprint, docMeta);
 
             // I'm not sure this is the best way to resolve this as swapping in
             // the docMetaPromise without any synchronization seems like we're

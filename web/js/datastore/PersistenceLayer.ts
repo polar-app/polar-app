@@ -1,14 +1,10 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {
-    BinaryFileData,
-    Datastore,
-    DeleteResult,
-    DocMetaSnapshotEventListener,
-    ErrorListener,
-    FileMeta,
-    FileRef,
-    SnapshotResult
-} from './Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {GetFileOpts} from './Datastore';
+import {DatastoreOverview} from './Datastore';
+import {DatastoreCapabilities} from './Datastore';
+import {DatastoreInitOpts} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
@@ -25,7 +21,7 @@ export interface PersistenceLayer {
      */
     readonly datastore: Datastore;
 
-    init(errorListener?: ErrorListener): Promise<void>;
+    init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<void>;
 
     stop(): Promise<void>;
 
@@ -69,9 +65,9 @@ export interface PersistenceLayer {
     writeFile(backend: Backend,
               ref: FileRef,
               data: BinaryFileData,
-              meta?: FileMeta): Promise<DocFileMeta>;
+              opts?: WriteFileOpts): Promise<DocFileMeta>;
 
-    getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>>;
+    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>>;
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
@@ -79,7 +75,13 @@ export interface PersistenceLayer {
 
     deactivate(): Promise<void>;
 
+    overview(): Promise<DatastoreOverview  | undefined>;
+
+    capabilities(): DatastoreCapabilities;
+
 }
 
 export type PersistenceLayerID = string;
+
+export type PersistenceLayerProvider = () => PersistenceLayer;
 
