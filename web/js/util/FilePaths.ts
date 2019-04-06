@@ -201,7 +201,21 @@ export class FilePaths {
         // other path encoding issues.
         const pathname = decodeURIComponent(parsedURL.pathname);
 
-        const path = pathname.replace(/\//g, this.SEP);
+        // TODO: I think the drive name has to be handled properly.
+
+        let path = pathname.replace(/\//g, this.SEP);
+
+        if (this.SEP === '\\' && path.search(/^\\[C-Z]:/)) {
+
+            // this is a windows file path and file URLs on windows look like
+            //
+            // file:///C:/path/to/file.txt
+            //
+            // and we just need to strip the first slash.
+
+            path = path.substring(1);
+
+        }
 
         return path;
 
