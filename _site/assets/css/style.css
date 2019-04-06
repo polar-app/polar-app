@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .subtitle {
-    max-width: 850px;
+    max-width: 900px;
     text-align: center;
     margin: auto;
     padding-left: 0;
@@ -41,6 +41,10 @@ h1, h2, h3, h4, h5 {
     margin-bottom: 1em;
     text-align: justify !important;
 }
+
+/*.subtitle .img-shadow {*/
+    /*margin: 1.5rem !important;*/
+/*}*/
 
 .banner h2 {
     font-size: 1.5rem !important;

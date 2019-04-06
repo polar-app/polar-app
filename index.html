@@ -57,13 +57,15 @@ image: https://getpolarized.io/assets/logo/icon.png
                                    href="https://app.getpolarized.io">Open Polar in Your Browser</a>
 
                             </div>
-
                         </div>
 
-                        {%- include image.html
-                                    alt="Main Polar PDF document showing an deep learning book"
-                                    class="img-fluid mt-4 mb-4 img-shadow"
-                                    src="./assets/screenshots/cnn5.webp" -%}
+
+                        <div class="img-shadow-wrapper p-3 pb-5">
+                            {%- include image.html
+                                        alt="Main Polar PDF document showing an deep learning book"
+                                        class="img-fluid img-shadow"
+                                        src="./assets/screenshots/cnn5.webp" -%}
+                        </div>
 
                     </div>
 
@@ -111,7 +113,7 @@ image: https://getpolarized.io/assets/logo/icon.png
                 <a name="features"></a>
                 <h1>Features</h1>
 
-                <p class="text-h3 text-justify m-auto" style="max-width: 700px;"> POLAR
+                <p class="text-h3 text-justify m-auto" style="max-width: 700px;"> Polar
                     allows you to keep all your documents, annotations, and flashcards <b>in
                         one place</b>.  Never lose track of what you're reading again.
                     <b>Annotate</b> documents directly while reading them and sync with
@@ -225,134 +227,40 @@ image: https://getpolarized.io/assets/logo/icon.png
     </div>
 </section>
 
-
-<section class="fdb-block" data-block-type="features" data-id="1" draggable="false">
-    <div class="container">
-        <div class="row text-center">
-
-            <div class="subtitle col-12 text-center">
-
-                <a name="features"></a>
-                <h2>Desktop, Web, and Fully Cloud Aware</h2>
-
-                <p class="text-justify">
-                    Polar is fully cross-platform and supported on MacOS,
-                    Windows, Linux, Chrome, Firefox, and Safari.
-                </p>
-
-                <p class="text-justify">
-
-                    Polar is also <b>fully cloud-aware</b> and support synchronizing
-                    your documents across multiple devices.  Based on Google's
-                    Firebase, POLAR supports real-time synchronization of your
-                    documents to other devices.
-                </p>
-
-                <p class="text-justify">
-                    But we don't stop there.  Polar also supports the web so you
-                    can access your data anywhere.
-                </p>
-
-                <p class="text-center">
-
-                    {%- include image.html
-                                alt="Polar supports all platforms including MacOS, Windows, Linux, and Firefox."
-                                class="mt-4"
-                                src="/assets/images/platforms.png"
-                                style="width: 850px; height: 150px;" -%}
-
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-
 <section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
     <div class="container-fluid">
         <div class="row align-items-top">
-
-            <div class="col-12 subtitle">
-
-                <h2>Highlight and Annotate</h2>
-
-                <p class="text-h3 text-justify">
-
-                    Annotations are a central feature to POLAR.  While reading documents
-                    you can underline text or create area highlights.  Once created, you
-                    can attach additional metadata to annotations such as comments and
-                    flashcards.
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="row">
-
-            <div class="col-12 mt-4 text-center" style="">
-
-                <div>
-
-                    {%- include image.html
-                                alt="Polar supports text annotations"
-                                class="img-fluid img-shadow img-rounded"
-                                src="./assets/screenshots/text-highlight-2019-04.png"
-                                style="min-width: 250px; zoom: 75%; margin: 25px;" -%}
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-
-
-<!--<section id="pagemarks-video" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">-->
-<!--<div class="container-fluid">-->
-<!--<div class="col col-lg p-4 text-center">-->
-<!--<div class="embed-responsive embed-responsive-16by9">-->
-<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/LfmvrzE7U-M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</section>-->
-
-
-<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
-    <div class="container-fluid">
-        <div class="row align-items-top">
-            <div class="col col-xs p-4 text-center">
-
-                <h2>All your Documents in One Place</h2>
+            <div class="col col-xs text-center">
 
                 <div class="subtitle overview text-justify">
-                    All your PDFs, eBooks, and web content are kept in one place
-                    - the <b>Document Repository</b>. Once you're done reading a
-                    document it can be archived and is hidden by default but can
-                    be referenced at any time.
+
+                    <h2>All Your Documents in One Place</h2>
+
+                    <p>
+                        All your PDFs, eBooks, and web content are kept in one place
+                        - the <b>Document Repository</b>. Once you're done reading a
+                        document it can be archived and is hidden by default but can
+                        be referenced at any time.
+                    </p>
                 </div>
 
-                <div class="mt-5" style="">
-                    {%- include image.html
-                                alt="Polar Document Repository for all your PDFs and eBooks"
-                                class="img-fluid img-shadow"
-                                src="./assets/screenshots/document-repo-2019-04.png"
-                                style="" -%}
+                <div class="img-shadow-wrapper p-3 pb-5">
+
+                    <div class="" style="">
+                        {%- include image.html
+                        alt="Polar Document Repository for all your PDFs and eBooks"
+                        class="img-fluid img-shadow"
+                        src="./assets/screenshots/document-repo-2019-04.png"
+                        style="" -%}
+                    </div>
+
                 </div>
 
             </div>
         </div>
     </div>
 </section>
+
 
 <section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
     <div class="container-fluid">
@@ -393,6 +301,109 @@ image: https://getpolarized.io/assets/logo/icon.png
         </div>
     </div>
 </section>
+
+
+<section class="fdb-block" data-block-type="features" data-id="1" draggable="false">
+    <div class="container">
+        <div class="row text-center">
+
+            <div class="subtitle col-12 text-center">
+
+                <a name="features"></a>
+                <h2>Desktop, Web, and Fully Cloud Aware</h2>
+
+                <p class="text-justify">
+                    Polar is fully cross-platform and supported on MacOS,
+                    Windows, Linux, Chrome, Firefox, and Safari.
+                </p>
+
+                <p class="text-justify">
+
+                    Polar is also <b>fully cloud-aware</b> and supports
+                    synchronizing your documents across multiple devices.  Based
+                    on Google's Firebase, Polar supports real-time
+                    synchronization of your documents to other devices.
+                </p>
+
+                <p class="text-justify">
+                    But we don't stop there.  Polar also supports the web so you
+                    can access your data anywhere.
+                </p>
+
+                <p class="text-center">
+
+                    {%- include image.html
+                                alt="Polar supports all platforms including MacOS, Windows, Linux, and Firefox."
+                                class="mt-4 img-fluid"
+                                src="/assets/images/platforms.png"
+                                style="" -%}
+
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+
+            <div class="col-12 subtitle">
+
+                <h2>Highlight and Annotate</h2>
+
+                <p class="text-h3 text-justify">
+
+                    Annotations are a central feature to Polar.  While reading documents
+                    you can underline text or create area highlights.  Once created, you
+                    can attach additional metadata to annotations such as comments and
+                    flashcards.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-12 text-center" style="">
+
+                <div class="img-shadow-wrapper p-3 pb-5">
+                    {%- include image.html
+                                alt="Polar supports text annotations"
+                                class="img-fluid img-shadow"
+                                src="./assets/screenshots/highlighting-zoomed.png"
+                                style="" -%}
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!--<section id="pagemarks-video" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">-->
+<!--<div class="container-fluid">-->
+<!--<div class="col col-lg p-4 text-center">-->
+<!--<div class="embed-responsive embed-responsive-16by9">-->
+<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/LfmvrzE7U-M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+
+
 
 
 <!--<section id="document-repository-video" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">-->
@@ -495,7 +506,7 @@ image: https://getpolarized.io/assets/logo/icon.png
                                 alt="Captured Content"
                                 class="img-fluid img-shadow"
                                 src="./assets/screenshots/captured-content-window.png"
-                                style="min-width: 450px; zoom: 100%; margin-bottom: 50px;" -%}
+                                style="min-width: 450px; margin-bottom: 50px;" -%}
 
 
                 </div>
