@@ -137,8 +137,10 @@ describe('FilePaths', function() {
             await assertPathExists(path);
 
             const url = FilePaths.toURL(path);
-
             const decodedPath = FilePaths.fromURL(url);
+
+            // make sure the input path is the same as the decoded path.
+            assert.equal(path, decodedPath);
 
             await assertPathExists(FilePaths.dirname(FilePaths.dirname(decodedPath)));
             await assertPathExists(FilePaths.dirname(decodedPath));
