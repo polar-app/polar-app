@@ -1,10 +1,8 @@
 import {assert} from 'chai';
 import {BrowserFilePaths, FilePaths} from './FilePaths';
 import {Files} from './Files';
-import {URLs} from './URLs';
 import fetch from './Fetch';
 import {isPresent} from '../Preconditions';
-import {Browser} from '../capture/Browser';
 
 describe('FilePaths', function() {
 
@@ -120,7 +118,7 @@ describe('FilePaths', function() {
 
     describe('toURL', async function() {
 
-        it('spaces and special chars but valid.', async function() {
+        it('spaces and special chars but still valid.', async function() {
 
             const special = "This is a special name UPPER, (17) [test 10.11] -- foo (1)";
 
@@ -132,7 +130,7 @@ describe('FilePaths', function() {
             await Files.mkdirAsync(dir);
             await Files.writeFileAsync(path, "fake data");
 
-            assert.ok(await Files.existsAsync(path));
+            assert.ok(await Files.existsAsync(path), "Path does not exist: " + path);
 
             const url = FilePaths.toURL(path);
 
@@ -140,7 +138,7 @@ describe('FilePaths', function() {
 
             // the decoded path value doesn't matter just as long as we can
             // get it before and after.
-            assert.ok(await Files.existsAsync(decodedPath));
+            assert.ok(await Files.existsAsync(decodedPath), "Decoded path does not exist: " + path);
 
         });
 
