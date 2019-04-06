@@ -1,9 +1,11 @@
 # 1.17.0
 
+- Added the ability to easily open a document by right clicking.
+
 - Title search now works if the substring is in the filename
 
 - New initial document sharing in Polar.  Shares both the document and the 
-  annotations associated with it.
+  annotations associated with it. Private by default of course..
 
 - New logging feature to change the log level via session or local storage.  We
   can use this in the future to let users change their polar log level on the 
