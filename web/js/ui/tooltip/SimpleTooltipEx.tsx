@@ -29,7 +29,7 @@ export class SimpleTooltipEx extends React.Component<IProps, IState> {
 
         this.trigger = this.trigger.bind(this);
 
-        this.show = Optional.of(this.props.show).getOrElse(500);
+        this.show = Optional.of(this.props.show).getOrElse(1000);
 
     }
 

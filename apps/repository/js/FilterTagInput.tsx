@@ -10,6 +10,7 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import Button from 'reactstrap/lib/Button';
 import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
+import {SimpleTooltipEx} from '../../../web/js/ui/tooltip/SimpleTooltipEx';
 // import {SyntheticKeyboardEvent} from 'react-dom';
 
 const Styles: IStyleMap = {
@@ -64,19 +65,24 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
             <div>
 
-                <Button color="light"
-                        id={this.id}
-                        size="sm"
-                        disabled={this.props.disabled}
-                        onClick={() => this.toggle(! this.state.open)}
-                        className="header-filter-clickable p-1 pl-2 pr-2 border">
+                <SimpleTooltipEx text={this.props.tooltip || ""}
+                                 disabled={this.state.open}>
 
-                    <i className="fa fa-tag doc-button doc-button-selectable mr-1"/>
-                    <span className="d-none-mobile">Tags</span>
+                    <Button color="light"
+                            id={this.id}
+                            size="sm"
+                            disabled={this.props.disabled}
+                            onClick={() => this.toggle(! this.state.open)}
+                            className="header-filter-clickable p-1 pl-2 pr-2 border">
 
-                    <div style={Styles.dropdownChevron}></div>
+                        <i className="fa fa-tag doc-button doc-button-selectable mr-1"/>
+                        <span className="d-none-mobile">Tags</span>
 
-                </Button>
+                        <div style={Styles.dropdownChevron}></div>
+
+                    </Button>
+
+                </SimpleTooltipEx>
 
                 <Popover placement="bottom"
                          isOpen={this.state.open}
@@ -161,6 +167,8 @@ interface IProps {
     readonly refresher: () => void;
 
     readonly filteredTags: FilteredTags;
+
+    readonly tooltip?: string;
 
 }
 

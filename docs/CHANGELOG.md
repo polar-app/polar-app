@@ -13,6 +13,15 @@
   the this means that we can use the cloud or firebase datastore... whichever 
   we are configured for...  
 
+# 1.16.4
+
+- Fixed bug with hidden dropdown items not being hidden.
+
+- Firebase usage on the web about 4-10x faster due to properly using snapshots 
+  instead of fetching each record individually. 
+
+- disable payments on appx...
+
 # 1.16.3
 
 - Firebase usage on the web about 4-10x faster due to properly using snapshots 
