@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="chrome-webstore-item"
+          href="https://chrome.google.com/webstore/detail/jkfdkjomocoaljglgddnmhcbolldcafd">
+
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="icon" href="/icon.ico">
+
+    <!-- TODO: these need to load locally before we enable firebase in production -->
+    <script src="/node_modules/firebase/firebase.js"></script>
+    <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
+    <link rel="stylesheet" href="/node_modules/firebaseui/dist/firebaseui.css" />
+
+    <link rel="stylesheet" href="/node_modules/react-table/react-table.css">
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+
+    <link rel="stylesheet" href="/node_modules/toastr/build/toastr.min.css">
+
+    <link rel="stylesheet" href="/pdfviewer-custom/flexbar.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/progress.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/typography.css">
+
+    <link rel="stylesheet" href="/apps/repository/css/index.css">
+
+    <title>Polar: Document Repository</title>
+
+    <style>
+
+      html, body {
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        height: 100%;
+        width: 100%;
+      }
+
+      /*body {*/
+        /*!* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7abcff+0,60abf8+44,4096ee+100;Blue+3D+%2314 *!*/
+        /*background: #7abcff; !* Old browsers *!*/
+        /*background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%); !* FF3.6-15 *!*/
+        /*background: -webkit-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%); !* Chrome10-25,Safari5.1-6 *!*/
+        /*background: linear-gradient(to bottom, #7abcff 0%,#60abf8 44%,#4096ee 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
+        /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 ); !* IE6-9 *!*/
+      /*}*/
+
+      #root {
+        display: flex;
+        height:  100%;
+      }
+
+      #auth-box {
+        margin: auto;
+        max-height: 500px;
+        max-width: 450px;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+      }
+
+      h1 {
+        color: #303030;
+        font-size: 35px;
+      }
+
+      #auth-box .btn {
+        font-size: 14px;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <div>
+
+      <div style="display: flex; position: absolute; left: 0; top: 0; width: 100vh; height: 100vh;">
+        <div style="margin: auto; ">
+          <img width="250" height="250" src="../../icon.svg"/>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+
+
+</html>
