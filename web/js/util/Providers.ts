@@ -149,82 +149,33 @@ export class AsyncProviders {
         return () => Promise.resolve(value);
     }
 
-    /**
-     */
     public static memoize<T>(provider: AsyncProvider<T>): AsyncProvider<T> {
 
-        let memoized: boolean = false;
+        const latch: Latch<T> = new Latch();
 
-        // an error that the provider threw
-        let err: Error | undefined;
-
-        // the value that the provider returned.
-        let memo: T | undefined;
-
-        const asyncMutex = this.asyncMutex(async () => {
-
-            try {
-
-                memo = await provider();
-                return memo!;
-
-            } catch (e) {
-                err = e;
-                throw e;
-            } finally {
-                memoized = true;
-            }
-
-        });
+        // true when the first provider is executing.
+        let executing: boolean = false;
 
         return async () => {
 
-            if (memoized) {
-
-                if (err) {
-                    throw err;
-                }
-
-                return memo!;
-
+            if (executing) {
+                // if we're executing we just return the latch and it will block
+                // until the first caller returns.
+                return latch.get();
             }
 
-            return await asyncMutex;
+            try {
+
+                executing = true;
+                latch.resolve(await provider());
+
+            } catch (e) {
+                latch.reject(e);
+            }
+
+            return latch.get();
 
         };
-
-    }
-
-    /**
-     * Typescript/JS in theory is single threaded but remote workers like Firebase
-     * or disk can come back async and we have to handle this properly.
-     *
-     *
-     * @param provider
-     */
-    private static async asyncMutex<T>(provider: AsyncProvider<T>) {
-
-        let executing: boolean = false;
-        const latch = new Latch<T>();
-
-        if (executing) {
-            return await latch.get();
-        }
-
-        try {
-
-            executing = true;
-
-            const result = await provider();
-
-            latch.resolve(result);
-
-            return result;
-
-        } catch (e) {
-            latch.reject(e);
-            throw e;
-        }
 
     }
 

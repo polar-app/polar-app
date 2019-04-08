@@ -44,6 +44,7 @@ import Input from 'reactstrap/lib/Input';
 import {Settings} from '../../../../web/js/datastore/Settings';
 import {AddContentActions} from '../ui/AddContentActions';
 import {DocContextMenu} from '../DocContextMenu';
+import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 
 const log = Logger.create();
 
@@ -235,9 +236,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         const repoDocInfos = this.getSelected();
 
-        for (const repoDocInfo of repoDocInfos) {
-            this.onDocDeleted(repoDocInfo);
-        }
+        this.onDocDeleted(...repoDocInfos);
 
         this.clearSelected();
 
@@ -870,16 +869,42 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private onDocDeleted(repoDocInfo: RepoDocInfo) {
+    private onDocDeleted(...repoDocInfos: RepoDocInfo[]) {
 
-        RendererAnalytics.event({category: 'user', action: 'doc-deleted'});
+        const doDeletes = async () => {
 
-        log.info("Deleting document: ", repoDocInfo);
+            const stats = {
+                successes: 0,
+                failures: 0
+            };
 
-        this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)
-            .catch(err => log.error("Could not delete doc: ", err));
+            for (const repoDocInfo of repoDocInfos) {
 
-        this.refresh();
+                log.info("Deleting document: ", repoDocInfo);
+
+                try {
+
+                    await this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo);
+                    ++stats.successes;
+                    this.refresh();
+
+                } catch (e) {
+                    ++stats.failures;
+                    log.error("Could not delete doc: " , e);
+                }
+
+            }
+
+            if (stats.failures === 0) {
+                Toaster.success(`${stats.successes} documents successfully deleted.`);
+            } else {
+                Toaster.error(`Failed to delete ${stats.failures} with ${stats.successes} successful.`);
+            }
+
+        };
+
+        doDeletes()
+            .catch(err => log.error("Unable to delete files: ", err));
 
     }
 

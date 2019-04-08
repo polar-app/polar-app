@@ -167,33 +167,25 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
         const statePath = FilePaths.join(docDir, 'state.json');
 
-        let docPath: string | undefined;
+        let deleteFilePromise: Promise<void> = Promise.resolve();
 
         if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
-
-            // FIXME: remove this via deleteFile NOT delete since I'm storing
-            // it as a binary file now.
-            docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.docFile.name);
-
+            deleteFilePromise = this.deleteFile(Backend.STASH, docMetaFileRef.docFile);
         }
 
-        log.info(`Deleting statePath ${statePath} and docPath ${docPath}`);
+        log.info(`Deleting statePath ${statePath} and file docMetaFileRef.docFile`);
 
         // TODO: don't delete JUST the state file but also the parent dir if it
         // is empty.
 
         const deleteStatePathPromise = Files.deleteAsync(statePath);
-        const deleteDocPathPromise = docPath !== undefined ? Files.deleteAsync(docPath) : Promise.resolve(undefined);
 
-        // now handle all the promises with the datastore mutation so that we
-        // can verify that we were written and committed.
-        this.datastoreMutations.handle(Promise.all([ deleteStatePathPromise, deleteDocPathPromise]),
-                                       datastoreMutation,
-                                       () => true);
+        await Promise.all([deleteStatePathPromise, deleteFilePromise]);
+
+        await deleteFilePromise;
 
         return {
             docMetaFile: await deleteStatePathPromise,
-            dataFile: await deleteDocPathPromise
         };
 
     }
@@ -308,6 +300,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         await Files.removeAsync(fileReference.path);
         await Files.removeAsync(fileReference.metaPath);
+
     }
 
     /**
@@ -724,8 +717,6 @@ export interface DataDirConfig {
 export interface DiskDeleteResult extends DeleteResult {
 
     docMetaFile: Readonly<FileDeleted>;
-
-    dataFile?: Readonly<FileDeleted>;
 
 }
 

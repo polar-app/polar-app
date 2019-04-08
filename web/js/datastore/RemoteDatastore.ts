@@ -3,6 +3,11 @@ import {Datastores} from './Datastores';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {Logger} from '../logger/Logger';
+import {DeleteResult} from './Datastore';
+import {DocMetaFileRef} from './DocMetaRef';
+import {DatastoreMutation} from './DatastoreMutation';
+import {DefaultDatastoreMutation} from './DatastoreMutation';
+import {IDocInfo} from '../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -41,6 +46,35 @@ export class RemoteDatastore extends DelegatedDatastore {
         }
 
         return {};
+    }
+
+
+    /**
+     * Delegate handle the mutations in the renderer process.
+     */
+    public write(fingerprint: string,
+                 data: string,
+                 docInfo: IDocInfo,
+                 datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
+
+        const result = this.delegate.write(fingerprint, data, docInfo);
+        this.datastoreMutations.handle(result, datastoreMutation, () => true);
+
+        return result;
+
+    }
+
+    /**
+     * Delegate handle the mutations in the renderer process.
+     */
+    public delete(docMetaFileRef: DocMetaFileRef,
+                  datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
+
+        const result = this.delegate.delete(docMetaFileRef);
+        this.datastoreMutations.handle(result, datastoreMutation, () => true);
+
+        return result;
+
     }
 
     /**

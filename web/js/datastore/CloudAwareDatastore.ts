@@ -166,10 +166,14 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         await this.datastoreMutations.executeBatchedWrite(datastoreMutation,
                                                           async (remoteCoordinator) => {
                                                               await this.cloud.delete(docMetaFileRef, remoteCoordinator);
+                                                              console.log("FIXME: cloud was deleted");
                                                           },
                                                           async (localCoordinator) => {
                                                               await this.local.delete(docMetaFileRef, localCoordinator);
+                                                              console.log("FIXME: local was deleted");
                                                           });
+
+        console.log("the high level delete completed... ");
 
         return {};
 
@@ -458,8 +462,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 // we're also not receiving events for this in the UI so no
                 // progress updates.
                 const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
-                log.warn("File deleted: " , docMetaFileRef);
                 await this.local.delete(docMetaFileRef);
+                log.info("File deleted: " , docMetaFileRef);
             }
 
         }

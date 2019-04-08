@@ -164,7 +164,7 @@ export class RepoDocMetaManager {
         // delete it from the repo now.
         const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(repoDocInfo.docInfo);
 
-        return persistenceLayer.delete(docMetaFileRef);
+        return await persistenceLayer.delete(docMetaFileRef);
 
     }
 

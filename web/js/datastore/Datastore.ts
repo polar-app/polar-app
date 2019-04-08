@@ -201,7 +201,7 @@ interface WritableDatastore {
      * @param data The RAW data to decode by the PersistenceLayer
      * @param docInfo The DocInfo for this document that we're writing
      */
-    write(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
+    write(fingerprint: string, data: string, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
 
     /**
      * Make sure the docs with the given fingerprints are synchronized with

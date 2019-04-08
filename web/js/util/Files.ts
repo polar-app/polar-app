@@ -431,6 +431,12 @@ export class Files {
             } else {
 
                 const readableStream = <NodeJS.ReadableStream> data;
+
+                if (! readableStream.pipe) {
+                    log.error("Given invalid data to copy: ", data);
+                    throw new Error("Given invalid data to copy.  Not supported type.");
+                }
+
                 readableStream.pipe(fs.createWriteStream(path));
             }
 

@@ -2,9 +2,9 @@ import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, Data
 import {WritableBinaryMetaDatastore} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {WriteFileOpts} from './Datastore';
+import {NetworkLayers} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -13,6 +13,7 @@ import {Optional} from '../util/ts/Optional';
 import {Firestore} from '../firebase/Firestore';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {Preconditions} from '../Preconditions';
+import {isPresent} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
@@ -35,8 +36,6 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
-import {isPresent} from '../Preconditions';
-import {NetworkLayers} from './Datastore';
 
 const log = Logger.create();
 
@@ -228,7 +227,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         try {
 
-            this.handleDatastoreMutations(docMetaRef, datastoreMutation);
+            this.handleDatastoreMutations(docMetaRef, datastoreMutation, 'delete');
 
             const commitPromise = Promise.all([
                 this.waitForCommit(docMetaRef),
@@ -746,7 +745,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 .collection(DatastoreCollection.DOC_INFO)
                 .doc(id);
 
-            this.handleDatastoreMutations(docMetaRef, datastoreMutation);
+            this.handleDatastoreMutations(docMetaRef, datastoreMutation, 'write');
 
             const commitPromise = Promise.all([
                 this.waitForCommit(docMetaRef),
@@ -997,13 +996,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     private handleDatastoreMutations(ref: firebase.firestore.DocumentReference,
-                                     datastoreMutation: DatastoreMutation<boolean>) {
+                                     datastoreMutation: DatastoreMutation<boolean>,
+                                     op: 'write' | 'delete') {
 
         const unsubscribeToSnapshot = ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
 
             if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
                 datastoreMutation.written.resolve(true);
-                log.debug("Got written for: ", ref);
+                log.debug(`Got written mutation with op: ${op}`, ref);
 
             }
 
@@ -1017,7 +1017,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 datastoreMutation.written.resolve(true);
                 datastoreMutation.committed.resolve(true);
-                log.debug("Got committed for: ", ref);
+                log.debug(`Got committed mutation with op: ${op}`, ref);
 
                 // not interested in snapshots from this document any more.
                 unsubscribeToSnapshot();
@@ -1116,6 +1116,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             };
 
             const docMetaProvider = AsyncProviders.memoize(async () => {
+
+                if (mutationType === 'deleted') {
+                    throw new Error("Unable to read data when mutationType is 'deleted'");
+                }
+
                 const data = await dataProvider();
                 const docMetaID = FirebaseDatastore.computeDocMetaID(docInfo.fingerprint);
                 Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
@@ -1196,7 +1201,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const progressTracker = new ProgressTracker(docChanges.length, 'firebase-snapshot');
 
         for (const docChange of docChanges) {
+
             handleDocChange(docChange);
+
         }
 
         // progressTracker = new ProgressTracker(snapshot.docs.length);
@@ -1336,7 +1343,6 @@ interface FirebaseDocMetaMutation extends DocMetaMutation {
 /**
  * Convert a Firestore DocumentChangeType to a DocMutationType.  We prefer the
  * CRUD (create update delete) naming.
- * @param docChangeType
  */
 function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): MutationType {
 
@@ -1366,7 +1372,7 @@ interface StorageSettings {
 }
 
 /**
- * A specific type of document ID derived from the fingerprint and only available
- * within Firebase.
+ * A specific type of document ID derived from the fingerprint and only
+ * available within Firebase.
  */
 export type FirebaseDocMetaID = string;

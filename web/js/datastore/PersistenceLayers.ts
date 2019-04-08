@@ -274,7 +274,7 @@ export class PersistenceLayers {
             if (doWriteDocMeta) {
 
                 const data = await source.datastore.getDocMeta(sourceSyncDoc.fingerprint);
-                await target.datastore.write(sourceSyncDoc.fingerprint, data, sourceSyncDoc.docMetaFileRef.docInfo);
+                await target.datastore.write(sourceSyncDoc.fingerprint, data!, sourceSyncDoc.docMetaFileRef.docInfo);
 
                 ++result.docMeta.writes;
 
