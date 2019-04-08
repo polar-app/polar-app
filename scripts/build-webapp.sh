@@ -53,7 +53,4 @@ cp *.svg dist/public
 
 cp manifest.json dist/public
 
-# FIXME: the remaining issue is that I need to permanently accept the TLS
-# certificate locally for my dev environment.
-
-sw-precache --config=sw-precache-config.js
+workbox generateSW workbox-config.js

@@ -1,7 +1,13 @@
 
-function createCommonGlobsForStaticAssetsAtPath(path) {
+const fs = require('fs');
 
-    const exts = ["css", "html", "png", "svg", "ico", "woff2"];
+function createCommonGlobsForStaticAssetsAtPath(path, exts) {
+
+    // const exts = ["css", "html", "png", "svg", "ico", "woff2"];
+
+    if (! exts) {
+        exts = ["css", "html", "png", "svg", "ico", "woff2"];
+    }
 
     const result = [];
 
@@ -14,9 +20,11 @@ function createCommonGlobsForStaticAssetsAtPath(path) {
 }
 
 
-function createCommonGlobsForPath(path) {
+function createCommonGlobsForPath(path, exts) {
 
-    const exts = ["css", "js", "html", "png", "svg", "ico", "woff2"];
+    if (! exts) {
+        exts = ["css", "js", "html", "png", "svg", "ico", "woff2"];
+    }
 
     const result = [];
 
@@ -32,26 +40,27 @@ function createPDFJSGlobs() {
 
     return [
 
-        'build/pdf.js',
-        'build/pdf.worker.js',
-        'web/viewer.js',
-        'web/viewer.css',
-        'web/index.html',
-        'web/locale/en/viewer.properties',
-        ...createCommonGlobsForPath('pdfviewer/web/images'),
+        'pdfviewer/build/pdf.js',
+        'pdfviewer/build/pdf.worker.js',
+        'pdfviewer/web/viewer.js',
+        'pdfviewer/web/viewer.css',
+        'pdfviewer/web/index.html',
+        'pdfviewer/web/locale/en-US/viewer.properties',
+        'pdfviewer/web/locale/en-GB/viewer.properties',
+        ...createCommonGlobsForPath('pdfviewer/web/images', ["png", "svg"]),
 
     ];
 
 }
 
-const staticFileGlobs = [
+const globPatterns = [
 
-    ...createCommonGlobsForStaticAssetsAtPath('apps'),
-    ...createCommonGlobsForPath('htmlviewer'),
+    ...createCommonGlobsForStaticAssetsAtPath('apps', ["css", "html", "svg"]),
+    ...createCommonGlobsForPath('htmlviewer', ["css", "html"]),
 
     ...createPDFJSGlobs(),
 
-    ...createCommonGlobsForPath('pdfviewer-custom'),
+    ...createCommonGlobsForPath('pdfviewer-custom', ['css']),
     ...createCommonGlobsForPath('web/dist'),
     ...createCommonGlobsForPath('web/assets'),
     'icon.ico',
@@ -76,17 +85,24 @@ const staticFileGlobs = [
 
 ];
 
-console.log("Using static file globs: \n ", staticFileGlobs.join("\n  "));
+console.log("Using static file globs: \n ", globPatterns.join("\n  "));
 
 module.exports = {
-    root: 'dist/public',
-    staticFileGlobs,
-    stripPrefix: 'dist/public',
+    globDirectory: 'dist/public',
+    globPatterns,
+    globIgnores: [],
+    globStrict: false,
+    // stripPrefix: 'dist/public',
     maximumFileSizeToCacheInBytes: 15000000,
     // runtimeCaching: [{
     //     urlPattern: /this\\.is\\.a\\.regex/,
     //     handler: 'networkFirst'
     // }]
+    swDest: 'dist/public/service-worker.js',
+    modifyURLPrefix: {
+        // Remove a '/dist' prefix from the URLs:
+        '/dist/public': ''
+    }
 };
 
 

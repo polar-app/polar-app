@@ -87,7 +87,6 @@
     "recursive-readdir": "~2.2.2",
     "spectron": "github:dsabanin/spectron",
     "summernote-typescript": "~0.8.9",
-    "sw-precache": "^5.2.1",
     "thread-loader": "^2.1.2",
     "timekeeper": "~2.1.2",
     "ts-loader": "^5.3.3",
@@ -218,7 +217,8 @@
     "typemoq": "~2.1.0",
     "underscore": "~1.9.1",
     "universal-analytics": "~0.4.20",
-    "uuid": "~3.3.2"
+    "uuid": "~3.3.2",
+    "workbox-cli": "^4.2.0"
   },
   "collective": {
     "type": "opencollective",
