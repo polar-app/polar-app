@@ -78,12 +78,16 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         if (! opts.noInitialSnapshot) {
 
+            log.debug("Performing initial snapshot");
+
             // do not run this if we specify options of noInitialSnapshot
 
             const snapshotListener = async (event: DocMetaSnapshotEvent) => this.docMetaSnapshotEventDispatcher.dispatchEvent(event);
 
             this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
 
+        } else {
+            log.debug("Skipping initial snapshot");
         }
 
         this.initialized = true;
@@ -492,7 +496,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 return Optional.empty();
             }
 
-            return Optional.of(recordHolder.value);
+            const rawFileMeta = recordHolder.value;
+
+            const fileMeta = {
+                ...rawFileMeta,
+                url: this.wrappedDownloadURL(rawFileMeta.url)
+            };
+
+            return Optional.of(fileMeta);
 
         } catch (e) {
 
@@ -602,6 +613,19 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         return await this.getFileMeta(backend, ref, 'cache');
     }
 
+    /**
+     * Optionally wrap the download URL with a middleware URL which can perform
+     * operations like authentication for the underlying download URL.
+     */
+    private wrappedDownloadURL(url: string) {
+
+        return url;
+
+        // this is disabled for now.
+        // return "https://us-central1-polar-cors.cloudfunctions.net/cors?url=" + encodeURIComponent(url);
+
+    }
+
     private async getFileFromStorage(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
 
         // TODO: this code and containsFile could be unified I think.
@@ -617,7 +641,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const metadata = await fileRef.getMetadata();
 
-            const url: string = await fileRef.getDownloadURL();
+            const downloadURL = await fileRef.getDownloadURL();
+            const url: string = this.wrappedDownloadURL(downloadURL);
 
             const meta = metadata.customMetadata;
 

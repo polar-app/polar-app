@@ -214,7 +214,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                     doSelect();
                                 },
 
-                                tabIndex: rowInfo ? rowInfo.viewIndex as number : undefined,
+                                tabIndex: rowInfo ? (rowInfo.viewIndex as number) + 1 : undefined,
 
                                 onKeyDown: (e: any) => {
                                     // this works but I need to handle the arrow keys properly...
