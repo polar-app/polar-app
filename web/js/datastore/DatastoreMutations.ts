@@ -47,7 +47,6 @@ export class DatastoreMutations {
                           remoteMutations.committed.get()])
                 .then(() => {
 
-                    console.log("FIXME: doing the local now");
                     localSync(localMutations)
                         .catch(err => reject(err));
 
@@ -58,18 +57,11 @@ export class DatastoreMutations {
 
             if (this.consistency === 'committed') {
 
-                console.log("FIXME: going to wait for committed");
-
-                // only return once the remote and local promises / operations
-                // have been completed...
-
                 datastoreMutation.committed.get()
                     .then(() => resolve())
                     .catch((err) => reject(err));
 
             } else {
-
-                console.log("FIXME: goign to wiat for written");
 
                 datastoreMutation.written.get()
                     .then(() => resolve())
@@ -85,12 +77,6 @@ export class DatastoreMutations {
     public batched<T>(remoteMutations: DatastoreMutation<T>,
                       localMutations: DatastoreMutation<T>,
                       target: DatastoreMutation<T> ) {
-
-        console.log("FIXME creating batched");
-
-        remoteMutations.written.get().then(() => console.log("FIXME666.2: resolved"));
-        localMutations.written.get().then(() => console.log("FIXME777.2: resolved"));
-
 
         this.batchPromises(remoteMutations.written.get(), localMutations.written.get(), target.written, 'written');
 
@@ -112,18 +98,11 @@ export class DatastoreMutations {
                              latch: Latch<T>,
                              consistency: DatastoreConsistency): void {
 
-        remotePromise.then(() => console.log("FIXME666.3: remotePromise resolved"));
-        localPromise.then(() => console.log("FIXME777.3: localPromise resolved"));
-
         const batch = Promise.all([remotePromise, localPromise]);
 
-        console.log("FIXME created batch promises for:  " + consistency);
-
         batch.then((result) => {
-            console.log("FIXME: batch resolved at consistency: " + consistency);
             latch.resolve(result[0]);
         }).catch(err => {
-            console.log("FIXME: batch rejected at consistency: " + consistency);
             latch.reject(err);
         });
 
@@ -137,7 +116,6 @@ export class DatastoreMutations {
 
             try {
 
-                console.log("FIXME: DatastoreMutation has been resolved");
                 target.written.resolve(converter(result));
                 target.committed.resolve(converter(result));
 
@@ -148,7 +126,6 @@ export class DatastoreMutations {
         }).catch(err => {
 
             try {
-                console.log("FIXME: DatastoreMutation has been rejected");
 
                 target.written.reject(err);
                 target.committed.reject(err);

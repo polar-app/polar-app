@@ -1,3 +1,16 @@
+# 1.17.1
+
+- Fixed ugly bug with async providers reading the value before it was awaited
+
+- Fixed bugs with the disk store not properly handling deletions of .meta files
+ 
+- Fixed bugs with delete when the cloud store was running not properly showing
+  that deletes were performed.
+  
+- Fixed bad bug where deletes were replicated and attempted to be read
+
+- New fix where a notice is given to the user that a delete was successful.
+
 # 1.17.0
 
 - Added the ability to easily open a document by right clicking.

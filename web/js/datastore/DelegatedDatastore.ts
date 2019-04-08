@@ -23,7 +23,7 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
 
     public readonly filesDir: string;
 
-    public readonly delegate: Datastore;
+    protected readonly delegate: Datastore;
 
     constructor(delegate: Datastore) {
         super();
