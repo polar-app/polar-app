@@ -68,7 +68,7 @@ export class Platforms {
     /**
      * Return the platform type (desktop or mobile)
      */
-    public static type() {
+    public static type(): PlatformType {
 
         const platform = this.get();
 
@@ -110,4 +110,4 @@ export type PlatformEnumType
       Platform.IOS |
       Platform.UNKNOWN;
 
-export type PlatformType = 'desktop' | 'mobile' | 'tablet' | 'unknown';
+export type PlatformType = 'desktop' | 'mobile' | 'unknown';
