@@ -152,7 +152,7 @@
     "featherlight": "~1.7.13",
     "file-exists-promise": "~1.0.2",
     "firebase": "^5.8.6",
-    "firebase-tools": "^6.5.1",
+    "firebase-tools": "^6.6.0",
     "firebaseui": "^3.5.2",
     "flowchart": "~1.2.0",
     "font-awesome": "~4.7.0",

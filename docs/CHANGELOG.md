@@ -1,6 +1,9 @@
 
 # 1.17.2
 
+- Webapp now supports range queries for fetching PDFs rather than fetching the 
+  entire document.  MASSIVE performance improvement here.
+
 - Migrated to workbox as sw-precache was officially deprecated.
 
 # 1.17.1

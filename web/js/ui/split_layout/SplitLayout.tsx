@@ -1,7 +1,4 @@
 import * as React from 'react';
-import {Logger} from '../../logger/Logger';
-
-const log = Logger.create();
 
 export class SplitLayout extends React.PureComponent<any, any> {
 

@@ -46,6 +46,7 @@ import {DocContextMenu} from './DocContextMenu';
 import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
+import {Jumpstarter} from './Jumpstarter';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -171,68 +172,70 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <SimpleTooltipEx text={`
-                                 This is the text for the tooltip
-                                 `}>
+                <Jumpstarter/>
 
-                    <div>
-                        this is code for the new tooltip
-                    </div>
+                {/*<SimpleTooltipEx text={`*/}
+                                 {/*This is the text for the tooltip*/}
+                                 {/*`}>*/}
 
-                </SimpleTooltipEx>
+                    {/*<div>*/}
+                        {/*this is code for the new tooltip*/}
+                    {/*</div>*/}
 
-                <div id="old-tooltip-example">
-                    this is code for the old tooltip
-                </div>
+                {/*</SimpleTooltipEx>*/}
+
+                {/*<div id="old-tooltip-example">*/}
+                    {/*this is code for the old tooltip*/}
+                {/*</div>*/}
 
 
-                <SimpleTooltip target="old-tooltip-example">
-                    this is an old tooltip.
-                </SimpleTooltip>
+                {/*<SimpleTooltip target="old-tooltip-example">*/}
+                    {/*this is an old tooltip.*/}
+                {/*</SimpleTooltip>*/}
 
-                <DocContextMenu onSetTitle={() => console.log("set title")}>
+                {/*<DocContextMenu onSetTitle={() => console.log("set title")}>*/}
 
-                    <div>
-                        Right click or long-tap on this box
-                    </div>
+                    {/*<div>*/}
+                        {/*Right click or long-tap on this box*/}
+                    {/*</div>*/}
 
-                </DocContextMenu>
+                {/*</DocContextMenu>*/}
 
-                <DocContextMenu2 >
+                {/*<DocContextMenu2 >*/}
 
-                    <div>
-                        Right click or long-tap on this box
-                    </div>
+                    {/*<div>*/}
+                        {/*Right click or long-tap on this box*/}
+                    {/*</div>*/}
 
-                </DocContextMenu2>
+                {/*</DocContextMenu2>*/}
 
-                {/*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*/}
-                    {/*<DropdownToggle tag="div">*/}
-                    {/*</DropdownToggle>*/}
-                    {/*<DropdownMenu>*/}
-                        {/*<DropdownItem header>Header</DropdownItem>*/}
-                        {/*<DropdownItem>Some Action</DropdownItem>*/}
-                        {/*<DropdownItem disabled>Action (disabled)</DropdownItem>*/}
-                        {/*<DropdownItem divider />*/}
-                        {/*<DropdownItem>Foo Action</DropdownItem>*/}
-                        {/*<DropdownItem>Bar Action</DropdownItem>*/}
-                        {/*<DropdownItem>Quo Action</DropdownItem>*/}
-                    {/*</DropdownMenu>*/}
-                {/*</Dropdown>*/}
+                {/*/!*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*!/*/}
+                    {/*/!*<DropdownToggle tag="div">*!/*/}
+                    {/*/!*</DropdownToggle>*!/*/}
+                    {/*/!*<DropdownMenu>*!/*/}
+                        {/*/!*<DropdownItem header>Header</DropdownItem>*!/*/}
+                        {/*/!*<DropdownItem>Some Action</DropdownItem>*!/*/}
+                        {/*/!*<DropdownItem disabled>Action (disabled)</DropdownItem>*!/*/}
+                        {/*/!*<DropdownItem divider />*!/*/}
+                        {/*/!*<DropdownItem>Foo Action</DropdownItem>*!/*/}
+                        {/*/!*<DropdownItem>Bar Action</DropdownItem>*!/*/}
+                        {/*/!*<DropdownItem>Quo Action</DropdownItem>*!/*/}
+                    {/*/!*</DropdownMenu>*!/*/}
+                {/*/!*</Dropdown>*!/*/}
 
-                asdf
+                {/*asdf*/}
 
-                {/*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*/}
+                {/*/!*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*!/*/}
 
-                    <DropdownItem header>Header</DropdownItem>
-                    <DropdownItem onClick={NULL_FUNCTION}>Some Action</DropdownItem>
-                    <DropdownItem disabled>Action (disabled)</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem>Foo Action</DropdownItem>
-                    <DropdownItem>Bar Action</DropdownItem>
-                    <DropdownItem>Quo Action</DropdownItem>
+                    {/*<DropdownItem header>Header</DropdownItem>*/}
+                    {/*<DropdownItem onClick={NULL_FUNCTION}>Some Action</DropdownItem>*/}
+                    {/*<DropdownItem disabled>Action (disabled)</DropdownItem>*/}
+                    {/*<DropdownItem divider />*/}
+                    {/*<DropdownItem>Foo Action</DropdownItem>*/}
+                    {/*<DropdownItem>Bar Action</DropdownItem>*/}
+                    {/*<DropdownItem>Quo Action</DropdownItem>*/}
 
-                {/*</Dropdown>*/}
+                {/*/!*</Dropdown>*!/*/}
 
             </div>
 
