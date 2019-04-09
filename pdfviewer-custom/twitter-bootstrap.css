@@ -39,6 +39,15 @@ button.dropdown-item:hover {
 
 }
 
+@media only screen and (min-device-width: 480px) {
+
+    .d-none-desktop {
+        display: none;
+    }
+
+}
+
+
 .twitter-bootstrap-content *,
 .twitter-bootstrap-content {
     font-size: 16px;

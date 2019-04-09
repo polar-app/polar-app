@@ -30,7 +30,7 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
 
         return (
 
-            <div className="ml-1 mr-1">
+            <div className="ml-1 mr-1 d-none-mobile">
 
                 <Button hidden={hidden}
                         onClick={() => this.onClick()}
