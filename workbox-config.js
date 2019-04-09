@@ -1,8 +1,10 @@
-
 const fs = require('fs');
 const libpath = require('path');
 
 const globDirectory = 'dist/public';
+
+const STATIC_FILE_EXTENSIONS = ["css", "html", "png", "svg", "ico", "woff2"];
+const JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS = ["js", ...STATIC_FILE_EXTENSIONS];
 
 function recurse(dir) {
 
@@ -30,45 +32,60 @@ function recurse(dir) {
 
 }
 
-function toExt(path) {
-    return
-}
+function toExtension(path) {
 
-function createCommonGlobsForStaticAssetsAtPath(path, exts) {
-
-    // const exts = ["css", "html", "png", "svg", "ico", "woff2"];
-
-    if (! exts) {
-        exts = ["css", "html", "png", "svg", "ico", "woff2"];
+    if (! path) {
+        return undefined;
     }
 
-    recurse(libpath.join(globDirectory, path))
-        .filter(current => )
+    const matches = path.match(/\.([a-z0-9]{3,4})$/);
 
-    const result = [];
-
-    for (const ext of exts) {
-        result.push(path + "/**/*." + ext);
+    if (matches && matches.length === 2) {
+        return matches[1];
     }
 
-    return result;
+    return undefined;
 
 }
 
+/**
+ * Return true if the path has one of the given extensions.
+ */
+function hasExtension(path, exts) {
 
-function createCommonGlobsForPath(path, exts) {
+    const ext = toExtension(path);
+
+    if (! ext) {
+        return false;
+    }
+
+    return exts.includes(ext);
+
+}
+
+function stripDirPrefix(path, prefix) {
+
+    if (! prefix.endsWith(libpath.sep)) {
+        prefix = prefix + libpath.sep
+    }
+
+    if (path.startsWith(prefix)) {
+        return path.substring(prefix.length);
+    }
+
+    return path;
+
+}
+
+function createGlobsRecursively(path, exts) {
 
     if (! exts) {
-        exts = ["css", "js", "html", "png", "svg", "ico", "woff2"];
+        exts = STATIC_FILE_EXTENSIONS;
     }
 
-    const result = [];
-
-    for (const ext of exts) {
-        result.push(path + "/**/*." + ext);
-    }
-
-    return result;
+    return recurse(libpath.join(globDirectory, path))
+        .filter(current => hasExtension(current, exts))
+        .map(current => stripDirPrefix(current, globDirectory));
 
 }
 
@@ -83,7 +100,7 @@ function createPDFJSGlobs() {
         'pdfviewer/web/index.html',
         'pdfviewer/web/locale/en-US/viewer.properties',
         'pdfviewer/web/locale/en-GB/viewer.properties',
-        ...createCommonGlobsForPath('pdfviewer/web/images', ["png", "svg"]),
+        ...createGlobsRecursively('pdfviewer/web/images', ["png", "svg"]),
 
     ];
 
@@ -91,14 +108,14 @@ function createPDFJSGlobs() {
 
 const globPatterns = [
 
-    ...createCommonGlobsForStaticAssetsAtPath('apps'),
-    ...createCommonGlobsForPath('htmlviewer'),
+    ...createGlobsRecursively('apps', STATIC_FILE_EXTENSIONS),
+    ...createGlobsRecursively('htmlviewer', JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS),
 
     ...createPDFJSGlobs(),
 
-    ...createCommonGlobsForPath('pdfviewer-custom'),
-    ...createCommonGlobsForPath('web/dist'),
-    ...createCommonGlobsForPath('web/assets'),
+    ...createGlobsRecursively('pdfviewer-custom', JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS),
+    ...createGlobsRecursively('web/dist', JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS),
+    ...createGlobsRecursively('web/assets', JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS),
     'icon.ico',
     'icon.png',
     'icon.svg',
@@ -122,9 +139,7 @@ const globPatterns = [
 ];
 
 console.log("Using static file globs: \n ", globPatterns.join("\n  "));
-
-const paths = recurse('dist/public');
-console.log(paths);
+console.log("====");
 
 module.exports = {
     globDirectory: 'dist/public',
