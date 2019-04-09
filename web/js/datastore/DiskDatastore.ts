@@ -30,6 +30,7 @@ import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {isPresent} from '../Preconditions';
 import {BinaryFileData} from './Datastore';
+import {string} from 'prop-types';
 
 const log = Logger.create();
 
@@ -262,11 +263,11 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         // this would create the parent dir for the file when it does not exist.
         await Files.createDirAsync(fileReference.dir);
 
-        if (data instanceof Blob) {
-            throw new Error("Can not support blobs");
-        }
+        type DiskBinaryFileData = FileHandle | Buffer | string | NodeJS.ReadableStream;
 
-        await Files.writeFileAsync(fileReference.path, data, {existing: 'link'});
+        const diskData = <DiskBinaryFileData> data;
+
+        await Files.writeFileAsync(fileReference.path, diskData, {existing: 'link'});
 
         await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '), {atomic: true});
 
