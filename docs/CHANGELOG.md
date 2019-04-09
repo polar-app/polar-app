@@ -1,6 +1,8 @@
 
 # 1.17.2
 
+- Fixed blob streams when replicating from the cloud back to disk.  
+
 - Webapp now supports range queries for fetching PDFs rather than fetching the 
   entire document.  MASSIVE performance improvement here.
 
