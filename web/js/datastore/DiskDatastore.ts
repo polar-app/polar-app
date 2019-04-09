@@ -29,6 +29,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {isPresent} from '../Preconditions';
+import {BinaryFileData} from './Datastore';
 
 const log = Logger.create();
 
@@ -237,7 +238,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     public async writeFile(backend: Backend,
                            ref: FileRef,
-                           data: FileHandle | Buffer | string,
+                           data: BinaryFileData,
                            opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
 
         if (! isPresent(data)) {
@@ -260,6 +261,10 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         // this would create the parent dir for the file when it does not exist.
         await Files.createDirAsync(fileReference.dir);
+
+        if (data instanceof Blob) {
+            throw new Error("Can not support blobs");
+        }
 
         await Files.writeFileAsync(fileReference.path, data, {existing: 'link'});
 

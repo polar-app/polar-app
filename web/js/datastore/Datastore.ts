@@ -283,7 +283,7 @@ export interface WritableBinaryMetaDatastore {
     writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void>;
 }
 
-export type BinaryFileData = FileHandle | Buffer | string | Blob;
+export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream;
 
 export function isBinaryFileData(data: any): boolean {
 

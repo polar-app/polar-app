@@ -84,13 +84,14 @@ export class Blobs {
 
                 const doRead = () => {
 
-                    // It is recommended that errors occurring during the processing
-                    // of the readable._read() method are emitted using the 'error'
-                    // event rather than being thrown. Throwing an Error from within
-                    // readable._read() can result in unexpected and inconsistent
-                    // behavior depending on whether the stream is operating in
-                    // flowing or paused mode. Using the 'error' event ensures
-                    // consistent and predictable handling of errors.
+                    // It is recommended that errors occurring during the
+                    // processing of the readable._read() method are emitted
+                    // using the 'error' event rather than being thrown.
+                    // Throwing an Error from within readable._read() can result
+                    // in unexpected and inconsistent behavior depending on
+                    // whether the stream is operating in flowing or paused
+                    // mode. Using the 'error' event ensures consistent and
+                    // predictable handling of errors.
                     doReadAsync().catch(err => {
                         this.emit('error', err);
                         this.push(null);
@@ -118,6 +119,11 @@ export class Blobs {
 
                 };
 
+                // we have to do the first read now... the rest should just
+                // work automatically because _read will be called and we push
+                // until no data is available.
+                doRead();
+
             }
 
 
@@ -126,67 +132,5 @@ export class Blobs {
         return new BlobReadableStream(opts);
 
     }
-
-
-    // public static async toStream(blob: Blob): Promise<NodeJS.ReadableStream> {
-    //
-    //     const result = new stream.Readable();
-    //
-    //     try {
-    //         const chunkSize = 4096;
-    //
-    //         let index: number = 0;
-    //
-    //         const computeEnd = () => {
-    //
-    //             let result = index + chunkSize;
-    //             if (result > blob.size) {
-    //                 result = blob.size;
-    //             }
-    //
-    //             return result;
-    //
-    //         };
-    //
-    //         result.on()
-    //
-    //         while (index < blob.size) {
-    //
-    //             const end = computeEnd();
-    //             const slice = blob.slice(index, end);
-    //
-    //             // now read the slice and write it to the stream
-    //             const buff = await this.toArrayBuffer(slice);
-    //
-    //
-    //             // If .push() returns a false value, the stream will stop
-    //             // reading from the source. Otherwise, it will continue without
-    //             // pause.
-    //
-    //             result.push(buff);
-    //
-    //             index += chunkSize;
-    //
-    //         }
-    //
-    //         result.push(null);
-    //
-    //     } catch (e) {
-    //         result.emit('error', e);
-    //         result.push(null);
-    //     }
-    //
-    //
-    // //     if (e) {
-    // //         rs.emit('error', e)
-    // //         rs.push(null)
-    // //     }
-    // //     rs.push(buffer)
-    // //     rs.push(null)
-    // // })
-    //
-    //     return result;
-    //
-    // }
 
 }

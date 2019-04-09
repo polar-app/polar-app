@@ -1,10 +1,14 @@
 import {Datastore, DatastoreID, ErrorListener, InitResult} from './Datastore';
 import {DocMetaRef} from './DocMetaRef';
-import {Logger} from '../logger/Logger';
 import {DiskDatastore} from './DiskDatastore';
 import {RemoteDatastore} from './RemoteDatastore';
-
-const log = Logger.create();
+import {Backend} from './Backend';
+import {FileRef} from './Datastore';
+import {BinaryFileData} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {DocFileMeta} from './DocFileMeta';
+import {isBinaryFileData} from './Datastore';
+import {Blobs} from '../util/Blobs';
 
 /**
  * A datastore which extends RemoteDatastore but adds support for local disk
@@ -27,6 +31,29 @@ export class HybridRemoteDatastore extends RemoteDatastore {
         await super.init();
         await this.diskDatastore.init(errorListener);
         return {};
+    }
+
+
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
+
+        if ( !isBinaryFileData(data)) {
+            throw new Error("Data is not BinaryFileData");
+        }
+
+        const toDiskData = (): BinaryFileData | NodeJS.ReadableStream => {
+
+            if (data instanceof Blob) {
+                return Blobs.toStream(data);
+            } else {
+                return data;
+            }
+
+        };
+
+        const diskData = toDiskData();
+
+        return this.diskDatastore.writeFile(backend, ref, diskData, opts);
+
     }
 
     public async getDocMetaRefs(): Promise<DocMetaRef[]> {
