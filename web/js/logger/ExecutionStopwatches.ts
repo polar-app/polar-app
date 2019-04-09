@@ -19,7 +19,7 @@ import {Logger} from './Logger';
 // - I could make ALL the loggers extends BaseLogger which is an ILogger but
 //   also adds this timing functinonality below.
 
-export class LogStopwatches {
+export class ExecutionStopwatches {
 
     public static create<T>(name: string, delegate: () => T, thresholds: Thresholds = new DefaultThresholds()): T {
 

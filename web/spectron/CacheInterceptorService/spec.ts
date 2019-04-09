@@ -4,7 +4,7 @@ import {MockPHZWriter} from '../../js/phz/MockPHZWriter';
 import {FilePaths} from '../../js/util/FilePaths';
 
 
-describe("CacheInterceptorService", function () {
+xdescribe("CacheInterceptorService", function () {
 
     this.timeout(30000);
 

@@ -3,7 +3,9 @@ import {Logger} from '../logger/Logger';
 import {CIDs} from './CIDs';
 import {Version} from '../util/Version';
 import {Stopwatch} from '../util/Stopwatch';
+import {TrackedDuration} from '../util/Stopwatch';
 import {Stopwatches} from '../util/Stopwatches';
+import {DurationMS} from '../util/TimeDurations';
 
 // const TRACKING_ID = 'UA-122721184-1';
 const TRACKING_ID = 'UA-122721184-5';
@@ -232,6 +234,16 @@ export interface Timer {
 
 }
 
+class LogThresholds {
+
+    public static readonly info = 500;
+
+    public static readonly warn = 1000;
+
+    public static readonly error = 1500;
+
+}
+
 class DefaultTimer implements Timer {
 
     private stopped: boolean = false;
@@ -252,11 +264,58 @@ class DefaultTimer implements Timer {
         }
 
         const duration = this.stopwatch.stop();
-        RendererAnalytics.timing(this.category, this.variable, duration.durationMS);
+
+        this.doAnalytics(duration);
+        this.doLogging(duration);
 
         this.stopped = true;
 
     }
+
+    private doAnalytics(duration: TrackedDuration) {
+        RendererAnalytics.timing(this.category, this.variable, duration.durationMS);
+    }
+
+    private doLogging(duration: TrackedDuration) {
+
+        type ThresholdLevel = 'error' | 'warn' | 'info';
+
+        const toLevel = (duration: DurationMS): ThresholdLevel | undefined => {
+
+            if (duration > LogThresholds.error) {
+                return 'error';
+            } else if (duration > LogThresholds.warn) {
+                return 'warn';
+            } else if (duration > LogThresholds.info) {
+                return 'info';
+            }
+
+            return undefined;
+
+        };
+
+        const level = toLevel(duration.durationMS);
+
+        const message = `Operation took too long: ${this.category}:${this.variable}: ${duration.durationMS}ms`;
+
+        switch (level) {
+
+            case 'info':
+                log.info(message);
+                break;
+
+            case 'warn':
+                log.warn(message);
+                break;
+
+            case 'error':
+                log.error(message);
+                break;
+
+        }
+
+    }
+
 
 }
 
