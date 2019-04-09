@@ -1,7 +1,10 @@
 
-import {AppRuntime} from '../web/js/AppRuntime';
 
-if ('serviceWorker' in navigator && AppRuntime.isBrowser()) {
+function isElectron() {
+    return window && 'process' in window;
+}
+
+if ('serviceWorker' in navigator && ! isElectron()) {
     // Delay registration until after the page has loaded, to ensure that our
     // precaching requests don't degrade the first visit experience.
     // See https://developers.google.com/web/fundamentals/instant-and-offline/service-worker/registration
