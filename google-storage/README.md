@@ -30,15 +30,3 @@ access-control-expose-headers: Content-Length, Date, Server, Transfer-Encoding, 
 
 https://github.com/mozilla/pdf.js/issues/4530
 https://github.com/mozilla/pdf.js/issues/3150
-
-# I have to re-grant myself...
-
-cors	get	Buckets	storage.buckets.get
-cors	set	Buckets	storage.buckets.update
-
-https://cloud.google.com/storage/docs/access-control/iam-roles
-
-
-gsutil iam ch user:burtonator@gmail.com:objectCreator gs://stash
-
-gsutil iam get gs://stash
