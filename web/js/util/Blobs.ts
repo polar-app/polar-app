@@ -1,5 +1,6 @@
 import * as stream from 'stream';
 import {ReadableOptions} from 'stream';
+import {ArrayBuffers} from './ArrayBuffers';
 
 export class Blobs {
 
@@ -104,7 +105,9 @@ export class Blobs {
                     const end = computeEnd();
                     const slice = blob.slice(this.index, end);
 
-                    const buff = await Blobs.toArrayBuffer(slice);
+                    const arrayBuffer = await Blobs.toArrayBuffer(slice);
+                    const buff = ArrayBuffers.toBuffer(arrayBuffer);
+
                     const doNextRead = this.push(buff);
 
                     this.index += size;
