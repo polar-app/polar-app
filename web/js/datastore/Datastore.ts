@@ -17,6 +17,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Prefs} from '../util/prefs/Prefs';
+import {isPresent} from '../Preconditions';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -283,6 +284,33 @@ export interface WritableBinaryMetaDatastore {
 }
 
 export type BinaryFileData = FileHandle | Buffer | string | Blob;
+
+export function isBinaryFileData(data: any): boolean {
+
+    if (! isPresent(data)) {
+        return false;
+    }
+
+    if (typeof data === 'string') {
+        return true;
+    }
+
+    if (data instanceof Buffer) {
+        return true;
+    }
+
+    if (data instanceof Blob) {
+        return true;
+    }
+
+    if (isPresent(data.path)) {
+        // if it seems like a FileHandle then use it as it will be supported
+        return true;
+    }
+
+    return false;
+
+}
 
 export interface FileRef {
 

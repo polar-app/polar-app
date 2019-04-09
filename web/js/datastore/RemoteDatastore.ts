@@ -8,6 +8,12 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {IDocInfo} from '../metadata/DocInfo';
+import {Backend} from './Backend';
+import {FileRef} from './Datastore';
+import {BinaryFileData} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {DocFileMeta} from './DocFileMeta';
+import {isBinaryFileData} from './Datastore';
 
 const log = Logger.create();
 
@@ -48,6 +54,14 @@ export class RemoteDatastore extends DelegatedDatastore {
         return {};
     }
 
+    public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
+
+        if ( !isBinaryFileData(data)) {
+            throw new Error("Data is not BinaryFileData");
+        }
+
+        return super.writeFile(backend, ref, data, opts);
+    }
 
     /**
      * Delegate handle the mutations in the renderer process.

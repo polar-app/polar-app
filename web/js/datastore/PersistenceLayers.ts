@@ -213,7 +213,7 @@ export class PersistenceLayers {
 
                     // TODO: make this a dedicated function to transfer between
                     // do datastores... or at least a dedicated function to read
-                    // it in as a buffe but this might be less of an issue now
+                    // it in as a buffer but this might be less of an issue now
                     // that I know that both firebase and the disk datastore
                     // can easily convert URLs to blobs and work with them.
 
