@@ -1,3 +1,8 @@
+
+# 1.17.2
+
+- Migrated to workbox as sw-precache was officially deprecated.
+
 # 1.17.1
 
 - Fixed ugly bug with async providers reading the value before it was awaited                                                            
