@@ -1,6 +1,6 @@
 # 1.17.1
 
-- Fixed ugly bug with async providers reading the value before it was awaited
+- Fixed ugly bug with async providers reading the value before it was awaited                                                            
 
 - Fixed bugs with the disk store not properly handling deletions of .meta files
  
@@ -25,7 +25,7 @@
   fly from within Polar.
 
 - Fixed ugly bug with handling special chars in filenames within the browser.
-
+                                                           
 - In Electron, the viewer window and the app repo now share the same session and
   the this means that we can use the cloud or firebase datastore... whichever 
   we are configured for...  
