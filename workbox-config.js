@@ -1,5 +1,38 @@
 
 const fs = require('fs');
+const libpath = require('path');
+
+const globDirectory = 'dist/public';
+
+function recurse(dir) {
+
+    const files = fs.readdirSync(dir);
+
+    const result  = [];
+
+    for (const file of files) {
+
+        const path = libpath.join(dir, file);
+
+        const stat = fs.statSync(path);
+
+        if (stat.isDirectory()) {
+            result.push(...recurse(path));
+        }
+
+        if (stat.isFile()) {
+            result.push(path);
+        }
+
+    }
+
+    return result;
+
+}
+
+function toExt(path) {
+    return
+}
 
 function createCommonGlobsForStaticAssetsAtPath(path, exts) {
 
@@ -8,6 +41,9 @@ function createCommonGlobsForStaticAssetsAtPath(path, exts) {
     if (! exts) {
         exts = ["css", "html", "png", "svg", "ico", "woff2"];
     }
+
+    recurse(libpath.join(globDirectory, path))
+        .filter(current => )
 
     const result = [];
 
@@ -55,12 +91,12 @@ function createPDFJSGlobs() {
 
 const globPatterns = [
 
-    ...createCommonGlobsForStaticAssetsAtPath('apps', ["css", "html", "svg"]),
-    ...createCommonGlobsForPath('htmlviewer', ["css", "html"]),
+    ...createCommonGlobsForStaticAssetsAtPath('apps'),
+    ...createCommonGlobsForPath('htmlviewer'),
 
     ...createPDFJSGlobs(),
 
-    ...createCommonGlobsForPath('pdfviewer-custom', ['css']),
+    ...createCommonGlobsForPath('pdfviewer-custom'),
     ...createCommonGlobsForPath('web/dist'),
     ...createCommonGlobsForPath('web/assets'),
     'icon.ico',
@@ -86,6 +122,9 @@ const globPatterns = [
 ];
 
 console.log("Using static file globs: \n ", globPatterns.join("\n  "));
+
+const paths = recurse('dist/public');
+console.log(paths);
 
 module.exports = {
     globDirectory: 'dist/public',
