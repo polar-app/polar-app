@@ -1,6 +1,34 @@
 [
   {
     "origin": ["https://getpolarized.io", "https://localapp.getpolarized.io", "https://app.getpolarized.io"],
+    "requestHeader": [
+      "Content-Type",
+      "Content-Length",
+      "Date",
+      "Server",
+      "Transfer-Encoding",
+      "X-GUploader-UploadID",
+      "X-Google-Trace",
+      "Accept-Ranges",
+      "Content-Encoding",
+      "Content-Length",
+      "Content-Range",
+      "Range"
+    ],
+    "responseHeader": [
+      "Content-Type",
+      "Content-Length",
+      "Date",
+      "Server",
+      "Transfer-Encoding",
+      "X-GUploader-UploadID",
+      "X-Google-Trace",
+      "Accept-Ranges",
+      "Content-Encoding",
+      "Content-Length",
+      "Content-Range",
+      "Range"
+    ],
     "method": ["GET", "HEAD"]
   }
 ]
