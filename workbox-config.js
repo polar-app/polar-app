@@ -119,6 +119,7 @@ const globPatterns = [
     'icon.ico',
     'icon.png',
     'icon.svg',
+    'index.html',
     'manifest.json',
     'apps/init.js',
     'apps/service-worker-registration.js',

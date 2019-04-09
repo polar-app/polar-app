@@ -53,4 +53,6 @@ cp *.svg dist/public
 
 cp manifest.json dist/public
 
+cp apps/repository/index.html dist/public
+
 workbox generateSW workbox-config.js
