@@ -38,7 +38,7 @@ function toExtension(path) {
         return undefined;
     }
 
-    const matches = path.match(/\.([a-z0-9]{3,4})$/);
+    const matches = path.match(/\.([a-z0-9]{1,15})$/);
 
     if (matches && matches.length === 2) {
         return matches[1];

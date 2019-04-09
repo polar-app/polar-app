@@ -25,7 +25,7 @@
   fly from within Polar.
 
 - Fixed ugly bug with handling special chars in filenames within the browser.
-                                                           
+                                                           t t 
 - In Electron, the viewer window and the app repo now share the same session and
   the this means that we can use the cloud or firebase datastore... whichever 
   we are configured for...  

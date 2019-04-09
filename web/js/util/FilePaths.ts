@@ -141,7 +141,7 @@ export class FilePaths {
             return Optional.empty();
         }
 
-        const matches = path.match(/\.([a-z0-9]{3,4})$/);
+        const matches = path.match(/\.([a-z0-9]{1,15})$/);
 
         if (matches && matches.length === 2) {
             return Optional.of(matches[1]);
