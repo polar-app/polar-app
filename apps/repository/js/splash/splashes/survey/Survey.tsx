@@ -6,7 +6,7 @@ import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_la
 import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
 import {CallToActionLink} from '../components/CallToActionLink';
 
-const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
+export const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
 
 // https://kevinburton1.typeform.com/to/BuX1Ef
 

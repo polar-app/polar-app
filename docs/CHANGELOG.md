@@ -1,4 +1,9 @@
 
+# 1.17.3
+
+- Integrated the net promoter score to prompt once per week so we get more NPS 
+  data points.
+
 # 1.17.2
 
 - Fixed blob streams when replicating from the cloud back to disk.  

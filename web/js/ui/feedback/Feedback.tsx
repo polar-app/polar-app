@@ -2,6 +2,8 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {LeftRightSplit} from '../left_right_split/LeftRightSplit';
+import {Nav} from '../util/Nav';
+import {SURVEY_LINK} from '../../../../apps/repository/js/splash/splashes/survey/Survey';
 
 export class Feedback extends React.Component<IProps, IState> {
 
@@ -10,6 +12,7 @@ export class Feedback extends React.Component<IProps, IState> {
 
         this.onFeedback = this.onFeedback.bind(this);
         this.onUnsure = this.onUnsure.bind(this);
+        this.takeExtendedSurvey = this.takeExtendedSurvey.bind(this);
 
         this.state = {
             completed: false
@@ -167,6 +170,12 @@ export class Feedback extends React.Component<IProps, IState> {
 
                 <ButtonTable/>
 
+                <div className="text-center mt-2">
+                    <Button color="link" size="sm" onClick={() => this.takeExtendedSurvey()}>Take Extended Survey</Button>
+                </div>
+
+                {this.props.footer}
+
             </div>;
 
         };
@@ -198,6 +207,13 @@ export class Feedback extends React.Component<IProps, IState> {
         if (this.props.onRated) {
             this.props.onRated();
         }
+
+    }
+
+    private takeExtendedSurvey() {
+
+        Nav.openLinkWithNewTab(SURVEY_LINK);
+        this.markCompleted();
 
     }
 
@@ -258,6 +274,8 @@ export interface IProps {
      * sending the feedback.
      */
     readonly unsure?: boolean;
+
+    readonly footer?: JSX.Element;
 
 }
 

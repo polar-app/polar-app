@@ -47,6 +47,7 @@ import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import {FundraisingCampaign} from './FundraisingCampaign';
+import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -169,13 +170,20 @@ class App<P> extends React.Component<{}, IAppState> {
             //     hello worldasdfasdf
             //
             // </div>
+          //
+          // {/*<LeftRightSplit left={*/}
+          //     {/*<div className="text-sm text-muted mt-2">We also have an extended*/}
+          //         {/*survey if you'd like to provide more feedback.</div>*/}
+          // {/*}*/}
+          //                 {/*right={<div/>}/>*/}
 
             <div>
 
                 <Feedback category='net-promoter-score'
                           title='How likely are you to recommend Polar to a colleague?'
                           from="Not likely"
-                          to="Very likely"/>
+                          to="Very likely"
+                />
 
                 <AnkiReviewContent/>
 
