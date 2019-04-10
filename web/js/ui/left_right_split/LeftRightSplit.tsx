@@ -26,7 +26,8 @@ export class LeftRightSplit extends React.PureComponent<IProps, any> {
 
         return (
 
-            <div className={'split-layout' + " " + this.props.className || ""}>
+            <div className={'split-layout' + " " + this.props.className || ""}
+                 style={this.props.style}>
 
                 <div style={{display: 'flex'}}>
 
@@ -71,6 +72,8 @@ interface IProps {
      * Additional classes
      */
     readonly className?: string;
+
+    readonly style?: React.CSSProperties;
 
     readonly left: JSX.Element;
 

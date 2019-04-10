@@ -46,7 +46,7 @@ import {DocContextMenu} from './DocContextMenu';
 import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
-import {Jumpstarter} from './Jumpstarter';
+import {FundraisingCampaign} from './FundraisingCampaign';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -172,7 +172,14 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <Jumpstarter/>
+                <Feedback category='net-promoter-score'
+                          title='How likely are you to recommend Polar to a colleague?'
+                          from="Not likely"
+                          to="Very likely"/>
+
+                <AnkiReviewContent/>
+
+                <FundraisingCampaign/>
 
                 {/*<SimpleTooltipEx text={`*/}
                                  {/*This is the text for the tooltip*/}

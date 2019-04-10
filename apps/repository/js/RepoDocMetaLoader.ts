@@ -23,6 +23,7 @@ import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
+import {IndeterminateProgressBar} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
 
 const log = Logger.create();
 
@@ -65,6 +66,8 @@ export class RepoDocMetaLoader {
     private onPersistenceLayerChanged(persistenceLayer: PersistenceLayer) {
 
         log.info("onPersistenceLayerChanged");
+
+        this.addInitialProgressListener(persistenceLayer);
 
         const progressTrackerIndex = new ProgressTrackerIndex();
 
@@ -131,6 +134,22 @@ export class RepoDocMetaLoader {
         });
 
     }
+
+    private addInitialProgressListener(persistenceLayer: PersistenceLayer) {
+
+        let progressBar = IndeterminateProgressBar.create();
+
+        persistenceLayer.addDocMetaSnapshotEventListener(async () => {
+
+            if (progressBar) {
+                progressBar.destroy();
+                progressBar = null!;
+            }
+
+        });
+
+    }
+
 
     private toRepoDocMeta(fingerprint: string, docMeta?: DocMeta): RepoDocMeta | undefined {
 

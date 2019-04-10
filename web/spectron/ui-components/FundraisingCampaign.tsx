@@ -2,9 +2,12 @@ import * as React from 'react';
 import {ToggleButton} from '../../js/ui/ToggleButton';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
-import Input from 'reactstrap/lib/Input';
+import {UncontrolledDropdown} from 'reactstrap';
+import DropdownToggle from 'reactstrap/lib/DropdownToggle';
+import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
 
-export class Jumpstarter extends React.Component<IProps, IState> {
+export class FundraisingCampaign extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -15,6 +18,19 @@ export class Jumpstarter extends React.Component<IProps, IState> {
         return (
 
             <div>
+
+                <div className="mb-2">
+
+                    <div className="m-auto"
+                         style={{
+                             width: '450px',
+                             height: '450px',
+                             backgroundColor: 'lightgrey'
+                         }}>
+                        video
+                    </div>
+
+                </div>
 
                 <div className="mb-2">
 
@@ -38,10 +54,17 @@ export class Jumpstarter extends React.Component<IProps, IState> {
                                 Monthly subscribers... blah blah blah.
                             </p>
                         </div>}
-                        right={ <Input type="select" bsSize="sm">
-                            <option>Small Select</option>
-                            <option>Small Select</option>
-                        </Input>}/>
+                        right={
+                            <UncontrolledDropdown size="sm">
+                                <DropdownToggle caret>
+                                    Select
+                                </DropdownToggle>
+                                <DropdownMenu right className="shadow">
+                                    <DropdownItem>I'm a monthly subscriber</DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+
+                        }/>
 
 
                 </div>

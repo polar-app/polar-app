@@ -1,8 +1,7 @@
 import * as React from 'react';
-import Dropdown, {DropdownButton, DropdownMenu, DropdownMenuWrapper, DropdownToggle, MenuItem} from '@burtonator/react-dropdown';
-import {NULL_FUNCTION} from '../../util/Functions';
 import Button from 'reactstrap/lib/Button';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {LeftRightSplit} from '../left_right_split/LeftRightSplit';
 
 export class Feedback extends React.Component<IProps, IState> {
 
@@ -61,15 +60,17 @@ export class Feedback extends React.Component<IProps, IState> {
                            block={true}
                            disabled={this.state.completed}
                            style={{
-                               width: '75px',
-                               height: '35px',
+                               width: '2.5em',
+                               height: '2.5em',
                                margin: '5px',
-                               display: 'block',
+                               display: 'inline-block',
                                backgroundColor: background
                            }}
                            onClick={() => this.onFeedback(props.rating)}>
 
-                {props.rating}
+                <div className="m-auto">
+                    {props.rating}
+                </div>
 
             </Button>;
         };
@@ -78,71 +79,82 @@ export class Feedback extends React.Component<IProps, IState> {
             return <div className="text-center">
 
                 <div className="text-success m-1">
-                    <i style={{fontSize: '125px'}}
+                    <i style={{fontSize: '75px'}}
                        className="fas fa-check-circle"></i>
                 </div>
 
-                <h1>Thanks for your feedback!</h1>
+                <h2>Thanks for your feedback!</h2>
 
             </div>;
         };
 
+        const ButtonTable = () => {
+
+            const colorSet = new GroupedColorSet();
+
+            return <table className="ml-auto mr-auto">
+
+                <tr>
+                    <td>
+
+                        <div style={{
+                            display: 'block',
+                        }}>
+                            <FeedbackButton rating={0}  background={colorSet.button0}/>
+
+                            <FeedbackButton rating={1}  background={colorSet.button1}/>
+
+                            <FeedbackButton rating={2}  background={colorSet.button2}/>
+
+                            <FeedbackButton rating={3}  background={colorSet.button3}/>
+
+                            <FeedbackButton rating={4}  background={colorSet.button4}/>
+
+                            <FeedbackButton rating={5}  background={colorSet.button5}/>
+
+                            <FeedbackButton rating={6}  background={colorSet.button6}/>
+
+                            <FeedbackButton rating={7}  background={colorSet.button7}/>
+
+                            <FeedbackButton rating={8}  background={colorSet.button8}/>
+
+                            <FeedbackButton rating={9}  background={colorSet.button9}/>
+
+                            <FeedbackButton rating={10} background={colorSet.button10}/>
+
+                        </div>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <LeftRightSplit style={{marginLeft: '5px', marginRight: '5px'}}
+                                        left={
+                                            <span style={{fontWeight: 'bold'}}>{this.props.from}</span>
+                                        }
+                                        right={
+                                            <span style={{fontWeight: 'bold'}}>{this.props.to}</span>
+                                        }/>
+
+                    </td>
+                </tr>
+
+                {/*<UnsureButton/>*/}
+
+            </table>;
+        }
+
         const FeedbackForm = () => {
             return <div className="m-1">
 
-                <h3>{this.props.title}</h3>
+                <h3 className="text-center">{this.props.title}</h3>
 
-                <Description/>
-
-                <div style={{
-                    width: '400px',
-                    marginLeft: 'auto',
-                    marginRight: 'auto'
-                }}>
-
-                    <div style={{
-                        display: 'flex',
-                        width: '400px'
-                    }}>
-
-                        <FeedbackButton rating={1}  background="rgba(255, 0, 0, 1.0)"/>
-
-                        <FeedbackButton rating={2}  background="rgba(255, 0, 0, 0.8)"/>
-
-                        <FeedbackButton rating={3}  background="rgba(255, 0, 0, 0.6)"/>
-
-                        <FeedbackButton rating={4}  background="rgba(255, 0, 0, 0.4)"/>
-
-                        <FeedbackButton rating={5}  background="rgba(255, 0, 0, 0.2)"/>
-
-                        <FeedbackButton rating={6}  background="rgba(0, 255, 0, 0.2)"/>
-
-                        <FeedbackButton rating={7}  background="rgba(0, 255, 0, 0.4)"/>
-
-                        <FeedbackButton rating={8}  background="rgba(0, 255, 0, 0.6)"/>
-
-                        <FeedbackButton rating={9}  background="rgba(0, 255, 0, 0.8)"/>
-
-                        <FeedbackButton rating={10} background="rgba(0, 255, 0, 1.0)"/>
-
-                    </div>
-
-                    <div style={{
-                        width: '400px',
-                        display: 'flex',
-                        paddingLeft: '5px',
-                        paddingRight: '5px'
-                    }}>
-
-                        <span style={{}}>{this.props.from}</span>
-
-                        <span style={{marginLeft: 'auto'}}>{this.props.to}</span>
-
-                    </div>
-
-                    <UnsureButton/>
-
+                <div className="ml-auto mr-auto">
+                    <Description/>
                 </div>
+
+                <ButtonTable/>
 
             </div>;
 
@@ -238,4 +250,53 @@ export interface IState {
     readonly completed: boolean;
 }
 
-export type Rating = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+interface ColorSet {
+
+    readonly button0: string;
+    readonly button1: string;
+    readonly button2: string;
+    readonly button3: string;
+    readonly button4: string;
+    readonly button5: string;
+    readonly button6: string;
+    readonly button7: string;
+    readonly button8: string;
+    readonly button9: string;
+    readonly button10: string;
+
+}
+
+class LinearColorSet implements ColorSet {
+
+    public readonly button0 = "rgba(255, 0, 0, 1.0)";
+    public readonly button1 = "rgba(255, 0, 0, 1.0)";
+    public readonly button2 = "rgba(255, 0, 0, 0.8)";
+    public readonly button3 = "rgba(255, 0, 0, 0.6)";
+    public readonly button4 = "rgba(255, 0, 0, 0.4)";
+    public readonly button5 = "rgba(255, 0, 0, 0.2)";
+    public readonly button6 = "rgba(0, 255, 0, 0.2)";
+    public readonly button7 = "rgba(0, 255, 0, 0.4)";
+    public readonly button8 = "rgba(0, 255, 0, 0.6)";
+    public readonly button9 = "rgba(0, 255, 0, 0.8)";
+    public readonly button10 = "rgba(0, 255, 0, 1.0)";
+
+}
+
+class GroupedColorSet implements ColorSet {
+
+    public readonly button0 = "#CB5C45";
+    public readonly button1 = "#CB5C45";
+    public readonly button2 = "#CB5C45";
+    public readonly button3 = "#CB5C45";
+    public readonly button4 = "#CB5C45";
+    public readonly button5 = "#CB5C45";
+    public readonly button6 = "#CB5C45";
+    public readonly button7 = "#EAC870";
+    public readonly button8 = "#EAC870";
+    public readonly button9 = "#3EC0B3";
+    public readonly button10 = "#3EC0B3";
+
+}
+
+
+export type Rating = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
