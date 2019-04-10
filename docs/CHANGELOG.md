@@ -1,6 +1,8 @@
 
 # 1.17.3
 
+- Added survey to the new NPS form too.
+
 - Integrated the net promoter score to prompt once per week so we get more NPS 
   data points.
 
