@@ -32,11 +32,12 @@ h1, h2, h3, h4, h5 {
 }
 
 .subtitle h2 {
-    font-size: 2rem !important;
+    font-size: 2.25rem !important;
     text-align: center !important;
 }
 
 .subtitle p {
+    font-size: 1.15em;
     margin-top: 1em;
     margin-bottom: 1em;
     text-align: justify !important;
