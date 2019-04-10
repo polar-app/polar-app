@@ -23,7 +23,7 @@ export class NPS extends React.Component<IProps, IState> {
         return (
 
             <Feedback category='net-promoter-score'
-                      title='How likely are you to recommend Polar to a colleague?'
+                      title='How likely are you to recommend Polar?'
                       from="Not likely"
                       to="Very likely"
                       onRated={() => this.onRated()}/>
