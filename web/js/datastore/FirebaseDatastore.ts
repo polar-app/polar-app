@@ -75,7 +75,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         this.firestore = await Firestore.getInstance({enablePersistence: this.enablePersistence});
         this.storage = firebase.storage();
 
-        if (! opts.noInitialSnapshot) {
+        if (opts.noInitialSnapshot) {
+            log.debug("Skipping initial snapshot");
+        } else {
 
             log.debug("Performing initial snapshot");
 
@@ -85,13 +87,41 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
 
-        } else {
-            log.debug("Skipping initial snapshot");
+            this.precache()
+                .catch(err => log.error("Unable to precache data", err));
+
         }
 
         this.initialized = true;
 
         return {};
+
+    }
+
+    /**
+     * Make sure all tables for this user are precached.
+     */
+    private async precache() {
+
+        await this.precacheDocFileMeta();
+
+    }
+
+    /**
+     * Fetch a fresh copy of DOC_FILE_META into the local cache so that secondary
+     * operations can use it moving forward.
+     */
+    private async precacheDocFileMeta() {
+
+        const uid = FirebaseDatastore.getUserID();
+
+        const query = await this.firestore!
+            .collection(DatastoreCollection.DOC_FILE_META)
+            .where('uid', '==', uid);
+
+        // this will just keep data fresh moving forward so that our local cache
+        // is always updated when remote data on other hosts is updated.
+        await query.get({source: 'server'});
 
     }
 
@@ -115,7 +145,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const query = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
             .where('uid', '==', uid);
-
 
         type BatchIDMap = {
             [P in DatastoreConsistency]: number;

@@ -18,6 +18,8 @@ import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {Backend} from './Backend';
+import {Either} from '../util/Either';
+import {LeftEither} from '../util/Either';
 
 const log = Logger.create();
 
@@ -41,22 +43,26 @@ export class Datastores {
     /**
      * Get the main FileRef (PHZ or PDF).
      */
-    public static toFileRef(docMeta: DocMeta): FileRef | undefined {
+    public static toFileRef(either: LeftEither<DocMeta, DocInfo>): FileRef | undefined {
 
-        if (docMeta) {
+        if (! either) {
+            return undefined;
+        }
 
-            if (docMeta.docInfo.filename) {
+        const docInfo =
+            Either.ofLeft(either)
+                  .convertLeftToRight(left => left.docInfo);
 
-                // return the existing doc meta information.
+        if (docInfo.filename) {
 
-                const fileRef: FileRef = {
-                    name: docMeta.docInfo.filename,
-                    hashcode: docMeta.docInfo.hashcode
-                };
+            // return the existing doc meta information.
 
-                return fileRef;
+            const fileRef: FileRef = {
+                name: docInfo.filename,
+                hashcode: docInfo.hashcode
+            };
 
-            }
+            return fileRef;
 
         }
 
@@ -68,11 +74,11 @@ export class Datastores {
      * Get all FileRefs for this DocMeta including the main doc but also
      * any image, audio, or video attachments.
      */
-    public static toBackendFileRefs(docMeta: DocMeta): ReadonlyArray<BackendFileRef> {
+    public static toBackendFileRefs(either: LeftEither<DocMeta, DocInfo>): ReadonlyArray<BackendFileRef> {
 
         const result: BackendFileRef[] = [];
 
-        const fileRef = this.toFileRef(docMeta);
+        const fileRef = this.toFileRef(either);
 
         if (fileRef) {
             // this is the main FileRef of the file (PHZ or PDF)
