@@ -1,7 +1,14 @@
 import {Optional} from "../ts/Optional";
+import {DurationStr} from '../TimeDurations';
+import {TimeDurations} from '../TimeDurations';
 
 export abstract class Prefs {
 
+    // TODO: migrate to using KeyValueStore
+
+    /**
+     * A marked pref is a pref that is boolean true or false
+     */
     public mark(key: string, value: boolean = true): void {
 
         if (value) {
@@ -12,7 +19,7 @@ export abstract class Prefs {
 
     }
 
-    public toggle(key: string, value: boolean = false) {
+    public toggleMarked(key: string, value: boolean = false) {
         this.mark(key, ! this.isMarked(key, value));
     }
 
@@ -22,6 +29,26 @@ export abstract class Prefs {
             this.get(key).getOrElse(`${defaultValue}`);
 
         return currentValue === 'true';
+
+    }
+
+    public markDelayed(key: string, duration: DurationStr = "1m") {
+
+        const durationMS = TimeDurations.toMillis(duration);
+        const after = Date.now() + durationMS;
+        this.set(key, `${after}`);
+
+    }
+
+    public isMarkedDelayed(key: string): boolean {
+
+        const val = this.get(key).getOrElse('');
+
+        if (val.match(/[0-9]+/)) {
+            return Date.now() < parseInt(val);
+        }
+
+        return false;
 
     }
 

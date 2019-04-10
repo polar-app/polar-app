@@ -104,6 +104,8 @@ export class Splash extends React.Component<IProps, IState> {
 
     private onLater() {
 
+        // TODO migrate to Prefs.markDelayed
+
         const conditionalSetting
             = new ConditionalSetting(this.props.settingKey);
 

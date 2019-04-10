@@ -11,6 +11,7 @@ import {Provider, Providers} from '../../../../web/js/util/Providers';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {AlternativeToReviewRef} from './splashes/alternativeto_review/AlternativeToReviewRef';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
+import {NPSRef} from './splashes/nps/NPSRef';
 
 const log = Logger.create();
 
@@ -18,9 +19,10 @@ const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
     new WhatsNewRef(),
     // new GithubStarsRef(),
-    new SurveyRef(),
+    // new SurveyRef(),
     new ChromeExtensionReviewRef(),
-    new AlternativeToReviewRef()
+    new AlternativeToReviewRef(),
+    new NPSRef()
 ];
 
 if (DistConfig.ENABLE_PURCHASES) {

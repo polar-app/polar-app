@@ -94,59 +94,70 @@ export class Feedback extends React.Component<IProps, IState> {
 
             return <table className="ml-auto mr-auto">
 
-                <tr>
-                    <td>
+                <tbody>
+                    <tr>
+                        <td>
 
-                        <div style={{
-                            display: 'block',
-                        }}>
-                            <FeedbackButton rating={0}  background={colorSet.button0}/>
+                            <div style={{
+                                display: 'block',
+                            }}>
+                                <FeedbackButton rating={0}  background={colorSet.button0}/>
 
-                            <FeedbackButton rating={1}  background={colorSet.button1}/>
+                                <FeedbackButton rating={1}  background={colorSet.button1}/>
 
-                            <FeedbackButton rating={2}  background={colorSet.button2}/>
+                                <FeedbackButton rating={2}  background={colorSet.button2}/>
 
-                            <FeedbackButton rating={3}  background={colorSet.button3}/>
+                                <FeedbackButton rating={3}  background={colorSet.button3}/>
 
-                            <FeedbackButton rating={4}  background={colorSet.button4}/>
+                                <FeedbackButton rating={4}  background={colorSet.button4}/>
 
-                            <FeedbackButton rating={5}  background={colorSet.button5}/>
+                                <FeedbackButton rating={5}  background={colorSet.button5}/>
 
-                            <FeedbackButton rating={6}  background={colorSet.button6}/>
+                                <FeedbackButton rating={6}  background={colorSet.button6}/>
 
-                            <FeedbackButton rating={7}  background={colorSet.button7}/>
+                                <FeedbackButton rating={7}  background={colorSet.button7}/>
 
-                            <FeedbackButton rating={8}  background={colorSet.button8}/>
+                                <FeedbackButton rating={8}  background={colorSet.button8}/>
 
-                            <FeedbackButton rating={9}  background={colorSet.button9}/>
+                                <FeedbackButton rating={9}  background={colorSet.button9}/>
 
-                            <FeedbackButton rating={10} background={colorSet.button10}/>
+                                <FeedbackButton rating={10} background={colorSet.button10}/>
 
-                        </div>
+                            </div>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td>
-                        <LeftRightSplit style={{marginLeft: '5px', marginRight: '5px'}}
-                                        left={
-                                            <span style={{fontWeight: 'bold'}}>{this.props.from}</span>
-                                        }
-                                        right={
-                                            <span style={{fontWeight: 'bold'}}>{this.props.to}</span>
-                                        }/>
+                    <tr>
+                        <td>
+                            <LeftRightSplit style={{marginLeft: '5px', marginRight: '5px'}}
+                                            left={
+                                                <span style={{fontWeight: 'bold'}}>{this.props.from}</span>
+                                            }
+                                            right={
+                                                <span style={{fontWeight: 'bold'}}>{this.props.to}</span>
+                                            }/>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
 
                 {/*<UnsureButton/>*/}
+
+                </tbody>
 
             </table>;
         }
 
         const FeedbackForm = () => {
-            return <div className="m-1">
+
+            return <div style={{
+                            width: '600px',
+                            position: 'fixed',
+                            right: 25,
+                            bottom: 25,
+                            zIndex: 9999,
+                        }}
+                        className="border rounded shadow bg-white p-3">
 
                 <h3 className="text-center">{this.props.title}</h3>
 
@@ -161,7 +172,7 @@ export class Feedback extends React.Component<IProps, IState> {
         };
 
         if (this.state.completed) {
-            return <Thanks/>;
+            return <div/>;
         } else {
             return <FeedbackForm/>;
         }
@@ -183,6 +194,10 @@ export class Feedback extends React.Component<IProps, IState> {
         }
 
         this.markCompleted();
+
+        if (this.props.onRated) {
+            this.props.onRated();
+        }
 
     }
 
@@ -297,6 +312,5 @@ class GroupedColorSet implements ColorSet {
     public readonly button10 = "#3EC0B3";
 
 }
-
 
 export type Rating = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;

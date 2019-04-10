@@ -45,7 +45,7 @@ export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
 
     private onClick() {
         const prefs = this.props.prefs()!;
-        prefs.toggle(this.props.name, this.props.defaultValue);
+        prefs.toggleMarked(this.props.name, this.props.defaultValue);
     }
 
 }
