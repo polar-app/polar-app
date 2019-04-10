@@ -123,6 +123,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // is always updated when remote data on other hosts is updated.
         await query.get({source: 'server'});
 
+        // now just add a snapshot listener so that we're constantly pulling in
+        // fresh values when updated elsewhere so that the user always has
+        // fast data.
+        query.onSnapshot(NULL_FUNCTION, NULL_FUNCTION);
+
     }
 
     public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
