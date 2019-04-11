@@ -73,7 +73,7 @@ export class DatastoreTester {
                 await MockPHZWriter.write(FilePaths.create(directories.stashDir, `${fingerprint}.phz`));
 
                 const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
-                await persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
+                await persistenceLayer.write(fingerprint, docMeta, {datastoreMutation});
 
                 // make sure we're always using the datastore mutations
                 await datastoreMutation.written.get();

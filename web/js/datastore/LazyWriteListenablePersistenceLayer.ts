@@ -10,6 +10,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
 import {DelegatedListenablePersistenceLayer} from './DelegatedListenablePersistenceLayer';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
+import {WriteOpts} from './PersistenceLayer';
 
 /**
  */
@@ -38,8 +39,8 @@ export class LazyWriteListenablePersistenceLayer extends DelegatedListenablePers
         return this.handleWrite(docMeta.docInfo, async () => super.writeDocMeta(docMeta, datastoreMutation));
     }
 
-    public async write(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
-        return this.handleWrite(docMeta.docInfo, async () => super.write(fingerprint, docMeta, datastoreMutation));
+    public async write(fingerprint: string, docMeta: DocMeta, opts?: WriteOpts): Promise<DocInfo> {
+        return this.handleWrite(docMeta.docInfo, async () => super.write(fingerprint, docMeta, opts));
     }
 
     private async handleWrite<T>(docInfo: DocInfo, completion: () => Promise<DocInfo>): Promise<DocInfo> {

@@ -2,10 +2,8 @@ import {Logger} from '../../logger/Logger';
 import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
 import {AdvertisingPersistenceLayer} from '../advertiser/AdvertisingPersistenceLayer';
-import {RemoteDatastores} from '../RemoteDatastores';
 import {CloudAwareDatastore} from '../CloudAwareDatastore';
 import {FirebaseDatastore} from '../FirebaseDatastore';
-import {LazyWriteListenablePersistenceLayer} from '../LazyWriteListenablePersistenceLayer';
 import {HybridRemoteDatastores} from '../HybridRemoteDatastores';
 
 const log = Logger.create();

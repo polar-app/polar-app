@@ -8,6 +8,7 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {IDocInfo} from '../metadata/DocInfo';
+import {WriteOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -54,7 +55,9 @@ export class RemoteDatastore extends DelegatedDatastore {
     public write(fingerprint: string,
                  data: string,
                  docInfo: IDocInfo,
-                 datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
+                 opts: WriteOpts = {}): Promise<void> {
+
+        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
         const result = this.delegate.write(fingerprint, data, docInfo);
         this.datastoreMutations.handle(result, datastoreMutation, () => true);

@@ -320,7 +320,7 @@ SpectronRenderer.run(async (state) => {
                 datastoreMutation.written.get().then(() => writtenDuration = Date.now() - before);
                 datastoreMutation.committed.get().then(() => committedDuration = Date.now() - before);
 
-                await persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
+                await persistenceLayer.write(fingerprint, docMeta, {datastoreMutation});
 
                 console.log(`writtenDuration: ${writtenDuration}, committedDuration: ${committedDuration}`);
 
