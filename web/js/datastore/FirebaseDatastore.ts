@@ -738,6 +738,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
+        log.debug("deleteFile: ", backend, ref);
+
         const deleteFileFromStorage = async () => {
 
             try {
@@ -764,8 +766,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-        await deleteFileFromStorage();
         await this.deleteFileMeta(backend, ref);
+
+        await deleteFileFromStorage();
 
     }
 
