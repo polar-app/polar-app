@@ -20,6 +20,7 @@ import base = Mocha.reporters.base;
 
 import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
+import {BackendFileRefData} from '../../../datastore/Datastore';
 
 const log = Logger.create();
 
@@ -217,9 +218,26 @@ export class PDFImporter {
             hashcode: docMeta.docInfo.hashcode
         };
 
+        // FIXME: there's a race here... the local writeFile completes first but
+        // we DO NOT wait for the remote writeFile so the operations look like
+        //
+        // writeFile local
+        // writeFile remote (started but not yet completed)
+        // write local
+        // write remote
+        // writeFile remote (completed)
+        // but there's a moment where the local
+        // document hasn't yet been written.
+
         await persistenceLayer.writeFile(Backend.STASH, fileRef, binaryFileData);
 
-        await persistenceLayer.write(pdfMeta.fingerprint, docMeta);
+        const writeFile: BackendFileRefData = {
+            backend: Backend.STASH,
+            data: binaryFileData,
+            ...fileRef
+        };
+
+        await persistenceLayer.write(pdfMeta.fingerprint, docMeta, {file: writeFile});
 
         return Optional.of({
             basename,

@@ -29,6 +29,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DocMeta} from '../metadata/DocMeta';
 import {Datastores} from './Datastores';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
+import {WriteOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -131,8 +132,13 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         // noop
     }
 
-    public async write(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
+    public async write(fingerprint: string,
+                       data: any,
+                       docInfo: IDocInfo,
+                       opts: WriteOpts = {}): Promise<void> {
+
         throw new Error("Not supported");
+
     }
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {

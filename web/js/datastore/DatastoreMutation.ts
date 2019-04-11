@@ -29,10 +29,12 @@ abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
 }
 
 /**
- * Fully commited ahead of time and with a given value. This is used for the
+ * Fully committed ahead of time and with a given value. This is used for the
  * disk datastore
  */
 export class DefaultDatastoreMutation<T> extends AbstractDatastoreMutation<T> {
+
+    // TODO: refactor and rename class as WriteLatches
 
     public readonly written = new Latch<T>();
 

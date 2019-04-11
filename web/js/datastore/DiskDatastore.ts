@@ -31,6 +31,7 @@ import {GetFileOpts} from './Datastore';
 import {isPresent} from '../Preconditions';
 import {BinaryFileData} from './Datastore';
 import {string} from 'prop-types';
+import {WriteOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -315,7 +316,11 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     public async write(fingerprint: string,
                        data: string,
                        docInfo: DocInfo,
-                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
+                       opts: WriteOpts = {}) {
+
+        await this.handleWriteFile(opts);
+
+        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
         Preconditions.assertPresent(data, "data");
         Preconditions.assertTypeOf(data, "string", "data", () => log.error("Failed with data: ", data));

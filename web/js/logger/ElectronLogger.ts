@@ -58,7 +58,7 @@ export class ElectronLoggers {
             // *** configure file
 
             // set the directory name properly
-            delegate.transports.file.file = `${directories.logsDir}/polar.log`;
+            delegate.transports.file.writeFile = `${directories.logsDir}/polar.log`;
             delegate.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
 
             delegate.transports.file.level = "info";

@@ -21,6 +21,7 @@ import {WriteFileOpts} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
+import {WriteOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -147,7 +148,9 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     public async write(fingerprint: string,
                        data: string,
                        docInfo: DocInfo,
-                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
+                       opts: WriteOpts = {}): Promise<void> {
+
+        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
         Preconditions.assertTypeOf(data, "string", "data");
 

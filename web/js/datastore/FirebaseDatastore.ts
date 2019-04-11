@@ -36,6 +36,7 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
+import {WriteOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -763,7 +764,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async write(fingerprint: string,
                        data: string,
                        docInfo: DocInfo,
-                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
+                       opts: WriteOpts = {}) {
+
+        await this.handleWriteFile(opts);
+
+        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
         try {
 

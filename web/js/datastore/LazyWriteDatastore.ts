@@ -7,6 +7,7 @@ import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
+import {WriteOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -43,9 +44,9 @@ export class LazyWriteDatastore extends DelegatedDatastore {
     public async write(fingerprint: string,
                        data: any,
                        docInfo: IDocInfo,
-                       datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
+                       opts?: WriteOpts): Promise<void> {
 
-        return this.handleWrite(docInfo, async () => await super.write(fingerprint, data, docInfo, datastoreMutation));
+        return this.handleWrite(docInfo, async () => await super.write(fingerprint, data, docInfo, opts));
 
     }
 

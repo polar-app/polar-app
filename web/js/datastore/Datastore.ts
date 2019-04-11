@@ -156,15 +156,35 @@ export abstract class AbstractDatastore {
         const syncMutation = new DefaultDatastoreMutation<boolean>();
         this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
-        await this.write(docMeta.docInfo.fingerprint, data, docInfo, syncMutation);
+        await this.write(docMeta.docInfo.fingerprint, data, docInfo, {datastoreMutation: syncMutation});
         return docInfo;
+
+    }
+
+    public abstract writeFile(backend: Backend,
+                              ref: FileRef,
+                              data: BinaryFileData,
+                              opts?: WriteFileOpts): Promise<DocFileMeta>;
+
+    /**
+     * Handle the file write if specify as a dependency within write()
+     */
+    protected async handleWriteFile(opts?: WriteOpts) {
+
+        if (! opts) {
+            return;
+        }
+
+        if (opts.writeFile) {
+            await this.writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data);
+        }
 
     }
 
     public abstract write(fingerprint: string,
                           data: any,
                           docInfo: IDocInfo,
-                          datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
+                          opts?: WriteOpts): Promise<void>;
 
     public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
         // noop
@@ -181,6 +201,18 @@ export abstract class AbstractDatastore {
         // throw new Error("Not supported with this datatore");
 
     }
+
+}
+
+export interface WriteOpts {
+
+    readonly datastoreMutation?: DatastoreMutation<boolean>;
+
+    /**
+     * Also write a file (PDF, PHZ) with the DocMeta data so that it's atomic
+     * and that the operations are ordered properly.
+     */
+    readonly writeFile?: BackendFileRefData;
 
 }
 
@@ -201,8 +233,12 @@ interface WritableDatastore {
      * @param fingerprint The fingerprint of the data we should be working with.
      * @param data The RAW data to decode by the PersistenceLayer
      * @param docInfo The DocInfo for this document that we're writing
+     * @param opts The opts to use when writing the file.
      */
-    write(fingerprint: string, data: string, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
+    write(fingerprint: string,
+          data: string,
+          docInfo: IDocInfo,
+          opts?: WriteOpts): Promise<void>;
 
     /**
      * Make sure the docs with the given fingerprints are synchronized with
@@ -272,6 +308,8 @@ export interface WriteFileOpts {
      */
     readonly updateMeta?: boolean;
 
+    readonly datastoreMutation?: DatastoreMutation<boolean>;
+
 }
 
 export class DefaultWriteFileOpts implements WriteFileOpts {
@@ -339,6 +377,10 @@ export class BackendFileRefs {
         return b0.backend === b1.backend && b0.name === b1.name && b0.hashcode === b1.hashcode;
     }
 
+}
+
+export interface BackendFileRefData extends BackendFileRef {
+    readonly data: BinaryFileData;
 }
 
 // noinspection TsLint

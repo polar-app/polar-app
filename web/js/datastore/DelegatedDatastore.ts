@@ -11,6 +11,7 @@ import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
+import {WriteOpts} from './Datastore';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -83,8 +84,8 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.stop();
     }
 
-    public write(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
-        return this.delegate.write(fingerprint, data, docInfo, datastoreMutation);
+    public write(fingerprint: string, data: any, docInfo: IDocInfo, opts?: WriteOpts): Promise<void> {
+        return this.delegate.write(fingerprint, data, docInfo, opts);
     }
 
     public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {

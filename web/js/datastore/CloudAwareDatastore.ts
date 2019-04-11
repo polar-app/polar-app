@@ -22,6 +22,8 @@ import {AsyncFunction} from '../util/AsyncWorkQueue';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {Datastores} from './Datastores';
+import {WriteOpts} from './Datastore';
+import local = chrome.storage.local;
 
 const log = Logger.create();
 
@@ -111,15 +113,18 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: BinaryFileData,
-                           opts?: WriteFileOpts): Promise<DocFileMeta> {
+                           opts: WriteFileOpts = {}): Promise<DocFileMeta> {
 
+        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
-        const result = this.local.writeFile(backend, ref, data, opts);
+        const result = await this.local.writeFile(backend, ref, data, opts);
+        datastoreMutation.written.resolve(true);
 
         // don't await the cloud write.  Once it's written locally we're fine
         // if it's not in the cloud we get an error logged and we should also
         // have task progress in the future.
         this.cloud.writeFile(backend, ref, data, opts)
+            .then(() => datastoreMutation.committed.resolve(true))
             .catch(err => log.error("Unable to write file to cloud: ", err));
 
         return result;
@@ -178,7 +183,23 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     public async write(fingerprint: string,
                        data: string,
                        docInfo: DocInfo,
-                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
+                       opts: WriteOpts = {}): Promise<void> {
+
+        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
+
+        const writeFileDatastoreMutation = new DefaultDatastoreMutation<boolean>();
+
+        if (opts.writeFile) {
+
+            await this.writeFile(opts.writeFile.backend,
+                                 opts.writeFile,
+                                 opts.writeFile.data,
+                                 {datastoreMutation: writeFileDatastoreMutation});
+
+        } else {
+            writeFileDatastoreMutation.written.resolve(true);
+            writeFileDatastoreMutation.committed.resolve(true);
+        }
 
         datastoreMutation
             .written.get().then(() => {
@@ -186,15 +207,22 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             this.docMetaComparisonIndex.updateUsingDocInfo(docInfo);
 
         })
-        // this should never fail in practice.
         .catch(err => log.error("Could not handle delete: ", err));
+
 
         await this.datastoreMutations.executeBatchedWrite(datastoreMutation,
                                                            async (remoteCoordinator) => {
-                                                               await this.cloud.write(fingerprint, data, docInfo, remoteCoordinator);
+
+                                                               // before we write the DocMeta data to the
+                                                               // cloud we have to wait until the file is
+                                                               // written.
+                                                               await writeFileDatastoreMutation.committed.get();
+
+                                                               await this.cloud.write(fingerprint, data, docInfo, {datastoreMutation: remoteCoordinator});
+
                                                            },
                                                            async (localCoordinator) => {
-                                                               await this.local.write(fingerprint, data, docInfo, localCoordinator);
+                                                               await this.local.write(fingerprint, data, docInfo, {datastoreMutation: localCoordinator});
                                                            });
 
     }
