@@ -613,6 +613,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private async getFile0(backend: Backend, ref: FileRef, opts: GetFileOpts): Promise<Optional<DocFileMeta>> {
 
+        console.log("FIXME: within getFile0");
+
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
         let result = await this.getFileFromFileMeta(backend, ref);
