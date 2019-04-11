@@ -109,8 +109,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     /**
-     * Fetch a fresh copy of DOC_FILE_META into the local cache so that secondary
-     * operations can use it moving forward.
+     * Fetch a fresh copy of DOC_FILE_META into the local cache so that
+     * secondary operations can use it moving forward.
      */
     private async precacheDocFileMeta() {
 
@@ -553,6 +553,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta) {
 
+        log.debug("Writing file meta for ", backend, ref);
+
         const id = this.createFileMetaID(backend, ref);
 
         const recordHolder: RecordHolder<DocFileMeta> = {
@@ -615,17 +617,24 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         let result = await this.getFileFromFileMeta(backend, ref);
 
-        if (! result.isPresent()) {
+        if (result.isPresent()) {
+            log.debug("Got file from file meta");
+            return result;
+        } else {
+
+            log.debug("Getting file from storage");
 
             result = await this.getFileFromStorage(backend, ref);
 
             if (result.isPresent()) {
                 // write it to doc_file_meta so that next time we have it
-                // available
+                // available...
+                //
+                // TODO this needs to be cleaned up significantly.
 
                 const docFileMeta: DocFileMeta = result.get();
 
-                if (! docFileMeta.ref.hashcode) {
+                if (!docFileMeta.ref.hashcode) {
                     // Firebase doesn't support file names with 'undefined'
                     // values.
                     delete (<any> docFileMeta.ref).hashcode;
@@ -637,8 +646,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             return result;
 
-        } else {
-            return result;
         }
 
     }
