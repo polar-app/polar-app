@@ -573,6 +573,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private async deleteFileMeta(backend: Backend, ref: FileRef) {
 
+        log.debug("Removing file meta for ", backend, ref);
+
         const id = this.createFileMetaID(backend, ref);
 
         await this.firestore!
