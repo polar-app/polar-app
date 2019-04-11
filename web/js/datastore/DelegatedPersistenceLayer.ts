@@ -13,6 +13,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
+import {WriteOpts} from './PersistenceLayer';
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.
@@ -78,8 +79,8 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.stop();
     }
 
-    public async write(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
-        return this.delegate.write(fingerprint, docMeta, datastoreMutation);
+    public async write(fingerprint: string, docMeta: DocMeta, opts?: WriteOpts): Promise<DocInfo> {
+        return this.delegate.write(fingerprint, docMeta, opts);
     }
 
     public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {

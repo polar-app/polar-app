@@ -229,15 +229,13 @@ export class PDFImporter {
         // but there's a moment where the local
         // document hasn't yet been written.
 
-        await persistenceLayer.writeFile(Backend.STASH, fileRef, binaryFileData);
-
         const writeFile: BackendFileRefData = {
             backend: Backend.STASH,
             data: binaryFileData,
             ...fileRef
         };
 
-        await persistenceLayer.write(pdfMeta.fingerprint, docMeta, {file: writeFile});
+        await persistenceLayer.write(pdfMeta.fingerprint, docMeta, {writeFile});
 
         return Optional.of({
             basename,

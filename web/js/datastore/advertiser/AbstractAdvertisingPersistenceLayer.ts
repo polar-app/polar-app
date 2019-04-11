@@ -16,9 +16,10 @@ import {Backend} from '../Backend';
 import {DocFileMeta} from '../DocFileMeta';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
-import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
+import {DatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Releaseable} from '../../reactor/EventListener';
+import {WriteOpts} from '../PersistenceLayer';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 
@@ -70,9 +71,9 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     public async write(fingerprint: string,
                        docMeta: DocMeta,
-                       datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+                       opts?: WriteOpts): Promise<DocInfo> {
 
-        return await this.handleWrite(docMeta, async () => await this.delegate.write(fingerprint, docMeta, datastoreMutation));
+        return await this.handleWrite(docMeta, async () => await this.delegate.write(fingerprint, docMeta, opts));
 
     }
 

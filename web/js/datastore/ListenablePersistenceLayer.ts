@@ -13,9 +13,6 @@ export interface ListenablePersistenceLayer extends PersistenceLayer {
 
     /**
      * Add an event listener but for a specific document in the repository.
-     *
-     * @param fingerprint
-     * @param listener
      */
     addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): void;
 

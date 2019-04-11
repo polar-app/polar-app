@@ -21,6 +21,7 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DatastoreInitOpts} from './Datastore';
+import {WriteOpts} from './PersistenceLayer';
 
 const log = Logger.create();
 
@@ -93,7 +94,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         Preconditions.assertPresent(docMeta.docInfo, "No docInfo on docMeta");
         Preconditions.assertPresent(docMeta.docInfo.fingerprint, "No fingerprint on docInfo");
 
-        return this.write(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
+        return this.write(docMeta.docInfo.fingerprint, docMeta, {datastoreMutation});
 
     }
 
@@ -102,7 +103,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
      */
     public async write(fingerprint: string,
                        docMeta: DocMeta,
-                       datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+                       opts: WriteOpts = {}): Promise<DocInfo> {
+
+        const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -169,7 +172,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         const syncMutation = new DefaultDatastoreMutation<boolean>();
         this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
-        await this.datastore.write(fingerprint, data, docInfo, syncMutation);
+        await this.datastore.write(fingerprint, data, docInfo, {datastoreMutation: syncMutation});
 
         return docInfo;
 

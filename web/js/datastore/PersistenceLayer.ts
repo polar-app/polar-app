@@ -5,6 +5,7 @@ import {GetFileOpts} from './Datastore';
 import {DatastoreOverview} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
+import {BackendFileRefData} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
@@ -60,7 +61,7 @@ export interface PersistenceLayer {
      * Return the DocInfo written. The DocInfo may be updated on commit
      * including updating lastUpdated, etc.
      */
-    write(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
+    write(fingerprint: string, docMeta: DocMeta, opts?: WriteOpts): Promise<DocInfo>;
 
     writeFile(backend: Backend,
               ref: FileRef,
@@ -81,7 +82,20 @@ export interface PersistenceLayer {
 
 }
 
+export interface WriteOpts {
+
+    readonly datastoreMutation?: DatastoreMutation<DocInfo>;
+
+    /**
+     * Also write a file (PDF, PHZ) with the DocMeta data so that it's atomic
+     * and that the operations are ordered properly.
+     */
+    readonly writeFile?: BackendFileRefData;
+
+}
+
 export type PersistenceLayerID = string;
 
 export type PersistenceLayerProvider = () => PersistenceLayer;
+
 
