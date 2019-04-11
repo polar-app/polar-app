@@ -6,6 +6,12 @@ import {isPresent} from '../Preconditions';
  *
  * Includes map functions to handle consuming both at once and a mapLeft and
  * mapRight functions to either type.
+ *
+ * This is useful in most situations as values can be interfaces which do not
+ * work with instanceof and could be deserialized json objects which don't work
+ * with instanceof either.
+ *
+ * Essentially instanceof isn't really reliable.
  */
 export class Either<L, R> {
 

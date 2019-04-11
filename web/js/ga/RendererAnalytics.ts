@@ -298,18 +298,20 @@ class DefaultTimer implements Timer {
 
         const message = `Operation took too long: ${this.category}:${this.variable}: ${duration.durationMS}ms`;
 
+        // we have to log directly to the console here as logging normally would
+        // generate other types of events that we don't want to trigger.
         switch (level) {
 
             case 'info':
-                log.info(message);
+                console.info(message);
                 break;
 
             case 'warn':
-                log.warn(message);
+                console.warn(message);
                 break;
 
             case 'error':
-                log.error(message);
+                console.error(message);
                 break;
 
         }
