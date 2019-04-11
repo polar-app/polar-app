@@ -1,6 +1,9 @@
 import * as stream from 'stream';
 import {ReadableOptions} from 'stream';
 import {ArrayBuffers} from './ArrayBuffers';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class Blobs {
 
@@ -83,23 +86,6 @@ export class Blobs {
 
                 };
 
-                const doRead = () => {
-
-                    // It is recommended that errors occurring during the
-                    // processing of the readable._read() method are emitted
-                    // using the 'error' event rather than being thrown.
-                    // Throwing an Error from within readable._read() can result
-                    // in unexpected and inconsistent behavior depending on
-                    // whether the stream is operating in flowing or paused
-                    // mode. Using the 'error' event ensures consistent and
-                    // predictable handling of errors.
-                    doReadAsync().catch(err => {
-                        this.emit('error', err);
-                        this.push(null);
-                    });
-
-                };
-
                 const doReadAsync = async () => {
 
                     const end = computeEnd();
@@ -119,6 +105,24 @@ export class Blobs {
                         // we have to read the next slice now.
                         doRead();
                     }
+
+                };
+
+                const doRead = () => {
+
+                    // It is recommended that errors occurring during the
+                    // processing of the readable._read() method are emitted
+                    // using the 'error' event rather than being thrown.
+                    // Throwing an Error from within readable._read() can result
+                    // in unexpected and inconsistent behavior depending on
+                    // whether the stream is operating in flowing or paused
+                    // mode. Using the 'error' event ensures consistent and
+                    // predictable handling of errors.
+                    doReadAsync().catch(err => {
+                        log.error("Caught error while writing to stream", err);
+                        this.emit('error', err);
+                        this.push(null);
+                    });
 
                 };
 
