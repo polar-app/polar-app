@@ -20,6 +20,7 @@ import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {Backend} from './Backend';
 import {Either} from '../util/Either';
 import {LeftEither} from '../util/Either';
+import {DocInfoLike} from '../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -43,7 +44,7 @@ export class Datastores {
     /**
      * Get the main FileRef (PHZ or PDF).
      */
-    public static toFileRef(either: LeftEither<DocMeta, DocInfo>): FileRef | undefined {
+    public static toFileRef(either: LeftEither<DocMeta, DocInfoLike>): FileRef | undefined {
 
         if (! either) {
             return undefined;
@@ -74,7 +75,7 @@ export class Datastores {
      * Get all FileRefs for this DocMeta including the main doc but also
      * any image, audio, or video attachments.
      */
-    public static toBackendFileRefs(either: LeftEither<DocMeta, DocInfo>): ReadonlyArray<BackendFileRef> {
+    public static toBackendFileRefs(either: LeftEither<DocMeta, DocInfoLike>): ReadonlyArray<BackendFileRef> {
 
         const result: BackendFileRef[] = [];
 

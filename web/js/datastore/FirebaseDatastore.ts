@@ -619,7 +619,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
-        let result = await this.getFileFromFileMeta(backend, ref);
+        // let result = await this.getFileFromFileMeta(backend, ref);
+        // disabling this cache for now as it's actually breaking
+        // things..
+
+        let result: Optional<DocFileMeta> = Optional.empty();
 
         if (result.isPresent()) {
             log.debug("Got file from file meta");

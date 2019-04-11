@@ -4,6 +4,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
+import {WriteOpts} from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
@@ -22,8 +23,7 @@ import {AsyncFunction} from '../util/AsyncWorkQueue';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {Datastores} from './Datastores';
-import {WriteOpts} from './Datastore';
-import local = chrome.storage.local;
+import {Either} from '../util/Either';
 
 const log = Logger.create();
 
@@ -488,6 +488,19 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 // we're also not receiving events for this in the UI so no
                 // progress updates.
                 const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
+
+                const fileRefs = Datastores.toBackendFileRefs(Either.ofRight(docMetaFileRef.docInfo));
+
+                for (const fileRef of fileRefs) {
+                    // TODO: do this in parallel...
+                    await this.local.deleteFile(fileRef.backend, fileRef);
+                }
+
+                // TODO: do both the main delete and each file delete in
+                // parallel.
+
+                // FIXME: we have to handle deleting the doc locally...
+                // which we're not doing now!!!
                 await this.local.delete(docMetaFileRef);
                 log.info("File deleted: " , docMetaFileRef);
             }

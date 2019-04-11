@@ -290,3 +290,5 @@ export interface Storage {
 export interface DiskUsage {
     readonly bytesUsed: number;
 }
+
+export type DocInfoLike = DocInfo | IDocInfo;
