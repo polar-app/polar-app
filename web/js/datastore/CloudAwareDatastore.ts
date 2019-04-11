@@ -124,7 +124,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         // if it's not in the cloud we get an error logged and we should also
         // have task progress in the future.
         this.cloud.writeFile(backend, ref, data, opts)
-            .then(() => datastoreMutation.committed.resolve(true))
+            .then(() => {
+                datastoreMutation.committed.resolve(true);
+            })
             .catch(err => log.error("Unable to write file to cloud: ", err));
 
         return result;
