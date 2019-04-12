@@ -88,6 +88,10 @@ export class Blobs {
 
             while (true) {
 
+                if (error) {
+                    break;
+                }
+
                 const end = computeEnd();
                 const slice = blob.slice(index, end);
 
@@ -114,6 +118,7 @@ export class Blobs {
             pushAsync()
                 .catch(err => {
                     // we had an issue pushing data so notify the reader
+                    log.error("Unable to stream data: ", err);
                     passThrough.emit('error', err);
                 });
         };
