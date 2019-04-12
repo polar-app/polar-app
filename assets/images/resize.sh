@@ -2,11 +2,13 @@
 
 # https://stackoverflow.com/questions/40007722/resize-with-imagemagick-with-a-maximal-width-height
 
-for file in $(find . -name '*.jpg' | grep -v scaled.jpg); do
-    echo ${file}
-    name=$(basename ${file} .jpg)
+ext=png
 
-    convert -scale 900x900\> ${file} ${name}-scaled.jpg
+for file in $(find . -name "*.${ext}" | grep -v scaled.${ext}); do
+    echo ${file}
+    name=$(basename ${file} .${ext})
+
+    convert -scale 900x900\> ${file} ${name}-scaled.${ext}
 
 done
 
