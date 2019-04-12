@@ -1,6 +1,8 @@
 
 # 1.17.3
 
+- Fixed bad bug with blob conversion that only hit us sometimes.
+
 - Added survey to the new NPS form too.
 
 - Integrated the net promoter score to prompt once per week so we get more NPS 

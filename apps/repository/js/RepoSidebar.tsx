@@ -80,18 +80,19 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
             <div style={{display: 'flex'}}>
 
-                <SimpleTooltipEx text="Toggle showing the sidebar">
+                <div className="mt-auto mb-auto">
+                    <SimpleTooltipEx text="Toggle showing the sidebar">
 
-                    <div id="toggle-sidebar"
-                         className="mr-1"
-                         style={{marginTop: 'auto', marginBottom: 'auto'}}>
-                        <Button color='light'
-                                onClick={() => this.toggle()}>
-                            <i className="fas fa-bars"></i>
-                        </Button>
-                    </div>
+                        <div id="toggle-sidebar"
+                             className="mr-1">
+                            <Button color='light'
+                                    onClick={() => this.toggle()}>
+                                <i className="fas fa-bars"></i>
+                            </Button>
+                        </div>
 
-                </SimpleTooltipEx>
+                    </SimpleTooltipEx>
+                </div>
 
                 <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <NavLogo/>
