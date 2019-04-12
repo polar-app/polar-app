@@ -322,7 +322,9 @@ export class RepositoryApp {
 
             const repoDocMeta = RepoDocMetas.convert(docInfo.fingerprint, docMeta);
 
-            if (RepoDocMetas.isValid(repoDocMeta)) {
+            const validity = RepoDocMetas.isValid(repoDocMeta);
+
+            if (validity === 'valid') {
 
                 this.repoDocInfoManager.updateFromRepoDocMeta(docInfo.fingerprint, repoDocMeta);
 
@@ -357,7 +359,7 @@ export class RepositoryApp {
 
             } else {
 
-                log.warn("We were given an invalid DocInfo which yielded a broken RepoDocMeta: ",
+                log.warn(`We were given an invalid DocInfo which yielded a broken RepoDocMeta ${validity}: `,
                          docInfo, repoDocMeta);
 
             }

@@ -10,8 +10,18 @@ const log = Logger.create();
 
 export class RepoDocMetas {
 
-    public static isValid(repoDocMeta?: RepoDocMeta) {
-        return repoDocMeta && isPresent(repoDocMeta.repoDocInfo.filename);
+    public static isValid(repoDocMeta?: RepoDocMeta): RepoDocValidity {
+
+        if (! repoDocMeta) {
+            return 'no-value';
+        }
+
+        if (! isPresent(repoDocMeta.repoDocInfo.filename)) {
+            return 'no-filename';
+        }
+
+        return 'valid';
+
     }
 
     public static convert(fingerprint: string, docMeta?: DocMeta): RepoDocMeta | undefined {
@@ -32,5 +42,7 @@ export class RepoDocMetas {
         return {repoDocInfo, repoAnnotations};
 
     }
+
 }
 
+export type RepoDocValidity = 'valid' | 'no-value' | 'no-filename';
