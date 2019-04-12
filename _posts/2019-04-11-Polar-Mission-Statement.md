@@ -30,34 +30,41 @@ especially as new features are released.
 
 Polar focuses on a number of key use cases. 
 
-The core is document which provides about 70% of the functionality. Each 
-additional use case builds upon this but sharing the core framework to avoid 
-complicating the framework.  
+The core is document management which provides about 70% of the technical
+complexity and allows us to re-use this infrastructure for the other use cases.
+
+Each additional use case builds upon but shares the core functionality to avoid
+technical complications.
 
 ### Document Management
 
-Document management is the core and used by nearly all additional layers.  This
+Document management is used by nearly all additional layers within Polar.  This
 includes basic functionality like adding documents, supporting multiple formats,
-storing metadata (title, author, etc) and handles replication, document 
+storing metadata (title, author, etc) and handles replication, document
 integrity, etc.
 
-Functionally this includes features like tagging, flagging, archiving, updating
+Functionally, this includes features like tagging, flagging, archiving, updating
 metadata, etc.
 
 ### Incremental Reading
 
 Allows the user to keep track of their position using pagemarks, update their
-pagemarks as they read documents, find new documents to read, etc. 
+pagemarks as they read documents, find new documents to read, etc.
+
+We also keep track of core stats including number or documents read per day, etc
+to encourage the user to hit their reading goals. 
 
 ### Annotation
 
 Supports text and area highlighting, comments, flashcards, etc. The user can
 attach annotations directly to documents.
 
+Annotations are top level metadata and can be exported, copied, and shared 
+between users.
+
 ### Document Sharing and Collaboration
 
-Document sharing involves allowing others to view and share documents you're 
-reading, share annotations, etc.
+Document sharing allows others to view and share documents you're reading, and annotating.
 
 This is a key Polar function as we want to test collaborative sharing to improve
 knowledge retention using flashcards, and annotations to allow users who are 
@@ -65,30 +72,33 @@ sharing the same documents to actively collaborate towards a better experience.
 
 For example, users could collaboratively build flashcards, add video, etc. 
 
-We could also use this to automatically suggest flashcards for users for 
-documents that are being shared with Polar.  
+We could also use this to automatically suggest flashcards for users of 
+documents that are being shared with Polar.
+
+This way you could add a text-book and have pre-built flashcards already 
+compiled and easily added with one click.  
 
 ### Bibliography Management
 
 This is primarily used for the scientific community and involves lookup of
-document metadata via DOI, preserve extended metadata for this document
-including author information, and supports exporting selected documents as a
-bibliography.
+document metadata via DOI, preserving extended metadata including author
+information, and supports exporting selected documents as a bibliography.
 
 ### Web Archival
 
-Annotating web content is irrelevant if the document can be deleted thereby
-invalidating your annotations.
+Annotating web content is irrelevant if the document can be deleted by the site
+thereby invalidating your annotations.
 
 Polar supports storing web content offline supporting annotations against
-content that may or may not be deleted from the original site.
+content that may or may not be deleted (or updated) by the original site.
 
 We plan on extending this use case to both improve archival in general but also 
 support more transparent archives that seem like real web pages within your web 
 browser.
 
-We also intend on supporting annotations for content which isn't necessarily 
-cached.
+We also intend on supporting annotations for content which isn't necessarily
+cached.  This functionality should allow Polar to be used by more users as it
+should be much easier to annotate content when it's just a native web page.
 
 ### Spaced Repetition and Flashcard Management
 
@@ -101,9 +111,11 @@ creation and attaching these to text/area highlights directly.
 The Flashcards can then be sync'd directly to Anki.
 
 We tend to continue supporting Anki for power users for the forseeable future
-but also want to support a basic spaced repetition app within Polar directly.
+but also want to support basic spaced repetition within Polar directly.
 
-This will help people who aren't Anki power users get started with 
+This will help people who aren't Anki power users get started with SR without 
+having to commit to Anki, add the plugin, create an account for sync there, 
+install the app on their phone, etc.
 
 ## 5D Internet
 
@@ -168,8 +180,8 @@ on a freemium model.
 In order for Polar to be competitive there must be an economic component to 
 continue funding development. 
 
-Otherwise we risk our ideas and technology being stolen by other companies
-who wouldn't aggressively support the rights of our user base.
+Otherwise, we risk our ideas and technology being stolen by other companies who
+wouldn't aggressively support the rights (and goals) of our user base.
 
 ## User Rights
 
@@ -197,9 +209,6 @@ cloud services including sync to mobile, web, etc.
 We may also engage in data partnerships which will be disclosed and will only 
 do so for the benefits of our user base.
 
-For example, data partnerships with universities performing scientific analysis
-of the data for the benefits of our users.
-
 Basically, we're not interested in doing anything evil and will only use your 
 data for your benefit.   
 
@@ -221,7 +230,7 @@ force uses to use cloud services.
 
 ## Federation
 
-Federation allows Polar to tie in different backend storage providers and which 
+Federation allows Polar to tie in different backend storage providers which 
 could have different properties, security and privacy features.
 
 Polar supports federation through the concept of Datastores which provides a 
@@ -231,8 +240,8 @@ Currently Polar supports three datastores:
 
 ### Disk
 
-Provides a local-only storage for the desktop app and allows user to read and
-write data locally without any privacy major considerations.
+Provides a local storage for the desktop app and allows user to read and
+write data without any major privacy considerations inherent with cloud.
 
 ### Firebase
 
@@ -246,7 +255,7 @@ Provides a hybrid between Disk+Firebase for the desktop cloud sync across device
 ### Future Datastores
 
 Polar provides for a Datastore interface which means we can easily implement
-new datatypes in the future.
+new technologies for data storage in the future.
 
 Filecoin is an example of an attractive Datastore which we might implement in 
 the future.    
@@ -258,6 +267,15 @@ stored in Polar are preserved long-term.
 
 This include selecting reliable file formats and using web standards as much as 
 possible.  
- 
- 
- 
+                                                         
+[^internet-scale-archiving] At some point we might allow users to share documents
+but there are privacy concerns we have to address here as web documents served
+to users might have PII data embedded within them and we also have to comply
+with local laws as well as be respectful of user privacy.  Initially this ]
+functionality won't be enabled but it's a sub-project we'd like to pursue in 
+the future and might be possible for some fraction of the documents indexed 
+when we can identify that they have zero PII.
+
+
+
+
