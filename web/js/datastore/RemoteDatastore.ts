@@ -59,7 +59,11 @@ export class RemoteDatastore extends DelegatedDatastore {
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
-        const result = this.delegate.write(fingerprint, data, docInfo);
+        // create a new opts without a datastoreMutation because we don't trust
+        // promises across process bounds
+        opts = {... opts, datastoreMutation: undefined};
+
+        const result = this.delegate.write(fingerprint, data, docInfo, opts);
         this.datastoreMutations.handle(result, datastoreMutation, () => true);
 
         return result;

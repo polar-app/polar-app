@@ -1,25 +1,20 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {Datastore} from '../../js/datastore/Datastore';
-import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
 import {Logging} from '../../js/logger/Logging';
 import {MainApp} from '../../js/apps/main/MainApp';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
-import {MainAppController} from '../../js/apps/main/MainAppController';
-import BrowserWindow = Electron.BrowserWindow;
 import {FileImportClient} from '../../js/apps/repository/FileImportClient';
 import {Files} from '../../js/util/Files';
 import {FilePaths} from '../../js/util/FilePaths';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {DiskDatastore} from '../../js/datastore/DiskDatastore';
-import {Promises} from '../../js/util/Promises';
-import {wait} from 'dom-testing-library';
-import {AppInstance} from '../../js/electron/framework/AppInstance';
 import {AppInstances} from '../../js/electron/framework/AppInstances';
 import {AppPath} from '../../js/electron/app_path/AppPath';
 import {FileImportRequests} from '../../js/apps/repository/FileImportRequests';
+import BrowserWindow = Electron.BrowserWindow;
 
 const log = Logger.create();
 

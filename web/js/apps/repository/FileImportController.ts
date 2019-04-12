@@ -282,6 +282,7 @@ export class FileImportController {
 
                 try {
                     const importedFile = await this.doImportFile(file);
+                    log.info("Imported file: ", importedFile);
                     result.push(importedFile);
                 } catch (e) {
                     log.error("Failed to import file: ", e, file);
@@ -301,7 +302,7 @@ export class FileImportController {
 
     private async doImportFile(file: AddFileRequest): Promise<Optional<ImportedFile>> {
 
-        log.info("Importing file: " + file);
+        log.info("Importing file: ", file);
 
         const importedFileResult =
             await this.pdfImporter.importFile(file.docPath, file.basename);
