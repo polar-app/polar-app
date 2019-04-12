@@ -51,8 +51,83 @@ export class Blobs {
 
     }
 
+
+
+    public static toStream(blob: Blob): NodeJS.ReadableStream {
+
+        const passThrough = new stream.PassThrough();
+
+        const writeSize = 4096;
+
+        let error: Error | undefined;
+
+        let index: number = 0;
+
+        passThrough.on('error', err => {
+            // the reader had a problem and we need to stop pushing data.
+            error = err;
+        });
+
+        passThrough.on('drain', err => {
+            doPush();
+        });
+
+        const computeEnd = () => {
+
+            let result = index + writeSize;
+            if (result > blob.size) {
+                // truncate the end.
+                result = blob.size;
+            }
+
+            return result;
+
+        };
+
+        const pushAsync = async () => {
+
+            while (true) {
+
+                const end = computeEnd();
+                const slice = blob.slice(index, end);
+
+                const arrayBuffer = await Blobs.toArrayBuffer(slice);
+                const buff = ArrayBuffers.toBuffer(arrayBuffer);
+
+                const doNextRead = passThrough.write(buff);
+
+                index = end;
+
+                if (index >= blob.size) {
+                    // we're done reading the document now.
+                    passThrough.write(null);
+                    return;
+                } else if (! doNextRead) {
+                    return;
+                }
+
+            }
+
+        };
+
+        const doPush = () => {
+            pushAsync()
+                .catch(err => {
+                    // we had an issue pushing data so notify the reader
+                    passThrough.emit('error', err);
+                });
+        };
+
+        doPush();
+
+        return passThrough;
+
+    }
+
     // https://nodejs.org/api/stream.html#stream_implementing_a_readable_stream
-    public static toStream(blob: Blob, opts: ReadableOptions = {}): NodeJS.ReadableStream {
+    public static toStream2(blob: Blob, opts: ReadableOptions = {}): NodeJS.ReadableStream {
+
+        console.log("FIXME blob size: " + blob.size);
 
         class BlobReadableStream extends stream.Readable {
 
@@ -74,6 +149,8 @@ export class Blobs {
 
             public _read(size: number): void {
 
+                console.log("FIXME: _read called");
+
                 const computeEnd = () => {
 
                     let result = this.index + size;
@@ -88,22 +165,47 @@ export class Blobs {
 
                 const doReadAsync = async () => {
 
-                    const end = computeEnd();
-                    const slice = blob.slice(this.index, end);
+                    // FIXME: I think maybe streams and promises aren't a good
+                    // combination...
 
-                    const arrayBuffer = await Blobs.toArrayBuffer(slice);
-                    const buff = ArrayBuffers.toBuffer(arrayBuffer);
+                    console.log("FIXME: trying to read again... index " + this.index);
 
-                    const doNextRead = this.push(buff);
+                    while (this.index < blob.size) {
 
-                    this.index += size;
+                        console.log("FIXME: beginning of while");
 
-                    if (this.index >= blob.size) {
-                        // we're done reading the document now.
-                        this.push(null);
-                    } else if (doNextRead) {
-                        // we have to read the next slice now.
-                        doRead();
+                        // TODO: it would be better if we had more of an iterator/
+                        // producer/generator API here to just get the next slice
+                        // rather than compute them directly.
+
+                        const end = computeEnd();
+                        const slice = blob.slice(this.index, end);
+
+                        // FIXME: I don't think this await is actually working
+                        // here...
+
+                        const arrayBuffer = await Blobs.toArrayBuffer(slice);
+                        const buff = ArrayBuffers.toBuffer(arrayBuffer);
+
+                        console.log("FIXME: did push... " + this.index);
+                        const doNextRead = this.push(buff);
+
+                        this.index += size;
+
+                        if (this.index >= blob.size) {
+                            // we're done reading the document now.
+                            console.log("FIXME: finished");
+                            this.push(null);
+                            console.log("FIXME: wrote final chunk (going to return)");
+                            return;
+                        } else if (! doNextRead) {
+                            // we have to read the next slice now.
+                            console.log("pausing read.");
+                            return;
+                        }
+
+                        console.log("FIXME: end of while");
+
                     }
 
                 };

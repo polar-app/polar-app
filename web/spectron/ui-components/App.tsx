@@ -48,6 +48,8 @@ import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
 import {FundraisingCampaign} from './FundraisingCampaign';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
+import {URLs} from '../../js/util/URLs';
+import {Blobs} from '../../js/util/Blobs';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -160,6 +162,22 @@ class App<P> extends React.Component<{}, IAppState> {
         // destroy the planet?', onCancel: NULL_FUNCTION, onConfirm:
         // NULL_FUNCTION });
 
+        // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
+
+        const url = "https://news.ycombinator.com/";
+
+        console.log("gonig to do it");
+
+        URLs.toBlob(url)
+            .then((blob) => {
+
+                console.log("converted to blob!");
+
+                Blobs.toStream(blob).pipe(process.stdout);
+
+            })
+            .catch(err => console.log("got error", err))
+
         return (
             //
             // <div tabIndex={0}
@@ -178,6 +196,8 @@ class App<P> extends React.Component<{}, IAppState> {
           //                 {/*right={<div/>}/>*/}
 
             <div>
+
+
 
                 <Feedback category='net-promoter-score'
                           title='How likely are you to recommend Polar to a colleague?'

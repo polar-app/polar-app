@@ -11,14 +11,20 @@ export class URLs {
         const response = await fetch(url);
         const blob = await response.blob();
         const arrayBuffer = await Blobs.toArrayBuffer(blob);
-        const buffer = ArrayBuffers.toBuffer(arrayBuffer);
-        return buffer;
+        return ArrayBuffers.toBuffer(arrayBuffer);
 
     }
 
     public static async toBlob(url: string): Promise<Blob> {
+
         const response = await fetch(url);
-        return await response.blob();
+
+        if (response.ok) {
+            return await response.blob();
+        } else {
+            throw new Error(`Could not fetch URL ${response.status}: ${response.statusText}`);
+        }
+
     }
 
     /**
