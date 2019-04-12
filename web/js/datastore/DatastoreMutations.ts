@@ -14,6 +14,34 @@ export class DatastoreMutations {
         return new DatastoreMutations(consistency);
     }
 
+
+    /**
+     * Do a primary sync followed by a secondary sync and then forward their
+     * completion to set of mutations.
+     */
+    private performOrderedWrites<T>(primarySync: (primaryMutations: DatastoreMutation<T>) => Promise<void>,
+                                    secondarySync: (secondaryMutations: DatastoreMutation<T>) => Promise<void>,
+                                    primaryMutations: DatastoreMutation<T>,
+                                    secondaryMutations: DatastoreMutation<T>,
+                                    reject: (err: Error) => void) {
+
+        primarySync(primaryMutations)
+            .catch((err) => reject(err));
+
+        // TODO: I used race before but it didn't actually work properly and I
+        // think it's incorrect as well.
+        Promise.all([primaryMutations.written.get(),
+                     primaryMutations.committed.get()])
+            .then(() => {
+
+                secondarySync(secondaryMutations)
+                    .catch(err => reject(err));
+
+            })
+            .catch((err) => reject(err));
+
+    }
+
     /**
      * Perform a write while coordinating the remote and local writes.
      *
@@ -38,34 +66,40 @@ export class DatastoreMutations {
                                         remoteMutations: DatastoreMutation<T> = new DefaultDatastoreMutation(),
                                         localMutations: DatastoreMutation<T> = new DefaultDatastoreMutation()): Promise<void> {
 
+
+        const writeRemoteThenLocal = (reject: (err: Error) => void) => {
+            this.performOrderedWrites<T>(remoteSync, localSync, remoteMutations, localMutations, reject);
+        };
+
+        const writeLocalThenRemote = (reject: (err: Error) => void) => {
+            this.performOrderedWrites<T>(localSync, remoteSync, localMutations, remoteMutations, reject);
+        };
+
+
         return new Promise<void>((resolve, reject) => {
 
-            remoteSync(remoteMutations)
-                .catch((err) => reject(err));
-
-            Promise.race([remoteMutations.written.get(),
-                          remoteMutations.committed.get()])
-                .then(() => {
-
-                    localSync(localMutations)
-                        .catch(err => reject(err));
-
-                })
-                .catch((err) => reject(err));
+            // writeRemoteThenLocal(reject);
+            writeLocalThenRemote(reject);
 
             this.batched(remoteMutations, localMutations, datastoreMutation);
 
-            if (this.consistency === 'committed') {
+            switch (this.consistency) {
 
-                datastoreMutation.committed.get()
-                    .then(() => resolve())
-                    .catch((err) => reject(err));
+                case 'committed':
 
-            } else {
+                    remoteMutations.committed.get()
+                        .then(() => resolve())
+                        .catch((err) => reject(err));
 
-                datastoreMutation.written.get()
-                    .then(() => resolve())
-                    .catch((err) => reject(err));
+                    break;
+
+                case 'written':
+
+                    localMutations.written.get()
+                        .then(() => resolve())
+                        .catch((err) => reject(err));
+
+                    break;
 
             }
 

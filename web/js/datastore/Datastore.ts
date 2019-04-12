@@ -143,7 +143,7 @@ export abstract class AbstractDatastore {
 
     protected datastoreMutations: DatastoreMutations;
 
-    constructor() {
+    protected constructor() {
         this.datastoreMutations = DatastoreMutations.create('written');
 
     }
