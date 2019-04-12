@@ -489,6 +489,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 // progress updates.
                 const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
 
+                // We have to handle deleting the binary files locally...
                 const fileRefs = Datastores.toBackendFileRefs(Either.ofRight(docMetaFileRef.docInfo));
 
                 for (const fileRef of fileRefs) {
@@ -499,8 +500,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 // TODO: do both the main delete and each file delete in
                 // parallel.
 
-                // FIXME: we have to handle deleting the doc locally...
-                // which we're not doing now!!!
                 await this.local.delete(docMetaFileRef);
                 log.info("File deleted: " , docMetaFileRef);
             }

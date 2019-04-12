@@ -30,7 +30,6 @@ import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {isPresent} from '../Preconditions';
 import {BinaryFileData} from './Datastore';
-import {string} from 'prop-types';
 import {WriteOpts} from './Datastore';
 
 const log = Logger.create();

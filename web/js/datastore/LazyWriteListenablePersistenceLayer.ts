@@ -1,16 +1,13 @@
-import {Datastore, DatastoreID, DeleteResult} from './Datastore';
-import {IDocInfo, DocInfo} from '../metadata/DocInfo';
+import {DeleteResult} from './Datastore';
+import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
-import {DelegatedPersistenceLayer} from './DelegatedPersistenceLayer';
-import {PersistenceLayer} from './PersistenceLayer';
+import {WriteOpts} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
-import {AsyncFunction} from '../util/AsyncWorkQueue';
 import {DelegatedListenablePersistenceLayer} from './DelegatedListenablePersistenceLayer';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
-import {WriteOpts} from './PersistenceLayer';
 
 /**
  */

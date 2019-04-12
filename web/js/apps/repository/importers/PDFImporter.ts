@@ -16,7 +16,6 @@ import {BinaryFileData, FileRef} from '../../../datastore/Datastore';
 import {URLs} from '../../../util/URLs';
 import {InputSources} from '../../../util/input/InputSources';
 import {AppRuntime} from '../../../AppRuntime';
-import base = Mocha.reporters.base;
 
 import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
@@ -217,17 +216,6 @@ export class PDFImporter {
             name: filename,
             hashcode: docMeta.docInfo.hashcode
         };
-
-        // FIXME: there's a race here... the local writeFile completes first but
-        // we DO NOT wait for the remote writeFile so the operations look like
-        //
-        // writeFile local
-        // writeFile remote (started but not yet completed)
-        // write local
-        // write remote
-        // writeFile remote (completed)
-        // but there's a moment where the local
-        // document hasn't yet been written.
 
         const writeFile: BackendFileRefData = {
             backend: Backend.STASH,

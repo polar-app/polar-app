@@ -615,9 +615,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private async getFile0(backend: Backend, ref: FileRef, opts: GetFileOpts): Promise<Optional<DocFileMeta>> {
 
-        console.log("FIXME: within getFile0");
-
         Datastores.assertNetworkLayer(this, opts.networkLayer);
+
+        // TODO: disabling reading from the file meta now becuase the cache
+        // isn't being invalidate fast enough and we're performing a stale
+        // read and reading the wrong URL on file deletes
 
         // let result = await this.getFileFromFileMeta(backend, ref);
         // disabling this cache for now as it's actually breaking

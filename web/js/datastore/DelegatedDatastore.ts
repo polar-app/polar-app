@@ -10,7 +10,6 @@ import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
-import {DatastoreMutation} from './DatastoreMutation';
 import {WriteOpts} from './Datastore';
 
 /**
