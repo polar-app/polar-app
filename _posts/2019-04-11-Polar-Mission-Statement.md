@@ -21,7 +21,7 @@ platform.
 
 ## Roadmap
 
-See the roadmap for [Q2/Q3/Q4 2019] (https://getpolarized.io/2019/04/10/Roadmap-Q2-Q3-2019.html).
+See the roadmap for [Q2/Q3/Q4 2019](https://getpolarized.io/2019/04/10/Roadmap-Q2-Q3-2019.html).
 
 The roadmap living document so please check back over time to see how it evolves
 especially as new features are released. 
