@@ -32,11 +32,10 @@ const tracer = RendererAnalytics.createTracer('persistence-layer');
  */
 export class TracedPersistenceLayer implements ListenablePersistenceLayer {
 
-    public readonly id = 'traced';
-
     public readonly datastore: Datastore;
 
-    constructor(private readonly delegate: ListenablePersistenceLayer) {
+    constructor(private readonly delegate: ListenablePersistenceLayer,
+                public readonly id: string = 'traced') {
         this.datastore = delegate.datastore;
     }
 

@@ -15,6 +15,6 @@ export interface DocFileMeta {
      */
     readonly url: string;
 
-    readonly meta: FileMeta;
+    // readonly meta: FileMeta;
 
 }

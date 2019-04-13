@@ -5,6 +5,7 @@
  */
 export enum Backend {
 
+    PUBLIC = 'public',
     VIDEO = 'video',
     IMAGE = 'image',
     STASH = 'stash'

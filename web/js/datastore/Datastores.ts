@@ -81,14 +81,18 @@ export class Datastores {
 
         const fileRef = this.toFileRef(either);
 
-        if (fileRef) {
-            // this is the main FileRef of the file (PHZ or PDF)
-            result.push({backend: Backend.STASH, ...fileRef});
-        }
-
         const docInfo =
             Either.ofLeft(either)
                 .convertLeftToRight(left => left.docInfo);
+
+        if (fileRef) {
+
+            const backend = docInfo.backend || Backend.STASH;
+
+            // this is the main FileRef of the file (PHZ or PDF)
+            result.push({backend, ...fileRef});
+
+        }
 
         const attachments = docInfo.attachments || {};
         const attachmentRefs = Object.values(attachments)

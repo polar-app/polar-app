@@ -5,6 +5,8 @@ import {DatastoreCapabilities} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {NetworkLayers} from './Datastore';
+import {WriteOpts} from './Datastore';
+import {FileMeta} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
@@ -36,7 +38,6 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
-import {WriteOpts} from './Datastore';
 
 const log = Logger.create();
 
@@ -88,46 +89,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
 
-            this.precache()
-                .catch(err => log.error("Unable to precache data", err));
-
         }
 
         this.initialized = true;
 
         return {};
-
-    }
-
-    /**
-     * Make sure all tables for this user are precached.
-     */
-    private async precache() {
-
-        await this.precacheDocFileMeta();
-
-    }
-
-    /**
-     * Fetch a fresh copy of DOC_FILE_META into the local cache so that
-     * secondary operations can use it moving forward.
-     */
-    private async precacheDocFileMeta() {
-
-        const uid = FirebaseDatastore.getUserID();
-
-        const query = await this.firestore!
-            .collection(DatastoreCollection.DOC_FILE_META)
-            .where('uid', '==', uid);
-
-        // this will just keep data fresh moving forward so that our local cache
-        // is always updated when remote data on other hosts is updated.
-        await query.get({source: 'server'});
-
-        // now just add a snapshot listener so that we're constantly pulling in
-        // fresh values when updated elsewhere so that the user always has
-        // fast data.
-        query.onSnapshot(NULL_FUNCTION, NULL_FUNCTION);
 
     }
 
@@ -379,7 +345,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                              data: BinaryFileData,
                              opts: WriteFileOpts): Promise<DocFileMeta> {
 
-        let meta = opts.meta || {};
         const visibility = opts.visibility || Visibility.PRIVATE;
 
         const storage = this.storage!;
@@ -392,7 +357,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             if (opts.updateMeta) {
 
-                meta = { ...meta, visibility };
+                const meta: FileMeta = { visibility };
+
+                // https://firebase.google.com/docs/storage/web/file-metadata
+                //
+                // Only the properties specified in the metadata are updated,
+                // all others are left unmodified.
 
                 await fileRef.updateMetadata(meta);
 
@@ -419,13 +389,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         let uploadTask: firebase.storage.UploadTask;
 
-        // TODO: we need to compute visibility for this for the future.
-
         const uid = FirebaseDatastore.getUserID();
 
         // stick the uid into the metadata which we use for authorization of the
         // blob when not public.
-        meta = {...meta, uid, visibility};
+        const meta = {uid, visibility};
 
         const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
 
@@ -505,100 +473,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         return {
             backend,
             ref,
-            url: downloadURL!,
-            meta
+            url: downloadURL!
         };
 
     }
-
-    public async getFileMeta(backend: Backend,
-                             ref: FileRef,
-                             source: 'cache' | 'server' = 'server'): Promise<Optional<DocFileMeta>> {
-
-        const id = this.createFileMetaID(backend, ref);
-
-        try {
-
-            const snapshot = await this.firestore!
-                .collection(DatastoreCollection.DOC_FILE_META)
-                .doc(id)
-                .get({ source });
-
-            const recordHolder = <RecordHolder<DocFileMeta> | undefined> snapshot.data();
-
-            if (!recordHolder) {
-                return Optional.empty();
-            }
-
-            const rawFileMeta = recordHolder.value;
-
-            const fileMeta = {
-                ...rawFileMeta,
-                url: this.wrappedDownloadURL(rawFileMeta.url)
-            };
-
-            return Optional.of(fileMeta);
-
-        } catch (e) {
-
-            if (source !== 'cache') {
-                throw e;
-            }
-
-            return Optional.empty();
-
-        }
-
-    }
-
-    public async writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta) {
-
-        log.debug("Writing file meta for ", backend, ref);
-
-        const id = this.createFileMetaID(backend, ref);
-
-        const recordHolder: RecordHolder<DocFileMeta> = {
-            uid: FirebaseDatastore.getUserID(),
-            id,
-            visibility: Visibility.PRIVATE,
-            value: docFileMeta
-        };
-
-        await this.firestore!
-            .collection(DatastoreCollection.DOC_FILE_META)
-            .doc(id)
-            .set(recordHolder);
-
-    }
-
-    private async deleteFileMeta(backend: Backend, ref: FileRef) {
-
-        log.debug("Removing file meta for ", backend, ref);
-
-        const id = this.createFileMetaID(backend, ref);
-
-        await this.firestore!
-            .collection(DatastoreCollection.DOC_FILE_META)
-            .doc(id)
-            .delete();
-
-    }
-
-    /**
-     * Force prefetching the file meta from the server if it's not in the cache.
-     */
-    private async prefetchFileMeta(backend: Backend, ref: FileRef) {
-
-        const fileMeta = await this.getFileMeta(backend, ref, 'cache');
-
-        if (! fileMeta.isPresent()) {
-            await await this.getFileMeta(backend, ref, 'server');
-        } else {
-            // noop
-        }
-
-    }
-
 
     private createFileMetaID(backend: Backend, ref: FileRef) {
         const storagePath = this.computeStoragePath(backend, ref);
@@ -617,53 +495,26 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
-        // TODO: disabling reading from the file meta now becuase the cache
-        // isn't being invalidate fast enough and we're performing a stale
-        // read and reading the wrong URL on file deletes
+        log.debug("getFile0");
 
-        // let result = await this.getFileFromFileMeta(backend, ref);
-        // disabling this cache for now as it's actually breaking
-        // things..
+        const storage = this.storage!;
 
-        let result: Optional<DocFileMeta> = Optional.empty();
+        const storagePath = this.computeStoragePath(backend, ref);
 
-        if (result.isPresent()) {
-            log.debug("Got file from file meta");
-            return result;
-        } else {
+        const storageRef = storage.ref().child(storagePath.path);
 
-            log.debug("Getting file from storage");
+        const downloadURL =
+            await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef);
 
-            result = await this.getFileFromStorage(backend, ref);
-
-            if (result.isPresent()) {
-                // write it to doc_file_meta so that next time we have it
-                // available...
-                //
-                // TODO this needs to be cleaned up significantly.
-
-                const docFileMeta: DocFileMeta = result.get();
-
-                if (!docFileMeta.ref.hashcode) {
-                    // Firebase doesn't support file names with 'undefined'
-                    // values.
-                    delete (<any> docFileMeta.ref).hashcode;
-                }
-
-                await this.writeFileMeta(backend, ref, docFileMeta);
-
-            }
-
-            return result;
-
+        if (! downloadURL) {
+            return Optional.empty();
         }
 
-    }
+        const url: string = this.wrappedDownloadURL(downloadURL);
 
-    private async getFileFromFileMeta(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-        return await this.getFileMeta(backend, ref, 'cache');
-    }
+        return Optional.of({ backend, ref, url});
 
+    }
     /**
      * Optionally wrap the download URL with a middleware URL which can perform
      * operations like authentication for the underlying download URL.
@@ -677,68 +528,16 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private async getFileFromStorage(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
-
-        // TODO: this code and containsFile could be unified I think.
-        // containsFile should just be getFile().isPresent()
-
-        const storage = this.storage!;
-
-        const storagePath = this.computeStoragePath(backend, ref);
-
-        const fileRef = storage.ref().child(storagePath.path);
-
-        try {
-
-            const metadata = await fileRef.getMetadata();
-
-            const downloadURL = await fileRef.getDownloadURL();
-            const url: string = this.wrappedDownloadURL(downloadURL);
-
-            const meta = metadata.customMetadata;
-
-            return Optional.of({ backend, ref, url, meta });
-
-        } catch (e) {
-
-            if (e.code === "storage/object-not-found") {
-                return Optional.empty();
-            }
-
-            // some other type of exception ias occurred
-            throw e;
-
-        }
-
-    }
-
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
 
-        // TODO: we should have some cache here to avoid checking the server too
-        // often but I don't think this is goign to be used often.
-
-        // TODO: this is slow when referencing the storage path directly we
-        // should instead use the doc_file_meta but not all files have this
-        // yet.
-
         const storagePath = this.computeStoragePath(backend, ref);
 
         const storage = this.storage!;
-        const fileRef = storage.ref().child(storagePath.path);
+        const storageRef = storage.ref().child(storagePath.path);
 
-        try {
-            await fileRef.getMetadata();
-            return true;
-        } catch (e) {
+        const downloadURL = await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef);
 
-            if (e.code === "storage/object-not-found") {
-                return false;
-            }
-
-            // some other type of exception ias occurred
-            throw e;
-
-        }
+        return isPresent(downloadURL);
 
     }
 
@@ -746,35 +545,27 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         log.debug("deleteFile: ", backend, ref);
 
-        const deleteFileFromStorage = async () => {
+        try {
 
-            try {
+            const storage = this.storage!;
 
-                const storage = this.storage!;
+            const storagePath = this.computeStoragePath(backend, ref);
 
-                const storagePath = this.computeStoragePath(backend, ref);
+            const fileRef = storage.ref().child(storagePath.path);
+            await fileRef.delete();
 
-                const fileRef = storage.ref().child(storagePath.path);
-                await fileRef.delete();
+        } catch (e) {
 
-            } catch (e) {
-
-                if (e.code === "storage/object-not-found") {
-                    // this is acceptable for now as we want deletes to be
-                    // idempotent
-                    return;
-                }
-
-                // some other type of exception ias occurred
-                throw e;
-
+            if (e.code === "storage/object-not-found") {
+                // this is acceptable for now as we want deletes to be
+                // idempotent
+                return;
             }
 
-        };
+            // some other type of exception ias occurred
+            throw e;
 
-        await this.deleteFileMeta(backend, ref);
-
-        await deleteFileFromStorage();
+        }
 
     }
 
@@ -1373,8 +1164,6 @@ export enum DatastoreCollection {
 
     DOC_META = "doc_meta",
 
-    DOC_FILE_META = "doc_file_meta"
-
 }
 
 
@@ -1436,3 +1225,82 @@ interface StorageSettings {
  * available within Firebase.
  */
 export type FirebaseDocMetaID = string;
+
+export class DownloadURLs {
+
+    /**
+     * Use the old getDownloadURL method which is not fast nor reliable.
+     */
+    private static USE_STORAGE_REF = false;
+
+    public static async computeDownloadURL(backend: Backend,
+                                           ref: FileRef,
+                                           storagePath: StoragePath,
+                                           storageRef: firebase.storage.Reference): Promise<string | undefined> {
+
+        if (this.USE_STORAGE_REF) {
+            return this.computeDownloadURLWithStorageRef(storageRef);
+        } else {
+            return this.computeDownloadURLDirectly(backend, ref, storagePath);
+        }
+
+    }
+
+    private static async computeDownloadURLWithStorageRef(storageRef: firebase.storage.Reference): Promise<string | undefined> {
+
+        try {
+
+            return await storageRef.getDownloadURL();
+
+        } catch (e) {
+
+            if (e.code === "storage/object-not-found") {
+                return undefined;
+            }
+
+            // some other type of exception ias occurred
+            throw e;
+
+        }
+
+    }
+
+    private static async computeDownloadURLDirectly(backend: Backend,
+                                                    ref: FileRef,
+                                                    storagePath: StoragePath): Promise<string | undefined> {
+
+        /**
+         * Compute the storage path including the flip over whether we're
+         * going to be public without any type of path conversion depending
+         * on whether it's public or not.  Public URLs have a 1:1 mapping
+         * where everything else might be in a different bucket or path
+         * depending the storage computation function.
+         */
+        const toPath = (): string => {
+
+            if (backend === Backend.PUBLIC) {
+                // there is no blinding of the data path with the users
+                // user ID or other key.
+                return `${backend}/${ref.name}`;
+            } else {
+                return storagePath.path;
+            }
+
+        };
+
+        const toURL = (): string => {
+
+            const path = toPath();
+
+            return `http://storage.googleapis.com/polar-32b0f.appspot.com/${path}`;
+
+        };
+
+        const url = toURL();
+
+        const exists = await URLs.existsWithHEAD(url);
+
+        return exists ? url : undefined;
+
+    }
+}

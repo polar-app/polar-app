@@ -57,7 +57,8 @@ describe('AdvertisingPersistenceLayer', function() {
                 "nrTextHighlights": 0,
                 "nrAreaHighlights": 0,
                 "uuid": "...",
-                "nrAnnotations": 0
+                "nrAnnotations": 0,
+                attachments: {}
             }
         ];
 

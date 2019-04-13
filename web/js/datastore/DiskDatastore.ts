@@ -518,18 +518,15 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const fileURL = FilePaths.toURL(fileReference.path);
         const url = new URL(fileURL);
 
-        let meta = {};
-
-        if (await Files.existsAsync(fileReference.metaPath)) {
-            const buff = await Files.readFileAsync(fileReference.metaPath);
-            meta = JSON.parse(buff.toString("utf-8"));
-        }
+        // if (await Files.existsAsync(fileReference.metaPath)) {
+        //     const buff = await Files.readFileAsync(fileReference.metaPath);
+        //     meta = JSON.parse(buff.toString("utf-8"));
+        // }
 
         return {
             backend,
             ref,
             url: url.href,
-            meta
         };
 
     }

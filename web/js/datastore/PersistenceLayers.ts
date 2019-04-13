@@ -220,7 +220,7 @@ export class PersistenceLayers {
                     const file = optionalFile.get();
                     const blob = await URLs.toBlob(file.url);
 
-                    await target.datastore.writeFile(file.backend, fileRef, blob, file.meta);
+                    await target.datastore.writeFile(file.backend, fileRef, blob);
 
                     ++result.files.writes;
 

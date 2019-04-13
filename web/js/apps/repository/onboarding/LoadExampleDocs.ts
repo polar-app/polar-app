@@ -310,6 +310,7 @@ export class LoadExampleDocs {
                     hashcode: opts.hashcode
                 };
 
+                docMeta.docInfo.backend = Backend.PUBLIC;
                 docMeta.docInfo.filename = ref.name;
                 docMeta.docInfo.hashcode = ref.hashcode;
 
@@ -362,24 +363,8 @@ export class LoadExampleDocs {
             const datastore = this.persistenceLayer.datastore;
 
             if (datastore.id === 'firebase') {
-
-                // with Firebase we need to tell it how to get access to
-                // the data files
-
-                const backend = Backend.STASH;
-                const ref = importedDoc.ref;
-
-                const docFileMeta: DocFileMeta = {
-                    backend,
-                    ref,
-                    url: opts.url,
-                    meta: {}
-                };
-
-                const binaryDatastore = <WritableBinaryMetaDatastore> <any> datastore;
-
-                await binaryDatastore.writeFileMeta(backend, ref, docFileMeta);
-
+                // noop for now.. backing out usage of metadata as it's expensive
+                // to store this metadata and we really don't need it
             }
 
         }

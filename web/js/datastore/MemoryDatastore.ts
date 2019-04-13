@@ -103,7 +103,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
         this.files[key] = {buffer: buff!, meta};
 
-        return {backend, ref, url: 'NOT_IMPLEMENTED:none', meta};
+        return {backend, ref, url: 'NOT_IMPLEMENTED:none'};
 
     }
 

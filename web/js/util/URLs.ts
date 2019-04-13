@@ -1,12 +1,13 @@
 import {Blobs} from './Blobs';
 import {ArrayBuffers} from './ArrayBuffers';
 import {Strings} from './Strings';
+import {URLStr} from './Strings';
 
 // import fetch from './Fetch';
 
 export class URLs {
 
-    public static async toBuffer(url: string): Promise<Buffer> {
+    public static async toBuffer(url: URLStr): Promise<Buffer> {
 
         const response = await fetch(url);
         const blob = await response.blob();
@@ -15,7 +16,7 @@ export class URLs {
 
     }
 
-    public static async toBlob(url: string): Promise<Blob> {
+    public static async toBlob(url: URLStr): Promise<Blob> {
 
         const response = await fetch(url);
 
@@ -31,7 +32,7 @@ export class URLs {
      * Return true if the URL is a web scheme (http or https)
      * @param url
      */
-    public static isWebScheme(url: string) {
+    public static isWebScheme(url: URLStr) {
 
         return url.startsWith('http:') || url.startsWith('https:');
 
@@ -41,7 +42,7 @@ export class URLs {
      * Get the site base URL including the scheme, domain, and optionally the
      * port.
      */
-    public static toBase(url: string) {
+    public static toBase(url: URLStr) {
 
         const parsedURL = new URL(url);
 
@@ -71,6 +72,14 @@ export class URLs {
             path.startsWith("http:") ||
             path.startsWith("https:");
 
+    }
+
+    /**
+     * Return true if the given URL exists by performing a HEAD request on it.
+     */
+    public static async existsWithHEAD(url: URLStr): Promise<boolean> {
+        const response = await fetch(url, {method: 'HEAD'});
+        return response.ok;
     }
 
 }

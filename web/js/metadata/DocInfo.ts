@@ -12,6 +12,7 @@ import {UUID} from './UUID';
 import {ReadingOverview} from './ReadingOverview';
 import {Visibility} from '../datastore/Datastore';
 import {Attachment} from './Attachment';
+import {Backend} from '../datastore/Backend';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -28,6 +29,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public properties: {[id: string]: string} = {};
     public archived: boolean = false;
     public flagged: boolean = false;
+    public backend?: Backend;
     public filename?: string;
     public added?: ISODateTimeString;
     public tags?: {[id: string]: Tag} = {};
@@ -152,6 +154,12 @@ export interface IDocInfo {
      * True if this document was starred for prioritization.
      */
     flagged: boolean;
+
+    /**
+     * The backend of the doc. We assume STASH by default but it could be PUBLIC
+     * for example docs.
+     */
+    backend?: Backend;
 
     /**
      * The filename of this doc in the .stash directory.

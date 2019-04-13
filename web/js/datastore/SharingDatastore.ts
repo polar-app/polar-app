@@ -165,10 +165,6 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         throw new Error("Not supported");
     }
 
-    public async writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void> {
-        throw new Error("Not supported");
-    }
-
 }
 
 
