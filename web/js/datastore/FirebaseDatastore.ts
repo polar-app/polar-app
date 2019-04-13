@@ -37,6 +37,7 @@ import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
+import {printf} from '../logger/Console';
 
 const log = Logger.create();
 

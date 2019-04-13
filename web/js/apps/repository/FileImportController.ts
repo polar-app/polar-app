@@ -226,7 +226,7 @@ export class FileImportController {
             return;
         }
 
-        Toaster.info(`Importing ${files.length} file(s) (one moment please).`);
+        // Toaster.info(`Importing ${files.length} file(s) (one moment please).`);
 
         if (AppRuntime.isElectron() && importedFiles.length === 1) {
 
