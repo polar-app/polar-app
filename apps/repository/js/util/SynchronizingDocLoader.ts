@@ -1,12 +1,8 @@
-import {FileRef} from '../../../../web/js/datastore/Datastore';
-import {Backend} from '../../../../web/js/datastore/Backend';
+import {BackendFileRef} from '../../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {DocLoader} from '../../../../web/js/apps/main/doc_loaders/DocLoader';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
-import {Stopwatches} from '../../../../web/js/util/Stopwatches';
-import {BackendFileRef} from '../../../../web/js/datastore/Datastore';
 
 const log = Logger.create();
 

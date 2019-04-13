@@ -21,7 +21,6 @@ import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
@@ -47,8 +46,6 @@ import {DocContextMenu} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {ProgressTracker} from '../../../../web/js/util/ProgressTracker';
 import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
-import {BackendFileRef} from '../../../../web/js/datastore/Datastore';
-import {DocInfo} from '../../../../web/js/metadata/DocInfo';
 import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
 
@@ -984,8 +981,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         }, 1);
 
     }
-
-
 
     private onDocumentLoadRequested(repoDocInfo: RepoDocInfo) {
 

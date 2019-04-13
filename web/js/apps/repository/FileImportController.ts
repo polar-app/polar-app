@@ -1,5 +1,6 @@
 import {PersistenceLayer} from "../../datastore/PersistenceLayer";
 import {ipcRenderer} from "electron";
+import {remote} from 'electron';
 import {Logger} from '../../logger/Logger';
 import {ImportedFile, PDFImporter} from './importers/PDFImporter';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
@@ -16,8 +17,6 @@ import {AddFileRequest} from "./AddFileRequest";
 import {AppRuntime} from "../../AppRuntime";
 import {AddFileRequests} from "./AddFileRequests";
 import {ProgressTracker} from '../../util/ProgressTracker';
-import {remote} from 'electron';
-import {Backend} from '../../datastore/Backend';
 
 const log = Logger.create();
 

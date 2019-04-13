@@ -37,8 +37,6 @@ import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
-import {printf} from '../logger/Console';
 
 const log = Logger.create();
 
@@ -471,7 +469,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
-        log.debug("getFile0");
+        log.debug("getFile");
 
         const storage = this.storage!;
 

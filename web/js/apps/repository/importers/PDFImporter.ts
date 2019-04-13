@@ -279,20 +279,21 @@ export interface ImportedFile {
     /**
      * The DocInfo for the file we just imported.
      */
-    docInfo: DocInfo;
+    readonly docInfo: DocInfo;
 
     /**
      * The basename of the file imported.
      */
-    basename: string;
+    readonly basename: string;
 
-    backendFileRef: BackendFileRef;
+    readonly backendFileRef: BackendFileRef;
 
 }
 
 interface FileHashMeta {
-    hashPrefix: string;
-    hashcode: string;
+    readonly hashPrefix: string;
+
+    readonly hashcode: string;
 }
 
 interface PDFImportOpts {
