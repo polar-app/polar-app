@@ -11,17 +11,16 @@ import {Optional} from '../../../util/ts/Optional';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Backend} from '../../../datastore/Backend';
-import {DocFileMeta} from '../../../datastore/DocFileMeta';
 import {AppRuntime} from '../../../AppRuntime';
 import {FileRef} from '../../../datastore/Datastore';
-import {WritableBinaryMetaDatastore} from '../../../datastore/Datastore';
+import {BackendFileRef} from '../../../datastore/Datastore';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
 import {Hashcode} from '../../../metadata/Hashcode';
 import {HashAlgorithm} from '../../../metadata/Hashcode';
 import {HashEncoding} from '../../../metadata/Hashcode';
 import {DocInfo} from '../../../metadata/DocInfo';
-import {BackendFileRef} from '../../../datastore/Datastore';
 import {Datastores} from '../../../datastore/Datastores';
+import {PDFMeta} from '../importers/PDFMetadata';
 
 const log = Logger.create();
 
@@ -285,8 +284,14 @@ export class LoadExampleDocs {
 
             if (AppRuntime.isElectron()) {
 
+                const pdfMeta: PDFMeta = {
+                    fingerprint: opts.fingerprint,
+                    nrPages: opts.nrPages,
+                    props: {}
+                };
+
                 const importedFile =
-                    await this.doImport(relativePath);
+                    await this.doImport(relativePath, pdfMeta);
 
                 if (importedFile.isPresent()) {
 
@@ -376,7 +381,7 @@ export class LoadExampleDocs {
 
     }
 
-    private async doImport(relativePath: string): Promise<Optional<ImportedFile>> {
+    private async doImport(relativePath: string, pdfMeta: PDFMeta): Promise<Optional<ImportedFile>> {
 
         const appPath = AppPath.get();
 
@@ -387,7 +392,7 @@ export class LoadExampleDocs {
         const path = FilePaths.join(appPath, relativePath);
         const basename = FilePaths.basename(relativePath);
 
-        return await this.pdfImporter.importFile(path, basename);
+        return await this.pdfImporter.importFile(path, basename, {pdfMeta});
 
     }
 

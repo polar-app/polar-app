@@ -22,6 +22,7 @@ import {Toaster} from '../../../ui/toaster/Toaster';
 import {BackendFileRefData} from '../../../datastore/Datastore';
 import {BackendFileRef} from '../../../datastore/Datastore';
 import {Datastores} from '../../../datastore/Datastores';
+import {PDFMeta} from './PDFMetadata';
 
 const log = Logger.create();
 
@@ -97,7 +98,9 @@ export class PDFImporter {
      *                 not actually have the full metadata we need that the
      *                 original input URL has given us.
      */
-    public async importFile(docPath: string, basename: string): Promise<Optional<ImportedFile>> {
+    public async importFile(docPath: string,
+                            basename: string,
+                            opts: PDFImportOpts = {}): Promise<Optional<ImportedFile>> {
 
         docPath = await this.prefetch(docPath, basename);
 
@@ -120,7 +123,7 @@ export class PDFImporter {
 
         }
 
-        const pdfMeta = await PDFMetadata.getMetadata(docPath);
+        const pdfMeta = opts.pdfMeta || await PDFMetadata.getMetadata(docPath);
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 
@@ -290,4 +293,8 @@ export interface ImportedFile {
 interface FileHashMeta {
     hashPrefix: string;
     hashcode: string;
+}
+
+interface PDFImportOpts {
+    readonly pdfMeta?: PDFMeta;
 }

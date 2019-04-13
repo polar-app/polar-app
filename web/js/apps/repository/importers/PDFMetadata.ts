@@ -109,7 +109,7 @@ export interface PDFMeta {
     readonly link?: string;
 
     /**
-     * Full / raw list of mettadata properties.
+     * Full / raw list of metadata properties.
      */
     readonly props: Readonly<Props>;
 
