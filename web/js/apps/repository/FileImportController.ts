@@ -248,7 +248,7 @@ export class FileImportController {
 
                     this.docLoader.create({
                         fingerprint,
-                        backendFileRef: {...file.fileRef, backend: Backend.STASH},
+                        backendFileRef: file.backendFileRef,
                         newWindow: true
                     }).load()
                       .catch(err => log.error("Unable to load doc: ", err));

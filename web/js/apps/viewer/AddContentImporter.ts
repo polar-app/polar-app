@@ -198,7 +198,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
         const url = new URL(document.location!.href);
         url.searchParams.delete('preview');
-        url.searchParams.set('filename', importedFile.fileRef.name);
+        url.searchParams.set('filename', importedFile.backendFileRef.name);
 
         history.pushState({}, document.title, url.toString());
 

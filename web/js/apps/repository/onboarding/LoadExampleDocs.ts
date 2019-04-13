@@ -20,6 +20,8 @@ import {Hashcode} from '../../../metadata/Hashcode';
 import {HashAlgorithm} from '../../../metadata/Hashcode';
 import {HashEncoding} from '../../../metadata/Hashcode';
 import {DocInfo} from '../../../metadata/DocInfo';
+import {BackendFileRef} from '../../../datastore/Datastore';
+import {Datastores} from '../../../datastore/Datastores';
 
 const log = Logger.create();
 
@@ -290,11 +292,11 @@ export class LoadExampleDocs {
 
                     const docInfo = importedFile.get().docInfo;
                     const docMeta = await this.persistenceLayer.getDocMeta(docInfo.fingerprint);
-                    const ref = importedFile.get().fileRef;
+                    const backendFileRef = importedFile.get().backendFileRef;
 
                     return {
                         docMeta: docMeta!,
-                        ref
+                        backendFileRef: backendFileRef!
                     };
 
                 } else {
@@ -320,7 +322,7 @@ export class LoadExampleDocs {
 
                 return {
                     docMeta,
-                    ref
+                    backendFileRef: Datastores.toBackendFileRef(docMeta)!
                 };
 
             }
@@ -428,6 +430,6 @@ interface DocOpts {
 interface ImportedDoc {
 
     readonly docMeta: DocMeta;
-    readonly ref: FileRef;
+    readonly backendFileRef: BackendFileRef;
 
 }

@@ -20,6 +20,8 @@ import {AppRuntime} from '../../../AppRuntime';
 import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
 import {BackendFileRefData} from '../../../datastore/Datastore';
+import {BackendFileRef} from '../../../datastore/Datastore';
+import {Datastores} from '../../../datastore/Datastores';
 
 const log = Logger.create();
 
@@ -134,16 +136,13 @@ export class PDFImporter {
 
                     // return the existing doc meta information.
 
-                    const fileRef: FileRef = {
-                        name: docMeta.docInfo.filename,
-                        hashcode: docMeta.docInfo.hashcode
-                    };
+                    const backendFileRef = Datastores.toBackendFileRef(docMeta);
 
                     const basename = FilePaths.basename(docMeta.docInfo.filename);
                     return Optional.of({
                         basename,
                         docInfo: docMeta.docInfo,
-                        fileRef
+                        backendFileRef: backendFileRef!
                     });
 
                 }
@@ -225,10 +224,12 @@ export class PDFImporter {
 
         await persistenceLayer.write(pdfMeta.fingerprint, docMeta, {writeFile});
 
+        const backendFileRef = Datastores.toBackendFileRef(docMeta);
+
         return Optional.of({
             basename,
             docInfo: docMeta.docInfo,
-            fileRef
+            backendFileRef: backendFileRef!
         });
 
     }
@@ -282,7 +283,7 @@ export interface ImportedFile {
      */
     basename: string;
 
-    fileRef: FileRef;
+    backendFileRef: BackendFileRef;
 
 }
 
