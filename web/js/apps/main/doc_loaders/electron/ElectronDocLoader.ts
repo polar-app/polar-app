@@ -25,8 +25,8 @@ export class ElectronDocLoader implements IDocLoader {
             async load(): Promise<void> {
 
                 Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
-                Preconditions.assertPresent(loadDocRequest.fileRef, "fileRef");
-                Preconditions.assertPresent(loadDocRequest.fileRef.name, "fileRef.name");
+                Preconditions.assertPresent(loadDocRequest.backendFileRef, "backendFileRef");
+                Preconditions.assertPresent(loadDocRequest.backendFileRef.name, "backendFileRef.name");
 
                 await ipcClient.execute('/main/load-doc', loadDocRequest);
 

@@ -1,10 +1,10 @@
-import {FileRef} from "../../../datastore/Datastore";
+import {BackendFileRef} from '../../../datastore/Datastore';
 
 export interface LoadDocRequest {
 
     readonly fingerprint: string;
 
-    readonly fileRef: FileRef;
+    readonly backendFileRef: BackendFileRef;
 
     /**
      * When true load in a new window.  Should probably always be true.

@@ -24,8 +24,8 @@ export class BrowserDocLoader implements IDocLoader {
         const linkLoader = Nav.createLinkLoader();
 
         Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
-        Preconditions.assertPresent(loadDocRequest.fileRef, "fileRef");
-        Preconditions.assertPresent(loadDocRequest.fileRef.name, "fileRef.name");
+        Preconditions.assertPresent(loadDocRequest.backendFileRef, "backendFileRef");
+        Preconditions.assertPresent(loadDocRequest.backendFileRef.name, "backendFileRef.name");
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 
@@ -33,8 +33,10 @@ export class BrowserDocLoader implements IDocLoader {
 
             async load(): Promise<void> {
 
+                const {backendFileRef} = loadDocRequest;
+
                 const optionalDatastoreFile
-                    = await persistenceLayer.getFile(Backend.STASH, loadDocRequest.fileRef, {noExistenceCheck: true});
+                    = await persistenceLayer.getFile(backendFileRef.backend, backendFileRef, {noExistenceCheck: true});
 
                 if (optionalDatastoreFile.isPresent()) {
 
@@ -42,12 +44,12 @@ export class BrowserDocLoader implements IDocLoader {
 
                     const toViewerURL = () => {
 
-                        const fileName = loadDocRequest.fileRef.name;
+                        const fileName = backendFileRef.name;
 
                         if (fileName.endsWith(".pdf")) {
-                            return PDFLoader.createViewerURL(datastoreFile.url, loadDocRequest.fileRef.name);
+                            return PDFLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
                         } else if (fileName.endsWith(".phz")) {
-                            return PHZLoader.createViewerURL(datastoreFile.url, loadDocRequest.fileRef.name);
+                            return PHZLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
                         } else {
                             throw new Error("Unable to handle file: " + fileName);
                         }

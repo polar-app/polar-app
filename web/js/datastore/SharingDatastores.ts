@@ -41,7 +41,7 @@ export class SharingDatastores {
             return undefined;
         }
 
-        const fileRef = Datastores.toFileRef(docMeta);
+        const fileRef = Datastores.toBackendFileRef(docMeta);
 
         if (fileRef) {
 

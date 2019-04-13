@@ -17,6 +17,7 @@ import {AppRuntime} from "../../AppRuntime";
 import {AddFileRequests} from "./AddFileRequests";
 import {ProgressTracker} from '../../util/ProgressTracker';
 import {remote} from 'electron';
+import {Backend} from '../../datastore/Backend';
 
 const log = Logger.create();
 
@@ -247,7 +248,7 @@ export class FileImportController {
 
                     this.docLoader.create({
                         fingerprint,
-                        fileRef: file.fileRef,
+                        backendFileRef: {...file.fileRef, backend: Backend.STASH},
                         newWindow: true
                     }).load()
                       .catch(err => log.error("Unable to load doc: ", err));

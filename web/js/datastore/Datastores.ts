@@ -42,9 +42,10 @@ export class Datastores {
     }
 
     /**
-     * Get the main FileRef (PHZ or PDF).
+     * Get the main BackendFileRef (PHZ or PDF) for this file (either the
+     * PHZ or PDF file)
      */
-    public static toFileRef(either: LeftEither<DocMeta, DocInfoLike>): FileRef | undefined {
+    public static toBackendFileRef(either: LeftEither<DocMeta, DocInfoLike>): BackendFileRef | undefined {
 
         if (! either) {
             return undefined;
@@ -58,12 +59,15 @@ export class Datastores {
 
             // return the existing doc meta information.
 
-            const fileRef: FileRef = {
+            const backend = docInfo.backend || Backend.STASH;
+
+            const backendFileRef: BackendFileRef = {
                 name: docInfo.filename,
-                hashcode: docInfo.hashcode
+                hashcode: docInfo.hashcode,
+                backend
             };
 
-            return fileRef;
+            return backendFileRef;
 
         }
 
@@ -79,7 +83,7 @@ export class Datastores {
 
         const result: BackendFileRef[] = [];
 
-        const fileRef = this.toFileRef(either);
+        const fileRef = this.toBackendFileRef(either);
 
         const docInfo =
             Either.ofLeft(either)

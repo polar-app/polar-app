@@ -9,6 +9,8 @@ import {FormattedTags} from '../FormattedTags';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import Button from 'reactstrap/lib/Button';
+import {Datastores} from '../../../../web/js/datastore/Datastores';
+import {Either} from '../../../../web/js/util/Either';
 
 const log = Logger.create();
 
@@ -178,9 +180,9 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
     private onDocumentLoadRequested(docInfo: IDocInfo) {
 
-        this.synchronizingDocLoader.load(docInfo.fingerprint,
-                                         docInfo.filename!,
-                                         docInfo.hashcode)
+        const backendFileRef = Datastores.toBackendFileRef(Either.ofRight(docInfo));
+
+        this.synchronizingDocLoader.load(docInfo.fingerprint, backendFileRef!)
             .catch(err => log.error("Unable to load doc: ", err));
 
     }

@@ -45,6 +45,12 @@ import {Settings} from '../../../../web/js/datastore/Settings';
 import {AddContentActions} from '../ui/AddContentActions';
 import {DocContextMenu} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
+import {ProgressTracker} from '../../../../web/js/util/ProgressTracker';
+import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
+import {BackendFileRef} from '../../../../web/js/datastore/Datastore';
+import {DocInfo} from '../../../../web/js/metadata/DocInfo';
+import {Datastores} from '../../../../web/js/datastore/Datastores';
+import {Either} from '../../../../web/js/util/Either';
 
 const log = Logger.create();
 
@@ -273,11 +279,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             onDelete: this.onDocDeleted,
             onSetTitle: this.onDocSetTitle,
             onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => {
-
-                this.onDocumentLoadRequested(repoDocInfo.fingerprint,
-                                             repoDocInfo.filename!,
-                                             repoDocInfo.hashcode);
-
+                this.onDocumentLoadRequested(repoDocInfo);
             }
 
         };
@@ -808,9 +810,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         onDoubleClick: (event: MouseEvent) => {
 
                                             if (rowInfo) {
-                                                this.onDocumentLoadRequested(rowInfo.original.fingerprint,
-                                                                             rowInfo.original.filename,
-                                                                             rowInfo.original.hashcode);
+                                                const repoDocInfo: RepoDocInfo = rowInfo.original;
+                                                this.onDocumentLoadRequested(repoDocInfo);
                                             }
 
                                         },
@@ -878,6 +879,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 failures: 0
             };
 
+            const progressTracker = new ProgressTracker(repoDocInfos.length, 'delete');
+
             for (const repoDocInfo of repoDocInfos) {
 
                 log.info("Deleting document: ", repoDocInfo);
@@ -891,6 +894,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 } catch (e) {
                     ++stats.failures;
                     log.error("Could not delete doc: " , e);
+                } finally {
+                    const progress = progressTracker.incr();
+                    ProgressMessages.broadcast(progress);
                 }
 
             }
@@ -979,11 +985,16 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private onDocumentLoadRequested(fingerprint: string,
-                                    filename: string,
-                                    hashcode?: Hashcode) {
 
-        this.synchronizingDocLoader.load(fingerprint, filename, hashcode)
+
+    private onDocumentLoadRequested(repoDocInfo: RepoDocInfo) {
+
+        const fingerprint = repoDocInfo.fingerprint;
+
+        const docInfo = repoDocInfo.docInfo;
+        const backendFileRef = Datastores.toBackendFileRef(Either.ofRight(docInfo));
+
+        this.synchronizingDocLoader.load(fingerprint, backendFileRef!)
             .catch(err => log.error("Unable to load doc: ", err));
 
     }
