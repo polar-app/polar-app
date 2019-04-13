@@ -34,7 +34,7 @@ export class BrowserDocLoader implements IDocLoader {
             async load(): Promise<void> {
 
                 const optionalDatastoreFile
-                    = await persistenceLayer.getFile(Backend.STASH, loadDocRequest.fileRef);
+                    = await persistenceLayer.getFile(Backend.STASH, loadDocRequest.fileRef, {noExistenceCheck: true});
 
                 if (optionalDatastoreFile.isPresent()) {
 

@@ -276,6 +276,13 @@ export interface GetFileOpts {
      */
     readonly networkLayer?: NetworkLayer;
 
+    /**
+     * When true, we avoid the existence check on teh file when appropriate and
+     * we're pretty certain that the file already exists.  This can be helpful
+     * in the UI when we just want to open a file and we have fresh metadata.
+     */
+    readonly noExistenceCheck?: boolean;
+
 }
 
 export interface WritableBinaryDatastore {

@@ -82,4 +82,18 @@ export class URLs {
         return response.ok;
     }
 
+    /**
+     * Test if a file exists by performing a range request on it for zero bytes.
+     */
+    public static async existsWithGETUsingRange(url: URLStr): Promise<boolean> {
+
+        const headers = {
+            Range: "bytes=0-0"
+        };
+
+        const response = await fetch(url, {method: 'HEAD', headers});
+        return response.ok;
+
+    }
+
 }

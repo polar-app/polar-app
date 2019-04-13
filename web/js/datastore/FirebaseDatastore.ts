@@ -483,7 +483,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         return Hashcodes.create(storagePath.path);
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+    public async getFile(backend: Backend,
+                         ref: FileRef,
+                         opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
 
         return await tracer.traceAsync('getFile', async () => {
             return await this.getFile0(backend, ref, opts);
@@ -504,7 +506,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const storageRef = storage.ref().child(storagePath.path);
 
         const downloadURL =
-            await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef);
+            await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, opts);
 
         if (! downloadURL) {
             return Optional.empty();
@@ -535,7 +537,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const storage = this.storage!;
         const storageRef = storage.ref().child(storagePath.path);
 
-        const downloadURL = await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef);
+        const downloadURL =
+            await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, {});
 
         return isPresent(downloadURL);
 
@@ -1236,12 +1239,13 @@ export class DownloadURLs {
     public static async computeDownloadURL(backend: Backend,
                                            ref: FileRef,
                                            storagePath: StoragePath,
-                                           storageRef: firebase.storage.Reference): Promise<string | undefined> {
+                                           storageRef: firebase.storage.Reference,
+                                           opts: GetFileOpts): Promise<string | undefined> {
 
         if (this.USE_STORAGE_REF) {
             return this.computeDownloadURLWithStorageRef(storageRef);
         } else {
-            return this.computeDownloadURLDirectly(backend, ref, storagePath);
+            return this.computeDownloadURLDirectly(backend, ref, storagePath, opts);
         }
 
     }
@@ -1267,7 +1271,8 @@ export class DownloadURLs {
 
     private static async computeDownloadURLDirectly(backend: Backend,
                                                     ref: FileRef,
-                                                    storagePath: StoragePath): Promise<string | undefined> {
+                                                    storagePath: StoragePath,
+                                                    opts: GetFileOpts): Promise<string | undefined> {
 
         /**
          * Compute the storage path including the flip over whether we're
@@ -1298,9 +1303,27 @@ export class DownloadURLs {
 
         const url = toURL();
 
-        const exists = await URLs.existsWithHEAD(url);
+        if (opts.noExistenceCheck) {
 
-        return exists ? url : undefined;
+            // This is pretty darn slow when using HEAD but with GET and a range
+            // query the performance isn't too bad.  Performing the HEAD directly
+            // is really poor with 300-7500ms latencies.  There are some major
+            // outliers when performing HEAD.
+            //
+            // Using GET and range of 0-0 is actually consistently about 200ms
+            // which is pretty reasonable but we stills should have the option
+            // to skip the exists check to just compute the URL.
+            //
+            // Doing an exists() with the Cloud SDK is about 250ms too.
+
+            return url;
+
+        } else {
+            const exists = await URLs.existsWithGETUsingRange(url);
+
+            return exists ? url : undefined;
+
+        }
 
     }
 }
