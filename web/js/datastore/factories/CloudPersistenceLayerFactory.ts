@@ -5,6 +5,7 @@ import {AdvertisingPersistenceLayer} from '../advertiser/AdvertisingPersistenceL
 import {CloudAwareDatastore} from '../CloudAwareDatastore';
 import {FirebaseDatastore} from '../FirebaseDatastore';
 import {HybridRemoteDatastores} from '../HybridRemoteDatastores';
+import {TracedDatastore} from '../TracedDatastore';
 
 const log = Logger.create();
 
@@ -15,7 +16,7 @@ export class CloudPersistenceLayerFactory {
         log.info("Using remote persistence layer and cloud aware data store");
 
         const local = HybridRemoteDatastores.create();
-        const cloud = new FirebaseDatastore();
+        const cloud = new TracedDatastore(new FirebaseDatastore(), 'traced-firebase');
 
         const datastore = new CloudAwareDatastore(local, cloud);
 

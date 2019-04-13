@@ -34,14 +34,11 @@ import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
-import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
 
 const log = Logger.create();
-
-const tracer = RendererAnalytics.createTracer('firebase');
 
 export class FirebaseDatastore extends AbstractDatastore implements Datastore, WritableBinaryMetaDatastore {
 
@@ -258,14 +255,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
 
-        return await tracer.traceAsync('getDocMeta', async () => {
-            return await this.getDocMeta0(fingerprint);
-        });
-
-    }
-
-    private async getDocMeta0(fingerprint: string): Promise<string | null> {
-
         const id = FirebaseDatastore.computeDocMetaID(fingerprint);
 
         return await this.getDocMetaDirectly(id);
@@ -333,17 +322,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                            ref: FileRef,
                            data: BinaryFileData,
                            opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
-
-        return await tracer.traceAsync('writeFile', async () => {
-            return await this.writeFile0(backend, ref, data, opts);
-        });
-
-    }
-
-    private async writeFile0(backend: Backend,
-                             ref: FileRef,
-                             data: BinaryFileData,
-                             opts: WriteFileOpts): Promise<DocFileMeta> {
 
         const visibility = opts.visibility || Visibility.PRIVATE;
 
@@ -486,14 +464,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getFile(backend: Backend,
                          ref: FileRef,
                          opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
-
-        return await tracer.traceAsync('getFile', async () => {
-            return await this.getFile0(backend, ref, opts);
-        });
-
-    }
-
-    private async getFile0(backend: Backend, ref: FileRef, opts: GetFileOpts): Promise<Optional<DocFileMeta>> {
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 

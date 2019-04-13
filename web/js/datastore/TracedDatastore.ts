@@ -29,7 +29,7 @@ const tracer = RendererAnalytics.createTracer('datastore');
  * analyze performance at runtime and try to keep optimizing the high level
  * operations.
  */
-export class TracedPersistenceLayer extends DelegatedDatastore {
+export class TracedDatastore extends DelegatedDatastore {
 
     constructor(public readonly delegate: Datastore,
                 public readonly id: DatastoreID = 'traced') {

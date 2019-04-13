@@ -7,6 +7,7 @@ import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {Firebase} from '../../firebase/Firebase';
 import {SharingDatastores} from '../SharingDatastores';
+import {TracedDatastore} from '../TracedDatastore';
 
 const log = Logger.create();
 
@@ -20,7 +21,7 @@ export class WebPersistenceLayerFactory {
                 return SharingDatastores.create();
             } else {
                 Firebase.init();
-                return new FirebaseDatastore();
+                return new TracedDatastore(new FirebaseDatastore(), 'traced-firebase');
             }
 
         };
