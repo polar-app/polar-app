@@ -238,7 +238,7 @@ class LogThresholds {
 
     public static readonly info = 500;
 
-    public static readonly warn = 1000;
+    public static readonly warn = 750;
 
     public static readonly error = 1500;
 

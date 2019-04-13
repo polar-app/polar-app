@@ -1,4 +1,7 @@
 import * as firebase from './lib/firebase';
+import {RendererAnalytics} from '../ga/RendererAnalytics';
+
+const tracer = RendererAnalytics.createTracer('firestore');
 
 export class Firestore {
 
@@ -16,19 +19,28 @@ export class Firestore {
 
     public static async createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
 
-        const result = firebase.firestore();
+        return await tracer.traceAsync('createInstance', async () => {
 
-        const settings = {
-            // timestampsInSnapshots: true
-        };
+            const result = firebase.firestore();
 
-        result.settings(settings);
+            const settings = {
+                // timestampsInSnapshots: true
+            };
 
-        if (opts.enablePersistence) {
-            await result.enablePersistence({experimentalTabSynchronization: true});
-        }
+            result.settings(settings);
 
-        return result;
+            if (opts.enablePersistence) {
+
+                // TODO: this seems super slow and not sure why.  The tab sync
+                // seems to not impact performance at all.
+                await tracer.traceAsync('enablePersistence', async () => {
+                    await result.enablePersistence({ experimentalTabSynchronization: true });
+                });
+            }
+
+            return result;
+
+        });
 
     }
 

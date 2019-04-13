@@ -44,7 +44,7 @@ export class Launcher {
 
         await addContentImporter.prepare();
 
-        const persistenceLayerManager = new PersistenceLayerManager({noSync: true});
+        const persistenceLayerManager = new PersistenceLayerManager({noSync: true, noInitialSnapshot: true});
 
         new CloudService(persistenceLayerManager)
             .start();
