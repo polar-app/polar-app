@@ -1297,7 +1297,7 @@ export class DownloadURLs {
 
             const path = toPath();
 
-            return `http://storage.googleapis.com/polar-32b0f.appspot.com/${path}`;
+            return `https://storage.googleapis.com/polar-32b0f.appspot.com/${path}`;
 
         };
 
