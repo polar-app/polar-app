@@ -323,6 +323,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                            data: BinaryFileData,
                            opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
 
+        log.debug(`writeFile: ${backend}: `, ref);
+
         const visibility = opts.visibility || Visibility.PRIVATE;
 
         const storage = this.storage!;
