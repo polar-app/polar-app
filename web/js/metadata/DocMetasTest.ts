@@ -77,6 +77,7 @@ describe('DocMetas', function() {
                         "readingPerDay": {
                             "2012-03-02": 2
                         },
+                        attachments: {}
                     },
                     "pageMetas": {
                         "1": {

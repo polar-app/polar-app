@@ -227,6 +227,8 @@ export class FileImportController {
             return;
         }
 
+        Toaster.info(`Importing ${files.length} file(s) (one moment please).`);
+
         if (AppRuntime.isElectron() && importedFiles.length === 1) {
 
             // only automatically open the file within Electron as that's the
@@ -257,8 +259,11 @@ export class FileImportController {
 
             }
 
-        } else {
-            Toaster.success(`Imported ${files.length} files successfully.`);
+        }
+
+
+        if (importedFiles.length !== 1) {
+            Toaster.success(`Imported ${files.length} file(s) successfully.`);
         }
 
     }
