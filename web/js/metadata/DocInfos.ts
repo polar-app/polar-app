@@ -2,6 +2,7 @@ import {DocInfo, IDocInfo} from './DocInfo';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Optional} from '../util/ts/Optional';
 import {UUIDs} from './UUIDs';
+import {PagemarkType} from './PagemarkType';
 
 export class DocInfos {
 
@@ -32,4 +33,23 @@ export class DocInfos {
 
     }
 
+    public static upgrade(docInfo: DocInfo) {
+
+        if (! docInfo) {
+            // return whatever we were given (either undefined or null)
+            return docInfo;
+        }
+
+        if (!docInfo.attachments) {
+            docInfo.attachments = {};
+        }
+
+        if (!docInfo.pagemarkType) {
+            // log.debug("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
+            docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
+        }
+
+        return docInfo;
+
+    }
 }

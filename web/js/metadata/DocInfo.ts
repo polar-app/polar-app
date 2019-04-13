@@ -11,6 +11,7 @@ import {Hashcode} from './Hashcode';
 import {UUID} from './UUID';
 import {ReadingOverview} from './ReadingOverview';
 import {Visibility} from '../datastore/Datastore';
+import {Attachment} from './Attachment';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -46,6 +47,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public doi?: string;
     public readingPerDay?: ReadingOverview;
     public visibility?: Visibility;
+    public attachments: {[id: string]: Attachment} = {};
 
     constructor(val: IDocInfo) {
 
@@ -240,6 +242,9 @@ export interface IDocInfo {
      * private.
      */
     visibility?: Visibility;
+
+    attachments: {[id: string]: Attachment};
+
 }
 
 /**

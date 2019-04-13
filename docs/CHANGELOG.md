@@ -1,4 +1,11 @@
 
+# 1.17.4
+
+- New support for attachments in DocInfo and the ability for attachments to 
+  just be a bucket + file ref...  
+
+- No longer waiting for remote writes for large files.
+
 # 1.17.3
 
 - Fixed bad bug with blob conversion that only hit us sometimes.

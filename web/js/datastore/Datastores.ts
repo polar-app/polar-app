@@ -86,6 +86,16 @@ export class Datastores {
             result.push({backend: Backend.STASH, ...fileRef});
         }
 
+        const docInfo =
+            Either.ofLeft(either)
+                .convertLeftToRight(left => left.docInfo);
+
+        const attachments = docInfo.attachments || {};
+        const attachmentRefs = Object.values(attachments)
+            .map(current => current.data);
+
+        result.push(...attachmentRefs);
+
         return result;
 
     }

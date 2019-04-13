@@ -1,6 +1,7 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {BackendFileRef} from '../datastore/Datastore';
 
 export class Attachment extends SerializedObject {
 
@@ -15,9 +16,9 @@ export class Attachment extends SerializedObject {
     public readonly type: string;
 
     /**
-     * The base64 encoded data for this attachment.
+     * The data for this attachment as stored as a file ref.
      */
-    public readonly data: string;
+    public readonly data: BackendFileRef;
 
     /**
      * The time this object was created

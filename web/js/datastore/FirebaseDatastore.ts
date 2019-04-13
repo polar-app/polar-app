@@ -963,9 +963,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         } else {
 
-            // build a unique name from the filename and the UUID of the user.
+            // Build a unique name from the filename and the UUID of the user.
             // this shouldn't actually be used except in the cases of VERY old
             // datastores.
+            //
             key = {
                 uid,
                 filename: fileRef.name

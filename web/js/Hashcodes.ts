@@ -1,9 +1,8 @@
 import {Preconditions} from './Preconditions';
 import {keccak256} from 'js-sha3';
 import uuid from 'uuid';
-import stream from 'stream';
 import {InputSource} from './util/input/InputSource';
-import {InputData, InputListener, InputSources} from './util/input/InputSources';
+import {InputData, InputSources} from './util/input/InputSources';
 
 // TODO: migrate this to use types.
 const base58check = require("base58check");

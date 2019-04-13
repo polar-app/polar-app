@@ -164,14 +164,7 @@ export class DocMetas {
             docMeta.attachments = {};
         }
 
-        if (docMeta.docInfo) {
-
-            if (!docMeta.docInfo.pagemarkType) {
-                // log.debug("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
-                docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
-            }
-
-        }
+        docMeta.docInfo = DocInfos.upgrade(docMeta.docInfo);
 
         return docMeta;
 
