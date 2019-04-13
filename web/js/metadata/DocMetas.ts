@@ -151,9 +151,6 @@ export class DocMetas {
 
         docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas);
 
-        // TODO: go through and upgrade the pagemarks. I should probably have
-        // an upgrade function for each object type...
-
         if (!docMeta.annotationInfo) {
             // log.debug("No annotation info.. Adding default.");
             docMeta.annotationInfo = AnnotationInfos.create();
