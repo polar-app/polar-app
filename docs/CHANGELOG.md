@@ -1,6 +1,14 @@
 
 # 1.17.4
 
+- Significant refactor to allow us to use direct URLs which we can calculate 
+  instead of having to use Firebase metadata + URL calculation which was very 
+  slow and latent.  Sometimes up to 7500ms for fetching metadata.  Now requests 
+  here are consistently 200ms and sometimes 0ms if we're fairly certain the URL
+  exists (when the client is fully sync'd).
+
+- Fixed bug where iframes would not load within capture occasionally. 
+
 - New support for attachments in DocInfo and the ability for attachments to 
   just be a bucket + file ref...  
 

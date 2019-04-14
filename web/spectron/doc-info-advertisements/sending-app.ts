@@ -39,8 +39,10 @@ SpectronRenderer.run(async () => {
         "added": "2012-03-02T11:38:49.321Z",
         "readingPerDay": {
             "2012-03-02": 1
-        }
-    };
+        },
+        attachments: {}}
+
+    ;
 
     assertJSON(canonicalize(docMeta.docInfo), canonicalize(expected));
 
