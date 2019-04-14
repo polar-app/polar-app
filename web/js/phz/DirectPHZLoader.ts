@@ -70,12 +70,14 @@ export class DirectPHZLoader {
 
     private getResourceEntry0(url: string): ResourceEntry | undefined {
 
-        return Object.values(this.resources.entries)
-            .filter(current => current.resource.url === url)
+        const resources: Array<ResourceEntry | undefined>
+            = Object.values(this.resources.entries);
+
+        return resources
+            .filter(current => current && current.resource.url === url)
             .reduce(Reducers.FIRST, undefined);
 
     }
-
 
     private async loadDocument(url: string,
                                resources: Resources) {

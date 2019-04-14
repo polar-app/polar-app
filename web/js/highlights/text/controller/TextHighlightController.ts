@@ -77,7 +77,7 @@ export class TextHighlightController {
 
                 const getPageNum = () => {
 
-                    const sel = window.getSelection();
+                    const sel = window.getSelection()!;
 
                     if (sel.rangeCount >= 1) {
 
@@ -384,7 +384,7 @@ export class TextHighlightController {
         log.info("Added text highlight to model");
 
         // now clear the selection since we just highlighted it.
-        win.getSelection().empty();
+        win.getSelection()!.empty();
 
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 

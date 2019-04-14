@@ -13,9 +13,9 @@ SpectronRenderer.run(async (state) => {
     MockSelections.createSyntheticSelection({ node: document.querySelector("#n4")!, offset: 0},
                                             { node: document.querySelector("#n7")!.firstChild!, offset: 35});
 
-    let selectedContents = SelectedContents.compute(window);
+    const selectedContents = SelectedContents.compute(window);
 
-    window.getSelection().empty();
+    window.getSelection()!.empty();
 
     SimpleHighlightRenderer.renderSelectedContents(selectedContents);
 

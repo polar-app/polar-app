@@ -45,7 +45,7 @@ SpectronRenderer.run(async () => {
 
         // compute the direction...
 
-        if (! window.getSelection().isCollapsed) {
+        if (! window.getSelection()!.isCollapsed) {
 
             // compute if the mouse is moving down or up to figure out the best
             // place to put the mouse
@@ -60,7 +60,7 @@ SpectronRenderer.run(async () => {
 
             // const referenceObject = new RangeReferenceObject();
 
-            const range = window.getSelection().getRangeAt(0);
+            const range = window.getSelection()!.getRangeAt(0);
             const referenceObject = new MouseEventReferenceObject(event, range, mouseDirection);
             const popper = new Popper(referenceObject, popup , {
 

@@ -21,7 +21,7 @@ export class SelectedContents {
      */
     public static compute(win: Window) {
 
-        const selection = win.getSelection();
+        const selection = win.getSelection()!;
 
         // get all the ranges and clone them so they can't vanish.
         const ranges = Ranges.cloneRanges(Selections.toRanges(selection));
