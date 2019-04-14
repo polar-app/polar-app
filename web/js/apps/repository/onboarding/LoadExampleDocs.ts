@@ -321,7 +321,7 @@ export class LoadExampleDocs {
                 docMeta.docInfo.filename = ref.name;
                 docMeta.docInfo.hashcode = ref.hashcode;
 
-                // note that we do NOt need to write to the datastore here
+                // note that we do NOT need to write to the datastore here
                 // as we will write below and Firebase is a bit slower for
                 // writes so we want to keep things as fast as possible.
 
@@ -335,8 +335,6 @@ export class LoadExampleDocs {
         };
 
         const importedDoc = await doImport();
-
-        const docInfo = importedDoc.docMeta.docInfo;
 
         const docMeta = importedDoc.docMeta;
 

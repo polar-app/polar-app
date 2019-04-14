@@ -3,6 +3,7 @@ import {FilePaths} from '../../../util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from '../../../logger/Logger';
 import {PDFMetadata} from './PDFMetadata';
+import {PDFMeta} from './PDFMetadata';
 import {Optional} from '../../../util/ts/Optional';
 import {FileHandle, Files} from '../../../util/Files';
 import {Hashcodes} from '../../../Hashcodes';
@@ -12,17 +13,16 @@ import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
 import {HashAlgorithm, Hashcode, HashEncoding} from '../../../metadata/Hashcode';
 import {IProvider} from '../../../util/Providers';
-import {BinaryFileData, FileRef} from '../../../datastore/Datastore';
+import {BinaryFileData} from '../../../datastore/Datastore';
+import {BackendFileRefData} from '../../../datastore/Datastore';
+import {BackendFileRef} from '../../../datastore/Datastore';
 import {URLs} from '../../../util/URLs';
 import {InputSources} from '../../../util/input/InputSources';
 import {AppRuntime} from '../../../AppRuntime';
 
 import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
-import {BackendFileRefData} from '../../../datastore/Datastore';
-import {BackendFileRef} from '../../../datastore/Datastore';
 import {Datastores} from '../../../datastore/Datastores';
-import {PDFMeta} from './PDFMetadata';
 
 const log = Logger.create();
 

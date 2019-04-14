@@ -20,6 +20,7 @@ import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
+import {Percentage} from '../util/ProgressTracker';
 
 const log = Logger.create();
 
@@ -112,8 +113,11 @@ export class Pagemarks {
 
             }
 
-            if (pagemarks.map(pagemark => pagemark.percentage)
-                         .reduce(Reducers.SUM, 0) === 100) {
+            const coverage: number =
+                pagemarks.map(pagemark => pagemark.percentage)
+                    .reduce(Reducers.SUM, 0);
+
+            if (Math.floor(coverage) === 100 || top === 100) {
 
                 // if this page is completely covered just ignore it
 
@@ -281,6 +285,14 @@ export class Pagemarks {
 
                 }
 
+            }
+
+            // noinspection JSSuspiciousNameCombination
+            if (Math.floor(pagemark.rect.top) === 100) {
+                // this is a broken pagemark where the top is at the end of the
+                // page which makes no sense.
+                delete result[key];
+                return;
             }
 
             if (! pagemark.id) {

@@ -106,9 +106,9 @@ export class AnnotationRect {
      *
      * @return {Rect}
      */
-    toFractionalRect() {
+    public toFractionalRect() {
 
-        let result = {
+        const result = {
             left: this.left / 100,
             top: this.top / 100,
             width: this.width / 100,
@@ -124,18 +124,18 @@ export class AnnotationRect {
      *
      * @return {Rect}
      */
-    toDimensions(dimensions: Dimensions) {
+    public toDimensions(dimensions: Dimensions) {
 
         Preconditions.assertNotNull(dimensions, "dimensions");
 
-        let fractionalRect = this.toFractionalRect();
+        const fractionalRect = this.toFractionalRect();
 
         return Rects.createFromBasicRect({
             left: fractionalRect.left * dimensions.width,
             width: fractionalRect.width * dimensions.width,
             top: fractionalRect.top * dimensions.height,
             height: fractionalRect.height * dimensions.height,
-        })
+        });
 
     }
 
