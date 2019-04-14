@@ -4,7 +4,6 @@ import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {AdvertisingPersistenceLayer} from '../../js/datastore/advertiser/AdvertisingPersistenceLayer';
 import {assertJSON} from '../../js/test/Assertions';
-import {Dictionaries} from '../../js/util/Dictionaries';
 import {canonicalize} from './testing';
 
 const log = Logger.create();
