@@ -4,9 +4,13 @@
 import {StringBuffer} from "../../util/StringBuffer";
 import {Nullables} from "../../util/ts/Nullables";
 
+// TODO:
+//  - what happens if there are multiple @import rules.. how do we handle this
+//  - can a CSS import run from within a <style> element?... yes.. they can.
+
 export class StylesheetSerializer {
 
-    public static serialize(listener: SerializedStylesheetListener, doc: Document) {
+    public static serialize(doc: Document, listener: SerializedStylesheetListener) {
 
         this.serializeStylesheets(doc.styleSheets, listener);
 
@@ -14,6 +18,8 @@ export class StylesheetSerializer {
 
     public static serializeStylesheets(styleSheets: StyleSheetList | ReadonlyArray<CSSStyleSheet>,
                                        listener: SerializedStylesheetListener) {
+
+        Blob
 
         for (const styleSheet of Array.from(styleSheets)) {
 
@@ -84,7 +90,7 @@ export interface SerializedStylesheet {
     readonly href?: string;
 
     /**
-     * The serialized text of the CSS.
+     * The serialized text of the CSS
      */
     readonly text: string;
 

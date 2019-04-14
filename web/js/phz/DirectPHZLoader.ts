@@ -136,9 +136,13 @@ export class DirectPHZLoader {
 
         const doc = new DOMParser().parseFromString(str, 'text/html');
 
-        const newLinkPromises = this.createLinkPromises(doc);
+        // TODO: This might be the bug regarding the page not resizing because
+        // we're loading an EXTERNAL resources not a local so I don't think
+        // we're getting an event that it was loaded.
 
-        this.linkPromises.push(...newLinkPromises);
+        const newLinkStylesheetPromises = this.createLinkStylesheetPromises(doc);
+
+        this.linkPromises.push(...newLinkStylesheetPromises);
 
         const iframes = this.neutralizeIFrames(doc);
 
@@ -150,7 +154,7 @@ export class DirectPHZLoader {
 
     }
 
-    private createLinkPromises(doc: Document): ReadonlyArray<LinkPromise> {
+    private createLinkStylesheetPromises(doc: Document): ReadonlyArray<LinkPromise> {
 
         const promises: LinkPromise[] = [];
 
