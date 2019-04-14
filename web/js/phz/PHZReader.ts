@@ -112,7 +112,6 @@ export class PHZReader implements CompressedReader {
      * Return a raw buffer with no encoding.
      *
      * @param path
-     * @return {Promise<Buffer>}
      * @private
      */
     private async _readAsBuffer(path: string): Promise<Buffer> {

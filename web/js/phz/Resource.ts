@@ -4,7 +4,6 @@ export class Resource {
 
     /**
      * Unique ID representing this resource in this archive.
-     *
      */
     public id: string;
 

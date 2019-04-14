@@ -58,11 +58,24 @@ export class DirectPHZLoader {
 
     private getResourceEntry(url: string): ResourceEntry | undefined {
 
+        const result = this.getResourceEntry0(url);
+
+        if (result) {
+            return result;
+        }
+
+        return this.getResourceEntry0(URLs.absolute(url, this.metadata!.url));
+
+    }
+
+    private getResourceEntry0(url: string): ResourceEntry | undefined {
+
         return Object.values(this.resources.entries)
             .filter(current => current.resource.url === url)
             .reduce(Reducers.FIRST, undefined);
 
     }
+
 
     private async loadDocument(url: string,
                                resources: Resources) {
@@ -113,7 +126,6 @@ export class DirectPHZLoader {
 
     private async loadResource(resourceEntry: ResourceEntry,
                                iframe: HTMLIFrameElement) {
-
 
         const blob = await this.phzReader.getResourceAsBlob(resourceEntry);
 
