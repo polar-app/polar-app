@@ -186,7 +186,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
 
                     <p>
-                        Polar supports works on both the desktop (MacOS,
+                        Polar works on both the desktop (MacOS,
                         Windows, and Linux) as well as the web (Chrome, Firefox,
                         and major browsers) and is <b>fully cloud aware</b>.
                     </p>
