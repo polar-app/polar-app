@@ -50,6 +50,8 @@ import {FundraisingCampaign} from './FundraisingCampaign';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
+import {CrowdfundingStatus} from './CrowdfundingStatus';
+import Progress from 'reactstrap/lib/Progress';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -176,7 +178,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 Blobs.toStream(blob).pipe(process.stdout);
 
             })
-            .catch(err => console.log("got error", err))
+            .catch(err => console.log("got error", err));
 
         return (
             //
@@ -197,15 +199,79 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <CrowdfundingStatus/>
+
+                <br/>
+                <br/>
+                <br/>
+
+                <div className="mb-1 rounded border p-2"
+                     style={{backgroundColor: '#F3CF32', fontWeight: 'bold'}}>
+
+                    <div style={{display: 'flex'}}>
+
+                        <div className="mt-auto mb-auto">
+                            {/*Polar needs your help to remain Open Source.  Please help fund our crowdfunding campaign.*/}
+
+                            Please help Polar remain Open Source by donating to our crowdfunding campaign.
+                        </div>
+
+                        <div className="mt-auto mb-auto ml-auto"
+                             style={{
+                                 justifyContent: 'flex-end',
+                             }}>
+                            <Button color="success" size="sm" style={{fontWeight: 'bold'}}>Donate Now</Button>
+                        </div>
 
 
-                <Feedback category='net-promoter-score'
-                          title='How likely are you to recommend Polar to a colleague?'
-                          from="Not likely"
-                          to="Very likely"
-                />
+                    </div>
 
-                <AnkiReviewContent/>
+                </div>
+
+                <br/>
+                <br/>
+
+                <div className="mb-1 rounded border p-2"
+                     style={{backgroundColor: '#F3CF32', fontWeight: 'bold'}}>
+
+                    <div style={{display: 'flex'}}>
+
+                        <div className="mt-auto mb-auto">
+                            {/*Polar needs your help to remain Open Source.  Please help fund our crowdfunding campaign.*/}
+
+                            Please support Polar by donating to our crowdfunding campaign.
+                        </div>
+
+                        <div>
+                            <Progress className="w-100" value={55}/>
+                        </div>
+
+                        <div className="mt-auto mb-auto ml-auto"
+                             style={{
+                                 justifyContent: 'flex-end',
+                             }}>
+                            <Button color="success" size="sm" style={{fontWeight: 'bold'}}>Donate Now</Button>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                {/*<Feedback category='net-promoter-score'*/}
+                          {/*title='How likely are you to recommend Polar to a colleague?'*/}
+                          {/*from="Not likely"*/}
+                          {/*to="Very likely"*/}
+                {/*/>*/}
+
+                {/*<AnkiReviewContent/>*/}
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
 
                 <FundraisingCampaign/>
 

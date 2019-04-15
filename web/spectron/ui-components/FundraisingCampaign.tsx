@@ -6,6 +6,8 @@ import {UncontrolledDropdown} from 'reactstrap';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
+import Button from 'reactstrap/lib/Button';
+import Progress from 'reactstrap/lib/Progress';
 
 export class FundraisingCampaign extends React.Component<IProps, IState> {
 
@@ -19,18 +21,75 @@ export class FundraisingCampaign extends React.Component<IProps, IState> {
 
             <div>
 
-                <div className="mb-2">
+                <div className="mb-1 rounded border p-2 text-justify"
+                     style={{backgroundColor: '#F3CF32', fontWeight: 'bold'}}>
 
-                    <div className="m-auto"
-                         style={{
-                             width: '450px',
-                             height: '450px',
-                             backgroundColor: 'lightgrey'
-                         }}>
-                        video
+                        {/*<i className="fas fa-info-circle" style={{color: 'blue', backgroundColor: 'white'}}></i>*/}
+                         <b>Dear Polar Users</b>! Polar needs your help to remain
+                        Open Source.
+                        We're launching a crowdfunding campaign to keep Polar
+                        Open Source and continue funding development for the
+                        next six months.
+
+                        Our core user base is large enough that we should be
+                        able to raise enough money to continue funding Polar
+                        development.
+
+                    <div className="text-center p-2">
+
+                        <span className="text-muted">Raised</span> <span className="text-primary">$2,425</span> <span className="text-muted">of</span> <span className="text-primary">$25,000</span>
+
                     </div>
 
+                    <div className="">
+
+                        <div className="ml-auto mr-auto" style={{maxWidth: '20em'}}>
+
+                            {/*/!*<div className="mt-auto mr-auto">*!/*/}
+
+                                {/*/!*<span className="text-xl text-primary">*!/*/}
+                                    {/*/!*55%*!/*/}
+                                {/*/!*</span>*!/*/}
+
+                            {/*/!*</div>*!/*/}
+
+                            <div className="m-auto">
+                                <Progress value={55}/>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="text-center p-2">
+
+                        <Button color="secondary"
+                                size="md"
+                                style={{fontWeight: 'bold'}}>More Info</Button>
+
+                        <Button className="ml-2"
+                                color="success"
+                                size="md"
+                                style={{fontWeight: 'bold'}}>Donate Now</Button>
+
+                    </div>
+
+                    <div className="mb-2">
+
+                        <div className="m-auto border border-secondary"
+                             style={{
+                                 width: '450px',
+                                 height: '450px',
+                                 backgroundColor: 'lightgrey'
+                             }}>
+                            video
+                        </div>
+
+                    </div>
+
+
                 </div>
+
 
                 <div className="mb-2">
 
