@@ -40,7 +40,8 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     <blockquote className="p-1">
 
-                        <span dangerouslySetInnerHTML={{__html: html}}>
+                        <span className="text-sm"
+                              dangerouslySetInnerHTML={{__html: html}}>
 
                         </span>
 

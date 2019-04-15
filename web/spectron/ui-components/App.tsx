@@ -197,6 +197,23 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <div className="p-2 border rounded"
+                     style={{
+                        backgroundColor: 'lightyellow',
+                        display: 'flex'
+                     }}>
+
+                    <progress className="mt-auto mb-auto w-100" value={0.33}></progress>
+
+                    <div className="mt-auto mb-auto ml-1" style={{whiteSpace: 'nowrap'}}>
+                        <span style={{fontWeight: 'bold'}}>$3,300</span> of <span className="text-muted">$5,000</span> raised
+                    </div>
+
+                    <div className="mv-auto ml-1">
+                        <Button color="success" size="sm">Donate</Button>
+                    </div>
+
+                </div>
 
 
                 <Feedback category='net-promoter-score'

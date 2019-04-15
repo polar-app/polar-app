@@ -54,13 +54,9 @@ export class ContentCapture {
 
                 /**
                  * The captured documents indexed by URL
-                 * @type {Object<String,Object>}
                  */
                 capturedDocuments: {},
 
-                // TODO: this should be something other chan chtml now.  This
-                // actually represents the format of the captured representation
-                // not the actual storage value on disk.
                 type: "phz",
 
                 version: "4.0.0",
