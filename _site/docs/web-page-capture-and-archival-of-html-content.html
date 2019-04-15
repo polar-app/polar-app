@@ -267,6 +267,60 @@ allows you to send directly from Chrome into Polar.  You can copy the URL and pa
 into Polar directly but it’s more convenient to have a one click button in integrated
 into your browser.</p>
 
+<h1 id="design">Design</h1>
+
+<h2 id="light-thin-fat-full-archives">Light, Thin, Fat, Full Archives.</h2>
+
+<p>We define the following archive types:</p>
+
+<ul>
+  <li>light: URL only (not supported yet)</li>
+  <li>thin: HTML only with iframes.  No CSS, images, audio, or video (supported in Polar 1.x)</li>
+  <li>fat: HTML + CSS + images. No audio or video.  (under development)</li>
+  <li>full: HTML + CSS plus all resources including images, audio, and video (not supported yet).</li>
+</ul>
+
+<h2 id="why-not-use-a-standard-format">Why not use a standard format.</h2>
+
+<p>I would have loved to. I didn’t want to build a document format and spend months 
+doing so.</p>
+
+<p>We’re lucky captured pages work AT ALL.</p>
+
+<h2 id="why-not-mhtml">Why not MHTML</h2>
+
+<ul>
+  <li>Firefox doesn’t support MHTML</li>
+  <li>MHTML doesn’t support images</li>
+  <li>We can’t extend it, fix bugs in it, etc.</li>
+</ul>
+
+<h2 id="why-not-warc">Why not WARC</h2>
+
+<ul>
+  <li>
+    <p>Chrome can’t replace an HTTP response while it’s served.  Only send a redirect.
+This means that you end up building a loader ANYWAY which is 90% of the 
+requirements for Polar.</p>
+  </li>
+  <li>
+    <p>WARC doesn’t support compression settings for individual entries.  We only STORE
+images/video for performance and storage gains.</p>
+  </li>
+  <li>
+    <p>With WARC the full HTTP request would need to be replayed.  With our content 
+capture we’re able to use in-browser assets and cache to rebuild the page.</p>
+  </li>
+  <li>
+    <p>We also cleanup and strip javavascript.</p>
+  </li>
+  <li>
+    <p>WARC would only represent the storage, not the extraction.  It might be 
+possible to WRITE WARC or have export to WARC though.</p>
+  </li>
+</ul>
+
+
 
             </div>
           </div>

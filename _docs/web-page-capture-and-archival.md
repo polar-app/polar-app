@@ -93,3 +93,47 @@ The <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomoco
 allows you to send directly from Chrome into Polar.  You can copy the URL and paste it
 into Polar directly but it's more convenient to have a one click button in integrated
 into your browser. 
+
+# Design
+
+## Light, Thin, Fat, Full Archives.
+
+We define the following archive types:
+
+- light: URL only (not supported yet)
+- thin: HTML only with iframes.  No CSS, images, audio, or video (supported in Polar 1.x)
+- fat: HTML + CSS + images. No audio or video.  (under development)
+- full: HTML + CSS plus all resources including images, audio, and video (not supported yet).
+
+## Why not use a standard format.
+
+I would have loved to. I didn't want to build a document format and spend months 
+doing so.
+
+We're lucky captured pages work AT ALL.
+
+## Why not MHTML
+
+- Firefox doesn't support MHTML
+- MHTML doesn't support images
+- We can't extend it, fix bugs in it, etc.
+
+## Why not WARC
+
+- Chrome can't replace an HTTP response while it's served.  Only send a redirect.
+  This means that you end up building a loader ANYWAY which is 90% of the 
+  requirements for Polar.
+
+- WARC doesn't support compression settings for individual entries.  We only STORE
+  images/video for performance and storage gains.
+  
+- With WARC the full HTTP request would need to be replayed.  With our content 
+  capture we're able to use in-browser assets and cache to rebuild the page.
+  
+- We also cleanup and strip javavascript.
+
+- WARC would only represent the storage, not the extraction.  It might be 
+  possible to WRITE WARC or have export to WARC though.
+  
+   
+ 
