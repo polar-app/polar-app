@@ -7,7 +7,7 @@ export class Firestore {
 
     private static firestore?: firebase.firestore.Firestore;
 
-    public static async getInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
+    public static async getInstance(opts: FirestoreOptions = {enablePersistence: true}): Promise<firebase.firestore.Firestore> {
 
         if (this.firestore) {
             return this.firestore;

@@ -1,8 +1,8 @@
 
-async function doTest() {
+export class Caches {
 
-    const cache = await caches.open('my-cache');
-
+    // const cache = await caches.open('my-cache');
+    //
     // const stream = new ReadableStream({
     //
     //     start(controller) {
@@ -12,13 +12,12 @@ async function doTest() {
     //     }
     //
     // });
-
+    //
     // const response = new Response(stream, {
     //     headers: {'content-type': 'text/html'}
     // });
-
+    //
     // const url = './test.txt';
     // await cache.put(url, response);
 
 }
-

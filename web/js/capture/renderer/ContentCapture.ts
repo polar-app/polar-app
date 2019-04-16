@@ -628,6 +628,19 @@ export class ContentCapture {
 
 }
 
+/**
+ * Generate IDs used for different internal content capture purposes
+ */
+export class IDGenerator {
+
+    private static id: number = 0;
+
+    public static generate() {
+        return this.id++;
+    }
+
+}
+
 console.log("Content capture script loaded within: " + window.location.href);
 
 declare var global: any;
