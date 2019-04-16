@@ -50,6 +50,7 @@ import {FundraisingCampaign} from './FundraisingCampaign';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
+import {Dock} from './Dock';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -176,7 +177,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 Blobs.toStream(blob).pipe(process.stdout);
 
             })
-            .catch(err => console.log("got error", err))
+            .catch(err => console.log("got error", err));
 
         return (
             //
@@ -197,34 +198,39 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <div className="p-2 border rounded"
-                     style={{
-                        backgroundColor: 'lightyellow',
-                        display: 'flex'
-                     }}>
+                <Dock side="left"
+                      width={350}
+                      left={<div style={{backgroundColor: 'red'}}>this is the left</div>}
+                      right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>
 
-                    <progress className="mt-auto mb-auto w-100" value={0.33}></progress>
+                {/*<div className="p-2 border rounded"*/}
+                     {/*style={{*/}
+                        {/*backgroundColor: 'lightyellow',*/}
+                        {/*display: 'flex'*/}
+                     {/*}}>*/}
 
-                    <div className="mt-auto mb-auto ml-1" style={{whiteSpace: 'nowrap'}}>
-                        <span style={{fontWeight: 'bold'}}>$3,300</span> of <span className="text-muted">$5,000</span> raised
-                    </div>
+                    {/*<progress className="mt-auto mb-auto w-100" value={0.33}></progress>*/}
 
-                    <div className="mv-auto ml-1">
-                        <Button color="success" size="sm">Donate</Button>
-                    </div>
+                    {/*<div className="mt-auto mb-auto ml-1" style={{whiteSpace: 'nowrap'}}>*/}
+                        {/*<span style={{fontWeight: 'bold'}}>$3,300</span> of <span className="text-muted">$5,000</span> raised*/}
+                    {/*</div>*/}
 
-                </div>
+                    {/*<div className="mv-auto ml-1">*/}
+                        {/*<Button color="success" size="sm">Donate</Button>*/}
+                    {/*</div>*/}
+
+                {/*</div>*/}
 
 
-                <Feedback category='net-promoter-score'
-                          title='How likely are you to recommend Polar to a colleague?'
-                          from="Not likely"
-                          to="Very likely"
-                />
+                {/*<Feedback category='net-promoter-score'*/}
+                          {/*title='How likely are you to recommend Polar to a colleague?'*/}
+                          {/*from="Not likely"*/}
+                          {/*to="Very likely"*/}
+                {/*/>*/}
 
-                <AnkiReviewContent/>
+                {/*<AnkiReviewContent/>*/}
 
-                <FundraisingCampaign/>
+                {/*<FundraisingCampaign/>*/}
 
                 {/*<SimpleTooltipEx text={`*/}
                                  {/*This is the text for the tooltip*/}
