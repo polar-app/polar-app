@@ -1,5 +1,3 @@
-import {NULL_FUNCTION} from './Functions';
-
 /**
  * Simple mechanism that allows callers to write functions together without
  * passing refs around.  The setCallback function can be passed to one component

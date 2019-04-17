@@ -51,6 +51,9 @@ class Styles {
  *      for the entire app and they never get removed we just update the
  *      position.
  *
+ *   - the splitter is being dragged even though draggable is false... I think
+ *     this is one of the biggest issues...
+ *
  */
 export class Dock extends React.Component<IProps, IState> {
 
@@ -92,14 +95,24 @@ export class Dock extends React.Component<IProps, IState> {
 
             <div className="dock" style={Styles.Dock}
                  onMouseMove={() => this.onMouseMove()}
+                 draggable={false}
                  onMouseUp={() => this.onMouseUp()}>
 
-                <div className="dock-left" style={leftStyle}>
+                <div className="dock-left"
+                     style={leftStyle}
+                     draggable={false}>
+                    onDrag={() => console.log("being dragged left")}
                     {this.props.left}
                 </div>
 
                 <div className="dock-splitter"
+                     draggable={false}
+                     onDrag={() => console.log("being dragged splitter")}
                      onMouseDown={() => this.onMouseDown()}
+                     onDragStart={() => {
+                         console.log("FIXME: onDragStart");
+                         return false;
+                     }}
                      style={{
                          width: '10px',
                          cursor: 'col-resize',
@@ -108,7 +121,10 @@ export class Dock extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="dock-right" style={contentStyle}>
+                <div className="dock-right"
+                     style={contentStyle}
+                     onDrag={() => console.log("being dragged right")}
+                     draggable={false}>
                     {this.props.right}
                 </div>
 

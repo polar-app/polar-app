@@ -39,6 +39,8 @@ import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
 import {Premium} from '../../../../apps/repository/js/splash/splashes/premium/Premium';
+import {MobileDisclaimer} from './MobileDisclaimer';
+import {MobileDisclaimers} from './MobileDisclaimers';
 
 const log = Logger.create();
 
@@ -85,6 +87,8 @@ export class RepositoryApp {
         await this.doLoadExampleDocs();
 
         // PreviewDisclaimers.createWhenNecessary();
+
+        MobileDisclaimers.createWhenNecessary();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
