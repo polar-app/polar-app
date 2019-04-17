@@ -24,6 +24,7 @@ import {SharingDatastores} from '../datastore/SharingDatastores';
 import {ShareContentButton} from '../apps/viewer/ShareContentButton';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
+import {Datastores} from '../datastore/Datastores';
 
 const log = Logger.create();
 
@@ -258,12 +259,15 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const docMeta = this.props.doc.docMeta;
 
+            const backendFileRef = Datastores.toBackendFileRef(docMeta)!;
+
             const onVisibilityChanged = async (visibility: Visibility) => {
+                // FIXME: we need the ability to revoke ALL sharing URLs now...
                 await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
             };
 
             const createShareLink = async (): Promise<string | undefined> => {
-                return SharingDatastores.createURL(persistenceLayer, docMeta);
+                return SharingDatastores.createURL(persistenceLayer, docMeta, backendFileRef);
             };
 
             if (annotations.length === 0) {

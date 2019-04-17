@@ -8,6 +8,8 @@ import {isPresent} from '../Preconditions';
 import {URLStr} from '../util/Strings';
 import {SharingDatastore} from './SharingDatastore';
 import {Logger} from '../logger/Logger';
+import {BackendFileRef} from './Datastore';
+import {SharedBinaryFileURLs} from './firebase/SharedBinaryFileURLs';
 
 const log = Logger.create();
 
@@ -33,6 +35,7 @@ export class SharingDatastores {
      */
     public static async createURL(persistenceLayer: PersistenceLayer,
                                   docMeta: DocMeta,
+                                  backendFileRef: BackendFileRef,
                                   baseURL: URLStr = this.currentURL()) {
 
         const datastoreCapabilities = persistenceLayer.capabilities();
@@ -45,29 +48,25 @@ export class SharingDatastores {
 
         if (fileRef) {
 
-            const docFileMeta = await persistenceLayer.getFile(Backend.STASH, fileRef, {networkLayer: 'web'});
+            const sharedURL = await SharedBinaryFileURLs.issue(backendFileRef);
 
-            if (docFileMeta.isPresent()) {
+            // Clean the URL when running in the desktop app.
+            const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
 
-                // Clean the URL when running in the desktop app.
-                const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
+            // we have to now replace the 'file' param with the proper URL.
 
-                // we have to now replace the 'file' param with the proper URL.
+            const file = sharedURL;
 
-                const file = docFileMeta.get().url;
+            const parsedURL = new URL(rawURL);
+            parsedURL.searchParams.set('file', file);
+            parsedURL.searchParams.set('shared', "true");
 
-                const parsedURL = new URL(rawURL);
-                parsedURL.searchParams.set('file', file);
-                parsedURL.searchParams.set('shared', "true");
+            const userID = FirebaseDatastore.getUserID();
+            const doc = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint, userID);
 
-                const userID = FirebaseDatastore.getUserID();
-                const doc = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint, userID);
+            parsedURL.searchParams.set('doc', doc);
 
-                parsedURL.searchParams.set('doc', doc);
-
-                return parsedURL.toString();
-
-            }
+            return parsedURL.toString();
 
         }
 

@@ -1,13 +1,44 @@
-import {URLStr} from '../../util/Strings';
 import {Firestore} from '../../firebase/Firestore';
 import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
 import {Hashcodes} from '../../Hashcodes';
 import {FirebaseDatastore} from '../FirebaseDatastore';
 import * as firebase from '../../firebase/lib/firebase';
+import {Backend} from '../Backend';
+import {BackendFileRef} from '../Datastore';
 
 const COLLECTION_NAME = 'shared_url';
 
-export class SharedURLs {
+/**
+ * This system has three types of URLs:
+ *
+ * internalURL: The actual URL for the document we're sharing.  We only need to
+ * store the backend and the name of the file to be able to construct this.
+ *
+ * signedURL: used within the google cloud which proxies to the internalURL
+ * without exposing it.
+ *
+ * sharedURL: That the user sees and is publicly viewable on the Internet.
+ *
+ *
+ * The underlying scheme here needs two records.
+ *
+ * shared_url:
+ *
+ *       Stores a mapping between the downloadToken (as id) and the backend and
+ *       name of file so we can compute the internalURL and a signedURL to
+ *       return to the user.
+ *
+ * shared_doc
+ *       Stores a shared file permissions for a user with the id computed
+ *       from the id of doc and then a list of permissions that this user has
+ *       handed out to other users on the Internet.
+ *
+ * Removing permissions requires a batch operation to remove the shared_url
+ * and the entry from the shared_doc for that recipient at once using array
+ * operations since a doc can be shared with more than one person.
+ *
+ */
+export class SharedBinaryFileURLs {
 
     private static firestore?: firebase.firestore.Firestore;
 
@@ -15,14 +46,17 @@ export class SharedURLs {
      * Create a new shared URL which includes a download token which can be
      * shared publicly.
      */
-    public static async issue(internalURL: URLStr): Promise<SharedURL> {
+    public static async issue(backendFileRef: BackendFileRef): Promise<SharedURL> {
+
+        const {backend, name} = backendFileRef;
 
         const downloadToken = DownloadTokens.createToken();
 
         const sharedURL = `https://us-central1-polar-cors.cloudfunctions.net/fetch/?downloadToken=${downloadToken}`;
 
         const sharedURLRecord: SharedURLRecord = {
-            internalURL,
+            backend,
+            name,
             downloadToken,
             sharedURL
         };
@@ -111,8 +145,15 @@ interface SharedURLMeta {
     readonly downloadToken: DownloadToken;
 }
 
+/**
+ * We only need the backend and the name of the file to be able to compute the
+ * internal URL.
+ */
 interface SharedURLRecord extends SharedURLMeta {
-    readonly internalURL: URLStr;
+
+    readonly backend: Backend;
+
+    readonly name: string;
 }
 
 /**
@@ -146,9 +187,22 @@ type DownloadToken = string;
  */
 type TeamStr = string;
 
+/**
+ * Normal email address.
+ */
 type EmailStr = string;
 
-type SharingRole = 'public';
+type Recipient = 'public' | TeamStr | EmailStr;
 
-type RecipientTeam = string;
+interface SharedDoc {
 
+    readonly id: string;
+    readonly accessList: ReadonlyArray<SharedDocAccess>;
+
+}
+
+interface SharedDocAccess {
+    id: string;
+    recipient: Recipient;
+    downloadToken: DownloadToken;
+}
