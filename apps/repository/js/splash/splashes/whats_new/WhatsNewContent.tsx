@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../../../web/js/logger/Logger';
 import {EmbeddedImages} from './EmbeddedImages';
+import {CrowdfundingCampaign} from '../../../../../../web/js/ui/crowdfunding/CrowdfundingCampaign';
 
 const log = Logger.create();
 
@@ -17,6 +18,12 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
             <div>
 
                 <div>
+
+                    <h3>Polar 1.16.0</h3>
+
+                    <div className="intro">
+                        <CrowdfundingCampaign/>
+                    </div>
 
                     <h3>Polar 1.16.0</h3>
 

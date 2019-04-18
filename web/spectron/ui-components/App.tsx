@@ -46,12 +46,13 @@ import {DocContextMenu} from './DocContextMenu';
 import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
-import {FundraisingCampaign} from './FundraisingCampaign';
+import {CrowdfundingCampaign} from '../../js/ui/crowdfunding/CrowdfundingCampaign';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
 import {CrowdfundingStatus} from './CrowdfundingStatus';
 import Progress from 'reactstrap/lib/Progress';
+import {CrowdfundingBar} from '../../js/ui/crowdfunding/CrowdfundingBar';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -205,28 +206,8 @@ class App<P> extends React.Component<{}, IAppState> {
                 <br/>
                 <br/>
 
-                <div className="mb-1 rounded border p-2"
-                     style={{backgroundColor: '#F3CF32', fontWeight: 'bold'}}>
 
-                    <div style={{display: 'flex'}}>
-
-                        <div className="mt-auto mb-auto">
-                            {/*Polar needs your help to remain Open Source.  Please help fund our crowdfunding campaign.*/}
-
-                            Please help Polar remain Open Source by donating to our crowdfunding campaign.
-                        </div>
-
-                        <div className="mt-auto mb-auto ml-auto"
-                             style={{
-                                 justifyContent: 'flex-end',
-                             }}>
-                            <Button color="success" size="sm" style={{fontWeight: 'bold'}}>Donate Now</Button>
-                        </div>
-
-
-                    </div>
-
-                </div>
+                <CrowdfundingBar/>
 
                 <br/>
                 <br/>
@@ -273,7 +254,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 <br/>
                 <br/>
 
-                <FundraisingCampaign/>
+                <CrowdfundingCampaign/>
 
                 {/*<SimpleTooltipEx text={`*/}
                                  {/*This is the text for the tooltip*/}

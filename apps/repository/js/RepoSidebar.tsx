@@ -4,7 +4,6 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {NavLogo} from './nav/NavLogo';
 import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
-import {SimpleTooltip} from '../../../web/js/ui/tooltip/SimpleTooltip';
 import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 import Button from 'reactstrap/lib/Button';
 import ListGroup from 'reactstrap/lib/ListGroup';
