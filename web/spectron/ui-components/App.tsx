@@ -185,6 +185,8 @@ class App<P> extends React.Component<{}, IAppState> {
 
         const [addTab, addTabBinder] = Channels.create<Tab>();
 
+        // https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space
+
         return (
             //
             // <div tabIndex={0}
@@ -203,13 +205,30 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <Button onClick={() => addTab({id: 666, title: 'asdf', content: "http://example.com"})}>Add Tab</Button>
+                <div style={{
+                         display: 'flex',
+                         flexFlow: 'column',
+                         height: '100%',
+                         width: '100%'
+                     }}>
 
-                <br/>
-                <br/>
-                <br/>
+                    <div>
+                        this is some misc content at the top
+                    </div>
 
-                <TabNav addTabBinder={addTabBinder}/>
+                    <webview id={'tab-webview-'}
+                             style={{flex: '1 1 auto'}}
+                             src="http://www.cnn.com"/>
+
+                </div>
+
+                {/*<Button onClick={() => addTab({id: 666, title: 'asdf', content: "http://example.com"})}>Add Tab</Button>*/}
+
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+
+                {/*<TabNav addTabBinder={addTabBinder}/>*/}
 
                 {/*<Dock side="left"*/}
                       {/*width={350}*/}
