@@ -4,7 +4,6 @@
 
 - Right click on text highlight now add 'scroll into view'
 
-
 # 1.17.4
 
 - Significant refactor to allow us to use direct URLs which we can calculate 
