@@ -5,14 +5,13 @@ import Nav from 'reactstrap/lib/Nav';
 import NavItem from 'reactstrap/lib/NavItem';
 import NavLink from 'reactstrap/lib/NavLink';
 import {ChannelBinder} from '../../js/util/Channels';
+import Button from 'reactstrap/lib/Button';
 
 let tabSequence: number = 10000;
 
 // TODO
 //
 // - context menu
-// - close button
-// - ability to add content externally
 // - fit the screen properly including the webview content
 
 export class TabNav extends React.Component<IProps, IState> {
@@ -22,6 +21,7 @@ export class TabNav extends React.Component<IProps, IState> {
 
         this.toggle = this.toggle.bind(this);
         this.addTab = this.addTab.bind(this);
+        this.closeTab = this.closeTab.bind(this);
 
         this.props.addTabBinder(tab => this.addTab(tab));
 
@@ -52,11 +52,33 @@ export class TabNav extends React.Component<IProps, IState> {
                 {this.state.tabs.map(tab =>
 
                     <NavItem key={tab.id}>
+
                         <NavLink
-                            className={"p-1 pl-2 pr-2 " + (tab.id === this.state.activeTab ? "active" : "")}
-                            onClick={() => this.toggle(tab.id)}>
-                            {tab.title}
+                            className={"p-0 " + (tab.id === this.state.activeTab ? "active" : "")}
+                            >
+
+                            <div style={{display: 'flex'}}>
+
+                                <div className="mt-auto mb-auto pt-1 pb-1 pl-2 pr-1"
+                                     style={{userSelect: 'none'}}
+                                     onClick={() => this.toggle(tab.id)}>
+                                    {tab.title}
+                                </div>
+
+                                <div className="mt-auto mb-auto mr-1">
+
+                                    <Button color="light"
+                                            onClick={() => this.closeTab(tab.id)}
+                                            className="text-muted p-1"
+                                            style={{fontSize: '14px'}}>
+                                        <i className="fas fa-times"></i>
+                                    </Button>
+
+                                </div>
+                            </div>
+
                         </NavLink>
+
                     </NavItem>
 
                    )}
@@ -115,7 +137,24 @@ export class TabNav extends React.Component<IProps, IState> {
             id: tabSequence++
         };
 
-        this.setState({...this.state, tabs: [...this.state.tabs, newTab]});
+        // make it the activeTab by default
+        const activeTab = newTab.id;
+
+        this.setState({
+            ...this.state,
+            tabs: [...this.state.tabs, newTab],
+            activeTab
+        });
+
+    }
+
+    private closeTab(tab: number) {
+
+        // TODO: we have to pick a new activeTab now...
+
+        const tabs = this.state.tabs.filter(current => current.id !== tab);
+
+        this.setState({...this.state, tabs});
 
     }
 
