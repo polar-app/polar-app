@@ -1,13 +1,10 @@
 import * as React from 'react';
-import TabContent from 'reactstrap/lib/TabContent';
-import TabPane from 'reactstrap/lib/TabPane';
 import Nav from 'reactstrap/lib/Nav';
 import NavItem from 'reactstrap/lib/NavItem';
 import NavLink from 'reactstrap/lib/NavLink';
 import {ChannelBinder} from '../../util/Channels';
 import Button from 'reactstrap/lib/Button';
 import {TabButtonContextMenu} from './TabButtonContextMenu';
-import {TabBody} from './TabBody';
 import {TabPanes} from './TabPanes';
 import {TabStyles} from './TabStyles';
 
@@ -15,7 +12,6 @@ let tabSequence: number = 10000;
 
 // TODO
 //
-// - context menu
 // - fit the screen properly including the webview content
 // - disable the ability to close the primary tab
 
@@ -31,20 +27,30 @@ export class TabNav extends React.Component<IProps, IState> {
 
         this.props.addTabBinder(tab => this.addTab(tab));
 
+        const initialTabs = this.props.initialTabs || [] ;
+
+        const tabs = initialTabs.map(current => {
+            return {
+                ...current,
+                id: tabSequence++
+            };
+        });
+
         this.state = {
             activeTab: 0,
-            tabs: [
-                {
-                    id: 0,
-                    title: "Repository",
-                    content: <div>This is the first page content</div>
-                },
-                {
-                    id: 1,
-                    title: "CNN",
-                    content: 'http://cnn.com'
-                },
-            ]
+            tabs
+            // tabs: [
+            //     {
+            //         id: 0,
+            //         title: "Repository",
+            //         content: <div>This is the first page content</div>
+            //     },
+            //     {
+            //         id: 1,
+            //         title: "CNN",
+            //         content: 'http://cnn.com'
+            //     },
+            // ]
         };
 
     }
@@ -160,6 +166,9 @@ export class TabNav extends React.Component<IProps, IState> {
 
 
 interface IProps {
+
+    readonly initialTabs?: ReadonlyArray<TabInit>;
+
     readonly addTabBinder: ChannelBinder<TabInit>;
 }
 
