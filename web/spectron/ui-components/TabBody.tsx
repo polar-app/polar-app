@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Tab} from './TabNav';
+import {TabStyles} from './TabStyles';
 
 export class TabBody extends React.Component<IProps, IState> {
 
@@ -14,7 +15,7 @@ export class TabBody extends React.Component<IProps, IState> {
         if (typeof tab.content === 'string') {
 
             return <webview id={'tab-webview-' + tab.id}
-                            style={{height: '100%', width: '100%'}}
+                            style={TabStyles.WEBVIEW}
                             src={tab.content}/>;
 
 

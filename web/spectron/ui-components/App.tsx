@@ -54,6 +54,7 @@ import {Dock} from './Dock';
 import {TabNav, Tab} from './TabNav';
 import {Channels} from '../../js/util/Channels';
 import {AnnotationRepoFilters} from '../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler';
+import {TabStyles} from './TabStyles';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -205,22 +206,21 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <div style={{
-                         display: 'flex',
-                         flexFlow: 'column',
-                         height: '100%',
-                         width: '100%'
-                     }}>
+                {/*<div style={TabStyles.FLEX_PARENT}>*/}
 
-                    <div>
-                        this is some misc content at the top
-                    </div>
+                    {/*<div>*/}
+                        {/*this is some misc content at the top*/}
+                    {/*</div>*/}
 
-                    <webview id={'tab-webview-'}
-                             style={{flex: '1 1 auto'}}
-                             src="http://www.cnn.com"/>
+                    {/*<div style={TabStyles.FLEX_PARENT}>*/}
 
-                </div>
+                        {/*<webview id={'tab-webview-'}*/}
+                                     {/*style={TabStyles.FLEX_CHILD}*/}
+                                     {/*// style={{height: '100%', width: '100%'}}*/}
+                                     {/*src="http://www.cnn.com"/>*/}
+                    {/*</div>*/}
+
+                {/*</div>*/}
 
                 {/*<Button onClick={() => addTab({id: 666, title: 'asdf', content: "http://example.com"})}>Add Tab</Button>*/}
 
@@ -228,7 +228,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*<br/>*/}
                 {/*<br/>*/}
 
-                {/*<TabNav addTabBinder={addTabBinder}/>*/}
+                <TabNav addTabBinder={addTabBinder}/>
 
                 {/*<Dock side="left"*/}
                       {/*width={350}*/}

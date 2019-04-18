@@ -9,6 +9,7 @@ import Button from 'reactstrap/lib/Button';
 import {TabButtonContextMenu} from './TabButtonContextMenu';
 import {TabBody} from './TabBody';
 import {TabPanes} from './TabPanes';
+import {TabStyles} from './TabStyles';
 
 let tabSequence: number = 10000;
 
@@ -52,7 +53,7 @@ export class TabNav extends React.Component<IProps, IState> {
 
         const NavTabs = () => {
 
-            return <Nav tabs>
+            return <Nav style={TabStyles.TAB_NAV} tabs>
 
                 {this.state.tabs.map(tab =>
 
@@ -102,9 +103,9 @@ export class TabNav extends React.Component<IProps, IState> {
 
             <div className="tab-nav">
 
-                <NavTabs/>
+                    <NavTabs/>
 
-                <TabPanes tabs={this.state.tabs} activeTab={this.state.activeTab}/>
+                    <TabPanes tabs={this.state.tabs} activeTab={this.state.activeTab}/>
 
             </div>
 
