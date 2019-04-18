@@ -52,14 +52,8 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
     }
 
     public render() {
-        //
-        const options: TagSelectOption[] =
-            this.props.tagsDBProvider().tags().map( current => {
-                return {
-                    value: current.id,
-                    label: current.label
-                };
-        });
+
+        const options = TagSelectOptions.fromTags(this.props.tagsDBProvider().tags());
 
         return (
 

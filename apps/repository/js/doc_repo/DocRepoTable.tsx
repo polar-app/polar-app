@@ -1013,6 +1013,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             repoDocInfo.archived = !repoDocInfo.archived;
             repoDocInfo.docInfo.archived = repoDocInfo.archived;
             mutated = true;
+
+            // used so the user can tell something actually happened because if
+            // the row just vanishes it's hard to tell that something actually
+            // changed.
+            if (repoDocInfo.archived) {
+                Toaster.success(`Document has been archived.`);
+            }
+
         }
 
         if (field === 'flagged') {

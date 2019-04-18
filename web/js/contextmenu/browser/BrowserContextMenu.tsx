@@ -125,6 +125,13 @@ export class BrowserContextMenu extends React.Component<IProps, IState> {
                         Text Highlight
 
                         <MenuItem hidden={!this.state.selectionContexts.textHighlight}
+                                  onSelect={() => ContextMenuMessages.postContextMenuMessage("scroll-to-text-highlight", triggerEvent)}>
+
+                            Scroll Into View
+
+                        </MenuItem>
+
+                        <MenuItem hidden={!this.state.selectionContexts.textHighlight}
                                   onSelect={() => ContextMenuMessages.postContextMenuMessage("delete-text-highlight", triggerEvent)}>
 
                             <div className="text-danger">Delete</div>

@@ -153,6 +153,10 @@ export class TextHighlightController {
                 this.onTextHighlightDeleted(triggerEvent);
                 break;
 
+            case "scroll-to-text-highlight":
+                this.onScrollToTextHighlight(triggerEvent);
+                break;
+
             default:
                 // log.warn("Unhandled message: " + event.data.type, event.data);
                 break;
@@ -469,6 +473,23 @@ export class TextHighlightController {
         }
 
         return result;
+
+    }
+
+    private onScrollToTextHighlight(triggerEvent: TriggerEvent) {
+
+        const annotationPointers
+            = AnnotationPointers.toAnnotationPointers(".text-highlight", triggerEvent);
+
+        Optional.first(...annotationPointers).map(annotationDescriptor => {
+
+            const id = annotationDescriptor.id;
+
+            const element = document.querySelector(`.annotations div[data-annotation-id='${id}']`);
+            element!.scrollIntoView();
+
+        });
+
 
     }
 

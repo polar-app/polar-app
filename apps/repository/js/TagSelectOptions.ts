@@ -19,11 +19,12 @@ export class TagSelectOptions {
     public static fromTags(tags: Tag[]): TagSelectOption[] {
 
         return tags.map( current => {
-            return {
-                value: current.id,
-                label: current.label
-            };
-        });
+                   return {
+                       value: current.id,
+                       label: current.label
+                   };
+               })
+               .sort((a, b) => a.label.localeCompare(b.label));
 
     }
 
