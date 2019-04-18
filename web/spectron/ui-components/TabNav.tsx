@@ -7,6 +7,8 @@ import NavLink from 'reactstrap/lib/NavLink';
 import {ChannelBinder} from '../../js/util/Channels';
 import Button from 'reactstrap/lib/Button';
 import {TabButtonContextMenu} from './TabButtonContextMenu';
+import {TabBody} from './TabBody';
+import {TabPanes} from './TabPanes';
 
 let tabSequence: number = 10000;
 
@@ -38,7 +40,7 @@ export class TabNav extends React.Component<IProps, IState> {
                 },
                 {
                     id: 1,
-                    title: "Second tab",
+                    title: "CNN",
                     content: 'http://cnn.com'
                 },
             ]
@@ -96,42 +98,13 @@ export class TabNav extends React.Component<IProps, IState> {
 
         };
 
-        // the actual body of the tabs
-        const Tabs = () => {
-
-            return <TabContent activeTab={this.state.activeTab}>
-
-                {this.state.tabs.map(tab => {
-
-                        const TabBody = () => {
-
-                            if (typeof tab.content === 'string') {
-                                return <div>this is external content</div>;
-                            } else {
-                                return tab.content;
-                            }
-
-                        };
-
-                        return <TabPane tabId={tab.id} key={tab.id}>
-                            <TabBody/>
-                        </TabPane>;
-
-                    })
-
-                };
-
-            </TabContent>;
-
-        };
-
         return (
 
             <div className="tab-nav">
 
                 <NavTabs/>
 
-                <Tabs/>
+                <TabPanes tabs={this.state.tabs} activeTab={this.state.activeTab}/>
 
             </div>
 
