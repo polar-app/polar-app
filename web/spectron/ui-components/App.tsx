@@ -51,6 +51,7 @@ import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
 import {Dock} from './Dock';
+import {TabNav} from './TabNav';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -198,10 +199,12 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <Dock side="left"
-                      width={350}
-                      left={<div style={{backgroundColor: 'red'}}>this is the left</div>}
-                      right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>
+                <TabNav/>
+
+                {/*<Dock side="left"*/}
+                      {/*width={350}*/}
+                      {/*left={<div style={{backgroundColor: 'red'}}>this is the left</div>}*/}
+                      {/*right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>*/}
 
                 {/*<div className="p-2 border rounded"*/}
                      {/*style={{*/}
