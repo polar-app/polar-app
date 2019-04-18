@@ -2,11 +2,11 @@
 title: Polar Mission Statement and Design for a Personal Knowledge Repository
 date: 2019-04-11 05:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/long-road-scaled.png 
+large_image: https://getpolarized.io/assets/images/darts-scaled.png 
 description: Polar has a broad mission statement to provide high quality tools for document annotation, management of documents (tagging, storage, etc) and sharing of content.
 ---
 
-<img class="img-fluid" src="https://getpolarized.io/assets/images/long-road-scaled.png">
+<img class="img-fluid" src="https://getpolarized.io/assets/images/darts-scaled.png">
 
 # Polar Mission Statement and Design for a Personal Knowledge Repository
 
