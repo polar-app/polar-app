@@ -33,7 +33,7 @@ export class TabNav extends React.Component<IProps, IState> {
             tabs: [
                 {
                     id: 0,
-                    title: "First tab",
+                    title: "Repository",
                     content: <div>This is the first page content</div>
                 },
                 {
@@ -60,7 +60,8 @@ export class TabNav extends React.Component<IProps, IState> {
                             className={"p-0 " + (tab.id === this.state.activeTab ? "active" : "")}
                             >
 
-                            <div style={{display: 'flex'}}>
+                            <div style={{display: 'flex'}}
+                                 className={tab.id === this.state.activeTab ? "border-bottom border-primary " : ""}>
 
                                 <TabButtonContextMenu onCloseOtherTabs={() => this.closeOtherTabs(tab.id)}
                                                       onClose={() => this.closeTab(tab.id)}>
@@ -70,6 +71,7 @@ export class TabNav extends React.Component<IProps, IState> {
                                          onClick={() => this.toggle(tab.id)}>
                                         {tab.title}
                                     </div>
+
                                 </TabButtonContextMenu>
 
                                 <div className="mt-auto mb-auto mr-1">

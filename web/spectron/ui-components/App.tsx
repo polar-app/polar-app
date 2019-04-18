@@ -205,6 +205,10 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <Button onClick={() => addTab({id: 666, title: 'asdf', content: "http://example.com"})}>Add Tab</Button>
 
+                <br/>
+                <br/>
+                <br/>
+
                 <TabNav addTabBinder={addTabBinder}/>
 
                 {/*<Dock side="left"*/}
