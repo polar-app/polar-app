@@ -1,3 +1,9 @@
+# 1.17.5
+
+- Filtering for tags now lists the tags alphabetically
+
+- Right click on text highlight now add 'scroll into view'
+
 
 # 1.17.4
 
