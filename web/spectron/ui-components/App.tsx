@@ -51,10 +51,10 @@ import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
 import {Dock} from './Dock';
-import {TabNav, Tab} from './TabNav';
+import {TabNav, Tab} from '../../js/ui/tabs/TabNav';
 import {Channels} from '../../js/util/Channels';
 import {AnnotationRepoFilters} from '../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler';
-import {TabStyles} from './TabStyles';
+import {TabStyles} from '../../js/ui/tabs/TabStyles';
 
 class App<P> extends React.Component<{}, IAppState> {
 

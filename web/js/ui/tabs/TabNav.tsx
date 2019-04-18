@@ -4,7 +4,7 @@ import TabPane from 'reactstrap/lib/TabPane';
 import Nav from 'reactstrap/lib/Nav';
 import NavItem from 'reactstrap/lib/NavItem';
 import NavLink from 'reactstrap/lib/NavLink';
-import {ChannelBinder} from '../../js/util/Channels';
+import {ChannelBinder} from '../../util/Channels';
 import Button from 'reactstrap/lib/Button';
 import {TabButtonContextMenu} from './TabButtonContextMenu';
 import {TabBody} from './TabBody';
