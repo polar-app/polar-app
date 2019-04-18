@@ -36,7 +36,7 @@ export class NPS extends React.Component<IProps, IState> {
         Toaster.success("Thanks for your feedback!");
 
         // mark it delayed so it's not shown again.
-        this.prefs.markDelayed(PREF_KEY);
+        this.prefs.markDelayed(PREF_KEY, '1w');
 
     }
 

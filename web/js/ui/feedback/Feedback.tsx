@@ -4,6 +4,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {LeftRightSplit} from '../left_right_split/LeftRightSplit';
 import {Nav} from '../util/Nav';
 import {SURVEY_LINK} from '../../../../apps/repository/js/splash/splashes/survey/Survey';
+import {FreeFormFeedback} from './FreeFormFeedback';
 
 export class Feedback extends React.Component<IProps, IState> {
 
@@ -15,7 +16,7 @@ export class Feedback extends React.Component<IProps, IState> {
         this.takeExtendedSurvey = this.takeExtendedSurvey.bind(this);
 
         this.state = {
-            completed: false
+            stage: 'score'
         };
 
     }
@@ -52,16 +53,16 @@ export class Feedback extends React.Component<IProps, IState> {
 
         const FeedbackButton = (props: FeedbackButtonProps) => {
 
-            let background = props.background;
+            const background = props.background;
 
-            if (this.state.completed) {
-                background = '#D8D8D8';
-            }
+            // if (this.state.completed) {
+            //     background = '#D8D8D8';
+            // }
 
             return <Button size='sm'
                            className="text-dark"
                            block={true}
-                           disabled={this.state.completed}
+                           // disabled={this.state.completed}
                            style={{
                                width: '2.5em',
                                height: '2.5em',
@@ -149,7 +150,7 @@ export class Feedback extends React.Component<IProps, IState> {
                 </tbody>
 
             </table>;
-        }
+        };
 
         const FeedbackForm = () => {
 
@@ -171,7 +172,11 @@ export class Feedback extends React.Component<IProps, IState> {
                 <ButtonTable/>
 
                 <div className="text-center mt-2">
-                    <Button color="link" size="sm" onClick={() => this.takeExtendedSurvey()}>Take Extended Survey</Button>
+
+                    <Button color="link"
+                            size="sm"
+                            onClick={() => this.takeExtendedSurvey()}>Take Extended Survey</Button>
+
                 </div>
 
                 {this.props.footer}
@@ -180,10 +185,18 @@ export class Feedback extends React.Component<IProps, IState> {
 
         };
 
-        if (this.state.completed) {
-            return <div/>;
-        } else {
-            return <FeedbackForm/>;
+        switch (this.state.stage) {
+
+            case 'completed':
+                return <div/>;
+
+            case 'text':
+                return <FreeFormFeedback rating={0}/>;
+
+            case 'score':
+                return <FeedbackForm/>;
+
+
         }
 
     }
@@ -237,7 +250,7 @@ export class Feedback extends React.Component<IProps, IState> {
     private markCompleted() {
 
         this.setState({
-            completed: true
+            stage: 'completed'
         });
 
     }
@@ -280,7 +293,9 @@ export interface IProps {
 }
 
 export interface IState {
-    readonly completed: boolean;
+
+    readonly stage: 'score' | 'text' | 'completed';
+
 }
 
 interface ColorSet {

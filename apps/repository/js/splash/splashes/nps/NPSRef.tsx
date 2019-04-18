@@ -26,7 +26,7 @@ export class NPSRef implements PrioritizedComponentRef {
 
             const since = ISODateTimeStrings.parse(datastoreOverview.created);
 
-            if (TimeDurations.hasElapsed(since, '1w')) {
+            if (TimeDurations.hasElapsed(since, '24h')) {
 
                 if (! this.prefs.isMarkedDelayed(PREF_KEY)) {
                     return PRIORITY;

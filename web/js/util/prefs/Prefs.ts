@@ -32,7 +32,7 @@ export abstract class Prefs {
 
     }
 
-    public markDelayed(key: string, duration: DurationStr = "1m") {
+    public markDelayed(key: string, duration: DurationStr = "1w") {
 
         const durationMS = TimeDurations.toMillis(duration);
         const after = Date.now() + durationMS;
