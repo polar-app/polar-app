@@ -6,6 +6,7 @@ import NavItem from 'reactstrap/lib/NavItem';
 import NavLink from 'reactstrap/lib/NavLink';
 import {ChannelBinder} from '../../js/util/Channels';
 import Button from 'reactstrap/lib/Button';
+import {TabButtonContextMenu} from './TabButtonContextMenu';
 
 let tabSequence: number = 10000;
 
@@ -13,6 +14,7 @@ let tabSequence: number = 10000;
 //
 // - context menu
 // - fit the screen properly including the webview content
+// - disable the ability to close the primary tab
 
 export class TabNav extends React.Component<IProps, IState> {
 
@@ -22,6 +24,7 @@ export class TabNav extends React.Component<IProps, IState> {
         this.toggle = this.toggle.bind(this);
         this.addTab = this.addTab.bind(this);
         this.closeTab = this.closeTab.bind(this);
+        this.closeOtherTabs = this.closeOtherTabs.bind(this);
 
         this.props.addTabBinder(tab => this.addTab(tab));
 
@@ -59,11 +62,15 @@ export class TabNav extends React.Component<IProps, IState> {
 
                             <div style={{display: 'flex'}}>
 
-                                <div className="mt-auto mb-auto pt-1 pb-1 pl-2 pr-1"
-                                     style={{userSelect: 'none'}}
-                                     onClick={() => this.toggle(tab.id)}>
-                                    {tab.title}
-                                </div>
+                                <TabButtonContextMenu onCloseOtherTabs={() => this.closeOtherTabs(tab.id)}
+                                                      onClose={() => this.closeTab(tab.id)}>
+
+                                    <div className="mt-auto mb-auto pt-1 pb-1 pl-2 pr-1"
+                                         style={{userSelect: 'none'}}
+                                         onClick={() => this.toggle(tab.id)}>
+                                        {tab.title}
+                                    </div>
+                                </TabButtonContextMenu>
 
                                 <div className="mt-auto mb-auto mr-1">
 
@@ -155,6 +162,13 @@ export class TabNav extends React.Component<IProps, IState> {
         const tabs = this.state.tabs.filter(current => current.id !== tab);
 
         this.setState({...this.state, tabs});
+
+    }
+
+    private closeOtherTabs(tab: number) {
+
+        const tabs = this.state.tabs.filter(current => current.id === tab);
+        this.setState({...this.state, tabs, activeTab: tab});
 
     }
 
