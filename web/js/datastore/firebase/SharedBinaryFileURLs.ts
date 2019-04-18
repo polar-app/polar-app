@@ -9,6 +9,10 @@ import {BackendFileRef} from '../Datastore';
 const COLLECTION_NAME = 'shared_url';
 
 /**
+ * Provides a system so that we can taken a private / internal URL and convert
+ * it to an external (shared) URL without exposing the private internal URL and
+ * we also give users the ability to revoke permissions.
+ *
  * This system has three types of URLs:
  *
  * internalURL: The actual URL for the document we're sharing.  We only need to
@@ -19,16 +23,15 @@ const COLLECTION_NAME = 'shared_url';
  *
  * sharedURL: That the user sees and is publicly viewable on the Internet.
  *
- *
  * The underlying scheme here needs two records.
  *
- * shared_url:
+ * shared_url_token:
  *
  *       Stores a mapping between the downloadToken (as id) and the backend and
  *       name of file so we can compute the internalURL and a signedURL to
  *       return to the user.
  *
- * shared_doc
+ * shared_url_conf
  *       Stores a shared file permissions for a user with the id computed
  *       from the id of doc and then a list of permissions that this user has
  *       handed out to other users on the Internet.
@@ -55,12 +58,21 @@ export class SharedBinaryFileURLs {
         const sharedURL = `https://us-central1-polar-cors.cloudfunctions.net/fetch/?downloadToken=${downloadToken}`;
 
         const sharedURLRecord: SharedURLRecord = {
+            id: downloadToken,
             backend,
             name,
             downloadToken,
             sharedURL
         };
 
+        await this.writeSharedURL(sharedURLRecord);
+
+        return sharedURL;
+    }
+
+    private static async writeSharedURL(sharedURLRecord: SharedURLRecord) {
+
+        const {downloadToken} = sharedURLRecord;
         const id = downloadToken;
 
         const firestore = await this.getFirestore();
@@ -71,7 +83,11 @@ export class SharedBinaryFileURLs {
 
         await ref.set(sharedURLRecord);
 
-        return sharedURL;
+    }
+
+
+    private static async writeSharedDoc() {
+        // noop for now
     }
 
     /**
@@ -145,16 +161,32 @@ interface SharedURLMeta {
     readonly downloadToken: DownloadToken;
 }
 
+export type SharedURLRecordID = string;
+
+class SharedURLRecordIDs {
+
+    public static create(downloadToken: DownloadToken) {
+        // the download token is already a good ID to use because we need
+        // constant time lookup for the token to the record.
+        return downloadToken;
+    }
+
+}
+
 /**
  * We only need the backend and the name of the file to be able to compute the
  * internal URL.
  */
 interface SharedURLRecord extends SharedURLMeta {
 
+    readonly id: SharedURLRecordID;
+
     readonly backend: Backend;
 
     readonly name: string;
 }
+
+type DownloadToken = string;
 
 /**
  * Maintains a system of tokens that user scan use to share internal Polar URLs
@@ -180,8 +212,6 @@ class DownloadTokens {
 
 }
 
-type DownloadToken = string;
-
 /**
  * A team string of team:foo where 'foo' is the name of the team
  */
@@ -194,15 +224,26 @@ type EmailStr = string;
 
 type Recipient = 'public' | TeamStr | EmailStr;
 
-interface SharedDoc {
+export type SharedBinaryFileID = string;
 
-    readonly id: string;
-    readonly accessList: ReadonlyArray<SharedDocAccess>;
+interface SharedBinaryFile {
+
+    readonly id: SharedBinaryFileID;
+
+    /**
+     * Grants to access this file.
+     */
+    readonly grants: ReadonlyArray<SharedBinaryFileGrant>;
 
 }
 
-interface SharedDocAccess {
-    id: string;
+export type SharedBinaryFileGrantID = string;
+
+/**
+ * An individual grant with the recipient.
+ */
+interface SharedBinaryFileGrant {
+    id: SharedBinaryFileGrantID;
     recipient: Recipient;
     downloadToken: DownloadToken;
 }
