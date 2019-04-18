@@ -81,3 +81,16 @@ describe('type tags', function() {
     });
 
 });
+
+
+describe('folder tags', function() {
+
+    it("basic functionality", function() {
+        Tags.assertValid('foo/bar');
+        Tags.assertValid('/foo/bar');
+
+        Tags.assertValid('cat/dog/boy/girl');
+    });
+
+
+});
