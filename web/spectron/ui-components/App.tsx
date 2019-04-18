@@ -55,6 +55,8 @@ import {TabNav, Tab} from '../../js/ui/tabs/TabNav';
 import {Channels} from '../../js/util/Channels';
 import {AnnotationRepoFilters} from '../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler';
 import {TabStyles} from '../../js/ui/tabs/TabStyles';
+import {UserFeedbacks} from '../../js/ui/UserFeedback';
+import {ISODateTimeStrings} from '../../js/metadata/ISODateTimeStrings';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -187,6 +189,12 @@ class App<P> extends React.Component<{}, IAppState> {
         const [addTab, addTabBinder] = Channels.create<Tab>();
 
         // https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space
+        //
+        // UserFeedbacks.write({
+        //     netPromoterScore: 0,
+        //     text: "awesome",
+        //     created: ISODateTimeStrings.create()
+        // }).catch(err => console.error("got error: ", err));
 
         return (
             //
