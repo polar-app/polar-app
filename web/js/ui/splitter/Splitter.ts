@@ -1,7 +1,7 @@
 import Split from 'split.js';
 import {WindowEvents} from '../../util/dom/WindowEvents';
 
-const INITIAL_SIZES: number[] = [70, 30];
+const INITIAL_SIZES: number[] = [68, 32];
 
 /**
  * A simple splitter that takes to elements or selectors and makes them vertical

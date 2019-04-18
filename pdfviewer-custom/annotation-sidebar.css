@@ -2,7 +2,7 @@
 
 .annotation-sidebar,
 .annotation-sidebar * {
-    font-size: 16px ;
+    font-size: 14px !important;
 }
 
 .annotation-sidebar p {

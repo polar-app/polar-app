@@ -1,4 +1,7 @@
-# 1.17.5
+# 1.18.0
+
+- Increased the sidebar a bit to accomadate updating comments without overflow
+  of the summernote bar.
 
 - Filtering for tags now lists the tags alphabetically
 
@@ -27,7 +30,7 @@
 
 - Integrated the net promoter score to prompt once per week so we get more NPS 
   data points.
-
+nnotation
 # 1.17.2
 
 - Fixed blob streams when replicating from the cloud back to disk.  
