@@ -236,7 +236,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*<br/>*/}
                 {/*<br/>*/}
 
-                <TabNav addTabBinder={addTabBinder}/>
+                {/*<TabNav addTabBinder={addTabBinder}/>*/}
 
                 {/*<Dock side="left"*/}
                       {/*width={350}*/}
