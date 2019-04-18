@@ -4,6 +4,16 @@ import TabPane from 'reactstrap/lib/TabPane';
 import Nav from 'reactstrap/lib/Nav';
 import NavItem from 'reactstrap/lib/NavItem';
 import NavLink from 'reactstrap/lib/NavLink';
+import {ChannelBinder} from '../../js/util/Channels';
+
+let tabSequence: number = 10000;
+
+// TODO
+//
+// - context menu
+// - close button
+// - ability to add content externally
+// - fit the screen properly including the webview content
 
 export class TabNav extends React.Component<IProps, IState> {
 
@@ -11,6 +21,9 @@ export class TabNav extends React.Component<IProps, IState> {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
+        this.addTab = this.addTab.bind(this);
+
+        this.props.addTabBinder(tab => this.addTab(tab));
 
         this.state = {
             activeTab: 0,
@@ -95,6 +108,17 @@ export class TabNav extends React.Component<IProps, IState> {
 
     }
 
+    private addTab(tab: TabInit) {
+
+        const newTab = {
+            ...tab,
+            id: tabSequence++
+        };
+
+        this.setState({...this.state, tabs: [...this.state.tabs, newTab]});
+
+    }
+
     private toggle(tab: number) {
 
         if (this.state.activeTab !== tab) {
@@ -107,6 +131,7 @@ export class TabNav extends React.Component<IProps, IState> {
 
 
 interface IProps {
+    readonly addTabBinder: ChannelBinder<TabInit>;
 }
 
 interface IState {
@@ -114,12 +139,7 @@ interface IState {
     readonly tabs: ReadonlyArray<Tab>;
 }
 
-/**
- * Our high level interface for a tab
- */
-interface Tab {
-
-    readonly id: number;
+export interface TabInit {
 
     readonly title: string;
 
@@ -127,6 +147,15 @@ interface Tab {
      * What we should be displaying in the tab.
      */
     readonly content: JSX.Element | string;
+
+}
+
+/**
+ * Our high level interface for a tab
+ */
+export interface Tab extends TabInit {
+
+    readonly id: number;
 
 }
 
