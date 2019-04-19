@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../util/Nav';
+import {CrowdfundingBar} from './CrowdfundingBar';
+import {CrowdfundingProgress} from './CrowdfundingProgress';
 
 export class CrowdfundingCampaign extends React.Component<IProps, IState> {
 
@@ -28,31 +30,13 @@ export class CrowdfundingCampaign extends React.Component<IProps, IState> {
                         able to raise enough money to continue funding Polar
                         development.
 
-                    {/*<div className="text-center p-2">*/}
 
-                        {/*<span className="text-muted">Raised</span> <span className="text-primary">$2,425</span> <span className="text-muted">of</span> <span className="text-primary">$25,000</span>*/}
+                    <div className="text-center">
 
-                    {/*</div>*/}
-
-                    {/*<div className="">*/}
-
-                        {/*<div className="ml-auto mr-auto" style={{maxWidth: '20em'}}>*/}
-
-                            {/*/!*<div className="mt-auto mr-auto">*!/*/}
-
-                                {/*/!*<span className="text-xl text-primary">*!/*/}
-                                    {/*/!*55%*!/*/}
-                                {/*/!*</span>*!/*/}
-
-                            {/*/!*</div>*!/*/}
-
-                            {/*<div className="m-auto">*/}
-                                {/*<Progress value={55}/>*/}
-                            {/*</div>*/}
-
-                        {/*</div>*/}
-
-                    {/*</div>*/}
+                        <div className="ml-auto mr-auto" style={{maxWidth: '450px'}}>
+                            <CrowdfundingProgress/>
+                        </div>
+                    </div>
 
                     <div className="text-center p-2">
 
