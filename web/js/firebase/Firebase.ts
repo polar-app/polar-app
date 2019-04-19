@@ -1,5 +1,4 @@
 import * as firebase from './lib/firebase';
-// import fb = firebase;
 
 export class Firebase {
 
