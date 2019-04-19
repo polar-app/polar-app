@@ -46,7 +46,6 @@ import {DocContextMenu} from './DocContextMenu';
 import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
-import {FundraisingCampaign} from './FundraisingCampaign';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
@@ -176,7 +175,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 Blobs.toStream(blob).pipe(process.stdout);
 
             })
-            .catch(err => console.log("got error", err))
+            .catch(err => console.log("got error", err));
 
         return (
             //
@@ -196,18 +195,6 @@ class App<P> extends React.Component<{}, IAppState> {
           //                 {/*right={<div/>}/>*/}
 
             <div>
-
-
-
-                <Feedback category='net-promoter-score'
-                          title='How likely are you to recommend Polar to a colleague?'
-                          from="Not likely"
-                          to="Very likely"
-                />
-
-                <AnkiReviewContent/>
-
-                <FundraisingCampaign/>
 
                 {/*<SimpleTooltipEx text={`*/}
                                  {/*This is the text for the tooltip*/}
