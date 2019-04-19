@@ -16,7 +16,7 @@ export abstract class ConditionalPrioritizedComponentRef implements PrioritizedC
 
     protected readonly userLevel: UserLevel | undefined;
 
-    constructor(settingKey: string, defaultPriority: number, userLevel?: UserLevel) {
+    protected constructor(settingKey: string, defaultPriority: number, userLevel?: UserLevel) {
         this.settingKey = settingKey;
         this.defaultPriority = defaultPriority;
         this.userLevel = userLevel;

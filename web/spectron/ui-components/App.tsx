@@ -50,13 +50,6 @@ import {FundraisingCampaign} from './FundraisingCampaign';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
-import {Dock} from './Dock';
-import {TabNav, Tab} from '../../js/ui/tabs/TabNav';
-import {Channels} from '../../js/util/Channels';
-import {AnnotationRepoFilters} from '../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler';
-import {TabStyles} from '../../js/ui/tabs/TabStyles';
-import {UserFeedbacks} from '../../js/ui/UserFeedback';
-import {ISODateTimeStrings} from '../../js/metadata/ISODateTimeStrings';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -169,8 +162,7 @@ class App<P> extends React.Component<{}, IAppState> {
         // destroy the planet?', onCancel: NULL_FUNCTION, onConfirm:
         // NULL_FUNCTION });
 
-        // const url =
-        // "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
+        // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
 
         const url = "https://news.ycombinator.com/";
 
@@ -184,17 +176,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 Blobs.toStream(blob).pipe(process.stdout);
 
             })
-            .catch(err => console.log("got error", err));
-
-        const [addTab, addTabBinder] = Channels.create<Tab>();
-
-        // https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space
-        //
-        // UserFeedbacks.write({
-        //     netPromoterScore: 0,
-        //     text: "awesome",
-        //     created: ISODateTimeStrings.create()
-        // }).catch(err => console.error("got error: ", err));
+            .catch(err => console.log("got error", err))
 
         return (
             //
@@ -208,69 +190,24 @@ class App<P> extends React.Component<{}, IAppState> {
             // </div>
           //
           // {/*<LeftRightSplit left={*/}
-          //     {/*<div className="text-sm text-muted mt-2">We also have an
-          // extended*/} {/*survey if you'd like to provide more
-          // feedback.</div>*/} {/*}*/} {/*right={<div/>}/>*/}
+          //     {/*<div className="text-sm text-muted mt-2">We also have an extended*/}
+          //         {/*survey if you'd like to provide more feedback.</div>*/}
+          // {/*}*/}
+          //                 {/*right={<div/>}/>*/}
 
             <div>
 
-                {/*<div style={TabStyles.FLEX_PARENT}>*/}
-
-                    {/*<div>*/}
-                        {/*this is some misc content at the top*/}
-                    {/*</div>*/}
-
-                    {/*<div style={TabStyles.FLEX_PARENT}>*/}
-
-                        {/*<webview id={'tab-webview-'}*/}
-                                     {/*style={TabStyles.FLEX_CHILD}*/}
-                                     {/*// style={{height: '100%', width: '100%'}}*/}
-                                     {/*src="http://www.cnn.com"/>*/}
-                    {/*</div>*/}
-
-                {/*</div>*/}
-
-                {/*<Button onClick={() => addTab({id: 666, title: 'asdf', content: "http://example.com"})}>Add Tab</Button>*/}
-
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-
-                {/*<TabNav addTabBinder={addTabBinder}/>*/}
-
-                {/*<Dock side="left"*/}
-                      {/*width={350}*/}
-                      {/*left={<div style={{backgroundColor: 'red'}}>this is the left</div>}*/}
-                      {/*right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>*/}
-
-                {/*<div className="p-2 border rounded"*/}
-                     {/*style={{*/}
-                        {/*backgroundColor: 'lightyellow',*/}
-                        {/*display: 'flex'*/}
-                     {/*}}>*/}
-
-                    {/*<progress className="mt-auto mb-auto w-100" value={0.33}></progress>*/}
-
-                    {/*<div className="mt-auto mb-auto ml-1" style={{whiteSpace: 'nowrap'}}>*/}
-                        {/*<span style={{fontWeight: 'bold'}}>$3,300</span> of <span className="text-muted">$5,000</span> raised*/}
-                    {/*</div>*/}
-
-                    {/*<div className="mv-auto ml-1">*/}
-                        {/*<Button color="success" size="sm">Donate</Button>*/}
-                    {/*</div>*/}
-
-                {/*</div>*/}
 
 
-                {/*<Feedback category='net-promoter-score'*/}
-                          {/*title='How likely are you to recommend Polar to a colleague?'*/}
-                          {/*from="Not likely"*/}
-                          {/*to="Very likely"*/}
-                {/*/>*/}
+                <Feedback category='net-promoter-score'
+                          title='How likely are you to recommend Polar to a colleague?'
+                          from="Not likely"
+                          to="Very likely"
+                />
 
-                {/*<AnkiReviewContent/>*/}
+                <AnkiReviewContent/>
 
-                {/*<FundraisingCampaign/>*/}
+                <FundraisingCampaign/>
 
                 {/*<SimpleTooltipEx text={`*/}
                                  {/*This is the text for the tooltip*/}
