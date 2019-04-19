@@ -19,12 +19,8 @@ class Styles {
  *
  * Features
  *
- * - menu items directly specified so we can show JUST the icons
  *
- * - support for an additional control for more advanced navigation.  For
- * example we could stuff in a tree control.
- *
- * - Keep the dock persistent.
+ * - Keep the dock persistent by using localStorage prefs
  *
  * TODO:
  *
@@ -39,6 +35,11 @@ class Styles {
  *  https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
  *
  *  - this MIGHT require window mouse event listeners which is not fun...
+ *
+ * - menu items directly specified so we can show JUST the icons in the sidebar
+ *   as a 'mode'.  TODO.. might be better if this was sort of a sub-component
+ *   or we implemented this via composition.
+ *
  *
  *  TODO:
  *   - screw it... Ic an just use THIS component:

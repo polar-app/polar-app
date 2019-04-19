@@ -35,6 +35,9 @@ interface UserFeedback {
 
     readonly created: ISODateTimeString;
 
+    // TODO: more fields including a unique/blinded ID for the user, the date
+    // their account was created (so I can do cohorts for this)
+
 }
 
 type NetPromoterScore = 0 | 1 | 2 | 3| 4 | 5 | 6 | 7 | 8 | 9 | 10;
