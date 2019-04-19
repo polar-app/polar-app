@@ -18,13 +18,13 @@ const log = Logger.create();
 
 const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
-    new CrowdfundingRef(),
     new WhatsNewRef(),
+    new CrowdfundingRef(),
+    new NPSRef(),
     // new GithubStarsRef(),
     // new SurveyRef(),
     new ChromeExtensionReviewRef(),
     new AlternativeToReviewRef(),
-    new NPSRef()
 ];
 
 if (DistConfig.ENABLE_PURCHASES) {
