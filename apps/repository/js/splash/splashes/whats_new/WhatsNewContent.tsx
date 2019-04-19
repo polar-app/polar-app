@@ -19,11 +19,78 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
-                    <h3>Polar 1.16.0</h3>
-
                     <div className="intro">
                         <CrowdfundingCampaign/>
                     </div>
+
+                    <h3>Polar 1.17.14</h3>
+
+                    <div className="intro">
+
+                        <p>
+                            This release mostly focused on our Crowdfunding campaign but the full
+                            changelog from 1.16.0 is below.  We're actively working on 1.18.0 which
+                            will include a number of really exciting features to stay tuned!
+                        </p>
+
+                    </div>
+                    <ul>
+
+                        <li>
+                            <p>Significant refactor to allow us to use direct URLs which we can calculate
+                                instead of having to use Firebase metadata + URL calculation which was very
+                                slow and latent.  Sometimes up to 7500ms for fetching metadata.  Now requests
+                                here are consistently 200ms and sometimes 0ms if we're fairly certain the URL
+                                exists (when the client is fully sync'd).</p>
+                        </li>
+                        <li>
+                            <p>Fixed bug where iframes would not load within capture occasionally.</p>
+                        </li>
+                        <li>
+                            <p>New support for attachments in DocInfo and the ability for attachments to
+                                just be a bucket + file ref...</p>
+                        </li>
+                        <li>
+                            <p>No longer waiting for remote writes for large files.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bad bug with blob conversion that only hit us sometimes.</p>
+                        </li>
+                        <li>
+                            <p>Added survey to the new NPS form too.</p>
+                        </li>
+                        <li>
+                            <p>Integrated the net promoter score to prompt once per week so we get more NPS
+                                data points.</p>
+                        </li>
+                        <li>
+                            <p>Fixed blob streams when replicating from the cloud back to disk.</p>
+                        </li>
+                        <li>
+                            <p>Webapp now supports range queries for fetching PDFs rather than fetching the
+                                entire document.  MASSIVE performance improvement here.</p>
+                        </li>
+                        <li>
+                            <p>Migrated to workbox as sw-precache was officially deprecated.</p>
+                        </li>
+                        <li>
+                            <p>Fixed ugly bug with async providers reading the value before it was awaited</p>
+                        </li>
+                        <li>
+                            <p>Fixed bugs with the disk store not properly handling deletions of .meta files</p>
+                        </li>
+                        <li>
+                            <p>Fixed bugs with delete when the cloud store was running not properly showing
+                                that deletes were performed.</p>
+                        </li>
+                        <li>
+                            <p>Fixed bad bug where deletes were replicated and attempted to be read</p>
+                        </li>
+                        <li>
+                            <p>New fix where a notice is given to the user that a delete was successful.</p>
+                        </li>
+
+                    </ul>
 
                     <h3>Polar 1.16.0</h3>
 
