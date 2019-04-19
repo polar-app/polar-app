@@ -8,6 +8,8 @@ description: Polar has a broad mission statement to provide high quality tools f
 
 <img class="img-fluid" src="https://getpolarized.io/assets/images/darts-scaled.png">
 
+This document is under construction and still evolving.
+
 # Polar Mission Statement and Design for a Personal Knowledge Repository
 
 Polar has a broad mission statement to provide high quality tools for document
