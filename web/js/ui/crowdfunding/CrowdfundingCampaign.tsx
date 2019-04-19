@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../util/Nav';
-import {CrowdfundingBar} from './CrowdfundingBar';
 import {CrowdfundingProgress} from './CrowdfundingProgress';
 
 export class CrowdfundingCampaign extends React.Component<IProps, IState> {
@@ -19,9 +18,10 @@ export class CrowdfundingCampaign extends React.Component<IProps, IState> {
                 <div className="mb-1 rounded p-2 text-justify"
                      style={{backgroundColor: '#F3CF32', fontWeight: 'bold'}}>
 
+                    <h2 className="text-center">Help Keep Polar Open Source</h2>
+
                         {/*<i className="fas fa-info-circle" style={{color: 'blue', backgroundColor: 'white'}}></i>*/}
-                         <b>Dear Polar Users</b>! Polar needs your help to remain
-                        Open Source.
+                        Polar needs your help to remain Open Source.
                         We're launching a crowdfunding campaign to keep Polar
                         Open Source and continue funding development for the
                         next six months.
@@ -31,11 +31,12 @@ export class CrowdfundingCampaign extends React.Component<IProps, IState> {
                         development.
 
 
-                    <div className="text-center">
+                    <div className="text-center mt-2 mb-1">
 
                         <div className="ml-auto mr-auto" style={{maxWidth: '450px'}}>
                             <CrowdfundingProgress/>
                         </div>
+
                     </div>
 
                     <div className="text-center p-2">

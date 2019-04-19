@@ -12,11 +12,13 @@ import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {AlternativeToReviewRef} from './splashes/alternativeto_review/AlternativeToReviewRef';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {NPSRef} from './splashes/nps/NPSRef';
+import {CrowdfundingRef} from './splashes/crowdfunding/CrowdfundingRef';
 
 const log = Logger.create();
 
 const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
+    new CrowdfundingRef(),
     new WhatsNewRef(),
     // new GithubStarsRef(),
     // new SurveyRef(),
