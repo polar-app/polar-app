@@ -10,6 +10,8 @@ import {EventMaps} from './Engine';
 import {isPresent} from '../../../../../web/js/Preconditions';
 import {TestingTime} from '../../../../../web/js/test/TestingTime';
 import {assertJSON} from '../../../../../web/js/test/Assertions';
+import {EventMap} from './Engine';
+import {EventHandlers} from './Engine';
 
 describe('Engine', function() {
 
@@ -24,7 +26,7 @@ describe('Engine', function() {
     it('basic', function() {
 
 
-        interface SplashEventHandlers {
+        interface SplashEventHandlers extends EventHandlers {
             readonly onWhatsNew: () => void;
         }
 
@@ -62,13 +64,13 @@ describe('Engine', function() {
         class WhatsNewRule implements Rule<UserFacts, SplashEventHandlers, WhatsNewState> {
 
             public run(facts: Readonly<UserFacts>,
-                       eventHandlers: SplashEventHandlers,
+                       eventMap: EventMap<SplashEventHandlers>,
                        state?: Readonly<WhatsNewState>): RuleFactPair<UserFacts, WhatsNewState> {
 
                 const updated = state && state.version !== facts.version;
 
                 if (updated) {
-                    eventHandlers.onWhatsNew();
+                    eventMap.onWhatsNew.handler();
                 }
 
                 state = {version: facts.version};
@@ -86,7 +88,7 @@ describe('Engine', function() {
         class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromoterState> {
 
             public run(facts: Readonly<UserFacts>,
-                       eventHandlers: SplashEventHandlers,
+                       eventMap: EventMap<SplashEventHandlers>,
                        state?: Readonly<NetPromoterState>): RuleFactPair<UserFacts, NetPromoterState> {
 
                 if (! state) {

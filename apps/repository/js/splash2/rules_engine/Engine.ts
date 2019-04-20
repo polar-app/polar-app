@@ -2,19 +2,22 @@ import {Rule} from './Rule';
 import {ISODateTimeString} from '../../../../../web/js/metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
 
+
+export type EventHandler = () => void;
+
+export interface EventHandlers {
+    readonly [name: string]: EventHandler;
+}
+
 /**
  * An engine that should run with facts , against rules, which can emit events.
  *
  * The engine can be event based or poll based and is designed to be very
  * efficient to run just from a few variables.
  */
-export class Engine<F, H> {
+export class Engine<F, H extends EventHandlers> {
 
-    private readonly engineState: MutableEngineState<F, H> = {
-        facts: this.facts,
-        ruleStates: {},
-    };
-
+    private readonly engineState: MutableEngineState<F, H>;
     /**
      *
      * @param facts The facts exposed to all rules in the engine.
@@ -27,13 +30,19 @@ export class Engine<F, H> {
                 private readonly order: RuleOrder<F, H>,
                 private readonly eventHandlers: H) {
 
+        this.engineState = {
+            facts: this.facts,
+            ruleStates: {},
+            eventTimes: {}
+        };
+
     }
 
     public run() {
 
-
-
         const {engineState, rules} = this;
+
+        const eventMap = EventMaps.create(this.eventHandlers, this.engineState.eventTimes);
 
         for (const ruleName of this.order) {
 
@@ -41,7 +50,7 @@ export class Engine<F, H> {
 
             const state = engineState.ruleStates[ruleName];
 
-            const result = rule.run(engineState.facts, this.eventHandlers, state);
+            const result = rule.run(engineState.facts, eventMap, state);
 
             // now update the fact and state of this object
             engineState.ruleStates[ruleName] = result[1];
@@ -52,25 +61,24 @@ export class Engine<F, H> {
 
     }
 
-
 }
 
-export class RuleMap<F, H> {
+export class RuleMap<F, H extends EventHandlers> {
 
     [name: string]: Rule<F, H, any>;
 
 }
 
-export type RuleKeys<F, H> = keyof RuleMap<F, H>;
+export type RuleKeys<F, H extends EventHandlers> = keyof RuleMap<F, H>;
 
 /**
  * Provide the order of the rules.  This is a bit verbose but Javascript object
  * keys order isn't defined reliably and I want to make sure we never have bugs
  * here.
  */
-export type RuleOrder<F, H> = [RuleKeys<F, H>];
+export type RuleOrder<F, H extends EventHandlers> = [RuleKeys<F, H>];
 
-interface MutableEngineState<F, H> {
+interface MutableEngineState<F, H extends EventHandlers> {
 
     facts: F;
 
@@ -79,20 +87,19 @@ interface MutableEngineState<F, H> {
      */
     ruleStates: {[id: string]: any};
 
+    /**
+     *
+     */
+    eventTimes: Partial<EventTimes<H>>;
+
 }
 
 /**
  * The engine state between run which between facts F and handlers H
  */
-export interface EngineState<F, H> extends Readonly<MutableEngineState<F, H>> {
+export interface EngineState<F, H extends EventHandlers> extends Readonly<MutableEngineState<F, H>> {
 
 
-}
-
-export type EventHandler = () => void;
-
-export interface EventHandlers {
-    readonly [name: string]: EventHandler;
 }
 
 export type MutableEventTimes<E extends EventHandlers> = {
