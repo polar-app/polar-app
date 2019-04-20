@@ -138,7 +138,7 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
 
         const hasMinimumTimeSinceLastEvent = () => {
 
-            const epoch = EventMaps.earliestExecution(eventMap);
+            const epoch = EventMaps.latestExecution(eventMap);
 
             return hasMinimumTimeSince(epoch, '15m');
 

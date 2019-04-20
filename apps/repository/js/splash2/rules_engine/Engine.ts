@@ -199,14 +199,29 @@ export class EventMaps {
         return result;
 
     }
-    public static earliestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
+
+    public static toLastExecutedTimes<E extends EventHandlers>(eventMap: EventMap<E>): ReadonlyArray<ISODateTimeString> {
 
         const eventTimes = EventMaps.toEventTimes(eventMap);
 
         return Object.values(eventTimes)
-                .filter(current => isPresent(current))
-                .sort()
+            .filter(current => isPresent(current))
+            .map(current => current!)
+            .sort();
+
+    }
+
+    public static earliestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
+
+        return [...this.toLastExecutedTimes(eventMap)]
                 .reduce(Reducers.FIRST, undefined);
+
+    }
+
+    public static latestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
+
+        return [...this.toLastExecutedTimes(eventMap)]
+            .reduce(Reducers.LAST, undefined);
 
     }
 
