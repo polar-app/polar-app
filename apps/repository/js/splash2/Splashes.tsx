@@ -6,7 +6,6 @@ import {SplashEngine} from './SplashEngine';
 import {DefaultSplashEngine} from './SplashEngine';
 import {Version} from '../../../../web/js/util/Version';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
-import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {NPSModal} from './nps/NPSModal';
 import {WhatsNewModal} from './whats_new/WhatsNewModal';
@@ -58,7 +57,8 @@ export class Splashes extends React.Component<IProps, IState> {
 
     public render() {
 
-        // FIXME: add some callbacks on state to prevent double dialog open...
+        // TODO: add some callbacks on state to prevent double dialog open in
+        // the future but we have a 5m latency now between these.
 
         switch (this.state.splash) {
 
@@ -76,10 +76,14 @@ export class Splashes extends React.Component<IProps, IState> {
     }
 
     private onWhatsNew() {
+        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-whats-new'});
+
         this.setState({...this.state, splash: 'whats-new'});
     }
 
     private onNetPromoter() {
+        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-net-promoter'});
+
         this.setState({...this.state, splash: 'net-promoter'});
     }
 
