@@ -9,7 +9,7 @@ import {TextRect} from '../../js/metadata/TextRect';
 import {TextHighlightRecords} from '../../js/metadata/TextHighlightRecords';
 import {ViewOrEditCommentExample} from './ViewOrEditCommentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
-import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
+import {WhatsNewContent} from '../../../apps/repository/js/splash2/whats_new/WhatsNewContent';
 import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
 import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';

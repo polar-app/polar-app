@@ -39,6 +39,8 @@ import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
 import {Premium} from '../../../../apps/repository/js/splash/splashes/premium/Premium';
+import {WhatsNewModal} from '../../../../apps/repository/js/splash2/whats_new/WhatsNewModal';
+import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
 import {MobileDisclaimer} from './MobileDisclaimer';
 import {MobileDisclaimers} from './MobileDisclaimers';
 import {TabNav} from '../../ui/tabs/TabNav';
@@ -181,7 +183,9 @@ export class RepositoryApp {
 
             <div style={{height: '100%'}}>
 
-                <PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>
+                {/*<PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>*/}
+
+                <Splashes persistenceLayerManager={this.persistenceLayerManager}/>
 
                 <SyncBar progress={syncBarProgress}/>
 

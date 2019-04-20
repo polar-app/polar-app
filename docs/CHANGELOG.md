@@ -7,6 +7,10 @@
 
 - Right click on text highlight now add 'scroll into view'
 
+# 1.17.5
+
+- Release to focus on our crowdfunding campaign.
+
 # 1.17.4
 
 - Significant refactor to allow us to use direct URLs which we can calculate 
@@ -30,7 +34,7 @@
 
 - Integrated the net promoter score to prompt once per week so we get more NPS 
   data points.
-nnotation
+
 # 1.17.2
 
 - Fixed blob streams when replicating from the cloud back to disk.  

@@ -127,11 +127,11 @@ export class TagInput extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div>
+            <div className="mt-auto mb-auto">
 
-                <i id={this.id} onClick={this.toggle}
+                <i id={this.id}
+                   onClick={this.toggle}
                    className="fa fa-tag doc-button doc-button-inactive"/>
-
 
                 {/*tag-input-popover {*/}
                 {/*width: 500px !important;*/}

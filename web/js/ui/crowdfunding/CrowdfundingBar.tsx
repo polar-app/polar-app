@@ -3,11 +3,16 @@ import Button from 'reactstrap/lib/Button';
 import {Nav} from '../util/Nav';
 import Progress from 'reactstrap/lib/Progress';
 import {CrowdfundingProgress} from './CrowdfundingProgress';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 export class CrowdfundingBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onMoreInfo = this.onMoreInfo.bind(this);
+        this.onDonate = this.onDonate.bind(this);
+
     }
 
     public render() {
@@ -48,13 +53,13 @@ export class CrowdfundingBar extends React.Component<IProps, IState> {
 
                         <Button color="secondary"
                                 size="sm"
-                                onClick={() => Nav.openLinkWithNewTab("https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html")}
+                                onClick={() => this.onMoreInfo()}
                                 style={{fontWeight: 'bold'}}>More Info</Button>
 
                         <Button className="ml-2"
                                 color="success"
                                 size="sm"
-                                onClick={() => Nav.openLinkWithNewTab("https://opencollective.com/polar-bookshelf")}
+                                onClick={() => this.onDonate()}
                                 style={{fontWeight: 'bold'}}>Donate Now</Button>
 
 
@@ -68,6 +73,16 @@ export class CrowdfundingBar extends React.Component<IProps, IState> {
 
         );
 
+    }
+
+    private onMoreInfo() {
+        RendererAnalytics.event({category: 'crowdfunding-bar', action: 'more-info'});
+        Nav.openLinkWithNewTab("https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html")
+    }
+
+    private onDonate() {
+        RendererAnalytics.event({category: 'crowdfunding-bar', action: 'donate'});
+        Nav.openLinkWithNewTab("https://opencollective.com/polar-bookshelf");
     }
 
 }

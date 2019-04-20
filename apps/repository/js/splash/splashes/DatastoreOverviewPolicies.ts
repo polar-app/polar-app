@@ -61,6 +61,7 @@ export class DatastoreOverviewPolicies {
     public static isPremium(datastoreOverview: DatastoreOverview) {
 
         if (! datastoreOverview.created) {
+            log.debug("No created time in datastore so unable to determine premium level");
             return false;
         }
 
