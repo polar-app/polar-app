@@ -9,19 +9,22 @@ import {Rule} from './rules_engine/Rule';
 import {RuleFactPair} from './rules_engine/Rule';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {DurationStr} from '../../../../web/js/util/TimeDurations';
+import {ExternalEngineState} from './rules_engine/Engine';
 
 export class SplashEngine {
 
     private engine: Engine<UserFacts, SplashEventHandlers>;
 
-    constructor(facts: UserFacts, eventHandlers: SplashEventHandlers) {
+    constructor(private facts: UserFacts,
+                private eventHandlers: SplashEventHandlers,
+                private readonly externalEngineState?: ExternalEngineState<UserFacts, SplashEventHandlers>) {
 
         const rules: RuleMap<UserFacts, SplashEventHandlers> = {
             whatsNew: new WhatsNewRule(),
             netPromoter: new NetPromoterRule()
         };
 
-        this.engine = new Engine(facts, rules, eventHandlers);
+        this.engine = new Engine(facts, rules, eventHandlers, externalEngineState);
 
     }
 

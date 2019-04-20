@@ -84,7 +84,36 @@ describe('Engine', function() {
 
     });
 
-    it('version upgrade', function() {
+    it('version upgrade with persisted external state', function() {
+
+        const facts: MutableUserFacts = {
+            datastoreCreated: "2012-02-02T11:38:49.321Z",
+            version: "1.0.0",
+        };
+
+        let whatsNewCalled: number = 0;
+        let netPromoterCalled: number = 0;
+
+        const eventHandlers: SplashEventHandlers = {
+            onWhatsNew: () => ++whatsNewCalled,
+            onNetPromoter: () => ++netPromoterCalled,
+        };
+
+        let engine = new SplashEngine(facts, eventHandlers);
+
+        engine.run();
+
+        assert.equal(whatsNewCalled, 0);
+
+        const externalEngineState = engine.toExternalEngineState();
+
+        facts.version = "1.1.0";
+
+        engine = new SplashEngine(facts, eventHandlers, externalEngineState);
+
+        engine.run();
+
+        assert.equal(whatsNewCalled, 1);
 
     });
 
