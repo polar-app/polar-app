@@ -22,7 +22,6 @@ export class Engine<F, H> {
                 private readonly rules: RuleMap<F, H>,
                 private readonly order: RuleOrder<F, H>,
                 private readonly eventHandlers: H) {
-        console.log("FIXME1: here");
 
     }
 
@@ -30,24 +29,20 @@ export class Engine<F, H> {
 
 
 
-        console.log("FIXME0: here");
-
-        // const {engineState, rules} = this;
-
-        console.log("FIXME: here");
+        const {engineState, rules} = this;
 
         for (const ruleName of this.order) {
 
-            const rule = this.rules[ruleName];
+            const rule = rules[ruleName];
 
-            const state = this.engineState.ruleStates[ruleName];
+            const state = engineState.ruleStates[ruleName];
 
-            const result = rule.run(this.engineState.facts, this.eventHandlers, state);
+            const result = rule.run(engineState.facts, this.eventHandlers, state);
 
             // now update the fact and state of this object
-            this.engineState.ruleStates[ruleName] = result[1];
+            engineState.ruleStates[ruleName] = result[1];
 
-            this.engineState.facts = result[0];
+            engineState.facts = result[0];
 
         }
 
