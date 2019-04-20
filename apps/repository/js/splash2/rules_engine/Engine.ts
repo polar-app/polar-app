@@ -24,12 +24,10 @@ export class Engine<F, H extends EventHandlers> {
      *
      * @param facts The facts exposed to all rules in the engine.
      * @param rules The rule map we should execute
-     * @param order The order that the rules should be executed.
      * @param eventHandlers The event handlers we should pass to rules.
      */
     constructor(private facts: F,
                 private readonly rules: RuleMap<F, H>,
-                private readonly order: RuleOrder<F, H>,
                 private readonly eventHandlers: H) {
 
         this.engineState = {
@@ -45,7 +43,9 @@ export class Engine<F, H extends EventHandlers> {
 
         const eventMap = EventMaps.create(this.eventHandlers, {});
 
-        for (const ruleName of this.order) {
+        const ruleNames = Object.getOwnPropertyNames(this.rules);
+
+        for (const ruleName of ruleNames) {
 
             const rule = rules[ruleName];
 

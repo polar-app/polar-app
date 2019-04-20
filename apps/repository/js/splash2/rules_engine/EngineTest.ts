@@ -99,8 +99,11 @@ describe('Engine', function() {
                     state = {};
                 }
 
+                // FIXME: datastore should be created for at least 7 days.
+
                 const hasMinimumTimeSince = (epoch: ISODateTimeString | undefined,
-                                             duration: DurationStr) => {
+                                             duration: DurationStr,
+                                             defaultValue: boolean = true) => {
 
                     if (epoch) {
 
@@ -109,7 +112,7 @@ describe('Engine', function() {
 
                     } else {
                         // our epoch hasn't happened yet so it's ok to send out this message.
-                        return true;
+                        return defaultValue;
                     }
 
                 };
@@ -165,41 +168,47 @@ describe('Engine', function() {
 
         };
 
-        let whatsNewCalled: boolean = false;
-        let netPromoterCalled: boolean = false;
+        let whatsNewCalled: number = 0;
+        let netPromoterCalled: number = 0;
 
         const rules: RuleMap<UserFacts, SplashEventHandlers> = {
-            whatsNew: new WhatsNewRule()
+            whatsNew: new WhatsNewRule(),
+            netPromoter: new NetPromoterRule()
         };
 
-        const order: RuleOrder<UserFacts, SplashEventHandlers> = [
-            'whatsNew'
-        ];
-
         const eventHandlers: SplashEventHandlers = {
-            onWhatsNew: () => whatsNewCalled = true,
-            onNetPromoter: () => netPromoterCalled = true,
+            onWhatsNew: () => ++whatsNewCalled,
+            onNetPromoter: () => ++netPromoterCalled,
         };
 
         const engine: Engine<UserFacts, SplashEventHandlers>
-            = new Engine(facts, rules, order, eventHandlers);
+            = new Engine(facts, rules, eventHandlers);
 
         engine.run();
 
-        assert.equal(whatsNewCalled, false);
-        assert.equal(netPromoterCalled, false);
+        assert.equal(whatsNewCalled, 0);
+        assert.equal(netPromoterCalled, 0);
 
         engine.run();
 
-        assert.equal(whatsNewCalled, false);
-        assert.equal(netPromoterCalled, false);
+        assert.equal(whatsNewCalled, 0);
+        assert.equal(netPromoterCalled, 0);
 
         facts.version = "1.1.0";
 
         engine.run();
 
-        assert.equal(whatsNewCalled, true);
-        assert.equal(netPromoterCalled, false);
+        assert.equal(whatsNewCalled, 1);
+        assert.equal(netPromoterCalled, 0);
+
+        // FIXME: test 15 minutes too ... after an upgrade where we were never
+        //  called before.
+
+        TestingTime.forward('8d');
+
+        engine.run();
+        assert.equal(whatsNewCalled, 1);
+        assert.equal(netPromoterCalled, 1);
 
         // FIXME: we need an event emit engine to emit only named events
         // like 'whats-new' and 'net-promoter-score' which I can tie code to
