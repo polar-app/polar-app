@@ -1,14 +1,14 @@
 import {EventHandlers} from './rules_engine/Engine';
-import {ISODateTimeString} from '../../../../web/js/metadata/ISODateTimeStrings';
-import {Rule} from './rules_engine/Rule';
 import {EventMap} from './rules_engine/Engine';
-import {RuleFactPair} from './rules_engine/Rule';
-import {ISODateTimeStrings} from '../../../../web/js/metadata/ISODateTimeStrings';
-import {TimeDurations} from '../../../../web/js/util/TimeDurations';
-import {DurationStr} from '../../../../web/js/util/TimeDurations';
 import {EventMaps} from './rules_engine/Engine';
 import {RuleMap} from './rules_engine/Engine';
 import {Engine} from './rules_engine/Engine';
+import {ISODateTimeString} from '../../../../web/js/metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from '../../../../web/js/metadata/ISODateTimeStrings';
+import {Rule} from './rules_engine/Rule';
+import {RuleFactPair} from './rules_engine/Rule';
+import {TimeDurations} from '../../../../web/js/util/TimeDurations';
+import {DurationStr} from '../../../../web/js/util/TimeDurations';
 
 export class SplashEngine {
 
@@ -29,6 +29,10 @@ export class SplashEngine {
         this.engine.run();
     }
 
+    public toExternalEngineState() {
+        return this.engine.toExternalEngineState();
+    }
+
 }
 
 
@@ -37,16 +41,7 @@ export interface SplashEventHandlers extends EventHandlers {
     readonly onNetPromoter: () => void;
 }
 
-
-/**
- * Stores a time for each of our event handlers to verify that events
- * do not occur too often and are ordered properly.
- */
-type SplashEventTimes = {
-    [id in keyof SplashEventHandlers]: ISODateTimeString | undefined
-};
-
-export interface UserFacts {
+export interface MutableUserFacts {
 
     /**
      * The time the datastore was created.
@@ -58,7 +53,9 @@ export interface UserFacts {
      */
     version: string;
 
-    eventTimes: SplashEventTimes;
+}
+
+export interface UserFacts extends Readonly<MutableUserFacts> {
 
 }
 

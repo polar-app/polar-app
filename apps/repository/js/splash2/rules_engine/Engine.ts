@@ -22,22 +22,47 @@ export class Engine<F, H extends EventHandlers> {
     private readonly engineState: MutableEngineState<F, H>;
 
     private readonly eventMap: MutableEventMap<H>;
+
     /**
      *
      * @param facts The facts exposed to all rules in the engine.
      * @param rules The rule map we should execute
      * @param eventHandlers The event handlers we should pass to rules.
+     * @param externalEngineState Used for resuming engine state.
      */
     constructor(private facts: F,
                 private readonly rules: RuleMap<F, H>,
-                private readonly eventHandlers: H) {
+                private readonly eventHandlers: H,
+                private readonly externalEngineState?: ExternalEngineState<F, H>) {
 
-        this.engineState = {
-            facts: this.facts,
-            ruleStates: {},
+        const defaultRuleStates = () => {
+
+            if (externalEngineState) {
+                // we have to restore from an external state
+                return externalEngineState.ruleStates;
+            }
+
+            return {};
+
         };
 
-        this.eventMap = EventMaps.create(this.eventHandlers, {});
+        const defaultEventTimes = () => {
+
+            if (externalEngineState) {
+                return externalEngineState.eventTimes;
+            }
+
+            return {};
+
+        };
+
+
+        // prepare the default state.
+        this.engineState = {
+            ruleStates: defaultRuleStates(),
+        };
+
+        this.eventMap = EventMaps.create(this.eventHandlers, defaultEventTimes());
 
     }
 
@@ -53,14 +78,23 @@ export class Engine<F, H extends EventHandlers> {
 
             const state = engineState.ruleStates[ruleName];
 
-            const result = rule.run(engineState.facts, eventMap, state);
+            const result = rule.run(this.facts, eventMap, state);
 
             // now update the fact and state of this object
             engineState.ruleStates[ruleName] = result[1];
 
-            engineState.facts = result[0];
+            this.facts = result[0];
 
         }
+
+    }
+
+    public toExternalEngineState(): ExternalEngineState<F, H> {
+
+        return {
+            ...this.engineState,
+            eventTimes: EventMaps.toEventTimes(this.eventMap)
+        };
 
     }
 
@@ -82,8 +116,6 @@ export type RuleKeys<F, H extends EventHandlers> = keyof RuleMap<F, H>;
 export type RuleOrder<F, H extends EventHandlers> = [RuleKeys<F, H>];
 
 interface MutableEngineState<F, H extends EventHandlers> {
-
-    facts: F;
 
     /**
      * The states of the individual rules.
