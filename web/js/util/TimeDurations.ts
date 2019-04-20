@@ -3,6 +3,7 @@ import {Preconditions} from '../Preconditions';
 
 export class TimeDurations {
 
+    // TODO: it would be nice to specify 1d1m2s too...
     public static toMillis(duration: Duration): DurationMS {
 
         if (typeof duration === 'number') {
@@ -31,30 +32,85 @@ export class TimeDurations {
             return sign * val * 60 * 60 * 1000;
         } else if (duration.endsWith("m")) {
             return sign * val * 60 * 1000;
-        } else if (duration.endsWith("s")) {
-            return sign * val * 1000;
         } else if (duration.endsWith("ms")) {
             return sign * val;
+        } else if (duration.endsWith("s")) {
+            return sign * val * 1000;
         } else {
             throw new Error("Unable to parse duration: " + duration);
         }
 
     }
 
-    // TODO: still need a solution for format()
-    // public static format(duration: Duration) {
-    //
-        // https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
+    public static format(duration: Duration) {
 
-        // const durationMS = this.toMillis(duration);
-        //
-        // const date = new Date();
-        // // date.setSeconds(durationMS / 1000); // specify value for SECONDS here
-        // date.setMilliseconds(durationMS);
-        // // return date.toISOString().substr(11, 8);
-        // return date.toISOString();
-    //
-    // }
+        type TimeComponent = 'd' | 'h' | 'm' | 's' | 'ms';
+
+        interface TimeValue {
+            readonly component: TimeComponent;
+            readonly value: number;
+        }
+
+        const removePrefix = (timeValues: ReadonlyArray<TimeValue>) => {
+
+            let isPrefix = true;
+
+            return timeValues.filter( timeValue => {
+
+                if (! isPrefix) {
+                    return true;
+                }
+
+                if (timeValue.value > 0) {
+                    isPrefix = false;
+                    return true;
+                }
+
+                return false;
+
+            });
+
+        };
+
+        /**
+         * Format the list of times such that zero values are emitted.
+         *
+         * For example a duration of '1d' should just emit as '1d' not
+         * 1d0h0m0s0ms this way the formatting is concise.
+         */
+        const formatConcise = (timeValues: ReadonlyArray<TimeValue>) => {
+
+            return timeValues.filter(timeValue => timeValue.value !== 0)
+                .map(timeValue => timeValue.value + timeValue.component)
+                .join('');
+
+        };
+
+        const durationMS = this.toMillis(duration);
+
+        // create the time since epoch and the hour/minute/seconds/ms can work
+        // directly.
+        const date = new Date(durationMS);
+
+        const days = Math.floor(durationMS / DURATION_1D);
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const seconds = date.getUTCSeconds();
+        const milliseconds = date.getUTCMilliseconds();
+
+        const timeValues: ReadonlyArray<TimeValue> = [
+            {value: days, component: 'd'},
+            {value: hours, component: 'h'},
+            {value: minutes, component: 'm'},
+            {value: seconds, component: 's'},
+            {value: milliseconds, component: 'ms'},
+        ];
+
+        const noPrefixTimeValues = removePrefix(timeValues);
+
+        return formatConcise(noPrefixTimeValues);
+
+    }
 
     /**
      * Compute a random duration based on the given duration.
@@ -127,3 +183,8 @@ export type DurationStr = string;
  * A duration in either a string form or just raw MS.
  */
 export type Duration = DurationStr | DurationMS;
+
+const DURATION_1D: DurationMS = TimeDurations.toMillis('1d');
+const DURATION_1H: DurationMS = TimeDurations.toMillis('1h');
+const DURATION_1M: DurationMS = TimeDurations.toMillis('1m');
+const DURATION_1S: DurationMS = TimeDurations.toMillis('1s');

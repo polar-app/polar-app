@@ -4,7 +4,7 @@ import {PrioritizedComponentManager, PrioritizedComponentRef} from '../../../../
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {DatastoreOverview} from '../../../../web/js/datastore/Datastore';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
-import {SplashLifecycle} from './SplashLifecycle';
+import {SplashLifecycle} from '../splash2/SplashLifecycle';
 
 const log = Logger.create();
 
