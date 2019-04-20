@@ -2,14 +2,10 @@ import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {PrioritizedComponentManager, PrioritizedComponentRef} from '../../../../web/js/ui/prioritized/PrioritizedComponentManager';
 import {WhatsNewRef} from './splashes/whats_new/WhatsNewRef';
-import {SurveyRef} from './splashes/survey/SurveyRef';
 import {PremiumRef} from './splashes/premium/PremiumRef';
-import {ChromeExtensionReviewRef} from './splashes/chrome_extension_review/ChromeExtensionReviewRef';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {DatastoreOverview} from '../../../../web/js/datastore/Datastore';
-import {Provider, Providers} from '../../../../web/js/util/Providers';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
-import {AlternativeToReviewRef} from './splashes/alternativeto_review/AlternativeToReviewRef';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {NPSRef} from './splashes/nps/NPSRef';
 import {CrowdfundingRef} from './splashes/crowdfunding/CrowdfundingRef';
@@ -26,8 +22,8 @@ const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     new NPSRef(),
     // new GithubStarsRef(),
     // new SurveyRef(),
-    new ChromeExtensionReviewRef(),
-    new AlternativeToReviewRef(),
+    // new ChromeExtensionReviewRef(),
+    // new AlternativeToReviewRef(),
 ];
 
 if (DistConfig.ENABLE_PURCHASES) {

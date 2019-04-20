@@ -3,13 +3,13 @@ import {WhatsNewModal} from './WhatsNewModal';
 import {PrioritizedComponentRef} from '../../../../../../web/js/ui/prioritized/PrioritizedComponentManager';
 import {Version} from '../../../../../../web/js/util/Version';
 import {RendererAnalytics} from '../../../../../../web/js/ga/RendererAnalytics';
-import {ConditionalSetting} from '../../../../../../web/js/ui/util/ConditionalSetting';
-import {Providers} from '../../../../../../web/js/util/Providers';
 import {LifecycleToggle} from '../../../../../../web/js/ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../../../../../web/js/ui/util/LifecycleEvents';
-import * as semver from 'semver';
 import {DatastoreOverview} from '../../../../../../web/js/datastore/Datastore';
 import {DatastoreOverviewPolicies} from '../DatastoreOverviewPolicies';
+import {Logger} from '../../../../../../web/js/logger/Logger';
+
+const log = Logger.create();
 
 export class WhatsNewRef implements PrioritizedComponentRef {
 
@@ -42,7 +42,10 @@ export class WhatsNewRef implements PrioritizedComponentRef {
             RendererAnalytics.event({category: 'app', action: 'whats-new-displayed'});
 
             return 1000;
+
         }
+
+        log.debug("Not a new version");
 
         return undefined;
 
