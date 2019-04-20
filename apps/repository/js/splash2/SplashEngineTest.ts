@@ -45,31 +45,11 @@ describe('SplashEngine', function() {
         assert.equal(whatsNewCalled, 0);
         assert.equal(netPromoterCalled, 1);
 
-        // FIXME this is impossible and not worth testing as we are not able to
-        // upgrade the version while we're running.
-
-        facts.version = "1.1.0";
-
-        engine.run();
-
-        assert.equal(whatsNewCalled, 1);
-        assert.equal(netPromoterCalled, 1);
-
-        // FIXME: test 15 minutes too ... after an upgrade where we were never
-        //  called before.
-
         TestingTime.forward('8d');
 
         engine.run();
-        assert.equal(whatsNewCalled, 1);
+        assert.equal(whatsNewCalled, 0);
         assert.equal(netPromoterCalled, 2);
-
-        // FIXME: we need an event emit engine to emit only named events
-        // like 'whats-new' and 'net-promoter-score' which I can tie code to
-        // and display messages.
-
-
-        // "2019-04-20T14:38:55.825Z"
 
 
         // FIXME: tests to perform
@@ -151,6 +131,14 @@ describe('SplashEngine', function() {
 
         assert.equal(whatsNewCalled, 1);
         assert.equal(netPromoterCalled, 1);
+
+        TestingTime.forward('16m');
+
+        engine.run();
+
+        assert.equal(whatsNewCalled, 1);
+        assert.equal(netPromoterCalled, 2);
+
 
     });
 
