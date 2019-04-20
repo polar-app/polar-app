@@ -167,7 +167,6 @@ describe('Engine', function() {
 
     describe('EventHandlers', function() {
 
-
         it('basic', function() {
 
             const myEventHandlers = {
