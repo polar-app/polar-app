@@ -2,10 +2,10 @@ import * as React from 'react';
 import {WhatsNewContent} from './WhatsNewContent';
 import Button from 'reactstrap/lib/Button';
 import ModalFooter from 'reactstrap/lib/ModalFooter';
-import {LargeModal} from '../../../../../../web/js/ui/large_modal/LargeModal';
-import {LargeModalBody} from '../../../../../../web/js/ui/large_modal/LargeModalBody';
+import {LargeModal} from '../../../../../web/js/ui/large_modal/LargeModal';
+import {LargeModalBody} from '../../../../../web/js/ui/large_modal/LargeModalBody';
 import {WhatsNew} from './WhatsNew';
-import {Logger} from '../../../../../../web/js/logger/Logger';
+import {Logger} from '../../../../../web/js/logger/Logger';
 
 const log = Logger.create();
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Logger} from '../../../../../../web/js/logger/Logger';
+import {Logger} from '../../../../../web/js/logger/Logger';
 import {EmbeddedImages} from './EmbeddedImages';
-import {CrowdfundingCampaign} from '../../../../../../web/js/ui/crowdfunding/CrowdfundingCampaign';
+import {CrowdfundingCampaign} from '../../../../../web/js/ui/crowdfunding/CrowdfundingCampaign';
 
 const log = Logger.create();
 

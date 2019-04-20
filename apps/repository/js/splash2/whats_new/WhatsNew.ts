@@ -1,7 +1,7 @@
-import {LifecycleToggle} from '../../../../../../web/js/ui/util/LifecycleToggle';
-import {LifecycleEvents} from '../../../../../../web/js/ui/util/LifecycleEvents';
-import {Version} from '../../../../../../web/js/util/Version';
-import {Logger} from '../../../../../../web/js/logger/Logger';
+import {LifecycleToggle} from '../../../../../web/js/ui/util/LifecycleToggle';
+import {LifecycleEvents} from '../../../../../web/js/ui/util/LifecycleEvents';
+import {Version} from '../../../../../web/js/util/Version';
+import {Logger} from '../../../../../web/js/logger/Logger';
 
 const log = Logger.create();
 
@@ -10,14 +10,14 @@ export class WhatsNew {
     /**
      * Return true if we're blocked by another event.
      */
-    public static isBlocked() {
+    private static isBlocked() {
         return ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
     }
 
     /**
      * Return true if this should be shown under ideal circumstances
      */
-    public static shouldShow(): boolean {
+    private static shouldShow(): boolean {
 
         const version = Version.get();
 

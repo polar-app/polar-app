@@ -1,14 +1,9 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {PrioritizedComponentManager, PrioritizedComponentRef} from '../../../../web/js/ui/prioritized/PrioritizedComponentManager';
-import {WhatsNewRef} from './splashes/whats_new/WhatsNewRef';
-import {PremiumRef} from './splashes/premium/PremiumRef';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {DatastoreOverview} from '../../../../web/js/datastore/Datastore';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
-import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
-import {NPSRef} from './splashes/nps/NPSRef';
-import {CrowdfundingRef} from './splashes/crowdfunding/CrowdfundingRef';
 import {SplashLifecycle} from './SplashLifecycle';
 
 const log = Logger.create();
