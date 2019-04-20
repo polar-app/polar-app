@@ -2,8 +2,6 @@ import {ISODateTimeString} from '../../../../../web/js/metadata/ISODateTimeStrin
 import {assert} from 'chai';
 import {Rule} from './Rule';
 import {RuleFactPair} from './Rule';
-import {EventHandlers} from './Engine';
-import {EventTimes} from './Engine';
 import {RuleMap} from './Engine';
 import {Engine} from './Engine';
 import {RuleOrder} from './Engine';
@@ -13,7 +11,7 @@ describe('Engine', function() {
     it('basic', function() {
 
 
-        interface SplashEventHandlers extends EventHandlers {
+        interface SplashEventHandlers {
             readonly onWhatsNew: () => void;
         }
 
@@ -23,8 +21,6 @@ describe('Engine', function() {
              * The time the datastore was created.
              */
             datastoreCreated: ISODateTimeString;
-
-            eventTimes: EventTimes;
 
             /**
              * The currently running version.
@@ -69,9 +65,6 @@ describe('Engine', function() {
 
             datastoreCreated: "2019-01-20T14:38:55.825Z",
 
-            eventTimes: {
-
-            },
             version: "1.0.0"
 
         };

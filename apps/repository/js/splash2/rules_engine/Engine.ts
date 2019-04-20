@@ -66,34 +66,6 @@ export type RuleKeys<F, H> = keyof RuleMap<F, H>;
  */
 export type RuleOrder<F, H> = [RuleKeys<F, H>];
 
-/**
- * The times the last events were shown.
- */
-export interface EventTimes {
-    readonly whatsNew?: ISODateTimeString;
-}
-
-export interface Event<T> {
-    lastExecuted?: ISODateTimeString;
-    handler: (input?: T) => void;
-}
-
-/**
- * Stores just the event event handlers code by name with no actual
- * metadata and we can only map to a void function with at most one
- * argument.
- */
-export interface EventHandlers {
-    [name: string]: <T>(input?: T) => void;
-}
-
-/**
- * The raw mapped types with metadata about their execution time.
- */
-export type EventStates<H> = {
-    [name in keyof H]: (<T>(input?: T) => void) | undefined;
-};
-
 interface MutableEngineState<F, H> {
 
     facts: F;
