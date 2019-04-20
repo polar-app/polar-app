@@ -13,8 +13,11 @@ import {AlternativeToReviewRef} from './splashes/alternativeto_review/Alternativ
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {NPSRef} from './splashes/nps/NPSRef';
 import {CrowdfundingRef} from './splashes/crowdfunding/CrowdfundingRef';
+import {SplashLifecycle} from './SplashLifecycle';
 
 const log = Logger.create();
+
+const MIN_DELAY = TimeDurations.toMillis('15m');
 
 const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
@@ -40,7 +43,8 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
             lastUpdated: 0
         };
 
-        this.doUpdate();
+        this.doUpdate()
+            .catch(err => log.error("Unable to update: ", err));
 
     }
 
@@ -59,48 +63,47 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
 
     }
 
-    private doUpdate() {
+    private async doUpdate() {
 
-        this.props.persistenceLayerManager.addEventListener(event => {
+        try {
 
-            if (event.state === 'changed') {
+            const persistenceLayer = await this.props.persistenceLayerManager.getAsync();
 
-                const persistenceLayer = this.props.persistenceLayerManager.get();
+            const datastore = persistenceLayer.datastore;
 
-                const datastore = persistenceLayer.datastore;
+            const datastoreOverview = await datastore.overview();
 
-                datastore.overview()
-                    .then(datastoreOverview => {
+            if (datastoreOverview) {
 
-                        if (datastoreOverview) {
+                this.setState({
+                    datastoreOverview,
+                    lastUpdated: Date.now()
+                });
 
-                            this.setState({
-                                datastoreOverview,
-                                lastUpdated: Date.now()
-                            });
-
-                            log.info("Datastore overview updated");
-
-                        }
-
-                        this.scheduleNextUpdate();
-
-                    })
-                    .catch(err => {
-                        log.error("Unable to get datastore overview: ", err);
-                        this.scheduleNextUpdate();
-                    });
+                log.info("Datastore overview updated");
 
             }
 
-        });
+        } finally {
+            this.scheduleNextUpdate();
+        }
 
     }
 
     private scheduleNextUpdate() {
 
-        // now do another update
-        setTimeout(() => this.doUpdate(), TimeDurations.toMillis('15m'));
+        const delay = SplashLifecycle.computeDelay();
+
+        const effectiveDelay = Math.max(delay || MIN_DELAY, MIN_DELAY);
+
+        log.debug("Scheduling next updated: ", {delay, effectiveDelay});
+
+        setTimeout(() => {
+
+            this.doUpdate()
+                .catch(err => log.error("Unable to do update: ", err));
+
+        }, effectiveDelay);
 
     }
 

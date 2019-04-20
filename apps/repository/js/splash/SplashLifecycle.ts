@@ -1,4 +1,8 @@
 import {LocalPrefs} from '../../../../web/js/util/LocalPrefs';
+import {Logger} from '../../../../web/js/logger/Logger';
+import {DurationMS} from '../../../../web/js/util/TimeDurations';
+
+const log = Logger.create();
 
 export class SplashLifecycle {
 
@@ -8,17 +12,28 @@ export class SplashLifecycle {
     public static canShow(): boolean {
 
         if (! navigator.onLine) {
+
+            log.debug("Not showing due to not being online");
             // almost all the splashes (possibly all of them) require the user
             // to be online.
             return false;
         }
 
-        return ! LocalPrefs.isDelayed(SplashLifecycle.KEY, SplashLifecycle.DELAY);
+        if (LocalPrefs.isDelayed(SplashLifecycle.KEY, SplashLifecycle.DELAY)) {
+            log.debug("Splash is delayed due to " + SplashLifecycle.KEY);
+            return false;
+        }
+
+        return true;
 
     }
 
     public static markShown() {
         LocalPrefs.markDelayed(this.KEY, SplashLifecycle.DELAY);
+    }
+
+    public static computeDelay(): DurationMS | undefined {
+        return LocalPrefs.computeDelay(this.KEY);
     }
 
 }

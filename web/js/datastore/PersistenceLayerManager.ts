@@ -8,6 +8,7 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
 import {DatastoreInitOpts} from './Datastore';
+import {Latch} from '../util/Latch';
 
 const log = Logger.create();
 
@@ -23,6 +24,8 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
      * The current persistence type in place.
      */
     private current?: PersistenceLayerType;
+
+    private initialized = new Latch<boolean>();
 
     constructor(private readonly opts?: DatastoreInitOpts) {
 
@@ -49,6 +52,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         }
 
         await this.change(type);
+        this.initialized.resolve(true);
 
         // now we have to listen and auto-change if we've switched in another
         this.listenForPersistenceLayerChange();
@@ -57,6 +61,16 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
     public get(): ListenablePersistenceLayer {
         return this.persistenceLayer!;
+    }
+
+    /**
+     * Get but waits for the first persistence layer to be initialized and after
+     * that returns just the current one.
+     */
+    public async getAsync(): Promise<ListenablePersistenceLayer> {
+        await this.initialized.get();
+        return this.get();
+
     }
 
     public currentType(): PersistenceLayerType | undefined {

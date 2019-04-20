@@ -41,6 +41,21 @@ export class TimeDurations {
 
     }
 
+    // TODO: still need a solution for format()
+    // public static format(duration: Duration) {
+    //
+        // https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
+
+        // const durationMS = this.toMillis(duration);
+        //
+        // const date = new Date();
+        // // date.setSeconds(durationMS / 1000); // specify value for SECONDS here
+        // date.setMilliseconds(durationMS);
+        // // return date.toISOString().substr(11, 8);
+        // return date.toISOString();
+    //
+    // }
+
     /**
      * Compute a random duration based on the given duration.
      * @param duration

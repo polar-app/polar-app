@@ -6,7 +6,7 @@ import {ISODateTimeStrings} from '../../../../../../web/js/metadata/ISODateTimeS
 import {TimeDurations} from '../../../../../../web/js/util/TimeDurations';
 import {LocalStoragePrefs} from '../../../../../../web/js/util/prefs/Prefs';
 
-const PRIORITY = 75;
+const PRIORITY = 85;
 
 export const PREF_KEY = 'net-promoter-score';
 
