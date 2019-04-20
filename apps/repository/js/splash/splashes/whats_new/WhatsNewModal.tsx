@@ -1,10 +1,13 @@
 import * as React from 'react';
 import {WhatsNewContent} from './WhatsNewContent';
-import Modal from 'reactstrap/lib/Modal';
-import ModalHeader from 'reactstrap/lib/ModalHeader';
-import ModalBody from 'reactstrap/lib/ModalBody';
 import Button from 'reactstrap/lib/Button';
 import ModalFooter from 'reactstrap/lib/ModalFooter';
+import {LargeModal} from '../../../../../../web/js/ui/large_modal/LargeModal';
+import {LargeModalBody} from '../../../../../../web/js/ui/large_modal/LargeModalBody';
+import {WhatsNew} from './WhatsNew';
+import {Logger} from '../../../../../../web/js/logger/Logger';
+
+const log = Logger.create();
 
 export class WhatsNewModal extends React.Component<IProps, IState> {
 
@@ -12,8 +15,13 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
         super(props, context);
 
         this.state = {
-            open: true
+            open: WhatsNew.doShow()
         };
+
+        if (this.state.open) {
+            log.debug("Showing what's new modal.");
+            WhatsNew.markShown();
+        }
 
     }
 
@@ -23,21 +31,20 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
             <div>
 
-                <Modal isOpen={this.state.open}
-                       size="lg"
-                       fade={false}
-                       style={{overflowY: 'initial', minWidth: '80%'}}>
-                    <ModalHeader>What's New in Polar</ModalHeader>
-                    <ModalBody style={{overflowY: 'auto', maxHeight: 'calc(100vh - 200px)'}}>
+                <LargeModal isOpen={this.state.open}>
+
+                    <LargeModalBody>
 
                         <WhatsNewContent/>
 
-                    </ModalBody>
+                    </LargeModalBody>
+
                     <ModalFooter>
                         <Button color="primary" onClick={() => this.setState({open: false})}>Close</Button>
                     </ModalFooter>
 
-                </Modal>
+                </LargeModal>
+
 
             </div>
 

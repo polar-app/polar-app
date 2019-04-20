@@ -17,18 +17,18 @@ const MIN_DELAY = TimeDurations.toMillis('15m');
 
 const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
-    new WhatsNewRef(),
-    new CrowdfundingRef(),
-    new NPSRef(),
+    // new WhatsNewRef(),
+    // new CrowdfundingRef(),
+    // new NPSRef(),
     // new GithubStarsRef(),
     // new SurveyRef(),
     // new ChromeExtensionReviewRef(),
     // new AlternativeToReviewRef(),
 ];
 
-if (DistConfig.ENABLE_PURCHASES) {
-    prioritizedComponentRefs.push(new PremiumRef());
-}
+// if (DistConfig.ENABLE_PURCHASES) {
+//     prioritizedComponentRefs.push(new PremiumRef());
+// }
 
 export class PrioritizedSplashes extends React.Component<IProps, IState> {
 
