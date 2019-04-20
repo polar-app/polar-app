@@ -16,7 +16,16 @@ describe('Engine', function() {
         }
 
 
-        interface MutableUserFacts {
+        /**
+         * Stores a time for each of our event handlers to verify that events
+         * do not occur too often and are ordered properly.
+         */
+        type SplashEventTimes = {
+            [id in keyof SplashEventHandlers]: ISODateTimeString | undefined
+        };
+
+        interface UserFacts {
+
             /**
              * The time the datastore was created.
              */
@@ -27,25 +36,21 @@ describe('Engine', function() {
              */
             version: string;
 
-        }
-
-        interface UserFacts extends Readonly<MutableUserFacts> {
+            eventTimes: SplashEventTimes;
 
         }
 
         interface WhatsNewState {
 
-            readonly version: string;
+            version: string;
 
         }
 
         class WhatsNewRule implements Rule<UserFacts, SplashEventHandlers, WhatsNewState> {
 
-            public readonly id = 'whats-new';
-
-            public run(facts: UserFacts,
+            public run(facts: Readonly<UserFacts>,
                        eventHandlers: SplashEventHandlers,
-                       state?: WhatsNewState): RuleFactPair<UserFacts, WhatsNewState> {
+                       state?: Readonly<WhatsNewState>): RuleFactPair<UserFacts, WhatsNewState> {
 
                 const updated = state && state.version !== facts.version;
 
@@ -61,11 +66,46 @@ describe('Engine', function() {
 
         }
 
-        const facts: MutableUserFacts = {
+        interface NetPromoterState {
+
+        }
+
+        class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromoterState> {
+
+            public run(facts: Readonly<UserFacts>,
+                       eventHandlers: SplashEventHandlers,
+                       state?: Readonly<NetPromoterState>): RuleFactPair<UserFacts, NetPromoterState> {
+
+                if (! state) {
+                    state = {};
+                }
+
+                // FIXME: go over all event times, find the min value, and make sure
+                // we don't have one called since then.
+
+                // FIXME: make it so that when we call fire an event the timestamp
+                // is always updated.
+
+                // FIXME: have a new structure that takes the event Handlers,
+                // returns a tuple of NEW event handlers with a wrapper function
+                // and an index of their call times called EventHistory and
+                // EventHandlers
+
+                return [facts, state];
+
+            }
+
+        }
+
+        const facts: UserFacts = {
 
             datastoreCreated: "2019-01-20T14:38:55.825Z",
 
-            version: "1.0.0"
+            version: "1.0.0",
+
+            eventTimes: {
+                onWhatsNew: undefined
+            }
 
         };
 

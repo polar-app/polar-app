@@ -4,14 +4,12 @@
  */
 export interface Rule<F, H, S> {
 
-    readonly id: RuleID;
-
     /**
      * Execute the rule and return new a new facts object. If the rule doesn't
      * wish to perform any actions just return the facts without mutation.
      *
      */
-    run(facts: F, eventHandlers: H, state?: S): RuleFactPair<F, S>;
+    run(facts: Readonly<F>, eventHandlers: H, state?: Readonly<S>): RuleFactPair<F, S>;
 
 }
 

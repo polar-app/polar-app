@@ -1,8 +1,10 @@
-import {ISODateTimeString} from '../../../../../web/js/metadata/ISODateTimeStrings';
 import {Rule} from './Rule';
 
 /**
- * An engine that should run the facts.
+ * An engine that should run with facts , against rules, which can emit events.
+ *
+ * The engine can be event based or poll based and is designed to be very
+ * efficient to run just from a few variables.
  */
 export class Engine<F, H> {
 
