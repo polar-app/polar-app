@@ -51,17 +51,6 @@ describe('SplashEngine', function() {
         assert.equal(whatsNewCalled, 0);
         assert.equal(netPromoterCalled, 2);
 
-
-        // FIXME: tests to perform
-        //
-        //  - new user, no initial "whats new" splash, then 7 days later ,
-        //    first NPS score prompted, then another 7 days, then new NPS score,
-        //    requested.
-        //
-        //  - new user, 3 days, then new version, then 4 more days, then 'what's new'
-
-        // - existing usser
-
     });
 
     it('version upgrade with persisted external state', function() {
