@@ -41,15 +41,17 @@ export class WhatsNew {
 
         log.debug("doShow history: ", {isBlocked, shouldShow});
 
-        return ! this.isBlocked() && this.shouldShow();
+        return ! isBlocked && shouldShow;
     }
 
     public static markShown() {
+
         const version = Version.get();
 
         log.debug("Marking version shown: " + version);
 
         LifecycleToggle.set(LifecycleEvents.WHATS_NEW_VERSION, version);
+
     }
 
 }
