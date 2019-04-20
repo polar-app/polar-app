@@ -95,9 +95,11 @@ export interface EventHandlers {
     readonly [name: string]: EventHandler;
 }
 
-export type EventTimes<E extends EventHandlers> = {
-    readonly [name in keyof E]: ISODateTimeString | undefined;
+export type MutableEventTimes<E extends EventHandlers> = {
+    [name in keyof E]: ISODateTimeString | undefined;
 };
+
+export type EventTimes<E extends EventHandlers> = Readonly<MutableEventTimes<E>>;
 
 export interface MutableEvent {
     handler: EventHandler;
@@ -108,16 +110,18 @@ export interface Event extends Readonly<MutableEvent> {
 
 }
 
-export type EventMap<E extends EventHandlers> = {
-    readonly [name in keyof E]: Event;
+export type MutableEventMap<E extends EventHandlers> = {
+    [name in keyof E]: Event;
 };
+
+export type EventMap<E extends EventHandlers> = Readonly<MutableEventMap<E>>;
 
 export class EventMaps {
 
     public static create<E extends EventHandlers>(handlers: E,
                                                   eventTimes: Partial<EventTimes<E>>): EventMap<E> {
 
-        const result: any = {};
+        const result: MutableEventMap<E> = <any> {};
 
         for (const handlerName of Object.keys(handlers)) {
 
@@ -138,6 +142,20 @@ export class EventMaps {
         }
 
         return result;
+
+    }
+
+    public static toEventTimes<E extends EventHandlers>(eventMap: EventMap<E> ): EventTimes<E> {
+
+        const result: MutableEventTimes<E> = <any> {};
+
+        for (const eventName of Object.keys(eventMap)) {
+            const event = eventMap[eventName];
+            result[eventName] = event.lastExecuted;
+        }
+
+        return result;
+
     }
 
 }

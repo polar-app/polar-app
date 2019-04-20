@@ -9,6 +9,7 @@ import {NULL_FUNCTION} from '../../../../../web/js/util/Functions';
 import {EventMaps} from './Engine';
 import {isPresent} from '../../../../../web/js/Preconditions';
 import {TestingTime} from '../../../../../web/js/test/TestingTime';
+import {assertJSON} from '../../../../../web/js/test/Assertions';
 
 describe('Engine', function() {
 
@@ -200,8 +201,11 @@ describe('Engine', function() {
             assert.isTrue(myEventMap.onFoo.lastExecuted !== undefined);
             assert.equal(myEventMap.onFoo.lastExecuted, "2012-03-02T11:38:49.321Z");
 
-        });
+            assertJSON(EventMaps.toEventTimes(myEventMap), {
+                "onFoo": "2012-03-02T11:38:49.321Z"
+            });
 
+        });
 
     });
 
