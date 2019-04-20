@@ -40,6 +40,7 @@ import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
 import {Premium} from '../../../../apps/repository/js/splash/splashes/premium/Premium';
 import {WhatsNewModal} from '../../../../apps/repository/js/splash2/whats_new/WhatsNewModal';
+import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
 
 const log = Logger.create();
 
@@ -178,7 +179,7 @@ export class RepositoryApp {
 
                 {/*<PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>*/}
 
-                <WhatsNewModal/>
+                <Splashes persistenceLayerManager={this.persistenceLayerManager}/>
 
                 <SyncBar progress={syncBarProgress}/>
 

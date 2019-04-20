@@ -8,6 +8,8 @@ import {Version} from '../../../../web/js/util/Version';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
+import {NPSModal} from './nps/NPSModal';
+import {WhatsNewModal} from './whats_new/WhatsNewModal';
 
 const log = Logger.create();
 
@@ -22,8 +24,6 @@ const log = Logger.create();
  *
  *    - if it has, display the what's new and have a timeout before we display
  *      the next message.
- *
- *    -
  *
  * - determine which additional splash to display:
  *
@@ -44,8 +44,11 @@ export class Splashes extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.onWhatsNew = this.onWhatsNew.bind(this);
+        this.onNetPromoter = this.onNetPromoter.bind(this);
+
         this.state = {
-            lastUpdated: 0
+            splash: 'none'
         };
 
         this.init()
@@ -55,8 +58,29 @@ export class Splashes extends React.Component<IProps, IState> {
 
     public render() {
 
-        return <div/>;
+        // FIXME: add some callbacks on state to prevent double dialog open...
 
+        switch (this.state.splash) {
+
+            case 'none':
+                return <div/>;
+
+            case 'net-promoter':
+                return <NPSModal/>;
+
+            case 'whats-new':
+                return <WhatsNewModal/>;
+
+        }
+
+    }
+
+    private onWhatsNew() {
+        this.setState({...this.state, splash: 'whats-new'});
+    }
+
+    private onNetPromoter() {
+        this.setState({...this.state, splash: 'net-promoter'});
     }
 
     private async init() {
@@ -66,8 +90,8 @@ export class Splashes extends React.Component<IProps, IState> {
         if (userFacts) {
 
             const splashEngine = new DefaultSplashEngine(userFacts, {
-                onWhatsNew: NULL_FUNCTION,
-                onNetPromoter: NULL_FUNCTION
+                onWhatsNew: () => this.onWhatsNew(),
+                onNetPromoter: () => this.onNetPromoter()
             });
 
             this.doUpdate(splashEngine);
@@ -133,7 +157,8 @@ interface IProps {
 }
 
 interface IState {
-
+    readonly splash: SplashID;
 }
 
+type SplashID = 'none' | 'net-promoter' | 'whats-new';
 
