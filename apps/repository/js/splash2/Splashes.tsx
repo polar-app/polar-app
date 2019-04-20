@@ -1,7 +1,13 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {SplashLifecycle} from './SplashLifecycle';
+import {UserFacts} from './SplashEngine';
+import {SplashEngine} from './SplashEngine';
+import {DefaultSplashEngine} from './SplashEngine';
+import {Version} from '../../../../web/js/util/Version';
+import {TimeDurations} from '../../../../web/js/util/TimeDurations';
+import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
+import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -42,8 +48,8 @@ export class Splashes extends React.Component<IProps, IState> {
             lastUpdated: 0
         };
 
-        this.doUpdate()
-            .catch(err => log.error("Unable to update: ", err));
+        this.init()
+            .catch(err => log.error("Unable to init: ", err));
 
     }
 
@@ -53,47 +59,70 @@ export class Splashes extends React.Component<IProps, IState> {
 
     }
 
-    private async doUpdate() {
+    private async init() {
 
-        try {
+        const userFacts = await this.computeUserFacts();
 
-            const persistenceLayer = await this.props.persistenceLayerManager.getAsync();
+        if (userFacts) {
 
-            const datastore = persistenceLayer.datastore;
+            const splashEngine = new DefaultSplashEngine(userFacts, {
+                onWhatsNew: NULL_FUNCTION,
+                onNetPromoter: NULL_FUNCTION
+            });
 
-            const datastoreOverview = await datastore.overview();
+            this.doUpdate(splashEngine);
 
-            if (datastoreOverview) {
-
-                const userState = {
-                    datastoreCreated: datastoreOverview.created
-                };
-
-            }
-
-        } finally {
-            this.scheduleNextUpdate();
+        } else {
+            log.warn("Unable to run splash engine due to no user facts");
+            RendererAnalytics.event({category: 'splash-subsystem', action: 'warn-no-user-facts'});
         }
 
     }
 
-    private handleFirstUpdate() {
+    private doUpdate(splashEngine: SplashEngine) {
+
+        try {
+
+            splashEngine.run();
+
+        } finally {
+            this.scheduleNextUpdate(splashEngine);
+        }
 
     }
 
-    private scheduleNextUpdate() {
-        //
-        // const delay = SplashLifecycle.computeDelay();
-        //
-        //
-        // log.debug("Scheduling next updated: ", {delay, effectiveDelay});
-        //
-        // setTimeout(() => {
-        //
-        //     this.doUpdate()
-        //         .catch(err => log.error("Unable to do update: ", err));
-        //
-        // }, effectiveDelay);
+    private async computeUserFacts(): Promise<UserFacts | undefined> {
+
+        const persistenceLayer = await this.props.persistenceLayerManager.getAsync();
+
+        const datastore = persistenceLayer.datastore;
+
+        const datastoreOverview = await datastore.overview();
+
+        if (datastoreOverview) {
+
+            const userFacts: UserFacts = {
+                datastoreCreated: datastoreOverview.created!,
+                version: Version.get()
+            };
+
+            return userFacts;
+
+        }
+
+        return undefined;
+
+    }
+
+    private scheduleNextUpdate(splashEngine: SplashEngine) {
+
+        const delay = TimeDurations.toMillis('5m');
+
+        setTimeout(() => {
+
+            this.doUpdate(splashEngine);
+
+        }, delay);
 
     }
 
