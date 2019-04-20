@@ -11,6 +11,7 @@ import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {DurationStr} from '../../../../web/js/util/TimeDurations';
 import {ExternalEngineState} from './rules_engine/Engine';
 
+
 export class SplashEngine {
 
     private engine: Engine<UserFacts, SplashEventHandlers>;
@@ -38,6 +39,49 @@ export class SplashEngine {
 
 }
 
+/**
+ * Splash engine that automatically persists and resumes from local storage.
+ */
+export class DefaultSplashEngine extends SplashEngine {
+
+    constructor(facts: UserFacts,
+                eventHandlers: SplashEventHandlers) {
+
+        super(facts, eventHandlers, LocalStorageExternalState.get());
+
+    }
+
+    public run() {
+
+        super.run();
+
+        const externalState = this.toExternalEngineState();
+        LocalStorageExternalState.set(externalState);
+
+    }
+
+}
+
+class LocalStorageExternalState {
+
+    private static KEY = 'splash-engine-state';
+
+    public static get(): ExternalEngineState<UserFacts, SplashEventHandlers> | undefined {
+        const value = localStorage.getItem(this.KEY);
+
+        if (value) {
+            return JSON.parse(value);
+        } else {
+            return undefined;
+        }
+
+    }
+
+    public static set(state: ExternalEngineState<UserFacts, SplashEventHandlers>) {
+        localStorage.setItem(this.KEY, JSON.stringify(state));
+    }
+
+}
 
 export interface SplashEventHandlers extends EventHandlers {
     readonly onWhatsNew: () => void;
