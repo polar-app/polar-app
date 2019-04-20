@@ -2,23 +2,19 @@ import {ISODateTimeString} from '../../../../../web/js/metadata/ISODateTimeStrin
 import {assert} from 'chai';
 import {Rule} from './Rule';
 import {RuleFactPair} from './Rule';
+import {EventHandlers} from './Engine';
+import {EventTimes} from './Engine';
+import {EventStates} from './Engine';
 
 describe('Engine', function() {
 
     it('basic', function() {
 
-        interface WhatsNewState {
 
-            readonly version: string;
-
+        interface SplashEventHandlers extends EventHandlers {
+            readonly onWhatsNew: () => void;
         }
 
-        /**
-         * The times the last events were shown.
-         */
-        interface EventTimes {
-            readonly whatsNew?: ISODateTimeString;
-        }
 
         interface UserFacts {
 
@@ -36,45 +32,10 @@ describe('Engine', function() {
 
         }
 
-        interface Event<T> {
-            lastExecuted?: ISODateTimeString;
-            handler: (input?: T) => void;
-        }
+        interface WhatsNewState {
 
-        /**
-         * Stores just the event event handlers code by name with no actual
-         * metadata and we can only map to a void function with at most one
-         * argument.
-         */
-        interface EventHandlers {
-            [name: string]: <T>(input?: T) => void;
-        }
+            readonly version: string;
 
-        /**
-         * The raw mapped types with metadata about their execution time.
-         */
-        type EventStates<H> = {
-            [name in keyof H]: (<T>(input?: T) => void) | undefined;
-        };
-
-        /**
-         * The engine state between run which between facts F and handlers H
-         */
-        interface EngineState<F, H> {
-
-            readonly facts: F;
-
-            /**
-             * The states of the individual rules.
-             */
-            readonly states: {[id: string]: any};
-
-            readonly events: EventStates<H>;
-
-        }
-
-        interface SplashEventHandlers extends EventHandlers {
-            readonly onWhatsNew: () => void;
         }
 
         class WhatsNewRule implements Rule<UserFacts, SplashEventHandlers, WhatsNewState> {
@@ -128,8 +89,10 @@ describe('Engine', function() {
         };
 
         // FIXME: now what is the best way to emit the events...
+        //
         //   - have a strictly typed eventEmitter passed in to the rules
         //     engine but should we expose ALL events to each rule...
+        //
         //   - probably but only if we keep ttrack of WHEN events were emitted
         //     and we can persist the times they were emitted independently
         //     of the handlers
