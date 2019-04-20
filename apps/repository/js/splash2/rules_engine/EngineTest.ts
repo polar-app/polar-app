@@ -4,7 +4,9 @@ import {Rule} from './Rule';
 import {RuleFactPair} from './Rule';
 import {EventHandlers} from './Engine';
 import {EventTimes} from './Engine';
-import {EventStates} from './Engine';
+import {RuleMap} from './Engine';
+import {Engine} from './Engine';
+import {RuleOrder} from './Engine';
 
 describe('Engine', function() {
 
@@ -16,19 +18,22 @@ describe('Engine', function() {
         }
 
 
-        interface UserFacts {
-
+        interface MutableUserFacts {
             /**
              * The time the datastore was created.
              */
-            readonly datastoreCreated: ISODateTimeString;
+            datastoreCreated: ISODateTimeString;
 
-            readonly eventTimes: EventTimes;
+            eventTimes: EventTimes;
 
             /**
              * The currently running version.
              */
-            readonly version: string;
+            version: string;
+
+        }
+
+        interface UserFacts extends Readonly<MutableUserFacts> {
 
         }
 
@@ -60,14 +65,7 @@ describe('Engine', function() {
 
         }
 
-
-        const rules: ReadonlyArray<Rule<UserFacts, SplashEventHandlers, any>> = [
-            new WhatsNewRule()
-        ];
-
-        const states: {[id: string]: any} = {};
-
-        let facts: UserFacts = {
+        const facts: MutableUserFacts = {
 
             datastoreCreated: "2019-01-20T14:38:55.825Z",
 
@@ -80,34 +78,32 @@ describe('Engine', function() {
 
         let whatsNewCalled: boolean = false;
 
+        const rules: RuleMap<UserFacts, SplashEventHandlers> = {
+            whatsNew: new WhatsNewRule()
+        };
+
+        const order: RuleOrder<UserFacts, SplashEventHandlers> = [
+            'whatsNew'
+        ];
+
         const eventHandlers: SplashEventHandlers = {
             onWhatsNew: () => whatsNewCalled = true
         };
 
-        const eventStates: EventStates<SplashEventHandlers> = {
-            onWhatsNew: undefined
-        };
+        const engine: Engine<UserFacts, SplashEventHandlers>
+            = new Engine(facts, rules, order, eventHandlers);
 
-        // FIXME: now what is the best way to emit the events...
-        //
-        //   - have a strictly typed eventEmitter passed in to the rules
-        //     engine but should we expose ALL events to each rule...
-        //
-        //   - probably but only if we keep ttrack of WHEN events were emitted
-        //     and we can persist the times they were emitted independently
-        //     of the handlers
+        engine.run();
 
-        for (const rule of rules) {
+        assert.equal(whatsNewCalled, false);
 
-            const state = states[rule.id];
+        engine.run();
 
-            const result = rule.run(facts, state);
+        assert.equal(whatsNewCalled, false);
 
-            // now update the fact and state of this object
-            states[rule.id] = result[1];
-            facts = result[0];
+        facts.version = "1.1.0";
 
-        }
+        engine.run();
 
         assert.equal(whatsNewCalled, true);
 

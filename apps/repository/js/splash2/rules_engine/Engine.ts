@@ -6,31 +6,48 @@ import {Rule} from './Rule';
  */
 export class Engine<F, H> {
 
+    private readonly engineState: MutableEngineState<F, H> = {
+        facts: this.facts,
+        ruleStates: {},
+    };
 
+    /**
+     *
+     * @param facts The facts exposed to all rules in the engine.
+     * @param rules The rule map we should execute
+     * @param order The order that the rules should be executed.
+     * @param eventHandlers The event handlers we should pass to rules.
+     */
     constructor(private facts: F,
-                private rules: ReadonlyArray<Rule<F, H, any>>) {
+                private readonly rules: RuleMap<F, H>,
+                private readonly order: RuleOrder<F, H>,
+                private readonly eventHandlers: H) {
+        console.log("FIXME1: here");
 
     }
 
     public run() {
 
-        // FIXME: we need a way to get the engineState from localStorage on it
 
-        const engineState: MutableEngineState<F, H> = {
-            facts: this.facts,
-            ruleStates: {},
-        };
 
-        for (const rule of this.rules) {
+        console.log("FIXME0: here");
 
-            const state = engineState.ruleStates[rule.id];
+        // const {engineState, rules} = this;
 
-            const result = rule.run(engineState.facts, state);
+        console.log("FIXME: here");
+
+        for (const ruleName of this.order) {
+
+            const rule = this.rules[ruleName];
+
+            const state = this.engineState.ruleStates[ruleName];
+
+            const result = rule.run(this.engineState.facts, this.eventHandlers, state);
 
             // now update the fact and state of this object
-            engineState.ruleStates[rule.id] = result[1];
+            this.engineState.ruleStates[ruleName] = result[1];
 
-            engineState.facts = result[0];
+            this.engineState.facts = result[0];
 
         }
 
@@ -45,7 +62,14 @@ export class RuleMap<F, H> {
 
 }
 
-export type RuleOrder<F, H> = [keyof RuleMap<F, H>];
+export type RuleKeys<F, H> = keyof RuleMap<F, H>;
+
+/**
+ * Provide the order of the rules.  This is a bit verbose but Javascript object
+ * keys order isn't defined reliably and I want to make sure we never have bugs
+ * here.
+ */
+export type RuleOrder<F, H> = [RuleKeys<F, H>];
 
 /**
  * The times the last events were shown.
@@ -75,7 +99,6 @@ export type EventStates<H> = {
     [name in keyof H]: (<T>(input?: T) => void) | undefined;
 };
 
-
 interface MutableEngineState<F, H> {
 
     facts: F;
@@ -94,19 +117,3 @@ export interface EngineState<F, H> extends Readonly<MutableEngineState<F, H>> {
 
 
 }
-
-class Foo {
-    public readonly foo: string = "foo";
-    public readonly bar: string = "bar";
-}
-
-type Bar = {
-    [name in keyof Foo]: string;
-};
-
-const bar: Bar = {
-    foo: "foo",
-    bar: "bar"
-};
-
-
