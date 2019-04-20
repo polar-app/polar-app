@@ -99,7 +99,23 @@ describe('Engine', function() {
                     state = {};
                 }
 
-                // FIXME: datastore should be created for at least 7 days.
+                const hasExistingAgedDatastore = () => {
+
+                    // datastore should be created for at least 7 days.
+
+                    if (facts.datastoreCreated) {
+
+                        const since = ISODateTimeStrings.parse(facts.datastoreCreated);
+
+                        if (TimeDurations.hasElapsed(since, '1w')) {
+                            return true;
+                        }
+
+                    }
+
+                    return false;
+
+                };
 
                 const hasMinimumTimeSince = (epoch: ISODateTimeString | undefined,
                                              duration: DurationStr,
@@ -132,6 +148,10 @@ describe('Engine', function() {
 
                 const canShow = () => {
 
+                    if (! hasExistingAgedDatastore()) {
+                        return false;
+                    }
+
                     if (! hasMinimumTimeSinceLastEvent()) {
                         return false;
                     }
@@ -156,7 +176,7 @@ describe('Engine', function() {
 
         const facts: UserFacts = {
 
-            datastoreCreated: "2019-01-20T14:38:55.825Z",
+            datastoreCreated: "2012-02-02T11:38:49.321Z",
 
             version: "1.0.0",
 
@@ -187,19 +207,19 @@ describe('Engine', function() {
         engine.run();
 
         assert.equal(whatsNewCalled, 0);
-        assert.equal(netPromoterCalled, 0);
+        assert.equal(netPromoterCalled, 1);
 
         engine.run();
 
         assert.equal(whatsNewCalled, 0);
-        assert.equal(netPromoterCalled, 0);
+        assert.equal(netPromoterCalled, 1);
 
         facts.version = "1.1.0";
 
         engine.run();
 
         assert.equal(whatsNewCalled, 1);
-        assert.equal(netPromoterCalled, 0);
+        assert.equal(netPromoterCalled, 1);
 
         // FIXME: test 15 minutes too ... after an upgrade where we were never
         //  called before.
@@ -208,7 +228,7 @@ describe('Engine', function() {
 
         engine.run();
         assert.equal(whatsNewCalled, 1);
-        assert.equal(netPromoterCalled, 1);
+        assert.equal(netPromoterCalled, 2);
 
         // FIXME: we need an event emit engine to emit only named events
         // like 'whats-new' and 'net-promoter-score' which I can tie code to
@@ -217,6 +237,16 @@ describe('Engine', function() {
 
         // "2019-04-20T14:38:55.825Z"
 
+
+        // FIXME: tests to perform
+        //
+        //  - new user, no initial "whats new" splash, then 7 days later ,
+        //    first NPS score prompted, then another 7 days, then new NPS score,
+        //    requested.
+        //
+        //  - new user, 3 days, then new version, then 4 more days, then 'what's new'
+
+        // - existing usser
 
     });
 
@@ -260,6 +290,7 @@ describe('Engine', function() {
             assertJSON(EventMaps.toEventTimes(myEventMap), {
                 "onFoo": "2012-03-02T11:38:49.321Z"
             });
+
 
         });
 

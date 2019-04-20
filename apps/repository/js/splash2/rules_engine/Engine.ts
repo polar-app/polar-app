@@ -20,6 +20,8 @@ export interface EventHandlers {
 export class Engine<F, H extends EventHandlers> {
 
     private readonly engineState: MutableEngineState<F, H>;
+
+    private readonly eventMap: MutableEventMap<H>;
     /**
      *
      * @param facts The facts exposed to all rules in the engine.
@@ -35,13 +37,13 @@ export class Engine<F, H extends EventHandlers> {
             ruleStates: {},
         };
 
+        this.eventMap = EventMaps.create(this.eventHandlers, {});
+
     }
 
     public run() {
 
-        const {engineState, rules} = this;
-
-        const eventMap = EventMaps.create(this.eventHandlers, {});
+        const {engineState, rules, eventMap} = this;
 
         const ruleNames = Object.getOwnPropertyNames(this.rules);
 
