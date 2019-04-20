@@ -1,4 +1,6 @@
 import {Rule} from './Rule';
+import {ISODateTimeString} from '../../../../../web/js/metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
 
 /**
  * An engine that should run with facts , against rules, which can emit events.
@@ -84,5 +86,58 @@ interface MutableEngineState<F, H> {
  */
 export interface EngineState<F, H> extends Readonly<MutableEngineState<F, H>> {
 
+
+}
+
+export type EventHandler = () => void;
+
+export interface EventHandlers {
+    readonly [name: string]: EventHandler;
+}
+
+export type EventTimes<E extends EventHandlers> = {
+    readonly [name in keyof E]: ISODateTimeString | undefined;
+};
+
+export interface MutableEvent {
+    handler: EventHandler;
+    lastExecuted: ISODateTimeString | undefined;
+}
+
+export interface Event extends Readonly<MutableEvent> {
+
+}
+
+export type EventMap<E extends EventHandlers> = {
+    readonly [name in keyof E]: Event;
+};
+
+export class EventMaps {
+
+    public static create<E extends EventHandlers>(handlers: E,
+                                                  eventTimes: Partial<EventTimes<E>>): EventMap<E> {
+
+        const result: any = {};
+
+        for (const handlerName of Object.keys(handlers)) {
+
+            const handler = handlers[handlerName];
+
+            const lastExecuted: ISODateTimeString | undefined = eventTimes[handlerName];
+
+            const event: MutableEvent = {
+                handler: () => {
+                    event.lastExecuted = ISODateTimeStrings.create();
+                    handler();
+                },
+                lastExecuted
+            };
+
+            result[handlerName] = event;
+
+        }
+
+        return result;
+    }
 
 }
