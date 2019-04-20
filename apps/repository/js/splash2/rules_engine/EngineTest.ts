@@ -12,6 +12,9 @@ import {TestingTime} from '../../../../../web/js/test/TestingTime';
 import {assertJSON} from '../../../../../web/js/test/Assertions';
 import {EventMap} from './Engine';
 import {EventHandlers} from './Engine';
+import {TimeDurations} from '../../../../../web/js/util/TimeDurations';
+import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
+import {DurationStr} from '../../../../../web/js/util/TimeDurations';
 
 describe('Engine', function() {
 
@@ -28,6 +31,7 @@ describe('Engine', function() {
 
         interface SplashEventHandlers extends EventHandlers {
             readonly onWhatsNew: () => void;
+            readonly onNetPromoter: () => void;
         }
 
 
@@ -95,16 +99,51 @@ describe('Engine', function() {
                     state = {};
                 }
 
-                // FIXME: go over all event times, find the min value, and make sure
-                // we don't have one called since then.
+                const hasMinimumTimeSince = (epoch: ISODateTimeString | undefined,
+                                             duration: DurationStr) => {
 
-                // FIXME: make it so that when we call fire an event the timestamp
-                // is always updated.
+                    if (epoch) {
 
-                // FIXME: have a new structure that takes the event Handlers,
-                // returns a tuple of NEW event handlers with a wrapper function
-                // and an index of their call times called EventHistory and
-                // EventHandlers
+                        const since = ISODateTimeStrings.parse(epoch);
+                        return TimeDurations.hasElapsed(since, duration);
+
+                    } else {
+                        // our epoch hasn't happened yet so it's ok to send out this message.
+                        return true;
+                    }
+
+                };
+
+                const hasMinimumTimeSinceLastEvent = () => {
+
+                    const epoch = EventMaps.earliestExecution(eventMap);
+
+                    return hasMinimumTimeSince(epoch, '15m');
+
+                };
+
+                const hasMinimumTimeSinceLastNPS = () => {
+                    const epoch = eventMap.onNetPromoter.lastExecuted;
+                    return hasMinimumTimeSince(epoch, '7d');
+                };
+
+                const canShow = () => {
+
+                    if (! hasMinimumTimeSinceLastEvent()) {
+                        return false;
+                    }
+
+                    if (! hasMinimumTimeSinceLastNPS()) {
+                        return false;
+                    }
+
+                    return true;
+
+                };
+
+                if (canShow()) {
+                    eventMap.onNetPromoter.handler();
+                }
 
                 return [facts, state];
 
@@ -119,12 +158,15 @@ describe('Engine', function() {
             version: "1.0.0",
 
             eventTimes: {
-                onWhatsNew: undefined
+                onWhatsNew: undefined,
+                onNetPromoter: undefined,
+
             }
 
         };
 
         let whatsNewCalled: boolean = false;
+        let netPromoterCalled: boolean = false;
 
         const rules: RuleMap<UserFacts, SplashEventHandlers> = {
             whatsNew: new WhatsNewRule()
@@ -135,7 +177,8 @@ describe('Engine', function() {
         ];
 
         const eventHandlers: SplashEventHandlers = {
-            onWhatsNew: () => whatsNewCalled = true
+            onWhatsNew: () => whatsNewCalled = true,
+            onNetPromoter: () => netPromoterCalled = true,
         };
 
         const engine: Engine<UserFacts, SplashEventHandlers>
@@ -144,16 +187,19 @@ describe('Engine', function() {
         engine.run();
 
         assert.equal(whatsNewCalled, false);
+        assert.equal(netPromoterCalled, false);
 
         engine.run();
 
         assert.equal(whatsNewCalled, false);
+        assert.equal(netPromoterCalled, false);
 
         facts.version = "1.1.0";
 
         engine.run();
 
         assert.equal(whatsNewCalled, true);
+        assert.equal(netPromoterCalled, false);
 
         // FIXME: we need an event emit engine to emit only named events
         // like 'whats-new' and 'net-promoter-score' which I can tie code to

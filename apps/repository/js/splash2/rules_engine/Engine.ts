@@ -1,6 +1,8 @@
 import {Rule} from './Rule';
 import {ISODateTimeString} from '../../../../../web/js/metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
+import {isPresent} from '../../../../../web/js/Preconditions';
+import {Reducers} from '../../../../../web/js/util/Reducers';
 
 
 export type EventHandler = () => void;
@@ -33,7 +35,6 @@ export class Engine<F, H extends EventHandlers> {
         this.engineState = {
             facts: this.facts,
             ruleStates: {},
-            eventTimes: {}
         };
 
     }
@@ -42,7 +43,7 @@ export class Engine<F, H extends EventHandlers> {
 
         const {engineState, rules} = this;
 
-        const eventMap = EventMaps.create(this.eventHandlers, this.engineState.eventTimes);
+        const eventMap = EventMaps.create(this.eventHandlers, {});
 
         for (const ruleName of this.order) {
 
@@ -87,17 +88,17 @@ interface MutableEngineState<F, H extends EventHandlers> {
      */
     ruleStates: {[id: string]: any};
 
-    /**
-     *
-     */
-    eventTimes: Partial<EventTimes<H>>;
-
 }
 
 /**
- * The engine state between run which between facts F and handlers H
+ * The engine state between run which between facts F and handlers H.
  */
-export interface EngineState<F, H extends EventHandlers> extends Readonly<MutableEngineState<F, H>> {
+export interface ExternalEngineState<F, H extends EventHandlers> extends Readonly<MutableEngineState<F, H>> {
+
+    /**
+     *
+     */
+    readonly eventTimes: Partial<EventTimes<H>>;
 
 
 }
@@ -152,7 +153,7 @@ export class EventMaps {
 
     }
 
-    public static toEventTimes<E extends EventHandlers>(eventMap: EventMap<E> ): EventTimes<E> {
+    public static toEventTimes<E extends EventHandlers>(eventMap: EventMap<E>): EventTimes<E> {
 
         const result: MutableEventTimes<E> = <any> {};
 
@@ -162,6 +163,16 @@ export class EventMaps {
         }
 
         return result;
+
+    }
+    public static earliestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
+
+        const eventTimes = EventMaps.toEventTimes(eventMap);
+
+        return Object.values(eventTimes)
+                .filter(current => isPresent(current))
+                .sort()
+                .reduce(Reducers.FIRST, undefined);
 
     }
 
