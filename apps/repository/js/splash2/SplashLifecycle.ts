@@ -15,7 +15,7 @@ export class SplashLifecycle {
 
             log.debug("Not showing due to not being online");
             // almost all the splashes (possibly all of them) require the user
-            // to be online.
+            // to be online
             return false;
         }
 

@@ -8,7 +8,7 @@ import {HighlightColor} from '../../metadata/BaseHighlight';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {EventListener} from '../../reactor/EventListener';
 import {Numbers} from '../../util/Numbers';
-import {SplashLifecycle} from '../../../../apps/repository/js/splash/SplashLifecycle';
+import {SplashLifecycle} from '../../../../apps/repository/js/splash2/SplashLifecycle';
 import {LifecycleEvents} from '../util/LifecycleEvents';
 import {LocalPrefs} from '../../util/LocalPrefs';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';

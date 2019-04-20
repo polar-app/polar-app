@@ -90,6 +90,7 @@ describe('TimeDurations', function() {
             const _1M = TimeDurations.toMillis('1m');
             const _1S = TimeDurations.toMillis('1s');
 
+            assert.equal(TimeDurations.format(_2D + _1S), '2d1s');
             assert.equal(TimeDurations.format(_1D + _1M), '1d1m');
             assert.equal(TimeDurations.format(_1M + _1D  + _1S), '1d1m1s');
 

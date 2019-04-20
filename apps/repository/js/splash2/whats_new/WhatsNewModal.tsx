@@ -14,6 +14,8 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.onDone = this.onDone.bind(this);
+
         this.state = {
             open: WhatsNew.doShow()
         };
@@ -40,7 +42,7 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
                     </LargeModalBody>
 
                     <ModalFooter>
-                        <Button color="primary" onClick={() => this.setState({open: false})}>Close</Button>
+                        <Button color="primary" onClick={() => this.onDone()}>Close</Button>
                     </ModalFooter>
 
                 </LargeModal>
@@ -51,6 +53,16 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
         );
     }
 
+    private onDone() {
+
+        this.setState({open: false});
+
+        if (this.props.onDone) {
+            this.props.onDone();
+        }
+
+    }
+
 }
 
 interface IProps {
@@ -58,7 +70,7 @@ interface IProps {
     /**
      * Called when we click the ok button.
      */
-    accept?: () => void;
+    onDone?: () => void;
 
 }
 
