@@ -213,15 +213,15 @@ export class EventMaps {
 
     public static earliestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
 
-        return [...this.toLastExecutedTimes(eventMap)]
-                .reduce(Reducers.FIRST, undefined);
+        const times: Array<string | undefined> = [...this.toLastExecutedTimes(eventMap)];
+        return  times.reduce(Reducers.FIRST, undefined);
 
     }
 
     public static latestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
 
-        return [...this.toLastExecutedTimes(eventMap)]
-            .reduce(Reducers.LAST, undefined);
+        const times: Array<string | undefined> = [...this.toLastExecutedTimes(eventMap)];
+        return  times.reduce(Reducers.LAST, undefined);
 
     }
 

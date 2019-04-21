@@ -184,8 +184,9 @@ export class Preconditions {
     }
 
     /**
-     * Use a default value if one is not specified.
-     *
+     * Use a default value if one is not specified.  This works better than
+     * other tests which error when working with undefined | null and booleans
+     * as these are false-ish.
      *
      */
     public static defaultValue<T>(value: T | undefined | null, defaultValue: T): NonNullable<T> {

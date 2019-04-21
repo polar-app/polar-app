@@ -65,7 +65,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public setup() {
 
         this.progress = Preconditions.defaultValue(this.progress, 0);
-        this.pagemarkType = Preconditions.defaultValue(this.pagemarkType, PagemarkType.SINGLE_COLUMN);
+        this.pagemarkType = this.pagemarkType || PagemarkType.SINGLE_COLUMN;
         this.properties = Preconditions.defaultValue(this.properties, {});
 
     }
