@@ -1,4 +1,5 @@
 import {NULL_FUNCTION} from './util/Functions';
+import {Nullable} from './util/ts/Nullable';
 
 export class Preconditions {
 
@@ -187,13 +188,13 @@ export class Preconditions {
      *
      *
      */
-    public static defaultValue<T>(value: T | undefined | null, defaultValue: NonNullable<T>): NonNullable<T> {
+    public static defaultValue<T>(value: T | undefined | null, defaultValue: T): NonNullable<T> {
 
         if (isPresent(value)) {
             return value!;
         }
 
-        return defaultValue;
+        return defaultValue!;
 
     }
 
