@@ -1,5 +1,9 @@
 # 1.17.5
 
+- Recording NPS and other stats in Firebase for analysis in bulk.
+
+- Completely reworked the splash system 
+  
 - Release to focus on our crowdfunding campaign.
 
 # 1.17.4
