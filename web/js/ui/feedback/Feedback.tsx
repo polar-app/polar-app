@@ -149,7 +149,7 @@ export class Feedback extends React.Component<IProps, IState> {
                 </tbody>
 
             </table>;
-        }
+        };
 
         const FeedbackForm = () => {
 
@@ -205,7 +205,7 @@ export class Feedback extends React.Component<IProps, IState> {
         this.markCompleted();
 
         if (this.props.onRated) {
-            this.props.onRated();
+            this.props.onRated(rating);
         }
 
     }
@@ -267,7 +267,7 @@ export interface IProps {
      */
     readonly noEvent?: boolean;
 
-    readonly onRated?: () => void;
+    readonly onRated?: (rating: Rating) => void;
 
     /**
      * When true we include a button at the bottom so that the user can skip
