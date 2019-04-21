@@ -10,6 +10,8 @@ import {RuleFactPair} from './rules_engine/Rule';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {DurationStr} from '../../../../web/js/util/TimeDurations';
 import {ExternalEngineState} from './rules_engine/Engine';
+import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
+import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 
 
 export class SplashEngine {
@@ -193,6 +195,12 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
             return hasMinimumTimeSince(epoch, '7d');
         };
 
+        const hasTourTerminated = () => {
+            // TODO: I think this should be a fact and we should not measure
+            // it directly.
+            return LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
+        };
+
         const canShow = () => {
 
             if (! hasExistingAgedDatastore()) {
@@ -204,6 +212,10 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
             }
 
             if (! hasMinimumTimeSinceLastNPS()) {
+                return false;
+            }
+
+            if (! hasTourTerminated()) {
                 return false;
             }
 
