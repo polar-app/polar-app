@@ -7,7 +7,7 @@ import {FilePaths} from "./FilePaths";
 import {Providers} from "./Providers";
 import {DurationStr, TimeDurations} from './TimeDurations';
 
-const ENABLE_ATOMIC_WRITES = false;
+const ENABLE_ATOMIC_WRITES = true;
 
 const log = Logger.create();
 
