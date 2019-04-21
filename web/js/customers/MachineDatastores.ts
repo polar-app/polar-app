@@ -22,6 +22,8 @@ export class MachineDatastores {
 
         if (AppRuntime.isElectron()) {
 
+            log.debug("Triggering background updates");
+
             // right now this only works on the desktop version as the web
             // version doesn't really support the features we would start
             // charging for
@@ -59,6 +61,8 @@ export class MachineDatastores {
 
     public static async calculate(persistenceLayerManager: PersistenceLayerManager): Promise<MachineDatastore | undefined> {
 
+        log.debug("Calculating machine datastore stats...");
+
         const persistenceLayer = await persistenceLayerManager.getAsync();
 
         const persistenceLayerType = persistenceLayerManager.currentType();
@@ -83,8 +87,18 @@ export class MachineDatastores {
 
         const written = ISODateTimeStrings.create();
 
-        return {persistenceLayerType, machine, nrDocs,
-                nrCaptures, storageInBytes, written};
+        const machineDatastore = {
+            persistenceLayerType,
+            machine,
+            nrDocs,
+            nrCaptures,
+            storageInBytes,
+            written
+        };
+
+        log.debug("Calculated final machine datastore stats: ", machineDatastore);
+
+        return machineDatastore;
 
     }
 
