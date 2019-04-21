@@ -566,6 +566,11 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 hideBackButton: true
             },
 
+            // TODO this breaks HARD unless we have the example documents loaded
+            // and maybe I should consider just selecting the first or Nth
+            // document which would always work for the most part.
+            //
+            // :nth-child(4n) could/should work.
 
             JoyrideTours.createImageStep({
                 target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}']`,

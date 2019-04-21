@@ -1,4 +1,5 @@
 import {NULL_FUNCTION} from './util/Functions';
+import {Nullable} from './util/ts/Nullable';
 
 export class Preconditions {
 
@@ -31,7 +32,7 @@ export class Preconditions {
      */
     public static assertEqual<T>(value: T, expected: T, name: string): T {
 
-        if(value !== expected) {
+        if (value !== expected) {
             throw new Error(`Value of ${value} !==- ${expected}`);
         }
 
@@ -45,11 +46,11 @@ export class Preconditions {
      * @param name The name of the number.
      * @return {number}
      */
-    static assertNumber(value: any, name: string) {
+    public static assertNumber(value: any, name: string) {
 
         Preconditions.assertNotNull(value, name);
 
-        if(isNaN(value)) {
+        if (isNaN(value)) {
             throw new Error(`Precondition failure for ${name}: NaN`);
         }
 
@@ -66,7 +67,7 @@ export class Preconditions {
      * @param name
      * @return {*}
      */
-    static assertInstanceOf(value: any, instance: any, name: string) {
+    public static assertInstanceOf(value: any, instance: any, name: string) {
 
         Preconditions.assertNotNull(value, name);
         Preconditions.assertNotNull(instance, "instance");
@@ -162,7 +163,7 @@ export class Preconditions {
 
     }
 
-    static assertNotTypeOf<T>(value: any, name: string, type: string): T {
+    public static assertNotTypeOf<T>(value: any, name: string, type: string): T {
 
         if (typeof value === type ) {
             throw new Error(`Precondition for typeof '${name}' was ${type} but not allowed`);
@@ -187,13 +188,13 @@ export class Preconditions {
      *
      *
      */
-    public static defaultValue<T>(value: T | undefined | null, defaultValue: NonNullable<T>): NonNullable<T> {
+    public static defaultValue<T>(value: T | undefined | null, defaultValue: T): NonNullable<T> {
 
         if (isPresent(value)) {
             return value!;
         }
 
-        return defaultValue;
+        return defaultValue!;
 
     }
 
@@ -208,12 +209,10 @@ export class Preconditions {
 
 }
 
-interface AssertionFunction<T> {
-    (val: T): boolean;
-}
+type AssertionFunction<T> = (val: T) => boolean;
 
 // noinspection TsLint: variable-name
-export function defaultValue<T>(value: T, defaultValue: NonNullable<T>): NonNullable<T> {
+export function defaultValue<T>(value: T | undefined | null, defaultValue: T): NonNullable<T> {
     return Preconditions.defaultValue(value, defaultValue);
 }
 
