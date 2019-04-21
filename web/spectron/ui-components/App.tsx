@@ -64,84 +64,84 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
     public render() {
-
-        // ProgressBar.create();
-
-        const options: ListOptionType[] = [
-            {
-                id: "title",
-                label: "Title",
-                selected: true
-            },
-            {
-                id: "tags",
-                label: "Tags",
-                selected: false
-            }
-        ];
-
-        const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
-
-        const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
-        const textSelections: TextRect[] = [new TextRect({text: "hello world"})];
-        const text = "hello world";
-
-        const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
-
-        // const ref = Refs.createFromAnnotationType(textHighlight.id,
-        // AnnotationType.TEXT_HIGHLIGHT);
-
-        docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;
-
-        // let flashcard = Flashcards.createFrontBack(front, back, ref);
         //
-        // // TODO: an idiosyncracie of the proxies system is that it mutates
-        // the // object so if it's read only it won't work.  This is a bug
-        // with // Proxies so I need to also fix that bug there in the future.
-        // flashcard = Object.assign({}, flashcard);
-        // annotation.pageMeta.flashcards[flashcard.id] = flashcard;
-
-
-        // TODO: we have to create some flashcards and comments for this object
-        // so that the annotation sidear renders.
-
-        const relatedTags = new RelatedTags();
-
-        relatedTags.update('0x01', 'set', 'linux');
-        relatedTags.update('0x01', 'set', 'microsoft');
-
-        relatedTags.update('0x02', 'set', 'linux');
-        relatedTags.update('0x02', 'set', 'google');
-
-        relatedTags.update('0x03', 'set', 'linux');
-        relatedTags.update('0x03', 'set', 'microsoft');
-
-        relatedTags.update('0x04', 'set', 'linux');
-        relatedTags.update('0x04', 'set', 'microsoft');
-
-        relatedTags.update('0x05', 'set', 'linux');
-        relatedTags.update('0x05', 'set', 'google');
-
-        const tags: Tag[] = [
-            {id: 'microsoft', label: 'microsoft'},
-            {id: 'google', label: 'google'}
-        ];
-
-        const existingTags: Tag[] = [
-            {id: 'google', label: 'google'}
-        ];
-
-        const steps = [
-            {
-                target: '.my-first-step',
-                content: 'This is my awesome feature!',
-                disableBeacon: true
-            },
-            {
-                target: '.my-other-step',
-                content: 'This another awesome feature!',
-            },
-        ];
+        // // ProgressBar.create();
+        //
+        // const options: ListOptionType[] = [
+        //     {
+        //         id: "title",
+        //         label: "Title",
+        //         selected: true
+        //     },
+        //     {
+        //         id: "tags",
+        //         label: "Tags",
+        //         selected: false
+        //     }
+        // ];
+        //
+        // const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
+        //
+        // const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
+        // const textSelections: TextRect[] = [new TextRect({text: "hello world"})];
+        // const text = "hello world";
+        //
+        // const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
+        //
+        // // const ref = Refs.createFromAnnotationType(textHighlight.id,
+        // // AnnotationType.TEXT_HIGHLIGHT);
+        //
+        // docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;
+        //
+        // // let flashcard = Flashcards.createFrontBack(front, back, ref);
+        // //
+        // // // TODO: an idiosyncracie of the proxies system is that it mutates
+        // // the // object so if it's read only it won't work.  This is a bug
+        // // with // Proxies so I need to also fix that bug there in the future.
+        // // flashcard = Object.assign({}, flashcard);
+        // // annotation.pageMeta.flashcards[flashcard.id] = flashcard;
+        //
+        //
+        // // TODO: we have to create some flashcards and comments for this object
+        // // so that the annotation sidear renders.
+        //
+        // const relatedTags = new RelatedTags();
+        //
+        // relatedTags.update('0x01', 'set', 'linux');
+        // relatedTags.update('0x01', 'set', 'microsoft');
+        //
+        // relatedTags.update('0x02', 'set', 'linux');
+        // relatedTags.update('0x02', 'set', 'google');
+        //
+        // relatedTags.update('0x03', 'set', 'linux');
+        // relatedTags.update('0x03', 'set', 'microsoft');
+        //
+        // relatedTags.update('0x04', 'set', 'linux');
+        // relatedTags.update('0x04', 'set', 'microsoft');
+        //
+        // relatedTags.update('0x05', 'set', 'linux');
+        // relatedTags.update('0x05', 'set', 'google');
+        //
+        // const tags: Tag[] = [
+        //     {id: 'microsoft', label: 'microsoft'},
+        //     {id: 'google', label: 'google'}
+        // ];
+        //
+        // const existingTags: Tag[] = [
+        //     {id: 'google', label: 'google'}
+        // ];
+        //
+        // const steps = [
+        //     {
+        //         target: '.my-first-step',
+        //         content: 'This is my awesome feature!',
+        //         disableBeacon: true
+        //     },
+        //     {
+        //         target: '.my-other-step',
+        //         content: 'This another awesome feature!',
+        //     },
+        // ];
         // Toaster.success('A new update for Polar was downloaded.  Please
         // restart.', 'Update downloaded', { requiresAcknowledgment: true,
         // preventDuplicates: true });  Toaster.info('X A new update for Polar
@@ -163,19 +163,6 @@ class App<P> extends React.Component<{}, IAppState> {
 
         // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
 
-        const url = "https://news.ycombinator.com/";
-
-        console.log("gonig to do it");
-
-        URLs.toBlob(url)
-            .then((blob) => {
-
-                console.log("converted to blob!");
-
-                Blobs.toStream(blob).pipe(process.stdout);
-
-            })
-            .catch(err => console.log("got error", err));
 
         return (
             //
@@ -196,68 +183,13 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                {/*<SimpleTooltipEx text={`*/}
-                                 {/*This is the text for the tooltip*/}
-                                 {/*`}>*/}
+                asdfasdf
 
-                    {/*<div>*/}
-                        {/*this is code for the new tooltip*/}
-                    {/*</div>*/}
-
-                {/*</SimpleTooltipEx>*/}
-
-                {/*<div id="old-tooltip-example">*/}
-                    {/*this is code for the old tooltip*/}
-                {/*</div>*/}
-
-
-                {/*<SimpleTooltip target="old-tooltip-example">*/}
-                    {/*this is an old tooltip.*/}
-                {/*</SimpleTooltip>*/}
-
-                {/*<DocContextMenu onSetTitle={() => console.log("set title")}>*/}
-
-                    {/*<div>*/}
-                        {/*Right click or long-tap on this box*/}
-                    {/*</div>*/}
-
-                {/*</DocContextMenu>*/}
-
-                {/*<DocContextMenu2 >*/}
-
-                    {/*<div>*/}
-                        {/*Right click or long-tap on this box*/}
-                    {/*</div>*/}
-
-                {/*</DocContextMenu2>*/}
-
-                {/*/!*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*!/*/}
-                    {/*/!*<DropdownToggle tag="div">*!/*/}
-                    {/*/!*</DropdownToggle>*!/*/}
-                    {/*/!*<DropdownMenu>*!/*/}
-                        {/*/!*<DropdownItem header>Header</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem>Some Action</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem disabled>Action (disabled)</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem divider />*!/*/}
-                        {/*/!*<DropdownItem>Foo Action</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem>Bar Action</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem>Quo Action</DropdownItem>*!/*/}
-                    {/*/!*</DropdownMenu>*!/*/}
-                {/*/!*</Dropdown>*!/*/}
-
-                {/*asdf*/}
-
-                {/*/!*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*!/*/}
-
-                    {/*<DropdownItem header>Header</DropdownItem>*/}
-                    {/*<DropdownItem onClick={NULL_FUNCTION}>Some Action</DropdownItem>*/}
-                    {/*<DropdownItem disabled>Action (disabled)</DropdownItem>*/}
-                    {/*<DropdownItem divider />*/}
-                    {/*<DropdownItem>Foo Action</DropdownItem>*/}
-                    {/*<DropdownItem>Bar Action</DropdownItem>*/}
-                    {/*<DropdownItem>Quo Action</DropdownItem>*/}
-
-                {/*/!*</Dropdown>*!/*/}
+                <Feedback category='net-promoter-score'
+                          title='How likely are you to recommend Polar?'
+                          from="Not likely"
+                          to="Very likely"
+                          onRated={NULL_FUNCTION}/>
 
             </div>
 
