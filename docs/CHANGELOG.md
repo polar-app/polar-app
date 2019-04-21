@@ -1,5 +1,7 @@
 # 1.18.0
 
+- Enabled atomic writes again for all platforms.
+
 - Upgraded to latest version of Typescript 3.4.3
 
 - Increased the sidebar a bit to accomadate updating comments without overflow
