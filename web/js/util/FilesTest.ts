@@ -8,6 +8,13 @@ const rimraf = require('rimraf');
 
 describe('Files', function() {
 
+    describe('atomic writes', async function() {
+
+        const tmp = FilePaths.join(os.tmpdir(), 'atomic-write.txt');
+        await Files.writeFileAsync(tmp, 'this is the data', {atomic: true});
+
+    });
+
     describe('createDirectorySnapshot', function() {
 
         let tmpdir: string = FilePaths.join(os.tmpdir(), 'none');
