@@ -392,10 +392,15 @@ export class Files {
             // create a unique path name for the tmp file including a suffix
             // which prevents races too so that only one atomic write wins if
             // multiple are attempted.  This can happen now with streams.
-            const suffix = Math.floor(Math.random() * 99999);
+            const suffix = Math.floor(Math.random() * 999999);
 
             const dirname = FilePaths.dirname(path);
             const basename = FilePaths.basename(path);
+
+            // TODO: if we can do a rename with a file descriptor we can open it
+            // delete it, then start writing to just the FD so that when the
+            // process exits the file is removed but node doesn't support this
+            // because the paths are file paths not FDs.
 
             path = FilePaths.join(dirname, "." + basename + "-" + suffix);
 
