@@ -44,9 +44,8 @@ export class Files {
      *                directories.
      */
     public static async recursively(path: string,
-                                    listener: (path: string) => Promise<void>,
+                                    listener: (path: string, stat: fs.Stats) => Promise<void>,
                                     aborter: Aborter = new Aborter(Providers.of(false))) {
-
 
         aborter.verify();
 
@@ -69,22 +68,23 @@ export class Files {
             aborter.verify();
 
             const dirEntryPath = FilePaths.join(path, dirEntry);
-            const dirEntryType = await this.fileType(dirEntryPath);
+
+            const dirEntryStat = await this.statAsync(dirEntryPath);
 
             aborter.verify();
 
-            if (dirEntryType === 'directory') {
+            if (dirEntryStat.isDirectory()) {
 
                 // since the aborter is passed this will throw and exception if
                 // it aborts
                 await this.recursively(dirEntryPath, listener, aborter);
 
-            } else if (dirEntryType === 'file') {
+            } else if (dirEntryStat.isFile()) {
 
-                await listener(dirEntryPath);
+                await listener(dirEntryPath, dirEntryStat);
 
             } else {
-                throw new Error(`Unable to handle dir entry: ${dirEntryPath} of type ${dirEntryType}`);
+                throw new Error(`Unable to handle dir entry: ${dirEntryPath}`);
             }
 
         }

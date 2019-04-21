@@ -19,8 +19,6 @@ export class StylesheetSerializer {
     public static serializeStylesheets(styleSheets: StyleSheetList | ReadonlyArray<CSSStyleSheet>,
                                        listener: SerializedStylesheetListener) {
 
-        Blob
-
         for (const styleSheet of Array.from(styleSheets)) {
 
             const serializedStylesheetRef = this.toSerializedStylesheet(<CSSStyleSheet> styleSheet);
