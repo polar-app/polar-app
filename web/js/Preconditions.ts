@@ -187,13 +187,13 @@ export class Preconditions {
      *
      *
      */
-    public static defaultValue<T>(argCurrentValue: T, argDefaultValue: T): T {
+    public static defaultValue<T>(value: T | undefined | null, defaultValue: NonNullable<T>): NonNullable<T> {
 
-        if(! argCurrentValue) {
-            return argDefaultValue;
+        if (isPresent(value)) {
+            return value!;
         }
 
-        return argCurrentValue;
+        return defaultValue;
 
     }
 
@@ -212,10 +212,9 @@ interface AssertionFunction<T> {
     (val: T): boolean;
 }
 
-
 // noinspection TsLint: variable-name
-export function defaultValue<T>(_currentValue: T, _defaultValue: T): T {
-    return Preconditions.defaultValue(_currentValue, _defaultValue);
+export function defaultValue<T>(value: T, defaultValue: NonNullable<T>): NonNullable<T> {
+    return Preconditions.defaultValue(value, defaultValue);
 }
 
 export function notNull<T>(value: T | null, name?: string): NonNullable<T> {

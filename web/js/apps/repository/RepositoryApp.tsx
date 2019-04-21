@@ -39,13 +39,12 @@ import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
 import {Premium} from '../../../../apps/repository/js/splash/splashes/premium/Premium';
-import {WhatsNewModal} from '../../../../apps/repository/js/splash2/whats_new/WhatsNewModal';
 import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
 import {MobileDisclaimer} from './MobileDisclaimer';
 import {MobileDisclaimers} from './MobileDisclaimers';
 import {TabNav} from '../../ui/tabs/TabNav';
 import {NULL_FUNCTION} from '../../util/Functions';
-
+import {MachineDatastores} from '../../customers/MachineDatastores';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -89,6 +88,8 @@ export class RepositoryApp {
         new ProgressService().start();
 
         await this.doLoadExampleDocs();
+
+        MachineDatastores.triggerBackgroundUpdates(this.persistenceLayerManager);
 
         // PreviewDisclaimers.createWhenNecessary();
 

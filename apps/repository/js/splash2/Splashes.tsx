@@ -82,9 +82,10 @@ export class Splashes extends React.Component<IProps, IState> {
     }
 
     private onNetPromoter() {
-        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-net-promoter'});
 
+        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-net-promoter'});
         this.setState({...this.state, splash: 'net-promoter'});
+
     }
 
     private async init() {

@@ -200,6 +200,10 @@ export class Optional<T> {
 
 }
 
+export class Defaults {
+
+}
+
 /**
  * Just consume a value with no need to return any result.
  */
