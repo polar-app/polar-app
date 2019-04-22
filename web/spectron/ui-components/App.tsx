@@ -196,17 +196,16 @@ class App<P> extends React.Component<{}, IAppState> {
                         <Button onClick={() => toggle()}>Toggle</Button>
                     </div>
 
-                    <div>
 
-                        <Dock left={<div>this is the left</div>}
-                              right={<div>
-                                  this is the right
-                                  <a href="http://cnn.com">asdf</a>
-                              </div>}
-                              side="left"
-                              toggleCoupler={toggleCoupler}
-                        />
-                    </div>
+                    <Dock
+                          left={<div>this is the left</div>}
+                          right={<div>
+                              this is the right
+                              <a href="http://cnn.com">asdf</a>
+                          </div>}
+                          side="left"
+                          toggleCoupler={toggleCoupler}
+                    />
 
                 </div>
 
