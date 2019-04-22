@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {MousePositions} from './MousePositions';
 import {ChannelCoupler} from '../../js/util/Channels';
+import {defaultValue} from '../../js/Preconditions';
 
 
 class Styles {
@@ -52,6 +53,9 @@ class Styles {
  *        - This could actually be called by composition and have a LocalState
  *          component that restores state of the component via props?
  *
+ * // TODO: to make flyout mode... just set position: absolute, height: 100%
+ *     and it should work
+ *
  */
 export class Dock extends React.Component<IProps, IState> {
 
@@ -66,16 +70,27 @@ export class Dock extends React.Component<IProps, IState> {
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.setFlyout = this.setFlyout.bind(this);
         this.markResizing = this.markResizing.bind(this);
 
         if (this.props.toggleCoupler) {
             this.props.toggleCoupler(() => this.toggle());
         }
 
+        if (this.props.setFlyoutCoupler) {
+            this.props.setFlyoutCoupler(() => this.setFlyout());
+        }
+
+
+        const mode = this.props.initialMode ? this.props.initialMode : 'expanded';
+        const width = this.props.initialWidth || 400;
+        const flyout = defaultValue(this.props.initialFlyout, false);
+
         this.state = {
-            mode: this.props.initialMode ? this.props.initialMode : 'expanded',
-            width: this.props.initialWidth || 400,
-            resizing: false
+            mode,
+            width,
+            resizing: false,
+            flyout
         };
 
     }
@@ -84,6 +99,10 @@ export class Dock extends React.Component<IProps, IState> {
 
         const leftStyle: React.CSSProperties = {};
         const rightStyle: React.CSSProperties = {};
+
+        for (const style of [leftStyle, rightStyle]) {
+            style.height = '100%';
+        }
 
         // FIXME: sidebarStyle first, then set leftStyle or rightSytle below...
 
@@ -99,6 +118,10 @@ export class Dock extends React.Component<IProps, IState> {
                 style.userSelect = 'none';
             }
 
+        }
+
+        if (this.state.flyout) {
+            sidebarStyle.position = 'absolute';
         }
 
         sidebarStyle.width = width;
@@ -119,11 +142,12 @@ export class Dock extends React.Component<IProps, IState> {
                 <div className="dock-left"
                      style={leftStyle}
                      draggable={false}>
+
                      {this.props.left}
 
                 </div>
 
-                <div className="dock-splitter"
+                <div className="dock-splitter ml-auto"
                      draggable={false}
                      onMouseDown={() => this.onMouseDown()}
                      style={{
@@ -207,6 +231,20 @@ export class Dock extends React.Component<IProps, IState> {
 
     }
 
+
+    private setFlyout() {
+
+        console.log("setting as flyout ");
+
+        const flyout = ! this.state.flyout;
+
+        const newState = {...this.state, flyout};
+        console.log("newState: ", newState);
+        this.setState(newState);
+
+    }
+
+
 }
 
 interface IProps {
@@ -217,6 +255,8 @@ interface IProps {
 
     readonly initialWidth?: number;
 
+    readonly initialFlyout?: boolean;
+
     readonly side: DockSide;
 
     readonly left: JSX.Element;
@@ -224,6 +264,8 @@ interface IProps {
     readonly right: JSX.Element;
 
     readonly toggleCoupler?: ChannelCoupler<void>;
+
+    readonly setFlyoutCoupler?: ChannelCoupler<void>;
 
 }
 
@@ -237,6 +279,9 @@ interface IState {
      * True when we're in the middle of resizing the dock.
      */
     readonly resizing: boolean;
+
+    readonly flyout: boolean;
+
 }
 
 /**

@@ -166,6 +166,8 @@ class App<P> extends React.Component<{}, IAppState> {
         // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
 
         const [toggle, toggleCoupler] = Channels.create<void>();
+        const [setFlyout, setFlyoutCoupler] = Channels.create<void>();
+
 
         return (
             //
@@ -195,6 +197,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                     <div>
                         <Button onClick={() => toggle()}>Toggle</Button>
+                        <Button onClick={() => setFlyout()}>Flyout</Button>
                     </div>
 
                     <Dock style={{flexGrow: 1}}
@@ -205,7 +208,25 @@ class App<P> extends React.Component<{}, IAppState> {
                           </div>}
                           side="left"
                           toggleCoupler={toggleCoupler}
+                          setFlyoutCoupler={setFlyoutCoupler}
                     />
+
+                    {/*<div style={{display: 'flex', height: '100%'}}>*/}
+
+                        {/*<div style={{width: '400px',*/}
+                                     {/*backgroundColor: 'red',*/}
+                                     {/*height: '100%',*/}
+                                     {/*position: 'absolute'}}>*/}
+
+                            {/*this is the left*/}
+                        {/*</div>*/}
+
+                        {/*<div style={{flexGrow: 1, backgroundColor: 'blue'}}>*/}
+                            {/*asdf*/}
+                            {/*asdf*/}
+                        {/*</div>*/}
+
+                    {/*</div>*/}
 
                 </div>
 

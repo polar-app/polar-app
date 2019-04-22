@@ -1,5 +1,4 @@
 import {NULL_FUNCTION} from './util/Functions';
-import {Nullable} from './util/ts/Nullable';
 
 export class Preconditions {
 
@@ -41,7 +40,8 @@ export class Preconditions {
     }
 
     /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * Assert that this value is defined , not-null, and also not NaN and also
+     * a number.
      * @param value The value we expect to be a number.
      * @param name The name of the number.
      * @return {number}
