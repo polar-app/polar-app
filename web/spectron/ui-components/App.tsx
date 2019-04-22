@@ -51,6 +51,7 @@ import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
 import {Dock} from './Dock';
 import {Channels} from '../../js/util/Channels';
+import {Suggestions} from '../../js/ui/feedback/Suggestions';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -189,52 +190,56 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%'
-                     }}>
+                <Suggestions category="foo"
+                             title="We need your feedback!"
+                             description="I need your help to improve Polar!  Now's your opportunity to let me us know how you'd like us to improve Polar moving forward!"/>
 
-                    <div>
-                        <Button onClick={() => toggle()}>Toggle</Button>
-                        <Button onClick={() => setFlyout()}>Flyout</Button>
-                    </div>
+                {/*<div style={{*/}
+                        {/*display: 'flex',*/}
+                        {/*flexDirection: 'column',*/}
+                        {/*height: '100%'*/}
+                     {/*}}>*/}
 
-                    <Dock style={{flexGrow: 1}}
-                          left={<div>this is the left</div>}
-                          right={<div style={{backgroundColor: 'blue'}}>
-                              this is the right
-                              <a href="http://cnn.com">asdf</a>
-                          </div>}
-                          side="left"
-                          toggleCoupler={toggleCoupler}
-                          setFlyoutCoupler={setFlyoutCoupler}
-                    />
-
-                    {/*<div style={{display: 'flex', height: '100%'}}>*/}
-
-                        {/*<div style={{width: '400px',*/}
-                                     {/*backgroundColor: 'red',*/}
-                                     {/*height: '100%',*/}
-                                     {/*position: 'absolute'}}>*/}
-
-                            {/*this is the left*/}
-                        {/*</div>*/}
-
-                        {/*<div style={{flexGrow: 1, backgroundColor: 'blue'}}>*/}
-                            {/*asdf*/}
-                            {/*asdf*/}
-                        {/*</div>*/}
-
+                    {/*<div>*/}
+                        {/*<Button onClick={() => toggle()}>Toggle</Button>*/}
+                        {/*<Button onClick={() => setFlyout()}>Flyout</Button>*/}
                     {/*</div>*/}
 
-                </div>
+                    {/*<Dock style={{flexGrow: 1}}*/}
+                          {/*left={<div>this is the left</div>}*/}
+                          {/*right={<div style={{backgroundColor: 'blue'}}>*/}
+                              {/*this is the right*/}
+                              {/*<a href="http://cnn.com">asdf</a>*/}
+                          {/*</div>}*/}
+                          {/*side="left"*/}
+                          {/*toggleCoupler={toggleCoupler}*/}
+                          {/*setFlyoutCoupler={setFlyoutCoupler}*/}
+                    {/*/>*/}
 
-                {/*<Feedback category='net-promoter-score'*/}
-                          {/*title='How likely are you to recommend Polar?'*/}
-                          {/*from="Not likely"*/}
-                          {/*to="Very likely"*/}
-                          {/*onRated={NULL_FUNCTION}/>*/}
+                    {/*/!*<div style={{display: 'flex', height: '100%'}}>*!/*/}
+
+                        {/*/!*<div style={{width: '400px',*!/*/}
+                                     {/*/!*backgroundColor: 'red',*!/*/}
+                                     {/*/!*height: '100%',*!/*/}
+                                     {/*/!*position: 'absolute'}}>*!/*/}
+
+                            {/*/!*this is the left*!/*/}
+                        {/*/!*</div>*!/*/}
+
+                        {/*/!*<div style={{flexGrow: 1, backgroundColor: 'blue'}}>*!/*/}
+                            {/*/!*asdf*!/*/}
+                            {/*/!*asdf*!/*/}
+                        {/*/!*</div>*!/*/}
+
+                    {/*/!*</div>*!/*/}
+
+                {/*</div>*/}
+
+                {/*/!*<Feedback category='net-promoter-score'*!/*/}
+                          {/*/!*title='How likely are you to recommend Polar?'*!/*/}
+                          {/*/!*from="Not likely"*!/*/}
+                          {/*/!*to="Very likely"*!/*/}
+                          {/*/!*onRated={NULL_FUNCTION}/>*!/*/}
 
             </div>
 
