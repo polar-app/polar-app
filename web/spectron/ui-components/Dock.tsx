@@ -42,12 +42,8 @@ class Styles {
  *
  *  TODO:
  *
- *   - the splitter is being dragged even though draggable is false... I think
- *     this is one of the biggest issues...
- *
- *   - when the bar is being dragged set 'pointerEvents: none' on the left and
- *     right so no weird events happen here and then revert once I lift up on
- *     the mouse....
+ *   - if the user leaves the window, does mouse up, then comes back in, the
+ *     dock is still in resize mode.
  *
  */
 export class Dock extends React.Component<IProps, IState> {
