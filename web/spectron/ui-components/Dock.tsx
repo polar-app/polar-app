@@ -56,6 +56,9 @@ class Styles {
  * // TODO: to make flyout mode... just set position: absolute, height: 100%
  *     and it should work
  *
+ *   -  I need a CLEAN way to persist the state for this object in localstorage
+ *      and for other components too.
+ *
  */
 export class Dock extends React.Component<IProps, IState> {
 
