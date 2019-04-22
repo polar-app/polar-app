@@ -1,6 +1,5 @@
 import * as React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
-import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {Tag} from '../../../web/js/tags/Tag';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
@@ -13,6 +12,7 @@ import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
+import {printf} from '../../../web/js/logger/Console';
 
 const log = Logger.create();
 
@@ -54,11 +54,6 @@ export class TagInput extends React.Component<IProps, IState> {
 
     private readonly id = IDs.create("popover-");
 
-    /**
-     * Tags that we're about to apply but have not yet applied yet.
-     */
-    private pendingTags: Tag[] = [];
-
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -75,19 +70,24 @@ export class TagInput extends React.Component<IProps, IState> {
 
         this.state = {
             open: false,
+            pendingTags: []
         };
 
     }
 
     private activate() {
 
-        this.pendingTags = this.props.existingTags || [];
+        const pendingTags = this.props.existingTags || [];
 
-        this.changeVisibility(true);
+        // Blackout.toggle(true);
+        this.setState({open: true, pendingTags});
+
     }
 
     private deactivate() {
         this.changeVisibility(false, true);
+        // Blackout.toggle(false);
+
     }
 
     private toggle(caller: string) {
@@ -97,13 +97,15 @@ export class TagInput extends React.Component<IProps, IState> {
     }
 
     private changeVisibility(open: boolean, cancelled: boolean = false) {
+
+
+        // FIXME: I don't like how this changeVisibilty stuff works..
+
         console.log("FIXME: changeVisibility: " , {open, cancelled});
 
         if (! open) {
             this.fireChanged(cancelled);
         }
-
-        Blackout.toggle(open);
 
         this.setState({...this.state, open});
 
@@ -113,11 +115,14 @@ export class TagInput extends React.Component<IProps, IState> {
 
         const availableTagOptions = TagOptions.fromTags(this.props.availableTags);
 
-        const pendingTags = TagOptions.fromTags(this.pendingTags);
+        const pendingTags = TagOptions.fromTags(this.state.pendingTags);
+
+        printf("FIXME: render pendingTags: ", pendingTags);
+        printf("FIXME: render state: ", this.state);
 
         const computeRelatedTags = () => {
 
-            const input = [...this.pendingTags]
+            const input = [...this.state.pendingTags]
                             .map(current => current.label)
                             ;
 
@@ -135,7 +140,7 @@ export class TagInput extends React.Component<IProps, IState> {
                              style={Styles.relatedTag}
                              color="light"
                              size="sm"
-                             onClick={() => this.addTag(item)}>{item}</Button>)}
+                             onClick={() => this.addRelatedTag(item)}>{item}</Button>)}
             </span>;
 
         };
@@ -242,10 +247,16 @@ export class TagInput extends React.Component<IProps, IState> {
 
     }
 
-    private addTag(tag: string) {
+    private addRelatedTag(label: string) {
 
-        const tagOption: TagOption = {value: tag, label: tag};
-        this.handleChange([tagOption]);
+        const tag: Tag = {
+            id: label,
+            label
+        };
+
+        const tags = [tag, ...this.state.pendingTags];
+
+        this.handleChange(TagOptions.fromTags(tags));
 
     }
 
@@ -270,7 +281,12 @@ export class TagInput extends React.Component<IProps, IState> {
 
     }
 
+    // FIXME: now what's happening is that we have TWO forms of actions here..
+    // one with ALL the tags and oen with jsut the new recommended tag that
+    // the user clicked on.
     private handleChange(selectedOptions: TagOption[]) {
+
+        console.log("FIXME: got new seleceted tags: ", selectedOptions);
 
         const tags = TagOptions.toTags(selectedOptions);
 
@@ -290,7 +306,7 @@ export class TagInput extends React.Component<IProps, IState> {
 
         }
 
-        // this.setState({...this.state, tagOptions: TagOptions.fromTags(validTags)});
+        this.setState({...this.state, pendingTags: validTags});
 
     }
 
@@ -311,9 +327,7 @@ export class TagInput extends React.Component<IProps, IState> {
                 // important to always call onChange even if we have no valid tags
                 // as this is acceptable and we want to save these to disk.
 
-                // const tags = TagOptions.toTags(this.state.tagOptions);
-
-                // this.props.onChange(tags);
+                this.props.onChange(this.state.pendingTags);
 
             }
 
@@ -351,9 +365,11 @@ interface IState {
 
     readonly open: boolean;
 
+    /**
+     * The tags that are actively being selected but not yet applied.
+     */
+    readonly pendingTags: Tag[];
+
 
 }
-
-
-
 
