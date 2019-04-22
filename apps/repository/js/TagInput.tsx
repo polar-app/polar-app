@@ -12,7 +12,8 @@ import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
-import {printf} from '../../../web/js/logger/Console';
+import {NULL_FUNCTION} from '../../../web/js/util/Functions';
+import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 
 const log = Logger.create();
 
@@ -49,10 +50,11 @@ const Styles: IStyleMap = {
 
 };
 
-
 export class TagInput extends React.Component<IProps, IState> {
 
     private readonly id = IDs.create("popover-");
+
+    private select: CreatableSelect<TagOption> | null;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -60,13 +62,10 @@ export class TagInput extends React.Component<IProps, IState> {
         this.activate = this.activate.bind(this);
         this.deactivate = this.deactivate.bind(this);
 
-        this.toggle = this.toggle.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onDone = this.onDone.bind(this);
 
         this.handleChange = this.handleChange.bind(this);
-        this.changeVisibility = this.changeVisibility.bind(this);
-        this.fireChanged = this.fireChanged.bind(this);
 
         this.state = {
             open: false,
@@ -79,36 +78,15 @@ export class TagInput extends React.Component<IProps, IState> {
 
         const pendingTags = this.props.existingTags || [];
 
-        // Blackout.toggle(true);
+        Blackout.enable();
+
         this.setState({open: true, pendingTags});
 
     }
 
     private deactivate() {
-        this.changeVisibility(false, true);
-        // Blackout.toggle(false);
-
-    }
-
-    private toggle(caller: string) {
-        console.log("FIXME: toggled: ", {caller});
-        const open = !this.state.open;
-        this.changeVisibility(open);
-    }
-
-    private changeVisibility(open: boolean, cancelled: boolean = false) {
-
-
-        // FIXME: I don't like how this changeVisibilty stuff works..
-
-        console.log("FIXME: changeVisibility: " , {open, cancelled});
-
-        if (! open) {
-            this.fireChanged(cancelled);
-        }
-
-        this.setState({...this.state, open});
-
+        Blackout.disable();
+        this.setState({open: false});
     }
 
     public render() {
@@ -116,9 +94,6 @@ export class TagInput extends React.Component<IProps, IState> {
         const availableTagOptions = TagOptions.fromTags(this.props.availableTags);
 
         const pendingTags = TagOptions.fromTags(this.state.pendingTags);
-
-        printf("FIXME: render pendingTags: ", pendingTags);
-        printf("FIXME: render state: ", this.state);
 
         const computeRelatedTags = () => {
 
@@ -204,9 +179,8 @@ export class TagInput extends React.Component<IProps, IState> {
                             value={pendingTags}
                             defaultValue={pendingTags}
                             placeholder="Create or select tags ..."
-                            options={availableTagOptions} >
-
-                            <div>this is the error</div>
+                            options={availableTagOptions}
+                            ref={ref => this.select = ref}>
 
                         </CreatableSelect>
 
@@ -258,20 +232,34 @@ export class TagInput extends React.Component<IProps, IState> {
 
         this.handleChange(TagOptions.fromTags(tags));
 
+        // need or else the button has focus now...
+        this.select!.focus();
+
     }
 
     private onCancel() {
-        this.changeVisibility(false, true);
+        this.setState({...this.state, open: false});
+        Blackout.disable();
     }
 
     private onDone() {
-        this.changeVisibility(false, false);
+
+        this.setState({...this.state, open: false});
+        Blackout.disable();
+
+        const onChange = this.props.onChange || NULL_FUNCTION;
+
+        // important to always call onChange even if we have no valid
+        // tags as this is acceptable and we want to save these to
+        // disk.
+
+        onChange(this.state.pendingTags);
+
     }
 
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
         if (event.key === "Escape") {
-            console.log("FIXME: got escape");
             this.onCancel();
         }
 
@@ -281,12 +269,7 @@ export class TagInput extends React.Component<IProps, IState> {
 
     }
 
-    // FIXME: now what's happening is that we have TWO forms of actions here..
-    // one with ALL the tags and oen with jsut the new recommended tag that
-    // the user clicked on.
     private handleChange(selectedOptions: TagOption[]) {
-
-        console.log("FIXME: got new seleceted tags: ", selectedOptions);
 
         const tags = TagOptions.toTags(selectedOptions);
 
@@ -307,34 +290,6 @@ export class TagInput extends React.Component<IProps, IState> {
         }
 
         this.setState({...this.state, pendingTags: validTags});
-
-    }
-
-    private fireChanged(cancelled: boolean) {
-
-        console.log("fireChanged: ", {cancelled});
-
-        if (cancelled) {
-
-            this.setState({...this.state});
-
-        } else {
-
-            if (this.props.onChange) {
-
-                console.log("FIXME calling onChange: ");
-
-                // important to always call onChange even if we have no valid tags
-                // as this is acceptable and we want to save these to disk.
-
-                this.props.onChange(this.state.pendingTags);
-
-            }
-
-            // this.setState({...this.state, currentTags: this.state.tags});
-            this.setState({...this.state});
-
-        }
 
     }
 
