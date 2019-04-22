@@ -2,7 +2,7 @@ import * as React from 'react';
 import Nav from 'reactstrap/lib/Nav';
 import NavItem from 'reactstrap/lib/NavItem';
 import NavLink from 'reactstrap/lib/NavLink';
-import {ChannelBinder} from '../../util/Channels';
+import {ChannelCoupler} from '../../util/Channels';
 import Button from 'reactstrap/lib/Button';
 import {TabButtonContextMenu} from './TabButtonContextMenu';
 import {TabPanes} from './TabPanes';
@@ -169,7 +169,7 @@ interface IProps {
 
     readonly initialTabs?: ReadonlyArray<TabInit>;
 
-    readonly addTabBinder: ChannelBinder<TabInit>;
+    readonly addTabBinder: ChannelCoupler<TabInit>;
 }
 
 interface IState {

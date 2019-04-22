@@ -49,6 +49,8 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
+import {Dock} from './Dock';
+import {Channels} from '../../js/util/Channels';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -163,6 +165,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
         // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
 
+        const [toggle, toggleCoupler] = Channels.create<void>();
 
         return (
             //
@@ -181,15 +184,33 @@ class App<P> extends React.Component<{}, IAppState> {
           // {/*}*/}
           //                 {/*right={<div/>}/>*/}
 
+
             <div>
 
-                asdfasdf
+                <div style={{
+                        display: 'flex',
+                        flexDirection: 'column'
+                     }}>
 
-                <Feedback category='net-promoter-score'
-                          title='How likely are you to recommend Polar?'
-                          from="Not likely"
-                          to="Very likely"
-                          onRated={NULL_FUNCTION}/>
+                    <div>
+                        <Button onClick={() => toggle()}>Toggle</Button>
+                    </div>
+
+                    <div>
+
+                        <Dock left={<div>this is the left</div>}
+                              right={<div>this is the right</div>}
+                              side="left"
+                              toggleCoupler={toggleCoupler}/>
+                    </div>
+
+                </div>
+
+                {/*<Feedback category='net-promoter-score'*/}
+                          {/*title='How likely are you to recommend Polar?'*/}
+                          {/*from="Not likely"*/}
+                          {/*to="Very likely"*/}
+                          {/*onRated={NULL_FUNCTION}/>*/}
 
             </div>
 

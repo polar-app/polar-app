@@ -17,7 +17,7 @@ import {AddContentButton} from '../ui/AddContentButton';
 import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
 import {AddContentActions} from '../ui/AddContentActions';
 import {ChannelFunction, Channels} from '../../../../web/js/util/Channels';
-import {ChannelBinder} from '../../../../web/js/util/Channels';
+import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 
 const log = Logger.create();
@@ -34,7 +34,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
     private readonly filterChannel: ChannelFunction<AnnotationRepoFilters>;
 
-    private readonly setFilterChannel: ChannelBinder<AnnotationRepoFilters>;
+    private readonly setFilterChannel: ChannelCoupler<AnnotationRepoFilters>;
 
     constructor(props: IProps, context: any) {
         super(props, context);

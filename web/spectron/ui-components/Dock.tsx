@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {MousePositions} from './MousePositions';
+import {ChannelCoupler} from '../../js/util/Channels';
 
 
 class Styles {
@@ -24,9 +25,7 @@ class Styles {
  *
  * TODO:
  *
- *  - need a way to expose a button to expand / collapse the dock
- *
- *  - need to support resize
+ *  - need a way to expose a button to expand / collapse the dock.  Toggle it...
  *
  *  - need to support persisting state
  *
@@ -42,18 +41,13 @@ class Styles {
  *
  *
  *  TODO:
- *   - screw it... Ic an just use THIS component:
- *    - http://alexkuz.github.io/react-dock/demo/
- *
- *    - and wrap it ?? with a 'permanently' docked mode?  The problem is I need
- *      a way to resize once it's permanently docked.
- *
- *    - one thing I could do is just make the even listeners static/permanent
- *      for the entire app and they never get removed we just update the
- *      position.
  *
  *   - the splitter is being dragged even though draggable is false... I think
  *     this is one of the biggest issues...
+ *
+ *   - when the bar is being dragged set 'pointerEvents: none' on the left and
+ *     right so no weird events happen here and then revert once I lift up on
+ *     the mouse....
  *
  */
 export class Dock extends React.Component<IProps, IState> {
@@ -68,7 +62,11 @@ export class Dock extends React.Component<IProps, IState> {
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
+        this.toggle = this.toggle.bind(this);
 
+        if (this.props.toggleCoupler) {
+            this.props.toggleCoupler(() => this.toggle());
+        }
 
         this.state = {
             mode: this.props.initialMode ? this.props.initialMode : 'expanded',
@@ -82,15 +80,17 @@ export class Dock extends React.Component<IProps, IState> {
         const leftStyle: React.CSSProperties = {};
         const rightStyle: React.CSSProperties = {};
 
-        // const width = typeof this.state.width === 'number' ? `${this.props.width}px` : this.props.width;
-        const width = this.state.width;
+        const width = this.state.mode === 'expanded' ? this.state.width : 0;
 
         const sidebarStyle = this.props.side === 'left' ? leftStyle : rightStyle;
-        const contentStyle = this.props.side !== 'left' ? leftStyle : rightStyle;
+        const contentStyle = this.props.side === 'right' ? leftStyle : rightStyle;
 
         sidebarStyle.width = width;
-
         contentStyle.width = `calc(100% - ${width})`;
+
+        // needed or the content expands out of the box which isn't what we
+        // want.
+        sidebarStyle.overflow = 'hidden';
 
         return (
 
@@ -102,8 +102,10 @@ export class Dock extends React.Component<IProps, IState> {
                 <div className="dock-left"
                      style={leftStyle}
                      draggable={false}>
-                    onDrag={() => console.log("being dragged left")}
-                    {this.props.left}
+                     onDrag={() => console.log("being dragged left")}
+
+                     {this.props.left}
+
                 </div>
 
                 <div className="dock-splitter"
@@ -169,6 +171,27 @@ export class Dock extends React.Component<IProps, IState> {
 
     }
 
+    private toggle() {
+
+        const newMode = () => {
+
+            switch (this.state.mode) {
+
+                case 'expanded':
+                    return 'collapsed';
+                case 'collapsed':
+                    return 'expanded';
+
+            }
+
+        };
+
+        const mode = newMode();
+
+        this.setState({...this.state, mode});
+
+    }
+
 }
 
 interface IProps {
@@ -182,6 +205,8 @@ interface IProps {
     readonly left: JSX.Element;
 
     readonly right: JSX.Element;
+
+    readonly toggleCoupler?: ChannelCoupler<void>;
 
 }
 

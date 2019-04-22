@@ -16,7 +16,7 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
-import {ChannelBinder} from '../../../../web/js/util/Channels';
+import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 
@@ -293,7 +293,7 @@ interface IProps {
 
     readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
 
-    readonly setFiltered: ChannelBinder<AnnotationRepoFilters>;
+    readonly setFiltered: ChannelCoupler<AnnotationRepoFilters>;
 
 }
 

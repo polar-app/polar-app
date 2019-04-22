@@ -15,13 +15,13 @@
  */
 export class Channels {
 
-    public static create<T>(): [ChannelFunction<T>, ChannelBinder<T>] {
+    public static create<T>(): [ChannelFunction<T>, ChannelCoupler<T>] {
 
         let target: ChannelFunction<T> = (value: T) => {
             // noop by default and we do nothing with the value.
         };
 
-        const setChannel: ChannelBinder<T> = (actual: (value: T) => void): void => {
+        const channelCoupler: ChannelCoupler<T> = (actual: (value: T) => void): void => {
             target = actual;
         };
 
@@ -29,7 +29,7 @@ export class Channels {
             target(value);
         };
 
-        return [channel, setChannel];
+        return [channel, channelCoupler];
 
     }
 
@@ -37,4 +37,4 @@ export class Channels {
 
 export type ChannelFunction<T> = (value: T) => void;
 
-export type ChannelBinder<T> = (actual: (value: T) => void) => void;
+export type ChannelCoupler<T> = (actual: (value: T) => void) => void;
