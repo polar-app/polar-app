@@ -189,7 +189,8 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <div style={{
                         display: 'flex',
-                        flexDirection: 'column'
+                        flexDirection: 'column',
+                        height: '100vh'
                      }}>
 
                     <div>
@@ -197,15 +198,21 @@ class App<P> extends React.Component<{}, IAppState> {
                     </div>
 
 
-                    <Dock
-                          left={<div>this is the left</div>}
-                          right={<div>
-                              this is the right
-                              <a href="http://cnn.com">asdf</a>
-                          </div>}
-                          side="left"
-                          toggleCoupler={toggleCoupler}
-                    />
+                    {/*<Dock*/}
+                          {/*left={<div>this is the left</div>}*/}
+                          {/*right={<div style={{backgroundColor: 'blue'}}>*/}
+                              {/*this is the right*/}
+                              {/*<a href="http://cnn.com">asdf</a>*/}
+                          {/*</div>}*/}
+                          {/*side="left"*/}
+                          {/*toggleCoupler={toggleCoupler}*/}
+                    {/*/>*/}
+
+                    <div style={{background: 'red', flexGrow: 1}}>
+
+                        bottom
+
+                    </div>
 
                 </div>
 
