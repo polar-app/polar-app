@@ -7,8 +7,8 @@ class Styles {
 
     public static Dock: React.CSSProperties = {
         display: 'flex',
-        height: '100%',
-        backgroundColor: 'lightgrey'
+        backgroundColor: 'lightgrey',
+        flexGrow: 1
     };
 
 }
@@ -107,7 +107,8 @@ export class Dock extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="dock" style={Styles.Dock}
+            <div className="dock"
+                 style={{...Styles.Dock, ...this.props.style || {}}}
                  onMouseMove={() => this.onMouseMove()}
                  draggable={false}
                  onMouseUp={() => this.onMouseUp()}>
@@ -206,6 +207,8 @@ export class Dock extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+
+    readonly style?: React.CSSProperties;
 
     readonly initialMode?: DockMode;
 
