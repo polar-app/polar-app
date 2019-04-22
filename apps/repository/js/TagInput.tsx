@@ -54,7 +54,7 @@ export class TagInput extends React.Component<IProps, IState> {
 
     private readonly id = IDs.create("popover-");
 
-    private select: CreatableSelect<TagOption> | null;
+    private select: CreatableSelect<TagOption> | null = null;
 
     constructor(props: IProps, context: any) {
         super(props, context);
