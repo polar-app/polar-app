@@ -13,8 +13,7 @@ import Button from 'reactstrap/lib/Button';
 import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
-
-let SEQUENCE = 0;
+import {IDs} from '../../../web/js/util/IDs';
 
 const log = Logger.create();
 
@@ -55,7 +54,7 @@ const Styles: IStyleMap = {
 
 export class TagInput extends React.PureComponent<IProps, IState> {
 
-    private readonly id = "popover-" + SEQUENCE++;
+    private readonly id = IDs.create("popover-");
 
     constructor(props: IProps, context: any) {
         super(props, context);
