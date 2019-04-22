@@ -97,8 +97,6 @@ export class Dock extends React.Component<IProps, IState> {
         }
 
         sidebarStyle.width = width;
-        // contentStyle.width = `calc(100% - ${width})`;
-
         contentStyle.flexGrow = 1;
 
         // needed or the content expands out of the box which isn't what we
