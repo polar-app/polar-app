@@ -1,11 +1,11 @@
-import {TagSelectOption} from './TagSelectOption';
+import {TagOption} from './TagOption';
 import {Tag} from '../../../web/js/tags/Tag';
 
-export class TagSelectOptions {
+export class TagOptions {
 
-    public static toTags(tagSelectOptions: TagSelectOption[]): Tag[] {
+    public static toTags(tagOptions: TagOption[]): Tag[] {
 
-        return tagSelectOptions.map((current): Tag => {
+        return tagOptions.map((current): Tag => {
 
             return {
                 id: current.value,
@@ -16,7 +16,7 @@ export class TagSelectOptions {
 
     }
 
-    public static fromTags(tags: Tag[]): TagSelectOption[] {
+    public static fromTags(tags: Tag[]): TagOption[] {
 
         return tags.map( current => {
                    return {

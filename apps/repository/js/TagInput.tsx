@@ -2,9 +2,8 @@ import * as React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {Tag} from '../../../web/js/tags/Tag';
-import {Optional} from '../../../web/js/util/ts/Optional';
-import {TagSelectOption} from './TagSelectOption';
-import {TagSelectOptions} from './TagSelectOptions';
+import {TagOption} from './TagOption';
+import {TagOptions} from './TagOptions';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
@@ -16,7 +15,6 @@ import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 
 const log = Logger.create();
-
 
 const Styles: IStyleMap = {
 
@@ -52,48 +50,82 @@ const Styles: IStyleMap = {
 };
 
 
-export class TagInput extends React.PureComponent<IProps, IState> {
+export class TagInput extends React.Component<IProps, IState> {
 
     private readonly id = IDs.create("popover-");
+
+    /**
+     * Tags that we're about to apply but have not yet applied yet.
+     */
+    private pendingTags: Tag[] = [];
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.activate = this.activate.bind(this);
+        this.deactivate = this.deactivate.bind(this);
+
         this.toggle = this.toggle.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.onDone = this.onDone.bind(this);
+
         this.handleChange = this.handleChange.bind(this);
+        this.changeVisibility = this.changeVisibility.bind(this);
+        this.fireChanged = this.fireChanged.bind(this);
+
         this.state = {
             open: false,
-            tags: []
         };
 
     }
 
-    public toggle() {
+    private activate() {
 
+        this.pendingTags = this.props.existingTags || [];
+
+        this.changeVisibility(true);
+    }
+
+    private deactivate() {
+        this.changeVisibility(false, true);
+    }
+
+    private toggle(caller: string) {
+        console.log("FIXME: toggled: ", {caller});
         const open = !this.state.open;
+        this.changeVisibility(open);
+    }
+
+    private changeVisibility(open: boolean, cancelled: boolean = false) {
+        console.log("FIXME: changeVisibility: " , {open, cancelled});
+
+        if (! open) {
+            this.fireChanged(cancelled);
+        }
 
         Blackout.toggle(open);
 
-        const tags = TagSelectOptions.fromTags(this.props.existingTags || []);
-
-        this.setState({...this.state, open, tags});
+        this.setState({...this.state, open});
 
     }
 
     public render() {
 
-        const availableTagOptions: TagSelectOption[]
-            = TagSelectOptions.fromTags(this.props.availableTags);
+        const availableTagOptions = TagOptions.fromTags(this.props.availableTags);
 
-        const existingTags: Tag[] = Optional.of(this.props.existingTags).getOrElse([]);
+        const pendingTags = TagOptions.fromTags(this.pendingTags);
 
-        const defaultValue: TagSelectOption[] =
-            TagSelectOptions.fromTags(existingTags)
-                .sort((a, b) => a.label.localeCompare(b.label));
+        const computeRelatedTags = () => {
 
-        const relatedTags: string[]
-            = this.props.relatedTags.compute(this.state.tags.map(current => current.label))
-                                    .map(current => current.tag);
+            const input = [...this.pendingTags]
+                            .map(current => current.label)
+                            ;
+
+            return this.props.relatedTags.compute(input).map(current => current.tag);
+
+        };
+
+        const relatedTags: string[] = computeRelatedTags();
 
         const RelatedTagsItems = () => {
             return <span>
@@ -129,7 +161,7 @@ export class TagInput extends React.PureComponent<IProps, IState> {
             <div className="mt-auto mb-auto">
 
                 <i id={this.id}
-                   onClick={this.toggle}
+                   onClick={() => this.activate()}
                    className="fa fa-tag doc-button doc-button-inactive"/>
 
                 {/*tag-input-popover {*/}
@@ -145,12 +177,12 @@ export class TagInput extends React.PureComponent<IProps, IState> {
                          isOpen={this.state.open}
                          target={this.id}
                          trigger="legacy"
-                         toggle={this.toggle}
+                         toggle={() => this.deactivate()}
                          className="tag-input-popover shadow">
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
 
                     {/*style={{borderWidth: '1px', backgroundColor: true ? "#b94a48" : "#aaa"}}*/}
-                    <PopoverBody style={Styles.popover}>
+                    <PopoverBody style={Styles.popover} className="shadow">
 
                         <div className="pt-1 pb-1">
                             <strong>Assign tags to document:</strong>
@@ -163,9 +195,9 @@ export class TagInput extends React.PureComponent<IProps, IState> {
                             onKeyDown={event => this.onKeyDown(event)}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={(selectedOptions) => this.handleChange(selectedOptions as TagSelectOption[])}
-                            value={this.state.tags}
-                            defaultValue={defaultValue}
+                            onChange={(selectedOptions) => this.handleChange(selectedOptions as TagOption[])}
+                            value={pendingTags}
+                            defaultValue={pendingTags}
                             placeholder="Create or select tags ..."
                             options={availableTagOptions} >
 
@@ -179,6 +211,28 @@ export class TagInput extends React.PureComponent<IProps, IState> {
 
                         </div>
 
+                        <div className="mt-1">
+
+                            <div style={{display: 'flex'}}>
+
+                                <div className="ml-auto"/>
+
+                                <Button color="secondary"
+                                        size="sm"
+                                        onClick={() => this.onCancel()}>
+                                    Cancel
+                                </Button>
+
+                                <div className="ml-1"/>
+
+                                <Button color="primary"
+                                        size="sm"
+                                        onClick={() => this.onDone()}>
+                                    Done
+                                </Button>
+                            </div>
+                        </div>
+
                     </PopoverBody>
                 </Popover>
 
@@ -188,35 +242,37 @@ export class TagInput extends React.PureComponent<IProps, IState> {
 
     }
 
-
     private addTag(tag: string) {
 
-        const newTag: TagSelectOption = {value: tag, label: tag};
-        const tags = [...this.state.tags, newTag];
-        this.setState({...this.state, tags});
-        this.handleChange(tags);
+        const tagOption: TagOption = {value: tag, label: tag};
+        this.handleChange([tagOption]);
 
+    }
+
+    private onCancel() {
+        this.changeVisibility(false, true);
+    }
+
+    private onDone() {
+        this.changeVisibility(false, false);
     }
 
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
         if (event.key === "Escape") {
-            this.toggle();
+            console.log("FIXME: got escape");
+            this.onCancel();
         }
 
         if (event.getModifierState("Control") && event.key === "Enter") {
-            this.toggle();
-        }
+            this.onDone();
+    }
 
     }
 
-    private save() {
-        // noop
-    }
+    private handleChange(selectedOptions: TagOption[]) {
 
-    private handleChange(selectedOptions: TagSelectOption[]) {
-
-        const tags = TagSelectOptions.toTags(selectedOptions);
+        const tags = TagOptions.toTags(selectedOptions);
 
         const validTags = Tags.findValidTags(...tags);
         const invalidTags = Tags.findInvalidTags(...tags);
@@ -230,19 +286,39 @@ export class TagInput extends React.PureComponent<IProps, IState> {
             Toaster.warning("Some tags were excluded - spaces and other control characters not supported: " + invalidTagsStr,
                             "Invalid tags");
 
+            log.warn("Some tags were invalid", invalidTags);
+
         }
 
-        this.setState({...this.state, tags: TagSelectOptions.fromTags(validTags)});
+        // this.setState({...this.state, tagOptions: TagOptions.fromTags(validTags)});
 
-        if (this.props.onChange) {
+    }
 
-            // important to always call onChange even if we have no valid tags
-            // as this is acceptable and we want to save these to disk.
-            this.props.onChange(validTags);
+    private fireChanged(cancelled: boolean) {
 
-            if (invalidTags.length > 0) {
-                log.warn("Some tags were invalid", invalidTags);
+        console.log("fireChanged: ", {cancelled});
+
+        if (cancelled) {
+
+            this.setState({...this.state});
+
+        } else {
+
+            if (this.props.onChange) {
+
+                console.log("FIXME calling onChange: ");
+
+                // important to always call onChange even if we have no valid tags
+                // as this is acceptable and we want to save these to disk.
+
+                // const tags = TagOptions.toTags(this.state.tagOptions);
+
+                // this.props.onChange(tags);
+
             }
+
+            // this.setState({...this.state, currentTags: this.state.tags});
+            this.setState({...this.state});
 
         }
 
@@ -275,10 +351,6 @@ interface IState {
 
     readonly open: boolean;
 
-    /**
-     * The currently selected tags.
-     */
-    readonly tags: TagSelectOption[];
 
 }
 

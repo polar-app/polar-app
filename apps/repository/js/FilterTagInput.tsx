@@ -3,8 +3,8 @@ import {Tag} from '../../../web/js/tags/Tag';
 import {TagsDB} from './TagsDB';
 import Select from 'react-select';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
-import {TagSelectOptions} from './TagSelectOptions';
-import {TagSelectOption} from './TagSelectOption';
+import {TagOptions} from './TagOptions';
+import {TagOption} from './TagOption';
 import {FilteredTags} from './FilteredTags';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import Button from 'reactstrap/lib/Button';
@@ -53,7 +53,7 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-        const options = TagSelectOptions.fromTags(this.props.tagsDBProvider().tags());
+        const options = TagOptions.fromTags(this.props.tagsDBProvider().tags());
 
         return (
 
@@ -137,9 +137,9 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
         // as so as we handle the change we toggle off
 
-        const defaultValue: TagSelectOption[] = selectedOptions;
+        const defaultValue: TagOption[] = selectedOptions;
 
-        this.props.filteredTags.set(TagSelectOptions.toTags(selectedOptions));
+        this.props.filteredTags.set(TagOptions.toTags(selectedOptions));
 
         this.props.refresher();
 
@@ -168,6 +168,6 @@ interface IProps {
 
 interface IState {
     readonly open: boolean;
-    readonly defaultValue: TagSelectOption[];
+    readonly defaultValue: TagOption[];
 }
 
