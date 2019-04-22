@@ -20,7 +20,7 @@ You can read our original posts here:
   
 [Show HN: Polar – an offline web browser with annotations and tagging](https://news.ycombinator.com/item?id=18219960)
 
-[Polar as a Personal Knowledge Repository](https://getpolarized.io/2019/03/01/polar-personal-knowledge-repository.html) [Hacker News Link](https://news.ycombinator.com/item?id=19294799)
+[Polar as a Personal Knowledge Repository](https://getpolarized.io/2019/03/01/polar-personal-knowledge-repository.html) - [Hacker News Link](https://news.ycombinator.com/item?id=19294799)
 
 First, the upside.  The traffic. If you get featured on the front page of HN
 you can expect a nice torrent of traffic for about 24 hours.
