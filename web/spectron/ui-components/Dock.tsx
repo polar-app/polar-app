@@ -63,6 +63,7 @@ export class Dock extends React.Component<IProps, IState> {
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.markResizing = this.markResizing.bind(this);
 
         if (this.props.toggleCoupler) {
             this.props.toggleCoupler(() => this.toggle());
@@ -70,7 +71,8 @@ export class Dock extends React.Component<IProps, IState> {
 
         this.state = {
             mode: this.props.initialMode ? this.props.initialMode : 'expanded',
-            width: this.props.initialWidth || 400
+            width: this.props.initialWidth || 400,
+            resizing: false
         };
 
     }
@@ -85,8 +87,19 @@ export class Dock extends React.Component<IProps, IState> {
         const sidebarStyle = this.props.side === 'left' ? leftStyle : rightStyle;
         const contentStyle = this.props.side === 'right' ? leftStyle : rightStyle;
 
+        if (this.state.resizing) {
+
+            for (const style of [sidebarStyle, contentStyle]) {
+                style.pointerEvents = 'none';
+                style.userSelect = 'none';
+            }
+
+        }
+
         sidebarStyle.width = width;
-        contentStyle.width = `calc(100% - ${width})`;
+        // contentStyle.width = `calc(100% - ${width})`;
+
+        contentStyle.flexGrow = 1;
 
         // needed or the content expands out of the box which isn't what we
         // want.
@@ -138,22 +151,28 @@ export class Dock extends React.Component<IProps, IState> {
 
     private onMouseUp() {
 
-        console.log("up");
+        // console.log("up");
 
-        this.mouseDown = false;
         this.mousePosition = MousePositions.get();
+
+        this.markResizing(false);
     }
 
     private onMouseDown() {
 
-        this.mouseDown = true;
-
-        console.log("down");
         this.mousePosition = MousePositions.get();
+
+        this.markResizing(true);
+
+    }
+
+    private markResizing(resizing: boolean) {
+        this.mouseDown = resizing;
+        this.setState({...this.state, resizing});
     }
 
     private onMouseMove() {
-        console.log("move");
+        // console.log("move");
 
         if (!this.mouseDown) {
             return;
@@ -211,9 +230,15 @@ interface IProps {
 }
 
 interface IState {
+
     readonly mode: DockMode;
+
     readonly width: number;
 
+    /**
+     * True when we're in the middle of resizing the dock.
+     */
+    readonly resizing: boolean;
 }
 
 /**

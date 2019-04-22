@@ -199,9 +199,13 @@ class App<P> extends React.Component<{}, IAppState> {
                     <div>
 
                         <Dock left={<div>this is the left</div>}
-                              right={<div>this is the right</div>}
+                              right={<div>
+                                  this is the right
+                                  <a href="http://cnn.com">asdf</a>
+                              </div>}
                               side="left"
-                              toggleCoupler={toggleCoupler}/>
+                              toggleCoupler={toggleCoupler}
+                        />
                     </div>
 
                 </div>
