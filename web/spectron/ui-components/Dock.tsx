@@ -25,15 +25,12 @@ class Styles {
  *
  * TODO:
  *
- *  - need a way to expose a button to expand / collapse the dock.  Toggle it...
  *
  *  - need to support persisting state
  *
  *  - to do resize:
  *
- *  https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
- *
- *  - this MIGHT require window mouse event listeners which is not fun...
+ *      https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
  *
  * - menu items directly specified so we can show JUST the icons in the sidebar
  *   as a 'mode'.  TODO.. might be better if this was sort of a sub-component
@@ -45,9 +42,15 @@ class Styles {
  *   - if the user leaves the window, does mouse up, then comes back in, the
  *     dock is still in resize mode.
  *
- *   - expand it in the parent using flexGrow in the parent..
- *
  *   - flyout mode.
+ *
+ *   - save state using localStorage.. I could override setState and I could
+ *     build a LocalState object which is passed an initialState from props
+ *     after and we call this.state = this.localState.hydrate() and the
+ *     over loaded setState() calls this.localState
+ *
+ *        - This could actually be called by composition and have a LocalState
+ *          component that restores state of the component via props?
  *
  */
 export class Dock extends React.Component<IProps, IState> {
@@ -82,10 +85,12 @@ export class Dock extends React.Component<IProps, IState> {
         const leftStyle: React.CSSProperties = {};
         const rightStyle: React.CSSProperties = {};
 
-        const width = this.state.mode === 'expanded' ? this.state.width : 0;
+        // FIXME: sidebarStyle first, then set leftStyle or rightSytle below...
 
         const sidebarStyle = this.props.side === 'left' ? leftStyle : rightStyle;
         const contentStyle = this.props.side === 'right' ? leftStyle : rightStyle;
+
+        const width = this.state.mode === 'expanded' ? this.state.width : 0;
 
         if (this.state.resizing) {
 
