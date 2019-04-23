@@ -61,6 +61,10 @@ class Styles {
  *
  *   - make sure the dock flows both ways... left and right.
  *
+ *   - right doesn't work...
+ *
+ *   - flyout doesn't work when we're toggled closed.
+ *
  */
 export class Dock extends React.Component<IProps, IState> {
 

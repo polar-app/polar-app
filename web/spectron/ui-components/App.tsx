@@ -64,6 +64,7 @@ class App<P> extends React.Component<{}, IAppState> {
             dropdownOpen: false,
             splitButtonOpen: false
         };
+
     }
 
     public render() {
@@ -200,21 +201,21 @@ class App<P> extends React.Component<{}, IAppState> {
                         {/*height: '100%'*/}
                      {/*}}>*/}
 
-                    {/*<div>*/}
-                        {/*<Button onClick={() => toggle()}>Toggle</Button>*/}
-                        {/*<Button onClick={() => setFlyout()}>Flyout</Button>*/}
-                    {/*</div>*/}
+                    <div>
+                        <Button onClick={() => toggle()}>Toggle</Button>
+                        <Button onClick={() => setFlyout()}>Flyout</Button>
+                    </div>
 
-                    {/*<Dock style={{flexGrow: 1}}*/}
-                          {/*left={<div>this is the left</div>}*/}
-                          {/*right={<div style={{backgroundColor: 'blue'}}>*/}
-                              {/*this is the right*/}
-                              {/*<a href="http://cnn.com">asdf</a>*/}
-                          {/*</div>}*/}
-                          {/*side="left"*/}
-                          {/*toggleCoupler={toggleCoupler}*/}
-                          {/*setFlyoutCoupler={setFlyoutCoupler}*/}
-                    {/*/>*/}
+                    <Dock style={{flexGrow: 1}}
+                          left={<div>this is the left</div>}
+                          right={<div style={{backgroundColor: 'blue'}}>
+                              this is the right
+                              <a href="http://cnn.com">asdf</a>
+                          </div>}
+                          side="left"
+                          toggleCoupler={toggleCoupler}
+                          setFlyoutCoupler={setFlyoutCoupler}
+                    />
 
                     {/*/!*<div style={{display: 'flex', height: '100%'}}>*!/*/}
 
