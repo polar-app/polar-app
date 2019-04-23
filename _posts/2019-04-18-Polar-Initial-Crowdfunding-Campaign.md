@@ -5,20 +5,37 @@ layout: post
 large_image: https://getpolarized.io/assets/images/initial-crowdfunding-scaled.png 
 description: 
 ---
-
-<iframe width="900" height="506"
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item"  
         src="https://www.youtube.com/embed/wfxmsXxod-g"
         frameBorder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen></iframe>
+</div>
 
 <div class="text-center">
     <a class="btn btn-success btn-lg font-weight-bold m-3" onclick="sendEvent('main-cta', 'click-crowdfunding-donate-button')" href="https://opencollective.com/polar-bookshelf">Donate Now</a>
 </div>
 
-# Help Keep Polar Open Source
+# Overview 
 
 I'm Kevin Burton, the creator of Polar and I need your help.
+
+For the past six months I've been working on a project to address the problems 
+with the current Internet.
+
+Polar is a new type of app which helps you build a personal knowledge repository 
+and keeps all your reading in one place.  It allows you to annotate all your 
+documents including highlighting and manage them with tags and notes.
+
+Polar also supports advanced features like spaced repetition (so you never 
+forget anything again) and web archival so you can view a document forever even 
+if it's deleted on the original site.
+
+More importantly, it's the starting ramp for a more long term vision around 
+content sharing and knowledge collaboration.
+
+# Help Keep Polar Open Source
 
 I’ll touch upon this in a minute but Polar is something I’ve been thinking about for a decade.  
 
