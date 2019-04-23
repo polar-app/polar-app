@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Tag} from '../../../web/js/tags/Tag';
 import {TagsDB} from './TagsDB';
 import Select from 'react-select';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
