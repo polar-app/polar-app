@@ -48,6 +48,7 @@ import {ProgressTracker} from '../../../../web/js/util/ProgressTracker';
 import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
 import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
+import {CrowdfundingBar} from '../../../../web/js/ui/crowdfunding/CrowdfundingBar';
 
 const log = Logger.create();
 
@@ -287,6 +288,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                 <header>
 
+
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
                     <div id="header-filter">
@@ -366,6 +368,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                     </div>
 
                     <MessageBanner/>
+                    <CrowdfundingBar/>
 
                 </header>
 
@@ -1013,6 +1016,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             repoDocInfo.archived = !repoDocInfo.archived;
             repoDocInfo.docInfo.archived = repoDocInfo.archived;
             mutated = true;
+
+            // used so the user can tell something actually happened because if
+            // the row just vanishes it's hard to tell that something actually
+            // changed.
+            if (repoDocInfo.archived) {
+                Toaster.success(`Document has been archived.`);
+            }
+
         }
 
         if (field === 'flagged') {

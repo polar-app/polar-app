@@ -44,8 +44,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public readonly id = 'firebase';
 
-    public enablePersistence: boolean = true;
-
     private app?: firebase.app.App;
 
     private firestore?: firebase.firestore.Firestore;
@@ -71,7 +69,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
-        this.firestore = await Firestore.getInstance({enablePersistence: this.enablePersistence});
+        this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
 
         if (opts.noInitialSnapshot) {

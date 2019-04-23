@@ -98,68 +98,68 @@ export class Feedback extends React.Component<IProps, IState> {
             return <table className="ml-auto mr-auto">
 
                 <tbody>
-                    <tr>
-                        <td>
+                <tr>
+                    <td>
 
-                            <div style={{
-                                display: 'block',
-                            }}>
-                                <FeedbackButton rating={0}  background={colorSet.button0}/>
+                        <div style={{
+                            display: 'block',
+                        }}>
+                            <FeedbackButton rating={0}  background={colorSet.button0}/>
 
-                                <FeedbackButton rating={1}  background={colorSet.button1}/>
+                            <FeedbackButton rating={1}  background={colorSet.button1}/>
 
-                                <FeedbackButton rating={2}  background={colorSet.button2}/>
+                            <FeedbackButton rating={2}  background={colorSet.button2}/>
 
-                                <FeedbackButton rating={3}  background={colorSet.button3}/>
+                            <FeedbackButton rating={3}  background={colorSet.button3}/>
 
-                                <FeedbackButton rating={4}  background={colorSet.button4}/>
+                            <FeedbackButton rating={4}  background={colorSet.button4}/>
 
-                                <FeedbackButton rating={5}  background={colorSet.button5}/>
+                            <FeedbackButton rating={5}  background={colorSet.button5}/>
 
-                                <FeedbackButton rating={6}  background={colorSet.button6}/>
+                            <FeedbackButton rating={6}  background={colorSet.button6}/>
 
-                                <FeedbackButton rating={7}  background={colorSet.button7}/>
+                            <FeedbackButton rating={7}  background={colorSet.button7}/>
 
-                                <FeedbackButton rating={8}  background={colorSet.button8}/>
+                            <FeedbackButton rating={8}  background={colorSet.button8}/>
 
-                                <FeedbackButton rating={9}  background={colorSet.button9}/>
+                            <FeedbackButton rating={9}  background={colorSet.button9}/>
 
-                                <FeedbackButton rating={10} background={colorSet.button10}/>
+                            <FeedbackButton rating={10} background={colorSet.button10}/>
 
-                            </div>
+                        </div>
 
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td>
-                            <LeftRightSplit style={{marginLeft: '5px', marginRight: '5px'}}
-                                            left={
-                                                <span style={{fontWeight: 'bold'}}>{this.props.from}</span>
-                                            }
-                                            right={
-                                                <span style={{fontWeight: 'bold'}}>{this.props.to}</span>
-                                            }/>
+                <tr>
+                    <td>
+                        <LeftRightSplit style={{marginLeft: '5px', marginRight: '5px'}}
+                                        left={
+                                            <span style={{fontWeight: 'bold'}}>{this.props.from}</span>
+                                        }
+                                        right={
+                                            <span style={{fontWeight: 'bold'}}>{this.props.to}</span>
+                                        }/>
 
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
 
                 {/*<UnsureButton/>*/}
 
                 </tbody>
 
             </table>;
-        }
+        };
 
         const FeedbackForm = () => {
 
             return <div style={{
-                            width: '600px',
-                            position: 'fixed',
-                            right: 25,
-                            bottom: 25,
-                            zIndex: 9999,
-                        }}
+                width: '600px',
+                position: 'fixed',
+                right: 25,
+                bottom: 25,
+                zIndex: 9999,
+            }}
                         className="border rounded shadow bg-white p-3">
 
                 <h3 className="text-center">{this.props.title}</h3>
@@ -193,10 +193,10 @@ export class Feedback extends React.Component<IProps, IState> {
         if (! this.props.noEvent) {
 
             RendererAnalytics.event({
-                category: this.props.category,
-                action: `${rating}`,
-                value: rating
-            });
+                                        category: this.props.category,
+                                        action: `${rating}`,
+                                        value: rating
+                                    });
 
             console.log(`Sent feedback for category ${this.props.category}: ${rating}`);
 
@@ -205,7 +205,7 @@ export class Feedback extends React.Component<IProps, IState> {
         this.markCompleted();
 
         if (this.props.onRated) {
-            this.props.onRated();
+            this.props.onRated(rating);
         }
 
     }
@@ -222,9 +222,9 @@ export class Feedback extends React.Component<IProps, IState> {
         if (! this.props.noEvent) {
 
             RendererAnalytics.event({
-                category: this.props.category,
-                action: `unsure`,
-            });
+                                        category: this.props.category,
+                                        action: `unsure`,
+                                    });
 
             console.log(`Sent unsure feedback for category ${this.props.category}`);
 
@@ -237,8 +237,8 @@ export class Feedback extends React.Component<IProps, IState> {
     private markCompleted() {
 
         this.setState({
-            completed: true
-        });
+                          completed: true
+                      });
 
     }
 
@@ -267,7 +267,7 @@ export interface IProps {
      */
     readonly noEvent?: boolean;
 
-    readonly onRated?: () => void;
+    readonly onRated?: (rating: Rating) => void;
 
     /**
      * When true we include a button at the bottom so that the user can skip

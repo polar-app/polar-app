@@ -1,7 +1,7 @@
 /**
  * Simple mechanism that allows callers to write functions together without
- * passing refs around.  The setCallback function can be passed to one component
- * and the callback function can be passed to another and one is for executing
+ * passing refs around.  The setChannel function can be passed to one component
+ * and the channel function can be passed to another and one is for executing
  * and the other is for updating.  This way the writer can never execute and
  * the executor can never write.
  *
@@ -13,28 +13,28 @@
  * because since no object are updated they are just all GCd together and the
  * wiring goes away.
  */
-export class Callbacks {
+export class Channels {
 
-    public static create<T>(): [CallbackFunction<T>, SetCallbackFunction<T>] {
+    public static create<T>(): [ChannelFunction<T>, ChannelCoupler<T>] {
 
-        let target: CallbackFunction<T> = (value: T) => {
+        let target: ChannelFunction<T> = (value: T) => {
             // noop by default and we do nothing with the value.
         };
 
-        const setCallback: SetCallbackFunction<T> = (actual: (value: T) => void): void => {
+        const channelCoupler: ChannelCoupler<T> = (actual: (value: T) => void): void => {
             target = actual;
         };
 
-        const callback = (value: T): void => {
+        const channel = (value: T): void => {
             target(value);
         };
 
-        return [callback, setCallback];
+        return [channel, channelCoupler];
 
     }
 
 }
 
-export type CallbackFunction<T> = (value: T) => void;
+export type ChannelFunction<T> = (value: T) => void;
 
-export type SetCallbackFunction<T> = (actual: (value: T) => void) => void;
+export type ChannelCoupler<T> = (actual: (value: T) => void) => void;

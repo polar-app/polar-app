@@ -1,33 +1,29 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {PrioritizedComponentManager, PrioritizedComponentRef} from '../../../../web/js/ui/prioritized/PrioritizedComponentManager';
-import {WhatsNewRef} from './splashes/whats_new/WhatsNewRef';
-import {SurveyRef} from './splashes/survey/SurveyRef';
-import {PremiumRef} from './splashes/premium/PremiumRef';
-import {ChromeExtensionReviewRef} from './splashes/chrome_extension_review/ChromeExtensionReviewRef';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {DatastoreOverview} from '../../../../web/js/datastore/Datastore';
-import {Provider, Providers} from '../../../../web/js/util/Providers';
 import {TimeDurations} from '../../../../web/js/util/TimeDurations';
-import {AlternativeToReviewRef} from './splashes/alternativeto_review/AlternativeToReviewRef';
-import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
-import {NPSRef} from './splashes/nps/NPSRef';
+import {SplashLifecycle} from '../splash2/SplashLifecycle';
 
 const log = Logger.create();
 
+const MIN_DELAY = TimeDurations.toMillis('15m');
+
 const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
-    new WhatsNewRef(),
+    // new WhatsNewRef(),
+    // new CrowdfundingRef(),
+    // new NPSRef(),
     // new GithubStarsRef(),
     // new SurveyRef(),
-    new ChromeExtensionReviewRef(),
-    new AlternativeToReviewRef(),
-    new NPSRef()
+    // new ChromeExtensionReviewRef(),
+    // new AlternativeToReviewRef(),
 ];
 
-if (DistConfig.ENABLE_PURCHASES) {
-    prioritizedComponentRefs.push(new PremiumRef());
-}
+// if (DistConfig.ENABLE_PURCHASES) {
+//     prioritizedComponentRefs.push(new PremiumRef());
+// }
 
 export class PrioritizedSplashes extends React.Component<IProps, IState> {
 
@@ -38,7 +34,8 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
             lastUpdated: 0
         };
 
-        this.doUpdate();
+        this.doUpdate()
+            .catch(err => log.error("Unable to update: ", err));
 
     }
 
@@ -57,48 +54,47 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
 
     }
 
-    private doUpdate() {
+    private async doUpdate() {
 
-        this.props.persistenceLayerManager.addEventListener(event => {
+        try {
 
-            if (event.state === 'changed') {
+            const persistenceLayer = await this.props.persistenceLayerManager.getAsync();
 
-                const persistenceLayer = this.props.persistenceLayerManager.get();
+            const datastore = persistenceLayer.datastore;
 
-                const datastore = persistenceLayer.datastore;
+            const datastoreOverview = await datastore.overview();
 
-                datastore.overview()
-                    .then(datastoreOverview => {
+            if (datastoreOverview) {
 
-                        if (datastoreOverview) {
+                this.setState({
+                    datastoreOverview,
+                    lastUpdated: Date.now()
+                });
 
-                            this.setState({
-                                datastoreOverview,
-                                lastUpdated: Date.now()
-                            });
-
-                            log.info("Datastore overview updated");
-
-                        }
-
-                        this.scheduleNextUpdate();
-
-                    })
-                    .catch(err => {
-                        log.error("Unable to get datastore overview: ", err);
-                        this.scheduleNextUpdate();
-                    });
+                log.info("Datastore overview updated");
 
             }
 
-        });
+        } finally {
+            this.scheduleNextUpdate();
+        }
 
     }
 
     private scheduleNextUpdate() {
 
-        // now do another update
-        setTimeout(() => this.doUpdate(), TimeDurations.toMillis('15m'));
+        const delay = SplashLifecycle.computeDelay();
+
+        const effectiveDelay = Math.max(delay || MIN_DELAY, MIN_DELAY);
+
+        log.debug("Scheduling next updated: ", {delay, effectiveDelay});
+
+        setTimeout(() => {
+
+            this.doUpdate()
+                .catch(err => log.error("Unable to do update: ", err));
+
+        }, effectiveDelay);
 
     }
 

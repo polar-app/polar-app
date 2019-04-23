@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
+import {Modal} from 'reactstrap';
 import {NULL_FUNCTION} from '../../util/Functions';
 
 /**

@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {MousePositions} from './MousePositions';
+import {ChannelCoupler} from '../../js/util/Channels';
+import {defaultValue} from '../../js/Preconditions';
 
 
 class Styles {
 
     public static Dock: React.CSSProperties = {
         display: 'flex',
-        height: '100%',
-        backgroundColor: 'lightgrey'
+        backgroundColor: 'lightgrey',
+        flexGrow: 1
     };
 
 }
@@ -19,40 +21,43 @@ class Styles {
  *
  * Features
  *
- * - menu items directly specified so we can show JUST the icons
  *
- * - support for an additional control for more advanced navigation.  For
- * example we could stuff in a tree control.
- *
- * - Keep the dock persistent.
+ * - Keep the dock persistent by using localStorage prefs
  *
  * TODO:
  *
- *  - need a way to expose a button to expand / collapse the dock
- *
- *  - need to support resize
  *
  *  - need to support persisting state
  *
  *  - to do resize:
  *
- *  https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
+ *      https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
  *
- *  - this MIGHT require window mouse event listeners which is not fun...
+ * - menu items directly specified so we can show JUST the icons in the sidebar
+ *   as a 'mode'.  TODO.. might be better if this was sort of a sub-component
+ *   or we implemented this via composition.
+ *
  *
  *  TODO:
- *   - screw it... Ic an just use THIS component:
- *    - http://alexkuz.github.io/react-dock/demo/
  *
- *    - and wrap it ?? with a 'permanently' docked mode?  The problem is I need
- *      a way to resize once it's permanently docked.
+ *   - if the user leaves the window, does mouse up, then comes back in, the
+ *     dock is still in resize mode.
  *
- *    - one thing I could do is just make the even listeners static/permanent
- *      for the entire app and they never get removed we just update the
- *      position.
+ *   - flyout mode.
  *
- *   - the splitter is being dragged even though draggable is false... I think
- *     this is one of the biggest issues...
+ *   - save state using localStorage.. I could override setState and I could
+ *     build a LocalState object which is passed an initialState from props
+ *     after and we call this.state = this.localState.hydrate() and the
+ *     over loaded setState() calls this.localState
+ *
+ *        - This could actually be called by composition and have a LocalState
+ *          component that restores state of the component via props?
+ *
+ * // TODO: to make flyout mode... just set position: absolute, height: 100%
+ *     and it should work
+ *
+ *   -  I need a CLEAN way to persist the state for this object in localstorage
+ *      and for other components too.
  *
  */
 export class Dock extends React.Component<IProps, IState> {
@@ -67,11 +72,28 @@ export class Dock extends React.Component<IProps, IState> {
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
+        this.toggle = this.toggle.bind(this);
+        this.setFlyout = this.setFlyout.bind(this);
+        this.markResizing = this.markResizing.bind(this);
 
+        if (this.props.toggleCoupler) {
+            this.props.toggleCoupler(() => this.toggle());
+        }
+
+        if (this.props.setFlyoutCoupler) {
+            this.props.setFlyoutCoupler(() => this.setFlyout());
+        }
+
+
+        const mode = this.props.initialMode ? this.props.initialMode : 'expanded';
+        const width = this.props.initialWidth || 400;
+        const flyout = defaultValue(this.props.initialFlyout, false);
 
         this.state = {
-            mode: this.props.initialMode ? this.props.initialMode : 'expanded',
-            width: this.props.initialWidth || 400
+            mode,
+            width,
+            resizing: false,
+            flyout
         };
 
     }
@@ -81,19 +103,41 @@ export class Dock extends React.Component<IProps, IState> {
         const leftStyle: React.CSSProperties = {};
         const rightStyle: React.CSSProperties = {};
 
-        // const width = typeof this.state.width === 'number' ? `${this.props.width}px` : this.props.width;
-        const width = this.state.width;
+        for (const style of [leftStyle, rightStyle]) {
+            style.height = '100%';
+        }
+
+        // FIXME: sidebarStyle first, then set leftStyle or rightSytle below...
 
         const sidebarStyle = this.props.side === 'left' ? leftStyle : rightStyle;
-        const contentStyle = this.props.side !== 'left' ? leftStyle : rightStyle;
+        const contentStyle = this.props.side === 'right' ? leftStyle : rightStyle;
+
+        const width = this.state.mode === 'expanded' ? this.state.width : 0;
+
+        if (this.state.resizing) {
+
+            for (const style of [sidebarStyle, contentStyle]) {
+                style.pointerEvents = 'none';
+                style.userSelect = 'none';
+            }
+
+        }
+
+        if (this.state.flyout) {
+            sidebarStyle.position = 'absolute';
+        }
 
         sidebarStyle.width = width;
+        contentStyle.flexGrow = 1;
 
-        contentStyle.width = `calc(100% - ${width})`;
+        // needed or the content expands out of the box which isn't what we
+        // want.
+        sidebarStyle.overflow = 'hidden';
 
         return (
 
-            <div className="dock" style={Styles.Dock}
+            <div className="dock"
+                 style={{...Styles.Dock, ...this.props.style || {}}}
                  onMouseMove={() => this.onMouseMove()}
                  draggable={false}
                  onMouseUp={() => this.onMouseUp()}>
@@ -101,18 +145,14 @@ export class Dock extends React.Component<IProps, IState> {
                 <div className="dock-left"
                      style={leftStyle}
                      draggable={false}>
-                    onDrag={() => console.log("being dragged left")}
-                    {this.props.left}
+
+                     {this.props.left}
+
                 </div>
 
-                <div className="dock-splitter"
+                <div className="dock-splitter ml-auto"
                      draggable={false}
-                     onDrag={() => console.log("being dragged splitter")}
                      onMouseDown={() => this.onMouseDown()}
-                     onDragStart={() => {
-                         console.log("FIXME: onDragStart");
-                         return false;
-                     }}
                      style={{
                          width: '10px',
                          cursor: 'col-resize',
@@ -123,7 +163,6 @@ export class Dock extends React.Component<IProps, IState> {
 
                 <div className="dock-right"
                      style={contentStyle}
-                     onDrag={() => console.log("being dragged right")}
                      draggable={false}>
                     {this.props.right}
                 </div>
@@ -135,22 +174,28 @@ export class Dock extends React.Component<IProps, IState> {
 
     private onMouseUp() {
 
-        console.log("up");
+        // console.log("up");
 
-        this.mouseDown = false;
         this.mousePosition = MousePositions.get();
+
+        this.markResizing(false);
     }
 
     private onMouseDown() {
 
-        this.mouseDown = true;
-
-        console.log("down");
         this.mousePosition = MousePositions.get();
+
+        this.markResizing(true);
+
+    }
+
+    private markResizing(resizing: boolean) {
+        this.mouseDown = resizing;
+        this.setState({...this.state, resizing});
     }
 
     private onMouseMove() {
-        console.log("move");
+        // console.log("move");
 
         if (!this.mouseDown) {
             return;
@@ -168,13 +213,52 @@ export class Dock extends React.Component<IProps, IState> {
 
     }
 
+    private toggle() {
+
+        const newMode = () => {
+
+            switch (this.state.mode) {
+
+                case 'expanded':
+                    return 'collapsed';
+                case 'collapsed':
+                    return 'expanded';
+
+            }
+
+        };
+
+        const mode = newMode();
+
+        this.setState({...this.state, mode});
+
+    }
+
+
+    private setFlyout() {
+
+        console.log("setting as flyout ");
+
+        const flyout = ! this.state.flyout;
+
+        const newState = {...this.state, flyout};
+        console.log("newState: ", newState);
+        this.setState(newState);
+
+    }
+
+
 }
 
 interface IProps {
 
+    readonly style?: React.CSSProperties;
+
     readonly initialMode?: DockMode;
 
     readonly initialWidth?: number;
+
+    readonly initialFlyout?: boolean;
 
     readonly side: DockSide;
 
@@ -182,11 +266,24 @@ interface IProps {
 
     readonly right: JSX.Element;
 
+    readonly toggleCoupler?: ChannelCoupler<void>;
+
+    readonly setFlyoutCoupler?: ChannelCoupler<void>;
+
 }
 
 interface IState {
+
     readonly mode: DockMode;
+
     readonly width: number;
+
+    /**
+     * True when we're in the middle of resizing the dock.
+     */
+    readonly resizing: boolean;
+
+    readonly flyout: boolean;
 
 }
 

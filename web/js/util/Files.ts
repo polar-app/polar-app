@@ -7,7 +7,7 @@ import {FilePaths} from "./FilePaths";
 import {Providers} from "./Providers";
 import {DurationStr, TimeDurations} from './TimeDurations';
 
-const ENABLE_ATOMIC_WRITES = false;
+const ENABLE_ATOMIC_WRITES = true;
 
 const log = Logger.create();
 
@@ -44,9 +44,8 @@ export class Files {
      *                directories.
      */
     public static async recursively(path: string,
-                                    listener: (path: string) => Promise<void>,
+                                    listener: (path: string, stat: fs.Stats) => Promise<void>,
                                     aborter: Aborter = new Aborter(Providers.of(false))) {
-
 
         aborter.verify();
 
@@ -69,22 +68,23 @@ export class Files {
             aborter.verify();
 
             const dirEntryPath = FilePaths.join(path, dirEntry);
-            const dirEntryType = await this.fileType(dirEntryPath);
+
+            const dirEntryStat = await this.statAsync(dirEntryPath);
 
             aborter.verify();
 
-            if (dirEntryType === 'directory') {
+            if (dirEntryStat.isDirectory()) {
 
                 // since the aborter is passed this will throw and exception if
                 // it aborts
                 await this.recursively(dirEntryPath, listener, aborter);
 
-            } else if (dirEntryType === 'file') {
+            } else if (dirEntryStat.isFile()) {
 
-                await listener(dirEntryPath);
+                await listener(dirEntryPath, dirEntryStat);
 
             } else {
-                throw new Error(`Unable to handle dir entry: ${dirEntryPath} of type ${dirEntryType}`);
+                throw new Error(`Unable to handle dir entry: ${dirEntryPath}`);
             }
 
         }
@@ -380,65 +380,35 @@ export class Files {
                                        data: FileHandle | NodeJS.ReadableStream | Buffer | string,
                                        options: WriteFileAsyncOptions = {}) {
 
-        // copy of the original when we are doing atomic writes.
+        // copy of the original path when we are doing atomic writes.
         const targetPath: string = path;
+
         let failed: boolean = false;
 
         const atomic = ENABLE_ATOMIC_WRITES && options.atomic;
 
         if (atomic) {
-            path = FilePaths.join(FilePaths.dirname(path), "." + FilePaths.basename(path));
+
+            // create a unique path name for the tmp file including a suffix
+            // which prevents races too so that only one atomic write wins if
+            // multiple are attempted.  This can happen now with streams.
+            const suffix = Math.floor(Math.random() * 999999);
+
+            const dirname = FilePaths.dirname(path);
+            const basename = FilePaths.basename(path);
+
+            // TODO: if we can do a rename with a file descriptor we can open it
+            // delete it, then start writing to just the FD so that when the
+            // process exits the file is removed but node doesn't support this
+            // because the paths are file paths not FDs.
+
+            path = FilePaths.join(dirname, "." + basename + "-" + suffix);
+
         }
 
         try {
 
-            if (data instanceof Buffer || typeof data === 'string') {
-
-                return this.withProperException(() => this.promised.writeFileAsync(path, data, options));
-
-            } else if (FileHandles.isFileHandle(data)) {
-
-                const existing = options.existing ? options.existing : 'copy';
-
-                const fileRef = <FileHandle> data;
-
-                if (existing === 'link') {
-
-                    // try to create a hard link first, then revert to a regular
-                    // file copy if necessary.
-
-                    if (await Files.existsAsync(path)) {
-                        // in the link mode an existing files has to be removed
-                        // before it can be linked.  Normally writeFileAsync would
-                        // overwrite existing files.
-                        await Files.unlinkAsync(path);
-                    }
-
-                    const src = fileRef.path;
-                    const dest = path;
-
-                    try {
-                        await Files.linkAsync(src, dest);
-                        return;
-                    } catch (e) {
-                        log.warn(`Unable to create hard link from ${src} to ${dest} (reverting to copy)`);
-                    }
-
-                }
-
-                Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
-
-            } else {
-
-                const readableStream = <NodeJS.ReadableStream> data;
-
-                if (! readableStream.pipe) {
-                    log.error("Given invalid data to copy: ", data);
-                    throw new Error("Given invalid data to copy.  Not supported type.");
-                }
-
-                readableStream.pipe(fs.createWriteStream(path));
-            }
+            await this._writeFileAsync(path, data, options);
 
         } catch (e) {
 
@@ -451,6 +421,65 @@ export class Files {
                 await Files.renameAsync(path, targetPath);
             }
 
+            // TODO: what if the rename fails, we need to remove the tmp file
+
+        }
+
+    }
+
+    /**
+     * Write a file async (directly) without any atomic handling.
+     */
+    private static async _writeFileAsync(path: string,
+                                         data: FileHandle | NodeJS.ReadableStream | Buffer | string,
+                                         options: WriteFileAsyncOptions = {}) {
+
+        if (data instanceof Buffer || typeof data === 'string') {
+
+            return this.withProperException(() => this.promised.writeFileAsync(path, data, options));
+
+        } else if (FileHandles.isFileHandle(data)) {
+
+            const existing = options.existing ? options.existing : 'copy';
+
+            const fileRef = <FileHandle> data;
+
+            if (existing === 'link') {
+
+                // try to create a hard link first, then revert to a regular
+                // file copy if necessary.
+
+                if (await Files.existsAsync(path)) {
+                    // in the link mode an existing files has to be removed
+                    // before it can be linked.  Normally writeFileAsync would
+                    // overwrite existing files.
+                    await Files.unlinkAsync(path);
+                }
+
+                const src = fileRef.path;
+                const dest = path;
+
+                try {
+                    await Files.linkAsync(src, dest);
+                    return;
+                } catch (e) {
+                    log.warn(`Unable to create hard link from ${src} to ${dest} (reverting to copy)`);
+                }
+
+            }
+
+            Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
+
+        } else {
+
+            const readableStream = <NodeJS.ReadableStream> data;
+
+            if (! readableStream.pipe) {
+                log.error("Given invalid data to copy: ", data);
+                throw new Error("Given invalid data to copy.  Not supported type.");
+            }
+
+            readableStream.pipe(fs.createWriteStream(path));
         }
 
     }

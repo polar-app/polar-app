@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {EmbeddedImages} from '../splash/splashes/whats_new/EmbeddedImages';
+import {EmbeddedImages} from '../splash2/whats_new/EmbeddedImages';
 import Card from 'reactstrap/lib/Card';
 import CardHeader from 'reactstrap/lib/CardHeader';
 import CardBody from 'reactstrap/lib/CardBody';

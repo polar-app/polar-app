@@ -1,15 +1,16 @@
 import * as React from 'react';
 import {WhatsNewContent} from './WhatsNewContent';
-import Modal from 'reactstrap/lib/Modal';
-import ModalHeader from 'reactstrap/lib/ModalHeader';
-import ModalBody from 'reactstrap/lib/ModalBody';
 import Button from 'reactstrap/lib/Button';
 import ModalFooter from 'reactstrap/lib/ModalFooter';
+import {LargeModal} from '../../../../../web/js/ui/large_modal/LargeModal';
+import {LargeModalBody} from '../../../../../web/js/ui/large_modal/LargeModalBody';
 
 export class WhatsNewModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onDone = this.onDone.bind(this);
 
         this.state = {
             open: true
@@ -23,25 +24,34 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
             <div>
 
-                <Modal isOpen={this.state.open}
-                       size="lg"
-                       fade={false}
-                       style={{overflowY: 'initial', minWidth: '80%'}}>
-                    <ModalHeader>What's New in Polar</ModalHeader>
-                    <ModalBody style={{overflowY: 'auto', maxHeight: 'calc(100vh - 200px)'}}>
+                <LargeModal isOpen={this.state.open}>
+
+                    <LargeModalBody>
 
                         <WhatsNewContent/>
 
-                    </ModalBody>
+                    </LargeModalBody>
+
                     <ModalFooter>
-                        <Button color="primary" onClick={() => this.setState({open: false})}>Close</Button>
+                        <Button color="primary" onClick={() => this.onDone()}>Close</Button>
                     </ModalFooter>
 
-                </Modal>
+                </LargeModal>
+
 
             </div>
 
         );
+    }
+
+    private onDone() {
+
+        this.setState({open: false});
+
+        if (this.props.onDone) {
+            this.props.onDone();
+        }
+
     }
 
 }
@@ -51,7 +61,7 @@ interface IProps {
     /**
      * Called when we click the ok button.
      */
-    accept?: () => void;
+    onDone?: () => void;
 
 }
 

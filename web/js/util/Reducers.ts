@@ -3,6 +3,9 @@ export class Reducers {
     public static SUM =
        (accumulator: number, currentValue: number) => accumulator + currentValue
 
+    public static MIN =
+        (accumulator: number, currentValue: number) => currentValue < accumulator ? currentValue : accumulator
+
     public static MAX =
         (accumulator: number, currentValue: number) => currentValue > accumulator ? currentValue : accumulator
 

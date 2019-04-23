@@ -1,4 +1,6 @@
 import {Platforms} from '../../util/Platforms';
+import {AppRuntime} from '../../AppRuntime';
+import {shell} from 'electron';
 
 export class Nav {
 
@@ -10,10 +12,16 @@ export class Nav {
 
     public static openLinkWithNewTab(link: string) {
 
-        const win = window.open(link, '_blank');
+        if (AppRuntime.isBrowser()) {
 
-        if (win) {
-            win.focus();
+            const win = window.open(link, '_blank');
+
+            if (win) {
+                win.focus();
+            }
+
+        } else {
+            shell.openExternal(link);
         }
 
     }

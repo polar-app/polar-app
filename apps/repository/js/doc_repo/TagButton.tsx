@@ -2,9 +2,9 @@ import * as React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import {Blackout} from '../../../../web/js/ui/blackout/Blackout';
-import {TagSelectOption} from '../TagSelectOption';
+import {TagOption} from '../TagOption';
 import {TagsDB} from '../TagsDB';
-import {TagSelectOptions} from '../TagSelectOptions';
+import {TagOptions} from '../TagOptions';
 import {Tag} from '../../../../web/js/tags/Tag';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 
@@ -33,7 +33,7 @@ export class TagButton extends React.Component<IProps, IState> {
 
     public render() {
 
-        const options: TagSelectOption[] =
+        const options: TagOption[] =
             this.props.tagsDBProvider().tags().map( current => {
                 return {
                     value: current.id,
@@ -140,12 +140,12 @@ export class TagButton extends React.Component<IProps, IState> {
 
         // as so as we handle the change we toggle off
 
-        const tagSelectOptions: TagSelectOption[] = selectedOptions;
+        const tagSelectOptions: TagOption[] = selectedOptions;
 
         if (! tagSelectOptions || tagSelectOptions.length === 0) {
             this.selectedTags = undefined;
         } else {
-            this.selectedTags = TagSelectOptions.toTags(selectedOptions);
+            this.selectedTags = TagOptions.toTags(selectedOptions);
         }
 
     }

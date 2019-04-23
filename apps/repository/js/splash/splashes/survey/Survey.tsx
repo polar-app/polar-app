@@ -1,7 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Splash} from '../../Splash';
-import {EmbeddedImages} from '../whats_new/EmbeddedImages';
+import {EmbeddedImages} from '../../../splash2/whats_new/EmbeddedImages';
 import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
 import {CallToActionLink} from '../components/CallToActionLink';
