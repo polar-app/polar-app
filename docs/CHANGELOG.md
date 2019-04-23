@@ -1,6 +1,7 @@
 # 1.18.0
 
-- Upgrade to Electron 4.x
+- Upgrade to Electron 4.1.4, Chrome/69.0.3497.128, and NodeJS v10.11.0.  Should
+  fix a latency issue some users were reporting WRT Ubuntu.
 
 - Fixed bug where the UI would break when both filtering and removing tags on 
   a document that was visible.
@@ -9,7 +10,7 @@
 
 - Upgraded to latest version of Typescript 3.4.3
 
-- Increased the sidebar a bit to accomadate updating comments without overflow
+- Increased the sidebar a bit to accommodate updating comments without overflow
   of the summernote bar.
 
 - Filtering for tags now lists the tags alphabetically
