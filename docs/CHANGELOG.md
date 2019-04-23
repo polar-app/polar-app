@@ -1,5 +1,8 @@
 # 1.18.0
 
+- Fixed bug where the UI would break when both filtering and removing tags on 
+  a document that was visible.
+
 - Enabled atomic writes again for all platforms.
 
 - Upgraded to latest version of Typescript 3.4.3
