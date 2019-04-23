@@ -32,13 +32,14 @@ export class Canvases {
     //
     // }
 
-    public static toDataURLHD2(canvas: HTMLCanvasElement) {
+    public static toDataURLHD(canvas: HTMLCanvasElement) {
 
         // https://developer.mozilla.org/en-US/docs/Web/API/Blob
         //
         return new Promise((resolve, reject) => {
 
             canvas.toBlob((blob) => {
+
                 if (blob) {
 
                     const reader = new FileReader();
@@ -72,7 +73,6 @@ export class Canvases {
         });
 
     }
-
 
 }
 
