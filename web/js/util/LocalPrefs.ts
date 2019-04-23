@@ -1,4 +1,6 @@
 import {Optional} from './ts/Optional';
+import {DurationStr, TimeDurations} from './TimeDurations';
+import {DurationMS} from './TimeDurations';
 
 /**
  * @Deprecated use the new IPrefs systems
@@ -84,6 +86,27 @@ export class LocalPrefs {
 
     }
 
+    /**
+     * Compute how long this item is delayed. Returns a positive number for the
+     * delay or a negative number if the item delay has expired.
+     */
+    public static computeDelay(key: string): DurationMS | undefined {
+
+        const pref = this.get(key).getOrUndefined();
+
+        if (pref && pref.match(/[0-9]+/)) {
+
+            const until = parseInt(pref, 10);
+            const now = Date.now();
+
+            return until - now;
+
+        } else {
+            return undefined;
+        }
+
+    }
+
     public static markDelayed(key: string, duration: DurationStr) {
 
         const durationMS = TimeDurations.toMillis(duration);
@@ -109,4 +132,3 @@ export class LocalPrefs {
 
 }
 
-import {DurationStr, TimeDurations} from './TimeDurations';

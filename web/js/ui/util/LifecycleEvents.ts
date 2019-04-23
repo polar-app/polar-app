@@ -29,6 +29,7 @@ export class LifecycleEvents {
     public static PREVIEW_TOUR_TERMINATED = 'preview-tour-terminated';
 
     public static WEBAPP_PREVIEW_WARNING_SHOWN = 'webapp-preview-warning-shown';
+    public static MOBILE_PREVIEW_WARNING_SHOWN = 'mobile-preview-warning-shown';
 
 }
 

@@ -31,7 +31,7 @@ export class Preconditions {
      */
     public static assertEqual<T>(value: T, expected: T, name: string): T {
 
-        if(value !== expected) {
+        if (value !== expected) {
             throw new Error(`Value of ${value} !==- ${expected}`);
         }
 
@@ -40,16 +40,17 @@ export class Preconditions {
     }
 
     /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * Assert that this value is defined , not-null, and also not NaN and also
+     * a number.
      * @param value The value we expect to be a number.
      * @param name The name of the number.
      * @return {number}
      */
-    static assertNumber(value: any, name: string) {
+    public static assertNumber(value: any, name: string) {
 
         Preconditions.assertNotNull(value, name);
 
-        if(isNaN(value)) {
+        if (isNaN(value)) {
             throw new Error(`Precondition failure for ${name}: NaN`);
         }
 
@@ -66,7 +67,7 @@ export class Preconditions {
      * @param name
      * @return {*}
      */
-    static assertInstanceOf(value: any, instance: any, name: string) {
+    public static assertInstanceOf(value: any, instance: any, name: string) {
 
         Preconditions.assertNotNull(value, name);
         Preconditions.assertNotNull(instance, "instance");
@@ -162,7 +163,7 @@ export class Preconditions {
 
     }
 
-    static assertNotTypeOf<T>(value: any, name: string, type: string): T {
+    public static assertNotTypeOf<T>(value: any, name: string, type: string): T {
 
         if (typeof value === type ) {
             throw new Error(`Precondition for typeof '${name}' was ${type} but not allowed`);
@@ -183,17 +184,18 @@ export class Preconditions {
     }
 
     /**
-     * Use a default value if one is not specified.
-     *
+     * Use a default value if one is not specified.  This works better than
+     * other tests which error when working with undefined | null and booleans
+     * as these are false-ish.
      *
      */
-    public static defaultValue<T>(argCurrentValue: T, argDefaultValue: T): T {
+    public static defaultValue<T>(value: T | undefined | null, defaultValue: T): NonNullable<T> {
 
-        if(! argCurrentValue) {
-            return argDefaultValue;
+        if (isPresent(value)) {
+            return value!;
         }
 
-        return argCurrentValue;
+        return defaultValue!;
 
     }
 
@@ -208,14 +210,11 @@ export class Preconditions {
 
 }
 
-interface AssertionFunction<T> {
-    (val: T): boolean;
-}
-
+type AssertionFunction<T> = (val: T) => boolean;
 
 // noinspection TsLint: variable-name
-export function defaultValue<T>(_currentValue: T, _defaultValue: T): T {
-    return Preconditions.defaultValue(_currentValue, _defaultValue);
+export function defaultValue<T>(value: T | undefined | null, defaultValue: T): NonNullable<T> {
+    return Preconditions.defaultValue(value, defaultValue);
 }
 
 export function notNull<T>(value: T | null, name?: string): NonNullable<T> {

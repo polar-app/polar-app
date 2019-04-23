@@ -1,6 +1,7 @@
 import * as firebase from './lib/firebase';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {AsyncProviders} from '../util/Providers';
+import {Firebase} from './Firebase';
 
 const tracer = RendererAnalytics.createTracer('firestore');
 
@@ -11,6 +12,8 @@ export class Firestore {
     private static firestoreProvider = AsyncProviders.memoize(async () => await Firestore.createInstance(opts));
 
     public static async getInstance(): Promise<firebase.firestore.Firestore> {
+        Firebase.init();
+
         return await this.firestoreProvider();
     }
 

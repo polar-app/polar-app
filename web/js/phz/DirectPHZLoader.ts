@@ -70,12 +70,14 @@ export class DirectPHZLoader {
 
     private getResourceEntry0(url: string): ResourceEntry | undefined {
 
-        return Object.values(this.resources.entries)
-            .filter(current => current.resource.url === url)
+        const resources: Array<ResourceEntry | undefined>
+            = Object.values(this.resources.entries);
+
+        return resources
+            .filter(current => current && current.resource.url === url)
             .reduce(Reducers.FIRST, undefined);
 
     }
-
 
     private async loadDocument(url: string,
                                resources: Resources) {
@@ -198,14 +200,15 @@ export class DirectPHZLoader {
     }
 
     /**
-     * Al through all the iframes in this doc and fix them so that they don't
+     * Go through all the iframes in this doc and fix them so that they don't
      * load as we are going to load them manually.
      */
     private neutralizeIFrames(doc: Document) {
 
         const result: IFrameRef[] = [];
 
-        for (const iframe of Array.from(doc.querySelectorAll("iframe"))) {
+        const iframes = Array.from(doc.querySelectorAll("iframe"));
+        for (const iframe of iframes) {
 
             const src = iframe.getAttribute("src");
 
@@ -215,7 +218,6 @@ export class DirectPHZLoader {
                 iframe.removeAttribute("src");
 
                 result.push({iframe, src});
-                continue;
 
             } else {
                 // this iframe isn't interesting to us as it does not have

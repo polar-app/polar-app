@@ -9,7 +9,7 @@ import {TextRect} from '../../js/metadata/TextRect';
 import {TextHighlightRecords} from '../../js/metadata/TextHighlightRecords';
 import {ViewOrEditCommentExample} from './ViewOrEditCommentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
-import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
+import {WhatsNewContent} from '../../../apps/repository/js/splash2/whats_new/WhatsNewContent';
 import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
 import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
@@ -46,13 +46,12 @@ import {DocContextMenu} from './DocContextMenu';
 import {Dialogs} from '../../js/ui/dialogs/Dialogs';
 import {DocContextMenu2} from './DocContextMenu2';
 import Dropdown from 'reactstrap/lib/Dropdown';
-import {CrowdfundingCampaign} from '../../js/ui/crowdfunding/CrowdfundingCampaign';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
-import {CrowdfundingStatus} from './CrowdfundingStatus';
-import Progress from 'reactstrap/lib/Progress';
-import {CrowdfundingBar} from '../../js/ui/crowdfunding/CrowdfundingBar';
+import {Dock} from './Dock';
+import {Channels} from '../../js/util/Channels';
+import {Suggestions} from '../../js/ui/feedback/Suggestions';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -65,87 +64,88 @@ class App<P> extends React.Component<{}, IAppState> {
             dropdownOpen: false,
             splitButtonOpen: false
         };
+
     }
 
     public render() {
-
-        // ProgressBar.create();
-
-        const options: ListOptionType[] = [
-            {
-                id: "title",
-                label: "Title",
-                selected: true
-            },
-            {
-                id: "tags",
-                label: "Tags",
-                selected: false
-            }
-        ];
-
-        const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
-
-        const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
-        const textSelections: TextRect[] = [new TextRect({text: "hello world"})];
-        const text = "hello world";
-
-        const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
-
-        // const ref = Refs.createFromAnnotationType(textHighlight.id,
-        // AnnotationType.TEXT_HIGHLIGHT);
-
-        docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;
-
-        // let flashcard = Flashcards.createFrontBack(front, back, ref);
         //
-        // // TODO: an idiosyncracie of the proxies system is that it mutates
-        // the // object so if it's read only it won't work.  This is a bug
-        // with // Proxies so I need to also fix that bug there in the future.
-        // flashcard = Object.assign({}, flashcard);
-        // annotation.pageMeta.flashcards[flashcard.id] = flashcard;
-
-
-        // TODO: we have to create some flashcards and comments for this object
-        // so that the annotation sidear renders.
-
-        const relatedTags = new RelatedTags();
-
-        relatedTags.update('0x01', 'set', 'linux');
-        relatedTags.update('0x01', 'set', 'microsoft');
-
-        relatedTags.update('0x02', 'set', 'linux');
-        relatedTags.update('0x02', 'set', 'google');
-
-        relatedTags.update('0x03', 'set', 'linux');
-        relatedTags.update('0x03', 'set', 'microsoft');
-
-        relatedTags.update('0x04', 'set', 'linux');
-        relatedTags.update('0x04', 'set', 'microsoft');
-
-        relatedTags.update('0x05', 'set', 'linux');
-        relatedTags.update('0x05', 'set', 'google');
-
-        const tags: Tag[] = [
-            {id: 'microsoft', label: 'microsoft'},
-            {id: 'google', label: 'google'}
-        ];
-
-        const existingTags: Tag[] = [
-            {id: 'google', label: 'google'}
-        ];
-
-        const steps = [
-            {
-                target: '.my-first-step',
-                content: 'This is my awesome feature!',
-                disableBeacon: true
-            },
-            {
-                target: '.my-other-step',
-                content: 'This another awesome feature!',
-            },
-        ];
+        // // ProgressBar.create();
+        //
+        // const options: ListOptionType[] = [
+        //     {
+        //         id: "title",
+        //         label: "Title",
+        //         selected: true
+        //     },
+        //     {
+        //         id: "tags",
+        //         label: "Tags",
+        //         selected: false
+        //     }
+        // ];
+        //
+        // const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
+        //
+        // const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
+        // const textSelections: TextRect[] = [new TextRect({text: "hello world"})];
+        // const text = "hello world";
+        //
+        // const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
+        //
+        // // const ref = Refs.createFromAnnotationType(textHighlight.id,
+        // // AnnotationType.TEXT_HIGHLIGHT);
+        //
+        // docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;
+        //
+        // // let flashcard = Flashcards.createFrontBack(front, back, ref);
+        // //
+        // // // TODO: an idiosyncracie of the proxies system is that it mutates
+        // // the // object so if it's read only it won't work.  This is a bug
+        // // with // Proxies so I need to also fix that bug there in the future.
+        // // flashcard = Object.assign({}, flashcard);
+        // // annotation.pageMeta.flashcards[flashcard.id] = flashcard;
+        //
+        //
+        // // TODO: we have to create some flashcards and comments for this object
+        // // so that the annotation sidear renders.
+        //
+        // const relatedTags = new RelatedTags();
+        //
+        // relatedTags.update('0x01', 'set', 'linux');
+        // relatedTags.update('0x01', 'set', 'microsoft');
+        //
+        // relatedTags.update('0x02', 'set', 'linux');
+        // relatedTags.update('0x02', 'set', 'google');
+        //
+        // relatedTags.update('0x03', 'set', 'linux');
+        // relatedTags.update('0x03', 'set', 'microsoft');
+        //
+        // relatedTags.update('0x04', 'set', 'linux');
+        // relatedTags.update('0x04', 'set', 'microsoft');
+        //
+        // relatedTags.update('0x05', 'set', 'linux');
+        // relatedTags.update('0x05', 'set', 'google');
+        //
+        // const tags: Tag[] = [
+        //     {id: 'microsoft', label: 'microsoft'},
+        //     {id: 'google', label: 'google'}
+        // ];
+        //
+        // const existingTags: Tag[] = [
+        //     {id: 'google', label: 'google'}
+        // ];
+        //
+        // const steps = [
+        //     {
+        //         target: '.my-first-step',
+        //         content: 'This is my awesome feature!',
+        //         disableBeacon: true
+        //     },
+        //     {
+        //         target: '.my-other-step',
+        //         content: 'This another awesome feature!',
+        //     },
+        // ];
         // Toaster.success('A new update for Polar was downloaded.  Please
         // restart.', 'Update downloaded', { requiresAcknowledgment: true,
         // preventDuplicates: true });  Toaster.info('X A new update for Polar
@@ -167,19 +167,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
         // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
 
-        const url = "https://news.ycombinator.com/";
+        const [toggle, toggleCoupler] = Channels.create<void>();
+        const [setFlyout, setFlyoutCoupler] = Channels.create<void>();
 
-        console.log("gonig to do it");
-
-        URLs.toBlob(url)
-            .then((blob) => {
-
-                console.log("converted to blob!");
-
-                Blobs.toStream(blob).pipe(process.stdout);
-
-            })
-            .catch(err => console.log("got error", err));
 
         return (
             //
@@ -198,126 +188,59 @@ class App<P> extends React.Component<{}, IAppState> {
           // {/*}*/}
           //                 {/*right={<div/>}/>*/}
 
+
             <div>
 
-                <CrowdfundingStatus/>
+                <Suggestions category="foo"
+                             title="We need your feedback!"
+                             description="I need your help to improve Polar!  Now's your opportunity to let me us know how you'd like us to improve Polar moving forward!"/>
 
-                <br/>
-                <br/>
-                <br/>
+                {/*<div style={{*/}
+                        {/*display: 'flex',*/}
+                        {/*flexDirection: 'column',*/}
+                        {/*height: '100%'*/}
+                     {/*}}>*/}
 
-
-                <CrowdfundingBar/>
-
-                <br/>
-                <br/>
-
-                <div className="mb-1 rounded border p-2"
-                     style={{backgroundColor: '#F3CF32', fontWeight: 'bold'}}>
-
-                    <div style={{display: 'flex'}}>
-
-                        <div className="mt-auto mb-auto">
-                            {/*Polar needs your help to remain Open Source.  Please help fund our crowdfunding campaign.*/}
-
-                            Please support Polar by donating to our crowdfunding campaign.
-                        </div>
-
-                        <div>
-                            <Progress className="w-100" value={55}/>
-                        </div>
-
-                        <div className="mt-auto mb-auto ml-auto"
-                             style={{
-                                 justifyContent: 'flex-end',
-                             }}>
-                            <Button color="success" size="sm" style={{fontWeight: 'bold'}}>Donate Now</Button>
-                        </div>
-
-
+                    <div>
+                        <Button onClick={() => toggle()}>Toggle</Button>
+                        <Button onClick={() => setFlyout()}>Flyout</Button>
                     </div>
 
-                </div>
+                    <Dock style={{flexGrow: 1}}
+                          left={<div>this is the left</div>}
+                          right={<div style={{backgroundColor: 'blue'}}>
+                              this is the right
+                              <a href="http://cnn.com">asdf</a>
+                          </div>}
+                          side="left"
+                          toggleCoupler={toggleCoupler}
+                          setFlyoutCoupler={setFlyoutCoupler}
+                    />
 
-                {/*<Feedback category='net-promoter-score'*/}
-                          {/*title='How likely are you to recommend Polar to a colleague?'*/}
-                          {/*from="Not likely"*/}
-                          {/*to="Very likely"*/}
-                {/*/>*/}
+                    {/*/!*<div style={{display: 'flex', height: '100%'}}>*!/*/}
 
-                {/*<AnkiReviewContent/>*/}
+                        {/*/!*<div style={{width: '400px',*!/*/}
+                                     {/*/!*backgroundColor: 'red',*!/*/}
+                                     {/*/!*height: '100%',*!/*/}
+                                     {/*/!*position: 'absolute'}}>*!/*/}
 
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                            {/*/!*this is the left*!/*/}
+                        {/*/!*</div>*!/*/}
 
-                <CrowdfundingCampaign/>
+                        {/*/!*<div style={{flexGrow: 1, backgroundColor: 'blue'}}>*!/*/}
+                            {/*/!*asdf*!/*/}
+                            {/*/!*asdf*!/*/}
+                        {/*/!*</div>*!/*/}
 
-                {/*<SimpleTooltipEx text={`*/}
-                                 {/*This is the text for the tooltip*/}
-                                 {/*`}>*/}
+                    {/*/!*</div>*!/*/}
 
-                    {/*<div>*/}
-                        {/*this is code for the new tooltip*/}
-                    {/*</div>*/}
-
-                {/*</SimpleTooltipEx>*/}
-
-                {/*<div id="old-tooltip-example">*/}
-                    {/*this is code for the old tooltip*/}
                 {/*</div>*/}
 
-
-                {/*<SimpleTooltip target="old-tooltip-example">*/}
-                    {/*this is an old tooltip.*/}
-                {/*</SimpleTooltip>*/}
-
-                {/*<DocContextMenu onSetTitle={() => console.log("set title")}>*/}
-
-                    {/*<div>*/}
-                        {/*Right click or long-tap on this box*/}
-                    {/*</div>*/}
-
-                {/*</DocContextMenu>*/}
-
-                {/*<DocContextMenu2 >*/}
-
-                    {/*<div>*/}
-                        {/*Right click or long-tap on this box*/}
-                    {/*</div>*/}
-
-                {/*</DocContextMenu2>*/}
-
-                {/*/!*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*!/*/}
-                    {/*/!*<DropdownToggle tag="div">*!/*/}
-                    {/*/!*</DropdownToggle>*!/*/}
-                    {/*/!*<DropdownMenu>*!/*/}
-                        {/*/!*<DropdownItem header>Header</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem>Some Action</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem disabled>Action (disabled)</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem divider />*!/*/}
-                        {/*/!*<DropdownItem>Foo Action</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem>Bar Action</DropdownItem>*!/*/}
-                        {/*/!*<DropdownItem>Quo Action</DropdownItem>*!/*/}
-                    {/*/!*</DropdownMenu>*!/*/}
-                {/*/!*</Dropdown>*!/*/}
-
-                {/*asdf*/}
-
-                {/*/!*<Dropdown isOpen={true} toggle={NULL_FUNCTION}>*!/*/}
-
-                    {/*<DropdownItem header>Header</DropdownItem>*/}
-                    {/*<DropdownItem onClick={NULL_FUNCTION}>Some Action</DropdownItem>*/}
-                    {/*<DropdownItem disabled>Action (disabled)</DropdownItem>*/}
-                    {/*<DropdownItem divider />*/}
-                    {/*<DropdownItem>Foo Action</DropdownItem>*/}
-                    {/*<DropdownItem>Bar Action</DropdownItem>*/}
-                    {/*<DropdownItem>Quo Action</DropdownItem>*/}
-
-                {/*/!*</Dropdown>*!/*/}
+                {/*/!*<Feedback category='net-promoter-score'*!/*/}
+                          {/*/!*title='How likely are you to recommend Polar?'*!/*/}
+                          {/*/!*from="Not likely"*!/*/}
+                          {/*/!*to="Very likely"*!/*/}
+                          {/*/!*onRated={NULL_FUNCTION}/>*!/*/}
 
             </div>
 

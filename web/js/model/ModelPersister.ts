@@ -47,7 +47,6 @@ export class ModelPersister {
                 if (this.nrDeferredWrites <= 1) {
                     // we only have one deferred write and this is the toggling
                     // of the mutating field.
-
                     return;
                 }
 

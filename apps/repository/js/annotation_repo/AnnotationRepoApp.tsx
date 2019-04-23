@@ -16,8 +16,8 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {AddContentButton} from '../ui/AddContentButton';
 import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
 import {AddContentActions} from '../ui/AddContentActions';
-import {CallbackFunction, Callbacks} from '../../../../web/js/util/Callbacks';
-import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
+import {ChannelFunction, Channels} from '../../../../web/js/util/Channels';
+import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 
 const log = Logger.create();
@@ -32,9 +32,9 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
     private readonly filteredTags = new FilteredTags();
 
-    private readonly filteredCallback: CallbackFunction<AnnotationRepoFilters>;
+    private readonly filterChannel: ChannelFunction<AnnotationRepoFilters>;
 
-    private readonly setFilteredCallback: SetCallbackFunction<AnnotationRepoFilters>;
+    private readonly setFilterChannel: ChannelCoupler<AnnotationRepoFilters>;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -43,8 +43,8 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
         this.docRepository = new RepoDocMetaManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
 
-        [this.filteredCallback, this.setFilteredCallback]
-            = Callbacks.create<AnnotationRepoFilters>();
+        [this.filterChannel, this.setFilterChannel]
+            = Channels.create<AnnotationRepoFilters>();
 
         this.state = {
         };
@@ -80,7 +80,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                             <div style={{marginLeft: 'auto'}}>
 
                                 <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                         onFiltered={filters => this.filteredCallback(filters)}
+                                                         onFiltered={filters => this.filterChannel(filters)}
                                                          right={
                                                              <div/>
                                                           }
@@ -107,7 +107,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                                                  updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
                                                  repoDocMetaManager={this.props.repoDocMetaManager}
                                                  repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                                 setFilteredCallback={this.setFilteredCallback}
+                                                 setFiltered={this.setFilterChannel}
                                                  onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
 
                         </FixedNavBody>

@@ -24,5 +24,4 @@ SpectronMain2.create().run(async state => {
 
     state.window.loadURL(`file://${__dirname}/sending-app.html`);
 
-
 });

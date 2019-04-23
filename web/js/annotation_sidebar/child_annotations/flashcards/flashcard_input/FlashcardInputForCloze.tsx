@@ -114,6 +114,11 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
         // TODO: don't use the top level window but get it from the proper
         // event
         const sel = window.getSelection();
+
+        if (!sel) {
+            return;
+        }
+
         const range = sel.getRangeAt(0);
 
         const textNodes = Ranges.getTextNodes(range);

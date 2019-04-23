@@ -4,6 +4,7 @@ import {Logger} from '../../../logger/Logger';
 import {isPresent} from '../../../Preconditions';
 
 const log = Logger.create();
+
 /**
  * Write data from the main Electron process.
  */

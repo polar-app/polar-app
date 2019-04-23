@@ -77,7 +77,7 @@ export class TextHighlightController {
 
                 const getPageNum = () => {
 
-                    const sel = window.getSelection();
+                    const sel = window.getSelection()!;
 
                     if (sel.rangeCount >= 1) {
 
@@ -151,6 +151,10 @@ export class TextHighlightController {
 
             case "delete-text-highlight":
                 this.onTextHighlightDeleted(triggerEvent);
+                break;
+
+            case "scroll-to-text-highlight":
+                this.onScrollToTextHighlight(triggerEvent);
                 break;
 
             default:
@@ -384,7 +388,7 @@ export class TextHighlightController {
         log.info("Added text highlight to model");
 
         // now clear the selection since we just highlighted it.
-        win.getSelection().empty();
+        win.getSelection()!.empty();
 
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
@@ -469,6 +473,23 @@ export class TextHighlightController {
         }
 
         return result;
+
+    }
+
+    private onScrollToTextHighlight(triggerEvent: TriggerEvent) {
+
+        const annotationPointers
+            = AnnotationPointers.toAnnotationPointers(".text-highlight", triggerEvent);
+
+        Optional.first(...annotationPointers).map(annotationDescriptor => {
+
+            const id = annotationDescriptor.id;
+
+            const element = document.querySelector(`.annotations div[data-annotation-id='${id}']`);
+            element!.scrollIntoView();
+
+        });
+
 
     }
 

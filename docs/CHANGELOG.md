@@ -1,3 +1,29 @@
+# 1.18.0
+
+- Upgrade to Electron 4.1.4, Chrome/69.0.3497.128, and NodeJS v10.11.0.  Should
+  fix a latency issue some users were reporting WRT Ubuntu.
+
+- Fixed bug where the UI would break when both filtering and removing tags on 
+  a document that was visible.
+
+- Enabled atomic writes again for all platforms.
+
+- Upgraded to latest version of Typescript 3.4.3
+
+- Increased the sidebar a bit to accommodate updating comments without overflow
+  of the summernote bar.
+
+- Filtering for tags now lists the tags alphabetically
+
+- Right click on text highlight now add 'scroll into view'
+
+# 1.17.5
+
+- Recording NPS and other stats in Firebase for analysis in bulk.
+
+- Completely reworked the splash system 
+  
+- Release to focus on our crowdfunding campaign.
 
 # 1.17.4
 

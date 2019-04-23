@@ -3,7 +3,7 @@ import React from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
 import {LargeModal} from '../large_modal/LargeModal';
-import {WhatsNewContent} from '../../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
+import {WhatsNewContent} from '../../../../apps/repository/js/splash2/whats_new/WhatsNewContent';
 import {LargeModalBody} from '../large_modal/LargeModalBody';
 import {Firebase} from '../../firebase/Firebase';
 import {FirebaseUIAuth} from '../../firebase/FirebaseUIAuth';

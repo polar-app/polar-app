@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Logger} from '../../../../../../web/js/logger/Logger';
+import {Logger} from '../../../../../web/js/logger/Logger';
 import {EmbeddedImages} from './EmbeddedImages';
-import {CrowdfundingCampaign} from '../../../../../../web/js/ui/crowdfunding/CrowdfundingCampaign';
+import {CrowdfundingCampaign} from '../../../../../web/js/ui/crowdfunding/CrowdfundingCampaign';
 
 const log = Logger.create();
 
@@ -22,6 +22,49 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                     <div className="intro">
                         <CrowdfundingCampaign/>
                     </div>
+
+
+                    <h3>Polar 1.18.0</h3>
+
+                    <div className="intro">
+
+                        <p>
+                            This release mostly focused on improving stability
+                            and implementing a few key UI features.  This
+                            upgrades us to Electron 4.x which as needed for
+                            some users who were experiencing severe latency
+                            using Polar on Linux.  We also resolve a key issue
+                            with non-atomic writes.
+                        </p>
+
+                        <p>
+                            This includes a good chunk of the new sharing
+                            functionality but it's not enabled yet.
+                        </p>
+
+
+                    </div>
+
+                    <ul>
+
+                        <li>Upgrade to Electron 4.1.4, Chrome/69.0.3497.128, and NodeJS v10.11.0.  Should
+                            fix a latency issue some users were reporting WRT Ubuntu.</li>
+
+                        <li>Fixed bug where the UI would break when both filtering and removing tags on
+                            a document that was visible.</li>
+
+                        <li>Enabled atomic writes again for all platforms.</li>
+
+                        <li>Upgraded to latest version of Typescript 3.4.3</li>
+
+                        <li>Increased the sidebar a bit to accommodate updating comments without overflow
+                            of the summernote bar.</li>
+
+                        <li>Filtering for tags now lists the tags alphabetically</li>
+
+                        <li>Right click on text highlight now add 'scroll into view'</li>
+
+                    </ul>
 
                     <h3>Polar 1.17.14</h3>
 

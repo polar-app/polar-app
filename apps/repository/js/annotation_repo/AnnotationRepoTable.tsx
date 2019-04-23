@@ -16,7 +16,7 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
-import {SetCallbackFunction} from '../../../../web/js/util/Callbacks';
+import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 
@@ -66,7 +66,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
         // this will trigger the filter engine to be run which will then call
         // onUpdated which then calls setState
-        this.props.setFilteredCallback(filters => filterEngine.onFiltered(filters));
+        this.props.setFiltered(filters => filterEngine.onFiltered(filters));
 
         const doRefresh = () => filterEngine.onProviderUpdated();
 
@@ -293,7 +293,7 @@ interface IProps {
 
     readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
 
-    readonly setFilteredCallback: SetCallbackFunction<AnnotationRepoFilters>;
+    readonly setFiltered: ChannelCoupler<AnnotationRepoFilters>;
 
 }
 

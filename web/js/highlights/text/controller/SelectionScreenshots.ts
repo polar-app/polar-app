@@ -34,7 +34,7 @@ export class SelectionScreenshots {
     public static withoutRange<T>(doc: Document, win: Window, handler: (range: Range) => T): T {
 
         const sel = win.getSelection();
-        const range = sel.getRangeAt(0);
+        const range = sel!.getRangeAt(0);
 
         doc.body.classList.toggle('selection-disabled', true);
 

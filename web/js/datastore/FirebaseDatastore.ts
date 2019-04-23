@@ -37,8 +37,6 @@ import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
-import {printf} from '../logger/Console';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -1299,61 +1297,4 @@ export class DownloadURLs {
 
     }
 }
-
-/**
- * Maintains a system of tokens that user scan use to share their documents
- * with other people
- */
-export class DownloadTokens {
-
-    // public static issue(internalURL: string): ExternalTokenURL {
-    //
-    // }
-    //
-    // public static revoke(token: string) {
-    //
-    // }
-
-    /**
-     * Create an ID that we hand out that we can revoke later if we want.
-     */
-    private static createToken(): string {
-
-        const uid = FirebaseDatastore.getUserID();
-
-        const timestamp = ISODateTimeStrings.create();
-
-        const rand = Math.floor(Math.random() * 1000000);
-        const hashcodeData = {uid, timestamp, rand};
-
-        return Hashcodes.createID(hashcodeData, 20);
-
-    }
-
-}
-
-interface DownloadToken {
-
-    readonly id: string;
-
-    readonly token: string;
-
-    readonly recipient: string;
-
-}
-
-export interface ExternalTokenURL {
-    readonly url: string;
-}
-
-/**
- * A team string of team:foo where 'foo' is the name of the team
- */
-type TeamStr = string;
-
-type EmailStr = string;
-
-type SharingRole = 'public';
-
-type RecipientTeam = string;
 

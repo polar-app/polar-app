@@ -39,7 +39,12 @@ import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
 import {Premium} from '../../../../apps/repository/js/splash/splashes/premium/Premium';
-
+import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
+import {MobileDisclaimer} from './MobileDisclaimer';
+import {MobileDisclaimers} from './MobileDisclaimers';
+import {TabNav} from '../../ui/tabs/TabNav';
+import {NULL_FUNCTION} from '../../util/Functions';
+import {MachineDatastores} from '../../customers/MachineDatastores';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -84,7 +89,11 @@ export class RepositoryApp {
 
         await this.doLoadExampleDocs();
 
+        MachineDatastores.triggerBackgroundUpdates(this.persistenceLayerManager);
+
         // PreviewDisclaimers.createWhenNecessary();
+
+        MobileDisclaimers.createWhenNecessary();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
@@ -175,11 +184,44 @@ export class RepositoryApp {
 
             <div style={{height: '100%'}}>
 
-                <PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>
+                {/*<PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>*/}
+
+                <Splashes persistenceLayerManager={this.persistenceLayerManager}/>
 
                 <SyncBar progress={syncBarProgress}/>
 
                 <RepositoryTour/>
+
+                {/*TODO this doesn't actually work because the iframes aren't */}
+                {/*expanded properly I think. */}
+
+                {/*<TabNav addTabBinder={NULL_FUNCTION}*/}
+                        {/*initialTabs={[*/}
+                            {/*{*/}
+                                {/*title: "Repository",*/}
+                                {/*content: <div>*/}
+
+                                    {/*<HashRouter hashType="noslash">*/}
+
+                                        {/*<Switch>*/}
+                                            {/*<Route exact path='/(logout|overview|login|configured|invite|premium)?' render={renderDocRepoApp}/>*/}
+                                            {/*<Route exact path='/annotations' render={renderAnnotationRepoApp}/>*/}
+                                            {/*<Route exact path='/whats-new' render={renderWhatsNew}/>*/}
+                                            {/*<Route exact path='/community' render={renderCommunity}/>*/}
+                                            {/*<Route exact path='/stats' render={renderStats}/>*/}
+                                            {/*<Route exact path='/logs' render={renderLogs}/>*/}
+                                            {/*<Route exact path='/editors-picks' render={editorsPicks}/>*/}
+                                        {/*</Switch>*/}
+
+                                    {/*</HashRouter>*/}
+
+                                {/*</div>*/}
+                            {/*},*/}
+                            {/*{*/}
+                                {/*title: "How to be Successful",*/}
+                                {/*content: "http://localhost:8500/htmlviewer/index.html?file=http%3A%2F%2Flocalhost%3A8500%2Ffiles%2F12ftXRsX74J16Rmjwp85zhRswMstYCksLppdqCvnEeTz2Ut98ut&filename=12tTwL82eW-How_To_Be_Successful___Sam_Altman.phz&fingerprint=1TofZfqvEEcSgrNYi6Wo&zoom=page-width&strategy=portable"*/}
+                            {/*}*/}
+                        {/*]}/>*/}
 
                 <HashRouter hashType="noslash">
 
