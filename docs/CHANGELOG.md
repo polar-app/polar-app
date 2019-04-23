@@ -1,5 +1,7 @@
 # 1.18.0
 
+- Upgrade to Electron 4.x
+
 - Fixed bug where the UI would break when both filtering and removing tags on 
   a document that was visible.
 
