@@ -59,6 +59,8 @@ class Styles {
  *   -  I need a CLEAN way to persist the state for this object in localstorage
  *      and for other components too.
  *
+ *   - make sure the dock flows both ways... left and right.
+ *
  */
 export class Dock extends React.Component<IProps, IState> {
 
@@ -107,7 +109,29 @@ export class Dock extends React.Component<IProps, IState> {
             style.height = '100%';
         }
 
-        // FIXME: sidebarStyle first, then set leftStyle or rightSytle below...
+        const createSplitterStyle = () => {
+
+            // TODO: might be better to create a map indexed by 'side' and then
+            // just read that directly and have all the props enumerated
+            // clearly and no if statement.
+
+            const result: React.CSSProperties = {
+                width: '10px',
+                cursor: 'col-resize',
+                backgroundColor: 'orange'
+            };
+
+            if (this.props.side === 'left') {
+                result.marginLeft = 'auto';
+            } else {
+                result.marginRight = 'auto';
+            }
+
+            return result;
+
+        };
+
+        const splitterStyle = createSplitterStyle();
 
         const sidebarStyle = this.props.side === 'left' ? leftStyle : rightStyle;
         const contentStyle = this.props.side === 'right' ? leftStyle : rightStyle;
@@ -150,14 +174,10 @@ export class Dock extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="dock-splitter ml-auto"
+                <div className="dock-splitter"
                      draggable={false}
                      onMouseDown={() => this.onMouseDown()}
-                     style={{
-                         width: '10px',
-                         cursor: 'col-resize',
-                         backgroundColor: 'orange'
-                     }}>
+                     style={splitterStyle}>
 
                 </div>
 
