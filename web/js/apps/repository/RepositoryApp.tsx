@@ -251,7 +251,7 @@ export class RepositoryApp {
                 <Input type="file"
                        id="file-upload"
                        name="file-upload"
-                       accept=".pdf"
+                       accept=".pdf, .PDF"
                        multiple
                        onChange={() => this.onFileUpload()}
                        style={{display: 'none'}}/>
