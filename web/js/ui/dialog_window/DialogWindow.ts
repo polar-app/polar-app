@@ -81,18 +81,22 @@ export class DialogWindow {
 
         switch (options.resource.type) {
             case ResourceType.FILE:
-                window.loadFile(options.resource.value);
+                window.loadFile(options.resource.value)
+                    .catch(err => console.error(err));
+
                 break;
             case ResourceType.URL:
-                window.loadURL(options.resource.value, {});
+                window.loadURL(options.resource.value, {})
+                    .catch(err => console.error(err));
                 break;
 
             case ResourceType.APP:
 
-                let appURL = ResourcePaths.resourceURLFromRelativeURL(options.resource.value);
+                const appURL = ResourcePaths.resourceURLFromRelativeURL(options.resource.value);
                 log.info("Loading app URL:" , appURL);
-                window.loadURL(appURL, {});
-                break
+                window.loadURL(appURL, {})
+                    .catch(err => console.error(err));
+                break;
 
         }
 

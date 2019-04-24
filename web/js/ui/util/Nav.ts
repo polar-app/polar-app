@@ -21,7 +21,9 @@ export class Nav {
             }
 
         } else {
-            shell.openExternal(link);
+            shell.openExternal(link)
+                .catch(err => console.error(err));
+
         }
 
     }

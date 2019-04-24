@@ -88,7 +88,9 @@ export class CaptureController {
 
             log.debug("Loading app: ", appURL);
 
-            webContents.loadURL(appURL);
+            webContents.loadURL(appURL)
+                .catch(err => console.error(err));
+
 
         });
 

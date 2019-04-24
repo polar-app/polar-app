@@ -126,8 +126,8 @@ export class MainAppBrowserWindowFactory {
 
         browserWindow.webContents.on('new-window', (e, url) => {
             e.preventDefault();
-            shell.openExternal(url);
-                // .catch(err => log.error("Cloud open external URL", err, url));
+            shell.openExternal(url)
+                .catch(err => log.error("Cloud open external URL", err, url));
         });
 
         browserWindow.webContents.on('will-navigate', (e, navURL) => {
@@ -159,14 +159,14 @@ export class MainAppBrowserWindowFactory {
             // required to force the URLs clicked to open in a new browser.  The
             // user probably / certainly wants to use their main browser.
             e.preventDefault();
-            shell.openExternal(navURL);
-                // .catch(err => log.error("Cloud open external URL", err, url));
+            shell.openExternal(navURL)
+                .catch(err => log.error("Cloud open external URL", err, url));
 
         });
 
         log.info("Loading URL: " + url);
-        browserWindow.loadURL(url);
-            // .catch(err => log.error("Cloud not load URL ", err, url));
+        browserWindow.loadURL(url)
+            .catch(err => log.error("Cloud not load URL ", err, url));
 
         return new Promise<BrowserWindow>(resolve => {
 

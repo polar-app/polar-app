@@ -19,7 +19,9 @@ export class SpectronMain {
 
                 let windowFactory: WindowFactory = async () => {
                     const result = new BrowserWindow(SpectronBrowserWindowOptions.create());
-                    result.loadURL('about:blank');
+                    result.loadURL('about:blank')
+                        .catch(err => console.error(err));
+
                     return result;
                 };
 

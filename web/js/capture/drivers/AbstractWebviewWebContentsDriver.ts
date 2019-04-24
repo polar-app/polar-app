@@ -148,7 +148,8 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         const resourceURL = ResourcePaths.resourceURLFromRelativeURL(this.appPath);
 
-        window.loadURL(resourceURL);
+        window.loadURL(resourceURL)
+            .catch(err => console.error(err));
 
         // THIS is our guest webview that we should be using.
         this.webContents = await this.waitForWebview();
