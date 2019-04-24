@@ -207,12 +207,15 @@ class App<P> extends React.Component<{}, IAppState> {
                     </div>
 
                     <Dock style={{flexGrow: 1}}
-                          left={<div>this is the left</div>}
+                          left={<div style={{backgroundColor: 'red'}}>
+                              this is the left
+                          </div>}
                           right={<div style={{backgroundColor: 'blue'}}>
                               this is the right
                               <a href="http://cnn.com">asdf</a>
                           </div>}
-                          side="left"
+                          side="right"
+                          initialWidth={100}
                           toggleCoupler={toggleCoupler}
                           setFlyoutCoupler={setFlyoutCoupler}
                     />

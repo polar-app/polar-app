@@ -186,7 +186,7 @@ export class Dock extends React.Component<IProps, IState> {
                 </div>
 
                 <div className="dock-right"
-                     style={contentStyle}
+                     style={rightStyle}
                      draggable={false}>
                     {this.props.right}
                 </div>
@@ -225,9 +225,14 @@ export class Dock extends React.Component<IProps, IState> {
             return;
         }
 
+        console.log("FIXME: m,oving");
+
+
         const lastMousePosition = MousePositions.get();
 
-        const delta = lastMousePosition.clientX - this.mousePosition.clientX;
+        const mult = this.props.side === 'left' ? 1 : -1;
+
+        const delta = mult * (lastMousePosition.clientX - this.mousePosition.clientX);
 
         const width = this.state.width + delta;
 
