@@ -750,7 +750,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const PUBLIC_MAX_AGE_1WEEK = 'public,max-age=604800';
 
-        const ext = optionalExt.getOrElse('');
+        const ext = optionalExt.getOrElse('').toLowerCase();
 
         if (ext === 'jpg' || ext === 'jpeg') {
 

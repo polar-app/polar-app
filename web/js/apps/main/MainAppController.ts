@@ -270,7 +270,7 @@ export class MainAppController {
                   title: "Import Document",
                   defaultPath: downloadsDir,
                   filters: [
-                      { name: 'Docs', extensions: ['pdf', "phz"] }
+                      { name: 'Docs', extensions: ['pdf', "phz", "PDF"] }
                   ],
                   properties: ['openFile', 'multiSelections']
                   // properties: ['openFile']
