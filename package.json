@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.18.0",
+  "version": "1.17.6",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -76,7 +76,7 @@
     "chai": "~4.2.0",
     "chai-diff": "~1.0.1",
     "dtsmake": "0.0.10",
-    "electron": "^5.0.0-beta.8",
+    "electron": "^5.0.0",
     "electron-builder": "~20.34.0",
     "electron-mocha": "~6.0.4",
     "fork-ts-checker-webpack-plugin": "^0.5.2",
