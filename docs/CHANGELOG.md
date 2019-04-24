@@ -1,7 +1,6 @@
-# 1.18.0
+# 1.17.6
 
-- Upgrade to Electron 4.1.4, Chrome/69.0.3497.128, and NodeJS v10.11.0.  Should
-  fix a latency issue some users were reporting WRT Ubuntu.
+- Major performance fix on large PDFs.
 
 - Fixed bug where the UI would break when both filtering and removing tags on 
   a document that was visible.
