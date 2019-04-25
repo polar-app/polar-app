@@ -19,10 +19,10 @@ SpectronMain2.create().run(async state => {
 
     const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
 
-    await mainWindow.loadURL(`file://${__dirname}/receiving-app.html`);
+    await state.window.loadURL(`file://${__dirname}/receiving-app.html`);
 
     await new DocInfoBroadcasterService().start();
 
-    await state.window.loadURL(`file://${__dirname}/sending-app.html`);
+    await mainWindow.loadURL(`file://${__dirname}/sending-app.html`);
 
 });
