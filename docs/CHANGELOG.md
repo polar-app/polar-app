@@ -1,24 +1,36 @@
-# 1.17.6
+# 1.18.0
 
 - Big upgrade to latest version of Electron:
 
     Electron v5.0.0, Chromium v73.0.3683.119, Node v12.0.0, v8 v7.3.492.27-electron.0
 
-- Major performance fix on large PDFs.
+  This should hopefully fix a major latency issue some users were seeing on 
+  Ubuntu/Linux.
 
-- Fixed bug where the UI would break when both filtering and removing tags on 
-  a document that was visible.
+- Major performance fix on large PDFs.  Scrolling should be dramatically 
+  improved.  There's still a small latency issue we're seeing but already 
+  performance is dramatically improved.
 
 - Enabled atomic writes again for all platforms.
-
-- Upgraded to latest version of Typescript 3.4.3
-
-- Increased the sidebar a bit to accommodate updating comments without overflow
-  of the summernote bar.
 
 - Filtering for tags now lists the tags alphabetically
 
 - Right click on text highlight now add 'scroll into view'
+
+- Upgraded to latest version of Typescript 3.4.3
+
+- Fixed regression where progress wasn't being updated when progress messages
+  were being sent from the renderer process.
+
+- Fixed bug which resorted in two file uploads to firebase while cloud sync 
+  was operational. For large files this was very painful and resorted in 2x 
+  data being uploaded.
+
+- Fixed bug where the UI would break when both filtering and removing tags on 
+  a document that was visible.
+
+- Increased the sidebar a bit to accommodate updating comments without overflow
+  of the summernote bar.
 
 # 1.17.5
 

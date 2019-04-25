@@ -20,13 +20,11 @@ export class ProgressService {
 
             });
 
-        } else {
-
-            // this is done in the browser so that it can send messages to
-            // itself about progress.
-            window.addEventListener("message", event => this.onMessageReceived(event), false);
-
         }
+
+        // this is done in the browser so that it can send messages to
+        // itself about progress.
+        window.addEventListener("message", event => this.onMessageReceived(event), false);
 
         log.info("started");
 

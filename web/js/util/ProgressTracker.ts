@@ -8,7 +8,7 @@ let NONCE = 0;
  */
 export class ProgressTracker {
 
-    private state: Progress;
+    private state: MutableProgress;
 
     private readonly epoch: number;
 
@@ -22,7 +22,8 @@ export class ProgressTracker {
             completed: 0,
             total,
             duration: 0,
-            progress: 0
+            progress: 0,
+            timestamp: Date.now()
         };
 
         if (this.state.total === 0) {
@@ -37,10 +38,13 @@ export class ProgressTracker {
      * that aren't deltas but are absolute values.
      *
      */
-    public abs(value: number): Readonly<Progress> {
+    public abs(value: number): Progress {
+
+        const now = Date.now();
+
         this.state.completed = value;
         this.state.progress = this.calculate();
-        this.state.duration = Date.now() - this.epoch;
+        this.state.duration = now - this.epoch;
         return this.peek();
     }
 
@@ -48,7 +52,7 @@ export class ProgressTracker {
      * Increment the progress of the job by one, compute the updated state,
      * and return.
      */
-    public incr(value: number = 1): Readonly<Progress> {
+    public incr(value: number = 1): Progress {
         return this.abs(this.state.completed + value);
     }
 
@@ -56,7 +60,7 @@ export class ProgressTracker {
      * Used so that we can jump to the end the job as it's terminated.
      *
      */
-    public terminate(): Readonly<Progress> {
+    public terminate(): Progress {
         this.state.completed = this.state.total;
         this.state.progress = this.calculate();
         this.state.duration = Date.now() - this.epoch;
@@ -66,8 +70,10 @@ export class ProgressTracker {
     /**
      * Get a current view of the progress state.
      */
-    public peek(): Readonly<Progress> {
-        return Object.freeze(Object.assign({}, this.state));
+    public peek(): Progress {
+        const result = {...this.state};
+        result.timestamp = Date.now();
+        return result;
     }
 
     private calculate(): Percentage {
@@ -95,13 +101,26 @@ export class ProgressTracker {
 
 export type ProgressListener = (progressState: Progress) => void;
 
-export interface Progress {
+export type UnixTimeMS = number;
+
+export interface MutableProgress {
     task: TaskID;
     completed: number;
     total: number;
     duration: number;
     progress: Percentage;
     id: string;
+    timestamp: UnixTimeMS;
+
+    /**
+     *  An optional human readable name for the task being completed.
+     */
+    name?: string;
+
+}
+
+export interface Progress extends Readonly<MutableProgress> {
+
 }
 
 export class ProgressStates {
