@@ -32,6 +32,8 @@
 - Increased the sidebar a bit to accommodate updating comments without overflow
   of the summernote bar.
 
+- Using the same account widget on web + desktop now.
+
 # 1.17.5
 
 - Recording NPS and other stats in Firebase for analysis in bulk.
