@@ -1,3 +1,8 @@
+# 1.18.1
+
+- new component to ScrollIntoView so that when we're dealing with scrollable 
+  and long form content we can make sure the content and scrolled and viewable. 
+
 # 1.18.0
 
 - Big upgrade to latest version of Electron:

@@ -3,6 +3,7 @@ import {CancelButton} from "../CancelButton";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {FlashcardCallback} from './flashcard_input/FlashcardInput';
+import {ScrollIntoView} from '../../../ui/ScrollIntoView';
 
 export class CreateFlashcard extends React.PureComponent<IProps, IState> {
 
@@ -23,9 +24,11 @@ export class CreateFlashcard extends React.PureComponent<IProps, IState> {
 
         return <NullCollapse open={this.props.active}>
 
-            <FlashcardInput id={'edit-flashcard-for' + this.props.id}
-                            onFlashcard={this.props.onFlashcardCreated}
-                            cancelButton={cancelButton}/>
+            <ScrollIntoView>
+                <FlashcardInput id={'edit-flashcard-for' + this.props.id}
+                                onFlashcard={this.props.onFlashcardCreated}
+                                cancelButton={cancelButton}/>
+            </ScrollIntoView>
 
         </NullCollapse>;
 
