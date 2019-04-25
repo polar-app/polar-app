@@ -2,14 +2,10 @@ import {assert, expect} from 'chai';
 import {webContents} from "electron";
 import {SpectronMain} from '../../js/test/SpectronMain';
 import waitForExpect from 'wait-for-expect';
-import {BrowserWindows} from '../../js/electron/framework/BrowserWindows';
 
 SpectronMain.run(async state => {
 
-    console.log("FIXME: loading...");
-
     await state.window.loadFile(__dirname + '/app.html');
-    console.log("FIXME: loded: " + state.window.webContents.getURL());
 
     // the only other way to get the WebContents from a Webview
     // is from the renderer via

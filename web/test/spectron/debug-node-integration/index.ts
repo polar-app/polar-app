@@ -18,7 +18,7 @@ export const BROWSER_OPTIONS = {
 
 };
 
-let windowFactory: WindowFactory = async () => {
+const windowFactory: WindowFactory = async () => {
     const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
     // mainWindow.webContents.toggleDevTools();
     await mainWindow.loadURL('about:blank');

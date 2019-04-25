@@ -33,7 +33,8 @@ export class SpectronBrowserWindowOptions {
             webPreferences: {
                 webSecurity: false,
                 nodeIntegration: true,
-                partition: "persist:spectron"
+                partition: "persist:spectron",
+                webviewTag: true
             }
 
         };

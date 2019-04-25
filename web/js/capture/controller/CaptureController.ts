@@ -66,16 +66,9 @@ export class CaptureController {
 
     }
 
-    /**
-     * Setup the
-     *
-     * @param webContents {Electron.WebContents}
-     * @param url {string}
-     *
-     */
     private async loadApp(webContents: Electron.WebContents, url: string): Promise<Electron.WebContents> {
 
-        return new Promise<Electron.WebContents>(resolve => {
+        return new Promise<Electron.WebContents>(async resolve => {
 
             log.debug("Starting capture for URL: " + url);
 
@@ -88,9 +81,7 @@ export class CaptureController {
 
             log.debug("Loading app: ", appURL);
 
-            webContents.loadURL(appURL)
-                .catch(err => console.error(err));
-
+            await webContents.loadURL(appURL);
 
         });
 
