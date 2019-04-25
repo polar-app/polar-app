@@ -78,5 +78,4 @@ export class WebDriverTestResultReader implements TestResultReader {
 
     }
 
-
 }
