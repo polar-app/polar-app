@@ -33,7 +33,7 @@ SpectronMain2.create(options).run(async state => {
     }
 
     const url = `http://localhost:8005/web/spectron/firebase-auth/content.html?primary=true`;
-    state.window.loadURL(url);
+    await state.window.loadURL(url);
     //
     // const secondWindow = await defaultWindowFactory();
     // secondWindow.loadURL(url);

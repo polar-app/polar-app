@@ -45,7 +45,7 @@ SpectronMain2.create(options).run(async state => {
     }
 
     const url = `http://localhost:8005/content.html`;
-    state.window.loadURL(url);
+    await state.window.loadURL(url);
 
 });
 

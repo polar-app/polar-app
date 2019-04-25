@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
 import {Spectron} from '../../js/test/Spectron';
 
-xdescribe('webview-discovery-from-renderer', function() {
+xdescribe('load-file', function() {
 
     Spectron.setup(__dirname);
     this.timeout(30000);

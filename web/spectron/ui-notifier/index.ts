@@ -8,7 +8,7 @@ SpectronMain2.create().run(async state => {
     const helloPromise: Promise<MainIPCEvent<string>>
         = WebContentsNotifier.once(state.window.webContents, 'hello');
 
-    state.window.loadURL(`file://${__dirname}/app.html`);
+    await await state.window.loadURL(`file://${__dirname}/app.html`);
 
     const mainIPCEvent = await helloPromise;
 

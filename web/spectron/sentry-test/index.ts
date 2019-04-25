@@ -6,6 +6,6 @@ SpectronMain2.create().run(async state => {
     let sentryLogger = new SentryLogger();
     sentryLogger.error("This is a false error from main: ", new Error("Fake error from main"));
 
-    state.window.loadURL(`file://${__dirname}/app.html`);
+    await state.window.loadURL(`file://${__dirname}/app.html`);
 
 });

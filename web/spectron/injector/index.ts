@@ -5,7 +5,7 @@ import {Injector} from 'injector';
 
 SpectronMain2.create().run(async state => {
 
-    state.window.loadURL(`file://${__dirname}/content.html`);
+    await state.window.loadURL(`file://${__dirname}/content.html`);
 
     const path = FilePaths.join(__dirname, "content.js");
     Injector.inject(state.window, path);

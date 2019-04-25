@@ -34,7 +34,7 @@ SpectronMain2.create(options).run(async state => {
         console.warn("Webserver already running.");
     }
 
-    state.window.loadURL(`http://localhost:8005/web/spectron/localstorage/content.html`);
+    await state.window.loadURL(`http://localhost:8005/web/spectron/localstorage/content.html`);
 
     const window = await defaultWindowFactory();
     window.loadURL(`http://localhost:8005/web/spectron/localstorage/content2.html`);

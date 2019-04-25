@@ -3,9 +3,7 @@ import {Datastore} from '../../js/datastore/Datastore';
 import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
 import {Logging} from '../../js/logger/Logging';
 import {MainApp} from '../../js/apps/main/MainApp';
-import BrowserWindow = Electron.BrowserWindow;
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
-import {wait} from 'dom-testing-library';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
@@ -14,8 +12,7 @@ import {Files} from '../../js/util/Files';
 import {MainAppController} from '../../js/apps/main/MainAppController';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {AppPath} from '../../js/electron/app_path/AppPath';
-import fs from 'fs';
-import {Preconditions} from '../../js/Preconditions';
+import BrowserWindow = Electron.BrowserWindow;
 
 const log = Logger.create();
 

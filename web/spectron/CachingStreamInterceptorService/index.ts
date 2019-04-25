@@ -49,7 +49,7 @@ SpectronMain2.create({windowFactory: defaultWindowFactory}).run(async state => {
 
     const didFinishLoadPromise = WebContentsPromises.once(state.window.webContents).didFinishLoad();
 
-    state.window.loadURL(url);
+    await await state.window.loadURL(url);
 
     await didFinishLoadPromise;
 

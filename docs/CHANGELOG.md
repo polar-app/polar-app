@@ -1,5 +1,9 @@
 # 1.17.6
 
+- Big upgrade to latest version of Electron:
+
+    Electron v5.0.0, Chromium v73.0.3683.119, Node v12.0.0, v8 v7.3.492.27-electron.0
+
 - Major performance fix on large PDFs.
 
 - Fixed bug where the UI would break when both filtering and removing tags on 

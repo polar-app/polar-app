@@ -4,7 +4,7 @@ import {FilePaths} from '../../js/util/FilePaths';
 
 SpectronMain2.create().run(async state => {
 
-    state.window.loadURL(`file://${__dirname}/content.html`);
+    await state.window.loadURL(`file://${__dirname}/content.html`);
 
     const src = FilePaths.join(__dirname, "content.js");
 

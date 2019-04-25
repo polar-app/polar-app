@@ -6,7 +6,7 @@ SpectronRenderer.run(async (state) => {
 
     history.pushState({}, "Home", "http://localhost/");
 
-    state.testResultWriter.write(document.location!.href === "http://localhost/");
+    await state.testResultWriter.write(document.location!.href === "http://localhost/");
 
 });
 

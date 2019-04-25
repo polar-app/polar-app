@@ -5,6 +5,6 @@ SpectronMain2.create().run(async state => {
 
     MainDatastore.create();
 
-    state.window.loadURL(`file://${__dirname}/app.html`);
+    await state.window.loadURL(`file://${__dirname}/app.html`);
 
 });

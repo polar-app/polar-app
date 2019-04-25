@@ -19,9 +19,7 @@ export class SpectronMain {
 
                 let windowFactory: WindowFactory = async () => {
                     const result = new BrowserWindow(SpectronBrowserWindowOptions.create());
-                    result.loadURL('about:blank')
-                        .catch(err => console.error(err));
-
+                    await result.loadURL('about:blank')
                     return result;
                 };
 
@@ -54,7 +52,8 @@ export class SpectronMain {
      * and just print error messages to the console.
      */
     public static run(callback: StateCallback, options?: SpectronMainOptions) {
-        SpectronMain.start(callback, options).catch(err => console.log(err));
+        SpectronMain.start(callback, options)
+            .catch(err => console.log("Caught error running spectron: ", err));
     }
 
 

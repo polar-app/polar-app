@@ -6,6 +6,6 @@ SpectronMain.run(async state => {
     const dialogWindowService = new DialogWindowService();
     await dialogWindowService.start();
 
-    state.window.loadURL(`file://${__dirname}/app.html`);
+    await state.window.loadURL(`file://${__dirname}/app.html`);
 
 });
