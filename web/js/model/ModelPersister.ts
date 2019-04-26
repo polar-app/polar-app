@@ -31,7 +31,11 @@ export class ModelPersister {
         // create a new DocMeta proxy that updates on ANY update.
         this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
 
-            if (this.docMeta.docInfo.mutating) {
+            if (this.docMeta.docInfo.mutating === 'skip') {
+                return;
+            }
+
+            if (this.docMeta.docInfo.mutating === 'batch') {
 
                 // skip bulk updates. This is done when we need to mutate multiple
                 // fields like setting 5-10 pagemarks at once or setting pagemarks
@@ -46,7 +50,7 @@ export class ModelPersister {
 
                 if (this.nrDeferredWrites <= 1) {
                     // we only have one deferred write and this is the toggling
-                    // of the mutating field.
+                    // of the mutating field OR we're skipping writes.
                     return;
                 }
 

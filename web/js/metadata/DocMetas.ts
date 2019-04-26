@@ -201,7 +201,7 @@ export class DocMetas {
 
         try {
 
-            docMeta.docInfo.mutating = true;
+            docMeta.docInfo.mutating = 'batch';
 
             return mutator();
 
@@ -213,7 +213,21 @@ export class DocMetas {
 
     }
 
+    public static withSkippedMutations<T>(docMeta: DocMeta, mutator: () => T) {
 
+        try {
+
+            docMeta.docInfo.mutating = 'skip';
+
+            return mutator();
+
+        } finally {
+            // set it to undefined so that it isn't actually persisted in the
+            // resulting JSON
+            docMeta.docInfo.mutating = undefined;
+        }
+
+    }
 }
 
 export class MockDocMetas {

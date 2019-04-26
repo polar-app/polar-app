@@ -37,6 +37,8 @@ describe('ModelPersister', function() {
 
     beforeEach(function() {
 
+        console.log("beforeEach:")
+
         persistenceLayer =
             new MockAdvertisingPersistenceLayer(
                 new DefaultPersistenceLayer(
@@ -52,33 +54,54 @@ describe('ModelPersister', function() {
 
     });
 
-    it("with simple write", async function() {
 
-        docMeta.docInfo.title = 'asdf';
+    describe('batched', function() {
 
-        await assertWrites(1);
+        it("with simple write", async function() {
 
-    });
-
-    it("with batched write", async function() {
-
-        DocMetas.withBatchedMutations(docMeta, () => {
             docMeta.docInfo.title = 'asdf';
-            docMeta.docInfo.description = 'hello world';
-            docMeta.getPageMeta(1).pageInfo.dimensions = {width: 100, height: 100};
+
+            await assertWrites(1);
+
         });
 
-        await assertWrites(1);
+        it("with batched write", async function() {
+
+            DocMetas.withBatchedMutations(docMeta, () => {
+                docMeta.docInfo.title = 'asdf';
+                docMeta.docInfo.description = 'hello world';
+                docMeta.getPageMeta(1).pageInfo.dimensions = {width: 100, height: 100};
+            });
+
+            await assertWrites(1);
+
+        });
+
+        it("with no batched write", async function() {
+
+            DocMetas.withBatchedMutations(docMeta, () => {
+                // no writes
+            });
+
+            await assertWrites(0);
+
+        });
 
     });
 
-    it("with no batched write", async function() {
+    describe('skipped', function() {
 
-        DocMetas.withBatchedMutations(docMeta, () => {
-            // no writes
+        it("with skipped write", async function() {
+
+            DocMetas.withSkippedMutations(docMeta, () => {
+                docMeta.docInfo.title = 'asdf';
+                docMeta.docInfo.description = 'hello world';
+                docMeta.getPageMeta(1).pageInfo.dimensions = {width: 100, height: 100};
+            });
+
+            await assertWrites(0);
+
         });
-
-        await assertWrites(0);
 
     });
 
