@@ -47,7 +47,6 @@ export class AnnotationEvent extends TraceEvent {
      */
     public container: Container;
 
-
     constructor(opts: any = {}) {
 
         super(opts);
@@ -59,13 +58,13 @@ export class AnnotationEvent extends TraceEvent {
         this.traceEvent = opts.traceEvent;
         this.container = opts.container;
 
-        if(this.value) {
+        if (this.value) {
             this.id = this.value.id;
         } else {
             this.id = this.previousValue.id;
         }
 
-        Preconditions.assertNotNull(this.pageMeta, "pageMeta");
+        Preconditions.assertPresent(this.pageMeta, "pageMeta");
 
     }
 

@@ -2,6 +2,8 @@ import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
+import {DocMeta} from './DocMeta';
+import {DocMetas} from './DocMetas';
 
 export class AreaHighlights {
 
@@ -31,6 +33,17 @@ export class AreaHighlights {
 
             // there is only one rect for an area highlight.
             rects: { "0": opts.rect }
+
+        });
+
+    }
+
+
+    public static attachScreenshots(docMeta: DocMeta, areaHighlight: AreaHighlight) {
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+
+            // Images.crea
 
         });
 

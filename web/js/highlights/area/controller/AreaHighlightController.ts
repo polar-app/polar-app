@@ -9,10 +9,6 @@ import {AreaHighlights} from '../../../metadata/AreaHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
 import {Optional} from '../../../util/ts/Optional';
-import {Canvases} from '../../../util/Canvas';
-import {Files} from '../../../util/Files';
-import {ArrayBuffers} from '../../../util/ArrayBuffers';
-import {ILTRect} from '../../../util/rects/ILTRect';
 
 
 const log = Logger.create();

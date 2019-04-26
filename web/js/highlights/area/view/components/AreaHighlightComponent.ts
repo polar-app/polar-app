@@ -14,7 +14,7 @@ import {DocFormat} from "../../../../docformat/DocFormat";
 import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
 import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
 import {ILTRect} from '../../../../util/rects/ILTRect';
-import {Canvases} from '../../../../util/Canvas';
+import {Canvases} from '../../../../util/Canvases';
 import {ArrayBuffers} from '../../../../util/ArrayBuffers';
 import {Files} from '../../../../util/Files';
 
@@ -44,6 +44,8 @@ export class AreaHighlightComponent extends Component {
         // captured within a higher level annotationEvent.
         this.annotationEvent = annotationEvent;
         this.areaHighlight = annotationEvent.value;
+
+        // FIXME: need to create the FIRST screenshot when this is created.
 
         this.boxController = new BoxController(boxMoveEvent => this.onBoxMoved(boxMoveEvent));
 
@@ -102,11 +104,16 @@ export class AreaHighlightComponent extends Component {
 
         const canvas = document.querySelector("canvas")!;
 
-        const ab = await Canvases.extract(canvas, rect);
-        const buff = ArrayBuffers.toBuffer(ab);
+        const extractedImage = await Canvases.extract(canvas, rect);
+        const buff = ArrayBuffers.toBuffer(extractedImage.data);
         await Files.writeFileAsync("/tmp/test.png", buff);
 
         console.log("FIXME: Write screenshot to file");
+
+        // FIXME: do a batch mutation of the underlying data...
+
+        // FIXME: how do I delete the LAST screenshot and add the NEW screenshot
+        // to the model...
 
     }
 

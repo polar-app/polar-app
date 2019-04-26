@@ -2,9 +2,8 @@
  * Functions for working with canvas objects, extracting screenshots, etc.
  */
 import {ArrayBuffers} from './ArrayBuffers';
-import {IRect} from './rects/IRect';
-import {IXYRect} from './rects/IXYRect';
 import {ILTRect} from './rects/ILTRect';
+
 const IMAGE_TYPE = 'image/png';
 const IMAGE_QUALITY = 1.0;
 
@@ -93,14 +92,15 @@ export class Canvases {
     }
 
     /**
-     * Extract image data from the given canvas directly and return it as an array buffer.
+     * Extract image data from the given canvas directly and return it as an
+     * array buffer.
      * @param canvas The canvas we should extract with.
      * @param rect The rect within the given canvas
      * @param opts The options for the image extraction
      */
     public static async extract(canvas: HTMLCanvasElement,
                                 rect: ILTRect,
-                                opts: ImageOpts = new DefaultImageOpts()): Promise<ArrayBuffer> {
+                                opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
 
 
         console.log("FIXME: creating at: ", rect);
@@ -118,11 +118,21 @@ export class Canvases {
                                rect.left, rect.top, rect.width, rect.height,
                                0, 0, rect.width, rect.height);
 
-        return await this.toArrayBuffer(tmpCanvas, opts);
+        const data = await this.toArrayBuffer(tmpCanvas, opts);
+
+        return {data, width: rect.width, height: rect.height};
 
     }
 
 }
+
+interface ExtractedImage {
+    readonly data: ArrayBuffer;
+    readonly width: number;
+    readonly height: number;
+}
+
+export type DataURL = string;
 
 interface ImageOpts {
     readonly type: ImageType;
