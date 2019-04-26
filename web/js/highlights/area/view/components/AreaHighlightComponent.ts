@@ -15,9 +15,11 @@ import {AnnotationEvent} from '../../../../annotations/components/AnnotationEven
 import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
 import {ILTRect} from '../../../../util/rects/ILTRect';
 import {Canvases} from '../../../../util/Canvases';
-import {ArrayBuffers} from '../../../../util/ArrayBuffers';
-import {Files} from '../../../../util/Files';
+import {ExtractedImage} from '../../../../util/Canvases';
 import {DocMetas} from '../../../../metadata/DocMetas';
+import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
+import {AsyncSerializer} from '../../../../util/AsyncSerializer';
+import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 
 const log = Logger.create();
 
@@ -29,11 +31,11 @@ export class AreaHighlightComponent extends Component {
     private areaHighlight?: AreaHighlight;
     private boxController?: BoxController;
 
-    constructor() {
+    private asyncSerializer = new AsyncSerializer();
+
+    constructor(private persistenceLayerProvider: PersistenceLayerProvider) {
         super();
-
         this.docFormat = DocFormatFactory.getInstance();
-
     }
 
     /**
@@ -74,28 +76,24 @@ export class AreaHighlightComponent extends Component {
 
         if (boxMoveEvent.state === "completed") {
 
-            this.doScreenshot(boxMoveEvent.boxRect)
-                .catch(err => log.error("Failed to write screenshot:", err));
-
             const annotationEvent = this.annotationEvent!;
 
-            // TODO: this isn't handled properly because we create a NEW rect
-            // with the existing values...
+            const {docMeta, pageMeta} = annotationEvent;
 
-            this.areaHighlight = new AreaHighlight(this.areaHighlight);
-            this.areaHighlight.rects["0"] = <any> areaHighlightRect;
+            this.asyncSerializer.execute(async () => {
 
-            log.debug("New areaHighlight: ", JSON.stringify(this.areaHighlight, null, "  "));
+                const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
 
-            const {docMeta} = annotationEvent;
+                return AreaHighlights.write(this.persistenceLayerProvider(),
+                                            docMeta,
+                                            pageMeta,
+                                            this.areaHighlight!,
+                                            areaHighlightRect,
+                                            extractedImage);
 
-            DocMetas.withBatchedMutations(docMeta, () => {
-
-                delete annotationEvent.pageMeta.areaHighlights[this.areaHighlight!.id];
-                annotationEvent.pageMeta.areaHighlights[this.areaHighlight!.id] = this.areaHighlight!;
-
+            }).then(result => {
+                this.areaHighlight = result;
             });
-
 
         } else {
             // noop
@@ -103,24 +101,12 @@ export class AreaHighlightComponent extends Component {
 
     }
 
-
-    private async doScreenshot(rect: ILTRect) {
+    private async captureScreenshot(rect: ILTRect): Promise<ExtractedImage> {
 
         const canvas = document.querySelector("canvas")!;
-
-        const extractedImage = await Canvases.extract(canvas, rect);
-        const buff = ArrayBuffers.toBuffer(extractedImage.data);
-        await Files.writeFileAsync("/tmp/test.png", buff);
-
-        console.log("FIXME: Write screenshot to file");
-
-        // FIXME: do a batch mutation of the underlying data...
-
-        // FIXME: how do I delete the LAST screenshot and add the NEW screenshot
-        // to the model...
+        return await Canvases.extract(canvas, rect);
 
     }
-
 
     /**
      * @Override

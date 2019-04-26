@@ -14,7 +14,7 @@ export class AreaHighlightView {
 
         this.componentManager = new ComponentManager(model,
                                                      new DefaultContainerProvider(),
-                                                     () => new AreaHighlightComponent(),
+                                                     () => new AreaHighlightComponent(model.persistenceLayerProvider),
                                                      () => new AreaHighlightModel());
 
     }

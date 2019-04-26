@@ -375,9 +375,9 @@ export class TextHighlightController {
             height: Math.floor(selectionScreenshot.clientRect.height)
         };
 
-        const screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
+        // const screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
 
-        TextHighlights.attachImage(textHighlightRecord.value, screenshotImageRef);
+        // TextHighlights.attachImage(textHighlightRecord.value, screenshotImageRef);
 
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
@@ -524,17 +524,17 @@ export class TextHighlightController {
     /**
      * @Deprecated remove as we're migrating to a new image/screenshot design.
      */
-    private toImage(screenshotID: string, rel: string, dimensions: IDimensions) {
-
-        return new Image({
-            src: `screenshot:${screenshotID}`,
-            width: dimensions.width,
-            height: dimensions.height,
-            rel,
-            type: ImageTypes.PNG
-        });
-
-    }
+    // private toImage(screenshotID: string, rel: string, dimensions: IDimensions) {
+    //
+    //     return new Image({
+    //         src: `screenshot:${screenshotID}`,
+    //         width: dimensions.width,
+    //         height: dimensions.height,
+    //         rel,
+    //         type: ImageTypes.PNG
+    //     });
+    //
+    // }
 
     /**
      * @Deprecated remove as we're migrating to a new image/screenshot design.

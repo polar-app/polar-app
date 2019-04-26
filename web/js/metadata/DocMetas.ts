@@ -192,16 +192,18 @@ export class DocMetas {
      * Make changes to the document so that they write as one batched mutation
      * at the end.
      *
+     * @param docMeta The doc to mutate
+     *
      * @param mutator  The function to execute which will mutation the
      * underlying DocMeta properly.
      */
-    public static withBatchedMutations(docMeta: DocMeta, mutator: () => void) {
+    public static withBatchedMutations<T>(docMeta: DocMeta, mutator: () => T) {
 
         try {
 
             docMeta.docInfo.mutating = true;
 
-            mutator();
+            return mutator();
 
         } finally {
             // set it to undefined so that it isn't actually persisted in the

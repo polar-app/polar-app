@@ -60,7 +60,7 @@ export class AreaHighlights {
                               pageMeta: PageMeta,
                               areaHighlight: AreaHighlight,
                               rect: AreaHighlightRect,
-                              extractedImage: ExtractedImage) {
+                              extractedImage: ExtractedImage): Promise<AreaHighlight> {
 
         const {type, width, height} = extractedImage;
 
@@ -97,7 +97,7 @@ export class AreaHighlights {
 
         const oldImage = areaHighlight.image;
 
-        DocMetas.withBatchedMutations(docMeta, () => {
+        const result = DocMetas.withBatchedMutations(docMeta, () => {
 
             if (areaHighlight.image) {
                 delete docMeta.docInfo.attachments[areaHighlight.image.id];
@@ -120,12 +120,16 @@ export class AreaHighlights {
             delete pageMeta.areaHighlights[areaHighlight.id];
             pageMeta.areaHighlights[newAreaHighlight.id] = newAreaHighlight!;
 
+            return newAreaHighlight;
+
         });
 
         if (oldImage) {
             datastore.deleteFile(oldImage.src.backend, oldImage.src)
                 .catch(err => log.error("Unable to delete old image: ", err, oldImage));
         }
+
+        return result;
 
     }
 

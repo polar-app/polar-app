@@ -16,7 +16,7 @@ export class AsyncSerializer {
 
     private blockers = new ArrayQueue<Latch<boolean>>();
 
-    public async execute<T>(callable: () => Promise<T>) {
+    public async execute<T>(callable: () => Promise<T>): Promise<T> {
 
         const myBlocker = new Latch<boolean>();
 
@@ -33,7 +33,7 @@ export class AsyncSerializer {
             // we're ready to execute so push our blocker to the queue.
             this.blockers.push(myBlocker);
 
-            await callable();
+            return await callable();
 
         } finally {
             myBlocker.resolve(true);
