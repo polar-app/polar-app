@@ -3,11 +3,8 @@ import {Logger} from "../../../../logger/Logger";
 import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";
 import {forDict} from "../../../../util/Functions";
-import {Rects} from "../../../../Rects";
 import {Dimensions} from "../../../../util/Dimensions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
-import {AreaHighlights} from "../../../../metadata/AreaHighlights";
-import {AnnotationRect} from "../../../../metadata/AnnotationRect";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";
 import {AreaHighlightRect} from "../../../../metadata/AreaHighlightRect";
 import {AreaHighlightRects} from "../../../../metadata/AreaHighlightRects";
@@ -16,6 +13,10 @@ import {BoxOptions} from "../../../../boxes/controller/BoxOptions";
 import {DocFormat} from "../../../../docformat/DocFormat";
 import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
 import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
+import {ILTRect} from '../../../../util/rects/ILTRect';
+import {Canvases} from '../../../../util/Canvas';
+import {ArrayBuffers} from '../../../../util/ArrayBuffers';
+import {Files} from '../../../../util/Files';
 
 const log = Logger.create();
 
@@ -61,9 +62,16 @@ export class AreaHighlightComponent extends Component {
         // console.log("Box moved to: ", boxMoveEvent);
 
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
-                                                                      boxMoveEvent.restrictionRect);
+                                                                        boxMoveEvent.restrictionRect);
 
         const areaHighlightRect = new AreaHighlightRect(annotationRect);
+
+        if (boxMoveEvent.state === 'completed') {
+
+            this.doScreenshot(boxMoveEvent.boxRect)
+                .catch(err => log.error("Failed to write screenshot:", err));
+
+        }
 
         // FIXME: the lastUpdated here isn't being updated. I'm going to
         // have to change the setters I think..
@@ -88,6 +96,20 @@ export class AreaHighlightComponent extends Component {
         }
 
     }
+
+
+    private async doScreenshot(rect: ILTRect) {
+
+        const canvas = document.querySelector("canvas")!;
+
+        const ab = await Canvases.extract(canvas, rect);
+        const buff = ArrayBuffers.toBuffer(ab);
+        await Files.writeFileAsync("/tmp/test.png", buff);
+
+        console.log("FIXME: Write screenshot to file");
+
+    }
+
 
     /**
      * @Override

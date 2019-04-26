@@ -12,6 +12,7 @@ import {Optional} from '../../../util/ts/Optional';
 import {Canvases} from '../../../util/Canvas';
 import {Files} from '../../../util/Files';
 import {ArrayBuffers} from '../../../util/ArrayBuffers';
+import {ILTRect} from '../../../util/rects/ILTRect';
 
 
 const log = Logger.create();
@@ -69,12 +70,6 @@ export class AreaHighlightController {
 
     private onCreateAreaHighlight(contextMenuLocation: ContextMenuLocation) {
 
-
-        this.doScreenshot()
-            .catch(err => log.error("Failed to write screenshot:", err));
-
-
-
         log.info("Creating area highlight: ", contextMenuLocation);
 
         const annotationRect = AnnotationRects.createFromEvent(contextMenuLocation);
@@ -91,19 +86,6 @@ export class AreaHighlightController {
         pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
 
     }
-
-    private async doScreenshot() {
-
-        const canvas = document.querySelector("canvas")!;
-
-        const ab = await Canvases.extract(canvas, {left: 0, top: 0, width: 250, height: 250} );
-        const buff = ArrayBuffers.toBuffer(ab);
-        await Files.writeFileAsync("/tmp/test.png", buff);
-
-        console.log("FIXME: Write screenshot to file");
-
-    }
-
     private onDeleteAreaHighlight(triggerEvent: TriggerEvent) {
 
         const annotationPointers

@@ -102,6 +102,9 @@ export class Canvases {
                                 rect: ILTRect,
                                 opts: ImageOpts = new DefaultImageOpts()): Promise<ArrayBuffer> {
 
+
+        console.log("FIXME: creating at: ", rect);
+
         const tmpCanvas = document.createElement("canvas");
 
         const tmpCanvasCtx = tmpCanvas.getContext('2d', {alpha: false})!;
