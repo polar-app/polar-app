@@ -71,55 +71,38 @@ export class AreaHighlightComponent extends Component {
 
         const areaHighlightRect = new AreaHighlightRect(annotationRect);
 
-        // FIXME: the lastUpdated here isn't being updated. I'm going to
-        // have to change the setters I think..
-
         if (boxMoveEvent.state === "completed") {
 
             const annotationEvent = this.annotationEvent!;
 
-            const {docMeta, pageMeta} = annotationEvent;
+            const { docMeta, pageMeta } = annotationEvent;
 
-            // FIXME: since the model is updated FROM the docMeta and we're
-            // waiting for the writeFile to complete there could be some UI lag
-            // here but how do we update the screenshot when it doesn't exist
-            // in the database yet?  Use a local blob for now until it's written
-            // I think is the best we can do but I'm not sure how we could go
-            // about this for now...
-            //
-            // FIXME: also there would still be latency writing to local disk
-            // and we should avoid that completely if we can...
-            //
-            // FIXME: maybe a static local cache for operations that haven't
-            // yet completed yet and that are available in blobs for specific
-            // refs? ... it would be best if this was done directly in the
-            // datastore since we're writing a blob and we know ahead of time
-            // what the URL looks like ... prior to being written.
+            const doWrite = async () => {
 
-            // FIXME: we need a new operation type for the mutator which is a
-            // 'noWrite' operation which only updates memory and does not
-            // persist the data.  We need to update the data locally, wait for
-            // the data to update , then swap the data.
-            //
-            // FIXME: one issue though is that the image data isn't cached so
-            // there might be a lag when replacing the blob with an HTTP URL
-            // if they're on a slow network.  However, we could use the new
-            // caches API for this.
-
-            this.asyncSerializer.execute(async () => {
-
+                // this await is unfortunately but it's almost instant
                 const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
 
-                return AreaHighlights.write(this.persistenceLayerProvider(),
-                                            docMeta,
-                                            pageMeta,
-                                            this.areaHighlight!,
-                                            areaHighlightRect,
-                                            extractedImage);
+                const writeOpts = {
+                    datastore: this.persistenceLayerProvider(),
+                    docMeta,
+                    pageMeta,
+                    areaHighlight: this.areaHighlight!,
+                    rect: areaHighlightRect,
+                    extractedImage
+                };
 
-            }).then(result => {
-                this.areaHighlight = result;
-            });
+                const writer = AreaHighlights.write(writeOpts);
+
+                const [areaHighlight, committer] = writer.prepare();
+
+                this.areaHighlight = areaHighlight;
+
+                await committer.commit();
+
+            };
+
+            this.asyncSerializer.execute(async () => await doWrite())
+                .catch(err => log.error("Unable to write to datastore: ", err));
 
         } else {
             // noop

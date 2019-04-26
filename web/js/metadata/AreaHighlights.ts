@@ -17,6 +17,7 @@ import {Logger} from '../logger/Logger';
 import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects} from './BaseHighlight';
+import {DatastoreFileCache} from '../datastore/HybridRemoteDatastore';
 
 const log = Logger.create();
 
@@ -55,12 +56,35 @@ export class AreaHighlights {
     }
 
 
-    public static async write(datastore: Datastore | PersistenceLayer,
-                              docMeta: DocMeta,
-                              pageMeta: PageMeta,
-                              areaHighlight: AreaHighlight,
-                              rect: AreaHighlightRect,
-                              extractedImage: ExtractedImage): Promise<AreaHighlight> {
+    public static write(opts: AreaHighlightWriteOpts): AreaHighlightWriter {
+        return new DefaultAreaHighlightWriter(opts);
+    }
+
+}
+
+export interface AreaHighlightWriteOpts {
+    readonly datastore: Datastore | PersistenceLayer;
+    readonly docMeta: DocMeta;
+    readonly pageMeta: PageMeta;
+    readonly areaHighlight: AreaHighlight;
+    readonly rect: AreaHighlightRect;
+    readonly extractedImage: ExtractedImage;
+}
+
+export interface AreaHighlightWriter {
+
+    prepare(): [AreaHighlight, AreaHighlightCommitter];
+
+}
+
+class DefaultAreaHighlightWriter implements AreaHighlightWriter {
+
+    constructor(private readonly opts: AreaHighlightWriteOpts) {
+    }
+
+    public prepare(): [AreaHighlight, AreaHighlightCommitter] {
+
+        const {docMeta, extractedImage, pageMeta, areaHighlight, rect} = this.opts;
 
         const {type, width, height} = extractedImage;
 
@@ -77,9 +101,11 @@ export class AreaHighlights {
         //
         // They MUST go in the following manner:
         //
+        //  - write out the metadata to memory without writing to the datastore
+        //
         //  - write the new file
         //
-        //  - write the new DocMeta
+        //  - write the new DocMeta to the datastore
         //
         //  - delete the old file (this does not need to block)
         //
@@ -92,30 +118,42 @@ export class AreaHighlights {
         //  of 'tag' operation where we write the files deletable before we
         //  delete them.
 
-        const blob = ArrayBuffers.toBlob(extractedImage.data);
-        await datastore.writeFile(fileRef.backend, fileRef, blob);
-
         const oldImage = areaHighlight.image;
 
-        const result = DocMetas.withBatchedMutations(docMeta, () => {
+        const image = new Image({
+            id, type, width, height,
+            rel: 'screenshot',
+            src: fileRef,
+        });
+
+        const blob = ArrayBuffers.toBlob(extractedImage.data);
+
+        const blobURL = URL.createObjectURL(blob);
+
+        DatastoreFileCache.writeFile(Backend.IMAGE, image.src, {
+            url: blobURL
+        });
+
+        // update the DocMeta but don't write yet.  We have to make sure the
+        // write of the image made to the datastore first.
+
+        const result = DocMetas.withSkippedMutations(docMeta, () => {
 
             if (areaHighlight.image) {
                 delete docMeta.docInfo.attachments[areaHighlight.image.id];
             }
 
-            const image = new Image({
-                id, type, width, height,
-                rel: 'screenshot',
-                src: fileRef,
-            });
-
             docMeta.docInfo.attachments[image.id] = new Attachment({fileRef});
 
             const rects: HighlightRects = {};
-
             rects["0"] = <any> rect;
 
-            const newAreaHighlight =  new AreaHighlight({...areaHighlight, image, rects});
+            const newAreaHighlight =  new AreaHighlight({
+                ...areaHighlight,
+                image,
+                rects,
+                lastUpdated: ISODateTimeStrings.create()
+            });
 
             delete pageMeta.areaHighlights[areaHighlight.id];
             pageMeta.areaHighlights[newAreaHighlight.id] = newAreaHighlight!;
@@ -124,12 +162,44 @@ export class AreaHighlights {
 
         });
 
+        const committer = new DefaultAreaHighlightCommitter(this.opts, image, blob, oldImage);
+
+        return [result, committer];
+
+    }
+
+}
+
+
+export interface AreaHighlightCommitter {
+
+    commit(): Promise<void>;
+
+}
+
+class DefaultAreaHighlightCommitter implements AreaHighlightCommitter {
+
+    constructor(private readonly opts: AreaHighlightWriteOpts,
+                private readonly image: Image,
+                private readonly blob: Blob,
+                private readonly oldImage: Image | undefined) {
+    }
+
+    public async commit(): Promise<void> {
+
+        const {datastore, docMeta} = this.opts;
+        const {image, oldImage, blob} = this;
+
+        await datastore.writeFile(image.src.backend, image.src, blob);
+
+        // now force a write of all the data and the current in memory version
+        // will be written including the above skipped mutation.
+        DocMetas.forceWrite(docMeta);
+
         if (oldImage) {
             datastore.deleteFile(oldImage.src.backend, oldImage.src)
                 .catch(err => log.error("Unable to delete old image: ", err, oldImage));
         }
-
-        return result;
 
     }
 

@@ -12,6 +12,7 @@ import {forDict} from '../util/Functions';
 import {TextHighlights} from './TextHighlights';
 import {Preconditions} from '../Preconditions';
 import {Errors} from '../util/Errors';
+import {ISODateTimeStrings} from './ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -228,6 +229,14 @@ export class DocMetas {
         }
 
     }
+
+    /**
+     * Force a write of the DocMeta
+     */
+    public static forceWrite(docMeta: DocMeta) {
+        docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
+    }
+
 }
 
 export class MockDocMetas {

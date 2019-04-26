@@ -1,11 +1,7 @@
 import {FileMeta, FileRef} from './Datastore';
 import {Backend} from './Backend';
 
-export interface DocFileMeta {
-
-    readonly backend: Backend;
-
-    readonly ref: FileRef;
+export interface DocFileURLMeta {
 
     /**
      * URL to the file that can be used within the browser to load or download
@@ -14,6 +10,14 @@ export interface DocFileMeta {
      * in this browser instance.
      */
     readonly url: string;
+
+}
+
+export interface DocFileMeta extends DocFileURLMeta {
+
+    readonly backend: Backend;
+
+    readonly ref: FileRef;
 
     // readonly meta: FileMeta;
 
