@@ -14,9 +14,6 @@ import {SelectedContents} from '../selection/SelectedContents';
 import {SelectionScreenshots} from './SelectionScreenshots';
 import {Hashcodes} from '../../../Hashcodes';
 import {IDimensions} from '../../../util/Dimensions';
-import {ImageType} from '../../../metadata/ImageType';
-
-import $ from '../../../ui/JQuery';
 import {TextHighlights} from '../../../metadata/TextHighlights';
 import {Screenshots} from '../../../metadata/Screenshots';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
@@ -25,6 +22,8 @@ import {TypedMessage} from '../../../util/TypedMessage';
 import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from '../../../metadata/BaseHighlight';
 import {Elements} from '../../../util/Elements';
+import {ImageType} from '../../../metadata/Image';
+import {ImageTypes} from '../../../metadata/Image';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -522,6 +521,9 @@ export class TextHighlightController {
 
     }
 
+    /**
+     * @Deprecated remove as we're migrating to a new image/screenshot design.
+     */
     private toImage(screenshotID: string, rel: string, dimensions: IDimensions) {
 
         return new Image({
@@ -529,17 +531,20 @@ export class TextHighlightController {
             width: dimensions.width,
             height: dimensions.height,
             rel,
-            type: ImageType.PNG
+            type: ImageTypes.PNG
         });
 
     }
 
+    /**
+     * @Deprecated remove as we're migrating to a new image/screenshot design.
+     */
     private toScreenshot(id: string, src: string, rel: string, dimensions: IDimensions) {
 
         const imageOpts = {
             width: dimensions.width,
             height: dimensions.height,
-            type: ImageType.PNG,
+            type: ImageTypes.PNG,
             rel
         };
 

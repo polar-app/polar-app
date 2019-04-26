@@ -6,11 +6,11 @@ import {ClientRects} from '../util/rects/ClientRects';
 import {Logger} from '../logger/Logger';
 import {Screenshot} from '../metadata/Screenshot';
 import {Screenshots} from '../metadata/Screenshots';
-import {ImageType} from '../metadata/ImageType';
 import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
 import {remote} from 'electron';
 import {AppRuntime} from '../AppRuntime';
 import {Optional} from '../util/ts/Optional';
+import {ImageTypes} from '../metadata/Image';
 
 const log = Logger.create();
 
@@ -18,6 +18,7 @@ const log = Logger.create();
  * Create a screenshot of the display.
  *
  * @ElectronRendererContext
+ * @Deprecated Moving to use images captured from canvas directly.
  */
 export class CapturedScreenshots {
 
@@ -107,7 +108,7 @@ export class CapturedScreenshots {
         return Screenshots.create(capturedScreenshot.dataURL, {
             width: capturedScreenshot.dimensions.width,
             height: capturedScreenshot.dimensions.height,
-            type: ImageType.PNG
+            type: ImageTypes.PNG
         });
 
     }

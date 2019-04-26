@@ -100,7 +100,7 @@ export class Datastores {
 
         const attachments = docInfo.attachments || {};
         const attachmentRefs = Object.values(attachments)
-            .map(current => current.data);
+            .map(current => current.fileRef);
 
         result.push(...attachmentRefs);
 

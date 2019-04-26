@@ -12,27 +12,6 @@ export class Canvases {
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/pdf-loader.js
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/extractor.js
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/debug-canvas.js
-    //
-    // function fixCanvasImageSmoothing() {
-    //
-    //     // NOTE: this doesn't seem to actually change our output in any way.  The
-    //     // content would change to a different image but it doesn't seem to. It
-    //     // might be an ordering issue as the canvas could already be written to
-    //     // but I don't think that's the issue.  To test whether this works we
-    //     // can just toggle imageSmoothingEnabled and see if the content changes
-    //     // on disk in our tests.
-    //
-    //     let canvas = document.querySelector("canvas");
-    //
-    //     if (! canvas) {
-    //         return;
-    //     }
-    //
-    //     let canvasCtx = canvas.getContext('2d');
-    //
-    //     canvasCtx.imageSmoothingEnabled = false;
-    //
-    // }
 
     /**
      * Take a canvas and convert it to a data URL without limitations on the
@@ -120,14 +99,18 @@ export class Canvases {
 
         const data = await this.toArrayBuffer(tmpCanvas, opts);
 
-        return {data, width: rect.width, height: rect.height};
+        return {data, width: rect.width, height: rect.height, type: opts.type};
 
     }
 
 }
 
-interface ExtractedImage {
+/**
+ * Keeps the binary data but also metadata for the extract.
+ */
+export interface ExtractedImage {
     readonly data: ArrayBuffer;
+    readonly type: ImageType;
     readonly width: number;
     readonly height: number;
 }
@@ -145,4 +128,4 @@ class DefaultImageOpts implements ImageOpts {
     public readonly quality = IMAGE_QUALITY;
 }
 
-export type ImageType = 'image/png' | 'image/jpg';
+export type ImageType = 'image/png' | 'image/jpeg';
