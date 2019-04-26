@@ -2,46 +2,25 @@ import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {BackendFileRef} from '../datastore/Datastore';
 
-export class Image extends SerializedObject {
+export class Image extends SerializedObject implements IImage {
 
-    /**
-     * The type of this image.
-     */
+    public readonly id: string;
+
     public readonly type: ImageType;
 
-    /**
-     * The src of this Image as backed in the datastore.
-     */
     public readonly src: BackendFileRef;
 
-    /**
-     * The width of this image.
-     */
     public readonly width?: number;
 
-    /**
-     * The height of this image.
-     *
-     * @type {number}
-     */
     public readonly height?: number;
 
-    /**
-     * A per image 'relation' similar to the HTML rel attribute with links.
-     * This allow us to attach an image to an annotation and give it a relation.
-     *
-     * For example.  We could have 'screenshot', 'thumbnail', 'highlight', etc.
-     *
-     * These relations are free form so any relation type can be designed by
-     * the developer and still compatible with the schema.  Standard relations
-     * are and will be defined and future relations can be added at any point.
-     */
     public readonly rel?: string;
 
-    constructor(opts: any) {
+    constructor(opts: IImage) {
 
-        super(opts);
+        super(<any> opts);
 
+        this.id = opts.id;
         this.type = opts.type;
         this.src = opts.src;
         this.width = opts.width;
@@ -65,6 +44,12 @@ export class Image extends SerializedObject {
 }
 
 export interface IImage {
+
+    /**
+     * A unique ID for this image which is used to store in keys and uniquely
+     * represents this image.
+     */
+    readonly id: string;
 
     /**
      * The type of this image.

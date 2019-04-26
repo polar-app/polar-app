@@ -9,12 +9,13 @@ export class BaseHighlight extends ExtendedAnnotation {
     /**
      * The rectangles where we need to place content for this highlights.
      */
-    public rects: {[key: string]: Rect} = {};
+    public rects: HighlightRects = {};
 
     /**
-     * Optional image for this highlight taken when the highlight was
-     * created.  This is usually a screenshot of the annotation and what
-     * it looks like on screen.
+     * Optional image for this highlight taken when the highlight was created.
+     * This is usually a screenshot of the annotation and what it looks like on
+     * screen.  This is the primary image for this highlight and not includes in
+     * the images below which are optional / secondary images.
      */
     public image?: Image;
 
@@ -52,3 +53,7 @@ export class BaseHighlight extends ExtendedAnnotation {
  * not need to be visibly shown.
  */
 export type HighlightColor = 'yellow' | 'red' | 'green' | 'blue' | 'transparent';
+
+export interface HighlightRects {
+    [key: string]: Rect;
+}

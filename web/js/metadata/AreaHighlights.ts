@@ -11,9 +11,14 @@ import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Images} from './Images';
 import {DocMetas} from './DocMetas';
 import {Backend} from '../datastore/Backend';
-import {IImage} from './Image';
 import {ArrayBuffers} from '../util/ArrayBuffers';
 import {Attachment} from './Attachment';
+import {Logger} from '../logger/Logger';
+import {PageMeta} from './PageMeta';
+import {AreaHighlightRect} from './AreaHighlightRect';
+import {HighlightRects} from './BaseHighlight';
+
+const log = Logger.create();
 
 export class AreaHighlights {
 
@@ -50,13 +55,12 @@ export class AreaHighlights {
     }
 
 
-    public static async attachScreenshots(datastore: Datastore | PersistenceLayer,
-                                          docMeta: DocMeta,
-                                          areaHighlight: AreaHighlight,
-                                          extractedImage: ExtractedImage) {
-
-        // FIXME: deleting an area highlight should remove its attachment too
-        // and be within a batch operation.
+    public static async write(datastore: Datastore | PersistenceLayer,
+                              docMeta: DocMeta,
+                              pageMeta: PageMeta,
+                              areaHighlight: AreaHighlight,
+                              rect: AreaHighlightRect,
+                              extractedImage: ExtractedImage) {
 
         const {type, width, height} = extractedImage;
 
@@ -69,27 +73,59 @@ export class AreaHighlights {
             name: `${id}.${ext}`
         };
 
-        const blob = ArrayBuffers.toBlob(extractedImage.data);
+        // WARN: THE OPERATIONS HERE ARE ORDERED FOR SAFETY
+        //
+        // They MUST go in the following manner:
+        //
+        //  - write the new file
+        //
+        //  - write the new DocMeta
+        //
+        //  - delete the old file (this does not need to block)
+        //
+        //  This CAN live a dangling older file if the write is aborted or the
+        //  client crashes but this is probably rare.  It could ALSO leave a NEW
+        //  file in place but it won't leave inconsistent/broken data from a
+        //  user perspective.
+        //
+        //  The only way around the danging binary file issue might be some sort
+        //  of 'tag' operation where we write the files deletable before we
+        //  delete them.
 
-        // we must first write the data to the datastore.
+        const blob = ArrayBuffers.toBlob(extractedImage.data);
         await datastore.writeFile(fileRef.backend, fileRef, blob);
+
+        const oldImage = areaHighlight.image;
 
         DocMetas.withBatchedMutations(docMeta, () => {
 
-            const image: IImage = {
+            if (areaHighlight.image) {
+                delete docMeta.docInfo.attachments[areaHighlight.image.id];
+            }
+
+            const image = new Image({
+                id, type, width, height,
                 rel: 'screenshot',
                 src: fileRef,
-                type, width, height
-            };
+            });
 
-            docMeta.docInfo.attachments[id] = new Attachment({fileRef});
+            docMeta.docInfo.attachments[image.id] = new Attachment({fileRef});
 
-            // FIXME: remove the old rel=screenshot image.
+            const rects: HighlightRects = {};
 
-            // FIXME: now update the area highlight by sticking the new image
-            // on...
+            rects["0"] = <any> rect;
+
+            const newAreaHighlight =  new AreaHighlight({...areaHighlight, image, rects});
+
+            delete pageMeta.areaHighlights[areaHighlight.id];
+            pageMeta.areaHighlights[newAreaHighlight.id] = newAreaHighlight!;
 
         });
+
+        if (oldImage) {
+            datastore.deleteFile(oldImage.src.backend, oldImage.src)
+                .catch(err => log.error("Unable to delete old image: ", err, oldImage));
+        }
 
     }
 

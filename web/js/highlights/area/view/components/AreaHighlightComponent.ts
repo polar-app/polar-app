@@ -17,6 +17,7 @@ import {ILTRect} from '../../../../util/rects/ILTRect';
 import {Canvases} from '../../../../util/Canvases';
 import {ArrayBuffers} from '../../../../util/ArrayBuffers';
 import {Files} from '../../../../util/Files';
+import {DocMetas} from '../../../../metadata/DocMetas';
 
 const log = Logger.create();
 
@@ -68,17 +69,13 @@ export class AreaHighlightComponent extends Component {
 
         const areaHighlightRect = new AreaHighlightRect(annotationRect);
 
-        if (boxMoveEvent.state === 'completed') {
-
-            this.doScreenshot(boxMoveEvent.boxRect)
-                .catch(err => log.error("Failed to write screenshot:", err));
-
-        }
-
         // FIXME: the lastUpdated here isn't being updated. I'm going to
         // have to change the setters I think..
 
         if (boxMoveEvent.state === "completed") {
+
+            this.doScreenshot(boxMoveEvent.boxRect)
+                .catch(err => log.error("Failed to write screenshot:", err));
 
             const annotationEvent = this.annotationEvent!;
 
@@ -90,8 +87,15 @@ export class AreaHighlightComponent extends Component {
 
             log.debug("New areaHighlight: ", JSON.stringify(this.areaHighlight, null, "  "));
 
-            delete annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id];
-            annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id] = this.areaHighlight;
+            const {docMeta} = annotationEvent;
+
+            DocMetas.withBatchedMutations(docMeta, () => {
+
+                delete annotationEvent.pageMeta.areaHighlights[this.areaHighlight!.id];
+                annotationEvent.pageMeta.areaHighlights[this.areaHighlight!.id] = this.areaHighlight!;
+
+            });
+
 
         } else {
             // noop

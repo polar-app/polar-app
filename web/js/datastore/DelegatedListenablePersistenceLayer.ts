@@ -1,22 +1,3 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
-        DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
-        AbstractDatastore,
-    ErrorListener} from './Datastore';
-import {Directories} from './Directories';
-import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
-import {Preconditions} from '../Preconditions';
-import {Backend} from './Backend';
-import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
-import {IDocInfo, DocInfo} from '../metadata/DocInfo';
-import {DatastoreMutation} from './DatastoreMutation';
-import {Datastores} from './Datastores';
-import {PersistenceLayers} from './PersistenceLayers';
-import {PersistenceLayer} from './PersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
-import {FileHandle} from '../util/Files';
-import {AdvertisingPersistenceLayer} from './advertiser/AdvertisingPersistenceLayer';
 import {DelegatedPersistenceLayer} from './DelegatedPersistenceLayer';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {PersistenceLayerListener} from './PersistenceLayerListener';

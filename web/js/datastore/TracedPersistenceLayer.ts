@@ -59,6 +59,10 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return tracer.traceAsync('containsFile', () => this.delegate.containsFile(backend, ref));
     }
 
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        return tracer.traceAsync('deleteFile', () => this.datastore.deleteFile(backend, ref));
+    }
+
     public async deactivate(): Promise<void> {
         return this.delegate.deactivate();
     }

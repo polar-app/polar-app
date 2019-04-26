@@ -43,6 +43,10 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.containsFile(backend, ref);
     }
 
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        return this.datastore.deleteFile(backend, ref);
+    }
+
     public async deactivate(): Promise<void> {
         return this.delegate.deactivate();
     }

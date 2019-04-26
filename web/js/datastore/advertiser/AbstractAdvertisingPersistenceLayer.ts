@@ -154,6 +154,10 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         return this.delegate.containsFile(backend, ref);
     }
 
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        return this.datastore.deleteFile(backend, ref);
+    }
+
     public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
         return this.delegate.getFile(backend, ref, opts);
     }

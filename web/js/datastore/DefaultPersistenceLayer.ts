@@ -216,6 +216,10 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.getFile(backend, ref, opts);
     }
 
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        return this.datastore.deleteFile(backend, ref);
+    }
+
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
         this.datastore.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
     }
