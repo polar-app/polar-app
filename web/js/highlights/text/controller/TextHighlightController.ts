@@ -361,6 +361,7 @@ export class TextHighlightController {
         // blocking the creation of the screenshot in the UI.
         const selectionScreenshot = SelectionScreenshots.capture(doc, win);
 
+        // FIXME: this is what I have to use on the underlying canvas I think.
         const textHighlightRecord = await factory();
 
         // TODO this is actually difficult because this screenshot is SLOW and

@@ -32,7 +32,23 @@ export class Canvases {
     //
     // }
 
-    public static toDataURLHD(canvas: HTMLCanvasElement) {
+    /**
+     * Take a canvas and convert it to a data URL without limitations on the
+     * size of the URL.
+     */
+    public static async toDataURL(canvas: HTMLCanvasElement,
+                                  opts: ImageOpts = new DefaultImageOpts()): Promise<string> {
+
+        // https://developer.mozilla.org/en-US/docs/Web/API/Blob
+
+        const ab = await this.toArrayBuffer(canvas, opts);
+        const encoded = ArrayBuffers.toBase64(ab);
+        return `data:${IMAGE_TYPE};base64,` + encoded;
+
+    }
+
+    public static toArrayBuffer(canvas: HTMLCanvasElement,
+                                opts: ImageOpts = new DefaultImageOpts()): Promise<ArrayBuffer> {
 
         // https://developer.mozilla.org/en-US/docs/Web/API/Blob
         //
@@ -50,8 +66,7 @@ export class Canvases {
 
                     reader.addEventListener("loadend", () => {
                         const ab = <ArrayBuffer> reader.result;
-                        const encoded = ArrayBuffers.toBase64(ab);
-                        resolve(`data:${IMAGE_TYPE};base64,` + encoded);
+                        resolve(ab);
                     });
 
                     reader.addEventListener("onerror", (err) => {
@@ -68,11 +83,24 @@ export class Canvases {
                     reject(new Error("No blob"));
                 }
 
-            }, IMAGE_TYPE, IMAGE_QUALITY);
+            }, opts.type, opts.quality);
 
         });
 
     }
 
+
 }
 
+interface ImageOpts {
+    readonly type: ImageType;
+    readonly quality: number;
+
+}
+
+class DefaultImageOpts implements ImageOpts {
+    public readonly type = IMAGE_TYPE;
+    public readonly quality = IMAGE_QUALITY;
+}
+
+export type ImageType = 'image/png' | 'image/jpg';
