@@ -14,16 +14,9 @@ import {ArrayQueue} from './ArrayQueue';
  */
 export class AsyncSerializer {
 
-    // FIXME: this needs testing now...
-    //
-    // - test with no entries
-    // - test with entries in proper order
-    // - test with entries resolved out of order and then check the order in
-    //   which they were called.
-
     private blockers = new ArrayQueue<Latch<boolean>>();
 
-    public async execute(callable: () => Promise<void>) {
+    public async execute<T>(callable: () => Promise<T>) {
 
         const myBlocker = new Latch<boolean>();
 
