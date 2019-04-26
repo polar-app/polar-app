@@ -66,6 +66,8 @@ export class AreaHighlightController {
 
     private onCreateAreaHighlight(contextMenuLocation: ContextMenuLocation) {
 
+        // FIXME: needs to use AreaHighlights.write here...
+
         log.info("Creating area highlight: ", contextMenuLocation);
 
         const annotationRect = AnnotationRects.createFromEvent(contextMenuLocation);
@@ -83,6 +85,8 @@ export class AreaHighlightController {
 
     }
     private onDeleteAreaHighlight(triggerEvent: TriggerEvent) {
+
+        // FIXME: this needs to remove the screenshots after deletion...
 
         const annotationPointers
             = AnnotationPointers.toAnnotationPointers(".area-highlight", triggerEvent);

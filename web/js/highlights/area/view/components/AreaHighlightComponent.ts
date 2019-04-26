@@ -80,6 +80,20 @@ export class AreaHighlightComponent extends Component {
 
             const {docMeta, pageMeta} = annotationEvent;
 
+            // FIXME: since the model is updated FROM the docMeta and we're
+            // waiting for the writeFile to complete there could be some UI lag
+            // here but how do we update the screenshot when it doesn't exist
+            // in the database yet?  Use a local blob for now until it's written
+            // I think is the best we can do but I'm not sure how we could go
+            // about this for now...
+            //
+            // FIXME: also there would still be latency writing to local disk
+            // and we should avoid that completely if we can...
+            //
+            // FIXME: maybe a static local cache for operations that haven't
+            // yet completed yet and that are available in blobs for specific
+            // refs? ...
+
             this.asyncSerializer.execute(async () => {
 
                 const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
