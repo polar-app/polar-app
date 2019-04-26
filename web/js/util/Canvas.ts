@@ -2,6 +2,9 @@
  * Functions for working with canvas objects, extracting screenshots, etc.
  */
 import {ArrayBuffers} from './ArrayBuffers';
+import {IRect} from './rects/IRect';
+import {IXYRect} from './rects/IXYRect';
+import {ILTRect} from './rects/ILTRect';
 const IMAGE_TYPE = 'image/png';
 const IMAGE_QUALITY = 1.0;
 
@@ -89,6 +92,32 @@ export class Canvases {
 
     }
 
+    /**
+     * Extract image data from the given canvas directly and return it as an array buffer.
+     * @param canvas The canvas we should extract with.
+     * @param rect The rect within the given canvas
+     * @param opts The options for the image extraction
+     */
+    public static async extract(canvas: HTMLCanvasElement,
+                                rect: ILTRect,
+                                opts: ImageOpts = new DefaultImageOpts()): Promise<ArrayBuffer> {
+
+        const tmpCanvas = document.createElement("canvas");
+
+        const tmpCanvasCtx = tmpCanvas.getContext('2d', {alpha: false})!;
+        tmpCanvasCtx.imageSmoothingEnabled = false;
+
+        tmpCanvas.width  = rect.width;
+        tmpCanvas.height = rect.height;
+
+        // copy data from the source canvas to the target
+        tmpCanvasCtx.drawImage(canvas,
+                               rect.left, rect.top, rect.width, rect.height,
+                               0, 0, rect.width, rect.height);
+
+        return await this.toArrayBuffer(tmpCanvas, opts);
+
+    }
 
 }
 
