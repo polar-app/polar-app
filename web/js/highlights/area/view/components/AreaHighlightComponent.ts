@@ -92,7 +92,19 @@ export class AreaHighlightComponent extends Component {
             //
             // FIXME: maybe a static local cache for operations that haven't
             // yet completed yet and that are available in blobs for specific
-            // refs? ...
+            // refs? ... it would be best if this was done directly in the
+            // datastore since we're writing a blob and we know ahead of time
+            // what the URL looks like ... prior to being written.
+
+            // FIXME: we need a new operation type for the mutator which is a
+            // 'noWrite' operation which only updates memory and does not
+            // persist the data.  We need to update the data locally, wait for
+            // the data to update , then swap the data.
+            //
+            // FIXME: one issue though is that the image data isn't cached so
+            // there might be a lag when replacing the blob with an HTTP URL
+            // if they're on a slow network.  However, we could use the new
+            // caches API for this.
 
             this.asyncSerializer.execute(async () => {
 

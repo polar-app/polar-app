@@ -33,7 +33,6 @@ export class HybridRemoteDatastore extends RemoteDatastore {
         return {};
     }
 
-
     public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
 
         if ( !isBinaryFileData(data)) {
@@ -63,5 +62,13 @@ export class HybridRemoteDatastore extends RemoteDatastore {
     public async getDocMeta(fingerprint: string): Promise<string | null> {
         return await this.diskDatastore.getDocMeta(fingerprint);
     }
+
+}
+
+/**
+ * A simple cache so that we can immediately make the blob ref available locally
+ * even though it has NOT been written to the datastore yet.
+ */
+class BlobCache {
 
 }
