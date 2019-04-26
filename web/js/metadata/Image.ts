@@ -1,19 +1,19 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {ImageType} from './ImageType';
+import {BackendFileRef} from '../datastore/Datastore';
 
 export class Image extends SerializedObject {
 
     /**
-     * The type of this image.  This is optional because for a remote URL
-     * we might not know the type.
+     * The type of this image.
      */
-    public readonly type?: ImageType;
+    public readonly type: ImageType;
 
     /**
-     * The src of this image.  Either an HTTP/HTTPS URL or a data: URL.
+     * The src of this Image as backed in the datastore.
      */
-    public readonly src: string;
+    public readonly src: BackendFileRef;
 
     /**
      * The width of this image.
@@ -58,8 +58,8 @@ export class Image extends SerializedObject {
 
         super.validate();
 
-        // Preconditions.assertNotNull(this.type, "type");
-        Preconditions.assertNotNull(this.src, "src");
+        Preconditions.assertPresent(this.type, "type");
+        Preconditions.assertPresent(this.src, "src");
 
     }
 

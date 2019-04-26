@@ -62,6 +62,12 @@ export class PageMeta extends SerializedObject {
 
     /**
      * Screenshots we've taken of this page while performing annotations.
+     *
+     * @Deprecated we're no longer using this and instead storing the
+     * screenshots directly along with the image with a 'rel' and then storing
+     * all the 'attachments' in the DocInfo.  The list of attachments is small
+     * plus we need to have the DocInfo be a smaller structure for the
+     * representation of the doc itself.
      */
     public readonly screenshots: {[id: string]: Screenshot} = {};
 

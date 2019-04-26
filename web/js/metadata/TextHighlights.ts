@@ -5,7 +5,6 @@ import {TextHighlight} from './TextHighlight';
 import {Image} from './Image';
 import {notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
-import {Screenshots} from './Screenshots';
 
 export class TextHighlights {
 
@@ -13,11 +12,11 @@ export class TextHighlights {
      * Create a mock text highlight for testing.
      * @return {*}
      */
-    static createMockTextHighlight() {
+    public static createMockTextHighlight() {
 
-        let rects: IRect[] = [ {top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}];
-        let textSelections = [new TextRect({text: "hello world"})];
-        let text = "hello world";
+        const rects: IRect[] = [ {top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}];
+        const textSelections = [new TextRect({text: "hello world"})];
+        const text = "hello world";
 
         // create a basic TextHighlight object..
         return TextHighlightRecords.create(rects, textSelections, {TEXT: text}).value;
@@ -34,11 +33,11 @@ export class TextHighlights {
 
             Object.values(textHighlight.images).forEach(image => {
 
-                const screenshotURI = Screenshots.parseURI(image.src);
-
-                if (screenshotURI) {
-                    delete pageMeta.screenshots[screenshotURI.id];
-                }
+                // const screenshotURI = Screenshots.parseURI(image.src);
+                //
+                // if (screenshotURI) {
+                //     delete pageMeta.screenshots[screenshotURI.id];
+                // }
 
             });
 

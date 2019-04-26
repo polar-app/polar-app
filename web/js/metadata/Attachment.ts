@@ -20,10 +20,6 @@ export class Attachment extends SerializedObject {
      */
     public readonly data: BackendFileRef;
 
-    /**
-     * The time this object was created
-     *
-     */
     public readonly created: ISODateTimeString;
 
     public constructor(opts: any) {

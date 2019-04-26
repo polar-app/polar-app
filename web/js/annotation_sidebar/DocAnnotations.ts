@@ -184,6 +184,7 @@ export class DocAnnotations {
 
     private static getScreenshot(pageMeta: PageMeta, highlight: BaseHighlight): Screenshot | undefined {
 
+        // tslint:disable-next-line:prefer-const
         let screenshot: Screenshot | undefined;
 
         if (highlight.images) {
@@ -192,11 +193,11 @@ export class DocAnnotations {
 
                 if (image.rel && image.rel === 'screenshot') {
 
-                    const screenshotURI = Screenshots.parseURI(image.src);
-
-                    if (screenshotURI) {
-                        screenshot = pageMeta.screenshots[screenshotURI.id];
-                    }
+                    // const screenshotURI = Screenshots.parseURI(image.src);
+                    //
+                    // if (screenshotURI) {
+                    //     screenshot = pageMeta.screenshots[screenshotURI.id];
+                    // }
 
                 }
 
