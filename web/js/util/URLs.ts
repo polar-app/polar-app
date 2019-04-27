@@ -54,7 +54,13 @@ export class URLs {
 
     }
 
-    public static absolute(url: string, base: string) {
+    public static absolute(url: string, base: string): string {
+
+        // if (this.isURL(base)) {
+        //     // this is already a URL.
+        //     return base;
+        // }
+
         return new URL(url, base).toString();
     }
 

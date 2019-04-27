@@ -15,13 +15,14 @@ describe('URLs', function() {
     });
 
     it('absolute', function() {
-
         assert.equal(URLs.absolute('foo/index.html', 'http://www.example.com'), "http://www.example.com/foo/index.html");
         assert.equal(URLs.absolute('/foo/index.html', 'http://www.example.com'), "http://www.example.com/foo/index.html");
         assert.equal(URLs.absolute('./foo/index.html', 'http://www.example.com'), "http://www.example.com/foo/index.html");
-
         assert.equal(URLs.absolute('#hello', 'http://www.example.com'), "http://www.example.com/#hello");
+    });
 
+    it('absolute between different sites', function() {
+        assert.equal(URLs.absolute('http://www.microsoft.com', 'http://www.example.com'), "http://www.example.com");
     });
 
 });

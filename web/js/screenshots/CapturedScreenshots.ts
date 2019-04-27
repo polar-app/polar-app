@@ -1,17 +1,14 @@
 import {IXYRect} from '../util/rects/IXYRect';
 import {IXYRects} from '../util/rects/IXYRects';
-import {CapturedScreenshot, CropDimensions, ResizeDimensions, CaptureOpts} from './CapturedScreenshot';
+import {CapturedScreenshot, CaptureOpts} from './CapturedScreenshot';
+import {ScreenshotRequest} from './CapturedScreenshot';
+import {DefaultCaptureOpts} from './CapturedScreenshot';
 import {ClientRects} from '../util/rects/ClientRects';
 import {Logger} from '../logger/Logger';
-import {Screenshot} from '../metadata/Screenshot';
-import {Screenshots} from '../metadata/Screenshots';
 import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
 import {remote} from 'electron';
 import {AppRuntime} from '../AppRuntime';
-import {Optional} from '../util/ts/Optional';
-import {ImageTypes} from '../metadata/Image';
-import {ScreenshotRequest} from './CapturedScreenshot';
-import {DefaultCaptureOpts} from './CapturedScreenshot';
+import {Promises} from '../util/Promises';
 
 const log = Logger.create();
 
@@ -22,6 +19,10 @@ const log = Logger.create();
  * @Deprecated Moving to use images captured from canvas directly.
  */
 export class CapturedScreenshots {
+
+    public static supported(): boolean {
+        return AppRuntime.isElectron();
+    }
 
     /**
      * Create a screenshot and return a NativeImage of the result.
@@ -39,8 +40,8 @@ export class CapturedScreenshots {
     public static async capture(target: CaptureTarget,
                                 opts: CaptureOpts = new DefaultCaptureOpts()): Promise<CapturedScreenshot> {
 
-        if ( ! AppRuntime.isElectron()) {
-            throw new Error("Not within Electron");
+        if ( ! this.supported()) {
+            throw new Error("Captured screenshots not supported");
         }
 
         const screenshotRequest = await this.doCapture(target, opts);
@@ -51,13 +52,42 @@ export class CapturedScreenshots {
 
         const id = this.getWebContentsID();
 
-        return await this.getRemoteDelegate().capture(id, screenshotRequest);
+        // NOTE: it takes about 20ms for the main process to capture the data
+        // another 30ms to send it to the renderer.  Half the main process time
+        // is taken capturing the image and the other time is spent converting
+        // it to a PNG.
+        //
+        // TODO: I could shave 20ms by converting the image to PNG within the
+        // renderer after the animations are restored but that's not really
+        // too impressive.
+        //
+        // TODO: even a 50ms flash is kind of annoying but not the end of the
+        // world.
+
+        const annotationToggler = new AnnotationToggler();
+
+        await Promises.requestAnimationFrame(() => annotationToggler.hide());
+        await Promises.waitFor(1000 / 60); // FIXME: this works at least on my but would be nice to make it faster
+
+        const capturedScreenshot
+            = await this.getRemoteDelegate().capture(id, screenshotRequest);
+
+        // FIXME: if we write it to a file, and the FILE (which would be written
+        // from the main process) has the overlay then we know that the overlay
+        // isn't being removed.
+
+        await Promises.requestAnimationFrame(() => annotationToggler.show());
+
+        return capturedScreenshot;
 
     }
 
     public static async captureToFile(target: CaptureTarget,
                                       dest: string,
                                       opts: CaptureOpts): Promise<void> {
+
+        // TODO: the idea here is that we could directly write to the datastore
+        // from within the main process
 
         // noop for now
 
@@ -123,4 +153,79 @@ export class CapturedScreenshots {
 }
 
 export type CaptureTarget = IXYRect | HTMLElement | ClientRect;
+
+export class Annotations {
+
+    private static SELECTOR = ".page .pagemark, .page .text-highlight, .page .area-highlight";
+
+    private static getAnnotationElements(): ReadonlyArray<HTMLElement> {
+        return Array.from(document.querySelectorAll(this.SELECTOR));
+    }
+
+    public static hide() {
+
+        for (const element of this.getAnnotationElements()) {
+            element.style.visibility = 'hidden';
+            const cs = getComputedStyle(element); // FIXME: remove
+            console.log("FIXME: vis is " + cs.visibility);
+        }
+
+    }
+
+    public static show() {
+
+        for (const element of this.getAnnotationElements()) {
+            element.style.visibility = 'visible';
+        }
+    }
+
+}
+
+export interface StyleRestore {
+    readonly visibility: string | null;
+}
+
+export interface AnnotationStyle {
+    readonly element: HTMLElement;
+    readonly styleRestore: StyleRestore;
+}
+
+export class AnnotationToggler {
+
+    private SELECTOR = ".page .pagemark, .page .text-highlight, .page .area-highlight";
+
+    private annotationStyles: AnnotationStyle[] = [];
+
+    private getAnnotationElements(): ReadonlyArray<HTMLElement> {
+        return Array.from(document.querySelectorAll(this.SELECTOR));
+    }
+
+    public hide() {
+
+        for (const annotationElement of this.getAnnotationElements()) {
+
+            const styleRestore: StyleRestore = {
+                visibility: annotationElement.style.visibility
+            };
+
+            annotationElement.style.visibility = 'hidden';
+
+            this.annotationStyles.push({element: annotationElement, styleRestore});
+
+        }
+
+    }
+
+    public show() {
+
+        for (const annotationStyle of this.annotationStyles) {
+
+            annotationStyle.element.style.visibility =
+                annotationStyle.styleRestore.visibility;
+
+        }
+
+    }
+
+}
 

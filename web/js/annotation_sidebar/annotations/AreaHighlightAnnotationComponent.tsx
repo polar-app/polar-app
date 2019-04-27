@@ -18,13 +18,14 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
     }
 
-
     public componentDidMount(): void {
 
         const {annotation} = this.props;
         const {image} = annotation;
 
         // FIXME: we're performing an update on an unmounted component here.
+
+        // FIXME the image ratio isn't being preserved here...
 
         // we need to see how to do this properly.
 
@@ -71,11 +72,31 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     <div style={{display: 'flex'}}>
                         <img style={{
-                                maxWidth: '100%',
-                                maxHeight: '100%',
-                                width: this.state.image.width,
-                                height: this.state.image.height,
+                                // maxWidth: '100%',
+                                // maxHeight: '100%',
+                                // width: this.state.image.width,
+                                // height: this.state.image.height,
+
+                                // width: '100%',
+                                // height: '100%',
+                                // maxWidth: this.state.image.width,
+                                // maxHeight: this.state.image.height,
+
+                                // display: 'block',
+                                // maxWidth: this.state.image.width,
+                                // maxHeight: this.state.image.height,
+                                // width: 'auto',
+                                // height: 'auto',
+
+                                display: 'block',
+                                maxWidth: this.state.image.width,
+                                maxHeight: this.state.image.height,
+                                width: 'auto',
+                                height: 'auto',
+
                              }}
+                             width={this.state.image.width}
+                             height={this.state.image.height}
                              alt="screenshot"
                              className="ml-auto mr-auto"
                              src={this.state.image.src}/>

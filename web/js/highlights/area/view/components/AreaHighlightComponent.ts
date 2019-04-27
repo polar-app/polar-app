@@ -82,10 +82,12 @@ export class AreaHighlightComponent extends Component {
 
             const doWrite = async () => {
 
+                // FIXME: in PDF move capture via canvas but in HTML mode
+                // capture via screenshot.
 
                 // this await is unfortunately but it's almost instant
                 // const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
-                const extractedImage = await this.captureScreenshot2(boxMoveEvent.boxRect);
+                const extractedImage = await this.captureScreenshot2(boxMoveEvent.boxRect, boxMoveEvent.target);
 
                 const writeOpts = {
                     datastore: this.persistenceLayerProvider(),
@@ -115,14 +117,32 @@ export class AreaHighlightComponent extends Component {
 
     }
 
+    /**
+     * FIXME: this is relative to the viewport NOT the rect... but I could call
+     * get boundingClientRect on it ....
+     *
+     *
+     */
+    private async captureScreenshot2(rect: ILTRect, element: HTMLElement): Promise<ExtractedImage> {
 
-    private async captureScreenshot2(rect: ILTRect): Promise<ExtractedImage> {
+        // FIXME we should try to find the webContents ID of the iframe...
+        // NOT the root window as this will work a LOT better and then we can
+        // use rect directly (not the element).  By better I mean we will not
+        // have any of the image overlays.
 
         const {width, height} = rect;
 
+        const boundingClientRect = element.getBoundingClientRect();
+
+        // const target: CaptureTarget = {
+        //     x: rect.left,
+        //     y: rect.top,
+        //     width, height
+        // };
+
         const target: CaptureTarget = {
-            x: rect.left,
-            y: rect.top,
+            x: boundingClientRect.left,
+            y: boundingClientRect.top,
             width, height
         };
 

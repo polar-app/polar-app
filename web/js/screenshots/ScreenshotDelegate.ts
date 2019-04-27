@@ -1,12 +1,13 @@
 import {CapturedScreenshot} from './CapturedScreenshot';
+import {ScreenshotRequest} from './CapturedScreenshot';
 import {webContents} from "electron";
 import {Logger} from '../logger/Logger';
-import {ScreenshotRequest} from './CapturedScreenshot';
+import {Stopwatches} from '../util/Stopwatches';
 
 const log = Logger.create();
 
 /**
- * Handles the actual screenshotting.
+ * Handles the actual screenshots
  */
 export class ScreenshotDelegate implements IScreenshotDelegate {
 
@@ -14,8 +15,12 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
 
     public async capture(id: WebContentsID, screenshotRequest: ScreenshotRequest): Promise<CapturedScreenshot> {
 
-        const nativeImage = await this.captureNativeImage(id, screenshotRequest);
-        return this.toCapturedScreenshot(nativeImage, screenshotRequest);
+        const nativeImage =
+            await Stopwatches.withStopwatchAsync(() => this.captureNativeImage(id, screenshotRequest),
+                                                 stopwatch => log.debug("captureNativeImage took: " + stopwatch));
+
+        return Stopwatches.withStopwatch(() => this.toCapturedScreenshot(nativeImage, screenshotRequest),
+                                         stopwatch => log.debug("toCapturedScreenshot took: " + stopwatch));
 
     }
 
@@ -111,7 +116,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
                 width: size.width,
                 height: size.height
             },
-            type: 'data-url'
+            type: screenshotRequest.type
         };
 
         return capturedScreenshot;
