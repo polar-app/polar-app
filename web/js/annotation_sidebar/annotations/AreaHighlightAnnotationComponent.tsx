@@ -66,8 +66,11 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                 <div key={key}
                      className='area-highlight p-1'>
 
-                    <div style={{background: 'rgba(255, 255, 0, 0.5)',
-                                 display: 'flex'}}>
+                    <div style={{
+                            background: 'rgba(255, 255, 0, 0.5)',
+                            display: 'block',
+                            textAlign: 'center'
+                         }}>
 
                         {/*FIXME what else to test... */}
                         {/*// a div inside the parent..*/}
@@ -103,13 +106,12 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                                 objectFit: 'contain',
                                 maxWidth: this.state.image.width,
                                 maxHeight: this.state.image.height,
-                                marginLeft: 'auto',
-                                marginRight: 'auto'
+                                // marginLeft: 'auto',
+                                // marginRight: 'auto'
                              }}
-                             width={this.state.image.width}
-                             height={this.state.image.height}
+                             // width={this.state.image.width}
+                             // height={this.state.image.height}
                              alt="screenshot"
-                             className="ml-auto mr-auto"
                              src={this.state.image.src}/>
 
                     </div>
