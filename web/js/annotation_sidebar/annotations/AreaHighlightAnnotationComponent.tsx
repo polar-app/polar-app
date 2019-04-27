@@ -24,6 +24,10 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
         const {annotation} = this.props;
         const {image} = annotation;
 
+        // FIXME: we're performing an update on an unmounted component here.
+
+        // we need to see how to do this properly.
+
         if (image) {
             // FIXME: this should be its own function...
             const persistenceLayer = this.props.persistenceLayerProvider();

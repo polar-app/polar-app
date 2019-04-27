@@ -1,7 +1,7 @@
-import {ScreenshotRequest} from './ScreenshotRequest';
 import {CapturedScreenshot} from './CapturedScreenshot';
 import {webContents} from "electron";
 import {Logger} from '../logger/Logger';
+import {ScreenshotRequest} from './CapturedScreenshot';
 
 const log = Logger.create();
 
@@ -15,7 +15,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
     public async capture(id: WebContentsID, screenshotRequest: ScreenshotRequest): Promise<CapturedScreenshot> {
 
         const nativeImage = await this.captureNativeImage(id, screenshotRequest);
-        return this.toCapturedScreenshot(nativeImage);
+        return this.toCapturedScreenshot(nativeImage, screenshotRequest);
 
     }
 
@@ -24,7 +24,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
      *
      * https://github.com/electron/electron/blob/master/docs/api/native-image.md
      *
-     * @param webContents the rect of the screen where to take the screenshot.
+     * @param id the ID fo the webContents to screenshot from.
      * @param screenshotRequest The rect data for where to capture on the page.
      * @return {Promise} for {NativeImage}. You can call toDateURL on the image
      *         with scaleFactor as an option.
@@ -85,17 +85,33 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
 
     }
 
-    private toCapturedScreenshot(image: Electron.NativeImage) {
+    private toCapturedScreenshot(image: Electron.NativeImage,
+                                 screenshotRequest: ScreenshotRequest) {
 
-        const dataURL = image.toDataURL();
+        const toData = () => {
+
+            switch (screenshotRequest.type) {
+
+                case 'data-url':
+                    return image.toDataURL();
+                case 'png':
+                    return image.toPNG();
+
+            }
+
+        };
+
+        const data = toData();
+
         const size = image.getSize();
 
         const capturedScreenshot: CapturedScreenshot = {
-            dataURL,
+            data,
             dimensions: {
                 width: size.width,
                 height: size.height
-            }
+            },
+            type: 'data-url'
         };
 
         return capturedScreenshot;

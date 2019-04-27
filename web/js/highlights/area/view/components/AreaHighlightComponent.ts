@@ -20,6 +20,9 @@ import {DocMetas} from '../../../../metadata/DocMetas';
 import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
+import {CapturedScreenshots} from '../../../../screenshots/CapturedScreenshots';
+import {CaptureTarget} from '../../../../screenshots/CapturedScreenshots';
+import {Buffers} from '../../../../util/Buffers';
 
 const log = Logger.create();
 
@@ -79,8 +82,10 @@ export class AreaHighlightComponent extends Component {
 
             const doWrite = async () => {
 
+
                 // this await is unfortunately but it's almost instant
-                const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
+                // const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
+                const extractedImage = await this.captureScreenshot2(boxMoveEvent.boxRect);
 
                 const writeOpts = {
                     datastore: this.persistenceLayerProvider(),
@@ -110,12 +115,36 @@ export class AreaHighlightComponent extends Component {
 
     }
 
+
+    private async captureScreenshot2(rect: ILTRect): Promise<ExtractedImage> {
+
+        const {width, height} = rect;
+
+        const target: CaptureTarget = {
+            x: rect.left,
+            y: rect.top,
+            width, height
+        };
+
+        const before = Date.now();
+        const captured = await CapturedScreenshots.capture(target, {type: 'png'});
+        const duration = Date.now() - before;
+        console.log("FIXME: CapturedScreenshots.capture duration: ", duration);
+
+        const buffer = <Buffer> captured.data;
+        const data = Buffers.toArrayBuffer(buffer);
+
+        return {data, type: 'image/png', width, height};
+
+    }
+
+
     private async captureScreenshot(rect: ILTRect): Promise<ExtractedImage> {
 
         const {pageMeta} = this.annotationEvent!;
         const pageNum = pageMeta.pageInfo.num;
 
-        const canvas = document.querySelectorAll("canvas")[pageNum - 1];
+        const canvas = await this.docFormat.getCanvas(pageNum);
 
         return await Canvases.extract(canvas, rect);
 

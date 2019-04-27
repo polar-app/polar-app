@@ -126,6 +126,10 @@ export abstract class DocFormat {
 
     }
 
+    public async getCanvas(pageNum: number): Promise<HTMLCanvasElement> {
+        return document.querySelectorAll("canvas")[pageNum - 1];
+    }
+
 }
 
 export interface PageDetail {

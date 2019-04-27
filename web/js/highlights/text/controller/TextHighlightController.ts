@@ -392,25 +392,25 @@ export class TextHighlightController {
 
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-        const capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
+        // const capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
+        //
+        // const dataURL = capturedScreenshot
+        //     .map(current => current.dataURL)
+        //     .getOrUndefined();
 
-        const dataURL = capturedScreenshot
-            .map(current => current.dataURL)
-            .getOrUndefined();
-
-        if (dataURL) {
-
-            const screenshot = this.toScreenshot(screenshotID,
-                                                 dataURL,
-                                                 'screenshot',
-                                                 screenshotDimensions);
-
-            // TODO: this has to be written as a binary file and then a reference to
-            // the screenshot added
-
-            // pageMeta.screenshots[screenshot.id] = screenshot;
-
-        }
+        // if (dataURL) {
+        //
+        //     const screenshot = this.toScreenshot(screenshotID,
+        //                                          dataURL,
+        //                                          'screenshot',
+        //                                          screenshotDimensions);
+        //
+        //     // TODO: this has to be written as a binary file and then a reference to
+        //     // the screenshot added
+        //
+        //     // pageMeta.screenshots[screenshot.id] = screenshot;
+        //
+        // }
 
         return textHighlightRecord;
 

@@ -1,7 +1,6 @@
 import {IXYRect} from '../util/rects/IXYRect';
 import {IXYRects} from '../util/rects/IXYRects';
-import {CapturedScreenshot, CropDimensions, ResizeDimensions} from './CapturedScreenshot';
-import {ScreenshotRequest} from './ScreenshotRequest';
+import {CapturedScreenshot, CropDimensions, ResizeDimensions, CaptureOpts} from './CapturedScreenshot';
 import {ClientRects} from '../util/rects/ClientRects';
 import {Logger} from '../logger/Logger';
 import {Screenshot} from '../metadata/Screenshot';
@@ -11,6 +10,8 @@ import {remote} from 'electron';
 import {AppRuntime} from '../AppRuntime';
 import {Optional} from '../util/ts/Optional';
 import {ImageTypes} from '../metadata/Image';
+import {ScreenshotRequest} from './CapturedScreenshot';
+import {DefaultCaptureOpts} from './CapturedScreenshot';
 
 const log = Logger.create();
 
@@ -29,14 +30,17 @@ export class CapturedScreenshots {
      *
      * @param target Specify either rect or element to capture as properties.
      *
+     * @param opts The options to specify when capturing.
+     *
      * @return {Promise} for {NativeImage}. You can call toDataURL on the image
      *         with scaleFactor as an option.
      *
      */
-    public static async capture(target: CaptureTarget, opts: CaptureOpts = {}): Promise<Optional<CapturedScreenshot>> {
+    public static async capture(target: CaptureTarget,
+                                opts: CaptureOpts = new DefaultCaptureOpts()): Promise<CapturedScreenshot> {
 
         if ( ! AppRuntime.isElectron()) {
-            return Optional.empty();
+            throw new Error("Not within Electron");
         }
 
         const screenshotRequest = await this.doCapture(target, opts);
@@ -47,7 +51,7 @@ export class CapturedScreenshots {
 
         const id = this.getWebContentsID();
 
-        return Optional.of(await this.getRemoteDelegate().capture(id, screenshotRequest));
+        return await this.getRemoteDelegate().capture(id, screenshotRequest);
 
     }
 
@@ -67,7 +71,7 @@ export class CapturedScreenshots {
         return remote.getCurrentWebContents().id;
     }
 
-    private static async doCapture(target: CaptureTarget, opts: CaptureOpts = {}): Promise<ScreenshotRequest> {
+    private static async doCapture(target: CaptureTarget, opts: CaptureOpts): Promise<ScreenshotRequest> {
 
         let rect: IXYRect;
 
@@ -95,29 +99,28 @@ export class CapturedScreenshots {
             throw new Error("Unknown target type.");
         }
 
-        const screenshotRequest = <ScreenshotRequest> {
-            rect, resize: opts.resize, crop: opts.crop
+        const screenshotRequest: ScreenshotRequest = {
+            rect,
+            resize: opts.resize,
+            crop: opts.crop,
+            type: opts.type
         };
 
         return screenshotRequest;
 
     }
-
-    public static toScreenshot(capturedScreenshot: CapturedScreenshot): Screenshot {
-
-        return Screenshots.create(capturedScreenshot.dataURL, {
-            width: capturedScreenshot.dimensions.width,
-            height: capturedScreenshot.dimensions.height,
-            type: ImageTypes.PNG
-        });
-
-    }
+    //
+    // public static toScreenshot(capturedScreenshot: CapturedScreenshot): Screenshot {
+    //
+    //     return Screenshots.create(capturedScreenshot.data, {
+    //         width: capturedScreenshot.dimensions.width,
+    //         height: capturedScreenshot.dimensions.height,
+    //         type: ImageTypes.PNG
+    //     });
+    //
+    // }
 
 }
 
 export type CaptureTarget = IXYRect | HTMLElement | ClientRect;
 
-export interface CaptureOpts {
-    readonly resize?: ResizeDimensions;
-    readonly crop?: CropDimensions;
-}
