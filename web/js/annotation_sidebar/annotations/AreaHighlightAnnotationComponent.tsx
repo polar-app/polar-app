@@ -2,6 +2,9 @@ import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
 import {URLStr} from '../../util/Strings';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
+import {AnnotationControlBar} from '../AnnotationControlBar';
+import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
+import {Doc} from '../../metadata/Doc';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -22,6 +25,7 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
         const {image} = annotation;
 
         if (image) {
+            // FIXME: this should be its own function...
             const persistenceLayer = this.props.persistenceLayerProvider();
             persistenceLayer.getFile(image.src.backend, image.src)
                 .then(docFileMeta => {
@@ -59,17 +63,27 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
             return (
 
                 <div key={key}
-                     style={{display: 'flex'}}
                      className='area-highlight p-1'>
 
-                    <img style={{
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            width: this.state.image.width,
-                            height: this.state.image.height,
-                         }}
-                         className="ml-auto mr-auto"
-                         src={this.state.image.src}/>
+                    <div style={{display: 'flex'}}>
+                        <img style={{
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                width: this.state.image.width,
+                                height: this.state.image.height,
+                             }}
+                             alt="screenshot"
+                             className="ml-auto mr-auto"
+                             src={this.state.image.src}/>
+                    </div>
+                    <AnnotationControlBar doc={this.props.doc}
+                                          annotation={annotation}/>
+
+                    <div className="comments">
+                        <ChildAnnotationSection doc={this.props.doc}
+                                                parent={annotation}
+                                                children={annotation.children}/>
+                    </div>
 
                 </div>
             );
@@ -85,6 +99,7 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
 }
 interface IProps {
+    readonly doc: Doc;
     readonly annotation: DocAnnotation;
     readonly persistenceLayerProvider: PersistenceLayerProvider;
 }

@@ -115,7 +115,7 @@ export class AreaHighlightComponent extends Component {
         const {pageMeta} = this.annotationEvent!;
         const pageNum = pageMeta.pageInfo.num;
 
-        const canvas = document.querySelectorAll("canvas")[pageNum];
+        const canvas = document.querySelectorAll("canvas")[pageNum - 1];
 
         return await Canvases.extract(canvas, rect);
 
