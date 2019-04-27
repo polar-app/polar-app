@@ -16,7 +16,6 @@ import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
 import {ILTRect} from '../../../../util/rects/ILTRect';
 import {Canvases} from '../../../../util/Canvases';
 import {ExtractedImage} from '../../../../util/Canvases';
-import {DocMetas} from '../../../../metadata/DocMetas';
 import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
@@ -69,6 +68,8 @@ export class AreaHighlightComponent extends Component {
 
         // console.log("Box moved to: ", boxMoveEvent);
 
+        // TODO: should I PLAY with capture directly within the current tab?
+
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                                         boxMoveEvent.restrictionRect);
 
@@ -83,7 +84,8 @@ export class AreaHighlightComponent extends Component {
             const doWrite = async () => {
 
                 // FIXME: in PDF move capture via canvas but in HTML mode
-                // capture via screenshot.
+                // capture via screenshot.  PDF means we can capture on the web
+                // too.
 
                 // this await is unfortunately but it's almost instant
                 // const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
