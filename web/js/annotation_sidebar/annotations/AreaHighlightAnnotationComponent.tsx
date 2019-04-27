@@ -66,10 +66,12 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                 <div key={key}
                      className='area-highlight p-1'>
 
-                    <div style={{
+                    <div className="m-1"
+                         style={{
                             background: 'rgba(255, 255, 0, 0.5)',
                             display: 'block',
-                            textAlign: 'center'
+                            textAlign: 'center',
+                            position: 'relative'
                          }}>
 
                         {/*FIXME what else to test... */}
@@ -109,12 +111,21 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                                 // marginLeft: 'auto',
                                 // marginRight: 'auto'
                              }}
-                             // width={this.state.image.width}
-                             // height={this.state.image.height}
+                             width={this.state.image.width}
+                             height={this.state.image.height}
                              alt="screenshot"
                              src={this.state.image.src}/>
 
                     </div>
+
+                    {/*<div style={{*/}
+                        {/*position: 'absolute',*/}
+                        {/*top: 0,*/}
+                        {/*left: 0,*/}
+                        {/*width: '100%',*/}
+                        {/*height: '100%,',*/}
+                        {/*backgroundColor: 'yellow',*/}
+                    {/*}}/>*/}
 
                     {/*<div style={{backgroundImage: `url(${this.state.image.src})`,*/}
                                 {/*maxWidth: this.state.image.width,*/}
