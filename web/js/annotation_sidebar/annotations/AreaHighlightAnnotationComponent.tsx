@@ -61,16 +61,16 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
         if (this.state.image) {
 
-            // FIXME: I need to figure out how to resolve the promise to the URL
-            // here and whether we shouldn't remove the async framework as getFile
-            // no longer needs to be async.
-
             return (
 
                 <div key={key}
                      className='area-highlight p-1'>
 
-                    <div style={{display: 'flex'}}>
+                    <div style={{background: 'rgba(255, 255, 0, 0.5)'}}>
+
+                        {/*FIXME what else to test... */}
+                        {/*// a div inside the parent..*/}
+
                         <img style={{
                                 // maxWidth: '100%',
                                 // maxHeight: '100%',
@@ -88,11 +88,20 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                                 // width: 'auto',
                                 // height: 'auto',
 
-                                display: 'block',
-                                maxWidth: this.state.image.width,
-                                maxHeight: this.state.image.height,
-                                width: 'auto',
+                                // display: 'block',
+                                // maxWidth: this.state.image.width,
+                                // maxHeight: this.state.image.height,
+                                // width: 'auto',
+                                // height: 'auto',
+
+                                // display: 'block',
+                                // maxWidth: this.state.image.width,
+                                // maxHeight: this.state.image.height,
+                                width: '100%',
                                 height: 'auto',
+                                objectFit: 'contain',
+                                maxWidth: this.state.image.width
+
 
                              }}
                              width={this.state.image.width}
@@ -100,7 +109,16 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                              alt="screenshot"
                              className="ml-auto mr-auto"
                              src={this.state.image.src}/>
+
                     </div>
+
+                    {/*<div style={{backgroundImage: `url(${this.state.image.src})`,*/}
+                                {/*maxWidth: this.state.image.width,*/}
+                                {/*maxHeight: this.state.image.height,*/}
+                                {/*}}>*/}
+
+                    {/*</div>*/}
+
                     <AnnotationControlBar doc={this.props.doc}
                                           annotation={annotation}/>
 

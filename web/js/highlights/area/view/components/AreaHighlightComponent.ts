@@ -250,6 +250,8 @@ export class AreaHighlightComponent extends Component {
             highlightElement.style.position = "absolute";
             highlightElement.style.backgroundColor = `yellow`;
             highlightElement.style.opacity = `0.5`;
+            (highlightElement.style as any).mixBlendMode = 'multiply';
+            highlightElement.style.border = `1px solid #c6c6c6`;
 
             // if(this.docFormat.name === "pdf") {
             //     // this is only needed for PDF and we might be able to use a
@@ -263,11 +265,8 @@ export class AreaHighlightComponent extends Component {
             highlightElement.style.width = `${overlayRect.width}px`;
             highlightElement.style.height = `${overlayRect.height}px`;
 
-            highlightElement.style.border = `1px solid #c6c6c6`;
-
             highlightElement.style.zIndex = '1';
 
-            (highlightElement.style as any).mixBlendMode = 'multiply';
 
         });
 
