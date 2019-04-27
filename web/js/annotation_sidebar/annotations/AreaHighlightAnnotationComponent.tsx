@@ -66,7 +66,8 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                 <div key={key}
                      className='area-highlight p-1'>
 
-                    <div style={{background: 'rgba(255, 255, 0, 0.5)'}}>
+                    <div style={{background: 'rgba(255, 255, 0, 0.5)',
+                                 display: 'flex'}}>
 
                         {/*FIXME what else to test... */}
                         {/*// a div inside the parent..*/}
@@ -100,9 +101,10 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                                 width: '100%',
                                 height: 'auto',
                                 objectFit: 'contain',
-                                maxWidth: this.state.image.width
-
-
+                                maxWidth: this.state.image.width,
+                                maxHeight: this.state.image.height,
+                                marginLeft: 'auto',
+                                marginRight: 'auto'
                              }}
                              width={this.state.image.width}
                              height={this.state.image.height}
