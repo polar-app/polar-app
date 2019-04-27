@@ -87,12 +87,11 @@ export class DocAnnotations {
 
     public static createFromAreaHighlight(areaHighlight: AreaHighlight, pageMeta: PageMeta): DocAnnotation {
 
-        const screenshot = this.getScreenshot(pageMeta, areaHighlight);
 
         return {
             id: areaHighlight.id,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
-            screenshot,
+            image: areaHighlight.image,
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
             position: {
@@ -135,12 +134,9 @@ export class DocAnnotations {
 
         }
 
-        const screenshot = this.getScreenshot(pageMeta, textHighlight);
-
         return {
             id: textHighlight.id,
             annotationType: AnnotationType.TEXT_HIGHLIGHT,
-            screenshot,
             html,
             pageNum: pageMeta.pageInfo.num,
             position: {

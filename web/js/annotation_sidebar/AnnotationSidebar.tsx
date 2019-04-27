@@ -24,6 +24,7 @@ import {SharingDatastores} from '../datastore/SharingDatastores';
 import {ShareContentButton} from '../apps/viewer/ShareContentButton';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
+import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 
 const log = Logger.create();
 
@@ -230,6 +231,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         annotations.map(annotation => {
             result.push (<DocAnnotationComponent key={annotation.id}
                                                  annotation={annotation}
+                                                 persistenceLayerProvider={this.props.persistenceLayerProvider}
                                                  doc={this.props.doc}/>);
         });
 
@@ -372,7 +374,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly doc: Doc;
-    readonly persistenceLayerProvider: () => PersistenceLayer;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 
 interface IState {

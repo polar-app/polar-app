@@ -94,6 +94,9 @@ export class HybridRemoteDatastore extends RemoteDatastore {
  */
 export class DatastoreFileCache {
 
+    // FIXME: we need the ability to flish this when an image is removed when
+    //  it's updated.
+
     private static readonly backing: {[key: string]: DocFileMeta} = {};
 
     public static writeFile(backend: Backend, ref: FileRef, meta: DocFileURLMeta) {

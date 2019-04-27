@@ -112,7 +112,11 @@ export class AreaHighlightComponent extends Component {
 
     private async captureScreenshot(rect: ILTRect): Promise<ExtractedImage> {
 
-        const canvas = document.querySelector("canvas")!;
+        const {pageMeta} = this.annotationEvent!;
+        const pageNum = pageMeta.pageInfo.num;
+
+        const canvas = document.querySelectorAll("canvas")[pageNum];
+
         return await Canvases.extract(canvas, rect);
 
     }

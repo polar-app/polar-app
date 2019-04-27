@@ -629,8 +629,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 this.waitForCommit(docInfoRef)
             ]);
 
-            log.debug("Setting...");
-
             const batch = this.firestore!.batch();
 
             const visibility = docInfo.visibility;
@@ -641,8 +639,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             batch.set(docInfoRef, this.createDocForDocInfo(docInfo, visibility));
 
             await batch.commit();
-
-            log.debug("Setting...done");
 
             // we need to make sure that we only return when it's committed
             // remotely...
