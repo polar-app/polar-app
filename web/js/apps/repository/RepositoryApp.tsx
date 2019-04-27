@@ -45,6 +45,7 @@ import {MobileDisclaimers} from './MobileDisclaimers';
 import {TabNav} from '../../ui/tabs/TabNav';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {MachineDatastores} from '../../customers/MachineDatastores';
+import {MailingList} from './auth_handler/MailingList';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -70,6 +71,11 @@ export class RepositoryApp {
             await authHandler.authenticate();
             return;
         }
+
+        // subscribe but do it in the background as this isn't a high priority
+        // UI task.
+        MailingList.subscribeWhenNecessary()
+            .catch(err => log.error(err));
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 

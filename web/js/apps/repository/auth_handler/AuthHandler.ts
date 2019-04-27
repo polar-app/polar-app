@@ -3,6 +3,7 @@ import {Firebase} from '../../../firebase/Firebase';
 import * as firebase from '../../../firebase/lib/firebase';
 import {AppRuntime} from '../../../AppRuntime';
 import {Optional} from '../../../util/ts/Optional';
+import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 
 export interface AuthHandler {
 
@@ -72,7 +73,8 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
             email: Optional.of(user.email).getOrUndefined(),
             emailVerified: user.emailVerified,
             photoURL: Optional.of(user.photoURL).getOrUndefined(),
-            uid: user.uid
+            uid: user.uid,
+            creationTime: user.metadata.creationTime!
         });
 
     }
@@ -149,5 +151,6 @@ export interface UserInfo {
     readonly emailVerified: boolean;
     readonly photoURL?: string;
     readonly uid: string;
+    readonly creationTime: ISODateTimeString;
 
 }
