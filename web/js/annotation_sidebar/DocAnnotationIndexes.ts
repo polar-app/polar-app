@@ -12,8 +12,6 @@ export class DocAnnotationIndexes {
             delete docAnnotationMap[id];
         }
 
-        // FIXME: comments vanish when the index is rebuilt...
-
         const tmpIndex = new DocAnnotationIndex(docAnnotationMap, Object.values(docAnnotationMap));
         return this.rebuild(tmpIndex);
 
@@ -26,7 +24,21 @@ export class DocAnnotationIndexes {
         let sortedDocAnnotations: SortedDocAnnotations = [];
 
         for (const docAnnotation of docAnnotations) {
+
+            if (docAnnotationMap[docAnnotation.id]) {
+
+                const current = docAnnotationMap[docAnnotation.id];
+
+                // we have to merge the previously built command and children
+
+                docAnnotation.comments = current.comments;
+                docAnnotation.children = current.children;
+
+            }
+
+            // new entry...
             docAnnotationMap[docAnnotation.id] = docAnnotation;
+
         }
 
         sortedDocAnnotations.push(...Object.values(docAnnotationMap));

@@ -160,12 +160,16 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             return;
         } else if (mutationType === MutationType.DELETE) {
 
+            console.log("FIXME: this is a delete");
+
             this.docAnnotationIndex
                 = DocAnnotationIndexes.delete(this.docAnnotationIndex, id);
 
             this.reload();
 
         } else {
+            console.log("FIXME: this is neither initial nor delete..");
+
             this.refresh(docAnnotation!);
         }
 
