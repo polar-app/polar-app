@@ -35,7 +35,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.scrollToAnnotation = this.scrollToAnnotation.bind(this);
         this.onExport = this.onExport.bind(this);
 
         const annotations = DocAnnotations.getAnnotationsForPage(props.doc.docMeta);
@@ -183,39 +182,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private reload() {
 
-        console.log("FIXME: setting state with new sorted annotations: ", this.docAnnotationIndex.sortedDocAnnotations);
         this.setState({
             annotations: this.docAnnotationIndex.sortedDocAnnotations
-        });
-
-    }
-
-    private scrollToAnnotation(id: string, pageNum: number) {
-
-        const selector = `.page div[data-annotation-id='${id}']`;
-
-        const pageElements: HTMLElement[] = Array.from(document.querySelectorAll(".page"));
-        const pageElement = pageElements[pageNum - 1];
-
-        if (!pageElement) {
-            log.error(`Could not find page ${pageNum} of N pages: ${pageElements.length}`);
-            return;
-        }
-
-        this.scrollToElement(pageElement);
-
-        const annotationElement = document.querySelector(selector)! as HTMLElement;
-
-        this.scrollToElement(annotationElement);
-
-    }
-
-    private scrollToElement(element: HTMLElement) {
-
-        element.scrollIntoView({
-            behavior: 'auto',
-            block: 'center',
-            inline: 'center'
         });
 
     }
@@ -230,8 +198,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const result: any = [];
 
         annotations.map(annotation => {
-            console.log("FIXME: created annotation component for: ", annotation)
-
             result.push (<DocAnnotationComponent key={annotation.id}
                                                  annotation={annotation}
                                                  persistenceLayerProvider={this.props.persistenceLayerProvider}

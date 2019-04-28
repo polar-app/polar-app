@@ -3,7 +3,6 @@ import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {DocMeta} from './DocMeta';
-import {ExtractedImage} from '../util/Canvases';
 import {Image} from './Image';
 import {Datastore} from '../datastore/Datastore';
 import {BackendFileRef} from '../datastore/Datastore';
@@ -17,8 +16,9 @@ import {Logger} from '../logger/Logger';
 import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects} from './BaseHighlight';
-import {DatastoreFileCache} from '../datastore/HybridRemoteDatastore';
 import {Position} from "./BaseHighlight";
+import {DatastoreFileCache} from '../datastore/HybridRemoteDatastore';
+import {ExtractedImage} from '../screenshots/CapturedScreenshot';
 
 const log = Logger.create();
 
@@ -53,13 +53,6 @@ export class AreaHighlights {
             rects: { "0": opts.rect }
 
         });
-
-    }
-
-    /**
-     * Capture an area highlight and write it to disk.
-     */
-    public static capture() {
 
     }
 
