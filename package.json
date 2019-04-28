@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
     "build-appx": "npm run-script setup-dist-appx && npm run-script compile && electron-builder --config=electron-builder.yml --win appx --publish never",
     "build-webapp": "npx webpack && ./scripts/build-webapp.sh",
-    "setup-dist-default": "cp web/js/dist_config/DefaultDistConfig.ts web/js/dist_config/DistConfig.ts",
+    "setup-dist-default": "npm run-script verify-electron-version && cp web/js/dist_config/DefaultDistConfig.ts web/js/dist_config/DistConfig.ts",
     "setup-dist-appx": "cp web/js/dist_config/AppXDistConfig.ts web/js/dist_config/DistConfig.ts",
     "publish-linux-snapcraft": "snapcraft push --release stable ./dist/polar-bookshelf-${npm_package_version}-amd64.snap",
     "publish-linux": "electron-builder --config=electron-builder.yml --linux snap appimage deb tar.gz --publish always",
@@ -24,6 +24,7 @@
     "dist-win": "npm run-script setup-dist-default && npm run-script compile && npm run-script publish-win",
     "dist-webapp": "npm run-script setup-dist-default && npm run-script compile && npm run-script publish-webapp",
     "dist-prepare": "",
+    "verify-electron-version": "./scripts/verify-electron-version",
     "compile": "tsc",
     "compile-watch": "tsc --watch",
     "test": "./scripts/test-runner.sh",
