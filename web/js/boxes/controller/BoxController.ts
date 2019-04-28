@@ -193,7 +193,6 @@ export class BoxController {
             })
             .on('dragend', (interactionEvent: any) => {
                 this.fireOnMoveEnd(interactionEvent);
-                console.log("FIXME666: DRAG END");
             })
             .on('resizestart', (interactionEvent: any) => {
                 this._captureStartTargetRect(interactionEvent);
@@ -279,8 +278,6 @@ export class BoxController {
             })
             .on('resizeend', (interactionEvent: any) => {
                 this.fireOnMoveEnd(interactionEvent);
-                console.log("FIXME666: RESIZE END");
-
             });
 
     }

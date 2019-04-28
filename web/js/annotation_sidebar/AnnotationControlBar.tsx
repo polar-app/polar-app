@@ -69,9 +69,15 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                          className="text-muted annotation-context-link">
                         {/*TODO: make this into its own component... */}
                         <a href="#" onClick={() => this.onJumpToContext(annotation)}>
-                            <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
+
+                            <Moment withTitle={true}
+                                    titleFormat="D MMM YYYY hh:MM A"
+                                    fromNow>
+
                                 {annotation.created}
+
                             </Moment>
+
                         </a>
                     </div>
 

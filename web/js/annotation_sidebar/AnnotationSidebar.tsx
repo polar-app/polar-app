@@ -17,14 +17,13 @@ import {Flashcard} from '../metadata/Flashcard';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
-import {PersistenceLayer} from '../datastore/PersistenceLayer';
+import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {Visibility} from '../datastore/Datastore';
 import {PersistenceLayers} from '../datastore/PersistenceLayers';
 import {SharingDatastores} from '../datastore/SharingDatastores';
 import {ShareContentButton} from '../apps/viewer/ShareContentButton';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
-import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 
 const log = Logger.create();
 
@@ -160,16 +159,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             return;
         } else if (mutationType === MutationType.DELETE) {
 
-            console.log("FIXME: this is a delete");
-
             this.docAnnotationIndex
                 = DocAnnotationIndexes.delete(this.docAnnotationIndex, id);
 
             this.reload();
 
         } else {
-            console.log("FIXME: this is neither initial nor delete..");
-
             this.refresh(docAnnotation!);
         }
 

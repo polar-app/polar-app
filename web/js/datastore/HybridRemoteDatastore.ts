@@ -74,6 +74,12 @@ export class HybridRemoteDatastore extends RemoteDatastore {
 
     }
 
+
+    public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        DatastoreFileCache.evictFile(backend, ref);
+        return super.deleteFile(backend, ref);
+    }
+
     public async getDocMetaRefs(): Promise<DocMetaRef[]> {
         return await this.diskDatastore.getDocMetaRefs();
     }
@@ -94,9 +100,6 @@ export class HybridRemoteDatastore extends RemoteDatastore {
  */
 export class DatastoreFileCache {
 
-    // FIXME: we need the ability to flish this when an image is removed when
-    //  it's updated.
-
     private static readonly backing: {[key: string]: DocFileMeta} = {};
 
     public static writeFile(backend: Backend, ref: FileRef, meta: DocFileURLMeta) {
@@ -108,6 +111,11 @@ export class DatastoreFileCache {
         const key = this.toKey(backend, ref);
         const entry = this.backing[key];
         return Optional.of(entry);
+    }
+
+    public static evictFile(backend: Backend, ref: FileRef) {
+        const key = this.toKey(backend, ref);
+        delete this.backing[key];
     }
 
     private static toKey(backend: Backend, ref: FileRef) {
