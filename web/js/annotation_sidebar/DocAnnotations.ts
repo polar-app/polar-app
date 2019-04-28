@@ -86,7 +86,6 @@ export class DocAnnotations {
 
     public static createFromAreaHighlight(areaHighlight: AreaHighlight, pageMeta: PageMeta): DocAnnotation {
 
-
         return {
             id: areaHighlight.id,
             annotationType: AnnotationType.AREA_HIGHLIGHT,

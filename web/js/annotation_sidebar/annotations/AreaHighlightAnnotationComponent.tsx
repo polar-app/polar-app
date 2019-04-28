@@ -68,48 +68,26 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     <div className="m-1"
                          style={{
-                            background: 'rgba(255, 255, 0, 0.5)',
                             display: 'block',
                             textAlign: 'center',
                             position: 'relative'
+
                          }}>
 
                         {/*FIXME what else to test... */}
                         {/*// a div inside the parent..*/}
 
+
                         <img style={{
-                                // maxWidth: '100%',
-                                // maxHeight: '100%',
-                                // width: this.state.image.width,
-                                // height: this.state.image.height,
+                                 width: '100%',
+                                 height: 'auto',
+                                 objectFit: 'contain',
+                                 maxWidth: this.state.image.width,
+                                 maxHeight: this.state.image.height,
 
-                                // width: '100%',
-                                // height: '100%',
-                                // maxWidth: this.state.image.width,
-                                // maxHeight: this.state.image.height,
+                                 boxSizing: 'content-box',
+                                 border: `1px solid #c6c6c6`
 
-                                // display: 'block',
-                                // maxWidth: this.state.image.width,
-                                // maxHeight: this.state.image.height,
-                                // width: 'auto',
-                                // height: 'auto',
-
-                                // display: 'block',
-                                // maxWidth: this.state.image.width,
-                                // maxHeight: this.state.image.height,
-                                // width: 'auto',
-                                // height: 'auto',
-
-                                // display: 'block',
-                                // maxWidth: this.state.image.width,
-                                // maxHeight: this.state.image.height,
-                                width: '100%',
-                                height: 'auto',
-                                objectFit: 'contain',
-                                maxWidth: this.state.image.width,
-                                maxHeight: this.state.image.height,
-                                // marginLeft: 'auto',
-                                // marginRight: 'auto'
                              }}
                              width={this.state.image.width}
                              height={this.state.image.height}
@@ -118,21 +96,6 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     </div>
 
-                    {/*<div style={{*/}
-                        {/*position: 'absolute',*/}
-                        {/*top: 0,*/}
-                        {/*left: 0,*/}
-                        {/*width: '100%',*/}
-                        {/*height: '100%,',*/}
-                        {/*backgroundColor: 'yellow',*/}
-                    {/*}}/>*/}
-
-                    {/*<div style={{backgroundImage: `url(${this.state.image.src})`,*/}
-                                {/*maxWidth: this.state.image.width,*/}
-                                {/*maxHeight: this.state.image.height,*/}
-                                {/*}}>*/}
-
-                    {/*</div>*/}
 
                     <AnnotationControlBar doc={this.props.doc}
                                           annotation={annotation}/>

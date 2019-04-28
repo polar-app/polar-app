@@ -12,6 +12,8 @@ export class DocAnnotationIndexes {
             delete docAnnotationMap[id];
         }
 
+        // FIXME: comments vanish when the index is rebuilt...
+
         const tmpIndex = new DocAnnotationIndex(docAnnotationMap, Object.values(docAnnotationMap));
         return this.rebuild(tmpIndex);
 
@@ -41,7 +43,7 @@ export class DocAnnotationIndexes {
             return diff;
 
         });
-        
+
         return new DocAnnotationIndex(docAnnotationMap, sortedDocAnnotations);
 
     }
@@ -52,6 +54,10 @@ export class DocAnnotationIndexes {
         // the text highlights and area highlights are on different coordinate
         // systems.  The text highlights are pixel offsets and area highlights
         // are percentage offsets.
+
+        // FIXME: a solution here is to add a NEW position system based on
+        // pixel offset (position) of where it's recorded when it's created like
+        // we do with text highlights.
 
         return (item.pageNum * 100000) + (item.position.y * 100) + item.position.x;
 
