@@ -1,6 +1,6 @@
-import {CapturedScreenshots} from '../../js/screenshots/CapturedScreenshots';
+import {ElectronScreenshots} from '../../js/screenshots/ElectronScreenshots';
 
-CapturedScreenshots.capture({x: 0, y: 0, width: 100, height: 100})
+ElectronScreenshots.capture({x: 0, y: 0, width: 100, height: 100})
     .then(capturedScreenshot => {
         console.log("Got screenshot: ", capturedScreenshot);
     });

@@ -20,8 +20,8 @@ import {ExtractedImage} from '../../../../util/Canvases';
 import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
-import {CapturedScreenshots} from '../../../../screenshots/CapturedScreenshots';
-import {CaptureTarget} from '../../../../screenshots/CapturedScreenshots';
+import {ElectronScreenshots} from '../../../../screenshots/ElectronScreenshots';
+import {CaptureTarget} from '../../../../screenshots/ElectronScreenshots';
 import {Buffers} from '../../../../util/Buffers';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
 
@@ -165,7 +165,7 @@ export class AreaHighlightComponent extends Component {
         };
 
         const before = Date.now();
-        const captured = await CapturedScreenshots.capture(target, {type: 'png'});
+        const captured = await ElectronScreenshots.capture(target, {type: 'png'});
         const duration = Date.now() - before;
         console.log("FIXME: CapturedScreenshots.capture duration: ", duration);
 

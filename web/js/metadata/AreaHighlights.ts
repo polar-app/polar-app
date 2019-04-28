@@ -56,6 +56,12 @@ export class AreaHighlights {
 
     }
 
+    /**
+     * Capture an area highlight and write it to disk.
+     */
+    public static capture() {
+
+    }
 
     public static write(opts: AreaHighlightWriteOpts): AreaHighlightWriter {
         return new DefaultAreaHighlightWriter(opts);

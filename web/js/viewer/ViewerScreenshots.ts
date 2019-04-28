@@ -1,4 +1,4 @@
-import {CapturedScreenshots} from "../screenshots/CapturedScreenshots";
+import {ElectronScreenshots} from "../screenshots/ElectronScreenshots";
 
 export class ViewerScreenshots {
 

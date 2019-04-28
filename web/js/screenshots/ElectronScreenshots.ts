@@ -13,12 +13,11 @@ import {Promises} from '../util/Promises';
 const log = Logger.create();
 
 /**
- * Create a screenshot of the display.
+ * Create a screenshot of the display directly using Electron.
  *
  * @ElectronRendererContext
- * @Deprecated Moving to use images captured from canvas directly.
  */
-export class CapturedScreenshots {
+export class ElectronScreenshots {
 
     public static supported(): boolean {
         return AppRuntime.isElectron();
@@ -67,7 +66,10 @@ export class CapturedScreenshots {
         const annotationToggler = new AnnotationToggler();
 
         await Promises.requestAnimationFrame(() => annotationToggler.hide());
-        await Promises.waitFor(1000 / 60); // FIXME: this works at least on my but would be nice to make it faster
+        await Promises.waitFor(1000 / 60); // FIXME: this works at least on my machine but would be nice to make it faster
+
+        // FIXME: this bug must/could be that the renderer has updated BUT the
+        // display has not yet updated
 
         const capturedScreenshot
             = await this.getRemoteDelegate().capture(id, screenshotRequest);

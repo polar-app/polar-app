@@ -1,4 +1,4 @@
-import {CapturedScreenshots} from '../../../screenshots/CapturedScreenshots';
+import {ElectronScreenshots} from '../../../screenshots/ElectronScreenshots';
 import {IFrames} from '../../../util/dom/IFrames';
 import {CapturedScreenshot} from '../../../screenshots/CapturedScreenshot';
 import {Optional} from '../../../util/ts/Optional';
