@@ -14,16 +14,11 @@ import {BoxOptions} from "../../../../boxes/controller/BoxOptions";
 import {DocFormat} from "../../../../docformat/DocFormat";
 import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
 import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
-import {ILTRect} from '../../../../util/rects/ILTRect';
-import {Canvases} from '../../../../util/Canvases';
-import {ExtractedImage} from '../../../../util/Canvases';
 import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
-import {ElectronScreenshots} from '../../../../screenshots/ElectronScreenshots';
-import {CaptureTarget} from '../../../../screenshots/ElectronScreenshots';
-import {Buffers} from '../../../../util/Buffers';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
+import {CapturedScreenshots} from '../../../../screenshots/CapturedScreenshots';
 
 const log = Logger.create();
 
@@ -89,13 +84,8 @@ export class AreaHighlightComponent extends Component {
 
             const doWrite = async () => {
 
-                // FIXME: in PDF move capture via canvas but in HTML mode
-                // capture via screenshot.  PDF means we can capture on the web
-                // too.
-
-                // this await is unfortunately but it's almost instant
-                // const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
-                const extractedImage = await this.captureScreenshot2(boxMoveEvent.boxRect, boxMoveEvent.target);
+                const extractedImage
+                    = await CapturedScreenshots.capture(pageNum, boxMoveEvent.boxRect, boxMoveEvent.target)
 
                 const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 
@@ -132,60 +122,6 @@ export class AreaHighlightComponent extends Component {
         } else {
             // noop
         }
-
-    }
-
-    /**
-     * FIXME: this is relative to the viewport NOT the rect... but I could call
-     * get boundingClientRect on it ....
-     *
-     *
-     */
-    private async captureScreenshot2(rect: ILTRect, element: HTMLElement): Promise<ExtractedImage> {
-
-        // FIXME we should try to find the webContents ID of the iframe...
-        // NOT the root window as this will work a LOT better and then we can
-        // use rect directly (not the element).  By better I mean we will not
-        // have any of the image overlays.
-
-        const {width, height} = rect;
-
-        const boundingClientRect = element.getBoundingClientRect();
-
-        // const target: CaptureTarget = {
-        //     x: rect.left,
-        //     y: rect.top,
-        //     width, height
-        // };
-
-        const target: CaptureTarget = {
-            x: boundingClientRect.left,
-            y: boundingClientRect.top,
-            width, height
-        };
-
-        const before = Date.now();
-        const captured = await ElectronScreenshots.capture(target, {type: 'png'});
-        const duration = Date.now() - before;
-        console.log("FIXME: CapturedScreenshots.capture duration: ", duration);
-
-        const buffer = <Buffer> captured.data;
-        const data = Buffers.toArrayBuffer(buffer);
-
-        return {data, type: 'image/png', width, height};
-
-    }
-
-    // FIXME: unify these capture algorithsm somewhere.
-
-    private async captureScreenshot(rect: ILTRect): Promise<ExtractedImage> {
-
-        const {pageMeta} = this.annotationEvent!;
-        const pageNum = pageMeta.pageInfo.num;
-
-        const canvas = await this.docFormat.getCanvas(pageNum);
-
-        return await Canvases.extract(canvas, rect);
 
     }
 

@@ -1,8 +1,8 @@
-import {CapturedScreenshot} from './CapturedScreenshot';
-import {ScreenshotRequest} from './CapturedScreenshot';
-import {webContents} from "electron";
-import {Logger} from '../logger/Logger';
-import {Stopwatches} from '../util/Stopwatches';
+import {CapturedScreenshot} from '../CapturedScreenshot';
+import {ScreenshotRequest} from '../CapturedScreenshot';
+import {webContents} from 'electron';
+import {Logger} from '../../logger/Logger';
+import {Stopwatches} from '../../util/Stopwatches';
 
 const log = Logger.create();
 

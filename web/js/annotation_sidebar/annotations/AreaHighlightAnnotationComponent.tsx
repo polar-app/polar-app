@@ -63,6 +63,12 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
             return (
 
+                // FIXME needs a ScrollIntoView wrapper... but of all the elements
+                // WHICH one should be scrolled into view?  I think this is the
+                // main problem.
+
+                // seems llike the entire sidebar is being redrawn!
+
                 <div key={key}
                      className='p-1'>
 

@@ -3,6 +3,8 @@
  */
 import {ArrayBuffers} from './ArrayBuffers';
 import {ILTRect} from './rects/ILTRect';
+import {ImageType, ExtractedImage} from '../screenshots/CapturedScreenshot';
+import {Preconditions} from '../Preconditions';
 
 const IMAGE_TYPE = 'image/png';
 const IMAGE_QUALITY = 1.0;
@@ -81,6 +83,8 @@ export class Canvases {
                                 rect: ILTRect,
                                 opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
 
+        Preconditions.assertPresent(canvas, "canvas");
+
         const tmpCanvas = document.createElement("canvas");
 
         const tmpCanvasCtx = tmpCanvas.getContext('2d', {alpha: false})!;
@@ -102,16 +106,6 @@ export class Canvases {
 
 }
 
-/**
- * Keeps the binary data but also metadata for the extract.
- */
-export interface ExtractedImage {
-    readonly data: ArrayBuffer;
-    readonly type: ImageType;
-    readonly width: number;
-    readonly height: number;
-}
-
 export type DataURL = string;
 
 interface ImageOpts {
@@ -124,5 +118,3 @@ class DefaultImageOpts implements ImageOpts {
     public readonly type = IMAGE_TYPE;
     public readonly quality = IMAGE_QUALITY;
 }
-
-export type ImageType = 'image/png' | 'image/jpeg';

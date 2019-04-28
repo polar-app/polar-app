@@ -127,7 +127,11 @@ export abstract class DocFormat {
     }
 
     public async getCanvas(pageNum: number): Promise<HTMLCanvasElement> {
-        return document.querySelectorAll("canvas")[pageNum - 1];
+
+        const pageElement = this.getPageElementFromPageNum(pageNum);
+
+        return <HTMLCanvasElement> pageElement.querySelector("canvas");
+
     }
 
 }

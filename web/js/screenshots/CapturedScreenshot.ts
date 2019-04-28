@@ -37,6 +37,18 @@ export interface CapturedScreenshot {
 
 }
 
+/**
+ * Keeps the binary data but also metadata for the extract.
+ */
+export interface ExtractedImage {
+    readonly data: ArrayBuffer;
+    readonly type: ImageType;
+    readonly width: number;
+    readonly height: number;
+}
+
+export type ImageType = 'image/png' | 'image/jpeg';
+
 export type CaptureImageType = 'data-url' | 'png';
 
 /**

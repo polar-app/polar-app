@@ -1,14 +1,14 @@
-import {IXYRect} from '../util/rects/IXYRect';
-import {IXYRects} from '../util/rects/IXYRects';
-import {CapturedScreenshot, CaptureOpts} from './CapturedScreenshot';
-import {ScreenshotRequest} from './CapturedScreenshot';
-import {DefaultCaptureOpts} from './CapturedScreenshot';
-import {ClientRects} from '../util/rects/ClientRects';
-import {Logger} from '../logger/Logger';
+import {IXYRect} from '../../util/rects/IXYRect';
+import {IXYRects} from '../../util/rects/IXYRects';
+import {CapturedScreenshot, CaptureOpts} from '../CapturedScreenshot';
+import {ScreenshotRequest} from '../CapturedScreenshot';
+import {DefaultCaptureOpts} from '../CapturedScreenshot';
+import {ClientRects} from '../../util/rects/ClientRects';
+import {Logger} from '../../logger/Logger';
 import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
 import {remote} from 'electron';
-import {AppRuntime} from '../AppRuntime';
-import {Promises} from '../util/Promises';
+import {AppRuntime} from '../../AppRuntime';
+import {Promises} from '../../util/Promises';
 
 const log = Logger.create();
 

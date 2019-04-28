@@ -1,5 +1,5 @@
 import {SpectronMain} from '../../js/test/SpectronMain';
-import {ScreenshotService} from '../../js/screenshots/ScreenshotService';
+import {ScreenshotService} from '../../js/screenshots/electron/ScreenshotService';
 
 SpectronMain.run(async state => {
 

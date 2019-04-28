@@ -12,7 +12,7 @@ import {MainAppMenu} from './MainAppMenu';
 import {Cmdline} from '../../electron/Cmdline';
 import {Logger} from '../../logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
-import {ScreenshotService} from '../../screenshots/ScreenshotService';
+import {ScreenshotService} from '../../screenshots/electron/ScreenshotService';
 import {DocLoaderService} from './doc_loaders/electron/ipc/DocLoaderService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
