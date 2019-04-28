@@ -360,28 +360,7 @@ export class TextHighlightController {
         // blocking the creation of the screenshot in the UI.
         // const selectionScreenshot = SelectionScreenshots.capture(doc, win);
 
-        // FIXME: this is what I have to use on the underlying canvas I think.
         const textHighlightRecord = await factory();
-
-        // TODO this is actually difficult because this screenshot is SLOW and
-        // if I could move it AFTER we updated the UI would be much better but
-        // it takes like 50ms-150ms and TWO of them are a big problem.  It would
-        // be better to do this AFTER I've taken the screenshots.
-
-        // let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
-
-        // const screenshotDimensions = {
-        //     width: Math.floor(selectionScreenshot.clientRect.width),
-        //     height: Math.floor(selectionScreenshot.clientRect.height)
-        // };
-
-        // const screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
-
-        // TextHighlights.attachImage(textHighlightRecord.value, screenshotImageRef);
-
-        // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
-
-        // const currentPageMeta = this.docFormat.getCurrentPageDetail();
 
         const pageMeta = this.model.docMeta.getPageMeta(pageNum);
 
@@ -391,26 +370,6 @@ export class TextHighlightController {
         win.getSelection()!.empty();
 
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
-
-        // const capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
-        //
-        // const dataURL = capturedScreenshot
-        //     .map(current => current.dataURL)
-        //     .getOrUndefined();
-
-        // if (dataURL) {
-        //
-        //     const screenshot = this.toScreenshot(screenshotID,
-        //                                          dataURL,
-        //                                          'screenshot',
-        //                                          screenshotDimensions);
-        //
-        //     // TODO: this has to be written as a binary file and then a reference to
-        //     // the screenshot added
-        //
-        //     // pageMeta.screenshots[screenshot.id] = screenshot;
-        //
-        // }
 
         return textHighlightRecord;
 
@@ -518,37 +477,6 @@ export class TextHighlightController {
         });
 
         log.info("Deleting text highlight");
-
-    }
-
-    /**
-     * @Deprecated remove as we're migrating to a new image/screenshot design.
-     */
-    // private toImage(screenshotID: string, rel: string, dimensions: IDimensions) {
-    //
-    //     return new Image({
-    //         src: `screenshot:${screenshotID}`,
-    //         width: dimensions.width,
-    //         height: dimensions.height,
-    //         rel,
-    //         type: ImageTypes.PNG
-    //     });
-    //
-    // }
-
-    /**
-     * @Deprecated remove as we're migrating to a new image/screenshot design.
-     */
-    private toScreenshot(id: string, src: string, rel: string, dimensions: IDimensions) {
-
-        const imageOpts = {
-            width: dimensions.width,
-            height: dimensions.height,
-            type: ImageTypes.PNG,
-            rel
-        };
-
-        return Screenshots.create(src, imageOpts, id);
 
     }
 
