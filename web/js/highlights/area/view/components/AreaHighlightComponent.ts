@@ -81,6 +81,8 @@ export class AreaHighlightComponent extends Component {
 
             const { docMeta, pageMeta } = annotationEvent;
 
+            const existingAreaHighlight = pageMeta.areaHighlights[this.areaHighlight!.id];
+
             const doWrite = async () => {
 
                 // FIXME: in PDF move capture via canvas but in HTML mode
@@ -91,20 +93,24 @@ export class AreaHighlightComponent extends Component {
                 // const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
                 const extractedImage = await this.captureScreenshot2(boxMoveEvent.boxRect, boxMoveEvent.target);
 
+                console.log("FIXME: wroting with annotationRect: ", annotationRect);
+                console.log("FIXME: wroting with boxRect: ", boxMoveEvent.boxRect);
+                console.log("FIXME: wroting with rect: ", areaHighlightRect);
+
                 const writeOpts = {
                     datastore: this.persistenceLayerProvider(),
                     docMeta,
                     pageMeta,
-                    areaHighlight: this.areaHighlight!,
+                    areaHighlight: existingAreaHighlight,
                     rect: areaHighlightRect,
                     extractedImage
                 };
 
                 const writer = AreaHighlights.write(writeOpts);
 
-                const [areaHighlight, committer] = writer.prepare();
+                const [writtenAreaHighlight, committer] = writer.prepare();
 
-                this.areaHighlight = areaHighlight;
+                this.areaHighlight = writtenAreaHighlight;
 
                 await committer.commit();
 
@@ -204,7 +210,6 @@ export class AreaHighlightComponent extends Component {
         forDict(areaHighlight.rects, (key, rect) => {
 
             const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
-
             const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 
             log.debug("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));

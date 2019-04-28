@@ -358,7 +358,7 @@ export class TextHighlightController {
 
         // start the screenshot now but don't await it yet.  this way we're not
         // blocking the creation of the screenshot in the UI.
-        const selectionScreenshot = SelectionScreenshots.capture(doc, win);
+        // const selectionScreenshot = SelectionScreenshots.capture(doc, win);
 
         // FIXME: this is what I have to use on the underlying canvas I think.
         const textHighlightRecord = await factory();
@@ -370,10 +370,10 @@ export class TextHighlightController {
 
         // let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
 
-        const screenshotDimensions = {
-            width: Math.floor(selectionScreenshot.clientRect.width),
-            height: Math.floor(selectionScreenshot.clientRect.height)
-        };
+        // const screenshotDimensions = {
+        //     width: Math.floor(selectionScreenshot.clientRect.width),
+        //     height: Math.floor(selectionScreenshot.clientRect.height)
+        // };
 
         // const screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
 

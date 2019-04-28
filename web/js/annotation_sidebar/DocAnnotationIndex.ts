@@ -3,11 +3,14 @@ import {DocAnnotationMap, SortedDocAnnotations} from './DocAnnotation';
 export class DocAnnotationIndex {
 
     public readonly docAnnotationMap: DocAnnotationMap = {};
-    public readonly sortedDocAnnotation: SortedDocAnnotations = [];
+    public readonly sortedDocAnnotations: SortedDocAnnotations = [];
 
-    constructor(docAnnotationMap: DocAnnotationMap = {}, sortedDocAnnotation: SortedDocAnnotations = []) {
+    constructor(docAnnotationMap: DocAnnotationMap = {},
+                sortedDocAnnotation: SortedDocAnnotations = []) {
+
         this.docAnnotationMap = docAnnotationMap;
-        this.sortedDocAnnotation = sortedDocAnnotation;
+        this.sortedDocAnnotations = sortedDocAnnotation;
+
     }
 
 }

@@ -155,6 +155,9 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
                 lastUpdated: ISODateTimeStrings.create()
             });
 
+            console.log("FIXME areaHighlight: ", areaHighlight);
+            console.log("FIXME newAreaHighlight: ", newAreaHighlight);
+
             delete pageMeta.areaHighlights[areaHighlight.id];
             pageMeta.areaHighlights[newAreaHighlight.id] = newAreaHighlight!;
 

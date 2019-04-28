@@ -5,7 +5,6 @@ import {Comment} from '../metadata/Comment';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
-import {Screenshots} from '../metadata/Screenshots';
 import {Text} from '../metadata/Text';
 import {DocAnnotation} from './DocAnnotation';
 import {AreaHighlight} from '../metadata/AreaHighlight';

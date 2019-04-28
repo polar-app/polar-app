@@ -44,7 +44,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             = DocAnnotationIndexes.rebuild(this.docAnnotationIndex, ...annotations);
 
         this.state = {
-            annotations: this.docAnnotationIndex.sortedDocAnnotation
+            annotations: this.docAnnotationIndex.sortedDocAnnotations
         };
 
     }
@@ -183,8 +183,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private reload() {
 
+        console.log("FIXME: setting state with new sorted annotations: ", this.docAnnotationIndex.sortedDocAnnotations);
         this.setState({
-            annotations: this.docAnnotationIndex.sortedDocAnnotation
+            annotations: this.docAnnotationIndex.sortedDocAnnotations
         });
 
     }
@@ -229,11 +230,14 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const result: any = [];
 
         annotations.map(annotation => {
+            console.log("FIXME: created annotation component for: ", annotation)
+
             result.push (<DocAnnotationComponent key={annotation.id}
                                                  annotation={annotation}
                                                  persistenceLayerProvider={this.props.persistenceLayerProvider}
                                                  doc={this.props.doc}/>);
         });
+
 
         return result;
 

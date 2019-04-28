@@ -10,7 +10,7 @@ import {Ref} from '../metadata/Refs';
 import {Flashcard} from '../metadata/Flashcard';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
-import {Image} from '../metadata/Image';
+import {IImage} from '../metadata/Image';
 
 export interface DocAnnotation {
 
@@ -29,7 +29,7 @@ export interface DocAnnotation {
     comments: Comment[];
     children: DocAnnotation[];
 
-    readonly image?: Image;
+    readonly image?: IImage;
 
     /**
      * The color for highlights.  When undefined there is no color (which would
