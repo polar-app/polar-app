@@ -75,14 +75,20 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                          }}>
 
                         <img style={{
+
+                                 // core CSS properties for the image so that it
+                                 // is responsive.
+
                                  width: '100%',
                                  height: 'auto',
                                  objectFit: 'contain',
                                  maxWidth: this.state.image.width,
                                  maxHeight: this.state.image.height,
 
+                                 // border around the image
+
                                  boxSizing: 'content-box',
-                                 border: `1px solid #c6c6c6`
+                                 border: `1px solid #c6c6c6`,
 
                              }}
                              width={this.state.image.width}

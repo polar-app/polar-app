@@ -13,6 +13,7 @@ import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
+import {Point} from '../Point';
 
 export class DocAnnotations {
 
@@ -86,16 +87,28 @@ export class DocAnnotations {
 
     public static createFromAreaHighlight(areaHighlight: AreaHighlight, pageMeta: PageMeta): DocAnnotation {
 
+        const createPosition = (): Point => {
+
+            if (areaHighlight.position) {
+                return {...areaHighlight.position};
+            }
+
+            return {
+                x: this.firstRect(areaHighlight).map(current => current.left).getOrElse(0),
+                y: this.firstRect(areaHighlight).map(current => current.top).getOrElse(0),
+            };
+
+        };
+
+        const position = createPosition();
+
         return {
             id: areaHighlight.id,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
             image: areaHighlight.image,
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
-            position: {
-                x: this.firstRect(areaHighlight).map(current => current.left).getOrElse(0),
-                y: this.firstRect(areaHighlight).map(current => current.top).getOrElse(0),
-            },
+            position,
             created: areaHighlight.created,
             pageMeta,
             children: [],
