@@ -5,6 +5,9 @@ import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -20,36 +23,41 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
     public componentDidMount(): void {
 
+        this.computeImageURL()
+            .then(imageURL => {
+                this.setState({image: imageURL});
+            })
+            .catch(err => log.error("Could not compute image URL: ", err));
+
+    }
+
+    private async computeImageURL(): Promise<ImageURL | undefined> {
+
         const {annotation} = this.props;
         const {image} = annotation;
 
-        // FIXME: we're performing an update on an unmounted component here.
+        if (! image) {
+            return undefined;
+        }
 
-        // FIXME the image ratio isn't being preserved here...
+        const persistenceLayer = this.props.persistenceLayerProvider();
+        const docFileMeta = await persistenceLayer.getFile(image.src.backend, image.src);
 
-        // we need to see how to do this properly.
+        if (docFileMeta.isPresent()) {
 
-        if (image) {
-            // FIXME: this should be its own function...
-            const persistenceLayer = this.props.persistenceLayerProvider();
-            persistenceLayer.getFile(image.src.backend, image.src)
-                .then(docFileMeta => {
+            const imageFileMeta = docFileMeta.get();
 
-                    docFileMeta.map(imageFile => {
+            const imageURL: ImageURL = {
+                width: image.width!,
+                height: image.height!,
+                src: imageFileMeta.url
+            };
 
-                        const imageURL: ImageURL = {
-                            width: image.width!,
-                            height: image.height!,
-                            src: imageFile.url
-                        };
-
-                        this.setState({image: imageURL});
-
-                    });
-
-                });
+            return imageURL;
 
         }
+
+        return undefined;
 
     }
 
