@@ -12,6 +12,8 @@ import {Promises} from '../../util/Promises';
 
 const log = Logger.create();
 
+const MIN_PAINT_INTERVAL = 1000 / 60;
+
 /**
  * Create a screenshot of the display directly using Electron.
  *
@@ -65,18 +67,16 @@ export class ElectronScreenshots {
 
         const annotationToggler = new AnnotationToggler();
 
+        // TODO: this should be the PROPER way to do this but on my machine
+        // this still doesn't work.
         await Promises.requestAnimationFrame(() => annotationToggler.hide());
-        await Promises.waitFor(1000 / 60); // FIXME: this works at least on my machine but would be nice to make it faster
 
-        // FIXME: this bug must/could be that the renderer has updated BUT the
-        // display has not yet updated
+        // wait for at least 1/60th of a second which is the duration that most
+        // machines target.  This is probably too long in practice though.
+        await Promises.waitFor(MIN_PAINT_INTERVAL);
 
         const capturedScreenshot
             = await this.getRemoteDelegate().capture(id, screenshotRequest);
-
-        // FIXME: if we write it to a file, and the FILE (which would be written
-        // from the main process) has the overlay then we know that the overlay
-        // isn't being removed.
 
         await Promises.requestAnimationFrame(() => annotationToggler.show());
 
@@ -141,47 +141,10 @@ export class ElectronScreenshots {
         return screenshotRequest;
 
     }
-    //
-    // public static toScreenshot(capturedScreenshot: CapturedScreenshot): Screenshot {
-    //
-    //     return Screenshots.create(capturedScreenshot.data, {
-    //         width: capturedScreenshot.dimensions.width,
-    //         height: capturedScreenshot.dimensions.height,
-    //         type: ImageTypes.PNG
-    //     });
-    //
-    // }
 
 }
 
 export type CaptureTarget = IXYRect | HTMLElement | ClientRect;
-
-export class Annotations {
-
-    private static SELECTOR = ".page .pagemark, .page .text-highlight, .page .area-highlight";
-
-    private static getAnnotationElements(): ReadonlyArray<HTMLElement> {
-        return Array.from(document.querySelectorAll(this.SELECTOR));
-    }
-
-    public static hide() {
-
-        for (const element of this.getAnnotationElements()) {
-            element.style.visibility = 'hidden';
-            const cs = getComputedStyle(element); // FIXME: remove
-            console.log("FIXME: vis is " + cs.visibility);
-        }
-
-    }
-
-    public static show() {
-
-        for (const element of this.getAnnotationElements()) {
-            element.style.visibility = 'visible';
-        }
-    }
-
-}
 
 export interface StyleRestore {
     readonly visibility: string | null;
