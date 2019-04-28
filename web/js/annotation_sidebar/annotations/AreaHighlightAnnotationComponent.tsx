@@ -91,6 +91,7 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                                  border: `1px solid #c6c6c6`,
 
                              }}
+                             className=""
                              width={this.state.image.width}
                              height={this.state.image.height}
                              alt="screenshot"
