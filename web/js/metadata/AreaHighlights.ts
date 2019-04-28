@@ -61,6 +61,27 @@ export class AreaHighlights {
         return new DefaultAreaHighlightWriter(opts);
     }
 
+    public static async delete(opts: AreaHighlightDeleteOpts) {
+
+        const {datastore, pageMeta, areaHighlight} = opts;
+        const {image} = areaHighlight;
+
+        delete pageMeta.areaHighlights[areaHighlight.id];
+
+        if (image) {
+            await datastore.deleteFile(image.src.backend, image.src);
+        }
+
+    }
+
+}
+
+export interface AreaHighlightDeleteOpts {
+    readonly datastore: Datastore | PersistenceLayer;
+    readonly docMeta: DocMeta;
+    readonly pageMeta: PageMeta;
+    readonly areaHighlight: AreaHighlight;
+
 }
 
 export interface AreaHighlightWriteOpts {

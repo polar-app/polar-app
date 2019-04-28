@@ -9,6 +9,8 @@ import {AreaHighlights} from '../../../metadata/AreaHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
 import {Optional} from '../../../util/ts/Optional';
+import {Arrays} from '../../../util/Arrays';
+import {AreaHighlightDeleteOpts} from '../../../metadata/AreaHighlights';
 
 
 const log = Logger.create();
@@ -86,15 +88,26 @@ export class AreaHighlightController {
     }
     private onDeleteAreaHighlight(triggerEvent: TriggerEvent) {
 
-        // FIXME: this needs to remove the screenshots after deletion...
-
         const annotationPointers
             = AnnotationPointers.toAnnotationPointers(".area-highlight", triggerEvent);
 
-        Optional.first(...annotationPointers).map(annotationPointer => {
+        const annotationPointer = Arrays.first(annotationPointers);
+
+        if (annotationPointer) {
+
+            const datastore = this.model.persistenceLayerProvider();
             const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
-            delete pageMeta.areaHighlights[annotationPointer.id];
-        });
+            const areaHighlight = pageMeta.areaHighlights[annotationPointer.id];
+            const {docMeta} = this.model;
+
+            const opts: AreaHighlightDeleteOpts = {
+                datastore, areaHighlight, pageMeta, docMeta
+            };
+
+            AreaHighlights.delete(opts)
+                .catch(err => log.error("Unable to delete area highlight: ", err));
+
+        }
 
     }
 
