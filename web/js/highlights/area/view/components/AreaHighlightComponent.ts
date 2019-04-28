@@ -5,6 +5,7 @@ import {Component} from "../../../../components/Component";
 import {forDict} from "../../../../util/Functions";
 import {Dimensions} from "../../../../util/Dimensions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
+import {Position} from "../../../../metadata/BaseHighlight";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";
 import {AreaHighlightRect} from "../../../../metadata/AreaHighlightRect";
 import {AreaHighlightRects} from "../../../../metadata/AreaHighlightRects";
@@ -22,6 +23,7 @@ import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 import {CapturedScreenshots} from '../../../../screenshots/CapturedScreenshots';
 import {CaptureTarget} from '../../../../screenshots/CapturedScreenshots';
 import {Buffers} from '../../../../util/Buffers';
+import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
 
 const log = Logger.create();
 
@@ -78,8 +80,10 @@ export class AreaHighlightComponent extends Component {
         if (boxMoveEvent.state === "completed") {
 
             const annotationEvent = this.annotationEvent!;
-
             const { docMeta, pageMeta } = annotationEvent;
+            const pageNum = pageMeta.pageInfo.num;
+
+            const {pageDimensions} = this.computePageDimensions(pageNum);
 
             const existingAreaHighlight = pageMeta.areaHighlights[this.areaHighlight!.id];
 
@@ -93,16 +97,22 @@ export class AreaHighlightComponent extends Component {
                 // const extractedImage = await this.captureScreenshot(boxMoveEvent.boxRect);
                 const extractedImage = await this.captureScreenshot2(boxMoveEvent.boxRect, boxMoveEvent.target);
 
-                console.log("FIXME: wroting with annotationRect: ", annotationRect);
-                console.log("FIXME: wroting with boxRect: ", boxMoveEvent.boxRect);
-                console.log("FIXME: wroting with rect: ", areaHighlightRect);
+                const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 
-                const writeOpts = {
+                const position: Position = {
+                    x: overlayRect.left,
+                    y: overlayRect.top,
+                    width: overlayRect.width,
+                    height: overlayRect.height,
+                };
+
+                const writeOpts: AreaHighlightWriteOpts = {
                     datastore: this.persistenceLayerProvider(),
                     docMeta,
                     pageMeta,
                     areaHighlight: existingAreaHighlight,
                     rect: areaHighlightRect,
+                    position,
                     extractedImage
                 };
 
@@ -195,17 +205,13 @@ export class AreaHighlightComponent extends Component {
         const pageMeta = annotationEvent.pageMeta;
         const docInfo = docMeta.docInfo;
 
-        const pageElement = this.docFormat.getPageElementFromPageNum(pageMeta.pageInfo.num);
-        const dimensionsElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
+        const pageNum = pageMeta.pageInfo.num;
 
         // the container must ALWAYS be the pageElement because if we use any
         // other container PDF.js breaks.
-        const containerElement = pageElement;
+        const containerElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
-        const pageDimensions = new Dimensions({
-            width: dimensionsElement.clientWidth,
-            height: dimensionsElement.clientHeight
-        });
+        const {pageDimensions, dimensionsElement} = this.computePageDimensions(pageNum);
 
         forDict(areaHighlight.rects, (key, rect) => {
 
@@ -277,6 +283,22 @@ export class AreaHighlightComponent extends Component {
 
     }
 
+    private computePageDimensions(pageNum: number): PageDimensions {
+
+        const pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
+
+        const dimensionsElement
+            = <HTMLElement> pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
+
+        const pageDimensions = new Dimensions({
+            width: dimensionsElement.clientWidth,
+            height: dimensionsElement.clientHeight
+        });
+
+        return {pageDimensions, dimensionsElement};
+
+    }
+
     /**
      * Create a unique DOM ID for this pagemark.
      */
@@ -300,4 +322,9 @@ export class AreaHighlightComponent extends Component {
 
     }
 
+}
+
+interface PageDimensions {
+    readonly pageDimensions: Dimensions;
+    readonly dimensionsElement: HTMLElement;
 }

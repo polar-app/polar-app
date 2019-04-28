@@ -29,6 +29,9 @@ export class BaseHighlight extends ExtendedAnnotation {
      */
     public color?: HighlightColor;
 
+
+    public position?: Position;
+
     constructor(val: any) {
 
         super(val);
@@ -57,3 +60,20 @@ export type HighlightColor = 'yellow' | 'red' | 'green' | 'blue' | 'transparent'
 export interface HighlightRects {
     [key: string]: Rect;
 }
+
+/**
+ * The position of a highlight is the absolute position on the page in pixels
+ * at 100% zoom level.  Some systems (like pagemarks and area highlights) use
+ * percentage placement but text highlights use absolute placement (a poor
+ * design issue) but we have to unify on absolute for compatibility reasons
+ * with text highlights.  We could later add both systems but we need to at
+ * least have the absolute position for portability reasons for area
+ * highlights.
+ */
+export interface Position {
+    readonly x: number;
+    readonly y: number;
+    readonly width: number;
+    readonly height: number;
+}
+

@@ -18,6 +18,7 @@ import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects} from './BaseHighlight';
 import {DatastoreFileCache} from '../datastore/HybridRemoteDatastore';
+import {Position} from "./BaseHighlight";
 
 const log = Logger.create();
 
@@ -68,6 +69,7 @@ export interface AreaHighlightWriteOpts {
     readonly pageMeta: PageMeta;
     readonly areaHighlight: AreaHighlight;
     readonly rect: AreaHighlightRect;
+    readonly position: Position;
     readonly extractedImage: ExtractedImage;
 }
 
@@ -84,7 +86,7 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
 
     public prepare(): [AreaHighlight, AreaHighlightCommitter] {
 
-        const {docMeta, extractedImage, pageMeta, areaHighlight, rect} = this.opts;
+        const {docMeta, extractedImage, pageMeta, areaHighlight, rect, position} = this.opts;
 
         const {type, width, height} = extractedImage;
 
@@ -152,6 +154,7 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
                 ...areaHighlight,
                 image,
                 rects,
+                position,
                 lastUpdated: ISODateTimeStrings.create()
             });
 
