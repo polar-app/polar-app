@@ -176,6 +176,7 @@ export class AreaHighlightComponent extends Component {
 
     }
 
+    // FIXME: unify these capture algorithsm somewhere.
 
     private async captureScreenshot(rect: ILTRect): Promise<ExtractedImage> {
 

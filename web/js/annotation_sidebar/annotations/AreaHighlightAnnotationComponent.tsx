@@ -64,9 +64,11 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
             return (
 
                 <div key={key}
-                     className='area-highlight p-1'>
+                     className='p-1'>
 
-                    <div className="m-1"
+                    <div className="area-highlight m-1"
+                         data-annotation-id={annotation.id}
+                         data-annotation-color={annotation.color}
                          style={{
                             display: 'block',
                             textAlign: 'center',
