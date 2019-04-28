@@ -60,13 +60,6 @@ export class AreaHighlightComponent extends Component {
 
         // TODO: actually I think this belongs in the controller... not the view
 
-        // TODO: refactor / this code is shared with the
-        // AbstractPagemarkComponent
-
-        // console.log("Box moved to: ", boxMoveEvent);
-
-        // TODO: should I PLAY with capture directly within the current tab?
-
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                                         boxMoveEvent.restrictionRect);
 
