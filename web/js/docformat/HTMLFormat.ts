@@ -108,14 +108,9 @@ export class HTMLFormat extends DocFormat {
 
     public async getCanvas(pageNum: number): Promise<HTMLCanvasElement> {
 
-        // FIXME: we could build our OWN image and URL handler to ensure that
+        // TODO: we could build our OWN image and URL handler to ensure that
         // all the URLs that we're capturing are absolute URLs but we would have
         // to do this for ALL url types including those that are in CSS
-
-        // FIXME: remove html2canvas as right now it just won't work for us.
-
-        // FIXME: this isn't working as the images are broken.  Without a fix
-        // for this we have to use the native screenshot mechanism in Electron
 
         if (HTMLFormat.canvas) {
             return HTMLFormat.canvas;
@@ -125,17 +120,10 @@ export class HTMLFormat extends DocFormat {
 
         const createElement = (): HTMLElement => {
             const doc = this.targetDocument()!;
-            console.log("FIXME: doc.location: " + doc.location.href);
-
-            // FIXME: this
-            // return <HTMLElement> doc.documentElement.cloneNode(true);
-
             return <HTMLElement> doc.documentElement!;
         };
 
         const element = createElement();
-
-        console.log("FIXME666: going to use canvas with", element);
 
         const page = <HTMLElement> document.querySelector(".page");
         if (! page) {
@@ -146,7 +134,6 @@ export class HTMLFormat extends DocFormat {
         const width = page.offsetWidth;
 
         const onClone = (clonedDoc: HTMLDocument) => {
-            console.log("FIXME: got cloned doc: ", clonedDoc);
 
             const base = clonedDoc.documentElement.querySelector("base");
 
@@ -165,21 +152,19 @@ export class HTMLFormat extends DocFormat {
                     const abs = URLs.absolute(base.href, img.src);
                     img.src = abs;
 
-                    console.log("FIXME: expanded to: " + img.src);
-
                 }
 
             }
 
         };
 
-        // FIXME: the time of this is still long.. like 500ms to 1000ms and it's
+        // TODO: the time of this is still long.. like 500ms to 1000ms and it's
         // very fragile ...
 
-        // FIXME: play with enabling/disabling all the CSS overlays, capture, then
-        // revert...
+        // TODO: play with enabling/disabling all the CSS overlays, capture,
+        // then revert...
 
-        // FIXME: now SVGs aren't rendering and if I enable
+        // TODO: now SVGs aren't rendering and if I enable
         // foreignObjectRendering what ends up happening is I get a black
         // screen.  Also I get a ton of 404s for image seven though theyu shoudl
         // be expanded.
