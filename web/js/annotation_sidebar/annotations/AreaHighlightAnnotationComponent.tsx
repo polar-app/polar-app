@@ -74,10 +74,6 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
                          }}>
 
-                        {/*FIXME what else to test... */}
-                        {/*// a div inside the parent..*/}
-
-
                         <img style={{
                                  width: '100%',
                                  height: 'auto',
