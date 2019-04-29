@@ -1,6 +1,5 @@
 import {AnnotationType} from '../metadata/AnnotationType';
 import {Comment} from '../metadata/Comment';
-import {Screenshot} from '../metadata/Screenshot';
 import {Point} from '../Point';
 import {HighlightColor} from '../metadata/BaseHighlight';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
@@ -18,7 +17,6 @@ export interface DocAnnotation {
     readonly annotationType: AnnotationType;
     readonly html?: HTMLString;
     readonly fields?: {[name: string]: HTMLString};
-    readonly screenshot?: Screenshot;
     readonly pageNum: number;
     readonly position: Point;
     readonly created: ISODateTimeString;
@@ -26,7 +24,6 @@ export interface DocAnnotation {
     // the reference to a parent annotation if this is a child annotation.
     readonly ref?: Ref;
 
-    comments: ReadonlyArray<Comment>;
     children: DocAnnotation[];
 
     readonly img?: Img;

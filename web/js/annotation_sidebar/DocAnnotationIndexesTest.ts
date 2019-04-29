@@ -270,7 +270,6 @@ function createAnnotation(id: string,
         created: '2009-06-15T13:45:30',
         pageMeta: null!,
         children: [],
-        comments: [],
         original: textHighlight
     };
 
@@ -740,4 +739,4 @@ const BROKEN = [
             "color": "red"
         }
     }
-]
+];

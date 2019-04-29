@@ -29,7 +29,6 @@ export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
             pageNum: 1,
             position: {x: 0, y: 0 },
             created: "2018-10-23T21:06:22+00:00",
-            comments: [],
             // the reference to a parent annotation if this is a child
             // annotation.
             children: [],

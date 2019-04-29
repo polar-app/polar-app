@@ -31,7 +31,6 @@ export class DocAnnotationIndexes {
 
                 // we have to merge the previously built command and children
 
-                docAnnotation.comments = current.comments;
                 docAnnotation.children = current.children;
 
             }
