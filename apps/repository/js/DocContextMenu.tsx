@@ -26,6 +26,7 @@ export class DocContextMenu extends React.Component<IProps, IState> {
 
     }
 
+    // TODO: this should go away in favor of simpler PureComponents.
     public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
         return ! deepEqual(this.props.repoDocInfo, nextProps.repoDocInfo);
     }
