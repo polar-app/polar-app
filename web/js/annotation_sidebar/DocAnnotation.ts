@@ -10,7 +10,7 @@ import {Ref} from '../metadata/Refs';
 import {Flashcard} from '../metadata/Flashcard';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
-import {IImage} from '../metadata/Image';
+import {URLStr} from '../util/Strings';
 
 export interface DocAnnotation {
 
@@ -29,7 +29,7 @@ export interface DocAnnotation {
     comments: ReadonlyArray<Comment>;
     children: DocAnnotation[];
 
-    readonly image?: IImage;
+    readonly img?: Img;
 
     /**
      * The color for highlights.  When undefined there is no color (which would
@@ -54,4 +54,11 @@ export type DocAnnotationMap = {[id: string]: DocAnnotation};
  */
 export type SortedDocAnnotations = DocAnnotation[];
 
-
+/**
+ * Image src with width, height, and URL.
+ */
+export interface Img {
+    readonly width: number;
+    readonly height: number;
+    readonly src: URLStr;
+}

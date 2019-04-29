@@ -7,6 +7,7 @@ import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
 import {Text} from '../metadata/Text';
 import {DocAnnotation} from './DocAnnotation';
+import {Img} from './DocAnnotation';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {Optional} from '../util/ts/Optional';
@@ -14,10 +15,12 @@ import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
+import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 
 export class DocAnnotations {
 
-    public static async getAnnotationsForPage(docMeta: DocMeta): Promise<DocAnnotation[]> {
+    public static async getAnnotationsForPage(persistenceLayerProvider: PersistenceLayerProvider,
+                                              docMeta: DocMeta): Promise<DocAnnotation[]> {
 
         const result: DocAnnotation[] = [];
 
@@ -25,7 +28,7 @@ export class DocAnnotations {
 
         for (const pageMeta of pageMetas) {
 
-            const areaHighlights = await this.getAreaHighlights(pageMeta);
+            const areaHighlights = await this.getAreaHighlights(persistenceLayerProvider, pageMeta);
 
             result.push(...this.getTextHighlights(pageMeta));
             result.push(...areaHighlights);
@@ -91,8 +94,38 @@ export class DocAnnotations {
 
     }
 
-    public static async createFromAreaHighlight(areaHighlight: AreaHighlight,
+    public static async createFromAreaHighlight(persistenceLayerProvider: PersistenceLayerProvider,
+                                                areaHighlight: AreaHighlight,
                                                 pageMeta: PageMeta): Promise<DocAnnotation> {
+
+        const createImg = async (): Promise<Img | undefined> => {
+
+            const {image} = areaHighlight;
+
+            if (! image) {
+                return undefined;
+            }
+
+            const persistenceLayer = persistenceLayerProvider();
+            const docFileMeta = await persistenceLayer.getFile(image.src.backend, image.src);
+
+            if (docFileMeta.isPresent()) {
+
+                const imageFileMeta = docFileMeta.get();
+
+                const img: Img = {
+                    width: image.width!,
+                    height: image.height!,
+                    src: imageFileMeta.url
+                };
+
+                return img;
+
+            }
+
+            return undefined;
+
+        };
 
         const createPosition = (): Point => {
 
@@ -107,12 +140,13 @@ export class DocAnnotations {
 
         };
 
+        const img = await createImg();
         const position = createPosition();
 
         return {
             id: areaHighlight.id,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
-            image: areaHighlight.image,
+            img,
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
             position,
@@ -183,7 +217,8 @@ export class DocAnnotations {
 
     }
 
-    private static async getAreaHighlights(pageMeta: PageMeta): Promise<DocAnnotation[]> {
+    private static async getAreaHighlights(persistenceLayerProvider: PersistenceLayerProvider,
+                                           pageMeta: PageMeta): Promise<DocAnnotation[]> {
 
         const result: DocAnnotation[] = [];
 
@@ -192,7 +227,7 @@ export class DocAnnotations {
         for (const areaHighlight of areaHighlights) {
 
             const docAnnotation =
-                await this.createFromAreaHighlight(areaHighlight, pageMeta);
+                await this.createFromAreaHighlight(persistenceLayerProvider, areaHighlight, pageMeta);
 
             result.push(docAnnotation);
 

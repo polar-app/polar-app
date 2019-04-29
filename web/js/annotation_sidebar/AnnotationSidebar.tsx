@@ -24,6 +24,7 @@ import {SharingDatastores} from '../datastore/SharingDatastores';
 import {ShareContentButton} from '../apps/viewer/ShareContentButton';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
+import {AreaHighlight} from '../metadata/AreaHighlight';
 
 const log = Logger.create();
 
@@ -44,7 +45,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async init() {
 
-        const annotations = await DocAnnotations.getAnnotationsForPage(this.props.doc.docMeta);
+        const annotations = await DocAnnotations.getAnnotationsForPage(this.props.persistenceLayerProvider,
+                                                                       this.props.doc.docMeta);
 
         this.docAnnotationIndex
             = DocAnnotationIndexes.rebuild(this.docAnnotationIndex, ...annotations);
@@ -67,10 +69,16 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const handleConversion = async () => {
 
+                const converter = (annotationValue: AreaHighlight) => {
+
+                    const {persistenceLayerProvider} = this.props;
+                    return DocAnnotations.createFromAreaHighlight(persistenceLayerProvider,
+                                                                  annotationValue,
+                                                                  annotationEvent.pageMeta);
+                };
+
                 const docAnnotation =
-                    await this.convertAnnotation(annotationEvent.value,
-                                                 annotationValue => DocAnnotations.createFromAreaHighlight(annotationValue,
-                                                                                                           annotationEvent.pageMeta));
+                    await this.convertAnnotation(annotationEvent.value, converter);
 
                 this.handleAnnotationEvent(annotationEvent.id,
                                            annotationEvent.traceEvent.mutationType,

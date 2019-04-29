@@ -43,8 +43,7 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
             return (
                 <AreaHighlightAnnotationComponent key={key}
                                                   annotation={annotation}
-                                                  doc={this.props.doc}
-                                                  persistenceLayerProvider={this.props.persistenceLayerProvider}/>
+                                                  doc={this.props.doc}/>
             );
 
         } else {

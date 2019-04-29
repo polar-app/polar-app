@@ -21,53 +21,14 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
     }
 
-    public componentDidMount(): void {
-
-        this.computeImageURL()
-            .then(imageURL => {
-                this.setState({image: imageURL});
-            })
-            .catch(err => log.error("Could not compute image URL: ", err));
-
-    }
-
-    private async computeImageURL(): Promise<ImageURL | undefined> {
-
-        const {annotation} = this.props;
-        const {image} = annotation;
-
-        if (! image) {
-            return undefined;
-        }
-
-        const persistenceLayer = this.props.persistenceLayerProvider();
-        const docFileMeta = await persistenceLayer.getFile(image.src.backend, image.src);
-
-        if (docFileMeta.isPresent()) {
-
-            const imageFileMeta = docFileMeta.get();
-
-            const imageURL: ImageURL = {
-                width: image.width!,
-                height: image.height!,
-                src: imageFileMeta.url
-            };
-
-            return imageURL;
-
-        }
-
-        return undefined;
-
-    }
-
     public render() {
 
-        const { annotation } = this.props;
+        const {annotation} = this.props;
+        const {img} = annotation;
 
         const key = 'area-highlight' + annotation.id;
 
-        if (this.state.image) {
+        if (img) {
 
             return (
 
@@ -96,8 +57,8 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                                  width: '100%',
                                  height: 'auto',
                                  objectFit: 'contain',
-                                 maxWidth: this.state.image.width,
-                                 maxHeight: this.state.image.height,
+                                 maxWidth: img.width,
+                                 maxHeight: img.height,
 
                                  // border around the image
 
@@ -106,10 +67,10 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
                              }}
                              className=""
-                             width={this.state.image.width}
-                             height={this.state.image.height}
+                             width={img.width}
+                             height={img.height}
                              alt="screenshot"
-                             src={this.state.image.src}/>
+                             src={img.src}/>
 
                     </div>
 
@@ -139,15 +100,8 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 interface IProps {
     readonly doc: Doc;
     readonly annotation: DocAnnotation;
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 
 interface IState {
-    readonly image?: ImageURL;
 }
 
-export interface ImageURL {
-    readonly width: number;
-    readonly height: number;
-    readonly src: URLStr;
-}
