@@ -19,6 +19,8 @@ import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
 import {CapturedScreenshots} from '../../../../screenshots/CapturedScreenshots';
+import {Arrays} from '../../../../util/Arrays';
+import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 
 const log = Logger.create();
 
@@ -51,6 +53,44 @@ export class AreaHighlightComponent extends Component {
 
         this.boxController = new BoxController(boxMoveEvent => this.onBoxMoved(boxMoveEvent));
 
+
+
+
+
+    }
+
+    // FIXME: this MUST be called after the first render();
+
+    private async captureFirstScreenshot() {
+
+        const areaHighlight = this.areaHighlight!;
+        const { docMeta, pageMeta } = this.annotationEvent!;
+
+        const rect = Arrays.first(Object.values(areaHighlight.rects));
+        const areaHighlightRect = AreaHighlightRects.createFromRect(rect!);
+        const pageNum = pageMeta.pageInfo.num;
+
+        const {pageDimensions} = this.computePageDimensions(pageNum);
+
+        const boxRect = areaHighlightRect.toDimensions(pageDimensions);
+
+        const target = <HTMLElement> document.getElementById(this.createID());
+
+        const opts: DoWriteOpts = {
+            datastore: this.persistenceLayerProvider(),
+            docMeta,
+            pageMeta,
+            pageNum,
+            areaHighlight,
+            target,
+            areaHighlightRect,
+            boxRect,
+        };
+
+        await this.asyncSerializer.execute(async () => {
+            this.areaHighlight = await AreaHighlights.doWrite(opts);
+        });
+
     }
 
     /**
@@ -59,6 +99,8 @@ export class AreaHighlightComponent extends Component {
     private onBoxMoved(boxMoveEvent: BoxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
+
+        //  FIXME: I think I can bet boxRect target just by querySelector
 
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                                         boxMoveEvent.restrictionRect);
@@ -71,14 +113,20 @@ export class AreaHighlightComponent extends Component {
             const { docMeta, pageMeta } = annotationEvent;
             const pageNum = pageMeta.pageInfo.num;
 
-            const {pageDimensions} = this.computePageDimensions(pageNum);
+            const areaHighlight = pageMeta.areaHighlights[this.areaHighlight!.id];
 
-            const existingAreaHighlight = pageMeta.areaHighlights[this.areaHighlight!.id];
+            const {boxRect, target} = boxMoveEvent;
+
+            console.log("FIXME boxRect: ", JSON.stringify(boxRect, null, "  "));
 
             const doWrite = async () => {
 
+                const {pageDimensions} = this.computePageDimensions(pageNum);
+
+                // TODO: this is a problem because the area highlight isn't created
+                // until we mutate it in the JSON..
                 const extractedImage
-                    = await CapturedScreenshots.capture(pageNum, boxMoveEvent.boxRect, boxMoveEvent.target)
+                    = await CapturedScreenshots.capture(pageNum, boxRect, target);
 
                 const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 
@@ -93,7 +141,7 @@ export class AreaHighlightComponent extends Component {
                     datastore: this.persistenceLayerProvider(),
                     docMeta,
                     pageMeta,
-                    areaHighlight: existingAreaHighlight,
+                    areaHighlight,
                     rect: areaHighlightRect,
                     position,
                     extractedImage
@@ -208,11 +256,21 @@ export class AreaHighlightComponent extends Component {
 
             highlightElement.style.zIndex = '1';
 
-
         });
+
+        if (! this.areaHighlight!.image) {
+
+            // FIXME: this now works but the image is blurry...
+
+            this.captureFirstScreenshot()
+                .catch(err => log.error("Unable to write to datastore: ", err));
+
+        }
+
 
     }
 
+    // FIXME: remove this
     private computePageDimensions(pageNum: number): PageDimensions {
 
         const pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
@@ -254,6 +312,7 @@ export class AreaHighlightComponent extends Component {
 
 }
 
+// FIXME: remove this
 interface PageDimensions {
     readonly pageDimensions: Dimensions;
     readonly dimensionsElement: HTMLElement;

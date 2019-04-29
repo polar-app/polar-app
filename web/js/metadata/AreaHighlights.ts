@@ -19,6 +19,10 @@ import {HighlightRects} from './BaseHighlight';
 import {Position} from "./BaseHighlight";
 import {DatastoreFileCache} from '../datastore/HybridRemoteDatastore';
 import {ExtractedImage} from '../screenshots/CapturedScreenshot';
+import {CapturedScreenshots} from '../screenshots/CapturedScreenshots';
+import {Dimensions} from '../util/Dimensions';
+import {DocFormatFactory} from '../docformat/DocFormatFactory';
+import {ILTRect} from '../util/rects/ILTRect';
 
 const log = Logger.create();
 
@@ -56,6 +60,65 @@ export class AreaHighlights {
 
     }
 
+    public static async doWrite(opts: DoWriteOpts): Promise<AreaHighlight> {
+
+        const {datastore, pageNum, pageMeta, docMeta,
+               areaHighlight, boxRect, target,
+               areaHighlightRect} = opts;
+
+        const {pageDimensions} = this.computePageDimensions(pageNum);
+
+        // TODO: this is a problem because the area highlight isn't created
+        // until we mutate it in the JSON..
+        const extractedImage
+            = await CapturedScreenshots.capture(pageNum, boxRect, target);
+
+        const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+
+        const position: Position = {
+            x: overlayRect.left,
+            y: overlayRect.top,
+            width: overlayRect.width,
+            height: overlayRect.height,
+        };
+
+        const writeOpts: AreaHighlightWriteOpts = {
+            datastore,
+            docMeta,
+            pageMeta,
+            areaHighlight,
+            rect: areaHighlightRect,
+            position,
+            extractedImage
+        };
+
+        const writer = AreaHighlights.write(writeOpts);
+
+        const [writtenAreaHighlight, committer] = writer.prepare();
+
+        await committer.commit();
+
+        return writtenAreaHighlight;
+    }
+
+    private static computePageDimensions(pageNum: number): PageDimensions {
+
+        const docFormat = DocFormatFactory.getInstance();
+
+        const pageElement = docFormat.getPageElementFromPageNum(pageNum);
+
+        const dimensionsElement
+            = <HTMLElement> pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
+
+        const pageDimensions = new Dimensions({
+            width: dimensionsElement.clientWidth,
+            height: dimensionsElement.clientHeight
+        });
+
+        return {pageDimensions, dimensionsElement};
+
+    }
+
     public static write(opts: AreaHighlightWriteOpts): AreaHighlightWriter {
         return new DefaultAreaHighlightWriter(opts);
     }
@@ -73,6 +136,22 @@ export class AreaHighlights {
 
     }
 
+}
+
+interface PageDimensions {
+    readonly pageDimensions: Dimensions;
+    readonly dimensionsElement: HTMLElement;
+}
+
+export interface DoWriteOpts {
+    readonly datastore: Datastore | PersistenceLayer;
+    readonly docMeta: DocMeta;
+    readonly pageMeta: PageMeta;
+    readonly pageNum: number;
+    readonly areaHighlight: AreaHighlight;
+    readonly target: HTMLElement;
+    readonly areaHighlightRect: AreaHighlightRect;
+    readonly boxRect: ILTRect;
 }
 
 export interface AreaHighlightDeleteOpts {

@@ -144,7 +144,7 @@ export class ElectronScreenshots {
 
 }
 
-export type CaptureTarget = IXYRect | HTMLElement | ClientRect;
+export type CaptureTarget = IXYRect | ClientRect;
 
 export interface StyleRestore {
     readonly visibility: string | null;
