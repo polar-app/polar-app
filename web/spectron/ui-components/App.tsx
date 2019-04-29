@@ -52,18 +52,12 @@ import {Blobs} from '../../js/util/Blobs';
 import {Dock} from './Dock';
 import {Channels} from '../../js/util/Channels';
 import {Suggestions} from '../../js/ui/feedback/Suggestions';
+import {FakeComponent0} from './FakeComponent0';
 
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
         super(props, context);
-
-        this.toggleDropDown = this.toggleDropDown.bind(this);
-        this.toggleSplit = this.toggleSplit.bind(this);
-        this.state = {
-            dropdownOpen: false,
-            splitButtonOpen: false
-        };
 
     }
 
@@ -166,10 +160,10 @@ class App<P> extends React.Component<{}, IAppState> {
         // NULL_FUNCTION });
 
         // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
-
-        const [toggle, toggleCoupler] = Channels.create<void>();
-        const [setFlyout, setFlyoutCoupler] = Channels.create<void>();
-
+        //
+        // const [toggle, toggleCoupler] = Channels.create<void>();
+        // const [setFlyout, setFlyoutCoupler] = Channels.create<void>();
+        //
 
         return (
             //
@@ -189,85 +183,13 @@ class App<P> extends React.Component<{}, IAppState> {
           //                 {/*right={<div/>}/>*/}
 
 
+
             <div>
-
-                <Suggestions category="foo"
-                             title="We need your feedback!"
-                             description="I need your help to improve Polar!  Now's your opportunity to let me us know how you'd like us to improve Polar moving forward!"/>
-
-                {/*<div style={{*/}
-                        {/*display: 'flex',*/}
-                        {/*flexDirection: 'column',*/}
-                        {/*height: '100%'*/}
-                     {/*}}>*/}
-
-                    <div>
-                        <Button onClick={() => toggle()}>Toggle</Button>
-                        <Button onClick={() => setFlyout()}>Flyout</Button>
-                    </div>
-
-                    <Dock style={{flexGrow: 1}}
-                          left={<div style={{backgroundColor: 'red'}}>
-                              this is the left
-                          </div>}
-                          right={<div style={{backgroundColor: 'blue'}}>
-                              this is the right
-                              <a href="http://cnn.com">asdf</a>
-                          </div>}
-                          side="right"
-                          initialWidth={100}
-                          toggleCoupler={toggleCoupler}
-                          setFlyoutCoupler={setFlyoutCoupler}
-                    />
-
-                    {/*/!*<div style={{display: 'flex', height: '100%'}}>*!/*/}
-
-                        {/*/!*<div style={{width: '400px',*!/*/}
-                                     {/*/!*backgroundColor: 'red',*!/*/}
-                                     {/*/!*height: '100%',*!/*/}
-                                     {/*/!*position: 'absolute'}}>*!/*/}
-
-                            {/*/!*this is the left*!/*/}
-                        {/*/!*</div>*!/*/}
-
-                        {/*/!*<div style={{flexGrow: 1, backgroundColor: 'blue'}}>*!/*/}
-                            {/*/!*asdf*!/*/}
-                            {/*/!*asdf*!/*/}
-                        {/*/!*</div>*!/*/}
-
-                    {/*/!*</div>*!/*/}
-
-                {/*</div>*/}
-
-                {/*/!*<Feedback category='net-promoter-score'*!/*/}
-                          {/*/!*title='How likely are you to recommend Polar?'*!/*/}
-                          {/*/!*from="Not likely"*!/*/}
-                          {/*/!*to="Very likely"*!/*/}
-                          {/*/!*onRated={NULL_FUNCTION}/>*!/*/}
-
+                <FakeComponent0/>
             </div>
 
         );
     }
-
-
-    private toggleDropDown() {
-
-        this.setState({
-            splitButtonOpen: this.state.splitButtonOpen,
-            dropdownOpen: !this.state.dropdownOpen
-        });
-
-    }
-
-    private toggleSplit() {
-
-        this.setState({
-            splitButtonOpen: !this.state.splitButtonOpen
-        });
-
-    }
-
 
 
 }
@@ -275,8 +197,6 @@ class App<P> extends React.Component<{}, IAppState> {
 export default App;
 
 interface IAppState {
-    dropdownOpen: boolean;
-    splitButtonOpen: boolean;
 
 }
 
