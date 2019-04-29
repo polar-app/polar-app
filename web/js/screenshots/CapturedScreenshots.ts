@@ -17,9 +17,13 @@ export class CapturedScreenshots {
     /**
      * Capture a screenshot using the right strategy (via PDF canvas or
      * Electron)
+     *
+     * @param pageNum The page number that the annotation is attached.
+     * @param boxRect The rect within the page of for the box (absolutely positioned as pixels).
+     * @param element The actual HTML element that represents the annotation on screen.
      */
     public static async capture(pageNum: number,
-                                rect: ILTRect,
+                                boxRect: ILTRect,
                                 element: HTMLElement): Promise<ExtractedImage> {
 
         const docFormat = DocFormatFactory.getInstance();
@@ -27,10 +31,10 @@ export class CapturedScreenshots {
         switch (docFormat.name) {
 
             case 'pdf':
-                return this.captureViaCanvas(pageNum, rect);
+                return this.captureViaCanvas(pageNum, boxRect);
 
             case 'html':
-                return this.captureViaElectron(rect, element);
+                return this.captureViaElectron(boxRect, element);
 
         }
 

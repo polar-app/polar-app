@@ -85,8 +85,6 @@ export class AreaHighlightController {
 
         pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
 
-
-
     }
     private onDeleteAreaHighlight(triggerEvent: TriggerEvent) {
 
