@@ -6,6 +6,18 @@ We use the uid field right now to determine if a record can be written.
 
 ```
 service cloud.firestore {
+
+  match /databases/{database}/documents {
+    match /user_feedback/{document=**} {
+      
+      // we only allow users to write to this database and not read from it.
+      // only admins can read right now.
+      
+      allow write;
+      
+    }
+  }
+
   match /databases/{database}/documents {
     match /{document=**} {
     
