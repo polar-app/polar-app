@@ -6,6 +6,7 @@ import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {assertJSON} from '../test/Assertions';
 import {TextHighlights} from '../metadata/TextHighlights';
 import {TestingTime} from '../test/TestingTime';
+import {ObjectIDs} from '../util/ObjectIDs';
 
 describe('DocAnnotationIndexes', function() {
 
@@ -260,6 +261,7 @@ function createAnnotation(id: string,
     const textHighlight = TextHighlights.createMockTextHighlight();
 
     return {
+        oid: ObjectIDs.create(),
         id,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
         pageNum,

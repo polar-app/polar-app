@@ -1,6 +1,7 @@
 import {DocInfo} from './DocInfo';
 import {DatastorePermission} from '../datastore/Datastore';
 import {DocMeta} from './DocMeta';
+import {ObjectID} from '../util/ObjectIDs';
 
 
 /**
@@ -8,7 +9,7 @@ import {DocMeta} from './DocMeta';
  * for use with providing additional metadata around DocMeta and DocInfo which
  * isn't necessarily written in the DocInfo/DocMeta including permission data.
  */
-export interface Doc {
+export interface Doc extends ObjectID {
 
     readonly docInfo: DocInfo;
 

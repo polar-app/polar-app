@@ -5,7 +5,8 @@ import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
-
+import {LazyProps} from '../../react/LazyComponents';
+import {LazyState} from '../../react/LazyComponents';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -20,6 +21,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
     public render() {
+
         const { annotation } = this.props;
 
         const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
@@ -63,7 +65,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
 }
-interface IProps {
+interface IProps extends LazyProps {
 
     readonly doc: Doc;
 
@@ -71,7 +73,7 @@ interface IProps {
 
 }
 
-interface IState {
+interface IState extends LazyState {
 
 }
 

@@ -6,6 +6,9 @@ import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
 import {Logger} from '../../logger/Logger';
+import {LazyComponent} from '../../react/LazyComponent';
+import {LazyProps} from '../../react/LazyComponents';
+import {LazyState} from '../../react/LazyComponents';
 
 const log = Logger.create();
 
@@ -22,7 +25,6 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
     public render() {
-
         const {annotation} = this.props;
         const {img} = annotation;
 
@@ -97,11 +99,11 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
 }
-interface IProps {
+interface IProps extends LazyProps {
     readonly doc: Doc;
     readonly annotation: DocAnnotation;
 }
 
-interface IState {
+interface IState extends LazyProps {
 }
 

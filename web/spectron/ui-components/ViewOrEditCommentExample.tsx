@@ -4,8 +4,7 @@ import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
 import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {Comments} from "../../js/metadata/Comments";
-import {ViewOrEditComment} from "../../js/annotation_sidebar/child_annotations/comments/ViewOrEditComment";
-import {NULL_FUNCTION} from "../../js/util/Functions";
+import {ObjectIDs} from '../../js/util/ObjectIDs';
 
 export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
 
@@ -22,7 +21,7 @@ export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
         const comment = Comments.createHTMLComment(html, 'page:1');
 
         const commentDocAnnotation: DocAnnotation = {
-
+            oid: ObjectIDs.create(),
             id: '01010101',
             annotationType: AnnotationType.COMMENT,
             html,

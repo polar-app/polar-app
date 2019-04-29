@@ -18,7 +18,6 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Prefs} from '../util/prefs/Prefs';
 import {isPresent} from '../Preconditions';
-import {printf} from '../logger/Console';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 

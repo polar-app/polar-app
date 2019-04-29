@@ -16,6 +16,7 @@ import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
+import {ObjectIDs} from '../util/ObjectIDs';
 
 export class DocAnnotations {
 
@@ -50,6 +51,7 @@ export class DocAnnotations {
     public static createFromFlashcard(flashcard: Flashcard, pageMeta: PageMeta): DocAnnotation {
 
         return {
+            oid: ObjectIDs.create(),
             id: flashcard.id,
             annotationType: AnnotationType.FLASHCARD,
             // html: comment.content.HTML!,
@@ -73,6 +75,7 @@ export class DocAnnotations {
     public static createFromComment(comment: Comment, pageMeta: PageMeta): DocAnnotation {
 
         return {
+            oid: ObjectIDs.create(),
             id: comment.id,
             annotationType: AnnotationType.COMMENT,
             html: comment.content.HTML!,
@@ -142,6 +145,7 @@ export class DocAnnotations {
         const position = createPosition();
 
         return {
+            oid: ObjectIDs.create(),
             id: areaHighlight.id,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
             img,
@@ -184,6 +188,7 @@ export class DocAnnotations {
         }
 
         return {
+            oid: ObjectIDs.create(),
             id: textHighlight.id,
             annotationType: AnnotationType.TEXT_HIGHLIGHT,
             html,

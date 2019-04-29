@@ -1,6 +1,7 @@
 import {Doc} from './Doc';
 import {DatastorePermission} from '../datastore/Datastore';
 import {DocMeta} from './DocMeta';
+import {ObjectIDs} from '../util/ObjectIDs';
 
 export class Docs {
 
@@ -9,6 +10,7 @@ export class Docs {
         const mutable = permission.mode === 'rw';
 
         return {
+            oid: ObjectIDs.create(),
             docMeta,
             docInfo: docMeta.docInfo,
             permission,

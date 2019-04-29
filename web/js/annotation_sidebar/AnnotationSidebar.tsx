@@ -28,6 +28,78 @@ import {AreaHighlight} from '../metadata/AreaHighlight';
 
 const log = Logger.create();
 
+const NoAnnotations = () => {
+    return (
+        <div className="p-2">
+
+            <h4 className="text-center text-muted">
+                No Annotations
+            </h4>
+
+            <p className="text-muted"
+               style={{fontSize: '16px'}}>
+
+                No annotations have yet been created. To create new
+                annotations create a
+                new <span style={{backgroundColor: "rgba(255,255,0,0.3)"}}>highlight</span> by
+                selecting text in the document.
+            </p>
+
+            <p className="text-muted"
+               style={{fontSize: '16px'}}>
+
+                The highlight will then be shown here and you can
+                then easily attach comments and flashcards to it
+                directly.
+            </p>
+
+        </div>
+    );
+};
+
+
+
+function createItems(render: IRender) {
+
+    // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
+
+    // TODO: I'm not sure what type of class a <div> or React element uses
+    // so using 'any' for now.
+
+    const result: any = [];
+
+    const {annotations} = render;
+
+    annotations.map(annotation => {
+        result.push (<DocAnnotationComponent key={annotation.id}
+                                             annotation={annotation}
+                                             persistenceLayerProvider={render.persistenceLayerProvider}
+                                             doc={render.doc}/>);
+    });
+
+
+    return result;
+
+}
+
+const AnnotationsBlock = (render: IRender) => {
+
+    if (render.annotations.length > 0) {
+        return createItems(render);
+    } else {
+        return <NoAnnotations/>;
+    }
+
+};
+
+const Annotations = (render: IRender) => {
+
+    return <div className="annotations">
+        <AnnotationsBlock {...render}/>
+    </div>;
+
+};
+
 export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private docAnnotationIndex: DocAnnotationIndex = new DocAnnotationIndex();
@@ -215,26 +287,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     }
 
-    private createItems(annotations: DocAnnotation[]) {
-
-        // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
-
-        // TODO: I'm not sure what type of class a <div> or React element uses
-        // so using 'any' for now.
-
-        const result: any = [];
-
-        annotations.map(annotation => {
-            result.push (<DocAnnotationComponent key={annotation.id}
-                                                 annotation={annotation}
-                                                 persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                                 doc={this.props.doc}/>);
-        });
-
-
-        return result;
-
-    }
     private onExport(path: string, format: ExportFormat) {
 
         Exporters.doExport(path, format, this.props.doc.docMeta)
@@ -307,60 +359,13 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         };
 
-        const NoAnnotations = () => {
-            return (
-                <div className="p-2">
-
-                    <h4 className="text-center text-muted">
-                        No Annotations
-                    </h4>
-
-                    <p className="text-muted"
-                       style={{fontSize: '16px'}}>
-
-                        No annotations have yet been created. To create new
-                        annotations create a
-                        new <span style={{backgroundColor: "rgba(255,255,0,0.3)"}}>highlight</span> by
-                        selecting text in the document.
-                    </p>
-
-                    <p className="text-muted"
-                       style={{fontSize: '16px'}}>
-
-                        The highlight will then be shown here and you can
-                        then easily attach comments and flashcards to it
-                        directly.
-                    </p>
-
-                </div>
-            );
-        };
-
-        const AnnotationsBlock = () => {
-
-            if (annotations.length > 0) {
-                return this.createItems(annotations);
-            } else {
-                return <NoAnnotations/>;
-            }
-
-        };
-
-        const Annotations = () => {
-
-            return <div className="annotations">
-                <AnnotationsBlock/>
-            </div>;
-
-        };
-
         return (
 
             <div id="annotation-manager" className="annotation-sidebar">
 
                 <AnnotationHeader/>
 
-                <Annotations/>
+                <Annotations {...this.state} {...this.props}/>
 
             </div>
 
@@ -378,4 +383,6 @@ interface IState {
     readonly annotations: DocAnnotation[];
 }
 
+interface IRender extends IProps, IState {
 
+}

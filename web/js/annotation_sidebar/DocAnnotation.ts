@@ -10,8 +10,9 @@ import {Flashcard} from '../metadata/Flashcard';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {URLStr} from '../util/Strings';
+import {ObjectID} from '../util/ObjectIDs';
 
-export interface DocAnnotation {
+export interface DocAnnotation extends ObjectID {
 
     readonly id: string;
     readonly annotationType: AnnotationType;
