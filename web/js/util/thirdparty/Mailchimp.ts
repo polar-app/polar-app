@@ -18,16 +18,17 @@ export class Mailchimp {
         const emailEncoded = encodeURIComponent(email);
         const url = `https://spinn3r.us10.list-manage.com/subscribe/post-json?u=0b1739813ebf118e92faf8fc3&id=ad3d53e837&c=callback&EMAIL=${emailEncoded}&b_0b1739813ebf118e92faf8fc3_ad3d53e837=&subscribe=&_=1552327454264`;
 
-        const response = await fetch(url);
+        const response = await fetch(url, {mode: 'no-cors'});
 
+        // FIXME: we can't read the text because we are in no-cors mode.
         const text = await response.text();
 
         if (text.indexOf('success') === -1 && text.indexOf('already subscribed') === -1) {
-            throw new Error("Invalid result: " + text);
+            throw new Error("Mailchimp failed: invalid result: " + text);
         }
 
         if (response.status !== 200) {
-            throw new Error("Failed request: " + response.status + ": " + response.statusText);
+            throw new Error("Mailchimp failed request: " + response.status + ": " + response.statusText);
         }
 
     }

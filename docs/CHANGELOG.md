@@ -1,7 +1,13 @@
+
+
 # 1.18.1
 
 - new component to ScrollIntoView so that when we're dealing with scrollable 
   and long form content we can make sure the content and scrolled and viewable. 
+
+- upgraded to latest firebase versions
+
+- cleanup orphan javascript
 
 # 1.18.0
 
