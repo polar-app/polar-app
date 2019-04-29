@@ -36,31 +36,51 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         this.onExport = this.onExport.bind(this);
 
-        const annotations = DocAnnotations.getAnnotationsForPage(props.doc.docMeta);
+        this.state = {
+            annotations: []
+        };
+
+    }
+
+    private async init() {
+
+        const annotations = await DocAnnotations.getAnnotationsForPage(this.props.doc.docMeta);
 
         this.docAnnotationIndex
             = DocAnnotationIndexes.rebuild(this.docAnnotationIndex, ...annotations);
 
-        this.state = {
+        this.setState({
             annotations: this.docAnnotationIndex.sortedDocAnnotations
-        };
+        });
 
     }
 
     public componentDidMount(): void {
 
-        // TODO: remove all these listeners when the component unmounts...
+        this.init()
+            .catch(err => log.error("Failed init: ", err));
+
+        // TODO: remove all these listeners when the component unmounts... in
+        // our case though it never unmounts
 
         new AreaHighlightModel().registerListener(this.props.doc.docMeta, annotationEvent => {
 
-            const docAnnotation =
-                this.convertAnnotation(annotationEvent.value,
-                                       annotationValue => DocAnnotations.createFromAreaHighlight(annotationValue,
-                                                                                                 annotationEvent.pageMeta));
+            const handleConversion = async () => {
 
-            this.handleAnnotationEvent(annotationEvent.id,
-                                       annotationEvent.traceEvent.mutationType,
-                                       docAnnotation);
+                const docAnnotation =
+                    await this.convertAnnotation(annotationEvent.value,
+                                                 annotationValue => DocAnnotations.createFromAreaHighlight(annotationValue,
+                                                                                                           annotationEvent.pageMeta));
+
+                this.handleAnnotationEvent(annotationEvent.id,
+                                           annotationEvent.traceEvent.mutationType,
+                                           docAnnotation);
+
+            };
+
+            handleConversion()
+                .catch(err => log.error("Unable to convert value: ", err));
+
 
         });
 

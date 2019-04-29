@@ -17,14 +17,20 @@ import {Point} from '../Point';
 
 export class DocAnnotations {
 
-    public static getAnnotationsForPage(docMeta: DocMeta): DocAnnotation[] {
+    public static async getAnnotationsForPage(docMeta: DocMeta): Promise<DocAnnotation[]> {
 
         const result: DocAnnotation[] = [];
 
-        Object.values(docMeta.pageMetas).forEach(pageMeta => {
+        const pageMetas = Object.values(docMeta.pageMetas);
+
+        for (const pageMeta of pageMetas) {
+
+            const areaHighlights = await this.getAreaHighlights(pageMeta);
+
             result.push(...this.getTextHighlights(pageMeta));
-            result.push(...this.getAreaHighlights(pageMeta));
-        });
+            result.push(...areaHighlights);
+
+        }
 
         const index: {[id: string]: DocAnnotation} = {};
 
@@ -85,7 +91,8 @@ export class DocAnnotations {
 
     }
 
-    public static createFromAreaHighlight(areaHighlight: AreaHighlight, pageMeta: PageMeta): DocAnnotation {
+    public static async createFromAreaHighlight(areaHighlight: AreaHighlight,
+                                                pageMeta: PageMeta): Promise<DocAnnotation> {
 
         const createPosition = (): Point => {
 
@@ -176,13 +183,20 @@ export class DocAnnotations {
 
     }
 
-    private static getAreaHighlights(pageMeta: PageMeta): DocAnnotation[] {
+    private static async getAreaHighlights(pageMeta: PageMeta): Promise<DocAnnotation[]> {
 
         const result: DocAnnotation[] = [];
 
-        Object.values(pageMeta.areaHighlights).forEach(areaHighlight => {
-            result.push(this.createFromAreaHighlight(areaHighlight, pageMeta));
-        });
+        const areaHighlights = Object.values(pageMeta.areaHighlights);
+
+        for (const areaHighlight of areaHighlights) {
+
+            const docAnnotation =
+                await this.createFromAreaHighlight(areaHighlight, pageMeta);
+
+            result.push(docAnnotation);
+
+        }
 
         return result;
 
