@@ -14,19 +14,19 @@ import {IImage} from '../metadata/Image';
 
 export interface DocAnnotation {
 
-    id: string;
-    annotationType: AnnotationType;
-    html?: HTMLString;
-    fields?: {[name: string]: HTMLString};
-    screenshot?: Screenshot;
-    pageNum: number;
-    position: Point;
-    created: ISODateTimeString;
+    readonly id: string;
+    readonly annotationType: AnnotationType;
+    readonly html?: HTMLString;
+    readonly fields?: {[name: string]: HTMLString};
+    readonly screenshot?: Screenshot;
+    readonly pageNum: number;
+    readonly position: Point;
+    readonly created: ISODateTimeString;
 
     // the reference to a parent annotation if this is a child annotation.
-    ref?: Ref;
+    readonly ref?: Ref;
 
-    comments: Comment[];
+    comments: ReadonlyArray<Comment>;
     children: DocAnnotation[];
 
     readonly image?: IImage;

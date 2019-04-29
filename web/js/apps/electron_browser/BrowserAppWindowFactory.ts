@@ -17,7 +17,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     icon: APP_ICON,
     webPreferences: {
 
-        // NOTE: these must be disabled becuase they break pdf.js.  It must be
+        // NOTE: these must be disabled because they break pdf.js.  It must be
         // some change to require() from their workers.  So maybe I just can't
         // use workers for now.
         // nodeIntegrationInWorker: true,
