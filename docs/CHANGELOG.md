@@ -1,3 +1,11 @@
+
+
+# 1.18.1
+
+- upgraded to latest firebase versions
+
+- cleanup orphan javascript
+
 # 1.18.0
 
 - Big upgrade to latest version of Electron:
