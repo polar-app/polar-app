@@ -33,6 +33,12 @@ We're using the web request API to handle this.
        up even more issues because it's difficult to implement, new, and might
        not work on other browsers.
 
+
+- OK.. in theory it should work BUT probably only within a chrome extension so 
+  we would have to bundle up our entire webapp as a chrome extension and serve
+  it there which would work fine of course so we could go down that route in 
+  the future.
+
 # Page Capture
 
 Web page capture is done by sending a message to the background 
