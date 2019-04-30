@@ -38,6 +38,11 @@ We're using the web request API to handle this.
   we would have to bundle up our entire webapp as a chrome extension and serve
   it there which would work fine of course so we could go down that route in 
   the future.
+  
+   - we would have to automatically build and push the web extension as part of 
+     CI distribution and it would constantly be 1 week old - unless it 
+     auto-updated itself which might be a violation of ToS.
+    
 
 # Page Capture
 
