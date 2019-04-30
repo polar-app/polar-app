@@ -5,6 +5,19 @@
 - new component to ScrollIntoView so that when we're dealing with scrollable 
   and long form content we can make sure the content and scrolled and viewable. 
 
+- New handling for scrolling so that documents with slight overflow don't shift
+  on us.
+
+- Fixed bug where capture would fail because load was 'aborted' but it really
+  doesn't matter as we're just triggering load and it's up to the user if they
+  want to capture.
+
+- extension should now properly only activate when used on app.getpolarized.io 
+  only for CORS access to PDFs.
+
+- polar chrome extension now part of main polar repo for better support and 
+  faster iteration.
+
 - upgraded to latest firebase versions
 
 - cleanup orphan javascript
