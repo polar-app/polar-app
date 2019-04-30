@@ -1,7 +1,8 @@
 
-
-
 # 1.18.1
+
+- extension should now properly only activate when used on app.getpolarized.io 
+  only for CORS access to PDFs.
 
 - polar chrome extension now part of main polar repo for better support and 
   faster iteration.

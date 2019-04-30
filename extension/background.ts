@@ -3,6 +3,7 @@ import WebRequestBodyDetails = chrome.webRequest.WebRequestBodyDetails;
 import WebNavigationParentedCallbackDetails = chrome.webNavigation.WebNavigationParentedCallbackDetails;
 import BlockingResponse = chrome.webRequest.BlockingResponse;
 import {ImportContentAPI} from './ImportContentAPI';
+import {RequestIndex} from './RequestIndex';
 
 const HOST = 'app.getpolarized.io';
 
@@ -10,11 +11,16 @@ const HOST = 'app.getpolarized.io';
 // see which URL we're redirecting to but in practice I think our main app URL
 // is fine.
 const ALLOWED_ORIGINS = `https://${HOST}`;
+// tslint:disable-next-line:max-line-length
+const EXPOSED_HEADERS = 'Accept-Ranges, Content-Encoding, Content-Length, Content-Range, Content-Type, Date, Range, Server, Transfer-Encoding, X-GUploader-UploadID, X-Google-Trace';
 
 // Load the Polar webapp after install which will send to login if not
 // authenticated first and also give the user the option to download.
 
 const INITIAL_URL = `https://${HOST}/?utm_source=app_on_install&utm_medium=chrome_extension`;
+
+const ACCESS_CONTROL_ALLOW_ORIGIN = 'Access-Control-Allow-Origin';
+const ACCESS_CONTROL_EXPOSE_HEADERS = 'Access-Control-Expose-Headers';
 
 function getViewerURL(pdfURL: string) {
 
@@ -37,8 +43,8 @@ function loadLink(url: string) {
 }
 
 /**
- * Return true if we can download the PDF by looking at the content disposition headers,
- * the URL, etc.
+ * Return true if we can download the PDF by looking at the content disposition
+ * headers, the URL, etc.
  *
  */
 function isDownloadable(details: WebResponseHeadersDetails | WebNavigationParentedCallbackDetails | WebRequestBodyDetails) {
@@ -145,13 +151,13 @@ class HttpHeaders {
 
     /**
      * Takes a set of headers, and set "Content-Disposition: attachment".
-     * @param {Object} details First argument of the webRequest.onHeadersReceived
-     *                         event. The property "responseHeaders" is read and
-     *                         modified if needed.
+     * @param {Object} details First argument of the
+     *     webRequest.onHeadersReceived event. The property "responseHeaders"
+     *     is read and modified if needed.
      *
-     * @return {Object|undefined} The return value for the onHeadersReceived event.
-     *                            Object with key "responseHeaders" if the headers
-     *                            have been modified, undefined otherwise.
+     * @return {Object|undefined} The return value for the onHeadersReceived
+     *     event. Object with key "responseHeaders" if the headers have been
+     *     modified, undefined otherwise.
      */
     public static createContentDispositionAttachmentHeaders(details: WebResponseHeadersDetails): any | undefined {
 
@@ -287,6 +293,7 @@ interface PingResponse {
     readonly version: string;
 }
 
+
 type DesktopAppState = 'active' | 'inactive';
 
 chrome.webRequest.onHeadersReceived.addListener(details => {
@@ -320,7 +327,40 @@ chrome.webRequest.onHeadersReceived.addListener(details => {
     },
     ['blocking', 'responseHeaders']);
 
-const ACCESS_CONTROL_ALLOW_ORIGIN = 'Access-Control-Allow-Origin';
+// keep the request index built so I can determine the original request to read
+// the origin.
+const requestIndex = new RequestIndex();
+requestIndex.start();
+
+
+function hasCorrectOrigin(details: chrome.webRequest.WebResponseHeadersDetails) {
+
+    const request = requestIndex.getRequest(details.requestId);
+
+    if (request) {
+
+        const requestHeaders = request.requestHeaders || [];
+
+        const filtered =
+            requestHeaders.filter(current => current.name.toLowerCase() === 'origin');
+
+        if (filtered.length >= 1) {
+
+            const origin  = filtered[0].value;
+
+            if (origin) {
+                return origin.endsWith(".getpolarized.io");
+            }
+
+        }
+
+    } else {
+        console.warn("No request found for request ID: " + details.requestId);
+    }
+
+    return false;
+
+}
 
 chrome.webRequest.onHeadersReceived.addListener(details => {
 
@@ -328,28 +368,35 @@ chrome.webRequest.onHeadersReceived.addListener(details => {
 
         if (isPDF(details)) {
 
-            const hdrName = ACCESS_CONTROL_ALLOW_ORIGIN;
+            // Lookup the origin here so that we only do this on
+            // app.getpolarized.io origins to prevent breaking other webapps and
+            // extensions.
 
-            // TODO: I actually think this is WRONG and that we should use
-            // req.headers.origin here and pick one based on the origin
-            // to avoid overwriting something that is used by another app.
-            //
-            // https://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
-            //
-            // it could be possible for another PDF viewer or another PDF
-            // app to request a specific origin and we shouldn't break other
-            // apps.  This is a big complicated though as we have to factor
-            // in the request and join the response with the request to get
-            // both headers.
+            if (hasCorrectOrigin(details)) {
 
-            // We have to remove existing CORS headers and replace them with
-            // our own or else we get two headers which isn't what we want.
-            // We only care about our header.
-            responseHeaders =
-                responseHeaders.filter(header => header.name.toLowerCase() !== hdrName.toLowerCase());
+                const removeHeader = (header: string) => {
 
-            responseHeaders.push({name: hdrName, value: ALLOWED_ORIGINS});
+                    return responseHeaders
+                        .filter(current => current.name.toLowerCase() !== header.toLowerCase());
 
+                };
+
+                // We have to remove existing CORS headers and replace them with
+                // our own or else we get two headers which isn't what we want.
+                // We only care about our header.
+
+                responseHeaders = removeHeader(ACCESS_CONTROL_ALLOW_ORIGIN);
+                responseHeaders = removeHeader(ACCESS_CONTROL_EXPOSE_HEADERS);
+
+                responseHeaders.push({name: ACCESS_CONTROL_ALLOW_ORIGIN, value: ALLOWED_ORIGINS});
+                responseHeaders.push({name: ACCESS_CONTROL_EXPOSE_HEADERS, value: EXPOSED_HEADERS});
+
+            } else {
+                console.debug("Skipping headers: incorrect origin");
+            }
+
+        } else {
+            console.debug("Skipping headers: not a PDF");
         }
 
         return {responseHeaders};
