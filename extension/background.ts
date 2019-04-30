@@ -340,6 +340,10 @@ function hasCorrectOrigin(details: chrome.webRequest.WebResponseHeadersDetails) 
 
         const requestHeaders = request.requestHeaders || [];
 
+        console.debug(`Initiator ${request.initiator} tabId: ${request.tabId}`);
+
+        console.debug("Working with requests headers for URL " + details.url, requestHeaders);
+
         const filtered =
             requestHeaders.filter(current => current.name.toLowerCase() === 'origin');
 
@@ -348,9 +352,17 @@ function hasCorrectOrigin(details: chrome.webRequest.WebResponseHeadersDetails) 
             const origin  = filtered[0].value;
 
             if (origin) {
+
+                console.debug("origin is: " + origin);
+
                 return origin.endsWith(".getpolarized.io");
+
+            } else {
+                console.debug("no origin header value");
             }
 
+        } else {
+            console.debug("no origin header");
         }
 
     } else {
@@ -358,6 +370,27 @@ function hasCorrectOrigin(details: chrome.webRequest.WebResponseHeadersDetails) 
     }
 
     return false;
+
+}
+
+function isCorrectInitiator(details: chrome.webRequest.WebResponseHeadersDetails) {
+
+    const request = requestIndex.getRequest(details.requestId);
+
+    if (request) {
+
+        if (details.initiator) {
+            return details.initiator.endsWith(".getpolarized.io");
+        } else {
+            console.warn("No initiator found for request ID: " + details.requestId);
+        }
+
+    } else {
+        console.warn("No request found for request ID: " + details.requestId);
+    }
+
+    return false;
+
 
 }
 
@@ -371,7 +404,7 @@ chrome.webRequest.onHeadersReceived.addListener(details => {
             // app.getpolarized.io origins to prevent breaking other webapps and
             // extensions.
 
-            if (hasCorrectOrigin(details)) {
+            if (isCorrectInitiator(details)) {
 
                 const removeHeader = (header: string) => {
 
@@ -391,11 +424,11 @@ chrome.webRequest.onHeadersReceived.addListener(details => {
                 responseHeaders.push({name: ACCESS_CONTROL_EXPOSE_HEADERS, value: EXPOSED_HEADERS});
 
             } else {
-                console.debug("Skipping headers: incorrect origin");
+                console.debug("Skipping headers: incorrect initiator: " + details.url);
             }
 
         } else {
-            console.debug("Skipping headers: not a PDF");
+            console.debug("Skipping headers: not a PDF"  + details.url);
         }
 
         return {responseHeaders};

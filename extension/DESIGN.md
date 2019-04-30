@@ -1,4 +1,4 @@
-# PDF handling
+# Automatic PDF handling
 
 - we add the CORS headers that polar needs directly by looking at the origin and
   verifying that they match up.
@@ -20,6 +20,18 @@ We're using the web request API to handle this.
 
 - There should probably be a 'download' button the user can use to DL the PDF 
   locally.
+
+- I think in practice this functionality is TOO HARD to implement and might be 
+  impossible.
+  
+    1. we can't change the response from the OPTIONS response and some servers 
+       will just return a 500.
+       
+    2. HTTP/HTTPS schemes, when mismatched, will return mix-content errors.  I 
+       think the only way to do this could be to use the new caches API and 
+       then a stream and then stream the data into the cache but this opens 
+       up even more issues because it's difficult to implement, new, and might
+       not work on other browsers.
 
 # Page Capture
 

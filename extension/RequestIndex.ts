@@ -9,12 +9,19 @@ export class RequestIndex {
 
     public start() {
 
+        const filter =  {
+            urls: [
+                '<all_urls>'
+            ]
+        };
+
         // these requests terminate and clean up data so we don't run out of memory.
-        chrome.webRequest.onCompleted.addListener(details => this.onComplete(details));
-        chrome.webRequest.onErrorOccurred.addListener(details => this.onErrorOccurred(details));
+        chrome.webRequest.onCompleted.addListener(details => this.onComplete(details), filter);
+
+        chrome.webRequest.onErrorOccurred.addListener(details => this.onErrorOccurred(details), filter);
 
         // this keeps track of the headers that are being used.
-        chrome.webRequest.onSendHeaders.addListener(details => this.onSendHeaders(details));
+        chrome.webRequest.onSendHeaders.addListener(details => this.onSendHeaders(details), filter);
 
     }
 
