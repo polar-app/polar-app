@@ -58,6 +58,8 @@ export class EventBridge {
 
         }, {passive: false});
 
+        // TODO: intercept up/down/left/right/pgup and pgdn and re-send them to
+        // the main window.
 
         iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
         iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
