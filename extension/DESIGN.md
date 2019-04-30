@@ -54,6 +54,8 @@ array, or object).
 
 # TODO
 
+- add content capture to the chrome extension.
+
 - the TSC compiler is fucking up because it sees node_modules and is importing 
   types from them and then get version differnces. 
 
