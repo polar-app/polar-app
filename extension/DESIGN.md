@@ -53,3 +53,8 @@ https://developers.chrome.com/extensions/messaging
 array, or object).
 
 # TODO
+
+- the TSC compiler is fucking up because it sees node_modules and is importing 
+  types from them and then get version differnces. 
+
+- npx tsc --traceResolution |grep node_modules |grep " use it as a name resolution result." |grep -v extension
