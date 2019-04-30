@@ -11,13 +11,15 @@ We're using the web request API to handle this.
 
 ## TODO
 
+- Do not activate on our OWN PDFs URLs served from google cloud storage and
+  mangle them... otherwise this is incompatible with our use case.  I think 
+  that since we're just adding the proper headers that it should work fine but
+  test it.
+
 - Verify that file URLs work
 
 - There should probably be a 'download' button the user can use to DL the PDF 
   locally.
-
-- keep a map of the requests but remove them on onErrorOccurred and onCompeted and
-  look at the origin header to see if we should add the proper CORS headers
 
 # Page Capture
 

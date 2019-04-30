@@ -332,7 +332,6 @@ chrome.webRequest.onHeadersReceived.addListener(details => {
 const requestIndex = new RequestIndex();
 requestIndex.start();
 
-
 function hasCorrectOrigin(details: chrome.webRequest.WebResponseHeadersDetails) {
 
     const request = requestIndex.getRequest(details.requestId);
