@@ -1,6 +1,10 @@
 
 
+
 # 1.18.1
+
+- polar chrome extension now part of main polar repo for better support and 
+  faster iteration.
 
 - upgraded to latest firebase versions
 
