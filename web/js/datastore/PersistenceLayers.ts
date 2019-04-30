@@ -17,6 +17,7 @@ import {DocFileMeta} from "./DocFileMeta";
 import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
 import {Datastores} from './Datastores';
+import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
 
@@ -34,7 +35,7 @@ export class PersistenceLayers {
 
         log.info("Changing document visibility changed to: ", visibility);
 
-        const backendFileRefs = Datastores.toBackendFileRefs(docMeta);
+        const backendFileRefs = BackendFileRefs.toBackendFileRefs(docMeta);
 
         const writeFileOpts = {visibility, updateMeta: true};
 
@@ -192,24 +193,22 @@ export class PersistenceLayers {
             }
         };
 
-        async function handleSyncFile(syncDoc: SyncDoc, fileRef: FileRef) {
+        async function handleSyncFile(syncDoc: SyncDoc, fileRef: BackendFileRef) {
 
             ++result.files.total;
 
-            // FIXME: use backendFileRef not just a simple FileRef so that we
-            // can handle binary attachments.
-            if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
+            if (! await target.datastore.containsFile(fileRef.backend, fileRef)) {
 
-                let optionalFile: Optional<DocFileMeta>;
+                let sourceFile: Optional<DocFileMeta>;
 
                 try {
-                    optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
+                    sourceFile = await source.datastore.getFile(fileRef.backend, fileRef);
                 } catch (e) {
                     log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef, e);
                     throw e;
                 }
 
-                if (optionalFile.isPresent()) {
+                if (sourceFile.isPresent()) {
 
                     // TODO: make this a dedicated function to transfer between
                     // do datastores... or at least a dedicated function to read
@@ -217,13 +216,14 @@ export class PersistenceLayers {
                     // that I know that both firebase and the disk datastore
                     // can easily convert URLs to blobs and work with them.
 
-                    const file = optionalFile.get();
+                    const file = sourceFile.get();
                     const blob = await URLs.toBlob(file.url);
 
                     await target.datastore.writeFile(file.backend, fileRef, blob);
 
                     ++result.files.writes;
 
+                } else {
                 }
 
             }
@@ -244,15 +244,11 @@ export class PersistenceLayers {
 
             for (const sourceSyncFile of sourceSyncDoc.files) {
 
-                // TODO: we're going to need some type of method to get all the
-                // files backing a DocMeta file when we start to use attachments
-                // like screenshots.
-
-                if (sourceSyncFile.ref.name) {
+                if (sourceSyncFile.name) {
                     // TODO: if we use the second queue it still locks up.
                     // await docFileAsyncWorkQueue.enqueue(async () =>
                     // handleStashFile(docFile));
-                    await handleSyncFile(sourceSyncDoc, sourceSyncFile.ref);
+                    await handleSyncFile(sourceSyncDoc, sourceSyncFile);
                 }
 
             }

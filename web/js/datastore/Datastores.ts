@@ -1,6 +1,5 @@
 import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
 import {NetworkLayer} from './Datastore';
-import {FileRef} from './Datastore';
 import {BackendFileRef} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
@@ -14,13 +13,13 @@ import {ProgressTracker} from '../util/ProgressTracker';
 import {AsyncProviders} from '../util/Providers';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
+import {DocInfoLike} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {Backend} from './Backend';
 import {Either} from '../util/Either';
 import {LeftEither} from '../util/Either';
-import {DocInfoLike} from '../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -41,72 +40,6 @@ export class Datastores {
 
     }
 
-    /**
-     * Get the main BackendFileRef (PHZ or PDF) for this file (either the
-     * PHZ or PDF file)
-     */
-    public static toBackendFileRef(either: LeftEither<DocMeta, DocInfoLike>): BackendFileRef | undefined {
-
-        if (! either) {
-            return undefined;
-        }
-
-        const docInfo =
-            Either.ofLeft(either)
-                  .convertLeftToRight(left => left.docInfo);
-
-        if (docInfo.filename) {
-
-            // return the existing doc meta information.
-
-            const backend = docInfo.backend || Backend.STASH;
-
-            const backendFileRef: BackendFileRef = {
-                name: docInfo.filename,
-                hashcode: docInfo.hashcode,
-                backend
-            };
-
-            return backendFileRef;
-
-        }
-
-        return undefined;
-
-    }
-
-    /**
-     * Get all FileRefs for this DocMeta including the main doc but also
-     * any image, audio, or video attachments.
-     */
-    public static toBackendFileRefs(either: LeftEither<DocMeta, DocInfoLike>): ReadonlyArray<BackendFileRef> {
-
-        const result: BackendFileRef[] = [];
-
-        const fileRef = this.toBackendFileRef(either);
-
-        const docInfo =
-            Either.ofLeft(either)
-                .convertLeftToRight(left => left.docInfo);
-
-        if (fileRef) {
-
-            const backend = docInfo.backend || Backend.STASH;
-
-            // this is the main FileRef of the file (PHZ or PDF)
-            result.push({backend, ...fileRef});
-
-        }
-
-        const attachments = docInfo.attachments || {};
-        const attachmentRefs = Object.values(attachments)
-            .map(current => current.fileRef);
-
-        result.push(...attachmentRefs);
-
-        return result;
-
-    }
 
     public static async getDocMetas(datastore: Datastore,
                                     listener: DocMetaListener,

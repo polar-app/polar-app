@@ -49,6 +49,7 @@ import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessa
 import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
 import {CrowdfundingBar} from '../../../../web/js/ui/crowdfunding/CrowdfundingBar';
+import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 
 const log = Logger.create();
 
@@ -990,7 +991,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         const fingerprint = repoDocInfo.fingerprint;
 
         const docInfo = repoDocInfo.docInfo;
-        const backendFileRef = Datastores.toBackendFileRef(Either.ofRight(docInfo));
+        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
 
         this.synchronizingDocLoader.load(fingerprint, backendFileRef!)
             .catch(err => log.error("Unable to load doc: ", err));

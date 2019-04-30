@@ -73,8 +73,8 @@ export class RepositoryApp {
         }
 
         // subscribe but do it in the background as this isn't a high priority UI task.
-        MailingList.subscribeWhenNecessary()
-            .catch(err => log.error(err));
+        // MailingList.subscribeWhenNecessary()
+        //     .catch(err => log.error(err));
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 

@@ -18,6 +18,9 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Prefs} from '../util/prefs/Prefs';
 import {isPresent} from '../Preconditions';
+import {Datastores} from './Datastores';
+import {Either} from '../util/Either';
+import {BackendFileRefs} from './BackendFileRefs';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -378,14 +381,6 @@ export interface BackendFileRef extends FileRef {
 
 }
 
-export class BackendFileRefs {
-
-    public static equals(b0: BackendFileRef, b1: BackendFileRef): boolean {
-        return b0.backend === b1.backend && b0.name === b1.name && b0.hashcode === b1.hashcode;
-    }
-
-}
-
 export interface BackendFileRefData extends BackendFileRef {
     readonly data: BinaryFileData;
 }
@@ -717,11 +712,7 @@ export interface SyncDoc {
 /**
  * A lightweight reference to a binary file attached to a SyncDoc.
  */
-export interface SyncFile {
-
-    readonly backend: Backend;
-
-    readonly ref: FileRef;
+export interface SyncFile extends BackendFileRef {
 
 }
 
@@ -729,30 +720,7 @@ export class SyncDocs {
 
     public static fromDocInfo(docInfo: IDocInfo, mutationType: MutationType): SyncDoc {
 
-        const files: SyncFile[] = [];
-
-        // TODO: dedicated function to take IDocInfo and then extract the file
-        // references for them.  Then write() and delete() should make sure the
-        // file references are valid and setup properly before we write
-        // (I think).
-
-        // FIXME: this needs to migrate to using
-        // Datastores and BackendFileRegs to get the underlying files and the ref for
-        // it so that we can get all the attachments in one pass.
-
-        if (docInfo.filename) {
-
-            const stashFile: SyncFile = {
-                backend: Backend.STASH,
-                ref: {
-                    name: docInfo.filename!,
-                    hashcode: docInfo.hashcode
-                }
-            };
-
-            files.push(stashFile);
-
-        }
+        const files = BackendFileRefs.toBackendFileRefs(Either.ofRight(docInfo));
 
         return {
             fingerprint: docInfo.fingerprint,
@@ -841,3 +809,4 @@ export class NetworkLayers {
     public static WEB = new Set<NetworkLayer>(['web']);
 
 }
+

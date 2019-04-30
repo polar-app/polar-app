@@ -8,6 +8,7 @@ import {isPresent} from '../Preconditions';
 import {URLStr} from '../util/Strings';
 import {SharingDatastore} from './SharingDatastore';
 import {Logger} from '../logger/Logger';
+import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
 
@@ -41,7 +42,7 @@ export class SharingDatastores {
             return undefined;
         }
 
-        const fileRef = Datastores.toBackendFileRef(docMeta);
+        const fileRef = BackendFileRefs.toBackendFileRef(docMeta);
 
         if (fileRef) {
 

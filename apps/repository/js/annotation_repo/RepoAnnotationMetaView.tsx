@@ -11,6 +11,7 @@ import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import Button from 'reactstrap/lib/Button';
 import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
+import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 
 const log = Logger.create();
 
@@ -180,7 +181,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
     private onDocumentLoadRequested(docInfo: IDocInfo) {
 
-        const backendFileRef = Datastores.toBackendFileRef(Either.ofRight(docInfo));
+        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
 
         this.synchronizingDocLoader.load(docInfo.fingerprint, backendFileRef!)
             .catch(err => log.error("Unable to load doc: ", err));

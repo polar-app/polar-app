@@ -21,6 +21,7 @@ import {HashEncoding} from '../../../metadata/Hashcode';
 import {DocInfo} from '../../../metadata/DocInfo';
 import {Datastores} from '../../../datastore/Datastores';
 import {PDFMeta} from '../importers/PDFMetadata';
+import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 
 const log = Logger.create();
 
@@ -327,7 +328,7 @@ export class LoadExampleDocs {
 
                 return {
                     docMeta,
-                    backendFileRef: Datastores.toBackendFileRef(docMeta)!
+                    backendFileRef: BackendFileRefs.toBackendFileRef(docMeta)!
                 };
 
             }

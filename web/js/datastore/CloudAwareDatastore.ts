@@ -24,6 +24,7 @@ import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
+import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
 
@@ -490,7 +491,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
 
                 // We have to handle deleting the binary files locally...
-                const fileRefs = Datastores.toBackendFileRefs(Either.ofRight(docMetaFileRef.docInfo));
+                const fileRefs = BackendFileRefs.toBackendFileRefs(Either.ofRight(docMetaFileRef.docInfo));
 
                 for (const fileRef of fileRefs) {
                     // TODO: do this in parallel...
