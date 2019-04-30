@@ -47,6 +47,18 @@ export class EventBridge {
             return;
         }
 
+        iframe.contentDocument.defaultView!.addEventListener("wheel", event => {
+
+            event.preventDefault();
+
+            document.querySelector(".polar-viewer")!
+                .scrollBy(event.deltaX, event.deltaY);
+
+            return false;
+
+        }, {passive: false});
+
+
         iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
         iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
 
