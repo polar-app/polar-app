@@ -77,6 +77,11 @@ export class MachineDatastores {
 
         await Files.recursively(directories.dataDir, async (path, stats) => {
 
+            if (path.indexOf(".backup-") !== -1) {
+                // this is part of a snapshot so this is invalid.
+                return;
+            }
+
             if (path.endsWith(".phz")) {
                 ++nrCaptures;
             }
