@@ -158,6 +158,9 @@ export class PersistenceLayers {
                                            cloudSyncOrigin: SyncOrigin,
                                            listener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION): Promise<void> {
 
+        // log.notice("local: " + localSyncOrigin.datastore.id);
+        // log.notice("cloud: " + cloudSyncOrigin.datastore.id);
+
         log.notice("Transferring from local -> cloud...");
         const localToCloud = await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, listener, 'local-to-cloud');
         log.notice("Transferring from local -> cloud...done", localToCloud);
