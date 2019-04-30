@@ -68,5 +68,6 @@ export interface LazyMap {
 }
 
 
+// TODO: support arrays of primitives plus arrays of ObjectID.
 export type LazyType = string | number | boolean | ObjectID | undefined | null;
 

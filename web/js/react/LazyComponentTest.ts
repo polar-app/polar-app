@@ -11,6 +11,11 @@ describe('LazyComponent', function() {
 
         assert.ok(lazyEquals({oid: 1}, {oid: 1}));
 
+        assert.isFalse(lazyEquals(false, true));
+        assert.isFalse(lazyEquals(null, undefined));
+
+        assert.isFalse(lazyEquals(1, "1"));
+
     });
 
 });
