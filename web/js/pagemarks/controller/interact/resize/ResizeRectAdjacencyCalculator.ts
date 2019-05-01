@@ -20,7 +20,7 @@ export class ResizeRectAdjacencyCalculator {
      */
     public calculate(resizeRect: Rect, intersectedRect: Rect, rectEdges: RectEdges) {
 
-        Preconditions.assertNotNull(rectEdges, "rectEdges");
+        Preconditions.assertPresent(rectEdges, "rectEdges");
 
         // console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: resizeRect: " + JSON.stringify(resizeRect, null, "  "));
         // console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: intersectedRect: " + JSON.stringify(intersectedRect, null, "  "));
