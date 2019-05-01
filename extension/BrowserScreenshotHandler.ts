@@ -20,6 +20,7 @@ export class BrowserScreenshotHandler {
                     const request = <ScreenshotRequest> message;
 
                     const handleResponse = async () => {
+
                         const dataURL = await webextensions.Tabs.captureVisibleTab();
 
                         sendResponse(Results.of(dataURL));
@@ -32,11 +33,18 @@ export class BrowserScreenshotHandler {
                             sendResponse(Results.ofError(err));
                         });
 
+                    // needed so that we can handle the response async.
+                    return true;
 
-
+                } else {
+                    console.debug("Not authorized");
                 }
 
+            } else {
+                console.debug("Not handled");
             }
+
+            return false;
 
         });
 
