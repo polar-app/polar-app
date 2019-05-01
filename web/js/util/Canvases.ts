@@ -16,16 +16,28 @@ export class Canvases {
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/debug-canvas.js
 
     /**
-     * Take a canvas and convert it to a data URL without limitations on the
-     * size of the URL.
+     * Take a canvas or an ArrayBuffer and convert it to a data URL without
+     * limitations on the size of the URL.
      */
-    public static async toDataURL(canvas: HTMLCanvasElement,
+    public static async toDataURL(data: HTMLCanvasElement | ArrayBuffer,
                                   opts: ImageOpts = new DefaultImageOpts()): Promise<string> {
 
         // https://developer.mozilla.org/en-US/docs/Web/API/Blob
 
-        const ab = await this.toArrayBuffer(canvas, opts);
+        const toArrayBuffer = async (): Promise<ArrayBuffer> => {
+
+            if (data instanceof HTMLCanvasElement) {
+                return await this.toArrayBuffer(data, opts);
+            }
+
+            return data;
+
+        };
+
+        const ab = await toArrayBuffer();
+
         const encoded = ArrayBuffers.toBase64(ab);
+
         return `data:${IMAGE_TYPE};base64,` + encoded;
 
     }
@@ -69,6 +81,35 @@ export class Canvases {
             }, opts.type, opts.quality);
 
         });
+
+    }
+
+    public static async crop(data: DataURL | HTMLImageElement,
+                             rect: ILTRect,
+                             opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
+
+        const createSRC = () => {
+
+            if (data instanceof HTMLImageElement) {
+                return data;
+            }
+
+            const img = document.createElement("img");
+            img.src = data;
+
+            return img;
+
+        };
+
+
+        const src = createSRC();
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext('2d', {alpha: false})!;
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(src, 0, 0);
+
+        return await this.extract(canvas, rect, opts );
 
     }
 

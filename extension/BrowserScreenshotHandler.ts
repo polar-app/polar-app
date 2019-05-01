@@ -27,6 +27,12 @@ export class BrowserScreenshotHandler {
 
                     };
 
+                    // FIXME: use a rect to crop the image.
+
+                    // FIXME: see if it's 200ms or 200ms WITH the screenshot. if sending no/less
+                    // data is much faster it might be valuable
+                    //
+
                     handleResponse()
                         .catch(err => {
                             console.error("Caught error trying to take screenshot: ", err);
