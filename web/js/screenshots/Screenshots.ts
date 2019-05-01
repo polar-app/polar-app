@@ -40,9 +40,7 @@ export class Screenshots {
 
     }
 
-    // FIXME: I need to think about whether I want to compute the bounding rect
-    // myself which would make things much easier but then I have to do the math
-    // directly.
+    // TODO: Computing the bounding rect directly would be a better option here.
 
     private static async captureViaElectron(rect: ILTRect, element: HTMLElement): Promise<ExtractedImage>  {
 

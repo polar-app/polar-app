@@ -78,8 +78,7 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
 
                 if (screenshotRequest.crop) {
                     log.info("Cropping image to: ", screenshotRequest.resize);
-
-                    image = image.resize(screenshotRequest.crop);
+                    image = image.crop(screenshotRequest.crop);
                 }
 
                 resolve(image);
