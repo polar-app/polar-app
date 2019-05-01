@@ -142,6 +142,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
                 };
 
                 chrome.runtime.sendMessage(extensionID, message, responseCallback);
+
             }
 
         }
