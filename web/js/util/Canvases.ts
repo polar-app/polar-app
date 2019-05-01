@@ -84,32 +84,52 @@ export class Canvases {
 
     }
 
-    public static async crop(data: DataURL | HTMLImageElement,
+    public static async crop(image: DataURL | HTMLImageElement,
                              rect: ILTRect,
-                             opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
+                             opts: CropOpts = new DefaultImageOpts()): Promise<DataURL> {
 
         const createSRC = () => {
 
-            if (data instanceof HTMLImageElement) {
-                return data;
+            if (image instanceof HTMLImageElement) {
+                return image;
             }
 
-            const img = document.createElement("img");
-            img.src = data;
+            return new Promise<HTMLImageElement>((resolve, reject) => {
 
-            return img;
+                const img = document.createElement("img") as HTMLImageElement;
+                img.src = image;
+
+                img.onload = () => resolve(img);
+
+                img.onerror = (err) => reject(err);
+                img.onabort = (err) => reject(err);
+
+
+                return img;
+
+            });
 
         };
 
+        const src = await createSRC();
 
-        const src = createSRC();
+        const canvas = opts.canvas || document.createElement("canvas");
 
-        const canvas = document.createElement("canvas");
+        canvas.width  = rect.width;
+        canvas.height = rect.height;
+
         const ctx = canvas.getContext('2d', {alpha: false})!;
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(src, 0, 0);
 
-        return await this.extract(canvas, rect, opts );
+        ctx.imageSmoothingEnabled = false;
+
+
+        ctx.drawImage(src,
+                      rect.left, rect.top, rect.width, rect.height,
+                      0, 0, rect.width, rect.height);
+
+        const result = canvas.toDataURL();
+
+        return result;
 
     }
 
@@ -148,6 +168,10 @@ export class Canvases {
 }
 
 export type DataURL = string;
+
+interface CropOpts extends ImageOpts {
+    canvas?: HTMLCanvasElement;
+}
 
 interface ImageOpts {
     readonly type: ImageType;

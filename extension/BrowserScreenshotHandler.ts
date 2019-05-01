@@ -1,7 +1,9 @@
-import {IXYRect} from '../web/js/util/rects/IXYRect';
 import {Results} from '../web/js/util/Results';
 import {Handlers} from './Handlers';
 import {webextensions} from './WebExtensions';
+import {Canvases} from '../web/js/util/Canvases';
+import {ILTRect} from '../web/js/util/rects/ILTRect';
+import {Stopwatches} from '../web/js/util/Stopwatches';
 
 /**
  * Allows us to take screenshots of the current browser within a chrome
@@ -21,17 +23,17 @@ export class BrowserScreenshotHandler {
 
                     const handleResponse = async () => {
 
-                        const dataURL = await webextensions.Tabs.captureVisibleTab();
+                        const tabImage: DataURL = await this.captureTabImage();
+
+                        const dataURL
+                            = await this.crop(tabImage, request.rect);
+
+                        // it takes about 200ms to TAKE a screenshot but only
+                        // about 20ms to send it.
 
                         sendResponse(Results.of(dataURL));
 
                     };
-
-                    // FIXME: use a rect to crop the image.
-
-                    // FIXME: see if it's 200ms or 200ms WITH the screenshot. if sending no/less
-                    // data is much faster it might be valuable
-                    //
 
                     handleResponse()
                         .catch(err => {
@@ -56,6 +58,25 @@ export class BrowserScreenshotHandler {
 
     }
 
+    private static async toDataURL(data: ArrayBuffer) {
+
+        return await Stopwatches.withStopwatchAsync(() => Canvases.toDataURL(data),
+                                                    stopwatch => console.log("toDataURL: " + stopwatch));
+
+    }
+
+    private static async crop(tabImage: DataURL, rect: ILTRect) {
+
+        return await Stopwatches.withStopwatchAsync(() => Canvases.crop(tabImage, rect),
+                                                    stopwatch => console.log("crop: " + stopwatch));
+
+    }
+
+    private static async captureTabImage() {
+        return await Stopwatches.withStopwatchAsync(() => webextensions.Tabs.captureVisibleTab(),
+                                                    stopwatch => console.log("captureVisibleTab: " + stopwatch));
+    }
+
     private static isHandled(message: any) {
         return message && message.type && message.type === 'browser-screenshot';
     }
@@ -63,7 +84,7 @@ export class BrowserScreenshotHandler {
 }
 
 interface ScreenshotRequest {
-    readonly rect: IXYRect;
+    readonly rect: ILTRect;
 }
 
 
