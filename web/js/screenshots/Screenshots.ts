@@ -4,7 +4,7 @@ import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from '../util/rects/ILTRect';
 import {Buffers} from '../util/Buffers';
 import {Canvases} from '../util/Canvases';
-import {ExtractedImage} from './CapturedScreenshot';
+import {ExtractedImage} from './Screenshot';
 import {Logger} from '../logger/Logger';
 
 const log = Logger.create();
@@ -12,7 +12,7 @@ const log = Logger.create();
 /**
  * Captures screenshots of a document in the most elegant way possible.
  */
-export class CapturedScreenshots {
+export class Screenshots {
 
     /**
      * Capture a screenshot using the right strategy (via PDF canvas or

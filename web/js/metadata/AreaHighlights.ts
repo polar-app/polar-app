@@ -18,8 +18,8 @@ import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects} from './BaseHighlight';
 import {Position} from "./BaseHighlight";
 import {DatastoreFileCache} from '../datastore/HybridRemoteDatastore';
-import {ExtractedImage} from '../screenshots/CapturedScreenshot';
-import {CapturedScreenshots} from '../screenshots/CapturedScreenshots';
+import {ExtractedImage} from '../screenshots/Screenshot';
+import {Screenshots} from '../screenshots/Screenshots';
 import {Dimensions} from '../util/Dimensions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from '../util/rects/ILTRect';
@@ -71,7 +71,7 @@ export class AreaHighlights {
         // TODO: this is a problem because the area highlight isn't created
         // until we mutate it in the JSON..
         const extractedImage
-            = await CapturedScreenshots.capture(pageNum, boxRect, target);
+            = await Screenshots.capture(pageNum, boxRect, target);
 
         const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 

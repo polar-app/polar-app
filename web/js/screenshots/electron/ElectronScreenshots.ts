@@ -1,8 +1,8 @@
 import {IXYRect} from '../../util/rects/IXYRect';
 import {IXYRects} from '../../util/rects/IXYRects';
-import {CapturedScreenshot, CaptureOpts} from '../CapturedScreenshot';
-import {ScreenshotRequest} from '../CapturedScreenshot';
-import {DefaultCaptureOpts} from '../CapturedScreenshot';
+import {Screenshot, CaptureOpts} from '../Screenshot';
+import {ScreenshotRequest} from '../Screenshot';
+import {DefaultCaptureOpts} from '../Screenshot';
 import {ClientRects} from '../../util/rects/ClientRects';
 import {Logger} from '../../logger/Logger';
 import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
@@ -39,7 +39,7 @@ export class ElectronScreenshots {
      *
      */
     public static async capture(target: CaptureTarget,
-                                opts: CaptureOpts = new DefaultCaptureOpts()): Promise<CapturedScreenshot> {
+                                opts: CaptureOpts = new DefaultCaptureOpts()): Promise<Screenshot> {
 
         if ( ! this.supported()) {
             throw new Error("Captured screenshots not supported");

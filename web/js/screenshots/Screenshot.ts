@@ -1,6 +1,20 @@
 import {IDimensions} from '../util/Dimensions';
 import {IXYRect} from '../util/rects/IXYRect';
 
+export interface Screenshot {
+
+    /**
+     * When this is a string it's a data URL and when it's a buffer it's raw
+     * image binary data.
+     */
+    readonly data: string | Buffer;
+
+    readonly dimensions: IDimensions;
+
+    readonly type: CaptureImageType;
+
+}
+
 export interface CaptureOpts {
     readonly resize?: ResizeDimensions;
     readonly crop?: CropDimensions;
@@ -23,19 +37,6 @@ export interface ScreenshotRequest {
 
 }
 
-export interface CapturedScreenshot {
-
-    /**
-     * When this is a string it's a data URL and when it's a buffer it's raw
-     * image binary data.
-     */
-    readonly data: string | Buffer;
-
-    readonly dimensions: IDimensions;
-
-    readonly type: CaptureImageType;
-
-}
 
 /**
  * Keeps the binary data but also metadata for the extract.

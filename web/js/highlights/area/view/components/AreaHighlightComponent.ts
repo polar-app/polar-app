@@ -18,7 +18,7 @@ import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
-import {CapturedScreenshots} from '../../../../screenshots/CapturedScreenshots';
+import {Screenshots} from '../../../../screenshots/Screenshots';
 import {Arrays} from '../../../../util/Arrays';
 import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 
@@ -126,7 +126,7 @@ export class AreaHighlightComponent extends Component {
                 // TODO: this is a problem because the area highlight isn't created
                 // until we mutate it in the JSON..
                 const extractedImage
-                    = await CapturedScreenshots.capture(pageNum, boxRect, target);
+                    = await Screenshots.capture(pageNum, boxRect, target);
 
                 const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 

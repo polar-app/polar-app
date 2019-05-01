@@ -3,7 +3,7 @@
  */
 import {ArrayBuffers} from './ArrayBuffers';
 import {ILTRect} from './rects/ILTRect';
-import {ImageType, ExtractedImage} from '../screenshots/CapturedScreenshot';
+import {ImageType, ExtractedImage} from '../screenshots/Screenshot';
 import {Preconditions} from '../Preconditions';
 
 const IMAGE_TYPE = 'image/png';

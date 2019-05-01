@@ -1,4 +1,4 @@
-import {CapturedScreenshot} from '../../../screenshots/CapturedScreenshot';
+import {Screenshot} from '../../../screenshots/Screenshot';
 import {Optional} from '../../../util/ts/Optional';
 
 /**
@@ -53,6 +53,6 @@ export interface SelectionScreenshot {
      */
     readonly clientRect: ClientRect;
 
-    readonly capturedScreenshotPromise: Promise<Optional<CapturedScreenshot>>;
+    readonly capturedScreenshotPromise: Promise<Optional<Screenshot>>;
 
 }
