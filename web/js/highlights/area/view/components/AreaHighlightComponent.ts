@@ -49,8 +49,6 @@ export class AreaHighlightComponent extends Component {
         this.annotationEvent = annotationEvent;
         this.areaHighlight = annotationEvent.value;
 
-        // FIXME: need to create the FIRST screenshot when this is created.
-
         this.boxController = new BoxController(boxMoveEvent => this.onBoxMoved(boxMoveEvent));
 
 
@@ -58,8 +56,6 @@ export class AreaHighlightComponent extends Component {
 
 
     }
-
-    // FIXME: this MUST be called after the first render();
 
     private async captureFirstScreenshot() {
 
@@ -70,7 +66,7 @@ export class AreaHighlightComponent extends Component {
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect!);
         const pageNum = pageMeta.pageInfo.num;
 
-        const {pageDimensions} = this.computePageDimensions(pageNum);
+        const {pageDimensions} = AreaHighlights.computePageDimensions(pageNum);
 
         const boxRect = areaHighlightRect.toDimensions(pageDimensions);
 
@@ -100,8 +96,6 @@ export class AreaHighlightComponent extends Component {
 
         // TODO: actually I think this belongs in the controller... not the view
 
-        //  FIXME: I think I can bet boxRect target just by querySelector
-
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                                         boxMoveEvent.restrictionRect);
 
@@ -117,11 +111,9 @@ export class AreaHighlightComponent extends Component {
 
             const {boxRect, target} = boxMoveEvent;
 
-            console.log("FIXME boxRect: ", JSON.stringify(boxRect, null, "  "));
-
             const doWrite = async () => {
 
-                const {pageDimensions} = this.computePageDimensions(pageNum);
+                const {pageDimensions} = AreaHighlights.computePageDimensions(pageNum);
 
                 // TODO: this is a problem because the area highlight isn't created
                 // until we mutate it in the JSON..
@@ -189,7 +181,7 @@ export class AreaHighlightComponent extends Component {
         // other container PDF.js breaks.
         const containerElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
-        const {pageDimensions, dimensionsElement} = this.computePageDimensions(pageNum);
+        const {pageDimensions, dimensionsElement} = AreaHighlights.computePageDimensions(pageNum);
 
         forDict(areaHighlight.rects, (key, rect) => {
 
@@ -260,30 +252,10 @@ export class AreaHighlightComponent extends Component {
 
         if (! this.areaHighlight!.image) {
 
-            // FIXME: this now works but the image is blurry...
-
             this.captureFirstScreenshot()
                 .catch(err => log.error("Unable to write to datastore: ", err));
 
         }
-
-
-    }
-
-    // FIXME: remove this
-    private computePageDimensions(pageNum: number): PageDimensions {
-
-        const pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
-
-        const dimensionsElement
-            = <HTMLElement> pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
-
-        const pageDimensions = new Dimensions({
-            width: dimensionsElement.clientWidth,
-            height: dimensionsElement.clientHeight
-        });
-
-        return {pageDimensions, dimensionsElement};
 
     }
 
@@ -310,10 +282,4 @@ export class AreaHighlightComponent extends Component {
 
     }
 
-}
-
-// FIXME: remove this
-interface PageDimensions {
-    readonly pageDimensions: Dimensions;
-    readonly dimensionsElement: HTMLElement;
 }

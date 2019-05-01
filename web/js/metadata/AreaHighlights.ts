@@ -101,7 +101,7 @@ export class AreaHighlights {
         return writtenAreaHighlight;
     }
 
-    private static computePageDimensions(pageNum: number): PageDimensions {
+    public static computePageDimensions(pageNum: number): PageDimensions {
 
         const docFormat = DocFormatFactory.getInstance();
 

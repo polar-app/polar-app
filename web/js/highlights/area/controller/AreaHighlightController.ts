@@ -71,8 +71,6 @@ export class AreaHighlightController {
 
     private onCreateAreaHighlight(contextMenuLocation: ContextMenuLocation) {
 
-        // FIXME: needs to use AreaHighlights.write here...
-
         log.info("Creating area highlight: ", contextMenuLocation);
 
         const annotationRect = AnnotationRects.createFromEvent(contextMenuLocation);
@@ -88,48 +86,7 @@ export class AreaHighlightController {
 
         pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
 
-
-        // FIXME vars we have here:
-        // pageNum
-        // areaHighlightRect (areaHighlight.rect)
-        // areaHighlight
-
-
     }
-
-    // private async captureFirstScreenshot(areaHighlight: AreaHighlight,
-    //                                      pageNum: number) {
-    //
-    //     const docMeta = this.model.docMeta;
-    //     const pageMeta = docMeta.getPageMeta(pageNum);
-    //
-    //     const rect = Arrays.first(Object.values(areaHighlight.rects));
-    //     const areaHighlightRect = AreaHighlightRects.createFromRect(rect!);
-    //
-    //     const {pageDimensions} = this.computePageDimensions(pageNum);
-    //
-    //     const boxRect = areaHighlightRect.toDimensions(pageDimensions);
-    //
-    //     // FIXME: do I really need the target because if I don't this would make
-    //     //  things a lot easier!!!
-    //     const target = <HTMLElement> document.getElementById(this.createID());
-    //
-    //     const opts: DoWriteOpts = {
-    //         datastore: this.persistenceLayerProvider(),
-    //         docMeta,
-    //         pageMeta,
-    //         pageNum,
-    //         areaHighlight,
-    //         target,
-    //         areaHighlightRect,
-    //         boxRect,
-    //     };
-    //
-    //     await this.asyncSerializer.execute(async () => {
-    //         this.areaHighlight = await AreaHighlights.doWrite(opts);
-    //     });
-    //
-    // }
 
     private onDeleteAreaHighlight(triggerEvent: TriggerEvent) {
 
