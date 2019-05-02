@@ -224,15 +224,13 @@
 
 					<!-- TODO: we should consider using the electron webview element for this -->
 
-					<!--FIXME: for some reason the script itself can't see the root window.-->
-
-					<iframe src="./blank.html"
+					<iframe src="about:blank"
 							style="width: 750px; "
 							frameborder="0"
 							scrolling="no"
 							id="content"
 							referrerpolicy="no-referrer"
-							></iframe>
+							sandbox="allow-scripts allow-pointer-lock allow-same-origin"></iframe>
 
 					<!-- TODO: this is a bit of a hack because the pagemarks system
                          listens to the page being redrawn to redraw the pagemarks and
