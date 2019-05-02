@@ -8,6 +8,7 @@ import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {Firebase} from '../../firebase/Firebase';
 import {SharingDatastores} from '../SharingDatastores';
 import {TracedDatastore} from '../TracedDatastore';
+import {DataFileCacheDatastore} from '../DataFileCacheDatastore';
 
 const log = Logger.create();
 
@@ -21,7 +22,12 @@ export class WebPersistenceLayerFactory {
                 return SharingDatastores.create();
             } else {
                 Firebase.init();
-                return new TracedDatastore(new FirebaseDatastore(), 'traced-firebase');
+
+                const firebaseDatastore = new FirebaseDatastore();
+                const dataFileCacheDatastore = new DataFileCacheDatastore(firebaseDatastore);
+                const tracedDatastore = new TracedDatastore(dataFileCacheDatastore, 'traced-firebase');
+                return tracedDatastore;
+
             }
 
         };

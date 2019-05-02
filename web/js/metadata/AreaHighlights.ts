@@ -17,7 +17,7 @@ import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects} from './BaseHighlight';
 import {Position} from "./BaseHighlight";
-import {DatastoreFileCache} from '../datastore/HybridRemoteDatastore';
+import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
 import {ExtractedImage} from '../screenshots/Screenshot';
 import {Screenshots} from '../screenshots/Screenshots';
 import {Dimensions} from '../util/Dimensions';

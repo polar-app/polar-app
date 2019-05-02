@@ -1,18 +1,18 @@
 import {Datastore, DatastoreID, ErrorListener, InitResult} from './Datastore';
+import {FileRef} from './Datastore';
+import {BinaryFileData} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {isBinaryFileData} from './Datastore';
+import {GetFileOpts} from './Datastore';
 import {DocMetaRef} from './DocMetaRef';
 import {DiskDatastore} from './DiskDatastore';
 import {RemoteDatastore} from './RemoteDatastore';
 import {Backend} from './Backend';
-import {FileRef} from './Datastore';
-import {BinaryFileData} from './Datastore';
-import {WriteFileOpts} from './Datastore';
 import {DocFileMeta} from './DocFileMeta';
-import {isBinaryFileData} from './Datastore';
 import {Blobs} from '../util/Blobs';
 import {Optional} from '../util/ts/Optional';
-import {GetFileOpts} from './Datastore';
 import {Logger} from '../logger/Logger';
-import {DocFileURLMeta} from './DocFileMeta';
+import {DatastoreFileCache} from './DatastoreFileCache';
 
 const log = Logger.create();
 
@@ -39,6 +39,7 @@ export class HybridRemoteDatastore extends RemoteDatastore {
         return {};
     }
 
+    // FIXME: move to using : DataFileCacheDatastore
     public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
 
         const hit = DatastoreFileCache.getFile(backend, ref);
@@ -90,36 +91,3 @@ export class HybridRemoteDatastore extends RemoteDatastore {
 
 }
 
-/**
- * A simple cache so that we can immediately make the blob ref available locally
- * even though it has NOT been written to the datastore yet to avoid latency
- * when the data is already local. We might want to think about using the
- * browser caches API in the future instead of forcing this into memory but
- * honestly this should be impossible for a user to cause the browser to run
- * out of memory just with their annotations.
- */
-export class DatastoreFileCache {
-
-    private static readonly backing: {[key: string]: DocFileMeta} = {};
-
-    public static writeFile(backend: Backend, ref: FileRef, meta: DocFileURLMeta) {
-        const key = this.toKey(backend, ref);
-        this.backing[key] = {...meta, backend, ref};
-    }
-
-    public static getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Optional<DocFileMeta> {
-        const key = this.toKey(backend, ref);
-        const entry = this.backing[key];
-        return Optional.of(entry);
-    }
-
-    public static evictFile(backend: Backend, ref: FileRef) {
-        const key = this.toKey(backend, ref);
-        delete this.backing[key];
-    }
-
-    private static toKey(backend: Backend, ref: FileRef) {
-        return `${backend}:${ref.name}`;
-    }
-
-}
