@@ -1,14 +1,15 @@
-/**
- * Functions for working with canvas objects, extracting screenshots, etc.
- */
 import {ArrayBuffers} from './ArrayBuffers';
 import {ILTRect} from './rects/ILTRect';
 import {ImageType, ExtractedImage} from '../screenshots/Screenshot';
 import {Preconditions} from '../Preconditions';
+import {DataURL} from './DataURLs';
 
 const IMAGE_TYPE = 'image/png';
 const IMAGE_QUALITY = 1.0;
 
+/**
+ * Functions for working with canvas objects, extracting screenshots, etc.
+ */
 export class Canvases {
 
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/pdf-loader.js
@@ -166,8 +167,6 @@ export class Canvases {
     }
 
 }
-
-export type DataURL = string;
 
 interface CropOpts extends ImageOpts {
     canvas?: HTMLCanvasElement;

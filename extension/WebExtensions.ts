@@ -1,4 +1,10 @@
-import {DataURL} from './BrowserScreenshotHandler';
+import {DataURL} from '../web/js/util/DataURLs';
+
+
+const EXTENSION_IDS = [
+    "nplbojledjdlbankapinifindadkdpnj", // dev
+    "jkfdkjomocoaljglgddnmhcbolldcafd"  // prod
+];
 
 export namespace webextensions {
 
@@ -9,6 +15,30 @@ export namespace webextensions {
             return new Promise<any>(resolve => {
                 chrome.runtime.sendMessage(extensionID, message, result => resolve(result));
             });
+
+        }
+
+    }
+
+    /**
+     * Reliably sends a message to OUR extension.
+     */
+    export class Messaging {
+
+        public static async sendMessage(message: any): Promise<any> {
+
+            for (const extension of EXTENSION_IDS) {
+
+                const result = await Runtime.sendMessage(extension, message);
+
+                if (result != null) {
+                    // will be null if nothing saw the call
+                    return result;
+                }
+
+            }
+
+            return null;
 
         }
 

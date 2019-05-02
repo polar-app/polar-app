@@ -23,6 +23,7 @@ import {Screenshots} from '../screenshots/Screenshots';
 import {Dimensions} from '../util/Dimensions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from '../util/rects/ILTRect';
+import {DataURLs} from '../util/DataURLs';
 
 const log = Logger.create();
 
@@ -227,7 +228,17 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
             src: fileRef,
         });
 
-        const blob = ArrayBuffers.toBlob(extractedImage.data);
+        const toBlob = () => {
+
+            if (typeof extractedImage.data === 'string') {
+                return DataURLs.toBlob(extractedImage.data);
+            } else {
+                return ArrayBuffers.toBlob(extractedImage.data);
+            }
+
+        };
+
+        const blob = toBlob();
 
         const blobURL = URL.createObjectURL(blob);
 

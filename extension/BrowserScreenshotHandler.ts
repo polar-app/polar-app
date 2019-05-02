@@ -4,6 +4,7 @@ import {webextensions} from './WebExtensions';
 import {Canvases} from '../web/js/util/Canvases';
 import {ILTRect} from '../web/js/util/rects/ILTRect';
 import {Stopwatches} from '../web/js/util/Stopwatches';
+import {DataURL} from '../web/js/util/DataURLs';
 
 /**
  * Allows us to take screenshots of the current browser within a chrome
@@ -31,7 +32,11 @@ export class BrowserScreenshotHandler {
                         // it takes about 200ms to TAKE a screenshot but only
                         // about 20ms to send it.
 
-                        sendResponse(Results.of(dataURL));
+                        const result: BrowserScreenshot = {
+                            dataURL, type: 'image/png'
+                        };
+
+                        sendResponse(Results.of(result));
 
                     };
 
@@ -83,9 +88,11 @@ export class BrowserScreenshotHandler {
 
 }
 
+export interface BrowserScreenshot {
+    readonly dataURL: string;
+    readonly type: 'image/png';
+}
+
 interface ScreenshotRequest {
     readonly rect: ILTRect;
 }
-
-
-export type DataURL = string;

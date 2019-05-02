@@ -15,4 +15,21 @@ export class Base64 {
 
     }
 
+    public static btoa(data: string): string {
+        if (typeof btoa !== 'undefined') {
+            return btoa(data);
+        } else {
+            const buff = new Buffer(data);
+            return buff.toString('base64');
+        }
+    }
+
+    public static atob(data: string): string {
+        if (typeof atob !== 'undefined') {
+            return atob(data);
+        } else {
+            return Buffer.from(data, 'base64').toString();
+        }
+    }
+
 }

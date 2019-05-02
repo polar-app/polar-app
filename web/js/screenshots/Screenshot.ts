@@ -1,5 +1,6 @@
 import {IDimensions} from '../util/Dimensions';
 import {IXYRect} from '../util/rects/IXYRect';
+import {DataURL} from '../util/DataURLs';
 
 export interface Screenshot {
 
@@ -42,7 +43,7 @@ export interface ScreenshotRequest {
  * Keeps the binary data but also metadata for the extract.
  */
 export interface ExtractedImage {
-    readonly data: ArrayBuffer;
+    readonly data: ArrayBuffer | DataURL;
     readonly type: ImageType;
     readonly width: number;
     readonly height: number;

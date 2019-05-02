@@ -1,40 +1,25 @@
-import {Toaster} from '../web/js/ui/toaster/Toaster';
+import {webextensions} from './WebExtensions';
+import {Result} from '../web/js/util/Result';
+import {BrowserScreenshot} from './BrowserScreenshotHandler';
 
 export class BrowserScreenshots {
 
-    public static capture() {
+    public static async capture(): Promise<BrowserScreenshot | undefined> {
 
-        // if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
-        //
-        //     for (const extensionID of extensionIDs) {
-        //
-        //         const responseCallback = (message: any) => {
-        //
-        //             if (message) {
-        //
-        //                 if (message.success !== undefined) {
-        //
-        //                     if (message.success) {
-        //                         Toaster.success("Successfully imported into Polar Desktop");
-        //                     } else {
-        //                         Toaster.error("Failed to import into Polar Desktop: " + message.message);
-        //                     }
-        //
-        //                 }
-        //
-        //             } else {
-        //                 // we don't always get a callback and it will be null
-        //                 // when nothing saw the message if the extension isn't
-        //                 // present.
-        //             }
-        //
-        //         };
-        //
-        //         chrome.runtime.sendMessage(extensionID, message, responseCallback);
-        //
-        //     }
-        //
-        // }
+        if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
+
+            const result: Result<BrowserScreenshot>
+                = await webextensions.Messaging.sendMessage({});
+
+            if (result.hasValue()) {
+                return result.get();
+            } else {
+                throw result.err;
+            }
+
+        } else {
+            throw new Error("No exception support");
+        }
 
     }
 

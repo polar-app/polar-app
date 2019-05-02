@@ -6,6 +6,8 @@ import {Buffers} from '../util/Buffers';
 import {Canvases} from '../util/Canvases';
 import {ExtractedImage} from './Screenshot';
 import {Logger} from '../logger/Logger';
+import {AppRuntime} from '../AppRuntime';
+import {BrowserScreenshots} from '../../../extension/BrowserScreenshots';
 
 const log = Logger.create();
 
@@ -34,7 +36,28 @@ export class Screenshots {
                 return this.captureViaCanvas(pageNum, boxRect);
 
             case 'html':
-                return this.captureViaElectron(boxRect, element);
+
+                if (AppRuntime.isBrowser()) {
+
+                    // we have to capture via our extension
+                    const browserScreenshot = await BrowserScreenshots.capture();
+
+                    if (browserScreenshot) {
+
+                        return {
+                            data: browserScreenshot.dataURL,
+                            type: browserScreenshot.type,
+                            width: boxRect.width,
+                            height: boxRect.height
+                        };
+
+                    } else {
+                        throw new Error("Unable to take screenshot via browser");
+                    }
+
+                } else {
+                    return this.captureViaElectron(boxRect, element);
+                }
 
         }
 
