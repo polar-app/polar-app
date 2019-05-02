@@ -257,6 +257,10 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
                 lastUpdated: ISODateTimeStrings.create()
             });
 
+            // it's important that we delete first so that the ABSENT event is
+            // fired
+            delete pageMeta.areaHighlights[areaHighlight.id];
+
             pageMeta.areaHighlights[newAreaHighlight.id] = newAreaHighlight!;
 
             return newAreaHighlight;

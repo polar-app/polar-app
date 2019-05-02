@@ -5,7 +5,7 @@ import {Logger} from '../logger/Logger';
 import {Logging} from '../logger/Logging';
 import {WebView} from '../view/WebView';
 import {PagemarkView} from '../pagemarks/view/PagemarkView';
-import {TextHighlightView2} from '../highlights/text/view/TextHighlightView2';
+import {TextHighlightView} from '../highlights/text/view/TextHighlightView';
 import {AnnotationSidebarService} from '../annotation_sidebar/AnnotationSidebarService';
 import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
@@ -69,7 +69,7 @@ export class Launcher {
         });
 
         new WebView(model, prefsProvider).start();
-        new TextHighlightView2(model).start();
+        new TextHighlightView(model).start();
         new AreaHighlightView(model).start();
         new AnnotationSidebarService(model).start();
 

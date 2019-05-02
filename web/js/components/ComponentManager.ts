@@ -16,7 +16,6 @@ const log = Logger.create();
 
 export class ComponentManager {
 
-    private readonly model: Model;
     private containerProvider: ContainerProvider;
     private docFormat: DocFormat;
     private readonly createComponent: () => Component;
@@ -27,12 +26,11 @@ export class ComponentManager {
     /**
      *
      */
-    constructor(model: Model,
+    constructor(private readonly type: string,
+                private readonly model: Model,
                 containerProvider: ContainerProvider,
                 createComponent: () => Component,
                 createDocMetaModel: () => DocMetaModel) {
-
-        this.model = model;
 
         this.containerProvider = containerProvider;
 

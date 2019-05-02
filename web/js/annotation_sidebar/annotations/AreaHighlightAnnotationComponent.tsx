@@ -30,7 +30,10 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
         const key = 'area-highlight' + annotation.id;
 
+
         if (img) {
+            const width = Math.floor(img.width);
+            const height = Math.floor(img.height);
 
             return (
 
@@ -59,8 +62,8 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                                  width: '100%',
                                  height: 'auto',
                                  objectFit: 'contain',
-                                 maxWidth: img.width,
-                                 maxHeight: img.height,
+                                 maxWidth: width,
+                                 maxHeight: height,
 
                                  // border around the image
 
@@ -69,8 +72,8 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
                              }}
                              className=""
-                             width={img.width}
-                             height={img.height}
+                             width={width}
+                             height={height}
                              alt="screenshot"
                              src={img.src}/>
 

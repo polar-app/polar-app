@@ -126,9 +126,11 @@ export class AnnotationRect {
      */
     public toDimensions(dimensions: Dimensions) {
 
-        Preconditions.assertNotNull(dimensions, "dimensions");
+        Preconditions.assertPresent(dimensions, "dimensions");
 
         const fractionalRect = this.toFractionalRect();
+
+        // TODO: this will give us fractional pixels which I think is wrong.
 
         return Rects.createFromBasicRect({
             left: fractionalRect.left * dimensions.width,
@@ -138,5 +140,23 @@ export class AnnotationRect {
         });
 
     }
+
+    public toDimensionsFloor(dimensions: Dimensions) {
+
+        Preconditions.assertPresent(dimensions, "dimensions");
+
+        const fractionalRect = this.toFractionalRect();
+
+        // TODO: this will give us fractional pixels which I think is wrong.
+
+        return Rects.createFromBasicRect({
+            left: Math.floor(fractionalRect.left * dimensions.width),
+            width: Math.floor(fractionalRect.width * dimensions.width),
+            top: Math.floor(fractionalRect.top * dimensions.height),
+            height: Math.floor(fractionalRect.height * dimensions.height),
+        });
+
+    }
+
 
 }

@@ -51,10 +51,6 @@ export class AreaHighlightComponent extends Component {
 
         this.boxController = new BoxController(boxMoveEvent => this.onBoxMoved(boxMoveEvent));
 
-
-
-
-
     }
 
     private async captureFirstScreenshot() {
@@ -68,7 +64,7 @@ export class AreaHighlightComponent extends Component {
 
         const {pageDimensions} = AreaHighlights.computePageDimensions(pageNum);
 
-        const boxRect = areaHighlightRect.toDimensions(pageDimensions);
+        const boxRect = areaHighlightRect.toDimensionsFloor(pageDimensions);
 
         const target = <HTMLElement> document.getElementById(this.createID());
 
@@ -129,12 +125,14 @@ export class AreaHighlightComponent extends Component {
                     height: overlayRect.height,
                 };
 
+                const rect = areaHighlightRect;
+
                 const writeOpts: AreaHighlightWriteOpts = {
                     datastore: this.persistenceLayerProvider(),
                     docMeta,
                     pageMeta,
                     areaHighlight,
-                    rect: areaHighlightRect,
+                    rect,
                     position,
                     extractedImage
                 };

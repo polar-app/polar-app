@@ -74,9 +74,6 @@ class App<P> extends React.Component<{}, IAppState> {
 
             console.log({cropped});
 
-            const croppedDataURL = await Canvases.toDataURL(cropped.data);
-
-            console.log({croppedDataURL});
 
         };
 

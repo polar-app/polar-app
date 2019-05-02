@@ -4,7 +4,7 @@ import {DefaultContainerProvider} from '../../../components/containers/providers
 import {TextHighlightModel} from '../model/TextHighlightModel';
 import {TextHighlightComponent} from './components/TextHighlightComponent';
 
-export class TextHighlightView2 {
+export class TextHighlightView {
 
     private readonly componentManager: ComponentManager;
 
@@ -14,7 +14,8 @@ export class TextHighlightView2 {
      */
     constructor(model: Model) {
 
-        this.componentManager = new ComponentManager(model,
+        this.componentManager = new ComponentManager("area-highlight",
+                                                     model,
                                                      new DefaultContainerProvider(),
                                                      () => new TextHighlightComponent(),
                                                      () => new TextHighlightModel());
