@@ -152,10 +152,6 @@ export class DirectPHZLoader {
 
         DOM.appendChildNodes(doc.documentElement!, iframe.contentDocument!.documentElement!);
 
-        // FIXME says forbidden on sandboxed iframes. FIXME: it's failing to
-        // set the origin properly.
-        // iframe.contentDocument!.domain = document.domain;
-
         await this.loadIFrames(iframes);
 
     }

@@ -8,18 +8,6 @@ import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';
 
 const log = Logger.create();
-//
-// window.addEventListener("mouseup", event => {
-//     // FIXME if I just click diretly it works.
-//
-//     console.log("FIXME: Got mouse up: ", event);
-// });
-//
-// window.addEventListener("mousemove", event => {
-//     // FIXME if I just click diretly it works.
-//
-//     console.log("FIXME: Got mousemove: ", event);
-// });
 
 /**
  * Listens for when a new text selection has been created
@@ -172,9 +160,6 @@ export class ActiveSelections {
     }
 
     private static targetElementForEvent(event: MouseEvent): HTMLElement | undefined {
-
-        console.log("FIXME:  finding target elemnet from: ", event.target);
-        console.log("FIXME:  finding target with event: ", event);
 
         if (event.target instanceof Node) {
 

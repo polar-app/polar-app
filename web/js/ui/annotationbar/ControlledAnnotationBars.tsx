@@ -31,8 +31,6 @@ export class ControlledAnnotationBars {
 
         ActiveSelections.addEventListener(activeSelectionEvent => {
 
-            console.log("FIXME: " , activeSelectionEvent.element);
-
             const pageElement = Elements.untilRoot(activeSelectionEvent.element, ".page");
 
             if (! pageElement) {
