@@ -24,23 +24,39 @@ export class BrowserScreenshotHandler {
 
                     const handleResponse = async () => {
 
+                        const type = 'image/png';
+
                         const tabImage: DataURL = await this.captureTabImage();
 
                         console.debug("FIXME: Received raw tab image: ", tabImage);
 
-                        const dataURL
-                            = await this.crop(tabImage, request.rect);
+                        if (! request.rect) {
 
-                        console.debug("FIXME: Cropped image: ", dataURL);
+                            const result: BrowserScreenshot = {
+                                dataURL: tabImage,
+                                type
+                            };
 
-                        // it takes about 200ms to TAKE a screenshot but only
-                        // about 20ms to send it.
+                            sendResponse(Results.of(result));
 
-                        const result: BrowserScreenshot = {
-                            dataURL, type: 'image/png'
-                        };
+                        } else {
 
-                        sendResponse(Results.of(result));
+                            const croppedImage
+                                = await this.crop(tabImage, request.rect);
+
+                            console.debug("FIXME: Cropped image: ", croppedImage);
+
+                            // it takes about 200ms to TAKE a screenshot but only
+                            // about 20ms to send it.
+
+                            const result: BrowserScreenshot = {
+                                dataURL: croppedImage,
+                                type
+                            };
+
+                            sendResponse(Results.of(result));
+
+                        }
 
                     };
 
@@ -98,5 +114,5 @@ export interface BrowserScreenshot {
 }
 
 interface ScreenshotRequest {
-    readonly rect: ILTRect;
+    readonly rect?: ILTRect;
 }
