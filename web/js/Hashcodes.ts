@@ -15,7 +15,7 @@ export class Hashcodes {
     public static create(data: any): string {
         Preconditions.assertPresent(data, "data");
 
-        data = data === 'string' ? data : JSON.stringify(data);
+        data = typeof data === 'string' ? data : JSON.stringify(data);
 
         return base58check.encode(keccak256(data));
     }
