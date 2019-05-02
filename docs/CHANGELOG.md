@@ -1,6 +1,11 @@
 
+# 1.19
+
+- Fixed bug with mouse up when using iframes.
+
 
 # 1.18.1
+
 
 - new component to ScrollIntoView so that when we're dealing with scrollable 
   and long form content we can make sure the content and scrolled and viewable. 
@@ -12,13 +17,13 @@
   doesn't matter as we're just triggering load and it's up to the user if they
   want to capture.
 
-- extension should now properly only activate when used on app.getpolarized.io 
+- Extension should now properly only activate when used on app.getpolarized.io 
   only for CORS access to PDFs.
 
-- polar chrome extension now part of main polar repo for better support and 
+- Polar chrome extension now part of main polar repo for better support and 
   faster iteration.
 
-- upgraded to latest firebase versions
+- Upgraded to latest firebase versions
 
 - cleanup orphan javascript
 
