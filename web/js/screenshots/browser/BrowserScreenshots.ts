@@ -1,9 +1,10 @@
-import {webextensions} from './WebExtensions';
-import {Result} from '../web/js/util/Result';
-import {BrowserScreenshot} from './BrowserScreenshotHandler';
-import {ILTRect} from '../web/js/util/rects/ILTRect';
-import {Results} from '../web/js/util/Results';
-import {Canvases} from '../web/js/util/Canvases';
+import {webextensions} from '../../../../extension/WebExtensions';
+import {Result} from '../../util/Result';
+import {BrowserScreenshot} from '../../../../extension/BrowserScreenshotHandler';
+import {ILTRect} from '../../util/rects/ILTRect';
+import {Results} from '../../util/Results';
+import {Canvases} from '../../util/Canvases';
+import {AnnotationToggler} from '../AnnotationToggler';
 
 export class BrowserScreenshots {
 
@@ -44,7 +45,11 @@ export class BrowserScreenshots {
 
             const captureWithLocalCrop = async () => {
 
+                const annotationToggler = new AnnotationToggler();
+
                 try {
+
+                    await annotationToggler.hide();
 
                     console.log("FIXME: doing local crop");
 
@@ -78,9 +83,12 @@ export class BrowserScreenshots {
                         type: uncropped.type,
                         dataURL: croppedImage
                     };
+
                 } catch (e) {
                     console.error("FIXME caught an error: ", e);
                     throw e;
+                } finally {
+                    annotationToggler.show();
                 }
 
             };

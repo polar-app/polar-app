@@ -7,7 +7,7 @@ import {Canvases} from '../util/Canvases';
 import {ExtractedImage} from './Screenshot';
 import {Logger} from '../logger/Logger';
 import {AppRuntime} from '../AppRuntime';
-import {BrowserScreenshots} from '../../../extension/BrowserScreenshots';
+import {BrowserScreenshots} from './browser/BrowserScreenshots';
 
 const log = Logger.create();
 

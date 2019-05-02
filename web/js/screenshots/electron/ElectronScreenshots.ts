@@ -68,16 +68,7 @@ export class ElectronScreenshots {
 
         const annotationToggler = new AnnotationToggler();
 
-        // FIXME : share this code with the browser system so that we can hide
-        // annotations there too..
-
-        // TODO: this should be the PROPER way to do this but on my machine
-        // this still doesn't work.
-        await Promises.requestAnimationFrame(() => annotationToggler.hide());
-
-        // wait for at least 1/60th of a second which is the duration that most
-        // machines target.  This is probably too long in practice though.
-        await Promises.waitFor(MIN_PAINT_INTERVAL);
+        await annotationToggler.hide();
 
         const capturedScreenshot
             = await this.getRemoteDelegate().capture(id, screenshotRequest);

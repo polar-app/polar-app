@@ -1,5 +1,8 @@
 import {AnnotationStyle} from './electron/ElectronScreenshots';
 import {StyleRestore} from './electron/ElectronScreenshots';
+import {Promises} from '../util/Promises';
+
+const MIN_PAINT_INTERVAL = 1000 / 60;
 
 export class AnnotationToggler {
 
@@ -11,7 +14,19 @@ export class AnnotationToggler {
         return Array.from(document.querySelectorAll(this.SELECTOR));
     }
 
-    public hide() {
+    public async hide() {
+
+        // TODO: this should be the PROPER way to do this but on my machine
+        // this still doesn't work.
+        await Promises.requestAnimationFrame(() => this.hideAnnotations());
+
+        // wait for at least 1/60th of a second which is the duration that most
+        // machines target.  This is probably too long in practice though.
+        await Promises.waitFor(MIN_PAINT_INTERVAL);
+
+    }
+
+    private hideAnnotations() {
 
         for (const annotationElement of this.getAnnotationElements()) {
 
