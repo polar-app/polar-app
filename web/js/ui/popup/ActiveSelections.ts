@@ -114,8 +114,6 @@ export class ActiveSelections {
 
         };
 
-
-
         target.addEventListener('mousedown', (event: MouseEvent) => {
 
             if (!activeSelection) {
@@ -124,29 +122,7 @@ export class ActiveSelections {
 
             const element = this.targetElementForEvent(event);
 
-            const rootWindow = () => {
-
-                // FIXME: this won't work because the iframe and root document
-                // have different origins...
-
-                let win = window;
-
-                win = window.parent;
-
-                // while (win.parent !== window) {
-                //     console.log("FIXME: going up a leve");
-                //     win = win.parent;
-                // }
-                //
-                return win;
-
-            };
-
-            const win = rootWindow();
-
-            console.log("FIXME: win.location: " + win.location.href);
-
-            win.addEventListener('mouseup', event => {
+            window.addEventListener('mouseup', event => {
                 // this code properly handles the mouse leaving the window
                 // during mouse up and then leaving wonky event handlers.
                 onMouseUp(event, element);
