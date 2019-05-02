@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../util/Nav';
-import Progress from 'reactstrap/lib/Progress';
 import {CrowdfundingProgress} from './CrowdfundingProgress';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
