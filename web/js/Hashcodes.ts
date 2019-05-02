@@ -12,7 +12,7 @@ const base58check = require("base58check");
  */
 export class Hashcodes {
 
-    public static create(data: string | object): string {
+    public static create(data: any): string {
         Preconditions.assertPresent(data, "data");
 
         data = data === 'string' ? data : JSON.stringify(data);
