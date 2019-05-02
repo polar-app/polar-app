@@ -91,7 +91,7 @@ describe('DocAnnotationIndexes', function() {
 
         const expected: any = [
             {
-                "oid": 2,
+                "oid": 5,
                 "id": "0003",
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
@@ -134,7 +134,7 @@ describe('DocAnnotationIndexes', function() {
                 }
             },
             {
-                "oid": 1,
+                "oid": 4,
                 "id": "0002",
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 2,
@@ -177,7 +177,7 @@ describe('DocAnnotationIndexes', function() {
                 }
             },
             {
-                "oid": 0,
+                "oid": 3,
                 "id": "0001",
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 3,
