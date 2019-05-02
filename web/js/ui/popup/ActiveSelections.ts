@@ -8,6 +8,18 @@ import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';
 
 const log = Logger.create();
+//
+// window.addEventListener("mouseup", event => {
+//     // FIXME if I just click diretly it works.
+//
+//     console.log("FIXME: Got mouse up: ", event);
+// });
+//
+// window.addEventListener("mousemove", event => {
+//     // FIXME if I just click diretly it works.
+//
+//     console.log("FIXME: Got mousemove: ", event);
+// });
 
 /**
  * Listens for when a new text selection has been created
@@ -43,15 +55,7 @@ export class ActiveSelections {
 
         };
 
-        target.addEventListener('mousedown', (event: MouseEvent) => {
-
-            if (!activeSelection) {
-                originPoint = this.eventToPoint(event);
-            }
-
-        });
-
-        target.addEventListener('mouseup', (event: MouseEvent) => {
+        const onMouseUp = (event: MouseEvent, element: HTMLElement | undefined) => {
 
             const handleMouseEvent = () => {
 
@@ -66,7 +70,6 @@ export class ActiveSelections {
                     hasActiveTextSelection = this.hasActiveTextSelection(selection);
 
                     const point = this.eventToPoint(event);
-                    const element = this.targetElementForEvent(event);
 
                     if (! element) {
                         log.warn("No target element: ", event.target);
@@ -108,6 +111,46 @@ export class ActiveSelections {
             };
 
             this.withTimeout(() => handleMouseEvent());
+
+        };
+
+
+
+        target.addEventListener('mousedown', (event: MouseEvent) => {
+
+            if (!activeSelection) {
+                originPoint = this.eventToPoint(event);
+            }
+
+            const element = this.targetElementForEvent(event);
+
+            const rootWindow = () => {
+
+                // FIXME: this won't work because the iframe and root document
+                // have different origins...
+
+                let win = window;
+
+                win = window.parent;
+
+                // while (win.parent !== window) {
+                //     console.log("FIXME: going up a leve");
+                //     win = win.parent;
+                // }
+                //
+                return win;
+
+            };
+
+            const win = rootWindow();
+
+            console.log("FIXME: win.location: " + win.location.href);
+
+            win.addEventListener('mouseup', event => {
+                // this code properly handles the mouse leaving the window
+                // during mouse up and then leaving wonky event handlers.
+                onMouseUp(event, element);
+            }, {once: true});
 
         });
 
@@ -153,6 +196,9 @@ export class ActiveSelections {
     }
 
     private static targetElementForEvent(event: MouseEvent): HTMLElement | undefined {
+
+        console.log("FIXME:  finding target elemnet from: ", event.target);
+        console.log("FIXME:  finding target with event: ", event);
 
         if (event.target instanceof Node) {
 

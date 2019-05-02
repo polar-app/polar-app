@@ -35,6 +35,28 @@ export class Mailchimp {
 
     public static async subscribeViaAPI(email: string, firstName: string, lastName: string) {
 
+        const apiKey = "437707a405a16fcc863e09cb2f6dcc6c-us10";
+
+        const mailingList = "ad3d53e837";
+
+        const url = `https://us10.api.mailchimp.com/2.0/lists/subscribe.json?apikey=${apiKey}&id=${mailingList}&email[email]=${email}&merge_vars[FNAME]=${firstName}&merge_vars[LNAME]=${lastName}&double_optin=false&send_welcome=false`;
+
+        console.log("FIXME: url: " + url);
+
+
+        const response = await fetch(url);
+
+        if (response.status !== 200) {
+            throw new Error("Failed request: " + response.status + ": " + response.statusText);
+        }
+
+        return response;
+
+    }
+
+
+    public static async subscribeViaAPI2(email: string, firstName: string, lastName: string) {
+
         const body = {
             "email_address": email,
             "status": "subscribed",
@@ -65,11 +87,14 @@ export class Mailchimp {
         const response = await fetch(url, init);
 
         if (response.status !== 200) {
+            console.log(await response.text());
             throw new Error("Failed request: " + response.status + ": " + response.statusText);
         }
 
         return response;
 
     }
+
+
 
 }

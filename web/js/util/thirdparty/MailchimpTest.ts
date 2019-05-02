@@ -1,15 +1,15 @@
 import {assert} from 'chai';
 import {Mailchimp} from './Mailchimp';
 
-xdescribe('Mailchimp', function() {
+describe('Mailchimp', function() {
 
-    // must be disabled for now as JSDOM uses 100% cpu during tests.
     it("basic", async function() {
 
-        const response = await Mailchimp.subscribe('johny+test6@gmail.com');
+        const response = await Mailchimp.subscribeViaAPI2('burtonator+test101@gmail.com', 'Kevin', 'Burton');
 
         console.log(response);
 
     });
+
 
 });
