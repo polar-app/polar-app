@@ -51,8 +51,6 @@ export class BrowserScreenshots {
 
                     await annotationToggler.hide();
 
-                    console.log("FIXME: doing local crop");
-
                     const request = {
                         type: 'browser-screenshot',
                     };
@@ -60,24 +58,16 @@ export class BrowserScreenshots {
                     const response: BrowserScreenshot
                         = await webextensions.Messaging.sendMessage(request);
 
-                    console.log("FIXME: got response: ", response);
-
                     if (!response) {
                         throw new Error("No response from web extension");
                     }
 
                     const result: Result<BrowserScreenshot> = Results.create(response);
 
-                    console.log("FIXME: got result: ", result);
-
                     const uncropped = result.get();
-
-                    console.log("FIXME: got uncropped: ", uncropped);
 
                     const croppedImage
                         = await Canvases.crop(uncropped.dataURL, rect);
-
-                    console.log("FIXME: FIXME cropped it to: ", croppedImage);
 
                     return {
                         type: uncropped.type,
@@ -85,7 +75,6 @@ export class BrowserScreenshots {
                     };
 
                 } catch (e) {
-                    console.error("FIXME caught an error: ", e);
                     throw e;
                 } finally {
                     annotationToggler.show();
