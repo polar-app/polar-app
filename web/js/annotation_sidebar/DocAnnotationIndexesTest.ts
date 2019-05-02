@@ -37,8 +37,8 @@ describe('DocAnnotationIndexes', function() {
                 "color": "yellow",
                 "created": "2012-03-02T11:38:49.321Z",
                 "flashcards": {},
-                "guid": "1xK2ayckvG",
-                "id": "1xK2ayckvG",
+                "guid": "12pNUv1Y9S",
+                "id": "12pNUv1Y9S",
                 "images": {},
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
                 "notes": {},
@@ -91,7 +91,7 @@ describe('DocAnnotationIndexes', function() {
 
         const expected: any = [
             {
-                "oid": 5,
+                "oid": 2,
                 "id": "0003",
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
@@ -103,8 +103,8 @@ describe('DocAnnotationIndexes', function() {
                 "pageMeta": null,
                 "children": [],
                 "original": {
-                    "id": "1xK2ayckvG",
-                    "guid": "1xK2ayckvG",
+                    "id": "12pNUv1Y9S",
+                    "guid": "12pNUv1Y9S",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "rects": {
@@ -134,7 +134,7 @@ describe('DocAnnotationIndexes', function() {
                 }
             },
             {
-                "oid": 4,
+                "oid": 1,
                 "id": "0002",
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 2,
@@ -146,8 +146,8 @@ describe('DocAnnotationIndexes', function() {
                 "pageMeta": null,
                 "children": [],
                 "original": {
-                    "id": "1xK2ayckvG",
-                    "guid": "1xK2ayckvG",
+                    "id": "12pNUv1Y9S",
+                    "guid": "12pNUv1Y9S",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "rects": {
@@ -177,7 +177,7 @@ describe('DocAnnotationIndexes', function() {
                 }
             },
             {
-                "oid": 3,
+                "oid": 0,
                 "id": "0001",
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 3,
@@ -189,8 +189,8 @@ describe('DocAnnotationIndexes', function() {
                 "pageMeta": null,
                 "children": [],
                 "original": {
-                    "id": "1xK2ayckvG",
-                    "guid": "1xK2ayckvG",
+                    "id": "12pNUv1Y9S",
+                    "guid": "12pNUv1Y9S",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "rects": {
