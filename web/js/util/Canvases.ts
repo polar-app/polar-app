@@ -105,7 +105,6 @@ export class Canvases {
                 img.onerror = (err) => reject(err);
                 img.onabort = (err) => reject(err);
 
-
                 return img;
 
             });
@@ -122,7 +121,6 @@ export class Canvases {
         const ctx = canvas.getContext('2d', {alpha: false})!;
 
         ctx.imageSmoothingEnabled = false;
-
 
         ctx.drawImage(src,
                       rect.left, rect.top, rect.width, rect.height,

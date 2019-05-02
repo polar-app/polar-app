@@ -82,7 +82,7 @@ SpectronRenderer.run(async (state) => {
         };
 
         const onSnapshotError = (err: Error) => {
-            console.error("Could not handle snapshot: ", err);
+            console.error("onSnapshotError: Could not handle snapshot: ", err);
         };
 
         const handleSnapshotsForCollection = (collection: string) => {

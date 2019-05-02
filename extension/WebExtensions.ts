@@ -2,7 +2,7 @@ import {DataURL} from '../web/js/util/DataURLs';
 
 
 const EXTENSION_IDS = [
-    "nplbojledjdlbankapinifindadkdpnj", // dev
+    "alennbmnfgmkcmfkcnlhpofncmalokfc", // dev
     "jkfdkjomocoaljglgddnmhcbolldcafd"  // prod
 ];
 
@@ -37,6 +37,8 @@ export namespace webextensions {
                 }
 
             }
+
+            console.warn("No results from any web extensions with IDs: ", EXTENSION_IDS);
 
             return null;
 

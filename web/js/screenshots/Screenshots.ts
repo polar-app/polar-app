@@ -40,7 +40,7 @@ export class Screenshots {
                 if (AppRuntime.isBrowser()) {
 
                     // we have to capture via our extension
-                    const browserScreenshot = await BrowserScreenshots.capture();
+                    const browserScreenshot = await BrowserScreenshots.capture(boxRect);
 
                     if (browserScreenshot) {
 
