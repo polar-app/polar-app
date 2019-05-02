@@ -148,7 +148,7 @@ export class AreaHighlightComponent extends Component {
             };
 
             this.asyncSerializer.execute(async () => await doWrite())
-                .catch(err => log.error("Unable to write to datastore: ", err));
+                .catch(err => log.error("Unable to update screenshot: ", err));
 
         } else {
             // noop
@@ -251,7 +251,8 @@ export class AreaHighlightComponent extends Component {
         if (! this.areaHighlight!.image) {
 
             this.captureFirstScreenshot()
-                .catch(err => log.error("Unable to write to datastore: ", err));
+                // .catch(err => log.error("Unable to capture first screenshot: ", err));
+                .catch(err => console.error("FIXME: Unable to capture first screenshot: ", err));
 
         }
 

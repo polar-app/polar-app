@@ -1,8 +1,7 @@
 
-# 1.19
+# 1.19.0
 
 - Fixed bug with mouse up when using iframes.
-
 
 # 1.18.1
 

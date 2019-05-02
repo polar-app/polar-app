@@ -84,8 +84,8 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    // devtool: "source-map",
-    // devtool: "inline-source-map",
+    // only inline-source-map works.
+    devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname, 'web/dist'),
         filename: '[name]-bundle.js',

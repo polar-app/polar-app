@@ -17,7 +17,9 @@ export class DataURLs {
 
     public static decode(dataURL: DataURL): DecodedDataURL {
 
-        try { // data:[<media type>][;base64],<data>
+        try {
+
+            // data:[<media type>][;base64],<data>
 
             // example:
             //
@@ -27,7 +29,7 @@ export class DataURLs {
             // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code
             // that does this
 
-            const dataPortion = dataURL.substring(dataURL.indexOf(","));
+            const dataPortion = this.parseDataPortion(dataURL);
 
             const byteString = Base64.atob(dataPortion);
 
@@ -52,6 +54,10 @@ export class DataURLs {
             throw e;
         }
 
+    }
+
+    public static parseDataPortion(dataURL: DataURL) {
+        return dataURL.substring(dataURL.indexOf(",") + 1);
     }
 
     public static toBlob(data: DataURL): Blob {

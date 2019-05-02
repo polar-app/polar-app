@@ -89,6 +89,8 @@ export class Canvases {
                              rect: ILTRect,
                              opts: CropOpts = new DefaultImageOpts()): Promise<DataURL> {
 
+        console.log("FIXME crop0");
+
         const createSRC = () => {
 
             if (image instanceof HTMLImageElement) {
@@ -111,24 +113,36 @@ export class Canvases {
 
         };
 
+        console.log("FIXME crop1");
+
         const src = await createSRC();
 
+        console.log("FIXME crop2");
+
         const canvas = opts.canvas || document.createElement("canvas");
+
+        console.log("FIXME crop3");
 
         canvas.width  = rect.width;
         canvas.height = rect.height;
 
+        console.log("FIXME crop4");
+
         const ctx = canvas.getContext('2d', {alpha: false})!;
 
+        console.log("FIXME crop5");
+
         ctx.imageSmoothingEnabled = false;
+
+        console.log("FIXME crop6");
 
         ctx.drawImage(src,
                       rect.left, rect.top, rect.width, rect.height,
                       0, 0, rect.width, rect.height);
 
-        const result = canvas.toDataURL();
+        console.log("FIXME crop7");
 
-        return result;
+        return canvas.toDataURL();
 
     }
 

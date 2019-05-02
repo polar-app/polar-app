@@ -37,10 +37,13 @@ export class Screenshots {
 
             case 'html':
 
+                // FIXME: move this to a dedicated function and toggle the
+                // annotations before and after...
+
                 if (AppRuntime.isBrowser()) {
 
                     // we have to capture via our extension
-                    const browserScreenshot = await BrowserScreenshots.capture(boxRect);
+                    const browserScreenshot = await BrowserScreenshots.capture(boxRect, element);
 
                     if (browserScreenshot) {
 

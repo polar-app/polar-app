@@ -9,6 +9,7 @@ import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './Screensh
 import {remote} from 'electron';
 import {AppRuntime} from '../../AppRuntime';
 import {Promises} from '../../util/Promises';
+import {AnnotationToggler} from '../AnnotationToggler';
 
 const log = Logger.create();
 
@@ -66,6 +67,9 @@ export class ElectronScreenshots {
         // world.
 
         const annotationToggler = new AnnotationToggler();
+
+        // FIXME : share this code with the browser system so that we can hide
+        // annotations there too..
 
         // TODO: this should be the PROPER way to do this but on my machine
         // this still doesn't work.
@@ -153,44 +157,5 @@ export interface StyleRestore {
 export interface AnnotationStyle {
     readonly element: HTMLElement;
     readonly styleRestore: StyleRestore;
-}
-
-export class AnnotationToggler {
-
-    private SELECTOR = ".page .pagemark, .page .text-highlight, .page .area-highlight";
-
-    private annotationStyles: AnnotationStyle[] = [];
-
-    private getAnnotationElements(): ReadonlyArray<HTMLElement> {
-        return Array.from(document.querySelectorAll(this.SELECTOR));
-    }
-
-    public hide() {
-
-        for (const annotationElement of this.getAnnotationElements()) {
-
-            const styleRestore: StyleRestore = {
-                visibility: annotationElement.style.visibility
-            };
-
-            annotationElement.style.visibility = 'hidden';
-
-            this.annotationStyles.push({element: annotationElement, styleRestore});
-
-        }
-
-    }
-
-    public show() {
-
-        for (const annotationStyle of this.annotationStyles) {
-
-            annotationStyle.element.style.visibility =
-                annotationStyle.styleRestore.visibility;
-
-        }
-
-    }
-
 }
 

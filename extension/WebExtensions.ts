@@ -31,7 +31,7 @@ export namespace webextensions {
 
                 const result = await Runtime.sendMessage(extension, message);
 
-                if (result != null) {
+                if (result) {
                     // will be null if nothing saw the call
                     return result;
                 }
