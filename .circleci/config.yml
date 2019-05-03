@@ -52,7 +52,9 @@ jobs:
 
     - run:
         name: spectron repository-app
-        command: npx mocha web/spectron/repository-app/spec.js
+        command: |
+          export SPECTRON_OFFSCREEN=true
+          npx mocha web/spectron/repository-app/spec.js
 
     - run:
         name: npm test

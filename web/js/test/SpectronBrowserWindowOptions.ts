@@ -4,6 +4,9 @@ import process from 'process';
 
 const SPECTRON_SHOW = 'SPECTRON_SHOW';
 
+const offscreen = process.env.SPECTRON_OFFSCREEN === 'true';
+const show = !offscreen;
+
 export class SpectronBrowserWindowOptions {
 
     public static create(): BrowserWindowConstructorOptions {
@@ -16,7 +19,6 @@ export class SpectronBrowserWindowOptions {
 
         // NOT showing by default because on windows, and other platforms, the
         // procs are often stuck so I need to figure that part out.
-        const show = true;
 
         return {
 
@@ -34,7 +36,8 @@ export class SpectronBrowserWindowOptions {
                 webSecurity: false,
                 nodeIntegration: true,
                 partition: "persist:spectron",
-                webviewTag: true
+                webviewTag: true,
+                offscreen
             }
 
         };
