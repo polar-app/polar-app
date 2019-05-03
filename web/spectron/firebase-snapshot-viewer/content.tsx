@@ -118,7 +118,7 @@ SpectronRenderer.run(async (state) => {
 
         await monitorSnapshots();
 
-    });
+    }).catch(err => console.error(err));
 
 });
 

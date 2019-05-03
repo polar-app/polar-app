@@ -432,7 +432,8 @@ SpectronRenderer.run(async (state) => {
 
         DatastoreTester.test(createDatastore, false);
 
-    });
+    })
+        .catch(err => console.error(err));
 
 });
 
