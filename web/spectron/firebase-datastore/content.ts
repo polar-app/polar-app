@@ -191,6 +191,6 @@ SpectronRenderer.run(async (state) => {
 
         DatastoreTester.test(async () => firebaseDatastore, false);
 
-    });
+    }).catch(err => console.error(err));
 
 });

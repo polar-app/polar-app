@@ -103,6 +103,6 @@ SpectronRenderer.run(async (state) => {
 
         // await initialMergeWithFirebase();
 
-    });
+    }).catch(err => console.error(err));
 
 });

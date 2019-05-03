@@ -303,6 +303,6 @@ SpectronRenderer.run(async (state) => {
         });
 
 
-    });
+    }).catch(err => console.error(err));
 
 });
