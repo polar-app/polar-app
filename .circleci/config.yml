@@ -33,7 +33,14 @@ jobs:
         - node_modules
         key: v1-dependencies-{{ checksum "package.json" }}
 
-    # run tests!
-    - run: "echo DISPLAY: $DISPLAY"
-    - run: npx tsc && npm test && npm run-script e2e
+    - run:
+        name: Running X virtual framebuffer
+        command: Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
+        background: true
+
+    - run: |
+      export DISPLAY:99 &&
+      npx tsc &&
+      npm test &&
+      npm run-script e2e
 
