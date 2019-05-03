@@ -15,12 +15,10 @@ import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PageMeta, PageNumber} from './PageMeta';
 import {Numbers} from "../util/Numbers";
 import {Reducers} from '../util/Reducers';
-import {ProgressByMode, ReadingProgress} from './ReadingProgress';
 import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
-import {Percentage} from '../util/ProgressTracker';
 
 const log = Logger.create();
 
@@ -56,6 +54,8 @@ export class Pagemarks {
             throw new Error("Page number must be 1 or more");
         }
 
+        percentage = Math.floor(percentage);
+
         const created = ISODateTimeStrings.create();
         const batch = Hashcodes.createID({created, id: this.sequences.batch++});
 
@@ -83,6 +83,8 @@ export class Pagemarks {
         };
 
         const createPagemarkRect = (pageNum: PageNumber, percentage: number = 100): PagemarkRect | undefined => {
+
+            percentage = Math.floor(percentage);
 
             // find the pagemark that is the furthest down the page.
 
@@ -225,7 +227,7 @@ export class Pagemarks {
 
             // the rest are from options.
             type: options.type,
-            percentage: keyOptions.percentage,
+            percentage: Math.floor(keyOptions.percentage),
             column: options.column,
             rect: keyOptions.rect,
             batch,
