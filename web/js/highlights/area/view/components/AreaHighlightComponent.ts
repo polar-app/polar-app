@@ -251,8 +251,7 @@ export class AreaHighlightComponent extends Component {
         if (! this.areaHighlight!.image) {
 
             this.captureFirstScreenshot()
-                // .catch(err => log.error("Unable to capture first screenshot: ", err));
-                .catch(err => console.error("FIXME: Unable to capture first screenshot: ", err));
+                .catch(err => log.error("Unable to capture first screenshot: ", err));
 
         }
 
