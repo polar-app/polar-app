@@ -8,6 +8,7 @@ import {Tag} from '../../../web/js/tags/Tag';
 import {Hashcode} from '../../../web/js/metadata/Hashcode';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {HighlightColor} from '../../../web/js/metadata/BaseHighlight';
+import {Img} from '../../../web/js/metadata/Img';
 
 // FIXME: a lot of duplication here between DocAnnotations DocAnnotation
 
@@ -37,6 +38,9 @@ export interface RepoAnnotation {
      * The original DocInfo used to construct this RepoDocInfo.
      */
     docInfo: IDocInfo;
+
+    img?: Img;
+
 
 }
 

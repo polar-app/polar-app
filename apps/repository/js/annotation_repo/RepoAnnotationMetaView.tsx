@@ -12,6 +12,8 @@ import Button from 'reactstrap/lib/Button';
 import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
+import {Img} from '../../../../web/js/metadata/Img';
+import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 
 const log = Logger.create();
 
@@ -49,6 +51,15 @@ const Styles: IStyleMap = {
         display: 'inline'
     }
 
+};
+
+interface AnnotationImageProps {
+    readonly id: string;
+    readonly img?: Img;
+}
+
+const AnnotationImage = (props: AnnotationImageProps) => {
+    return <ResponsiveImg id={props.id} img={props.img}/>;
 };
 
 export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
@@ -160,6 +171,8 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
                     <div style={Styles.annotationText}>
                         {repoAnnotation.text}
                     </div>
+
+                    <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
 
                 </div>
 

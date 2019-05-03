@@ -1,14 +1,11 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
-import {URLStr} from '../../util/Strings';
-import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
 import {Logger} from '../../logger/Logger';
-import {LazyComponent} from '../../react/LazyComponent';
 import {LazyProps} from '../../react/LazyComponents';
-import {LazyState} from '../../react/LazyComponents';
+import {ResponsiveImg} from '../ResponsiveImg';
 
 const log = Logger.create();
 
@@ -44,41 +41,7 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                 <div key={key}
                      className='p-1'>
 
-                    <div className="area-highlight m-1"
-                         data-annotation-id={annotation.id}
-                         data-annotation-color={annotation.color}
-                         style={{
-                            display: 'block',
-                            textAlign: 'center',
-                            position: 'relative'
-
-                         }}>
-
-                        <img style={{
-
-                                 // core CSS properties for the image so that it
-                                 // is responsive.
-
-                                 width: '100%',
-                                 height: 'auto',
-                                 objectFit: 'contain',
-                                 maxWidth: width,
-                                 maxHeight: height,
-
-                                 // border around the image
-
-                                 boxSizing: 'content-box',
-                                 border: `1px solid #c6c6c6`,
-
-                             }}
-                             className=""
-                             width={width}
-                             height={height}
-                             alt="screenshot"
-                             src={img.src}/>
-
-                    </div>
-
+                    <ResponsiveImg id={annotation.id} img={annotation.img} color={annotation.color}/>
 
                     <AnnotationControlBar doc={this.props.doc}
                                           annotation={annotation}/>

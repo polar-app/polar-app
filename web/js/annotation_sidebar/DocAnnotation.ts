@@ -11,6 +11,7 @@ import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {URLStr} from '../util/Strings';
 import {ObjectID} from '../util/ObjectIDs';
+import {Img} from '../metadata/Img';
 
 export interface DocAnnotation extends ObjectID {
 
@@ -51,12 +52,3 @@ export type DocAnnotationMap = {[id: string]: DocAnnotation};
  * Annotations according to their position in the document.
  */
 export type SortedDocAnnotations = DocAnnotation[];
-
-/**
- * Image src with width, height, and URL.
- */
-export interface Img {
-    readonly width: number;
-    readonly height: number;
-    readonly src: URLStr;
-}

@@ -361,13 +361,15 @@ export class RepositoryApp {
      */
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
 
+        const persistenceLayerProvider = () => this.persistenceLayerManager.get();
+
         const handleUpdatedDocInfo = async () => {
 
             log.info("Received DocInfo update");
 
             const docMeta = await this.persistenceLayerManager.get().getDocMeta(docInfo.fingerprint);
 
-            const repoDocMeta = RepoDocMetas.convert(docInfo.fingerprint, docMeta);
+            const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, docInfo.fingerprint, docMeta);
 
             const validity = RepoDocMetas.isValid(repoDocMeta);
 

@@ -1,5 +1,8 @@
 import {Hashcodes} from '../Hashcodes';
 import {ImageType} from './Image';
+import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
+import {Img} from './Img';
+import {Image} from './Image';
 
 export class Images {
 
@@ -23,6 +26,25 @@ export class Images {
                 return "svg";
 
         }
+
+    }
+
+    public static toImg(persistenceLayerProvider: PersistenceLayerProvider, image?: Image): Img | undefined {
+
+        if (! image) {
+            return undefined;
+        }
+
+        const persistenceLayer = persistenceLayerProvider();
+        const docFileMeta = persistenceLayer.getFile(image.src.backend, image.src);
+
+        const img: Img = {
+            width: image.width!,
+            height: image.height!,
+            src: docFileMeta.url
+        };
+
+        return img;
 
     }
 

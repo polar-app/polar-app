@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {Mailchimp} from './Mailchimp';
 
 xdescribe('Mailchimp', function() {
@@ -10,6 +9,5 @@ xdescribe('Mailchimp', function() {
         console.log(response);
 
     });
-
 
 });

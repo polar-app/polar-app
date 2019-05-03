@@ -11,6 +11,7 @@ import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
 import {IndeterminateProgressBar} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
+import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 
 const log = Logger.create();
 
@@ -84,7 +85,9 @@ export class RepoDocMetaLoader {
                         const docMeta = await docMetaMutation.docMetaProvider();
                         const docInfo = docMeta.docInfo;
 
-                        const repoDocMeta = this.toRepoDocMeta(docInfo.fingerprint, docMeta);
+                        const persistenceLayerProvider = () => this.persistenceLayerManager.get();
+
+                        const repoDocMeta = this.toRepoDocMeta(persistenceLayerProvider, docInfo.fingerprint, docMeta);
 
                         if (repoDocMeta && RepoDocInfos.isValid(repoDocMeta.repoDocInfo)) {
 
@@ -138,11 +141,13 @@ export class RepoDocMetaLoader {
     }
 
 
-    private toRepoDocMeta(fingerprint: string, docMeta?: DocMeta): RepoDocMeta | undefined {
+    private toRepoDocMeta(persistenceLayerProvider: PersistenceLayerProvider,
+                          fingerprint: string,
+                          docMeta?: DocMeta): RepoDocMeta | undefined {
 
         if (docMeta) {
 
-            return RepoDocMetas.convert(fingerprint, docMeta);
+            return RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
 
         } else {
             log.warn("No DocMeta for fingerprint: " + fingerprint);
