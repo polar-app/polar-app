@@ -51,6 +51,8 @@ export class Spectron {
 
         beforeEach(async function() {
 
+            this.timeout(TIMEOUT);
+
             log.info("Starting spectron with dir: " + dir);
 
             this.app = new Application({
@@ -91,8 +93,11 @@ export class Spectron {
                 spectronOutputMonitorService._doLogForwarding();
             }
 
+            // TODO: there's a bug here where if mocha times out it won't allow
+            // us to startup then we can't actually stop and we leave behind
+            // windows that are invalid.
+
             if (this.app && this.app.isRunning()) {
-                log.info("Telling app to stop");
                 return this.app.stop();
             } else {
                 log.info("App already stopped.");
@@ -123,6 +128,8 @@ export interface RunCallback {
 export interface TApplication {
 
     client: TBrowser;
+
+    stop(): void;
 
 }
 
