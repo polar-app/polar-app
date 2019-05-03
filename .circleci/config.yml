@@ -38,9 +38,17 @@ jobs:
         command: Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
         background: true
 
-    - run: |
-      export DISPLAY:99 &&
-      npx tsc &&
-      npm test &&
-      npm run-script e2e
+    - run:
+        name: Compile Typescript
+        command: npx tsc
+
+    - run:
+        name: npm test
+        command: npm test
+
+    - run:
+        name: e2e
+        command: |
+          export DISPLAY:99
+          npm run-script e2e
 
