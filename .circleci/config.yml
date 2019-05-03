@@ -34,6 +34,6 @@ jobs:
         key: v1-dependencies-{{ checksum "package.json" }}
 
     # run tests!
-    - run: echo DISPLAY: $DISPLAY
+    - run: "echo DISPLAY: $DISPLAY"
     - run: npx tsc && npm test && npm run-script e2e
 
