@@ -52,6 +52,6 @@ SpectronRenderer.run(async (state) => {
 
         await purgeFirebase();
 
-    });
+    }).catch(err => console.error(err));
 
 });

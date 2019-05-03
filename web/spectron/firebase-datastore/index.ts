@@ -7,7 +7,6 @@ import {SpectronBrowserWindowOptions} from '../../js/test/SpectronBrowserWindowO
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {AppPath} from '../../js/electron/app_path/AppPath';
 
-
 async function defaultWindowFactory(): Promise<BrowserWindow> {
     const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
     // mainWindow.webContents.toggleDevTools();

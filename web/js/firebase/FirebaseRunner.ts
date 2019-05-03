@@ -30,12 +30,14 @@ export class FirebaseRunner {
 
         window.addEventListener('load', async () => {
 
-            Firebase.init();
+            const app = Firebase.init();
 
             if (firebase.auth().currentUser === null) {
 
                 // bring up the UI so that we can login.
                 FirebaseUIAuth.login();
+
+                // TODO: await app.auth().signInWithEmailAndPassword('foo', 'bar');
 
             }
 

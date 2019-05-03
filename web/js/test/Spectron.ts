@@ -9,7 +9,7 @@ const {Application} = require('spectron');
 
 const log = Logger.create();
 
-const TIMEOUT = 30000;
+const TIMEOUT = 120000;
 
 // String path to the Electron application executable to launch. Note: If you
 // want to invoke electron directly with your app's main script then you should
@@ -40,7 +40,7 @@ export class Spectron {
      */
     public static setup(dir: string, ...args: any[]) {
 
-        log.info("Configuring spectron...");
+        console.log("Configuring spectron...");
 
         // TODO: since spectron requires a window to operate, we should ALWAYS
         // create a window and then return it to the user so that they can
@@ -51,7 +51,10 @@ export class Spectron {
 
         beforeEach(async function() {
 
-            log.info("Starting spectron with dir: " + dir);
+            this.timeout(TIMEOUT);
+
+            console.log("Starting spectron with dir: " + dir );
+            console.log("ELECTRON_PATH ", ELECTRON_PATH);
 
             this.app = new Application({
 
@@ -71,9 +74,9 @@ export class Spectron {
 
             });
 
-            log.info("Starting app...");
+            console.log("Starting app...");
             const app = await this.app.start();
-            log.info("Starting app...done");
+            console.log("Starting app...done");
 
             spectronOutputMonitorService = new SpectronOutputMonitorService(app);
             spectronOutputMonitorService.start();
@@ -84,18 +87,21 @@ export class Spectron {
 
         afterEach(async function() {
 
-            log.info("Going to shutdown now... ");
+            console.log("Going to shutdown now... ");
 
             if (spectronOutputMonitorService) {
                 spectronOutputMonitorService.stop();
                 spectronOutputMonitorService._doLogForwarding();
             }
 
+            // TODO: there's a bug here where if mocha times out it won't allow
+            // us to startup then we can't actually stop and we leave behind
+            // windows that are invalid.
+
             if (this.app && this.app.isRunning()) {
-                log.info("Telling app to stop");
                 return this.app.stop();
             } else {
-                log.info("App already stopped.");
+                console.log("App already stopped.");
             }
 
         });
@@ -123,6 +129,8 @@ export interface RunCallback {
 export interface TApplication {
 
     client: TBrowser;
+
+    stop(): void;
 
 }
 
