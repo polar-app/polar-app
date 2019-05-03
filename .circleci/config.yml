@@ -51,6 +51,10 @@ jobs:
         command: npm test
 
     - run:
+        name: test if stderr is captured
+        command: echo hello world > /dev/stderr
+
+    - run:
         name: e2e
         command: |
           export DISPLAY=:99
