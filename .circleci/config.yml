@@ -38,6 +38,10 @@ jobs:
         key: v1-dependencies-{{ checksum "package.json" }}
 
     - run:
+        name: Install packages needed for Electron testing.
+        command: sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2
+
+    - run:
         name: XVFB installed?
         command: whereis Xvfb
 
@@ -69,5 +73,3 @@ jobs:
     #    command: |
     #      export DISPLAY=:99
     #      npm run-script e2e
-
-    # apt-get update libgtk-3-0 libnss3 libxss1 libasound2

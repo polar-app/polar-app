@@ -7,6 +7,8 @@ const SPECTRON_SHOW = 'SPECTRON_SHOW';
 const offscreen = process.env.SPECTRON_OFFSCREEN === 'true';
 const show = !offscreen;
 
+console.log("Running with spectron config: ", {offscreen, show});
+
 export class SpectronBrowserWindowOptions {
 
     public static create(): BrowserWindowConstructorOptions {
@@ -14,8 +16,6 @@ export class SpectronBrowserWindowOptions {
         // Determine whether we should show the window by default. Normally
         // showing the window is really annoying when developing locally but
         // for debug purposes it's nice to actually show them.
-
-        // const show: boolean = process.env[SPECTRON_SHOW] === 'true';
 
         // NOT showing by default because on windows, and other platforms, the
         // procs are often stuck so I need to figure that part out.
