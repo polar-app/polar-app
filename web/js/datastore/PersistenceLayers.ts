@@ -206,6 +206,9 @@ export class PersistenceLayers {
 
                 const doSourceContainsFile = async () => {
 
+                    // TODO make dedicated functions to track exceptions here for
+                    //  both target and source.
+
                     try {
                         return await source.datastore.containsFile(fileRef.backend, fileRef);
                     } catch (e) {
@@ -233,6 +236,9 @@ export class PersistenceLayers {
 
                     ++result.files.writes;
 
+                } else {
+                    // this should not be possible but log it anyway.
+                    log.warn("Both the target and source files are missing: ", fileRef);
                 }
 
             }
