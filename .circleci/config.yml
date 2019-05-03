@@ -7,7 +7,11 @@ jobs:
   build:
     docker:
     # specify the version you desire here
-    - image: circleci/node:10.10
+    #
+    # all images and tags here:
+    #   https://circleci.com/docs/2.0/docker-image-tags.json
+    #
+    - image: circleci/node:12.1-stretch
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
@@ -47,6 +51,10 @@ jobs:
         command: npx tsc
 
     - run:
+        name: spectron repository-app
+        command: npx mocha web/spectron/repository-app/spec.js
+
+    - run:
         name: npm test
         command: npm test
 
@@ -60,6 +68,4 @@ jobs:
     #      export DISPLAY=:99
     #      npm run-script e2e
 
-    - run:
-        name: spectron repository-app
-        command: npx mocha web/spectron/repository-app/spec.js
+    # apt-get update
