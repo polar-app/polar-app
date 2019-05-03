@@ -40,7 +40,7 @@ export class Spectron {
      */
     public static setup(dir: string, ...args: any[]) {
 
-        log.info("Configuring spectron...");
+        console.log("Configuring spectron...");
 
         // TODO: since spectron requires a window to operate, we should ALWAYS
         // create a window and then return it to the user so that they can
@@ -53,7 +53,8 @@ export class Spectron {
 
             this.timeout(TIMEOUT);
 
-            log.info("Starting spectron with dir: " + dir);
+            console.log("Starting spectron with dir: " + dir );
+            console.log("ELECTRON_PATH ", ELECTRON_PATH);
 
             this.app = new Application({
 
@@ -73,9 +74,9 @@ export class Spectron {
 
             });
 
-            log.info("Starting app...");
+            console.log("Starting app...");
             const app = await this.app.start();
-            log.info("Starting app...done");
+            console.log("Starting app...done");
 
             spectronOutputMonitorService = new SpectronOutputMonitorService(app);
             spectronOutputMonitorService.start();
@@ -86,7 +87,7 @@ export class Spectron {
 
         afterEach(async function() {
 
-            log.info("Going to shutdown now... ");
+            console.log("Going to shutdown now... ");
 
             if (spectronOutputMonitorService) {
                 spectronOutputMonitorService.stop();
@@ -100,7 +101,7 @@ export class Spectron {
             if (this.app && this.app.isRunning()) {
                 return this.app.stop();
             } else {
-                log.info("App already stopped.");
+                console.log("App already stopped.");
             }
 
         });
