@@ -200,9 +200,11 @@ export class PersistenceLayers {
 
             ++result.files.total;
 
-            if (! await target.datastore.containsFile(fileRef.backend, fileRef)) {
+            const targetContainsFile = await target.datastore.containsFile(fileRef.backend, fileRef);
 
-                const doContainsFile = async () => {
+            if (! targetContainsFile) {
+
+                const doSourceContainsFile = async () => {
 
                     try {
                         return await source.datastore.containsFile(fileRef.backend, fileRef);
@@ -213,9 +215,9 @@ export class PersistenceLayers {
 
                 };
 
-                const containsFile = await doContainsFile();
+                const sourceContainsFile = await doSourceContainsFile();
 
-                if (! containsFile) {
+                if (sourceContainsFile) {
 
                     const sourceFile = source.datastore.getFile(fileRef.backend, fileRef);
 
