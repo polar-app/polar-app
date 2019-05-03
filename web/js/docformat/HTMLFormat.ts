@@ -175,7 +175,7 @@ export class HTMLFormat extends DocFormat {
             // foreignObjectRendering: true
         };
 
-        await html2canvas(element, {
+        html2canvas(element, {
             canvas: HTMLFormat.canvas,
             width, height,
             ...opts

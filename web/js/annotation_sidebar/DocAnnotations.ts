@@ -109,7 +109,7 @@ export class DocAnnotations {
             }
 
             const persistenceLayer = persistenceLayerProvider();
-            const docFileMeta = await persistenceLayer.getFile(image.src.backend, image.src);
+            const docFileMeta = persistenceLayer.getFile(image.src.backend, image.src);
 
             const img: Img = {
                 width: image.width!,

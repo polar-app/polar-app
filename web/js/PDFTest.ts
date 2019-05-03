@@ -34,7 +34,7 @@ xdescribe('PDF', function() {
         // const doc = await pdfjs.getDocument(uint8!)
         const doc = await pdfjs.getDocument(fileURL);
 
-        const metadata = await doc.getMetadata()
+        const metadata = await doc.getMetadata();
 
         if(metadata.metadata && metadata.metadata.get('dc:title')) {
 

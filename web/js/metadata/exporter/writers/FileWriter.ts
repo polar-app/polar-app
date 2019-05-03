@@ -14,7 +14,7 @@ export class FileWriter implements Writer {
     }
 
     public async init(): Promise<void> {
-        this.stream = await Files.createWriteStream(this.path);
+        this.stream = Files.createWriteStream(this.path);
     }
 
     public async write(data: string): Promise<void> {

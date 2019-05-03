@@ -184,7 +184,7 @@ export class DatastoreTester {
 
                 assert.ok(await datastore.containsFile(Backend.IMAGE, fileRef));
 
-                const datastoreFile = await datastore.getFile(Backend.IMAGE, fileRef);
+                const datastoreFile = datastore.getFile(Backend.IMAGE, fileRef);
                 assert.ok(datastoreFile, "no result");
 
                 // noinspection TsLint

@@ -124,7 +124,7 @@ export class PHZReader implements CompressedReader {
 
     private async _readAsStream(path: string): Promise<NodeJS.ReadableStream> {
         const zipFile = await this.getZipFile(path);
-        return await zipFile.nodeStream();
+        return zipFile.nodeStream();
     }
 
     private async _readAsBlob(path: string): Promise<Blob> {
@@ -138,7 +138,7 @@ export class PHZReader implements CompressedReader {
             throw new Error("No zip.");
         }
 
-        const zipFile = await this.zip.file(path);
+        const zipFile = this.zip.file(path);
 
 
         if (!zipFile) {

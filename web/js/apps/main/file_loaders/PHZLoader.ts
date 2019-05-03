@@ -27,7 +27,7 @@ export class PHZLoader extends FileLoader {
         Preconditions.assertNotNull(this.fileRegistry);
 
         if (LOAD_STRATEGY === 'portable') {
-            return await this.doPortable(path);
+            return this.doPortable(path);
         } else {
             return await this.doElectron(path);
         }

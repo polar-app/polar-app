@@ -35,8 +35,7 @@ export class BrowserDocLoader implements IDocLoader {
 
                 const {backendFileRef} = loadDocRequest;
 
-                const datastoreFile
-                    = await persistenceLayer.getFile(backendFileRef.backend, backendFileRef);
+                const datastoreFile = persistenceLayer.getFile(backendFileRef.backend, backendFileRef);
 
                 const toViewerURL = () => {
 

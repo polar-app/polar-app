@@ -7,7 +7,7 @@ export class Services {
 
     public static async start(...services: StartableService[]) {
 
-        let promises: Promise<any>[] = [];
+        const promises: Promise<any>[] = [];
 
         services.forEach(service => {
             log.info("Starting service: " + service.constructor.name);

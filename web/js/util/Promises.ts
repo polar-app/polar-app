@@ -105,7 +105,7 @@ export class Promises {
      * @param func
      */
     public static executeLogged(func: () => Promise<any>) {
-        func().catch(err => log.error("Caught error: ", err))
+        func().catch(err => log.error("Caught error: ", err));
     }
 
     public static requestAnimationFrame(callback: () => void = NULL_FUNCTION) {

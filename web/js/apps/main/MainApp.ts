@@ -114,7 +114,7 @@ export class MainApp {
         // await cacheInterceptorService.start()
         //     .catch(err => log.error(err));
 
-        await captureController.start();
+        captureController.start();
 
         await dialogWindowService.start();
 
