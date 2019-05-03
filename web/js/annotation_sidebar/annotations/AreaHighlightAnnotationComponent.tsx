@@ -37,9 +37,9 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
             return (
 
-                // TODO/FIXME: we need the ability to scroll to the most recent
-                // annotation that is created but I need a functional way to
-                // do this because how do I determine when it loses focus?
+                // TODO: we need the ability to scroll to the most recent
+                // annotation that is created but I need a functional way to do
+                // this because how do I determine when it loses focus?
 
                 <div key={key}
                      className='p-1'>

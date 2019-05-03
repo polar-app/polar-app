@@ -28,7 +28,7 @@ export class BrowserScreenshotHandler {
 
                         const tabImage: DataURL = await this.captureTabImage();
 
-                        console.debug("FIXME: Received raw tab image: ", tabImage);
+                        // console.debug("Received raw tab image: ", tabImage);
 
                         if (! request.rect) {
 
@@ -44,7 +44,7 @@ export class BrowserScreenshotHandler {
                             const croppedImage
                                 = await this.crop(tabImage, request.rect);
 
-                            console.debug("FIXME: Cropped image: ", croppedImage);
+                            // console.debug("Cropped image: ", croppedImage);
 
                             // it takes about 200ms to TAKE a screenshot but only
                             // about 20ms to send it.

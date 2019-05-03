@@ -40,5 +40,10 @@ export class DataFileCacheDatastore extends DelegatedDatastore {
 
     }
 
+    public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        DatastoreFileCache.evictFile(backend, ref);
+        return super.deleteFile(backend, ref);
+    }
+
 }
 

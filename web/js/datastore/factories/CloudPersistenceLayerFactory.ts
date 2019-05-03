@@ -16,6 +16,7 @@ export class CloudPersistenceLayerFactory {
         log.info("Using remote persistence layer and cloud aware data store");
 
         const local = HybridRemoteDatastores.create();
+
         const cloud = new TracedDatastore(new FirebaseDatastore(), 'traced-firebase');
 
         const datastore = new CloudAwareDatastore(local, cloud);
