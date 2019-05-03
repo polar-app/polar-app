@@ -207,7 +207,7 @@ export class PersistenceLayers {
                 const doSourceContainsFile = async () => {
 
                     // TODO make dedicated functions to track exceptions here for
-                    //  both target and source.
+                    // both target and source.
 
                     try {
                         return await source.datastore.containsFile(fileRef.backend, fileRef);
