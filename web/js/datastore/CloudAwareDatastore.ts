@@ -134,7 +134,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): DocFileMeta {
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 

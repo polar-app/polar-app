@@ -264,7 +264,7 @@ interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
-    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>>;
+    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta;
 
 }
 
@@ -278,13 +278,6 @@ export interface GetFileOpts {
      * file operation and returning a more specific URL.
      */
     readonly networkLayer?: NetworkLayer;
-
-    /**
-     * When true, we avoid the existence check on teh file when appropriate and
-     * we're pretty certain that the file already exists.  This can be helpful
-     * in the UI when we just want to open a file and we have fresh metadata.
-     */
-    readonly noExistenceCheck?: boolean;
 
 }
 

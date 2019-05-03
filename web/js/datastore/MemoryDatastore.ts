@@ -107,17 +107,17 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef): DocFileMeta {
 
         const key = MemoryDatastore.toFileRefKey(backend, ref);
 
         if (!key) {
-            return Optional.empty();
+            throw new Error(`No file for ${backend} at ${ref.name}`);
         }
 
         const fileData = this.files[key];
 
-        return Optional.of({backend, ref, url: 'NOT_IMPLEMENTED:none', meta: fileData.meta});
+        return {backend, ref, url: 'NOT_IMPLEMENTED:none'};
 
     }
 

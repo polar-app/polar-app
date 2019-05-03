@@ -27,13 +27,13 @@ export class DataFileCacheDatastore extends DelegatedDatastore {
         super(delegate);
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
 
         const hit = DatastoreFileCache.getFile(backend, ref);
 
         if (hit.isPresent()) {
             log.debug("Found file in datastore cache: ", {backend, ref});
-            return hit;
+            return hit.get();
         }
 
         return super.getFile(backend, ref, opts);

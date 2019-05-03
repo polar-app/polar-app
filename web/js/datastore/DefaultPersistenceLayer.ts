@@ -212,7 +212,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
         return this.datastore.getFile(backend, ref, opts);
     }
 

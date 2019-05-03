@@ -46,29 +46,25 @@ export class SharingDatastores {
 
         if (fileRef) {
 
-            const docFileMeta = await persistenceLayer.getFile(Backend.STASH, fileRef, {networkLayer: 'web'});
+            const docFileMeta = persistenceLayer.getFile(Backend.STASH, fileRef, {networkLayer: 'web'});
 
-            if (docFileMeta.isPresent()) {
+            // Clean the URL when running in the desktop app.
+            const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
 
-                // Clean the URL when running in the desktop app.
-                const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
+            // we have to now replace the 'file' param with the proper URL.
 
-                // we have to now replace the 'file' param with the proper URL.
+            const file = docFileMeta.url;
 
-                const file = docFileMeta.get().url;
+            const parsedURL = new URL(rawURL);
+            parsedURL.searchParams.set('file', file);
+            parsedURL.searchParams.set('shared', "true");
 
-                const parsedURL = new URL(rawURL);
-                parsedURL.searchParams.set('file', file);
-                parsedURL.searchParams.set('shared', "true");
+            const userID = FirebaseDatastore.getUserID();
+            const doc = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint, userID);
 
-                const userID = FirebaseDatastore.getUserID();
-                const doc = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint, userID);
+            parsedURL.searchParams.set('doc', doc);
 
-                parsedURL.searchParams.set('doc', doc);
-
-                return parsedURL.toString();
-
-            }
+            return parsedURL.toString();
 
         }
 

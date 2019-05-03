@@ -157,7 +157,7 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         throw new Error("Not supported");
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
         throw new Error("Not implemented yet");
     }
 

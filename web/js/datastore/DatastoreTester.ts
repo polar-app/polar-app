@@ -16,10 +16,8 @@ import {Backend} from './Backend';
 import {Datastore} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
-import {func} from 'prop-types';
 import {Latch} from '../util/Latch';
 import {Datastores} from './Datastores';
-import {PersistenceLayers} from './PersistenceLayers';
 import {DiskDatastore} from './DiskDatastore';
 import {TestingTime} from '../test/TestingTime';
 
@@ -188,8 +186,6 @@ export class DatastoreTester {
 
                 const datastoreFile = await datastore.getFile(Backend.IMAGE, fileRef);
                 assert.ok(datastoreFile, "no result");
-                assert.ok(datastoreFile.isPresent(), "not present");
-                assert.ok(datastoreFile.get(), "no value");
 
                 // noinspection TsLint
                 // assert.equal(datastoreFile.get().meta['foo'], 'bar');

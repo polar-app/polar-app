@@ -95,6 +95,7 @@ export class DocAnnotations {
 
     }
 
+    // TODO: this no longer needs to be async.
     public static async createFromAreaHighlight(persistenceLayerProvider: PersistenceLayerProvider,
                                                 areaHighlight: AreaHighlight,
                                                 pageMeta: PageMeta): Promise<DocAnnotation> {
@@ -110,21 +111,13 @@ export class DocAnnotations {
             const persistenceLayer = persistenceLayerProvider();
             const docFileMeta = await persistenceLayer.getFile(image.src.backend, image.src);
 
-            if (docFileMeta.isPresent()) {
+            const img: Img = {
+                width: image.width!,
+                height: image.height!,
+                src: docFileMeta.url
+            };
 
-                const imageFileMeta = docFileMeta.get();
-
-                const img: Img = {
-                    width: image.width!,
-                    height: image.height!,
-                    src: imageFileMeta.url
-                };
-
-                return img;
-
-            }
-
-            return undefined;
+            return img;
 
         };
 

@@ -202,16 +202,22 @@ export class PersistenceLayers {
 
             if (! await target.datastore.containsFile(fileRef.backend, fileRef)) {
 
-                let sourceFile: Optional<DocFileMeta>;
+                const doContainsFile = async () => {
 
-                try {
-                    sourceFile = await source.datastore.getFile(fileRef.backend, fileRef);
-                } catch (e) {
-                    log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef, e);
-                    throw e;
-                }
+                    try {
+                        return await source.datastore.containsFile(fileRef.backend, fileRef);
+                    } catch (e) {
+                        log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef, e);
+                        throw e;
+                    }
 
-                if (sourceFile.isPresent()) {
+                };
+
+                const containsFile = await doContainsFile();
+
+                if (! containsFile) {
+
+                    const sourceFile = source.datastore.getFile(fileRef.backend, fileRef);
 
                     // TODO: make this a dedicated function to transfer between
                     // do datastores... or at least a dedicated function to read
@@ -219,15 +225,12 @@ export class PersistenceLayers {
                     // that I know that both firebase and the disk datastore
                     // can easily convert URLs to blobs and work with them.
 
-                    const file = sourceFile.get();
-                    const blob = await URLs.toBlob(file.url);
+                    const blob = await URLs.toBlob(sourceFile.url);
 
-                    await target.datastore.writeFile(file.backend, fileRef, blob);
+                    await target.datastore.writeFile(sourceFile.backend, fileRef, blob);
 
                     ++result.files.writes;
 
-                } else {
-                    // noop
                 }
 
             }

@@ -79,8 +79,8 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return tracer.traceAsync('getDocMetaRefs', () => this.delegate.getDocMetaRefs());
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
-        return tracer.traceAsync('getFile', () => this.delegate.getFile(backend, ref, opts));
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
+        return tracer.trace('getFile', () => this.delegate.getFile(backend, ref, opts));
     }
 
     public async init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<void> {

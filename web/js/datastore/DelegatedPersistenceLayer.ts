@@ -63,7 +63,7 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.getDocMetaRefs();
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
         return this.delegate.getFile(backend, ref, opts);
     }
 

@@ -68,7 +68,7 @@ export interface PersistenceLayer {
               data: BinaryFileData,
               opts?: WriteFileOpts): Promise<DocFileMeta>;
 
-    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>>;
+    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta;
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 

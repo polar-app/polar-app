@@ -245,7 +245,11 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         if (! isPresent(data)) {
 
             if (opts.updateMeta) {
-                return (await this.getFile(backend, ref)).get();
+
+                // this is a metadata update and is not valid for the disk data
+                // store so we have no work to do.
+                return this.getFile(backend, ref);
+
             } else {
                 // when the caller specifies null they mean that there's a
                 // metadata update which needs to be applied.
@@ -275,7 +279,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts: GetFileOpts = {}): DocFileMeta {
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
@@ -283,12 +287,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         const fileReference = this.createFileReference(backend, ref);
 
-        if (await Files.existsAsync(fileReference.path)) {
-            const datastoreFile = await this.createDatastoreFile(backend, ref, fileReference);
-            return Optional.of(datastoreFile);
-        } else {
-            return Optional.empty();
-        }
+        return this.createDatastoreFile(backend, ref, fileReference);
 
     }
 
@@ -511,9 +510,9 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    private async createDatastoreFile(backend: Backend,
-                                      ref: FileRef,
-                                      fileReference: DiskFileReference): Promise<DocFileMeta> {
+    private createDatastoreFile(backend: Backend,
+                                ref: FileRef,
+                                fileReference: DiskFileReference): DocFileMeta {
 
         const fileURL = FilePaths.toURL(fileReference.path);
         const url = new URL(fileURL);

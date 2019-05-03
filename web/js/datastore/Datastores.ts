@@ -1,6 +1,5 @@
 import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
 import {NetworkLayer} from './Datastore';
-import {BackendFileRef} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -13,13 +12,9 @@ import {ProgressTracker} from '../util/ProgressTracker';
 import {AsyncProviders} from '../util/Providers';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
-import {DocInfoLike} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
-import {Backend} from './Backend';
-import {Either} from '../util/Either';
-import {LeftEither} from '../util/Either';
 
 const log = Logger.create();
 

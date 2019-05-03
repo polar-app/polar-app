@@ -4,7 +4,7 @@ import {assertJSON} from '../test/Assertions';
 
 describe('TestHighlights', function() {
 
-    it("deleteTextHighlight", async function () {
+    it("deleteTextHighlight", async function() {
 
         const pageMeta = new PageMeta(PAGE_META);
 
@@ -345,4 +345,4 @@ const PAGE_META: any = {
     "pageInfo": {
         "num": 1
     }
-}
+};
