@@ -66,11 +66,8 @@ jobs:
         command: npm test
 
     - run:
-        name: test if stderr is captured
-        command: echo hello world > /dev/stderr
-
-    #- run:
-    #    name: e2e
-    #    command: |
-    #      export DISPLAY=:99
-    #      npm run-script e2e
+        name: e2e
+        command: |
+          export DISPLAY=:99 &&
+          export SPECTRON_OFFSCREEN=true &&
+          npm run-script e2e
