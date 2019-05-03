@@ -30,7 +30,7 @@
     "test": "./scripts/test-runner.sh",
     "e2e": "find web/spectron -name 'spec.js' | xargs mocha-parallel-tests --timeout 30000 --max-parallel=1 --exit",
     "e2e-mocha": "npx mocha --exit --log-timer-events --recursive 'web/spectron/**/spec.js'",
-    "e2e-find": "find web/spectron -name 'spec.js' -exec mocha --timeout 30000 --exit '{}' ';'",
+    "e2e-find": "find web/spectron -name 'spec.js' -exec mocha --exit '{}' ';'",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
     "postinstall": "opencollective-postinstall",
