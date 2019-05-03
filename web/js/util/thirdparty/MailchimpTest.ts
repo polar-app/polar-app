@@ -5,7 +5,7 @@ describe('Mailchimp', function() {
 
     it("basic", async function() {
 
-        const response = await Mailchimp.subscribeViaAPI2('burtonator+test101@gmail.com', 'Kevin', 'Burton');
+        const response = await Mailchimp.subscribeViaAPI('burtonator+test101@gmail.com', 'Kevin', 'Burton');
 
         console.log(response);
 

@@ -33,7 +33,7 @@ export class Mailchimp {
 
     }
 
-    public static async subscribeViaAPI(email: string, firstName: string, lastName: string) {
+    public static async subscribeViaAPI2(email: string, firstName: string, lastName: string) {
 
         const apiKey = "437707a405a16fcc863e09cb2f6dcc6c-us10";
 
@@ -55,7 +55,7 @@ export class Mailchimp {
     }
 
 
-    public static async subscribeViaAPI2(email: string, firstName: string, lastName: string) {
+    public static async subscribeViaAPI(email: string, firstName: string, lastName: string) {
 
         const body = {
             "email_address": email,
@@ -74,7 +74,7 @@ export class Mailchimp {
         const authorization = 'Basic ' + Base64.encode(username + ":" + password);
 
         const init = {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Authorization': authorization
             },
