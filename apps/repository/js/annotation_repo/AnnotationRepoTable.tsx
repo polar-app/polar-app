@@ -104,11 +104,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                 <div id="doc-table">
 
                     {/*TODO:*/}
-                    {/*    - disable the header*/}
-                    {/*    - make the text wrap*/}
-                    {/*    - if it has an image, show an image*/}
-                    {/*    - sorting options by date descending*/}
-                    {/*    - date/time on each item at the bottom*/}
+                    {/*- the bar should be fixed to the top even when we scroll....*/}
 
                     <ReactTable
                         data={[...data]}

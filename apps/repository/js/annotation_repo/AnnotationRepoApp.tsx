@@ -91,37 +91,30 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                 <div style={{display: 'flex', flexGrow: 1, overflow: 'auto'}}>
 
                     <div className="ml-1"
-                         style={{width: '450px'}}>
+                         style={{width: '450px', display: 'flex', flexDirection: 'column'}}>
 
-                        <FixedNavBody>
+                        <div className="mb-1 mt-1">
 
-                            <div style={{display: 'flex', flexDirection: 'column'}}>
+                            <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                     onFiltered={filters => this.filterChannel(filters)}
+                                                     tagPopoverPlacement="bottom-end"
+                                                     right={
+                                                         <div/>
+                                                     }
+                            />
 
-                                <div className="mb-1">
-                                    <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                             onFiltered={filters => this.filterChannel(filters)}
-                                                             tagPopoverPlacement="bottom-end"
-                                                             right={
-                                                                 <div/>
-                                                             }
-                                    />
+                        </div>
 
-                                </div>
+                        <div style={{flexGrow: 1, overflowY: 'auto'}}>
 
-                                <div style={{flexGrow: 1, overflowY: 'auto'}}>
+                            <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                                 updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                                 repoDocMetaManager={this.props.repoDocMetaManager}
+                                                 repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                                 setFiltered={this.setFilterChannel}
+                                                 onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
 
-                                    <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                                         updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                                         repoDocMetaManager={this.props.repoDocMetaManager}
-                                                         repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                                         setFiltered={this.setFilterChannel}
-                                                         onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
-
-                                </div>
-
-                            </div>
-
-                        </FixedNavBody>
+                        </div>
 
                     </div>
 

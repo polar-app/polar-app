@@ -8,7 +8,6 @@ import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
 import {AnnotationRepoFilters, AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import {FilteredTags} from '../FilteredTags';
-import Popper from '../FilterTagInput';
 
 const log = Logger.create();
 
@@ -102,20 +101,23 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
                     <div className="header-filter-box">
 
-                        <InputGroup size="sm">
 
                             {/*<InputGroupAddon addonType="prepend">*/}
                             {/*A*/}
                             {/*</InputGroupAddon>*/}
 
-                            <Input id="filter_title"
-                                   type="text"
-                                   placeholder="Filter by text"
-                                   onChange={(value) => this.handler.onFilterByText(value.target.value)}/>
+                        {/*<SimpleTooltipEx text="Filter the annotations by the text of the annotation.">*/}
 
-                            <SimpleTooltip target="filter_title">Filter the annotations by the text of the annotation..</SimpleTooltip>
+                            <InputGroup size="sm">
 
-                        </InputGroup>
+                                <Input id="filter_title"
+                                       type="text"
+                                       placeholder="Filter by text"
+                                       onChange={(value) => this.handler.onFilterByText(value.target.value)}/>
+                            </InputGroup>
+
+                        {/*</SimpleTooltipEx>*/}
+
 
                     </div>
 
