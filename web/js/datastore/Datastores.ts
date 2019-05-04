@@ -21,6 +21,7 @@ import {Backend} from './Backend';
 import {Either} from '../util/Either';
 import {LeftEither} from '../util/Either';
 import {DocInfoLike} from '../metadata/DocInfo';
+import {isPresent} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -48,6 +49,7 @@ export class Datastores {
     public static toBackendFileRef(either: LeftEither<DocMeta, DocInfoLike>): BackendFileRef | undefined {
 
         if (! either) {
+            log.warn("No 'either' param specified.");
             return undefined;
         }
 
@@ -69,6 +71,8 @@ export class Datastores {
 
             return backendFileRef;
 
+        } else {
+            log.warn("DocInfo has no filename");
         }
 
         return undefined;
@@ -100,7 +104,15 @@ export class Datastores {
 
         const attachments = docInfo.attachments || {};
         const attachmentRefs = Object.values(attachments)
-            .map(current => current.data);
+            .map(current => current.data)
+            .filter(current => {
+                if (isPresent(current)) {
+                    return true;
+                }
+
+                log.warn("Doc had missing attachment data: ", docInfo.fingerprint);
+                return false;
+            });
 
         result.push(...attachmentRefs);
 
