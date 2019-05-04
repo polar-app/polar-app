@@ -39,17 +39,6 @@ export class FirebaseTestRunner {
 
         window.addEventListener('load', async () => {
 
-            const app = Firebase.init();
-
-            if (firebase.auth().currentUser === null) {
-
-                // bring up the UI so that we can login.
-                // FirebaseUIAuth.login();
-
-                await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
-
-            }
-
             this.init()
                 .catch(err => log.error("Caught error on init", err));
 
@@ -58,6 +47,17 @@ export class FirebaseTestRunner {
     }
 
     public async init() {
+
+        const app = Firebase.init();
+
+        if (firebase.auth().currentUser === null) {
+
+            // bring up the UI so that we can login.
+            // FirebaseUIAuth.login();
+
+            await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+
+        }
 
         firebase.auth()
             .onAuthStateChanged((user) => this.onAuth(user),
