@@ -10,7 +10,9 @@ import {AppPath} from '../../js/electron/app_path/AppPath';
 
 async function defaultWindowFactory(): Promise<BrowserWindow> {
     const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
-    mainWindow.loadURL('about:blank');
+    mainWindow.loadURL('about:blank')
+        .catch(err => console.error(err));
+
     return mainWindow;
 }
 

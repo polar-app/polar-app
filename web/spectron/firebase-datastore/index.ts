@@ -1,28 +1,14 @@
-import {app, BrowserWindow} from 'electron';
-import {ISpectronMainOptions, SpectronMain2} from '../../js/test/SpectronMain2';
+import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {WebserverConfig} from '../../js/backend/webserver/WebserverConfig';
 import {Webserver} from '../../js/backend/webserver/Webserver';
 import {FileRegistry} from '../../js/backend/webserver/FileRegistry';
-import {SpectronBrowserWindowOptions} from '../../js/test/SpectronBrowserWindowOptions';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {AppPath} from '../../js/electron/app_path/AppPath';
 import {FilePaths} from '../../js/util/FilePaths';
 
-async function defaultWindowFactory(): Promise<BrowserWindow> {
-    const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
-    // mainWindow.webContents.toggleDevTools();
-    mainWindow.loadURL('about:blank');
-    return mainWindow;
-}
-
-
-const options: ISpectronMainOptions = {
-    windowFactory: defaultWindowFactory
-};
-
 AppPath.set(FilePaths.join(__dirname, "..", "..", ".."));
 
-SpectronMain2.create(options).run(async state => {
+SpectronMain2.create().run(async state => {
 
     await PolarDataDir.useFreshDirectory('.polar-firebase-datastore');
 
