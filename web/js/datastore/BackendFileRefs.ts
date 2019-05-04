@@ -4,8 +4,13 @@ import {DocInfoLike} from '../metadata/DocInfo';
 import {BackendFileRef} from './Datastore';
 import {Either} from '../util/Either';
 import {Backend} from './Backend';
+import {Logger} from '../logger/Logger';
+import {isPresent} from '../Preconditions';
+
+const log = Logger.create();
 
 export class BackendFileRefs {
+
     /**
      * Get the main BackendFileRef (PHZ or PDF) for this file (either the
      * PHZ or PDF file)
@@ -13,6 +18,7 @@ export class BackendFileRefs {
     public static toBackendFileRef(either: LeftEither<DocMeta, DocInfoLike>): BackendFileRef | undefined {
 
         if (! either) {
+            log.warn("No 'either' param specified.");
             return undefined;
         }
 
@@ -34,6 +40,8 @@ export class BackendFileRefs {
 
             return backendFileRef;
 
+        } else {
+            log.warn("DocInfo has no filename");
         }
 
         return undefined;
@@ -65,7 +73,15 @@ export class BackendFileRefs {
 
         const attachments = docInfo.attachments || {};
         const attachmentRefs = Object.values(attachments)
-            .map(current => current.fileRef);
+            .map(current => current.fileRef)
+            .filter(current => {
+                if (isPresent(current)) {
+                    return true;
+                }
+
+                log.warn("Doc had missing attachment data: ", docInfo.fingerprint);
+                return false;
+            });
 
         result.push(...attachmentRefs);
 
