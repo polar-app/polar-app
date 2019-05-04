@@ -1,10 +1,5 @@
-import {assert} from 'chai';
 import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
-import {PolarDataDir} from '../../js/test/PolarDataDir';
-
-// we can change the polar data dir with the following
-// PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
 describe('Firebase Datastore', function() {
 
