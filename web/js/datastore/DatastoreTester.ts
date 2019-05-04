@@ -93,19 +93,28 @@ export class DatastoreTester {
                     await datastoreMutation.committed.get();
 
                 } catch (e) {
-                    console.error(e);
+                    console.error("beforeEach failed: ", e);
                     throw e;
                 }
 
             });
 
             afterEach(async function() {
-                console.log("===== after test ====");
 
-                await Datastores.purge(persistenceLayer.datastore,
-                                       purgeEvent => console.log("Purged: ", purgeEvent));
+                try {
 
-                await persistenceLayer.stop();
+                    console.log("===== after test ====");
+
+                    await Datastores.purge(persistenceLayer.datastore,
+                                           purgeEvent => console.log("Purged: ", purgeEvent));
+
+                    await persistenceLayer.stop();
+
+                } catch (e) {
+                    console.error("afterEach failed: ", e);
+                    throw e;
+                }
+
             });
 
             it("write and read data to disk", async function() {

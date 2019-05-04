@@ -1,35 +1,22 @@
-import {SpectronRenderer, SpectronRendererState} from '../../js/test/SpectronRenderer';
-import {Firebase} from '../../js/firebase/Firebase';
-import {FirebaseUIAuth} from '../../js/firebase/FirebaseUIAuth';
-import * as firebase from '../../js/firebase/lib/firebase';
-import {Elements} from '../../js/util/Elements';
+import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {DiskDatastore} from '../../js/datastore/DiskDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";
 import {DatastoreTester} from '../../js/datastore/DatastoreTester';
-import {Firestore} from '../../js/firebase/Firestore';
-import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
-import {ElectronDocLoader} from '../../js/apps/main/doc_loaders/electron/ElectronDocLoader';
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
 import {FilePaths} from '../../js/util/FilePaths';
-import {Datastore} from '../../js/datastore/Datastore';
-import {DocMeta} from '../../js/metadata/DocMeta';
-import {Directories, GlobalDataDir} from '../../js/datastore/Directories';
 import {Files} from '../../js/util/Files';
-import {MockPHZWriter} from '../../js/phz/MockPHZWriter';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import waitForExpect from 'wait-for-expect';
 import {Datastores} from '../../js/datastore/Datastores';
 import {Latch} from '../../js/util/Latch';
-import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../../js/util/Functions';
-import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
-import {Preconditions} from '../../js/Preconditions';
+import {ASYNC_NULL_FUNCTION} from '../../js/util/Functions';
 import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 
@@ -201,7 +188,7 @@ SpectronRenderer.run(async (state) => {
                 const docMetaFiles = await persistenceLayer.getDocMetaRefs();
                 assert.equal(docMetaFiles.length, 0);
 
-                persistenceLayer.stop();
+                await persistenceLayer.stop();
 
             });
 
@@ -440,8 +427,7 @@ SpectronRenderer.run(async (state) => {
 
         DatastoreTester.test(createDatastore, false);
 
-    })
-        .catch(err => console.error(err));
+    }).catch(err => console.error(err));
 
 });
 
