@@ -76,13 +76,11 @@ SpectronRenderer.run(async (state) => {
 
         // FIXME: states that need to be handled in UI....
         //
-        // - MERGE shoudl be the ideal situation NOT transfer... this is easier
+        // - MERGE should be the ideal situation NOT transfer... this is easier
         //   to implement.
 
 
-        //
-
-        describe('Cloud datastore tests', function() {
+        xdescribe('Cloud datastore tests', function() {
 
             beforeEach(async function() {
 
@@ -90,13 +88,23 @@ SpectronRenderer.run(async (state) => {
 
                     console.log("==== BEGIN beforeEach");
 
+                    console.log("Removing files from: " + PolarDataDir.get());
+
                     await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
+
+                    console.log("Initializing firebase datastore...");
 
                     const firebaseDatastore = new FirebaseDatastore();
                     await firebaseDatastore.init();
 
+                    console.log("Initializing firebase datastore...done");
+
+                    console.log("Purging firebase datastore...");
+
                     await Datastores.purge(firebaseDatastore,
                                            purgeEvent => console.log("Purged: ", purgeEvent));
+
+                    console.log("Purging firebase datastore...done");
 
                     await firebaseDatastore.stop();
 

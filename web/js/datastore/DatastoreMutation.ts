@@ -6,6 +6,8 @@ import {Latch} from '../util/Latch';
  */
 export interface DatastoreMutation<T> {
 
+    readonly id: number;
+
     /**
      * The mutation was written but still pending.  This happens when we're
      * writing to a WAL or a local vs cloud environment where the write may need
@@ -22,9 +24,12 @@ export interface DatastoreMutation<T> {
 
 abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
 
+    public static SEQUENCE = 0;
+
+    public readonly id: number = AbstractDatastoreMutation.SEQUENCE++;
+
     public abstract readonly written: Latch<T>;
     public abstract readonly committed: Latch<T>;
-
 
 }
 
@@ -34,7 +39,10 @@ abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
  */
 export class DefaultDatastoreMutation<T> extends AbstractDatastoreMutation<T> {
 
-    // TODO: refactor and rename class as WriteLatches
+    // TODO: refactor and rename class as DatastoreLatchPair
+    constructor() {
+        super();
+    }
 
     public readonly written = new Latch<T>();
 

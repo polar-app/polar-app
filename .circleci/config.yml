@@ -55,15 +55,15 @@ jobs:
         command: npx tsc
 
     - run:
+        name: npm test
+        command: npm test
+
+    - run:
         name: spectron repository-app
         command: |
           export DISPLAY=:99 &&
           export SPECTRON_OFFSCREEN=true &&
           npx mocha web/spectron/repository-app/spec.js
-
-    - run:
-        name: npm test
-        command: npm test
 
     - run:
         name: e2e

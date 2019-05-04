@@ -31,6 +31,7 @@ import {GetFileOpts} from './Datastore';
 import {isPresent} from '../Preconditions';
 import {BinaryFileData} from './Datastore';
 import {WriteOpts} from './Datastore';
+import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();
 
@@ -166,29 +167,39 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()):
         Promise<Readonly<DiskDeleteResult>> {
 
-        const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
-        const statePath = FilePaths.join(docDir, 'state.json');
+        const deleteDelegate = async () => {
 
-        let deleteFilePromise: Promise<void> = Promise.resolve();
+            const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
+            const statePath = FilePaths.join(docDir, 'state.json');
 
-        if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
-            deleteFilePromise = this.deleteFile(Backend.STASH, docMetaFileRef.docFile);
-        }
+            let deleteFilePromise: Promise<void> = Promise.resolve();
 
-        log.info(`Deleting statePath ${statePath} and file docMetaFileRef.docFile`);
+            if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
+                deleteFilePromise = this.deleteFile(Backend.STASH, docMetaFileRef.docFile);
+            }
 
-        // TODO: don't delete JUST the state file but also the parent dir if it
-        // is empty.
+            log.info(`Deleting statePath ${statePath} and file: `, docMetaFileRef.docFile);
 
-        const deleteStatePathPromise = Files.deleteAsync(statePath);
+            // TODO: don't delete JUST the state file but also the parent dir if it
+            // is empty.
 
-        await Promise.all([deleteStatePathPromise, deleteFilePromise]);
+            const deleteStatePathPromise = Files.deleteAsync(statePath);
 
-        await deleteFilePromise;
+            log.debug("Waiting for state delete...");
+            const docMetaFile = await deleteStatePathPromise;
+            log.debug("Waiting for state delete...done");
 
-        return {
-            docMetaFile: await deleteStatePathPromise,
+            log.debug("Waiting for file delete...");
+            await deleteFilePromise;
+            log.debug("Waiting for file delete...done");
+
+            return {
+                docMetaFile
+            };
+
         };
+
+        return await DatastoreMutations.handle(async () => deleteDelegate(), datastoreMutation, () => true);
 
     }
 
@@ -317,47 +328,49 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                        docInfo: DocInfo,
                        opts: WriteOpts = {}) {
 
-        await this.handleWriteFile(opts);
-
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
-        Preconditions.assertPresent(data, "data");
-        Preconditions.assertTypeOf(data, "string", "data", () => log.error("Failed with data: ", data));
+        const writeDelegate = async () => {
 
-        if (data.length === 0) {
-            throw new Error("Invalid data");
-        }
+            await this.handleWriteFile(opts);
 
-        if (data[0] !== '{') {
-            throw new Error("Not JSON");
-        }
+            Preconditions.assertPresent(data, "data");
+            Preconditions.assertTypeOf(data, "string", "data", () => log.error("Failed with data: ", data));
 
-        log.info("Performing sync of content into disk datastore");
+            if (data.length === 0) {
+                throw new Error("Invalid data");
+            }
 
-        const docDir = FilePaths.join(this.dataDir, fingerprint);
+            if (data[0] !== '{') {
+                throw new Error("Not JSON");
+            }
 
-        await Files.createDirAsync(docDir);
+            log.info("Performing sync of content into disk datastore");
 
-        log.debug("Calling stat on docDir: " + docDir);
-        const stat = await Files.statAsync(docDir);
+            const docDir = FilePaths.join(this.dataDir, fingerprint);
 
-        if (! stat.isDirectory()) {
-            throw new Error("Path is not a directory: " + docDir);
-        }
+            await Files.createDirAsync(docDir);
 
-        const statePath = FilePaths.join(docDir, "state.json");
+            log.debug("Calling stat on docDir: " + docDir);
+            const stat = await Files.statAsync(docDir);
 
-        log.info(`Writing data to state file: ${statePath}`);
+            if (! stat.isDirectory()) {
+                throw new Error("Path is not a directory: " + docDir);
+            }
 
-        // TODO: don't write directly to state.json... instead write to
-        // state.json.new, then delete state.json, then move state.json.new to
-        // state.json..  This way we can create backups using hard links easily.
+            const statePath = FilePaths.join(docDir, "state.json");
 
-        const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8', atomic: true});
+            log.info(`Writing data to state file: ${statePath}`);
 
-        this.datastoreMutations.handle(result, datastoreMutation, () => true);
+            // TODO: don't write directly to state.json... instead write to
+            // state.json.new, then delete state.json, then move state.json.new to
+            // state.json..  This way we can create backups using hard links easily.
 
-        return result;
+            await Files.writeFileAsync(statePath, data, {encoding: 'utf8', atomic: true});
+
+        };
+
+        await DatastoreMutations.handle(async () => writeDelegate(), datastoreMutation, () => true);
 
     }
 

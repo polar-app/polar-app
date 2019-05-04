@@ -46,17 +46,25 @@ export class DatastoreTester {
 
                     console.log("===== before test ====");
 
-                    // TODO: might want to run
+                    console.log("Removing directory recursively: " + dataDir);
+
                     await Files.removeDirectoryRecursivelyAsync(dataDir);
 
                     GlobalDataDir.set(dataDir);
+                    console.log("Creating new datastore");
+
                     datastore = await datastoreFactory();
                     directories = new Directories();
 
                     persistenceLayer = new DefaultPersistenceLayer(datastore);
 
+                    console.log("Init of new persistence layer...");
                     await persistenceLayer.init();
-                    await Datastores.purge(datastore);
+                    console.log("Init of new persistence layer...done");
+
+                    console.log("Purge of new persistence layer...");
+                    await Datastores.purge(datastore, purgeEvent => console.log("Purged: ", purgeEvent));
+                    console.log("Purge of new persistence layer...done");
 
                     docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
@@ -79,6 +87,9 @@ export class DatastoreTester {
 
                     // make sure we're always using the datastore mutations
                     await datastoreMutation.written.get();
+
+                    // TODO: I think this is acceptable as our consistency is
+                    // local first.
                     await datastoreMutation.committed.get();
 
                 } catch (e) {

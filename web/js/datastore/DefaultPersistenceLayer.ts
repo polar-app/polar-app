@@ -170,7 +170,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         const docInfo = Object.assign({}, docMeta.docInfo);
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();
-        this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+
+        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
         const writeOpts = {
             ...opts,
