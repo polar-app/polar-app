@@ -171,7 +171,9 @@ export class RepoDocMetaManager {
 
         console.log("FIXME: 4");
 
-        return await persistenceLayer.delete(docMetaFileRef);
+        await persistenceLayer.delete(docMetaFileRef);
+
+        console.log("FIXME: 5");
 
     }
 
