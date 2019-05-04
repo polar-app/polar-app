@@ -43,6 +43,10 @@ async function createDatastore() {
         }
 
         // FIXME: this is the issue.. the two datastores are inconsistent after this is completed.
+        //
+        // FIXME: probably the reason why this is is because the local completed
+        // I'm still waiting for the remote to complete...
+
         // FIXME: assert.ok(consistency.consistent, "Datastores are not consistent");
 
     };
@@ -72,11 +76,11 @@ SpectronRenderer.run(async (state) => {
 
         describe('Cloud datastore tests', function() {
 
-            beforeEach(async function() {
+            beforeEach(async function(name) {
 
                 try {
 
-                    console.log("==== BEGIN beforeEach");
+                    console.log("==== BEGIN beforeEach: " + name);
 
                     console.log("Removing files from: " + PolarDataDir.get());
 
