@@ -871,7 +871,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     private onDocDeleted(...repoDocInfos: RepoDocInfo[]) {
 
+        console.log("FIXME onDocDeleted", repoDocInfos);
+
         const doDeletes = async () => {
+
+
+            console.log("FIXME: doing deletes...");
 
             const stats = {
                 successes: 0,
@@ -881,6 +886,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             const progressTracker = new ProgressTracker(repoDocInfos.length, 'delete');
 
             for (const repoDocInfo of repoDocInfos) {
+
+                console.log("FIXME: doing delete on: ", repoDocInfo);
 
                 log.info("Deleting document: ", repoDocInfo);
 

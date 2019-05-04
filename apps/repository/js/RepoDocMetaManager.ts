@@ -157,12 +157,19 @@ export class RepoDocMetaManager {
 
     public async deleteDocInfo(repoDocInfo: RepoDocInfo) {
 
+        console.log("FIXME: 1");
+
         this.updateFromRepoDocInfo(repoDocInfo.fingerprint);
 
+        console.log("FIXME: 2");
         const persistenceLayer = this.persistenceLayerProvider.get();
+
+        console.log("FIXME: 3");
 
         // delete it from the repo now.
         const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(repoDocInfo.docInfo);
+
+        console.log("FIXME: 4");
 
         return await persistenceLayer.delete(docMetaFileRef);
 
