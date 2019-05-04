@@ -13,7 +13,7 @@ import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore, DatastoreCollection} from '../../js/datastore/FirebaseDatastore';
 import {ElectronDocLoader} from '../../js/apps/main/doc_loaders/electron/ElectronDocLoader';
-import {FirebaseRunner} from '../../js/firebase/FirebaseRunner';
+import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {Latch} from '../../js/util/Latch';
@@ -68,7 +68,7 @@ function renderJSON(name: string, object: any) {
 
 SpectronRenderer.run(async (state) => {
 
-    new FirebaseRunner(state).run(async () => {
+    new FirebaseTestRunner(state).run(async () => {
 
         const onSnapshot = (collection: string,
                             snapshot: firebase.firestore.QuerySnapshot) => {

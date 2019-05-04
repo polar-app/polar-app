@@ -15,9 +15,12 @@ Preconditions.assertPresent(FIREBASE_USER, 'FIREBASE_USER');
 Preconditions.assertPresent(FIREBASE_PASS, 'FIREBASE_PASS');
 
 /**
+ * A simple test runner harness that connect to firebase via direct auth and
+ * runs tests against firebase directly.
+ *
  * @ElectronRendererContext
  */
-export class FirebaseRunner {
+export class FirebaseTestRunner {
 
     private readonly state: SpectronRendererState;
 

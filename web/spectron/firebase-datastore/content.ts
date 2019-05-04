@@ -4,7 +4,7 @@ import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";
 import {DatastoreTester} from '../../js/datastore/DatastoreTester';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
-import {FirebaseRunner} from '../../js/firebase/FirebaseRunner';
+import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {Latch} from '../../js/util/Latch';
@@ -22,7 +22,7 @@ const fingerprint = "0x001";
 
 SpectronRenderer.run(async (state) => {
 
-    new FirebaseRunner(state).run(async () => {
+    new FirebaseTestRunner(state).run(async () => {
 
         const firebaseDatastore = new FirebaseDatastore();
 
