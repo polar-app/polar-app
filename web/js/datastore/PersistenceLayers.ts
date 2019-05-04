@@ -200,25 +200,24 @@ export class PersistenceLayers {
 
             ++result.files.total;
 
-            const targetContainsFile = await target.datastore.containsFile(fileRef.backend, fileRef);
+            const containsFile = async (datastore: Datastore,
+                                        ref: BackendFileRef,
+                                        id: 'source' | 'target'): Promise<boolean> => {
+
+                try {
+                    return await datastore.containsFile(ref.backend, ref);
+                } catch (e) {
+                    log.error(`Could not get file ${ref.name} for doc with fingerprint: ${syncDoc.fingerprint} from ${id}`, ref, e);
+                    throw e;
+                }
+
+            };
+
+            const targetContainsFile = await containsFile(target.datastore, fileRef, 'target');
 
             if (! targetContainsFile) {
 
-                const doSourceContainsFile = async () => {
-
-                    // TODO make dedicated functions to track exceptions here for
-                    // both target and source.
-
-                    try {
-                        return await source.datastore.containsFile(fileRef.backend, fileRef);
-                    } catch (e) {
-                        log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef, e);
-                        throw e;
-                    }
-
-                };
-
-                const sourceContainsFile = await doSourceContainsFile();
+                const sourceContainsFile =  await containsFile(source.datastore, fileRef, 'source');
 
                 if (sourceContainsFile) {
 
@@ -238,7 +237,7 @@ export class PersistenceLayers {
 
                 } else {
                     // this should not be possible but log it anyway.
-                    log.warn("Both the target and source files are missing: ", fileRef);
+                    log.warn(`Both the target and source files are missing in doc ${syncDoc.fingerprint}: `, fileRef);
                 }
 
             }
