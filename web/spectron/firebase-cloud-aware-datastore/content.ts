@@ -80,11 +80,11 @@ SpectronRenderer.run(async (state) => {
 
         describe('Cloud datastore tests', function() {
 
-            beforeEach(async function(name) {
+            beforeEach(async function() {
 
                 try {
 
-                    console.log("==== BEGIN beforeEach: " + name);
+                    console.log("==== BEGIN beforeEach: ");
 
                     console.log("Removing files from: " + PolarDataDir.get());
 
