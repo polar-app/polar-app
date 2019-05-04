@@ -3,12 +3,6 @@ import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/BaseHighlight';
 
 
-const DefaultBody = () => {
-    return <div className='area-highlight'>
-        No image
-    </div>;
-};
-
 /**
  * Shows a and image and re-sizes it to its parent properly.
  */
@@ -23,8 +17,6 @@ export class ResponsiveImg extends React.Component<IProps, IState> {
 
     public render() {
         const {img, id, color} = this.props;
-
-        // const defaultBody = this.props.defaultBody || <DefaultBody/>;
 
         if (img) {
             const width = Math.floor(img.width);
@@ -73,8 +65,7 @@ export class ResponsiveImg extends React.Component<IProps, IState> {
 
             );
         } else {
-            // FIXME:
-            return <DefaultBody/>;
+            return <div>{this.props.defaultText || 'No image'}</div>;
         }
 
     }
@@ -84,7 +75,7 @@ interface IProps {
     readonly id: string;
     readonly img?: Img;
     readonly color?: HighlightColor;
-    readonly defaultBody?: JSX.Element;
+    readonly defaultText?: string;
 }
 
 interface IState {

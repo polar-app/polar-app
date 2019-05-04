@@ -10,7 +10,7 @@ const Body = (props: IProps) => {
 
     if (img) {
 
-        return <ResponsiveImg id={props.id} img={img}/>;
+        return <ResponsiveImg id={props.id} img={img} defaultText=" "/>;
 
     } else {
         return (

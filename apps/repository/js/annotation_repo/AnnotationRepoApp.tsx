@@ -97,7 +97,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
                             <div style={{display: 'flex', flexDirection: 'column'}}>
 
-                                <div className="mt-1 mb-1">
+                                <div className="mb-1">
                                     <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                              onFiltered={filters => this.filterChannel(filters)}
                                                              tagPopoverPlacement="bottom-end"

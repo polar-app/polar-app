@@ -59,7 +59,7 @@ interface AnnotationImageProps {
 }
 
 const AnnotationImage = (props: AnnotationImageProps) => {
-    return <ResponsiveImg id={props.id} img={props.img}/>;
+    return <ResponsiveImg id={props.id} img={props.img} defaultText=" "/>;
 };
 
 export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
