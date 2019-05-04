@@ -12,7 +12,7 @@ export class RendererTestResultWriter implements TestResultWriter {
 
     public async write(result: any) {
 
-        log.info("Got result from renderer: ", result);
+        log.info("Got result from renderer: " + result);
 
         if (!isPresent(result)) {
             throw new Error("No result given!");

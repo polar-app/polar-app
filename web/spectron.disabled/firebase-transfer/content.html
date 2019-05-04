@@ -9,12 +9,6 @@
     <script src="https://unpkg.com/mocha@5.2.0/mocha.js"></script>
     <link href="https://unpkg.com/mocha@5.2.0/mocha.css" rel="stylesheet" />
 
-    <style>
-        body {
-            margin: 5px;
-        }
-    </style>
-
 </head>
 <body>
 
@@ -22,11 +16,9 @@
 
 <div id="sign-in-status"></div>
 <div id="sign-in"></div>
-<pre id="account-details"></pre>
+<div id="account-details"></div>
 
 <div id="mocha"></div>
-<div id="snapshot-logger"></div>
-
 
 <script>
 
@@ -37,7 +29,7 @@
     // for each of our main apps.  In the future we should try to track down
     // why this is happening but I spent 1-2 hours on trying to figure out
     // the root cause with no resolution and this is a temporary workaround.
-    const {remote} = require('electron');
+    const {remote} = require('electron/electron');
     const path = require('path');
     const appPath = remote.getGlobal("appPath");
     require(path.join(appPath, "content.js"));
