@@ -134,7 +134,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                 {
                                     Header: '',
                                     accessor: 'title',
-                                    maxWidth: 350,
+                                    maxWidth: 450,
                                     headerStyle: {display: 'none'},
                                     style: {whiteSpace: 'normal'},
                                     Cell: (row: any) => {
@@ -149,18 +149,13 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                     }
 
                                 },
-                                // {
-                                //     Header: 'Created',
-                                //     // accessor: (row: any) => row.added,
-                                //     accessor: 'created',
-                                //     show: true,
-                                //     maxWidth: 100,
-                                //     defaultSortDesc: true,
-                                //     Cell: (row: any) => (
-                                //         <DateTimeTableCell className="doc-col-last-updated" datetime={row.original.created}/>
-                                //     )
-                                //
-                                // },
+                                {
+                                    Header: 'Created',
+                                    // accessor: (row: any) => row.added,
+                                    accessor: 'created',
+                                    show: false,
+
+                                },
                                 // {
                                 //     id: 'tags',
                                 //     Header: 'Tags',
