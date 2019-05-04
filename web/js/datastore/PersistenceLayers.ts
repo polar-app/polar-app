@@ -201,33 +201,26 @@ export class PersistenceLayers {
             ++result.files.total;
 
             const containsFile = async (datastore: Datastore,
-                                        ref: BackendFileRef,
                                         id: 'source' | 'target'): Promise<boolean> => {
 
                 try {
-                    return await datastore.containsFile(ref.backend, ref);
+                    return await datastore.containsFile(fileRef.backend, fileRef);
                 } catch (e) {
-                    log.error(`Could not get file ${ref.name} for doc with fingerprint: ${syncDoc.fingerprint} from ${id}`, ref, e);
+                    log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint} from ${id}`, fileRef, e);
                     throw e;
                 }
 
             };
 
-            const targetContainsFile = await containsFile(target.datastore, fileRef, 'target');
+            const targetContainsFile = await containsFile(target.datastore, 'target');
 
             if (! targetContainsFile) {
 
-                const sourceContainsFile =  await containsFile(source.datastore, fileRef, 'source');
+                const sourceContainsFile =  await containsFile(source.datastore, 'source');
 
                 if (sourceContainsFile) {
 
                     const sourceFile = source.datastore.getFile(fileRef.backend, fileRef);
-
-                    // TODO: make this a dedicated function to transfer between
-                    // do datastores... or at least a dedicated function to read
-                    // it in as a buffer but this might be less of an issue now
-                    // that I know that both firebase and the disk datastore
-                    // can easily convert URLs to blobs and work with them.
 
                     const blob = await URLs.toBlob(sourceFile.url);
 
