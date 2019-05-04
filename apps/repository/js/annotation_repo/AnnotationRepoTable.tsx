@@ -103,9 +103,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
                 <div id="doc-table">
 
-                    {/*TODO:*/}
-                    {/*- the bar should be fixed to the top even when we scroll....*/}
-
                     <ReactTable
                         data={[...data]}
                         // headerProps={{display: 'none'}}
