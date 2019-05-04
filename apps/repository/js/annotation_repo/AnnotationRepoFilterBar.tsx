@@ -8,6 +8,7 @@ import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
 import {AnnotationRepoFilters, AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import {FilteredTags} from '../FilteredTags';
+import {Placement} from 'popper.js';
 
 const log = Logger.create();
 
@@ -150,7 +151,7 @@ export interface IProps {
      */
     readonly right?: JSX.Element;
 
-    readonly tagPopoverPlacement?: Popper.Placement;
+    readonly tagPopoverPlacement?: Placement;
 
 
 }
