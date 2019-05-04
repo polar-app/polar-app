@@ -13,12 +13,12 @@ import {Files} from '../../js/util/Files';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
-import waitForExpect from 'wait-for-expect';
 import {Datastores} from '../../js/datastore/Datastores';
 import {Latch} from '../../js/util/Latch';
 import {ASYNC_NULL_FUNCTION} from '../../js/util/Functions';
 import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
+import waitForExpect from 'wait-for-expect';
 
 Logging.initForTesting();
 
@@ -36,18 +36,22 @@ async function createDatastore() {
 
     cloudAwareDatastore.shutdownHook = async () => {
 
-        const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
+        await waitForExpect(async () => {
 
-        if (! consistency.consistent) {
-            console.log("Filesystems are NOT consistent: ", consistency.manifest0, consistency.manifest1);
-        }
+            const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
 
-        // FIXME: this is the issue.. the two datastores are inconsistent after this is completed.
-        //
-        // FIXME: probably the reason why this is is because the local completed
-        // I'm still waiting for the remote to complete...
+            if (! consistency.consistent) {
+                console.log("Filesystems are NOT consistent: ", consistency.manifest0, consistency.manifest1);
+            }
 
-        // FIXME: assert.ok(consistency.consistent, "Datastores are not consistent");
+            // FIXME: this is the issue.. the two datastores are inconsistent after this is completed.
+            //
+            // FIXME: probably the reason why this is is because the local completed
+            // I'm still waiting for the remote to complete...
+
+            assert.ok(consistency.consistent, "Datastores are not consistent");
+
+        });
 
     };
 
