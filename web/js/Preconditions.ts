@@ -129,6 +129,8 @@ export class Preconditions {
     }
 
 
+    // TODO: support a dict so that instead of specifying a name we can just
+    // pass {name} since this is mostly a redundant param.
     public static assertPresent<T>(value: T | null, name?: string): NonNullable<T> {
 
         let msgPrefix = "Precondition argument failed: ";

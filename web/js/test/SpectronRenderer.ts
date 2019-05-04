@@ -29,7 +29,7 @@ export class SpectronRenderer {
 }
 
 export interface RunCallback {
-    (state: SpectronRendererState): Promise<any>
+    (state: SpectronRendererState): Promise<any>;
 }
 
 

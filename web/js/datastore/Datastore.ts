@@ -157,7 +157,7 @@ export abstract class AbstractDatastore {
         const docInfo = docMeta.docInfo;
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();
-        this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
         await this.write(docMeta.docInfo.fingerprint, data, docInfo, {datastoreMutation: syncMutation});
         return docInfo;

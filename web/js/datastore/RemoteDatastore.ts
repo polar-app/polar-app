@@ -9,6 +9,7 @@ import {DatastoreMutation} from './DatastoreMutation';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {IDocInfo} from '../metadata/DocInfo';
 import {WriteOpts} from './Datastore';
+import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();
 
@@ -63,10 +64,11 @@ export class RemoteDatastore extends DelegatedDatastore {
         // promises across process bounds
         opts = {... opts, datastoreMutation: undefined};
 
-        const result = this.delegate.write(fingerprint, data, docInfo, opts);
-        this.datastoreMutations.handle(result, datastoreMutation, () => true);
+        const writeDelegate = async () => {
+            return this.delegate.write(fingerprint, data, docInfo, opts);
+        };
 
-        return result;
+        return DatastoreMutations.handle(() => writeDelegate(), datastoreMutation, () => true);
 
     }
 
@@ -76,10 +78,9 @@ export class RemoteDatastore extends DelegatedDatastore {
     public delete(docMetaFileRef: DocMetaFileRef,
                   datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-        const result = this.delegate.delete(docMetaFileRef);
-        this.datastoreMutations.handle(result, datastoreMutation, () => true);
-
-        return result;
+        return DatastoreMutations.handle(() => this.delegate.delete(docMetaFileRef),
+                                         datastoreMutation,
+                                         () => true);
 
     }
 
