@@ -57,6 +57,7 @@ export class FirebaseTestRunner {
 
             await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
 
+            console.log("Authenticated with Firebase successfully.");
         }
 
         firebase.auth()
