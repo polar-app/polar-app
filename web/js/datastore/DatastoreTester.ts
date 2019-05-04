@@ -68,8 +68,8 @@ export class DatastoreTester {
 
                     assert.equal(contains, false, "Document already exists in persistence layer: " + fingerprint);
 
-                    await Files.mkdirAsync(directories.dataDir);
-                    await Files.mkdirAsync(directories.stashDir);
+                    await Files.createDirAsync(directories.dataDir);
+                    await Files.createDirAsync(directories.stashDir);
 
                     await MockPHZWriter.write(FilePaths.create(directories.stashDir, `${fingerprint}.phz`));
 
