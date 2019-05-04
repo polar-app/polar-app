@@ -80,7 +80,7 @@ SpectronRenderer.run(async (state) => {
         //   to implement.
 
 
-        xdescribe('Cloud datastore tests', function() {
+        describe('Cloud datastore tests', function() {
 
             beforeEach(async function() {
 
