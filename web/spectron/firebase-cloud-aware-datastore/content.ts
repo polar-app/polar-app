@@ -20,10 +20,12 @@ import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import waitForExpect from 'wait-for-expect';
 
+const TIMEOUT = 30000;
+
 Logging.initForTesting();
 
 mocha.setup('bdd');
-mocha.timeout(30000);
+mocha.timeout(TIMEOUT);
 
 async function createDatastore() {
 
@@ -48,7 +50,7 @@ async function createDatastore() {
 
             assert.ok(consistency.consistent, "Datastores are not consistent");
 
-        });
+        }, TIMEOUT);
 
     };
 
