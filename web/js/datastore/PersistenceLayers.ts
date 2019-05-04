@@ -237,7 +237,7 @@ export class PersistenceLayers {
                     ++result.files.writes;
 
                 } else {
-                    log.error("Both the target and source files are missing: ", fileRef);
+                    log.warn("Both the target and source files are missing: ", fileRef);
                 }
 
             }
