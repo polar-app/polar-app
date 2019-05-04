@@ -38,6 +38,8 @@ async function createDatastore() {
 
         await waitForExpect(async () => {
 
+            console.log("Checking consistency...");
+
             const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
 
             if (! consistency.consistent) {
