@@ -1,6 +1,26 @@
 import * as React from 'react';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
+import {DateTimeTableCell} from '../DateTimeTableCell';
+
+const Body = (props: IProps) => {
+
+    const {id, annotation} = props;
+    const {img} = annotation;
+
+    if (img) {
+
+        return <ResponsiveImg id={props.id} img={img}/>;
+
+    } else {
+        return (
+            <div id={props.id}>
+                <div>{annotation.text || 'no text'}</div>
+            </div>
+        );
+    }
+
+};
 
 export class AnnotationPreview extends React.Component<IProps, IState> {
 
@@ -12,20 +32,14 @@ export class AnnotationPreview extends React.Component<IProps, IState> {
     }
 
     public render() {
-        const {id, annotation} = this.props;
-        const {img} = annotation;
 
-        if (img) {
+        return <div id={this.props.id}>
 
-            return <ResponsiveImg id={this.props.id} img={img}/>;
+            <Body {...this.props}/>
 
-        } else {
-            return (
-                <div id={this.props.id}>
-                    <p>{annotation.text || 'no text'}</p>
-                </div>
-            );
-        }
+            <DateTimeTableCell datetime={this.props.annotation.created} className="text-muted text-xs"/>
+
+        </div>;
 
     }
 
