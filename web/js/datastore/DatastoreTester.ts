@@ -16,14 +16,10 @@ import {Backend} from './Backend';
 import {Datastore} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
-import {func} from 'prop-types';
 import {Latch} from '../util/Latch';
 import {Datastores} from './Datastores';
-import {PersistenceLayers} from './PersistenceLayers';
 import {DiskDatastore} from './DiskDatastore';
 import {TestingTime} from '../test/TestingTime';
-
-const rimraf = require('rimraf');
 
 const tmpdir = os.tmpdir();
 
@@ -46,38 +42,49 @@ export class DatastoreTester {
 
             beforeEach(async function() {
 
-                console.log("===== before test ====");
+                try {
 
-                // TODO: might want to run
-                await Files.removeDirectoryRecursivelyAsync(dataDir);
+                    console.log("===== before test ====");
 
-                GlobalDataDir.set(dataDir);
-                datastore = await datastoreFactory();
-                directories = new Directories();
+                    // TODO: might want to run
+                    await Files.removeDirectoryRecursivelyAsync(dataDir);
 
-                persistenceLayer = new DefaultPersistenceLayer(datastore);
+                    GlobalDataDir.set(dataDir);
+                    datastore = await datastoreFactory();
+                    directories = new Directories();
 
-                await persistenceLayer.init();
-                await Datastores.purge(datastore);
+                    persistenceLayer = new DefaultPersistenceLayer(datastore);
 
-                docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+                    await persistenceLayer.init();
+                    await Datastores.purge(datastore);
 
-                docMeta.docInfo.filename = `${fingerprint}.phz`;
+                    docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
-                await persistenceLayer.delete({fingerprint, docInfo: docMeta.docInfo});
+                    docMeta.docInfo.filename = `${fingerprint}.phz`;
 
-                const contains = await persistenceLayer.contains(fingerprint);
+                    await persistenceLayer.delete({ fingerprint, docInfo: docMeta.docInfo });
 
-                assert.equal(contains, false, "Document already exists in persistence layer: " + fingerprint);
+                    const contains = await persistenceLayer.contains(fingerprint);
 
-                await MockPHZWriter.write(FilePaths.create(directories.stashDir, `${fingerprint}.phz`));
+                    assert.equal(contains, false, "Document already exists in persistence layer: " + fingerprint);
 
-                const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
-                await persistenceLayer.write(fingerprint, docMeta, {datastoreMutation});
+                    await Files.mkdirAsync(directories.dataDir);
+                    await Files.mkdirAsync(directories.stashDir);
 
-                // make sure we're always using the datastore mutations
-                await datastoreMutation.written.get();
-                await datastoreMutation.committed.get();
+                    await MockPHZWriter.write(FilePaths.create(directories.stashDir, `${fingerprint}.phz`));
+
+                    const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
+
+                    await persistenceLayer.write(fingerprint, docMeta, { datastoreMutation });
+
+                    // make sure we're always using the datastore mutations
+                    await datastoreMutation.written.get();
+                    await datastoreMutation.committed.get();
+
+                } catch (e) {
+                    console.error(e);
+                    throw e;
+                }
 
             });
 

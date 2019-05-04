@@ -6,6 +6,7 @@ import {FileRegistry} from '../../js/backend/webserver/FileRegistry';
 import {SpectronBrowserWindowOptions} from '../../js/test/SpectronBrowserWindowOptions';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {AppPath} from '../../js/electron/app_path/AppPath';
+import {FilePaths} from '../../js/util/FilePaths';
 
 async function defaultWindowFactory(): Promise<BrowserWindow> {
     const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
@@ -19,7 +20,7 @@ const options: ISpectronMainOptions = {
     windowFactory: defaultWindowFactory
 };
 
-AppPath.set(__dirname);
+AppPath.set(FilePaths.join(__dirname, "..", "..", ".."));
 
 SpectronMain2.create(options).run(async state => {
 
@@ -28,7 +29,7 @@ SpectronMain2.create(options).run(async state => {
     // the webserver must be running as firebase won't load without being on an
     // HTTP URL
 
-    console.log("Running with app path: " + app.getAppPath());
+    console.log("Running with app path: " + AppPath.get());
 
     const webserverConfig = new WebserverConfig(AppPath.get(), 8005);
 
@@ -44,7 +45,7 @@ SpectronMain2.create(options).run(async state => {
     // const path = FilePaths.create(__dirname, "content.html");
     // state.window.loadFile(path);
 
-    const url = `http://localhost:8005/content.html`;
+    const url = `http://localhost:8005/web/spectron/firebase-datastore/content.html`;
     await state.window.loadURL(url);
 
 });

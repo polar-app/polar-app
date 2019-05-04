@@ -165,7 +165,7 @@ SpectronRenderer.run(async (state) => {
                     }
 
                     public async stop() {
-                        this.persistenceLayer!.stop();
+                        await this.persistenceLayer!.stop();
                     }
 
                 }

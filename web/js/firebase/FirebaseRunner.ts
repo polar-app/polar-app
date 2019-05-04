@@ -2,11 +2,17 @@ import {SpectronRendererState} from '../test/SpectronRenderer';
 import * as firebase from './lib/firebase';
 import {Logger} from '../logger/Logger';
 import {Firebase} from './Firebase';
-import {FirebaseUIAuth} from './FirebaseUIAuth';
 import {ASYNC_NULL_FUNCTION} from '../util/Functions';
 import {isPresent} from '../Preconditions';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
+
+const FIREBASE_USER = process.env.FIREBASE_USER!;
+const FIREBASE_PASS = process.env.FIREBASE_PASS!;
+
+Preconditions.assertPresent(FIREBASE_USER, 'FIREBASE_USER');
+Preconditions.assertPresent(FIREBASE_PASS, 'FIREBASE_PASS');
 
 /**
  * @ElectronRendererContext
@@ -35,9 +41,9 @@ export class FirebaseRunner {
             if (firebase.auth().currentUser === null) {
 
                 // bring up the UI so that we can login.
-                FirebaseUIAuth.login();
+                // FirebaseUIAuth.login();
 
-                // TODO: await app.auth().signInWithEmailAndPassword('foo', 'bar');
+                await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
 
             }
 
