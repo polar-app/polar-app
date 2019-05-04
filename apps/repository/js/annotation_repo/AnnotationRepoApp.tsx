@@ -20,8 +20,6 @@ import {ChannelFunction, Channels} from '../../../../web/js/util/Channels';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 
-const log = Logger.create();
-
 export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
@@ -55,53 +53,58 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
         return (
 
-            <FixedNav id="doc-repository" className="annotations-view">
+            <FixedNav id="doc-repository"
+                      className="annotations-view">
 
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    <div id="header-filter" className="mt-1">
+                    {/*<div id="header-filter" className="mt-1">*/}
 
-                        <div style={{display: 'flex'}}>
+                    {/*    <div style={{display: 'flex'}}>*/}
 
-                            <div className=""
-                                 style={{
-                                     whiteSpace: 'nowrap',
-                                     marginTop: 'auto',
-                                     marginBottom: 'auto',
-                                     display: 'flex'
-                                 }}>
+                    {/*        <div className=""*/}
+                    {/*             style={{*/}
+                    {/*                 whiteSpace: 'nowrap',*/}
+                    {/*                 marginTop: 'auto',*/}
+                    {/*                 marginBottom: 'auto',*/}
+                    {/*                 display: 'flex'*/}
+                    {/*             }}>*/}
 
-                                <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}
-                                                  captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
+                    {/*            <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}*/}
+                    {/*                              captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>*/}
 
-                            </div>
+                    {/*        </div>*/}
 
-                            <div style={{marginLeft: 'auto'}}>
+                    {/*        <div style={{marginLeft: 'auto'}}>*/}
 
-                                <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                         onFiltered={filters => this.filterChannel(filters)}
-                                                         right={
-                                                             <div/>
-                                                          }
-                                />
+                    {/*        </div>*/}
 
-                            </div>
+                    {/*    </div>*/}
 
-                        </div>
-
-                    </div>
+                    {/*</div>*/}
 
                     <MessageBanner/>
 
                 </header>
 
-                <div style={{display: 'flex'}}>
+                <div style={{display: 'flex', flexGrow: 1, overflow: 'auto'}}>
 
                     <div className="ml-1"
-                         style={{width: 'calc(100% - 350px)'}}>
+                         style={{width: '350px'}}>
 
                         <FixedNavBody>
+
+
+                            <div className="mt-1 mb-1">
+                                <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                         onFiltered={filters => this.filterChannel(filters)}
+                                                         tagPopoverPlacement="bottom-end"
+                                                         right={
+                                                             <div/>
+                                                         }
+                                />
+                            </div>
 
                             <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                                  updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
@@ -115,7 +118,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                     </div>
 
                     <div className="mt-2 pl-1 pr-1"
-                         style={{width: '350px'}}>
+                         style={{width: 'calc(100% - 350px)'}}>
                         <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
                                                 repoAnnotation={this.state.repoAnnotation}/>
                     </div>

@@ -10,6 +10,7 @@ import Button from 'reactstrap/lib/Button';
 import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {SimpleTooltipEx} from '../../../web/js/ui/tooltip/SimpleTooltipEx';
+import Popper from 'popper.js';
 // import {SyntheticKeyboardEvent} from 'react-dom';
 
 const Styles: IStyleMap = {
@@ -54,6 +55,8 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
         const options = TagOptions.fromTags(this.props.tagsDBProvider().tags());
 
+        const tagsPopoverPlacement = this.props.tagPopoverPlacement || 'bottom';
+
         return (
 
             <div>
@@ -77,7 +80,7 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
                 </SimpleTooltipEx>
 
-                <Popover placement="bottom"
+                <Popover placement={tagsPopoverPlacement}
                          isOpen={this.state.open}
                          target={this.id}
                          trigger="legacy"
@@ -162,6 +165,8 @@ interface IProps {
     readonly filteredTags: FilteredTags;
 
     readonly tooltip?: string;
+
+    readonly tagPopoverPlacement?: Popper.Placement;
 
 }
 

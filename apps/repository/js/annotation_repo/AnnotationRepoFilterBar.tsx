@@ -8,6 +8,7 @@ import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
 import {AnnotationRepoFilters, AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import {FilteredTags} from '../FilteredTags';
+import Popper from '../FilterTagInput';
 
 const log = Logger.create();
 
@@ -91,7 +92,8 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                                     tagsDBProvider={this.props.tagsDBProvider}
                                     refresher={() => this.handler.onFilterByTags(this.filteredTags)}
                                     tooltip="Filter the annotation list by a specific tag."
-                                    filteredTags={this.filteredTags} />
+                                    filteredTags={this.filteredTags}
+                                    tagPopoverPlacement={this.props.tagPopoverPlacement}/>
 
                 </div>
 
@@ -145,6 +147,9 @@ export interface IProps {
      * FilterBar.
      */
     readonly right?: JSX.Element;
+
+    readonly tagPopoverPlacement?: Popper.Placement;
+
 
 }
 

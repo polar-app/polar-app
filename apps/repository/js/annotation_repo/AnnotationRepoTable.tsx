@@ -19,6 +19,7 @@ import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {UpdatedCallback} from './AnnotationRepoFilterEngine';
+import {AnnotationPreview} from './AnnotationPreview';
 
 const log = Logger.create();
 
@@ -102,77 +103,87 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
                 <div id="doc-table">
 
+                    {/*TODO:*/}
+                    {/*    - disable the header*/}
+                    {/*    - make the text wrap*/}
+                    {/*    - if it has an image, show an image*/}
+                    {/*    - sorting options by date descending*/}
+                    {/*    - date/time on each item at the bottom*/}
+
                     <ReactTable
                         data={[...data]}
+                        // headerProps={{display: 'none'}}
                         columns={
                             [
-                                {
-                                    Header: '',
-                                    accessor: 'type',
-                                    maxWidth: 30,
-
-                                    Cell: (row: any) => {
-                                        return (
-
-                                            <div className="text-center">
-                                                <AnnotationIcon type={row.original.type} color={row.original.color}/>
-                                            </div>
-
-                                        );
-                                    }
-
-                                },
+                                // {
+                                //     Header: '',
+                                //     accessor: 'type',
+                                //     maxWidth: 30,
+                                //
+                                //     Cell: (row: any) => {
+                                //         return (
+                                //
+                                //             <div className="text-center">
+                                //                 <AnnotationIcon type={row.original.type} color={row.original.color}/>
+                                //             </div>
+                                //
+                                //         );
+                                //     }
+                                //
+                                // },
                                 {
                                     Header: '',
                                     accessor: 'title',
+                                    maxWidth: 350,
+                                    headerStyle: {display: 'none'},
+                                    style: {whiteSpace: 'normal'},
                                     Cell: (row: any) => {
                                         const id = 'annotation-title' + row.index;
-                                        return (
-                                            <div id={id}>
-
-                                                <div>{row.original.text || 'no text'}</div>
-
-                                            </div>
-
-                                        );
-                                    }
-
-                                },
-                                {
-                                    Header: 'Created',
-                                    // accessor: (row: any) => row.added,
-                                    accessor: 'created',
-                                    show: true,
-                                    maxWidth: 100,
-                                    defaultSortDesc: true,
-                                    Cell: (row: any) => (
-                                        <DateTimeTableCell className="doc-col-last-updated" datetime={row.original.created}/>
-                                    )
-
-                                },
-                                {
-                                    id: 'tags',
-                                    Header: 'Tags',
-                                    accessor: '',
-                                    show: true,
-                                    width: 200,
-                                    Cell: (row: any) => {
-
-                                        // TODO: use <FormattedTags>
-
-                                        const tags: {[id: string]: Tag} = row.original.tags;
-
-                                        const formatted = Object.values(tags)
-                                            .map(tag => tag.label)
-                                            .sort()
-                                            .join(", ");
 
                                         return (
-                                            <div>{formatted}</div>
+
+                                            <AnnotationPreview id={id} annotation={row.original}/>
+
                                         );
 
                                     }
+
                                 },
+                                // {
+                                //     Header: 'Created',
+                                //     // accessor: (row: any) => row.added,
+                                //     accessor: 'created',
+                                //     show: true,
+                                //     maxWidth: 100,
+                                //     defaultSortDesc: true,
+                                //     Cell: (row: any) => (
+                                //         <DateTimeTableCell className="doc-col-last-updated" datetime={row.original.created}/>
+                                //     )
+                                //
+                                // },
+                                // {
+                                //     id: 'tags',
+                                //     Header: 'Tags',
+                                //     accessor: '',
+                                //     show: true,
+                                //     width: 200,
+                                //     Cell: (row: any) => {
+                                //
+                                //         // TODO: use <FormattedTags>
+                                //
+                                //         const tags: {[id: string]: Tag} = row.original.tags;
+                                //
+                                //         const formatted = Object.values(tags)
+                                //             .map(tag => tag.label)
+                                //             .sort()
+                                //             .join(", ");
+                                //
+                                //         return (
+                                //             <div>{formatted}</div>
+                                //         );
+                                //
+                                //     }
+                                // },
 
                             ]}
 
