@@ -72,7 +72,7 @@ export class FirebaseTestRunner {
 
         if (user) {
 
-            log.notice("Working with user: ", user);
+            log.notice("Working with user: " + user.email);
 
             const accountDetailsElement = document.getElementById("account-details");
 

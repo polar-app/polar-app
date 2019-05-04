@@ -55,6 +55,13 @@ jobs:
         command: npx tsc
 
     - run:
+        name: firebase-cloud-aware-datastore
+        command: |
+          export DISPLAY=:99 &&
+          export SPECTRON_OFFSCREEN=true &&
+          npx mocha web/spectron/firebase-cloud-aware-datastore/spec.js
+
+    - run:
         name: npm test
         command: npm test
 
