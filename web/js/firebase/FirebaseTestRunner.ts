@@ -2,16 +2,25 @@ import {SpectronRendererState} from '../test/SpectronRenderer';
 import * as firebase from './lib/firebase';
 import {Logger} from '../logger/Logger';
 import {Firebase} from './Firebase';
-import {FirebaseUIAuth} from './FirebaseUIAuth';
 import {ASYNC_NULL_FUNCTION} from '../util/Functions';
 import {isPresent} from '../Preconditions';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
+const FIREBASE_USER = process.env.FIREBASE_USER!;
+const FIREBASE_PASS = process.env.FIREBASE_PASS!;
+
+Preconditions.assertPresent(FIREBASE_USER, 'FIREBASE_USER');
+Preconditions.assertPresent(FIREBASE_PASS, 'FIREBASE_PASS');
+
 /**
+ * A simple test runner harness that connect to firebase via direct auth and
+ * runs tests against firebase directly.
+ *
  * @ElectronRendererContext
  */
-export class FirebaseRunner {
+export class FirebaseTestRunner {
 
     private readonly state: SpectronRendererState;
 
@@ -30,17 +39,6 @@ export class FirebaseRunner {
 
         window.addEventListener('load', async () => {
 
-            const app = Firebase.init();
-
-            if (firebase.auth().currentUser === null) {
-
-                // bring up the UI so that we can login.
-                FirebaseUIAuth.login();
-
-                // TODO: await app.auth().signInWithEmailAndPassword('foo', 'bar');
-
-            }
-
             this.init()
                 .catch(err => log.error("Caught error on init", err));
 
@@ -49,6 +47,18 @@ export class FirebaseRunner {
     }
 
     public async init() {
+
+        const app = Firebase.init();
+
+        if (firebase.auth().currentUser === null) {
+
+            // bring up the UI so that we can login.
+            // FirebaseUIAuth.login();
+
+            await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+
+            console.log("Authenticated with Firebase successfully.");
+        }
 
         firebase.auth()
             .onAuthStateChanged((user) => this.onAuth(user),
@@ -62,7 +72,7 @@ export class FirebaseRunner {
 
         if (user) {
 
-            log.notice("Working with user: ", user);
+            log.notice("Working with user: " + user.email);
 
             const accountDetailsElement = document.getElementById("account-details");
 

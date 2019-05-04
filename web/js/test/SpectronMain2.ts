@@ -72,7 +72,7 @@ export class SpectronMain2 {
 async function defaultWindowFactory(): Promise<BrowserWindow> {
     const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
     // mainWindow.webContents.toggleDevTools();
-    await mainWindow.loadURL('about:blank')
+    await mainWindow.loadURL('about:blank');
 
     return mainWindow;
 }
