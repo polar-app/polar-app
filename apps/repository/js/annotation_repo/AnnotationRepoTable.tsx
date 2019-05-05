@@ -133,9 +133,14 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                     Cell: (row: any) => {
                                         const id = 'annotation-title' + row.index;
 
+                                        const annotation: RepoAnnotation = row.original;
+
                                         return (
 
-                                            <AnnotationPreview id={id} annotation={row.original}/>
+                                            <AnnotationPreview id={id}
+                                                               text={annotation.text}
+                                                               img={annotation.img}
+                                                               created={annotation.created}/>
 
                                         );
 
