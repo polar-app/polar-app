@@ -39,12 +39,9 @@ abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
  */
 export class DefaultDatastoreMutation<T> extends AbstractDatastoreMutation<T> {
 
-    // TODO: refactor and rename class as DatastoreMutations
+    // TODO: refactor and rename class as DatastoreLatchPair
     constructor() {
         super();
-
-        console.error("FIXME: datastore mutation with id N was created here: " + this.id);
-
     }
 
     public readonly written = new Latch<T>();
