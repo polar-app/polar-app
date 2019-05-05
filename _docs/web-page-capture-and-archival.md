@@ -112,10 +112,19 @@ doing so.
 
 We're lucky captured pages work AT ALL.
 
+## What are the challenges of creating a portable HTML archive that mandates something custom.
+
+ - CORS access policies prevent the content being access programmatically for
+   things like screenshots.
+   
+ - CORS prevents loading resources from our origin and the target origin
+
 ## Why not MHTML
 
 - Firefox doesn't support MHTML
+
 - MHTML doesn't support images
+
 - We can't extend it, fix bugs in it, etc.
 
 ## Why not WARC
@@ -134,6 +143,5 @@ We're lucky captured pages work AT ALL.
 
 - WARC would only represent the storage, not the extraction.  It might be 
   possible to WRITE WARC or have export to WARC though.
-  
-   
+     
  
