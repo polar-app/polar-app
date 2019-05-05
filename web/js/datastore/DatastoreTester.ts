@@ -223,6 +223,7 @@ export class DatastoreTester {
                 // differ");
 
                 await datastore.deleteFile(Backend.IMAGE, fileRef);
+                // make sure we're idempotent for our writes.
                 await datastore.deleteFile(Backend.IMAGE, fileRef);
 
             });

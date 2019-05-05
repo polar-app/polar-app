@@ -299,6 +299,9 @@ export interface WritableBinaryDatastore {
 
 export interface WriteFileOpts {
 
+    /**
+     * @deprecated we no longer support arbitrary file metadata.
+     */
     readonly meta?: FileMeta;
 
     /**
