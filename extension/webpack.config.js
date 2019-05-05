@@ -10,6 +10,7 @@ console.log("Using N workers: " + workers);
 module.exports = {
     // mode: 'development',
     entry: {
+        "content": [ "./content.ts"],
         "popup": [ "./popup.ts"],
         "background": [ "./background.ts"],
     },
