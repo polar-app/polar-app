@@ -44,7 +44,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
     public init() {
 
-
         const onUpdated: UpdatedCallback =
             repoAnnotations => {
 

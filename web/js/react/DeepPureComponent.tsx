@@ -12,7 +12,17 @@ export abstract class DeepPureComponent<P, S> extends React.Component<P, S> {
     }
 
     public shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
-        return isEqual(this.props, nextProps) && isEqual(this.state, nextState);
+
+        if (! isEqual(this.props, nextProps)) {
+            return true;
+        }
+
+        if (! isEqual(this.state, nextState)) {
+            return true;
+        }
+
+        return false;
+
     }
 
 }
