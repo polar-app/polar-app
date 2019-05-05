@@ -14,7 +14,17 @@ export abstract class LazyComponent<L extends LazyProps, S extends LazyState> ex
     }
 
     public shouldComponentUpdate(nextProps: Readonly<LazyProps>, nextState: Readonly<LazyState>, nextContext: any): boolean {
-        return lazyObjEquals(this.props, nextProps) && lazyObjEquals(this.state, nextState);
+
+        if (! lazyObjEquals(this.props, nextProps)) {
+            return true;
+        }
+
+        if (! lazyObjEquals(this.state, nextState)) {
+            return true;
+        }
+
+        return false;
+
     }
 
 }
