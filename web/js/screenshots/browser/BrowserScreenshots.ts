@@ -60,7 +60,8 @@ export class BrowserScreenshots {
                         = await webextensions.Messaging.sendMessage(request);
 
                     if (!response) {
-                        Toaster.error("Unable to capture screenshot. Make sure the latest version of the Polar web extension is installed.");
+                        Toaster.error("Area highlights not yet supported in the Polar webapp. ");
+                        // Toaster.error("Unable to capture screenshot. Make sure the latest version of the Polar web extension is installed.");
                         throw new Error("No response from web extension");
                     }
 
