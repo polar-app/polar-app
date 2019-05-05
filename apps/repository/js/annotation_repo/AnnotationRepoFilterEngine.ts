@@ -101,20 +101,22 @@ export class AnnotationRepoFilterEngine {
             RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
         }
 
+        if (tags.length === 0) {
+            // we're done as there are no tags.
+            return repoAnnotations;
+        }
+
         return repoAnnotations.filter(current => {
 
-            if (tags.length === 0) {
-                // there is no filter in place...
-                return true;
-            }
+            const docTags = Object.values(current.docInfo.tags || {});
 
-            if (! isPresent(current.docInfo.tags)) {
-                // the document we're searching over has not tags.
+            if (docTags.length === 0) {
+                // the document we're searching over has no tags.
                 return false;
             }
 
             const intersection =
-                Sets.intersection(tags, Tags.toIDs(Object.values(current.docInfo.tags!)));
+                Sets.intersection(tags, Tags.toIDs(docTags));
 
             return intersection.length === tags.length;
 
