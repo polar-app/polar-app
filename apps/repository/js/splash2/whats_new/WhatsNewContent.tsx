@@ -19,8 +19,50 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
+                    {/*<div className="intro">*/}
+                    {/*    <CrowdfundingCampaign/>*/}
+                    {/*</div>*/}
+
+
+                    <h3>Polar 1.19.0</h3>
+
                     <div className="intro">
-                        <CrowdfundingCampaign/>
+
+                        <p>
+                            Polar 1.19 adds three big features.
+                        </p>
+
+                        <b>Area Highlights</b>
+
+                        <p>
+                            Area highlights are now updated in the sidebar and
+                            updated and resized while you drag the area
+                            highlight box.
+                        </p>
+
+                        <b>Updated Annotations View</b>
+
+                        <p>
+                            We've updated the annotations view to show
+                            preview annotations and a better view of each
+                            annotation including showing area highlights.
+                        </p>
+
+                        <b>Native PDF Handling in Web Extension Disabled</b>
+
+                        <p>
+                            We've had to remove the native PDF handling in our web extension.
+                        </p>
+
+                        <p>
+                            This feature automatically previewed and added a
+                            PDF to the Polar webapp while browsing.
+                        </p>
+
+                        <p>We had to disable it due to cross domain security
+                        issues we weren't able to fix. This might be enabled
+                        again in a future version of Polar.</p>
+
                     </div>
 
 

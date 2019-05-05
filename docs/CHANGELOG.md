@@ -3,8 +3,16 @@
 
 - Fixed bug with mouse up when using iframes.
 
-# 1.18.1
+- Area highlights now supported
 
+- Updated annotation view which is more usable and allows you to work with your 
+  notes and annotations more directly including better filtering and UI.
+
+- Polar chrome extension no longer handles PDFs by default.  We will have to 
+  keep this functionality disabled until we can embed the entire web app 
+  within the chrome extension but this is a difficult task for now.
+
+# 1.18.1
 
 - new component to ScrollIntoView so that when we're dealing with scrollable 
   and long form content we can make sure the content and scrolled and viewable. 
@@ -15,9 +23,6 @@
 - Fixed bug where capture would fail because load was 'aborted' but it really
   doesn't matter as we're just triggering load and it's up to the user if they
   want to capture.
-
-- Extension should now properly only activate when used on app.getpolarized.io 
-  only for CORS access to PDFs.
 
 - Polar chrome extension now part of main polar repo for better support and 
   faster iteration.
