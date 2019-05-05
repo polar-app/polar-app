@@ -1,9 +1,8 @@
 import {PersistenceLayer} from "./PersistenceLayer";
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from "../util/Functions";
-import {Backend} from './Backend';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
-import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
 import {BackendFileRef} from './Datastore';
 import {Visibility} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
@@ -12,11 +11,8 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from "../Preconditions";
-import {Optional} from "../util/ts/Optional";
-import {DocFileMeta} from "./DocFileMeta";
 import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
-import {Datastores} from './Datastores';
 import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
