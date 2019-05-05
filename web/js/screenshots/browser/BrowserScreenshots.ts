@@ -5,6 +5,7 @@ import {ILTRect} from '../../util/rects/ILTRect';
 import {Results} from '../../util/Results';
 import {Canvases} from '../../util/Canvases';
 import {AnnotationToggler} from '../AnnotationToggler';
+import {Toaster} from '../../ui/toaster/Toaster';
 
 export class BrowserScreenshots {
 
@@ -59,6 +60,7 @@ export class BrowserScreenshots {
                         = await webextensions.Messaging.sendMessage(request);
 
                     if (!response) {
+                        Toaster.error("Unable to capture screenshot. Make sure the latest version of the Polar web extension is installed.");
                         throw new Error("No response from web extension");
                     }
 
