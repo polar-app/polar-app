@@ -103,6 +103,9 @@ export class RepoDocMetaLoader {
 
                     if (docMetaMutation.mutationType === 'deleted') {
 
+                        // FIXME: we have to delete data from the RepoDocMetas
+                        // now
+
                         mutations.push({
                             mutationType: docMetaMutation.mutationType,
                             fingerprint: docMetaMutation.fingerprint,

@@ -1,4 +1,3 @@
-import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocInfo, IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
@@ -11,7 +10,6 @@ import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IProvider} from '../../../web/js/util/Providers';
-import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
@@ -169,7 +167,7 @@ export class RepoDocMetaManager {
     }
 
     private init() {
-        // FIXME: is this even needed anymore?
+        // TODO: is this even needed anymore?
 
         for (const repoDocInfo of Object.values(this.repoDocInfoIndex)) {
             this.updateTagsDB(repoDocInfo);
