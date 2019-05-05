@@ -41,7 +41,7 @@ export class BackendFileRefs {
             return backendFileRef;
 
         } else {
-            log.warn("DocInfo has no filename");
+            // log.warn("DocInfo has no filename");
         }
 
         return undefined;

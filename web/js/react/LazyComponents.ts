@@ -46,7 +46,7 @@ export function lazyEquals(a: LazyType, b: LazyType) {
     const aObj = <any> a;
     const bObj = <any> b;
 
-    if (aObj.oid && bObj.oid) {
+    if (aObj && aObj.oid && bObj && bObj.oid) {
         return aObj.oid === bObj.oid;
     }
 

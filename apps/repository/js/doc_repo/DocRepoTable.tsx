@@ -473,8 +473,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                             const id = 'doc-repo-row-title' + row.index;
                                             const repoDocInfo: RepoDocInfo = row.original;
 
-                                            console.log("FIXME: rendering title");
-
                                             return (
 
                                                 <div id={id}>
