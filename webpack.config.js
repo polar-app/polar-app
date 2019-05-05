@@ -124,6 +124,4 @@ module.exports = {
         host: 'localapp.getpolarized.io'
     }
 
-}
-
-
+};
