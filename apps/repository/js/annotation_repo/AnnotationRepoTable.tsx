@@ -1,12 +1,8 @@
 import * as React from 'react';
 import ReactTable from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
-import {Tag} from '../../../../web/js/tags/Tag';
-import {Tags} from '../../../../web/js/tags/Tags';
-import {DateTimeTableCell} from '../DateTimeTableCell';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
-import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
-import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
+import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
@@ -14,7 +10,6 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
-import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
@@ -26,9 +21,7 @@ const log = Logger.create();
 export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
-
-    private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
-
+    
     constructor(props: IProps, context: any) {
         super(props, context);
 

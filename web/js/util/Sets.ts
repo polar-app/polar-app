@@ -9,9 +9,7 @@ export class Sets {
      *
      */
     public static difference<T>(a: ReadonlyArray<T>, b: ReadonlyArray<T>): ReadonlyArray<T> {
-
         return a.filter(x => ! b.includes(x));
-
     }
 
     public static union<T>(a: ReadonlyArray<T>, b: ReadonlyArray<T>): ReadonlyArray<T> {
