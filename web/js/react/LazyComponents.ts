@@ -28,14 +28,6 @@ export function lazyEquals(a: LazyType, b: LazyType) {
 
     // typeof null is 'object'
 
-    const typA = typ(a);
-    const typB = typ(b);
-
-    if (typA !== typB) {
-        // they're not the same type while WEIRD is possible in JS
-        return false;
-    }
-
     const nrUndefined = [a, b].filter(val => val === undefined).length;
     const nrNull = [a, b].filter(val => val === null).length;
 
@@ -47,8 +39,15 @@ export function lazyEquals(a: LazyType, b: LazyType) {
         return false;
     }
 
-    if (typA === 'object' && typB === 'object') {
-        return (<any> a).oid === (<any> b).oid;
+    // TODO: it should be possible to work with any combination of deep objects
+    // as long as they don't have functions or things that are difficult to
+    // compare.
+
+    const aObj = <any> a;
+    const bObj = <any> b;
+
+    if (aObj.oid && bObj.oid) {
+        return aObj.oid === bObj.oid;
     }
 
     return a === b;

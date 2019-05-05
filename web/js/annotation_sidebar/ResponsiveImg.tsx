@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/BaseHighlight';
-
+import {DeepPureComponent} from '../react/DeepPureComponent';
 
 /**
  * Shows a and image and re-sizes it to its parent properly.
  */
-export class ResponsiveImg extends React.Component<IProps, IState> {
+export class ResponsiveImg extends DeepPureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
