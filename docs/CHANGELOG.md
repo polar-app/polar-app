@@ -1,6 +1,8 @@
 
 # 1.19.0
 
+- Upgrade to Electron 5.0.1
+
 - Fixed bug with mouse up when using iframes.
 
 - Area highlights now supported
