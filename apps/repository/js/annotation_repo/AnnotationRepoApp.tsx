@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {FilteredTags} from '../FilteredTags';
@@ -12,10 +11,8 @@ import {RepoHeader} from '../repo_header/RepoHeader';
 import {MessageBanner} from '../MessageBanner';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
-import {FixedNav, FixedNavBody} from '../FixedNav';
-import {AddContentButton} from '../ui/AddContentButton';
+import {FixedNav} from '../FixedNav';
 import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
-import {AddContentActions} from '../ui/AddContentActions';
 import {ChannelFunction, Channels} from '../../../../web/js/util/Channels';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';

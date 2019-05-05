@@ -132,8 +132,6 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
     }
 
-
-
 }
 
 export interface IProps {
