@@ -165,7 +165,6 @@
     "font-awesome": "~4.7.0",
     "fontawesome": "~5.6.3",
     "glyphicons": "~0.2.0",
-    "html2canvas": "^1.0.0-rc.1",
     "http-proxy-agent": "~2.1.0",
     "http-proxy-middleware": "~0.19.1",
     "https-proxy-agent": "~2.2.1",

@@ -1,7 +1,6 @@
 import {DocFormat, DocFormatName, PageDetail} from './DocFormat';
 import {notNull} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
-import html2canvas from 'html2canvas';
 import {URLs} from '../util/URLs';
 
 export class HTMLFormat extends DocFormat {
@@ -47,7 +46,7 @@ export class HTMLFormat extends DocFormat {
     }
 
     setCurrentDocFingerprint(fingerprint: string) {
-        let polarFingerprint = this._queryFingerprintElement();
+        const polarFingerprint = this._queryFingerprintElement();
         polarFingerprint.setAttribute("content", fingerprint);
     }
 
@@ -108,80 +107,7 @@ export class HTMLFormat extends DocFormat {
 
     public async getCanvas(pageNum: number): Promise<HTMLCanvasElement> {
 
-        // TODO: we could build our OWN image and URL handler to ensure that
-        // all the URLs that we're capturing are absolute URLs but we would have
-        // to do this for ALL url types including those that are in CSS
-
-        if (HTMLFormat.canvas) {
-            return HTMLFormat.canvas;
-        }
-
-        HTMLFormat.canvas = document.createElement('canvas');
-
-        const createElement = (): HTMLElement => {
-            const doc = this.targetDocument()!;
-            return <HTMLElement> doc.documentElement!;
-        };
-
-        const element = createElement();
-
-        const page = <HTMLElement> document.querySelector(".page");
-        if (! page) {
-            throw new Error("No page found");
-        }
-
-        const height = page.offsetHeight;
-        const width = page.offsetWidth;
-
-        const onClone = (clonedDoc: HTMLDocument) => {
-
-            const base = clonedDoc.documentElement.querySelector("base");
-
-            if (! base) {
-                throw new Error();
-            }
-
-            for (const img of Array.from(clonedDoc.querySelectorAll("img"))) {
-
-                if (img.src) {
-
-                    if (URLs.isURL(img.src)) {
-                        continue;
-                    }
-
-                    const abs = URLs.absolute(base.href, img.src);
-                    img.src = abs;
-
-                }
-
-            }
-
-        };
-
-        // TODO: the time of this is still long.. like 500ms to 1000ms and it's
-        // very fragile ...
-
-        // TODO: play with enabling/disabling all the CSS overlays, capture,
-        // then revert...
-
-        // TODO: now SVGs aren't rendering and if I enable
-        // foreignObjectRendering what ends up happening is I get a black
-        // screen.  Also I get a ton of 404s for image seven though theyu shoudl
-        // be expanded.
-
-        const opts = {
-            allowTaint: true,
-            onclone: onClone,
-            // foreignObjectRendering: true
-        };
-
-        html2canvas(element, {
-            canvas: HTMLFormat.canvas,
-            width, height,
-            ...opts
-        });
-
-        return HTMLFormat.canvas;
+        throw new Error("Not supported");
 
     }
 
