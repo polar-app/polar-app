@@ -3,28 +3,30 @@ import {Firestore} from '../firebase/Firestore';
 import {Hashcodes} from '../Hashcodes';
 import {MachineID} from '../util/MachineIDs';
 
-export class UserFeedbacks {
+export class ContentCaptureFeedbacks {
 
-    public static async write(userFeedback: UserFeedback) {
+    public static async write(contentCaptureFeedback: ContentCaptureFeedback) {
 
         const firestore = await Firestore.getInstance();
 
         const id = Hashcodes.createRandomID();
 
-        const ref = firestore.collection("user_feedback").doc(id);
+        const ref = firestore.collection("content_capture_feedback").doc(id);
 
-        await ref.set(userFeedback);
+        await ref.set(contentCaptureFeedback);
 
     }
 
 }
 
-interface UserFeedback {
+interface ContentCaptureFeedback {
 
     /**
-     * The score they gave us.
+     * The URL that they're providing feedback for.
      */
-    readonly netPromoterScore: NetPromoterScore;
+    readonly url: string;
+
+    readonly rating: Rating;
 
     /**
      * Their actual text that they provided.
@@ -35,10 +37,7 @@ interface UserFeedback {
 
     readonly machine: MachineID;
 
-    // TODO: more fields including a unique/blinded ID for the user, the date
-    // their account was created (so I can do cohorts for this)
-
 }
 
-type NetPromoterScore = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+type Rating = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
