@@ -20,6 +20,6 @@ if [ "${branch}" != "master" ]; then
     die "Must be on master branch"
 fi
 
-git clean -f && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
+git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
 
 # TODO install the and test the platform builds now...
