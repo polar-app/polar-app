@@ -57,7 +57,7 @@ build_for_arch() {
        -v ~/.cache/electron:/root/.cache/electron \
        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
        -v ${WINDOWS_CSC_DIR}:/root/windows-csc \
-       electronuserland/builder:wine bash -c 'npm install && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.'${target}'.artifactName=\${name}-\${version}-'${target}'-'${arch}'.\${ext} --'${arch}' --win '${target}' --publish never'
+       electronuserland/builder:wine bash -c 'npm install && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.'${target}'.artifactName=\${name}-\${version}-'${target}'-'${arch}'.\${ext} --'${arch}' --win '${target}' --publish always'
 }
 
 build_for_arch x64 portable
