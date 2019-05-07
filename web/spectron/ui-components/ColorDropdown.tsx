@@ -57,7 +57,7 @@ const ColorButton = (props: ColorButtonProps) => {
                    style={{
                        display: 'inline-block',
                        backgroundColor,
-                       border: '1pt solid rgba(0,0,0, 0.1)',
+                       border: '1pt solid rgba(0, 0, 0, 0.1)',
                        width: size,
                        height: size
                    }}>
