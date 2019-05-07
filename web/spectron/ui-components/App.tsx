@@ -55,6 +55,8 @@ import {Suggestions} from '../../js/ui/feedback/Suggestions';
 import {FakeComponent0} from './FakeComponent0';
 import {Canvases} from '../../js/util/Canvases';
 import {ColorDropdown} from './ColorDropdown';
+import { SketchPicker } from 'react-color';
+import {TwitterPicker} from 'react-color';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -101,6 +103,12 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
                 <ColorDropdown onSelected={color => console.log(color)}/>
+
+                <SketchPicker />;
+
+
+                <TwitterPicker/>
+
             </div>
 
         );

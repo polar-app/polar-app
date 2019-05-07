@@ -7,6 +7,8 @@ import {UncontrolledButtonDropdown} from 'reactstrap';
 import {DropdownToggle} from 'reactstrap';
 import {DropdownMenu} from 'reactstrap';
 import {DropdownItem} from 'reactstrap';
+import {UncontrolledPopover} from 'reactstrap';
+
 
 interface ColorButtonProps extends IProps {
     readonly color: HighlightColor;
@@ -24,7 +26,7 @@ const ColorButton = (props: ColorButtonProps) => {
             case 'red':
                 return 'rgba(255,0,0)';
             case 'green':
-                return 'rgba(0,255,0)'
+                return 'rgba(0,255,0)';
             default:
                 throw new Error("Bad color: " + props.color);
         }
@@ -64,6 +66,8 @@ export class ColorDropdown extends React.Component<IProps, IState> {
     }
     private toggle() {
 
+        console.log("FIXME: toggle");
+
         this.setState({
             open: !this.state.open
         });
@@ -94,6 +98,33 @@ export class ColorDropdown extends React.Component<IProps, IState> {
 
                 </Popover>
 
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+
+
+                <Button id="Popover2" type="button">
+                    Launch Popover
+                </Button>
+
+                <UncontrolledPopover placement="bottom"
+                                     target="Popover2">
+
+                    <PopoverBody>
+
+                        <ColorButton {...props} color={'yellow'}/>
+                        <ColorButton {...props} color={'red'}/>
+                        <ColorButton {...props} color={'green'}/>
+
+                    </PopoverBody>
+
+                </UncontrolledPopover>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+
                 <UncontrolledButtonDropdown>
 
                     <DropdownToggle caret>
@@ -105,6 +136,8 @@ export class ColorDropdown extends React.Component<IProps, IState> {
 
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
+
+
 
             </div>
         );
