@@ -58,6 +58,7 @@ import {ColorDropdown} from './ColorDropdown';
 import { SketchPicker } from 'react-color';
 import {TwitterPicker} from 'react-color';
 import {SwatchesPicker} from 'react-color';
+import {ColorSelector} from '../../js/ui/colors/ColorSelector';
 
 const styles = {
     swatch: {
@@ -97,6 +98,9 @@ class App<P> extends React.Component<{}, IAppState> {
           //                 {/*right={<div/>}/>*/}
 
             <div>
+
+                <ColorSelector color='yellow' size="16px"/>
+
                 <ColorDropdown onSelected={color => console.log(color)}/>
 
                 <SketchPicker />;

@@ -276,6 +276,7 @@ export class ColorDropdown extends React.Component<IProps, IState> {
 
             </div>
         );
+
     }
 
 }
