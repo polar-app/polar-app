@@ -17,11 +17,14 @@ import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {CreateFlashcard} from './child_annotations/flashcards/CreateFlashcard';
 import {FlashcardActions} from './child_annotations/flashcards/FlashcardActions';
 import {Doc} from '../metadata/Doc';
+import {NULL_FUNCTION} from '../util/Functions';
+import {ColorSelector} from '../ui/colors/ColorSelector';
 
 const Styles: IStyleMap = {
 
     button: {
-        paddingTop: '4px',
+        marginTop: 'auto',
+        marginBottom: 'auto',
         color: 'red !important',
         fontSize: '15px'
 
@@ -109,6 +112,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                             <FlashcardIcon/>
 
                         </Button>
+
+                        <ColorSelector onSelected={NULL_FUNCTION}
+                                       className="mt-auto mb-auto"
+                                       size='16px'
+                                       color='yellow'/>
 
                         <div className="ml-1">
                             <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}

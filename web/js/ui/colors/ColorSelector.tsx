@@ -5,8 +5,11 @@ import {NULL_FUNCTION} from '../../util/Functions';
 import {ColorButton} from './ColorButton';
 import {RGBColor} from './ColorButton';
 import {ColorSelectorBox} from './ColorSelectorBox';
+import {IDs} from '../../util/IDs';
 
 export class ColorSelector extends React.Component<IProps, IState> {
+
+    private id: string;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -16,6 +19,8 @@ export class ColorSelector extends React.Component<IProps, IState> {
         this.state = {
             open: false
         };
+
+        this.id = IDs.create('color-button');
 
     }
 
@@ -36,24 +41,25 @@ export class ColorSelector extends React.Component<IProps, IState> {
 
     public render() {
 
-        const props = this.props;
+        const {id, props} = this;
 
         const onSelected = props.onSelected || NULL_FUNCTION;
 
         return (
 
-            <div>
+            <div className={this.props.className || ''}
+                 style={this.props.style}>
 
                 <ColorButton color={this.props.color}
                              size={this.props.size}
-                             id="ColorButton1"
+                             id={id}
                              onSelected={() => this.activate()}/>
 
                 <Popover placement="bottom"
                          trigger="legacy"
                          delay={0}
                          isOpen={this.state.open}
-                         target="ColorButton1"
+                         target={id}
                          toggle={this.deactivate}>
 
                     <PopoverBody className="shadow rounded p-2"
@@ -76,6 +82,9 @@ export class ColorSelector extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
 
     readonly size?: string;
 
