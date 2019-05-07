@@ -14,6 +14,7 @@ import {NULL_FUNCTION} from '../../js/util/Functions';
 
 interface ColorButtonProps extends IProps {
     readonly color: string;
+    readonly size?: string;
     readonly id?: string;
 }
 
@@ -43,6 +44,8 @@ const ColorButton = (props: ColorButtonProps) => {
 
     const onSelected = props.onSelected || NULL_FUNCTION;
 
+    const size = props.size || '30px';
+
     return <Button size="lg"
                    id={props.id}
                    type="button"
@@ -55,8 +58,8 @@ const ColorButton = (props: ColorButtonProps) => {
                        display: 'inline-block',
                        backgroundColor,
                        border: '1pt solid rgba(0,0,0, 0.1)',
-                       width: '30px',
-                       height: '30px'
+                       width: size,
+                       height: size
                    }}>
 
     </Button>;
@@ -120,8 +123,10 @@ const ColorButtonsRow = (props: ColorButtonsRowProps) => {
 
 const ColorButtonsRow0 = (props: IProps) => {
 
+
+    // 3x colors added...
     // const colors = ['#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF'];
-    const colors = ['#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3'];
+    const colors = ['#FFFF00', '#F96676', '#8DFF76', '#00D084', '#8ED1FC', '#0693E3'];
 
     return <ColorButtonsRow {...props} colors={colors}/>;
 
@@ -129,7 +134,7 @@ const ColorButtonsRow0 = (props: IProps) => {
 
 const ColorButtonsRow1 = (props: IProps) => {
 
-    const colors = ['#ABB8C3', '#EB144C', '#F78DA7', '#9900EF'];
+    const colors = [ '#EB144C', '#F78DA7', '#9900EF', '#FF6900', '#FCB900', '#7BDCB5'];
 
     return <ColorButtonsRow {...props} colors={colors}/>;
 
