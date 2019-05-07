@@ -8,6 +8,7 @@ import {DropdownToggle} from 'reactstrap';
 import {DropdownMenu} from 'reactstrap';
 import {DropdownItem} from 'reactstrap';
 import {UncontrolledPopover} from 'reactstrap';
+import {TwitterPicker} from 'react-color';
 
 
 interface ColorButtonProps extends IProps {
@@ -86,6 +87,7 @@ export class ColorDropdown extends React.Component<IProps, IState> {
                 <Popover placement="bottom"
                          isOpen={this.state.open}
                          target="Popover1"
+
                          toggle={this.toggle}>
 
                     <PopoverBody>
@@ -103,19 +105,105 @@ export class ColorDropdown extends React.Component<IProps, IState> {
                 <br/>
                 <br/>
 
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
 
                 <Button id="Popover2" type="button">
                     Launch Popover
                 </Button>
 
                 <UncontrolledPopover placement="bottom"
+                                     trigger="legacy"
+                                     delay={0}
+                                     hideArrow
+                                     className="border-0"
                                      target="Popover2">
 
                     <PopoverBody>
 
-                        <ColorButton {...props} color={'yellow'}/>
-                        <ColorButton {...props} color={'red'}/>
-                        <ColorButton {...props} color={'green'}/>
+                        {/*<ColorButton {...props} color={'yellow'}/>*/}
+                        {/*<ColorButton {...props} color={'red'}/>*/}
+                        {/*<ColorButton {...props} color={'green'}/>*/}
+
+                        <TwitterPicker triangle='hide'/>
 
                     </PopoverBody>
 
