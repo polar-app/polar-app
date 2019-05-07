@@ -26,7 +26,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
         const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
 
-        const html = Optional.of(annotation.html).getOrElse('');
+        const html = Optional.first(annotation.html).getOrElse('');
 
         const key = 'text-highlight-' + annotation.id;
 

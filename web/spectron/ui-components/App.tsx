@@ -54,6 +54,7 @@ import {Channels} from '../../js/util/Channels';
 import {Suggestions} from '../../js/ui/feedback/Suggestions';
 import {FakeComponent0} from './FakeComponent0';
 import {Canvases} from '../../js/util/Canvases';
+import {ColorDropdown} from './ColorDropdown';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -98,9 +99,8 @@ class App<P> extends React.Component<{}, IAppState> {
           // {/*}*/}
           //                 {/*right={<div/>}/>*/}
 
-
             <div>
-                <FakeComponent0/>
+                <ColorDropdown onSelected={color => console.log(color)}/>
             </div>
 
         );

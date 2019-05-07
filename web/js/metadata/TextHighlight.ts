@@ -79,7 +79,14 @@ export class TextHighlight extends BaseHighlight {
 export interface ITextHighlight {
 
     readonly textSelections: {[id: number]: TextRect};
+
     readonly text: Text | string;
+
+    /**
+     * User edited/revised text for the highlight.
+     */
+    readonly revisedText?: Text | string;
+
     readonly rects: {[key: number]: Rect};
     readonly image?: Image;
     readonly images: {[key: string]: Image};
