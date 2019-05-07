@@ -160,25 +160,33 @@ export class ColorDropdown extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.toggle = this.toggle.bind(this);
+        this.deactivate = this.deactivate.bind(this);
 
         this.state = {
             open: false
         };
 
     }
-    private toggle() {
 
-        console.log("FIXME: toggle");
+    private deactivate() {
 
         this.setState({
-            open: !this.state.open
+            open: false
+        });
+    }
+
+    private activate() {
+
+        this.setState({
+            open: true
         });
     }
 
     public render() {
 
         const props = this.props;
+
+        const onSelected = props.onSelected || NULL_FUNCTION;
 
         return (
             <div>
@@ -208,19 +216,23 @@ export class ColorDropdown extends React.Component<IProps, IState> {
                 {/*</Popover>*/}
 
 
-                <ColorButton color="yellow" id="ColorButton1"/>
+                <ColorButton color="yellow" id="ColorButton1" onSelected={() => this.activate()}/>
 
                 <Popover placement="bottom"
                          trigger="legacy"
                          delay={0}
                          isOpen={this.state.open}
                          target="ColorButton1"
-                         toggle={this.toggle}>
+                         toggle={this.deactivate}>
 
                     <PopoverBody className="shadow rounded p-2"
                                  style={{backgroundColor: '#ffffff'}}>
 
-                        <ColorButtons {...props}/>
+                        <ColorButtons {...props}
+                                      onSelected={(color) => {
+                                        this.deactivate();
+                                        onSelected(color);
+                                      }}/>
 
                     </PopoverBody>
 
