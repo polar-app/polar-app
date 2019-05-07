@@ -9,16 +9,17 @@ import {DropdownMenu} from 'reactstrap';
 import {DropdownItem} from 'reactstrap';
 import {UncontrolledPopover} from 'reactstrap';
 import {TwitterPicker} from 'react-color';
+import {NULL_FUNCTION} from '../../js/util/Functions';
 
 
 interface ColorButtonProps extends IProps {
-    readonly color: HighlightColor;
-    // readonly onSelected: () =
+    readonly color: string;
+    readonly id?: string;
 }
 
 const Spacer = () => {
     return <div style={{width: '10px'}} className="ml-2"/>;
-}
+};
 
 const ColorButton = (props: ColorButtonProps) => {
 
@@ -33,25 +34,30 @@ const ColorButton = (props: ColorButtonProps) => {
             case 'green':
                 return 'rgba(0,255,0)';
             default:
-                throw new Error("Bad color: " + props.color);
+                return props.color;
         }
 
     };
 
     const backgroundColor = createBackgroundColor();
 
+    const onSelected = props.onSelected || NULL_FUNCTION;
+
     return <Button size="lg"
-            type="button"
-            className="border-0 ml-2"
-            title=""
-            aria-label=""
-            color="light"
-            // onClick={() => this.dispatchOnHighlighted('yellow')}
-            style={{
-                backgroundColor,
-                width: '30px',
-                height: '30px'
-            }}>
+                   id={props.id}
+                   type="button"
+                   className="ml-1 mr-1 p-0"
+                   title=""
+                   aria-label=""
+                   color="light"
+                   onClick={() => onSelected(props.color)}
+                   style={{
+                       display: 'inline-block',
+                       backgroundColor,
+                       border: '1pt solid rgba(0,0,0, 0.1)',
+                       width: '30px',
+                       height: '30px'
+                   }}>
 
     </Button>;
 
@@ -78,7 +84,6 @@ const ColorExample = (props: ColorExampleProps) => {
                          opacity: 1.0,
                          width: '200px',
                          mixBlendMode: 'multiply',
-
                          height: '1.4em'}}/>
 
         </div>
@@ -87,15 +92,64 @@ const ColorExample = (props: ColorExampleProps) => {
 
 };
 
+
 const ColorExamples = () => {
 
     return <div style={{display: 'flex'}}>
 
         <ColorExample color="#FF6900"/>
-        <Spacer/>
         <ColorExample color="#FCB900"/>
-        <Spacer/>
         <ColorExample color="#7BDCB5"/>
+
+    </div>;
+
+};
+
+interface ColorButtonsRowProps extends IProps {
+    readonly colors: ReadonlyArray<string>;
+}
+
+const ColorButtonsRow = (props: ColorButtonsRowProps) => {
+
+    return <div>
+        {props.colors.map(color =>
+               <ColorButton {...props} color={color}/>)}
+    </div>;
+
+};
+
+const ColorButtonsRow0 = (props: IProps) => {
+
+    // const colors = ['#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF'];
+    const colors = ['#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3'];
+
+    return <ColorButtonsRow {...props} colors={colors}/>;
+
+};
+
+const ColorButtonsRow1 = (props: IProps) => {
+
+    const colors = ['#ABB8C3', '#EB144C', '#F78DA7', '#9900EF'];
+
+    return <ColorButtonsRow {...props} colors={colors}/>;
+
+};
+
+
+const ColorButtons = (props: IProps) => {
+
+    return <div className="pt-1 pb-1"
+                style={{
+                    // justifyContent: 'space-evenly'
+                }}>
+        {/*<ColorButton {...props} color={'yellow'}/>*/}
+        {/*<ColorButton {...props} color={'red'}/>*/}
+        {/*<ColorButton {...props} color={'green'}/>*/}
+        <ColorButtonsRow0 {...props}/>
+
+        <div className="mt-2">
+            <ColorButtonsRow1 {...props}/>
+        </div>
 
     </div>;
 
@@ -128,21 +182,45 @@ export class ColorDropdown extends React.Component<IProps, IState> {
 
         return (
             <div>
-                <Button id="Popover1" type="button">
-                    Launch Popover
-                </Button>
+
+                <br/>
+
+                <ColorButtons {...props}/>
+
+
+                {/*<Button id="Popover1" type="button">*/}
+                {/*    Launch Popover*/}
+                {/*</Button>*/}
+
+                {/*<Popover placement="bottom"*/}
+                {/*         isOpen={this.state.open}*/}
+                {/*         target="Popover1"*/}
+
+                {/*         toggle={this.toggle}>*/}
+
+                {/*    <PopoverBody className="shadow rounded p-2"*/}
+                {/*                 style={{backgroundColor: '#ffffff'}}>*/}
+
+                {/*        <ColorButtons {...this.props}/>*/}
+
+                {/*    </PopoverBody>*/}
+
+                {/*</Popover>*/}
+
+
+                <ColorButton color="yellow" id="ColorButton1"/>
 
                 <Popover placement="bottom"
+                         trigger="legacy"
+                         delay={0}
                          isOpen={this.state.open}
-                         target="Popover1"
-
+                         target="ColorButton1"
                          toggle={this.toggle}>
 
-                    <PopoverBody>
+                    <PopoverBody className="shadow rounded p-2"
+                                 style={{backgroundColor: '#ffffff'}}>
 
-                        <ColorButton {...props} color={'yellow'}/>
-                        <ColorButton {...props} color={'red'}/>
-                        <ColorButton {...props} color={'green'}/>
+                        <ColorButtons {...props}/>
 
                     </PopoverBody>
 
@@ -186,7 +264,7 @@ export class ColorDropdown extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly onSelected: (color: HighlightColor) => void;
+    readonly onSelected?: (color: string) => void;
 }
 
 interface IState {
