@@ -16,6 +16,10 @@ interface ColorButtonProps extends IProps {
     // readonly onSelected: () =
 }
 
+const Spacer = () => {
+    return <div style={{width: '10px'}} className="ml-2"/>;
+}
+
 const ColorButton = (props: ColorButtonProps) => {
 
     const createBackgroundColor = () => {
@@ -38,18 +42,62 @@ const ColorButton = (props: ColorButtonProps) => {
 
     return <Button size="lg"
             type="button"
-            className="border ml-1 mr-1"
+            className="border-0 ml-2"
             title=""
             aria-label=""
             color="light"
             // onClick={() => this.dispatchOnHighlighted('yellow')}
             style={{
                 backgroundColor,
-                width: '1.5em',
-                height: '1.5em'
+                width: '30px',
+                height: '30px'
             }}>
 
     </Button>;
+
+};
+
+
+interface ColorExampleProps {
+    readonly color: string;
+}
+
+const ColorExample = (props: ColorExampleProps) => {
+
+    return <div style={{
+                    margin: '5px'
+                }}>
+
+
+        <div style={{position: 'relative', top: 0}}>
+
+            this is some example text
+
+            <div style={{position: 'absolute',
+                         top: 0, backgroundColor: props.color,
+                         opacity: 1.0,
+                         width: '200px',
+                         mixBlendMode: 'multiply',
+
+                         height: '1.4em'}}/>
+
+        </div>
+
+    </div>;
+
+};
+
+const ColorExamples = () => {
+
+    return <div style={{display: 'flex'}}>
+
+        <ColorExample color="#FF6900"/>
+        <Spacer/>
+        <ColorExample color="#FCB900"/>
+        <Spacer/>
+        <ColorExample color="#7BDCB5"/>
+
+    </div>;
 
 };
 
@@ -100,95 +148,15 @@ export class ColorDropdown extends React.Component<IProps, IState> {
 
                 </Popover>
 
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                <div style={{}}>
+                    this is some example text that would be highlighted
+                </div>
 
                 <Button id="Popover2" type="button">
                     Launch Popover
                 </Button>
+
+                <ColorExamples/>
 
                 <UncontrolledPopover placement="bottom"
                                      trigger="legacy"
@@ -208,22 +176,6 @@ export class ColorDropdown extends React.Component<IProps, IState> {
                     </PopoverBody>
 
                 </UncontrolledPopover>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-
-                <UncontrolledButtonDropdown>
-
-                    <DropdownToggle caret>
-                        D
-                    </DropdownToggle>
-                    <DropdownMenu>
-
-                        <DropdownItem  tag="div" className="m-0 p-0 w-0">x</DropdownItem>
-
-                    </DropdownMenu>
-                </UncontrolledButtonDropdown>
 
 
 
