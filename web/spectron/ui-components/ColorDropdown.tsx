@@ -8,7 +8,7 @@ import {DropdownToggle} from 'reactstrap';
 import {DropdownMenu} from 'reactstrap';
 import {DropdownItem} from 'reactstrap';
 import {UncontrolledPopover} from 'reactstrap';
-import {TwitterPicker} from 'react-color';
+// import {TwitterPicker} from 'react-color';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 
 
@@ -266,13 +266,11 @@ export class ColorDropdown extends React.Component<IProps, IState> {
                         {/*<ColorButton {...props} color={'red'}/>*/}
                         {/*<ColorButton {...props} color={'green'}/>*/}
 
-                        <TwitterPicker triangle='hide'/>
+                        {/*<TwitterPicker triangle='hide'/>*/}
 
                     </PopoverBody>
 
                 </UncontrolledPopover>
-
-
 
             </div>
         );

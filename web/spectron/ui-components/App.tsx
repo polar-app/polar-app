@@ -55,9 +55,6 @@ import {Suggestions} from '../../js/ui/feedback/Suggestions';
 import {FakeComponent0} from './FakeComponent0';
 import {Canvases} from '../../js/util/Canvases';
 import {ColorDropdown} from './ColorDropdown';
-import { SketchPicker } from 'react-color';
-import {TwitterPicker} from 'react-color';
-import {SwatchesPicker} from 'react-color';
 import {ColorSelector} from '../../js/ui/colors/ColorSelector';
 
 const styles = {
@@ -103,7 +100,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <ColorDropdown onSelected={color => console.log(color)}/>
 
-                <SketchPicker />;
+                {/*<SketchPicker />;*/}
 
                 TODO:
 
@@ -119,10 +116,10 @@ class App<P> extends React.Component<{}, IAppState> {
                       and onClick should trigger it to close
 
 
-                <TwitterPicker/>
+                {/*<TwitterPicker/>*/}
 
-                <TwitterPicker
-                    colors={['#FF0000', '#FF0000', '#FF0000', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF']}/>
+                {/*<TwitterPicker*/}
+                {/*    colors={['#FF0000', '#FF0000', '#FF0000', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF']}/>*/}
 
                 {/*<SwatchesPicker*/}
                 {/*    // color={ c }*/}
