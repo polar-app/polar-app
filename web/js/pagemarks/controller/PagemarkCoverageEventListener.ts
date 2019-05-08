@@ -153,7 +153,7 @@ export class PagemarkCoverageEventListener {
 
         const pageHeight = pageElement.clientHeight;
 
-        const percentage = Percentages.calculate(verticalOffsetWithinPageElement, pageHeight);
+        const percentage = Percentages.calculate(verticalOffsetWithinPageElement, pageHeight, {noRound: true});
 
         log.info("percentage for pagemark: ", percentage);
 
