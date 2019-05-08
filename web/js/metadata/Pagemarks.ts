@@ -54,8 +54,6 @@ export class Pagemarks {
             throw new Error("Page number must be 1 or more");
         }
 
-        percentage = Math.floor(percentage);
-
         const created = ISODateTimeStrings.create();
         const batch = Hashcodes.createID({created, id: this.sequences.batch++});
 
@@ -83,8 +81,6 @@ export class Pagemarks {
         };
 
         const createPagemarkRect = (pageNum: PageNumber, percentage: number = 100): PagemarkRect | undefined => {
-
-            percentage = Math.floor(percentage);
 
             // find the pagemark that is the furthest down the page.
 
@@ -227,7 +223,12 @@ export class Pagemarks {
 
             // the rest are from options.
             type: options.type,
-            percentage: Math.floor(keyOptions.percentage),
+
+            // do NOT math.floor this.  It causes issues when percentages are
+            // less than 1 and for large pages the small changes can make a
+            // difference in pagemark placement
+            percentage: Numbers.toFixedFloat(keyOptions.percentage, 10),
+
             column: options.column,
             rect: keyOptions.rect,
             batch,

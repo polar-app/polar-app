@@ -9,6 +9,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Percentages} from '../../util/Percentages';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
+import {DocMetas} from '../../metadata/DocMetas';
 
 const log = Logger.create();
 
@@ -156,9 +157,11 @@ export class PagemarkCoverageEventListener {
 
         log.info("percentage for pagemark: ", percentage);
 
-        this.model.erasePagemark(pageNum);
-
-        await this.model.createPagemarksForRange(pageNum, percentage);
+        const docMeta = this.model.docMeta;
+        await DocMetas.withBatchedMutations(docMeta, async () => {
+            this.model.erasePagemark(pageNum);
+            await this.model.createPagemarksForRange(pageNum, percentage);
+        });
 
     }
 
