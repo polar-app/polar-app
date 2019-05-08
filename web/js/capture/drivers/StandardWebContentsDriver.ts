@@ -55,18 +55,19 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
     public async destroy() {
+
         log.info("Destroying window...");
-
-        Optional.of(this.browserWindow)
-            .map(browserWindow => {
-
-                if (!browserWindow.isDestroyed()) {
-                    browserWindow.close();
-                }
-
-            });
-
-        log.info("Destroying window...done");
+        //
+        // Optional.of(this.browserWindow)
+        //     .map(browserWindow => {
+        //
+        //         if (!browserWindow.isDestroyed()) {
+        //             browserWindow.close();
+        //         }
+        //
+        //     });
+        //
+        // log.info("Destroying window...done");
     }
 
     /**
