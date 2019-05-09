@@ -9,6 +9,7 @@ import {Reactor} from "../reactor/Reactor";
 import {TraceListeners} from "./TraceListeners";
 import {Paths} from "../util/Paths";
 import {TraceListener} from './TraceListener';
+import {Dictionaries} from '../util/Dictionaries';
 
 const EVENT_NAME = "onMutation";
 
@@ -17,7 +18,6 @@ export class TraceHandler {
     private readonly path: string;
     private readonly target: any;
     private readonly traceIdentifier: number;
-
     private readonly proxies: Proxies;
 
     // @ts-ignore
@@ -42,10 +42,10 @@ export class TraceHandler {
                 traceIdentifier: number,
                 proxies: Proxies) {
 
-        this.path = Preconditions.assertNotNull(path, "path");
-        this.target = Preconditions.assertNotNull(target, "target");
-        this.traceIdentifier = Preconditions.assertNotNull(traceIdentifier, "traceIdentifier");
-        this.proxies = Preconditions.assertNotNull(proxies, "proxies");
+        this.path = Preconditions.assertPresent(path, "path");
+        this.target = Preconditions.assertPresent(target, "target");
+        this.traceIdentifier = Preconditions.assertPresent(traceIdentifier, "traceIdentifier");
+        this.proxies = Preconditions.assertPresent(proxies, "proxies");
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
@@ -87,6 +87,15 @@ export class TraceHandler {
         return this.reactor.getEventListeners(EVENT_NAME);
     }
 
+    public removeTraceListeners() {
+
+        if (this.reactor) {
+            console.log("FIXME: clearing event.");
+            this.reactor.clearEvent(EVENT_NAME);
+        }
+
+    }
+
     public get(target: any, property: string, receiver: any) {
 
         switch (property) {
@@ -103,6 +112,9 @@ export class TraceHandler {
             case "__traceListeners":
                 return this.getTraceListeners();
 
+            case "__removeTraceListeners":
+                return this.removeTraceListeners.bind(this);
+
             default:
                 return Reflect.get(target, property, receiver);
         }
@@ -110,6 +122,10 @@ export class TraceHandler {
     }
 
     public set(target: any, property: string, value: any, receiver: any) {
+
+        console.log("FIXME: got a set at: " + this.path);
+
+        value = Dictionaries.deepCopy(value);
 
         // TODO: before we change the value, also trace the new input values
         // if we are given an object.
@@ -162,27 +178,56 @@ export class TraceHandler {
 
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
 
+        // FIXME: there is another main issue here... if we copy the same object
+        // into two places... we should duplicate it by copying it deep without
+        // the proxy object...
+
+        // /**
+        //  * We have to delete all the keys on this object manually as proxies
+        //  * will remain otherwise
+        //  */
+        // const deactivateTraceListeners = (obj: any) => {
+        //
+        //     // FIXME: we have to do this recursively...
+        //
+        //     if (! obj) {
+        //         return;
+        //     }
+        //
+        //     if (obj.__removeTraceListeners) {
+        //         console.log("FIXME3 __removeTraceListeners");
+        //         obj.__removeTraceListeners();
+        //     }
+        //
+        //     for (const key of Object.keys(obj)) {
+        //         deactivateTraceListeners(obj[key]);
+        //     }
+        //
+        // };
+        //
+        // deactivateTraceListeners(previousValue);
+
         /**
          * We have to delete all the keys on this object manually as proxies
          * will remain otherwise
          */
-        const garbageCollect = (obj: any) => {
-
-            if (! obj) {
-                return;
-            }
-
-            if (typeof obj !== 'object') {
-                return;
-            }
-
-            for (const key of Object.keys(obj)) {
-                delete obj[key];
-            }
-
-        };
-
-        garbageCollect(previousValue);
+        // const garbageCollect = (obj: any) => {
+        //
+        //     if (! obj) {
+        //         return;
+        //     }
+        //
+        //     if (typeof obj !== 'object') {
+        //         return;
+        //     }
+        //
+        //     for (const key of Object.keys(obj)) {
+        //         delete obj[key];
+        //     }
+        //
+        // };
+        //
+        // garbageCollect(previousValue);
 
         return result;
 

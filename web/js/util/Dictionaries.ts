@@ -103,6 +103,44 @@ export class Dictionaries {
 
     }
 
+    public static deepCopy(dict: any): any {
+
+        if (dict === undefined || dict === null) {
+            // nothing to do here.
+            return dict;
+        }
+
+        if (! (typeof dict === 'object')) {
+            // if we're not a dictionary we're done
+            return dict;
+        }
+
+
+        if (Array.isArray(dict)) {
+
+            const result: any[] = [];
+
+            for (let idx = 0; idx < dict.length; ++idx) {
+                result[idx] = this.deepCopy(dict[idx]);
+            }
+
+            return result;
+
+        } else {
+
+            const result: any = {};
+
+            Object.keys(dict).forEach(key => {
+                result[key] = this.deepCopy(dict[key]);
+            });
+
+            return result;
+
+        }
+
+    }
+
+
     /**
      *
      * Recursively work through this object and remove any fields that are

@@ -2,20 +2,14 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {IRect} from '../util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
+import {ITextHighlight} from './TextHighlight';
 import {Image} from './Image';
 import {notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
-import {ITextHighlight} from './TextHighlight';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
 import {DocMeta} from './DocMeta';
-import {Rect} from '../Rect';
-import {Note} from './Note';
-import {Question} from './Question';
-import {Flashcard} from './Flashcard';
-import {ISODateTimeString} from './ISODateTimeStrings';
-import {Author} from './Author';
-import {HighlightColor} from './HighlightColor';
+import {Dictionaries} from '../util/Dictionaries';
 
 const log =  Logger.create();
 
@@ -25,8 +19,6 @@ export class TextHighlights {
                          docMeta: DocMeta,
                          pageMeta: PageMeta,
                          updates: Partial<ITextHighlight>) {
-
-        console.time("FIXME:TextHighlights#update");
 
         const existing = pageMeta.textHighlights[id]!;
 
@@ -48,14 +40,21 @@ export class TextHighlights {
             color: existing.color
         };
 
-        const updated = new TextHighlight({...archetype, ...updates});
+        // FIXME: ok.. the problem is taht this isn't doing a DEEP copy ...
+        // so it's sharing some of the keys from the previous object and I
+        // don't think there is a way to disable the proxy...
+
+        const updated = new TextHighlight(Dictionaries.deepCopy({...archetype, ...updates}));
+
+        console.log("FIXME: highlight is now: ", JSON.stringify(updated, null, ' '));
 
         DocMetas.withBatchedMutations(docMeta, () => {
             delete pageMeta.textHighlights[id];
+
+            console.log("FIXME: highlight is now: ", JSON.stringify(updated, null, ' '));
+
             pageMeta.textHighlights[id] = updated;
         });
-
-        console.timeEnd("FIXME:TextHighlights#update");
 
     }
 

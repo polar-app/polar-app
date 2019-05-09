@@ -10,6 +10,7 @@ import {MockDocMetas} from '../metadata/DocMetas';
 import {DocMetas} from '../metadata/DocMetas';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {Numbers} from '../util/Numbers';
+import {Dictionaries} from '../util/Dictionaries';
 
 describe('Proxies', function() {
 
@@ -317,7 +318,7 @@ describe('Proxies', function() {
 
             const durations = [];
 
-            for (let i = 0; i < 20; ++i) {
+            for (let i = 0; i < 25; ++i) {
 
                 const before = Date.now();
 
@@ -356,6 +357,42 @@ describe('Proxies', function() {
         });
 
     });
+
+    describe('deep copy', function() {
+
+
+        it("basic", function() {
+
+            let obj: any = {
+                foo: 'foo',
+                cat: {
+                    name: 'leo'
+                }
+            };
+
+            const mutations = [];
+
+            obj = Proxies.create(obj, (traceEvent: TraceEvent) => {
+                mutations.push(traceEvent);
+            });
+
+            obj.foo = 'foo1';
+            obj.cat.name = 'monster';
+
+            assert.equal(2, mutations.length);
+
+            obj = Dictionaries.deepCopy(obj);
+
+            obj.foo = 'foo2';
+            obj.cat.name = 'monster2';
+
+            assert.equal(2, mutations.length);
+
+
+        });
+
+    });
+
 
     describe('paths', function() {
 
