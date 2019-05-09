@@ -22,6 +22,7 @@ import {Screenshots} from '../../../../screenshots/Screenshots';
 import {Arrays} from '../../../../util/Arrays';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
 import {HighlightColor} from '../../../../metadata/HighlightColor';
+import {ILTRect} from '../../../../util/rects/ILTRect';
 
 const log = Logger.create();
 
@@ -188,8 +189,23 @@ export class AreaHighlightComponent extends Component {
 
         forDict(areaHighlight.rects, (key, rect) => {
 
+            const toOverlayRect = (): ILTRect => {
+
+                if (areaHighlight.position) {
+                    return {
+                        left: areaHighlight.position.x,
+                        top: areaHighlight.position.y,
+                        width: areaHighlight.position.width,
+                        height: areaHighlight.position.height
+                    };
+                }
+
+                return areaHighlightRect.toDimensions(pageDimensions);
+
+            };
+
             const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
-            const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+            const overlayRect = toOverlayRect();
 
             log.debug("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));
 

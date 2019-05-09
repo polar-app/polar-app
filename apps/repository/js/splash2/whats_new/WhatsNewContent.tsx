@@ -37,7 +37,7 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                         <b>Area Highlights</b>
 
                         <p>
-                            Area highlights are now updated in the sidebar and
+                            Area highlights are now shown in the sidebar and
                             updated and resized while you drag the area
                             highlight box.
                         </p>
