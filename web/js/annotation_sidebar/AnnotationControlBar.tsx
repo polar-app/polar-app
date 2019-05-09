@@ -17,10 +17,8 @@ import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {CreateFlashcard} from './child_annotations/flashcards/CreateFlashcard';
 import {FlashcardActions} from './child_annotations/flashcards/FlashcardActions';
 import {Doc} from '../metadata/Doc';
-import {NULL_FUNCTION} from '../util/Functions';
 import {ColorSelector} from '../ui/colors/ColorSelector';
 import {HighlightColor} from '../metadata/HighlightColor';
-import {TextHighlight} from '../metadata/TextHighlight';
 import {TextHighlights} from '../metadata/TextHighlights';
 
 const Styles: IStyleMap = {
@@ -155,7 +153,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const {annotation} = this.props;
 
+        // FIXME: needs AreaHighlights.update
+        // FIXME: this code is SLOW and I think it calls updates N times.
+        //    - it's not slow at first but what happens is that it gets slower
+        //      and slower over time.
+        // FIXME: update all the sidebar components to use new updates...
+
         if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+            console.log("FIXME666 updating");
             TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
         }
 

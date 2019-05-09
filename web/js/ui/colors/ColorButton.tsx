@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Button} from 'reactstrap';
 
-export class ColorButton extends React.Component<IProps, IState> {
+export class ColorButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

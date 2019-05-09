@@ -9,6 +9,13 @@ import {ITextHighlight} from './TextHighlight';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
 import {DocMeta} from './DocMeta';
+import {Rect} from '../Rect';
+import {Note} from './Note';
+import {Question} from './Question';
+import {Flashcard} from './Flashcard';
+import {ISODateTimeString} from './ISODateTimeStrings';
+import {Author} from './Author';
+import {HighlightColor} from './HighlightColor';
 
 const log =  Logger.create();
 
@@ -19,14 +26,36 @@ export class TextHighlights {
                          pageMeta: PageMeta,
                          updates: Partial<ITextHighlight>) {
 
+        console.time("FIXME:TextHighlights#update");
+
         const existing = pageMeta.textHighlights[id]!;
 
-        const updated = new TextHighlight({...existing, ...updates});
+        const archetype = {
+            textSelections: existing.textSelections,
+            text: existing.text,
+            revisedText: existing.revisedText,
+            rects: existing.rects,
+            image: existing.image,
+            images: existing.images,
+            notes: existing.notes,
+            questions: existing.questions,
+            flashcards: existing.flashcards,
+            id: existing.id,
+            guid: existing.guid,
+            created: existing.created,
+            lastUpdated: existing.lastUpdated,
+            author: existing.author,
+            color: existing.color
+        };
+
+        const updated = new TextHighlight({...archetype, ...updates});
 
         DocMetas.withBatchedMutations(docMeta, () => {
             delete pageMeta.textHighlights[id];
             pageMeta.textHighlights[id] = updated;
         });
+
+        console.timeEnd("FIXME:TextHighlights#update");
 
     }
 

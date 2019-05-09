@@ -33,6 +33,8 @@ export class TextHighlight extends BaseHighlight {
      */
     public text: Text | string = Texts.create("", TextType.HTML);
 
+    public revisedText?: Text | string;
+
     constructor(val: ITextHighlight) {
 
         super(val);
@@ -100,4 +102,5 @@ export interface ITextHighlight {
     readonly lastUpdated: ISODateTimeString;
     readonly author?: Author;
     readonly color?: HighlightColor;
+
 }

@@ -131,6 +131,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     public componentDidMount(): void {
 
+        console.log("FIXME: componentDidMount for sidebar...");
+
         this.init()
             .catch(err => log.error("Failed init: ", err));
 

@@ -7,7 +7,7 @@ import {RGBColor} from './ColorButton';
 import {ColorSelectorBox} from './ColorSelectorBox';
 import {IDs} from '../../util/IDs';
 
-export class ColorSelector extends React.Component<IProps, IState> {
+export class ColorSelector extends React.PureComponent<IProps, IState> {
 
     private id: string;
 

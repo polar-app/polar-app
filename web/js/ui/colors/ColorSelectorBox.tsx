@@ -47,7 +47,7 @@ const ColorButtons = (props: IProps) => {
 
 };
 
-export class ColorSelectorBox extends React.Component<IProps, IState> {
+export class ColorSelectorBox extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
