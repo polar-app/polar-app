@@ -63,6 +63,7 @@ describe('DocAnnotationIndexes', function() {
                     }
                 }
             },
+            "docMeta": null,
             "pageMeta": null,
             "pageNum": 1,
             "position": {
@@ -100,6 +101,7 @@ describe('DocAnnotationIndexes', function() {
                     "y": 50
                 },
                 "created": "2009-06-15T13:45:30",
+                "docMeta": null,
                 "pageMeta": null,
                 "children": [],
                 "original": {
@@ -143,6 +145,7 @@ describe('DocAnnotationIndexes', function() {
                     "y": 0
                 },
                 "created": "2009-06-15T13:45:30",
+                "docMeta": null,
                 "pageMeta": null,
                 "children": [],
                 "original": {
@@ -186,6 +189,7 @@ describe('DocAnnotationIndexes', function() {
                     "y": 100
                 },
                 "created": "2009-06-15T13:45:30",
+                "docMeta": null,
                 "pageMeta": null,
                 "children": [],
                 "original": {
