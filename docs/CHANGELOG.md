@@ -1,6 +1,13 @@
 
 # 1.19.0
 
+- Fixed bug where capture would not remove noscript elements and would mangle 
+  the UI.
+  
+- Dropdowns are faster now due to no delay.
+
+- Fixed bug with pagemarks < 1%   
+
 - Upgrade to Electron 5.0.1
 
 - Fixed bug with mouse up when using iframes.

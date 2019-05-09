@@ -25,6 +25,53 @@ describe('Pagemarks', function() {
             reset();
         });
 
+        it("less than zero", function() {
+
+            // we had a test that was breaking when less than one
+
+            const docMeta = DocMetas.create('0x0001', 1);
+
+            const pageMeta = DocMetas.getPageMeta(docMeta, 1);
+
+            assertJSON(pageMeta.readingProgress, {});
+
+            Pagemarks.updatePagemarksForRange(docMeta, 1, 0.999);
+
+            const expected = [
+                {
+                    "id": "1s2gw2Mkwb",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                    "type": "SINGLE_COLUMN",
+                    "percentage": 0.999,
+                    "column": 0,
+                    "rect": {
+                        "left": 0,
+                        "top": 0,
+                        "width": 100,
+                        "height": 0.999
+                    },
+                    "batch": "1Y9CcEHSxc",
+                    "mode": "READ",
+                    "notes": {}
+                }
+            ];
+
+            assertJSON(Object.values(pageMeta.pagemarks), expected);
+
+            assertJSON(pageMeta.readingProgress, {
+                "1AS9DE87jw": {
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "1AS9DE87jw",
+                    "progress": 0.999,
+                    "progressByMode": {
+                        "READ": 0.999
+                    }
+                }
+            });
+
+        });
+
         it("for one page", function() {
 
             const docMeta = DocMetas.create('0x0001', 1);
