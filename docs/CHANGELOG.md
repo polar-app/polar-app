@@ -1,6 +1,10 @@
 
 # 1.19.0
 
+- Fixed major performance issue when creating lots of annotations.
+
+- New color picker with advanced colors for highlights.
+
 - Fixed bug where capture would not remove noscript elements and would mangle 
   the UI.
   
