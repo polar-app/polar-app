@@ -87,15 +87,6 @@ export class TraceHandler {
         return this.reactor.getEventListeners(EVENT_NAME);
     }
 
-    public removeTraceListeners() {
-
-        if (this.reactor) {
-            console.log("FIXME: clearing event.");
-            this.reactor.clearEvent(EVENT_NAME);
-        }
-
-    }
-
     public get(target: any, property: string, receiver: any) {
 
         switch (property) {
@@ -112,9 +103,6 @@ export class TraceHandler {
             case "__traceListeners":
                 return this.getTraceListeners();
 
-            case "__removeTraceListeners":
-                return this.removeTraceListeners.bind(this);
-
             default:
                 return Reflect.get(target, property, receiver);
         }
@@ -122,8 +110,6 @@ export class TraceHandler {
     }
 
     public set(target: any, property: string, value: any, receiver: any) {
-
-        console.log("FIXME: got a set at: " + this.path);
 
         value = Dictionaries.deepCopy(value);
 
@@ -177,57 +163,6 @@ export class TraceHandler {
         });
 
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
-
-        // FIXME: there is another main issue here... if we copy the same object
-        // into two places... we should duplicate it by copying it deep without
-        // the proxy object...
-
-        // /**
-        //  * We have to delete all the keys on this object manually as proxies
-        //  * will remain otherwise
-        //  */
-        // const deactivateTraceListeners = (obj: any) => {
-        //
-        //     // FIXME: we have to do this recursively...
-        //
-        //     if (! obj) {
-        //         return;
-        //     }
-        //
-        //     if (obj.__removeTraceListeners) {
-        //         console.log("FIXME3 __removeTraceListeners");
-        //         obj.__removeTraceListeners();
-        //     }
-        //
-        //     for (const key of Object.keys(obj)) {
-        //         deactivateTraceListeners(obj[key]);
-        //     }
-        //
-        // };
-        //
-        // deactivateTraceListeners(previousValue);
-
-        /**
-         * We have to delete all the keys on this object manually as proxies
-         * will remain otherwise
-         */
-        // const garbageCollect = (obj: any) => {
-        //
-        //     if (! obj) {
-        //         return;
-        //     }
-        //
-        //     if (typeof obj !== 'object') {
-        //         return;
-        //     }
-        //
-        //     for (const key of Object.keys(obj)) {
-        //         delete obj[key];
-        //     }
-        //
-        // };
-        //
-        // garbageCollect(previousValue);
 
         return result;
 
