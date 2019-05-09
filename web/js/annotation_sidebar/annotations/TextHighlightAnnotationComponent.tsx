@@ -7,6 +7,7 @@ import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSectio
 import {Doc} from '../../metadata/Doc';
 import {LazyProps} from '../../react/LazyComponents';
 import {LazyState} from '../../react/LazyComponents';
+import {HighlightColors} from '../../metadata/HighlightColor';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -30,6 +31,8 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
         const key = 'text-highlight-' + annotation.id;
 
+        const backgroundColor = HighlightColors.toBackgroundColor(annotation.color, 0.7);
+
         return (
 
             <div className="m-0 mb-2">
@@ -40,7 +43,10 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
                      data-annotation-color={annotation.color}
                      className={attrType}>
 
-                    <blockquote className="p-1">
+                    <blockquote className="p-1"
+                                style={{
+                                    borderLeft: `5px solid ${backgroundColor}`
+                                }}>
 
                         <span className="text-sm"
                               dangerouslySetInnerHTML={{__html: html}}>

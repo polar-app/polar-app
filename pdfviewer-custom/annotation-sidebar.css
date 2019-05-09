@@ -72,22 +72,6 @@
     margin-bottom: 5px !important;
 }
 
-.annotation-sidebar .text-highlight blockquote,
-.annotation-sidebar .text-highlight[data-annotation-color="yellow"] blockquote {
-    border-left: 5px solid rgba(255,255,0,0.8);
-    /*background-color: rgba(255,255,0,0.1);*/
-}
-
-.annotation-sidebar .text-highlight[data-annotation-color="green"] blockquote {
-    border-left: 5px solid rgba(0,255,0,0.6);
-    /*background-color: rgba(0,255,0,0.1);*/
-}
-
-.annotation-sidebar .text-highlight[data-annotation-color="red"] blockquote {
-    border-left: 5px solid rgba(255,0,0,0.6);
-    /*background-color: rgba(0,255,0,0.1);*/
-}
-
 .annotation-sidebar .text-highlight blockquote span {
     line-height: 1.6;
 }
