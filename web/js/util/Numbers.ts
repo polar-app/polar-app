@@ -1,4 +1,21 @@
+import {Reducers} from './Reducers';
+
 export class Numbers {
+
+    public static sum(...values: number[]) {
+        return values.reduce(Reducers.SUM, 0);
+    }
+
+    public static mean(...values: number[]) {
+
+        if (values.length === 0) {
+            return NaN;
+        }
+
+        const sum = Numbers.sum(...values);
+        return sum / values.length;
+
+    }
 
     public static compare(n0: number | undefined, n1: number | undefined) {
 

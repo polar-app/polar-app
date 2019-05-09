@@ -9,11 +9,11 @@ import {Symbol} from '../metadata/Symbol';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DocMetas} from '../metadata/DocMetas';
 import {TextHighlight} from '../metadata/TextHighlight';
+import {Numbers} from '../util/Numbers';
 
 describe('Proxies', function() {
 
-
-    describe('paths', function() {
+    describe('performance', function() {
 
         const textHighlightData: any = {
             "id": "1xU5hiNvuy",
@@ -307,7 +307,7 @@ describe('Proxies', function() {
         it("basic performance", function() {
 
             // let docMeta = MockDocMetas.createMockDocMeta('0x001');
-            let docMeta = MockDocMetas.createWithinInitialPagemarks('0x001', 1);
+            let docMeta = DocMetas.create('0x001', 1);
 
             docMeta = Proxies.create(docMeta, (traceEvent: TraceEvent) => {
                 // noop
@@ -315,11 +315,11 @@ describe('Proxies', function() {
 
             const pageMeta = DocMetas.getPageMeta(docMeta, 1);
 
-            console.log("FIXME: current docMEta", JSON.stringify(docMeta, null, "  "));
+            const durations = [];
 
-            for (let i = 0; i < 15; ++i) {
+            for (let i = 0; i < 20; ++i) {
 
-                console.time("set-text-highlight");
+                const before = Date.now();
 
                 const textHighlight = new TextHighlight(textHighlightData);
                 delete pageMeta.textHighlights[textHighlight.id];
@@ -330,9 +330,28 @@ describe('Proxies', function() {
 
                 assert.equal(Object.values(pageMeta.textHighlights).length, 1);
 
-                console.timeEnd("set-text-highlight");
+                const after = Date.now();
+
+                const duration = after - before;
+                durations.push(duration);
 
             }
+
+            // the first two timings are bunk and useless due to JIT issues.
+            durations.shift();
+            durations.shift();
+
+            const max = Math.max(...durations);
+            const mean = Numbers.mean(...durations);
+
+            console.log({durations});
+            console.log({max, mean});
+
+            // make sure the mean duration is not more than 2x the max to verify
+            // we don't have any performance regressions.
+
+            assert.ok(max < 50);
+            assert.ok(max < mean * 15);
 
         });
 

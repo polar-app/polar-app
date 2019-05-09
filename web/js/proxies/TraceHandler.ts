@@ -161,6 +161,29 @@ export class TraceHandler {
         });
 
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
+
+        /**
+         * We have to delete all the keys on this object manually as proxies
+         * will remain otherwise
+         */
+        const garbageCollect = (obj: any) => {
+
+            if (! obj) {
+                return;
+            }
+
+            if (typeof obj !== 'object') {
+                return;
+            }
+
+            for (const key of Object.keys(obj)) {
+                delete obj[key];
+            }
+
+        };
+
+        garbageCollect(previousValue);
+
         return result;
 
     }
