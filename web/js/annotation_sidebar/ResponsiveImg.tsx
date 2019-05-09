@@ -52,7 +52,7 @@ export class ResponsiveImg extends DeepPureComponent<IProps, IState> {
                              // border around the image
 
                              boxSizing: 'content-box',
-                             border: `1px solid #c6c6c6`,
+                             // border: `1px solid #c6c6c6`,
 
                          }}
                          className=""

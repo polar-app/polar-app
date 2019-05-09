@@ -9,7 +9,6 @@ import {PageMeta} from './PageMeta';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
 import {DocMeta} from './DocMeta';
-import {Dictionaries} from '../util/Dictionaries';
 
 const log =  Logger.create();
 
@@ -22,11 +21,14 @@ export class TextHighlights {
 
         const existing = pageMeta.textHighlights[id]!;
 
+        if (!existing) {
+            throw new Error("No existing for id: " + id);
+        }
+
         const updated = new TextHighlight({...existing, ...updates});
 
         DocMetas.withBatchedMutations(docMeta, () => {
             delete pageMeta.textHighlights[id];
-
             pageMeta.textHighlights[id] = updated;
         });
 

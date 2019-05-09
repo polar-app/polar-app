@@ -13,7 +13,7 @@ import {Author} from './Author';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {HighlightColor} from './HighlightColor';
 
-export class TextHighlight extends BaseHighlight {
+export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
     /**
      * A raw array-like object of text from the regions that the user
@@ -38,7 +38,6 @@ export class TextHighlight extends BaseHighlight {
     constructor(val: ITextHighlight) {
 
         super(val);
-
 
         // FIXME: all these extractions (text, html, etc) should be 'snippet'
         // because we also have to include the context with them and with the

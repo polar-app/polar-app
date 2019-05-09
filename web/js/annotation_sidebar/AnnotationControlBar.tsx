@@ -20,6 +20,7 @@ import {Doc} from '../metadata/Doc';
 import {ColorSelector} from '../ui/colors/ColorSelector';
 import {HighlightColor} from '../metadata/HighlightColor';
 import {TextHighlights} from '../metadata/TextHighlights';
+import {AreaHighlights} from '../metadata/AreaHighlights';
 
 const Styles: IStyleMap = {
 
@@ -151,23 +152,19 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     private onColor(color: HighlightColor) {
 
-        const {annotation} = this.props;
+        setTimeout(() => {
 
-        // FIXME: needs AreaHighlights.update
-        // FIXME: this code is SLOW and I think it calls updates N times.
-        //    - it's not slow at first but what happens is that it gets slower
-        //      and slower over time.
-        // FIXME: update all the sidebar components to use new updates...
+            const {annotation} = this.props;
 
-        if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
-            console.log("FIXME666 updating");
-            TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
-        }
+            if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+                TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
+            }
 
-        if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
-            annotation.pageMeta.areaHighlights[annotation.id].color = color;
-        }
+            if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+                AreaHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
+            }
 
+        }, 1);
     }
 
     private onDelete(annotation: DocAnnotation) {

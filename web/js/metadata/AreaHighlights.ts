@@ -1,6 +1,7 @@
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
+import {IAreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {DocMeta} from './DocMeta';
 import {Image} from './Image';
@@ -28,6 +29,26 @@ import {DataURLs} from '../util/DataURLs';
 const log = Logger.create();
 
 export class AreaHighlights {
+
+    public static update(id: string,
+                         docMeta: DocMeta,
+                         pageMeta: PageMeta,
+                         updates: Partial<IAreaHighlight>) {
+
+        const existing = pageMeta.areaHighlights[id]!;
+
+        if (!existing) {
+            throw new Error("No existing for id: " + id);
+        }
+
+        const updated = new AreaHighlight({...existing, ...updates});
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+            delete pageMeta.areaHighlights[id];
+            pageMeta.areaHighlights[id] = updated;
+        });
+
+    }
 
     public static createID(created: ISODateTimeString) {
         // TODO: this needs some unique data and random is probably find.

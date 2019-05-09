@@ -3,7 +3,6 @@ import {Logger} from "../../../../logger/Logger";
 import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";
 import {forDict} from "../../../../util/Functions";
-import {Dimensions} from "../../../../util/Dimensions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
 import {Position} from "../../../../metadata/BaseHighlight";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";
@@ -18,9 +17,11 @@ import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
+import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 import {Screenshots} from '../../../../screenshots/Screenshots';
 import {Arrays} from '../../../../util/Arrays';
-import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
+import {HighlightColors} from '../../../../metadata/HighlightColor';
+import {HighlightColor} from '../../../../metadata/HighlightColor';
 
 const log = Logger.create();
 
@@ -181,6 +182,10 @@ export class AreaHighlightComponent extends Component {
 
         const {pageDimensions, dimensionsElement} = AreaHighlights.computePageDimensions(pageNum);
 
+        const color: HighlightColor = areaHighlight.color || 'yellow';
+
+        const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
+
         forDict(areaHighlight.rects, (key, rect) => {
 
             const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
@@ -227,8 +232,7 @@ export class AreaHighlightComponent extends Component {
             highlightElement.className = `area-highlight annotation area-highlight-${areaHighlight.id}`;
 
             highlightElement.style.position = "absolute";
-            highlightElement.style.backgroundColor = `yellow`;
-            highlightElement.style.opacity = `0.5`;
+            highlightElement.style.backgroundColor = backgroundColor;
             (highlightElement.style as any).mixBlendMode = 'multiply';
             highlightElement.style.border = `1px solid #c6c6c6`;
 

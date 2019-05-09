@@ -131,6 +131,7 @@ export class DocAnnotations {
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
             position,
+            color: areaHighlight.color,
             created: areaHighlight.created,
             docMeta,
             pageMeta,

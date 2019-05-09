@@ -6,6 +6,7 @@ import {Doc} from '../../metadata/Doc';
 import {Logger} from '../../logger/Logger';
 import {LazyProps} from '../../react/LazyComponents';
 import {ResponsiveImg} from '../ResponsiveImg';
+import {HighlightColors} from '../../metadata/HighlightColor';
 
 const log = Logger.create();
 
@@ -27,10 +28,9 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
         const key = 'area-highlight' + annotation.id;
 
-
         if (img) {
-            const width = Math.floor(img.width);
-            const height = Math.floor(img.height);
+
+            const borderColor = HighlightColors.toBackgroundColor(annotation.color, 0.7);
 
             return (
 
@@ -41,7 +41,13 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                 <div key={key}
                      className='p-1'>
 
-                    <ResponsiveImg id={annotation.id} img={annotation.img} color={annotation.color}/>
+                    <div style={{
+                            borderLeft: `5px solid ${borderColor}`
+                        }}>
+
+                        <ResponsiveImg id={annotation.id} img={annotation.img} color={annotation.color}/>
+
+                    </div>
 
                     <AnnotationControlBar doc={this.props.doc}
                                           annotation={annotation}/>

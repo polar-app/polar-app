@@ -31,7 +31,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
         const key = 'text-highlight-' + annotation.id;
 
-        const backgroundColor = HighlightColors.toBackgroundColor(annotation.color, 0.7);
+        const borderColor = HighlightColors.toBackgroundColor(annotation.color, 0.7);
 
         return (
 
@@ -45,7 +45,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     <blockquote className="p-1"
                                 style={{
-                                    borderLeft: `5px solid ${backgroundColor}`
+                                    borderLeft: `5px solid ${borderColor}`
                                 }}>
 
                         <span className="text-sm"
