@@ -1,12 +1,4 @@
 import * as React from 'react';
-import {Button} from 'reactstrap';
-import {ActiveSelection} from '../popup/ActiveSelections';
-import {IEventDispatcher} from '../../reactor/SimpleReactor';
-import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
-import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
-import {HighlightColor} from '../../metadata/BaseHighlight';
-import {PopupStateEvent} from '../popup/PopupStateEvent';
-import {EventListener} from '../../reactor/EventListener';
 import {Numbers} from '../../util/Numbers';
 import {SplashLifecycle} from '../../../../apps/repository/js/splash2/SplashLifecycle';
 import {LifecycleEvents} from '../util/LifecycleEvents';

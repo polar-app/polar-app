@@ -5,8 +5,30 @@ import {TextHighlight} from './TextHighlight';
 import {Image} from './Image';
 import {notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
+import {ITextHighlight} from './TextHighlight';
+import {DocMetas} from './DocMetas';
+import {Logger} from '../logger/Logger';
+import {DocMeta} from './DocMeta';
+
+const log =  Logger.create();
 
 export class TextHighlights {
+
+    public static update(id: string,
+                         docMeta: DocMeta,
+                         pageMeta: PageMeta,
+                         updates: Partial<ITextHighlight>) {
+
+        const existing = pageMeta.textHighlights[id]!;
+
+        const updated = new TextHighlight({...existing, ...updates});
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+            delete pageMeta.textHighlights[id];
+            pageMeta.textHighlights[id] = updated;
+        });
+
+    }
 
     /**
      * Create a mock text highlight for testing.

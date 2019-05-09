@@ -84,6 +84,7 @@ export class ColorSelector extends React.Component<IProps, IState> {
 interface IProps {
 
     readonly className?: string;
+
     readonly style?: React.CSSProperties;
 
     readonly size?: string;

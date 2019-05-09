@@ -10,7 +10,7 @@ const ColorButtonsRow = (props: ColorButtonsRowProps) => {
 
     return <div>
         {props.colors.map(color =>
-          <ColorButton {...props} color={color}/>)}
+          <ColorButton key={color} {...props} color={color}/>)}
     </div>;
 
 };

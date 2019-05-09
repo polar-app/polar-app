@@ -31,6 +31,7 @@ export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
             // the reference to a parent annotation if this is a child
             // annotation.
             children: [],
+            docMeta,
             pageMeta: docMeta.pageMetas[1],
             original: comment
         };

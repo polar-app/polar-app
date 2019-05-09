@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {HighlightColor} from '../../metadata/BaseHighlight';
 import {AnnotationType} from '../../metadata/AnnotationType';
 import {FlashcardIcon} from './FlashcardIcon';
 import {CommentIcon} from './CommentIcon';
 import {HighlighterIcon} from './HighlighterIcon';
+import {HighlightColor} from '../../metadata/HighlightColor';
 
 /**
  */

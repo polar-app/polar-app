@@ -1,12 +1,9 @@
 import * as React from 'react';
 import {Button} from 'reactstrap';
 import {ActiveSelection} from '../popup/ActiveSelections';
-import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
-import {HighlightColor} from '../../metadata/BaseHighlight';
-import {PopupStateEvent} from '../popup/PopupStateEvent';
-import {EventListener} from '../../reactor/EventListener';
+import {HighlightColor} from '../../metadata/HighlightColor';
 
 /**
  * An annotation bar that is placed exactly.

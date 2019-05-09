@@ -2,7 +2,7 @@ import {TextRect} from './TextRect';
 import {Text} from './Text';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
-import {BaseHighlight, HighlightColor} from './BaseHighlight';
+import {BaseHighlight} from './BaseHighlight';
 import {Preconditions} from '../Preconditions';
 import {Rect} from '../Rect';
 import {Image} from './Image';
@@ -11,6 +11,7 @@ import {Question} from './Question';
 import {Flashcard} from './Flashcard';
 import {Author} from './Author';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {HighlightColor} from './HighlightColor';
 
 export class TextHighlight extends BaseHighlight {
 

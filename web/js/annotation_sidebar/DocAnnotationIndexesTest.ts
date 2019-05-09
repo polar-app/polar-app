@@ -270,6 +270,7 @@ function createAnnotation(id: string,
         },
         created: '2009-06-15T13:45:30',
         pageMeta: null!,
+        docMeta: null!,
         children: [],
         original: textHighlight
     };

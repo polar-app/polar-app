@@ -5,10 +5,9 @@
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {Tag} from '../../../web/js/tags/Tag';
-import {Hashcode} from '../../../web/js/metadata/Hashcode';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
-import {HighlightColor} from '../../../web/js/metadata/BaseHighlight';
 import {Img} from '../../../web/js/metadata/Img';
+import {HighlightColor} from '../../../web/js/metadata/HighlightColor';
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 

@@ -137,7 +137,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         // TODO: remove all these listeners when the component unmounts... in
         // our case though it never unmounts
 
-        new AreaHighlightModel().registerListener(this.props.doc.docMeta, annotationEvent => {
+        const {docMeta} = this.props.doc;
+
+        new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
 
             const handleConversion = async () => {
 
@@ -145,6 +147,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                     const {persistenceLayerProvider} = this.props;
                     return DocAnnotations.createFromAreaHighlight(persistenceLayerProvider,
+                                                                  docMeta,
                                                                   annotationValue,
                                                                   annotationEvent.pageMeta);
                 };
@@ -168,7 +171,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,
-                                       annotationValue => DocAnnotations.createFromTextHighlight(annotationValue,
+                                       annotationValue => DocAnnotations.createFromTextHighlight(docMeta,
+                                                                                                 annotationValue,
                                                                                                  annotationEvent.pageMeta));
 
             this.handleAnnotationEvent(annotationEvent.id,
@@ -179,7 +183,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         new CommentModel().registerListener(this.props.doc.docMeta, annotationEvent => {
 
             const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromComment(comment, annotationEvent.pageMeta);
+            const childDocAnnotation = DocAnnotations.createFromComment(docMeta, comment, annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
                                             annotationEvent.traceEvent.mutationType,
@@ -190,7 +194,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         new FlashcardModel().registerListener(this.props.doc.docMeta, annotationEvent => {
 
             const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromFlashcard(flashcard, annotationEvent.pageMeta);
+            const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta, flashcard, annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
                                             annotationEvent.traceEvent.mutationType,
