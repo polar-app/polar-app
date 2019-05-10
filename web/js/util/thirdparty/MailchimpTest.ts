@@ -4,9 +4,9 @@ xdescribe('Mailchimp', function() {
 
     it("basic", async function() {
 
-        const response = await Mailchimp.subscribeViaAPI('burtonator+test101@gmail.com', 'Kevin', 'Burton');
+        this.timeout(5000);
 
-        console.log(response);
+        await Mailchimp.subscribe('burtonator+test101@gmail.com', 'Kevin Burton');
 
     });
 
