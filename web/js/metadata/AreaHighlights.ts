@@ -147,10 +147,18 @@ export class AreaHighlights {
 
     public static async delete(opts: AreaHighlightDeleteOpts) {
 
-        const {datastore, pageMeta, areaHighlight} = opts;
+        const {datastore, docMeta, pageMeta, areaHighlight} = opts;
         const {image} = areaHighlight;
 
-        delete pageMeta.areaHighlights[areaHighlight.id];
+        DocMetas.withBatchedMutations(docMeta, () => {
+
+            delete pageMeta.areaHighlights[areaHighlight.id];
+
+            if (image) {
+                delete docMeta.docInfo.attachments[image.id];
+            }
+
+        });
 
         if (image) {
             await datastore.deleteFile(image.src.backend, image.src);

@@ -225,7 +225,7 @@ export class PersistenceLayers {
                     ++result.files.writes;
 
                 } else {
-                    log.warn(`Both the target and source files are missing in doc ${syncDoc.fingerprint}: `, fileRef);
+                    log.warn(`Both the target and source files are missing in doc ${syncDoc.fingerprint} (${syncDoc.title}): `, fileRef);
                 }
 
             }

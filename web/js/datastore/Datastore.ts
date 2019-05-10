@@ -698,6 +698,11 @@ export interface SyncDoc {
     readonly uuid?: UUID;
 
     /**
+     * The title of the doc from the DocInfo for debug purposes.
+     */
+    readonly title: string;
+
+    /**
      * The binary files reference by this doc.
      */
     readonly files: ReadonlyArray<SyncFile>;
@@ -720,6 +725,7 @@ export class SyncDocs {
 
         return {
             fingerprint: docInfo.fingerprint,
+            title: docInfo.title || 'untitled',
             docMetaFileRef: DocMetaFileRefs.createFromDocInfo(docInfo),
             mutationType,
             uuid: docInfo.uuid,
