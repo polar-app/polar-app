@@ -2,7 +2,8 @@
 title: Polar Initial Crowdfunding Campaign
 date: 2019-04-11 05:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/initial-crowdfunding-scaled.png 
+large_image: https://getpolarized.io/assets/images/initial-crowdfunding-scaled.png
+hidden: true
 description: 
 ---
 <div class="embed-responsive embed-responsive-16by9">

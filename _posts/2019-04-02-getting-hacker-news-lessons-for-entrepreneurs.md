@@ -3,7 +3,6 @@ title: Getting Hacker News'd Twice - Lessons Learned for Entrepreneurs
 date: 2019-04-02 05:00:00 -0800
 layout: post
 large_image: https://getpolarized.io/assets/images/hackernews-stats.png
-hidden: true
 description: I've had my app featured on Hacker News twice in the last six months. It's been interesting to say the least and I wanted to write up my thoughts here to share my lessons learned with other entrepreneurs
 ---
 <img class="img-fluid" src="https://getpolarized.io/assets/images/hackernews-stats.png">
@@ -30,7 +29,7 @@ users.
 
 ## Traffic from Oct 2018 
 
-<img src="/assets/images/posts/hacker-news-traffic-10-2018.png">
+<img class="img-fluid" src="/assets/images/posts/hacker-news-traffic-10-2018.png">
 
 Our first big HN splash.  This provided a great deal of validation that Polar 
 could really help with people to manage their reading and that other people
@@ -38,7 +37,7 @@ were experiencing the same pain that I had when dealing with books and research.
 
 ## Traffic from March 2019
 
-<img src="/assets/images/posts/hacker-news-traffic-03-2019.png">
+<img class="img-fluid" src="/assets/images/posts/hacker-news-traffic-03-2019.png">
 
 In March you can see we've reduced our bounce rate and I think we've been 
 improving the app across the board.  

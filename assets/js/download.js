@@ -7,6 +7,8 @@ function configureDownloads() {
 
         "download-win-64": `https://github.com/burtonator/polar-bookshelf/releases/download/v${polar_release}/polar-bookshelf-${polar_release}-nsis-x64.exe`,
         "download-win-32": `https://github.com/burtonator/polar-bookshelf/releases/download/v${polar_release}/polar-bookshelf-${polar_release}-nsis-ia32.exe`,
+        // "download-win-64": `https://github.com/burtonator/polar-bookshelf/releases/download/v${polar_release}/polar-bookshelf-${polar_release}-x64.exe`,
+        // "download-win-32": `https://github.com/burtonator/polar-bookshelf/releases/download/v${polar_release}/polar-bookshelf-${polar_release}-ia32.exe`,
         "download-macos-dmg": `https://github.com/burtonator/polar-bookshelf/releases/download/v${polar_release}/polar-bookshelf-${polar_release}.dmg`,
         "download-linux-deb": `https://github.com/burtonator/polar-bookshelf/releases/download/v${polar_release}/polar-bookshelf-${polar_release}-amd64.deb`,
         "download-linux-targz": `https://github.com/burtonator/polar-bookshelf/releases/download/v${polar_release}/polar-bookshelf-${polar_release}-x64.tar.gz`,
