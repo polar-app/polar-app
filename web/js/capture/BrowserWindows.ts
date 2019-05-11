@@ -33,6 +33,8 @@ export class BrowserWindows {
 
             webPreferences: {
 
+                sandbox: false,
+
                 // the path to our content capture bundle needs to be absolute
                 // for some strange reason and this is required by Electron.
                 // preload,

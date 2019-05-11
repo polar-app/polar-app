@@ -33,6 +33,7 @@ export class SpectronBrowserWindowOptions {
             show,
 
             webPreferences: {
+                sandbox: false,
                 webSecurity: false,
                 nodeIntegration: true,
                 partition: "persist:spectron",
