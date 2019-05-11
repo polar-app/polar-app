@@ -293,7 +293,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                     <div id="header-filter">
 
-                        <div style={{display: 'flex'}}>
+                        <div style={{display: 'flex'}}
+                             className="mt-1 mb-1">
 
                             <div className=""
                                  style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto', display: 'flex'}}>

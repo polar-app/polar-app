@@ -73,6 +73,8 @@ export class Dock extends React.Component<IProps, IState> {
 
             const result: React.CSSProperties = {
                 width: '5px',
+                minWidth: '5px',
+                maxWidth: '5px',
                 cursor: 'col-resize',
                 backgroundColor: '#c6c6c6'
             };
@@ -108,6 +110,8 @@ export class Dock extends React.Component<IProps, IState> {
         }
 
         sidebarStyle.width = width;
+        sidebarStyle.minWidth = width;
+        sidebarStyle.maxWidth = width;
         contentStyle.flexGrow = 1;
 
         // needed or the content expands out of the box which isn't what we

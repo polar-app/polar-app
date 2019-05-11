@@ -55,6 +55,7 @@ export class ResponsiveImg extends DeepPureComponent<IProps, IState> {
                              // border: `1px solid #c6c6c6`,
 
                          }}
+                         draggable={false}
                          className=""
                          width={width}
                          height={height}
