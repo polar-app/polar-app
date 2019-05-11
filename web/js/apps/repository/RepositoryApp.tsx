@@ -44,7 +44,8 @@ import {MobileDisclaimer} from './MobileDisclaimer';
 import {MobileDisclaimers} from './MobileDisclaimers';
 import {TabNav} from '../../ui/tabs/TabNav';
 import {NULL_FUNCTION} from '../../util/Functions';
-import {MachineDatastores} from '../../customers/MachineDatastores';
+import {MachineDatastores} from '../../telemetry/MachineDatastores';
+import {MailingList} from './auth_handler/MailingList';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -70,6 +71,10 @@ export class RepositoryApp {
             await authHandler.authenticate();
             return;
         }
+
+        // subscribe but do it in the background as this isn't a high priority UI task.
+        MailingList.subscribeWhenNecessary()
+            .catch(err => log.error(err));
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
@@ -251,7 +256,7 @@ export class RepositoryApp {
                 <Input type="file"
                        id="file-upload"
                        name="file-upload"
-                       accept=".pdf"
+                       accept=".pdf, .PDF"
                        multiple
                        onChange={() => this.onFileUpload()}
                        style={{display: 'none'}}/>
@@ -356,13 +361,15 @@ export class RepositoryApp {
      */
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
 
+        const persistenceLayerProvider = () => this.persistenceLayerManager.get();
+
         const handleUpdatedDocInfo = async () => {
 
             log.info("Received DocInfo update");
 
             const docMeta = await this.persistenceLayerManager.get().getDocMeta(docInfo.fingerprint);
 
-            const repoDocMeta = RepoDocMetas.convert(docInfo.fingerprint, docMeta);
+            const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, docInfo.fingerprint, docMeta);
 
             const validity = RepoDocMetas.isValid(repoDocMeta);
 

@@ -1,7 +1,7 @@
 productName: Polar Bookshelf
 # TODO: unfortunately this needs to be set.  Not sure why but it reverted to
 # using nightly versions when not set.  It should use package.json
-electronVersion: 3.0.8
+electronVersion: 5.0.1
 appId: io.inputneuron/polar
 compression: normal
 npmRebuild: false
@@ -97,3 +97,4 @@ publish:
   publishAutoUpdate: true
 
 asar: true
+afterPack: "./electron-builder-afterpack.js"

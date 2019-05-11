@@ -1,13 +1,13 @@
 import {Datastore, DatastoreID, ErrorListener, InitResult} from './Datastore';
+import {FileRef} from './Datastore';
+import {BinaryFileData} from './Datastore';
+import {WriteFileOpts} from './Datastore';
+import {isBinaryFileData} from './Datastore';
 import {DocMetaRef} from './DocMetaRef';
 import {DiskDatastore} from './DiskDatastore';
 import {RemoteDatastore} from './RemoteDatastore';
 import {Backend} from './Backend';
-import {FileRef} from './Datastore';
-import {BinaryFileData} from './Datastore';
-import {WriteFileOpts} from './Datastore';
 import {DocFileMeta} from './DocFileMeta';
-import {isBinaryFileData} from './Datastore';
 import {Blobs} from '../util/Blobs';
 
 /**
@@ -32,7 +32,6 @@ export class HybridRemoteDatastore extends RemoteDatastore {
         await this.diskDatastore.init(errorListener);
         return {};
     }
-
 
     public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
 
@@ -65,3 +64,4 @@ export class HybridRemoteDatastore extends RemoteDatastore {
     }
 
 }
+

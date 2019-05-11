@@ -43,15 +43,7 @@ export class ActiveSelections {
 
         };
 
-        target.addEventListener('mousedown', (event: MouseEvent) => {
-
-            if (!activeSelection) {
-                originPoint = this.eventToPoint(event);
-            }
-
-        });
-
-        target.addEventListener('mouseup', (event: MouseEvent) => {
+        const onMouseUp = (event: MouseEvent, element: HTMLElement | undefined) => {
 
             const handleMouseEvent = () => {
 
@@ -66,7 +58,6 @@ export class ActiveSelections {
                     hasActiveTextSelection = this.hasActiveTextSelection(selection);
 
                     const point = this.eventToPoint(event);
-                    const element = this.targetElementForEvent(event);
 
                     if (! element) {
                         log.warn("No target element: ", event.target);
@@ -108,6 +99,22 @@ export class ActiveSelections {
             };
 
             this.withTimeout(() => handleMouseEvent());
+
+        };
+
+        target.addEventListener('mousedown', (event: MouseEvent) => {
+
+            if (!activeSelection) {
+                originPoint = this.eventToPoint(event);
+            }
+
+            const element = this.targetElementForEvent(event);
+
+            window.addEventListener('mouseup', event => {
+                // this code properly handles the mouse leaving the window
+                // during mouse up and then leaving wonky event handlers.
+                onMouseUp(event, element);
+            }, {once: true});
 
         });
 

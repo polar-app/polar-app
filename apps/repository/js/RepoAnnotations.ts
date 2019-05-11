@@ -8,10 +8,14 @@ import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Flashcard} from '../../../web/js/metadata/Flashcard';
 import {Text} from '../../../web/js/metadata/Text';
 import {Texts} from '../../../web/js/metadata/Texts';
+import {Images} from '../../../web/js/metadata/Images';
+import {Img} from '../../../web/js/metadata/Img';
+import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 
 export class RepoAnnotations {
 
-    public static convert(docMeta: DocMeta): RepoAnnotation[] {
+    public static convert(persistenceLayerProvider: PersistenceLayerProvider,
+                          docMeta: DocMeta): RepoAnnotation[] {
 
         const result: RepoAnnotation[] = [];
         const docInfo = docMeta.docInfo;
@@ -24,19 +28,19 @@ export class RepoAnnotations {
             const flashcards = Object.values(pageMeta.flashcards || {}) ;
 
             for (const textHighlight of textHighlights) {
-                result.push(this.toRepoAnnotation(textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
             }
 
             for (const areaHighlight of areaHighlights) {
-                result.push(this.toRepoAnnotation(areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
             }
 
             for (const comment of comments) {
-                result.push(this.toRepoAnnotation(comment, AnnotationType.COMMENT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, comment, AnnotationType.COMMENT, docInfo));
             }
 
             for (const flashcard of flashcards) {
-                result.push(this.toRepoAnnotation(flashcard, AnnotationType.FLASHCARD, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, flashcard, AnnotationType.FLASHCARD, docInfo));
             }
 
         }
@@ -45,7 +49,8 @@ export class RepoAnnotations {
 
     }
 
-    public static toRepoAnnotation(sourceAnnotation: TextHighlight | AreaHighlight | Comment | Flashcard,
+    public static toRepoAnnotation(persistenceLayerProvider: PersistenceLayerProvider,
+                                   sourceAnnotation: TextHighlight | AreaHighlight | Comment | Flashcard,
                                    type: AnnotationType,
                                    docInfo: DocInfo): RepoAnnotation {
 
@@ -80,8 +85,15 @@ export class RepoAnnotations {
             meta = {color: (<TextHighlight> sourceAnnotation).color};
         }
 
+        let img: Img | undefined;
+
         if (type === AnnotationType.AREA_HIGHLIGHT) {
-            meta = {color: (<AreaHighlight> sourceAnnotation).color};
+
+            const areaHighlight = <AreaHighlight> sourceAnnotation;
+            meta = {color: areaHighlight.color};
+
+            img = Images.toImg(persistenceLayerProvider, areaHighlight.image);
+
         }
 
         return {
@@ -92,7 +104,8 @@ export class RepoAnnotations {
             created: sourceAnnotation.created,
             tags: docInfo.tags || {},
             meta,
-            docInfo
+            docInfo,
+            img
         };
 
     }

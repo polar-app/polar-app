@@ -3,6 +3,7 @@ import {Firebase} from '../../../firebase/Firebase';
 import * as firebase from '../../../firebase/lib/firebase';
 import {AppRuntime} from '../../../AppRuntime';
 import {Optional} from '../../../util/ts/Optional';
+import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 
 export interface AuthHandler {
 
@@ -55,7 +56,52 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
 }
 
-export class BrowserAuthHandler extends DefaultAuthHandler {
+export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
+
+    public async userInfo(): Promise<Optional<UserInfo>> {
+
+        Firebase.init();
+
+        const user = await this.currentUser();
+
+        if (user === null) {
+            return Optional.empty();
+        }
+
+        return Optional.of({
+            displayName: Optional.of(user.displayName).getOrUndefined(),
+            email: Optional.of(user.email).getOrUndefined(),
+            emailVerified: user.emailVerified,
+            photoURL: Optional.of(user.photoURL).getOrUndefined(),
+            uid: user.uid,
+            creationTime: user.metadata.creationTime!
+        });
+
+    }
+
+    protected async currentUser(): Promise<firebase.User | null> {
+
+        Firebase.init();
+
+        return new Promise<firebase.User | null>((resolve, reject) => {
+
+            const unsubscribe = firebase.auth()
+                .onAuthStateChanged((user) => {
+                                        unsubscribe();
+                                        resolve(user);
+                                    },
+                                    (err) => {
+                                        unsubscribe();
+                                        reject(err);
+                                    });
+
+        });
+
+    }
+
+}
+
+export class BrowserAuthHandler extends FirebaseAuthHandler {
 
     public async authenticate(): Promise<void> {
 
@@ -80,49 +126,9 @@ export class BrowserAuthHandler extends DefaultAuthHandler {
 
     }
 
-    public async userInfo(): Promise<Optional<UserInfo>> {
-
-        Firebase.init();
-
-        const user = await this.currentUser();
-
-        if (user === null) {
-            return Optional.empty();
-        }
-
-        return Optional.of({
-            displayName: Optional.of(user.displayName).getOrUndefined(),
-            email: Optional.of(user.email).getOrUndefined(),
-            emailVerified: user.emailVerified,
-            photoURL: Optional.of(user.photoURL).getOrUndefined(),
-            uid: user.uid
-        });
-
-    }
-
-    private async currentUser(): Promise<firebase.User | null> {
-
-        Firebase.init();
-
-        return new Promise<firebase.User | null>((resolve, reject) => {
-
-            const unsubscribe = firebase.auth()
-                .onAuthStateChanged((user) => {
-                    unsubscribe();
-                    resolve(user);
-                },
-                (err) => {
-                    unsubscribe();
-                    reject(err);
-                });
-
-        });
-
-    }
-
 }
 
-export class ElectronAuthHandler extends DefaultAuthHandler {
+export class ElectronAuthHandler extends FirebaseAuthHandler {
 
     public async status(): Promise<AuthStatus> {
 
@@ -145,5 +151,6 @@ export interface UserInfo {
     readonly emailVerified: boolean;
     readonly photoURL?: string;
     readonly uid: string;
+    readonly creationTime: ISODateTimeString;
 
 }

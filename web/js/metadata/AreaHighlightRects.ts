@@ -3,7 +3,7 @@ import {AreaHighlightRect} from "./AreaHighlightRect";
 
 export class AreaHighlightRects {
 
-    static createFromRect(rect: Rect) {
+    public static createFromRect(rect: Rect) {
 
         return new AreaHighlightRect({
             left: rect.left,

@@ -22,7 +22,7 @@ SpectronMain2.create().run(async state => {
 
     assert.ok(await Files.existsAsync(path), "The error.log file does not exist at: " + path);
 
-    state.window.loadURL(`file://${__dirname}/app.html`);
+    await state.window.loadURL(`file://${__dirname}/app.html`);
 
     log.error("This is from the main process: ", new Error("Fake error in main process"));
 

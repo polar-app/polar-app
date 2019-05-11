@@ -1,9 +1,8 @@
 import {PersistenceLayer} from "./PersistenceLayer";
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from "../util/Functions";
-import {Backend} from './Backend';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
-import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
 import {BackendFileRef} from './Datastore';
 import {Visibility} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
@@ -12,11 +11,9 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from "../Preconditions";
-import {Optional} from "../util/ts/Optional";
-import {DocFileMeta} from "./DocFileMeta";
 import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
-import {Datastores} from './Datastores';
+import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
 
@@ -34,7 +31,7 @@ export class PersistenceLayers {
 
         log.info("Changing document visibility changed to: ", visibility);
 
-        const backendFileRefs = Datastores.toBackendFileRefs(docMeta);
+        const backendFileRefs = BackendFileRefs.toBackendFileRefs(docMeta);
 
         const writeFileOpts = {visibility, updateMeta: true};
 
@@ -157,6 +154,9 @@ export class PersistenceLayers {
                                            cloudSyncOrigin: SyncOrigin,
                                            listener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION): Promise<void> {
 
+        // log.notice("local: " + localSyncOrigin.datastore.id);
+        // log.notice("cloud: " + cloudSyncOrigin.datastore.id);
+
         log.notice("Transferring from local -> cloud...");
         const localToCloud = await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, listener, 'local-to-cloud');
         log.notice("Transferring from local -> cloud...done", localToCloud);
@@ -192,38 +192,40 @@ export class PersistenceLayers {
             }
         };
 
-        async function handleSyncFile(syncDoc: SyncDoc, fileRef: FileRef) {
+        async function handleSyncFile(syncDoc: SyncDoc, fileRef: BackendFileRef) {
 
             ++result.files.total;
 
-            // FIXME: use backendFileRef not just a simple FileRef so that we
-            // can handle binary attachments.
-            if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
-
-                let optionalFile: Optional<DocFileMeta>;
+            const containsFile = async (datastore: Datastore,
+                                        id: 'source' | 'target'): Promise<boolean> => {
 
                 try {
-                    optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
+                    return await datastore.containsFile(fileRef.backend, fileRef);
                 } catch (e) {
-                    log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef, e);
+                    log.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint} from ${id}`, fileRef, e);
                     throw e;
                 }
 
-                if (optionalFile.isPresent()) {
+            };
 
-                    // TODO: make this a dedicated function to transfer between
-                    // do datastores... or at least a dedicated function to read
-                    // it in as a buffer but this might be less of an issue now
-                    // that I know that both firebase and the disk datastore
-                    // can easily convert URLs to blobs and work with them.
+            const targetContainsFile = await containsFile(target.datastore, 'target');
 
-                    const file = optionalFile.get();
-                    const blob = await URLs.toBlob(file.url);
+            if (! targetContainsFile) {
 
-                    await target.datastore.writeFile(file.backend, fileRef, blob);
+                const sourceContainsFile =  await containsFile(source.datastore, 'source');
+
+                if (sourceContainsFile) {
+
+                    const sourceFile = source.datastore.getFile(fileRef.backend, fileRef);
+
+                    const blob = await URLs.toBlob(sourceFile.url);
+
+                    await target.datastore.writeFile(sourceFile.backend, fileRef, blob);
 
                     ++result.files.writes;
 
+                } else {
+                    log.warn(`Both the target and source files are missing in doc ${syncDoc.fingerprint} (${syncDoc.title}): `, fileRef);
                 }
 
             }
@@ -244,15 +246,11 @@ export class PersistenceLayers {
 
             for (const sourceSyncFile of sourceSyncDoc.files) {
 
-                // TODO: we're going to need some type of method to get all the
-                // files backing a DocMeta file when we start to use attachments
-                // like screenshots.
-
-                if (sourceSyncFile.ref.name) {
+                if (sourceSyncFile.name) {
                     // TODO: if we use the second queue it still locks up.
                     // await docFileAsyncWorkQueue.enqueue(async () =>
                     // handleStashFile(docFile));
-                    await handleSyncFile(sourceSyncDoc, sourceSyncFile.ref);
+                    await handleSyncFile(sourceSyncDoc, sourceSyncFile);
                 }
 
             }

@@ -3,11 +3,8 @@ import {Logger} from "../../../../logger/Logger";
 import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";
 import {forDict} from "../../../../util/Functions";
-import {Rects} from "../../../../Rects";
-import {Dimensions} from "../../../../util/Dimensions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
-import {AreaHighlights} from "../../../../metadata/AreaHighlights";
-import {AnnotationRect} from "../../../../metadata/AnnotationRect";
+import {Position} from "../../../../metadata/BaseHighlight";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";
 import {AreaHighlightRect} from "../../../../metadata/AreaHighlightRect";
 import {AreaHighlightRects} from "../../../../metadata/AreaHighlightRects";
@@ -16,6 +13,16 @@ import {BoxOptions} from "../../../../boxes/controller/BoxOptions";
 import {DocFormat} from "../../../../docformat/DocFormat";
 import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
 import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
+import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
+import {AsyncSerializer} from '../../../../util/AsyncSerializer';
+import {AreaHighlights} from '../../../../metadata/AreaHighlights';
+import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
+import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
+import {Screenshots} from '../../../../screenshots/Screenshots';
+import {Arrays} from '../../../../util/Arrays';
+import {HighlightColors} from '../../../../metadata/HighlightColor';
+import {HighlightColor} from '../../../../metadata/HighlightColor';
+import {ILTRect} from '../../../../util/rects/ILTRect';
 
 const log = Logger.create();
 
@@ -27,11 +34,11 @@ export class AreaHighlightComponent extends Component {
     private areaHighlight?: AreaHighlight;
     private boxController?: BoxController;
 
-    constructor() {
+    private asyncSerializer = new AsyncSerializer();
+
+    constructor(private persistenceLayerProvider: PersistenceLayerProvider) {
         super();
-
         this.docFormat = DocFormatFactory.getInstance();
-
     }
 
     /**
@@ -48,6 +55,38 @@ export class AreaHighlightComponent extends Component {
 
     }
 
+    private async captureFirstScreenshot() {
+
+        const areaHighlight = this.areaHighlight!;
+        const { docMeta, pageMeta } = this.annotationEvent!;
+
+        const rect = Arrays.first(Object.values(areaHighlight.rects));
+        const areaHighlightRect = AreaHighlightRects.createFromRect(rect!);
+        const pageNum = pageMeta.pageInfo.num;
+
+        const {pageDimensions} = AreaHighlights.computePageDimensions(pageNum);
+
+        const boxRect = areaHighlightRect.toDimensionsFloor(pageDimensions);
+
+        const target = <HTMLElement> document.getElementById(this.createID());
+
+        const opts: DoWriteOpts = {
+            datastore: this.persistenceLayerProvider(),
+            docMeta,
+            pageMeta,
+            pageNum,
+            areaHighlight,
+            target,
+            areaHighlightRect,
+            boxRect,
+        };
+
+        await this.asyncSerializer.execute(async () => {
+            this.areaHighlight = await AreaHighlights.doWrite(opts);
+        });
+
+    }
+
     /**
      *
      */
@@ -55,33 +94,63 @@ export class AreaHighlightComponent extends Component {
 
         // TODO: actually I think this belongs in the controller... not the view
 
-        // TODO: refactor / this code is shared with the
-        // AbstractPagemarkComponent
-
-        // console.log("Box moved to: ", boxMoveEvent);
-
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
-                                                                      boxMoveEvent.restrictionRect);
+                                                                        boxMoveEvent.restrictionRect);
 
         const areaHighlightRect = new AreaHighlightRect(annotationRect);
-
-        // FIXME: the lastUpdated here isn't being updated. I'm going to
-        // have to change the setters I think..
 
         if (boxMoveEvent.state === "completed") {
 
             const annotationEvent = this.annotationEvent!;
+            const { docMeta, pageMeta } = annotationEvent;
+            const pageNum = pageMeta.pageInfo.num;
 
-            // TODO: this isn't handled properly because we create a NEW rect
-            // with the existing values...
+            const areaHighlight = pageMeta.areaHighlights[this.areaHighlight!.id];
 
-            this.areaHighlight = new AreaHighlight(this.areaHighlight);
-            this.areaHighlight.rects["0"] = <any> areaHighlightRect;
+            const {boxRect, target} = boxMoveEvent;
 
-            log.debug("New areaHighlight: ", JSON.stringify(this.areaHighlight, null, "  "));
+            const doWrite = async () => {
 
-            delete annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id];
-            annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id] = this.areaHighlight;
+                const {pageDimensions} = AreaHighlights.computePageDimensions(pageNum);
+
+                // TODO: this is a problem because the area highlight isn't created
+                // until we mutate it in the JSON..
+                const extractedImage
+                    = await Screenshots.capture(pageNum, boxRect, target);
+
+                const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+
+                const position: Position = {
+                    x: overlayRect.left,
+                    y: overlayRect.top,
+                    width: overlayRect.width,
+                    height: overlayRect.height,
+                };
+
+                const rect = areaHighlightRect;
+
+                const writeOpts: AreaHighlightWriteOpts = {
+                    datastore: this.persistenceLayerProvider(),
+                    docMeta,
+                    pageMeta,
+                    areaHighlight,
+                    rect,
+                    position,
+                    extractedImage
+                };
+
+                const writer = AreaHighlights.write(writeOpts);
+
+                const [writtenAreaHighlight, committer] = writer.prepare();
+
+                this.areaHighlight = writtenAreaHighlight;
+
+                await committer.commit();
+
+            };
+
+            this.asyncSerializer.execute(async () => await doWrite())
+                .catch(err => log.error("Unable to update screenshot: ", err));
 
         } else {
             // noop
@@ -106,23 +175,37 @@ export class AreaHighlightComponent extends Component {
         const pageMeta = annotationEvent.pageMeta;
         const docInfo = docMeta.docInfo;
 
-        const pageElement = this.docFormat.getPageElementFromPageNum(pageMeta.pageInfo.num);
-        const dimensionsElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
+        const pageNum = pageMeta.pageInfo.num;
 
         // the container must ALWAYS be the pageElement because if we use any
         // other container PDF.js breaks.
-        const containerElement = pageElement;
+        const containerElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
-        const pageDimensions = new Dimensions({
-            width: dimensionsElement.clientWidth,
-            height: dimensionsElement.clientHeight
-        });
+        const {pageDimensions, dimensionsElement} = AreaHighlights.computePageDimensions(pageNum);
+
+        const color: HighlightColor = areaHighlight.color || 'yellow';
+
+        const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
 
         forDict(areaHighlight.rects, (key, rect) => {
 
-            const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
+            const toOverlayRect = (): ILTRect => {
 
-            const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+                if (areaHighlight.position) {
+                    return {
+                        left: areaHighlight.position.x,
+                        top: areaHighlight.position.y,
+                        width: areaHighlight.position.width,
+                        height: areaHighlight.position.height
+                    };
+                }
+
+                return areaHighlightRect.toDimensions(pageDimensions);
+
+            };
+
+            const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
+            const overlayRect = toOverlayRect();
 
             log.debug("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));
 
@@ -165,8 +248,9 @@ export class AreaHighlightComponent extends Component {
             highlightElement.className = `area-highlight annotation area-highlight-${areaHighlight.id}`;
 
             highlightElement.style.position = "absolute";
-            highlightElement.style.backgroundColor = `yellow`;
-            highlightElement.style.opacity = `0.5`;
+            highlightElement.style.backgroundColor = backgroundColor;
+            (highlightElement.style as any).mixBlendMode = 'multiply';
+            highlightElement.style.border = `1px solid #c6c6c6`;
 
             // if(this.docFormat.name === "pdf") {
             //     // this is only needed for PDF and we might be able to use a
@@ -180,13 +264,16 @@ export class AreaHighlightComponent extends Component {
             highlightElement.style.width = `${overlayRect.width}px`;
             highlightElement.style.height = `${overlayRect.height}px`;
 
-            highlightElement.style.border = `1px solid #c6c6c6`;
-
             highlightElement.style.zIndex = '1';
 
-            (highlightElement.style as any).mixBlendMode = 'multiply';
-
         });
+
+        if (! this.areaHighlight!.image) {
+
+            this.captureFirstScreenshot()
+                .catch(err => log.error("Unable to capture first screenshot: ", err));
+
+        }
 
     }
 

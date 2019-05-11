@@ -2,8 +2,9 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import Input from 'reactstrap/lib/Input';
 import {Rating} from './Feedback';
-import {UserFeedbacks} from '../UserFeedback';
 import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
+import {UserFeedbacks} from '../../telemetry/UserFeedback';
+import {MachineIDs} from '../../util/MachineIDs';
 
 export class FreeFormFeedback extends React.Component<IProps, IState> {
 
@@ -50,7 +51,8 @@ export class FreeFormFeedback extends React.Component<IProps, IState> {
         UserFeedbacks.write({
             netPromoterScore: this.props.rating,
             text: this.text,
-            created: ISODateTimeStrings.create()
+            created: ISODateTimeStrings.create(),
+            machine: MachineIDs.get()
         }).catch(err => console.error("got error: ", err));
 
     }

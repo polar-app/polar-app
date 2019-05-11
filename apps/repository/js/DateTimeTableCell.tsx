@@ -6,6 +6,7 @@ import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
+// TODO: this isn't really a table cell anymore.
 export class DateTimeTableCell extends React.PureComponent<IProps, any> {
 
     constructor(props: IProps, context: any) {

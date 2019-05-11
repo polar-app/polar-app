@@ -157,6 +157,7 @@ export class TagInput extends React.Component<IProps, IState> {
                          isOpen={this.state.open}
                          target={this.id}
                          trigger="legacy"
+                         delay={0}
                          toggle={() => this.deactivate()}
                          className="tag-input-popover shadow">
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}

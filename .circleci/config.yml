@@ -7,7 +7,11 @@ jobs:
   build:
     docker:
     # specify the version you desire here
-    - image: circleci/node:10.10
+    #
+    # all images and tags here:
+    #   https://circleci.com/docs/2.0/docker-image-tags.json
+    #
+    - image: circleci/node:12.1-stretch
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
@@ -33,6 +37,50 @@ jobs:
         - node_modules
         key: v1-dependencies-{{ checksum "package.json" }}
 
-    # run tests!
-    - run: npx tsc && npm test
+    - run:
+        name: Install packages needed for Electron testing.
+        command: sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2
 
+    - run:
+        name: XVFB installed?
+        command: whereis Xvfb
+
+    - run:
+        name: Running X virtual framebuffer
+        command: Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
+        background: true
+
+    - run:
+        name: Compile Typescript
+        command: npx tsc
+
+#    - run:
+#        name: firebase-cloud-aware-datastore
+#        command: |
+#          export DISPLAY=:99 &&
+#          export SPECTRON_OFFSCREEN=true &&
+#          npx mocha web/spectron/firebase-cloud-aware-datastore/spec.js
+
+    - run:
+        name: npm test
+        command: npm test
+
+#    - run:
+#        name: spectron repository-app
+#        command: |
+#          export DISPLAY=:99 &&
+#          export SPECTRON_OFFSCREEN=true &&
+#          npx mocha web/spectron/repository-app/spec.js
+
+    - run:
+        name: e2e
+        command: |
+          export DISPLAY=:99 &&
+          export SPECTRON_OFFSCREEN=true &&
+          npm run-script e2e
+
+    - run:
+        name: build and verify webapp
+        command: |
+          npm run-script build-webapp && \
+          find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'

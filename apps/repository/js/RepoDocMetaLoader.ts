@@ -1,29 +1,17 @@
-import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
-import {Optional} from '../../../web/js/util/ts/Optional';
-import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {Logger} from '../../../web/js/logger/Logger';
-import {ProgressCalculator} from '../../../web/js/util/ProgressCalculator';
-import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
-import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {RepoDocInfos} from './RepoDocInfos';
-import {Dictionaries} from '../../../web/js/util/Dictionaries';
-import {RepoDocInfo} from './RepoDocInfo';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
-import {DocMetaSnapshotEvent, SnapshotProgress, SnapshotUnsubscriber, DocMetaSnapshotEvents, MutationType} from '../../../web/js/datastore/Datastore';
-import {ElectronContextTypes} from '../../../web/js/electron/context/ElectronContextTypes';
-import {Promises} from '../../../web/js/util/Promises';
+import {MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
-import {PersistenceLayerManagerEvent} from '../../../web/js/datastore/PersistenceLayerManager';
-import {NULL_FUNCTION} from '../../../web/js/util/Functions';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
-import {isPresent} from '../../../web/js/Preconditions';
 import {ProgressTrackerIndex} from '../../../web/js/util/ProgressTrackerIndex';
 import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
 import {IndeterminateProgressBar} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
+import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 
 const log = Logger.create();
 
@@ -97,7 +85,9 @@ export class RepoDocMetaLoader {
                         const docMeta = await docMetaMutation.docMetaProvider();
                         const docInfo = docMeta.docInfo;
 
-                        const repoDocMeta = this.toRepoDocMeta(docInfo.fingerprint, docMeta);
+                        const persistenceLayerProvider = () => this.persistenceLayerManager.get();
+
+                        const repoDocMeta = this.toRepoDocMeta(persistenceLayerProvider, docInfo.fingerprint, docMeta);
 
                         if (repoDocMeta && RepoDocInfos.isValid(repoDocMeta.repoDocInfo)) {
 
@@ -151,11 +141,13 @@ export class RepoDocMetaLoader {
     }
 
 
-    private toRepoDocMeta(fingerprint: string, docMeta?: DocMeta): RepoDocMeta | undefined {
+    private toRepoDocMeta(persistenceLayerProvider: PersistenceLayerProvider,
+                          fingerprint: string,
+                          docMeta?: DocMeta): RepoDocMeta | undefined {
 
         if (docMeta) {
 
-            return RepoDocMetas.convert(fingerprint, docMeta);
+            return RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
 
         } else {
             log.warn("No DocMeta for fingerprint: " + fingerprint);

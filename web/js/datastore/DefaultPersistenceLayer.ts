@@ -170,7 +170,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         const docInfo = Object.assign({}, docMeta.docInfo);
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();
-        this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+
+        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
         const writeOpts = {
             ...opts,
@@ -212,8 +213,12 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
         return this.datastore.getFile(backend, ref, opts);
+    }
+
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        return this.datastore.deleteFile(backend, ref);
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {

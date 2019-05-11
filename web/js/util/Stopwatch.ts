@@ -18,6 +18,20 @@ export class Stopwatch {
 
     }
 
+    /**
+     * Smart toString method that returns the state and duration of the
+     * stopwatch.
+     */
+    public toString() {
+
+        if (this.stopped === undefined) {
+            return 'RUNNING';
+        } else {
+            return new TrackedDuration(this.started, this.stopped!).toString();
+        }
+
+    }
+
 }
 
 export class TrackedDuration {

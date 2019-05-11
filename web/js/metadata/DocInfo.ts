@@ -44,7 +44,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public referrer?: string;
     public shareStrategy?: ShareStrategy;
     public storedResources?: Set<StoredResource>;
-    public mutating?: boolean;
+    public mutating?: DocMutating;
     public published?: ISODateString | ISODateTimeString;
     public doi?: string;
     public readingPerDay?: ReadingOverview;
@@ -231,7 +231,7 @@ export interface IDocInfo {
      * try/finally block when updating this because if it's not set back to
      * false then writes will be lost.
      */
-    mutating?: boolean;
+    mutating?: DocMutating;
 
     /**
      * The time this document was originally published according to the
@@ -254,6 +254,16 @@ export interface IDocInfo {
     attachments: {[id: string]: Attachment};
 
 }
+
+/**
+ * Change how we should handle documents mutating.
+ *
+ * 'batch' we're mutating as an entire batch.
+ *
+ * 'skip' do not write the DocMeta that's being mutated.  This meant for just
+ * updating in memory and not meant to actually perform any underlying action.
+ */
+export type DocMutating = 'batch' | 'skip';
 
 /**
  * How this document was shared

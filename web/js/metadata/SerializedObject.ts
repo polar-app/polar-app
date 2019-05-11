@@ -21,11 +21,11 @@ export class SerializedObject {
     }
 
     public setup() {
-
+        // noop
     }
 
     public validate() {
-
+        // noop
     }
 
 }

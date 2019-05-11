@@ -67,7 +67,7 @@ export class ExportButton extends React.Component<IProps, IState> {
 
         };
 
-        remote.dialog.showSaveDialog(opts, (path: string) => {
+        remote.dialog.showSaveDialog(opts, (path?: string) => {
 
             if (path && this.props.onExport) {
                 this.props.onExport(path, format);

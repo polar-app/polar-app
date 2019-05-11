@@ -9,6 +9,7 @@ import {Reactor} from "../reactor/Reactor";
 import {TraceListeners} from "./TraceListeners";
 import {Paths} from "../util/Paths";
 import {TraceListener} from './TraceListener';
+import {Dictionaries} from '../util/Dictionaries';
 
 const EVENT_NAME = "onMutation";
 
@@ -17,7 +18,6 @@ export class TraceHandler {
     private readonly path: string;
     private readonly target: any;
     private readonly traceIdentifier: number;
-
     private readonly proxies: Proxies;
 
     // @ts-ignore
@@ -42,10 +42,10 @@ export class TraceHandler {
                 traceIdentifier: number,
                 proxies: Proxies) {
 
-        this.path = Preconditions.assertNotNull(path, "path");
-        this.target = Preconditions.assertNotNull(target, "target");
-        this.traceIdentifier = Preconditions.assertNotNull(traceIdentifier, "traceIdentifier");
-        this.proxies = Preconditions.assertNotNull(proxies, "proxies");
+        this.path = Preconditions.assertPresent(path, "path");
+        this.target = Preconditions.assertPresent(target, "target");
+        this.traceIdentifier = Preconditions.assertPresent(traceIdentifier, "traceIdentifier");
+        this.proxies = Preconditions.assertPresent(proxies, "proxies");
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
@@ -111,6 +111,8 @@ export class TraceHandler {
 
     public set(target: any, property: string, value: any, receiver: any) {
 
+        value = Dictionaries.deepCopy(value);
+
         // TODO: before we change the value, also trace the new input values
         // if we are given an object.
 
@@ -161,6 +163,7 @@ export class TraceHandler {
         });
 
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
+
         return result;
 
     }

@@ -29,20 +29,19 @@ describe('JSONExporter', function() {
         await converter.close();
 
         const expected = {
-            "version": 1,
             "items": [
                 {
-                    "id": "12tPgPJ9QP",
-                    "guid": "12tPgPJ9QP",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "content": {
                         "TEXT": "hello world"
                     },
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "guid": "12exn26R8gkD2fjouKQU",
+                    "id": "12exn26R8gkD2fjouKQU",
+                    "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "ref": "page:1"
                 }
-            ]
-
+            ],
+            "version": 1
         };
 
         assertJSON(writer.toString(), expected);
@@ -75,8 +74,8 @@ describe('JSONExporter', function() {
                         "TEXT": "hello world"
                     },
                     "created": "2012-03-02T11:38:49.321Z",
-                    "guid": "12tPgPJ9QP",
-                    "id": "12tPgPJ9QP",
+                    "guid": "12exn26R8gkD2fjouKQU",
+                    "id": "12exn26R8gkD2fjouKQU",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "ref": "page:1"
                 },
@@ -85,8 +84,8 @@ describe('JSONExporter', function() {
                         "TEXT": "hello world"
                     },
                     "created": "2012-03-02T11:38:49.321Z",
-                    "guid": "12XMbYpxLx",
-                    "id": "12XMbYpxLx",
+                    "guid": "1QF1kkH7VXZNYzbcDaPu",
+                    "id": "1QF1kkH7VXZNYzbcDaPu",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "ref": "page:1"
                 }

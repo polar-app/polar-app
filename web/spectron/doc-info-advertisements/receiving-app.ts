@@ -52,6 +52,7 @@ SpectronRenderer.run(async (state) => {
         console.log("Receiver SUCCESSFUL");
 
         state.testResultWriter.write(true)
+            .then(() => log.info("DONE"))
             .catch((err: Error) => {
                 log.error("Could not receive event.", err);
             });

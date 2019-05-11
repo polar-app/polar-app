@@ -1,10 +1,13 @@
 import {DocFormat, DocFormatName, PageDetail} from './DocFormat';
 import {notNull} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
+import {URLs} from '../util/URLs';
 
 export class HTMLFormat extends DocFormat {
 
     public readonly name = 'html';
+
+    private static canvas: HTMLCanvasElement | undefined;
 
     constructor() {
         super();
@@ -30,9 +33,9 @@ export class HTMLFormat extends DocFormat {
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    currentDocFingerprint(): string | undefined {
+    public currentDocFingerprint(): string | undefined {
 
-        let polarFingerprint = this._queryFingerprintElement();
+        const polarFingerprint = this._queryFingerprintElement();
 
         if (polarFingerprint !== null) {
             return Optional.of(polarFingerprint.getAttribute("content")!).getOrUndefined();
@@ -43,11 +46,11 @@ export class HTMLFormat extends DocFormat {
     }
 
     setCurrentDocFingerprint(fingerprint: string) {
-        let polarFingerprint = this._queryFingerprintElement();
+        const polarFingerprint = this._queryFingerprintElement();
         polarFingerprint.setAttribute("content", fingerprint);
     }
 
-    _queryFingerprintElement(): Element {
+    private _queryFingerprintElement(): Element {
         return notNull(document.querySelector("meta[name='polar-fingerprint']"));
     }
 
@@ -68,7 +71,7 @@ export class HTMLFormat extends DocFormat {
         };
     }
 
-    currentScale() {
+    public currentScale() {
 
         return Optional.of(document.querySelector("meta[name='polar-scale']"))
             .map(current => current.getAttribute('content'))
@@ -98,8 +101,14 @@ export class HTMLFormat extends DocFormat {
 
     }
 
-    targetDocument(): HTMLDocument | null {
+    public targetDocument(): HTMLDocument | null {
         return Optional.of(document.querySelector("iframe")).get().contentDocument;
+    }
+
+    public async getCanvas(pageNum: number): Promise<HTMLCanvasElement> {
+
+        throw new Error("Not supported");
+
     }
 
 }

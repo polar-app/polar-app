@@ -94,8 +94,8 @@ export class BrowserApp {
 
             });
 
-            content.addEventListener('did-fail-load', () => {
-                log.warn("Load of URL failed.");
+            content.addEventListener('did-fail-load', (event) => {
+                log.warn("Load of URL failed.", event);
             });
 
             this.forwardConsoleMessages(content);

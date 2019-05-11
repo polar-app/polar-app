@@ -231,6 +231,7 @@ export class ContentCapture {
             // structures are updated.
 
             result.mutations.cleanupRemoveScripts = ContentCapture.cleanupRemoveScripts(cloneDoc, url);
+            ContentCapture.removeNoScriptElements(cloneDoc);
             result.mutations.cleanupHead = ContentCapture.cleanupHead(cloneDoc, url);
             result.mutations.cleanupBase = ContentCapture.cleanupBase(cloneDoc, url);
             result.mutations.adsBlocked = AdBlocker.cleanse(cloneDoc, url);
@@ -402,6 +403,20 @@ export class ContentCapture {
         }
 
         return result;
+
+    }
+
+
+    /**
+     * noscript elements must be removed because they weren't actually used
+     * as part of the original rendered page.
+     */
+    private static removeNoScriptElements(cloneDoc: Document) {
+
+        const elements = Array.from(cloneDoc.documentElement.querySelectorAll('noscript'));
+        for (const element of elements) {
+            element.parentElement!.removeChild(element);
+        }
 
     }
 

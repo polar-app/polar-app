@@ -28,7 +28,12 @@ export class ConsoleLogger implements ILogger {
     }
 
     public debug(msg: string, ...args: any[]) {
+
+        // TODO: we might want to make this call console.debug and not
+        // console.log so that we can turn it off but it's also nice to disable
+        // these for performance reasons  so I'm not sure of the right strategy.
         console.log(msg, ...args);
+
     }
 
     public async sync(): Promise<void> {

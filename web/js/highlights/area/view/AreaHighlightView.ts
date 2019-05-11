@@ -12,9 +12,10 @@ export class AreaHighlightView {
      */
     constructor(model: Model) {
 
-        this.componentManager = new ComponentManager(model,
+        this.componentManager = new ComponentManager("area-highlight",
+                                                     model,
                                                      new DefaultContainerProvider(),
-                                                     () => new AreaHighlightComponent(),
+                                                     () => new AreaHighlightComponent(model.persistenceLayerProvider),
                                                      () => new AreaHighlightModel());
 
     }

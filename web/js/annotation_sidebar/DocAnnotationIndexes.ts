@@ -23,21 +23,29 @@ export class DocAnnotationIndexes {
         const docAnnotationMap = Object.assign({}, docAnnotationIndex.docAnnotationMap);
         let sortedDocAnnotations: SortedDocAnnotations = [];
 
-
         for (const docAnnotation of docAnnotations) {
+
+            if (docAnnotationMap[docAnnotation.id]) {
+
+                const current = docAnnotationMap[docAnnotation.id];
+
+                // we have to merge the previously built command and children
+
+                docAnnotation.children = current.children;
+
+            }
+
+            // new entry...
             docAnnotationMap[docAnnotation.id] = docAnnotation;
+
         }
 
         sortedDocAnnotations.push(...Object.values(docAnnotationMap));
 
-        function sortScore(item: DocAnnotation) {
-            return (item.pageNum * 100000) + (item.position.y * 100) + item.position.x;
-        }
-
         // now sort the doc annotations so that they're in the order we need them.
         sortedDocAnnotations = sortedDocAnnotations.sort((a, b) => {
 
-            const diff = sortScore(a) - sortScore(b);
+            const diff = this.computeScore(a) - this.computeScore(b);
 
             if (diff === 0) {
                 return a.id.localeCompare(b.id);
@@ -48,6 +56,12 @@ export class DocAnnotationIndexes {
         });
 
         return new DocAnnotationIndex(docAnnotationMap, sortedDocAnnotations);
+
+    }
+
+    public static computeScore(item: DocAnnotation) {
+
+        return (item.pageNum * 100000) + (item.position.y * 100) + item.position.x;
 
     }
 

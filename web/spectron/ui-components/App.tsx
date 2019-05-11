@@ -52,124 +52,31 @@ import {Blobs} from '../../js/util/Blobs';
 import {Dock} from './Dock';
 import {Channels} from '../../js/util/Channels';
 import {Suggestions} from '../../js/ui/feedback/Suggestions';
+import {FakeComponent0} from './FakeComponent0';
+import {Canvases} from '../../js/util/Canvases';
+import {ColorDropdown} from './ColorDropdown';
+import {ColorSelector} from '../../js/ui/colors/ColorSelector';
+
+const styles = {
+    swatch: {
+        width: '30px',
+        height: '30px',
+        float: 'left',
+        borderRadius: '4px',
+        margin: '0 6px 6px 0',
+    }
+};
 
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
         super(props, context);
 
-        this.toggleDropDown = this.toggleDropDown.bind(this);
-        this.toggleSplit = this.toggleSplit.bind(this);
-        this.state = {
-            dropdownOpen: false,
-            splitButtonOpen: false
-        };
     }
 
     public render() {
-        //
-        // // ProgressBar.create();
-        //
-        // const options: ListOptionType[] = [
-        //     {
-        //         id: "title",
-        //         label: "Title",
-        //         selected: true
-        //     },
-        //     {
-        //         id: "tags",
-        //         label: "Tags",
-        //         selected: false
-        //     }
-        // ];
-        //
-        // const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
-        //
-        // const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
-        // const textSelections: TextRect[] = [new TextRect({text: "hello world"})];
-        // const text = "hello world";
-        //
-        // const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
-        //
-        // // const ref = Refs.createFromAnnotationType(textHighlight.id,
-        // // AnnotationType.TEXT_HIGHLIGHT);
-        //
-        // docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;
-        //
-        // // let flashcard = Flashcards.createFrontBack(front, back, ref);
-        // //
-        // // // TODO: an idiosyncracie of the proxies system is that it mutates
-        // // the // object so if it's read only it won't work.  This is a bug
-        // // with // Proxies so I need to also fix that bug there in the future.
-        // // flashcard = Object.assign({}, flashcard);
-        // // annotation.pageMeta.flashcards[flashcard.id] = flashcard;
-        //
-        //
-        // // TODO: we have to create some flashcards and comments for this object
-        // // so that the annotation sidear renders.
-        //
-        // const relatedTags = new RelatedTags();
-        //
-        // relatedTags.update('0x01', 'set', 'linux');
-        // relatedTags.update('0x01', 'set', 'microsoft');
-        //
-        // relatedTags.update('0x02', 'set', 'linux');
-        // relatedTags.update('0x02', 'set', 'google');
-        //
-        // relatedTags.update('0x03', 'set', 'linux');
-        // relatedTags.update('0x03', 'set', 'microsoft');
-        //
-        // relatedTags.update('0x04', 'set', 'linux');
-        // relatedTags.update('0x04', 'set', 'microsoft');
-        //
-        // relatedTags.update('0x05', 'set', 'linux');
-        // relatedTags.update('0x05', 'set', 'google');
-        //
-        // const tags: Tag[] = [
-        //     {id: 'microsoft', label: 'microsoft'},
-        //     {id: 'google', label: 'google'}
-        // ];
-        //
-        // const existingTags: Tag[] = [
-        //     {id: 'google', label: 'google'}
-        // ];
-        //
-        // const steps = [
-        //     {
-        //         target: '.my-first-step',
-        //         content: 'This is my awesome feature!',
-        //         disableBeacon: true
-        //     },
-        //     {
-        //         target: '.my-other-step',
-        //         content: 'This another awesome feature!',
-        //     },
-        // ];
-        // Toaster.success('A new update for Polar was downloaded.  Please
-        // restart.', 'Update downloaded', { requiresAcknowledgment: true,
-        // preventDuplicates: true });  Toaster.info('X A new update for Polar
-        // was downloaded.  Please restart.', 'Update downloaded', {
-        // requiresAcknowledgment: true, preventDuplicates: true });
 
-        // ProgressToasters.create()
-        //     .then(progressUpdater => {
-        //         progressUpdater.update({title: "Finding files (5) ... ",
-        // status:
-        // '/home/burton/projects/polar-bookshelf/web/js/apps/repository/FileImportController.ts'});
-        // });
-
-        // Dialogs.prompt({title: 'What is the name of your widget?',
-        // placeholder: 'give me something', onCancel: NULL_FUNCTION, onDone:
-        // NULL_FUNCTION }); Dialogs.confirm({title: 'Are you sure you want to
-        // destroy the planet?', onCancel: NULL_FUNCTION, onConfirm:
-        // NULL_FUNCTION });
-
-        // const url = "https://firebasestorage.googleapis.com/v0/b/polar-32b0f.appspot.com/o/stash%2F12ULKejZ79NiL5UYR3ohWgbaxKYjTJZUKsh1PTBV.pdf?alt=media&token=82fcef8d-4e97-4dc5-aedc-62a60d9efd12";
-
-        const [toggle, toggleCoupler] = Channels.create<void>();
-        const [setFlyout, setFlyoutCoupler] = Channels.create<void>();
-
-
+        const c = '#FF0000';
         return (
             //
             // <div tabIndex={0}
@@ -187,59 +94,42 @@ class App<P> extends React.Component<{}, IAppState> {
           // {/*}*/}
           //                 {/*right={<div/>}/>*/}
 
-
             <div>
 
-                <Suggestions category="foo"
-                             title="We need your feedback!"
-                             description="I need your help to improve Polar!  Now's your opportunity to let me us know how you'd like us to improve Polar moving forward!"/>
+                <ColorSelector color='yellow' size="16px"/>
 
-                {/*<div style={{*/}
-                        {/*display: 'flex',*/}
-                        {/*flexDirection: 'column',*/}
-                        {/*height: '100%'*/}
-                     {/*}}>*/}
+                <ColorDropdown onSelected={color => console.log(color)}/>
 
-                    {/*<div>*/}
-                        {/*<Button onClick={() => toggle()}>Toggle</Button>*/}
-                        {/*<Button onClick={() => setFlyout()}>Flyout</Button>*/}
-                    {/*</div>*/}
+                {/*<SketchPicker />;*/}
 
-                    {/*<Dock style={{flexGrow: 1}}*/}
-                          {/*left={<div>this is the left</div>}*/}
-                          {/*right={<div style={{backgroundColor: 'blue'}}>*/}
-                              {/*this is the right*/}
-                              {/*<a href="http://cnn.com">asdf</a>*/}
-                          {/*</div>}*/}
-                          {/*side="left"*/}
-                          {/*toggleCoupler={toggleCoupler}*/}
-                          {/*setFlyoutCoupler={setFlyoutCoupler}*/}
-                    {/*/>*/}
+                TODO:
 
-                    {/*/!*<div style={{display: 'flex', height: '100%'}}>*!/*/}
+                Now we are kind of stuck because I like the UI of the twitter
+                color picker but:
 
-                        {/*/!*<div style={{width: '400px',*!/*/}
-                                     {/*/!*backgroundColor: 'red',*!/*/}
-                                     {/*/!*height: '100%',*!/*/}
-                                     {/*/!*position: 'absolute'}}>*!/*/}
+                    - I don't want the ability to enter a custom value
 
-                            {/*/!*this is the left*!/*/}
-                        {/*/!*</div>*!/*/}
+                    - we should have red, yellow, green, green colors in various
+                      shades.. one for each row.
 
-                        {/*/!*<div style={{flexGrow: 1, backgroundColor: 'blue'}}>*!/*/}
-                            {/*/!*asdf*!/*/}
-                            {/*/!*asdf*!/*/}
-                        {/*/!*</div>*!/*/}
+                    - the UI should be reliable without any reactstrap button
+                      and onClick should trigger it to close
 
-                    {/*/!*</div>*!/*/}
 
-                {/*</div>*/}
+                {/*<TwitterPicker/>*/}
 
-                {/*/!*<Feedback category='net-promoter-score'*!/*/}
-                          {/*/!*title='How likely are you to recommend Polar?'*!/*/}
-                          {/*/!*from="Not likely"*!/*/}
-                          {/*/!*to="Very likely"*!/*/}
-                          {/*/!*onRated={NULL_FUNCTION}/>*!/*/}
+                {/*<TwitterPicker*/}
+                {/*    colors={['#FF0000', '#FF0000', '#FF0000', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF']}/>*/}
+
+                {/*<SwatchesPicker*/}
+                {/*    // color={ c }*/}
+                {/*    // hex={ c }*/}
+                {/*    style={ styles.swatch }*/}
+                {/*    onClick={NULL_FUNCTION}*/}
+                {/*    // focusStyle={{*/}
+                {/*    //     boxShadow: `0 0 4px ${ c }`,*/}
+                {/*    // }}*/}
+                {/*/>*/}
 
             </div>
 
@@ -247,32 +137,11 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
 
-    private toggleDropDown() {
-
-        this.setState({
-            splitButtonOpen: this.state.splitButtonOpen,
-            dropdownOpen: !this.state.dropdownOpen
-        });
-
-    }
-
-    private toggleSplit() {
-
-        this.setState({
-            splitButtonOpen: !this.state.splitButtonOpen
-        });
-
-    }
-
-
-
 }
 
 export default App;
 
 interface IAppState {
-    dropdownOpen: boolean;
-    splitButtonOpen: boolean;
 
 }
 

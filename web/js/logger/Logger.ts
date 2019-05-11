@@ -70,7 +70,6 @@ class DelegatedLogger implements ILogger {
         return await LoggerDelegate.get().sync();
     }
 
-
     /**
      *
      */

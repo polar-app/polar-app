@@ -1,42 +1,31 @@
-import {SpectronRenderer, SpectronRendererState} from '../../js/test/SpectronRenderer';
-import {Firebase} from '../../js/firebase/Firebase';
-import {FirebaseUIAuth} from '../../js/firebase/FirebaseUIAuth';
-import * as firebase from '../../js/firebase/lib/firebase';
-import {Elements} from '../../js/util/Elements';
+import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {DiskDatastore} from '../../js/datastore/DiskDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";
 import {DatastoreTester} from '../../js/datastore/DatastoreTester';
-import {Firestore} from '../../js/firebase/Firestore';
-import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
-import {ElectronDocLoader} from '../../js/apps/main/doc_loaders/electron/ElectronDocLoader';
-import {FirebaseRunner} from '../../js/firebase/FirebaseRunner';
+import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
 import {FilePaths} from '../../js/util/FilePaths';
-import {Datastore} from '../../js/datastore/Datastore';
-import {DocMeta} from '../../js/metadata/DocMeta';
-import {Directories, GlobalDataDir} from '../../js/datastore/Directories';
 import {Files} from '../../js/util/Files';
-import {MockPHZWriter} from '../../js/phz/MockPHZWriter';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
-import waitForExpect from 'wait-for-expect';
 import {Datastores} from '../../js/datastore/Datastores';
 import {Latch} from '../../js/util/Latch';
-import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../../js/util/Functions';
-import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
-import {Preconditions} from '../../js/Preconditions';
+import {ASYNC_NULL_FUNCTION} from '../../js/util/Functions';
 import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
+import waitForExpect from 'wait-for-expect';
+
+const TIMEOUT = 30000;
 
 Logging.initForTesting();
 
 mocha.setup('bdd');
-mocha.timeout(30000);
+mocha.timeout(TIMEOUT);
 
 async function createDatastore() {
 
@@ -48,13 +37,21 @@ async function createDatastore() {
     const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
 
     cloudAwareDatastore.shutdownHook = async () => {
-        const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
 
-        if (! consistency.consistent) {
-            console.log("Filesystems are NOT consistent: ", consistency.manifest0, consistency.manifest1);
-        }
+        await waitForExpect(async () => {
 
-        assert.ok(consistency.consistent, "Datastores are not consistent");
+            console.log("Checking consistency...");
+
+            const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
+
+            if (! consistency.consistent) {
+                console.log("Filesystems are NOT consistent: ", consistency.manifest0, consistency.manifest1);
+            }
+
+            assert.ok(consistency.consistent, "Datastores are not consistent");
+
+        }, TIMEOUT);
+
     };
 
     return cloudAwareDatastore;
@@ -62,7 +59,7 @@ async function createDatastore() {
 
 SpectronRenderer.run(async (state) => {
 
-    new FirebaseRunner(state).run(async () => {
+    new FirebaseTestRunner(state).run(async () => {
 
         await PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
@@ -76,11 +73,9 @@ SpectronRenderer.run(async (state) => {
 
         // FIXME: states that need to be handled in UI....
         //
-        // - MERGE shoudl be the ideal situation NOT transfer... this is easier
+        // - MERGE should be the ideal situation NOT transfer... this is easier
         //   to implement.
 
-
-        //
 
         describe('Cloud datastore tests', function() {
 
@@ -88,15 +83,25 @@ SpectronRenderer.run(async (state) => {
 
                 try {
 
-                    console.log("==== BEGIN beforeEach");
+                    console.log("==== BEGIN beforeEach: ");
+
+                    console.log("Removing files from: " + PolarDataDir.get());
 
                     await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
+
+                    console.log("Initializing firebase datastore...");
 
                     const firebaseDatastore = new FirebaseDatastore();
                     await firebaseDatastore.init();
 
+                    console.log("Initializing firebase datastore...done");
+
+                    console.log("Purging firebase datastore...");
+
                     await Datastores.purge(firebaseDatastore,
                                            purgeEvent => console.log("Purged: ", purgeEvent));
+
+                    console.log("Purging firebase datastore...done");
 
                     await firebaseDatastore.stop();
 
@@ -193,7 +198,7 @@ SpectronRenderer.run(async (state) => {
                 const docMetaFiles = await persistenceLayer.getDocMetaRefs();
                 assert.equal(docMetaFiles.length, 0);
 
-                persistenceLayer.stop();
+                await persistenceLayer.stop();
 
             });
 
@@ -432,7 +437,7 @@ SpectronRenderer.run(async (state) => {
 
         DatastoreTester.test(createDatastore, false);
 
-    });
+    }).catch(err => console.error(err));
 
 });
 

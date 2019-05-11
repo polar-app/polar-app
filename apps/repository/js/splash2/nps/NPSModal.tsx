@@ -3,9 +3,9 @@ import React from 'react';
 import {Feedback} from '../../../../../web/js/ui/feedback/Feedback';
 import {Rating} from '../../../../../web/js/ui/feedback/Feedback';
 import {Toaster} from '../../../../../web/js/ui/toaster/Toaster';
-import {UserFeedbacks} from '../../../../../web/js/customers/UserFeedback';
 import {MachineIDs} from '../../../../../web/js/util/MachineIDs';
 import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
+import {UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 
 export class NPSModal extends React.Component<IProps, IState> {
 

@@ -1173,7 +1173,22 @@ module.exports = typeof window !== 'undefined' && window.Math === Math ? window 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 module.exports = function isNodeJS() {
-  return (typeof process === 'undefined' ? 'undefined' : _typeof(process)) === 'object' && process + '' === '[object process]';
+  // NW.js / Electron is a browser context, but copies some Node.js objects; see
+  // http://docs.nwjs.io/en/latest/For%20Users/Advanced/JavaScript%20Contexts%20in%20NW.js/#access-nodejs-and-nwjs-api-in-browser-context
+  // https://electronjs.org/docs/api/process#processversionselectron
+
+  // cherrypicked from:
+  //
+  // https://github.com/mozilla/pdf.js/pull/10681/files
+  //
+  // Must return false when running within the electron browser context.
+
+  const result = typeof process === 'object' &&
+                 process + '' === '[object process]' &&
+                 !process.versions['nw'] && !process.versions['electron'];
+
+  return result;
+
 };
 
 /***/ }),

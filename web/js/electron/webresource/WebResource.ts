@@ -45,13 +45,16 @@ class FileWebResource extends WebResource {
     }
 
     public loadBrowserWindow(browserWindow: BrowserWindow): void {
-        browserWindow.loadFile(this.file);
+        browserWindow.loadFile(this.file)
+            .catch(err => console.error(err));
+
     }
 
     public loadWebContents(webContents: WebContents): void {
         log.info("Loading file: ", this.file);
         // webContents.loadFile(this.file);
-        webContents.loadURL('file://' + this.file);
+        webContents.loadURL('file://' + this.file)
+            .catch(err => console.error(err));
     }
 
     public load(loader: URLLoader): void {
@@ -77,12 +80,14 @@ class URLWebResource extends WebResource {
     }
 
     public loadBrowserWindow(browserWindow: BrowserWindow): void {
-        browserWindow.loadURL(this.url);
+        browserWindow.loadURL(this.url)
+            .catch(err => console.error(err));
     }
 
     public loadWebContents(webContents: WebContents): void {
         log.info("Loading URL: ", this.url);
-        webContents.loadURL(this.url);
+        webContents.loadURL(this.url)
+            .catch(err => console.error(err));
     }
 
     public load(loader: URLLoader): void {

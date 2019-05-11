@@ -19,9 +19,126 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
+                    {/*<div className="intro">*/}
+                    {/*    <CrowdfundingCampaign/>*/}
+                    {/*</div>*/}
+
+
+                    <h3>Polar 1.19.0</h3>
+
                     <div className="intro">
-                        <CrowdfundingCampaign/>
+
+                        <p>
+                            Polar 1.19 has been a lot of work but it's finally out the door.
+
+                            There are a few we want to highlight about this release.
+                        </p>
+
+                        <b>Area Highlights</b>
+
+                        <p>
+                            Area highlights are now shown in the sidebar and
+                            updated and resized while you drag the area
+                            highlight box.
+                        </p>
+
+                        <b>Updated Annotations View</b>
+
+                        <p>
+                            We've updated the annotations view to show
+                            preview annotations and a better view of each
+                            annotation including showing area highlights.
+                        </p>
+
+                        <b>Color Selector</b>
+
+                        <p>
+                            There's now an advanced color selector for highlights
+                            and this expands us to 12 different colors.  We're going
+                            to expand the palette in the future but this is already
+                            a step in the right directly.
+                        </p>
+
+                        <p>
+                            Technically we support any RGB value but we're
+                            limiting the colors you can select for now just to
+                            make the UI simpler and easy to use.
+                        </p>
+
+                        <b>Performance Improvements</b>
+
+                        <p>
+                            We've also implemented some more major performance
+                            improvements when working with larger documents and
+                            larger sets of annotations.
+                        </p>
+
+                        <b>Native PDF Handling in Web Extension Disabled</b>
+
+                        <p>
+                            We've had to remove the native PDF handling in our web extension.
+                        </p>
+
+                        <p>
+                            This feature automatically previewed and added a
+                            PDF to the Polar webapp while browsing.
+                        </p>
+
+                        <p>We had to disable it due to cross domain security
+                        issues we weren't able to fix. This might be enabled
+                        again in a future version of Polar.</p>
+
                     </div>
+
+
+                    <h3>Polar 1.18.0</h3>
+
+                    <div className="intro">
+
+                        <p>
+                            This release mostly focused on improving stability
+                            and implementing a few key UI features.  This
+                            upgrades us to Electron 5.x which as needed for
+                            some users who were experiencing severe latency
+                            using Polar on Linux.  We also resolve a key issue
+                            with non-atomic writes.
+                        </p>
+
+                        <p>
+                            This includes a good chunk of the new sharing
+                            functionality but it's not enabled yet.
+                        </p>
+
+
+                    </div>
+
+                    <ul>
+
+                        <li>Big upgrade to latest version of Electron. Electron v5.0.0, Chromium v73.0.3683.119, Node v12.0.0, v8 v7.3.492.27-electron.0. This should hopefully fix a major latency issue some users were seeing on Ubuntu/Linux.
+
+                        </li><li>Major performance fix on large PDFs.  Scrolling should be dramatically improved.  There's still a small latency issue we're seeing but already performance is dramatically improved.
+
+                        </li><li>Enabled atomic writes again for all platforms.
+
+                        </li><li>Filtering for tags now lists the tags alphabetically
+
+                        </li><li>Right click on text highlight now add 'scroll into view'
+
+                        </li><li>Upgraded to latest version of Typescript 3.4.3
+
+                        </li><li>Fixed regression where progress wasn't being updated when progress messages were being sent from the renderer process.
+
+                        </li><li>Fixed bug which resorted in two file uploads to firebase while cloud sync was operational. For large files this was very painful and resorted in 2x data being uploaded.
+
+                        </li><li>Fixed bug where the UI would break when both filtering and removing tags on a document that was visible.
+
+                        </li>
+                        <li>Increased the sidebar a bit to accommodate updating comments without overflow of the summernote bar.
+
+                        </li>
+                        <li>Using the same account widget on web + desktop now.</li>
+
+                    </ul>
 
                     <h3>Polar 1.17.14</h3>
 

@@ -39,6 +39,7 @@ shell() {
 
 build_for_arch() {
     arch=${1}
+    target=${2}
 
    # -v ${PWD##*/}-node-modules:/project/node_modules \
    #
@@ -56,10 +57,11 @@ build_for_arch() {
        -v ~/.cache/electron:/root/.cache/electron \
        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
        -v ${WINDOWS_CSC_DIR}:/root/windows-csc \
-       electronuserland/builder:wine bash -c 'npm install && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.nsis.artifactName=\${name}-\${version}-'${arch}'.\${ext} --'${arch}' --win nsis --publish always'
+       electronuserland/builder:wine bash -c 'npm install && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.'${target}'.artifactName=\${name}-\${version}-'${target}'-'${arch}'.\${ext} --'${arch}' --win '${target}' --publish always'
 }
 
-build_for_arch x64
-build_for_arch ia32
+build_for_arch x64 portable
+build_for_arch x64 nsis
+build_for_arch ia32 nsis
 
 

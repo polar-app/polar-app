@@ -15,7 +15,6 @@ import {GetFileOpts} from './Datastore';
 import {BinaryFileData} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {BackendFileRef} from './Datastore';
-import {BackendFileRefs} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {DocMetaFileRef} from './DocMetaRef';
@@ -30,6 +29,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Datastores} from './Datastores';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {WriteOpts} from './Datastore';
+import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
 
@@ -74,7 +74,7 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
                     }
                 ];
 
-                this.backendFileRefs = Datastores.toBackendFileRefs(this.docMeta);
+                this.backendFileRefs = BackendFileRefs.toBackendFileRefs(this.docMeta);
 
             }
 
@@ -157,7 +157,7 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         throw new Error("Not supported");
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
         throw new Error("Not implemented yet");
     }
 

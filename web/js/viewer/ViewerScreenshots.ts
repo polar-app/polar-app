@@ -1,5 +1,3 @@
-import {CapturedScreenshots} from "../screenshots/CapturedScreenshots";
-
 export class ViewerScreenshots {
 
     public static doScreenshot() {
@@ -43,12 +41,6 @@ export class ViewerScreenshots {
                 width, height, x: 0, y: 0
             }
         };
-
-        CapturedScreenshots.capture(<HTMLElement> document.querySelector(".page"), captureOpts)
-            .then(screenshot => {
-                console.log("FIXME: got screnshot", screenshot);
-            })
-            .catch(err => console.error("Unable to capture screenshot: ", err));
 
     }
 

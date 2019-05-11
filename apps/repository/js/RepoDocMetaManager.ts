@@ -1,4 +1,3 @@
-import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocInfo, IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
@@ -11,10 +10,10 @@ import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IProvider} from '../../../web/js/util/Providers';
-import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
+import {Sets} from '../../../web/js/util/Sets';
 
 const log = Logger.create();
 
@@ -53,12 +52,61 @@ export class RepoDocMetaManager {
             this.relatedTags.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
                                                                  .map(current => current.label));
 
-            for (const repoAnnotation of repoDocMeta.repoAnnotations) {
-                this.repoAnnotationIndex[repoAnnotation.id] = repoAnnotation;
-            }
+            const updateAnnotations = () => {
+
+                const deleteOrphaned = () => {
+
+                    const currentAnnotationsIDs = Object.values(this.repoAnnotationIndex)
+                        .filter(current => current.fingerprint === repoDocMeta.repoDocInfo.fingerprint)
+                        .map(current => current.id);
+
+                    const newAnnotationIDs = repoDocMeta.repoAnnotations
+                        .map(current => current.id);
+
+                    const deleteIDs = Sets.difference(currentAnnotationsIDs, newAnnotationIDs);
+
+                    for (const deleteID of deleteIDs) {
+                        delete this.repoAnnotationIndex[deleteID];
+                    }
+
+                };
+
+                const updateExisting = () => {
+
+                    for (const repoAnnotation of repoDocMeta.repoAnnotations) {
+                        this.repoAnnotationIndex[repoAnnotation.id] = repoAnnotation;
+                    }
+
+                };
+
+                deleteOrphaned();
+                updateExisting();
+
+            };
+
+            updateAnnotations();
 
         } else {
-            delete this.repoDocInfoIndex[fingerprint];
+
+            const deleteOrphanedAnnotations = () => {
+
+                // now delete stale repo annotations.
+                for (const repoAnnotation of Object.values(this.repoAnnotationIndex)) {
+
+                    if (repoAnnotation.fingerprint === fingerprint) {
+                        delete this.repoAnnotationIndex[repoAnnotation.id];
+                    }
+                }
+
+            };
+
+            const deleteDoc = () => {
+                delete this.repoDocInfoIndex[fingerprint];
+            };
+
+            deleteOrphanedAnnotations();
+            deleteDoc();
+
         }
 
     }
@@ -164,12 +212,12 @@ export class RepoDocMetaManager {
         // delete it from the repo now.
         const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(repoDocInfo.docInfo);
 
-        return await persistenceLayer.delete(docMetaFileRef);
+        await persistenceLayer.delete(docMetaFileRef);
 
     }
 
     private init() {
-        // FIXME: is this even needed anymore?
+        // TODO: is this even needed anymore?
 
         for (const repoDocInfo of Object.values(this.repoDocInfoIndex)) {
             this.updateTagsDB(repoDocInfo);

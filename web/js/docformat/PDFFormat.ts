@@ -1,5 +1,4 @@
 import {CurrentDocState, DocFormat} from './DocFormat';
-import {Preconditions} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 
 declare var window: any;

@@ -18,7 +18,9 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Prefs} from '../util/prefs/Prefs';
 import {isPresent} from '../Preconditions';
-import {printf} from '../logger/Console';
+import {Datastores} from './Datastores';
+import {Either} from '../util/Either';
+import {BackendFileRefs} from './BackendFileRefs';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -155,7 +157,7 @@ export abstract class AbstractDatastore {
         const docInfo = docMeta.docInfo;
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();
-        this.datastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
         await this.write(docMeta.docInfo.fingerprint, data, docInfo, {datastoreMutation: syncMutation});
         return docInfo;
@@ -262,7 +264,7 @@ interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
-    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>>;
+    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta;
 
 }
 
@@ -276,13 +278,6 @@ export interface GetFileOpts {
      * file operation and returning a more specific URL.
      */
     readonly networkLayer?: NetworkLayer;
-
-    /**
-     * When true, we avoid the existence check on teh file when appropriate and
-     * we're pretty certain that the file already exists.  This can be helpful
-     * in the UI when we just want to open a file and we have fresh metadata.
-     */
-    readonly noExistenceCheck?: boolean;
 
 }
 
@@ -304,6 +299,9 @@ export interface WritableBinaryDatastore {
 
 export interface WriteFileOpts {
 
+    /**
+     * @deprecated we no longer support arbitrary file metadata.
+     */
     readonly meta?: FileMeta;
 
     /**
@@ -376,14 +374,6 @@ export interface FileRef {
 export interface BackendFileRef extends FileRef {
 
     readonly backend: Backend;
-
-}
-
-export class BackendFileRefs {
-
-    public static equals(b0: BackendFileRef, b1: BackendFileRef): boolean {
-        return b0.backend === b1.backend && b0.name === b1.name && b0.hashcode === b1.hashcode;
-    }
 
 }
 
@@ -708,6 +698,11 @@ export interface SyncDoc {
     readonly uuid?: UUID;
 
     /**
+     * The title of the doc from the DocInfo for debug purposes.
+     */
+    readonly title: string;
+
+    /**
      * The binary files reference by this doc.
      */
     readonly files: ReadonlyArray<SyncFile>;
@@ -718,11 +713,7 @@ export interface SyncDoc {
 /**
  * A lightweight reference to a binary file attached to a SyncDoc.
  */
-export interface SyncFile {
-
-    readonly backend: Backend;
-
-    readonly ref: FileRef;
+export interface SyncFile extends BackendFileRef {
 
 }
 
@@ -730,33 +721,11 @@ export class SyncDocs {
 
     public static fromDocInfo(docInfo: IDocInfo, mutationType: MutationType): SyncDoc {
 
-        const files: SyncFile[] = [];
-
-        // TODO: dedicated function to take IDocInfo and then extract the file
-        // references for them.  Then write() and delete() should make sure the
-        // file references are valid and setup properly before we write
-        // (I think).
-
-        // FIXME: this needs to migrate to using
-        // Datastores and BackendFileRegs to get the underlying files and the ref for
-        // it so that we can get all the attachments in one pass.
-
-        if (docInfo.filename) {
-
-            const stashFile: SyncFile = {
-                backend: Backend.STASH,
-                ref: {
-                    name: docInfo.filename!,
-                    hashcode: docInfo.hashcode
-                }
-            };
-
-            files.push(stashFile);
-
-        }
+        const files = BackendFileRefs.toBackendFileRefs(Either.ofRight(docInfo));
 
         return {
             fingerprint: docInfo.fingerprint,
+            title: docInfo.title || 'untitled',
             docMetaFileRef: DocMetaFileRefs.createFromDocInfo(docInfo),
             mutationType,
             uuid: docInfo.uuid,
@@ -842,3 +811,4 @@ export class NetworkLayers {
     public static WEB = new Set<NetworkLayer>(['web']);
 
 }
+

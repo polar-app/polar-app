@@ -7,12 +7,11 @@ import {Preconditions} from '../../Preconditions';
 import {Paths} from '../../util/Paths';
 
 import express, {Express, RequestHandler} from 'express';
+import {NextFunction, Request, Response} from 'express';
 import serveStatic from 'serve-static';
 import {ResourceRegistry} from './ResourceRegistry';
 import * as http from "http";
 import * as https from "https";
-import {Capture} from '../../capture/Capture';
-import {CaptureOpts} from '../../capture/CaptureOpts';
 import {PathParams} from 'express-serve-static-core';
 import {FilePaths} from '../../util/FilePaths';
 
@@ -75,6 +74,16 @@ export class Webserver implements WebRequestHandler {
 
         this.app.use(express.json());
         this.app.use(express.urlencoded());
+
+        const requestLogger = (req: Request, res: Response, next: NextFunction) => {
+            console.info(`${req.method} ${req.url}`);
+            console.info(req.headers);
+            console.info();
+            console.info('====');
+            next();
+        };
+
+        // this.app.use(requestLogger);
 
         this.registerFilesHandler();
         this.registerResourcesHandler();

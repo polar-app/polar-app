@@ -1,18 +1,84 @@
+
+# 1.19.0
+
+- Fixed major performance issue when creating lots of annotations.
+
+- New color picker with advanced colors for highlights.
+
+- Fixed bug where capture would not remove noscript elements and would mangle 
+  the UI.
+  
+- Dropdowns are faster now due to no delay.
+
+- Fixed bug with pagemarks < 1%   
+
+- Upgrade to Electron 5.0.1
+
+- Fixed bug with mouse up when using iframes.
+
+- Area highlights now supported
+
+- Updated annotation view which is more usable and allows you to work with your 
+  notes and annotations more directly including better filtering and UI.
+
+- Polar chrome extension no longer handles PDFs by default.  We will have to 
+  keep this functionality disabled until we can embed the entire web app 
+  within the chrome extension but this is a difficult task for now.
+
+# 1.18.1
+
+- new component to ScrollIntoView so that when we're dealing with scrollable 
+  and long form content we can make sure the content and scrolled and viewable. 
+
+- New handling for scrolling so that documents with slight overflow don't shift
+  on us.
+
+- Fixed bug where capture would fail because load was 'aborted' but it really
+  doesn't matter as we're just triggering load and it's up to the user if they
+  want to capture.
+
+- Polar chrome extension now part of main polar repo for better support and 
+  faster iteration.
+
+- Upgraded to latest firebase versions
+
+- cleanup orphan javascript
+
 # 1.18.0
 
-- Fixed bug where the UI would break when both filtering and removing tags on 
-  a document that was visible.
+- Big upgrade to latest version of Electron:
+
+    Electron v5.0.0, Chromium v73.0.3683.119, Node v12.0.0, v8 v7.3.492.27-electron.0
+
+  This should hopefully fix a major latency issue some users were seeing on 
+  Ubuntu/Linux.
+
+- Major performance fix on large PDFs.  Scrolling should be dramatically 
+  improved.  There's still a small latency issue we're seeing but already 
+  performance is dramatically improved.
 
 - Enabled atomic writes again for all platforms.
-
-- Upgraded to latest version of Typescript 3.4.3
-
-- Increased the sidebar a bit to accomadate updating comments without overflow
-  of the summernote bar.
 
 - Filtering for tags now lists the tags alphabetically
 
 - Right click on text highlight now add 'scroll into view'
+
+- Upgraded to latest version of Typescript 3.4.3
+
+- Fixed regression where progress wasn't being updated when progress messages
+  were being sent from the renderer process.
+
+- Fixed bug which resorted in two file uploads to firebase while cloud sync 
+  was operational. For large files this was very painful and resorted in 2x 
+  data being uploaded.
+
+- Fixed bug where the UI would break when both filtering and removing tags on 
+  a document that was visible.
+
+- Increased the sidebar a bit to accommodate updating comments without overflow
+  of the summernote bar.
+
+- Using the same account widget on web + desktop now.
 
 # 1.17.5
 

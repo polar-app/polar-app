@@ -1,6 +1,4 @@
-import {CapturedScreenshots} from '../../../screenshots/CapturedScreenshots';
-import {IFrames} from '../../../util/dom/IFrames';
-import {CapturedScreenshot} from '../../../screenshots/CapturedScreenshot';
+import {Screenshot} from '../../../screenshots/Screenshot';
 import {Optional} from '../../../util/ts/Optional';
 
 /**
@@ -8,24 +6,24 @@ import {Optional} from '../../../util/ts/Optional';
  */
 export class SelectionScreenshots {
 
-    public static capture(doc: Document, win: Window) {
-
-        return this.withoutRange(doc, win, range => {
-
-            return this.captureRange(win, range);
-
-        });
-
-    }
-
-    public static captureRange(win: Window, range: Range): SelectionScreenshot {
-        let clientRect = this.getClientRect(range);
-        clientRect = IFrames.computeTopLevelClientRect(clientRect, win);
-
-        const capturedScreenshotPromise = CapturedScreenshots.capture(clientRect);
-
-        return {clientRect, capturedScreenshotPromise};
-    }
+    // public static capture(doc: Document, win: Window) {
+    //
+    //     return this.withoutRange(doc, win, range => {
+    //
+    //         return this.captureRange(win, range);
+    //
+    //     });
+    //
+    // }
+    //
+    // public static captureRange(win: Window, range: Range): SelectionScreenshot {
+    //     let clientRect = this.getClientRect(range);
+    //     clientRect = IFrames.computeTopLevelClientRect(clientRect, win);
+    //
+    //     const capturedScreenshotPromise = CapturedScreenshots.capture(clientRect);
+    //
+    //     return {clientRect, capturedScreenshotPromise};
+    // }
 
     public static getClientRect(range: Range) {
         return range.getBoundingClientRect();
@@ -55,6 +53,6 @@ export interface SelectionScreenshot {
      */
     readonly clientRect: ClientRect;
 
-    readonly capturedScreenshotPromise: Promise<Optional<CapturedScreenshot>>;
+    readonly capturedScreenshotPromise: Promise<Optional<Screenshot>>;
 
 }

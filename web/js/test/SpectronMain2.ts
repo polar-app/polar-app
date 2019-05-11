@@ -2,6 +2,7 @@ import {app, BrowserWindow} from 'electron';
 import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
 import {Logger} from '../logger/Logger';
 import {SpectronBrowserWindowOptions} from './SpectronBrowserWindowOptions';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -25,6 +26,8 @@ export class SpectronMain2 {
     }
 
     public setup(): Promise<BrowserWindow> {
+
+        Preconditions.assertPresent(app, "No app");
 
         return new Promise(resolve => {
 
@@ -69,7 +72,8 @@ export class SpectronMain2 {
 async function defaultWindowFactory(): Promise<BrowserWindow> {
     const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
     // mainWindow.webContents.toggleDevTools();
-    mainWindow.loadURL('about:blank');
+    await mainWindow.loadURL('about:blank');
+
     return mainWindow;
 }
 

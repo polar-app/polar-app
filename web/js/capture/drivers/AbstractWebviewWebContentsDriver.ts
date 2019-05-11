@@ -11,9 +11,8 @@ import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebConte
 import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
 import {BrowserAppEvent} from '../../apps/browser/BrowserAppEvent';
 import {Browser} from '../Browser';
-import WebContents = Electron.WebContents;
 import {BrowserProfiles} from '../BrowserProfiles';
-import {Promises} from '../../util/Promises';
+import WebContents = Electron.WebContents;
 
 const log = Logger.create();
 
@@ -148,7 +147,8 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         const resourceURL = ResourcePaths.resourceURLFromRelativeURL(this.appPath);
 
-        window.loadURL(resourceURL);
+        await window.loadURL(resourceURL);
+            // .catch(err => console.error(err));
 
         // THIS is our guest webview that we should be using.
         this.webContents = await this.waitForWebview();

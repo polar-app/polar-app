@@ -11,6 +11,7 @@ import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {WriteOpts} from './Datastore';
+import {DatastoreMutation} from './DatastoreMutation';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -39,8 +40,8 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.contains(fingerprint);
     }
 
-    public delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
-        return this.delegate.delete(docMetaFileRef);
+    public delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<Readonly<DeleteResult>> {
+        return this.delegate.delete(docMetaFileRef, datastoreMutation);
     }
 
     public writeFile(backend: Backend, ref: FileRef, data: BinaryFileData, opts?: WriteFileOpts): Promise<DocFileMeta> {
@@ -51,7 +52,7 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
         return this.delegate.getFile(backend, ref, opts);
     }
 

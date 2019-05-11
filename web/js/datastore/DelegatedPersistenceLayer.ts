@@ -43,6 +43,10 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.containsFile(backend, ref);
     }
 
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        return this.datastore.deleteFile(backend, ref);
+    }
+
     public async deactivate(): Promise<void> {
         return this.delegate.deactivate();
     }
@@ -59,7 +63,7 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.getDocMetaRefs();
     }
 
-    public async getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
         return this.delegate.getFile(backend, ref, opts);
     }
 

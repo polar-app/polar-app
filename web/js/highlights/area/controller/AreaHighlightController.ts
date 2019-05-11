@@ -9,6 +9,11 @@ import {AreaHighlights} from '../../../metadata/AreaHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
 import {Optional} from '../../../util/ts/Optional';
+import {Arrays} from '../../../util/Arrays';
+import {AreaHighlightDeleteOpts} from '../../../metadata/AreaHighlights';
+import {AreaHighlightRects} from '../../../metadata/AreaHighlightRects';
+import {DoWriteOpts} from '../../../metadata/AreaHighlights';
+import {AreaHighlight} from '../../../metadata/AreaHighlight';
 
 
 const log = Logger.create();
@@ -88,10 +93,23 @@ export class AreaHighlightController {
         const annotationPointers
             = AnnotationPointers.toAnnotationPointers(".area-highlight", triggerEvent);
 
-        Optional.first(...annotationPointers).map(annotationPointer => {
+        const annotationPointer = Arrays.first(annotationPointers);
+
+        if (annotationPointer) {
+
+            const datastore = this.model.persistenceLayerProvider();
             const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
-            delete pageMeta.areaHighlights[annotationPointer.id];
-        });
+            const areaHighlight = pageMeta.areaHighlights[annotationPointer.id];
+            const {docMeta} = this.model;
+
+            const opts: AreaHighlightDeleteOpts = {
+                datastore, areaHighlight, pageMeta, docMeta
+            };
+
+            AreaHighlights.delete(opts)
+                .catch(err => log.error("Unable to delete area highlight: ", err));
+
+        }
 
     }
 

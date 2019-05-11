@@ -12,6 +12,7 @@ import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
+import {PageNumber} from '../metadata/PageMeta';
 
 const log = Logger.create();
 
@@ -187,7 +188,7 @@ export class Model {
 
     }
 
-    public async createPagemarksForRange(end: number, percentage: number) {
+    public async createPagemarksForRange(end: PageNumber, percentage: number) {
 
         const docMeta = await this.docMetaPromise;
 
@@ -200,7 +201,7 @@ export class Model {
     }
 
     /**
-     * @refactor This code should be in its own dedicated helper class
+     * @refactor This code should move to Pagemarks.ts
      * @param pageNum
      */
     public erasePagemark(pageNum: number) {

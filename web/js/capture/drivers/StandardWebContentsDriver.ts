@@ -92,7 +92,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         const result = WebContentsPromises.once(this.webContents!).didFinishLoad();
 
-        this.webContents!.loadURL(url, opts);
+        await this.webContents!.loadURL(url, opts)
 
         if (waitForFinishLoad) {
             return result;

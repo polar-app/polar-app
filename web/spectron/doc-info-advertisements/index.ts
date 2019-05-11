@@ -10,6 +10,7 @@ const BROWSER_OPTIONS = {
 
     webPreferences: {
         webSecurity: false,
+        nodeIntegration: true,
     }
 
 };
@@ -18,11 +19,10 @@ SpectronMain2.create().run(async state => {
 
     const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
 
-    mainWindow.loadURL(`file://${__dirname}/receiving-app.html`);
+    await state.window.loadURL(`file://${__dirname}/receiving-app.html`);
 
     await new DocInfoBroadcasterService().start();
 
-    state.window.loadURL(`file://${__dirname}/sending-app.html`);
-
+    await mainWindow.loadURL(`file://${__dirname}/sending-app.html`);
 
 });

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../util/Nav';
-import Progress from 'reactstrap/lib/Progress';
 import {CrowdfundingProgress} from './CrowdfundingProgress';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
@@ -77,7 +76,7 @@ export class CrowdfundingBar extends React.Component<IProps, IState> {
 
     private onMoreInfo() {
         RendererAnalytics.event({category: 'crowdfunding-bar', action: 'more-info'});
-        Nav.openLinkWithNewTab("https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html")
+        Nav.openLinkWithNewTab("https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html");
     }
 
     private onDonate() {

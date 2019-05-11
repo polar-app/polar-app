@@ -1,5 +1,6 @@
 import {Datastore, DatastoreID, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, InitResult, SnapshotResult} from './Datastore';
 import {DeleteResult} from './Datastore';
+import {WriteOpts} from './Datastore';
 import {Datastores} from './Datastores';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
@@ -8,7 +9,7 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {IDocInfo} from '../metadata/DocInfo';
-import {WriteOpts} from './Datastore';
+import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();
 
@@ -63,25 +64,31 @@ export class RemoteDatastore extends DelegatedDatastore {
         // promises across process bounds
         opts = {... opts, datastoreMutation: undefined};
 
-        const result = this.delegate.write(fingerprint, data, docInfo, opts);
-        this.datastoreMutations.handle(result, datastoreMutation, () => true);
+        const writeDelegate = async () => {
+            return this.delegate.write(fingerprint, data, docInfo, opts);
+        };
 
-        return result;
+        return DatastoreMutations.handle(() => writeDelegate(), datastoreMutation, () => true);
 
     }
 
     /**
      * Delegate handle the mutations in the renderer process.
      */
-    public delete(docMetaFileRef: DocMetaFileRef,
-                  datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
+    public async delete(docMetaFileRef: DocMetaFileRef,
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-        const result = this.delegate.delete(docMetaFileRef);
-        this.datastoreMutations.handle(result, datastoreMutation, () => true);
+        const syncMutation = new DefaultDatastoreMutation<boolean>();
+
+        const result = await DatastoreMutations.handle(() => this.delegate.delete(docMetaFileRef, syncMutation),
+                                                       datastoreMutation,
+                                                       () => true);
 
         return result;
 
     }
+
+
 
     /**
      * An event listener to listen to the datastore while operating on both

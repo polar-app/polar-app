@@ -12,6 +12,7 @@ import {forDict} from '../util/Functions';
 import {TextHighlights} from './TextHighlights';
 import {Preconditions} from '../Preconditions';
 import {Errors} from '../util/Errors';
+import {ISODateTimeStrings} from './ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -192,16 +193,35 @@ export class DocMetas {
      * Make changes to the document so that they write as one batched mutation
      * at the end.
      *
+     * @param docMeta The doc to mutate
+     *
      * @param mutator  The function to execute which will mutation the
      * underlying DocMeta properly.
      */
-    public static withBatchedMutations(docMeta: DocMeta, mutator: () => void) {
+    public static withBatchedMutations<T>(docMeta: DocMeta, mutator: () => T) {
 
         try {
 
-            docMeta.docInfo.mutating = true;
+            docMeta.docInfo.mutating = 'batch';
 
-            mutator();
+            return mutator();
+
+        } finally {
+            // set it to undefined so that it isn't actually persisted in the
+            // resulting JSON
+            docMeta.docInfo.mutating = undefined;
+
+        }
+
+    }
+
+    public static withSkippedMutations<T>(docMeta: DocMeta, mutator: () => T) {
+
+        try {
+
+            docMeta.docInfo.mutating = 'skip';
+
+            return mutator();
 
         } finally {
             // set it to undefined so that it isn't actually persisted in the
@@ -211,6 +231,12 @@ export class DocMetas {
 
     }
 
+    /**
+     * Force a write of the DocMeta
+     */
+    public static forceWrite(docMeta: DocMeta) {
+        docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
+    }
 
 }
 

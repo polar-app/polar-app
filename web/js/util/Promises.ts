@@ -1,5 +1,6 @@
 import {Logger} from '../logger/Logger';
 import {Latch} from './Latch';
+import {NULL_FUNCTION} from './Functions';
 
 const log = Logger.create();
 
@@ -59,6 +60,7 @@ export class Promises {
 
     }
 
+
     /**
      * Return a promise that returns a literal value.
      *
@@ -103,7 +105,14 @@ export class Promises {
      * @param func
      */
     public static executeLogged(func: () => Promise<any>) {
-        func().catch(err => log.error("Caught error: ", err))
+        func().catch(err => log.error("Caught error: ", err));
+    }
+
+    public static requestAnimationFrame(callback: () => void = NULL_FUNCTION) {
+        return new Promise(resolve => {
+            callback();
+            window.requestAnimationFrame(() => resolve());
+        });
     }
 
 }

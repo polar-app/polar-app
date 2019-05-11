@@ -35,34 +35,25 @@ export class BrowserDocLoader implements IDocLoader {
 
                 const {backendFileRef} = loadDocRequest;
 
-                const optionalDatastoreFile
-                    = await persistenceLayer.getFile(backendFileRef.backend, backendFileRef, {noExistenceCheck: true});
+                const datastoreFile = persistenceLayer.getFile(backendFileRef.backend, backendFileRef);
 
-                if (optionalDatastoreFile.isPresent()) {
+                const toViewerURL = () => {
 
-                    const datastoreFile = optionalDatastoreFile.get();
+                    const fileName = backendFileRef.name;
 
-                    const toViewerURL = () => {
+                    if (fileName.endsWith(".pdf")) {
+                        return PDFLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
+                    } else if (fileName.endsWith(".phz")) {
+                        return PHZLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
+                    } else {
+                        throw new Error("Unable to handle file: " + fileName);
+                    }
 
-                        const fileName = backendFileRef.name;
+                };
 
-                        if (fileName.endsWith(".pdf")) {
-                            return PDFLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
-                        } else if (fileName.endsWith(".phz")) {
-                            return PHZLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
-                        } else {
-                            throw new Error("Unable to handle file: " + fileName);
-                        }
+                const viewerURL = toViewerURL();
 
-                    };
-
-                    const viewerURL = toViewerURL();
-
-                    linkLoader.load(viewerURL);
-
-                } else {
-                    log.warn("No datastore file for: ", loadDocRequest);
-                }
+                linkLoader.load(viewerURL);
 
             }
 

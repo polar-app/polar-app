@@ -91,6 +91,13 @@ export class PHZWriter {
 
         return new Promise((resolve, reject) => {
 
+            // TODO: to convert to a blob we can specify a 'target' in the
+            // constructor which could be a function callback with a blob
+            // parameter.  We then handle this natively here and then write
+            // the blob directly to firebase.
+            //
+            // this.zip.generateAsync()
+
             const options: JSZip.JSZipGeneratorOptions<'nodebuffer'> = {
                 type: 'nodebuffer',
                 streamFiles: true,

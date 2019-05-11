@@ -1,6 +1,6 @@
 export class Uint8Arrays {
 
-    public static toBase64( bytes: Uint8Array ) {
+    public static toBase64(bytes: Uint8Array) {
 
         let binary = '';
         const len = bytes.byteLength;

@@ -60,7 +60,7 @@ export abstract class VersionedObject extends SerializedObject {
 
         super.setup();
 
-        if(!this.lastUpdated && this.created) {
+        if (!this.lastUpdated && this.created) {
             this.lastUpdated = this.created;
         }
 
@@ -70,8 +70,8 @@ export abstract class VersionedObject extends SerializedObject {
 
         super.validate();
 
-        this.created = Preconditions.assertNotNull(this.created);
-        this.lastUpdated = Preconditions.assertNotNull(this.lastUpdated);
+        this.created = Preconditions.assertPresent(this.created);
+        this.lastUpdated = Preconditions.assertPresent(this.lastUpdated);
 
         Preconditions.assertNotNull(this.id, "id");
         Preconditions.assertNotNull(this.created, "created");

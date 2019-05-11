@@ -1,12 +1,8 @@
 import * as React from 'react';
 import ReactTable from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
-import {Tag} from '../../../../web/js/tags/Tag';
-import {Tags} from '../../../../web/js/tags/Tags';
-import {DateTimeTableCell} from '../DateTimeTableCell';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
-import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
-import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
+import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
@@ -14,20 +10,18 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
-import {AnnotationIcon} from '../../../../web/js/ui/standard_icons/AnnotationIcon';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {UpdatedCallback} from './AnnotationRepoFilterEngine';
+import {AnnotationPreview} from './AnnotationPreview';
 
 const log = Logger.create();
 
 export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
-
-    private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
-
+    
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -42,7 +36,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     }
 
     public init() {
-
 
         const onUpdated: UpdatedCallback =
             repoAnnotations => {
@@ -104,37 +97,45 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
                     <ReactTable
                         data={[...data]}
+                        // headerProps={{display: 'none'}}
                         columns={
                             [
-                                {
-                                    Header: '',
-                                    accessor: 'type',
-                                    maxWidth: 30,
-
-                                    Cell: (row: any) => {
-                                        return (
-
-                                            <div className="text-center">
-                                                <AnnotationIcon type={row.original.type} color={row.original.color}/>
-                                            </div>
-
-                                        );
-                                    }
-
-                                },
+                                // {
+                                //     Header: '',
+                                //     accessor: 'type',
+                                //     maxWidth: 30,
+                                //
+                                //     Cell: (row: any) => {
+                                //         return (
+                                //
+                                //             <div className="text-center">
+                                //                 <AnnotationIcon type={row.original.type} color={row.original.color}/>
+                                //             </div>
+                                //
+                                //         );
+                                //     }
+                                //
+                                // },
                                 {
                                     Header: '',
                                     accessor: 'title',
+                                    maxWidth: 450,
+                                    headerStyle: {display: 'none'},
+                                    style: {whiteSpace: 'normal'},
                                     Cell: (row: any) => {
                                         const id = 'annotation-title' + row.index;
+
+                                        const annotation: RepoAnnotation = row.original;
+
                                         return (
-                                            <div id={id}>
 
-                                                <div>{row.original.text || 'no text'}</div>
-
-                                            </div>
+                                            <AnnotationPreview id={id}
+                                                               text={annotation.text}
+                                                               img={annotation.img}
+                                                               created={annotation.created}/>
 
                                         );
+
                                     }
 
                                 },
@@ -142,37 +143,32 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                     Header: 'Created',
                                     // accessor: (row: any) => row.added,
                                     accessor: 'created',
-                                    show: true,
-                                    maxWidth: 100,
-                                    defaultSortDesc: true,
-                                    Cell: (row: any) => (
-                                        <DateTimeTableCell className="doc-col-last-updated" datetime={row.original.created}/>
-                                    )
+                                    show: false,
 
                                 },
-                                {
-                                    id: 'tags',
-                                    Header: 'Tags',
-                                    accessor: '',
-                                    show: true,
-                                    width: 200,
-                                    Cell: (row: any) => {
-
-                                        // TODO: use <FormattedTags>
-
-                                        const tags: {[id: string]: Tag} = row.original.tags;
-
-                                        const formatted = Object.values(tags)
-                                            .map(tag => tag.label)
-                                            .sort()
-                                            .join(", ");
-
-                                        return (
-                                            <div>{formatted}</div>
-                                        );
-
-                                    }
-                                },
+                                // {
+                                //     id: 'tags',
+                                //     Header: 'Tags',
+                                //     accessor: '',
+                                //     show: true,
+                                //     width: 200,
+                                //     Cell: (row: any) => {
+                                //
+                                //         // TODO: use <FormattedTags>
+                                //
+                                //         const tags: {[id: string]: Tag} = row.original.tags;
+                                //
+                                //         const formatted = Object.values(tags)
+                                //             .map(tag => tag.label)
+                                //             .sort()
+                                //             .join(", ");
+                                //
+                                //         return (
+                                //             <div>{formatted}</div>
+                                //         );
+                                //
+                                //     }
+                                // },
 
                             ]}
 

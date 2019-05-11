@@ -5,7 +5,9 @@ import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
-
+import {LazyProps} from '../../react/LazyComponents';
+import {LazyState} from '../../react/LazyComponents';
+import {HighlightColors} from '../../metadata/HighlightColor';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -20,13 +22,16 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
     public render() {
+
         const { annotation } = this.props;
 
         const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
 
-        const html = Optional.of(annotation.html).getOrElse('');
+        const html = Optional.first(annotation.html).getOrElse('');
 
         const key = 'text-highlight-' + annotation.id;
+
+        const borderColor = HighlightColors.toBackgroundColor(annotation.color, 0.7);
 
         return (
 
@@ -38,7 +43,10 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
                      data-annotation-color={annotation.color}
                      className={attrType}>
 
-                    <blockquote className="p-1">
+                    <blockquote className="p-1"
+                                style={{
+                                    borderLeft: `5px solid ${borderColor}`
+                                }}>
 
                         <span className="text-sm"
                               dangerouslySetInnerHTML={{__html: html}}>
@@ -63,7 +71,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
 }
-interface IProps {
+interface IProps extends LazyProps {
 
     readonly doc: Doc;
 
@@ -71,7 +79,7 @@ interface IProps {
 
 }
 
-interface IState {
+interface IState extends LazyState {
 
 }
 

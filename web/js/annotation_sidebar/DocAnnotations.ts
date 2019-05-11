@@ -5,7 +5,6 @@ import {Comment} from '../metadata/Comment';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
-import {Screenshots} from '../metadata/Screenshots';
 import {Text} from '../metadata/Text';
 import {DocAnnotation} from './DocAnnotation';
 import {AreaHighlight} from '../metadata/AreaHighlight';
@@ -14,17 +13,28 @@ import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
+import {Point} from '../Point';
+import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
+import {ObjectIDs} from '../util/ObjectIDs';
+import {Images} from '../metadata/Images';
 
 export class DocAnnotations {
 
-    public static getAnnotationsForPage(docMeta: DocMeta): DocAnnotation[] {
+    public static async getAnnotationsForPage(persistenceLayerProvider: PersistenceLayerProvider,
+                                              docMeta: DocMeta): Promise<DocAnnotation[]> {
 
         const result: DocAnnotation[] = [];
 
-        Object.values(docMeta.pageMetas).forEach(pageMeta => {
-            result.push(...this.getTextHighlights(pageMeta));
-            result.push(...this.getAreaHighlights(pageMeta));
-        });
+        const pageMetas = Object.values(docMeta.pageMetas);
+
+        for (const pageMeta of pageMetas) {
+
+            const areaHighlights = await this.getAreaHighlights(persistenceLayerProvider, docMeta, pageMeta);
+
+            result.push(...this.getTextHighlights(docMeta, pageMeta));
+            result.push(...areaHighlights);
+
+        }
 
         const index: {[id: string]: DocAnnotation} = {};
 
@@ -38,9 +48,12 @@ export class DocAnnotations {
 
     }
 
-    public static createFromFlashcard(flashcard: Flashcard, pageMeta: PageMeta): DocAnnotation {
+    public static createFromFlashcard(docMeta: DocMeta,
+                                      flashcard: Flashcard,
+                                      pageMeta: PageMeta): DocAnnotation {
 
         return {
+            oid: ObjectIDs.create(),
             id: flashcard.id,
             annotationType: AnnotationType.FLASHCARD,
             // html: comment.content.HTML!,
@@ -52,9 +65,9 @@ export class DocAnnotations {
                 y: 0
             },
             created: flashcard.created,
+            docMeta,
             pageMeta,
             children: [],
-            comments: [],
             ref: flashcard.ref,
             original: flashcard
 
@@ -62,9 +75,12 @@ export class DocAnnotations {
 
     }
 
-    public static createFromComment(comment: Comment, pageMeta: PageMeta): DocAnnotation {
+    public static createFromComment(docMeta: DocMeta,
+                                    comment: Comment,
+                                    pageMeta: PageMeta): DocAnnotation {
 
         return {
+            oid: ObjectIDs.create(),
             id: comment.id,
             annotationType: AnnotationType.COMMENT,
             html: comment.content.HTML!,
@@ -75,9 +91,9 @@ export class DocAnnotations {
                 y: 0
             },
             created: comment.created,
+            docMeta,
             pageMeta,
             children: [],
-            comments: [],
             ref: comment.ref,
             original: comment
 
@@ -85,36 +101,58 @@ export class DocAnnotations {
 
     }
 
-    public static createFromAreaHighlight(areaHighlight: AreaHighlight, pageMeta: PageMeta): DocAnnotation {
+    // TODO: this no longer needs to be async.
+    public static async createFromAreaHighlight(persistenceLayerProvider: PersistenceLayerProvider,
+                                                docMeta: DocMeta,
+                                                areaHighlight: AreaHighlight,
+                                                pageMeta: PageMeta): Promise<DocAnnotation> {
 
-        const screenshot = this.getScreenshot(pageMeta, areaHighlight);
+        const createPosition = (): Point => {
 
-        return {
-            id: areaHighlight.id,
-            annotationType: AnnotationType.AREA_HIGHLIGHT,
-            screenshot,
-            html: undefined,
-            pageNum: pageMeta.pageInfo.num,
-            position: {
+            if (areaHighlight.position) {
+                return {...areaHighlight.position};
+            }
+
+            return {
                 x: this.firstRect(areaHighlight).map(current => current.left).getOrElse(0),
                 y: this.firstRect(areaHighlight).map(current => current.top).getOrElse(0),
-            },
+            };
+
+        };
+
+        const img = Images.toImg(persistenceLayerProvider, areaHighlight.image);
+        const position = createPosition();
+
+        return {
+            oid: ObjectIDs.create(),
+            id: areaHighlight.id,
+            annotationType: AnnotationType.AREA_HIGHLIGHT,
+            img,
+            html: undefined,
+            pageNum: pageMeta.pageInfo.num,
+            position,
+            color: areaHighlight.color,
             created: areaHighlight.created,
+            docMeta,
             pageMeta,
             children: [],
-            comments: [],
             original: areaHighlight
         };
 
     }
 
-    public static createFromTextHighlight(textHighlight: TextHighlight, pageMeta: PageMeta): DocAnnotation {
+    public static createFromTextHighlight(docMeta: DocMeta,
+                                          textHighlight: TextHighlight,
+                                          pageMeta: PageMeta): DocAnnotation {
 
         let html: string = "";
 
         if (typeof textHighlight.text === 'string') {
             html = `<p>${textHighlight.text}</p>`;
         }
+
+        // TODO: prefer to use revisedText so that the user can edit the text
+        // that we selected from the document without reverting to the original
 
         if (isPresent(textHighlight.text) && typeof textHighlight.text === 'object') {
 
@@ -135,12 +173,10 @@ export class DocAnnotations {
 
         }
 
-        const screenshot = this.getScreenshot(pageMeta, textHighlight);
-
         return {
+            oid: ObjectIDs.create(),
             id: textHighlight.id,
             annotationType: AnnotationType.TEXT_HIGHLIGHT,
-            screenshot,
             html,
             pageNum: pageMeta.pageInfo.num,
             position: {
@@ -149,33 +185,42 @@ export class DocAnnotations {
             },
             color: textHighlight.color,
             created: textHighlight.created,
+            docMeta,
             pageMeta,
             children: [],
-            comments: [],
             original: textHighlight
         };
 
     }
 
-    private static getTextHighlights(pageMeta: PageMeta): DocAnnotation[] {
+    private static getTextHighlights(docMeta: DocMeta, pageMeta: PageMeta): DocAnnotation[] {
 
         const result: DocAnnotation[] = [];
 
         Object.values(pageMeta.textHighlights).forEach(textHighlight => {
-            result.push(this.createFromTextHighlight(textHighlight, pageMeta));
+            result.push(this.createFromTextHighlight(docMeta, textHighlight, pageMeta));
         });
 
         return result;
 
     }
 
-    private static getAreaHighlights(pageMeta: PageMeta): DocAnnotation[] {
+    private static async getAreaHighlights(persistenceLayerProvider: PersistenceLayerProvider,
+                                           docMeta: DocMeta,
+                                           pageMeta: PageMeta): Promise<DocAnnotation[]> {
 
         const result: DocAnnotation[] = [];
 
-        Object.values(pageMeta.areaHighlights).forEach(areaHighlight => {
-            result.push(this.createFromAreaHighlight(areaHighlight, pageMeta));
-        });
+        const areaHighlights = Object.values(pageMeta.areaHighlights);
+
+        for (const areaHighlight of areaHighlights) {
+
+            const docAnnotation =
+                await this.createFromAreaHighlight(persistenceLayerProvider, docMeta, areaHighlight, pageMeta);
+
+            result.push(docAnnotation);
+
+        }
 
         return result;
 
@@ -184,6 +229,7 @@ export class DocAnnotations {
 
     private static getScreenshot(pageMeta: PageMeta, highlight: BaseHighlight): Screenshot | undefined {
 
+        // tslint:disable-next-line:prefer-const
         let screenshot: Screenshot | undefined;
 
         if (highlight.images) {
@@ -192,11 +238,11 @@ export class DocAnnotations {
 
                 if (image.rel && image.rel === 'screenshot') {
 
-                    const screenshotURI = Screenshots.parseURI(image.src);
-
-                    if (screenshotURI) {
-                        screenshot = pageMeta.screenshots[screenshotURI.id];
-                    }
+                    // const screenshotURI = Screenshots.parseURI(image.src);
+                    //
+                    // if (screenshotURI) {
+                    //     screenshot = pageMeta.screenshots[screenshotURI.id];
+                    // }
 
                 }
 

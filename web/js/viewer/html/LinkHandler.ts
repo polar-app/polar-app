@@ -62,7 +62,7 @@ export class LinkHandler {
         doc.querySelectorAll('a')
             .forEach(anchor => anchor.addEventListener('keydown', event => {
 
-                if(event.key === 'Enter' || event.key === 'Return') {
+                if (event.key === 'Enter' || event.key === 'Return') {
                     event.preventDefault();
                     event.stopPropagation();
                     this.handleLinkEvent(event);
@@ -81,7 +81,9 @@ export class LinkHandler {
             log.info("Opening URL: " + href);
 
             if (shell) {
-                shell.openExternal(href);
+                shell.openExternal(href)
+                    .catch(err => console.error(err));
+
             } else {
                 Nav.openLinkWithNewTab(href);
             }

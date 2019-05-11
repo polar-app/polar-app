@@ -15,12 +15,10 @@ import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PageMeta, PageNumber} from './PageMeta';
 import {Numbers} from "../util/Numbers";
 import {Reducers} from '../util/Reducers';
-import {ProgressByMode, ReadingProgress} from './ReadingProgress';
 import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
-import {Percentage} from '../util/ProgressTracker';
 
 const log = Logger.create();
 
@@ -225,7 +223,12 @@ export class Pagemarks {
 
             // the rest are from options.
             type: options.type,
-            percentage: keyOptions.percentage,
+
+            // do NOT math.floor this.  It causes issues when percentages are
+            // less than 1 and for large pages the small changes can make a
+            // difference in pagemark placement
+            percentage: Numbers.toFixedFloat(keyOptions.percentage, 10),
+
             column: options.column,
             rect: keyOptions.rect,
             batch,

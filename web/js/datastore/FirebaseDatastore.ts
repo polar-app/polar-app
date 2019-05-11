@@ -37,8 +37,11 @@ import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
+import {Latch} from '../util/Latch';
 
 const log = Logger.create();
+
+let STORAGE_UPLOAD_ID: number = 0;
 
 export class FirebaseDatastore extends AbstractDatastore implements Datastore, WritableBinaryMetaDatastore {
 
@@ -251,11 +254,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * Get the DocMeta we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
-    public async getDocMeta(fingerprint: string): Promise<string | null> {
+    public async getDocMeta(fingerprint: string, opts: GetDocMetaOpts = {}): Promise<string | null> {
 
         const id = FirebaseDatastore.computeDocMetaID(fingerprint);
 
-        return await this.getDocMetaDirectly(id);
+        return await this.getDocMetaDirectly(id, opts);
 
     }
 
@@ -263,7 +266,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * Get the DocMeta if from teh raw ID.
      * @param id
      */
-    public async getDocMetaDirectly(id: string): Promise<string | null> {
+    public async getDocMetaDirectly(id: string,
+                                    opts: GetDocMetaOpts = {}): Promise<string | null> {
 
         const ref = this.firestore!
             .collection(DatastoreCollection.DOC_META)
@@ -273,7 +277,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             // TODO: lift this out into its own method.
 
-            const preferredSource = this.preferredSource();
+            const preferredSource = opts.preferredSource || this.preferredSource();
 
             if (preferredSource === 'cache') {
 
@@ -295,6 +299,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 return await Promises.any(cachePromise, serverPromise);
 
+            } else if (isPresent(opts.preferredSource)) {
+                return await ref.get({ source: opts.preferredSource });
             } else {
                 // now revert to checking the server, then cache if we're
                 // offline.
@@ -316,143 +322,189 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
+    /**
+     * We have to keep track of pending file writes because it's possible that
+     * two systems race and attempt to write the same file at once.
+     *
+     * TODO: We should probably abort this in the future if the hashcodes for
+     * the documents we're trying to write are present but not identical or the
+     * visibility settings are different.  Either that or stack them so that
+     * the second (with different settings) is performed after the first.
+     */
+    private pendingFileWrites: {[key: string]: Latch<DocFileMeta>} = {};
+
     public async writeFile(backend: Backend,
                            ref: FileRef,
                            data: BinaryFileData,
                            opts: WriteFileOpts = new DefaultWriteFileOpts()): Promise<DocFileMeta> {
 
+        // TODO: the latch handling, file writing, and progress notification
+        // should all be decoupled into their own functions.
+
         log.debug(`writeFile: ${backend}: `, ref);
 
-        const visibility = opts.visibility || Visibility.PRIVATE;
-
-        const storage = this.storage!;
-
         const storagePath = this.computeStoragePath(backend, ref);
+        const pendingFileWriteKey = storagePath.path;
 
-        const fileRef = storage.ref().child(storagePath.path);
+        let latch = this.pendingFileWrites[pendingFileWriteKey];
 
-        if (! isPresent(data)) {
+        if (latch) {
+            log.warn("Write already pending.  Going to return latch.");
+            return this.pendingFileWrites[pendingFileWriteKey].get();
+        }
 
-            if (opts.updateMeta) {
+        latch = this.pendingFileWrites[pendingFileWriteKey] = new Latch();
 
-                const meta: FileMeta = { visibility };
+        try {
 
-                // https://firebase.google.com/docs/storage/web/file-metadata
-                //
-                // Only the properties specified in the metadata are updated,
-                // all others are left unmodified.
+            const visibility = opts.visibility || Visibility.PRIVATE;
 
-                await fileRef.updateMetadata(meta);
+            const storage = this.storage!;
 
-                log.info("File metadata updated with: ", meta);
+            const fileRef = storage.ref().child(storagePath.path);
 
-                // TODO: I don't like having to call getFile again but hopefully
-                // it should be cached at this point.
-                return (await this.getFile(backend, ref)).get();
+            if (!isPresent(data)) {
 
-            } else {
-                // when the caller specifies null they mean that there's a
-                // metadata update which needs to be applied.
-                throw new Error("No data present");
+                if (opts.updateMeta) {
+
+                    const meta: FileMeta = { visibility };
+
+                    // https://firebase.google.com/docs/storage/web/file-metadata
+                    //
+                    // Only the properties specified in the metadata are updated,
+                    // all others are left unmodified.
+
+                    await fileRef.updateMetadata(meta);
+
+                    log.info("File metadata updated with: ", meta);
+
+                    return this.getFile(backend, ref);
+
+                } else {
+                    // when the caller specifies null they mean that there's a
+                    // metadata update which needs to be applied.
+                    throw new Error("No data present");
+                }
+
             }
 
-        }
-
-        if (await this.containsFile(backend, ref)) {
-            // the file is already in the datastore so don't attempt to
-            // overwrite it for now.  The files are immutable and we don't
-            // accept overwrites.
-            return (await this.getFile(backend, ref)).get();
-        }
-
-        let uploadTask: firebase.storage.UploadTask;
-
-        const uid = FirebaseDatastore.getUserID();
-
-        // stick the uid into the metadata which we use for authorization of the
-        // blob when not public.
-        const meta = {uid, visibility};
-
-        const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
-
-        if (storagePath.settings) {
-            metadata.contentType = storagePath.settings.contentType;
-            metadata.cacheControl = storagePath.settings.cacheControl;
-        }
-
-        if (typeof data === 'string') {
-            uploadTask = fileRef.putString(data, 'raw', metadata);
-        } else if (data instanceof Blob) {
-            uploadTask = fileRef.put(data, metadata);
-        } else {
-
-            if (FileHandles.isFileHandle(data)) {
-
-                // This only happens in the desktop app so we can read file URLs
-                // to blobs and otherwise it converts URLs to files.
-                const fileHandle = <FileHandle> data;
-
-                const fileURL = FilePaths.toURL(fileHandle.path);
-                const blob = await URLs.toBlob(fileURL);
-                uploadTask = fileRef.put(blob, metadata);
-
-            } else {
-                uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
+            if (await this.containsFile(backend, ref)) {
+                // the file is already in the datastore so don't attempt to
+                // overwrite it for now.  The files are immutable and we don't
+                // accept overwrites.
+                return this.getFile(backend, ref);
             }
 
-        }
+            let uploadTask: firebase.storage.UploadTask;
 
-        // TODO: we can get progress from the uploadTask here.
+            const uid = FirebaseDatastore.getUserID();
 
-        const started = Date.now();
+            // stick the uid into the metadata which we use for authorization of the
+            // blob when not public.
+            const meta = { uid, visibility };
 
-        const task = ProgressTracker.createNonce();
+            const metadata: firebase.storage.UploadMetadata = { customMetadata: meta };
 
-        uploadTask.on('state_changed', (snapshotData: any) => {
+            if (storagePath.settings) {
+                metadata.contentType = storagePath.settings.contentType;
+                metadata.cacheControl = storagePath.settings.cacheControl;
+            }
 
-            const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
+            if (typeof data === 'string') {
+                uploadTask = fileRef.putString(data, 'raw', metadata);
+            } else if (data instanceof Blob) {
+                uploadTask = fileRef.put(data, metadata);
+            } else {
 
-            const now = Date.now();
-            const duration = now - started;
+                if (FileHandles.isFileHandle(data)) {
 
-            const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-            log.notice('Upload is ' + percentage + '%// done');
+                    // This only happens in the desktop app so we can read file URLs
+                    // to blobs and otherwise it converts URLs to files.
+                    const fileHandle = <FileHandle> data;
 
-            const progress: ProgressMessage = {
-                id: 'firebase-upload',
-                task,
-                completed: snapshot.bytesTransferred,
-                total: snapshot.totalBytes,
-                duration,
-                progress: <Percentage> percentage
+                    const fileURL = FilePaths.toURL(fileHandle.path);
+                    const blob = await URLs.toBlob(fileURL);
+                    uploadTask = fileRef.put(blob, metadata);
+
+                } else {
+                    uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
+                }
+
+            }
+
+            // TODO: we can get progress from the uploadTask here.
+
+            const started = Date.now();
+
+            const task = ProgressTracker.createNonce();
+
+            // TODO: create an index of pending progress messages and show the
+            // OLDEST on in the progress bar.. but add like a 5 minute timeout in
+            // case it's not updated.   Each progress message MUST have a 'created'
+            // timestamp from now on so we can GC them and or ignore them if they're
+            // never used again
+
+            const progressID = 'firebase-upload-' + STORAGE_UPLOAD_ID++;
+
+            uploadTask.on('state_changed', (snapshotData: any) => {
+
+                const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
+
+                const now = Date.now();
+                const duration = now - started;
+
+                const percentage = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
+                log.notice('Upload is ' + percentage + '% done');
+
+                const progress: ProgressMessage = {
+                    id: progressID,
+                    task,
+                    completed: snapshot.bytesTransferred,
+                    total: snapshot.totalBytes,
+                    duration,
+                    progress: <Percentage> percentage,
+                    timestamp: Date.now(),
+                    name: `${backend}/${ref.name}`
+                };
+
+                ProgressMessages.broadcast(progress);
+
+                switch (snapshot.state) {
+
+                    case firebase.storage.TaskState.PAUSED:
+                        // or 'paused'
+                        // console.log('Upload is paused');
+                        break;
+
+                    case firebase.storage.TaskState.RUNNING:
+                        // or 'running'
+                        // console.log('Upload is running');
+                        break;
+                }
+
+            });
+
+            const uploadTaskSnapshot = await uploadTask;
+
+            const downloadURL = uploadTaskSnapshot.downloadURL;
+
+            const result: DocFileMeta = {
+                backend,
+                ref,
+                url: downloadURL!
             };
 
-            ProgressMessages.broadcast(progress);
+            latch.resolve(result);
 
-            switch (snapshot.state) {
+            // now we have to clean up after our latch.
+            delete this.pendingFileWrites[pendingFileWriteKey];
 
-                case firebase.storage.TaskState.PAUSED:
-                    // or 'paused'
-                    // console.log('Upload is paused');
-                    break;
+            return result;
 
-                case firebase.storage.TaskState.RUNNING:
-                    // or 'running'
-                    // console.log('Upload is running');
-                    break;
-            }
-
-        });
-
-        const uploadTaskSnapshot = await uploadTask;
-
-        const downloadURL = uploadTaskSnapshot.downloadURL;
-
-        return {
-            backend,
-            ref,
-            url: downloadURL!
-        };
+        } catch (e) {
+            latch.reject(e);
+            throw e;
+        }
 
     }
 
@@ -461,9 +513,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         return Hashcodes.create(storagePath.path);
     }
 
-    public async getFile(backend: Backend,
-                         ref: FileRef,
-                         opts: GetFileOpts = {}): Promise<Optional<DocFileMeta>> {
+    public getFile(backend: Backend,
+                   ref: FileRef,
+                   opts: GetFileOpts = {}): DocFileMeta {
 
         Datastores.assertNetworkLayer(this, opts.networkLayer);
 
@@ -476,15 +528,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const storageRef = storage.ref().child(storagePath.path);
 
         const downloadURL =
-            await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, opts);
-
-        if (! downloadURL) {
-            return Optional.empty();
-        }
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, opts);
 
         const url: string = this.wrappedDownloadURL(downloadURL);
 
-        return Optional.of({ backend, ref, url});
+        return { backend, ref, url};
 
     }
     /**
@@ -508,9 +556,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const storageRef = storage.ref().child(storagePath.path);
 
         const downloadURL =
-            await DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, {});
+            DownloadURLs.computeDownloadURL(backend, ref, storagePath, storageRef, {});
 
-        return isPresent(downloadURL);
+        return DownloadURLs.checkExistence(downloadURL);
 
     }
 
@@ -575,8 +623,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 this.waitForCommit(docInfoRef)
             ]);
 
-            log.debug("Setting...");
-
             const batch = this.firestore!.batch();
 
             const visibility = docInfo.visibility;
@@ -587,8 +633,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             batch.set(docInfoRef, this.createDocForDocInfo(docInfo, visibility));
 
             await batch.commit();
-
-            log.debug("Setting...done");
 
             // we need to make sure that we only return when it's committed
             // remotely...
@@ -750,7 +794,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const PUBLIC_MAX_AGE_1WEEK = 'public,max-age=604800';
 
-        const ext = optionalExt.getOrElse('');
+        const ext = optionalExt.getOrElse('').toLowerCase();
 
         if (ext === 'jpg' || ext === 'jpeg') {
 
@@ -879,12 +923,49 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         type DocMetaData = string | null;
 
         interface DocMetaLookup {
+            get(fingerprint: string): Promise<DocMetaData>;
+
+            // [fingerprint: string]: DocMetaData;
+        }
+
+        /**
+         * Local cache for storing DocMeta that we haven't fetched yet.
+         */
+        interface DocMetaCache {
             [fingerprint: string]: DocMetaData;
+        }
+
+        const datastore = this;
+
+        class DefaultDocMetaLookup implements DocMetaLookup {
+
+            constructor(private readonly cache: DocMetaCache) {
+
+            }
+
+            public async get(fingerprint: string): Promise<DocMetaData> {
+
+                const result = this.cache[fingerprint];
+
+                if (isPresent(result)) {
+                    return result;
+                }
+
+                // we don't have this in the local cache which we SHOULD but
+                // dont' generate an error here.  We should force a fetch from
+                // the server.
+
+                log.warn("No entry for fingerprint (fetching directly from server): " + fingerprint);
+
+                return await datastore.getDocMeta(fingerprint, {preferredSource: 'server'});
+
+            }
+
         }
 
         // TODO: we should shave ANOTHER 500ms by hinting that this page will
         // need BOTH the doc_meta and doc_info data (I think) by loading them
-        // both at the same time.
+        // both at the same time (in parallel via Promises.all)
         const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
 
             const uid = FirebaseDatastore.getUserID();
@@ -901,7 +982,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const docChanges = snapshot.docChanges();
 
-            const result: DocMetaLookup = {};
+            const cache: DocMetaCache = {};
 
             // TODO: if we did a lookup by ID and not by fingerprint we could
             // probably keep the data JUST within localStorage until it's
@@ -913,10 +994,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
                 const fingerprint = record.value.docInfo.fingerprint;
                 const data = record.value.value;
-                result[fingerprint] = data;
+                cache[fingerprint] = data;
             }
 
-            return result;
+            return new DefaultDocMetaLookup(cache);
 
         };
 
@@ -931,12 +1012,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const docInfo = record.value;
 
             const dataProvider = async () => {
-
-                // return await this.getDocMeta(docInfo.fingerprint);
-
                 const docMetaLookup = await docMetaLookupProvider();
-                return docMetaLookup[docInfo.fingerprint];
-
+                return docMetaLookup.get(docInfo.fingerprint);
             };
 
             const docMetaProvider = AsyncProviders.memoize(async () => {
@@ -1201,22 +1278,30 @@ export type FirebaseDocMetaID = string;
 
 export class DownloadURLs {
 
-    /**
-     * Use the old getDownloadURL method which is not fast nor reliable.
-     */
-    private static USE_STORAGE_REF = false;
+    public static async checkExistence(url: string): Promise<boolean> {
 
-    public static async computeDownloadURL(backend: Backend,
-                                           ref: FileRef,
-                                           storagePath: StoragePath,
-                                           storageRef: firebase.storage.Reference,
-                                           opts: GetFileOpts): Promise<string | undefined> {
+        // This is pretty darn slow when using HEAD but with GET and a range
+        // query the performance isn't too bad.  Performing the HEAD directly
+        // is really poor with 300-7500ms latencies.  There are some major
+        // outliers when performing HEAD.
+        //
+        // Using GET and range of 0-0 is actually consistently about 200ms
+        // which is pretty reasonable but we stills should have the option
+        // to skip the exists check to just compute the URL.
+        //
+        // Doing an exists() with the Cloud SDK is about 250ms too.
 
-        if (this.USE_STORAGE_REF) {
-            return this.computeDownloadURLWithStorageRef(storageRef);
-        } else {
-            return this.computeDownloadURLDirectly(backend, ref, storagePath, opts);
-        }
+        return await URLs.existsWithGETUsingRange(url);
+
+    }
+
+    public static computeDownloadURL(backend: Backend,
+                                     ref: FileRef,
+                                     storagePath: StoragePath,
+                                     storageRef: firebase.storage.Reference,
+                                     opts: GetFileOpts): string {
+
+        return this.computeDownloadURLDirectly(backend, ref, storagePath, opts);
 
     }
 
@@ -1239,10 +1324,10 @@ export class DownloadURLs {
 
     }
 
-    private static async computeDownloadURLDirectly(backend: Backend,
-                                                    ref: FileRef,
-                                                    storagePath: StoragePath,
-                                                    opts: GetFileOpts): Promise<string | undefined> {
+    private static computeDownloadURLDirectly(backend: Backend,
+                                              ref: FileRef,
+                                              storagePath: StoragePath,
+                                              opts: GetFileOpts): string {
 
         /**
          * Compute the storage path including the flip over whether we're
@@ -1271,30 +1356,14 @@ export class DownloadURLs {
 
         };
 
-        const url = toURL();
-
-        if (opts.noExistenceCheck) {
-
-            // This is pretty darn slow when using HEAD but with GET and a range
-            // query the performance isn't too bad.  Performing the HEAD directly
-            // is really poor with 300-7500ms latencies.  There are some major
-            // outliers when performing HEAD.
-            //
-            // Using GET and range of 0-0 is actually consistently about 200ms
-            // which is pretty reasonable but we stills should have the option
-            // to skip the exists check to just compute the URL.
-            //
-            // Doing an exists() with the Cloud SDK is about 250ms too.
-
-            return url;
-
-        } else {
-            const exists = await URLs.existsWithGETUsingRange(url);
-
-            return exists ? url : undefined;
-
-        }
+        return toURL();
 
     }
+
 }
 
+interface GetDocMetaOpts {
+
+    readonly preferredSource?: FirestoreSource;
+
+}

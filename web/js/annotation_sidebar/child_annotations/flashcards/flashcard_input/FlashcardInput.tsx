@@ -5,7 +5,6 @@ import {FlashcardInputFieldsType} from './FlashcardInputs';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
 import {Flashcard} from '../../../../metadata/Flashcard';
-import {Comment} from '../../../../metadata/Comment';
 
 const log = Logger.create();
 

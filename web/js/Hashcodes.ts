@@ -12,9 +12,11 @@ const base58check = require("base58check");
  */
 export class Hashcodes {
 
-    public static create(data: string): string {
-        Preconditions.assertNotNull(data, "data");
-        // return base58check.encode(createKeccakHash('keccak256').update(data).digest());
+    public static create(data: any): string {
+        Preconditions.assertPresent(data, "data");
+
+        data = typeof data === 'string' ? data : JSON.stringify(data);
+
         return base58check.encode(keccak256(data));
     }
 

@@ -64,7 +64,7 @@ app.on('ready', function() {
 
         await capture.start();
 
-        if(args.quit) {
+        if (args.quit) {
             log.info("Capture finished.  Quitting now");
             app.quit();
         } else {

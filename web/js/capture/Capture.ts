@@ -106,13 +106,23 @@ export class Capture {
     private async loadURL(url: string) {
 
         // wait until the main URL loads.
-        const loadURLPromise = this.driver!.loadURL(url);
+
+        const latch = new Latch();
+
+        this.driver!.loadURL(url)
+            .then(() => {
+                latch.resolve(true);
+            })
+            .catch(err => {
+                log.error("Loading URL failed: ", err);
+                latch.resolve(true);
+            });
 
         // wait a minimum amount of time for the page to load so that we can
         // make sure that all static content has executed.
         // const minDelayPromise = Promises.waitFor(EXECUTE_CAPTURE_DELAY);
 
-        await Promise.all([ loadURLPromise ]);
+        await Promise.all([ latch.get() ]);
 
         // the page loaded now... capture the content.
         await this.handleLoad(url);

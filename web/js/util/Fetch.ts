@@ -1,13 +1,8 @@
-import {Request, Response} from 'node-fetch';
+import {Request, Response, RequestInit} from 'node-fetch';
 
 import {default as node_fetch} from 'node-fetch';
 
 declare var window: any;
-
-/**
- * When defined, we use this as a mock response and return it directly.
- */
-let response: Response | undefined;
 
 /**
  * Implementation of fetch which uses node-fetch when running in node or
@@ -31,6 +26,9 @@ export default function fetch(url: string | Request, init?: RequestInit): Promis
 
 export class MockFetch {
 
+    /**
+     * When defined, we use this as a mock response and return it directly.
+     */
     public static response?: Response;
 
 }
