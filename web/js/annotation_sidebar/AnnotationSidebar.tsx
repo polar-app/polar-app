@@ -25,7 +25,7 @@ import {ShareContentButton} from '../apps/viewer/ShareContentButton';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
 import {AreaHighlight} from '../metadata/AreaHighlight';
-import {Datastores} from '../datastore/Datastores';
+import {BackendFileRefs} from '../datastore/BackendFileRefs';
 
 const log = Logger.create();
 
@@ -314,7 +314,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const docMeta = this.props.doc.docMeta;
 
-            const backendFileRef = Datastores.toBackendFileRef(docMeta)!;
+            const backendFileRef = BackendFileRefs.toBackendFileRef(docMeta)!;
 
             const onVisibilityChanged = async (visibility: Visibility) => {
                 // FIXME: we need the ability to revoke ALL sharing URLs now...
