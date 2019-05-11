@@ -1,3 +1,6 @@
+# 1.19.1
+
+- The left side dock in the annotation view is now resizeable.
 
 # 1.19.0
 
