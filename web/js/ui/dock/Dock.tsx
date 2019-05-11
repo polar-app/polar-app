@@ -72,9 +72,9 @@ export class Dock extends React.Component<IProps, IState> {
             // clearly and no if statement.
 
             const result: React.CSSProperties = {
-                width: '5px',
-                minWidth: '5px',
-                maxWidth: '5px',
+                width: '4px',
+                minWidth: '4px',
+                maxWidth: '4px',
                 cursor: 'col-resize',
                 backgroundColor: '#c6c6c6'
             };
@@ -116,7 +116,7 @@ export class Dock extends React.Component<IProps, IState> {
 
         // needed or the content expands out of the box which isn't what we
         // want.
-        sidebarStyle.overflow = 'hidden';
+        sidebarStyle.overflow = 'auto';
 
         return (
 
