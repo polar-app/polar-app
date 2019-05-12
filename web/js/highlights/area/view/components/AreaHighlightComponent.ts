@@ -119,7 +119,15 @@ export class AreaHighlightComponent extends Component {
                 const extractedImage
                     = await Screenshots.capture(pageNum, boxRect, target);
 
-                const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+                const toOverlayRect = () => {
+
+                    let overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+                    overlayRect = AreaHighlights.toCorrectScale(overlayRect);
+                    return overlayRect;
+
+                };
+
+                const overlayRect = toOverlayRect();
 
                 const position: Position = {
                     x: overlayRect.left,

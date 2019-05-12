@@ -14,6 +14,7 @@ import {AreaHighlightDeleteOpts} from '../../../metadata/AreaHighlights';
 import {AreaHighlightRects} from '../../../metadata/AreaHighlightRects';
 import {DoWriteOpts} from '../../../metadata/AreaHighlights';
 import {AreaHighlight} from '../../../metadata/AreaHighlight';
+import {Rects} from '../../../Rects';
 
 
 const log = Logger.create();
@@ -73,7 +74,8 @@ export class AreaHighlightController {
 
         log.info("Creating area highlight: ", contextMenuLocation);
 
-        const annotationRect = AnnotationRects.createFromEvent(contextMenuLocation);
+        const rectFromEvent = AnnotationRects.createFromEvent(contextMenuLocation);
+        const annotationRect = AreaHighlights.toCorrectScale(Rects.createFromBasicRect(rectFromEvent));
 
         log.info("annotationRect", annotationRect);
 
