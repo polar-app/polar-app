@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {DeepPureComponent} from '../../js/react/DeepPureComponent';
 import {TreeNodeChildren} from './TreeNodeChildren';
+import Button from 'reactstrap/lib/Button';
 
 class Styles {
 
@@ -13,12 +14,12 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         marginRight: '5px',
-        fontSize: '19px',
+        fontSize: '14px',
         lineHeight: '1.5',
         color: 'var(--primary)',
         cursor: 'pointer',
         userSelect: 'none',
-        width: '15px',
+        width: '12px',
         // height: '20px'
     };
 
@@ -38,7 +39,7 @@ class Styles {
 
 // TODO
 // - make them hover optionally
-//   - icons should change based on their state
+//   - we need an 'icon' that represents an entry with just a horizontal line instead of a file icon.
 //   - toggling up and going to the root triggers them ALL to expand and not
 //     sure why. Might make sense to just cheat and mutate the objects directly.
 //   - icons aren't rendered properly in the UI and have too much margin
@@ -67,10 +68,16 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
             if (children.length > 0) {
 
+                // if (this.state.node.closed) {
+                //     return 'fas fa-caret-right';
+                // } else {
+                //     return 'fas fa-caret-down';
+                // }
+
                 if (this.state.node.closed) {
-                    return 'fas fa-caret-right';
+                    return 'fas fa-plus';
                 } else {
-                    return 'fas fa-caret-down';
+                    return 'fas fa-minus';
                 }
 
             }
@@ -80,7 +87,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
         };
 
-        const nodeNameClazz = node.selected ? 'bg-primary text-white rounded' : '';
+        const nodeButtonColor = node.selected ? 'primary' : 'white';
 
         const icon = createIcon();
 
@@ -95,9 +102,11 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                          onClick={() => this.toggle()}>
                     </div>
 
-                    <div style={Styles.NODE_NAME} className={nodeNameClazz}>
+                    <Button style={Styles.NODE_NAME}
+                            className="p-0"
+                            color={nodeButtonColor}>
                         {node.name}
-                    </div>
+                    </Button>
 
                 </div>
 
@@ -111,23 +120,14 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
     private toggle() {
 
-        console.log("FIXME: toggling");
-
         const children = this.state.node.children || [];
 
         if (children.length === 0) {
-            console.log("FIXME: no childdren.");
-
             // doesn't make sense to expand/collapse something without children.
             return;
         }
 
-
-        console.log("FIXME: upodating");
-
         this.state.node.closed = !this.state.node.closed;
-
-        console.log("FIXME: node is now: ", this.state.node);
 
         this.setState({...this.state, node: this.state.node, idx: Date.now()});
 
