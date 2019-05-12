@@ -6,7 +6,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 // we can change the polar data dir with the following
 // PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
-xdescribe('TODO change this describe', function() {
+xdescribe('verify that disabling web security works with iframes.', function() {
 
     Spectron.setup(__dirname);
     this.timeout(30000);

@@ -10,7 +10,6 @@ import {Directories} from '../datastore/Directories';
 import {CaptureResult} from './CaptureResult';
 import {Hashcodes} from '../Hashcodes';
 import {Captured} from './renderer/Captured';
-import {Files} from '../util/Files';
 
 const log = Logger.create();
 
@@ -34,13 +33,8 @@ export class ContentCaptureExecutor {
         // this more aggressively.
         try {
 
-
-
             const result: IResult<Captured> = await webContents.executeJavaScript("ContentCapture.execute()");
             captured = Results.create<Captured>(result).get();
-
-            // FIXME:
-            await Files.writeFileAsync("/tmp/test.json", JSON.stringify(result, null, "  "));
 
         } catch (e) {
 

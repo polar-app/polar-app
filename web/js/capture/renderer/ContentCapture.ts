@@ -35,17 +35,11 @@ export class ContentCapture {
                               url?: string,
                               result?: Captured): Captured {
 
-
         const ENABLE_IFRAMES = true;
 
         if (!contentDoc) {
             // this is the first document were working with.
             contentDoc = document;
-        }
-
-        for (const iframe of Array.from(contentDoc.querySelectorAll("iframe"))) {
-            console.log("FIXME000: found iframe: " + iframe.src);
-            console.log("FIXME000: has contentDocument: " + (iframe.contentDocument !== null));
         }
 
         if (!url) {
@@ -118,9 +112,6 @@ export class ContentCapture {
 
                     console.log("Going to capture iframe: " + iframeHref);
                     console.log(iframe.outerHTML);
-
-                    // FIXME: this is supposed to be recursive and update the capturedDocuments itself
-                    // but it's not.
                     ContentCapture.captureHTML(iframe.contentDocument, iframeHref, result);
 
                     ++nrHandled;

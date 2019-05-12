@@ -5,7 +5,7 @@ import {NULL_FUNCTION} from '../../util/Functions';
 
 const log = Logger.create();
 
-const MAX_RESIZES = 0;
+const MAX_RESIZES = 25;
 
 /**
  * Listens to the main iframe load and resizes it appropriately based on the

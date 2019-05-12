@@ -31,8 +31,6 @@ export class DirectPHZLoader {
 
     public async load(): Promise<Optional<Captured>> {
 
-        console.log("FIXME: loading directly");
-
         try {
 
             if (this.metadata) {
@@ -71,8 +69,6 @@ export class DirectPHZLoader {
     }
 
     private getResourceEntry0(url: string): ResourceEntry | undefined {
-
-        console.log("FIXME: lookoing for URL within entries: " + url, this.resources.entries);
 
         const resources: Array<ResourceEntry | undefined>
             = Object.values(this.resources.entries);
@@ -188,8 +184,6 @@ export class DirectPHZLoader {
     private async loadIFrames(iframeRefs: IFrameRef[]) {
 
         for (const iframeRef of iframeRefs) {
-
-            console.log("FIXME loading iframe: " , iframeRef);
 
             const resourceEntry = this.getResourceEntry(iframeRef.src);
 
