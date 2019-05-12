@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {DeepPureComponent} from '../../js/react/DeepPureComponent';
 
 class Styles {
 
@@ -12,7 +13,9 @@ class Styles {
         marginRight: '5px',
         fontSize: '19px',
         lineHeight: '1.5',
-        color: 'var(--primary)'
+        color: 'var(--primary)',
+        cursor: 'pointer',
+        userSelect: 'none'
     };
 
     public static NODE_NAME: React.CSSProperties = {
@@ -21,7 +24,8 @@ class Styles {
         fontSize: '16px',
         lineHeight: '1.5',
         cursor: 'pointer',
-        userSelect: 'none'
+        userSelect: 'none',
+        whiteSpace: 'nowrap'
     };
 
 }
@@ -31,13 +35,38 @@ class Styles {
 //   - optionally toggle their state
 //   - a configuration for the icons
 
-export class TreeNode extends React.Component<IProps, IState> {
+interface TreeNodeChildrenProps {
+    readonly closed?: boolean;
+    readonly children?: TNode[];
+}
+
+// TODO: this should be a deep / pure component too.
+const TreeNodeChildren = (props: TreeNodeChildrenProps) => {
+
+    let idx = 0;
+    const children = props.children || [];
+
+    if (props.closed) {
+        return <div/>;
+    } else {
+        return <div style={{paddingLeft: '0.5em',
+            marginLeft: '0.5em',
+            borderLeft: '1px solid #c6c6c6'}}>
+            {children.map(child => <TreeNode key={idx++} node={child}/>)}
+        </div>;
+    }
+
+};
+
+export class TreeNode extends DeepPureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.toggle = this.toggle.bind(this);
+
         this.state = {
-            open: false
+            closed: props.node.closed
         };
 
     }
@@ -47,13 +76,6 @@ export class TreeNode extends React.Component<IProps, IState> {
         const {node} = this.props;
         const children = node.children || [];
 
-        let idx = 0;
-        //
-        // <i className="fas fa-folder"></i>
-        //
-        // < i
-        // className = "far fa-file" > < / i >
-        //
         const createIcon = () => {
 
             if (children.length > 0) {
@@ -72,7 +94,9 @@ export class TreeNode extends React.Component<IProps, IState> {
 
                 <div style={Styles.NODE_PARENT}>
 
-                    <div style={Styles.NODE_ICON} className={icon}>
+                    <div style={Styles.NODE_ICON}
+                         className={icon}
+                         onClick={() => this.toggle()}>
                     </div>
 
                     <div style={Styles.NODE_NAME}>
@@ -81,17 +105,28 @@ export class TreeNode extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div style={{paddingLeft: '0.5em',
-                             marginLeft: '0.5em',
-                             borderLeft: '1px solid black'}}>
-                    {children.map(child => <TreeNode key={idx++} node={child}/>)}
-                </div>
+                <TreeNodeChildren children={children} closed={this.state.closed}/>
 
             </div>
 
         );
 
     }
+
+    private toggle() {
+
+        const {node} = this.props;
+        const children = node.children || [];
+
+        if (children.length === 0) {
+            // doesn't make sense to expand/collapse something without children.
+            return;
+        }
+
+        this.setState({...this.state, closed: !this.state.closed});
+
+    }
+
 
 }
 
@@ -102,12 +137,18 @@ interface IProps {
 export interface TNode {
 
     readonly name: string;
+
+    /**
+     * Whether the node is closed.  Defaults to open.
+     */
+    readonly closed?: boolean;
+
     readonly children?: TNode[];
 
 }
 
 interface IState {
-    readonly open: boolean;
+    readonly closed?: boolean;
 }
 
 
