@@ -58,6 +58,7 @@ import {ColorDropdown} from './ColorDropdown';
 import {ColorSelector} from '../../js/ui/colors/ColorSelector';
 import {TNode} from './TreeNode';
 import {TreeNode} from './TreeNode';
+import {TreeView} from './TreeView';
 
 const styles = {
     swatch: {
@@ -157,20 +158,27 @@ class App<P> extends React.Component<{}, IAppState> {
     public render() {
 
         const root: TNode = {
+            id: 0,
             name: 'CompSci',
             children: [
                 {
-                    name: 'Linux'
+                    id: 1,
+                    name: 'Linux',
+                    children: []
                 },
                 {
+                    id: 2,
                     name: 'Google',
                     children: [
                         {
-                            name: 'Mountain View'
+                            id: 3,
+                            name: 'Mountain View',
+                            children: []
                         },
                         {
+                            id: 4,
                             name: 'San Francisco',
-                            selected: true
+                            children: []
                         },
                     ]
 
@@ -183,7 +191,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{marginLeft: '5px'}}>
 
-                <TreeNode node={root}/>
+                <TreeView root={root}/>
 
                 {/*<Dock side="left"*/}
                 {/*      style={{height: '100vh'}}*/}

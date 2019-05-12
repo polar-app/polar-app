@@ -2,6 +2,7 @@ import * as React from 'react';
 import {DeepPureComponent} from '../../js/react/DeepPureComponent';
 import {TreeNodeChildren} from './TreeNodeChildren';
 import Button from 'reactstrap/lib/Button';
+import {Dictionaries} from '../../js/util/Dictionaries';
 
 class Styles {
 
@@ -66,6 +67,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
     public render() {
 
+        const {treeState} = this.props;
         const {node} = this.state;
         const children = node.children || [];
 
@@ -79,7 +81,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                 //     return 'fas fa-caret-down';
                 // }
 
-                if (this.state.node.closed) {
+                if (closed) {
                     return 'fas fa-plus';
                 } else {
                     return 'fas fa-minus';
@@ -92,7 +94,10 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
         };
 
-        const nodeButtonColor = node.selected ? 'primary' : 'white';
+        const selected = treeState.selected.contains(node.id);
+        const closed = treeState.closed.contains(node.id);
+
+        const nodeButtonColor = selected ? 'primary' : 'white';
 
         const icon = createIcon();
 
@@ -109,13 +114,14 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
                     <Button style={Styles.NODE_NAME}
                             className="p-0 pl-1 pr-1"
+                            onClick={() => this.select()}
                             color={nodeButtonColor}>
                         {node.name}
                     </Button>
 
                 </div>
 
-                <TreeNodeChildren children={children} closed={this.state.node.closed}/>
+                <TreeNodeChildren children={children} closed={closed} treeState={this.props.treeState}/>
 
             </div>
 
@@ -132,7 +138,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
             return;
         }
 
-        this.state.node.closed = !this.state.node.closed;
+        this.props.treeState.closed.toggle(this.props.node.id);
 
         this.setState({...this.state, node: this.state.node, idx: Date.now()});
 
@@ -140,16 +146,10 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
     private select() {
 
-        const children = this.state.node.children || [];
+        this.props.treeState.selected.reset();
+        this.props.treeState.selected.toggle(this.props.node.id);
 
-        if (children.length === 0) {
-            // doesn't make sense to expand/collapse something without children.
-            return;
-        }
-
-        this.state.node.closed = !this.state.node.closed;
-
-        this.setState({...this.state, node: this.state.node, idx: Date.now()});
+        this.setState({...this.state, idx: Date.now()});
 
     }
 
@@ -158,23 +158,81 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
 interface IProps {
     readonly node: TNode;
+    readonly treeState: TreeState;
+}
+
+
+/**
+ * A state object for the entire tree to keep an index of expanded/collapsed
+ * nodes, etc.
+ */
+export class TreeState {
+
+    public readonly closed = new Marked();
+
+    public readonly selected = new Marked();
+
+}
+
+class Marked {
+
+    public readonly data: {[id: number]: boolean} = {};
+
+    public mark(id: number) {
+        this.data[id] = true;
+    }
+
+    public clear(id: number) {
+        delete this.data[id];
+    }
+
+    public toggle(id: number) {
+        this.data[id] = ! this.data[id];
+        return this.data[id];
+    }
+
+    public contains(id: number) {
+        return this.data[id];
+    }
+
+    public reset() {
+        Dictionaries.empty(this.data);
+    }
+
 }
 
 export interface TNode {
 
     name: string;
 
-    /**
-     * Whether the node is closed.  Defaults to open.
-     */
-    closed?: boolean;
+    children: TNode[];
 
     /**
-     * True when the node is selected
+     * The UNIQUE id for this node.
      */
-    selected?: boolean;
+    readonly id: number;
 
-    children?: TNode[];
+}
+
+export class TNodes {
+
+    public static idx = 0;
+
+    // /**
+    //  * Create TNodes with a correct index.
+    //  */
+    // public static create(node: TNodePartial): TNode {
+    //
+    //     const children
+    //         = node.children.map(child => this.create(child));
+    //
+    //     return {
+    //         id: this.idx++,
+    //         name: node.name,
+    //         children
+    //     };
+    //
+    // }
 
 }
 
