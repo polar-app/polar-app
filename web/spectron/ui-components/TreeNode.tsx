@@ -43,7 +43,8 @@ class Styles {
 //   - toggling up and going to the root triggers them ALL to expand and not
 //     sure why. Might make sense to just cheat and mutate the objects directly.
 //   - icons aren't rendered properly in the UI and have too much margin
-//   -
+//   - revert BACK from button
+//   - no code to SELECT an item ...
 
 
 export class TreeNode extends DeepPureComponent<IProps, IState> {
