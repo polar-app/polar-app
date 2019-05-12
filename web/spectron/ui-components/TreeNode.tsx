@@ -39,6 +39,11 @@ class Styles {
 }
 
 // TODO
+
+//
+// - FIXME now the problem is how do I select the right node... if I select ONE
+//   node I need to efficiently de-select the other node.
+
 // - make them hover optionally
 //   - we need an 'icon' that represents an entry with just a horizontal line instead of a file icon.
 //   - toggling up and going to the root triggers them ALL to expand and not
