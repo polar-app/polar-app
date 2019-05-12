@@ -1,5 +1,7 @@
 # 1.19.1
 
+- annotation sidebar is resizeable now
+
 - proper capture of iframes now
 
 - upgrade to latest jsdom
