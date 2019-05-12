@@ -777,7 +777,16 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         background: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-background-color)' : 'var(--primary-background-color)',
                                         color: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-text-color)' : 'var(--primary-text-color)',
-                                    }
+                                    },
+
+                                    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
+                                            if (event.key === "Delete") {
+                                                if (rowInfo) {
+                                                    const repoDocInfo: RepoDocInfo = rowInfo.original;
+                                                    this.onDocDeleted(repoDocInfo);
+                                                }
+                                            }
+					},
 
                                 };
                             }}
