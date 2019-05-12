@@ -114,9 +114,8 @@ export class Dock extends React.Component<IProps, IState> {
         sidebarStyle.maxWidth = width;
         contentStyle.flexGrow = 1;
 
-        // needed or the content expands out of the box which isn't what we
-        // want.
-        sidebarStyle.overflow = 'auto';
+        // force it to be 100% and make the inner elements use overflow
+        sidebarStyle.height = '100%';
 
         return (
 

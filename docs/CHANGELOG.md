@@ -1,5 +1,7 @@
 # 1.19.1
 
+- proper capture of iframes now
+
 - upgrade to latest jsdom
 
 - 'Delete' char now works to delete one or multiple docs and you're prompted to

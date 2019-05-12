@@ -86,10 +86,11 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
                 </header>
 
-                <div style={{display: 'flex', flexGrow: 1, overflow: 'auto'}}>
+                <div style={{display: 'flex', flexGrow: 1, height: '100%'}}>
 
                     <Dock left={
-                            <div>
+                            <div style={{display: 'flex' , flexDirection: 'column', height: '100%'}}>
+
                                 <div className="mb-1 mt-1">
 
                                     <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
