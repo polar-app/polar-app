@@ -763,6 +763,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             //     desc: true
                             // }]}
                             getTrProps={(state: any, rowInfo: any) => {
+
                                 return {
 
                                     // include the doc fingerprint in the table
@@ -780,13 +781,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                     },
 
                                     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
-                                            if (event.key === "Delete") {
-                                                if (rowInfo) {
-                                                    const repoDocInfo: RepoDocInfo = rowInfo.original;
-                                                    this.onDocDeleted(repoDocInfo);
-                                                }
-                                            }
-					},
+                                        this.onKeyDown(event);
+                                    },
 
                                 };
                             }}
@@ -865,6 +861,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         );
     }
 
+    private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+
+        if (event.key === "Delete") {
+            this.onMultiDeleted();
+        }
+
+    }
+
     private async onDocTagged(repoDocInfo: RepoDocInfo, tags: Tag[]) {
 
         RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
@@ -893,6 +897,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 successes: 0,
                 failures: 0
             };
+
+            this.clearSelected();
 
             const progressTracker = new ProgressTracker(repoDocInfos.length, 'delete');
 
