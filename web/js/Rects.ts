@@ -22,19 +22,19 @@ export class Rects {
      * @param rect {Rect}
      * @param scale {number}
      */
-    static scale(rect: Rect, scale: number) {
+    public static scale(rect: Rect, scale: number) {
 
-        Preconditions.assertNotNull(rect, "rect");
+        Preconditions.assertPresent(rect, "rect");
 
         // make sure the input is valid before we work on it.
         rect = Rects.validate(rect);
 
         rect = new Rect(rect);
 
-        let result: any = {};
+        const result: any = {};
 
         Objects.typedKeys(rect).forEach(key => {
-            result[key] = <number>rect[key] * scale;
+            result[key] = Math.floor(<number> rect[key] * scale);
         });
 
         return Rects.validate(result);
@@ -53,12 +53,12 @@ export class Rects {
      */
     public static validate(rect: any): Rect {
 
-        Preconditions.assertNotNull(rect.left, "left");
-        Preconditions.assertNotNull(rect.top, "top");
-        Preconditions.assertNotNull(rect.width, "width");
-        Preconditions.assertNotNull(rect.height, "height");
-        Preconditions.assertNotNull(rect.bottom, "bottom");
-        Preconditions.assertNotNull(rect.right, "right");
+        Preconditions.assertPresent(rect.left, "left");
+        Preconditions.assertPresent(rect.top, "top");
+        Preconditions.assertPresent(rect.width, "width");
+        Preconditions.assertPresent(rect.height, "height");
+        Preconditions.assertPresent(rect.bottom, "bottom");
+        Preconditions.assertPresent(rect.right, "right");
 
         Preconditions.assertNumber(rect.left, "left");
         Preconditions.assertNumber(rect.top, "top");
@@ -114,14 +114,14 @@ export class Rects {
 
         rect = new Rect(rect);
 
-        if(absolute) {
+        if (absolute) {
 
-            if(dir.x !== undefined) {
+            if (dir.x !== undefined) {
                 rect.left = dir.x;
                 rect.right = rect.left + rect.width;
             }
 
-            if(dir.y !== undefined) {
+            if (dir.y !== undefined) {
                 rect.top = dir.y;
                 rect.bottom = rect.top + rect.height;
             }
@@ -130,12 +130,12 @@ export class Rects {
 
             // TODO: I could just convert the relative positions to absolute to
             // clean up this code a bit.
-            if(dir.x !== undefined) {
+            if (dir.x !== undefined) {
                 rect.left = rect.left + dir.x;
                 rect.right = rect.right + dir.x;
             }
 
-            if(dir.y !== undefined) {
+            if (dir.y !== undefined) {
                 rect.bottom = rect.bottom + dir.y;
                 rect.top = rect.top + dir.y;
             }
@@ -354,19 +354,19 @@ export class Rects {
         // var2 or var 3... and then define them when they are not defined.  For
         // example. If top and height are defined, I can define bottom.
 
-        if(! rect.bottom && "top" in rect && "height" in rect) {
+        if (! rect.bottom && "top" in rect && "height" in rect) {
             rect.bottom = rect.top + rect.height;
         }
 
-        if(! rect.right && "left" in rect && "width" in rect) {
+        if (! rect.right && "left" in rect && "width" in rect) {
             rect.right = rect.left + rect.width;
         }
 
-        if(! rect.height && "bottom" in rect && "top" in rect) {
+        if (! rect.height && "bottom" in rect && "top" in rect) {
             rect.height = rect.bottom - rect.top;
         }
 
-        if(! rect.width && "right" in rect && "left" in rect) {
+        if (! rect.width && "right" in rect && "left" in rect) {
             rect.width = rect.right - rect.left;
         }
 

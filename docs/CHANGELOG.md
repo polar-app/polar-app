@@ -1,5 +1,8 @@
 # 1.19.1
 
+- Fixed bug where the PDF page size yielded an incorrect placement of the area 
+  highlight.
+
 - The left side dock in the annotation view is now resizeable.
 
 # 1.19.0

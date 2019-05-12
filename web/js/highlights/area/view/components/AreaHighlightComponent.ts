@@ -23,6 +23,7 @@ import {Arrays} from '../../../../util/Arrays';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
 import {HighlightColor} from '../../../../metadata/HighlightColor';
 import {ILTRect} from '../../../../util/rects/ILTRect';
+import {Rects} from '../../../../Rects';
 
 const log = Logger.create();
 
@@ -192,13 +193,26 @@ export class AreaHighlightComponent extends Component {
             const toOverlayRect = (): ILTRect => {
 
                 if (areaHighlight.position) {
-                    return {
+
+                    let overlayRect = {
                         left: areaHighlight.position.x,
                         top: areaHighlight.position.y,
                         width: areaHighlight.position.width,
                         height: areaHighlight.position.height
                     };
+
+                    if (this.docFormat.name === "pdf") {
+                        const currentScale = this.docFormat.currentScale();
+                        overlayRect = Rects.scale(Rects.createFromBasicRect(overlayRect), currentScale);
+                    }
+
+                    return overlayRect;
+
                 }
+
+                // TODO: This is for OLDER area highlights but these will be
+                // deprecated pretty soon as they're not really used very much
+                // I imagine.
 
                 return areaHighlightRect.toDimensions(pageDimensions);
 
@@ -251,12 +265,6 @@ export class AreaHighlightComponent extends Component {
             highlightElement.style.backgroundColor = backgroundColor;
             (highlightElement.style as any).mixBlendMode = 'multiply';
             highlightElement.style.border = `1px solid #c6c6c6`;
-
-            // if(this.docFormat.name === "pdf") {
-            //     // this is only needed for PDF and we might be able to use a
-            // transform // in the future which would be easier. let
-            // currentScale = this.docFormat.currentScale(); overlayRect =
-            // Rects.scale(overlayRect, currentScale); }
 
             highlightElement.style.left = `${overlayRect.left}px`;
             highlightElement.style.top = `${overlayRect.top}px`;
