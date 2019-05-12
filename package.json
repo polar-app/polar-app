@@ -4,7 +4,7 @@
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
-    "start": "tsc && electron .",
+    "start": "electron .",
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
     "build-appx": "npm run-script setup-dist-appx && npm run-script compile && electron-builder --config=electron-builder.yml --win appx --publish never",
     "build-webapp": "npx webpack && ./scripts/build-webapp.sh",
