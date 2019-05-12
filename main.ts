@@ -19,6 +19,10 @@ if (!hasSingleInstanceLock) {
     app.quit();
 }
 
+// needed to disable site isolation because it doesn't actually allow us to
+// disable web security properly.
+app.commandLine.appendSwitch('disable-site-isolation-trials');
+
 async function launch() {
 
     console.log("Running with app path: " + app.getAppPath());

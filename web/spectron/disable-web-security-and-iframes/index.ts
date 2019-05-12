@@ -1,5 +1,7 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
-import {BrowserWindow} from 'electron';
+import {app, BrowserWindow} from 'electron';
+
+app.commandLine.appendSwitch('disable-site-isolation-trials');
 
 async function defaultWindowFactory(): Promise<BrowserWindow> {
 
