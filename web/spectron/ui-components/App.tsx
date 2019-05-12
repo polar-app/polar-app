@@ -169,7 +169,8 @@ class App<P> extends React.Component<{}, IAppState> {
                             name: 'Mountain View'
                         },
                         {
-                            name: 'San Francisco'
+                            name: 'San Francisco',
+                            selected: true
                         },
                     ]
 

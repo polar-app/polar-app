@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {DeepPureComponent} from '../../js/react/DeepPureComponent';
+import {TreeNodeChildren} from './TreeNodeChildren';
 
 class Styles {
 
@@ -8,6 +9,7 @@ class Styles {
     };
 
     public static NODE_ICON: React.CSSProperties = {
+        display: 'block',
         marginTop: 'auto',
         marginBottom: 'auto',
         marginRight: '5px',
@@ -15,7 +17,9 @@ class Styles {
         lineHeight: '1.5',
         color: 'var(--primary)',
         cursor: 'pointer',
-        userSelect: 'none'
+        userSelect: 'none',
+        width: '15px',
+        // height: '20px'
     };
 
     public static NODE_NAME: React.CSSProperties = {
@@ -25,38 +29,21 @@ class Styles {
         lineHeight: '1.5',
         cursor: 'pointer',
         userSelect: 'none',
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        paddingLeft: '3px',
+        paddingRight: '3px'
     };
 
 }
 
 // TODO
 // - make them hover optionally
-//   - optionally toggle their state
-//   - a configuration for the icons
+//   - icons should change based on their state
+//   - toggling up and going to the root triggers them ALL to expand and not
+//     sure why. Might make sense to just cheat and mutate the objects directly.
+//   - icons aren't rendered properly in the UI and have too much margin
+//   -
 
-interface TreeNodeChildrenProps {
-    readonly closed?: boolean;
-    readonly children?: TNode[];
-}
-
-// TODO: this should be a deep / pure component too.
-const TreeNodeChildren = (props: TreeNodeChildrenProps) => {
-
-    let idx = 0;
-    const children = props.children || [];
-
-    if (props.closed) {
-        return <div/>;
-    } else {
-        return <div style={{paddingLeft: '0.5em',
-            marginLeft: '0.5em',
-            borderLeft: '1px solid #c6c6c6'}}>
-            {children.map(child => <TreeNode key={idx++} node={child}/>)}
-        </div>;
-    }
-
-};
 
 export class TreeNode extends DeepPureComponent<IProps, IState> {
 
@@ -79,12 +66,21 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
         const createIcon = () => {
 
             if (children.length > 0) {
-                return "fas fa-folder";
+
+                if (this.state.closed) {
+                    return 'fas fa-caret-right';
+                } else {
+                    return 'fas fa-caret-down';
+                }
+
             }
 
-            return "far fa-file";
+            // return "far fa-file";
+            return "";
 
         };
+
+        const nodeNameClazz = node.selected ? 'bg-primary text-white rounded' : '';
 
         const icon = createIcon();
 
@@ -99,7 +95,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                          onClick={() => this.toggle()}>
                     </div>
 
-                    <div style={Styles.NODE_NAME}>
+                    <div style={Styles.NODE_NAME} className={nodeNameClazz}>
                         {node.name}
                     </div>
 
@@ -142,6 +138,11 @@ export interface TNode {
      * Whether the node is closed.  Defaults to open.
      */
     readonly closed?: boolean;
+
+    /**
+     * True when the node is selected
+     */
+    readonly selected?: boolean;
 
     readonly children?: TNode[];
 
