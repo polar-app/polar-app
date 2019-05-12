@@ -1,5 +1,8 @@
 # 1.19.1
 
+- 'Delete' char now works to delete one or multiple docs and you're prompted to
+  confirm.
+
 - Fixed bug where the PDF page size yielded an incorrect placement of the area 
   highlight.
 
