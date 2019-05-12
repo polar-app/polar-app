@@ -57,7 +57,6 @@ import {Canvases} from '../../js/util/Canvases';
 import {ColorDropdown} from './ColorDropdown';
 import {ColorSelector} from '../../js/ui/colors/ColorSelector';
 import {TNode} from './TreeNode';
-import {TNode} from './TreeNode';
 import {TreeNode} from './TreeNode';
 
 const styles = {
@@ -157,26 +156,33 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
-        const nodes: TNode[] = [
-            {
-                name: 'CompSci',
-                children: [
-                    {
-                        name: 'Linux'
-                    },
-                    {
-                        name: 'Google'
-                    }
+        const root: TNode = {
+            name: 'CompSci',
+            children: [
+                {
+                    name: 'Linux'
+                },
+                {
+                    name: 'Google',
+                    children: [
+                        {
+                            name: 'Mountain View'
+                        },
+                        {
+                            name: 'San Francisco'
+                        },
+                    ]
 
-                ]
-            }
-        ];
+                }
+
+            ]
+        };
 
         return (
 
-            <div>
+            <div style={{marginLeft: '5px'}}>
 
-                <TreeNode nodes={nodes}/>
+                <TreeNode node={root}/>
 
                 {/*<Dock side="left"*/}
                 {/*      style={{height: '100vh'}}*/}
