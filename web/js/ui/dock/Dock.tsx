@@ -8,7 +8,8 @@ class Styles {
 
     public static Dock: React.CSSProperties = {
         display: 'flex',
-        flexGrow: 1
+        flexGrow: 1,
+        height: '100%'
     };
 
 }
