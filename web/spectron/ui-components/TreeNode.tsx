@@ -16,7 +16,7 @@ class Styles {
         marginRight: '5px',
         fontSize: '14px',
         lineHeight: '1.5',
-        color: 'var(--primary)',
+        color: 'var(--secondary)',
         cursor: 'pointer',
         userSelect: 'none',
         width: '12px',
@@ -31,8 +31,8 @@ class Styles {
         cursor: 'pointer',
         userSelect: 'none',
         whiteSpace: 'nowrap',
-        paddingLeft: '3px',
-        paddingRight: '3px'
+        paddingLeft: '5px',
+        paddingRight: '5px'
     };
 
 }
@@ -45,7 +45,10 @@ class Styles {
 //   - icons aren't rendered properly in the UI and have too much margin
 //   - revert BACK from button
 //   - no code to SELECT an item ...
-
+//   - onSelected function
+//   - what about long press?
+//   - what about context menus?
+//   - should we support N selected items or just one?
 
 export class TreeNode extends DeepPureComponent<IProps, IState> {
 
@@ -53,6 +56,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
+        this.select = this.select.bind(this);
 
         this.state = {
             node: props.node
@@ -104,7 +108,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                     </div>
 
                     <Button style={Styles.NODE_NAME}
-                            className="p-0"
+                            className="p-0 pl-1 pr-1"
                             color={nodeButtonColor}>
                         {node.name}
                     </Button>
@@ -120,6 +124,21 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
     }
 
     private toggle() {
+
+        const children = this.state.node.children || [];
+
+        if (children.length === 0) {
+            // doesn't make sense to expand/collapse something without children.
+            return;
+        }
+
+        this.state.node.closed = !this.state.node.closed;
+
+        this.setState({...this.state, node: this.state.node, idx: Date.now()});
+
+    }
+
+    private select() {
 
         const children = this.state.node.children || [];
 

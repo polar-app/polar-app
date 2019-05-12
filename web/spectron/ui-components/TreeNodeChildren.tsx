@@ -21,7 +21,7 @@ export class TreeNodeChildren extends DeepPureComponent<IProps, IState> {
             return <div style={{
                             paddingLeft: '0.5em',
                             marginLeft: '0.5em',
-                            borderLeft: '1px solid #c6c6c6'
+                            // borderLeft: '1px solid #c6c6c6'
                         }}>
                         {children.map(child => <TreeNode key={idx++} node={child}/>)}
             </div>;
