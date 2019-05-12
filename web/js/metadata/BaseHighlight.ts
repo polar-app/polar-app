@@ -2,6 +2,7 @@ import {Image} from './Image';
 import {ExtendedAnnotation} from './ExtendedAnnotation';
 import {Preconditions} from '../Preconditions';
 import {Rect} from '../Rect';
+import {HighlightColor} from './HighlightColor';
 
 
 export class BaseHighlight extends ExtendedAnnotation {
@@ -48,14 +49,6 @@ export class BaseHighlight extends ExtendedAnnotation {
     }
 
 }
-
-/**
- * The set of highlight colors.  We also provide transparent for text you want
- * to index but might not actually want visible in the document. We can use this
- * for secondary / anonymous highlights like notes and comments which might
- * not need to be visibly shown.
- */
-export type HighlightColor = 'yellow' | 'red' | 'green' | 'blue' | 'transparent';
 
 export interface HighlightRects {
     [key: string]: Rect;

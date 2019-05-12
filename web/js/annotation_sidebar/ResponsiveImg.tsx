@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Img} from '../metadata/Img';
-import {HighlightColor} from '../metadata/BaseHighlight';
 import {DeepPureComponent} from '../react/DeepPureComponent';
+import {HighlightColor} from '../metadata/HighlightColor';
 
 /**
  * Shows a and image and re-sizes it to its parent properly.
@@ -52,9 +52,10 @@ export class ResponsiveImg extends DeepPureComponent<IProps, IState> {
                              // border around the image
 
                              boxSizing: 'content-box',
-                             border: `1px solid #c6c6c6`,
+                             // border: `1px solid #c6c6c6`,
 
                          }}
+                         draggable={false}
                          className=""
                          width={width}
                          height={height}

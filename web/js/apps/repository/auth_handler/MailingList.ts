@@ -29,12 +29,16 @@ export class MailingList {
                 // haven't also opted out.
 
                 if (userInfo.email) {
-                    await Mailchimp.subscribe(userInfo.email);
-                    RendererAnalytics.event({category: 'mailing-list', action: 'subscribed'});
+                    try {
+                        RendererAnalytics.event({category: 'mailing-list', action: 'subscribed'});
+                        await Mailchimp.subscribe(userInfo.email, userInfo.displayName || "");
+                    } catch (e) {
+                        RendererAnalytics.event({category: 'mailing-list', action: 'failed'});
+                        throw e;
+                    }
                 }
 
             });
-
 
         }
 

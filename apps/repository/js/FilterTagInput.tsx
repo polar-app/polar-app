@@ -84,6 +84,7 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
                          isOpen={this.state.open}
                          target={this.id}
                          trigger="legacy"
+                         delay={0}
                          toggle={() => this.toggle(false)}
                          className="tag-input-popover">
 

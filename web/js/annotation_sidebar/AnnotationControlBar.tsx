@@ -17,11 +17,16 @@ import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {CreateFlashcard} from './child_annotations/flashcards/CreateFlashcard';
 import {FlashcardActions} from './child_annotations/flashcards/FlashcardActions';
 import {Doc} from '../metadata/Doc';
+import {ColorSelector} from '../ui/colors/ColorSelector';
+import {HighlightColor} from '../metadata/HighlightColor';
+import {TextHighlights} from '../metadata/TextHighlights';
+import {AreaHighlights} from '../metadata/AreaHighlights';
 
 const Styles: IStyleMap = {
 
     button: {
-        paddingTop: '4px',
+        marginTop: 'auto',
+        marginBottom: 'auto',
         color: 'red !important',
         fontSize: '15px'
 
@@ -48,6 +53,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onComment = this.onComment.bind(this);
+        this.onColor = this.onColor.bind(this);
 
         this.state = {
             activeInputComponent: 'none'
@@ -110,6 +116,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         </Button>
 
+                        <ColorSelector className="mt-auto mb-auto"
+                                       size='16px'
+                                       color={this.props.annotation.color || 'yellow'}
+                                       onSelected={color => this.onColor(color)}/>
+
                         <div className="ml-1">
                             <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
                                                 disabled={! this.props.doc.mutable}
@@ -137,6 +148,23 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
             </div>
 
         );
+    }
+
+    private onColor(color: HighlightColor) {
+
+        setTimeout(() => {
+
+            const {annotation} = this.props;
+
+            if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+                TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
+            }
+
+            if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+                AreaHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
+            }
+
+        }, 1);
     }
 
     private onDelete(annotation: DocAnnotation) {

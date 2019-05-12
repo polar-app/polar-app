@@ -5,7 +5,7 @@ import {Arrays} from '../util/Arrays';
 import {TextRect} from './TextRect';
 import {IRect} from '../util/rects/IRect';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
-import {HighlightColor} from './BaseHighlight';
+import {HighlightColor} from './HighlightColor';
 
 export class TextHighlightRecords {
 

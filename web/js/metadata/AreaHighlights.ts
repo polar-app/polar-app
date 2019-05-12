@@ -1,6 +1,7 @@
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
+import {IAreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {DocMeta} from './DocMeta';
 import {Image} from './Image';
@@ -24,10 +25,53 @@ import {Dimensions} from '../util/Dimensions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from '../util/rects/ILTRect';
 import {DataURLs} from '../util/DataURLs';
+import {Rect} from '../Rect';
+import {Rects} from '../Rects';
 
 const log = Logger.create();
 
 export class AreaHighlights {
+
+    public static update(id: string,
+                         docMeta: DocMeta,
+                         pageMeta: PageMeta,
+                         updates: Partial<IAreaHighlight>) {
+
+        const existing = pageMeta.areaHighlights[id]!;
+
+        if (!existing) {
+            throw new Error("No existing for id: " + id);
+        }
+
+        const updated = new AreaHighlight({...existing, ...updates});
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+            delete pageMeta.areaHighlights[id];
+            pageMeta.areaHighlights[id] = updated;
+        });
+
+    }
+
+    public static toCorrectScale(overlayRect: Rect) {
+
+        const docFormat = DocFormatFactory.getInstance();
+
+        if (docFormat.name === "pdf") {
+            const currentScale = docFormat.currentScale();
+
+            // we have to scale these number BACK to their original
+            // positions at 100%
+
+            const rescaleFactor = 1 / currentScale;
+
+            overlayRect = Rects.scale(Rects.createFromBasicRect(overlayRect), rescaleFactor);
+
+        }
+
+        return overlayRect;
+
+
+    }
 
     public static createID(created: ISODateTimeString) {
         // TODO: this needs some unique data and random is probably find.
@@ -126,10 +170,18 @@ export class AreaHighlights {
 
     public static async delete(opts: AreaHighlightDeleteOpts) {
 
-        const {datastore, pageMeta, areaHighlight} = opts;
+        const {datastore, docMeta, pageMeta, areaHighlight} = opts;
         const {image} = areaHighlight;
 
-        delete pageMeta.areaHighlights[areaHighlight.id];
+        DocMetas.withBatchedMutations(docMeta, () => {
+
+            delete pageMeta.areaHighlights[areaHighlight.id];
+
+            if (image) {
+                delete docMeta.docInfo.attachments[image.id];
+            }
+
+        });
 
         if (image) {
             await datastore.deleteFile(image.src.backend, image.src);

@@ -3,7 +3,6 @@ import {Logger} from "../../../../logger/Logger";
 import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";
 import {forDict} from "../../../../util/Functions";
-import {Dimensions} from "../../../../util/Dimensions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
 import {Position} from "../../../../metadata/BaseHighlight";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";
@@ -18,9 +17,13 @@ import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {AsyncSerializer} from '../../../../util/AsyncSerializer';
 import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
+import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 import {Screenshots} from '../../../../screenshots/Screenshots';
 import {Arrays} from '../../../../util/Arrays';
-import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
+import {HighlightColors} from '../../../../metadata/HighlightColor';
+import {HighlightColor} from '../../../../metadata/HighlightColor';
+import {ILTRect} from '../../../../util/rects/ILTRect';
+import {Rects} from '../../../../Rects';
 
 const log = Logger.create();
 
@@ -116,7 +119,15 @@ export class AreaHighlightComponent extends Component {
                 const extractedImage
                     = await Screenshots.capture(pageNum, boxRect, target);
 
-                const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+                const toOverlayRect = () => {
+
+                    let overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+                    overlayRect = AreaHighlights.toCorrectScale(overlayRect);
+                    return overlayRect;
+
+                };
+
+                const overlayRect = toOverlayRect();
 
                 const position: Position = {
                     x: overlayRect.left,
@@ -181,10 +192,42 @@ export class AreaHighlightComponent extends Component {
 
         const {pageDimensions, dimensionsElement} = AreaHighlights.computePageDimensions(pageNum);
 
+        const color: HighlightColor = areaHighlight.color || 'yellow';
+
+        const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
+
         forDict(areaHighlight.rects, (key, rect) => {
 
+            const toOverlayRect = (): ILTRect => {
+
+                if (areaHighlight.position) {
+
+                    let overlayRect = {
+                        left: areaHighlight.position.x,
+                        top: areaHighlight.position.y,
+                        width: areaHighlight.position.width,
+                        height: areaHighlight.position.height
+                    };
+
+                    if (this.docFormat.name === "pdf") {
+                        const currentScale = this.docFormat.currentScale();
+                        overlayRect = Rects.scale(Rects.createFromBasicRect(overlayRect), currentScale);
+                    }
+
+                    return overlayRect;
+
+                }
+
+                // TODO: This is for OLDER area highlights but these will be
+                // deprecated pretty soon as they're not really used very much
+                // I imagine.
+
+                return areaHighlightRect.toDimensions(pageDimensions);
+
+            };
+
             const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
-            const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+            const overlayRect = toOverlayRect();
 
             log.debug("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));
 
@@ -227,16 +270,9 @@ export class AreaHighlightComponent extends Component {
             highlightElement.className = `area-highlight annotation area-highlight-${areaHighlight.id}`;
 
             highlightElement.style.position = "absolute";
-            highlightElement.style.backgroundColor = `yellow`;
-            highlightElement.style.opacity = `0.5`;
+            highlightElement.style.backgroundColor = backgroundColor;
             (highlightElement.style as any).mixBlendMode = 'multiply';
             highlightElement.style.border = `1px solid #c6c6c6`;
-
-            // if(this.docFormat.name === "pdf") {
-            //     // this is only needed for PDF and we might be able to use a
-            // transform // in the future which would be easier. let
-            // currentScale = this.docFormat.currentScale(); overlayRect =
-            // Rects.scale(overlayRect, currentScale); }
 
             highlightElement.style.left = `${overlayRect.left}px`;
             highlightElement.style.top = `${overlayRect.top}px`;

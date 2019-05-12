@@ -210,6 +210,7 @@ export class DocMetas {
             // set it to undefined so that it isn't actually persisted in the
             // resulting JSON
             docMeta.docInfo.mutating = undefined;
+
         }
 
     }

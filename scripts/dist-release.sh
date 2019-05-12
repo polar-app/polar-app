@@ -20,6 +20,7 @@ if [ "${branch}" != "master" ]; then
     die "Must be on master branch"
 fi
 
-git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
+# TODO: consider doing a full rm -rf node_modules first but the problem is that
+# we need to make sure we're still using the right npm binary.
 
-# TODO install the and test the platform builds now...
+git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}

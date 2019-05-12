@@ -2,11 +2,37 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {IRect} from '../util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
+import {ITextHighlight} from './TextHighlight';
 import {Image} from './Image';
 import {notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
+import {DocMetas} from './DocMetas';
+import {Logger} from '../logger/Logger';
+import {DocMeta} from './DocMeta';
+
+const log =  Logger.create();
 
 export class TextHighlights {
+
+    public static update(id: string,
+                         docMeta: DocMeta,
+                         pageMeta: PageMeta,
+                         updates: Partial<ITextHighlight>) {
+
+        const existing = pageMeta.textHighlights[id]!;
+
+        if (!existing) {
+            throw new Error("No existing for id: " + id);
+        }
+
+        const updated = new TextHighlight({...existing, ...updates});
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+            delete pageMeta.textHighlights[id];
+            pageMeta.textHighlights[id] = updated;
+        });
+
+    }
 
     /**
      * Create a mock text highlight for testing.

@@ -1,7 +1,6 @@
 import {AnnotationType} from '../metadata/AnnotationType';
 import {Comment} from '../metadata/Comment';
 import {Point} from '../Point';
-import {HighlightColor} from '../metadata/BaseHighlight';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {PageMeta} from '../metadata/PageMeta';
 import {HTMLString} from '../util/HTMLString';
@@ -9,9 +8,10 @@ import {Ref} from '../metadata/Refs';
 import {Flashcard} from '../metadata/Flashcard';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
-import {URLStr} from '../util/Strings';
 import {ObjectID} from '../util/ObjectIDs';
 import {Img} from '../metadata/Img';
+import {HighlightColor} from '../metadata/HighlightColor';
+import {DocMeta} from '../metadata/DocMeta';
 
 export interface DocAnnotation extends ObjectID {
 
@@ -35,6 +35,8 @@ export interface DocAnnotation extends ObjectID {
      * work for comments, etc)
      */
     readonly color?: HighlightColor;
+
+    readonly docMeta: DocMeta;
 
     readonly pageMeta: PageMeta;
 

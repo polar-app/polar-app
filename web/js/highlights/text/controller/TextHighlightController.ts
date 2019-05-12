@@ -9,21 +9,15 @@ import {KeyEvents} from '../../../KeyEvents';
 import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {TextExtracter} from './TextExtracter';
 import {TextHighlightRecord, TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
-import {Image} from '../../../metadata/Image';
 import {SelectedContents} from '../selection/SelectedContents';
-import {SelectionScreenshots} from './SelectionScreenshots';
 import {Hashcodes} from '../../../Hashcodes';
-import {IDimensions} from '../../../util/Dimensions';
 import {TextHighlights} from '../../../metadata/TextHighlights';
-import {Screenshots} from '../../../metadata/Screenshots';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {Optional} from '../../../util/ts/Optional';
 import {TypedMessage} from '../../../util/TypedMessage';
 import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
-import {HighlightColor} from '../../../metadata/BaseHighlight';
 import {Elements} from '../../../util/Elements';
-import {ImageType} from '../../../metadata/Image';
-import {ImageTypes} from '../../../metadata/Image';
+import {HighlightColor} from '../../../metadata/HighlightColor';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 

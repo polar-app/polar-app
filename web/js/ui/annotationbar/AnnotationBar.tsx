@@ -4,9 +4,9 @@ import {ActiveSelection} from '../popup/ActiveSelections';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
-import {HighlightColor} from '../../metadata/BaseHighlight';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {EventListener, Releaseable} from '../../reactor/EventListener';
+import {HighlightColor} from '../../metadata/HighlightColor';
 
 export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
