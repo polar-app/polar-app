@@ -53,21 +53,21 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
         this.toggle = this.toggle.bind(this);
 
         this.state = {
-            closed: props.node.closed
+            node: props.node
         };
 
     }
 
     public render() {
 
-        const {node} = this.props;
+        const {node} = this.state;
         const children = node.children || [];
 
         const createIcon = () => {
 
             if (children.length > 0) {
 
-                if (this.state.closed) {
+                if (this.state.node.closed) {
                     return 'fas fa-caret-right';
                 } else {
                     return 'fas fa-caret-down';
@@ -101,7 +101,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
                 </div>
 
-                <TreeNodeChildren children={children} closed={this.state.closed}/>
+                <TreeNodeChildren children={children} closed={this.state.node.closed}/>
 
             </div>
 
@@ -111,15 +111,25 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
     private toggle() {
 
-        const {node} = this.props;
-        const children = node.children || [];
+        console.log("FIXME: toggling");
+
+        const children = this.state.node.children || [];
 
         if (children.length === 0) {
+            console.log("FIXME: no childdren.");
+
             // doesn't make sense to expand/collapse something without children.
             return;
         }
 
-        this.setState({...this.state, closed: !this.state.closed});
+
+        console.log("FIXME: upodating");
+
+        this.state.node.closed = !this.state.node.closed;
+
+        console.log("FIXME: node is now: ", this.state.node);
+
+        this.setState({...this.state, node: this.state.node, idx: Date.now()});
 
     }
 
@@ -132,24 +142,25 @@ interface IProps {
 
 export interface TNode {
 
-    readonly name: string;
+    name: string;
 
     /**
      * Whether the node is closed.  Defaults to open.
      */
-    readonly closed?: boolean;
+    closed?: boolean;
 
     /**
      * True when the node is selected
      */
-    readonly selected?: boolean;
+    selected?: boolean;
 
-    readonly children?: TNode[];
+    children?: TNode[];
 
 }
 
 interface IState {
-    readonly closed?: boolean;
+    readonly idx?: number;
+    readonly node: TNode;
 }
 
 
