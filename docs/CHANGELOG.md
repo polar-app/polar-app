@@ -1,5 +1,8 @@
 # 1.19.1
 
+- set a max height for the background resizer and don't allow it to go crazy
+  resizing itself forever.
+
 - annotation sidebar is resizeable now
 
 - proper capture of iframes now

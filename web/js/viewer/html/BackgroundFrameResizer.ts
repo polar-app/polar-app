@@ -8,6 +8,11 @@ const log = Logger.create();
 const MAX_RESIZES = 25;
 
 /**
+ * Set a reasonable max height.  100k is about 50x pages.
+ */
+const MAX_HEIGHT = 100000;
+
+/**
  * Listens to the main iframe load and resizes it appropriately based on the
  * scroll height of the document.
  *
@@ -57,11 +62,21 @@ export class BackgroundFrameResizer {
             this.onResized(height);
 
             return;
-        } else {
-            await this.doBackgroundResize(false);
         }
 
-        setTimeout(() => this.resizeParentInBackground(), this.timeoutInterval);
+        const height = await this.doBackgroundResize(false);
+
+        if (height && height > MAX_HEIGHT) {
+            log.info("Hit MAX_HEIGHT: " + MAX_HEIGHT);
+            return;
+        }
+
+        setTimeout(() => {
+
+            this.resizeParentInBackground()
+                .catch(err => log.error("Unable to resize in background: ", err));
+
+        }, this.timeoutInterval);
 
     }
 
