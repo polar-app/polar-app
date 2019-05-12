@@ -93,10 +93,8 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 
     private onDeleteRequested() {
 
-        Dialogs.confirm({title: "Are you sure you want to delete this document? ",
-                         subtitle: "The document and all annotations will be lost.",
-                         onCancel: NULL_FUNCTION,
-                         onConfirm: () => this.onDelete()});
+        this.onDelete();
+
     }
 
     private onDelete() {

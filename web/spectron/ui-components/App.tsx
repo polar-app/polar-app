@@ -49,7 +49,7 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
-import {Dock} from './Dock';
+import {Dock} from '../../js/ui/dock/Dock';
 import {Channels} from '../../js/util/Channels';
 import {Suggestions} from '../../js/ui/feedback/Suggestions';
 import {FakeComponent0} from './FakeComponent0';
@@ -67,6 +67,84 @@ const styles = {
     }
 };
 
+const Left = () => {
+    return <div style={{backgroundColor: 'red', overflow: 'auto'}}>
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+        this is some content that is very very very long.
+    </div>;
+}
+
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
@@ -76,60 +154,14 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
-        const c = '#FF0000';
         return (
-            //
-            // <div tabIndex={0}
-            //      onMouseDown={(event) => event.currentTarget.focus()}
-            //      onKeyPress={() => console.log("key press")}
-            //      onKeyDown={() => console.log("key down")}>
-            //
-            //     hello worldasdfasdf
-            //
-            // </div>
-          //
-          // {/*<LeftRightSplit left={*/}
-          //     {/*<div className="text-sm text-muted mt-2">We also have an extended*/}
-          //         {/*survey if you'd like to provide more feedback.</div>*/}
-          // {/*}*/}
-          //                 {/*right={<div/>}/>*/}
 
             <div>
 
-                <ColorSelector color='yellow' size="16px"/>
-
-                <ColorDropdown onSelected={color => console.log(color)}/>
-
-                {/*<SketchPicker />;*/}
-
-                TODO:
-
-                Now we are kind of stuck because I like the UI of the twitter
-                color picker but:
-
-                    - I don't want the ability to enter a custom value
-
-                    - we should have red, yellow, green, green colors in various
-                      shades.. one for each row.
-
-                    - the UI should be reliable without any reactstrap button
-                      and onClick should trigger it to close
-
-
-                {/*<TwitterPicker/>*/}
-
-                {/*<TwitterPicker*/}
-                {/*    colors={['#FF0000', '#FF0000', '#FF0000', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF']}/>*/}
-
-                {/*<SwatchesPicker*/}
-                {/*    // color={ c }*/}
-                {/*    // hex={ c }*/}
-                {/*    style={ styles.swatch }*/}
-                {/*    onClick={NULL_FUNCTION}*/}
-                {/*    // focusStyle={{*/}
-                {/*    //     boxShadow: `0 0 4px ${ c }`,*/}
-                {/*    // }}*/}
-                {/*/>*/}
+                <Dock side="left"
+                      style={{height: '100vh'}}
+                      left={<Left/>}
+                      right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>
 
             </div>
 

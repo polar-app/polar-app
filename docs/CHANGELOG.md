@@ -1,3 +1,12 @@
+# 1.19.1
+
+- 'Delete' char now works to delete one or multiple docs and you're prompted to
+  confirm.
+
+- Fixed bug where the PDF page size yielded an incorrect placement of the area 
+  highlight.
+
+- The left side dock in the annotation view is now resizeable.
 
 # 1.19.0
 

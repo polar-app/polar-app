@@ -49,7 +49,7 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div className="border-bottom mb-1">
+            <div className="border-bottom">
                 <SplitBar>
 
                     <SplitBarLeft>
