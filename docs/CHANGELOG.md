@@ -1,5 +1,7 @@
 # 1.19.1
 
+- Fixed a bad bug where comments and flashcards wouldn't reload in the sidebar.
+
 - set a max height for the background resizer and don't allow it to go crazy
   resizing itself forever.
 
