@@ -56,6 +56,9 @@ import {FakeComponent0} from './FakeComponent0';
 import {Canvases} from '../../js/util/Canvases';
 import {ColorDropdown} from './ColorDropdown';
 import {ColorSelector} from '../../js/ui/colors/ColorSelector';
+import {TNode} from './TreeNode';
+import {TNode} from './TreeNode';
+import {TreeNode} from './TreeNode';
 
 const styles = {
     swatch: {
@@ -154,14 +157,31 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
+        const nodes: TNode[] = [
+            {
+                name: 'CompSci',
+                children: [
+                    {
+                        name: 'Linux'
+                    },
+                    {
+                        name: 'Google'
+                    }
+
+                ]
+            }
+        ];
+
         return (
 
             <div>
 
-                <Dock side="left"
-                      style={{height: '100vh'}}
-                      left={<Left/>}
-                      right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>
+                <TreeNode nodes={nodes}/>
+
+                {/*<Dock side="left"*/}
+                {/*      style={{height: '100vh'}}*/}
+                {/*      left={<Left/>}*/}
+                {/*      right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>*/}
 
             </div>
 
