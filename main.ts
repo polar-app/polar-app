@@ -19,6 +19,8 @@ if (!hasSingleInstanceLock) {
     app.quit();
 }
 
+app.commandLine.appendSwitch("no-sandbox");
+
 async function launch() {
 
     console.log("Running with app path: " + app.getAppPath());
