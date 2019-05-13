@@ -1,6 +1,12 @@
 
 # 1.19.3
 
+- Fixed bug with the percentages being slightly off and causing issues being 
+  greater than 100%
+
+- Fixed a small performance issue with N writes during write() which also means
+  we increase performance but lower Firebase costs.
+
 - Fixed bug with formatting being selected and part of the form being selected 
   when double clicking in comments.
   

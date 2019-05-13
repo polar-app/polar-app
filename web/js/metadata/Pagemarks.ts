@@ -19,6 +19,7 @@ import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
+import {Percentages} from '../util/Percentages';
 
 const log = Logger.create();
 
@@ -524,9 +525,10 @@ export class Pagemarks {
 
         const writeReadingProgress = (preExisting?: boolean) => {
 
-            const progress = Object.values(pageMeta.pagemarks)
-                .map(current => current.percentage)
-                .reduce(Reducers.SUM, 0);
+            const percentages = Object.values(pageMeta.pagemarks)
+                .map(current => current.percentage);
+
+            const progress = Percentages.sum(...percentages);
 
             const progressByMode = createProgressByMode();
 
