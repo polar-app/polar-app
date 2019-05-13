@@ -1,3 +1,8 @@
+
+# 1.19.2
+
+- Fixed bug with deletes not working.
+
 # 1.19.1
 
 - fixed a CSS issue with the dock

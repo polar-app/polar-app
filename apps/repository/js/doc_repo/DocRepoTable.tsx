@@ -75,6 +75,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         this.persistenceLayerManager = this.props.persistenceLayerManager;
         this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
 
+        this.onDocDeleteRequested = this.onDocDeleteRequested.bind(this);
+
         this.onDocTagged = this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
@@ -890,6 +892,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
     private onDocDeleted(...repoDocInfos: RepoDocInfo[]) {
+
+        console.log("FIXME: deleting documents... ", repoDocInfos);
 
         const doDeletes = async () => {
 
