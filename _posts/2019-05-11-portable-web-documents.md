@@ -21,6 +21,10 @@ Polar uses PWDs and PDFs to manage the users reading and allows the user to keep
 all documents in a central repository and allows for suspend/resume of reading,
 tagging, and annotation.
 
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/ZkEo5YmNukY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
 ## Why a New Document Format?
 
 PDFs are great and have gotten us pretty far to date but I think their future 
