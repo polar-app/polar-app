@@ -1,11 +1,14 @@
 ---
-title: 
-date: 2019-01-23 09:00:00 -0800
+title: Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards 
+date: 2019-05-11 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/electron.png
-description:
+large_image: https://getpolarized.io/assets/images/portable-web-documents-scaled.png
+description: Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards
+hidden: true
  
 ---
+
+<img class="img-fluid" src="https://getpolarized.io/assets/images/portable-web-documents-scaled.png">
 
 # Overview:
 
