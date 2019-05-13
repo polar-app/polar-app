@@ -1,5 +1,7 @@
 # 1.19.1
 
+- fixed a CSS issue with the dock
+
 - Fixed a bad bug where comments and flashcards wouldn't reload in the sidebar.
 
 - set a max height for the background resizer and don't allow it to go crazy
