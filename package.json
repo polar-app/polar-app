@@ -1,10 +1,10 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.19.0",
+  "version": "1.19.2",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
-    "start": "tsc && electron .",
+    "start": "electron .",
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
     "build-appx": "npm run-script setup-dist-appx && npm run-script compile && electron-builder --config=electron-builder.yml --win appx --publish never",
     "build-webapp": "npx webpack && ./scripts/build-webapp.sh",
@@ -84,7 +84,7 @@
     "electron-mocha": "~6.0.4",
     "fork-ts-checker-webpack-plugin": "^0.5.2",
     "install": "^0.12.2",
-    "jsdom": "~13.1.0",
+    "jsdom": "^15.0.0",
     "mocha": "~5.2.0",
     "mocha-isolation": "~0.1.5",
     "mocha-junit-reporter": "^1.18.0",

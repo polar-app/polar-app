@@ -89,9 +89,9 @@ export class PageMetas {
         // know about without having to resort indexes or update maps multiple
         // times.
 
-        Preconditions.assertNotNull(docMeta, "docMeta");
-        Preconditions.assertNotNull(memberName, "memberName");
-        Preconditions.assertNotNull(callback, "callback");
+        Preconditions.assertPresent(docMeta, "docMeta");
+        Preconditions.assertPresent(memberName, "memberName");
+        Preconditions.assertPresent(callback, "callback");
 
         forDict(docMeta.pageMetas, (key, pageMeta) => {
 

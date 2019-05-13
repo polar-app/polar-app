@@ -1,8 +1,8 @@
 
 export class DocumentReadyStates {
 
-    static async waitFor(doc: Document,
-                         requiredReadyState: DocumentReadyState): Promise<ReadyStateResolution> {
+    public static async waitFor(doc: Document,
+                                requiredReadyState: DocumentReadyState): Promise<ReadyStateResolution> {
 
         return this.waitForChanger(doc, requiredReadyState, new DocumentReadyStateChanger(doc));
 

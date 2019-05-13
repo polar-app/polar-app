@@ -1,4 +1,22 @@
+
+# 1.19.2
+
+- Fixed bug with deletes not working. I need to get automated testing setup!
+
 # 1.19.1
+
+- fixed a CSS issue with the dock
+
+- Fixed a bad bug where comments and flashcards wouldn't reload in the sidebar.
+
+- set a max height for the background resizer and don't allow it to go crazy
+  resizing itself forever.
+
+- annotation sidebar is resizeable now
+
+- proper capture of iframes now
+
+- upgrade to latest jsdom
 
 - 'Delete' char now works to delete one or multiple docs and you're prompted to
   confirm.

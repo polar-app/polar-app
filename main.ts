@@ -19,7 +19,9 @@ if (!hasSingleInstanceLock) {
     app.quit();
 }
 
-app.commandLine.appendSwitch("no-sandbox");
+// needed to disable site isolation because it doesn't actually allow us to
+// disable web security properly.
+app.commandLine.appendSwitch('disable-site-isolation-trials');
 
 async function launch() {
 

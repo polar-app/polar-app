@@ -30,8 +30,9 @@ export class DocAnnotations {
         for (const pageMeta of pageMetas) {
 
             const areaHighlights = await this.getAreaHighlights(persistenceLayerProvider, docMeta, pageMeta);
+            const textHighlights = this.getTextHighlights(docMeta, pageMeta);
 
-            result.push(...this.getTextHighlights(docMeta, pageMeta));
+            result.push(...textHighlights);
             result.push(...areaHighlights);
 
         }
@@ -101,11 +102,10 @@ export class DocAnnotations {
 
     }
 
-    // TODO: this no longer needs to be async.
-    public static async createFromAreaHighlight(persistenceLayerProvider: PersistenceLayerProvider,
-                                                docMeta: DocMeta,
-                                                areaHighlight: AreaHighlight,
-                                                pageMeta: PageMeta): Promise<DocAnnotation> {
+    public static createFromAreaHighlight(persistenceLayerProvider: PersistenceLayerProvider,
+                                          docMeta: DocMeta,
+                                          areaHighlight: AreaHighlight,
+                                          pageMeta: PageMeta): DocAnnotation {
 
         const createPosition = (): Point => {
 

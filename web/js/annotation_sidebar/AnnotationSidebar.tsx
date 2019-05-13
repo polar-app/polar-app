@@ -141,7 +141,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
 
-            const handleConversion = async () => {
+            const handleConversion = () => {
 
                 const converter = (annotationValue: AreaHighlight) => {
 
@@ -153,7 +153,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                 };
 
                 const docAnnotation =
-                    await this.convertAnnotation(annotationEvent.value, converter);
+                    this.convertAnnotation(annotationEvent.value, converter);
 
                 this.handleAnnotationEvent(annotationEvent.id,
                                            annotationEvent.traceEvent.mutationType,
@@ -161,9 +161,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             };
 
-            handleConversion()
-                .catch(err => log.error("Unable to convert value: ", err));
-
+            handleConversion();
 
         });
 
@@ -229,7 +227,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const annotation = this.docAnnotationIndex.docAnnotationMap[ref.value];
 
         if (! annotation) {
-            log.warn("No annotation for ref:", annotation);
+            log.warn("No annotation for ref:", ref.value);
             return;
         }
 
@@ -258,10 +256,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                                   mutationType: MutationType,
                                   docAnnotation: DocAnnotation | undefined) {
 
-        if (mutationType === MutationType.INITIAL) {
-            // we already have the data properly.
-            return;
-        } else if (mutationType === MutationType.DELETE) {
+        if (mutationType === MutationType.DELETE) {
 
             this.docAnnotationIndex
                 = DocAnnotationIndexes.delete(this.docAnnotationIndex, id);
