@@ -1,7 +1,7 @@
 
 # 1.19.2
 
-- Fixed bug with deletes not working.
+- Fixed bug with deletes not working. I need to get automated testing setup!
 
 # 1.19.1
 
