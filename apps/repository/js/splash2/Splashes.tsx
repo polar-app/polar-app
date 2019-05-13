@@ -112,6 +112,8 @@ export class Splashes extends React.Component<IProps, IState> {
 
         try {
 
+            RendererAnalytics.event({category: 'splash-subsystem-background', action: 'do-update'});
+
             splashEngine.run();
 
         } finally {
