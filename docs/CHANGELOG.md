@@ -1,4 +1,9 @@
 
+# 1.19.3
+
+- Fixed bug with formatting being selected and part of the form being selected 
+  when double clicking in comments.
+  
 # 1.19.2
 
 - Fixed bug with deletes not working. I need to get automated testing setup!
