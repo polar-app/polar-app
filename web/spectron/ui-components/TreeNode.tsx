@@ -3,6 +3,7 @@ import {DeepPureComponent} from '../../js/react/DeepPureComponent';
 import {TreeNodeChildren} from './TreeNodeChildren';
 import Button from 'reactstrap/lib/Button';
 import {Dictionaries} from '../../js/util/Dictionaries';
+import Input from 'reactstrap/lib/Input';
 
 class Styles {
 
@@ -34,12 +35,24 @@ class Styles {
         cursor: 'pointer',
         userSelect: 'none',
         whiteSpace: 'nowrap',
-        paddingLeft: '5px',
         paddingRight: '5px',
         fontFamily: 'sans-serif',
         boxShadow: 'none'
     };
 
+
+    public static NODE_SELECTOR: React.CSSProperties = {
+        lineHeight: '1.5',
+        fontSize: '15px',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        userSelect: 'none',
+
+    };
+
+    public static NODE_BODY: React.CSSProperties = {
+        paddingLeft: '5px',
+    };
 }
 
 // TODO
@@ -49,16 +62,14 @@ class Styles {
 //   node I need to efficiently de-select the other node.
 
 // - make them hover optionally
-//   - we need an 'icon' that represents an entry with just a horizontal line instead of a file icon.
-//   - toggling up and going to the root triggers them ALL to expand and not
-//     sure why. Might make sense to just cheat and mutate the objects directly.
-//   - icons aren't rendered properly in the UI and have too much margin
-//   - revert BACK from button
-//   - no code to SELECT an item ...
-//   - onSelected function
+//   - how do we want to support multiple folder selection.  Probably either
+//     a checkbox or shift/control modifiers
 //   - what about long press?
 //   - what about context menus?
 //   - should we support N selected items or just one?
+//
+//      - 'selected' should be an array and we should support a checkbox next
+//        to each tree entry .
 
 export class TreeNode extends DeepPureComponent<IProps, IState> {
 
@@ -140,14 +151,27 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                          onClick={() => this.toggle()}>
                     </div>
 
-                    <Button style={Styles.NODE_NAME}
-                            className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
-                            onClick={() => this.select()}
-                            color="light">
+                    {/*<div style={Styles.NODE_SELECTOR}>*/}
+                    {/*    <Input className="m-0" type="checkbox" />*/}
+                    {/*</div>*/}
 
-                        {node.name}
+                        {/*<Input style={Styles.NODE_SELECTOR} className="m-0" type="checkbox" />*/}
 
-                    </Button>
+                    {/*<input style={Styles.NODE_SELECTOR} className="m-0" type="checkbox" />*/}
+
+
+                    <div style={Styles.NODE_BODY}>
+
+                        <Button style={Styles.NODE_NAME}
+                                className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
+                                onClick={() => this.select()}
+                                color="light">
+
+                            {node.name}
+
+                        </Button>
+
+                    </div>
 
                 </div>
 
