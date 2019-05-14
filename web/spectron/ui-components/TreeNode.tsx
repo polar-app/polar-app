@@ -153,7 +153,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                     <div style={Styles.NODE_SELECTOR}>
                         {/*<Input className="m-0" type="checkbox" />*/}
                         {/*X*/}
-                        <input className="m-0" type="checkbox" />
+                        <input className="m-0" type="checkbox" onChange={event => console.log('changed')}/>
 
                     </div>
 
