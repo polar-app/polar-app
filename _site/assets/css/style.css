@@ -1,5 +1,10 @@
 
 
+img {
+    max-width: 1200px !important;
+}
+
+
 html, body {
     height: 100%;
 }
@@ -24,7 +29,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .subtitle {
-    max-width: 1000px;
+    max-width: 1200px !important;
     text-align: center;
     margin: auto;
     padding-left: 0;
@@ -204,8 +209,4 @@ blockquote {
 
 .social-proof {
     font-size: 1.25em;
-}
-
-img {
-    max-width: 1000px;
 }
