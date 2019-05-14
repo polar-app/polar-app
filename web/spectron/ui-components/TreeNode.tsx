@@ -14,12 +14,13 @@ class Styles {
         display: 'block',
         marginTop: 'auto',
         marginBottom: 'auto',
-        marginRight: '5px',
-        fontSize: '14px',
+        marginRight: '0px',
+        fontSize: '12px',
         lineHeight: '1.5',
         color: 'var(--secondary)',
         cursor: 'pointer',
         userSelect: 'none',
+        // this has to be fixed width or each layer doesn't line up.
         width: '12px',
         // height: '20px'
     };
@@ -27,13 +28,16 @@ class Styles {
     public static NODE_NAME: React.CSSProperties = {
         marginTop: 'auto',
         marginBottom: 'auto',
-        fontSize: '16px',
+        marginLeft: '2px',
+        fontSize: '15px',
         lineHeight: '1.5',
         cursor: 'pointer',
         userSelect: 'none',
         whiteSpace: 'nowrap',
         paddingLeft: '5px',
-        paddingRight: '5px'
+        paddingRight: '5px',
+        fontFamily: 'sans-serif',
+        boxShadow: 'none'
     };
 
 }
@@ -58,11 +62,16 @@ class Styles {
 
 export class TreeNode extends DeepPureComponent<IProps, IState> {
 
+    public readonly id: number;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
         this.select = this.select.bind(this);
+        this.deselect = this.deselect.bind(this);
+
+        this.id = this.props.node.id;
 
         this.state = {
             node: props.node
@@ -86,12 +95,19 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                 //     return 'fas fa-caret-down';
                 // }
 
+                // if (closed) {
+                //     return 'fas fa-plus';
+                // } else {
+                //     return 'fas fa-minus';
+                // }
+
                 if (closed) {
-                    return 'fas fa-plus';
+                    return 'far fa-plus-square';
                 } else {
-                    return 'fas fa-minus';
+                    return 'far fa-minus-square';
                 }
 
+                // <i className="far fa-plus-square"></i>
             }
 
             // return "far fa-file";
@@ -99,12 +115,19 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
         };
 
-        const selected = treeState.selected.contains(node.id);
+        const selectedID = treeState.selected ? treeState.selected.id : -1;
+
+        const selected = selectedID === this.id;
+
+        console.log("FIXME: node is selectted: ", {selectedID, selected, thisid: this.id});
+
         const closed = treeState.closed.contains(node.id);
 
-        const nodeButtonColor = selected ? 'primary' : 'white';
+        const nodeButtonClazz = selected ? 'bg-primary text-white' : '';
 
         const icon = createIcon();
+
+        console.log("FUIXME: rendering");
 
         return (
 
@@ -118,10 +141,12 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                     </div>
 
                     <Button style={Styles.NODE_NAME}
-                            className="p-0 pl-1 pr-1"
+                            className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
                             onClick={() => this.select()}
-                            color={nodeButtonColor}>
+                            color="light">
+
                         {node.name}
+
                     </Button>
 
                 </div>
@@ -149,10 +174,17 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
     }
 
+    private deselect() {
+        this.setState({...this.state, idx: Date.now()});
+    }
+
     private select() {
 
-        this.props.treeState.selected.reset();
-        this.props.treeState.selected.toggle(this.props.node.id);
+        if (this.props.treeState.selected) {
+            this.props.treeState.selected.deselect();
+        }
+
+        this.props.treeState.selected = this;
 
         this.setState({...this.state, idx: Date.now()});
 
@@ -175,7 +207,7 @@ export class TreeState {
 
     public readonly closed = new Marked();
 
-    public readonly selected = new Marked();
+    public selected?: TreeNode;
 
 }
 

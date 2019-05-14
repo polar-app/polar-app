@@ -4,6 +4,18 @@ import {TNode} from './TreeNode';
 import {TreeNode} from './TreeNode';
 import {TreeState} from './TreeNode';
 
+class Styles {
+
+    public static NODE_CHILDREN: React.CSSProperties = {
+        display: 'block',
+        paddingLeft: '10px',
+        marginLeft: '5px',
+        borderLeft: '1px solid #c6c6c6'
+    };
+
+}
+
+
 export class TreeNodeChildren extends DeepPureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -19,11 +31,7 @@ export class TreeNodeChildren extends DeepPureComponent<IProps, IState> {
         if (this.props.closed) {
             return <div/>;
         } else {
-            return <div style={{
-                            paddingLeft: '0.5em',
-                            marginLeft: '0.5em',
-                            // borderLeft: '1px solid #c6c6c6'
-                        }}>
+            return <div style={Styles.NODE_CHILDREN}>
                         {children.map(child =>
                             <TreeNode key={idx++} node={child} treeState={this.props.treeState} />)}
             </div>;
