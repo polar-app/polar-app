@@ -100,9 +100,9 @@ exports.default = async function(context) {
 
     // electron builder doesn't seem to be properly setting the chrome-sandbox
     // permissions
-    console.log("Setting correct permissions and mode for chrome-sandbox");
-
-    exec("chown root dist/linux-unpacked/chrome-sandbox");
-    exec("chmod 4755 dist/linux-unpacked/chrome-sandbox");
+    // console.log("Setting correct permissions and mode for chrome-sandbox");
+    //
+    // exec("chown root dist/linux-unpacked/chrome-sandbox");
+    // exec("chmod 4755 dist/linux-unpacked/chrome-sandbox");
 
 };
