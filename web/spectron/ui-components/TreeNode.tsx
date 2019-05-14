@@ -4,6 +4,7 @@ import {TreeNodeChildren} from './TreeNodeChildren';
 import Button from 'reactstrap/lib/Button';
 import {Dictionaries} from '../../js/util/Dictionaries';
 import {isPresent} from '../../js/Preconditions';
+import {Preconditions} from '../../js/Preconditions';
 
 class Styles {
 
@@ -88,6 +89,11 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
         this.state = {
             node: props.node
         };
+
+        // during expand/collapse new nodes are created and we have to keep the
+        // index updated or we will access a component that no longer exists.
+
+        this.props.treeState.index[this.id] = this;
 
     }
 
@@ -208,16 +214,20 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
         if (!multi) {
 
-            for (const node of Object.values(this.props.treeState.selected)) {
-                const id = node.id;
+            for (const id of Object.values(this.props.treeState.selected)) {
+
+                const node = this.props.treeState.index[id];
+                Preconditions.assertPresent(node, "No node for id: " + id);
+
                 node.deselect();
                 delete this.props.treeState.selected[id];
+
             }
 
         }
 
         if (selected) {
-            this.props.treeState.selected[this.id] = this;
+            this.props.treeState.selected[this.id] = this.id;
         } else {
             delete this.props.treeState.selected[this.id];
         }
@@ -246,7 +256,9 @@ export class TreeState {
     /**
      * The list of the nodes that are selected by id
      */
-    public selected: {[id: number]: TreeNode} = [];
+    public selected: {[id: number]: number} = [];
+
+    public index: {[id: number]: TreeNode} = [];
 
 }
 
