@@ -130,15 +130,11 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
         const selected = selectedID === this.id;
 
-        console.log("FIXME: node is selectted: ", {selectedID, selected, thisid: this.id});
-
         const closed = treeState.closed.contains(node.id);
 
         const nodeButtonClazz = selected ? 'bg-primary text-white' : '';
 
         const icon = createIcon();
-
-        console.log("FUIXME: rendering");
 
         return (
 
