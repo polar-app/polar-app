@@ -1,6 +1,8 @@
 
 # 1.19.3
 
+- Using a border around the selected item in the annotation view not a background
+
 - Fixed bug with the percentages being slightly off and causing issues being 
   greater than 100%
 
