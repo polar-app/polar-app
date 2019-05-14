@@ -65,13 +65,44 @@ const {exec} = require('child_process');
 
 exports.default = async function(context) {
 
+    const requirePath = (path) => {
+        if (!fs.existsSync(path)) {
+            throw new Error("Path does does not exist: " + path);
+        }
+    };
+
+    const isLinux =
+        context.targets.find(target => target.name === 'appImage' || target.name === 'snap');
+
+    console.log({isLinux});
+
+    if (!isLinux) {
+        console.log("Not linux so skipping --no-sandbox changes");
+        return;
+    }
+
+    console.log("Configuring polar-bookshelf for --no-sandbox");
+
+    const pathPolarBookshelf = "dist/linux-unpacked/polar-bookshelf";
+    const pathPolarBookshelfBin = "dist/linux-unpacked/polar-bookshelf.bin";
+
+    requirePath(pathPolarBookshelf);
+    requirePath("dist/linux-unpacked/chrome-sandbox");
+
+    fs.renameSync(pathPolarBookshelf, pathPolarBookshelfBin);
+
+    const wrapperScript = `#!/bin/bash
+    "\${BASH_SOURCE%/*}"/polar-bookshelf.bin "$@" --no-sandbox
+  `;
+
+    fs.writeFileSync(pathPolarBookshelf, wrapperScript);
+    exec(`chmod +x ${pathPolarBookshelf}`);
+
     // electron builder doesn't seem to be properly setting the chrome-sandbox
     // permissions
-    if (fs.existsSync("dist/linux-unpacked/chrome-sandbox")) {
-        console.log("Setting correct permissions and mode for chrome-sandbox");
+    console.log("Setting correct permissions and mode for chrome-sandbox");
 
-        exec("chown root dist/linux-unpacked/chrome-sandbox");
-        exec("chmod 4755 dist/linux-unpacked/chrome-sandbox");
-    }
+    exec("chown root dist/linux-unpacked/chrome-sandbox");
+    exec("chmod 4755 dist/linux-unpacked/chrome-sandbox");
 
 };
