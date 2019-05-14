@@ -44,14 +44,17 @@ class Styles {
     public static NODE_SELECTOR: React.CSSProperties = {
         lineHeight: '1.5',
         fontSize: '15px',
+        userSelect: 'none',
         marginTop: 'auto',
         marginBottom: 'auto',
-        userSelect: 'none',
+        paddingLeft: '5px',
 
     };
 
     public static NODE_BODY: React.CSSProperties = {
-        paddingLeft: '5px',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        // paddingLeft: '5px',
     };
 }
 
@@ -147,14 +150,12 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                          onClick={() => this.toggle()}>
                     </div>
 
-                    {/*<div style={Styles.NODE_SELECTOR}>*/}
-                    {/*    <Input className="m-0" type="checkbox" />*/}
-                    {/*</div>*/}
+                    <div style={Styles.NODE_SELECTOR}>
+                        {/*<Input className="m-0" type="checkbox" />*/}
+                        {/*X*/}
+                        <input className="m-0" type="checkbox" />
 
-                        {/*<Input style={Styles.NODE_SELECTOR} className="m-0" type="checkbox" />*/}
-
-                    {/*<input style={Styles.NODE_SELECTOR} className="m-0" type="checkbox" />*/}
-
+                    </div>
 
                     <div style={Styles.NODE_BODY}>
 
