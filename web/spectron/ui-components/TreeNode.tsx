@@ -3,12 +3,13 @@ import {DeepPureComponent} from '../../js/react/DeepPureComponent';
 import {TreeNodeChildren} from './TreeNodeChildren';
 import Button from 'reactstrap/lib/Button';
 import {Dictionaries} from '../../js/util/Dictionaries';
-import Input from 'reactstrap/lib/Input';
+import {isPresent} from '../../js/Preconditions';
 
 class Styles {
 
     public static NODE_PARENT: React.CSSProperties = {
         display: 'flex',
+        marginTop: '2px'
     };
 
     public static NODE_ICON: React.CSSProperties = {
@@ -69,10 +70,6 @@ class Styles {
 //     a checkbox or shift/control modifiers
 //   - what about long press?
 //   - what about context menus?
-//   - should we support N selected items or just one?
-//
-//      - 'selected' should be an array and we should support a checkbox next
-//        to each tree entry .
 
 export class TreeNode extends DeepPureComponent<IProps, IState> {
 
@@ -84,6 +81,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
         this.toggle = this.toggle.bind(this);
         this.select = this.select.bind(this);
         this.deselect = this.deselect.bind(this);
+        this.onCheckbox = this.onCheckbox.bind(this);
 
         this.id = this.props.node.id;
 
@@ -129,9 +127,7 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
         };
 
-        const selectedID = treeState.selected ? treeState.selected.id : -1;
-
-        const selected = selectedID === this.id;
+        const selected = isPresent(treeState.selected[this.id]);
 
         const closed = treeState.closed.contains(node.id);
 
@@ -153,7 +149,10 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
                     <div style={Styles.NODE_SELECTOR}>
                         {/*<Input className="m-0" type="checkbox" />*/}
                         {/*X*/}
-                        <input className="m-0" type="checkbox" onChange={event => console.log('changed')}/>
+                        <input className="m-0"
+                               checked={selected}
+                               type="checkbox"
+                               onChange={event => this.onCheckbox(event)}/>
 
                     </div>
 
@@ -180,6 +179,10 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
 
     }
 
+    private onCheckbox(event: React.ChangeEvent<HTMLInputElement>) {
+        this.select(true, event.target.checked);
+    }
+
     private toggle() {
 
         const children = this.state.node.children || [];
@@ -196,16 +199,28 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
     }
 
     private deselect() {
+        delete this.props.treeState.selected[this.id];
         this.setState({...this.state, idx: Date.now()});
     }
 
-    private select() {
+    private select(multi: boolean = false,
+                   selected: boolean = true) {
 
-        if (this.props.treeState.selected) {
-            this.props.treeState.selected.deselect();
+        if (!multi) {
+
+            for (const node of Object.values(this.props.treeState.selected)) {
+                const id = node.id;
+                node.deselect();
+                delete this.props.treeState.selected[id];
+            }
+
         }
 
-        this.props.treeState.selected = this;
+        if (selected) {
+            this.props.treeState.selected[this.id] = this;
+        } else {
+            delete this.props.treeState.selected[this.id];
+        }
 
         this.setState({...this.state, idx: Date.now()});
 
@@ -228,7 +243,10 @@ export class TreeState {
 
     public readonly closed = new Marked();
 
-    public selected?: TreeNode;
+    /**
+     * The list of the nodes that are selected by id
+     */
+    public selected: {[id: number]: TreeNode} = [];
 
 }
 
