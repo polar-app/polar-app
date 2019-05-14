@@ -4,13 +4,12 @@ date: 2019-05-11 09:00:00 -0800
 layout: post
 large_image: https://getpolarized.io/assets/images/portable-web-documents-scaled.png
 description: Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards
-hidden: true
  
 ---
 
 <img class="img-fluid" src="https://getpolarized.io/assets/images/portable-web-documents-scaled.png">
 
-# Overview:
+# Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards
 
 Portable Web Documents are a technology similar to PDFs (Portable Document
 Format) implemented in Polar which support offline caching of full HTML
@@ -24,6 +23,8 @@ tagging, and annotation.
 <div class="embed-responsive embed-responsive-16by9">
 <iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/ZkEo5YmNukY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
+
+<br/>
 
 ## Why a New Document Format?
 
