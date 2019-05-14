@@ -199,27 +199,26 @@ export class DocMetas {
      * underlying DocMeta properly.
      */
     public static withBatchedMutations<T>(docMeta: DocMeta, mutator: () => T) {
-
-        try {
-
-            docMeta.docInfo.mutating = 'batch';
-
-            return mutator();
-
-        } finally {
-            // set it to undefined so that it isn't actually persisted in the
-            // resulting JSON
-            docMeta.docInfo.mutating = undefined;
-
-        }
-
+        return this.withMutating(docMeta, 'batch', mutator);
     }
 
     public static withSkippedMutations<T>(docMeta: DocMeta, mutator: () => T) {
+        return this.withMutating(docMeta, 'skip', mutator);
+    }
+
+    private static withMutating<T>(docMeta: DocMeta,
+                                   value: 'skip' | 'batch',
+                                   mutator: () => T) {
+
+        if (docMeta.docInfo.mutating === value) {
+            // we were called twice so don't reset itself in the finally block
+            // below to trigger too many updates. Just mutate directly.
+            return mutator();
+        }
 
         try {
 
-            docMeta.docInfo.mutating = 'skip';
+            docMeta.docInfo.mutating = value;
 
             return mutator();
 
@@ -230,6 +229,7 @@ export class DocMetas {
         }
 
     }
+
 
     /**
      * Force a write of the DocMeta

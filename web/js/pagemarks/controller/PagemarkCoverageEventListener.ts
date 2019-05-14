@@ -158,6 +158,7 @@ export class PagemarkCoverageEventListener {
         log.info("percentage for pagemark: ", percentage);
 
         const docMeta = this.model.docMeta;
+
         await DocMetas.withBatchedMutations(docMeta, async () => {
             this.model.erasePagemark(pageNum);
             await this.model.createPagemarksForRange(pageNum, percentage);
