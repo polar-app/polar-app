@@ -4,16 +4,16 @@ import {TreeNode} from './TreeNode';
 import {TreeState} from './TreeNode';
 import {TNode} from './TreeNode';
 
-export class TreeView extends DeepPureComponent<IProps, IState> {
+export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
 
-    constructor(props: IProps, context: any) {
+    constructor(props: IProps<V>, context: any) {
         super(props, context);
 
     }
 
     public render() {
 
-        const treeState = new TreeState();
+        const treeState = new TreeState(this.props.onSelected);
 
         return (
 
@@ -27,8 +27,9 @@ export class TreeView extends DeepPureComponent<IProps, IState> {
 
 }
 
-interface IProps {
-    readonly root: TNode;
+interface IProps<V> {
+    readonly root: TNode<V>;
+    readonly onSelected: (...nodes: ReadonlyArray<V>) => void;
 }
 
 interface IState {

@@ -146,7 +146,7 @@ const Left = () => {
         this is some content that is very very very long.
         this is some content that is very very very long.
     </div>;
-}
+};
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -157,14 +157,21 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
-        const root: TNode = {
+        interface TagNode {
+            tag: string;
+        }
+
+        const root: TNode<TagNode> = {
             id: 0,
             name: 'CompSci',
             children: [
                 {
                     id: 1,
                     name: 'Linux',
-                    children: []
+                    children: [],
+                    value: {
+                        tag: "/CompSci/Linux"
+                    }
                 },
                 {
                     id: 2,
@@ -173,25 +180,38 @@ class App<P> extends React.Component<{}, IAppState> {
                         {
                             id: 3,
                             name: 'Mountain View',
-                            children: []
+                            children: [],
+                            value: {
+                                tag: "/CompSci/Google/Mountain View"
+                            }
                         },
                         {
                             id: 4,
                             name: 'San Francisco',
-                            children: []
+                            children: [],
+                            value: {
+                                tag: "/CompSci/Google/San Francisco"
+                            }
                         },
-                    ]
+                    ],
+                    value: {
+                        tag: "/CompSci/Google"
+                    }
 
                 }
 
-            ]
+            ],
+            value: {
+                tag: "/CompSci"
+            }
         };
 
         return (
 
             <div style={{marginLeft: '5px'}}>
 
-                <TreeView root={root}/>
+                <TreeView root={root}
+                          onSelected={(...values: TagNode[]) => console.log("selected: ", values)}/>
 
                 {/*<Dock side="left"*/}
                 {/*      style={{height: '100vh'}}*/}

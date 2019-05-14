@@ -16,9 +16,9 @@ class Styles {
 }
 
 
-export class TreeNodeChildren extends DeepPureComponent<IProps, IState> {
+export class TreeNodeChildren<V> extends DeepPureComponent<IProps<V>, IState> {
 
-    constructor(props: IProps, context: any) {
+    constructor(props: IProps<V>, context: any) {
         super(props, context);
 
     }
@@ -41,10 +41,10 @@ export class TreeNodeChildren extends DeepPureComponent<IProps, IState> {
 
 }
 
-interface IProps {
+interface IProps<V> {
     readonly closed?: boolean;
-    readonly children?: TNode[];
-    readonly treeState: TreeState;
+    readonly children?: Array<TNode<V>>;
+    readonly treeState: TreeState<V>;
 
 }
 

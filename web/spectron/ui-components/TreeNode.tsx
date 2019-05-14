@@ -64,20 +64,25 @@ class Styles {
 
 //   - what about long press?
 //   - what about context menus?
+//   - FIXME: implement the onSelect handler to callback which nodes are
+//    actually selected and an object for each node.
 
-export class TreeNode extends DeepPureComponent<IProps, IState> {
+export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
     public readonly id: number;
+    public readonly value: V;
 
-    constructor(props: IProps, context: any) {
+    constructor(props: IProps<V>, context: any) {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
         this.select = this.select.bind(this);
         this.deselect = this.deselect.bind(this);
         this.onCheckbox = this.onCheckbox.bind(this);
+        this.dispatchSelected = this.dispatchSelected.bind(this);
 
         this.id = this.props.node.id;
+        this.value = this.props.node.value;
 
         this.state = {
             node: props.node
@@ -205,36 +210,53 @@ export class TreeNode extends DeepPureComponent<IProps, IState> {
     private select(multi: boolean = false,
                    selected: boolean = true) {
 
+        const {treeState} = this.props;
+
         if (!multi) {
 
-            for (const id of Object.values(this.props.treeState.selected)) {
+            for (const id of Object.values(treeState.selected)) {
 
-                const node = this.props.treeState.index[id];
+                const node = treeState.index[id];
                 Preconditions.assertPresent(node, "No node for id: " + id);
 
                 node.deselect();
-                delete this.props.treeState.selected[id];
+                delete treeState.selected[id];
 
             }
 
         }
 
         if (selected) {
-            this.props.treeState.selected[this.id] = this.id;
+            treeState.selected[this.id] = this.id;
         } else {
-            delete this.props.treeState.selected[this.id];
+            delete treeState.selected[this.id];
         }
 
         this.setState({...this.state, idx: Date.now()});
 
+        this.dispatchSelected();
+
     }
 
+    private dispatchSelected() {
+        const {treeState} = this.props;
+
+        const values: V[] = []
+
+        for (const id of Object.values(treeState.selected)) {
+            const node = treeState.index[id];
+            values.push(node.value);
+        }
+
+        treeState.onSelected(...values);
+
+    }
 
 }
 
-interface IProps {
-    readonly node: TNode;
-    readonly treeState: TreeState;
+interface IProps<V> {
+    readonly node: TNode<V>;
+    readonly treeState: TreeState<V>;
 }
 
 
@@ -242,7 +264,10 @@ interface IProps {
  * A state object for the entire tree to keep an index of expanded/collapsed
  * nodes, etc.
  */
-export class TreeState {
+export class TreeState<V> {
+
+    constructor(public readonly onSelected: (...nodes: ReadonlyArray<V>) => void) {
+    }
 
     public readonly closed = new Marked();
 
@@ -251,7 +276,7 @@ export class TreeState {
      */
     public selected: {[id: number]: number} = [];
 
-    public index: {[id: number]: TreeNode} = [];
+    public index: {[id: number]: TreeNode<V>} = [];
 
 }
 
@@ -282,44 +307,24 @@ class Marked {
 
 }
 
-export interface TNode {
+export interface TNode<V> {
 
     name: string;
 
-    children: TNode[];
+    children: Array<TNode<V>>;
 
     /**
      * The UNIQUE id for this node.
      */
     readonly id: number;
 
-}
-
-export class TNodes {
-
-    public static idx = 0;
-
-    // /**
-    //  * Create TNodes with a correct index.
-    //  */
-    // public static create(node: TNodePartial): TNode {
-    //
-    //     const children
-    //         = node.children.map(child => this.create(child));
-    //
-    //     return {
-    //         id: this.idx++,
-    //         name: node.name,
-    //         children
-    //     };
-    //
-    // }
+    readonly value: V;
 
 }
 
-interface IState {
+interface IState<V> {
     readonly idx?: number;
-    readonly node: TNode;
+    readonly node: TNode<V>;
 }
 
 
