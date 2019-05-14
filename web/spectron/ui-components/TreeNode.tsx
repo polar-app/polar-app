@@ -62,13 +62,6 @@ class Styles {
 
 // TODO
 
-//
-// - FIXME now the problem is how do I select the right node... if I select ONE
-//   node I need to efficiently de-select the other node.
-
-// - make them hover optionally
-//   - how do we want to support multiple folder selection.  Probably either
-//     a checkbox or shift/control modifiers
 //   - what about long press?
 //   - what about context menus?
 
