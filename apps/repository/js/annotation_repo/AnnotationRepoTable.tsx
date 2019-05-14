@@ -217,8 +217,10 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                 },
 
                                 style: {
-                                    background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
-                                    color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
+                                    borderWidth: '1px',
+                                    borderStyle: 'solid',
+                                    borderColor: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
+                                    // color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
                                 }
 
                             };
