@@ -1,4 +1,10 @@
 
+# 1.19.4
+
+- unique machines code properly merged 
+
+- enable snap distribution again. 
+
 # 1.19.3
 
 - Using a border around the selected item in the annotation view not a background
