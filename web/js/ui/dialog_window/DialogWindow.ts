@@ -15,7 +15,6 @@ const BROWSER_WINDOW_OPTIONS = {
     height: 600,
     show: false,
     webPreferences: {
-        sandbox: false,
         webSecurity: false,
         nodeIntegration: true,
         defaultEncoding: 'UTF-8'

@@ -24,9 +24,6 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     // TODO: the AppIcon CAN be a file URL
     icon: APP_ICON,
     webPreferences: {
-
-        sandbox: false,
-
         // TODO:
         // https://github.com/electron/electron/pull/794
         //
