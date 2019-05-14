@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.19.2",
+  "version": "1.19.3",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -185,6 +185,7 @@
     "npm": "~6.5.0",
     "opencollective-postinstall": "~2.0.1",
     "pdfjs-dist": "~2.0.943",
+    "polar-google-fonts": "^1.0.3",
     "polar-loader": "1.0.3",
     "popper.js": "~1.14.4",
     "prettify": "~0.1.7",
