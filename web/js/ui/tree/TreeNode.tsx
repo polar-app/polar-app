@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {DeepPureComponent} from '../../js/react/DeepPureComponent';
+import {DeepPureComponent} from '../../react/DeepPureComponent';
 import {TreeNodeChildren} from './TreeNodeChildren';
 import Button from 'reactstrap/lib/Button';
-import {Dictionaries} from '../../js/util/Dictionaries';
-import {isPresent} from '../../js/Preconditions';
-import {Preconditions} from '../../js/Preconditions';
+import {Dictionaries} from '../../util/Dictionaries';
+import {isPresent} from '../../Preconditions';
+import {Preconditions} from '../../Preconditions';
 
 class Styles {
 
@@ -241,7 +241,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
     private dispatchSelected() {
         const {treeState} = this.props;
 
-        const values: V[] = []
+        const values: V[] = [];
 
         for (const id of Object.values(treeState.selected)) {
             const node = treeState.index[id];

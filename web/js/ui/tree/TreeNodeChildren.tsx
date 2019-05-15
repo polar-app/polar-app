@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DeepPureComponent} from '../../js/react/DeepPureComponent';
+import {DeepPureComponent} from '../../react/DeepPureComponent';
 import {TNode} from './TreeNode';
 import {TreeNode} from './TreeNode';
 import {TreeState} from './TreeNode';

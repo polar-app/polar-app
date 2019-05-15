@@ -56,9 +56,9 @@ import {FakeComponent0} from './FakeComponent0';
 import {Canvases} from '../../js/util/Canvases';
 import {ColorDropdown} from './ColorDropdown';
 import {ColorSelector} from '../../js/ui/colors/ColorSelector';
-import {TNode} from './TreeNode';
-import {TreeNode} from './TreeNode';
-import {TreeView} from './TreeView';
+import {TNode} from '../../js/ui/tree/TreeNode';
+import {TreeNode} from '../../js/ui/tree/TreeNode';
+import {TreeView} from '../../js/ui/tree/TreeView';
 
 const styles = {
     swatch: {
