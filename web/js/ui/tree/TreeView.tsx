@@ -3,6 +3,9 @@ import {DeepPureComponent} from '../../react/DeepPureComponent';
 import {TreeNode} from './TreeNode';
 import {TreeState} from './TreeNode';
 import {TNode} from './TreeNode';
+import InputGroupAddon from 'reactstrap/lib/InputGroupAddon';
+import InputGroup from 'reactstrap/lib/InputGroup';
+import Input from 'reactstrap/lib/Input';
 
 export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
 
@@ -18,7 +21,19 @@ export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
         return (
 
             <div>
+
+                {/*<InputGroup className="m-1">*/}
+
+                {/*    <InputGroupAddon addonType="append">*/}
+                {/*        X*/}
+                {/*    </InputGroupAddon>*/}
+
+                {/*    <Input placeholder="Filter" />*/}
+
+                {/*</InputGroup>*/}
+
                 <TreeNode node={this.props.root} treeState={treeState}/>
+
             </div>
 
         );

@@ -10,7 +10,7 @@ class Styles {
 
     public static NODE_PARENT: React.CSSProperties = {
         display: 'flex',
-        marginTop: '2px'
+        paddingTop: '2px'
     };
 
     public static NODE_ICON: React.CSSProperties = {
@@ -41,11 +41,10 @@ class Styles {
         fontFamily: 'sans-serif',
         boxShadow: 'none',
 
+        // needed to change the look of buttons to something reasonable.
         backgroundColor: 'inherit',
         border: 'none',
-
         outlineColor: 'transparent',
-
         borderRadius: '4px'
 
     };
@@ -67,6 +66,7 @@ class Styles {
     };
 
     public static NODE_RIGHT: React.CSSProperties = {
+
         marginTop: 'auto',
         marginBottom: 'auto',
         marginLeft: 'auto',
@@ -78,8 +78,40 @@ class Styles {
         marginRight: '5px',
         fontFamily: 'sans-serif',
         boxShadow: 'none',
-        color: 'var(--secondary)',
+        color: 'var(--grey300)',
 
+        display: 'flex',
+
+    };
+
+    public static CREATE_BUTTON: React.CSSProperties = {
+
+        marginTop: 'auto',
+        marginBottom: 'auto',
+
+        // needed to change the look of buttons to something reasonable.
+        backgroundColor: 'inherit',
+        border: 'none',
+        outlineColor: 'transparent',
+        borderRadius: '4px'
+
+    };
+
+    public static CREATE_ICON: React.CSSProperties = {
+
+        marginTop: 'auto',
+        marginBottom: 'auto',
+
+        fontSize: '12px',
+        lineHeight: '1.5',
+        userSelect: 'none',
+        whiteSpace: 'nowrap',
+
+        // needed to change the look of buttons to something reasonable.
+        backgroundColor: 'inherit',
+        border: 'none',
+        outlineColor: 'transparent',
+        borderRadius: '4px'
 
     };
 
@@ -212,7 +244,20 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
                     </div>
 
                     <div style={Styles.NODE_RIGHT}>
-                        11
+
+                        {/*<div className="mt-auto mb-auto">*/}
+                        {/*    <button style={Styles.CREATE_BUTTON}>*/}
+
+                        {/*        <i style={Styles.CREATE_ICON}*/}
+                        {/*           className="hover-button fas fa-plus"></i>*/}
+
+                        {/*    </button>*/}
+                        {/*</div>*/}
+
+                        <div>
+                            11
+                        </div>
+
                     </div>
 
                 </div>
