@@ -1,5 +1,6 @@
 import {isPresent} from '../Preconditions';
 import {Tag} from './Tag';
+import {Reducers} from '../util/Reducers';
 
 export interface MutableTagNode<V> {
 
@@ -11,6 +12,8 @@ export interface MutableTagNode<V> {
 
     value: V;
 
+    count: number;
+
 }
 
 export interface TagNode<V> {
@@ -21,15 +24,24 @@ export interface TagNode<V> {
 
     readonly children: ReadonlyArray<TagNode<V>>;
 
+    readonly count: number;
+
     readonly value: V;
 
 }
 
+/**
+ * A tag but also the data about the number of records that match this tag.
+ */
+export interface TagDescriptor extends Tag {
+    readonly count: number;
+}
+
 export class TagNodes {
 
-    public static create(...tags: ReadonlyArray<Tag>): TagNode<Tag> {
+    public static create(...tags: ReadonlyArray<TagDescriptor>): TagNode<TagDescriptor> {
 
-        const tagIndex: {[label: string]: Tag} = {};
+        const tagIndex: {[label: string]: TagDescriptor} = {};
 
         for (const tag of tags) {
 
@@ -41,10 +53,16 @@ export class TagNodes {
 
         }
 
-        const tagNodeIndex = new TagNodeIndex<Tag>();
+        const tagNodeIndex = new TagNodeIndex();
+
+        // the global count for all nodes
+        const count =
+            tags.filter(current => current.label !== '/')
+                .map(current => current.count)
+                .reduce(Reducers.SUM, 0);
 
         // always register a root so we have at least one path
-        const root = tagNodeIndex.register('/', '/', {id: '/', label: '/'});
+        const root = tagNodeIndex.register('/', '/', {id: '/', label: '/', count});
 
         const sortedTagIndexKeys = Object.keys(tagIndex).sort();
 
@@ -136,15 +154,15 @@ interface PathEntry extends RawPathEntry {
     readonly parent: RawPathEntry | undefined;
 }
 
-class TagNodeIndex<V> {
+class TagNodeIndex {
 
     private seq: number = 0;
 
-    private index: {[path: string]: MutableTagNode<V>} = {};
+    private index: {[path: string]: MutableTagNode<TagDescriptor>} = {};
 
     public register(path: string,
                     name: string,
-                    value: V): MutableTagNode<V> {
+                    value: TagDescriptor): MutableTagNode<TagDescriptor> {
 
         if (! this.index[path]) {
 
@@ -152,6 +170,7 @@ class TagNodeIndex<V> {
                 id: this.seq++,
                 name,
                 children: [],
+                count: value.count,
                 value
             };
 

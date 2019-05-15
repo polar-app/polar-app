@@ -264,7 +264,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                             {/*</div>*/}
 
                             <div>
-                                11
+                                {node.count}
                             </div>
 
                         </div>

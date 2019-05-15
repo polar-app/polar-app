@@ -4,8 +4,8 @@ import {Firestore} from '../firebase/Firestore';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Logger} from '../logger/Logger';
-
-const log = Logger.create();
+import {AppRuntime} from '../AppRuntime';
+import {Version} from '../util/Version';
 
 /**
  * Does one thing.. records the machine ID to the table and the time it was
@@ -26,14 +26,31 @@ export class UniqueMachines {
 
             const doc = await ref.get();
 
+            const runtime = AppRuntime.type();
+            const version = Version.get();
+
             if (doc.exists) {
 
                 const existing: UniqueMachine = <any> doc.data()!;
 
+                const toRuntime = () => {
+
+                    if (existing.runtime) {
+                        const set = new Set(existing.runtime);
+                        set.add(runtime);
+                        return [...set];
+                    }
+
+                    return [runtime];
+
+                };
+
                 const record: UniqueMachine = {
                     machine: existing.machine,
                     created: existing.created,
-                    updated: ISODateTimeStrings.create()
+                    updated: ISODateTimeStrings.create(),
+                    runtime: toRuntime(),
+                    version
                 };
 
                 return record;
@@ -45,7 +62,9 @@ export class UniqueMachines {
             const record: UniqueMachine = {
                 machine: id,
                 created: now,
-                updated: now
+                updated: now,
+                runtime: [runtime],
+                version
             };
 
             return record;
@@ -82,5 +101,15 @@ interface UniqueMachine {
      *
      */
     readonly updated: ISODateTimeString;
+
+    /**
+     *
+     */
+    readonly runtime: ReadonlyArray<'electron' | 'browser'>;
+
+    /**
+     * The last version that we found.
+     */
+    readonly version: string;
 
 }

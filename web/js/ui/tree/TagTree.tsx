@@ -10,6 +10,7 @@ import {TagNodes} from '../../tags/TagNode';
 import {TreeView} from './TreeView';
 import {Tags} from '../../tags/Tags';
 import {TagCreateButton} from './TagCreateButton';
+import {TagDescriptor} from '../../tags/TagNode';
 
 class Styles {
 
@@ -55,7 +56,7 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
         // FIXME: this will NOT work I think because the IDs each time keep
         // changing???  but the TreeState should be reset each time I think.
 
-        const root: TNode<Tag> = TagNodes.create(...this.state.tags);
+        const root: TNode<TagDescriptor> = TagNodes.create(...this.state.tags);
 
         return (
 
@@ -96,7 +97,7 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
         console.log("New tag created: " + path);
     }
 
-    private onSelected(selected: ReadonlyArray<Tag>) {
+    private onSelected(selected: ReadonlyArray<TagDescriptor>) {
 
         this.setState({...this.state, selected});
 
@@ -126,14 +127,14 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 }
 
 interface IProps {
-    readonly tags: ReadonlyArray<Tag>;
+    readonly tags: ReadonlyArray<TagDescriptor>;
     readonly onSelected: (...selected: ReadonlyArray<Tag>) => void;
 }
 
 interface IState {
     readonly filter: string;
-    readonly tags: ReadonlyArray<Tag>;
-    readonly selected: ReadonlyArray<Tag>;
+    readonly tags: ReadonlyArray<TagDescriptor>;
+    readonly selected: ReadonlyArray<TagDescriptor>;
 }
 
 

@@ -152,8 +152,11 @@ class App<P> extends React.Component<{}, IAppState> {
             '/CompSci/Programming Languages/Java',
             '/History/WWII',
             '/History/United States/WWII',
-
-        ].map(current => Tags.create(current));
+        ].map(current => Tags.create(current))
+            .map(current => {
+                const count = Math.floor(Math.random() * 100);
+                return {...current, count};
+            });
 
         // const root: TNode<Tag> = TagNodes.create(...tags);
 
