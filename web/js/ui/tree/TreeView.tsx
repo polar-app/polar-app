@@ -8,18 +8,20 @@ class Styles {
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
+    private readonly treeState: TreeState<V>;
+
     constructor(props: IProps<V>, context: any) {
         super(props, context);
+        this.treeState = new TreeState<V>(this.props.onSelected);
 
     }
 
     public render() {
-        console.log("FIXME: rendering with ", this.props.root);
-        const treeState = new TreeState(this.props.onSelected);
 
         return (
 
-            <TreeNode node={this.props.root} treeState={treeState}/>
+            <TreeNode node={this.props.root}
+                      treeState={this.treeState}/>
 
         );
 

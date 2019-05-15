@@ -163,9 +163,9 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
     }
 
-    public componentWillUnmount(): void {
-        this.deselect();
-    }
+    // public componentWillUnmount(): void {
+    //     this.deselect();
+    // }
 
     public render() {
 
@@ -270,7 +270,9 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
                     </div>
 
-                <TreeNodeChildren children={children} closed={closed} treeState={this.props.treeState}/>
+                <TreeNodeChildren children={children}
+                                  closed={closed}
+                                  treeState={this.props.treeState}/>
 
             </div>
 
@@ -327,6 +329,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         }
 
         if (selected) {
+            console.log("FIXME: selecting IT");
             treeState.selected[this.id] = this.id;
         } else {
             delete treeState.selected[this.id];
@@ -346,6 +349,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         console.log("FIXME: treeState.selected: ", treeState.selected);
         console.log("FIXME: treeState.index: ", treeState.index);
 
+        // get copies of every noted that was selected...
         for (const id of Object.values(treeState.selected)) {
             const node = treeState.index[id];
             values.push(node.value);

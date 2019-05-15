@@ -9,6 +9,7 @@ import {TNode} from './TreeView';
 import {TagNodes} from '../../tags/TagNode';
 import {TreeView} from './TreeView';
 import {Tags} from '../../tags/Tags';
+import {TagCreateButton} from './TagCreateButton';
 
 class Styles {
 
@@ -24,6 +25,12 @@ class Styles {
         flexGrow: 1
     };
 
+    public static FILTER_INPUT: React.CSSProperties = {
+        height: 'auto',
+        fontFamily: 'sans-serif',
+        fontSize: '14px'
+    };
+
 }
 
 export class TagTree extends DeepPureComponent<IProps, IState> {
@@ -31,9 +38,13 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.onSelected = this.onSelected.bind(this);
+        this.onFiltered = this.onFiltered.bind(this);
+
         this.state = {
             filter: "Comp",
-            tags: this.props.tags
+            tags: this.props.tags,
+            selected: []
         };
 
     }
@@ -44,7 +55,6 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
         // changing???  but the TreeState should be reset each time I think.
 
         const root: TNode<Tag> = TagNodes.create(...this.state.tags);
-        console.log("FIXME: new root: ", root);
 
         return (
 
@@ -63,23 +73,28 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
                 <div style={{display: 'flex'}}>
 
-                    <Input className="p-1"
+                    <Input className="p-1 pb-0 pt-0"
+                           style={Styles.FILTER_INPUT}
                            onChange={event => this.onFiltered(event.currentTarget.value)}
                            placeholder="Filter by name..." />
 
-                    <Button className="ml-1" color="light" title="Create new folder">
-
-                        <i className="hover-button fas fa-plus"/>
-
-                    </Button>
+                    <TagCreateButton selected={this.state.selected}/>
 
                 </div>
 
-                <TreeView root={root} onSelected={this.props.onSelected}/>
+                <TreeView root={root} onSelected={values => this.onSelected(values)}/>
 
             </div>
 
         );
+
+    }
+
+    private onSelected(...selected: ReadonlyArray<Tag>) {
+
+        this.setState({...this.state, selected});
+
+        this.props.onSelected(...selected);
 
     }
 
@@ -96,11 +111,6 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
         const tags = this.props.tags.filter(tag => {
             const label = tag.label.toLocaleLowerCase();
             return label.indexOf(filter) !== -1;
-
-
-            // const basename = Tags.basename(label);
-            // console.log("FIXME: basename: ", basename);
-            // return basename.indexOf(filter) !== -1;
         });
 
         this.setState({tags, filter});
@@ -111,12 +121,13 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
 interface IProps {
     readonly tags: ReadonlyArray<Tag>;
-    readonly onSelected: (...nodes: ReadonlyArray<Tag>) => void;
+    readonly onSelected: (...selected: ReadonlyArray<Tag>) => void;
 }
 
 interface IState {
     readonly filter: string;
     readonly tags: ReadonlyArray<Tag>;
+    readonly selected: ReadonlyArray<Tag>;
 }
 
 
