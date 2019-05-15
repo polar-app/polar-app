@@ -86,7 +86,7 @@ describe('TagNode', function() {
                             {
                                 "children": [],
                                 "id": 2,
-                                "label": "bar",
+                                "name": "bar",
                                 "value": {
                                     "id": "/foo/bar",
                                     "label": "/foo/bar"
@@ -94,7 +94,7 @@ describe('TagNode', function() {
                             }
                         ],
                         "id": 1,
-                        "label": "foo",
+                        "name": "foo",
                         "value": {
                             "id": "/foo",
                             "label": "/foo"
@@ -102,7 +102,7 @@ describe('TagNode', function() {
                     }
                 ],
                 "id": 0,
-                "label": "/",
+                "name": "/",
                 "value": {
                     "id": "/",
                     "label": "/"
@@ -116,7 +116,7 @@ describe('TagNode', function() {
             assertJSON(TagNodes.create(), {
                 "children": [],
                 "id": 0,
-                "label": "/",
+                "name": "/",
                 "value": {
                     "id": "/",
                     "label": "/"

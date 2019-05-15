@@ -43,7 +43,7 @@ export class TreeNodeChildren<V> extends DeepPureComponent<IProps<V>, IState> {
 
 interface IProps<V> {
     readonly closed?: boolean;
-    readonly children?: Array<TNode<V>>;
+    readonly children?: ReadonlyArray<TNode<V>>;
     readonly treeState: TreeState<V>;
 
 }

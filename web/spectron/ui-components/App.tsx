@@ -59,6 +59,8 @@ import {ColorSelector} from '../../js/ui/colors/ColorSelector';
 import {TNode} from '../../js/ui/tree/TreeNode';
 import {TreeNode} from '../../js/ui/tree/TreeNode';
 import {TreeView} from '../../js/ui/tree/TreeView';
+import {TagNodes} from '../../js/tags/TagNode';
+import {Tags} from '../../js/tags/Tags';
 
 const styles = {
     swatch: {
@@ -96,67 +98,77 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
-        interface TagNode {
-            tag: string;
-        }
+        //
+        // const root: TNode<TagNode> = {
+        //     id: 0,
+        //     name: 'CompSci',
+        //     children: [
+        //         {
+        //             id: 1,
+        //             name: 'Linux',
+        //             children: [],
+        //             value: {
+        //                 tag: "/CompSci/Linux"
+        //             }
+        //         },
+        //         {
+        //             id: 2,
+        //             name: 'Google',
+        //             children: [
+        //                 {
+        //                     id: 3,
+        //                     name: 'Mountain View',
+        //                     children: [],
+        //                     value: {
+        //                         tag: "/CompSci/Google/Mountain View"
+        //                     }
+        //                 },
+        //                 {
+        //                     id: 4,
+        //                     name: 'San Francisco',
+        //                     children: [],
+        //                     value: {
+        //                         tag: "/CompSci/Google/San Francisco"
+        //                     }
+        //                 },
+        //             ],
+        //             value: {
+        //                 tag: "/CompSci/Google"
+        //             }
+        //
+        //         }
+        //
+        //     ],
+        //     value: {
+        //         tag: "/CompSci"
+        //     }
+        // };
 
-        const root: TNode<TagNode> = {
-            id: 0,
-            name: 'CompSci',
-            children: [
-                {
-                    id: 1,
-                    name: 'Linux',
-                    children: [],
-                    value: {
-                        tag: "/CompSci/Linux"
-                    }
-                },
-                {
-                    id: 2,
-                    name: 'Google',
-                    children: [
-                        {
-                            id: 3,
-                            name: 'Mountain View',
-                            children: [],
-                            value: {
-                                tag: "/CompSci/Google/Mountain View"
-                            }
-                        },
-                        {
-                            id: 4,
-                            name: 'San Francisco',
-                            children: [],
-                            value: {
-                                tag: "/CompSci/Google/San Francisco"
-                            }
-                        },
-                    ],
-                    value: {
-                        tag: "/CompSci/Google"
-                    }
+        const tags = [
+            '/CompSci/Google',
+            '/CompSci/Linux',
+            '/CompSci/Microsoft',
+            '/CompSci/Programming Languages/C++',
+            '/CompSci/Programming Languages/Java',
+            '/History/WWII',
+            '/History/United States/WWII',
 
-                }
+        ].map(current => Tags.create(current));
 
-            ],
-            value: {
-                tag: "/CompSci"
-            }
-        };
+        const root: TNode<Tag> = TagNodes.create(...tags);
 
         return (
 
             <div style={{marginLeft: '5px'}}>
 
-                {/*<TreeView root={root}*/}
-                {/*          onSelected={(...values: TagNode[]) => console.log("selected: ", values)}/>*/}
+                <TreeView root={root}
+                          onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>
 
-                <Dock side="left"
-                      left={<Folders/>}
-                      right={<Dock side="left"
-                                   left={<Preview/>}
-                                   right={<Main/>}/>}/>
+                {/*<Dock side="left"*/}
+                {/*      left={<Folders/>}*/}
+                {/*      right={<Dock side="left"*/}
+                {/*                   left={<Preview/>}*/}
+                {/*                   right={<Main/>}/>}/>*/}
 
 
             </div>

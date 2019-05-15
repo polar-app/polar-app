@@ -5,7 +5,7 @@ export interface MutableTagNode<V> {
 
     id: number;
 
-    label: string;
+    name: string;
 
     children: Array<MutableTagNode<V>>;
 
@@ -17,7 +17,7 @@ export interface TagNode<V> {
 
     readonly id: number;
 
-    readonly label: string;
+    readonly name: string;
 
     readonly children: ReadonlyArray<TagNode<V>>;
 
@@ -143,14 +143,14 @@ class TagNodeIndex<V> {
     private index: {[path: string]: MutableTagNode<V>} = {};
 
     public register(path: string,
-                    label: string,
+                    name: string,
                     value: V): MutableTagNode<V> {
 
         if (! this.index[path]) {
 
             this.index[path] = {
                 id: this.seq++,
-                label,
+                name,
                 children: [],
                 value
             };

@@ -79,6 +79,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
         this.select = this.select.bind(this);
         this.deselect = this.deselect.bind(this);
         this.onCheckbox = this.onCheckbox.bind(this);
+        this.onClick = this.onClick.bind(this);
         this.dispatchSelected = this.dispatchSelected.bind(this);
 
         this.id = this.props.node.id;
@@ -164,7 +165,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
                         <Button style={Styles.NODE_NAME}
                                 className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
-                                onClick={() => this.select()}
+                                onClick={(event: React.MouseEvent<HTMLButtonElement>) => this.onClick(event)}
                                 color="light">
 
                             {node.name}
@@ -181,6 +182,11 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
         );
 
+    }
+
+    private onClick(event: React.MouseEvent<HTMLButtonElement>) {
+        const multi = event.ctrlKey;
+        this.select(multi);
     }
 
     private onCheckbox(event: React.ChangeEvent<HTMLInputElement>) {
@@ -311,7 +317,7 @@ export interface TNode<V> {
 
     name: string;
 
-    children: Array<TNode<V>>;
+    children: ReadonlyArray<TNode<V>>;
 
     /**
      * The UNIQUE id for this node.
