@@ -7,6 +7,10 @@ import {Dictionaries} from '../util/Dictionaries';
 
 export class Tags {
 
+    public static create(label: string): Tag {
+        return {id: label, label};
+    }
+
     public static assertValid(label: string) {
 
         if (!this.validate(label).isPresent()) {

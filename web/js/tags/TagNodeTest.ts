@@ -1,5 +1,6 @@
 import {assertJSON} from '../test/Assertions';
 import {TagNodes} from './TagNode';
+import {Tags} from './Tags';
 
 describe('TagNode', function() {
 
@@ -72,21 +73,40 @@ describe('TagNode', function() {
 
         it("basic", function() {
 
-            assertJSON(TagNodes.create('/',
-                                       '/foo',
-                                       '/foo/bar'), {
+            const tags = [
+                '/',
+                '/foo',
+                '/foo/bar'
+            ].map(current => Tags.create(current));
+
+            assertJSON(TagNodes.create(...tags), {
                 "children": [
                     {
                         "children": [
                             {
                                 "children": [],
-                                "label": "bar"
+                                "id": 2,
+                                "label": "bar",
+                                "value": {
+                                    "id": "/foo/bar",
+                                    "label": "/foo/bar"
+                                }
                             }
                         ],
-                        "label": "foo"
+                        "id": 1,
+                        "label": "foo",
+                        "value": {
+                            "id": "/foo",
+                            "label": "/foo"
+                        }
                     }
                 ],
-                "label": "/"
+                "id": 0,
+                "label": "/",
+                "value": {
+                    "id": "/",
+                    "label": "/"
+                }
             });
 
         });
@@ -94,19 +114,13 @@ describe('TagNode', function() {
         it("empty", function() {
 
             assertJSON(TagNodes.create(), {
-                           "children": [
-                           ],
-                           "label": "/"
-                       });
-
-        });
-
-        it("empty", function() {
-
-            assertJSON(TagNodes.create(), {
-                "children": [
-                ],
-                "label": "/"
+                "children": [],
+                "id": 0,
+                "label": "/",
+                "value": {
+                    "id": "/",
+                    "label": "/"
+                }
             });
 
         });

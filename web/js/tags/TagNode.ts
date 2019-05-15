@@ -1,45 +1,67 @@
 import {isPresent} from '../Preconditions';
+import {Tag} from './Tag';
 
-export interface MutableTagNode {
+export interface MutableTagNode<V> {
+
+    id: number;
 
     label: string;
 
-    children: TagNode[];
+    children: Array<MutableTagNode<V>>;
+
+    value: V;
 
 }
 
-export interface TagNode {
+export interface TagNode<V> {
+
+    readonly id: number;
 
     readonly label: string;
 
-    readonly children: ReadonlyArray<TagNode>;
+    readonly children: ReadonlyArray<TagNode<V>>;
+
+    readonly value: V;
 
 }
 
 export class TagNodes {
 
-    public static create(...tags: ReadonlyArray<string>): TagNode {
+    public static create(...tags: ReadonlyArray<Tag>): TagNode<Tag> {
 
-        tags = tags.filter(current => current.startsWith("/"))
-                   .sort();
-
-        const index = new TagNodeIndex();
-
-        // always register a root so we have at least one path
-        const root = index.register('/', '/');
+        const tagIndex: {[label: string]: Tag} = {};
 
         for (const tag of tags) {
 
-            const pathEntries = this.split(tag);
+            if (! tag.label.startsWith("/")) {
+                continue;
+            }
+
+            tagIndex[tag.label] = tag;
+
+        }
+
+        const tagNodeIndex = new TagNodeIndex<Tag>();
+
+        // always register a root so we have at least one path
+        const root = tagNodeIndex.register('/', '/', {id: '/', label: '/'});
+
+        const sortedTagIndexKeys = Object.keys(tagIndex).sort();
+
+        for (const tagLabel of sortedTagIndexKeys) {
+
+            const tag = tagIndex[tagLabel];
+
+            const pathEntries = this.split(tagLabel);
 
             for (const pathEntry of pathEntries) {
 
                 if (pathEntry.parent) {
 
-                    const parent = index.register(pathEntry.parent.path, pathEntry.parent.basename);
+                    const parent = tagNodeIndex.get(pathEntry.parent.path);
 
-                    if (! index.contains(pathEntry.path)) {
-                        const newNode = index.register(pathEntry.path, pathEntry.basename);
+                    if (! tagNodeIndex.contains(pathEntry.path)) {
+                        const newNode = tagNodeIndex.register(pathEntry.path, pathEntry.basename, tag);
                         parent.children.push(newNode);
                     }
 
@@ -114,18 +136,23 @@ interface PathEntry extends RawPathEntry {
     readonly parent: RawPathEntry | undefined;
 }
 
-class TagNodeIndex {
+class TagNodeIndex<V> {
 
-    private index: {[path: string]: MutableTagNode} = {};
+    private seq: number = 0;
+
+    private index: {[path: string]: MutableTagNode<V>} = {};
 
     public register(path: string,
-                    label: string): MutableTagNode {
+                    label: string,
+                    value: V): MutableTagNode<V> {
 
         if (! this.index[path]) {
 
             this.index[path] = {
+                id: this.seq++,
                 label,
-                children: []
+                children: [],
+                value
             };
 
         }
