@@ -159,7 +159,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
-            <div style={{marginLeft: '5px'}}>
+            <div style={{margin: '5px'}}>
 
                 <TreeView root={root}
                           onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>
