@@ -39,9 +39,16 @@ class Styles {
         whiteSpace: 'nowrap',
         paddingRight: '5px',
         fontFamily: 'sans-serif',
-        boxShadow: 'none'
-    };
+        boxShadow: 'none',
 
+        backgroundColor: 'inherit',
+        border: 'none',
+
+        outlineColor: 'transparent',
+
+        borderRadius: '4px'
+
+    };
 
     public static NODE_SELECTOR: React.CSSProperties = {
         lineHeight: '1.5',
@@ -58,6 +65,24 @@ class Styles {
         marginBottom: 'auto',
         // paddingLeft: '5px',
     };
+
+    public static NODE_RIGHT: React.CSSProperties = {
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginLeft: 'auto',
+
+        fontSize: '15px',
+        lineHeight: '1.5',
+        userSelect: 'none',
+        whiteSpace: 'nowrap',
+        marginRight: '5px',
+        fontFamily: 'sans-serif',
+        boxShadow: 'none',
+        color: 'var(--secondary)',
+
+
+    };
+
 }
 
 // TODO
@@ -66,6 +91,18 @@ class Styles {
 //   - what about context menus?
 //   - FIXME: implement the onSelect handler to callback which nodes are
 //    actually selected and an object for each node.
+
+//   - FIXME: I need to put the NUMBER of items in the tree to the right AND I need to
+//     support a 'create folder' option too for creating a nested folder.
+//
+//   - FIXME: I need the abiltiy to filter the tree view so that we can filter
+//            the tags easily.
+//
+//  - FIXME: hover needs to support clicking on the parent... to select the node.
+//
+//  - FIXME: need to support folder rename?
+//
+//  - FIXME: creating a NEW folder
 
 export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
@@ -144,7 +181,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
             <div style={{}}>
 
-                <div style={Styles.NODE_PARENT}>
+                <div style={Styles.NODE_PARENT} className="hover-highlight">
 
                     <div style={Styles.NODE_ICON}
                          className={icon}
@@ -163,15 +200,19 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
                     <div style={Styles.NODE_BODY}>
 
-                        <Button style={Styles.NODE_NAME}
+                        <button style={Styles.NODE_NAME}
                                 className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
                                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => this.onClick(event)}
                                 color="light">
 
                             {node.name}
 
-                        </Button>
+                        </button>
 
+                    </div>
+
+                    <div style={Styles.NODE_RIGHT}>
+                        11
                     </div>
 
                 </div>
@@ -315,9 +356,9 @@ class Marked {
 
 export interface TNode<V> {
 
-    name: string;
+    readonly name: string;
 
-    children: ReadonlyArray<TNode<V>>;
+    readonly children: ReadonlyArray<TNode<V>>;
 
     /**
      * The UNIQUE id for this node.
