@@ -70,82 +70,21 @@ const styles = {
     }
 };
 
-const Left = () => {
+const Folders = () => {
     return <div style={{backgroundColor: 'red', overflow: 'auto'}}>
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
-        this is some content that is very very very long.
+        these are the folders
     </div>;
+};
+
+const Preview = () => {
+    return <div style={{backgroundColor: 'orange', overflow: 'auto'}}>
+        This is the preview
+    </div>;
+};
+
+
+const Main = () => {
+    return <div style={{backgroundColor: 'blue'}}>this is the right</div>;
 };
 
 class App<P> extends React.Component<{}, IAppState> {
@@ -210,13 +149,15 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{marginLeft: '5px'}}>
 
-                <TreeView root={root}
-                          onSelected={(...values: TagNode[]) => console.log("selected: ", values)}/>
+                {/*<TreeView root={root}*/}
+                {/*          onSelected={(...values: TagNode[]) => console.log("selected: ", values)}/>*/}
 
-                {/*<Dock side="left"*/}
-                {/*      style={{height: '100vh'}}*/}
-                {/*      left={<Left/>}*/}
-                {/*      right={<div style={{backgroundColor: 'blue'}}>this is the right</div>}/>*/}
+                <Dock side="left"
+                      left={<Folders/>}
+                      right={<Dock side="left"
+                                   left={<Preview/>}
+                                   right={<Main/>}/>}/>
+
 
             </div>
 
