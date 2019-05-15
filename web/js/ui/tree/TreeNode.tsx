@@ -239,6 +239,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                         </div>
 
                         <div style={Styles.NODE_BODY}
+                             onDoubleClick={() => this.toggle()}
                              onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
 
                             <button style={Styles.NODE_NAME}
