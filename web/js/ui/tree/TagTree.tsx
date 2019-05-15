@@ -40,6 +40,7 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
         this.onSelected = this.onSelected.bind(this);
         this.onFiltered = this.onFiltered.bind(this);
+        this.onCreated = this.onCreated.bind(this);
 
         this.state = {
             filter: "Comp",
@@ -78,7 +79,8 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
                            onChange={event => this.onFiltered(event.currentTarget.value)}
                            placeholder="Filter by name..." />
 
-                    <TagCreateButton selected={this.state.selected}/>
+                    <TagCreateButton selected={this.state.selected}
+                                     onCreated={path => this.onCreated(path)}/>
 
                 </div>
 
@@ -90,7 +92,11 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
     }
 
-    private onSelected(...selected: ReadonlyArray<Tag>) {
+    private onCreated(path: string) {
+        console.log("New tag created: " + path);
+    }
+
+    private onSelected(selected: ReadonlyArray<Tag>) {
 
         this.setState({...this.state, selected});
 

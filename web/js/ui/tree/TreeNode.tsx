@@ -345,18 +345,14 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     private dispatchSelected() {
         const {treeState} = this.props;
 
-        const values: V[] = [];
+        const selected = Object.values(treeState.selected)
+            .filter(nodeID => isPresent(nodeID))
+            .map(nodeID => treeState.index[nodeID])
+            .map(node => node.value);
 
-        console.log("FIXME: treeState.selected: ", treeState.selected);
-        console.log("FIXME: treeState.index: ", treeState.index);
+        console.log("FIXME: dispatching selected ", selected);
 
-        // get copies of every noted that was selected...
-        for (const id of Object.values(treeState.selected)) {
-            const node = treeState.index[id];
-            values.push(node.value);
-        }
-
-        treeState.onSelected(...values);
+        treeState.onSelected(selected);
 
     }
 
