@@ -1,12 +1,9 @@
 import * as React from 'react';
 import {DeepPureComponent} from '../../react/DeepPureComponent';
 import {TreeNode} from './TreeNode';
-import {TreeState} from './TreeNode';
-import {TNode} from './TreeNode';
-import InputGroupAddon from 'reactstrap/lib/InputGroupAddon';
-import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
 import Button from 'reactstrap/lib/Button';
+import {Dictionaries} from '../../util/Dictionaries';
 
 class Styles {
 
@@ -39,6 +36,10 @@ export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
 
             <div style={Styles.PARENT}>
 
+                {/*FIXME: redo the way we do filters... filter the INPUT on the full*/}
+                {/*path and then filter pass this to the view once we've converted*/}
+                {/*them to full tags.*/}
+
                 {/*<InputGroup className="m-1"*/}
                 {/*            style={Styles.HEADER}>*/}
 
@@ -48,7 +49,7 @@ export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
 
                 <div style={{display: 'flex'}}>
 
-                    <Input className="p-1" placeholder="Filter folders by name..." />
+                    <Input className="p-1" placeholder="Filter by name..." />
 
                     <Button className="ml-1" color="light" title="Create new folder">
 
@@ -80,3 +81,73 @@ interface IProps<V> {
 interface IState {
 
 }
+
+
+/**
+ * A state object for the entire tree to keep an index of expanded/collapsed
+ * nodes, etc.
+ */
+export class TreeState<V> {
+
+    constructor(public readonly onSelected: (...nodes: ReadonlyArray<V>) => void) {
+    }
+
+    public readonly closed = new Marked();
+
+    /**
+     * The currently applied filter for the path we're searching for.
+     */
+    public readonly filter = "";
+
+    /**
+     * The list of the nodes that are selected by id
+     */
+    public readonly selected: {[id: number]: number} = [];
+
+    public readonly index: {[id: number]: TreeNode<V>} = [];
+
+}
+
+
+export class Marked {
+
+    public readonly data: {[id: number]: boolean} = {};
+
+    public mark(id: number) {
+        this.data[id] = true;
+    }
+
+    public clear(id: number) {
+        delete this.data[id];
+    }
+
+    public toggle(id: number) {
+        this.data[id] = ! this.data[id];
+        return this.data[id];
+    }
+
+    public contains(id: number) {
+        return this.data[id];
+    }
+
+    public reset() {
+        Dictionaries.empty(this.data);
+    }
+
+}
+
+export interface TNode<V> {
+
+    readonly name: string;
+
+    readonly children: ReadonlyArray<TNode<V>>;
+
+    /**
+     * The UNIQUE id for this node.
+     */
+    readonly id: number;
+
+    readonly value: V;
+
+}
+

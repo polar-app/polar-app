@@ -5,6 +5,9 @@ import Button from 'reactstrap/lib/Button';
 import {Dictionaries} from '../../util/Dictionaries';
 import {isPresent} from '../../Preconditions';
 import {Preconditions} from '../../Preconditions';
+import {TreeState} from './TreeView';
+import {TNode} from './TreeView';
+import {NullCollapse} from '../null_collapse/NullCollapse';
 
 class Styles {
 
@@ -63,6 +66,7 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         // paddingLeft: '5px',
+        flexGrow: 1,
     };
 
     public static NODE_RIGHT: React.CSSProperties = {
@@ -201,6 +205,20 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
         };
 
+        const isFiltered = () => {
+
+            const filter = treeState.filter.trim();
+
+            if (filter === '') {
+                return false;
+            }
+
+            return this.props.node.name.indexOf(filter) === -1;
+
+        };
+
+        const filtered = isFiltered();
+
         const selected = isPresent(treeState.selected[this.id]);
 
         const closed = treeState.closed.contains(node.id);
@@ -213,54 +231,56 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
             <div style={{}}>
 
-                <div style={Styles.NODE_PARENT} className="hover-highlight">
+                <NullCollapse open={!filtered}>
+                    <div style={Styles.NODE_PARENT} className="hover-highlight">
 
-                    <div style={Styles.NODE_ICON}
-                         className={icon}
-                         onClick={() => this.toggle()}>
-                    </div>
+                        <div style={Styles.NODE_ICON}
+                             className={icon}
+                             onClick={() => this.toggle()}>
+                        </div>
 
-                    <div style={Styles.NODE_SELECTOR}>
-                        {/*<Input className="m-0" type="checkbox" />*/}
-                        {/*X*/}
-                        <input className="m-0"
-                               checked={selected}
-                               type="checkbox"
-                               onChange={event => this.onCheckbox(event)}/>
+                        <div style={Styles.NODE_SELECTOR}>
+                            {/*<Input className="m-0" type="checkbox" />*/}
+                            {/*X*/}
+                            <input className="m-0"
+                                   checked={selected}
+                                   type="checkbox"
+                                   onChange={event => this.onCheckbox(event)}/>
 
-                    </div>
+                        </div>
 
-                    <div style={Styles.NODE_BODY}>
+                        <div style={Styles.NODE_BODY}
+                             onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
 
-                        <button style={Styles.NODE_NAME}
-                                className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
-                                onClick={(event: React.MouseEvent<HTMLButtonElement>) => this.onClick(event)}
-                                color="light">
+                            <button style={Styles.NODE_NAME}
+                                    className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
+                                    color="light">
 
-                            {node.name}
+                                {node.name}
 
-                        </button>
+                            </button>
 
-                    </div>
+                        </div>
 
-                    <div style={Styles.NODE_RIGHT}>
+                        <div style={Styles.NODE_RIGHT}>
 
-                        {/*<div className="mt-auto mb-auto">*/}
-                        {/*    <button style={Styles.CREATE_BUTTON}>*/}
+                            {/*<div className="mt-auto mb-auto">*/}
+                            {/*    <button style={Styles.CREATE_BUTTON}>*/}
 
-                        {/*        <i style={Styles.CREATE_ICON}*/}
-                        {/*           className="hover-button fas fa-plus"></i>*/}
+                            {/*        <i style={Styles.CREATE_ICON}*/}
+                            {/*           className="hover-button fas fa-plus"></i>*/}
 
-                        {/*    </button>*/}
-                        {/*</div>*/}
+                            {/*    </button>*/}
+                            {/*</div>*/}
 
-                        <div>
-                            11
+                            <div>
+                                11
+                            </div>
+
                         </div>
 
                     </div>
-
-                </div>
+                </NullCollapse>
 
                 <TreeNodeChildren children={children} closed={closed} treeState={this.props.treeState}/>
 
@@ -270,7 +290,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
     }
 
-    private onClick(event: React.MouseEvent<HTMLButtonElement>) {
+    private onClick(event: React.MouseEvent<HTMLElement>) {
         const multi = event.ctrlKey;
         this.select(multi);
     }
@@ -351,68 +371,6 @@ interface IProps<V> {
     readonly treeState: TreeState<V>;
 }
 
-
-/**
- * A state object for the entire tree to keep an index of expanded/collapsed
- * nodes, etc.
- */
-export class TreeState<V> {
-
-    constructor(public readonly onSelected: (...nodes: ReadonlyArray<V>) => void) {
-    }
-
-    public readonly closed = new Marked();
-
-    /**
-     * The list of the nodes that are selected by id
-     */
-    public selected: {[id: number]: number} = [];
-
-    public index: {[id: number]: TreeNode<V>} = [];
-
-}
-
-class Marked {
-
-    public readonly data: {[id: number]: boolean} = {};
-
-    public mark(id: number) {
-        this.data[id] = true;
-    }
-
-    public clear(id: number) {
-        delete this.data[id];
-    }
-
-    public toggle(id: number) {
-        this.data[id] = ! this.data[id];
-        return this.data[id];
-    }
-
-    public contains(id: number) {
-        return this.data[id];
-    }
-
-    public reset() {
-        Dictionaries.empty(this.data);
-    }
-
-}
-
-export interface TNode<V> {
-
-    readonly name: string;
-
-    readonly children: ReadonlyArray<TNode<V>>;
-
-    /**
-     * The UNIQUE id for this node.
-     */
-    readonly id: number;
-
-    readonly value: V;
-
-}
 
 interface IState<V> {
     readonly idx?: number;
