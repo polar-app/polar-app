@@ -123,6 +123,12 @@ class Styles {
 
 // TODO
 
+// FIXME: BAD bug ...
+//   - select a node
+//   - collapse its parent
+//   - select another node
+//   - then we get an error that a component is not mounted.
+
 //   - what about long press?
 //   - what about context menus?
 //   - FIXME: implement the onSelect handler to callback which nodes are
