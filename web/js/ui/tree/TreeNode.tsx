@@ -123,12 +123,6 @@ class Styles {
 
 // TODO
 
-// FIXME: BAD bug ...
-//   - select a node
-//   - collapse its parent
-//   - select another node
-//   - then we get an error that a component is not mounted.
-
 //   - what about long press?
 //   - what about context menus?
 //   - FIXME: implement the onSelect handler to callback which nodes are
@@ -165,14 +159,12 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.value = this.props.node.value;
 
         this.state = {
-            // node: props.node
         };
 
-        // during expand/collapse new nodes are created and we have to keep the
-        // index updated or we will access a component that no longer exists.
+    }
 
-        this.props.treeState.index[this.id] = this;
-
+    public componentWillUnmount(): void {
+        this.deselect();
     }
 
     public render() {
@@ -181,8 +173,11 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         const {node} = this.props;
         const children = node.children || [];
 
-        console.log("FIXME: TreeNode with ", this.props.node)
-        console.log("FIXME: TreeNopde with children: ", children);
+        // during expand/collapse new nodes are created and we have to keep the
+        // index updated or we will access a component that no longer exists.
+        // not sure why but this needs to be updated for each render and
+        // components aren't always created.
+        treeState.index[this.id] = this;
 
         const createIcon = () => {
 

@@ -95,11 +95,12 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
         const tags = this.props.tags.filter(tag => {
             const label = tag.label.toLocaleLowerCase();
-            const basename = Tags.basename(label);
+            return label.indexOf(filter) !== -1;
 
-            console.log("FIXME: basename: ", basename);
 
-            return basename.indexOf(filter) !== -1;
+            // const basename = Tags.basename(label);
+            // console.log("FIXME: basename: ", basename);
+            // return basename.indexOf(filter) !== -1;
         });
 
         this.setState({tags, filter});
