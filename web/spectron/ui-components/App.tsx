@@ -56,11 +56,11 @@ import {FakeComponent0} from './FakeComponent0';
 import {Canvases} from '../../js/util/Canvases';
 import {ColorDropdown} from './ColorDropdown';
 import {ColorSelector} from '../../js/ui/colors/ColorSelector';
-import {TNode} from '../../js/ui/tree/TreeNode';
 import {TreeNode} from '../../js/ui/tree/TreeNode';
 import {TreeView} from '../../js/ui/tree/TreeView';
 import {TagNodes} from '../../js/tags/TagNode';
 import {Tags} from '../../js/tags/Tags';
+import {TagTree} from '../../js/ui/tree/TagTree';
 
 const styles = {
     swatch: {
@@ -155,14 +155,16 @@ class App<P> extends React.Component<{}, IAppState> {
 
         ].map(current => Tags.create(current));
 
-        const root: TNode<Tag> = TagNodes.create(...tags);
+        // const root: TNode<Tag> = TagNodes.create(...tags);
 
         return (
 
             <div style={{margin: '5px'}}>
 
-                <TreeView root={root}
-                          onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>
+                <TagTree tags={tags} onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>
+
+                {/*<TreeView root={root}*/}
+                {/*          />*/}
 
                 {/*<Dock side="left"*/}
                 {/*      left={<Folders/>}*/}

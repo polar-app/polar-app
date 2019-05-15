@@ -16,7 +16,7 @@ class Styles {
 }
 
 
-export class TreeNodeChildren<V> extends DeepPureComponent<IProps<V>, IState> {
+export class TreeNodeChildren<V> extends React.Component<IProps<V>, IState> {
 
     constructor(props: IProps<V>, context: any) {
         super(props, context);

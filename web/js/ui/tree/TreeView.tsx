@@ -1,27 +1,12 @@
 import * as React from 'react';
-import {DeepPureComponent} from '../../react/DeepPureComponent';
 import {TreeNode} from './TreeNode';
-import Input from 'reactstrap/lib/Input';
-import Button from 'reactstrap/lib/Button';
 import {Dictionaries} from '../../util/Dictionaries';
 
 class Styles {
 
-    public static PARENT: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column'
-    };
-
-    public static HEADER: React.CSSProperties = {
-    };
-
-    public static BODY: React.CSSProperties = {
-        flexGrow: 1
-    };
-
 }
 
-export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
+export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
     constructor(props: IProps<V>, context: any) {
         super(props, context);
@@ -29,43 +14,12 @@ export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
     }
 
     public render() {
-
+        console.log("FIXME: rendering with ", this.props.root);
         const treeState = new TreeState(this.props.onSelected);
 
         return (
 
-            <div style={Styles.PARENT}>
-
-                {/*FIXME: redo the way we do filters... filter the INPUT on the full*/}
-                {/*path and then filter pass this to the view once we've converted*/}
-                {/*them to full tags.*/}
-
-                {/*<InputGroup className="m-1"*/}
-                {/*            style={Styles.HEADER}>*/}
-
-                {/*    <InputGroupAddon addonType="append">*/}
-                {/*        X*/}
-                {/*    </InputGroupAddon>*/}
-
-                <div style={{display: 'flex'}}>
-
-                    <Input className="p-1" placeholder="Filter by name..." />
-
-                    <Button className="ml-1" color="light" title="Create new folder">
-
-                        <i className="hover-button fas fa-plus"></i>
-
-                    </Button>
-
-                </div>
-
-                {/*</InputGroup>*/}
-
-                <div style={Styles.HEADER}>
-                    <TreeNode node={this.props.root} treeState={treeState}/>
-                </div>
-
-            </div>
+            <TreeNode node={this.props.root} treeState={treeState}/>
 
         );
 

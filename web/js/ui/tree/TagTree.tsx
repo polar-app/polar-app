@@ -4,6 +4,11 @@ import {TreeNode} from './TreeNode';
 import Input from 'reactstrap/lib/Input';
 import Button from 'reactstrap/lib/Button';
 import {Dictionaries} from '../../util/Dictionaries';
+import {Tag} from '../../tags/Tag';
+import {TNode} from './TreeView';
+import {TagNodes} from '../../tags/TagNode';
+import {TreeView} from './TreeView';
+import {Tags} from '../../tags/Tags';
 
 class Styles {
 
@@ -21,16 +26,25 @@ class Styles {
 
 }
 
-export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
+export class TagTree extends DeepPureComponent<IProps, IState> {
 
-    constructor(props: IProps<V>, context: any) {
+    constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.state = {
+            filter: "Comp",
+            tags: this.props.tags
+        };
 
     }
 
     public render() {
 
-        const treeState = new TreeState(this.props.onSelected);
+        // FIXME: this will NOT work I think because the IDs each time keep
+        // changing???  but the TreeState should be reset each time I think.
+
+        const root: TNode<Tag> = TagNodes.create(...this.state.tags);
+        console.log("FIXME: new root: ", root);
 
         return (
 
@@ -49,21 +63,19 @@ export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
 
                 <div style={{display: 'flex'}}>
 
-                    <Input className="p-1" placeholder="Filter by name..." />
+                    <Input className="p-1"
+                           onChange={event => this.onFiltered(event.currentTarget.value)}
+                           placeholder="Filter by name..." />
 
                     <Button className="ml-1" color="light" title="Create new folder">
 
-                        <i className="hover-button fas fa-plus"></i>
+                        <i className="hover-button fas fa-plus"/>
 
                     </Button>
 
                 </div>
 
-                {/*</InputGroup>*/}
-
-                <div style={Styles.HEADER}>
-                    <TreeNode node={this.props.root} treeState={treeState}/>
-                </div>
+                <TreeView root={root} onSelected={this.props.onSelected}/>
 
             </div>
 
@@ -71,83 +83,39 @@ export class TreeView<V> extends DeepPureComponent<IProps<V>, IState> {
 
     }
 
+    private onFiltered(filter: string) {
+
+        // TODO: one strategy here is to create ALL possible paths, then
+        // find just the unique ones, then filter just on those and then use
+        // THOSE as the result.
+
+        // FIXME: ... TODO... this doesn't break out all unique sub-paths.
+
+        filter = filter.toLocaleLowerCase();
+
+        const tags = this.props.tags.filter(tag => {
+            const label = tag.label.toLocaleLowerCase();
+            const basename = Tags.basename(label);
+
+            console.log("FIXME: basename: ", basename);
+
+            return basename.indexOf(filter) !== -1;
+        });
+
+        this.setState({tags, filter});
+
+    }
+
 }
 
-interface IProps<V> {
-    readonly root: TNode<V>;
-    readonly onSelected: (...nodes: ReadonlyArray<V>) => void;
+interface IProps {
+    readonly tags: ReadonlyArray<Tag>;
+    readonly onSelected: (...nodes: ReadonlyArray<Tag>) => void;
 }
 
 interface IState {
-
+    readonly filter: string;
+    readonly tags: ReadonlyArray<Tag>;
 }
 
-
-/**
- * A state object for the entire tree to keep an index of expanded/collapsed
- * nodes, etc.
- */
-export class TreeState<V> {
-
-    constructor(public readonly onSelected: (...nodes: ReadonlyArray<V>) => void) {
-    }
-
-    public readonly closed = new Marked();
-
-    /**
-     * The currently applied filter for the path we're searching for.
-     */
-    public readonly filter = "";
-
-    /**
-     * The list of the nodes that are selected by id
-     */
-    public readonly selected: {[id: number]: number} = [];
-
-    public readonly index: {[id: number]: TreeNode<V>} = [];
-
-}
-
-
-export class Marked {
-
-    public readonly data: {[id: number]: boolean} = {};
-
-    public mark(id: number) {
-        this.data[id] = true;
-    }
-
-    public clear(id: number) {
-        delete this.data[id];
-    }
-
-    public toggle(id: number) {
-        this.data[id] = ! this.data[id];
-        return this.data[id];
-    }
-
-    public contains(id: number) {
-        return this.data[id];
-    }
-
-    public reset() {
-        Dictionaries.empty(this.data);
-    }
-
-}
-
-export interface TNode<V> {
-
-    readonly name: string;
-
-    readonly children: ReadonlyArray<TNode<V>>;
-
-    /**
-     * The UNIQUE id for this node.
-     */
-    readonly id: number;
-
-    readonly value: V;
-
-}
 

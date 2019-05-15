@@ -146,7 +146,7 @@ class Styles {
 //
 //  - FIXME: creating a NEW folder
 
-export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
+export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
     public readonly id: number;
     public readonly value: V;
@@ -165,7 +165,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
         this.value = this.props.node.value;
 
         this.state = {
-            node: props.node
+            // node: props.node
         };
 
         // during expand/collapse new nodes are created and we have to keep the
@@ -178,8 +178,11 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
     public render() {
 
         const {treeState} = this.props;
-        const {node} = this.state;
+        const {node} = this.props;
         const children = node.children || [];
+
+        console.log("FIXME: TreeNode with ", this.props.node)
+        console.log("FIXME: TreeNopde with children: ", children);
 
         const createIcon = () => {
 
@@ -211,20 +214,6 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
         };
 
-        const isFiltered = () => {
-
-            const filter = treeState.filter.trim();
-
-            if (filter === '') {
-                return false;
-            }
-
-            return this.props.node.name.indexOf(filter) === -1;
-
-        };
-
-        const filtered = isFiltered();
-
         const selected = isPresent(treeState.selected[this.id]);
 
         const closed = treeState.closed.contains(node.id);
@@ -237,8 +226,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
             <div style={{}}>
 
-                <NullCollapse open={!filtered}>
-                    <div style={Styles.NODE_PARENT} className="hover-highlight">
+                <div style={Styles.NODE_PARENT} className="hover-highlight">
 
                         <div style={Styles.NODE_ICON}
                              className={icon}
@@ -286,7 +274,6 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
                         </div>
 
                     </div>
-                </NullCollapse>
 
                 <TreeNodeChildren children={children} closed={closed} treeState={this.props.treeState}/>
 
@@ -307,7 +294,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
     private toggle() {
 
-        const children = this.state.node.children || [];
+        const children = this.props.node.children || [];
 
         if (children.length === 0) {
             // doesn't make sense to expand/collapse something without children.
@@ -316,7 +303,7 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
         this.props.treeState.closed.toggle(this.props.node.id);
 
-        this.setState({...this.state, node: this.state.node, idx: Date.now()});
+        this.setState({...this.state, idx: Date.now()});
 
     }
 
@@ -361,6 +348,9 @@ export class TreeNode<V> extends DeepPureComponent<IProps<V>, IState<V>> {
 
         const values: V[] = [];
 
+        console.log("FIXME: treeState.selected: ", treeState.selected);
+        console.log("FIXME: treeState.index: ", treeState.index);
+
         for (const id of Object.values(treeState.selected)) {
             const node = treeState.index[id];
             values.push(node.value);
@@ -380,7 +370,6 @@ interface IProps<V> {
 
 interface IState<V> {
     readonly idx?: number;
-    readonly node: TNode<V>;
 }
 
 
