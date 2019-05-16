@@ -125,9 +125,11 @@ describe('TagNode', function() {
 
             assertJSON(TagNodes.create(), {
                 "children": [],
+                "count": 0,
                 "id": 0,
                 "name": "/",
                 "value": {
+                    "count": 0,
                     "id": "/",
                     "label": "/"
                 }
