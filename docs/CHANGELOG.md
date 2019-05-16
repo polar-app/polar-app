@@ -1,4 +1,14 @@
 
+# 1.19.6
+
+- Fixed bug with highlights vanishing when colors were changed
+
+- Fixes bugs with .debs 
+
+# 1.19.5
+
+- Fixes some bugs with snaps
+
 # 1.19.4
 
 - unique machines code properly merged 
