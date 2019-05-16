@@ -32,7 +32,7 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
 interface IProps<V> {
     readonly root: TNode<V>;
-    readonly onSelected: (nodes: ReadonlyArray<V>) => void;
+    readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void;
 }
 
 interface IState {
@@ -46,7 +46,7 @@ interface IState {
  */
 export class TreeState<V> {
 
-    constructor(public readonly onSelected: (nodes: ReadonlyArray<V>) => void) {
+    constructor(public readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void) {
     }
 
     public readonly closed = new Marked();
