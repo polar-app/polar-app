@@ -2,50 +2,36 @@
  * Keeps track of the last copy the user did so that we can then request what
  * was copied.
  */
+import {Ranges} from '../highlights/text/selection/Ranges';
 
 export class ClipboardCleanser {
 
     public static register() {
 
-        document.addEventListener('cut', event => this.handleEvent(event));
-        document.addEventListener('copy', event => this.handleEvent(event));
+        document.addEventListener('cut', event => this.handleCutOrCopy(event));
+        document.addEventListener('copy', event => this.handleCutOrCopy(event));
 
     }
 
-    private static handleEvent(event: ClipboardEvent) {
+    private static handleCutOrCopy(event: ClipboardEvent) {
 
         if (!event.clipboardData) {
             return;
         }
 
-        console.log("FIXME000: ", [...event.clipboardData.types]);
+        const sel = window.getSelection();
 
-        console.log("FIXME00: ", event.clipboardData.getData('text/plain'));
-        console.log("FIXME01: ", event.clipboardData.getData('text/html'));
+        if (! sel) {
+            return;
+        }
 
-        const html = event.clipboardData.getData('text/html');
-        const cleansed = this.cleanse(html);
-        console.log("FIXME: cleansed: ", cleansed);
+        const text = Ranges.toText(sel.getRangeAt(0));
 
-        event.clipboardData.setData('text/html', "asdf");
-
-        // This is necessary to prevent the current document selection from
-        // being written to the clipboard.
+        event.clipboardData.setData('text/plain', text);
+        event.clipboardData.setData('text/html', text);
+        event.clipboardData.setData('pasted-from-polar', 'true');
         event.preventDefault();
 
-    }
-
-    private static cleanse(html: string) {
-        console.log("FIXME1, ", html);
-
-        const div = document.createElement('div');
-        div.innerHTML = html;
-
-        console.log("FIXME2, ", div);
-        console.log("FIXME3, ", div.outerHTML);
-        console.log("FIXME4, ", div.innerText);
-
-        return div.innerText;
     }
 
 }
