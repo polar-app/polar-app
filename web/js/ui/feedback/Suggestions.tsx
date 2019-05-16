@@ -6,6 +6,8 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 export class Suggestions extends React.Component<IProps, IState> {
 
+    private value: string = "";
+
     constructor(props: any, context: any) {
         super(props, context);
 
@@ -48,6 +50,7 @@ export class Suggestions extends React.Component<IProps, IState> {
 
                 <Input type="textarea"
                        autofocus
+                       onChange={event => this.value = value.currentTarget.value}
                        style={{height: '8em'}}/>
 
 

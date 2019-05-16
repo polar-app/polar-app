@@ -22,7 +22,8 @@ export class UserFeedbacks {
 interface UserFeedback {
 
     /**
-     * The score they gave us.
+     * The score they gave us.  This is important as I need this to prioritize
+     * their feedback appropriately.
      */
     readonly netPromoterScore: NetPromoterScore;
 

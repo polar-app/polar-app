@@ -165,7 +165,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <Suggestions category={"asdf"}
+                <Suggestions category={"user-suggestions"}
                              title={"How should we improve Polar?"}
                              description="We need your help to improve Polar!  In your opinion what should we do to make it better?"/>
 
