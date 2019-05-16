@@ -11,6 +11,7 @@ import {TreeView} from './TreeView';
 import {Tags} from '../../tags/Tags';
 import {TagCreateButton} from './TagCreateButton';
 import {TagDescriptor} from '../../tags/TagNode';
+import {TagStr} from '../../tags/Tag';
 
 class Styles {
 
@@ -97,7 +98,9 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
         console.log("New tag created: " + path);
     }
 
-    private onSelected(selected: ReadonlyArray<TagDescriptor>) {
+    private onSelected(selectedTags: ReadonlyArray<TagDescriptor>) {
+
+        const selected = selectedTags.map(current => current.label);
 
         this.setState({...this.state, selected});
 
@@ -128,13 +131,13 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
 interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly onSelected: (...selected: ReadonlyArray<Tag>) => void;
+    readonly onSelected: (...selected: ReadonlyArray<TagStr>) => void;
 }
 
 interface IState {
     readonly filter: string;
     readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly selected: ReadonlyArray<TagDescriptor>;
+    readonly selected: ReadonlyArray<TagStr>;
 }
 
 

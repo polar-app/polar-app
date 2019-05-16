@@ -8,6 +8,8 @@ export interface MutableTagNode<V> {
 
     name: string;
 
+    path: string;
+
     children: Array<MutableTagNode<V>>;
 
     value: V;
@@ -21,6 +23,8 @@ export interface TagNode<V> {
     readonly id: number;
 
     readonly name: string;
+
+    readonly path: string;
 
     readonly children: ReadonlyArray<TagNode<V>>;
 
@@ -169,6 +173,7 @@ class TagNodeIndex {
             this.index[path] = {
                 id: this.seq++,
                 name,
+                path,
                 children: [],
                 count: value.count,
                 value

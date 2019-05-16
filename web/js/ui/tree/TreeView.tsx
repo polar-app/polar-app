@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {Dictionaries} from '../../util/Dictionaries';
+import {TagStr} from '../../tags/Tag';
 
 class Styles {
 
@@ -96,6 +97,8 @@ export interface TNode<V> {
 
     readonly name: string;
 
+    readonly path: string;
+
     readonly children: ReadonlyArray<TNode<V>>;
 
     /**
@@ -111,4 +114,5 @@ export interface TNode<V> {
     readonly value: V;
 
 }
+
 

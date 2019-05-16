@@ -9,7 +9,7 @@ export interface Tag {
     /**
      * The label to show in the UI.
      */
-    readonly label: string;
+    readonly label: TagStr;
 
     /**
      * True when the tag is hidden.  Used for special types of tags that should
@@ -19,3 +19,7 @@ export interface Tag {
 
 }
 
+/**
+ * A string representation of a tag.
+ */
+export type TagStr = string;

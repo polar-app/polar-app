@@ -61,6 +61,7 @@ import {TreeView} from '../../js/ui/tree/TreeView';
 import {TagNodes} from '../../js/tags/TagNode';
 import {Tags} from '../../js/tags/Tags';
 import {TagTree} from '../../js/ui/tree/TagTree';
+import {TagStr} from '../../../web/js/tags/Tag';
 
 const styles = {
     swatch: {
@@ -158,21 +159,21 @@ class App<P> extends React.Component<{}, IAppState> {
              return {...current, count};
          });
 
-        // const root: TNode<Tag> = TagNodes.create(...tags);
-        Dialogs.prompt({
-                           title: "Enter the name of a new folder:",
-                           validator: () => {
-                               return {message: "it failed dude"};
-                           },
-                           onCancel: NULL_FUNCTION,
-                           onDone: NULL_FUNCTION
-
-                       });
+        // // const root: TNode<Tag> = TagNodes.create(...tags);
+        // Dialogs.prompt({
+        //                    title: "Enter the name of a new folder:",
+        //                    validator: () => {
+        //                        return {message: "it failed dude"};
+        //                    },
+        //                    onCancel: NULL_FUNCTION,
+        //                    onDone: NULL_FUNCTION
+        //
+        //                });
         return (
 
             <div style={{margin: '5px'}}>
 
-                <TagTree tags={tags} onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>
+                <TagTree tags={tags} onSelected={(values) => console.log("selected: ", values)}/>
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}
