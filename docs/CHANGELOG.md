@@ -1,6 +1,10 @@
 
 # 1.19.6
 
+- new clipboard cleanser for properly handling the clipboard when pasting from 
+  part of the PDF.  The handling is not yet perfect but we're making steps in 
+  that direction at least.
+
 - Fixed bug with highlights vanishing when colors were changed
 
 - Fixes bugs with .debs 
