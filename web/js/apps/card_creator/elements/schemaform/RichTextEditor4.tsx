@@ -8,7 +8,6 @@ import {Logger} from '../../../../logger/Logger';
 import {ReactSummernote4} from './ReactSummernote4';
 import {NULL_FUNCTION} from '../../../../util/Functions';
 import {RichTextMutator} from './RichTextMutator';
-import {ClipboardCleanser} from '../../../../ui/ClipboardCleanser';
 const log = Logger.create();
 
 /**
@@ -173,14 +172,6 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
     }
 
 }
-
-/**
- * This uses a jquery event so we're going to just use our own type.
- */
-interface PasteEvent {
-    readonly originalEvent: ClipboardEvent;
-}
-
 
 interface IProps {
     readonly id: string;
