@@ -4,18 +4,26 @@ import {UserFacts} from './SplashEngine';
 import {SplashEventHandlers} from './SplashEngine';
 import {SplashEngine} from './SplashEngine';
 import {MutableUserFacts} from './SplashEngine';
+import {MockStorageBackend} from '../../../../web/js/util/LocalPrefs';
+import {StorageBackends} from '../../../../web/js/util/LocalPrefs';
+import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
+import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 
 describe('SplashEngine', function() {
 
     beforeEach(function() {
+        StorageBackends.delegate = new MockStorageBackend();
         TestingTime.freeze();
     });
 
     afterEach(function() {
+        StorageBackends.delegate = undefined;
         TestingTime.unfreeze();
     });
 
     it('first NPS, then version upgrade', function() {
+
+        LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
 
         const facts: MutableUserFacts = {
 
@@ -55,6 +63,8 @@ describe('SplashEngine', function() {
 
     it('version upgrade with persisted external state', function() {
 
+        LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
+
         const facts: MutableUserFacts = {
             datastoreCreated: "2012-02-02T11:38:49.321Z",
             version: "1.0.0",
@@ -89,6 +99,8 @@ describe('SplashEngine', function() {
     });
 
     it('NPS preempted due to "whats new"', function() {
+
+        LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
 
         const facts: MutableUserFacts = {
             datastoreCreated: "2012-02-02T11:38:49.321Z",
