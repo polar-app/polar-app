@@ -35,10 +35,12 @@ describe('SplashEngine', function() {
 
         let whatsNewCalled: number = 0;
         let netPromoterCalled: number = 0;
+        let suggestionsCalled: number = 0;
 
         const eventHandlers: SplashEventHandlers = {
             onWhatsNew: () => ++whatsNewCalled,
             onNetPromoter: () => ++netPromoterCalled,
+            onSuggestions: () => ++suggestionsCalled,
         };
 
         const engine = new SplashEngine(facts, eventHandlers);
@@ -46,17 +48,20 @@ describe('SplashEngine', function() {
         engine.run();
 
         assert.equal(whatsNewCalled, 0);
+        assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 1);
 
         engine.run();
 
         assert.equal(whatsNewCalled, 0);
+        assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 1);
 
         TestingTime.forward('8d');
 
         engine.run();
         assert.equal(whatsNewCalled, 0);
+        assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 2);
 
     });
@@ -72,10 +77,12 @@ describe('SplashEngine', function() {
 
         let whatsNewCalled: number = 0;
         let netPromoterCalled: number = 0;
+        let suggestionsCalled: number = 0;
 
         const eventHandlers: SplashEventHandlers = {
             onWhatsNew: () => ++whatsNewCalled,
             onNetPromoter: () => ++netPromoterCalled,
+            onSuggestions: () => ++suggestionsCalled,
         };
 
         let engine = new SplashEngine(facts, eventHandlers);
@@ -83,6 +90,7 @@ describe('SplashEngine', function() {
         engine.run();
 
         assert.equal(whatsNewCalled, 0);
+        assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 1);
 
         const externalEngineState = engine.toExternalEngineState();
@@ -94,6 +102,7 @@ describe('SplashEngine', function() {
         engine.run();
 
         assert.equal(whatsNewCalled, 1);
+        assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 1);
 
     });
@@ -109,10 +118,12 @@ describe('SplashEngine', function() {
 
         let whatsNewCalled: number = 0;
         let netPromoterCalled: number = 0;
+        let suggestionsCalled: number = 0;
 
         const eventHandlers: SplashEventHandlers = {
             onWhatsNew: () => ++whatsNewCalled,
             onNetPromoter: () => ++netPromoterCalled,
+            onSuggestions: () => ++suggestionsCalled,
         };
 
         let engine = new SplashEngine(facts, eventHandlers);
@@ -131,6 +142,7 @@ describe('SplashEngine', function() {
         engine.run();
 
         assert.equal(whatsNewCalled, 1);
+        assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 1);
 
         TestingTime.forward('16m');
@@ -138,10 +150,9 @@ describe('SplashEngine', function() {
         engine.run();
 
         assert.equal(whatsNewCalled, 1);
+        assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 2);
 
-
     });
-
 
 });

@@ -68,6 +68,9 @@ export class Splashes extends React.Component<IProps, IState> {
             case 'net-promoter':
                 return <NPSModal/>;
 
+            case 'suggestions':
+                return <div></div>; // FIXME: noop for now
+
             case 'whats-new':
                 return <WhatsNewModal/>;
 
@@ -88,6 +91,13 @@ export class Splashes extends React.Component<IProps, IState> {
 
     }
 
+    private onSuggestions() {
+
+        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-suggestions'});
+        this.setState({...this.state, splash: 'suggestions'});
+
+    }
+
     private async init() {
 
         const userFacts = await this.computeUserFacts();
@@ -96,7 +106,8 @@ export class Splashes extends React.Component<IProps, IState> {
 
             const splashEngine = new DefaultSplashEngine(userFacts, {
                 onWhatsNew: () => this.onWhatsNew(),
-                onNetPromoter: () => this.onNetPromoter()
+                onNetPromoter: () => this.onNetPromoter(),
+                onSuggestions: () => this.onSuggestions()
             });
 
             this.doUpdate(splashEngine);
@@ -167,5 +178,5 @@ interface IState {
     readonly splash: SplashID;
 }
 
-type SplashID = 'none' | 'net-promoter' | 'whats-new';
+type SplashID = 'none' | 'net-promoter' | 'whats-new' | 'suggestions';
 

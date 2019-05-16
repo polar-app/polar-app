@@ -25,7 +25,8 @@ export class SplashEngine {
 
         const rules: RuleMap<UserFacts, SplashEventHandlers> = {
             whatsNew: new WhatsNewRule(),
-            netPromoter: new NetPromoterRule()
+            netPromoter: new NetPromoterRule(),
+            suggestions: new SuggestionsRule(),
         };
 
         this.engine = new Engine(facts, rules, eventHandlers, externalEngineState);
