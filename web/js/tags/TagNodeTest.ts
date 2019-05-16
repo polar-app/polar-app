@@ -77,7 +77,11 @@ describe('TagNode', function() {
                 '/',
                 '/foo',
                 '/foo/bar'
-            ].map(current => Tags.create(current));
+            ].map(current => Tags.create(current))
+             .map(current => {
+                    const count = Math.floor(Math.random() * 100);
+                    return {...current, count};
+                });
 
             assertJSON(TagNodes.create(...tags), {
                 "children": [
