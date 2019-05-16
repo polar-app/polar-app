@@ -46,7 +46,7 @@ export class AreaHighlights {
         const updated = new AreaHighlight({...existing, ...updates});
 
         DocMetas.withBatchedMutations(docMeta, () => {
-            delete pageMeta.areaHighlights[id];
+            // delete pageMeta.areaHighlights[id];
             pageMeta.areaHighlights[id] = updated;
         });
 
