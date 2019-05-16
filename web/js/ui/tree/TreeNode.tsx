@@ -128,15 +128,6 @@ class Styles {
 //   - FIXME: implement the onSelect handler to callback which nodes are
 //    actually selected and an object for each node.
 
-//   - FIXME: I need to put the NUMBER of items in the tree to the right AND I need to
-//     support a 'create folder' option too for creating a nested folder.
-//
-//   - FIXME: I need the abiltiy to filter the tree view so that we can filter
-//            the tags easily.
-//
-//  - FIXME: hover needs to support clicking on the parent... to select the node.
-//
-//  - FIXME: need to support folder rename?
 //
 //  - FIXME: creating a NEW folder
 
