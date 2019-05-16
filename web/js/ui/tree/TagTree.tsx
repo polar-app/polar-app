@@ -96,8 +96,6 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
     private onCreated(path: string) {
 
-        console.log("FIXME created " + path);
-
         const tags = [...this.state.tags];
 
         tags.push({
