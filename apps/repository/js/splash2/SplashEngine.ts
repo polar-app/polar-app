@@ -12,6 +12,7 @@ import {DurationStr} from '../../../../web/js/util/TimeDurations';
 import {ExternalEngineState} from './rules_engine/Engine';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
+import {Duration} from '../../../../web/js/util/TimeDurations';
 
 
 export class SplashEngine {
@@ -88,6 +89,7 @@ class LocalStorageExternalState {
 export interface SplashEventHandlers extends EventHandlers {
     readonly onWhatsNew: () => void;
     readonly onNetPromoter: () => void;
+    readonly onSuggestions: () => void;
 }
 
 export interface MutableUserFacts {
@@ -107,6 +109,65 @@ export interface MutableUserFacts {
 export interface UserFacts extends Readonly<MutableUserFacts> {
 
 }
+
+interface SuggestionsState {
+
+}
+
+class SuggestionsRule implements Rule<UserFacts, SplashEventHandlers, SuggestionsState> {
+
+    public run(facts: Readonly<UserFacts>,
+               eventMap: EventMap<SplashEventHandlers>,
+               state?: Readonly<SuggestionsState>): RuleFactPair<UserFacts, SuggestionsState> {
+
+        if (! state) {
+            state = {};
+        }
+
+        const canShow = () => {
+
+            // prompt for suggestion if the user has been using polar for at LEAST
+            // three days and we are at least 15m from the last event.
+
+            const hasExistingAgedDatastore = () => {
+                return UserFactsUtils.hasExistingAgedDatastore(facts, '3d');
+            };
+
+            const hasMinimumTimeSinceLastEvent = () => {
+
+                const epoch = EventMaps.latestExecution(eventMap);
+
+                return hasMinimumTimeSince(epoch, '15m');
+
+            };
+
+            if (! hasExistingAgedDatastore()) {
+                return false;
+            }
+
+            if (! hasMinimumTimeSinceLastEvent()) {
+                return false;
+            }
+
+            if (! hasTourTerminated()) {
+                return false;
+            }
+
+            return true;
+
+        };
+
+        if (canShow()) {
+            eventMap.onSuggestions.handler();
+        }
+
+        return [facts, state];
+
+    }
+
+}
+
+
 
 interface WhatsNewState {
 
@@ -138,6 +199,51 @@ interface NetPromoterState {
 
 }
 
+class UserFactsUtils {
+
+    public static hasExistingAgedDatastore(facts: UserFacts, duration: Duration) {
+
+        // datastore should be created for at least 7 days.
+
+        if (facts.datastoreCreated) {
+
+            const since = ISODateTimeStrings.parse(facts.datastoreCreated);
+
+            if (TimeDurations.hasElapsed(since, duration)) {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+
+}
+
+function hasMinimumTimeSince(epoch: ISODateTimeString | undefined,
+                             duration: DurationStr,
+                             defaultValue: boolean = true) {
+
+    if (epoch) {
+
+        const since = ISODateTimeStrings.parse(epoch);
+        return TimeDurations.hasElapsed(since, duration);
+
+    } else {
+        // our epoch hasn't happened yet so it's ok to send out this message.
+        return defaultValue;
+    }
+
+}
+
+function hasTourTerminated() {
+    // TODO: I think this should be a fact and we should not measure
+    // it directly.
+    return LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
+};
+
+
 class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromoterState> {
 
     public run(facts: Readonly<UserFacts>,
@@ -149,37 +255,7 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
         }
 
         const hasExistingAgedDatastore = () => {
-
-            // datastore should be created for at least 7 days.
-
-            if (facts.datastoreCreated) {
-
-                const since = ISODateTimeStrings.parse(facts.datastoreCreated);
-
-                if (TimeDurations.hasElapsed(since, '1w')) {
-                    return true;
-                }
-
-            }
-
-            return false;
-
-        };
-
-        const hasMinimumTimeSince = (epoch: ISODateTimeString | undefined,
-                                     duration: DurationStr,
-                                     defaultValue: boolean = true) => {
-
-            if (epoch) {
-
-                const since = ISODateTimeStrings.parse(epoch);
-                return TimeDurations.hasElapsed(since, duration);
-
-            } else {
-                // our epoch hasn't happened yet so it's ok to send out this message.
-                return defaultValue;
-            }
-
+            return UserFactsUtils.hasExistingAgedDatastore(facts, '1w');
         };
 
         const hasMinimumTimeSinceLastEvent = () => {
@@ -193,12 +269,6 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
         const hasMinimumTimeSinceLastNPS = () => {
             const epoch = eventMap.onNetPromoter.lastExecuted;
             return hasMinimumTimeSince(epoch, '7d');
-        };
-
-        const hasTourTerminated = () => {
-            // TODO: I think this should be a fact and we should not measure
-            // it directly.
-            return LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
         };
 
         const canShow = () => {

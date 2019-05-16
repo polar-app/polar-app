@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import Input from 'reactstrap/lib/Input';
 import {TakeExtendedSurveyButton} from './TakeExtendedSurveyButton';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 export class Suggestions extends React.Component<IProps, IState> {
 
@@ -21,7 +22,7 @@ export class Suggestions extends React.Component<IProps, IState> {
         const Description = () => {
 
             if (this.props.description) {
-                return <p className="text-center">{this.props.description}</p>;
+                return <p>{this.props.description}</p>;
             } else {
                 return <div></div>;
             }
@@ -39,7 +40,7 @@ export class Suggestions extends React.Component<IProps, IState> {
                         }}
                         className="border rounded shadow bg-white p-3">
 
-                <h3 className="text-center">{this.props.title}</h3>
+                <h3>{this.props.title}</h3>
 
                 <div className="ml-auto mr-auto">
                     <Description/>
@@ -80,14 +81,10 @@ export class Suggestions extends React.Component<IProps, IState> {
 
         if (! this.props.noEvent) {
 
-            // RendererAnalytics.event({
-            //     category: this.props.category,
-            //     action: `${rating}`,
-            //     value: rating
-            // });
-
-            // console.log(`Sent feedback for category ${this.props.category}:
-            // ${rating}`);
+            RendererAnalytics.event({
+                category: this.props.category,
+                action: 'sent-suggestion',
+            });
 
         }
 

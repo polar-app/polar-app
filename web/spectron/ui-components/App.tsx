@@ -61,6 +61,7 @@ import {TreeView} from '../../js/ui/tree/TreeView';
 import {TagNodes} from '../../js/tags/TagNode';
 import {Tags} from '../../js/tags/Tags';
 import {TagTree} from '../../js/ui/tree/TagTree';
+import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
 
 const styles = {
     swatch: {
@@ -164,7 +165,11 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <TagTree tags={tags} onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>
+                <Suggestions category={"asdf"}
+                             title={"How should we improve Polar?"}
+                             description="We need your help to improve Polar!  In your opinion what should we do to make it better?"/>
+
+                {/*<TagTree tags={tags} onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>*/}
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}
