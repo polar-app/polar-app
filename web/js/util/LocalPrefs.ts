@@ -123,12 +123,68 @@ export class LocalPrefs {
     }
 
     public static get(key: string): Optional<string> {
-        return Optional.of(window.localStorage.getItem(key));
+
+        const storage = StorageBackends.get();
+
+        return storage.get(key);
     }
 
     public static set(key: string, value: string): void {
+
+        const storage = StorageBackends.get();
+
+        storage.set(key, value);
+
+    }
+
+}
+
+export class StorageBackends {
+
+    public static delegate?: IStorageBackend;
+
+    public static get() {
+
+        if (this.delegate) {
+            return this.delegate;
+        }
+
+        return new LocalStorageBackend();
+
+    }
+
+}
+
+interface IStorageBackend {
+
+    get(key: string): Optional<string>;
+
+    set(key: string, value: string): void;
+
+}
+
+class LocalStorageBackend {
+
+    public get(key: string): Optional<string> {
+        return Optional.of(window.localStorage.getItem(key));
+    }
+
+    public set(key: string, value: string): void {
         window.localStorage.setItem(key, value);
     }
 
 }
 
+export class MockStorageBackend {
+
+    private backing: {[key: string]: string} = {};
+
+    public get(key: string): Optional<string> {
+        return Optional.of(this.backing[key]);
+    }
+
+    public set(key: string, value: string): void {
+        this.backing[key] = value;
+    }
+
+}

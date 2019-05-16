@@ -20,7 +20,7 @@ terminate() {
 
 mkdir -p target/test-results/mocha/
 
-for file in `find web/js -name '*Test.js' | sort -f`; do
+for file in `find apps web/js -name '*Test.js' | sort -f`; do
 
     echo "=========="
     echo "${file}"
