@@ -8,10 +8,6 @@ description: Polar 1.19 Released With Area Highlights and Updated Annotations Vi
 
 # Polar 1.19 Released With Area Highlights and Updated Annotations View
 
-Polar 1.19 has been a lot of work but it's finally out the door.
-
-There are a few we want to highlight about this release.
-
 <div class="embed-responsive embed-responsive-16by9">
 <iframe class="embed-responsive-item"  
         width="560"
@@ -22,20 +18,36 @@ There are a few we want to highlight about this release.
 </div>
 
 <br/>
+<br/>
+
+Polar 1.19 has been a lot of work but it's finally out the door.
+
+If you haven't updated Polar in a while make sure you're on the latest version 
+by going to Help | About or Help | Check for Updates.
+
+There are a few we want to highlight about this release.
 
 ## Area Highlights
 
 Area highlights are now shown in the sidebar and updated and resized while you
 drag the area highlight box.
 
-<img class="img-fluid" src="/assets/screenshots/1-19-sidebar.jpeg">
+This was frequently requested by our users and allows you to select mathematical
+figures and illustrations for annotation.
+
+<img class="img-fluid img-shadow" src="/assets/screenshots/1-19-sidebar.jpeg">
+<br/>
+<br/>
+
 
 ## Updated Annotations View
 
 We've updated the annotations view to show preview annotations and a better view
 of each annotation including showing area highlights.
 
-<img class="img-fluid" src="/assets/screenshots/1-19-area-highlights.jpeg">
+<img class="img-fluid img-shadow" src="https://getpolarized.io/assets/screenshots/annotations-view.webp">
+<br/>
+<br/>
 
 ## Color Selector
 
@@ -46,7 +58,12 @@ already a step in the right directly.
 Technically we support any RGB value but we're limiting the colors you can
 select for now just to make the UI simpler and easy to use.
 
-<img class="img-fluid" src="/assets/screenshots/1-19-colors.png">
+
+<p class="text-center">
+<img class="img-fluid img-shadow" src="/assets/screenshots/1-19-colors.png">
+</p>
+<br/>
+<br/>
 
 ## Performance Improvements
 

@@ -60,6 +60,5 @@ exclude:
   - firebase.json
   - package.json
   - package-lock.json
-  - feed.xml
   - Gemfile
   - Gemfile.lock
