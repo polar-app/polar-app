@@ -61,7 +61,7 @@ export class RendererAnalytics {
     public static event(args: IEventArgs): void {
 
         if (! isBrowserContext) {
-            log.warn("Not called from browser context");
+            // log.warn("Not called from browser context");
             return;
         }
 

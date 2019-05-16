@@ -64,6 +64,14 @@ describe('SplashEngine', function() {
         assert.equal(suggestionsCalled, 0);
         assert.equal(netPromoterCalled, 2);
 
+        TestingTime.forward('1d');
+        TestingTime.forward('1m');
+
+        engine.run();
+        assert.equal(whatsNewCalled, 0);
+        assert.equal(suggestionsCalled, 1);
+        assert.equal(netPromoterCalled, 2);
+
     });
 
     it('version upgrade with persisted external state', function() {

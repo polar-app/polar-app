@@ -13,7 +13,7 @@ import {ExternalEngineState} from './rules_engine/Engine';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {Duration} from '../../../../web/js/util/TimeDurations';
-
+import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 
 export class SplashEngine {
 
@@ -134,23 +134,33 @@ class SuggestionsRule implements Rule<UserFacts, SplashEventHandlers, Suggestion
                 return UserFactsUtils.hasExistingAgedDatastore(facts, '3d');
             };
 
-            const hasMinimumTimeSinceLastEvent = () => {
-
-                const epoch = EventMaps.latestExecution(eventMap);
-
-                return hasMinimumTimeSince(epoch, '15m');
-
+            const hasMinimumTimeSinceLastNPS = () => {
+                const epoch = eventMap.onNetPromoter.lastExecuted;
+                return hasMinimumTimeSince(epoch, '1d');
             };
 
-            if (! hasExistingAgedDatastore()) {
+            const hasMinimumTimeSinceLastEvent = () => {
+                const epoch = EventMaps.latestExecution(eventMap);
+                return hasMinimumTimeSince(epoch, '15m');
+            };
+
+            if (! hasMinimumTimeSinceLastEvent()) {
+                RendererAnalytics.event({category: 'splash-suggestions-skipped', action: 'reason-has-minimum-time-since-last-event'});
                 return false;
             }
 
-            if (! hasMinimumTimeSinceLastEvent()) {
+            if (! hasExistingAgedDatastore()) {
+                RendererAnalytics.event({category: 'splash-suggestions-skipped', action: 'reason-has-existing-aged-datastore'});
+                return false;
+            }
+
+            if (! hasMinimumTimeSinceLastNPS()) {
+                RendererAnalytics.event({category: 'splash-suggestions-skipped', action: 'reason-has-minimum-time-since-last-nps'});
                 return false;
             }
 
             if (! hasTourTerminated()) {
+                RendererAnalytics.event({category: 'splash-suggestions-skipped', action: 'reason-has-tour-terminated'});
                 return false;
             }
 
@@ -196,9 +206,6 @@ class WhatsNewRule implements Rule<UserFacts, SplashEventHandlers, WhatsNewState
 
 }
 
-interface NetPromoterState {
-
-}
 
 class UserFactsUtils {
 
@@ -242,8 +249,10 @@ function hasTourTerminated() {
     // TODO: I think this should be a fact and we should not measure
     // it directly.
     return LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
-};
+}
 
+interface NetPromoterState {
+}
 
 class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromoterState> {
 
@@ -260,11 +269,8 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
         };
 
         const hasMinimumTimeSinceLastEvent = () => {
-
             const epoch = EventMaps.latestExecution(eventMap);
-
             return hasMinimumTimeSince(epoch, '15m');
-
         };
 
         const hasMinimumTimeSinceLastNPS = () => {
@@ -275,18 +281,22 @@ class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromote
         const canShow = () => {
 
             if (! hasExistingAgedDatastore()) {
+                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-existing-aged-datastore'});
                 return false;
             }
 
             if (! hasMinimumTimeSinceLastEvent()) {
+                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-minimum-time-since-last-event'});
                 return false;
             }
 
             if (! hasMinimumTimeSinceLastNPS()) {
+                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-minimum-time-since-last-nps'});
                 return false;
             }
 
             if (! hasTourTerminated()) {
+                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-tour-terminated'});
                 return false;
             }
 
