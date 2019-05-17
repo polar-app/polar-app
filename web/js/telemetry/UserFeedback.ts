@@ -19,13 +19,13 @@ export class UserFeedbacks {
 
 }
 
-interface UserFeedback {
+export interface UserFeedback {
 
     /**
      * The score they gave us.  This is important as I need this to prioritize
      * their feedback appropriately.
      */
-    readonly netPromoterScore: NetPromoterScore;
+    readonly netPromoterScore: NetPromoterScore | null;
 
     /**
      * Their actual text that they provided.
@@ -41,5 +41,5 @@ interface UserFeedback {
 
 }
 
-type NetPromoterScore = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type NetPromoterScore = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 

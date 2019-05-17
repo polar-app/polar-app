@@ -9,6 +9,7 @@ import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {NPSModal} from './nps/NPSModal';
 import {WhatsNewModal} from './whats_new/WhatsNewModal';
+import {SuggestionsModal} from './suggestions/SuggestionsModal';
 
 const log = Logger.create();
 
@@ -69,7 +70,7 @@ export class Splashes extends React.Component<IProps, IState> {
                 return <NPSModal/>;
 
             case 'suggestions':
-                return <div></div>; // FIXME: noop for now
+                return <SuggestionsModal/>;
 
             case 'whats-new':
                 return <WhatsNewModal/>;

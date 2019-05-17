@@ -129,7 +129,11 @@ export class LocalPrefs {
         return storage.get(key);
     }
 
-    public static set(key: string, value: string): void {
+    public static set(key: string, value: string | number): void {
+
+        if (typeof value === 'number') {
+            value = value.toString();
+        }
 
         const storage = StorageBackends.get();
 

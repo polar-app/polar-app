@@ -49,10 +49,8 @@ export class Suggestions extends React.Component<IProps, IState> {
                 </div>
 
                 <Input type="textarea"
-                       autofocus
-                       onChange={event => this.value = value.currentTarget.value}
+                       onChange={event => this.value = event.target.value}
                        style={{height: '8em'}}/>
-
 
                 <div className="mt-2" style={{display: 'flex'}}>
 
@@ -94,7 +92,7 @@ export class Suggestions extends React.Component<IProps, IState> {
         this.markCompleted();
 
         if (this.props.onDone) {
-            this.props.onDone();
+            this.props.onDone(this.value);
         }
 
     }
@@ -122,7 +120,7 @@ export interface IProps {
      */
     readonly noEvent?: boolean;
 
-    readonly onDone?: () => void;
+    readonly onDone?: (text: string) => void;
 
 }
 

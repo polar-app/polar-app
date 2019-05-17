@@ -72,11 +72,11 @@ export class Optional<T> {
      */
     public getOrUndefined(): T | undefined {
 
-        if (this.value === null) {
+        if (! this.isPresent()) {
             return undefined;
         }
 
-        return this.value;
+        return this.value!;
     }
 
     /**
@@ -84,7 +84,7 @@ export class Optional<T> {
      */
     public getOrNull(): T | null {
 
-        if (this.value === null) {
+        if (! this.isPresent()) {
             return null;
         }
 

@@ -7,36 +7,43 @@ import {MachineIDs} from '../../../../../web/js/util/MachineIDs';
 import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
 import {UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 import {Suggestions} from '../../../../../web/js/ui/feedback/Suggestions';
+import {LocalPrefs} from '../../../../../web/js/util/LocalPrefs';
+import {SplashKeys} from '../SplashKeys';
+import {UserFeedback} from '../../../../../web/js/telemetry/UserFeedback';
+import {NetPromoterScore} from '../../../../../web/js/telemetry/UserFeedback';
 
 export class SuggestionsModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-        this.onRated = this.onRated.bind(this);
+        this.onSuggestion = this.onSuggestion.bind(this);
     }
 
     public render() {
 
         return (
 
-
             <Suggestions category={"user-suggestions"}
                          title={"How should we improve Polar?"}
-                         description="We need your help to improve Polar!  In your opinion what should we do to make it better?"/>
+                         description="We need your help to improve Polar!  In your opinion what should we do to make it better?"
+                         onDone={text => this.onSuggestion(text)}/>
 
         );
     }
 
-    private onRated(rating: Rating) {
+    private onSuggestion(text: string) {
 
         Toaster.success("Thanks for your feedback!");
 
-        // FIXME: we have to use the cached value of the NPS now.
+        const netPromoterScore = LocalPrefs.get(SplashKeys.NET_PROMOTER_SCORE)
+            .map(current => Number.parseInt(current))
+            .map(current => current as NetPromoterScore)
+            .getOrNull();
 
-        const userFeedback = {
+        const userFeedback: UserFeedback = {
             machine: MachineIDs.get(),
-            text: null,
-            netPromoterScore: rating,
+            text,
+            netPromoterScore,
             created: ISODateTimeStrings.create()
         };
 
