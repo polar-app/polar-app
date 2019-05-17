@@ -115,68 +115,6 @@ interface SuggestionsState {
 
 }
 
-/**
- *
- * Determines if we can fire a major rule.
- *
- *  - 3 days since the datastore has been created (aged)
- *  - 15 minutes since ANY rule fired
- *  - 7 days since this rule last fired.
- *
- * @param facts The facts to work with
- * @param eventMap The events to look at their last firing times.
- * @param event The event handler for this rule.
- * @param analyticsKey The key we use to fire analytics for tracking.
- */
-function canFireMajorRule(facts: Readonly<UserFacts>,
-                          eventMap: EventMap<SplashEventHandlers>,
-                          event: Event,
-                          analyticsKey: string) {
-
-    // Prompt for suggestion if the user has been using polar for at LEAST three
-    // days and we are at least 15m from the last event.
-
-    const hasExistingAgedDatastore = () => {
-        return UserFactsUtils.hasExistingAgedDatastore(facts, '3d');
-    };
-
-    const hasMinimumTimeSinceLastEvent = () => {
-        const lastEventExecution = EventMaps.latestExecution(eventMap);
-        return hasMinimumTimeSince(lastEventExecution, '15m');
-    };
-    const hasMinimumTimeSinceLastRuleFired = () => {
-        const epoch = event.lastExecuted;
-        return hasMinimumTimeSince(epoch, '7d');
-    };
-
-    if (! hasExistingAgedDatastore()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-existing-aged-datastore'});
-        return false;
-    }
-
-    if (! hasMinimumTimeSinceLastMajorPrompt(eventMap)) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-major-prompt'});
-        return false;
-    }
-
-    if (! hasMinimumTimeSinceLastEvent()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-event'});
-        return false;
-    }
-    if (! hasMinimumTimeSinceLastRuleFired()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-rule-fired'});
-        return false;
-    }
-
-    if (! hasTourTerminated()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-tour-terminated'});
-        return false;
-    }
-
-    return true;
-
-}
-
 class SuggestionsRule implements Rule<UserFacts, SplashEventHandlers, SuggestionsState> {
 
     public run(facts: Readonly<UserFacts>,
@@ -255,25 +193,66 @@ class WhatsNewRule implements Rule<UserFacts, SplashEventHandlers, WhatsNewState
 }
 
 
-class UserFactsUtils {
+/**
+ *
+ * Determines if we can fire a major rule.
+ *
+ *  - 3 days since the datastore has been created (aged)
+ *  - 15 minutes since ANY rule fired
+ *  - 7 days since this rule last fired.
+ *
+ * @param facts The facts to work with
+ * @param eventMap The events to look at their last firing times.
+ * @param event The event handler for this rule.
+ * @param analyticsKey The key we use to fire analytics for tracking.
+ */
+function canFireMajorRule(facts: Readonly<UserFacts>,
+                          eventMap: EventMap<SplashEventHandlers>,
+                          event: Event,
+                          analyticsKey: string) {
 
-    public static hasExistingAgedDatastore(facts: UserFacts, duration: Duration) {
+    // Prompt for suggestion if the user has been using polar for at LEAST three
+    // days and we are at least 15m from the last event.
 
-        // datastore should be created for at least 7 days.
+    const hasExistingAgedDatastore = () => {
+        return UserFactsUtils.hasExistingAgedDatastore(facts, '3d');
+    };
 
-        if (facts.datastoreCreated) {
+    const hasMinimumTimeSinceLastEvent = () => {
+        const lastEventExecution = EventMaps.latestExecution(eventMap);
+        return hasMinimumTimeSince(lastEventExecution, '15m');
+    };
 
-            const since = ISODateTimeStrings.parse(facts.datastoreCreated);
+    const hasMinimumTimeSinceLastRuleFired = () => {
+        const epoch = event.lastExecuted;
+        return hasMinimumTimeSince(epoch, '7d');
+    };
 
-            if (TimeDurations.hasElapsed(since, duration)) {
-                return true;
-            }
-
-        }
-
+    if (! hasExistingAgedDatastore()) {
+        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-existing-aged-datastore'});
         return false;
-
     }
+
+    if (! hasMinimumTimeSinceLastMajorPrompt(eventMap)) {
+        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-major-prompt'});
+        return false;
+    }
+
+    if (! hasMinimumTimeSinceLastEvent()) {
+        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-event'});
+        return false;
+    }
+    if (! hasMinimumTimeSinceLastRuleFired()) {
+        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-rule-fired'});
+        return false;
+    }
+
+    if (! hasTourTerminated()) {
+        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-tour-terminated'});
+        return false;
+    }
+
+    return true;
 
 }
 
@@ -311,4 +290,26 @@ function hasTourTerminated() {
     // TODO: I think this should be a fact and we should not measure
     // it directly.
     return LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
+}
+
+class UserFactsUtils {
+
+    public static hasExistingAgedDatastore(facts: UserFacts, duration: Duration) {
+
+        // datastore should be created for at least 7 days.
+
+        if (facts.datastoreCreated) {
+
+            const since = ISODateTimeStrings.parse(facts.datastoreCreated);
+
+            if (TimeDurations.hasElapsed(since, duration)) {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+
 }
