@@ -964,7 +964,7 @@
     }
 
     #pricing table th {
-      width: 25%;
+      width: 20%;
       vertical-align: top;
     }
 
@@ -1006,6 +1006,14 @@
       text-align: left;
     }
 
+    #pricing th div {
+        margin-top: auto;
+    }
+
+    #pricing .buy-links {
+        text-align: center;
+    }
+
   </style>
 
 <div id="pricing" class="hidden-xs">
@@ -1025,11 +1033,9 @@
 
           <h3 class="text-xxlarge">$0</h3>
           <p class="text-small text-tint">
-            We want as many people to use Polar as possible.
+            We want as many people to use Polar as possible.  Most people
+            easily stay within these limits.
           </p>
-          <div>
-<!--            <a class="btn bg-btn buy-non-saas" rel="nofollow" href="/wysiwyg-editor/checkout/step1/16">Buy now</a>-->
-          </div>
           <br>
         </th>
         <th class="highlight-plan">
@@ -1038,9 +1044,6 @@
           <h3 class="text-xxlarge">$4.99<span class="text-small">/month</span></h3>
           <p class="text-small text-tint">Less than the price of a cup of
             coffee.  Need more storage and ready to move up to the next level?  We're ready when you are!</p>
-          <div>
-            <a class="btn r-btn shadow-level-1 highlight" rel="" href="https://opencollective.com/polar-bookshelf/contribute/tier/6659-bronze">Buy now</a>
-          </div>
           <br>
         </th>
         <th class="">
@@ -1050,14 +1053,39 @@
           <p class="text-small text-tint">
             Designed for Polar power users!  Need more storage?  Let's do this!
           </p>
-          <div>
-            <a class="btn bg-btn" rel="" href="https://opencollective.com/polar-bookshelf/contribute/tier/6661-silver">Buy now</a>
-          </div>
           <br>
         </th>
+        <th class="">
+          <p class="text-xlarge ">Gold</p>
+
+          <h3 class="text-xxlarge">$14.99<span class="text-small">/month</span></h3>
+          <p class="text-small text-tint">
+              You can't live without Polar
+              and have a massive amount of data that you need to keep secure.
+          </p>
+          <br>
+      </th>
       </tr>
       </thead>
       <tbody>
+
+      <tr class="buy-links">
+          <td>
+          </td>
+          <td>
+          </td>
+          <td class="highlight-plan">
+              <a class="btn r-btn shadow-level-1 highlight" rel="" href="https://opencollective.com/polar-bookshelf/contribute/tier/6659-bronze">Buy now</a>
+          </td>
+          <td>
+              <a class="btn bg-btn" rel="" href="https://opencollective.com/polar-bookshelf/contribute/tier/6661-silver">Buy now</a>
+          </td>
+          <td class="">
+              <a class="btn bg-btn" rel="" href="https://opencollective.com/polar-bookshelf/contribute/tier/9247-gold">Buy now</a>
+          </td>
+      </tr>
+
+
       <tr>
         <td>
           Automatic Updates
@@ -1072,6 +1100,9 @@
         <td class="">
           <i class="fa fa-check"></i>
         </td>
+          <td class="">
+              <i class="fa fa-check"></i>
+          </td>
       </tr>
       <tr>
         <td>
@@ -1087,6 +1118,9 @@
         <td class="">
           <i class="fa fa-check"></i>
         </td>
+          <td class="">
+              <i class="fa fa-check"></i>
+          </td>
       </tr>
       <tr>
         <td>
@@ -1102,6 +1136,9 @@
         <td class="">
           unlimited
         </td>
+          <td class="">
+              unlimited
+          </td>
       </tr>
       <tr>
         <td>
@@ -1115,8 +1152,11 @@
           Up to 2GB
         </td>
         <td class="">
-          2GB to 50GB
+          Up to 50GB
         </td>
+          <td class="">
+              Up to 1000GB
+          </td>
       </tr>
       <tr>
         <td>
@@ -1130,8 +1170,11 @@
           Up to 500
         </td>
         <td class="">
-          Up to 15,000
+          Up to 1500
         </td>
+          <td class="">
+              unlimited
+          </td>
       </tr>
       <tr>
         <td>
@@ -1147,6 +1190,9 @@
         <td class="">
           <i class="fa fa-check"></i>
         </td>
+          <td class="">
+              <i class="fa fa-check"></i>
+          </td>
       </tr>
 
       </tbody>
