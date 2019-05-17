@@ -1,6 +1,8 @@
 
 # 1.19.4
 
+- we are now prompting the user for suggestions on how to fix polar.
+
 - unique machines code properly merged 
 
 - enable snap distribution again. 

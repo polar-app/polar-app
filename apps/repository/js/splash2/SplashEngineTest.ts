@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {TestingTime} from '../../../../web/js/test/TestingTime';
-import {UserFacts} from './SplashEngine';
 import {SplashEventHandlers} from './SplashEngine';
 import {SplashEngine} from './SplashEngine';
 import {MutableUserFacts} from './SplashEngine';
@@ -8,6 +7,9 @@ import {MockStorageBackend} from '../../../../web/js/util/LocalPrefs';
 import {StorageBackends} from '../../../../web/js/util/LocalPrefs';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
+import {assertJSON} from '../../../../web/js/test/Assertions';
+import {TimeDurations} from '../../../../web/js/util/TimeDurations';
+import {Duration} from '../../../../web/js/util/TimeDurations';
 
 describe('SplashEngine', function() {
 
@@ -19,6 +21,34 @@ describe('SplashEngine', function() {
     afterEach(function() {
         StorageBackends.delegate = undefined;
         TestingTime.unfreeze();
+    });
+
+    it('Scan forward in the future with default configuration', function() {
+
+        LifecycleToggle.mark(LifecycleEvents.TOUR_TERMINATED);
+
+        const facts: MutableUserFacts = {
+
+            datastoreCreated: "2012-02-02T11:38:49.321Z",
+
+            version: "1.0.0",
+
+        };
+
+        const [createSnapshot, eventHandlers] = createEventHandlers();
+
+        const engine = new SplashEngine(facts, eventHandlers);
+
+        testEngineInTheFuture(engine);
+
+        assertJSON(createSnapshot(), {
+            "netPromoterCalled": 9,
+            "suggestionsCalled": 9,
+            "whatsNewCalled": 0
+        });
+
+        console.log("worked!");
+
     });
 
     it('first NPS, then version upgrade', function() {
@@ -71,6 +101,8 @@ describe('SplashEngine', function() {
         assert.equal(whatsNewCalled, 0);
         assert.equal(suggestionsCalled, 1);
         assert.equal(netPromoterCalled, 2);
+
+        console.log("worked!");
 
     });
 
@@ -164,3 +196,50 @@ describe('SplashEngine', function() {
     });
 
 });
+
+/**
+ * Keep testing by in the future by running the engine over and over and see
+ * how many times we fire and WHAT we fire.
+ */
+function testEngineInTheFuture(engine: SplashEngine, duration: Duration = '60d') {
+
+    const epoch = new Date();
+
+    while (true) {
+
+        TestingTime.forward('15m');
+        engine.run();
+
+        if (TimeDurations.hasElapsed(epoch, duration)) {
+            break;
+        }
+
+    }
+
+}
+
+export type CreateSnapshotFunction = () => any;
+
+function createEventHandlers(): [CreateSnapshotFunction, SplashEventHandlers] {
+
+    let whatsNewCalled: number = 0;
+    let netPromoterCalled: number = 0;
+    let suggestionsCalled: number = 0;
+
+    const eventHandlers: SplashEventHandlers = {
+        onWhatsNew: () => ++whatsNewCalled,
+        onNetPromoter: () => ++netPromoterCalled,
+        onSuggestions: () => ++suggestionsCalled,
+    };
+
+    const createSnapshot = () => {
+        return {
+            whatsNewCalled,
+            netPromoterCalled,
+            suggestionsCalled
+        };
+    };
+
+    return [createSnapshot, eventHandlers];
+
+}
