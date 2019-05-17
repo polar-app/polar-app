@@ -69,7 +69,7 @@ export class PagemarkController {
                 break;
 
             case "set-pagemark-mode-table-of-appendix":
-                this.onSetPagemarkMode(triggerEvent, PagemarkMode.APPENDEX);
+                this.onSetPagemarkMode(triggerEvent, PagemarkMode.APPENDIX);
                 break;
 
             case "set-pagemark-mode-table-of-references":

@@ -31,10 +31,10 @@ export enum PagemarkMode {
     TABLE_OF_CONTENTS = "TABLE_OF_CONTENTS",
 
     /**
-     * This part of the document is the appendex and not part of the readable
+     * This part of the document is the appendix and not part of the readable
      * portion of the document.
      */
-    APPENDEX = "APPENDEX",
+    APPENDIX = "APPENDIX",
 
     /**
      * This part of the document holds the references (citations) and not part
