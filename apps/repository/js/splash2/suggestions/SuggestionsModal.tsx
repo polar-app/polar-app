@@ -11,6 +11,7 @@ import {LocalPrefs} from '../../../../../web/js/util/LocalPrefs';
 import {SplashKeys} from '../SplashKeys';
 import {UserFeedback} from '../../../../../web/js/telemetry/UserFeedback';
 import {NetPromoterScore} from '../../../../../web/js/telemetry/UserFeedback';
+import {RendererAnalytics} from '../../../../../web/js/ga/RendererAnalytics';
 
 export class SuggestionsModal extends React.Component<IProps, IState> {
 
@@ -39,6 +40,10 @@ export class SuggestionsModal extends React.Component<IProps, IState> {
             .map(current => Number.parseInt(current))
             .map(current => current as NetPromoterScore)
             .getOrNull();
+
+        if (netPromoterScore === null) {
+            RendererAnalytics.event({category: 'suggestions-splash', action: 'no-nps'});
+        }
 
         const userFeedback: UserFeedback = {
             machine: MachineIDs.get(),
