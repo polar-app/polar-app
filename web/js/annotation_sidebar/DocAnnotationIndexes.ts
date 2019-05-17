@@ -20,7 +20,7 @@ export class DocAnnotationIndexes {
     public static rebuild(docAnnotationIndex: DocAnnotationIndex,
                           ...docAnnotations: DocAnnotation[]): DocAnnotationIndex {
 
-        const docAnnotationMap = Object.assign({}, docAnnotationIndex.docAnnotationMap);
+        const docAnnotationMap = {...docAnnotationIndex.docAnnotationMap};
         let sortedDocAnnotations: SortedDocAnnotations = [];
 
         for (const docAnnotation of docAnnotations) {
