@@ -201,6 +201,32 @@ class SuggestionsRule implements Rule<UserFacts, SplashEventHandlers, Suggestion
 }
 
 
+interface NetPromoterState {
+}
+
+class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromoterState> {
+
+    public run(facts: Readonly<UserFacts>,
+               eventMap: EventMap<SplashEventHandlers>,
+               state?: Readonly<NetPromoterState>): RuleFactPair<UserFacts, NetPromoterState> {
+
+        if (! state) {
+            state = {};
+        }
+
+        const canShow =
+            () => canFireMajorRule(facts, eventMap, eventMap.onNetPromoter, 'splash-nps-skipped');
+
+        if (canShow()) {
+            eventMap.onNetPromoter.handler();
+        }
+
+        return [facts, state];
+
+    }
+
+}
+
 
 interface WhatsNewState {
 
@@ -285,72 +311,4 @@ function hasTourTerminated() {
     // TODO: I think this should be a fact and we should not measure
     // it directly.
     return LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
-}
-
-interface NetPromoterState {
-}
-
-class NetPromoterRule implements Rule<UserFacts, SplashEventHandlers, NetPromoterState> {
-
-    public run(facts: Readonly<UserFacts>,
-               eventMap: EventMap<SplashEventHandlers>,
-               state?: Readonly<NetPromoterState>): RuleFactPair<UserFacts, NetPromoterState> {
-
-        if (! state) {
-            state = {};
-        }
-
-        const hasExistingAgedDatastore = () => {
-            return UserFactsUtils.hasExistingAgedDatastore(facts, '1w');
-        };
-
-        const hasMinimumTimeSinceLastEvent = () => {
-            const epoch = EventMaps.latestExecution(eventMap);
-            return hasMinimumTimeSince(epoch, '15m');
-        };
-
-        const hasMinimumTimeSinceLastNPS = () => {
-            const epoch = eventMap.onNetPromoter.lastExecuted;
-            return hasMinimumTimeSince(epoch, '7d');
-        };
-
-        const canShow = () => {
-
-            if (! hasExistingAgedDatastore()) {
-                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-existing-aged-datastore'});
-                return false;
-            }
-
-            if (! hasMinimumTimeSinceLastMajorPrompt(eventMap)) {
-                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-minimum-time-since-last-major-prompt'});
-                return false;
-            }
-
-            if (! hasMinimumTimeSinceLastEvent()) {
-                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-minimum-time-since-last-event'});
-                return false;
-            }
-
-            if (! hasMinimumTimeSinceLastNPS()) {
-                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-minimum-time-since-last-nps'});
-                return false;
-            }
-
-            if (! hasTourTerminated()) {
-                RendererAnalytics.event({category: 'splash-nps-skipped', action: 'reason-has-tour-terminated'});
-                return false;
-            }
-
-            return true;
-
-        };
-
-        if (canShow()) {
-            eventMap.onNetPromoter.handler();
-        }
-
-        return [facts, state];
-
-    }
-
 }
