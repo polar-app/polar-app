@@ -238,6 +238,15 @@ export class DatastoreTester {
 
             });
 
+            it("overview", async function() {
+
+                // right now just make sure we can call it and that the value
+                // it returns is is not undefined.
+                const overview = await datastore.overview();
+                assert.isDefined(overview);
+
+            });
+
             it("snapshot and make sure we receive a terminated batch at committed consistency.", async function() {
 
                 const writtenSnapshotReceived = new Latch<boolean>();
