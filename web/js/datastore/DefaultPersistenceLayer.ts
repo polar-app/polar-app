@@ -165,7 +165,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with
         // in practice.
-        const data = DocMetas.serialize(docMeta);
+        const data = DocMetas.serialize(docMeta, "");
 
         const docInfo = Object.assign({}, docMeta.docInfo);
 

@@ -8,8 +8,6 @@ import {Preconditions} from '../Preconditions';
 export class MetadataSerializer {
 
     public static serialize(object: any, spacing: string = "") {
-        // return JSON.stringify(object, MetadataSerializer.replacer, "");
-
         return JSON.stringify(object, null, spacing);
     }
 
