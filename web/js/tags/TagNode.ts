@@ -158,9 +158,9 @@ interface PathEntry extends RawPathEntry {
     readonly parent: RawPathEntry | undefined;
 }
 
-class TagNodeIndex {
+let SEQ: number = 0;
 
-    private seq: number = 0;
+class TagNodeIndex {
 
     private index: {[path: string]: MutableTagNode<TagDescriptor>} = {};
 
@@ -171,7 +171,7 @@ class TagNodeIndex {
         if (! this.index[path]) {
 
             this.index[path] = {
-                id: this.seq++,
+                id: SEQ++,
                 name,
                 path,
                 children: [],

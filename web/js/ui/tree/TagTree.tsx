@@ -20,13 +20,6 @@ class Styles {
         flexDirection: 'column'
     };
 
-    public static HEADER: React.CSSProperties = {
-    };
-
-    public static BODY: React.CSSProperties = {
-        flexGrow: 1
-    };
-
     public static FILTER_INPUT: React.CSSProperties = {
         height: 'auto',
         fontFamily: 'sans-serif',
@@ -56,6 +49,8 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
 
         // FIXME: this will NOT work I think because the IDs each time keep
         // changing???  but the TreeState should be reset each time I think.
+
+        console.log("FIXME: re-rendering");
 
         const root: TNode<TagDescriptor> = TagNodes.create(...this.state.tags);
 
