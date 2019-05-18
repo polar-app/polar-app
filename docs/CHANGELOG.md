@@ -1,5 +1,25 @@
 
+# 1.19.6
+
+- Fixed typo with "Appendix"
+
+- More aggressive prompting for suggestions but only 1x per week now.
+
+- new clipboard cleanser for properly handling the clipboard when pasting from 
+  part of the PDF.  The handling is not yet perfect but we're making steps in 
+  that direction at least.
+
+- Fixed bug with highlights vanishing when colors were changed
+
+- Fixed bugs with .debs 
+
+# 1.19.5
+
+- Fixes some bugs with snaps
+
 # 1.19.4
+
+- we are now prompting the user for suggestions on how to fix polar.
 
 - unique machines code properly merged 
 

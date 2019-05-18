@@ -28,7 +28,7 @@ export class TextHighlights {
         const updated = new TextHighlight({...existing, ...updates});
 
         DocMetas.withBatchedMutations(docMeta, () => {
-            delete pageMeta.textHighlights[id];
+            // delete pageMeta.textHighlights[id];
             pageMeta.textHighlights[id] = updated;
         });
 

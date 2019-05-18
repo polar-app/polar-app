@@ -61,6 +61,8 @@ import {TreeView} from '../../js/ui/tree/TreeView';
 import {TagNodes} from '../../js/tags/TagNode';
 import {Tags} from '../../js/tags/Tags';
 import {TagTree} from '../../js/ui/tree/TagTree';
+import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
+import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/SuggestionsModal';
 import {TagStr} from '../../../web/js/tags/Tag';
 
 const styles = {

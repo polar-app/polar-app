@@ -28,9 +28,9 @@ describe('PagemarkMode', function() {
                 "key": "table-of-contents"
             },
             {
-                "name": "APPENDEX",
-                "title": "appendex",
-                "key": "appendex"
+                "name": "APPENDIX",
+                "title": "appendix",
+                "key": "appendix"
             },
             {
                 "name": "REFERENCES",

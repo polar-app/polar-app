@@ -79,7 +79,7 @@ describe('TagNode', function() {
                 '/foo/bar'
             ].map(current => Tags.create(current))
              .map(current => {
-                    const count = Math.floor(Math.random() * 100);
+                    const count = 1;
                     return {...current, count};
                 });
 
@@ -89,25 +89,31 @@ describe('TagNode', function() {
                         "children": [
                             {
                                 "children": [],
+                                "count": 1,
                                 "id": 2,
                                 "name": "bar",
                                 "value": {
+                                    "count": 1,
                                     "id": "/foo/bar",
                                     "label": "/foo/bar"
                                 }
                             }
                         ],
+                        "count": 1,
                         "id": 1,
                         "name": "foo",
                         "value": {
+                            "count": 1,
                             "id": "/foo",
                             "label": "/foo"
                         }
                     }
                 ],
+                "count": 2,
                 "id": 0,
                 "name": "/",
                 "value": {
+                    "count": 2,
                     "id": "/",
                     "label": "/"
                 }
@@ -119,9 +125,11 @@ describe('TagNode', function() {
 
             assertJSON(TagNodes.create(), {
                 "children": [],
+                "count": 0,
                 "id": 0,
                 "name": "/",
                 "value": {
+                    "count": 0,
                     "id": "/",
                     "label": "/"
                 }

@@ -387,7 +387,7 @@ export class AbstractPagemarkComponent extends Component {
             case PagemarkMode.TABLE_OF_CONTENTS:
                 return PagemarkColors.GREY;
 
-            case PagemarkMode.APPENDEX:
+            case PagemarkMode.APPENDIX:
                 return PagemarkColors.GREY;
 
             case PagemarkMode.REFERENCES:

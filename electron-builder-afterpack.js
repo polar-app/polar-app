@@ -72,7 +72,7 @@ exports.default = async function(context) {
     };
 
     const isLinux =
-        context.targets.find(target => target.name === 'appImage' || target.name === 'snap');
+        context.targets.find(target => ['appImage', 'deb', 'snap', 'tar.gz'].includes(target.name));
 
     console.log({isLinux});
 

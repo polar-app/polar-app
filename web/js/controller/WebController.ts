@@ -14,6 +14,7 @@ import {AreaHighlightController} from '../highlights/area/controller/AreaHighlig
 import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCoverageEventListener';
 import {DocDetails} from '../metadata/DocDetails';
 import {Optional} from '../util/ts/Optional';
+import {ClipboardCleanser} from '../ui/ClipboardCleanser';
 
 
 const log = Logger.create();
@@ -41,7 +42,7 @@ export class WebController extends Controller {
 
         new PagemarkController(model).start();
         new DocTitleController(this.model).start();
-
+        ClipboardCleanser.register();
     }
 
     public async start() {
