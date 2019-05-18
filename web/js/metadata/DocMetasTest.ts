@@ -7,6 +7,7 @@ import {PagemarkType} from './PagemarkType';
 import {TestingTime} from '../test/TestingTime';
 import {TextHighlights} from './TextHighlights';
 import {Proxies} from '../proxies/Proxies';
+import {MockDocMetas} from './DocMetas';
 
 TestingTime.freeze();
 
@@ -42,6 +43,21 @@ describe('DocMetas', function() {
 
         });
 
+
+
+    });
+
+    describe('No whitespace option', function() {
+
+        // make sure no whitespace is used
+        const fingerprint = "0x001";
+
+        const docMeta = MockDocMetas.createMockDocMeta(fingerprint);
+        const json = DocMetas.serialize(docMeta, "");
+
+        assert.isTrue(json.startsWith("{\"annotationInfo\":{},\"version\":2,\"attachments\":{}"));
+
+        assert.equal(json.indexOf("\n"), -1);
 
 
     });
