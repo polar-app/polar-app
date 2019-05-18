@@ -1,6 +1,8 @@
 
 # 1.19.7
 
+- update to latest interactjs
+
 - Datastore 'overview' now works on Firebase and syncs up with cloud aware 
   datastore properly I think.
 
