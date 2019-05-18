@@ -5,11 +5,6 @@ import {Dialogs} from '../dialogs/Dialogs';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Tags} from '../../tags/Tags';
 
-class Styles {
-
-
-}
-
 export class TagCreateButton extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -54,7 +49,7 @@ export class TagCreateButton extends React.Component<IProps, IState> {
     }
 
     private onCreated(tag: TagStr, name: string) {
-        const path = tag + '/' + name;
+        const path =  createTag(tag, name);
         this.props.onCreated(path);
     }
 
@@ -72,7 +67,7 @@ interface IState {
 function createInputValidator(tag: string) {
 
     return (input: string) => {
-        const newTag = tag + '/' + input;
+        const newTag = createTag(tag, input);
 
         if (! Tags.validate(newTag).isPresent()) {
             console.warn("Given invalid tag: ", newTag);
@@ -86,6 +81,12 @@ function createInputValidator(tag: string) {
     };
 }
 
-function inputValidator(value: string) {
+function createTag(parent: string, child: string) {
+
+    if (parent === '/') {
+        return parent + child;
+    }
+
+    return parent + '/' + child;
 
 }
