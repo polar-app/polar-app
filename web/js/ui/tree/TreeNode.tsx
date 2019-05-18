@@ -1,13 +1,9 @@
 import * as React from 'react';
-import {DeepPureComponent} from '../../react/DeepPureComponent';
 import {TreeNodeChildren} from './TreeNodeChildren';
-import Button from 'reactstrap/lib/Button';
-import {Dictionaries} from '../../util/Dictionaries';
 import {isPresent} from '../../Preconditions';
 import {Preconditions} from '../../Preconditions';
 import {TreeState} from './TreeView';
 import {TNode} from './TreeView';
-import {NullCollapse} from '../null_collapse/NullCollapse';
 
 class Styles {
 
@@ -120,16 +116,6 @@ class Styles {
     };
 
 }
-
-// TODO
-
-//   - what about long press?
-//   - what about context menus?
-//   - FIXME: implement the onSelect handler to callback which nodes are
-//    actually selected and an object for each node.
-
-//
-//  - FIXME: creating a NEW folder
 
 export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 

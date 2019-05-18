@@ -50,9 +50,9 @@ export class TagTree extends React.Component<IProps, IState> {
         // FIXME: this will NOT work I think because the IDs each time keep
         // changing???  but the TreeState should be reset each time I think.
 
-        console.log("FIXME: re-rendering");
+        console.log("FIXME: re-rendering: ", this.state.tags);
 
-        const root: TNode<TagDescriptor> = TagNodes.create(...this.state.tags);
+        const root: TNode<TagDescriptor> = TagNodes.create(...this.props.tags);
 
         return (
 

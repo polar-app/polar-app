@@ -3,10 +3,6 @@ import {TreeNode} from './TreeNode';
 import {Dictionaries} from '../../util/Dictionaries';
 import {TagStr} from '../../tags/Tag';
 
-class Styles {
-
-}
-
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
     private readonly treeState: TreeState<V>;

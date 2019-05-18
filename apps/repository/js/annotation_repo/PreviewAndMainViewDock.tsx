@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import {FilteredTags} from '../FilteredTags';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
@@ -10,8 +9,7 @@ import AnnotationRepoTable from './AnnotationRepoTable';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
 import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
-import {ChannelFunction, Channels} from '../../../../web/js/util/Channels';
-import {ChannelCoupler} from '../../../../web/js/util/Channels';
+import {ChannelFunction} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 
@@ -46,7 +44,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
                             <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                      onFiltered={filters => this.props.filterChannel(filters)}
-                                                     tagPopoverPlacement="bottom-end"
+                                                     tagPopoverPlacement="auto"
                                                      right={
                                                          <div/>
                                                      }

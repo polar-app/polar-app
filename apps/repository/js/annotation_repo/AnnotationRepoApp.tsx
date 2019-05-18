@@ -22,6 +22,7 @@ import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {ChannelFunction} from '../../../../web/js/util/Channels';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
+import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
@@ -36,7 +37,8 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
             = Channels.create<AnnotationRepoFilters>();
 
         this.state = {
-            data: []
+            data: [],
+            tags: []
         };
 
         this.init();
@@ -51,7 +53,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
             setTimeout(() => {
 
-                console.log("FIXME setting state... ");
+                console.log("FIXME setting state... ", state.tags);
 
                 // The react table will not update when I change the state from
                 // within the event listener
@@ -63,7 +65,13 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         const onUpdated: UpdatedCallback = repoAnnotations => {
 
-            const state = {...this.state, data: repoAnnotations};
+            const tags = this.props.repoDocMetaManager.tagsDB.tags()
+                .map(current => {
+                    const count = Math.floor(Math.random() * 100); // FIXME
+                    return {...current, count};
+                });
+
+            const state = {...this.state, data: repoAnnotations, tags};
             setStateInBackground(state);
 
         };
@@ -96,12 +104,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
     public render() {
 
-        const tags = this.props.repoDocMetaManager.tagsDB.tags()
-            .map(current => {
-                const count = Math.floor(Math.random() * 100);
-                return {...current, count};
-            });
-
         return (
 
             <FixedNav id="doc-repository"
@@ -122,7 +124,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                                  overflow: 'auto'}}>
 
                         <div className="m-1">
-                            <TagTree tags={tags} onSelected={NULL_FUNCTION}/>
+                            <TagTree tags={this.state.tags} onSelected={NULL_FUNCTION}/>
                         </div>
 
                     </div>
@@ -159,6 +161,8 @@ export interface IState {
     readonly repoAnnotation?: RepoAnnotation;
 
     readonly data: ReadonlyArray<RepoAnnotation>;
+
+    readonly tags: ReadonlyArray<TagDescriptor>;
 
 }
 
