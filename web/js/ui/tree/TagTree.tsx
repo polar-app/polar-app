@@ -39,7 +39,6 @@ export class TagTree extends React.Component<IProps, IState> {
 
         this.state = {
             filter: "",
-            tags: this.props.tags,
             selected: []
         };
 
@@ -47,27 +46,13 @@ export class TagTree extends React.Component<IProps, IState> {
 
     public render() {
 
-        // FIXME: this will NOT work I think because the IDs each time keep
-        // changing???  but the TreeState should be reset each time I think.
+        const tags = filterTags(this.props.tags, this.state.filter);
 
-        console.log("FIXME: re-rendering: ", this.state.tags);
-
-        const root: TNode<TagDescriptor> = TagNodes.create(...this.props.tags);
+        const root: TNode<TagDescriptor> = TagNodes.create(...tags);
 
         return (
 
             <div style={Styles.PARENT}>
-
-                {/*FIXME: redo the way we do filters... filter the INPUT on the full*/}
-                {/*path and then filter pass this to the view once we've converted*/}
-                {/*them to full tags.*/}
-
-                {/*<InputGroup className="m-1"*/}
-                {/*            style={Styles.HEADER}>*/}
-
-                {/*    <InputGroupAddon addonType="append">*/}
-                {/*        X*/}
-                {/*    </InputGroupAddon>*/}
 
                 <div style={{display: 'flex'}}>
 
@@ -91,7 +76,10 @@ export class TagTree extends React.Component<IProps, IState> {
 
     private onCreated(path: string) {
 
-        const tags = [...this.state.tags];
+        // FIXME: this needs to push out so that it's re-called again with new
+        // tags
+
+        const tags = [...this.props.tags];
 
         tags.push({
             label: path,
@@ -99,7 +87,7 @@ export class TagTree extends React.Component<IProps, IState> {
             count: 0
         });
 
-        this.setState({...this.state, tags});
+        this.setState({...this.state});
 
     }
 
@@ -113,20 +101,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
     private onFiltered(filter: string) {
 
-        // TODO: one strategy here is to create ALL possible paths, then
-        // find just the unique ones, then filter just on those and then use
-        // THOSE as the result.
-
-        // FIXME: ... TODO... this doesn't break out all unique sub-paths.
-
-        filter = filter.toLocaleLowerCase();
-
-        const tags = this.props.tags.filter(tag => {
-            const label = tag.label.toLocaleLowerCase();
-            return label.indexOf(filter) !== -1;
-        });
-
-        this.setState({tags, filter});
+        this.setState({filter});
 
     }
 
@@ -139,8 +114,20 @@ interface IProps {
 
 interface IState {
     readonly filter: string;
-    readonly tags: ReadonlyArray<TagDescriptor>;
     readonly selected: ReadonlyArray<TagStr>;
 }
 
+function filterTags(tags: ReadonlyArray<TagDescriptor>, filter: string): ReadonlyArray<TagDescriptor> {
 
+    if (filter.trim() === '') {
+        return tags;
+    }
+
+    filter = filter.toLocaleLowerCase();
+
+    return tags.filter(tag => {
+        const label = tag.label.toLocaleLowerCase();
+        return label.indexOf(filter) !== -1;
+    });
+
+}
