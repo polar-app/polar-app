@@ -12,6 +12,8 @@ import {Tags} from '../../tags/Tags';
 import {TagCreateButton} from './TagCreateButton';
 import {TagDescriptor} from '../../tags/TagNode';
 import {TagStr} from '../../tags/Tag';
+import {TagFilter} from './TagFilter';
+import {NullCollapse} from '../null_collapse/NullCollapse';
 
 class Styles {
 
@@ -56,13 +58,21 @@ export class TagTree extends React.Component<IProps, IState> {
 
                 <div style={{display: 'flex'}}>
 
-                    <Input className="p-1 pb-0 pt-0"
-                           style={Styles.FILTER_INPUT}
-                           onChange={event => this.onFiltered(event.currentTarget.value)}
-                           placeholder="Filter by name..." />
+                    {/*<Input className="p-1 pb-0 pt-0"*/}
+                    {/*       style={Styles.FILTER_INPUT}*/}
+                    {/*       onChange={event => this.onFiltered(event.currentTarget.value)}*/}
+                    {/*       placeholder="Filter by name..." />*/}
 
-                    <TagCreateButton selected={this.state.selected}
-                                     onCreated={path => this.onCreated(path)}/>
+                    <div style={{flexGrow: 1}}>
+                        <TagFilter tags={this.props.tags}/>
+                    </div>
+
+                    <NullCollapse open={!this.props.noCreate}>
+
+                        <TagCreateButton selected={this.state.selected}
+                                         onCreated={path => this.onCreated(path)}/>
+
+                    </NullCollapse>
 
                 </div>
 
@@ -110,6 +120,7 @@ export class TagTree extends React.Component<IProps, IState> {
 interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly onSelected: (...selected: ReadonlyArray<TagStr>) => void;
+    readonly noCreate?: boolean;
 }
 
 interface IState {

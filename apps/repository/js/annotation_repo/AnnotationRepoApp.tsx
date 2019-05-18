@@ -124,7 +124,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                                  overflow: 'auto'}}>
 
                         <div className="m-1">
-                            <TagTree tags={this.state.tags} onSelected={NULL_FUNCTION}/>
+                            <TagTree tags={this.state.tags} onSelected={NULL_FUNCTION} noCreate={true}/>
                         </div>
 
                     </div>
@@ -133,7 +133,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                       <PreviewAndMainViewDock  data={this.state.data} filterChannel={this.filterChannel} {...this.props}/>
                   }
                   side='left'
-                  initialWidth={200}/>
+                  initialWidth={300}/>
 
 
             </FixedNav>
