@@ -1,32 +1,29 @@
 import * as React from 'react';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import {FilteredTags} from '../FilteredTags';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import AnnotationRepoTable from './AnnotationRepoTable';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {MessageBanner} from '../MessageBanner';
 import {RepoAnnotation} from '../RepoAnnotation';
-import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
 import {FixedNav} from '../FixedNav';
-import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
-import {ChannelFunction, Channels} from '../../../../web/js/util/Channels';
-import {ChannelCoupler} from '../../../../web/js/util/Channels';
-import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import PreviewAndMainViewDock from './PreviewAndMainViewDock';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
+import {TagTree} from '../../../../web/js/ui/tree/TagTree';
+import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
+import {UpdatedCallback} from './AnnotationRepoFilterEngine';
+import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
+import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
+import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
+import {Channels} from '../../../../web/js/util/Channels';
+import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {ChannelFunction} from '../../../../web/js/util/Channels';
+import {ChannelCoupler} from '../../../../web/js/util/Channels';
+import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 
-export default class AnnotationRepoApp extends React.Component<IProps, IState> {
-
-    private readonly persistenceLayerManager: PersistenceLayerManager;
-
-    private readonly docRepository: RepoDocMetaManager;
-
-    private readonly repoDocInfoLoader: RepoDocMetaLoader;
-
-    private readonly filteredTags = new FilteredTags();
+export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
     private readonly filterChannel: ChannelFunction<AnnotationRepoFilters>;
 
@@ -35,19 +32,75 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.docRepository = new RepoDocMetaManager(this.persistenceLayerManager);
-        this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
-
         [this.filterChannel, this.setFilterChannel]
             = Channels.create<AnnotationRepoFilters>();
 
         this.state = {
+            data: []
         };
+
+        this.init();
+
+    }
+    public init() {
+
+        // FIXME: this code need to be move to the parent so that it can
+        //  setState every time the entire app reloads
+
+        const setStateInBackground = (state: IState) => {
+
+            setTimeout(() => {
+
+                console.log("FIXME setting state... ");
+
+                // The react table will not update when I change the state from
+                // within the event listener
+                this.setState(state);
+
+            }, 1);
+
+        };
+
+        const onUpdated: UpdatedCallback = repoAnnotations => {
+
+            const state = {...this.state, data: repoAnnotations};
+            setStateInBackground(state);
+
+        };
+
+        const repoAnnotationsProvider =
+            () => Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
+
+        const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
+
+        // this will trigger the filter engine to be run which will then call
+        // onUpdated which then calls setState
+        this.setFilterChannel(filters => filterEngine.onFiltered(filters));
+
+        const doRefresh = () => filterEngine.onProviderUpdated();
+
+        PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
+
+            this.releaser.register(
+                persistenceLayer.addEventListener(() => doRefresh()));
+
+        });
+
+        this.releaser.register(
+            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => doRefresh()));
+
+        // do an initial refresh to get the first batch of data.
+        doRefresh();
 
     }
 
     public render() {
+
+        const tags = this.props.repoDocMetaManager.tagsDB.tags()
+            .map(current => {
+                const count = Math.floor(Math.random() * 100);
+                return {...current, count};
+            });
 
         return (
 
@@ -57,83 +110,33 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    {/*<div id="header-filter" className="mt-1">*/}
-
-                    {/*    <div style={{display: 'flex'}}>*/}
-
-                    {/*        <div className=""*/}
-                    {/*             style={{*/}
-                    {/*                 whiteSpace: 'nowrap',*/}
-                    {/*                 marginTop: 'auto',*/}
-                    {/*                 marginBottom: 'auto',*/}
-                    {/*                 display: 'flex'*/}
-                    {/*             }}>*/}
-
-                    {/*            <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}*/}
-                    {/*                              captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>*/}
-
-                    {/*        </div>*/}
-
-                    {/*        <div style={{marginLeft: 'auto'}}>*/}
-
-                    {/*        </div>*/}
-
-                    {/*    </div>*/}
-
-                    {/*</div>*/}
-
                     <MessageBanner/>
 
                 </header>
 
+
                 <Dock left={
-                        <div style={{display: 'flex' , flexDirection: 'column', height: '100%'}}>
+                    <div style={{display: 'flex' ,
+                                 flexDirection: 'column',
+                                 height: '100%',
+                                 overflow: 'auto'}}>
 
-                            <div className="mb-1 mt-1">
-
-                                <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                         onFiltered={filters => this.filterChannel(filters)}
-                                                         tagPopoverPlacement="bottom-end"
-                                                         right={
-                                                             <div/>
-                                                         }
-                                />
-
-                            </div>
-
-                            <div style={{flexGrow: 1, overflowY: 'auto'}}>
-
-                                <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                                     updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                                     repoDocMetaManager={this.props.repoDocMetaManager}
-                                                     repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                                     setFiltered={this.setFilterChannel}
-                                                     onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
-
-                            </div>
-
+                        <div className="m-1">
+                            <TagTree tags={tags} onSelected={NULL_FUNCTION}/>
                         </div>
-                      }
-                      right={
-                          <div className="mt-2 pl-1 pr-1"
-                               style={{}}>
-                              <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                      repoAnnotation={this.state.repoAnnotation}/>
-                          </div>
-                      }
-                      side='left'
-                      initialWidth={450}/>
+
+                    </div>
+                  }
+                  right={
+                      <PreviewAndMainViewDock  data={this.state.data} filterChannel={this.filterChannel} {...this.props}/>
+                  }
+                  side='left'
+                  initialWidth={200}/>
+
 
             </FixedNav>
 
         );
-    }
-
-    private onRepoAnnotationSelected(repoAnnotation: RepoAnnotation) {
-        // console.log("A repo annotation was selected: " , repoAnnotation);
-
-        this.setState({repoAnnotation});
-
     }
 
 }
@@ -154,6 +157,8 @@ export interface IProps {
 export interface IState {
 
     readonly repoAnnotation?: RepoAnnotation;
+
+    readonly data: ReadonlyArray<RepoAnnotation>;
 
 }
 

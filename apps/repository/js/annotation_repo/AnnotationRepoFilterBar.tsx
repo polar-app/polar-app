@@ -10,12 +10,6 @@ import {AnnotationRepoFilters, AnnotationRepoFiltersHandler} from './AnnotationR
 import {FilteredTags} from '../FilteredTags';
 import {Placement} from 'popper.js';
 
-const log = Logger.create();
-
-class Styles {
-
-}
-
 export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
 
     private handler: AnnotationRepoFiltersHandler;
@@ -157,5 +151,3 @@ export interface IProps {
 interface IState {
 
 }
-
-export type ToggleCallback = (value: boolean) => void;

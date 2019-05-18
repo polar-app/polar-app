@@ -28,7 +28,7 @@ class Styles {
 
 }
 
-export class TagTree extends DeepPureComponent<IProps, IState> {
+export class TagTree extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
