@@ -1,7 +1,10 @@
 
 # 1.19.7
 
-- update to latest interactjs
+- JSON is now represented without spaced to cut storage costs in half and speed
+  up writes.
+
+- Update to latest interactjs
 
 - Datastore 'overview' now works on Firebase and syncs up with cloud aware 
   datastore properly I think.
