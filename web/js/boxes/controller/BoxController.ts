@@ -44,7 +44,7 @@ export class BoxController {
                     .getOrElse(boxOptions.target.parentElement!);
 
         interact(boxOptions.target)
-            .draggable(<any> {
+            .draggable({
 
                 inertia: false,
                 restrict: {
@@ -60,7 +60,7 @@ export class BoxController {
                 },
 
             })
-            .resizable( <any> {
+            .resizable( {
 
                 // resize from all edges and corners
                 edges: {
