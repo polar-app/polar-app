@@ -8,6 +8,20 @@ import {Arrays} from '../util/Arrays';
 
 export class Tags {
 
+    /**
+     * Only folders (no tags).
+     */
+    public static onlyFolders(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        return tags.filter(tag => tag.label.startsWith('/'));
+    }
+
+    /**
+     * Only tags (no folders).
+     */
+    public static onlyTags(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        return tags.filter(tag => ! tag.label.startsWith('/'));
+    }
+
     public static create(label: string): Tag {
         return {id: label, label};
     }
