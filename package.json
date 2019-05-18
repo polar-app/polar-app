@@ -170,7 +170,7 @@
     "https-proxy-agent": "~2.2.1",
     "injector": "file:./web/injector",
     "inliner": "~1.13.1",
-    "interactjs": "~1.3.4",
+    "interactjs": "^1.4.1",
     "jquery": "^3.4.0",
     "jquery-ui": "~1.12.1",
     "jquery-ui-bundle": "~1.12.1-migrate",

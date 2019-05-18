@@ -1,4 +1,9 @@
 
+# 1.19.7
+
+- Datastore 'overview' now works on Firebase and syncs up with cloud aware 
+  datastore properly I think.
+
 # 1.19.6
 
 - Fixed typo with "Appendix"
