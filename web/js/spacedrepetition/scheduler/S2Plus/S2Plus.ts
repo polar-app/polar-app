@@ -31,7 +31,7 @@ export class S2Plus {
                             prevDifficulty: number,
                             prevInterval: number,
                             performanceRating: number,
-                            today = new Date()) {
+                            today = new Date()): Scheduling {
 
         const percentOverdue = this.calcPercentOverdue(reviewedAt, prevInterval, today);
 
@@ -60,6 +60,11 @@ export class S2Plus {
 
     }
 
-
 }
 
+interface Scheduling {
+    readonly difficulty: number;
+    readonly interval: number;
+    readonly nextReviewDate: Date;
+    readonly reviewedAt: Date;
+}
