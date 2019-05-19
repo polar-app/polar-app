@@ -8,6 +8,9 @@ import {S2Plus} from './S2Plus';
 import {TestingTime} from '../../../test/TestingTime';
 import {DEFAULT_DIFFICULTY} from './S2Plus';
 import {DEFAULT_INTERVAL} from './S2Plus';
+import {Days} from './Dates';
+import {Difficulty} from './S2Plus';
+import {twoDaysAgo} from './DateConstants';
 
 const testData = [
     {
@@ -135,12 +138,22 @@ describe("calculate", () => {
         //  - I think by default we have to have a queue of new cards which do
         //    not yet have reviews..
 
-        const [reviewedAt, difficulty, interval, performanceRating] = [oneDayAgo, DEFAULT_DIFFICULTY, DEFAULT_INTERVAL, 1.0 ];
-        const result = S2Plus.calculate(reviewedAt, difficulty, interval, performanceRating, today);
-        console.log(result);
+        const debugCalc = (reviewedAt: Date,
+                           prevDifficulty: Difficulty,
+                           prevInterval: Days,
+                           performanceRating: number,
+                           timestamp = new Date()) => {
+
+            const result = S2Plus.calculate(reviewedAt, prevDifficulty, prevInterval, performanceRating, timestamp);
+            console.log(JSON.stringify(result, null, "  "));
+
+        };
+
+        // const [reviewedAt, difficulty, interval, performanceRating] = [oneDayAgo, DEFAULT_DIFFICULTY, DEFAULT_INTERVAL, 1.0 ];
+        debugCalc(oneDayAgo, DEFAULT_DIFFICULTY, DEFAULT_INTERVAL, 1.0, today);
+        debugCalc(twoDaysAgo, DEFAULT_DIFFICULTY, DEFAULT_INTERVAL, 1.0, today);
 
     });
-
 
 });
 

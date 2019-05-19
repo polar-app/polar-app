@@ -1,5 +1,8 @@
 export const today = new Date();
 
+export const twoDaysAgo = new Date(today);
+twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
 export const oneDayAgo = new Date(today);
 oneDayAgo.setDate(oneDayAgo.getDate() - 1);
 
