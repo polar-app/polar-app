@@ -132,7 +132,8 @@ describe("calculate", () => {
         //
         //  - why is reviewedAt its own value?
         //
-        //  - I think by default we have to have a queue of new cards.
+        //  - I think by default we have to have a queue of new cards which do
+        //    not yet have reviews..
 
         const [reviewedAt, difficulty, interval, performanceRating] = [oneDayAgo, DEFAULT_DIFFICULTY, DEFAULT_INTERVAL, 1.0 ];
         const result = S2Plus.calculate(reviewedAt, difficulty, interval, performanceRating, today);
