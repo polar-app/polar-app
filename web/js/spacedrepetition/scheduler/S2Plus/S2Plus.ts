@@ -1,9 +1,12 @@
 import {Dates} from './Dates';
+import {Days} from './Dates';
 
 const GRADE_MIN = 0;
 const GRADE_MAX = 1;
 const GRADE_CUTOFF = 0.6;
-const DEFAULT_DIFFICULTY = 0.3;
+export const DEFAULT_DIFFICULTY = 0.3;
+
+export const DEFAULT_INTERVAL = 1;
 
 /**
  * https://github.com/pensieve-srs/pensieve-srs
@@ -15,25 +18,42 @@ export class S2Plus {
         return Math.min(Math.max(value, min), max);
     }
 
-    public static calcRecallRate(reviewedAt: Date, interval: number, today = new Date()) {
-        const diff = Dates.diffDays(today, reviewedAt);
+    public static calcRecallRate(reviewedAt: Date, interval: Days, timestamp = new Date()) {
+        const diff = Dates.diffDays(timestamp, reviewedAt);
         const recall = 2 ** (-diff / interval);
         return Math.ceil(recall * 100) / 100;
     }
 
-    public static calcPercentOverdue(reviewedAt: Date, interval: number, today = new Date()) {
-        const diff = Dates.diffDays(today, reviewedAt);
+    public static calcPercentOverdue(reviewedAt: Date, interval: Days, timestamp = new Date()) {
+        const diff = Dates.diffDays(timestamp, reviewedAt);
         const calculated = diff / interval;
         return Math.min(2, calculated);
     }
 
+    /**
+     *
+     *
+     * @param reviewedAt The time the value was last reviews.  For new cards
+     *                   use the current time and the set an 'interval' to the
+     *                   default interval which is probably 1 day.
+     *
+     * @param prevDifficulty
+     *
+     * @param prevInterval
+     *
+     * @param performanceRating After an item is attempted, choose a
+     * performanceRating from [0.0, 1.0], with 1.0 being the best.  Set a cutoff
+     * point for the answer being “correct” (default is 0.6). Then set
+     *
+     * @param timestamp The time the calculation was done.
+     */
     public static calculate(reviewedAt: Date,
-                            prevDifficulty: number,
-                            prevInterval: number,
+                            prevDifficulty: Difficulty,
+                            prevInterval: Days,
                             performanceRating: number,
-                            today = new Date()): Scheduling {
+                            timestamp = new Date()): Scheduling {
 
-        const percentOverdue = this.calcPercentOverdue(reviewedAt, prevInterval, today);
+        const percentOverdue = this.calcPercentOverdue(reviewedAt, prevInterval, timestamp);
 
         const difficultyDelta = percentOverdue * (1 / 17) * (8 - 9 * performanceRating);
         const difficulty = this.clamp(prevDifficulty + difficultyDelta, 0, 1);
@@ -49,22 +69,29 @@ export class S2Plus {
 
         const interval = prevInterval * intervalDelta;
 
-        const nextReviewDate = Dates.addDays(today, interval);
+        const nextReviewDate = Dates.addDays(timestamp, interval);
 
         return {
             difficulty,
             interval,
             nextReviewDate,
-            reviewedAt: today,
+            reviewedAt: timestamp,
         };
 
     }
 
 }
 
-interface Scheduling {
-    readonly difficulty: number;
-    readonly interval: number;
+export interface Scheduling {
+    readonly difficulty: Difficulty;
+    readonly interval: Days;
     readonly nextReviewDate: Date;
     readonly reviewedAt: Date;
 }
+
+/**
+ * How difficult the item is, from [0.0, 1.0].  Defaults to 0.3 (if the software
+ * has no way of determining a better default for an item)
+ */
+export type Difficulty = number;
+

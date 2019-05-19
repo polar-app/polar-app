@@ -5,6 +5,9 @@ import {oneDayAgo} from './DateConstants';
 import {today} from './DateConstants';
 import {Dates} from './Dates';
 import {S2Plus} from './S2Plus';
+import {TestingTime} from '../../../test/TestingTime';
+import {DEFAULT_DIFFICULTY} from './S2Plus';
+import {DEFAULT_INTERVAL} from './S2Plus';
 
 const testData = [
     {
@@ -101,7 +104,17 @@ describe("calcPercentOverdue", () => {
         expect(actual).to.equal(2);
     });
 });
+
 describe("calculate", () => {
+
+    beforeEach(function() {
+        TestingTime.freeze();
+    });
+
+    afterEach(function() {
+        TestingTime.unfreeze();
+    });
+
     it("should calculate the next review data", () => {
         testDataCalculate.forEach(data => {
             const { reviewedAt, difficulty, interval, performanceRating } = data;
@@ -111,4 +124,23 @@ describe("calculate", () => {
             expect(result.difficulty.toFixed(2)).to.equal(data.nextDifficulty.toString());
         });
     });
+
+
+    it("basic", () => {
+
+        // TODO: what is difficulty and interval.. ???
+        //
+        //  - why is reviewedAt its own value?
+        //
+        //  - I think by default we have to have a queue of new cards.
+
+        const [reviewedAt, difficulty, interval, performanceRating] = [oneDayAgo, DEFAULT_DIFFICULTY, DEFAULT_INTERVAL, 1.0 ];
+        const result = S2Plus.calculate(reviewedAt, difficulty, interval, performanceRating, today);
+        console.log(result);
+
+    });
+
+
 });
+
+
