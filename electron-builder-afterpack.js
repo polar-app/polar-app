@@ -92,7 +92,9 @@ exports.default = async function(context) {
     fs.renameSync(pathPolarBookshelf, pathPolarBookshelfBin);
 
     const wrapperScript = `#!/bin/bash
-    "\${BASH_SOURCE%/*}"/polar-bookshelf.bin "$@" --no-sandbox
+    SOURCE_FILE=$(readlink -f "\${BASH_SOURCE}")
+    SOURCE_DIR=\${SOURCE_FILE%/*}
+    "\${SOURCE_DIR}/polar-bookshelf.bin" "$@" --no-sandbox
   `;
 
     fs.writeFileSync(pathPolarBookshelf, wrapperScript);
