@@ -9,6 +9,15 @@ export const DEFAULT_DIFFICULTY = 0.3;
 export const DEFAULT_INTERVAL = 1;
 
 /**
+ * TODO
+ *  - What is 'difficulty' and why do we need to have it per iteration...
+ *
+ *  - What do we use to prioritize the next round of training?  it has to be a
+ *    queue but how do I sort the queue?
+ *  -
+ */
+
+/**
  * https://github.com/pensieve-srs/pensieve-srs
  * http://www.blueraja.com/blog/477/a-better-spaced-repetition-learning-algorithm-sm2
  */
