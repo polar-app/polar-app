@@ -12,6 +12,7 @@ export class Suggestions extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onDone = this.onDone.bind(this);
+        this.onCancel = this.onCancel.bind(this);
 
         this.state = {
             completed: false
@@ -59,7 +60,12 @@ export class Suggestions extends React.Component<IProps, IState> {
                         <TakeExtendedSurveyButton/>
 
                         <Button size="md"
+                                color="secondary"
+                                onClick={() => this.onCancel()}>Cancel</Button>
+
+                        <Button size="md"
                                 color="primary"
+                                className="ml-1"
                                 onClick={() => this.onDone()}>Send Feedback</Button>
 
                     </div>
@@ -75,6 +81,21 @@ export class Suggestions extends React.Component<IProps, IState> {
         } else {
             return <Form/>;
         }
+
+    }
+
+    private onCancel() {
+
+        if (! this.props.noEvent) {
+
+            RendererAnalytics.event({
+                category: this.props.category,
+                action: 'cancel-suggestion',
+            });
+
+        }
+
+        this.markCompleted();
 
     }
 
