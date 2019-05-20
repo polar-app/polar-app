@@ -1,6 +1,8 @@
 
 # 1.19.7
 
+- Fixed an issue with polar on linux not resolving symlinks properly on startup.
+
 - JSON is now represented without spaced to cut storage costs in half and speed
   up writes.
 
