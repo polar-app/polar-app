@@ -71,7 +71,7 @@ Some of these features aren't implemented yet but are on the roadmap.
 
 # How do I sync to Anki
 
-https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html
+Please see [Anki Sync for Spaced Repetition](https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html)
 
 # Can I export data from Polar?
 
@@ -136,7 +136,7 @@ npm compile && npm start
 
 At this point you should have a version of Polar running on your machine.
 
-```npm install``` only needs to be run occassionally.  Usually when you pull 
+```npm install``` only needs to be run occasionally.  Usually when you pull 
 from git and the ```package.json``` file changes with new dependencies.  
 
 # How do I enable advanced logging?

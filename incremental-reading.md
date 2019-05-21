@@ -1,11 +1,11 @@
 ---
 
-title: Incremental Reading
+title: Incremental Reading (Pagemarks and Tracking Progress)
 layout: doc
-description: Incremental reading is a strategy around suspending and resuming reading of a document over time. 
+description: Incremental reading is a strategy around suspending and resuming reading of a document over time to track progress using a a 'pagemark.' 
 ---
 
-# Incremental Reading
+# Incremental Reading (Pagemarks and Tracking Progress)
 
 Incremental reading is a strategy around suspending and resuming reading of a
 document over time.  Reading the documents in chunks and coming back to the 
