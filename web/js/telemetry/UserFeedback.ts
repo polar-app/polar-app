@@ -36,6 +36,8 @@ export interface UserFeedback {
 
     readonly machine: MachineID;
 
+    readonly version: string;
+
     // TODO: more fields including a unique/blinded ID for the user, the date
     // their account was created (so I can do cohorts for this)
 

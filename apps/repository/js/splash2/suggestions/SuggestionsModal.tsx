@@ -12,6 +12,7 @@ import {SplashKeys} from '../SplashKeys';
 import {UserFeedback} from '../../../../../web/js/telemetry/UserFeedback';
 import {NetPromoterScore} from '../../../../../web/js/telemetry/UserFeedback';
 import {RendererAnalytics} from '../../../../../web/js/ga/RendererAnalytics';
+import {Version} from '../../../../../web/js/util/Version';
 
 export class SuggestionsModal extends React.Component<IProps, IState> {
 
@@ -45,11 +46,14 @@ export class SuggestionsModal extends React.Component<IProps, IState> {
             RendererAnalytics.event({category: 'suggestions-splash', action: 'no-nps'});
         }
 
+        const version = Version.get();
+
         const userFeedback: UserFeedback = {
             machine: MachineIDs.get(),
             text,
             netPromoterScore,
-            created: ISODateTimeStrings.create()
+            created: ISODateTimeStrings.create(),
+            version
         };
 
         UserFeedbacks.write(userFeedback)
