@@ -5,6 +5,14 @@ date: 2019-01-01 08:00:00 -0800
 permalink: /docs/key-bindings-for-common-polar-operations.html
 ---
 
+# Key Bindings for Common Polar Operations
+
+### Delete
+
+Delete the current document
+
+## Document Viewer
+
 #### Toggle Sidebar
 
 **F10**: Toggles the sidebar view when using the document viewer.  The sidebar

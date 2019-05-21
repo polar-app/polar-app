@@ -3,6 +3,7 @@ title: Anki Sync for Spaced Repetition
 layout: doc
 date: 2018-12-19 07:22:47 -0800
 permalink: /docs/anki-sync-for-spaced-repetition.html
+description: Polar supports native integration with Anki via the Polar Connect add-on. 
 ---
 
 # Anki and Spaced Repetition

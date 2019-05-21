@@ -3,6 +3,7 @@ title: Cloud Sync
 layout: doc
 date: 2019-01-14 09:00:00 -0800
 permalink: /docs/cloud-sync.html
+description: Polar supports synchronizing the storage of your documents and annotations with the cloud 
 ---
 
 # Cloud Sync

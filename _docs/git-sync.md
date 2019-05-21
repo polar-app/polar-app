@@ -3,15 +3,16 @@ title: Git Sync
 layout: doc
 date: 2019-01-14 09:00:00 -0800
 permalink: /docs/git-sync.html
+description: Polar supports synchronizing the storage of your documents and annotations with git. 
 ---
 
 # Git Sync
 
 Polar supports synchronizing the storage of your documents and annotations 
-(known as your datastore) into git since Polar just stores JSON files directly
+(known as your datastore) with git.  Polar just stores JSON files directly
 and the underlying PDFs are immutable.
 
-We still recommend using <a href="/cloud-sync.html">cloud sync</a> for most 
+We still recommend using <a href="/docs/cloud-sync.html">cloud sync</a> for most 
 users as it supports a much greater feature set and is vastly easier to use.
 
 However, if you're already familiar with git, it's nice to have a secondary 

@@ -3,6 +3,7 @@ title: Tracking Policy
 layout: doc
 date: 2019-01-30 07:22:47 -0800
 permalink: /docs/tracking-policy.html
+description: Polar uses Google Analytics and other 3rd party services to track your usage of Polar for quality assurance 
 ---
 
 # Tracking Policy

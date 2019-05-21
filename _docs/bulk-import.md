@@ -3,6 +3,7 @@ title: Bulk Import
 layout: doc
 date: 2019-01-25 09:00:00 -0800
 permalink: /docs/bulk-import.html
+description: Polar allows you to bulk import one or more PDFs from a directory on you local disk and imports them into your repository. 
 ---
 
 # Bulk Import

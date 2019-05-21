@@ -2,6 +2,7 @@
 
 title: Incremental Reading
 layout: doc
+description: Incremental reading is a strategy around suspending and resuming reading of a document over time. 
 ---
 
 # Incremental Reading

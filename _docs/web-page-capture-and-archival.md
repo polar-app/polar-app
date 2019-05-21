@@ -3,7 +3,8 @@ title: Web Page Capture and Archival of HTML Content
 layout: doc
 date: 2018-12-16 07:22:47 -0800
 permalink: /docs/web-page-capture-and-archival-of-html-content.html
-large_image: https://getpolarized.io/assets/screenshots/capture-preview-narrow.png 
+large_image: https://getpolarized.io/assets/screenshots/capture-preview-narrow.png
+description: Polar supports long term web page archival via a process called "capture" which downloads and caches the content locally.  
 ---
 
 # Web Page Capture

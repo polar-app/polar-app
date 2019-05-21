@@ -2,12 +2,13 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- seo -%}
+  {%- seo title=false -%}
 
 
   {% if page.large_image or page.image %}
 
   {% if page.large_image%}
+  <meta name="og:image" content="{{ page.large_image }}">
   <meta name="twitter:image" content="{{ page.large_image }}">
   <meta name="twitter:card"  content="summary_large_image">
   {% else %}
@@ -18,6 +19,7 @@
   {% else %}
   <meta name="twitter:card"  content="summary">
   <meta name="twitter:image" content="{{ site.logo }}">
+  <meta name="og:image" content="{{ site.logo }}">
   {% endif %}
 
   {% if page.description %}
@@ -28,8 +30,10 @@
 
   {% if page.title %}
   <meta name="twitter:title" content="{{ page.title }}">
+  <title>{{ page.title }}</title>
   {% else %}
   <meta name="twitter:title" content="{{ site.title }}">
+  <title>{{ site.title }}</title>
   {% endif %}
 
   <meta name="twitter:site" content="@getpolarized">

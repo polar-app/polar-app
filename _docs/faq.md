@@ -3,6 +3,7 @@ title: Frequently Asked Questions (FAQ)
 layout: doc
 date: 2019-01-30 07:22:47 -0800
 permalink: /docs/frequently-asked-questions.html
+description: Polar Frequently Asked Questions (FAQ) 
 ---
 
 # How do I support Polar?

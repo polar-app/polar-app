@@ -3,6 +3,7 @@ title:  Building Cloud Document Sync with Google Firebase
 date:   2019-01-03 09:00:00 -0800
 layout: post
 large_image: https://getpolarized.io/assets/images/firebase-sync-scaled.jpg
+description: About a month ago we shipped a new version of Polar which enables support for cloud sync backed by Firebase. 
 ---
 
 <img class="img-fluid" src="https://getpolarized.io/assets/images/firebase-sync-scaled.jpg">

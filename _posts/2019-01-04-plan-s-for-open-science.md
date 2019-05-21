@@ -3,6 +3,7 @@ title:  Plan S for Open Science - Open Access to Scientific Research
 date:   2019-01-03 09:00:00 -0800
 layout: post
 large_image: https://getpolarized.io/assets/images/openscience-scaled.jpg
+description: Since the September 2018 launch of the Europe-backed program to mandate immediate open access (OA) to scientific literature, 16 funders in 13 countries have signed on. That's still far shy of Plan S's ambition. 
 ---
 
 <img class="img-fluid" src="https://getpolarized.io/assets/images/openscience-scaled.jpg">

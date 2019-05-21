@@ -3,6 +3,7 @@ title: Polar as a Personal Knowledge Repository
 date: 2019-03-01 09:00:00 -0800
 layout: post
 large_image: https://getpolarized.io/assets/images/open-library-scaled.jpg
+description: Polar is designed around the idea of maintaining all your documents in one place and maintaining key extracted knowledge via spaced repetition. 
 ---
 
 <img class="img-fluid" src="https://getpolarized.io/assets/images/open-library-scaled.jpg">
