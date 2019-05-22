@@ -1,6 +1,11 @@
+import {assert} from 'chai';
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
-import {Logger} from '../../js/logger/Logger';
+import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
+import {Backend} from '../../js/datastore/Backend';
+import {FileHandle} from '../../js/util/Files';
+import {Files} from '../../js/util/Files';
+import {FilePaths} from '../../js/util/FilePaths';
 
 mocha.setup('bdd');
 mocha.timeout(10000);
@@ -9,7 +14,26 @@ SpectronRenderer.run(async (state) => {
 
     new FirebaseTestRunner(state).run(async () => {
 
-        console.log("FIXME: running firefase tests...");
+
+        describe('Firebase doc sharing', function() {
+
+            it("Create a sharing URL and make sure we can download it without credentials", async function() {
+
+                const firebaseDatastore = new FirebaseDatastore();
+                await firebaseDatastore.init();
+
+                const path = FilePaths.join(__dirname, '..', '..', '..', 'docs', 'examples', 'pdf', 'chubby.pdf');
+                assert.isTrue(await Files.existsAsync(path));
+
+                const fileHandle: FileHandle = {path};
+
+                await firebaseDatastore.writeFile(Backend.STASH, {name: 'test.pdf'}, fileHandle);
+
+            });
+
+        });
+
+
 
     }).catch(err => console.error(err));
 
