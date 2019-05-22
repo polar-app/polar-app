@@ -28,6 +28,16 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                     <div className="intro">
 
+                        <p className="text-center">
+                            <iframe className="embed-responsive-item"
+                                    width="560"
+                                    height="315"
+                                    src="https://www.youtube.com/embed/Q5SU31cT4DQ"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen></iframe>
+                        </p>
+
                         <p>
                             Polar 1.19 has been a lot of work but it's finally out the door.
 

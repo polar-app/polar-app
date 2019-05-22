@@ -87,6 +87,8 @@ snap:
     - { "gtk-3-themes": { "interface": "content", "target": "$SNAP/data-dir/themes", "default-provider": "gtk-common-themes:gtk-3-themes" }, }
     - { "icon-themes": { "interface": "content", "target": "$SNAP/data-dir/icons", "default-provider": "gtk-common-themes:icon-themes" }, }
     - { "sound-themes": { "interface": "content", "target": "$SNAP/data-dir/sounds", "default-provider": "gtk-common-themes:sounds-themes" }, }
+    # NOTE that this requires manual approval via snapcraft...
+    #- { "browser-sandbox": { "interface": "browser-support", "allow-sandbox": true }, }
   environment:
     DISABLE_WAYLAND: 1 #use XWayland
 

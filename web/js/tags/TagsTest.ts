@@ -1,6 +1,19 @@
 import {Tags} from './Tags';
 import {assert} from 'chai';
 
+describe('basename', function() {
+
+    it("basename", function() {
+        assert.equal(Tags.basename('linux'), 'linux');
+        assert.equal(Tags.basename(''), '');
+        assert.equal(Tags.basename('/foo/bar'), 'bar');
+        assert.equal(Tags.basename('/foo'), 'foo');
+
+    });
+
+});
+
+
 describe('RegExp', function() {
 
     it("test unicode literal", function() {

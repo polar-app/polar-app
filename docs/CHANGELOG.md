@@ -1,4 +1,84 @@
 
+# 1.19.7
+
+- Fixed bug in htmlviewer where the sandbox was breaking doc loading.
+
+- Fixed an issue with polar on linux not resolving symlinks properly on startup.
+
+- JSON is now represented without spacing to cut storage costs in half and speed
+  up writes.  
+
+- Update to latest interactjs
+
+- Datastore 'overview' now works on Firebase and syncs up with cloud aware 
+  datastore properly I think.
+
+# 1.19.6
+
+- Fixed typo with "Appendix"
+
+- More aggressive prompting for suggestions but only 1x per week now.
+
+- new clipboard cleanser for properly handling the clipboard when pasting from 
+  part of the PDF.  The handling is not yet perfect but we're making steps in 
+  that direction at least.
+
+- Fixed bug with highlights vanishing when colors were changed
+
+- Fixed bugs with .debs 
+
+# 1.19.5
+
+- Fixes some bugs with snaps
+
+# 1.19.4
+
+- we are now prompting the user for suggestions on how to fix polar.
+
+- unique machines code properly merged 
+
+- enable snap distribution again. 
+
+# 1.19.3
+
+- Using a border around the selected item in the annotation view not a background
+
+- Fixed bug with the percentages being slightly off and causing issues being 
+  greater than 100%
+
+- Fixed a small performance issue with N writes during write() which also means
+  we increase performance but lower Firebase costs.
+
+- Fixed bug with formatting being selected and part of the form being selected 
+  when double clicking in comments.
+  
+# 1.19.2
+
+- Fixed bug with deletes not working. I need to get automated testing setup!
+
+# 1.19.1
+
+- fixed a CSS issue with the dock
+
+- Fixed a bad bug where comments and flashcards wouldn't reload in the sidebar.
+
+- set a max height for the background resizer and don't allow it to go crazy
+  resizing itself forever.
+
+- annotation sidebar is resizeable now
+
+- proper capture of iframes now
+
+- upgrade to latest jsdom
+
+- 'Delete' char now works to delete one or multiple docs and you're prompted to
+  confirm.
+
+- Fixed bug where the PDF page size yielded an incorrect placement of the area 
+  highlight.
+
+- The left side dock in the annotation view is now resizeable.
+
 # 1.19.0
 
 - Fixed major performance issue when creating lots of annotations.

@@ -221,7 +221,9 @@ export class EventMaps {
     public static latestExecution<E extends EventHandlers>(eventMap: EventMap<E>): ISODateTimeString | undefined {
 
         const times: Array<string | undefined> = [...this.toLastExecutedTimes(eventMap)];
-        return  times.reduce(Reducers.LAST, undefined);
+        const result = times.reduce(Reducers.LAST, undefined);
+
+        return result;
 
     }
 

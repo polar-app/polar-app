@@ -27,6 +27,27 @@ export class Firebase {
 
     }
 
+    public static async currentUser(): Promise<firebase.User | null> {
+
+        Firebase.init();
+
+        return new Promise<firebase.User | null>((resolve, reject) => {
+
+            const unsubscribe = firebase.auth()
+                .onAuthStateChanged((user) => {
+                                        unsubscribe();
+                                        resolve(user);
+                                    },
+                                    (err) => {
+                                        unsubscribe();
+                                        reject(err);
+                                    });
+
+        });
+
+    }
+
+
 }
 
 export type UserID = string;

@@ -117,7 +117,7 @@ export class ContentCapture {
                     ++nrHandled;
 
                 } else {
-                    console.log(`Skipping iframe: (${frameValidity})` + iframe.outerHTML);
+                    console.log(`Skipping iframe: ` + iframe.src, frameValidity, iframe.outerHTML);
                     ++nrSkipped;
                 }
 
@@ -142,12 +142,16 @@ export class ContentCapture {
         };
 
         if (! iframe.contentDocument) {
+            console.log("iframe not valid due to no contentDocument");
+
             return {reason: "NO_CONTENT_DOCUMENT", valid: false};
         }
 
         // TODO: only work with http and https URLs or about:blank
 
         if (iframe.style.display === "none") {
+
+            console.log("iframe not valid due to display:none");
 
             // TODO: we need a more practical mechanism to determine if we
             // are display none including visibility and calculated CSS and
@@ -300,7 +304,11 @@ export class ContentCapture {
 
     private static computeScrollBox(doc: Document): ScrollBox {
 
-        const computedStyle = getComputedStyle(doc.documentElement!);
+        if (! doc.documentElement) {
+            throw new Error("No document element");
+        }
+
+        const computedStyle = window.getComputedStyle(doc.documentElement!);
 
         return {
             width: doc.documentElement!.scrollWidth,
@@ -656,7 +664,7 @@ export class IDGenerator {
 
 }
 
-console.log("Content capture script loaded within: " + window.location.href);
+// console.log("Content capture script loaded within: " + window.location.href);
 
 declare var global: any;
 

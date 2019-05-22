@@ -9,6 +9,7 @@ import {TimeDurations} from '../../../../web/js/util/TimeDurations';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {NPSModal} from './nps/NPSModal';
 import {WhatsNewModal} from './whats_new/WhatsNewModal';
+import {SuggestionsModal} from './suggestions/SuggestionsModal';
 
 const log = Logger.create();
 
@@ -68,6 +69,9 @@ export class Splashes extends React.Component<IProps, IState> {
             case 'net-promoter':
                 return <NPSModal/>;
 
+            case 'suggestions':
+                return <SuggestionsModal/>;
+
             case 'whats-new':
                 return <WhatsNewModal/>;
 
@@ -88,6 +92,13 @@ export class Splashes extends React.Component<IProps, IState> {
 
     }
 
+    private onSuggestions() {
+
+        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-suggestions'});
+        this.setState({...this.state, splash: 'suggestions'});
+
+    }
+
     private async init() {
 
         const userFacts = await this.computeUserFacts();
@@ -96,7 +107,8 @@ export class Splashes extends React.Component<IProps, IState> {
 
             const splashEngine = new DefaultSplashEngine(userFacts, {
                 onWhatsNew: () => this.onWhatsNew(),
-                onNetPromoter: () => this.onNetPromoter()
+                onNetPromoter: () => this.onNetPromoter(),
+                onSuggestions: () => this.onSuggestions()
             });
 
             this.doUpdate(splashEngine);
@@ -111,6 +123,8 @@ export class Splashes extends React.Component<IProps, IState> {
     private doUpdate(splashEngine: SplashEngine) {
 
         try {
+
+            RendererAnalytics.event({category: 'splash-subsystem-background', action: 'do-update'});
 
             splashEngine.run();
 
@@ -165,5 +179,5 @@ interface IState {
     readonly splash: SplashID;
 }
 
-type SplashID = 'none' | 'net-promoter' | 'whats-new';
+type SplashID = 'none' | 'net-promoter' | 'whats-new' | 'suggestions';
 

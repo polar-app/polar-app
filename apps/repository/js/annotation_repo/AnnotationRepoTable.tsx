@@ -21,7 +21,7 @@ const log = Logger.create();
 export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
-    
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -119,7 +119,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                 {
                                     Header: '',
                                     accessor: 'title',
-                                    maxWidth: 450,
                                     headerStyle: {display: 'none'},
                                     style: {whiteSpace: 'normal'},
                                     Cell: (row: any) => {
@@ -218,8 +217,10 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                 },
 
                                 style: {
-                                    background: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
-                                    color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
+                                    borderWidth: '1px',
+                                    borderStyle: 'solid',
+                                    borderColor: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
+                                    // color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
                                 }
 
                             };

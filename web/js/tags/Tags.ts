@@ -4,8 +4,21 @@ import {Optional} from '../util/ts/Optional';
 import {Tag} from './Tag';
 import {TypedTag} from './TypedTag';
 import {Dictionaries} from '../util/Dictionaries';
+import {Arrays} from '../util/Arrays';
 
 export class Tags {
+
+    public static create(label: string): Tag {
+        return {id: label, label};
+    }
+
+    /**
+     * Get a basename for a label without the prefix.
+     * @param label
+     */
+    public static basename(label: string): string {
+        return Arrays.last(label.split('/'))!;
+    }
 
     public static assertValid(label: string) {
 

@@ -49,13 +49,20 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import {LeftRightSplit} from '../../js/ui/left_right_split/LeftRightSplit';
 import {URLs} from '../../js/util/URLs';
 import {Blobs} from '../../js/util/Blobs';
-import {Dock} from './Dock';
+import {Dock} from '../../js/ui/dock/Dock';
 import {Channels} from '../../js/util/Channels';
 import {Suggestions} from '../../js/ui/feedback/Suggestions';
 import {FakeComponent0} from './FakeComponent0';
 import {Canvases} from '../../js/util/Canvases';
 import {ColorDropdown} from './ColorDropdown';
 import {ColorSelector} from '../../js/ui/colors/ColorSelector';
+import {TreeNode} from '../../js/ui/tree/TreeNode';
+import {TreeView} from '../../js/ui/tree/TreeView';
+import {TagNodes} from '../../js/tags/TagNode';
+import {Tags} from '../../js/tags/Tags';
+import {TagTree} from '../../js/ui/tree/TagTree';
+import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
+import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/SuggestionsModal';
 
 const styles = {
     swatch: {
@@ -67,6 +74,23 @@ const styles = {
     }
 };
 
+const Folders = () => {
+    return <div style={{backgroundColor: 'red', overflow: 'auto'}}>
+        these are the folders
+    </div>;
+};
+
+const Preview = () => {
+    return <div style={{backgroundColor: 'orange', overflow: 'auto'}}>
+        This is the preview
+    </div>;
+};
+
+
+const Main = () => {
+    return <div style={{backgroundColor: 'blue'}}>this is the right</div>;
+};
+
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
@@ -76,60 +100,85 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
-        const c = '#FF0000';
+        //
+        // const root: TNode<TagNode> = {
+        //     id: 0,
+        //     name: 'CompSci',
+        //     children: [
+        //         {
+        //             id: 1,
+        //             name: 'Linux',
+        //             children: [],
+        //             value: {
+        //                 tag: "/CompSci/Linux"
+        //             }
+        //         },
+        //         {
+        //             id: 2,
+        //             name: 'Google',
+        //             children: [
+        //                 {
+        //                     id: 3,
+        //                     name: 'Mountain View',
+        //                     children: [],
+        //                     value: {
+        //                         tag: "/CompSci/Google/Mountain View"
+        //                     }
+        //                 },
+        //                 {
+        //                     id: 4,
+        //                     name: 'San Francisco',
+        //                     children: [],
+        //                     value: {
+        //                         tag: "/CompSci/Google/San Francisco"
+        //                     }
+        //                 },
+        //             ],
+        //             value: {
+        //                 tag: "/CompSci/Google"
+        //             }
+        //
+        //         }
+        //
+        //     ],
+        //     value: {
+        //         tag: "/CompSci"
+        //     }
+        // };
+
+        const tags = [
+            '/CompSci/Google',
+            '/CompSci/Linux',
+            '/CompSci/Microsoft',
+            '/CompSci/Programming Languages/C++',
+            '/CompSci/Programming Languages/Java',
+            '/History/WWII',
+            '/History/United States/WWII',
+        ].map(current => Tags.create(current))
+            .map(current => {
+                const count = Math.floor(Math.random() * 100);
+                return {...current, count};
+            });
+
+        // const root: TNode<Tag> = TagNodes.create(...tags);
+
         return (
-            //
-            // <div tabIndex={0}
-            //      onMouseDown={(event) => event.currentTarget.focus()}
-            //      onKeyPress={() => console.log("key press")}
-            //      onKeyDown={() => console.log("key down")}>
-            //
-            //     hello worldasdfasdf
-            //
-            // </div>
-          //
-          // {/*<LeftRightSplit left={*/}
-          //     {/*<div className="text-sm text-muted mt-2">We also have an extended*/}
-          //         {/*survey if you'd like to provide more feedback.</div>*/}
-          // {/*}*/}
-          //                 {/*right={<div/>}/>*/}
 
-            <div>
+            <div style={{margin: '5px'}}>
 
-                <ColorSelector color='yellow' size="16px"/>
+                <SuggestionsModal/>
 
-                <ColorDropdown onSelected={color => console.log(color)}/>
+                {/*<TagTree tags={tags} onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>*/}
 
-                {/*<SketchPicker />;*/}
+                {/*<TreeView root={root}*/}
+                {/*          />*/}
 
-                TODO:
+                {/*<Dock side="left"*/}
+                {/*      left={<Folders/>}*/}
+                {/*      right={<Dock side="left"*/}
+                {/*                   left={<Preview/>}*/}
+                {/*                   right={<Main/>}/>}/>*/}
 
-                Now we are kind of stuck because I like the UI of the twitter
-                color picker but:
-
-                    - I don't want the ability to enter a custom value
-
-                    - we should have red, yellow, green, green colors in various
-                      shades.. one for each row.
-
-                    - the UI should be reliable without any reactstrap button
-                      and onClick should trigger it to close
-
-
-                {/*<TwitterPicker/>*/}
-
-                {/*<TwitterPicker*/}
-                {/*    colors={['#FF0000', '#FF0000', '#FF0000', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF']}/>*/}
-
-                {/*<SwatchesPicker*/}
-                {/*    // color={ c }*/}
-                {/*    // hex={ c }*/}
-                {/*    style={ styles.swatch }*/}
-                {/*    onClick={NULL_FUNCTION}*/}
-                {/*    // focusStyle={{*/}
-                {/*    //     boxShadow: `0 0 4px ${ c }`,*/}
-                {/*    // }}*/}
-                {/*/>*/}
 
             </div>
 

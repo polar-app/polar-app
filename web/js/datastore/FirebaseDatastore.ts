@@ -38,6 +38,7 @@ import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
 import {Latch} from '../util/Latch';
+import {Firebase} from '../firebase/Firebase';
 
 const log = Logger.create();
 
@@ -647,7 +648,15 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     public async overview(): Promise<DatastoreOverview | undefined> {
-        return undefined;
+
+        const docMetaRefs = await this.getDocMetaRefs();
+        const user = await Firebase.currentUser();
+
+        return {
+            nrDocs: docMetaRefs.length,
+            created: user!.metadata.creationTime
+        };
+
     }
 
     public capabilities(): DatastoreCapabilities {

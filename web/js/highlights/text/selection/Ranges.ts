@@ -78,6 +78,27 @@ export class Ranges {
 
     }
 
+    public static toText(range: Range) {
+
+        let result = "";
+
+        const docFragment = range.cloneContents();
+
+        docFragment.childNodes.forEach(childNode => {
+
+            if (childNode.nodeType === Node.TEXT_NODE) {
+                result += childNode.textContent;
+            } else {
+                result += (<HTMLElement> childNode).innerText;
+            }
+
+        });
+
+        return result;
+
+    }
+
+
     /**
      * Get the text nodes for range. Optionally splitting the text if necessary
      *

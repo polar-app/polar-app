@@ -49,6 +49,7 @@ import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessa
 import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
+import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 
 const log = Logger.create();
 
@@ -73,6 +74,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
         this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
+
+        this.onDocDeleteRequested = this.onDocDeleteRequested.bind(this);
 
         this.onDocTagged = this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
@@ -237,13 +240,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     }
 
     private onMultiDeleted() {
-
         const repoDocInfos = this.getSelected();
-
-        this.onDocDeleted(...repoDocInfos);
-
-        this.clearSelected();
-
+        this.onDocDeleteRequested(...repoDocInfos);
     }
 
     private clearSelected() {
@@ -274,7 +272,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         const { data } = this.state;
 
         const contextMenuProps = {
-            onDelete: this.onDocDeleted,
+            onDelete: this.onDocDeleteRequested,
             onSetTitle: this.onDocSetTitle,
             onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => {
                 this.onDocumentLoadRequested(repoDocInfo);
@@ -293,7 +291,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                     <div id="header-filter">
 
-                        <div style={{display: 'flex'}}>
+                        <div style={{display: 'flex'}}
+                             className="mt-1 mb-1">
 
                             <div className=""
                                  style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto', display: 'flex'}}>
@@ -331,9 +330,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                         </div>
 
                                         <div className="ml-1">
-                                            <MultiDeleteButton onCancel={NULL_FUNCTION}
-                                                               disabled={this.state.selected.length <= 0}
-                                                               onConfirm={() => this.onMultiDeleted()}/>
+                                            <MultiDeleteButton disabled={this.state.selected.length <= 0}
+                                                               onClick={() => this.onMultiDeleted()}/>
                                         </div>
 
                                     </div>
@@ -740,7 +738,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                                         <DocDropdown id={'doc-dropdown-' + row.index}
                                                                      repoDocInfo={repoDocInfo}
-                                                                     onDelete={this.onDocDeleted}
+                                                                     onDelete={this.onDocDeleteRequested}
                                                                      onSetTitle={this.onDocSetTitle}
                                                                      onDocumentLoadRequested={contextMenuProps.onDocumentLoadRequested}/>
 
@@ -767,6 +765,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                             //     desc: true
                             // }]}
                             getTrProps={(state: any, rowInfo: any) => {
+
                                 return {
 
                                     // include the doc fingerprint in the table
@@ -781,7 +780,11 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                                         background: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-background-color)' : 'var(--primary-background-color)',
                                         color: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-text-color)' : 'var(--primary-text-color)',
-                                    }
+                                    },
+
+                                    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
+                                        this.onKeyDown(event);
+                                    },
 
                                 };
                             }}
@@ -860,6 +863,14 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         );
     }
 
+    private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+
+        if (event.key === "Delete") {
+            this.onMultiDeleted();
+        }
+
+    }
+
     private async onDocTagged(repoDocInfo: RepoDocInfo, tags: Tag[]) {
 
         RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
@@ -869,7 +880,20 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
+    private onDocDeleteRequested(...repoDocInfos: RepoDocInfo[]) {
+
+        Dialogs.confirm({
+            title: "Are you sure you want to delete these document(s)?",
+            subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
+            onCancel: NULL_FUNCTION,
+            onConfirm: () => this.onDocDeleted(...repoDocInfos),
+        });
+
+    }
+
     private onDocDeleted(...repoDocInfos: RepoDocInfo[]) {
+
+        console.log("FIXME: deleting documents... ", repoDocInfos);
 
         const doDeletes = async () => {
 
@@ -877,6 +901,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 successes: 0,
                 failures: 0
             };
+
+            this.clearSelected();
 
             const progressTracker = new ProgressTracker(repoDocInfos.length, 'delete');
 
@@ -899,6 +925,8 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 }
 
             }
+
+            this.clearSelected();
 
             if (stats.failures === 0) {
                 Toaster.success(`${stats.successes} documents successfully deleted.`);

@@ -25,6 +25,8 @@ import {Dimensions} from '../util/Dimensions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from '../util/rects/ILTRect';
 import {DataURLs} from '../util/DataURLs';
+import {Rect} from '../Rect';
+import {Rects} from '../Rects';
 
 const log = Logger.create();
 
@@ -44,9 +46,30 @@ export class AreaHighlights {
         const updated = new AreaHighlight({...existing, ...updates});
 
         DocMetas.withBatchedMutations(docMeta, () => {
-            delete pageMeta.areaHighlights[id];
+            // delete pageMeta.areaHighlights[id];
             pageMeta.areaHighlights[id] = updated;
         });
+
+    }
+
+    public static toCorrectScale(overlayRect: Rect) {
+
+        const docFormat = DocFormatFactory.getInstance();
+
+        if (docFormat.name === "pdf") {
+            const currentScale = docFormat.currentScale();
+
+            // we have to scale these number BACK to their original
+            // positions at 100%
+
+            const rescaleFactor = 1 / currentScale;
+
+            overlayRect = Rects.scale(Rects.createFromBasicRect(overlayRect), rescaleFactor);
+
+        }
+
+        return overlayRect;
+
 
     }
 

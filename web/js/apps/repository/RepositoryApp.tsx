@@ -46,6 +46,7 @@ import {TabNav} from '../../ui/tabs/TabNav';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {MachineDatastores} from '../../telemetry/MachineDatastores';
 import {MailingList} from './auth_handler/MailingList';
+import {UniqueMachines} from '../../telemetry/UniqueMachines';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -95,6 +96,8 @@ export class RepositoryApp {
         await this.doLoadExampleDocs();
 
         MachineDatastores.triggerBackgroundUpdates(this.persistenceLayerManager);
+
+        UniqueMachines.trigger();
 
         // PreviewDisclaimers.createWhenNecessary();
 

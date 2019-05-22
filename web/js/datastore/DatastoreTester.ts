@@ -146,6 +146,17 @@ export class DatastoreTester {
             });
 
 
+
+            it("data contains no whitespace", async function() {
+
+                const data = await datastore.getDocMeta(fingerprint);
+
+                assert.isNotNull(data);
+                assert.equal(data!.indexOf("\n"), -1);
+
+            });
+
+
             it("read non-existant fingerprint", async function() {
 
                 const nonExistantDocMeta = await persistenceLayer.getDocMeta('0x666');
@@ -235,6 +246,15 @@ export class DatastoreTester {
                 assert.equal(docMetaFiles.length > 0, true);
 
                 assert.equal(docMetaFiles.map((current) => current.fingerprint).includes(fingerprint), true);
+
+            });
+
+            it("overview", async function() {
+
+                // right now just make sure we can call it and that the value
+                // it returns is is not undefined.
+                const overview = await datastore.overview();
+                assert.isDefined(overview);
 
             });
 

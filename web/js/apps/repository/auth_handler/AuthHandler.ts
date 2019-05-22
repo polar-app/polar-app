@@ -80,23 +80,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
     }
 
     protected async currentUser(): Promise<firebase.User | null> {
-
-        Firebase.init();
-
-        return new Promise<firebase.User | null>((resolve, reject) => {
-
-            const unsubscribe = firebase.auth()
-                .onAuthStateChanged((user) => {
-                                        unsubscribe();
-                                        resolve(user);
-                                    },
-                                    (err) => {
-                                        unsubscribe();
-                                        reject(err);
-                                    });
-
-        });
-
+        return Firebase.currentUser();
     }
 
 }
@@ -151,6 +135,10 @@ export interface UserInfo {
     readonly emailVerified: boolean;
     readonly photoURL?: string;
     readonly uid: string;
+
+    /**
+     * The time the account was created on our end.
+     */
     readonly creationTime: ISODateTimeString;
 
 }

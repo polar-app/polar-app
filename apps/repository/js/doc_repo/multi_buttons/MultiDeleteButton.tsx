@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {SimpleTooltipEx} from '../../../../../web/js/ui/tooltip/SimpleTooltipEx';
-import {Dialogs} from '../../../../../web/js/ui/dialogs/Dialogs';
 
 export class MultiDeleteButton extends React.Component<IProps, IState> {
 
@@ -46,12 +45,7 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
             return;
         }
 
-        Dialogs.confirm({
-            title: "Are you sure you want to delete these documents?",
-            subtitle: "This is a permanent operation and can't be undone.",
-            onCancel: () => this.props.onCancel(),
-            onConfirm: () => this.props.onConfirm(),
-        });
+        this.props.onClick();
 
     }
 
@@ -59,8 +53,7 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly disabled?: boolean;
-    readonly onCancel: () => void;
-    readonly onConfirm: () => void;
+    readonly onClick: () => void;
 }
 
 interface IState {

@@ -1,15 +1,15 @@
 import * as React from 'react';
-import {MousePositions} from './MousePositions';
-import {ChannelCoupler} from '../../js/util/Channels';
-import {defaultValue} from '../../js/Preconditions';
+import {MousePositions} from '../../../spectron/ui-components/MousePositions';
+import {ChannelCoupler} from '../../util/Channels';
+import {defaultValue} from '../../Preconditions';
 
 
 class Styles {
 
     public static Dock: React.CSSProperties = {
         display: 'flex',
-        backgroundColor: 'lightgrey',
-        flexGrow: 1
+        flexGrow: 1,
+        height: '100%'
     };
 
 }
@@ -18,52 +18,6 @@ class Styles {
  * A simple expand/collapse dock with a persistent mode where it stays docked
  * next time you open the UI and a temporary mode too where it expand when the
  * toggle button is pushed.
- *
- * Features
- *
- *
- * - Keep the dock persistent by using localStorage prefs
- *
- * TODO:
- *
- *
- *  - need to support persisting state
- *
- *  - to do resize:
- *
- *      https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
- *
- * - menu items directly specified so we can show JUST the icons in the sidebar
- *   as a 'mode'.  TODO.. might be better if this was sort of a sub-component
- *   or we implemented this via composition.
- *
- *
- *  TODO:
- *
- *   - if the user leaves the window, does mouse up, then comes back in, the
- *     dock is still in resize mode.
- *
- *   - flyout mode.
- *
- *   - save state using localStorage.. I could override setState and I could
- *     build a LocalState object which is passed an initialState from props
- *     after and we call this.state = this.localState.hydrate() and the
- *     over loaded setState() calls this.localState
- *
- *        - This could actually be called by composition and have a LocalState
- *          component that restores state of the component via props?
- *
- * // TODO: to make flyout mode... just set position: absolute, height: 100%
- *     and it should work
- *
- *   -  I need a CLEAN way to persist the state for this object in localstorage
- *      and for other components too.
- *
- *   - make sure the dock flows both ways... left and right.
- *
- *   - right doesn't work...
- *
- *   - flyout doesn't work when we're toggled closed.
  *
  */
 export class Dock extends React.Component<IProps, IState> {
@@ -89,7 +43,6 @@ export class Dock extends React.Component<IProps, IState> {
         if (this.props.setFlyoutCoupler) {
             this.props.setFlyoutCoupler(() => this.setFlyout());
         }
-
 
         const mode = this.props.initialMode ? this.props.initialMode : 'expanded';
         const width = this.props.initialWidth || 400;
@@ -120,9 +73,11 @@ export class Dock extends React.Component<IProps, IState> {
             // clearly and no if statement.
 
             const result: React.CSSProperties = {
-                width: '10px',
+                width: '4px',
+                minWidth: '4px',
+                maxWidth: '4px',
                 cursor: 'col-resize',
-                backgroundColor: 'orange'
+                backgroundColor: '#c6c6c6'
             };
 
             if (this.props.side === 'left') {
@@ -156,19 +111,19 @@ export class Dock extends React.Component<IProps, IState> {
         }
 
         sidebarStyle.width = width;
+        sidebarStyle.minWidth = width;
+        sidebarStyle.maxWidth = width;
         contentStyle.flexGrow = 1;
 
-        // needed or the content expands out of the box which isn't what we
-        // want.
-        sidebarStyle.overflow = 'hidden';
+        // force it to be 100% and make the inner elements use overflow
+        sidebarStyle.height = '100%';
 
         return (
 
             <div className="dock"
                  style={{...Styles.Dock, ...this.props.style || {}}}
                  onMouseMove={() => this.onMouseMove()}
-                 draggable={false}
-                 onMouseUp={() => this.onMouseUp()}>
+                 draggable={false}>
 
                 <div className="dock-left"
                      style={leftStyle}
@@ -211,6 +166,12 @@ export class Dock extends React.Component<IProps, IState> {
 
         this.markResizing(true);
 
+        window.addEventListener('mouseup', () => {
+            // this code properly handles the mouse leaving the window
+            // during mouse up and then leaving wonky event handlers.
+            this.onMouseUp();
+        }, {once: true});
+
     }
 
     private markResizing(resizing: boolean) {
@@ -224,9 +185,6 @@ export class Dock extends React.Component<IProps, IState> {
         if (!this.mouseDown) {
             return;
         }
-
-        console.log("FIXME: m,oving");
-
 
         const lastMousePosition = MousePositions.get();
 

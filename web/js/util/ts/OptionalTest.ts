@@ -106,4 +106,24 @@ describe('Optional', function() {
     });
 
 
+    describe('getOrNull', function() {
+
+        it("basic", function() {
+            assert.isNull(Optional.of(null).getOrNull());
+            assert.isNull(Optional.of(undefined).getOrNull());
+        });
+
+    });
+
+    describe('getOrUndefined', function() {
+
+        it("basic", function() {
+            assert.isUndefined(Optional.of(null).getOrUndefined());
+            assert.isUndefined(Optional.of(undefined).getOrUndefined());
+        });
+
+    });
+
+
+
 });

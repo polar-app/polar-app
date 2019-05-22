@@ -10,8 +10,9 @@ export class DOM {
 
     public static appendChildNodes(source: HTMLElement, target: HTMLElement) {
 
-        for (const node of Array.from(source.childNodes)) {
-            target.appendChild(node);
+        for (const sourceNode of Array.from(source.childNodes)) {
+            // target.appendChild(sourceNode.cloneNode(true));
+            target.appendChild(sourceNode);
         }
 
     }
