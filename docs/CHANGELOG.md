@@ -5,8 +5,8 @@
 
 - Fixed an issue with polar on linux not resolving symlinks properly on startup.
 
-- JSON is now represented without spaced to cut storage costs in half and speed
-  up writes.
+- JSON is now represented without spacing to cut storage costs in half and speed
+  up writes.  
 
 - Update to latest interactjs
 
