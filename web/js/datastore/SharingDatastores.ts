@@ -49,7 +49,7 @@ export class SharingDatastores {
 
         if (fileRef) {
 
-            const sharedURL = await SharedBinaryFileURLs.issue(backendFileRef);
+            const sharedURL = await SharedBinaryFileURLs.create(backendFileRef);
 
             // Clean the URL when running in the desktop app.
             const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");

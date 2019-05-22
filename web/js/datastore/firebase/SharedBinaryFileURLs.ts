@@ -49,7 +49,7 @@ export class SharedBinaryFileURLs {
      * Create a new shared URL which includes a download token which can be
      * shared publicly.
      */
-    public static async issue(backendFileRef: BackendFileRef): Promise<SharedURL> {
+    public static async create(backendFileRef: BackendFileRef): Promise<SharedURL> {
 
         const {backend, name} = backendFileRef;
 
