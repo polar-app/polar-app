@@ -25,16 +25,48 @@ const COLLECTION_NAME = 'shared_url';
  *
  * The underlying scheme here needs two records.
  *
- * shared_url_token:
+ * shared_url:
  *
  *       Stores a mapping between the downloadToken (as id) and the backend and
  *       name of file so we can compute the internalURL and a signedURL to
  *       return to the user.
  *
- * shared_url_conf
+ *       firebase ACL/permissions:
+ *          read: ONLY the user and admin
+ *          write: ONLY the user
+ *
+ * shared_permissions:
  *       Stores a shared file permissions for a user with the id computed
  *       from the id of doc and then a list of permissions that this user has
  *       handed out to other users on the Internet.
+ *
+ *       This is needed allow the user to keep track of WHO has permissions to
+ *       each of his documents to revoke individual permissions for individual
+ *       users or teams.
+ *
+ *       This way in the permissions dialog they can see all the files they've
+ *       shared and who has access to each file so that they can change
+ *       them from one location.
+ *
+ *       We can also use this table to lookup permissions for a file and show
+ *       the user an icon next to each file on the permissions.
+ *
+ *       schema:
+ *          uid: number : The user id of the user who owns the document.
+ *          target: 'public'
+ *              JUST public for now.. We are going to make other types like
+ *              groups and users in the future.
+ *          TODO/FIXME: the id or the fingerprint or the docinfo?
+ *
+ *       firebase ACL/permissions:
+ *          read: ONLY the user and admin
+ *          write: ONLY the user
+ *
+ *       TODO: for the /users/:handle page we need a way to list files that the
+ *       current user has access to and then query those... Maybe the best way
+ *       to do this is to denormalize everything on writes / deletes / updates
+ *       and just have fan-out configure the permissions.
+ *
  *
  * Removing permissions requires a batch operation to remove the shared_url
  * and the entry from the shared_doc for that recipient at once using array
