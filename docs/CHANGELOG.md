@@ -1,6 +1,8 @@
 
 # 1.19.7
 
+- Better handling of uppercase filenames now.
+
 - Fixed bug in htmlviewer where the sandbox was breaking doc loading.
 
 - Fixed an issue with polar on linux not resolving symlinks properly on startup.

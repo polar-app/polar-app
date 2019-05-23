@@ -152,6 +152,19 @@ export class FilePaths {
     }
 
     /**
+     * Return true if the file has the the given extension.  Case insensitive.
+     */
+    public static hasExtension(path: string, ext: string) {
+        Preconditions.assertPresent(path);
+        Preconditions.assertPresent(ext);
+
+        ext = ext.replace(/\.+/, "")
+                 .toLowerCase();
+
+        return path.toLowerCase().endsWith("." + ext);
+    }
+
+    /**
      * Convert this path to a file URL so that we can use it in an API that
      * expects a URL.
      */

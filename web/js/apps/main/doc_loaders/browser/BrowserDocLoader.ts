@@ -8,6 +8,7 @@ import {PDFLoader} from '../../file_loaders/PDFLoader';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 import {Nav} from '../../../../ui/util/Nav';
 import {PHZLoader} from '../../file_loaders/PHZLoader';
+import {FilePaths} from '../../../../util/FilePaths';
 
 const log = Logger.create();
 
@@ -41,9 +42,9 @@ export class BrowserDocLoader implements IDocLoader {
 
                     const fileName = backendFileRef.name;
 
-                    if (fileName.endsWith(".pdf")) {
+                    if (FilePaths.hasExtension(fileName, "pdf")) {
                         return PDFLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
-                    } else if (fileName.endsWith(".phz")) {
+                    } else if (FilePaths.hasExtension(fileName, "phz")) {
                         return PHZLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
                     } else {
                         throw new Error("Unable to handle file: " + fileName);

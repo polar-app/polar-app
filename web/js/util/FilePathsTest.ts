@@ -6,6 +6,20 @@ import {isPresent} from '../Preconditions';
 
 describe('FilePaths', function() {
 
+
+    describe('hasExtension', function() {
+
+        it("basic", function() {
+            assert.isTrue(FilePaths.hasExtension('foo.pdf', 'pdf'));
+            assert.isTrue(FilePaths.hasExtension('foo.PDF', 'pdf'));
+            assert.isTrue(FilePaths.hasExtension('foo.pdf', 'PDF'));             4
+            assert.isTrue(FilePaths.hasExtension('foo.PDF', 'PDF'));
+            assert.isTrue(FilePaths.hasExtension('foo.pdf', '.pdf'));
+            assert.isTrue(FilePaths.hasExtension('foo.PDF', '.pdf'));
+        });
+
+    });
+
     describe('BrowserFilePaths', function() {
 
         it("basename", function() {
