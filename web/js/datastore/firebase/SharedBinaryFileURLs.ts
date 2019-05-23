@@ -35,6 +35,10 @@ const COLLECTION_NAME = 'shared_url';
  *          read: ONLY the user and admin
  *          write: ONLY the user
  *
+ *       TODO/FIXME: we need an object for this. Right now SharedURL is a
+ *       string and we should have a SharedURL object.  Maybe a
+ *       SharedURLStr...
+ *
  * shared_permissions:
  *       Stores a shared file permissions for a user with the id computed
  *       from the id of doc and then a list of permissions that this user has

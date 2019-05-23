@@ -141,6 +141,7 @@ export class HTMLViewer extends Viewer {
 
         $(document).keydown(function(event: KeyboardEvent) {
 
+            // TODO: use the code here not the 'which'
             if (event.ctrlKey && (event.which === 61 ||
                                   event.which === 107 ||
                                   event.which === 173 ||
