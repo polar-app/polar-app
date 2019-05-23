@@ -67,7 +67,7 @@ export class AddFileRequests {
     public static computeFromFileList(files: FileList): AddFileRequest[] {
 
         return Array.from(files)
-            .filter(file => file.name.endsWith(".pdf"))
+            .filter(file => FilePaths.hasExtension(file.name, 'pdf'))
             .map(file => {
 
                 if (file.path) {
@@ -125,7 +125,7 @@ export class AddFileRequests {
 
                             await Files.recursively(path, async newPath => {
 
-                                if (newPath.endsWith(".pdf")) {
+                                if (newPath.toLocaleLowerCase().endsWith(".pdf")) {
                                     acceptedFiles.push(newPath);
                                 }
 
