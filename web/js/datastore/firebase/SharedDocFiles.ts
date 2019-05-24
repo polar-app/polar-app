@@ -81,6 +81,40 @@ const COLLECTION_NAME = 'shared_url';
  * and the entry from the shared_doc for that recipient at once using array
  * operations since a doc can be shared with more than one person.
  *
+ *       TODO: a better design would be to give a DocMetaID (fingerprint+uid hash)
+ *       and then the download token, and then the file ref information and then
+ *       resolve it properly to the backend URL ourselves.  This way we don't
+ *       need one entry per binary file type nor do we need the mime type
+ *       and this also makes for the primary setting for the file.
+ *
+ *       FIXME: this won't REALLY work though because the unique metadata is
+ *       encoded into the file in fact if we EVER give it out then it's
+ *       permanently shared and can't be revoked.
+ *
+ *         - this could be fixed if we blinded it with metadata from the user
+ *           that isn't computed locally but computed on the backend or locally
+ *           per each user.
+ *
+ *         - the download token would be used to compute the URL directly I think
+ *           and maybe we could encrypt the users user ID within it directly so
+ *           that we can decrypt it on the backend, apply the user ID and the
+ *           compute the RIGHT download URL.
+ *
+ *         - The major problem is how do we migrate to this NEW system. I could
+ *           potentially have metadata within the files so that lookup is
+ *           completely custom or has a prefix so to enable us to lookup
+ *           directly.
+ *
+ *         - actually!  We do this already with computeStoragePath so I think I
+ *           just need to do the following:
+ *              - make sure the uid is stored with teh downloadToken and never given
+ *                to the user
+ *              - they give us a BackendFileRef in the URL
+ *              - we lookup the download token, verify their access, compute the
+ *                correct download URL , then create the signed URL from the
+ *                download URL and then hand that out.
+ *
+ *              - the user can also revoke the downloadToken at ANY time...
  */
 export class SharedDocFiles {
 
