@@ -109,12 +109,29 @@ const COLLECTION_NAME = 'shared_url';
  *           just need to do the following:
  *              - make sure the uid is stored with teh downloadToken and never given
  *                to the user
- *              - they give us a BackendFileRef in the URL
+ *              - they give us a BackendFileRef in the URL encoded.
  *              - we lookup the download token, verify their access, compute the
  *                correct download URL , then create the signed URL from the
  *                download URL and then hand that out.
  *
  *              - the user can also revoke the downloadToken at ANY time...
+ *              - it's not really a download token as much as it's a sharing token
+ *
+ *              - TODO: actually, do we even NEED the download token now?
+ *                if the user is trying to access a document of another user,
+ *                we can check if they have access by their uid or whether the
+ *                doc is public.
+ *
+ *          - the use case for the first version fo sharing is a public page for
+ *            users so I can see all their documents listed.
+ *              - this version doesn't actually use the same UI layout as the
+ *                current UI but more of a river of news and MAYBE the ability
+ *                to add teh document to your own repo
+ *
+ *              - we need a way to view by doc_id which would reference a doc
+ *                that you don't own to see someone else's document directly
+ *                via firebase.
+ *
  */
 export class SharedDocFiles {
 
