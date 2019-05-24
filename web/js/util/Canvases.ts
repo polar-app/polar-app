@@ -138,27 +138,94 @@ export class Canvases {
      * @param opts The options for the image extraction
      */
     public static async extract(canvas: HTMLCanvasElement,
-                                rect: ILTRect,
-                                opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
+                                 rect: ILTRect,
+                                 opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
+
+        // FIXME: AHA!  there is an ugly bug here where the on-screen width
+        // of the canvas is not the actual width teh canvas THINKS it is...
+
+        console.log("FIXME: capturing canvas with rect: ", rect);
 
         Preconditions.assertPresent(canvas, "canvas");
+
+
+        const xScale = canvas.width / canvas.offsetWidth;
+        const yScale = canvas.height / canvas.offsetHeight;
+
+        // scale the canvas rect to the actual width + height
+        // of the internal canvas.
+        const canvasRect = {
+            left: rect.left * xScale,
+            width: rect.width * xScale,
+            top: rect.top * yScale,
+            height: rect.height * yScale
+        };
+
+
+        console.log("FIXME: canvas offsetWidth: " + canvas.offsetWidth);
+        console.log("FIXME: canvas offsetHeight: " + canvas.offsetHeight);
+
+        console.log("FIXME: canvas width: " + canvas.width);
+        console.log("FIXME: canvas height: " + canvas.height);
+
+
+        console.log("Using canvas rect: ", canvasRect);
 
         const tmpCanvas = document.createElement("canvas");
 
         const tmpCanvasCtx = tmpCanvas.getContext('2d', {alpha: false})!;
         tmpCanvasCtx.imageSmoothingEnabled = false;
 
-        tmpCanvas.width  = rect.width;
-        tmpCanvas.height = rect.height;
+        tmpCanvas.width  = canvasRect.width;
+        tmpCanvas.height = canvasRect.height;
+
+        console.log("FIXME: tmp canvas width: " + tmpCanvas.width);
+        console.log("FIXME: tmp canvas height: " + tmpCanvas.height);
 
         // copy data from the source canvas to the target
         tmpCanvasCtx.drawImage(canvas,
-                               rect.left, rect.top, rect.width, rect.height,
-                               0, 0, rect.width, rect.height);
+                               canvasRect.left, canvasRect.top, canvasRect.width, canvasRect.height,
+                               0, 0, canvasRect.width, canvasRect.height);
 
         const data = await this.toArrayBuffer(tmpCanvas, opts);
 
-        return {data, width: rect.width, height: rect.height, type: opts.type};
+        const result = {
+            data,
+            width: canvasRect.width,
+            height: canvasRect.height,
+            type: opts.type
+        };
+
+        console.log("FIXME: got result ", result);
+
+        return result;
+
+    }
+
+    public static async extract2(canvas: HTMLCanvasElement,
+                                rect: ILTRect,
+                                opts: ImageOpts = new DefaultImageOpts()): Promise<ExtractedImage> {
+
+        console.log("FIXME: capturing canvas with rect: ", rect);
+
+        Preconditions.assertPresent(canvas, "canvas");
+
+        const canvasCtx = canvas.getContext('2d', {alpha: false})!;
+        canvasCtx.imageSmoothingEnabled = false;
+
+        const imageData = canvasCtx.getImageData(rect.left, rect.top, rect.width, rect.height);
+
+        const tmpCanvas = document.createElement("canvas");
+        const tmpCanvasCtx = canvas.getContext('2d', {alpha: false})!;
+        tmpCanvasCtx.putImageData(imageData, 0, 0);
+
+        document.body.appendChild(tmpCanvas);
+
+        const data = await this.toArrayBuffer(tmpCanvas, opts);
+
+        const result = {data, width: rect.width, height: rect.height, type: opts.type};
+
+        return result;
 
     }
 
