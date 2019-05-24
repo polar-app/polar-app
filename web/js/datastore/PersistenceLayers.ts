@@ -176,6 +176,9 @@ export class PersistenceLayers {
                                  listener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION,
                                  id: string = 'none'): Promise<TransferResult> {
 
+        // TODO: include warnings as part of the transfer so that they can be
+        // logged and so that we can tell the user.
+
         // TODO: no errors are actually raised on the copy operations that are
         // operating in the async queue.  These need to be bubbled up.  This
         // function could just take an error listener and call back that way
