@@ -6,7 +6,7 @@ import {Backend} from '../../js/datastore/Backend';
 import {FileHandle} from '../../js/util/Files';
 import {Files} from '../../js/util/Files';
 import {FilePaths} from '../../js/util/FilePaths';
-import {SharedBinaryFileURLs} from '../../js/datastore/firebase/SharedBinaryFileURLs';
+import {SharedDocFiles} from '../../js/datastore/firebase/SharedDocFiles';
 import {BackendFileRef} from '../../js/datastore/Datastore';
 
 mocha.setup('bdd');
@@ -35,7 +35,7 @@ SpectronRenderer.run(async (state) => {
 
                 await firebaseDatastore.writeFile(Backend.STASH, {name: 'test.pdf'}, fileHandle);
 
-                const url = await SharedBinaryFileURLs.create(backendFileRef);
+                const url = await SharedDocFiles.create(backendFileRef);
 
                 console.log(url);
 

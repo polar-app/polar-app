@@ -5,6 +5,9 @@ import {FirebaseDatastore} from '../FirebaseDatastore';
 import * as firebase from '../../firebase/lib/firebase';
 import {Backend} from '../Backend';
 import {BackendFileRef} from '../Datastore';
+import {Firebase} from '../../firebase/Firebase';
+import {Optional} from '../../util/ts/Optional';
+import {FirebaseDocMetaID} from '../FirebaseDatastore';
 
 const COLLECTION_NAME = 'shared_url';
 
@@ -30,14 +33,12 @@ const COLLECTION_NAME = 'shared_url';
  *       Stores a mapping between the downloadToken (as id) and the backend and
  *       name of file so we can compute the internalURL and a signedURL to
  *       return to the user.
+ *          uid: number : The user id of the user who owns the document.
+ *          type: media type that this represents.
  *
  *       firebase ACL/permissions:
  *          read: ONLY the user and admin
  *          write: ONLY the user
- *
- *       TODO/FIXME: we need an object for this. Right now SharedURL is a
- *       string and we should have a SharedURL object.  Maybe a
- *       SharedURLStr...
  *
  * shared_permissions:
  *       Stores a shared file permissions for a user with the id computed
@@ -56,10 +57,7 @@ const COLLECTION_NAME = 'shared_url';
  *       the user an icon next to each file on the permissions.
  *
  *       schema:
- *          uid: number : The user id of the user who owns the document.
- *          target: 'public'
- *              JUST public for now.. We are going to make other types like
- *              groups and users in the future.
+ *
  *          TODO/FIXME: the id or the fingerprint or the docinfo?
  *
  *       firebase ACL/permissions:
@@ -67,17 +65,24 @@ const COLLECTION_NAME = 'shared_url';
  *          write: ONLY the user
  *
  *       TODO: for the /users/:handle page we need a way to list files that the
- *       current user has access to and then query those... Maybe the best way
- *       to do this is to denormalize everything on writes / deletes / updates
- *       and just have fan-out configure the permissions.
+ *       user performing the read has access to and then query those...  Right
+ *       now though we only
  *
+ *       TODO: the one downside though is that we're going to need a way to have
+ *       a public timeline.
+ *
+ *       TODO: one issue is that MANY resources (not just the main one) are
+ *       required.  Including pdf and image resources.
+ *
+ *       TODO: to find the main docs the user is indexing all we need to do is
+ *       either group by doc_id or something or look at the type.
  *
  * Removing permissions requires a batch operation to remove the shared_url
  * and the entry from the shared_doc for that recipient at once using array
  * operations since a doc can be shared with more than one person.
  *
  */
-export class SharedBinaryFileURLs {
+export class SharedDocFiles {
 
     private static firestore?: firebase.firestore.Firestore;
 
@@ -85,7 +90,16 @@ export class SharedBinaryFileURLs {
      * Create a new shared URL which includes a download token which can be
      * shared publicly.
      */
-    public static async create(backendFileRef: BackendFileRef): Promise<SharedURL> {
+    public static async create(fingerprint: string,
+                               backendFileRef: BackendFileRef,
+                               type: BinaryFileType,
+                               recipient: Recipient = 'public'): Promise<SharedURL> {
+
+        // FIXME: we have to first get all the DocFiles for this
+        // document to change their permissions.
+
+        // FIXME: for any NEW writes of files we have to automatically share
+        // the binary images there too.  Need tests for that.
 
         const {backend, name} = backendFileRef;
 
@@ -93,22 +107,43 @@ export class SharedBinaryFileURLs {
 
         const sharedURL = `https://us-central1-polar-cors.cloudfunctions.net/fetch/?downloadToken=${downloadToken}`;
 
-        const sharedURLRecord: SharedURLRecord = {
+        const user = await Firebase.currentUser();
+
+        const {uid} = user!;
+
+        const docID = FirebaseDatastore.computeDocMetaID(fingerprint, uid);
+
+        // TODO when writing NEW binary file attachments we need a cheap way
+        // to lookup the previous perms and inherit them. Maybe it would be
+        // easier to have ONE download token for the main doc and ALL the
+        // attachments for it...
+
+        // FIXME: also, the URL now needs to be computed without async right?
+        // this completely botches our strategy doesn't it?
+        //
+        //
+
+        const sharedDoc: SharedDocFile = {
             id: downloadToken,
             backend,
             name,
             downloadToken,
-            sharedURL
+            sharedURL,
+            uid,
+            recipient,
+            type,
+            fingerprint,
+            docID
         };
 
-        await this.writeSharedURL(sharedURLRecord);
+        await this.writeSharedDoc(sharedDoc);
 
         return sharedURL;
     }
 
-    private static async writeSharedURL(sharedURLRecord: SharedURLRecord) {
+    private static async writeSharedDoc(sharedDoc: SharedDocFile) {
 
-        const {downloadToken} = sharedURLRecord;
+        const {downloadToken} = sharedDoc;
         const id = downloadToken;
 
         const firestore = await this.getFirestore();
@@ -117,19 +152,14 @@ export class SharedBinaryFileURLs {
             .collection(COLLECTION_NAME)
             .doc(id);
 
-        await ref.set(sharedURLRecord);
+        await ref.set(sharedDoc);
 
-    }
-
-
-    private static async writeSharedDoc() {
-        // noop for now
     }
 
     /**
      * Resolve a downloadToken to the internalURL.
      */
-    public static async resolve(downloadToken: DownloadToken): Promise<SharedURLRecord | undefined> {
+    public static async resolve(downloadToken: DownloadToken): Promise<SharedDocFile | undefined> {
 
         const firestore = await this.getFirestore();
 
@@ -142,7 +172,7 @@ export class SharedBinaryFileURLs {
         const doc = await ref.get();
 
         if (doc.exists) {
-            return <SharedURLRecord> doc.data();
+            return <SharedDocFile> doc.data();
         }
 
         return undefined;
@@ -163,7 +193,7 @@ export class SharedBinaryFileURLs {
 
     }
 
-    public static parse(sharedURL: SharedURL): SharedURLMeta {
+    public static parse(sharedURL: SharedURL): SharedDocFileMeta {
         const parsedURL = new URL(sharedURL);
 
         const downloadToken = parsedURL.searchParams.get('downloadToken');
@@ -192,7 +222,7 @@ export class SharedBinaryFileURLs {
 
 type SharedURL = string;
 
-interface SharedURLMeta {
+interface SharedDocFileMeta {
     readonly sharedURL: SharedURL;
     readonly downloadToken: DownloadToken;
 }
@@ -209,18 +239,50 @@ class SharedURLRecordIDs {
 
 }
 
+export type Recipient = 'public';
+
 /**
  * We only need the backend and the name of the file to be able to compute the
  * internal URL.
  */
-interface SharedURLRecord extends SharedURLMeta {
+interface SharedDocFile extends SharedDocFileMeta {
 
     readonly id: SharedURLRecordID;
 
     readonly backend: Backend;
 
     readonly name: string;
+
+    /**
+     * The uid of the user sharing this doc file.
+     */
+    readonly uid: string;
+
+    readonly recipient: Recipient;
+
+    /**
+     * Used so we know what type is actually stored at the remote URL.
+     */
+    readonly type: BinaryFileType;
+
+    /**
+     * True if this is the main resource for the document (PHZ, PDF, EPUB, etc)
+     * and not the images or other misc attachments.
+     */
+    readonly main: boolean;
+
+    readonly fingerprint: string;
+
+    readonly docID: FirebaseDocMetaID;
+
 }
+
+export type BinaryFileType = 'image/jpeg' |
+                             'image/png' |
+                             'image/svg' |
+                             'image/webp' |
+                             'application/pdf' |
+                             'application/octet-stream';
 
 type DownloadToken = string;
 
