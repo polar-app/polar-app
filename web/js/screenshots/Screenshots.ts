@@ -28,8 +28,6 @@ export class Screenshots {
                                 boxRect: ILTRect,
                                 element: HTMLElement): Promise<ExtractedImage> {
 
-        console.log("FIXME capturing boxRect: ", boxRect);
-
         const docFormat = DocFormatFactory.getInstance();
 
         switch (docFormat.name) {
