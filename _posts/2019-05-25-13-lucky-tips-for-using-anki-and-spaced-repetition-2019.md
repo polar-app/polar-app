@@ -60,7 +60,7 @@ between books and continue where you left off.
 
 ## Active Recall
 
-You should also understand why active recall (https://en.wikipedia.org/wiki/Active_recall) is so important
+You should also understand why [active recall](https://en.wikipedia.org/wiki/Active_recall) is so important
 
 > Active recall is a principle of efficient learning, which claims the need to
 actively stimulate memory during the learning process. It contrasts with passive
