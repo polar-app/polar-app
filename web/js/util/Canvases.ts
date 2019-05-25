@@ -143,22 +143,41 @@ export class Canvases {
 
         Preconditions.assertPresent(canvas, "canvas");
 
+        const xScale = canvas.width / canvas.offsetWidth;
+        const yScale = canvas.height / canvas.offsetHeight;
+
+        // scale the canvas rect to the actual width + height
+        // of the internal canvas.
+        const canvasRect = {
+            left: rect.left * xScale,
+            width: rect.width * xScale,
+            top: rect.top * yScale,
+            height: rect.height * yScale
+        };
+
         const tmpCanvas = document.createElement("canvas");
 
         const tmpCanvasCtx = tmpCanvas.getContext('2d', {alpha: false})!;
         tmpCanvasCtx.imageSmoothingEnabled = false;
 
-        tmpCanvas.width  = rect.width;
-        tmpCanvas.height = rect.height;
+        tmpCanvas.width  = canvasRect.width;
+        tmpCanvas.height = canvasRect.height;
 
         // copy data from the source canvas to the target
         tmpCanvasCtx.drawImage(canvas,
-                               rect.left, rect.top, rect.width, rect.height,
-                               0, 0, rect.width, rect.height);
+                               canvasRect.left, canvasRect.top, canvasRect.width, canvasRect.height,
+                               0, 0, canvasRect.width, canvasRect.height);
 
         const data = await this.toArrayBuffer(tmpCanvas, opts);
 
-        return {data, width: rect.width, height: rect.height, type: opts.type};
+        const result = {
+            data,
+            width: canvasRect.width,
+            height: canvasRect.height,
+            type: opts.type
+        };
+
+        return result;
 
     }
 

@@ -1,6 +1,11 @@
 
 # 1.19.7
 
+- Fixed a potential sync issue where the cache could become inconsistent and 
+  polar would attempt to perform a read on a document that really doesn't exist.
+  
+  Now we just yield a warning.
+
 - Better handling of uppercase filenames now.
 
 - Fixed bug in htmlviewer where the sandbox was breaking doc loading.
