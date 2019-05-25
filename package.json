@@ -14,7 +14,7 @@
     "publish-linux": "electron-builder --config=electron-builder.yml --linux snap appimage deb tar.gz --publish always",
     "__publish-linux": "electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
     "publish-macos": "electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
-    "publish-webapp": "npm run-script build-webapp && firebase deploy",
+    "publish-webapp": "npm run-script build-webapp && firebase target:apply hosting app.getpolarized.io polar-webapp && firebase deploy",
     "__publish-win": "electron-builder --config=electron-builder.yml --win nsis --publish never",
     "publish-win": "./scripts/dist-win.sh",
     "make-linux-targz": "electron-builder --config=electron-builder.yml --linux tar.gz",
