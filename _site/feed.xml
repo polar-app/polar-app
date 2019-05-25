@@ -1,229 +1,498 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-05-25T12:21:16-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.md.disabled" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.md</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.md.disabled"># 13 Lucky Tips for using Anki and Spaced Repetition in 2019
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-05-25T12:25:59-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;h1 id=&quot;13-lucky-tips-for-using-anki-and-spaced-repetition-in-2019&quot;&gt;13 Lucky Tips for using Anki and Spaced Repetition in 2019&lt;/h1&gt;
 
-For the past view users I've been using Anki to capture anything I want to
-remember long term.  If I'm reading an important Wikipedia page I save it to
-Polar, annotate it directly, then create flashcards from the annotations.
+&lt;p&gt;For the past view users I’ve been using Anki to capture anything I want to
+remember long term.  If I’m reading an important Wikipedia page I save it to
+Polar, annotate it directly, then create flashcards from the annotations.&lt;/p&gt;
 
-I do this to my textbooks and anything else I find important enough to remember
-forever.
+&lt;p&gt;I do this to my textbooks and anything else I find important enough to remember
+forever.&lt;/p&gt;
 
-The reason SR is so effective for me is it allows me to efficiently schedule
-when to review the material. I'm not constantly reviewing material I already
-know.
+&lt;p&gt;The reason SR is so effective for me is it allows me to efficiently schedule
+when to review the material. I’m not constantly reviewing material I already
+know.&lt;/p&gt;
 
-Here are my tips and tricks for using Anki and SR for language learning, pursing
+&lt;p&gt;Here are my tips and tricks for using Anki and SR for language learning, pursing
 a medical degree, undergraduate degree, or just trying to be the smartest person
-in the room!
+in the room!&lt;/p&gt;
 
-These tips will work on any spaced repetition platform including Anki, Quizlet,
-or Memrise.
+&lt;p&gt;These tips will work on any spaced repetition platform including Anki, Quizlet,
+or Memrise.&lt;/p&gt;
 
-## Understand How It Works
+&lt;h2 id=&quot;understand-how-it-works&quot;&gt;Understand How It Works&lt;/h2&gt;
 
-First, you should read a bit about [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition) and make sure you know how
-it works.
+&lt;p&gt;First, you should read a bit about &lt;a href=&quot;https://en.wikipedia.org/wiki/Spaced_repetition&quot;&gt;spaced repetition&lt;/a&gt; and make sure you know how
+it works.&lt;/p&gt;
 
-This is key or you're going to make silly mistakes and revert to the old strategy
-of learning and cramming.
+&lt;p&gt;This is key or you’re going to make silly mistakes and revert to the old strategy
+of learning and cramming.&lt;/p&gt;
 
-## Make it Easy.
+&lt;h2 id=&quot;make-it-easy&quot;&gt;Make it Easy.&lt;/h2&gt;
 
-Creating flashcards needs to be easy use a tool like
-[Polar](https://getpolarized.io/) so that you can create flashcards, comments,
-and annotations directly while you're reading the material.
+&lt;p&gt;Creating flashcards needs to be easy use a tool like
+&lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt; so that you can create flashcards, comments,
+and annotations directly while you’re reading the material.&lt;/p&gt;
 
-Once created the flashcards can all be sync'd to Anki in batch.
+&lt;p&gt;Once created the flashcards can all be sync’d to Anki in batch.&lt;/p&gt;
 
-This prevents you from going back and forth between Anki and your reading app.
+&lt;p&gt;This prevents you from going back and forth between Anki and your reading app.&lt;/p&gt;
 
-Additionally, Polar supports incremental reading so you can go back and forth
-between books and continue where you left off.
+&lt;p&gt;Additionally, Polar supports incremental reading so you can go back and forth
+between books and continue where you left off.&lt;/p&gt;
 
-## Active Recall
+&lt;h2 id=&quot;active-recall&quot;&gt;Active Recall&lt;/h2&gt;
 
-You should also understand why active recall (https://en.wikipedia.org/wiki/Active_recall) is so important
+&lt;p&gt;You should also understand why active recall (https://en.wikipedia.org/wiki/Active_recall) is so important&lt;/p&gt;
 
-&gt; Active recall is a principle of efficient learning, which claims the need to
+&lt;blockquote&gt;
+  &lt;p&gt;Active recall is a principle of efficient learning, which claims the need to
 actively stimulate memory during the learning process. It contrasts with passive
 review, in which the learning material is processed passively (e.g. by reading,
 watching, etc.). For example, reading a text about George Washington, with no
-further action, is a passive review. Answering the question &quot;Who was the first
-US President?&quot;, is active recall.
+further action, is a passive review. Answering the question “Who was the first
+US President?”, is active recall.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-Essentially you want everything to be a question and you want to have to think of the
-answer. It's this thinking process which allows your brain to map weights to specific
-neurons and actually learn.
+&lt;p&gt;Essentially you want everything to be a question and you want to have to think of the
+answer. It’s this thinking process which allows your brain to map weights to specific
+neurons and actually learn.&lt;/p&gt;
 
-Don't give leading questions or give your self hints to the answer. If you don't
-know the questions that's fine.  Just fail it so it's brought up again.
+&lt;p&gt;Don’t give leading questions or give your self hints to the answer. If you don’t
+know the questions that’s fine.  Just fail it so it’s brought up again.&lt;/p&gt;
 
-## Habit, Habit, Habit.
+&lt;h2 id=&quot;habit-habit-habit&quot;&gt;Habit, Habit, Habit.&lt;/h2&gt;
 
-You couldn't sit down at the end of the month and brush your teeth for 2-3 hours
-to make up for not brushing would you?
+&lt;p&gt;You couldn’t sit down at the end of the month and brush your teeth for 2-3 hours
+to make up for not brushing would you?&lt;/p&gt;
 
-This has to be a habit. You have to do it every day for 15-45 minutes.
+&lt;p&gt;This has to be a habit. You have to do it every day for 15-45 minutes.&lt;/p&gt;
 
-Do it when you have dead time.  During  your commute. While you're in line at the DMV.
+&lt;p&gt;Do it when you have dead time.  During  your commute. While you’re in line at the DMV.&lt;/p&gt;
 
-While you're bored.
+&lt;p&gt;While you’re bored.&lt;/p&gt;
 
-## Think LONG Term.
+&lt;h2 id=&quot;think-long-term&quot;&gt;Think LONG Term.&lt;/h2&gt;
 
-Don't give up on cards after you've finished a class or other milestone.
+&lt;p&gt;Don’t give up on cards after you’ve finished a class or other milestone.&lt;/p&gt;
 
-The cool thing about SR is that you can keep the material forever.  If you paid
-money to learn Calculus you might as well keep it.  Once you've learned it
-using SR is mostly about maintenance.
+&lt;p&gt;The cool thing about SR is that you can keep the material forever.  If you paid
+money to learn Calculus you might as well keep it.  Once you’ve learned it
+using SR is mostly about maintenance.&lt;/p&gt;
 
-Since you know the material the scheduling will get farther and farther in the
-future and there won't be such a massive burden.
+&lt;p&gt;Since you know the material the scheduling will get farther and farther in the
+future and there won’t be such a massive burden.&lt;/p&gt;
 
-## Use the Right Card Type
+&lt;h2 id=&quot;use-the-right-card-type&quot;&gt;Use the Right Card Type&lt;/h2&gt;
 
-You should prefer to use question and answer cards.
+&lt;p&gt;You should prefer to use question and answer cards.&lt;/p&gt;
 
-These are in the form of
+&lt;p&gt;These are in the form of&lt;/p&gt;
 
-&gt; Q: What is the capital of California?
+&lt;blockquote&gt;
+  &lt;p&gt;Q: What is the capital of California?&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&gt; A: Sacramento
+&lt;blockquote&gt;
+  &lt;p&gt;A: Sacramento&lt;/p&gt;
+&lt;/blockquote&gt;
 
-This would be as opposed to cloze deletion cards like:
+&lt;p&gt;This would be as opposed to cloze deletion cards like:&lt;/p&gt;
 
-\[Sacramento\] is the capital of California.
+&lt;p&gt;[Sacramento] is the capital of California.&lt;/p&gt;
 
-In the above the 'Sacramento' string is hidden.
+&lt;p&gt;In the above the ‘Sacramento’ string is hidden.&lt;/p&gt;
 
-Cloze deletion cards might seem easy but they often give away context clues
-which weakens the entire point of SR.
+&lt;p&gt;Cloze deletion cards might seem easy but they often give away context clues
+which weakens the entire point of SR.&lt;/p&gt;
 
-- Cloze Deletions for Languages.
+&lt;ul&gt;
+  &lt;li&gt;Cloze Deletions for Languages.&lt;/li&gt;
+&lt;/ul&gt;
 
-There's one main exception for cloze deletion cards - languages.
+&lt;p&gt;There’s one main exception for cloze deletion cards - languages.&lt;/p&gt;
 
-Cloze can be good to help with grammar and sentence structure.
+&lt;p&gt;Cloze can be good to help with grammar and sentence structure.&lt;/p&gt;
 
-They should NOT replace Q/A cards though.
+&lt;p&gt;They should NOT replace Q/A cards though.&lt;/p&gt;
 
-For a given word you should have the definition and the forward and reverse translation.
+&lt;p&gt;For a given word you should have the definition and the forward and reverse translation.&lt;/p&gt;
 
-## Person cards.  Remember a Person's Face!
+&lt;h2 id=&quot;person-cards--remember-a-persons-face&quot;&gt;Person cards.  Remember a Person’s Face!&lt;/h2&gt;
 
-This is one of my favorite hacks.
+&lt;p&gt;This is one of my favorite hacks.&lt;/p&gt;
 
-I have trouble with matching names to faces and I used to avoid talking to people.
+&lt;p&gt;I have trouble with matching names to faces and I used to avoid talking to people.&lt;/p&gt;
 
-Now I just create a card with their picture and the answer is their name.
+&lt;p&gt;Now I just create a card with their picture and the answer is their name.&lt;/p&gt;
 
-It's really help avoid awkward social situations.
+&lt;p&gt;It’s really help avoid awkward social situations.&lt;/p&gt;
 
-## Related Cards
+&lt;h2 id=&quot;related-cards&quot;&gt;Related Cards&lt;/h2&gt;
 
-If you're struggling with a card try creating related cards.
+&lt;p&gt;If you’re struggling with a card try creating related cards.&lt;/p&gt;
 
-For example if you have difficulties remembering the reasons for the start of WWII
-make flashcards about those reasons.
+&lt;p&gt;For example if you have difficulties remembering the reasons for the start of WWII
+make flashcards about those reasons.&lt;/p&gt;
 
-If you want to include Pearl Harbor for example maybe you include facts about
-the ships or the types of attacks that were involved.
+&lt;p&gt;If you want to include Pearl Harbor for example maybe you include facts about
+the ships or the types of attacks that were involved.&lt;/p&gt;
 
-## Create only Beneficial Cards.
+&lt;h2 id=&quot;create-only-beneficial-cards&quot;&gt;Create only Beneficial Cards.&lt;/h2&gt;
 
-Don't create nonsense cards. Ask yourself will this really help you.
+&lt;p&gt;Don’t create nonsense cards. Ask yourself will this really help you.&lt;/p&gt;
 
-Remember that SR is an efficient scheduler so going from 5-10k cards isn't 2x
-more work.  It is initially but quickly your spacings increase and you're going
-to just be reviewing a few cards per day again.
+&lt;p&gt;Remember that SR is an efficient scheduler so going from 5-10k cards isn’t 2x
+more work.  It is initially but quickly your spacings increase and you’re going
+to just be reviewing a few cards per day again.&lt;/p&gt;
 
-However, by only keeping important cards in there this helps you avoid card
-burnout since you're never wondering &quot;why&quot; you're learning these cards.
+&lt;p&gt;However, by only keeping important cards in there this helps you avoid card
+burnout since you’re never wondering “why” you’re learning these cards.&lt;/p&gt;
 
-The why is because they're valuable!
+&lt;p&gt;The why is because they’re valuable!&lt;/p&gt;
 
-Knowing key facts might still land you that job.  If you know a technical term
+&lt;p&gt;Knowing key facts might still land you that job.  If you know a technical term
 during an interview or due diligence it could help convince the interviewer that
-you know your stuff.  Consider adding it anyway!
+you know your stuff.  Consider adding it anyway!&lt;/p&gt;
 
-## Use 'shingling' to Remember Speeches
+&lt;h2 id=&quot;use-shingling-to-remember-speeches&quot;&gt;Use ‘shingling’ to Remember Speeches&lt;/h2&gt;
 
-Do not include entire speeches to remember. Instead. Use overlapped sentences.
+&lt;p&gt;Do not include entire speeches to remember. Instead. Use overlapped sentences.&lt;/p&gt;
 
-For example. If you want to remember the following:
+&lt;p&gt;For example. If you want to remember the following:&lt;/p&gt;
 
-&gt; Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
-&gt; Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
-&gt; We are met on a great battle-field of that war.
-&gt; We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.
+&lt;blockquote&gt;
+  &lt;p&gt;Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
+Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
+We are met on a great battle-field of that war.
+We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-Break this out into three cards:
+&lt;p&gt;Break this out into three cards:&lt;/p&gt;
 
-&gt; Q: Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
+&lt;blockquote&gt;
+  &lt;p&gt;Q: Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&gt; A: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
+&lt;blockquote&gt;
+  &lt;p&gt;A: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.&lt;/p&gt;
+&lt;/blockquote&gt;
 
---
+&lt;p&gt;–&lt;/p&gt;
 
-&gt; Q: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
+&lt;blockquote&gt;
+  &lt;p&gt;Q: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&gt; A: We are met on a great battle-field of that war.
+&lt;blockquote&gt;
+  &lt;p&gt;A: We are met on a great battle-field of that war.&lt;/p&gt;
+&lt;/blockquote&gt;
 
---
+&lt;p&gt;–&lt;/p&gt;
 
-&gt; Q: We are met on a great battle-field of that war.
+&lt;blockquote&gt;
+  &lt;p&gt;Q: We are met on a great battle-field of that war.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&gt; A: We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.
+&lt;blockquote&gt;
+  &lt;p&gt;A: We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-This will help you connect the parts without having to choke on a massive card with the entire speech.
+&lt;p&gt;This will help you connect the parts without having to choke on a massive card with the entire speech.&lt;/p&gt;
 
-## Use Absurdity and Keep it Fun
+&lt;h2 id=&quot;use-absurdity-and-keep-it-fun&quot;&gt;Use Absurdity and Keep it Fun&lt;/h2&gt;
 
-If you were driving to work and you saw a naked man riding a horse on the side
-of the road would you need to remember it?
+&lt;p&gt;If you were driving to work and you saw a naked man riding a horse on the side
+of the road would you need to remember it?&lt;/p&gt;
 
-Would you have to write it down?
+&lt;p&gt;Would you have to write it down?&lt;/p&gt;
 
-No. It would burn in your mind.  You'd remember this image for a decade.
+&lt;p&gt;No. It would burn in your mind.  You’d remember this image for a decade.&lt;/p&gt;
 
-Do this for your facts.
+&lt;p&gt;Do this for your facts.&lt;/p&gt;
 
-Let's say you met a guy and his name is &quot;Mark Nun&quot;.
+&lt;p&gt;Let’s say you met a guy and his name is “Mark Nun”.&lt;/p&gt;
 
-Picture this guy as an actual nun wearing a nun's uniform.
+&lt;p&gt;Picture this guy as an actual nun wearing a nun’s uniform.&lt;/p&gt;
 
-You're never going to forget this guy's name.
+&lt;p&gt;You’re never going to forget this guy’s name.&lt;/p&gt;
 
-I do this all the time and it's a great hack.  You can do this for your cards to by
-mapping images with the cards that are absurd.
+&lt;p&gt;I do this all the time and it’s a great hack.  You can do this for your cards to by
+mapping images with the cards that are absurd.&lt;/p&gt;
 
-## Use Extra Fields
+&lt;h2 id=&quot;use-extra-fields&quot;&gt;Use Extra Fields&lt;/h2&gt;
 
-Create an 'extra' field with your cards so that you can add notes and pictures
-so that when you fail to remember you can get back to the original context.
+&lt;p&gt;Create an ‘extra’ field with your cards so that you can add notes and pictures
+so that when you fail to remember you can get back to the original context.&lt;/p&gt;
 
-## Use Stories and Etymology
+&lt;h2 id=&quot;use-stories-and-etymology&quot;&gt;Use Stories and Etymology&lt;/h2&gt;
 
-Attach 'extra' stories to the material as above but make them stories or use
-imagery to remember the material.
+&lt;p&gt;Attach ‘extra’ stories to the material as above but make them stories or use
+imagery to remember the material.&lt;/p&gt;
 
-I've found that etymology works VERY well for learning languages.
+&lt;p&gt;I’ve found that etymology works VERY well for learning languages.&lt;/p&gt;
 
-For example.  The German word for sea is meer which is related ot the English word
-marine which is also related to mare (spanish / italian for sea).
+&lt;p&gt;For example.  The German word for sea is meer which is related ot the English word
+marine which is also related to mare (spanish / italian for sea).&lt;/p&gt;
 
-Those connections make it easier to remember.
+&lt;p&gt;Those connections make it easier to remember.&lt;/p&gt;
 
-# Conclusion
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-SR won't replace the work of actually understanding the material.  This is still
-your job.  If you're still confused on a subject try reading it from different
-perspectives of from different authors.
+&lt;p&gt;SR won’t replace the work of actually understanding the material.  This is still
+your job.  If you’re still confused on a subject try reading it from different
+perspectives of from different authors.&lt;/p&gt;
 
-Use the above tips to keep moving forward with spaced repetition. Use a tool
-like Polar to easily create flashcards and sync them to Anki.
+&lt;p&gt;Use the above tips to keep moving forward with spaced repetition. Use a tool
+like Polar to easily create flashcards and sync them to Anki.&lt;/p&gt;
 
-Make sure you're also using the right Anki plugins and that you're using it to
-full effect.</content><author><name></name></author><summary type="html"># 13 Lucky Tips for using Anki and Spaced Repetition in 2019</summary></entry><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019-index.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019/index</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019-index.html"></content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards</title><link href="https://getpolarized.io/2019/05/11/portable-web-documents.html" rel="alternate" type="text/html" title="Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards" /><published>2019-05-11T10:00:00-07:00</published><updated>2019-05-11T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/11/portable-web-documents</id><content type="html" xml:base="https://getpolarized.io/2019/05/11/portable-web-documents.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/portable-web-documents-scaled.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Make sure you’re also using the right Anki plugins and that you’re using it to
+full effect.&lt;/p&gt;</content><author><name></name></author><summary type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</summary></entry><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019-index.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019/index</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019-index.html">&lt;h1 id=&quot;13-lucky-tips-for-using-anki-and-spaced-repetition-in-2019&quot;&gt;13 Lucky Tips for using Anki and Spaced Repetition in 2019&lt;/h1&gt;
+
+&lt;p&gt;For the past view users I’ve been using Anki to capture anything I want to
+remember long term.  If I’m reading an important Wikipedia page I save it to
+Polar, annotate it directly, then create flashcards from the annotations.&lt;/p&gt;
+
+&lt;p&gt;I do this to my textbooks and anything else I find important enough to remember
+forever.&lt;/p&gt;
+
+&lt;p&gt;The reason SR is so effective for me is it allows me to efficiently schedule
+when to review the material. I’m not constantly reviewing material I already
+know.&lt;/p&gt;
+
+&lt;p&gt;Here are my tips and tricks for using Anki and SR for language learning, pursing
+a medical degree, undergraduate degree, or just trying to be the smartest person
+in the room!&lt;/p&gt;
+
+&lt;p&gt;These tips will work on any spaced repetition platform including Anki, Quizlet,
+or Memrise.&lt;/p&gt;
+
+&lt;h2 id=&quot;understand-how-it-works&quot;&gt;Understand How It Works&lt;/h2&gt;
+
+&lt;p&gt;First, you should read a bit about &lt;a href=&quot;https://en.wikipedia.org/wiki/Spaced_repetition&quot;&gt;spaced repetition&lt;/a&gt; and make sure you know how
+it works.&lt;/p&gt;
+
+&lt;p&gt;This is key or you’re going to make silly mistakes and revert to the old strategy
+of learning and cramming.&lt;/p&gt;
+
+&lt;h2 id=&quot;make-it-easy&quot;&gt;Make it Easy.&lt;/h2&gt;
+
+&lt;p&gt;Creating flashcards needs to be easy use a tool like
+&lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt; so that you can create flashcards, comments,
+and annotations directly while you’re reading the material.&lt;/p&gt;
+
+&lt;p&gt;Once created the flashcards can all be sync’d to Anki in batch.&lt;/p&gt;
+
+&lt;p&gt;This prevents you from going back and forth between Anki and your reading app.&lt;/p&gt;
+
+&lt;p&gt;Additionally, Polar supports incremental reading so you can go back and forth
+between books and continue where you left off.&lt;/p&gt;
+
+&lt;h2 id=&quot;active-recall&quot;&gt;Active Recall&lt;/h2&gt;
+
+&lt;p&gt;You should also understand why active recall (https://en.wikipedia.org/wiki/Active_recall) is so important&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Active recall is a principle of efficient learning, which claims the need to
+actively stimulate memory during the learning process. It contrasts with passive
+review, in which the learning material is processed passively (e.g. by reading,
+watching, etc.). For example, reading a text about George Washington, with no
+further action, is a passive review. Answering the question “Who was the first
+US President?”, is active recall.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Essentially you want everything to be a question and you want to have to think of the
+answer. It’s this thinking process which allows your brain to map weights to specific
+neurons and actually learn.&lt;/p&gt;
+
+&lt;p&gt;Don’t give leading questions or give your self hints to the answer. If you don’t
+know the questions that’s fine.  Just fail it so it’s brought up again.&lt;/p&gt;
+
+&lt;h2 id=&quot;habit-habit-habit&quot;&gt;Habit, Habit, Habit.&lt;/h2&gt;
+
+&lt;p&gt;You couldn’t sit down at the end of the month and brush your teeth for 2-3 hours
+to make up for not brushing would you?&lt;/p&gt;
+
+&lt;p&gt;This has to be a habit. You have to do it every day for 15-45 minutes.&lt;/p&gt;
+
+&lt;p&gt;Do it when you have dead time.  During  your commute. While you’re in line at the DMV.&lt;/p&gt;
+
+&lt;p&gt;While you’re bored.&lt;/p&gt;
+
+&lt;h2 id=&quot;think-long-term&quot;&gt;Think LONG Term.&lt;/h2&gt;
+
+&lt;p&gt;Don’t give up on cards after you’ve finished a class or other milestone.&lt;/p&gt;
+
+&lt;p&gt;The cool thing about SR is that you can keep the material forever.  If you paid
+money to learn Calculus you might as well keep it.  Once you’ve learned it
+using SR is mostly about maintenance.&lt;/p&gt;
+
+&lt;p&gt;Since you know the material the scheduling will get farther and farther in the
+future and there won’t be such a massive burden.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-the-right-card-type&quot;&gt;Use the Right Card Type&lt;/h2&gt;
+
+&lt;p&gt;You should prefer to use question and answer cards.&lt;/p&gt;
+
+&lt;p&gt;These are in the form of&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Q: What is the capital of California?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A: Sacramento&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This would be as opposed to cloze deletion cards like:&lt;/p&gt;
+
+&lt;p&gt;[Sacramento] is the capital of California.&lt;/p&gt;
+
+&lt;p&gt;In the above the ‘Sacramento’ string is hidden.&lt;/p&gt;
+
+&lt;p&gt;Cloze deletion cards might seem easy but they often give away context clues
+which weakens the entire point of SR.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Cloze Deletions for Languages.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There’s one main exception for cloze deletion cards - languages.&lt;/p&gt;
+
+&lt;p&gt;Cloze can be good to help with grammar and sentence structure.&lt;/p&gt;
+
+&lt;p&gt;They should NOT replace Q/A cards though.&lt;/p&gt;
+
+&lt;p&gt;For a given word you should have the definition and the forward and reverse translation.&lt;/p&gt;
+
+&lt;h2 id=&quot;person-cards--remember-a-persons-face&quot;&gt;Person cards.  Remember a Person’s Face!&lt;/h2&gt;
+
+&lt;p&gt;This is one of my favorite hacks.&lt;/p&gt;
+
+&lt;p&gt;I have trouble with matching names to faces and I used to avoid talking to people.&lt;/p&gt;
+
+&lt;p&gt;Now I just create a card with their picture and the answer is their name.&lt;/p&gt;
+
+&lt;p&gt;It’s really help avoid awkward social situations.&lt;/p&gt;
+
+&lt;h2 id=&quot;related-cards&quot;&gt;Related Cards&lt;/h2&gt;
+
+&lt;p&gt;If you’re struggling with a card try creating related cards.&lt;/p&gt;
+
+&lt;p&gt;For example if you have difficulties remembering the reasons for the start of WWII
+make flashcards about those reasons.&lt;/p&gt;
+
+&lt;p&gt;If you want to include Pearl Harbor for example maybe you include facts about
+the ships or the types of attacks that were involved.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-only-beneficial-cards&quot;&gt;Create only Beneficial Cards.&lt;/h2&gt;
+
+&lt;p&gt;Don’t create nonsense cards. Ask yourself will this really help you.&lt;/p&gt;
+
+&lt;p&gt;Remember that SR is an efficient scheduler so going from 5-10k cards isn’t 2x
+more work.  It is initially but quickly your spacings increase and you’re going
+to just be reviewing a few cards per day again.&lt;/p&gt;
+
+&lt;p&gt;However, by only keeping important cards in there this helps you avoid card
+burnout since you’re never wondering “why” you’re learning these cards.&lt;/p&gt;
+
+&lt;p&gt;The why is because they’re valuable!&lt;/p&gt;
+
+&lt;p&gt;Knowing key facts might still land you that job.  If you know a technical term
+during an interview or due diligence it could help convince the interviewer that
+you know your stuff.  Consider adding it anyway!&lt;/p&gt;
+
+&lt;h2 id=&quot;use-shingling-to-remember-speeches&quot;&gt;Use ‘shingling’ to Remember Speeches&lt;/h2&gt;
+
+&lt;p&gt;Do not include entire speeches to remember. Instead. Use overlapped sentences.&lt;/p&gt;
+
+&lt;p&gt;For example. If you want to remember the following:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
+Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
+We are met on a great battle-field of that war.
+We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Break this out into three cards:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Q: Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;–&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Q: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A: We are met on a great battle-field of that war.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;–&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Q: We are met on a great battle-field of that war.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A: We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This will help you connect the parts without having to choke on a massive card with the entire speech.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-absurdity-and-keep-it-fun&quot;&gt;Use Absurdity and Keep it Fun&lt;/h2&gt;
+
+&lt;p&gt;If you were driving to work and you saw a naked man riding a horse on the side
+of the road would you need to remember it?&lt;/p&gt;
+
+&lt;p&gt;Would you have to write it down?&lt;/p&gt;
+
+&lt;p&gt;No. It would burn in your mind.  You’d remember this image for a decade.&lt;/p&gt;
+
+&lt;p&gt;Do this for your facts.&lt;/p&gt;
+
+&lt;p&gt;Let’s say you met a guy and his name is “Mark Nun”.&lt;/p&gt;
+
+&lt;p&gt;Picture this guy as an actual nun wearing a nun’s uniform.&lt;/p&gt;
+
+&lt;p&gt;You’re never going to forget this guy’s name.&lt;/p&gt;
+
+&lt;p&gt;I do this all the time and it’s a great hack.  You can do this for your cards to by
+mapping images with the cards that are absurd.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-extra-fields&quot;&gt;Use Extra Fields&lt;/h2&gt;
+
+&lt;p&gt;Create an ‘extra’ field with your cards so that you can add notes and pictures
+so that when you fail to remember you can get back to the original context.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-stories-and-etymology&quot;&gt;Use Stories and Etymology&lt;/h2&gt;
+
+&lt;p&gt;Attach ‘extra’ stories to the material as above but make them stories or use
+imagery to remember the material.&lt;/p&gt;
+
+&lt;p&gt;I’ve found that etymology works VERY well for learning languages.&lt;/p&gt;
+
+&lt;p&gt;For example.  The German word for sea is meer which is related ot the English word
+marine which is also related to mare (spanish / italian for sea).&lt;/p&gt;
+
+&lt;p&gt;Those connections make it easier to remember.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;SR won’t replace the work of actually understanding the material.  This is still
+your job.  If you’re still confused on a subject try reading it from different
+perspectives of from different authors.&lt;/p&gt;
+
+&lt;p&gt;Use the above tips to keep moving forward with spaced repetition. Use a tool
+like Polar to easily create flashcards and sync them to Anki.&lt;/p&gt;
+
+&lt;p&gt;Make sure you’re also using the right Anki plugins and that you’re using it to
+full effect.&lt;/p&gt;</content><author><name></name></author><summary type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</summary></entry><entry><title type="html">Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards</title><link href="https://getpolarized.io/2019/05/11/portable-web-documents.html" rel="alternate" type="text/html" title="Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards" /><published>2019-05-11T10:00:00-07:00</published><updated>2019-05-11T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/11/portable-web-documents</id><content type="html" xml:base="https://getpolarized.io/2019/05/11/portable-web-documents.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/portable-web-documents-scaled.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;portable-web-documents---an-alternative-to-pdf-based-on-html5-and-web-standards&quot;&gt;Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards&lt;/h1&gt;
 
