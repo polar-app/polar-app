@@ -2,16 +2,18 @@
 title: 13 Lucky Tips for using Anki and Spaced Repetition in 2019
 date: 2019-05-25 09:00:00 -0800
 layout: post
-large_image: https://getpolarized.io/assets/images/portable-web-documents-scaled.png
-description: Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards
-hidden: true
+large_image: https://i.imgur.com/FeMzRL1.png
+description: For the past few years I've been using Anki to capture anything I want to remember long term.  If I'm reading an important Wikipedia page I save it to Polar, annotate it directly, then create flashcards from the annotations.
 ---
+
+<img class="img-fluid" src="https://i.imgur.com/FeMzRL1.png">
 
 # 13 Lucky Tips for using Anki and Spaced Repetition in 2019
 
-For the past view users I've been using Anki to capture anything I want to
+For the past few years I've been using Anki to capture anything I want to
 remember long term.  If I'm reading an important Wikipedia page I save it to
-Polar, annotate it directly, then create flashcards from the annotations.
+[Polar](https://getpolarized.io/), annotate it directly, then create flashcards 
+from the annotations.
 
 I do this to my textbooks and anything else I find important enough to remember
 forever.
@@ -35,6 +37,10 @@ it works.
 This is key or you're going to make silly mistakes and revert to the old strategy
 of learning and cramming.
 
+<p class="text-center">
+<img class="img-fluid border border-secondary" src="https://i.imgur.com/otv7GF0.png">
+</p>                         
+
 ## Make it Easy.
 
 Creating flashcards needs to be easy use a tool like
@@ -47,6 +53,10 @@ This prevents you from going back and forth between Anki and your reading app.
 
 Additionally, Polar supports incremental reading so you can go back and forth
 between books and continue where you left off.
+
+<p class="text-center">
+<img class="img-fluid border border-secondary" src="https://i.imgur.com/rbAwfR6.png">
+</p>
 
 ## Active Recall
 
@@ -107,7 +117,7 @@ In the above the 'Sacramento' string is hidden.
 Cloze deletion cards might seem easy but they often give away context clues
 which weakens the entire point of SR.
 
-- Cloze Deletions for Languages.
+## Cloze Deletions for Languages.
 
 There's one main exception for cloze deletion cards - languages.
 
