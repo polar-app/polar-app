@@ -87,6 +87,20 @@ Do it when you have dead time.  During  your commute. While you're in line at th
 
 While you're bored.
 
+## 85-90 Difficulty
+
+You should try to target 85-90% difficulty for your cards. If you go into Anki 
+stats you can see the difficulty level for your recent usage.
+
+Too easy and you're probably reviewing too often (and wasting time).  Too hard
+and you're not going to learn anything.
+
+You want it to be difficult to not too difficulty.
+
+Unfortunately Anki doesn't tun itself so you have to tune Anki directly.
+
+This can be adjusted in the per-deck settings by changing the ease factors. 
+
 ## Think LONG Term.
 
 Don't give up on cards after you've finished a class or other milestone.
@@ -136,6 +150,10 @@ I have trouble with matching names to faces and I used to avoid talking to peopl
 Now I just create a card with their picture and the answer is their name.
 
 It's really help avoid awkward social situations.
+
+<p class="text-center">
+<img class="img-fluid border border-secondary" src="https://i.imgur.com/qP4My84.png">
+</p>
 
 ## Related Cards
 
@@ -204,9 +222,11 @@ Would you have to write it down?
 
 No. It would burn in your mind.  You'd remember this image for a decade.
 
-Do this for your facts.
+Do this for your anki cards you're trying to remember.
 
-Let's say you met a guy and his name is "Mark Nun".
+Let's say you met a guy and his name is "Mark Nun".  
+
+(I just made this up btw. If your name is Mark Nun we don't know each other!) 
 
 Picture this guy as an actual nun wearing a nun's uniform.
 
@@ -220,6 +240,15 @@ mapping images with the cards that are absurd.
 Create an 'extra' field with your cards so that you can add notes and pictures
 so that when you fail to remember you can get back to the original context.
 
+I'll often put the book information.  The actual text of where I saw the card, etc.
+
+I'm working on a feature for Polar to add this directly so that when you create
+a flashcard in Polar we automatically create a card with the context so you 
+can click back to it.
+
+The initial version will probably just have a link back to the Polar webapp to
+avoid bloating Anki with too many images.
+
 ## Use Stories and Etymology
 
 Attach 'extra' stories to the material as above but make them stories or use
@@ -227,7 +256,7 @@ imagery to remember the material.
 
 I've found that etymology works VERY well for learning languages.
 
-For example.  The German word for sea is meer which is related ot the English word
+For example.  The German word for sea is meer which is related to the English word
 marine which is also related to mare (spanish / italian for sea).
 
 Those connections make it easier to remember.

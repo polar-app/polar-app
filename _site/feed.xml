@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-05-25T12:54:47-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-05-26T09:20:13-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;13-lucky-tips-for-using-anki-and-spaced-repetition-in-2019&quot;&gt;13 Lucky Tips for using Anki and Spaced Repetition in 2019&lt;/h1&gt;
 
@@ -52,7 +52,7 @@ between books and continue where you left off.&lt;/p&gt;
 
 &lt;h2 id=&quot;active-recall&quot;&gt;Active Recall&lt;/h2&gt;
 
-&lt;p&gt;You should also understand why active recall (https://en.wikipedia.org/wiki/Active_recall) is so important&lt;/p&gt;
+&lt;p&gt;You should also understand why &lt;a href=&quot;https://en.wikipedia.org/wiki/Active_recall&quot;&gt;active recall&lt;/a&gt; is so important&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Active recall is a principle of efficient learning, which claims the need to
@@ -80,6 +80,20 @@ to make up for not brushing would you?&lt;/p&gt;
 &lt;p&gt;Do it when you have dead time.  During  your commute. While you’re in line at the DMV.&lt;/p&gt;
 
 &lt;p&gt;While you’re bored.&lt;/p&gt;
+
+&lt;h2 id=&quot;85-90-difficulty&quot;&gt;85-90 Difficulty&lt;/h2&gt;
+
+&lt;p&gt;You should try to target 85-90% difficulty for your cards. If you go into Anki 
+stats you can see the difficulty level for your recent usage.&lt;/p&gt;
+
+&lt;p&gt;Too easy and you’re probably reviewing too often (and wasting time).  Too hard
+and you’re not going to learn anything.&lt;/p&gt;
+
+&lt;p&gt;You want it to be difficult to not too difficulty.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately Anki doesn’t tun itself so you have to tune Anki directly.&lt;/p&gt;
+
+&lt;p&gt;This can be adjusted in the per-deck settings by changing the ease factors.&lt;/p&gt;
 
 &lt;h2 id=&quot;think-long-term&quot;&gt;Think LONG Term.&lt;/h2&gt;
 
@@ -134,6 +148,10 @@ which weakens the entire point of SR.&lt;/p&gt;
 &lt;p&gt;Now I just create a card with their picture and the answer is their name.&lt;/p&gt;
 
 &lt;p&gt;It’s really help avoid awkward social situations.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/qP4My84.png&quot; /&gt;
+&lt;/p&gt;
 
 &lt;h2 id=&quot;related-cards&quot;&gt;Related Cards&lt;/h2&gt;
 
@@ -216,9 +234,11 @@ of the road would you need to remember it?&lt;/p&gt;
 
 &lt;p&gt;No. It would burn in your mind.  You’d remember this image for a decade.&lt;/p&gt;
 
-&lt;p&gt;Do this for your facts.&lt;/p&gt;
+&lt;p&gt;Do this for your anki cards you’re trying to remember.&lt;/p&gt;
 
 &lt;p&gt;Let’s say you met a guy and his name is “Mark Nun”.&lt;/p&gt;
+
+&lt;p&gt;(I just made this up btw. If your name is Mark Nun we don’t know each other!)&lt;/p&gt;
 
 &lt;p&gt;Picture this guy as an actual nun wearing a nun’s uniform.&lt;/p&gt;
 
@@ -232,6 +252,15 @@ mapping images with the cards that are absurd.&lt;/p&gt;
 &lt;p&gt;Create an ‘extra’ field with your cards so that you can add notes and pictures
 so that when you fail to remember you can get back to the original context.&lt;/p&gt;
 
+&lt;p&gt;I’ll often put the book information.  The actual text of where I saw the card, etc.&lt;/p&gt;
+
+&lt;p&gt;I’m working on a feature for Polar to add this directly so that when you create
+a flashcard in Polar we automatically create a card with the context so you 
+can click back to it.&lt;/p&gt;
+
+&lt;p&gt;The initial version will probably just have a link back to the Polar webapp to
+avoid bloating Anki with too many images.&lt;/p&gt;
+
 &lt;h2 id=&quot;use-stories-and-etymology&quot;&gt;Use Stories and Etymology&lt;/h2&gt;
 
 &lt;p&gt;Attach ‘extra’ stories to the material as above but make them stories or use
@@ -239,7 +268,7 @@ imagery to remember the material.&lt;/p&gt;
 
 &lt;p&gt;I’ve found that etymology works VERY well for learning languages.&lt;/p&gt;
 
-&lt;p&gt;For example.  The German word for sea is meer which is related ot the English word
+&lt;p&gt;For example.  The German word for sea is meer which is related to the English word
 marine which is also related to mare (spanish / italian for sea).&lt;/p&gt;
 
 &lt;p&gt;Those connections make it easier to remember.&lt;/p&gt;
