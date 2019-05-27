@@ -79,6 +79,9 @@ export class DocPermissions {
     //    its doc_meta_id directly and not the users own doc_meta_id. this way
     //    the user can turn on/;off.
 
+    //
+    //
+
     /**
      * Create a new shared URL which includes a download token which can be
      * shared publicly.
