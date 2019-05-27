@@ -65,6 +65,19 @@ export class DocPermissions {
     //  - if I can keep the DocMetaID in the doc itself then what I can do is
     //    use THAT to store the keys I need to lookup the file and compute the
     //    URL myself but what am I going to call this new field.
+    //
+    //  - what are we going to call this file??
+    //
+    //  - we can specify to load a specific doc_id in the URL for the viewer
+    //    rather than loading a fingerprint but right this isn't supported.
+    //
+    //  - I think the BEST way to do this is to have a sharedWith param and then
+    //    have a set of additional doc meta IDs there and then fetch those and
+    //    store them along side the main this way the user can add the main
+    //    document and it seems like a normal document to them but we have
+    //    additional metadata as a new state.json file but it's referenced via
+    //    its doc_meta_id directly and not the users own doc_meta_id. this way
+    //    the user can turn on/;off.
 
     /**
      * Create a new shared URL which includes a download token which can be
@@ -123,8 +136,6 @@ export class DocPermissions {
 
 }
 
-type SharedURL = string;
-
 export type Recipient = 'public';
 
 /**
@@ -163,7 +174,3 @@ type TeamStr = string;
 type EmailStr = string;
 
 type Recipient = 'public' | TeamStr | EmailStr;
-
-export type SharedBinaryFileID = string;
-
-export type SharedBinaryFileGrantID = string;
