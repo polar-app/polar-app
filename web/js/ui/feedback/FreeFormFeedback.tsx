@@ -43,7 +43,7 @@ export class FreeFormFeedback extends React.Component<IProps, IState> {
                        height: '100%'
                    }}/>
 
-            <Button type="primary" onClick={() => this.onSendFeedback()}>Send Feedback</Button>
+            <Button color="primary" onClick={() => this.onSendFeedback()}>Send Feedback</Button>
 
         </div>;
 

@@ -19,7 +19,13 @@ class Styles {
 
     public static PARENT: React.CSSProperties = {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: '#ffffff',
+    };
+
+    public static BAR: React.CSSProperties = {
+        display: 'flex',
+        marginBottom: '5px'
     };
 
     public static FILTER_INPUT: React.CSSProperties = {
@@ -56,7 +62,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
             <div style={Styles.PARENT}>
 
-                <div style={{display: 'flex'}}>
+                <div style={Styles.BAR}>
 
                     {/*<Input className="p-1 pb-0 pt-0"*/}
                     {/*       style={Styles.FILTER_INPUT}*/}
@@ -64,7 +70,7 @@ export class TagTree extends React.Component<IProps, IState> {
                     {/*       placeholder="Filter by name..." />*/}
 
                     <div style={{flexGrow: 1}}>
-                        <TagFilter tags={this.props.tags}/>
+                        <TagFilter tags={Tags.onlyTags(this.props.tags)}/>
                     </div>
 
                     <NullCollapse open={!this.props.noCreate}>
