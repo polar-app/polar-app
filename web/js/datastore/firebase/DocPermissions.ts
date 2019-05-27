@@ -42,7 +42,7 @@ const COLLECTION_NAME = 'shared_url';
  *      this system is enough to compute the target URL that should be fetched
  *
  */
-export class SharedDocFiles {
+export class DocPermissions {
 
     private static firestore?: firebase.firestore.Firestore;
 
@@ -55,6 +55,16 @@ export class SharedDocFiles {
     // In fact, yes I do because the getFile() method will need this metadata
     // to build a NEW type of URL for each file which we can COMPUTE of course
     // but I need a hint to be able to do it.
+    //
+    // TODO: I can fix this by putting this metadata in the FileRef so that when
+    // the user calls BackendFileRefs.toBackendFileRefs I can compute/add the
+    // required metadata that needs to be attached to the FileRef to denote
+    // whether they are the owner or not and who the owner is and how we build
+    // the URL properly.  What metadata do I need to include?
+    //
+    //  - if I can keep the DocMetaID in the doc itself then what I can do is
+    //    use THAT to store the keys I need to lookup the file and compute the
+    //    URL myself but what am I going to call this new field.
 
     /**
      * Create a new shared URL which includes a download token which can be

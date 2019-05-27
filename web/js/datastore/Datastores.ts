@@ -35,7 +35,6 @@ export class Datastores {
 
     }
 
-
     public static async getDocMetas(datastore: Datastore,
                                     listener: DocMetaListener,
                                     docMetaRefs?: DocMetaRef[]) {

@@ -9,7 +9,7 @@ import {URLStr} from '../util/Strings';
 import {SharingDatastore} from './SharingDatastore';
 import {Logger} from '../logger/Logger';
 import {BackendFileRef} from './Datastore';
-import {SharedDocFiles} from './firebase/SharedDocFiles';
+import {DocPermissions} from './firebase/DocPermissions';
 import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
@@ -49,7 +49,7 @@ export class SharingDatastores {
 
         if (fileRef) {
 
-            const sharedURL = await SharedDocFiles.create(backendFileRef);
+            const sharedURL = await DocPermissions.create(backendFileRef);
 
             // Clean the URL when running in the desktop app.
             const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
