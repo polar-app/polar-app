@@ -118,6 +118,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
 
                 <Dock left={
+                    // TODO this should be its own component
                     <div style={{display: 'flex' ,
                                  flexDirection: 'column',
                                  height: '100%',
@@ -139,6 +140,10 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
             </FixedNav>
 
         );
+    }
+
+    private onSelected(tag: string) {
+
     }
 
 }
