@@ -15,19 +15,21 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
     public render() {
 
-        return (
+        const {roots} = this.props;
 
-            <TreeNode node={this.props.root}
-                      treeState={this.treeState}/>
-
-        );
+        return <div>
+            {roots.map(node =>
+                   <TreeNode node={node}
+                             key={node.id}
+                             treeState={this.treeState}/>)}
+        </div>;
 
     }
 
 }
 
 interface IProps<V> {
-    readonly root: TNode<V>;
+    readonly roots: ReadonlyArray<TNode<V>>;
     readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void;
 }
 

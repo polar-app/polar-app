@@ -307,7 +307,6 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         }
 
         if (selected) {
-            console.log("FIXME: selecting IT: " + this.id);
             treeState.selected[this.id] = this.id;
         } else {
             delete treeState.selected[this.id];

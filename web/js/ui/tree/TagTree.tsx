@@ -82,7 +82,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
                 </div>
 
-                <TreeView root={root} onSelected={values => this.onSelected(values)}/>
+                <TreeView roots={root.children} onSelected={values => this.onSelected(values)}/>
 
             </div>
 
