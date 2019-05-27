@@ -38,6 +38,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
         return (
 
             <Dock left={
+                    // TODO: this should become its own component.
                     <div style={{display: 'flex' , flexDirection: 'column', height: '100%'}}>
 
                         <div className="mb-1 mt-1">

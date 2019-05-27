@@ -34,56 +34,6 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         // this.init();
 
     }
-    //
-    // public init() {
-    //
-    //     // FIXME: this code need to be move to the parent so that it can
-    //     //  setState every time the entire app reloads
-    //
-    //     const setStateInBackground = (state: IState) => {
-    //
-    //         setTimeout(() => {
-    //
-    //             // The react table will not update when I change the state from
-    //             // within the event listener
-    //             this.setState(state);
-    //
-    //         }, 1);
-    //
-    //     };
-    //
-    //     const onUpdated: UpdatedCallback = repoAnnotations => {
-    //
-    //         const state = {...this.state, data: repoAnnotations};
-    //         setStateInBackground(state);
-    //
-    //     };
-    //
-    //     const repoAnnotationsProvider =
-    //         () => Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
-    //
-    //     const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
-    //
-    //     // this will trigger the filter engine to be run which will then call
-    //     // onUpdated which then calls setState
-    //     this.props.setFiltered(filters => filterEngine.onFiltered(filters));
-    //
-    //     const doRefresh = () => filterEngine.onProviderUpdated();
-    //
-    //     PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
-    //
-    //         this.releaser.register(
-    //             persistenceLayer.addEventListener(() => doRefresh()));
-    //
-    //     });
-    //
-    //     this.releaser.register(
-    //         RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => doRefresh()));
-    //
-    //     // do an initial refresh to get the first batch of data.
-    //     doRefresh();
-    //
-    // }
 
     public onSelected(selected: number,
                       repoAnnotation: RepoAnnotation) {

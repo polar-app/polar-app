@@ -43,76 +43,21 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
             <div id="filter-bar"
                  style={{
                      display: 'flex',
-                     marginLeft: 'auto',
-                     justifyContent: 'flex-end'
                  }}>
 
-                <div className="mr-2 d-none"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                    <div className="checkbox-group">
-
-                        <ToggleButton id="toggle-flagged"
-                                      label="flagged"
-                                      initialValue={false}
-                                      onChange={value => this.handler.onToggleFlaggedOnly(value)}/>
-
-                        <SimpleTooltip target="toggle-flagged">Only show flagged documents.</SimpleTooltip>
-
-                    </div>
-
-                </div>
-
-                <div className="header-filter-box mr-1 d-none"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                    <div className="checkbox-group">
-
-                        <ToggleButton id="toggle-archived"
-                                      label="archived"
-                                      initialValue={false}
-                                      onChange={value => this.handler.onToggleFilterArchived(value)}/>
-
-                        <SimpleTooltip target="toggle-archived">Show both archived and unarchived documents.  Archived documents are hidden by default.</SimpleTooltip>
-
-                    </div>
-
-                </div>
-
-                <div className="header-filter-box header-filter-tags mr-1"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                    <FilterTagInput id="filter-tag-input"
-                                    tagsDBProvider={this.props.tagsDBProvider}
-                                    refresher={() => this.handler.onFilterByTags(this.filteredTags)}
-                                    tooltip="Filter the annotation list by a specific tag."
-                                    filteredTags={this.filteredTags}
-                                    tagPopoverPlacement={this.props.tagPopoverPlacement}/>
-
-                </div>
-
-                <div className="header-filter-box mr-1"
+                <div className="header-filter-box mr-1 pl-1 pr-1"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                     <div className="header-filter-box">
 
+                        <InputGroup size="sm">
 
-                            {/*<InputGroupAddon addonType="prepend">*/}
-                            {/*A*/}
-                            {/*</InputGroupAddon>*/}
+                            <Input id="filter_title"
+                                   type="text"
+                                   placeholder="Filter by annotation text"
+                                   onChange={(value) => this.handler.onFilterByText(value.target.value)}/>
 
-                        {/*<SimpleTooltipEx text="Filter the annotations by the text of the annotation.">*/}
-
-                            <InputGroup size="sm">
-
-                                <Input id="filter_title"
-                                       type="text"
-                                       placeholder="Filter by text"
-                                       onChange={(value) => this.handler.onFilterByText(value.target.value)}/>
-                            </InputGroup>
-
-                        {/*</SimpleTooltipEx>*/}
-
+                        </InputGroup>
 
                     </div>
 
