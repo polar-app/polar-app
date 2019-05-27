@@ -8,6 +8,7 @@ import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStri
 import {UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 import {SplashKeys} from '../SplashKeys';
 import {LocalPrefs} from '../../../../../web/js/util/LocalPrefs';
+import {Version} from '../../../../../web/js/util/Version';
 
 export class NPSModal extends React.Component<IProps, IState> {
 
@@ -35,11 +36,15 @@ export class NPSModal extends React.Component<IProps, IState> {
 
         Toaster.success("Thanks for your feedback!");
 
+        const version = Version.get();
+
         const userFeedback = {
             machine: MachineIDs.get(),
             text: null,
             netPromoterScore: rating,
-            created: ISODateTimeStrings.create()
+            created: ISODateTimeStrings.create(),
+            version
+
         };
 
         UserFeedbacks.write(userFeedback)

@@ -146,6 +146,17 @@ export class DatastoreTester {
             });
 
 
+
+            it("data contains no whitespace", async function() {
+
+                const data = await datastore.getDocMeta(fingerprint);
+
+                assert.isNotNull(data);
+                assert.equal(data!.indexOf("\n"), -1);
+
+            });
+
+
             it("read non-existant fingerprint", async function() {
 
                 const nonExistantDocMeta = await persistenceLayer.getDocMeta('0x666');

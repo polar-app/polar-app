@@ -1,4 +1,25 @@
 
+# 1.19.7
+
+- Fixed a potential sync issue where the cache could become inconsistent and 
+  polar would attempt to perform a read on a document that really doesn't exist.
+  
+  Now we just yield a warning.
+
+- Better handling of uppercase filenames now.
+
+- Fixed bug in htmlviewer where the sandbox was breaking doc loading.
+
+- Fixed an issue with polar on linux not resolving symlinks properly on startup.
+
+- JSON is now represented without spacing to cut storage costs in half and speed
+  up writes.  
+
+- Update to latest interactjs
+
+- Datastore 'overview' now works on Firebase and syncs up with cloud aware 
+  datastore properly I think.
+
 # 1.19.6
 
 - Fixed typo with "Appendix"

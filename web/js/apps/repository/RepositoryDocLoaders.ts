@@ -38,7 +38,7 @@ export class RepositoryDocLoaders {
 
             await Files.recursively(path, async docPath => {
 
-                if (docPath.endsWith(".pdf")) {
+                if (FilePaths.hasExtension(docPath, "pdf")) {
                     docPaths.push(docPath);
                 }
 

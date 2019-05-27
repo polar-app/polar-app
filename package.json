@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.19.6",
+  "version": "1.19.7",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "publish-linux": "electron-builder --config=electron-builder.yml --linux snap appimage deb tar.gz --publish always",
     "__publish-linux": "electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
     "publish-macos": "electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
-    "publish-webapp": "npm run-script build-webapp && firebase deploy",
+    "publish-webapp": "npm run-script build-webapp && firebase target:apply hosting app.getpolarized.io polar-webapp && firebase deploy",
     "__publish-win": "electron-builder --config=electron-builder.yml --win nsis --publish never",
     "publish-win": "./scripts/dist-win.sh",
     "make-linux-targz": "electron-builder --config=electron-builder.yml --linux tar.gz",
@@ -170,7 +170,7 @@
     "https-proxy-agent": "~2.2.1",
     "injector": "file:./web/injector",
     "inliner": "~1.13.1",
-    "interactjs": "~1.3.4",
+    "interactjs": "^1.4.1",
     "jquery": "^3.4.0",
     "jquery-ui": "~1.12.1",
     "jquery-ui-bundle": "~1.12.1-migrate",

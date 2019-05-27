@@ -6,6 +6,9 @@ import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
 import {UserFeedbacks} from '../../telemetry/UserFeedback';
 import {MachineIDs} from '../../util/MachineIDs';
 
+/**
+ * @Deprecated this is duplicated with Suggestions.  Remove.
+ */
 export class FreeFormFeedback extends React.Component<IProps, IState> {
 
     private text: string = "";
@@ -48,12 +51,12 @@ export class FreeFormFeedback extends React.Component<IProps, IState> {
 
     private onSendFeedback() {
 
-        UserFeedbacks.write({
-            netPromoterScore: this.props.rating,
-            text: this.text,
-            created: ISODateTimeStrings.create(),
-            machine: MachineIDs.get()
-        }).catch(err => console.error("got error: ", err));
+        // UserFeedbacks.write({
+        //     netPromoterScore: this.props.rating,
+        //     text: this.text,
+        //     created: ISODateTimeStrings.create(),
+        //     machine: MachineIDs.get()
+        // }).catch(err => console.error("got error: ", err));
 
     }
 

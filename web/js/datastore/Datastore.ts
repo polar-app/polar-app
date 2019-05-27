@@ -153,7 +153,7 @@ export abstract class AbstractDatastore {
     public async writeDocMeta(docMeta: DocMeta,
                               datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
-        const data = DocMetas.serialize(docMeta);
+        const data = DocMetas.serialize(docMeta, "");
         const docInfo = docMeta.docInfo;
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();

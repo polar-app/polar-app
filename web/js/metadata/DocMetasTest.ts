@@ -7,10 +7,17 @@ import {PagemarkType} from './PagemarkType';
 import {TestingTime} from '../test/TestingTime';
 import {TextHighlights} from './TextHighlights';
 import {Proxies} from '../proxies/Proxies';
+import {MockDocMetas} from './DocMetas';
+import {Pagemarks} from './Pagemarks';
 
 TestingTime.freeze();
 
 describe('DocMetas', function() {
+
+    beforeEach(function() {
+        Pagemarks.sequences.id = 0;
+        Pagemarks.sequences.batch = 0;
+    });
 
     describe('JSON', function() {
 
@@ -46,6 +53,21 @@ describe('DocMetas', function() {
 
     });
 
+    it('No whitespace option', function() {
+
+        // make sure no whitespace is used
+        const fingerprint = "0x001";
+
+        const docMeta = MockDocMetas.createMockDocMeta(fingerprint);
+        const json = DocMetas.serialize(docMeta, "");
+
+        assert.isTrue(json.startsWith("{\"annotationInfo\":{},\"version\":2,\"attachments\":{}"));
+
+        assert.equal(json.indexOf("\n"), -1);
+
+
+    });
+
     describe('Deserialize', function() {
 
         it("Test Deserializing and then updating some pagemarks", function() {
@@ -61,110 +83,110 @@ describe('DocMetas', function() {
 
             const expected = {
                     "annotationInfo": {},
-                    "version": 2,
                     "attachments": {},
                     "docInfo": {
-                        "progress": 100,
-                        "pagemarkType": "SINGLE_COLUMN",
-                        "properties": {},
-                        "archived": false,
-                        "flagged": false,
-                        "tags": {},
-                        "nrPages": 2,
-                        "fingerprint": "0x001",
                         "added": "2012-03-02T11:38:49.321Z",
-                        "uuid": "__canonicalized__",
+                        "archived": false,
+                        "attachments": {},
+                        "fingerprint": "0x001",
+                        "flagged": false,
+                        "nrPages": 2,
+                        "pagemarkType": "SINGLE_COLUMN",
+                        "progress": 100,
+                        "properties": {},
                         "readingPerDay": {
                             "2012-03-02": 2
                         },
-                        attachments: {}
+                        "tags": {},
+                        "uuid": "__canonicalized__"
                     },
                     "pageMetas": {
                         "1": {
-                            "pagemarks": {
-                                "12CDjpvoCY": {
-                                    "id": "12CDjpvoCY",
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
-                                    "type": "SINGLE_COLUMN",
-                                    "percentage": 100,
-                                    "column": 0,
-                                    "rect": {
-                                        "left": 0,
-                                        "top": 0,
-                                        "width": 100,
-                                        "height": 100
-                                    },
-                                    "batch": "1TLPYPE5XU",
-                                    "mode": "READ",
-                                    "notes": {}
-                                }
-                            },
-                            "notes": {},
-                            "comments": {},
-                            "questions": {},
-                            "readingProgress": {
-                                "136SMQ5mZM": {
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "id": "136SMQ5mZM",
-                                    "progress": 100,
-                                    "progressByMode": {
-                                        "READ": 100,
-                                    }
-                                }
-                            },
-                            "flashcards": {},
-                            "textHighlights": {},
                             "areaHighlights": {},
-                            "screenshots": {},
-                            "thumbnails": {},
+                            "comments": {},
+                            "flashcards": {},
+                            "notes": {},
                             "pageInfo": {
                                 "num": 1
-                            }
-                        },
-                        "2": {
+                            },
                             "pagemarks": {
-                                "12wfHNWzGf": {
-                                    "id": "12wfHNWzGf",
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
-                                    "type": "SINGLE_COLUMN",
-                                    "percentage": 100,
+                                "1s2gw2Mkwb": {
+                                    "batch": "1Y9CcEHSxc",
                                     "column": 0,
+                                    "created": "2012-03-02T11:38:49.321Z",
+                                    "id": "1s2gw2Mkwb",
+                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                                    "mode": "READ",
+                                    "notes": {},
+                                    "percentage": 100,
                                     "rect": {
+                                        "height": 100,
                                         "left": 0,
                                         "top": 0,
-                                        "width": 100,
-                                        "height": 100
+                                        "width": 100
                                     },
-                                    "batch": "12r4saWMd2",
-                                    "mode": "READ",
-                                    "notes": {}
+                                    "type": "SINGLE_COLUMN"
                                 }
                             },
-                            "notes": {},
-                            "comments": {},
                             "questions": {},
                             "readingProgress": {
-                                "145xgms7VH": {
+                                "1QLX4U7vTU": {
                                     "created": "2012-03-02T11:38:49.321Z",
-                                    "id": "145xgms7VH",
+                                    "id": "1QLX4U7vTU",
                                     "progress": 100,
                                     "progressByMode": {
-                                        "READ": 100,
+                                        "READ": 100
                                     }
                                 }
                             },
-                            "flashcards": {},
-                            "textHighlights": {},
-                            "areaHighlights": {},
                             "screenshots": {},
-                            "thumbnails": {},
+                            "textHighlights": {},
+                            "thumbnails": {}
+                        },
+                        "2": {
+                            "areaHighlights": {},
+                            "comments": {},
+                            "flashcards": {},
+                            "notes": {},
                             "pageInfo": {
                                 "num": 2
-                            }
+                            },
+                            "pagemarks": {
+                                "126nS8PMqF": {
+                                    "batch": "1yNbsiPseh",
+                                    "column": 0,
+                                    "created": "2012-03-02T11:38:49.321Z",
+                                    "id": "126nS8PMqF",
+                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                                    "mode": "READ",
+                                    "notes": {},
+                                    "percentage": 100,
+                                    "rect": {
+                                        "height": 100,
+                                        "left": 0,
+                                        "top": 0,
+                                        "width": 100
+                                    },
+                                    "type": "SINGLE_COLUMN"
+                                }
+                            },
+                            "questions": {},
+                            "readingProgress": {
+                                "1VtUQQJoXr": {
+                                    "created": "2012-03-02T11:38:49.321Z",
+                                    "id": "1VtUQQJoXr",
+                                    "progress": 100,
+                                    "progressByMode": {
+                                        "READ": 100
+                                    }
+                                }
+                            },
+                            "screenshots": {},
+                            "textHighlights": {},
+                            "thumbnails": {}
                         }
-                    }
+                    },
+                    "version": 2
                 }
             ;
 
@@ -214,29 +236,32 @@ describe('DocMetas', function() {
 
                 console.log(Object.keys(docMeta.getPageMeta(1).pagemarks));
 
-                delete docMeta.getPageMeta(1).pagemarks["1hajrtFtkP"].rect ;
+                assertJSON(Object.keys(docMeta.getPageMeta(1).pagemarks), ["1s2gw2Mkwb"]);
+
+                delete docMeta.getPageMeta(1).pagemarks["1s2gw2Mkwb"].rect ;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
                 const expected = {
-                        "1hajrtFtkP": {
-                            "id": "1hajrtFtkP",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "lastUpdated": "2012-03-02T11:38:49.321Z",
-                            "type": "SINGLE_COLUMN",
-                            "percentage": 100,
+                        "1s2gw2Mkwb": {
+                            "batch": "1Y9CcEHSxc",
                             "column": 0,
-                            "batch": "1jQboVWxtJ",
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "id": "1s2gw2Mkwb",
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "mode": "READ",
                             "notes": {},
+                            "percentage": 100,
                             "rect": {
+                                "height": 100,
                                 "left": 0,
                                 "top": 0,
-                                "width": 100,
-                                "height": 100
-                            }
+                                "width": 100
+                            },
+                            "type": "SINGLE_COLUMN"
                         }
                     }
+
                 ;
 
                 assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
@@ -273,15 +298,15 @@ describe('DocMetas', function() {
 
                 console.log(JSON.stringify(docMeta.getPageMeta(1).pagemarks, null, "  "));
 
-                console.log(Object.keys(docMeta.getPageMeta(1).pagemarks));
+                assertJSON(Object.keys(docMeta.getPageMeta(1).pagemarks), ["1s2gw2Mkwb"]);
 
-                (<any> (docMeta.getPageMeta(1).pagemarks["12cyUyU3s3"].id)) = null;
+                (<any> (docMeta.getPageMeta(1).pagemarks["1s2gw2Mkwb"].id)) = null;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
                 const expected = {
-                        "12cyUyU3s3": {
-                            "id": "12cyUyU3s3",
+                        "1s2gw2Mkwb": {
+                            "id": "1s2gw2Mkwb",
                             "created": "2012-03-02T11:38:49.321Z",
                             "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "type": "SINGLE_COLUMN",
@@ -293,9 +318,9 @@ describe('DocMetas', function() {
                                 "width": 100,
                                 "height": 100
                             },
-                            "batch": "1ZUGnh2R1J",
+                            "batch": "1Y9CcEHSxc",
                             "mode": "READ",
-                            "notes": {},
+                            "notes": {}
                         }
                     }
                 ;

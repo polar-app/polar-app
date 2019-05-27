@@ -11,17 +11,7 @@ import {DragRectAdjacencyCalculator} from '../../pagemarks/controller/interact/d
 import {ResizeRectAdjacencyCalculator} from '../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator';
 import {NULL_FUNCTION} from '../../util/Functions';
 
-// import interact from 'interactjs';
-
-// TODO: the interactjs typescript bindings in our version are incompatible
-// with
-// our typescript config because we disallow implicity any.  Apparently
-// interactjs fixed this BUT the fix doesn't seem to be in the 1.3.x series.
-
-// import {} from 'interactjs';
-const interact = require('interactjs');
-// import * as interact from 'interactjs';
-
+import interact from 'interactjs';
 
 const log = Logger.create();
 
@@ -54,7 +44,7 @@ export class BoxController {
                     .getOrElse(boxOptions.target.parentElement!);
 
         interact(boxOptions.target)
-            .draggable(<any> {
+            .draggable({
 
                 inertia: false,
                 restrict: {
@@ -70,7 +60,7 @@ export class BoxController {
                 },
 
             })
-            .resizable( <any> {
+            .resizable( {
 
                 // resize from all edges and corners
                 edges: {
