@@ -37,6 +37,14 @@ NOTE: In Polar versions prior to 1.8.0 we used a 'deck per doc' strategy where
 a new deck was created per document.  Not many users liked this and we removed
 it in 1.8.0. Technically it's still supported but needs to be re-enabled. 
 
+## Sub-decks
+
+We now support sub-decks and these can be done with ```deck:compsci/linux``` for 
+example with a forward slash building the sub-deck hierarchy.
+
+We replace it with the internal Anki ```::``` but in Polar we want to keep
+hierarchies represented by a forward slash.
+
 # Card Types
 
 Both cloze deletion and front/back card types are supported.
