@@ -63,6 +63,7 @@ import {Tags} from '../../js/tags/Tags';
 import {TagTree} from '../../js/ui/tree/TagTree';
 import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
 import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/SuggestionsModal';
+import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premium';
 
 const styles = {
     swatch: {
@@ -166,7 +167,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <SuggestionsModal/>
+                {/*<SuggestionsModal/>*/}
+
+                <Premium/>
 
                 {/*<TagTree tags={tags} onSelected={(...values: Tag[]) => console.log("selected: ", values)}/>*/}
 

@@ -5,8 +5,6 @@
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Firebase} from '../firebase/Firebase';
 import {Firestore} from '../firebase/Firestore';
-import {Preconditions} from '../Preconditions';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 
 const COLLECTION_NAME = "account";
 
@@ -43,29 +41,6 @@ export class Accounts {
 
     }
 
-    public static async write(init: AccountInit) {
-
-        const firestore = await Firestore.getInstance();
-        const user = await Firebase.currentUser();
-
-        Preconditions.assertPresent("user");
-
-        const id = user!.uid;
-
-        const account: Account = {
-            id,
-            uid: id,
-            email: user!.email!,
-            lastModified: ISODateTimeStrings.create(),
-            ...init
-        };
-
-        const ref = firestore
-            .collection(COLLECTION_NAME)
-            .doc(id);
-
-        await ref.set(account);
-    }
 
 }
 
@@ -77,9 +52,6 @@ interface AccountInit {
 
 interface Account extends AccountInit {
 
-    /**
-     *
-     */
     readonly id: string;
 
     /**
@@ -106,3 +78,4 @@ interface Account extends AccountInit {
 }
 
 export type AccountLevel = 'free' | 'bronze' | 'silver' | 'gold';
+
