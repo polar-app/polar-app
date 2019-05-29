@@ -75,6 +75,14 @@ button.dropdown-item:hover {
     font-size: 20px;
 }
 
+.text-xxl {
+    font-size: 22px;
+}
+
+.text-xxxl {
+    font-size: 26px;
+}
+
 /*
  https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
  https://css-tricks.com/forums/topic/scaling-down-images-with-css-makes-them-blurry/
@@ -95,6 +103,46 @@ button.dropdown-item:hover {
 .hover-highlight:hover {
     /*TODO: this is still too dark I think*/
     background-color: var(--grey100);
+}
+
+.text-grey900 {
+    color: var(--grey900);
+}
+
+.text-grey800 {
+    color: var(--grey800);
+}
+
+.text-grey700 {
+    color: var(--grey700);
+}
+
+.text-grey600 {
+    color: var(--grey600);
+}
+
+.text-grey500 {
+    color: var(--grey500);
+}
+
+.text-grey400 {
+    color: var(--grey400);
+}
+
+.text-grey300 {
+    color: var(--grey300);
+}
+
+.text-grey200 {
+    color: var(--grey200);
+}
+
+.text-grey100 {
+    color: var(--grey100);
+}
+
+.text-grey000 {
+    color: var(--grey000);
 }
 
 :root {

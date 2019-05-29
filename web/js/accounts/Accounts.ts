@@ -41,7 +41,6 @@ export class Accounts {
 
     }
 
-
 }
 
 interface AccountInit {
@@ -63,11 +62,6 @@ interface Account extends AccountInit {
      * The accounts primary email address.  We might add more in the future.
      */
     readonly email: string;
-
-    /**
-     * The last time we received a payment from this user.
-     */
-    readonly lastPayment?: ISODateTimeString;
 
     /**
      * The last time any important action was changed on the account. Payment
