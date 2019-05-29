@@ -1,23 +1,24 @@
+
+
+
 ---
-title: GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks
+title: 
 date: 2019-05-28 09:00:00 -0800
 layout: post
 large_image: https://i.imgur.com/FeMzRL1.png
 description: GPT-2 is a language model released by OpenAI a few months ago which is causing a great deal of stir in the deep learning community.
 ---
 
+
+Title: GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks
+
+Bio:  Kevin Burton is the Creator of <a href="https://getpolarized.io/">Polar</a> and the CEO of <a href="http://www.datastreamer.io/">Datastreamer</a>. 
+
 # Overview
 
-[GPT-2](https://openai.com/blog/better-language-models/) is a language model
-released by OpenAI a few months ago which is causing a great deal of stir in the
-deep learning community.
-
-First, I'll admit that title above is a bit provocative. You might be tempted 
-to view this as hyperbolic and just an attempt to get attention.  
-
-However, it might not be an exaggeration. 
-
-When OpenAI release GPT-2 they were also deeply concerned: 
+[GPT-2](https://openai.com/blog/better-language-models/) is a deep-learning
+language model released by OpenAI a few months ago which is causing a bit of
+controversy in the deep learning community.
 
 > Due to our concerns about malicious applications of the technology, we are not
 releasing the trained model. As an experiment in responsible disclosure, we are
@@ -27,53 +28,17 @@ well as a technical paper.
 OpenAI actually took a conservative position and decided to hold off from
 releasing the model due to the potential impact on society.
 
-I’m very pro-technology and not very cynical but this is one of the first
-technologies that I saw that actually frightened me due to its potential for
-abuse.
+This is one of the first emerging technologies that *really* frightens me.
+There's a massive potential or abuse here and I don't think society is ready for
+it just yet.
 
 With many disruptive technologies we generally have a few years to come to grips
-with the problems they might cause.  Robotics, Crispr, and other technologies are
-still a few years away from really impacting our life (however it plays out).
+with the problems they might cause. Robotics, Crispr, and other technologies are
+still a few years away from really impacting our lives (however it plays out).
 
 Not true with GPT-2 - it’s here today.
 
-If this was released tomorrow a large portion of the web would just fall apart.
-
-# What’s the upside?
-
-Is there any upside?  There is. I think it could have a dramatic and amazing
-impact on spaced repetition and cognitive science.
-
-GPT-2 could help build question and answer pairs by bulk processing large
-textbooks to build flashcards for spaced repetition systems like Anki and
-[Polar](https://getpolarized.io/).
-
-It could also help with the raw *understanding* of the text so you could ask it
-questions of and it could provide you with answers.  Far better than simple
-full-text search!
-
-Full-text search will get you closer to an answer but you still have to spend a
-bit of time reading.
-
-With GPT-2 it could just flat out give you the answer.
-
-If you’ve ever read Diamond Age it could help build a “Young Lady’s Illustrated
-Primer” or an artificially intelligent textbook that you can interact with
-directly!
-
-You would literally be able to interact directly with a textbook and ask it
-questions.
-
-An artificially intelligent textbook would no longer be sterile.  It could
-suggest other reading based on your interests.  You could ask it questions.
-
-It can't *understand* the text in the classical sense than you or I can. You 
-can't ask it mathematical questions and expect answers or questions that 
-involve philosophy.
-
-Those still require humans. 
-
-# What is it?
+# Background
 
 GPT-2 is a deep learning model released by OpenAI back in February which they
 built by indexing 40GB of web content derived from a web crawl.
@@ -83,7 +48,7 @@ They indexed about 8M pages and then dumped it into a neural network
 It builds an internal linguistic model of the underlying text represented as a
 neural network.
 
-This helps it understand the actual text but also it's generative.  This means
+This helps it understand the actual text but also it's generative. This means
 it can build NEW text based on a prompt.
 
 Here's a short example:
@@ -114,27 +79,44 @@ valley, with no other animals or humans. Pérez noticed that the valley had what
 appeared to be a natural fountain, surrounded by two peaks of rock and silver
 snow.
 
-... this is just a short excerpt.  
+... this is just a short excerpt. 
 
-You can [read more here](https://openai.com/blog/better-language-models/) 
+You can <a href="https://openai.com/blog/better-language-models/">read more here</a> 
 
-# How Could it Melt the Internet?
+# Could it Destroy the Web?
 
-The Internet is built on a number of assumptions which aren’t necessarily true
+The web is built on a number of assumptions which aren’t necessarily true
 any longer.
 
 First, that only humans can write legitimate content.
 
-In the past machine-generated text seemed, well, robotic.  If you used a markov
+In the past machine-generated text seemed, well, robotic. If you used a markov
 chain to generate text it sounded like you would expect - like canned text.
 
-It went off topic.  Didn't make sense.  They were words.  They were a subset of 
+It went off topic. Didn't make sense. They were words. They were a subset of 
 language but they didn't have much meaning.
+
+You can get a sense of how this works by using auto-complete on your mobile phone.
+
+If you start off with a sample sentence and let it auto-complete and just select 
+the first match it will sound rather - insane.
+
+Here's an example.
+
+On my phone I entered "The cat is outside" and then hit next again and again.
+
+My came up with:
+
+"The cat is outside and is never told about Jesus do they go to the emergency
+place of his own and they are crawling to be my friend."
+
+I mean, those are words. That's technically a sentence. But it doesn't make a 
+ton of sense. 
 
 GPT-2 can write entire articles of text that sound like they were written by a
 human.
 
-Not only do they seem human they're also readable - you wont' get bored either.
+Not only do they seem human they're also readable - you won't get bored either.
 
 This is going to lead to a *massive* amount of Google spam.
 
@@ -149,37 +131,77 @@ Legitimate marketers are going do to this too.
 Why write new content when you could just crawl your competitors site and have
 it generate content based on *their* data.
 
+Or just crawl your own content and have it generate new articles based on your
+current articles as a system prompt.
+
+What else could we do?
+
 You could create fake news.
 
 Fake scientific research.
 
-The list goes on and on.  
+You could spam your competitors support queue with fake technical support requests.
 
-You could create terabytes of content for very little money. Far less than what
-it costs to pay a human for the same thing.
+The list goes on and on. 
 
 If you have any background in SEO or search your heart is probably racing.
 
-Take a 20 minute break and meditate.  We'll be here when you get back.
+Take a 20 minute break and meditate. We'll be here when you get back.
+
+# What’s the upside?
+
+Is there any upside?  There is. I think it could have a dramatic and amazing
+impact on spaced repetition and cognitive science.
+
+GPT-2 could help build question and answer pairs by bulk processing large
+textbooks to build flashcards for spaced repetition systems like Anki and
+<a href="https://getpolarized.io/">Polar</a>.
+
+It could also help with the raw *understanding* of the text so you could ask it
+questions and it could provide you with answers. Far better than simple
+full-text search!
+
+Full-text search will get you closer to an answer but you still have to spend a
+bit of time reading.
+
+With GPT-2 it could just flat out give you the answer.
+
+If you’ve ever read Diamond Age it could help build a “Young Lady’s Illustrated
+Primer” or an artificially intelligent textbook that you can interact with
+directly!
+
+You would literally be able to interact with a textbook and ask it questions
+from the material you're reading.
+
+Textbooks would no longer be sterile and inert. It could suggest other reading
+based on your interests. You could interact with it and it could actually
+*teach* you directly.
+
+It can't *understand* the text in the classical sense than you or I can. You 
+can't ask it mathematical questions and expect answers or questions that 
+are more philosophical in nature.
+
+Those still require humans. 
 
 # Mitigation
 
-There is some risk mitigation we could pursue.  We could require public keys 
+There is some risk mitigation we could pursue. We could require public keys 
 for users and only index content that is signed and build a trust model
 similar to Pagerank.
 
-Humans can only write so much content.  By using this model you're going to 
+Humans can only write so much content. By using this model you're going to 
 throttle people by forcing their rank to flow between the graph of the web 
 of trust.
 
-People can create fake keys of course.  They can fake key after key for their
-fake robots but they have to attract REAL humans.
+People can create fake keys of course. They can fake key after key for their
+fake robots but they have to attract REAL humans to certify them at some point
+and you would only flow so much rank from a real human forward. 
 
 If search engines employed auditors to find and validate real people we could
 keep the web from becoming owned by AI.
 
 It's not perfect but I think there's a path forward here though going in depth
-is a bit ouf of scope for this article.  
+is a bit ouf of scope for this article. 
 
 # What Could Stop GPT-2?
 
@@ -188,21 +210,25 @@ GPT-2 is a bad idea.
 
 How could we stop it?
 
-We can't.  It's just a matter of time until this technology is democratized and
+We can't. It's just a matter of time until this technology is democratized and
 in the hands of everyone.
 
+The prices of GPUs and cloud computing is just getting cheaper and cheaper and 
+eventually this is going to become commoditized.
+
 In five or so years you'll be able to build a model like GPT-2 in a few days to 
-weeks with very little funding and off the shelf tools.
+weeks with very little funding and with off the shelf tools.
 
 We're going to have to deal with this one way or another.
 
 # Conclusion
 
 GPT-2 is really frightening but if we can mitigate the risks we might be able
-to use these system in the future and focus mostly on the positives.
+to use these systems in the future and focus mostly on the positives.
 
-We're going to need to educate older voters and people naive on modern technology 
-on the risks of trusting fake news and deep fakes.
+We're going to need to educate older voters and people naive about modern
+technology on the risks of trusting fake news and deep fakes.
 
-This might be an uphill battle though.  We already have fake news and we haven't
-done that good of a job dealing with it to date. 
+This might be an uphill battle though. We already have fake news and we haven't
+done a good job dealing with it already. How are we going to deal with it when
+its gets far far worse? 

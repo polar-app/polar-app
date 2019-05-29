@@ -13,13 +13,27 @@
         id="checkout-button-plan_F9Cgv6rpQtKHaJ"
         role="link"
 >
-    Checkout
+    Buy Bronze
 </button>
 
 <div id="error-message"></div>
 
 <script>
-    var stripe = Stripe('pk_live_nuUlFGZzCqFCnx19rAfGBO9900Fx3Mpi3m');
+
+
+    const testMode = false
+
+    function getStripeKey() {
+
+        if (testMode) {
+            return "pk_test_P1HRwH4QYGacPaK4eEqVaGPK007y7wFlDK";
+        }
+
+        return "pk_live_nuUlFGZzCqFCnx19rAfGBO9900Fx3Mpi3m";
+
+    }
+
+    var stripe = Stripe(getStripeKey());
 
     var checkoutButton = document.getElementById('checkout-button-plan_F9Cgv6rpQtKHaJ');
     checkoutButton.addEventListener('click', function () {
@@ -33,8 +47,8 @@
                   // a successful payment.
                   // Instead use one of the strategies described in
                   // https://stripe.com/docs/payments/checkout/fulfillment
-                  successUrl: 'https://getpolarized.io/success',
-                  cancelUrl: 'https://getpolarized.io/canceled',
+                  successUrl: 'https://getpolarized.io/purchase-success.html',
+                  cancelUrl: 'https://getpolarized.io/purchase-cancelled.html',
                   customerEmail: 'burton@getpolarized.io',
               })
               .then(function (result) {
