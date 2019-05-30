@@ -4,6 +4,7 @@ import {FixedNavBody} from '../../../FixedNav';
 import {RepoHeader} from '../../../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../../../web/js/datastore/PersistenceLayerManager';
 import {PremiumContent} from './PremiumContent';
+import {PremiumContent2} from './PremiumContent2';
 
 export class PremiumApp extends React.Component<IProps, IState> {
 
@@ -32,7 +33,7 @@ export class PremiumApp extends React.Component<IProps, IState> {
                     <div className="row">
 
                         <div className="col-lg-12 w-100 pt-4">
-                            <PremiumContent/>
+                            <PremiumContent2/>
                         </div>
                     </div>
 
