@@ -4,6 +4,7 @@ import {Splash} from '../../Splash';
 import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
 import {CallToActionLink} from '../components/CallToActionLink';
+import {PremiumButton} from './PremiumButton';
 
 export class PremiumContent2 extends React.Component<IProps, IState> {
 
@@ -99,20 +100,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td>
                                 </td>
                                 <td className="highlight-plan">
-                                    <a className="btn r-btn shadow-level-1 highlight"
-                                       rel=""
-                                       href="https://opencollective.com/polar-bookshelf/contribute/tier/6659-bronze">Buy
-                                        now</a>
+                                    <PremiumButton from="free" to="bronze"/>
                                 </td>
                                 <td>
-                                    <a className="btn bg-btn" rel=""
-                                       href="https://opencollective.com/polar-bookshelf/contribute/tier/6661-silver">Buy
-                                        now</a>
+                                    <PremiumButton from="free" to="silver"/>
                                 </td>
                                 <td className="">
-                                    <a className="btn bg-btn" rel=""
-                                       href="https://opencollective.com/polar-bookshelf/contribute/tier/9247-gold">Buy
-                                        now</a>
+                                    <PremiumButton from="free" to="gold"/>
                                 </td>
                             </tr>
 
