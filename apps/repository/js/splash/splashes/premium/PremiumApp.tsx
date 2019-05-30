@@ -5,6 +5,8 @@ import {RepoHeader} from '../../../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../../../web/js/datastore/PersistenceLayerManager';
 import {PremiumContent} from './PremiumContent';
 import {PremiumContent2} from './PremiumContent2';
+import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
+import {AccountPlan} from '../../../../../../web/js/accounts/Accounts';
 
 export class PremiumApp extends React.Component<IProps, IState> {
 
@@ -33,7 +35,7 @@ export class PremiumApp extends React.Component<IProps, IState> {
                     <div className="row">
 
                         <div className="col-lg-12 w-100 pt-4">
-                            <PremiumContent2/>
+                            <PremiumContent2 userInfo={this.props.userInfo} plan={this.props.plan}/>
                         </div>
                     </div>
 
@@ -48,6 +50,8 @@ export class PremiumApp extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly plan: AccountPlan;
+    readonly userInfo?: UserInfo;
 }
 
 export interface IState {

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
-import {Logger} from '../../../../../../web/js/logger/Logger';
 import {Nav} from '../../../../../../web/js/ui/util/Nav';
-import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
+import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
+import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
+import {Logger} from '../../../../../../web/js/logger/Logger';
 
 const log = Logger.create();
 
@@ -20,23 +21,26 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
         const {to, from} = this.props;
 
+        const {email} = this.props.userInfo!;
+
         // true if we're BUYING a new plan...
         const buy = from === 'free';
 
-        const text = buy ? "Buy" : "Upgrade";
+        const text = buy ? "Buy" : "Change";
 
         const buyHandler = () => {
             // if we're buying a NEW product go ahead and redirect us to
             // stripe and use their BUY package.  This is better than embedding
             // the stripe SDK and also stripe ALSO needs to run over HTTPS
-            Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=burton@inputneuron.io&plan=${to}`);
+            Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${email}&plan=${to}`);
         };
 
-        const upgradeHandler = () => {
-            Toaster.info("Not implemented yet");
+        const changeHandler = () => {
+            AccountActions.upgradePlan(to)
+                .catch(err => log.error("Unable to upgrade plan: ", err));
         };
 
-        const handler = buy ? buyHandler : upgradeHandler;
+        const handler = buy ? buyHandler : changeHandler;
 
         return (
 
@@ -55,6 +59,8 @@ export class PremiumButton extends React.Component<IProps, IState> {
 export interface IProps {
     readonly from: Plan;
     readonly to: Plan;
+    readonly userInfo?: UserInfo;
+
 }
 
 export interface IState {

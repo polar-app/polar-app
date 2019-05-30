@@ -5,6 +5,8 @@ import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_la
 import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
 import {CallToActionLink} from '../components/CallToActionLink';
 import {PremiumButton} from './PremiumButton';
+import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
+import {AccountPlan} from '../../../../../../web/js/accounts/Accounts';
 
 export class PremiumContent2 extends React.Component<IProps, IState> {
 
@@ -100,13 +102,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td>
                                 </td>
                                 <td className="highlight-plan">
-                                    <PremiumButton from="free" to="bronze"/>
+                                    <PremiumButton from={this.props.plan} to="bronze" userInfo={this.props.userInfo}/>
                                 </td>
                                 <td>
-                                    <PremiumButton from="free" to="silver"/>
+                                    <PremiumButton from={this.props.plan} to="silver" userInfo={this.props.userInfo}/>
                                 </td>
                                 <td className="">
-                                    <PremiumButton from="free" to="gold"/>
+                                    <PremiumButton from={this.props.plan} to="gold" userInfo={this.props.userInfo}/>
                                 </td>
                             </tr>
 
@@ -250,6 +252,8 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    readonly plan: AccountPlan;
+    readonly userInfo?: UserInfo;
 }
 
 interface IState {

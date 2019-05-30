@@ -45,7 +45,7 @@ export class Accounts {
 
 interface AccountInit {
 
-    readonly level: AccountLevel;
+    readonly plan: AccountPlan;
 
 }
 
@@ -71,5 +71,5 @@ interface Account extends AccountInit {
 
 }
 
-export type AccountLevel = 'free' | 'bronze' | 'silver' | 'gold';
+export type AccountPlan = 'free' | 'bronze' | 'silver' | 'gold';
 
