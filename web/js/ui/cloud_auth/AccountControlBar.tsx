@@ -5,6 +5,7 @@ import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from '
 import {SimpleTooltip} from '../tooltip/SimpleTooltip';
 import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
+import {Nav} from '../util/Nav';
 
 const log = Logger.create();
 
@@ -64,7 +65,7 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
                         <div style={{display: 'block', whiteSpace: 'nowrap'}} className="mt-2">
 
                             <Button id="cloud-sync-invite-users"
-                                    color="primary"
+                                    color="secondary"
                                     size="sm"
                                     onClick={() => this.props.onInvite()}>
 
@@ -100,6 +101,20 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
                                     {/*Logout of Polar.*/}
 
                                 {/*</SimpleTooltip>*/}
+
+                            </Button>
+
+                        </div>
+
+                        <div className="mt-2 pt-2 border-top text-center">
+
+                            <Button color="primary"
+                                    size="sm"
+                                    onClick={() => document.location.hash = "plans"}>
+
+                                <i className="fas fa-external-link-alt"></i>
+                                &nbsp;
+                                View Plans and Pricing
 
                             </Button>
 

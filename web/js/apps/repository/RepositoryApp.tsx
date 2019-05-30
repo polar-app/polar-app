@@ -242,7 +242,7 @@ export class RepositoryApp {
                         <Route exact path='/stats' render={renderStats}/>
                         <Route exact path='/logs' render={renderLogs}/>
                         <Route exact path='/editors-picks' render={editorsPicks}/>
-                        <Route exact path='/premium2' render={premium}/>
+                        <Route exact path='/plans' render={premium}/>
                     </Switch>
 
                 </HashRouter>
