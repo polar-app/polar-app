@@ -14,6 +14,7 @@
 @import url('./progress.css');
 @import url('./typography.css');
 @import url('./summernote.css');
+@import url('./pricing.css');
 
 body {
     height: 100%;

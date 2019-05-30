@@ -10,15 +10,21 @@ import {Arrays} from "../../util/Arrays";
  */
 export class RelatedTags {
 
-    private tagMetaIndex: {[tag: string]: TagMeta} = {};
+    /**
+     * Maps from the tag to the DocIDs for this tag.
+     */
+    private tagDocsIndex: {[tag: string]: TagDocs} = {};
 
-    private docMetaIndex: {[docID: string]: DocMeta} = {};
+    /**
+     * Maps from the doc ID to the tags for this document.
+     */
+    private docTagsIndex: {[docID: string]: DocTags} = {};
 
     public update(docID: DocID, mutationType: MutationType, ...tags: TagLiteral[]) {
 
         for (const tag of tags) {
 
-            const tagMeta = Dictionaries.computeIfAbsent(this.tagMetaIndex, tag, () => {
+            const tagMeta = Dictionaries.computeIfAbsent(this.tagDocsIndex, tag, () => {
                 return {tag, docs: new Set<DocID>()};
             });
 
@@ -34,7 +40,7 @@ export class RelatedTags {
 
             }
 
-            const docMeta = Dictionaries.computeIfAbsent(this.docMetaIndex, docID, () => {
+            const docMeta = Dictionaries.computeIfAbsent(this.docTagsIndex, docID, () => {
                 return {doc: docID, tags: []};
             });
 
@@ -42,11 +48,20 @@ export class RelatedTags {
 
         }
 
+        const before = Date.now();
+
+        JSON.stringify(this.tagDocsIndex);
+        JSON.stringify(this.docTagsIndex);
+
+        const after = Date.now();
+        const duration = after - before;
+
+        console.log("FIXME: duration: " + duration);
+
     }
 
     /**
      * Compute related tags for the given tags...
-     * @param tags
      */
     public compute(tags: TagLiteral[], limit: number = 5): TagHit[] {
 
@@ -57,7 +72,7 @@ export class RelatedTags {
 
             // get all the documents that mention this tag
 
-            const indexedTagMeta = this.tagMetaIndex[tag];
+            const indexedTagMeta = this.tagDocsIndex[tag];
 
             if (! indexedTagMeta) {
                 // this tag isn't indexed yet.
@@ -68,7 +83,7 @@ export class RelatedTags {
 
             for (const relatedDoc of relatedDocs) {
 
-                const indexedDocMeta = this.docMetaIndex[relatedDoc];
+                const indexedDocMeta = this.docTagsIndex[relatedDoc];
 
                 const relatedTags = indexedDocMeta.tags;
 
@@ -107,12 +122,12 @@ export class RelatedTags {
 
 }
 
-export interface TagMeta {
+export interface TagDocs {
     readonly tag: TagLiteral;
     readonly docs: Set<DocID>;
 }
 
-export interface DocMeta {
+export interface DocTags {
     tags: string[];
 }
 
