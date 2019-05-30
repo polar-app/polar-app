@@ -4,43 +4,25 @@
 
 </head>
 <body>
+
 <!-- Load Stripe.js on your website. -->
 <script src="https://js.stripe.com/v3"></script>
-
-<!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
-<button
-        style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-        id="checkout-button-plan_F9Cgv6rpQtKHaJ"
-        role="link"
->
-    Buy Bronze
-</button>
 
 <div id="error-message"></div>
 
 <script>
 
+    const url = new URL(document.location.href);
 
-    const testMode = false
+    const plan = url.searchParams.get('plan');
+    const email = url.searchParams.get('email');
 
-    function getStripeKey() {
+    var stripe = Stripe('pk_live_nuUlFGZzCqFCnx19rAfGBO9900Fx3Mpi3m');
 
-        if (testMode) {
-            return "pk_test_P1HRwH4QYGacPaK4eEqVaGPK007y7wFlDK";
-        }
+    const handler = () => {
 
-        return "pk_live_nuUlFGZzCqFCnx19rAfGBO9900Fx3Mpi3m";
-
-    }
-
-    var stripe = Stripe(getStripeKey());
-
-    var checkoutButton = document.getElementById('checkout-button-plan_F9Cgv6rpQtKHaJ');
-    checkoutButton.addEventListener('click', function () {
-        // When the customer clicks on the button, redirect
-        // them to Checkout.
         stripe.redirectToCheckout({
-                  items: [{plan: 'plan_F9Cgv6rpQtKHaJ', quantity: 1}],
+                  items: [{plan: `plan_${plan}`, quantity: 1}],
 
                   // Do not rely on the redirect to the successUrl for fulfilling
                   // purchases, customers may not always reach the success_url after
@@ -49,7 +31,7 @@
                   // https://stripe.com/docs/payments/checkout/fulfillment
                   successUrl: 'https://getpolarized.io/purchase-success.html',
                   cancelUrl: 'https://getpolarized.io/purchase-cancelled.html',
-                  customerEmail: 'burton@getpolarized.io',
+                  customerEmail: email,
               })
               .then(function (result) {
                   if (result.error) {
@@ -59,6 +41,11 @@
                       displayError.textContent = result.error.message;
                   }
               });
-    });
-</script></body>
+    };
+
+    handler();
+
+</script>
+
+</body>
 </html>
