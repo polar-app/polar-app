@@ -4,6 +4,7 @@ import {Nav} from '../../../../../../web/js/ui/util/Nav';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
 import {Logger} from '../../../../../../web/js/logger/Logger';
+import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 
 const log = Logger.create();
 
@@ -21,6 +22,10 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
         const {to, from} = this.props;
 
+        // true when this is the current plan and we do not need to show the
+        // button
+        const currentPlan = to === from;
+
         const {email} = this.props.userInfo!;
 
         // true if we're BUYING a new plan...
@@ -36,7 +41,10 @@ export class PremiumButton extends React.Component<IProps, IState> {
         };
 
         const changeHandler = () => {
-            AccountActions.upgradePlan(to)
+
+            console.log("Changing plan to: " + to);
+
+            AccountActions.changePlan(to)
                 .catch(err => log.error("Unable to upgrade plan: ", err));
         };
 
@@ -44,12 +52,16 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
         return (
 
-            <Button color="secondary"
-                    onClick={() => handler()}>
+            <NullCollapse open={! currentPlan}>
 
-                {text}
+                <Button color="secondary"
+                        onClick={() => handler()}>
 
-            </Button>
+                    {text}
+
+                </Button>
+
+            </NullCollapse>
 
         );
     }

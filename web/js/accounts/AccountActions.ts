@@ -4,16 +4,16 @@ import {AccountPlan} from './Accounts';
 
 export class AccountActions {
 
-    public static async cancelPlan() {
-        const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCancelPlan/`;
+    public static async cancelSubscription() {
+        const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCancelSubscription/`;
         const data = await this.createAccountData();
 
         await this.executeAccountMethod(url, data);
 
     }
 
-    public static async upgradePlan(plan: AccountPlan) {
-        const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeUpgradePlan/`;
+    public static async changePlan(plan: AccountPlan) {
+        const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeChangePlan/`;
         const accountData = await this.createAccountData();
         const data = {plan, ...accountData};
 
