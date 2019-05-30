@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {WhatsNewContent} from '../splash2/whats_new/WhatsNewContent';
-import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {FixedNav} from '../../../FixedNav';
+import {FixedNavBody} from '../../../FixedNav';
+import {RepoHeader} from '../../../repo_header/RepoHeader';
+import {PersistenceLayerManager} from '../../../../../../web/js/datastore/PersistenceLayerManager';
+import {PremiumContent} from './PremiumContent';
 
-export default class WhatsNewApp extends React.Component<IProps, IState> {
+export class PremiumApp extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -30,8 +31,8 @@ export default class WhatsNewApp extends React.Component<IProps, IState> {
 
                     <div className="row">
 
-                        <div className="col-lg-12 w-100">
-                            <WhatsNewContent/>
+                        <div className="col-lg-12 w-100 pt-4">
+                            <PremiumContent/>
                         </div>
                     </div>
 

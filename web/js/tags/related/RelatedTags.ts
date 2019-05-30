@@ -48,6 +48,16 @@ export class RelatedTags {
 
         }
 
+        const before = Date.now();
+
+        JSON.stringify(this.tagDocsIndex);
+        JSON.stringify(this.docTagsIndex);
+
+        const after = Date.now();
+        const duration = after - before;
+
+        console.log("FIXME: duration: " + duration);
+
     }
 
     /**

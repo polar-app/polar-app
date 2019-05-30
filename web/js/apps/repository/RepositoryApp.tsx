@@ -47,6 +47,7 @@ import {NULL_FUNCTION} from '../../util/Functions';
 import {MachineDatastores} from '../../telemetry/MachineDatastores';
 import {MailingList} from './auth_handler/MailingList';
 import {UniqueMachines} from '../../telemetry/UniqueMachines';
+import {PremiumApp} from '../../../../apps/repository/js/splash/splashes/premium/PremiumApp';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -157,7 +158,7 @@ export class RepositoryApp {
         };
 
         const premium = () => {
-            return (<Premium/>);
+            return (<PremiumApp persistenceLayerManager={this.persistenceLayerManager}/>);
         };
 
         const onNavChange = () => {
@@ -241,6 +242,7 @@ export class RepositoryApp {
                         <Route exact path='/stats' render={renderStats}/>
                         <Route exact path='/logs' render={renderLogs}/>
                         <Route exact path='/editors-picks' render={editorsPicks}/>
+                        <Route exact path='/premium2' render={premium}/>
                     </Switch>
 
                 </HashRouter>
