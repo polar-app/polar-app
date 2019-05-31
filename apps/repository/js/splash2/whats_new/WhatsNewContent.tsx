@@ -19,7 +19,7 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                     {/*</div>*/}
 
 
-                    <h3>Polar 1.19.6</h3>
+                    <h3>Polar 1.19.7</h3>
 
                     <p>
                         This release mostly focuses on stability and performance issues.
