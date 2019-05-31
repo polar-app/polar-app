@@ -71,6 +71,10 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                         and read hundreds to thousands of documents? No problem.
                     </p>
 
+                    <p className="text-center mb-3 text-xlarge">
+                        Have an issue?  Feel free to send us an email at <b>support@getpolarized.io</b>
+                    </p>
+
                     <div className="white-box high-shadow table-box">
                         <table className="table">
                             <thead>
