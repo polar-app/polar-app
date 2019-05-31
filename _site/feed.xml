@@ -1,4 +1,233 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-05-30T13:40:08-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-05-31T08:12:40-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks</title><link href="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html" rel="alternate" type="text/html" title="GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks" /><published>2019-05-30T10:00:00-07:00</published><updated>2019-05-30T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks</id><content type="html" xml:base="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/V8RyHZ9.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;gpt-2-the-destruction-of-the-web-and-artificially-intelligent-textbooks&quot;&gt;GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://openai.com/blog/better-language-models/&quot;&gt;GPT-2&lt;/a&gt; is a deep-learning
+language model released by OpenAI a few months ago which is causing a bit of
+controversy in the deep learning community.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Due to our concerns about malicious applications of the technology, we are not
+releasing the trained model. As an experiment in responsible disclosure, we are
+instead releasing a much smaller model for researchers to experiment with, as
+well as a technical paper.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;OpenAI actually took a conservative position and decided to hold off from
+releasing the model due to the potential impact on society.&lt;/p&gt;
+
+&lt;p&gt;This is one of the first emerging technologies that &lt;em&gt;really&lt;/em&gt; frightens me.
+There’s a massive potential or abuse here and I don’t think society is ready for
+it just yet.&lt;/p&gt;
+
+&lt;p&gt;With many disruptive technologies we generally have a few years to come to grips
+with the problems they might cause. Robotics, Crispr, and other technologies are
+still a few years away from really impacting our lives (however it plays out).&lt;/p&gt;
+
+&lt;p&gt;Not true with GPT-2 - it’s here today.&lt;/p&gt;
+
+&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
+
+&lt;p&gt;GPT-2 is a deep learning model released by OpenAI back in February which they
+built by indexing 40GB of web content derived from a web crawl.&lt;/p&gt;
+
+&lt;p&gt;They indexed about 8M pages and then dumped it into a neural network&lt;/p&gt;
+
+&lt;p&gt;It builds an internal linguistic model of the underlying text represented as a
+neural network.&lt;/p&gt;
+
+&lt;p&gt;This helps it understand the actual text but also it’s generative. This means
+it can build NEW text based on a prompt.&lt;/p&gt;
+
+&lt;p&gt;Here’s a short example:&lt;/p&gt;
+
+&lt;h2 id=&quot;system-prompt&quot;&gt;System Prompt&lt;/h2&gt;
+
+&lt;p&gt;This part was generated by a human as the input prompt:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In a shocking finding, scientist discovered a herd of unicorns living in a
+remote, previously unexplored valley, in the Andes Mountains. Even more
+surprising to the researchers was the fact that the unicorns spoke perfect
+English.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;model-completion&quot;&gt;Model Completion&lt;/h2&gt;
+
+&lt;p&gt;This was generated by GPT-2, a computer:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The scientist named the population, after their distinctive horn, Ovid’s
+Unicorn. These four-horned, silver-white unicorns were previously unknown to
+science.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Now, after almost two centuries, the mystery of what sparked this odd
+phenomenon is finally solved.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Dr. Jorge Pérez, an evolutionary biologist from the University of La Paz, and
+several companions, were exploring the Andes Mountains when they found a small
+valley, with no other animals or humans. Pérez noticed that the valley had what
+appeared to be a natural fountain, surrounded by two peaks of rock and silver
+snow.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;… this is just a short excerpt.&lt;/p&gt;
+
+&lt;p&gt;You can &lt;a href=&quot;https://openai.com/blog/better-language-models/&quot;&gt;read more here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;could-it-destroy-the-web&quot;&gt;Could it Destroy the Web?&lt;/h1&gt;
+
+&lt;p&gt;The web is built on a number of assumptions which aren’t necessarily true
+any longer.&lt;/p&gt;
+
+&lt;p&gt;First, that only humans can write legitimate content.&lt;/p&gt;
+
+&lt;p&gt;In the past machine-generated text seemed, well, robotic. If you used a markov
+chain to generate text it sounded like you would expect - like canned text.&lt;/p&gt;
+
+&lt;p&gt;It went off topic. Didn’t make sense. They were words. They were a subset of 
+language but they didn’t have much meaning.&lt;/p&gt;
+
+&lt;p&gt;You can get a sense of how this works by using auto-complete on your mobile phone.&lt;/p&gt;
+
+&lt;p&gt;If you start off with a sample sentence and let it auto-complete and just select 
+the first match it will sound rather - insane.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example.&lt;/p&gt;
+
+&lt;p&gt;On my phone I entered “The cat is outside” and then hit next again and again.&lt;/p&gt;
+
+&lt;p&gt;My came up with:&lt;/p&gt;
+
+&lt;p&gt;“The cat is outside and is never told about Jesus do they go to the emergency
+place of his own and they are crawling to be my friend.”&lt;/p&gt;
+
+&lt;p&gt;I mean, those are words. That’s technically a sentence. But it doesn’t make a 
+ton of sense.&lt;/p&gt;
+
+&lt;p&gt;GPT-2 can write entire articles of text that sound like they were written by a
+human.&lt;/p&gt;
+
+&lt;p&gt;Not only do they seem human they’re also readable - you won’t get bored either.&lt;/p&gt;
+
+&lt;p&gt;This is going to lead to a &lt;em&gt;massive&lt;/em&gt; amount of Google spam.&lt;/p&gt;
+
+&lt;p&gt;If you can write content for cheap you can use arbitrage and post content on the
+web and then run ads against it.&lt;/p&gt;
+
+&lt;p&gt;If you can generate gigabytes of content for pennies you can make a lot of money
+just cranking out fake content and spamming search engines..&lt;/p&gt;
+
+&lt;p&gt;Legitimate marketers are going do to this too.&lt;/p&gt;
+
+&lt;p&gt;Why write new content when you could just crawl your competitors site and have
+it generate content based on &lt;em&gt;their&lt;/em&gt; data.&lt;/p&gt;
+
+&lt;p&gt;Or just crawl your own content and have it generate new articles based on your
+current articles as a system prompt.&lt;/p&gt;
+
+&lt;p&gt;What else could we do?&lt;/p&gt;
+
+&lt;p&gt;You could create fake news.&lt;/p&gt;
+
+&lt;p&gt;Fake scientific research.&lt;/p&gt;
+
+&lt;p&gt;You could spam your competitors support queue with fake technical support requests.&lt;/p&gt;
+
+&lt;p&gt;The list goes on and on.&lt;/p&gt;
+
+&lt;p&gt;If you have any background in SEO or search your heart is probably racing.&lt;/p&gt;
+
+&lt;p&gt;Take a 20 minute break and meditate. We’ll be here when you get back.&lt;/p&gt;
+
+&lt;h1 id=&quot;whats-the-upside&quot;&gt;What’s the upside?&lt;/h1&gt;
+
+&lt;p&gt;Is there any upside?  There is. I think it could have a dramatic and amazing
+impact on spaced repetition and cognitive science.&lt;/p&gt;
+
+&lt;p&gt;GPT-2 could help build question and answer pairs by bulk processing large
+textbooks to build flashcards for spaced repetition systems like Anki and
+&lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It could also help with the raw &lt;em&gt;understanding&lt;/em&gt; of the text so you could ask it
+questions and it could provide you with answers. Far better than simple
+full-text search!&lt;/p&gt;
+
+&lt;p&gt;Full-text search will get you closer to an answer but you still have to spend a
+bit of time reading.&lt;/p&gt;
+
+&lt;p&gt;With GPT-2 it could just flat out give you the answer.&lt;/p&gt;
+
+&lt;p&gt;If you’ve ever read Diamond Age it could help build a “Young Lady’s Illustrated
+Primer” or an artificially intelligent textbook that you can interact with
+directly!&lt;/p&gt;
+
+&lt;p&gt;You would literally be able to interact with a textbook and ask it questions
+from the material you’re reading.&lt;/p&gt;
+
+&lt;p&gt;Textbooks would no longer be sterile and inert. It could suggest other reading
+based on your interests. You could interact with it and it could actually
+&lt;em&gt;teach&lt;/em&gt; you directly.&lt;/p&gt;
+
+&lt;p&gt;It can’t &lt;em&gt;understand&lt;/em&gt; the text in the classical sense than you or I can. You 
+can’t ask it mathematical questions and expect answers or questions that 
+are more philosophical in nature.&lt;/p&gt;
+
+&lt;p&gt;Those still require humans.&lt;/p&gt;
+
+&lt;h1 id=&quot;mitigation&quot;&gt;Mitigation&lt;/h1&gt;
+
+&lt;p&gt;There is some risk mitigation we could pursue. We could require public keys 
+for users and only index content that is signed and build a trust model
+similar to Pagerank.&lt;/p&gt;
+
+&lt;p&gt;Humans can only write so much content. By using this model you’re going to 
+throttle people by forcing their rank to flow between the graph of the web 
+of trust.&lt;/p&gt;
+
+&lt;p&gt;People can create fake keys of course. They can fake key after key for their
+fake robots but they have to attract REAL humans to certify them at some point
+and you would only flow so much rank from a real human forward.&lt;/p&gt;
+
+&lt;p&gt;If search engines employed auditors to find and validate real people we could
+keep the web from becoming owned by AI.&lt;/p&gt;
+
+&lt;p&gt;It’s not perfect but I think there’s a path forward here though going in depth
+is a bit ouf of scope for this article.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-could-stop-gpt-2&quot;&gt;What Could Stop GPT-2?&lt;/h1&gt;
+
+&lt;p&gt;Let’s say we collectively decide that building and releasing something like 
+GPT-2 is a bad idea.&lt;/p&gt;
+
+&lt;p&gt;How could we stop it?&lt;/p&gt;
+
+&lt;p&gt;We can’t. It’s just a matter of time until this technology is democratized and
+in the hands of everyone.&lt;/p&gt;
+
+&lt;p&gt;The prices of GPUs and cloud computing is just getting cheaper and cheaper and 
+eventually this is going to become commoditized.&lt;/p&gt;
+
+&lt;p&gt;In five or so years you’ll be able to build a model like GPT-2 in a few days to 
+weeks with very little funding and with off the shelf tools.&lt;/p&gt;
+
+&lt;p&gt;We’re going to have to deal with this one way or another.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;GPT-2 is really frightening but if we can mitigate the risks we might be able
+to use these systems in the future and focus mostly on the positives.&lt;/p&gt;
+
+&lt;p&gt;We’re going to need to educate older voters and people naive about modern
+technology on the risks of trusting fake news and deep fakes.&lt;/p&gt;
+
+&lt;p&gt;This might be an uphill battle though. We already have fake news and we haven’t
+done a good job dealing with it already. How are we going to deal with it when
+its gets far far worse?&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;13-lucky-tips-for-using-anki-and-spaced-repetition-in-2019&quot;&gt;13 Lucky Tips for using Anki and Spaced Repetition in 2019&lt;/h1&gt;
 
@@ -1386,89 +1615,4 @@ it for a bit instead of downloading a complicated app.&lt;/p&gt;
 
 &lt;p&gt;We’ll see what happens this time.  I’ve been putting a ton of time and effort 
 into Polar to get it launched - working 24/7 basically and I think I’m very very
-close to being at the sweet spot in terms of usability.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.16.0 Released</title><link href="https://getpolarized.io/2019/03/31/polar-1-16-0.html" rel="alternate" type="text/html" title="Polar 1.16.0 Released" /><published>2019-03-31T10:00:00-07:00</published><updated>2019-03-31T10:00:00-07:00</updated><id>https://getpolarized.io/2019/03/31/polar-1-16-0</id><content type="html" xml:base="https://getpolarized.io/2019/03/31/polar-1-16-0.html">&lt;h1 id=&quot;polar-1160-released&quot;&gt;Polar 1.16.0 Released&lt;/h1&gt;
-
-&lt;p&gt;A number of major changes went into Polar 1.16.0 but the big highlights include
-a big performance bump for the desktop app on startup, an updated chrome
-extension to improve stability during loading PDFs, and a new context menu for
-the document repository.&lt;/p&gt;
-
-&lt;p&gt;This also includes a new timing system which allows us to detect slow operations
-in Polar to help improve performance over time.  The plan is to keep an eye on
-these metrics to help track down any performance regressions and also to improve
-performance over time.&lt;/p&gt;
-
-&lt;p&gt;Polar 1.17 (the next major version of Polar) is already under development and
-should include:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Initial version of sharing of documents publicly.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fix for a major bug involving large PDFs and the “white screen of death”&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Removal of some important legacy code for content capture in the desktop app.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;full-changelog-for-1160&quot;&gt;Full changelog for 1.16.0&lt;/h2&gt;
-
-&lt;ul&gt;
-    &lt;li&gt;
-        &lt;p&gt;Multi-delete button now uses the confirm prompt properly.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;The doc repo now supports a context menu for each row&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Fixed major performance issue with the datastore on Electron as it was going
-            through the IPC process for the datastore data reads and this was amazingly
-            slow. Moving it into the renderer process speeds up reads by about 10x.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Fixed bad bug in the webapp where we wouldn't ever fetch the latest docs from
-            firebase.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;A ton of improvement to tooltips needed for mobile support but also the fact
-            that having them popup bothered a lot of users.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Inline app message that styling with rich HTML is supported for new users.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;More improvements for mobile.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Fixed bag bug where Firebase batches weren't used properly and we had a
-            delete outside of the batch which could leave FB inconsistent.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Always show the multi-delete and multi-tag buttons even if just one is
-            selected as it will still work just fine.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Make the top buttons for tagging and delete permanently displayed not hidden.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Added a couple key metrics for Firebase performance via tracer so that we can
-            verify real-world behavior.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;RendererAnalytics now safer if accidentally called from the Node context and
-            just silently fails.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;RendererAnalytics now supports using a stopwatch so we can track the times
-            of important operations.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Improved CSS of annotation sidebar and included instructions on how to create
-            your first annotation.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-        &lt;p&gt;Use the sidebar area to explain how to create annotations.&lt;/p&gt;
-    &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.16.0 Released</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry></feed>
+close to being at the sweet spot in terms of usability.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>

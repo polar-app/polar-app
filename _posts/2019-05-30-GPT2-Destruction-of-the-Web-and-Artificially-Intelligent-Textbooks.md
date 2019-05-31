@@ -1,23 +1,13 @@
-
-
-
 ---
-title: 
-date: 2019-05-28 09:00:00 -0800
+title: GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks
+date: 2019-05-30 09:00:00 -0800
 layout: post
-large_image: https://i.imgur.com/FeMzRL1.png
-description: GPT-2 is a language model released by OpenAI a few months ago which is causing a great deal of stir in the deep learning community.
+large_image: https://i.imgur.com/V8RyHZ9.png
+description: GPT-2 is a deep-learning language model released by OpenAI a few months ago which is causing a bit of controversy in the deep learning community. OpenAI actually took a conservative position and decided to hold off from releasing the model due to the potential impact on society.
 ---
+<img class="img-fluid" src="https://i.imgur.com/V8RyHZ9.png">
 
-
-Title: GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks
-
-Bio:  Kevin Burton is the Creator of <a href="https://getpolarized.io/">Polar</a> and the CEO of <a href="http://www.datastreamer.io/">Datastreamer</a>. 
-
-
-
-
-# Overview
+# GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks
 
 [GPT-2](https://openai.com/blog/better-language-models/) is a deep-learning
 language model released by OpenAI a few months ago which is causing a bit of
