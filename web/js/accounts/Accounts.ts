@@ -6,8 +6,6 @@ import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Firebase} from '../firebase/Firebase';
 import {Firestore} from '../firebase/Firestore';
 import {Dialogs} from '../ui/dialogs/Dialogs';
-import {NULL_FUNCTION} from '../util/Functions';
-import doc = Mocha.reporters.doc;
 
 const COLLECTION_NAME = "account";
 

@@ -1,12 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Logger} from '../../logger/Logger';
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
-import {SimpleTooltip} from '../tooltip/SimpleTooltip';
 import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
-import {Nav} from '../util/Nav';
-import {NullCollapse} from '../null_collapse/NullCollapse';
 
 const LogoutButton = (props: IProps) => {
 
