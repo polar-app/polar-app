@@ -5,6 +5,9 @@
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Firebase} from '../firebase/Firebase';
 import {Firestore} from '../firebase/Firestore';
+import {Dialogs} from '../ui/dialogs/Dialogs';
+import {NULL_FUNCTION} from '../util/Functions';
+import doc = Mocha.reporters.doc;
 
 const COLLECTION_NAME = "account";
 
@@ -38,6 +41,64 @@ export class Accounts {
         }
 
         return <Account> snapshot.data();
+
+    }
+
+    public static async listenForPlanUpgrades() {
+
+        const user = await Firebase.currentUser();
+
+        if (! user) {
+            return;
+        }
+
+        const firestore = await Firestore.getInstance();
+
+        const id = user.uid;
+
+        const ref = firestore
+            .collection(COLLECTION_NAME)
+            .doc(id);
+
+        const onConfirm = () => {
+
+            const url = new URL(document.location.href);
+            url.hash = "#";
+
+            const newLocation = url.toString();
+
+            if (document.location.href === newLocation) {
+                document.location.reload();
+            } else {
+                document.location.href = newLocation;
+            }
+
+        };
+
+        let account: Account | undefined;
+
+        ref.onSnapshot(doc => {
+
+            const newAccount = <Account> doc.data();
+
+            try {
+
+                if (account && account.plan !== newAccount.plan) {
+
+                    Dialogs.confirm({
+                        title: "Your plan has changed and we need to reload.",
+                        subtitle: "This will just take a moment we promise.",
+                        onConfirm,
+                        noCancel: true
+                    });
+
+                }
+
+            } finally {
+                account = newAccount;
+            }
+
+        });
 
     }
 

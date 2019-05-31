@@ -1,12 +1,28 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Splash} from '../../Splash';
-import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
-import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
-import {CallToActionLink} from '../components/CallToActionLink';
 import {PremiumButton} from './PremiumButton';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountPlan} from '../../../../../../web/js/accounts/Accounts';
+import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
+import Button from 'reactstrap/lib/Button';
+import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
+
+const CancelSubscriptionButton = (props: IProps) => {
+
+    return <NullCollapse open={props.plan !== 'free'}>
+
+        <Button color="secondary"
+                size="sm"
+                onClick={() => AccountActions.cancelSubscription()}>
+
+            {/*FIXME: must prompt to change not just do it... */}
+
+            Cancel Subscription
+
+        </Button>
+
+    </NullCollapse>;
+};
 
 export class PremiumContent2 extends React.Component<IProps, IState> {
 
@@ -19,7 +35,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
         /* WARN: taken directly from polar-site */
 
         return (
-            <div>
+            <div className={"plan-" + this.props.plan}>
 
                 <div id="pricing" className="hidden-xs">
 
@@ -54,7 +70,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                     </p>
                                     <br/>
                                 </th>
-                                <th className="highlight-plan">
+                                <th className="">
                                     <p className="text-xlarge  highlight">Bronze</p>
 
                                     <h3 className="text-xxlarge">$4.99<span
@@ -101,7 +117,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 </td>
                                 <td>
                                 </td>
-                                <td className="highlight-plan">
+                                <td className="">
                                     <PremiumButton from={this.props.plan} to="bronze" userInfo={this.props.userInfo}/>
                                 </td>
                                 <td>
@@ -121,7 +137,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                     <i className="fa fa-check"></i>
                                 </td>
-                                <td className="highlight-plan">
+                                <td className="">
                                     <i className="fa fa-check"></i>
                                 </td>
                                 <td className="">
@@ -139,7 +155,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                     <i className="fa fa-check"></i>
                                 </td>
-                                <td className="highlight-plan">
+                                <td className="">
                                     <i className="fa fa-check"></i>
                                 </td>
                                 <td className="">
@@ -157,7 +173,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                     2
                                 </td>
-                                <td className="highlight-plan">
+                                <td className="">
                                     unlimited
                                 </td>
                                 <td className="">
@@ -175,7 +191,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                     Up to 350MB
                                 </td>
-                                <td className="highlight-plan">
+                                <td className="">
                                     Up to 2GB
                                 </td>
                                 <td className="">
@@ -193,7 +209,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                     Up to 100
                                 </td>
-                                <td className="highlight-plan">
+                                <td className="">
                                     Up to 500
                                 </td>
                                 <td className="">
@@ -211,7 +227,7 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                     <span className="feature-na">---</span>
                                 </td>
-                                <td className="highlight-plan">
+                                <td className="">
                                     <i className="fa fa-check"></i>
                                 </td>
                                 <td className="">
@@ -227,20 +243,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <p className="text-center text-xlarge text-justify pt-5">
-                        Polar is <b>always Open Source!</b> We're "free as in
-                        liberty."
-                        Developers who contribute back to Polar get a year of
-                        cloud storage for
-                        free. If you'd like you can compile Polar from source
-                        directly but
-                        cloud usage fees still apply. Note that you can always
-                        use Polar without
-                        the cloud and just use the desktop app directly. This
-                        way Polar will be
-                        "free as in beer." Just make sure to <b>backup your
-                        data!</b>.
-                    </p>
+                    <div>
+
+                        <div className="ml-auto">
+                            <CancelSubscriptionButton {...this.props}/>
+                        </div>
+
+                    </div>
 
                 </div>
 

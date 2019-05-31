@@ -94,3 +94,19 @@
 #pricing .buy-links {
     text-align: center;
 }
+
+
+.plan-bronze #pricing tr th:nth-child(3),
+.plan-bronze #pricing tr td:nth-child(3) {
+    background: #EcF5Ff;
+}
+
+.plan-silver #pricing tr th:nth-child(4),
+.plan-silver #pricing tr td:nth-child(4) {
+    background: #EcF5Ff;
+}
+
+.plan-gold #pricing tr th:nth-child(5),
+.plan-gold #pricing tr td:nth-child(5) {
+    background: #EcF5Ff;
+}

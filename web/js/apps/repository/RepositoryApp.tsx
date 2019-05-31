@@ -198,6 +198,9 @@ export class RepositoryApp {
 
         this.sendAnalytics();
 
+        Accounts.listenForPlanUpgrades()
+            .catch(err => log.error("Unable to listen for plan upgrades: ", err));
+
         ReactDOM.render(
 
             <div style={{height: '100%'}}>
