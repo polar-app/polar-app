@@ -379,8 +379,8 @@ export class BoxController {
     private _computeOriginXY(interactionEvent: any) {
 
         const delta = {
-            x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
-            y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
+            x: interactionEvent.pageX - interactionEvent._interaction.coords.start.page.x,
+            y: interactionEvent.pageY - interactionEvent._interaction.coords.start.page.y
         };
 
         // log.info(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
