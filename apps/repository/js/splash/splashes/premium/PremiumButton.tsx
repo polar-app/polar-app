@@ -5,6 +5,8 @@ import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/Au
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
 import {Logger} from '../../../../../../web/js/logger/Logger';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
+import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
+import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
 
 const log = Logger.create();
 
@@ -42,10 +44,22 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
         const changeHandler = () => {
 
-            console.log("Changing plan to: " + to);
+            const onConfirm = () => {
 
-            AccountActions.changePlan(to)
-                .catch(err => log.error("Unable to upgrade plan: ", err));
+                console.log("Changing plan to: " + to);
+
+                Toaster.info(`Changing plan to ${to}.  One moment...`);
+
+                AccountActions.changePlan(to)
+                    .catch(err => log.error("Unable to upgrade plan: ", err));
+            };
+
+            Dialogs.confirm({
+                title: `Are you sure you want to ${to}?`,
+                subtitle: 'Your billing will automatically be updated and account pro-rated.',
+                onConfirm
+            });
+
         };
 
         const handler = buy ? buyHandler : changeHandler;

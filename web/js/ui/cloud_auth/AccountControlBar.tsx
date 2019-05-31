@@ -61,12 +61,12 @@ const InviteUsersButton = (props: IProps) => {
 
 const ViewPlansAndPricingButton = (props: IProps) => {
 
-    return <Button color="primary"
+    return <Button color="success"
             size="sm"
             onClick={() => document.location.hash = "plans"}>
 
-        <i className="fas fa-external-link-alt"></i>
-        &nbsp;
+        {/*<i className="fas fa-external-link-alt"></i>*/}
+        {/*&nbsp;*/}
         View Plans and Pricing
 
     </Button>;

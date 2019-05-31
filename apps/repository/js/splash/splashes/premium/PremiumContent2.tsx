@@ -6,6 +6,28 @@ import {AccountPlan} from '../../../../../../web/js/accounts/Accounts';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 import Button from 'reactstrap/lib/Button';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
+import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
+import {Logger} from '../../../../../../web/js/logger/Logger';
+import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
+
+const log = Logger.create();
+
+function cancelSubscription() {
+
+    const onConfirm = () => {
+        Toaster.info("Canceling plan.  One moment...");
+
+        AccountActions.cancelSubscription()
+            .catch(err => log.error("Unable to cancel plan: ", err));
+    };
+
+    Dialogs.confirm({
+        title: `Are you sure you want to cancel your plan and revert to the free tier?`,
+        subtitle: 'Your billing will automatically be updated and account pro-rated.',
+        onConfirm
+    });
+
+}
 
 const CancelSubscriptionButton = (props: IProps) => {
 
@@ -13,9 +35,7 @@ const CancelSubscriptionButton = (props: IProps) => {
 
         <Button color="secondary"
                 size="sm"
-                onClick={() => AccountActions.cancelSubscription()}>
-
-            {/*FIXME: must prompt to change not just do it... */}
+                onClick={() => cancelSubscription()}>
 
             Cancel Subscription
 
@@ -243,7 +263,8 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div>
+                    <div className="mt-2"
+                         style={{display: 'flex'}}>
 
                         <div className="ml-auto">
                             <CancelSubscriptionButton {...this.props}/>

@@ -2,6 +2,7 @@ import {Firebase} from '../firebase/Firebase';
 import fetch from '../util/Fetch';
 import {AccountPlan} from './Accounts';
 
+
 export class AccountActions {
 
     public static async cancelSubscription() {
