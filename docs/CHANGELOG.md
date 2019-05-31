@@ -1,4 +1,10 @@
 
+# 1.19.8
+
+- New payment system for Polar premium
+
+- Fixed bug when dragging area highlights.
+
 # 1.19.7
 
 - Fixed a potential sync issue where the cache could become inconsistent and 

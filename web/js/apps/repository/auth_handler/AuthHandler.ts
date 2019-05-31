@@ -70,7 +70,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
         return Optional.of({
             displayName: Optional.of(user.displayName).getOrUndefined(),
-            email: Optional.of(user.email).getOrUndefined(),
+            email: Optional.of(user.email).get(),
             emailVerified: user.emailVerified,
             photoURL: Optional.of(user.photoURL).getOrUndefined(),
             uid: user.uid,
@@ -131,7 +131,7 @@ export type AuthStatus = 'needs-authentication' |  undefined;
 export interface UserInfo {
 
     readonly displayName?: string;
-    readonly email?: string;
+    readonly email: string;
     readonly emailVerified: boolean;
     readonly photoURL?: string;
     readonly uid: string;

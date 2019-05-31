@@ -20,7 +20,10 @@ export class Dialogs {
 
         const onCancel = () => {
             cleanup();
-            opts.onCancel();
+
+            if (opts.onCancel) {
+                opts.onCancel();
+            }
         };
 
         const onConfirm = () => {
