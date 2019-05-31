@@ -187,17 +187,17 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                             </tr>
                             <tr>
                                 <td>
-                                    Number of active cloud devices
+                                    Number of active cloud sync devices
                                 </td>
 
                                 <td className="">
                                     2
                                 </td>
                                 <td className="">
-                                    unlimited
+                                    3
                                 </td>
                                 <td className="">
-                                    unlimited
+                                    4
                                 </td>
                                 <td className="">
                                     unlimited

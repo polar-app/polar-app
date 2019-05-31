@@ -66,6 +66,7 @@ import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/
 import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premium';
 import {Nav} from '../../js/ui/util/Nav';
 import {SubscriptionPlan} from './SubscriptionPlan';
+import {CrowdfundingBar} from '../../js/ui/crowdfunding/CrowdfundingBar';
 
 const styles = {
     swatch: {
@@ -168,6 +169,18 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div style={{margin: '5px'}}>
+
+                <CrowdfundingBar/>
+
+
+                <Button className="ml-2"
+                        color="light"
+                        size="sm"
+                        onClick={NULL_FUNCTION}
+                        style={{
+                            backgroundColor: 'red',
+                            fontWeight: 'bold'
+                        }}>Go Premium</Button>
 
                 <div>
 
