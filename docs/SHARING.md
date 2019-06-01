@@ -2,67 +2,6 @@
 
 Sharing Design in Polar
 
-
-
-    // FIXME: this is a problem because in the UI we are generating a custom
-    // download URL for the file but the OTHER resources will not have this
-    // param so we're unable to get them. I might have to have a way to store
-    // this in the main JSON file itself so that I can get access to it from
-    // within all layers of the system.
-    //
-    // In fact, yes I do because the getFile() method will need this metadata
-    // to build a NEW type of URL for each file which we can COMPUTE of course
-    // but I need a hint to be able to do it.
-    //
-    // TODO: I can fix this by putting this metadata in the FileRef so that when
-    // the user calls BackendFileRefs.toBackendFileRefs I can compute/add the
-    // required metadata that needs to be attached to the FileRef to denote
-    // whether they are the owner or not and who the owner is and how we build
-    // the URL properly.  What metadata do I need to include?
-    //
-    //  - if I can keep the DocMetaID in the doc itself then what I can do is
-    //    use THAT to store the keys I need to lookup the file and compute the
-    //    URL myself but what am I going to call this new field.
-    //
-    //  - what are we going to call this file??
-    //
-    //  - we can specify to load a specific doc_id in the URL for the viewer
-    //    rather than loading a fingerprint but right this isn't supported.
-    //
-    //  - I think the BEST way to do this is to have a sharedWith param and then
-    //    have a set of additional doc meta IDs there and then fetch those and
-    //    store them along side the main this way the user can add the main
-    //    document and it seems like a normal document to them but we have
-    //    additional metadata as a new state.json file but it's referenced via
-    //    its doc_meta_id directly and not the users own doc_meta_id. this way
-    //    the user can turn on/;off.
-    //
-    //  - use a new 'sharing' data structure
-    //
-    //  - sharing: {
-    //        settings: {
-    //
-    //        }
-    //
-    //
-    
-    //        peers: [
-    //            {source: 'firebase', doc: '1x001'}
-    //        ]
-    //    }
-    //
-    //     - TODO: is this open ended?  What if alice shares it with bob who in
-    //             turn shared it with carol.  This would be alice->bob->carol but
-    //             who controls the spread of the information?
-    //
-    //     -
-    //
-    // - Should the 'sharing' data be
-    //
-    // - We need 'anyone with the link can view' semantics which DOES require
-    //   a token BUT we can make a special recipient of 'token' that has the
-    //   token that you can use to view the document.
-
 # Datastructure
 
 ```javascript
@@ -77,7 +16,7 @@ Sharing Design in Polar
         
         /**
          * Contains a list of users that are also sharing the same document that
-         * we're collaborating with.
+         * we're collaborating with (all the peers in the group).
          */
         peers: [
             {
@@ -90,12 +29,21 @@ Sharing Design in Polar
                 },
                 // the doc ID on this platform on what we have access to that is
                 // shared with us.
-                doc: '0x000'
+                doc_id: '0x000'
             }            
         ]        
     }
 }
 ```
+
+The doc is needed in the source so that we can use  FileRef when the user calls
+BackendFileRefs.toBackendFileRefs I can compute/add the required metadata that
+needs to be attached to the FileRef to denote whether they are the owner or not
+and who the owner is and how we build the URL properly.  What metadata do I need
+to include?
+
+We then lookup the data on the backend permissions system so that we verify that
+the user actually DOES have access to the file.
 
 # Tables
 
@@ -186,3 +134,8 @@ that they are about to block the original author.
 
 - TODO: need the structure for user pages so that users can link to their 
   timeline of documents, comments, and highlights.
+
+    //
+    // - We need 'anyone with the link can view' semantics which DOES require
+    //   a token BUT we can make a special recipient of 'token' that has the
+    //   token that you can use to view the document.
