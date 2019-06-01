@@ -83,14 +83,27 @@ Sharing Design in Polar
 ## message
 
 Stores a message for an 'inbox' that is displayed to a user. The messages are 
-type do we can have user to user messages but also features like a user added 
+typed do we can have user to user messages but also features like a user added 
 you as a contact or a user shared a document with you.
+
+The user will have a popup in the top right with messages and they can either
+accept or deny documents that were added and also 'open' them.
 
 We use this for two main reasons:
 
 - to notify you when someone has added you as a friend
 
-- to notify you when you have a new document you can add to your repo.
+- to notify you when you have a new document you can add to your repo
+
+### schema
+
+||type|| shared_doc | new_friend || The type of the message for the user||
+
+### messages types
+
+- shared_doc: a new document has been shared with you
+
+#### shared_doc
 
 ## contact
 
@@ -114,3 +127,12 @@ A contact that you've interacted with in the past either as a friends or a handl
 Yes.  We should allow this though it's a rare use case.  We might also want to 
 preserve the original user who shared it with us so that we can warn the user 
 that they are about to block the original author.   
+
+## TODO
+
+- need a pref to allow the user to forward the document in the futuer.
+
+- Initially we have NO limits on who can be added.  We add everyone in the 
+  chain.    
+
+- email and using mandrill with mailchimp
