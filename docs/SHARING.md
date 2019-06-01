@@ -86,7 +86,7 @@ Stores a message for an 'inbox' that is displayed to a user. The messages are
 type do we can have user to user messages but also features like a user added 
 you as a contact or a user shared a document with you.
 
-We us this for two main reasons:
+We use this for two main reasons:
 
 - to notify you when someone has added you as a friend
 
