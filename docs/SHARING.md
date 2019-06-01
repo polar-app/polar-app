@@ -4,6 +4,8 @@ Sharing Design in Polar
 
 # Datastructure
 
+Update the DocMeta to having a new Sharing section.
+
 ```javascript
 
 {
