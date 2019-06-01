@@ -74,11 +74,43 @@ Sharing Design in Polar
      */
     sharing: {
         
+        
+        /**
+         * Contains a list of users that are also sharing the same document that
+         * we're collaborating with.
+         */
+        peers: [
+            {
+                source: {
+                    id: 'firebase',
+                    locale: 'us-central1',
+                    owner: {
+                        contact_id: '',
+                    }
+                },
+                // the doc ID on this platform on what we have access to that is
+                // shared with us.
+                doc: '0x000'
+            }            
+        ]        
     }
 }
 ```
 
 # Tables
+
+## doc_permission
+
+Contains the permissions set for the user for this document in their repo.
+
+By default the document is private (no permissions).
+
+### schema
+
+|| id || The DocID of the document ||
+|| uid || The users uid that owns the id (DocID) ||
+|| fingerprint || The fingerprint of the document in the doc repo ||
+|| recipients || An array of encoded recipients who have access to the document || 
 
 ## message
 
@@ -111,6 +143,7 @@ A contact that you've interacted with in the past either as a friends or a handl
 
 ### fields
 
+|| id || A unique contact ID for this user and they are sharing some selected information about their profile ||
 || source || 'firebase-us-central1' || The source of this friend. Could be something outside of polar.
 || rel || ReadonlyArray<RelType> || The list or relationships for this contact.  
  
@@ -130,9 +163,26 @@ that they are about to block the original author.
 
 ## TODO
 
+- TODO: can the datastore keep its own parameters for the doc_id in a shared 
+  document lookup / cache so that by the time we go to fetch the document we 
+  already the document ID to use?  That might work out well...
+    - I already ahve this... it's in the 'sharing' metadata of the doc with the 
+      owner information and the doc_id   
+
+- the first big milestone I have to implement is changing the permissions with 
+  one user and then fetching again with another user to make sure they can 
+  access all the resources properly.
+
+- the current 'permissions' system of 'private' or 'public' with the DocMeta 
+  won't really work with the new system so we have to upgrade the permissions 
+  there. 
+
 - need a pref to allow the user to forward the document in the futuer.
 
 - Initially we have NO limits on who can be added.  We add everyone in the 
   chain.    
 
 - email and using mandrill with mailchimp
+
+- TODO: need the structure for user pages so that users can link to their 
+  timeline of documents, comments, and highlights.

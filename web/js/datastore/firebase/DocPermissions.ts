@@ -140,4 +140,10 @@ type TeamStr = string;
  */
 type EmailStr = string;
 
-type Recipient = 'public' | TeamStr | EmailStr;
+/**
+ * A bearer token to access this document when the user is sharing just by the
+ * URL.
+ */
+type TokenStr = string;
+
+type Recipient = 'public' | TeamStr | EmailStr | TokenStr;
