@@ -5,6 +5,8 @@
 
 - Fixed bug when dragging area highlights.
 
+- Fixed regression in the webapp where PHZ files couldn't be loaded.
+
 # 1.19.7
 
 - Fixed a potential sync issue where the cache could become inconsistent and 
