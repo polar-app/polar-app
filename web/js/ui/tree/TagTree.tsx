@@ -75,8 +75,8 @@ export class TagTree extends React.Component<IProps, IState> {
 
                     <NullCollapse open={!this.props.noCreate}>
 
-                        <TagCreateButton selected={this.props.selected}
-                                         onCreated={path => this.onCreated(path)}/>
+                        {/*<TagCreateButton selected={this.props.selected}*/}
+                        {/*                 onCreated={path => this.onCreated(path)}/>*/}
 
                     </NullCollapse>
 
@@ -126,7 +126,6 @@ export class TagTree extends React.Component<IProps, IState> {
 interface IProps {
     readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly selected: ReadonlyArray<TagStr>;
     readonly onSelected: (...selected: ReadonlyArray<TagStr>) => void;
     readonly noCreate?: boolean;
 }

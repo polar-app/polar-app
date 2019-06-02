@@ -45,7 +45,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
         this.state = {
             data: [],
             tags: [],
-            selected: []
+            // selected: []
         };
 
         this.init();
@@ -82,11 +82,11 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                     return {...current, count};
                 });
 
-            console.log("FIXME: selected is now: ", JSON.stringify(this.state.selected));
+            // console.log("FIXME: selected is now: ", JSON.stringify(this.state.selected));
 
             const state = {...this.state, data: repoAnnotations, tags};
 
-            console.log("FIXME: selected will become: ", JSON.stringify(state.selected));
+            // console.log("FIXME: selected will become: ", JSON.stringify(state.selected));
 
             setStateInBackground(state);
 
@@ -142,7 +142,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                         <div className="m-1">
                             <TagTree tags={this.state.tags}
                                      treeState={this.treeState}
-                                     selected={this.state.selected}
+                                     // selected={this.state.selected}
                                      onSelected={values => this.onSelected(values)}
                                      noCreate={true}/>
                         </div>
@@ -162,8 +162,8 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     }
 
     private onSelected(...selected: ReadonlyArray<TagStr>) {
-        console.log("FIXME666.1: ")
-        this.setState({...this.state, selected});
+        console.log("FIXME666.2: ");
+        // this.setState({...this.state, selected});
 
     }
 
@@ -196,7 +196,7 @@ export interface IState {
     /**
      * The currently selected tags.
      */
-    readonly selected: ReadonlyArray<TagStr>;
+    // readonly selected: ReadonlyArray<TagStr>;
 
 }
 
