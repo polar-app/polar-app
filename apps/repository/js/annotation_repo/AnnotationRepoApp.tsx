@@ -62,10 +62,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
             setTimeout(() => {
 
-                console.log("FIXME2");
-
-                console.log("FIXME setting state... ", state.tags);
-
                 // The react table will not update when I change the state from
                 // within the event listener
                 this.setState(state);
