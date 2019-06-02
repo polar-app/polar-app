@@ -34,7 +34,7 @@ export class NullCollapse extends React.Component<IProps, IState> {
 
 interface IProps {
 
-    readonly open: boolean;
+    readonly open?: boolean;
 
 }
 

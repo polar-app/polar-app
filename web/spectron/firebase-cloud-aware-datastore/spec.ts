@@ -7,7 +7,7 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 describe('Firebase Cloud Aware Datastore', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(30000);
+    this.timeout(120000);
 
     it('basic tests', async function() {
 

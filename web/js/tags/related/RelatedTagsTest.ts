@@ -1,10 +1,11 @@
 import {RelatedTags} from './RelatedTags';
 import {assertJSON} from '../../test/Assertions';
+import {assert} from 'chai';
 
 describe('RelatedTags', function() {
 
-    const getTagMetaIndex = (relatedTags: RelatedTags) => {
-        return (<any> relatedTags).tagMetaIndex;
+    const getTagDocsIndex = (relatedTags: RelatedTags) => {
+        return (<any> relatedTags).tagDocsIndex;
     };
 
     it("basic", async function() {
@@ -26,7 +27,9 @@ describe('RelatedTags', function() {
         relatedTags.update('0x05', 'set', 'linux');
         relatedTags.update('0x05', 'set', 'google');
 
-        const tagMetaIndex = getTagMetaIndex(relatedTags);
+        const tagMetaIndex = getTagDocsIndex(relatedTags);
+
+        assert.isDefined(tagMetaIndex);
 
         assertJSON(tagMetaIndex, {
                "linux": {

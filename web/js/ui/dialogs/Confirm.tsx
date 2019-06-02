@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'reactstrap';
 import {DialogContainer} from './DialogContainer';
+import {NullCollapse} from '../null_collapse/NullCollapse';
 
 class Styles {
 
@@ -48,11 +49,15 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
                     <div className="text-right mt-1">
 
-                        <Button color="secondary"
-                                style={Styles.button}
-                                size="sm"
-                                className="m-1"
-                                onClick={() => this.onCancel()}>Cancel</Button>
+                        <NullCollapse open={! this.props.noCancel}>
+
+                            <Button color="secondary"
+                                    style={Styles.button}
+                                    size="sm"
+                                    className="m-1"
+                                    onClick={() => this.onCancel()}>Cancel</Button>
+
+                        </NullCollapse>
 
                         <Button color="danger"
                                 style={Styles.button}
@@ -83,9 +88,12 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
     }
 
     private onCancel(): void {
-        this.props.onCancel();
-    }
 
+        if (this.props.onCancel) {
+            this.props.onCancel();
+        }
+
+    }
 
 }
 
@@ -93,9 +101,10 @@ export interface ConfirmProps {
 
     readonly title: string;
     readonly subtitle?: string;
-    readonly onCancel: () => void;
+    readonly onCancel?: () => void;
     readonly onConfirm: () => void;
     readonly type?: 'danger';
+    readonly noCancel?: boolean;
 
 }
 

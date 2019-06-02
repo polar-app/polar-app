@@ -67,10 +67,10 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
                                       id="upgrade-to-premium-link"
-                                      title="Upgrade to Polar Premium"
+                                      title="Upgrade to Premium"
                                       tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
-                                      link="#premium"
-                                      icon="fas fa-money-bill-wave"/>
+                                      link="#plans"
+                                      icon="fas fa-certificate"/>
 
                     <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
 

@@ -47,6 +47,8 @@ import {NULL_FUNCTION} from '../../util/Functions';
 import {MachineDatastores} from '../../telemetry/MachineDatastores';
 import {MailingList} from './auth_handler/MailingList';
 import {UniqueMachines} from '../../telemetry/UniqueMachines';
+import {PremiumApp} from '../../../../apps/repository/js/splash/splashes/premium/PremiumApp';
+import {Accounts} from '../../accounts/Accounts';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -72,6 +74,9 @@ export class RepositoryApp {
             await authHandler.authenticate();
             return;
         }
+
+        const userInfo = await authHandler.userInfo();
+        const account = await Accounts.get();
 
         // subscribe but do it in the background as this isn't a high priority UI task.
         MailingList.subscribeWhenNecessary()
@@ -157,7 +162,12 @@ export class RepositoryApp {
         };
 
         const premium = () => {
-            return (<Premium/>);
+
+            const plan = account ? account.plan : 'free';
+
+            return (<PremiumApp persistenceLayerManager={this.persistenceLayerManager}
+                                plan={plan}
+                                userInfo={userInfo.getOrUndefined()}/>);
         };
 
         const onNavChange = () => {
@@ -187,6 +197,9 @@ export class RepositoryApp {
         window.addEventListener("hashchange", () => onNavChange(), false);
 
         this.sendAnalytics();
+
+        Accounts.listenForPlanUpgrades()
+            .catch(err => log.error("Unable to listen for plan upgrades: ", err));
 
         ReactDOM.render(
 
@@ -241,6 +254,7 @@ export class RepositoryApp {
                         <Route exact path='/stats' render={renderStats}/>
                         <Route exact path='/logs' render={renderLogs}/>
                         <Route exact path='/editors-picks' render={editorsPicks}/>
+                        <Route exact path='/plans' render={premium}/>
                     </Switch>
 
                 </HashRouter>

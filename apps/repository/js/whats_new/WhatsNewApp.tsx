@@ -1,12 +1,8 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
 import {WhatsNewContent} from '../splash2/whats_new/WhatsNewContent';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-
-const log = Logger.create();
 
 export default class WhatsNewApp extends React.Component<IProps, IState> {
 
