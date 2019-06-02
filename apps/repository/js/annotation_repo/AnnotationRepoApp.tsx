@@ -32,7 +32,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
     private readonly setFilterChannel: ChannelCoupler<AnnotationRepoFilters>;
 
-    private readonly treeState: TreeState<TagStr>;
+    private readonly treeState: TreeState<TagDescriptor>;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -162,6 +162,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     }
 
     private onSelected(...selected: ReadonlyArray<TagStr>) {
+        console.log("FIXME666.1: ")
         this.setState({...this.state, selected});
 
     }

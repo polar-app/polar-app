@@ -4,6 +4,7 @@ import {isPresent} from '../../Preconditions';
 import {Preconditions} from '../../Preconditions';
 import {TreeState} from './TreeView';
 import {TNode} from './TreeView';
+import {TagDescriptor} from '../../tags/TagNode';
 
 class Styles {
 

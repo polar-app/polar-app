@@ -39,9 +39,9 @@ export class MockFolderTree extends React.Component<IProps, IState> {
 
             <div>
 
-                <TagTree tags={this.state.tags}
-                         selected={this.state.selected}
-                         onSelected={(values) => console.log("selected: ", values)}/>
+                {/*<TagTree tags={this.state.tags}*/}
+                {/*         selected={this.state.selected}*/}
+                {/*         onSelected={(values) => console.log("selected: ", values)}/>*/}
 
             </div>
 

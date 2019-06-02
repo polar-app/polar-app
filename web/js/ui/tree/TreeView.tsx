@@ -27,7 +27,7 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
 interface IProps<V> {
     readonly roots: ReadonlyArray<TNode<V>>;
-    readonly treeState: TreeState<TagDescriptor>;
+    readonly treeState: TreeState<V>;
     readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void;
 }
 

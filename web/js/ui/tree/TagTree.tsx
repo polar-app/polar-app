@@ -124,7 +124,7 @@ export class TagTree extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly treeState: TreeState<TagStr>;
+    readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly selected: ReadonlyArray<TagStr>;
     readonly onSelected: (...selected: ReadonlyArray<TagStr>) => void;
