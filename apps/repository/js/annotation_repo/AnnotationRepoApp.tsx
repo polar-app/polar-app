@@ -39,13 +39,11 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         this.onSelected = this.onSelected.bind(this);
 
-        [this.filterChannel, this.setFilterChannel]
-            = Channels.create<AnnotationRepoFilters>();
+        [this.filterChannel, this.setFilterChannel] = Channels.create<AnnotationRepoFilters>();
 
         this.state = {
             data: [],
             tags: [],
-            // selected: []
         };
 
         this.init();
@@ -134,15 +132,16 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
                 <Dock left={
                     // TODO this should be its own component
-                    <div style={{display: 'flex' ,
-                                 flexDirection: 'column',
-                                 height: '100%',
-                                 overflow: 'auto'}}>
+                    <div style={{
+                            display: 'flex' ,
+                            flexDirection: 'column',
+                            height: '100%',
+                            overflow: 'auto'
+                         }}>
 
                         <div className="m-1">
                             <TagTree tags={this.state.tags}
                                      treeState={this.treeState}
-                                     // selected={this.state.selected}
                                      onSelected={values => this.onSelected(values)}
                                      noCreate={true}/>
                         </div>
@@ -150,7 +149,9 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                     </div>
                   }
                   right={
-                      <PreviewAndMainViewDock  data={this.state.data} filterChannel={this.filterChannel} {...this.props}/>
+                      <PreviewAndMainViewDock  data={this.state.data}
+                                               filterChannel={this.filterChannel}
+                                               {...this.props}/>
                   }
                   side='left'
                   initialWidth={300}/>
@@ -162,9 +163,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     }
 
     private onSelected(...selected: ReadonlyArray<TagStr>) {
-        console.log("FIXME666.2: ");
         // this.setState({...this.state, selected});
-
     }
 
 }

@@ -7,13 +7,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
-import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
-import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
-import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
-import {ChannelCoupler} from '../../../../web/js/util/Channels';
-import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
-import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 import {AnnotationPreview} from './AnnotationPreview';
 
 const log = Logger.create();

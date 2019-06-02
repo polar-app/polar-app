@@ -1,8 +1,4 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
-import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {FilterTagInput} from '../FilterTagInput';
 import {TagsDB} from '../TagsDB';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
@@ -46,7 +42,11 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                  }}>
 
                 <div className="header-filter-box mr-1 pl-1 pr-1"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                     style={{
+                         whiteSpace: 'nowrap',
+                         marginTop: 'auto',
+                         marginBottom: 'auto'
+                     }}>
 
                     <div className="header-filter-box">
 
