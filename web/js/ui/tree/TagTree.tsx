@@ -47,7 +47,6 @@ export class TagTree extends React.Component<IProps, IState> {
 
         this.state = {
             filter: "",
-            selected: []
         };
 
     }
@@ -75,7 +74,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
                     <NullCollapse open={!this.props.noCreate}>
 
-                        <TagCreateButton selected={this.state.selected}
+                        <TagCreateButton selected={this.props.selected}
                                          onCreated={path => this.onCreated(path)}/>
 
                     </NullCollapse>
@@ -109,8 +108,6 @@ export class TagTree extends React.Component<IProps, IState> {
 
     private onSelected(selected: ReadonlyArray<TagStr>) {
 
-        this.setState({...this.state, selected});
-
         this.props.onSelected(...selected);
 
     }
@@ -125,13 +122,13 @@ export class TagTree extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;
+    readonly selected: ReadonlyArray<TagStr>;
     readonly onSelected: (...selected: ReadonlyArray<TagStr>) => void;
     readonly noCreate?: boolean;
 }
 
 interface IState {
     readonly filter: string;
-    readonly selected: ReadonlyArray<TagStr>;
 }
 
 function filterTags(tags: ReadonlyArray<TagDescriptor>, filter: string): ReadonlyArray<TagDescriptor> {

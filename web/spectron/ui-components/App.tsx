@@ -64,6 +64,7 @@ import {TagTree} from '../../js/ui/tree/TagTree';
 import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
 import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/SuggestionsModal';
 import {TagStr} from '../../../web/js/tags/Tag';
+import {MockFolderTree} from './MockFolderTree';
 
 const styles = {
     swatch: {
@@ -175,7 +176,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <TagTree tags={tags} onSelected={(values) => console.log("selected: ", values)}/>
+                <MockFolderTree/>
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}
