@@ -78,7 +78,11 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
             const tags = this.props.repoDocMetaManager.tagsDB.tags()
                 .map(current => {
-                    const count = Math.floor(Math.random() * 100); // FIXME
+                    // FIXME: this count is a FAKE value... it is just something
+                    // we're pulling out of the air until we compute the actual
+                    // count of objects for this tag.  This is a big TODO that
+                    // I need need to fix before we merge.
+                    const count = Math.floor(Math.random() * 100);
                     return {...current, count};
                 });
 
