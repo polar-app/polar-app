@@ -326,8 +326,6 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
             .map(nodeID => treeState.index[nodeID])
             .map(node => node.props.node.path);
 
-        console.log("FIXME: dispatching selected ", selected);
-
         treeState.onSelected(selected);
 
     }

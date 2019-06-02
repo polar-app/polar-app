@@ -2,26 +2,23 @@ import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {Dictionaries} from '../../util/Dictionaries';
 import {TagStr} from '../../tags/Tag';
+import {TagDescriptor} from '../../tags/TagNode';
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
-    private readonly treeState: TreeState<V>;
-
     constructor(props: IProps<V>, context: any) {
         super(props, context);
-        this.treeState = new TreeState<V>(this.props.onSelected);
-
     }
 
     public render() {
 
-        const {roots} = this.props;
+        const {roots, treeState} = this.props;
 
         return <div>
             {roots.map(node =>
                    <TreeNode node={node}
                              key={node.id}
-                             treeState={this.treeState}/>)}
+                             treeState={treeState}/>)}
         </div>;
 
     }
@@ -30,6 +27,7 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
 interface IProps<V> {
     readonly roots: ReadonlyArray<TNode<V>>;
+    readonly treeState: TreeState<TagDescriptor>;
     readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void;
 }
 

@@ -43,8 +43,6 @@ export class TagFilter extends React.Component<IProps, IState> {
 
         const defaultValue = selectedOptions as TagOption[];
 
-        console.log("FIXME: hadnleChangE: ", defaultValue);
-
         // this.props.filteredTags.set(TagOptions.toTags(selectedOptions));
         //
         // this.props.refresher();

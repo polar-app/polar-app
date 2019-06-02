@@ -24,12 +24,15 @@ import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagStr} from '../../../../web/js/tags/Tag';
+import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
     private readonly filterChannel: ChannelFunction<AnnotationRepoFilters>;
 
     private readonly setFilterChannel: ChannelCoupler<AnnotationRepoFilters>;
+
+    private readonly treeState: TreeState<TagStr>;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -47,6 +50,8 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         this.init();
 
+        this.treeState = new TreeState(values => this.onSelected(...values));
+
     }
     public init() {
 
@@ -56,6 +61,8 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
         const setStateInBackground = (state: IState) => {
 
             setTimeout(() => {
+
+                console.log("FIXME2");
 
                 console.log("FIXME setting state... ", state.tags);
 
@@ -75,7 +82,12 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                     return {...current, count};
                 });
 
+            console.log("FIXME: selected is now: ", JSON.stringify(this.state.selected));
+
             const state = {...this.state, data: repoAnnotations, tags};
+
+            console.log("FIXME: selected will become: ", JSON.stringify(state.selected));
+
             setStateInBackground(state);
 
         };
@@ -120,7 +132,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
                 </header>
 
-
                 <Dock left={
                     // TODO this should be its own component
                     <div style={{display: 'flex' ,
@@ -130,6 +141,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
                         <div className="m-1">
                             <TagTree tags={this.state.tags}
+                                     treeState={this.treeState}
                                      selected={this.state.selected}
                                      onSelected={values => this.onSelected(values)}
                                      noCreate={true}/>
@@ -150,6 +162,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     }
 
     private onSelected(...selected: ReadonlyArray<TagStr>) {
+        this.setState({...this.state, selected});
 
     }
 

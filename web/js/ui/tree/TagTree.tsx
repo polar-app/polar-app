@@ -14,6 +14,7 @@ import {TagDescriptor} from '../../tags/TagNode';
 import {TagStr} from '../../tags/Tag';
 import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
+import {TreeState} from './TreeView';
 
 class Styles {
 
@@ -81,7 +82,9 @@ export class TagTree extends React.Component<IProps, IState> {
 
                 </div>
 
-                <TreeView roots={[root]} onSelected={values => this.onSelected(values)}/>
+                <TreeView roots={[root]}
+                          treeState={this.props.treeState}
+                          onSelected={values => this.onSelected(values)}/>
 
             </div>
 
@@ -121,6 +124,7 @@ export class TagTree extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    readonly treeState: TreeState<TagStr>;
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly selected: ReadonlyArray<TagStr>;
     readonly onSelected: (...selected: ReadonlyArray<TagStr>) => void;
