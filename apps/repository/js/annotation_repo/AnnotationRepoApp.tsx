@@ -23,6 +23,7 @@ import {ChannelFunction} from '../../../../web/js/util/Channels';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
+import {TagStr} from '../../../../web/js/tags/Tag';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
@@ -33,12 +34,15 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.onSelected = this.onSelected.bind(this);
+
         [this.filterChannel, this.setFilterChannel]
             = Channels.create<AnnotationRepoFilters>();
 
         this.state = {
             data: [],
-            tags: []
+            tags: [],
+            selected: []
         };
 
         this.init();
@@ -125,7 +129,10 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                                  overflow: 'auto'}}>
 
                         <div className="m-1">
-                            <TagTree tags={this.state.tags} onSelected={NULL_FUNCTION} noCreate={true}/>
+                            <TagTree tags={this.state.tags}
+                                     selected={this.state.selected}
+                                     onSelected={values => this.onSelected(values)}
+                                     noCreate={true}/>
                         </div>
 
                     </div>
@@ -142,7 +149,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
         );
     }
 
-    private onSelected(tag: string) {
+    private onSelected(...selected: ReadonlyArray<TagStr>) {
 
     }
 
@@ -167,7 +174,15 @@ export interface IState {
 
     readonly data: ReadonlyArray<RepoAnnotation>;
 
+    /**
+     * All available tags
+     */
     readonly tags: ReadonlyArray<TagDescriptor>;
+
+    /**
+     * The currently selected tags.
+     */
+    readonly selected: ReadonlyArray<TagStr>;
 
 }
 
