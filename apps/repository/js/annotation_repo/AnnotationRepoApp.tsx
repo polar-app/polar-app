@@ -17,14 +17,13 @@ import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
-import {PartialAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagStr} from '../../../../web/js/tags/Tag';
+import {Tag} from '../../../../web/js/tags/Tag';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
-import {Tag} from '../../../../web/js/tags/Tag';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
@@ -55,9 +54,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         this.treeState = new TreeState(values => this.onSelectedFolders(values));
 
-        // FIXME: this code need to be move to the parent so that it can
-        //  setState every time the entire app reloads
-
         // FIXME: move to method
         const setStateInBackground = (state: IState) => {
 
@@ -78,15 +74,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
             // docs and to have separate tag indexes for each and differing
             // counts because they could not sum to the same values and we also
             // don't want to show something that's empty in this view too.
-            const tags = this.props.repoDocMetaManager.tagsDB.tags()
-                .map(current => {
-                    // FIXME: this count is a FAKE value... it is just something
-                    // we're pulling out of the air until we compute the actual
-                    // count of objects for this tag.  This is a big TODO that
-                    // I need need to fix before we merge.
-                    const count = Math.floor(Math.random() * 100);
-                    return {...current, count};
-                });
+            const tags = this.props.repoDocMetaManager.tagsDB.tags();
 
             const state = {...this.state, data: repoAnnotations, tags};
 
@@ -120,7 +108,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
     public render() {
 
-        console.log("FIXME: rendering witht ree state ", this.treeState);
         return (
 
             <FixedNav id="doc-repository"
@@ -156,7 +143,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                       // TODO/FIXME: this code should be updated because we are
                       // NOT actually using the tags here.
                       <PreviewAndMainViewDock data={this.state.data}
-                                               updateFilters={filters => this.filtersHandler.update(filters)}
+                                              updateFilters={filters => this.filtersHandler.update(filters)}
                                               {...this.props}/>
                   }
                   side='left'
@@ -169,21 +156,13 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     }
 
     private onSelectedFolders(selected: ReadonlyArray<TagStr>) {
-
-        console.log("FIXME: onSelectedFolders: " , selected)
-
         this.selectedFolders = selected.map(current => Tags.create(current));
-
-
-
         this.onUpdatedTags();
     }
 
     private onUpdatedTags() {
 
         const tags = [...this.selectedTags, ...this.selectedFolders];
-
-        console.log("FIXME: onUpdatedTags: ", tags);
 
         const filteredTags = new FilteredTags();
         filteredTags.set(tags);

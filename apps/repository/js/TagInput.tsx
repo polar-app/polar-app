@@ -301,7 +301,7 @@ export interface IProps {
     /**
      * The tags that can be selected.
      */
-    readonly availableTags: Tag[];
+    readonly availableTags: readonly Tag[];
 
     /**
      * The existing tags on this item.
