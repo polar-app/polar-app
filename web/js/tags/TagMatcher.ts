@@ -43,6 +43,11 @@ export class TagMatcher {
         const queryTagIDs = this.queryTagPairs.folderTags.tagIDs;
         const docTagIDs = this.docTagPairs.folderTags.tagIDs;
 
+        if (queryTagIDs.length === 0) {
+            // we have no query so we should match
+            return true;
+        }
+
         const index: {[path: string]: boolean} = {};
 
         for (const docTagID of docTagIDs) {
@@ -68,13 +73,13 @@ export class TagMatcher {
         const queryTagIDs = this.queryTagPairs.regularTags.tagIDs;
         const docTagIDs = this.docTagPairs.regularTags.tagIDs;
 
-        if (docTagIDs.length === 0) {
-            // the document we're searching over has no tags.
-            return false;
+        if (queryTagIDs.length === 0) {
+            // we have no query so we should match
+            return true;
         }
 
-        if (queryTagIDs.length === 0) {
-            // we have no query tags
+        if (docTagIDs.length === 0) {
+            // the document we're searching over has no tags.
             return false;
         }
 
@@ -123,6 +128,7 @@ class FolderTags extends TypedTags {
     constructor(tags: ReadonlyArray<Tag>) {
         super(tags);
     }
+
 }
 
 class RegularTags extends TypedTags {
@@ -137,8 +143,8 @@ export class TagMatcherFactory {
 
     private queryTagPairs: TagPairs;
 
-    public constructor(public readonly tags: readonly Tag[]) {
-        this.queryTagPairs = new TagPairs(this.tags);
+    public constructor(public readonly queryTags: readonly Tag[]) {
+        this.queryTagPairs = new TagPairs(this.queryTags);
     }
 
     public create(docTags: readonly Tag[]) {
