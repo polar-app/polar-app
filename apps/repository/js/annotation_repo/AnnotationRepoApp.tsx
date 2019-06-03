@@ -67,6 +67,10 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
         // FIXME: move to method
         const onUpdated: UpdatedCallback = repoAnnotations => {
 
+            // FIXME we need a way to keep the counts for both annotations AND
+            // docs and to have separate tag indexes for each and differing
+            // counts because they could not sum to the same values and we also
+            // don't want to show something that's empty in this view too.
             const tags = this.props.repoDocMetaManager.tagsDB.tags()
                 .map(current => {
                     // FIXME: this count is a FAKE value... it is just something

@@ -95,16 +95,31 @@ export class AnnotationRepoFilterEngine {
 
     private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        const tags = Tags.toIDs(this.filters.filteredTags.get());
+        // FIXME: it would be better if this was a dual pass system where we
+        // first found all the annotations under a folder, then all the tags
+        // that ALSO matched.
 
-        if (tags.length > 0) {
+        const tagIDs = Tags.toIDs(Tags.onlyTags(this.filters.filteredTags.get()));
+
+        const folderIDs = Tags.toIDs(Tags.onlyFolders(this.filters.filteredTags.get()))
+                            .filter(current => current !== '/');
+
+        if (tagIDs.length > 0) {
             RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
         }
 
-        if (tags.length === 0) {
+        if (tagIDs.length === 0) {
             // we're done as there are no tags.
             return repoAnnotations;
         }
+
+        // FIXME: the logic here needs to be improved for folders.  Any folder
+        // tag can now work with suffixes... so /CompSci will match
+        //
+        // /CompSci/Google
+        //
+
+        // Tags.
 
         return repoAnnotations.filter(current => {
 
@@ -116,10 +131,9 @@ export class AnnotationRepoFilterEngine {
             }
 
             const intersection =
-                Sets.intersection(tags, Tags.toIDs(docTags));
+                Sets.intersection(tagIDs, Tags.toIDs(docTags));
 
-            return intersection.length === tags.length;
-
+            return intersection.length === tagIDs.length;
 
         });
 

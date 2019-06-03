@@ -57,9 +57,6 @@ export class TagTree extends React.Component<IProps, IState> {
 
         const tags = filterTags(this.props.tags, this.state.filter);
 
-        // FIXME: this is the bug.. we're creating completely new tags each time
-        // with new IDs...  FIXME: move this outside of the parent so I can
-        // manage the TAGs with IDs myself.
         const root: TNode<TagDescriptor> = TagNodes.create(...tags);
 
         return (
@@ -67,11 +64,6 @@ export class TagTree extends React.Component<IProps, IState> {
             <div style={Styles.PARENT}>
 
                 <div style={Styles.BAR}>
-
-                    {/*<Input className="p-1 pb-0 pt-0"*/}
-                    {/*       style={Styles.FILTER_INPUT}*/}
-                    {/*       onChange={event => this.onFiltered(event.currentTarget.value)}*/}
-                    {/*       placeholder="Filter by name..." />*/}
 
                     <div style={{flexGrow: 1}}>
                         <TagFilter tags={Tags.onlyTags(this.props.tags)} onChange={tags => this.onSelectedTags(tags)}/>
