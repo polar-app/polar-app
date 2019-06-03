@@ -31,7 +31,7 @@ export class TagFilter extends React.Component<IProps, IState> {
                 classNamePrefix="select"
                 onChange={(value: ValueType<TagOption>, action: ActionMeta) => this.handleChange(value, action) }
                 // defaultValue={this.state.defaultValue}
-                placeholder="Select a tag ..."
+                placeholder="Filter by tag ..."
                 options={options}
             />
 
