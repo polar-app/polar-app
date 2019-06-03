@@ -8,6 +8,7 @@ import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotations} from '../RepoAnnotations';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 
 /**
  * The actual engine that applies the filters once they are updated.
@@ -95,65 +96,27 @@ export class AnnotationRepoFilterEngine {
 
     private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        // FIXME: it would be better if this was a dual pass system where we
-        // first found all the annotations under a folder, then all the tags
-        // that ALSO matched.
+        const tags = this.filters.filteredTags.get()
+            .filter(current => current.id !== '/');
 
-        const tagIDs = Tags.toIDs(Tags.onlyRegular(this.filters.filteredTags.get()));
-
-        const folderIDs = Tags.toIDs(Tags.onlyFolderTags(this.filters.filteredTags.get()))
-                            .filter(current => current !== '/');
+        const tagMatcherFactory = new TagMatcherFactory(tags);
 
         // FIXME: it's ALWAYS the folders AND the tags... though the tags COULD
         // be OR tags...
 
-        if (tagIDs.length > 0) {
-            RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
-        }
+        // if (tagIDs.length > 0) {
+        //     RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
+        // }
 
-        if (tagIDs.length === 0) {
+        if (tags.length === 0) {
             // we're done as there are no tags.
             return repoAnnotations;
         }
 
-        // FIXME: the logic here needs to be improved for folders.  Any folder
-        // tag can now work with suffixes... so /CompSci will match
-        //
-        // /CompSci/Google
-        //
-
-        // Tags.
-
-        const matchesFolders = (repoAnnotation: RepoAnnotation): boolean => {
-
-            if (folderIDs.length === 0) {
-                return true;
-            }
-
-            return false;
-
-        };
-
-        const matchesTags = (repoAnnotation: RepoAnnotation): boolean => {
-
-            const docTags = Object.values(repoAnnotation.docInfo.tags || {});
-
-            if (docTags.length === 0) {
-                // the document we're searching over has no tags.
-                return false;
-            }
-
-            const intersection =
-                Sets.intersection(tagIDs, Tags.toIDs(docTags));
-
-            return intersection.length === tagIDs.length;
-
-
-        };
-
         return repoAnnotations.filter(current => {
-
-            return matchesTags(current);
+            const docTags = Object.values(current.docInfo.tags || {});
+            const tagMatcher = tagMatcherFactory.create(docTags);
+            return tagMatcher.matches();
 
         });
 
