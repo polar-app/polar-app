@@ -40,8 +40,6 @@ export class TagFilter extends React.Component<IProps, IState> {
     }
     private handleChange(selectedOptions: ValueType<TagOption>, action: ActionMeta) {
 
-        console.log("FIXME: handled change with : ", selectedOptions)
-
         // as so as we handle the change we toggle off
 
         const tagValues = selectedOptions as TagOption[];
