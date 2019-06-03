@@ -5,6 +5,7 @@ import {Preconditions} from '../../Preconditions';
 import {TreeState} from './TreeView';
 import {TNode} from './TreeView';
 import {TagDescriptor} from '../../tags/TagNode';
+import {TagStr} from '../../tags/Tag';
 
 class Styles {
 
@@ -324,6 +325,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     }
 
     private dispatchSelected() {
+
         const {treeState} = this.props;
 
         const selected = Object.keys(treeState.selected)
@@ -331,7 +333,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
             .map(nodeID => treeState.index[nodeID])
             .map(node => node.props.node.path);
 
-        treeState.onSelected(selected);
+        this.props.treeState.dispatchSelected();
 
     }
 

@@ -42,11 +42,9 @@ export class TagTree extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onSelectedFolder = this.onSelectedFolder.bind(this);
         this.onSelectedTags = this.onSelectedTags.bind(this);
         this.onFiltered = this.onFiltered.bind(this);
         this.onCreated = this.onCreated.bind(this);
-        this.dispatchSelected = this.dispatchSelected.bind(this);
 
         this.state = {
             filter: "",
@@ -81,8 +79,7 @@ export class TagTree extends React.Component<IProps, IState> {
                 </div>
 
                 <TreeView roots={[root]}
-                          treeState={this.props.treeState}
-                          onSelected={values => this.onSelectedFolder(values)}/>
+                          treeState={this.props.treeState}/>
 
             </div>
 
@@ -109,22 +106,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
     private onSelectedTags(selected: ReadonlyArray<Tag>) {
         this.props.treeState.tags = selected;
-        this.dispatchSelected();
-    }
-
-    private onSelectedFolder(selected: ReadonlyArray<TagStr>) {
-        this.dispatchSelected();
-    }
-
-    private dispatchSelected() {
-
-        const selectedFolders = Object.keys(this.props.treeState.selected);
-        const selectedTags = this.props.treeState.tags.map(current => current.id);
-
-        const selected = [...selectedTags, ...selectedFolders];
-
-        this.props.onSelected(selected);
-
+        this.props.treeState.dispatchSelected();
     }
 
     private onFiltered(filter: string) {
@@ -136,7 +118,6 @@ export class TagTree extends React.Component<IProps, IState> {
 interface IProps {
     readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly onSelected: (selected: ReadonlyArray<TagStr>) => void;
     readonly noCreate?: boolean;
 }
 

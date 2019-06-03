@@ -146,7 +146,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
                             <TagTree tags={this.state.tags}
                                      treeState={this.treeState}
-                                     onSelected={values => this.onSelectedFolders(values)}
                                      noCreate={true}/>
 
                         </div>
@@ -170,22 +169,17 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     }
 
     private onSelectedFolders(selected: ReadonlyArray<TagStr>) {
+
+        console.log("FIXME: onSelectedFolders: " , selected)
+
         this.selectedFolders = selected.map(current => Tags.create(current));
 
-        console.log("FIXME2: ==== ");
-        console.log("FIXME: selectedFolders:  ", this.selectedFolders);
-        console.log("FIXME: selectedTags:  ", this.selectedTags);
 
 
         this.onUpdatedTags();
     }
 
     private onUpdatedTags() {
-
-        console.log("FIXME1: ==== ");
-        console.log("FIXME: selectedFolders:  ", this.selectedFolders);
-        console.log("FIXME: selectedTags:  ", this.selectedTags);
-
 
         const tags = [...this.selectedTags, ...this.selectedFolders];
 
