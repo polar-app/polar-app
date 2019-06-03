@@ -99,10 +99,13 @@ export class AnnotationRepoFilterEngine {
         // first found all the annotations under a folder, then all the tags
         // that ALSO matched.
 
-        const tagIDs = Tags.toIDs(Tags.onlyTags(this.filters.filteredTags.get()));
+        const tagIDs = Tags.toIDs(Tags.onlyRegular(this.filters.filteredTags.get()));
 
-        const folderIDs = Tags.toIDs(Tags.onlyFolders(this.filters.filteredTags.get()))
+        const folderIDs = Tags.toIDs(Tags.onlyFolderTags(this.filters.filteredTags.get()))
                             .filter(current => current !== '/');
+
+        // FIXME: it's ALWAYS the folders AND the tags... though the tags COULD
+        // be OR tags...
 
         if (tagIDs.length > 0) {
             RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
@@ -121,9 +124,19 @@ export class AnnotationRepoFilterEngine {
 
         // Tags.
 
-        return repoAnnotations.filter(current => {
+        const matchesFolders = (repoAnnotation: RepoAnnotation): boolean => {
 
-            const docTags = Object.values(current.docInfo.tags || {});
+            if (folderIDs.length === 0) {
+                return true;
+            }
+
+            return false;
+
+        };
+
+        const matchesTags = (repoAnnotation: RepoAnnotation): boolean => {
+
+            const docTags = Object.values(repoAnnotation.docInfo.tags || {});
 
             if (docTags.length === 0) {
                 // the document we're searching over has no tags.
@@ -134,6 +147,13 @@ export class AnnotationRepoFilterEngine {
                 Sets.intersection(tagIDs, Tags.toIDs(docTags));
 
             return intersection.length === tagIDs.length;
+
+
+        };
+
+        return repoAnnotations.filter(current => {
+
+            return matchesTags(current);
 
         });
 

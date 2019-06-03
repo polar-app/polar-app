@@ -5,20 +5,22 @@ import {Tag} from './Tag';
 import {TypedTag} from './TypedTag';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
+import {TagPaths} from './TagPaths';
+import {Sets} from '../util/Sets';
 
 export class Tags {
 
     /**
      * Only folders (no tags).
      */
-    public static onlyFolders(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    public static onlyFolderTags(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
         return tags.filter(tag => tag.label.startsWith('/'));
     }
 
     /**
      * Only tags (no folders).
      */
-    public static onlyTags(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    public static onlyRegular(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
         return tags.filter(tag => ! tag.label.startsWith('/'));
     }
 
@@ -164,5 +166,6 @@ export class Tags {
             value: split[1]
         });
     }
+
 }
 

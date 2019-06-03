@@ -1,6 +1,7 @@
 import {isPresent} from '../Preconditions';
 import {Tag} from './Tag';
 import {Reducers} from '../util/Reducers';
+import {TagPaths} from './TagPaths';
 
 export interface MutableTagNode<V> {
 
@@ -77,7 +78,7 @@ export class TagNodes {
 
             const tag = tagIndex[tagLabel];
 
-            const pathEntries = this.split(tagLabel);
+            const pathEntries = TagPaths.createPathEntries(tagLabel);
 
             for (const pathEntry of pathEntries) {
 
@@ -100,66 +101,8 @@ export class TagNodes {
 
     }
 
-    public static split(path: string): ReadonlyArray<PathEntry> {
-
-        const paths = path.split("/");
-
-        let buff: string = '';
-
-        const result: PathEntry[] = [];
-
-        let parent: PathEntry | undefined;
-
-        for (const current of paths) {
-
-            // const parent: string | undefined  = buff === '' ? undefined : buff;
-
-            if (buff === '/') {
-                buff = buff + current;
-            } else {
-                buff = buff + '/' + current;
-            }
-
-            const toParent = (): RawPathEntry | undefined => {
-
-                if (parent) {
-
-                    return {
-                        path: parent.path,
-                        basename: parent.basename
-                    };
-
-                }
-
-                return undefined;
-
-            };
-
-            const pathEntry: PathEntry = {
-                path: buff,
-                basename: current,
-                parent: toParent()
-            };
-
-            result.push(pathEntry);
-
-            parent = pathEntry;
-
-        }
-
-        return result;
-    }
-
 }
 
-interface RawPathEntry {
-    readonly path: string;
-    readonly basename: string;
-}
-
-interface PathEntry extends RawPathEntry {
-    readonly parent: RawPathEntry | undefined;
-}
 
 class TagNodeIndex {
 

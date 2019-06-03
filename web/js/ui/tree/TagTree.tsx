@@ -66,7 +66,7 @@ export class TagTree extends React.Component<IProps, IState> {
                 <div style={Styles.BAR}>
 
                     <div style={{flexGrow: 1}}>
-                        <TagFilter tags={Tags.onlyTags(this.props.tags)} onChange={tags => this.onSelectedTags(tags)}/>
+                        <TagFilter tags={Tags.onlyRegular(this.props.tags)} onChange={tags => this.onSelectedTags(tags)}/>
                     </div>
 
                     <NullCollapse open={!this.props.noCreate}>

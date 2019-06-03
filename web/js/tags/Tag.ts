@@ -1,10 +1,11 @@
 
+// TODO: this should be moved to the metadata package.
 export interface Tag {
 
     /**
      * The actual id for the tag which is unique across all tags.
      */
-    readonly id: string;
+    readonly id: TagIDStr;
 
     /**
      * The label to show in the UI.
@@ -23,3 +24,8 @@ export interface Tag {
  * A string representation of a tag.
  */
 export type TagStr = string;
+
+/**
+ * Just the tag ID, not the TagStr (which might not be unique).
+ */
+export type TagIDStr = string;
