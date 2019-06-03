@@ -4,7 +4,7 @@ import {Reducers} from '../util/Reducers';
 
 export interface MutableTagNode<V> {
 
-    id: number;
+    id: string;
 
     name: string;
 
@@ -20,7 +20,7 @@ export interface MutableTagNode<V> {
 
 export interface TagNode<V> {
 
-    readonly id: number;
+    readonly id: string;
 
     readonly name: string;
 
@@ -43,6 +43,9 @@ export interface TagDescriptor extends Tag {
 
 export class TagNodes {
 
+    /**
+     * Create a hierarchical structure of tags from the tag descriptors.
+     */
     public static create(...tags: ReadonlyArray<TagDescriptor>): TagNode<TagDescriptor> {
 
         const tagIndex: {[label: string]: TagDescriptor} = {};
@@ -158,8 +161,6 @@ interface PathEntry extends RawPathEntry {
     readonly parent: RawPathEntry | undefined;
 }
 
-let SEQ: number = 0;
-
 class TagNodeIndex {
 
     private index: {[path: string]: MutableTagNode<TagDescriptor>} = {};
@@ -171,7 +172,7 @@ class TagNodeIndex {
         if (! this.index[path]) {
 
             this.index[path] = {
-                id: SEQ++,
+                id: value.id,
                 name,
                 path,
                 children: [],

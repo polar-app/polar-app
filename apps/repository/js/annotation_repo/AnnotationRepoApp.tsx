@@ -12,19 +12,20 @@ import {FixedNav} from '../FixedNav';
 import PreviewAndMainViewDock from './PreviewAndMainViewDock';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
-import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {Channels} from '../../../../web/js/util/Channels';
-import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {ChannelFunction} from '../../../../web/js/util/Channels';
 import {ChannelCoupler} from '../../../../web/js/util/Channels';
+import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagStr} from '../../../../web/js/tags/Tag';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
+import {TNode} from '../../../../web/js/ui/tree/TreeView';
+import {TagNodes} from '../../../../web/js/tags/TagNode';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
@@ -118,6 +119,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
     public render() {
 
+        console.log("FIXME: rendering witht ree state ", this.treeState);
         return (
 
             <FixedNav id="doc-repository"
@@ -140,10 +142,12 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                          }}>
 
                         <div className="m-1">
+
                             <TagTree tags={this.state.tags}
                                      treeState={this.treeState}
                                      onSelected={values => this.onSelected(values)}
                                      noCreate={true}/>
+
                         </div>
 
                     </div>
@@ -186,6 +190,8 @@ export interface IState {
     readonly repoAnnotation?: RepoAnnotation;
 
     readonly data: ReadonlyArray<RepoAnnotation>;
+
+
 
     /**
      * All available tags

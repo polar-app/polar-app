@@ -56,6 +56,9 @@ export class TagTree extends React.Component<IProps, IState> {
 
         const tags = filterTags(this.props.tags, this.state.filter);
 
+        // FIXME: this is the bug.. we're creating completely new tags each time
+        // with new IDs...  FIXME: move this outside of the parent so I can
+        // manage the TAGs with IDs myself.
         const root: TNode<TagDescriptor> = TagNodes.create(...tags);
 
         return (

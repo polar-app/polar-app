@@ -120,7 +120,7 @@ class Styles {
 
 export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
-    public readonly id: number;
+    public readonly id: string;
     public readonly value: V;
 
     constructor(props: IProps<V>, context: any) {
@@ -188,6 +188,8 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         };
 
         const selected = isPresent(treeState.selected[this.id]);
+
+        console.log(`FIXME: node ${this.id} is selected: ${selected}`);
 
         const closed = treeState.closed.contains(node.id);
 
@@ -295,7 +297,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
         if (!multi) {
 
-            for (const id of Object.values(treeState.selected)) {
+            for (const id of Object.keys(treeState.selected)) {
 
                 const node = treeState.index[id];
                 Preconditions.assertPresent(node, "No node for id: " + id);
@@ -308,11 +310,15 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         }
 
         if (selected) {
-            treeState.selected[this.id] = this.id;
+
+            console.log("FIXME: marking selected: " + this.id);
+
+            treeState.selected[this.id] = true;
         } else {
             delete treeState.selected[this.id];
         }
 
+        // FIXME: don't do this ... instead require the parent to call this...
         this.setState({...this.state, idx: Date.now()});
 
         this.dispatchSelected();
@@ -322,7 +328,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     private dispatchSelected() {
         const {treeState} = this.props;
 
-        const selected = Object.values(treeState.selected)
+        const selected = Object.keys(treeState.selected)
             .filter(nodeID => isPresent(nodeID))
             .map(nodeID => treeState.index[nodeID])
             .map(node => node.props.node.path);

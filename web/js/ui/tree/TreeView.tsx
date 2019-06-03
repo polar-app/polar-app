@@ -3,6 +3,7 @@ import {TreeNode} from './TreeNode';
 import {Dictionaries} from '../../util/Dictionaries';
 import {TagStr} from '../../tags/Tag';
 import {TagDescriptor} from '../../tags/TagNode';
+import {isPresent} from '../../Preconditions';
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
@@ -55,32 +56,32 @@ export class TreeState<V> {
     /**
      * The list of the nodes that are selected by id
      */
-    public readonly selected: {[id: number]: number} = [];
+    public readonly selected: {[id: string]: boolean} = {};
 
-    public readonly index: {[id: number]: TreeNode<V>} = [];
+    public readonly index: {[id: string]: TreeNode<V>} = {};
 
 }
 
 
 export class Marked {
 
-    public readonly data: {[id: number]: boolean} = {};
+    public readonly data: {[id: string]: boolean} = {};
 
-    public mark(id: number) {
+    public mark(id: string) {
         this.data[id] = true;
     }
 
-    public clear(id: number) {
+    public clear(id: string) {
         delete this.data[id];
     }
 
-    public toggle(id: number) {
+    public toggle(id: string) {
         this.data[id] = ! this.data[id];
         return this.data[id];
     }
 
-    public contains(id: number) {
-        return this.data[id];
+    public contains(id: string): boolean {
+        return isPresent(this.data[id]);
     }
 
     public reset() {
@@ -105,7 +106,7 @@ export interface TNode<V> {
     /**
      * The UNIQUE id for this node.
      */
-    readonly id: number;
+    readonly id: string;
 
     readonly value: V;
 

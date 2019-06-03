@@ -41,11 +41,12 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                      display: 'flex',
                  }}>
 
-                <div className="header-filter-box mr-1 pl-1 pr-1"
+                <div className="header-filter-box mr-1 pl-1"
                      style={{
                          whiteSpace: 'nowrap',
                          marginTop: 'auto',
-                         marginBottom: 'auto'
+                         marginBottom: 'auto',
+                         flexGrow: 1
                      }}>
 
                     <div className="header-filter-box">
