@@ -40,15 +40,14 @@ export class TagFilter extends React.Component<IProps, IState> {
     }
     private handleChange(selectedOptions: ValueType<TagOption>, action: ActionMeta) {
 
+        console.log("FIXME: handled change with : ", selectedOptions)
+
         // as so as we handle the change we toggle off
 
-        const defaultValue = selectedOptions as TagOption[];
+        const tagValues = selectedOptions as TagOption[];
 
-        // this.props.filteredTags.set(TagOptions.toTags(selectedOptions));
-        //
-        // this.props.refresher();
-        //
-        // this.setState({defaultValue, open: false});
+        const tags = TagOptions.toTags(tagValues);
+        this.props.onChange(tags);
 
     }
 
@@ -57,6 +56,7 @@ export class TagFilter extends React.Component<IProps, IState> {
 interface IProps {
 
     readonly tags: ReadonlyArray<Tag>;
+    readonly onChange: (tags: ReadonlyArray<Tag>) => void;
 
 }
 

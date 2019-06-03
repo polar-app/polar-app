@@ -27,6 +27,8 @@ import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {TNode} from '../../../../web/js/ui/tree/TreeView';
 import {TagNodes} from '../../../../web/js/tags/TagNode';
 import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
+import {Tags} from '../../../../web/js/tags/Tags';
+import {FilteredTags} from '../FilteredTags';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
@@ -44,7 +46,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
             tags: [],
         };
 
-        this.treeState = new TreeState(values => this.onSelected(...values));
+        this.treeState = new TreeState(values => this.onSelected(values));
 
         // FIXME: this code need to be move to the parent so that it can
         //  setState every time the entire app reloads
@@ -154,8 +156,19 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
         );
     }
 
-    private onSelected(...selected: ReadonlyArray<TagStr>) {
-        // this.setState({...this.state, selected});
+    private onSelected(selected: ReadonlyArray<TagStr>) {
+
+        console.log("FIXME: onSelected: ", selected);
+
+        // TODO: this is kind of a hack to make the tags as the id is being
+        // faked here
+
+        const tags = selected.map(current => Tags.create(current));
+
+        const filteredTags = new FilteredTags();
+        filteredTags.set(tags);
+
+        this.filtersHandler.update({filteredTags});
     }
 
 }

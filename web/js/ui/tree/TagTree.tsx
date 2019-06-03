@@ -42,7 +42,8 @@ export class TagTree extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onSelected = this.onSelected.bind(this);
+        this.onSelectedFolder = this.onSelectedFolder.bind(this);
+        this.onSelectedTags = this.onSelectedTags.bind(this);
         this.onFiltered = this.onFiltered.bind(this);
         this.onCreated = this.onCreated.bind(this);
 
@@ -73,7 +74,7 @@ export class TagTree extends React.Component<IProps, IState> {
                     {/*       placeholder="Filter by name..." />*/}
 
                     <div style={{flexGrow: 1}}>
-                        <TagFilter tags={Tags.onlyTags(this.props.tags)}/>
+                        <TagFilter tags={Tags.onlyTags(this.props.tags)} onChange={tags => this.onSelectedTags(tags)}/>
                     </div>
 
                     <NullCollapse open={!this.props.noCreate}>
@@ -87,7 +88,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
                 <TreeView roots={[root]}
                           treeState={this.props.treeState}
-                          onSelected={values => this.onSelected(values)}/>
+                          onSelected={values => this.onSelectedFolder(values)}/>
 
             </div>
 
@@ -112,9 +113,15 @@ export class TagTree extends React.Component<IProps, IState> {
 
     }
 
-    private onSelected(selected: ReadonlyArray<TagStr>) {
+    private onSelectedTags(selected: ReadonlyArray<Tag>) {
 
-        this.props.onSelected(...selected);
+        this.props.onSelected(selected.map(current => current.label));
+
+    }
+
+    private onSelectedFolder(selected: ReadonlyArray<TagStr>) {
+
+        this.props.onSelected(selected);
 
     }
 
@@ -129,7 +136,7 @@ export class TagTree extends React.Component<IProps, IState> {
 interface IProps {
     readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly onSelected: (...selected: ReadonlyArray<TagStr>) => void;
+    readonly onSelected: (selected: ReadonlyArray<TagStr>) => void;
     readonly noCreate?: boolean;
 }
 
