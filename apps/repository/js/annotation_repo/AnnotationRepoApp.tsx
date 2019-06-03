@@ -26,37 +26,30 @@ import {TagStr} from '../../../../web/js/tags/Tag';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {TNode} from '../../../../web/js/ui/tree/TreeView';
 import {TagNodes} from '../../../../web/js/tags/TagNode';
+import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
-    private readonly filterChannel: ChannelFunction<AnnotationRepoFilters>;
-
-    private readonly setFilterChannel: ChannelCoupler<AnnotationRepoFilters>;
-
     private readonly treeState: TreeState<TagDescriptor>;
+
+    private readonly filtersHandler: AnnotationRepoFiltersHandler;
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.onSelected = this.onSelected.bind(this);
 
-        [this.filterChannel, this.setFilterChannel] = Channels.create<AnnotationRepoFilters>();
-
         this.state = {
             data: [],
             tags: [],
         };
 
-        this.init();
-
         this.treeState = new TreeState(values => this.onSelected(...values));
-
-    }
-    public init() {
 
         // FIXME: this code need to be move to the parent so that it can
         //  setState every time the entire app reloads
 
+        // FIXME: move to method
         const setStateInBackground = (state: IState) => {
 
             setTimeout(() => {
@@ -69,6 +62,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         };
 
+        // FIXME: move to method
         const onUpdated: UpdatedCallback = repoAnnotations => {
 
             const tags = this.props.repoDocMetaManager.tagsDB.tags()
@@ -81,11 +75,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                     return {...current, count};
                 });
 
-            // console.log("FIXME: selected is now: ", JSON.stringify(this.state.selected));
-
             const state = {...this.state, data: repoAnnotations, tags};
-
-            // console.log("FIXME: selected will become: ", JSON.stringify(state.selected));
 
             setStateInBackground(state);
 
@@ -96,9 +86,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
 
-        // this will trigger the filter engine to be run which will then call
-        // onUpdated which then calls setState
-        this.setFilterChannel(filters => filterEngine.onFiltered(filters));
+        this.filtersHandler = new AnnotationRepoFiltersHandler(filters => filterEngine.onFiltered(filters));
 
         const doRefresh = () => filterEngine.onProviderUpdated();
 
@@ -154,7 +142,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                   }
                   right={
                       <PreviewAndMainViewDock  data={this.state.data}
-                                               filterChannel={this.filterChannel}
+                                               updateFilters={filters => this.filtersHandler.update(filters)}
                                                {...this.props}/>
                   }
                   side='left'

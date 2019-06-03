@@ -12,6 +12,7 @@ import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
 import {ChannelFunction} from '../../../../web/js/util/Channels';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
+import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 
 export default class PreviewAndMainViewDock extends React.Component<IProps, IState> {
 
@@ -44,7 +45,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                         <div className="mb-1 mt-1">
 
                             <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                     onFiltered={filters => this.props.filterChannel(filters)}
+                                                     updateFilters={this.props.updateFilters}
                                                      tagPopoverPlacement="auto"
                                                      right={
                                                          <div/>
@@ -103,7 +104,7 @@ export interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
-    readonly filterChannel: ChannelFunction<AnnotationRepoFilters>;
+    readonly updateFilters: UpdateFiltersCallback;
 
     readonly data: ReadonlyArray<RepoAnnotation>;
 

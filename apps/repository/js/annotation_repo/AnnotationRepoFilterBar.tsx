@@ -2,23 +2,16 @@ import * as React from 'react';
 import {TagsDB} from '../TagsDB';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
-import {AnnotationRepoFilters, AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
-import {FilteredTags} from '../FilteredTags';
+import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {Placement} from 'popper.js';
 
 export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
-
-    private handler: AnnotationRepoFiltersHandler;
-
-    private filteredTags: FilteredTags = new FilteredTags();
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.state = {
         };
-
-        this.handler = new AnnotationRepoFiltersHandler(filters => this.props.onFiltered(filters));
 
     }
 
@@ -56,7 +49,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                             <Input id="filter_title"
                                    type="text"
                                    placeholder="Filter by annotation text"
-                                   onChange={(value) => this.handler.onFilterByText(value.target.value)}/>
+                                   onChange={(value) => this.props.updateFilters({text: value.target.value})}/>
 
                         </InputGroup>
 
@@ -81,7 +74,7 @@ export interface IProps {
      */
     readonly tagsDBProvider: () => TagsDB;
 
-    readonly onFiltered: (filters: AnnotationRepoFilters) => void;
+    readonly updateFilters: UpdateFiltersCallback;
 
     /**
      * When defined, a JSX element to display on the right of the
