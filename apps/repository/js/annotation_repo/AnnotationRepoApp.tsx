@@ -16,19 +16,15 @@ import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
-import {Channels} from '../../../../web/js/util/Channels';
-import {ChannelFunction} from '../../../../web/js/util/Channels';
-import {ChannelCoupler} from '../../../../web/js/util/Channels';
-import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
+import {PartialAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagStr} from '../../../../web/js/tags/Tag';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
-import {TNode} from '../../../../web/js/ui/tree/TreeView';
-import {TagNodes} from '../../../../web/js/tags/TagNode';
-import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
+import {Tag} from '../../../../web/js/tags/Tag';
 
 export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
 
@@ -36,17 +32,28 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
     private readonly filtersHandler: AnnotationRepoFiltersHandler;
 
+    /**
+     * The tags that are selected by the user.
+     */
+    private selectedTags: readonly Tag[] = [];
+
+    /**
+     * The tags that are selected by the user.
+     */
+    private selectedFolders: readonly Tag[] = [];
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onSelected = this.onSelected.bind(this);
+        this.onSelectedFolders = this.onSelectedFolders.bind(this);
+        this.onUpdatedTags = this.onUpdatedTags.bind(this);
 
         this.state = {
             data: [],
             tags: [],
         };
 
-        this.treeState = new TreeState(values => this.onSelected(values));
+        this.treeState = new TreeState(values => this.onSelectedFolders(values));
 
         // FIXME: this code need to be move to the parent so that it can
         //  setState every time the entire app reloads
@@ -139,7 +146,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
                             <TagTree tags={this.state.tags}
                                      treeState={this.treeState}
-                                     onSelected={values => this.onSelected(values)}
+                                     onSelected={values => this.onSelectedFolders(values)}
                                      noCreate={true}/>
 
                         </div>
@@ -147,9 +154,11 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                     </div>
                   }
                   right={
-                      <PreviewAndMainViewDock  data={this.state.data}
+                      // TODO/FIXME: this code should be updated because we are
+                      // NOT actually using the tags here.
+                      <PreviewAndMainViewDock data={this.state.data}
                                                updateFilters={filters => this.filtersHandler.update(filters)}
-                                               {...this.props}/>
+                                              {...this.props}/>
                   }
                   side='left'
                   initialWidth={300}/>
@@ -160,14 +169,27 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
         );
     }
 
-    private onSelected(selected: ReadonlyArray<TagStr>) {
+    private onSelectedFolders(selected: ReadonlyArray<TagStr>) {
+        this.selectedFolders = selected.map(current => Tags.create(current));
 
-        console.log("FIXME: onSelected: ", selected);
+        console.log("FIXME2: ==== ");
+        console.log("FIXME: selectedFolders:  ", this.selectedFolders);
+        console.log("FIXME: selectedTags:  ", this.selectedTags);
 
-        // TODO: this is kind of a hack to make the tags as the id is being
-        // faked here
 
-        const tags = selected.map(current => Tags.create(current));
+        this.onUpdatedTags();
+    }
+
+    private onUpdatedTags() {
+
+        console.log("FIXME1: ==== ");
+        console.log("FIXME: selectedFolders:  ", this.selectedFolders);
+        console.log("FIXME: selectedTags:  ", this.selectedTags);
+
+
+        const tags = [...this.selectedTags, ...this.selectedFolders];
+
+        console.log("FIXME: onUpdatedTags: ", tags);
 
         const filteredTags = new FilteredTags();
         filteredTags.set(tags);

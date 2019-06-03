@@ -189,8 +189,6 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
         const selected = isPresent(treeState.selected[this.id]);
 
-        console.log(`FIXME: node ${this.id} is selected: ${selected}`);
-
         const closed = treeState.closed.contains(node.id);
 
         const nodeButtonClazz = selected ? 'bg-primary text-white' : '';

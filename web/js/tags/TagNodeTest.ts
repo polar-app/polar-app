@@ -1,12 +1,13 @@
 import {assertJSON} from '../test/Assertions';
 import {TagNodes} from './TagNode';
 import {Tags} from './Tags';
+import {TagPaths} from './TagPaths';
 
 describe('TagNode', function() {
 
     it("split", function() {
 
-        assertJSON(TagNodes.split("/foo"), [
+        assertJSON(TagPaths.createPathEntries("/foo"), [
             {
                 "path": "/",
                 "basename": ""
@@ -21,7 +22,7 @@ describe('TagNode', function() {
             }
         ]);
 
-        assertJSON(TagNodes.split("/foo/bar"), [
+        assertJSON(TagPaths.createPathEntries("/foo/bar"), [
             {
                 "path": "/",
                 "basename": ""
@@ -44,7 +45,7 @@ describe('TagNode', function() {
             }
         ]);
 
-        assertJSON(TagNodes.split("/Hello World/The Dog"), [
+        assertJSON(TagPaths.createPathEntries("/Hello World/The Dog"), [
             {
                 "path": "/",
                 "basename": ""

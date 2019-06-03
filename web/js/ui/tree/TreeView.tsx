@@ -4,6 +4,7 @@ import {Dictionaries} from '../../util/Dictionaries';
 import {TagStr} from '../../tags/Tag';
 import {TagDescriptor} from '../../tags/TagNode';
 import {isPresent} from '../../Preconditions';
+import {Tag} from '../../tags/Tag';
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
@@ -59,6 +60,11 @@ export class TreeState<V> {
     public readonly selected: {[id: string]: boolean} = {};
 
     public readonly index: {[id: string]: TreeNode<V>} = {};
+
+    /**
+     * Just the user tags that the user has selected.
+     */
+    public tags: readonly Tag[] = [];
 
 }
 

@@ -46,6 +46,7 @@ export class TagTree extends React.Component<IProps, IState> {
         this.onSelectedTags = this.onSelectedTags.bind(this);
         this.onFiltered = this.onFiltered.bind(this);
         this.onCreated = this.onCreated.bind(this);
+        this.dispatchSelected = this.dispatchSelected.bind(this);
 
         this.state = {
             filter: "",
@@ -66,7 +67,8 @@ export class TagTree extends React.Component<IProps, IState> {
                 <div style={Styles.BAR}>
 
                     <div style={{flexGrow: 1}}>
-                        <TagFilter tags={Tags.onlyRegular(this.props.tags)} onChange={tags => this.onSelectedTags(tags)}/>
+                        <TagFilter tags={Tags.onlyRegular(this.props.tags)}
+                                   onChange={tags => this.onSelectedTags(tags)}/>
                     </div>
 
                     <NullCollapse open={!this.props.noCreate}>
@@ -106,21 +108,27 @@ export class TagTree extends React.Component<IProps, IState> {
     }
 
     private onSelectedTags(selected: ReadonlyArray<Tag>) {
-
-        this.props.onSelected(selected.map(current => current.label));
-
+        this.props.treeState.tags = selected;
+        this.dispatchSelected();
     }
 
     private onSelectedFolder(selected: ReadonlyArray<TagStr>) {
+        this.dispatchSelected();
+    }
+
+    private dispatchSelected() {
+
+        const selectedFolders = Object.keys(this.props.treeState.selected);
+        const selectedTags = this.props.treeState.tags.map(current => current.id);
+
+        const selected = [...selectedTags, ...selectedFolders];
 
         this.props.onSelected(selected);
 
     }
 
     private onFiltered(filter: string) {
-
         this.setState({filter});
-
     }
 
 }
