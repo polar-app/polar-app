@@ -17,6 +17,10 @@ import {Sets} from '../../../web/js/util/Sets';
 
 const log = Logger.create();
 
+// FIXME: migrate this into a more complicated data structure with tag metadata
+// too which we can update such that we have an exact set of each key annotation
+// and tag so that when it's updated we can add/delete without any GC issues.
+// AKA the counts are exact.
 export interface RepoAnnotationIndex {
     [id: string]: RepoAnnotation;
 }
