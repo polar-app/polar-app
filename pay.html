@@ -21,18 +21,23 @@
 
     const handler = () => {
 
-        stripe.redirectToCheckout({
-                  items: [{plan: `plan_${plan}`, quantity: 1}],
+        const planInfo = {
+            items: [{plan: `plan_${plan}`, quantity: 1}],
 
-                  // Do not rely on the redirect to the successUrl for fulfilling
-                  // purchases, customers may not always reach the success_url after
-                  // a successful payment.
-                  // Instead use one of the strategies described in
-                  // https://stripe.com/docs/payments/checkout/fulfillment
-                  successUrl: 'https://getpolarized.io/purchase-success.html',
-                  cancelUrl: 'https://getpolarized.io/purchase-cancelled.html',
-                  customerEmail: email,
-              })
+            // Do not rely on the redirect to the successUrl for fulfilling
+            // purchases, customers may not always reach the success_url after
+            // a successful payment.
+            // Instead use one of the strategies described in
+            // https://stripe.com/docs/payments/checkout/fulfillment
+            successUrl: 'https://getpolarized.io/purchase-success.html',
+            cancelUrl: 'https://getpolarized.io/purchase-cancelled.html',
+        };
+
+        if (email) {
+            planInfo.customerEmail = email;
+        }
+
+        stripe.redirectToCheckout(planInfo)
               .then(function (result) {
                   if (result.error) {
                       // If `redirectToCheckout` fails due to a browser or network

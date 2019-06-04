@@ -1,4 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-05-31T08:12:40-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks</title><link href="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html" rel="alternate" type="text/html" title="GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks" /><published>2019-05-30T10:00:00-07:00</published><updated>2019-05-30T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks</id><content type="html" xml:base="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/V8RyHZ9.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-06-04T12:11:54-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.19.8 Released - Better Payments and Fixes</title><link href="https://getpolarized.io/2019/06/02/Polar-1-19-8.html" rel="alternate" type="text/html" title="Polar 1.19.8 Released - Better Payments and Fixes" /><published>2019-06-02T10:00:00-07:00</published><updated>2019-06-02T10:00:00-07:00</updated><id>https://getpolarized.io/2019/06/02/Polar-1-19-8</id><content type="html" xml:base="https://getpolarized.io/2019/06/02/Polar-1-19-8.html">&lt;h1 id=&quot;polar-1198-released---better-payments-and-fixes&quot;&gt;Polar 1.19.8 Released - Better Payments and Fixes&lt;/h1&gt;
+
+&lt;p&gt;
+    We've revamped our payments system for Polar Premium and
+    the biggest change is that we're now accepting payments
+    via Stripe.
+&lt;/p&gt;
+
+&lt;p&gt;
+    We've manually migrated accounts from Open Collective and
+    your payments will still process there while you have a
+    regular premium account.  If you have any issues please
+    feel free to contact &lt;b&gt;support@getpolarized.io&lt;/b&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+    We're going to be working to bring on a few more premium
+    features in the next couple weeks.  These include:
+
+
+&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;Watch directories that can automatically import documents into Polar.&lt;/li&gt;
+    &lt;li&gt;Markdown support&lt;/li&gt;
+    &lt;li&gt;Dark mode&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+    We're not 100% certain of the timeline on these features
+    as some of them are a bit difficult to implement.
+&lt;/p&gt;
+
+&lt;p&gt;
+    We're also working on a few major changes that are taking
+    a bit longer - mostly because they're very technically
+    complicated.  These aren't available yet but are 50-80%
+    complete.
+&lt;/p&gt;
+
+&lt;p&gt;
+    This includes:
+&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;Folder view that extends our tagging system with a full hierarchy.&lt;/li&gt;
+    &lt;li&gt;Tabbed browsing for the desktop / Electron version of Polar&lt;/li&gt;
+    &lt;li&gt;ePub support&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+    If you'd like to see these features sooner rather than
+    later the best way you can help (besides a pull request)
+    is to upgrade to &lt;a href=&quot;https://getpolarized.io/pricing.html&quot;&gt;
+    Polar Premium&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;&lt;b&gt;Changes in 1.19.8 Include:&lt;/b&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;New payment system for Polar premium based on Stripe.&lt;/li&gt;
+    &lt;li&gt;Fixed bug when dragging area highlights.&lt;/li&gt;
+    &lt;li&gt;Fixed regression in the webapp where PHZ files couldn't be loaded.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.19.8 Released - Better Payments and Fixes</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks</title><link href="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html" rel="alternate" type="text/html" title="GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks" /><published>2019-05-30T10:00:00-07:00</published><updated>2019-05-30T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks</id><content type="html" xml:base="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/V8RyHZ9.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;gpt-2-the-destruction-of-the-web-and-artificially-intelligent-textbooks&quot;&gt;GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks&lt;/h1&gt;
 
@@ -1462,157 +1525,4 @@ other platforms so it’s in their best interest to fix this.&lt;/p&gt;
 app to their app store.&lt;/p&gt;
 
 &lt;p&gt;I really hope someone at Google see this posts and we see some sort of resolution 
-to this issue.&lt;/p&gt;</content><author><name></name></author><summary type="html">Google Killing Chrome Extensions with 1 Week Publishing Delays</summary></entry><entry><title type="html">Getting Hacker News’d Twice - Lessons Learned for Entrepreneurs</title><link href="https://getpolarized.io/2019/04/02/getting-hacker-news-lessons-for-entrepreneurs.html" rel="alternate" type="text/html" title="Getting Hacker News'd Twice - Lessons Learned for Entrepreneurs" /><published>2019-04-02T06:00:00-07:00</published><updated>2019-04-02T06:00:00-07:00</updated><id>https://getpolarized.io/2019/04/02/getting-hacker-news-lessons-for-entrepreneurs</id><content type="html" xml:base="https://getpolarized.io/2019/04/02/getting-hacker-news-lessons-for-entrepreneurs.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/hackernews-stats.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;getting-hacker-newsd-twice---lessons-learned-for-entrepreneurs&quot;&gt;Getting Hacker News’d Twice - Lessons Learned for Entrepreneurs&lt;/h1&gt;
-
-&lt;p&gt;I’ve had &lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt; featured on Hacker News three times in the last six months.&lt;/p&gt;
-
-&lt;p&gt;It’s been interesting to say the least and I wanted to write up my thoughts here
-to share my lessons learned with other entrepreneurs and hackers who might be 
-launching apps or having their site featured on the site.&lt;/p&gt;
-
-&lt;p&gt;You can read our original posts here:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=18219960&quot;&gt;Show HN: Polar – an offline web browser with annotations and tagging&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://getpolarized.io/2019/03/01/polar-personal-knowledge-repository.html&quot;&gt;Polar as a Personal Knowledge Repository&lt;/a&gt; - &lt;a href=&quot;https://news.ycombinator.com/item?id=19294799&quot;&gt;Hacker News Link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;First, the upside.  The traffic. If you get featured on the front page of HN
-you can expect a nice torrent of traffic for about 24 hours.&lt;/p&gt;
-
-&lt;p&gt;A good rule of thumb from my experience is that you can expect from 12-15k 
-users.&lt;/p&gt;
-
-&lt;h2 id=&quot;traffic-from-oct-2018&quot;&gt;Traffic from Oct 2018&lt;/h2&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;/assets/images/posts/hacker-news-traffic-10-2018.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Our first big HN splash.  This provided a great deal of validation that Polar 
-could really help with people to manage their reading and that other people
-were experiencing the same pain that I had when dealing with books and research.&lt;/p&gt;
-
-&lt;h2 id=&quot;traffic-from-march-2019&quot;&gt;Traffic from March 2019&lt;/h2&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;/assets/images/posts/hacker-news-traffic-03-2019.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In March you can see we’ve reduced our bounce rate and I think we’ve been 
-improving the app across the board.&lt;/p&gt;
-
-&lt;p&gt;Initially we were just a basic MVP and now we have some really impressive 
-features which help users decide to actually give us a chance.&lt;/p&gt;
-
-&lt;h2 id=&quot;insanely-smart&quot;&gt;Insanely Smart&lt;/h2&gt;
-
-&lt;p&gt;The upside of the HN crowd is that they’re insanely smart.  Seriously.  Expect
-VCs, hackers, students, PhDs, entrepreneurs, etc.&lt;/p&gt;
-
-&lt;p&gt;They can provide awesome feedback for your app/project/startup!&lt;/p&gt;
-
-&lt;p&gt;We’ve had some really amazing suggestions that we wouldn’t have received 
-otherwise.&lt;/p&gt;
-
-&lt;p&gt;The downside?  They’re insanely smart - so they’re not the typical user base.&lt;/p&gt;
-
-&lt;p&gt;One trick you have to learn is when to discard their advice.&lt;/p&gt;
-
-&lt;p&gt;My grandfather once said the great thing about advice is that you don’t have to 
-take it - and I think that applies here as well.&lt;/p&gt;
-
-&lt;p&gt;Their suggestions might work GREAT for &lt;em&gt;their&lt;/em&gt; use case but it might not work
-out well for your project - especially if you want to build something more
-mainstream.&lt;/p&gt;
-
-&lt;p&gt;That said, I think that the vast majority of their advice is valuable and it’s 
-great to get an initial user base using your product - even if they’re early 
-adopters.&lt;/p&gt;
-
-&lt;h2 id=&quot;mindset&quot;&gt;Mindset&lt;/h2&gt;
-
-&lt;p&gt;If you’re working on a project and think HN could benefit make sure you approach
-them with the right mindset.&lt;/p&gt;
-
-&lt;p&gt;Don’t spam.  It just won’t work.  They have a spam force-field.  It won’t get
-through.&lt;/p&gt;
-
-&lt;p&gt;Actually &lt;em&gt;contribute&lt;/em&gt; and find a valuable way to give back.&lt;/p&gt;
-
-&lt;p&gt;With Polar we’re a bit lucky as they’re the target market.  Polar is a tool for
-people to manage their reading.  If you read a lot of research papers, books,
-web pages, etc and want to keep that material manageable forever then Polar
-might be the tool for you.&lt;/p&gt;
-
-&lt;p&gt;We’re a tool for alpha geeks and HN is definitely the right crowd.&lt;/p&gt;
-
-&lt;p&gt;However, if your app isn’t a typical HN tool you can find another way to benefit
-from their feedback.&lt;/p&gt;
-
-&lt;p&gt;Take whatever you’re working on and make it interesting. Find something 
-that provides value and you’re in.&lt;/p&gt;
-
-&lt;h2 id=&quot;make-it-easy-for-them-to-participate&quot;&gt;Make it easy for them to participate.&lt;/h2&gt;
-
-&lt;p&gt;The more tools you have ahead of time to make it easy for them to give you 
-feedback the better.&lt;/p&gt;
-
-&lt;p&gt;You want to harness the initial feedback and help them contribute to your 
-community.&lt;/p&gt;
-
-&lt;p&gt;Try to setup chat or a discussion forum so they can easily jump on and get you
-their initial impression.&lt;/p&gt;
-
-&lt;p&gt;We have a ton of users submit github issues or jump on our Discord group every 
-time we’ve been on HN.&lt;/p&gt;
-
-&lt;h2 id=&quot;harness-the-feedback-long-term&quot;&gt;Harness the feedback long term&lt;/h2&gt;
-
-&lt;p&gt;Here’s the main area I messed up on in the past.  We had no way to harness the
-HN feedback and crowd long term!&lt;/p&gt;
-
-&lt;p&gt;We had about 30k visitors and only about 1500 installed our app.  The problem we
-had is that it’s a desktop app that you have to download and install it locally.&lt;/p&gt;
-
-&lt;p&gt;Unfortunately, I’m starting to learn that the conversion rate here is insanely 
-low.  Something like 5% - not very impressive.&lt;/p&gt;
-
-&lt;p&gt;I’ve since learned my lesson and Polar has relaunched as a webapp.  We now have
-three ways to capture them long term after they hit the site:&lt;/p&gt;
-
-&lt;p&gt;First, when they sign up on the site we capture their email and (optionally) add
-them to our mailing list.  If the app doesn’t work out for them initially it
-might in the future and this way we can blast out an email when we have an
-update.&lt;/p&gt;
-
-&lt;p&gt;Second, we now have an advanced Chrome extension that you can install which 
-adds a preview feature for PDFs and allows you to easily install it via just 
-clicking an ‘Add to Polar’ button.&lt;/p&gt;
-
-&lt;p&gt;If they don’t initially get that “AHA” moment from the webapp, they might in the
-future once they install the extension and they discover a PDF that they want to
-read.  They might be in more of a mindset to read and this might help them
-understand the app a bit better.&lt;/p&gt;
-
-&lt;p&gt;Third, now that Polar is a webapp, they can try it much faster.  They can be 
-up and running in &amp;lt; 1 second.  Just login and enter their credentials and 
-they’re in.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-meta-experiment&quot;&gt;The Meta Experiment&lt;/h1&gt;
-
-&lt;p&gt;This post is actually a meta experiment.&lt;/p&gt;
-
-&lt;p&gt;My hope is that this is actually the 3rd time we’re going to make it on HN. :)&lt;/p&gt;
-
-&lt;p&gt;I took what I learned from the first two times and implemented the changes to 
-Polar that I think will contribute to significant growth and make it easier for 
-our users to get that “AHA” moment.&lt;/p&gt;
-
-&lt;p&gt;I think this actually applies across the board not just on HN.&lt;/p&gt;
-
-&lt;p&gt;Not having a webapp really hurt us and prevented people from just playing with
-it for a bit instead of downloading a complicated app.&lt;/p&gt;
-
-&lt;p&gt;At least that’s my working hypothesis.&lt;/p&gt;
-
-&lt;p&gt;We’ll see what happens this time.  I’ve been putting a ton of time and effort 
-into Polar to get it launched - working 24/7 basically and I think I’m very very
-close to being at the sweet spot in terms of usability.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+to this issue.&lt;/p&gt;</content><author><name></name></author><summary type="html">Google Killing Chrome Extensions with 1 Week Publishing Delays</summary></entry></feed>
