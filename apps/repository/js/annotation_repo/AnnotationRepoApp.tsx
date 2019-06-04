@@ -74,7 +74,7 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
             // docs and to have separate tag indexes for each and differing
             // counts because they could not sum to the same values and we also
             // don't want to show something that's empty in this view too.
-            const tags = this.props.repoDocMetaManager.tagsDB.tags();
+            const tags = this.props.repoDocMetaManager.repoAnnotationIndex.toTagDescriptors();
 
             const state = {...this.state, data: repoAnnotations, tags};
 
@@ -82,8 +82,8 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         };
 
-        const repoAnnotationsProvider =
-            () => Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
+        const repoAnnotationsProvider: () => ReadonlyArray<RepoAnnotation> =
+            () => this.props.repoDocMetaManager!.repoAnnotationIndex.values();
 
         const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
 

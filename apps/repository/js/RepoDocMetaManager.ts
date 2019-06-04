@@ -14,6 +14,7 @@ import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 import {Sets} from '../../../web/js/util/Sets';
+import {DataObjectIndex} from './DataObjectIndex';
 
 const log = Logger.create();
 
@@ -21,8 +22,12 @@ const log = Logger.create();
 // too which we can update such that we have an exact set of each key annotation
 // and tag so that when it's updated we can add/delete without any GC issues.
 // AKA the counts are exact.
-export interface RepoAnnotationIndex {
-    [id: string]: RepoAnnotation;
+export class RepoAnnotationIndex extends DataObjectIndex<RepoAnnotation> {
+
+    constructor() {
+        super((repoAnnotation: RepoAnnotation) => Object.values(repoAnnotation.tags || {}) );
+    }
+
 }
 
 /**
@@ -33,7 +38,7 @@ export class RepoDocMetaManager {
 
     public readonly repoDocInfoIndex: RepoDocInfoIndex = {};
 
-    public readonly repoAnnotationIndex: RepoAnnotationIndex = {};
+    public readonly repoAnnotationIndex: RepoAnnotationIndex = new RepoAnnotationIndex();
 
     public readonly tagsDB = new TagsDB();
 
@@ -70,7 +75,7 @@ export class RepoDocMetaManager {
                     const deleteIDs = Sets.difference(currentAnnotationsIDs, newAnnotationIDs);
 
                     for (const deleteID of deleteIDs) {
-                        delete this.repoAnnotationIndex[deleteID];
+                        this.repoAnnotationIndex.remove(deleteID);
                     }
 
                 };
@@ -78,7 +83,7 @@ export class RepoDocMetaManager {
                 const updateExisting = () => {
 
                     for (const repoAnnotation of repoDocMeta.repoAnnotations) {
-                        this.repoAnnotationIndex[repoAnnotation.id] = repoAnnotation;
+                        this.repoAnnotationIndex.add(repoAnnotation.id, repoAnnotation);
                     }
 
                 };
@@ -98,7 +103,7 @@ export class RepoDocMetaManager {
                 for (const repoAnnotation of Object.values(this.repoAnnotationIndex)) {
 
                     if (repoAnnotation.fingerprint === fingerprint) {
-                        delete this.repoAnnotationIndex[repoAnnotation.id];
+                        this.repoAnnotationIndex.remove(repoAnnotation.id);
                     }
                 }
 
