@@ -140,6 +140,7 @@ However, you're essentially  GIVING the document to someone thi sway.
   one user and then fetching again with another user to make sure they can 
   access all the resources properly.
 
+    https://firebase.google.com/docs/firestore/security/rules-conditions#access_other_documents
 
 - the current 'permissions' system of 'private' or 'public' with the DocMeta 
   won't really work with the new system so we have to upgrade the permissions 
