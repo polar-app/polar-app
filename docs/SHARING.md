@@ -35,7 +35,12 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
                 doc_id: '0x000'
             }            
         ]        
+    },
+    permissions: {
+        
     }
+        
+    
 }
 ```
 
@@ -134,6 +139,11 @@ However, you're essentially  GIVING the document to someone thi sway.
     //   a token BUT we can make a special recipient of 'token' that has the
     //   token that you can use to view the document.
 
+- TODO: should we have some sort of RBAC?
+
+- TODO: I don't like how this is seemingly ad hoc and the schema for permissions 
+  isn't defined very well.
+
 # Implementation Strategy
 
 - the first big milestone I have to implement is changing the permissions with 
@@ -141,6 +151,29 @@ However, you're essentially  GIVING the document to someone thi sway.
   access all the resources properly.
 
     https://firebase.google.com/docs/firestore/security/rules-conditions#access_other_documents
+
+
+    The new rule should probably be
+    
+```
+  allow read: if get(/databases/$(database)/documents/doc_permission/$(resource.data.id)).data.admin == true
+```                
+
+    TODO: 
+        - how is teh doc_id preserved from the resource.data.id
+
+    - I think we HAVE to have a doc_permission document becuase this needs to 
+      apply to doc_info I think.. not just doc_meta.  It DOES NOT make a difference
+      if we denormalize this.
+      
+      doc_meta
+      doc_permission permission in the DocMeta (which is de-duplicated on the 
+      root) and stored in DocHolder
+      doc_sharing
+
+    -       
+      
+      
 
 - the current 'permissions' system of 'private' or 'public' with the DocMeta 
   won't really work with the new system so we have to upgrade the permissions 

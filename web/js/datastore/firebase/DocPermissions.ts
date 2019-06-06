@@ -33,7 +33,7 @@ const COLLECTION_NAME = 'shared_url';
  *
  *          fingerprint
  *          uid
- *          permissions: permission[]
+ *          recipient: recipient[]
  *
  *      the download URL should be computed as
  *
