@@ -126,25 +126,6 @@ However, you're essentially  GIVING the document to someone thi sway.
 
 ## TODO
 
-- regular expressions don't work either:
-
-    function test3() {
-        return "bar|bar".matches("bar");
-    }
-
-    -     
-
-
-- the map functions SEEM to be there but they aren't.  Things like 'includes' 
-  are missing.
-  
-
-- Teams are going to be hard to implement. The only way I can really think of 
-  doing this is to evaluate every member of the set one by one...  
-
-- a big issue sis how are we going to see that a document with permissions
-  assigned to teams maps to a user that is a member of a team.
-
 - Initially we have NO limits on who can be added.  We add everyone in the 
   chain this way people can discover one another indefinitely.  The one issue 
   here though is latency.  Users are going to pop in all at once.      
@@ -198,45 +179,6 @@ Just accept:
 - we will have to do string validation on the server side too... before we 
   accept the data.  This way we don't allow someone to create a group with a 
   space for example.  We can just use regex match on this space.   
-
-## Group Match Regexp
-
-The code for this could just be
-
-```javascript
-
-function lspace(value) {
-    
-    if (value.length > 0) {
-        return " " + value;        
-    }
-    
-    return value;
-    
-} 
-
-function rspace(value) {
-    
-    if (value.length > 0) {
-        return value + " ";        
-    }
-    
-    return value;
-    
-} 
-
-function createMatchInput(values) {
-    return lspace(rspace(values.join(" ")));
-}
-
-function createMatcher(values) {
-    return 
-}
-
-
-```
-
-BETTER SOLUTION!!!!
 
 # Solution to group membership problems:
 
