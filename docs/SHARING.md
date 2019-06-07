@@ -34,9 +34,11 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
                 // shared with us.
                 doc_id: '0x000'
             }            
-        ]        
+        ]
+                
     },
     permissions: {
+        
         
     }
         
@@ -124,6 +126,25 @@ However, you're essentially  GIVING the document to someone thi sway.
 
 ## TODO
 
+- regular expressions don't work either:
+
+    function test3() {
+        return "bar|bar".matches("bar");
+    }
+
+    -     
+
+
+- the map functions SEEM to be there but they aren't.  Things like 'includes' 
+  are missing.
+  
+
+- Teams are going to be hard to implement. The only way I can really think of 
+  doing this is to evaluate every member of the set one by one...  
+
+- a big issue sis how are we going to see that a document with permissions
+  assigned to teams maps to a user that is a member of a team.
+
 - Initially we have NO limits on who can be added.  We add everyone in the 
   chain this way people can discover one another indefinitely.  The one issue 
   here though is latency.  Users are going to pop in all at once.      
@@ -144,6 +165,40 @@ However, you're essentially  GIVING the document to someone thi sway.
 - TODO: I don't like how this is seemingly ad hoc and the schema for permissions 
   isn't defined very well.
 
+# Regular Expressions
+
+Regex works in Firebase but it's a bit weird.  The function is:
+
+```javascript
+return foo.matches(regex);
+```
+
+so 
+
+```javascript
+return "foo".matches("foo|bar");
+```
+
+will return true
+
+This regex WILL work but I need to be VERY careful how I build this out.  The 
+spaces between the groups needs to handled properly. 
+
+Just accept:
+
+- space, underscore, a-z, A-Z, 0-9, 
+
+- make all records have space prefixes and suffixes.  For example keys of 
+  'foo' and 'bar' would be encoded as:
+  
+  ' foo bar '
+  
+  'foo' -> ' foo '
+  
+- we will have to do string validation on the server side too... before we 
+  accept the data.  This way we don't allow someone to create a group with a 
+  space for example.  We can just use regex match on this space.   
+
 # Implementation Strategy
 
 - the first big milestone I have to implement is changing the permissions with 
@@ -154,9 +209,28 @@ However, you're essentially  GIVING the document to someone thi sway.
 
 
     The new rule should probably be
+
+    - I don't need any sort of unusual access to this record.  Just fetch 
+    by the available keys.
+    
+    
+    resource.permissions.recipients[public]
+    
+    - FIXME how do I determine if the user is in a specific team... ?
+
+    - maybe in the futrue I can use custom claims for this ... 
+    
+    - var/let/const cant' be used with functions... 
+    
+    
+    https://firebase.google.com/docs/rules/rules-behavior
+    
+    "Some document access calls may be cached, and cached calls do not count towards the limits."
     
 ```
   allow read: if get(/databases/$(database)/documents/doc_permission/$(resource.data.id)).data.admin == true
+  
+  
 ```                
 
     TODO: 
@@ -186,3 +260,5 @@ However, you're essentially  GIVING the document to someone thi sway.
 1.  Write the data structure to firebase via test/command line so that we can verify that the data is written properly
 2.  Write the hook on the backend to pass the request through with the proper lookup mechanism.
 3.  Make sure the sharing data structure is serialize properly.  
+
+
