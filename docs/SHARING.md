@@ -146,40 +146,6 @@ However, you're essentially  GIVING the document to someone thi sway.
 - TODO: I don't like how this is seemingly ad hoc and the schema for permissions 
   isn't defined very well.
 
-# Regular Expressions
-
-Regex works in Firebase but it's a bit weird.  The function is:
-
-```javascript
-return foo.matches(regex);
-```
-
-so 
-
-```javascript
-return "foo".matches("foo|bar");
-```
-
-will return true
-
-This regex WILL work but I need to be VERY careful how I build this out.  The 
-spaces between the groups needs to handled properly. 
-
-Just accept:
-
-- space, underscore, a-z, A-Z, 0-9, 
-
-- make all records have space prefixes and suffixes.  For example keys of 
-  'foo' and 'bar' would be encoded as:
-  
-  ' foo bar '
-  
-  'foo' -> ' foo '
-  
-- we will have to do string validation on the server side too... before we 
-  accept the data.  This way we don't allow someone to create a group with a 
-  space for example.  We can just use regex match on this space.   
-
 # Solution to group membership problems:
 
 We cna use hasAny method in list which will resolve this nicely as long as the
