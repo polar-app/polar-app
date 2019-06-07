@@ -199,6 +199,54 @@ Just accept:
   accept the data.  This way we don't allow someone to create a group with a 
   space for example.  We can just use regex match on this space.   
 
+## Group Match Regexp
+
+The code for this could just be
+
+```javascript
+
+function lspace(value) {
+    
+    if (value.length > 0) {
+        return " " + value;        
+    }
+    
+    return value;
+    
+} 
+
+function rspace(value) {
+    
+    if (value.length > 0) {
+        return value + " ";        
+    }
+    
+    return value;
+    
+} 
+
+function createMatchInput(values) {
+    return lspace(rspace(values.join(" ")));
+}
+
+function createMatcher(values) {
+    return 
+}
+
+
+```
+
+BETTER SOLUTION!!!!
+
+# Solution to group membership problems:
+
+We cna use hasAny method in list which will resolve this nicely as long as the
+strings match up properly
+
+https://firebase.google.com/docs/reference/rules/rules.List
+https://firebase.google.com/docs/reference/rules/rules.Map
+
+
 # Implementation Strategy
 
 - the first big milestone I have to implement is changing the permissions with 
