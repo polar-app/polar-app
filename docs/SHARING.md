@@ -244,27 +244,17 @@ change OURS adding them and giving them permission.
 We would need to implement this on the client and make it a premium feature to 
 disable. 
 
-## TODO
-
 - Initially we have NO limits on who can be added.  We add everyone in the 
   chain this way people can discover one another indefinitely.  The one issue 
   here though is latency.  Users are going to pop in all at once.      
 
+# Message Delivery
+
 - email and using mandrill with mailchimp so that when someone is added they 
   get a transactional email from the user.
 
-- TODO: need the structure for user pages so that users can link to their 
-  timeline of documents, comments, and highlights.
-
-    //
-    // - We need 'anyone with the link can view' semantics which DOES require
-    //   a token BUT we can make a special recipient of 'token' that has the
-    //   token that you can use to view the document.
-
-- TODO: should we have some sort of RBAC?
-
-- TODO: I don't like how this is seemingly ad hoc and the schema for permissions 
-  isn't defined very well.
+- TODO we need to settle on a system for transactional email.  Sendgrid is just
+  too pricey.
 
 # Solution to group membership problems:
 
@@ -286,12 +276,7 @@ https://firebase.google.com/docs/rules/rules-behavior
 
 "Some document access calls may be cached, and cached calls do not count towards the limits."
 
-
 # Implementation Strategy
-
-- how do I allow the user to control who has access to see their shared contacts 
-  for documents?
-    I guess I could punt on this now and add it later?
 
 - the first big milestone I have to implement is changing the permissions with 
   one user and then fetching again with another user to make sure they can 
@@ -436,4 +421,59 @@ We would use a similar algorithm to this
       think through all the problems so I don't back myself into a corner.
       
     - this won't be built out just yet...    
+               
+# Top Friend Recommendation
+
+We need to have TWO top friend recommendation systems.
+
+The first is global. This is our fallback. This will be the top users in the 
+system. We use this to bootstrap and then we start migrating the user to their 
+own personalized system.
+
+Next, we just to a basic collaborative filtering system where we take the 
+users friends, then their friends, and rank them by counts on the backend with 
+a cloud function.
+
+We cache this and updated it if it's stale on login when the user logs in and
+it hasn't been updated in 24 hours. This should allow us to reduce our total 
+computational complexity for this component.
+
+The TOP recommender algorithm would probably need to use google cloud big query 
+or something or maybe pagerank (ideally) so that we have a robust top user 
+ranking system.       
+
+This would only run on top documents.
+
+I think I can get this query down to less than 5 seconds if done properly.
+
+https://docs.google.com/spreadsheets/d/1eYnlXwNVGiDHo07pNAVU_Fjc9UwHrdYyMbYhhK8L8SM/edit?usp=sharing
+
+This would only be about 100 requests and we can use both the global and local 
+data to compute this.  For example we can take the top ranking users local to 
+each user OR we can compute their local rank if there's overlap.
+
+The math for this worked out (for a basic algorithm) to be about $360 per month
+on firebase if we only focused this on the local graph and only read the friends
+of the user to 1 degree.  This wouldn't be a massive amount of data and we could
+recompute it every hour.
+
+The only way we enable the secondary / user-specific algorithm is if there is
+enough overlap for specialized recommendations.  We would need to have 5-10 head
+nodes with > 10 ranking.  Once these are ranked just fetch their metadata
+directly.
+
+
+## TODO
+
+- We need a inverted index for showing the timeline of groups and users. I think 
+  this should generally be the same structure and just store a ordered list of 
+  annotations which can then be viewed in the UI.  We're going to go after users
+  first and view their stream of annotations.
+
+- TODO: need the structure for user pages so that users can link to their 
+  timeline of documents, comments, and highlights.
+
+    // - We need 'anyone with the link can view' semantics which DOES require
+    //   a token BUT we can make a special recipient of 'token' that has the
+    //   token that you can use to view the document.
 
