@@ -16,6 +16,7 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
      */
     sharing: {
         
+        // FIXME: this is now a doc_peer table.
         
         /**
          * Contains a list of users that are also sharing the same document that
@@ -68,6 +69,8 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
         ]
                 
     },
+    
+    // FIXME: this is now a doc_permission table.
     
     // The new permissions section includes who has access to this document for 
     // reading our comments, notes, etc.  By default a document is private 
@@ -211,22 +214,37 @@ migrated the records properly.
 
 This will have to be a boolean that we flag at the end.
 
-## TODO
+# Custom Claims in the Future
 
-- It seems to be a privacy violation to allow the 'peers' object shared to 
-  everyone especially who the owner of the document is sharing with.  We might 
-  need to keep these separate as copying the emails here seems to be a bad 
-  idea.
-  
-    - We could blind them via SHA1 hash BUT the problem here is that you can 
-      still find out who someone is sharing with if you have their email 
-      addresses.
-      
-    - both issues can be resolved with separate doc_peer and doc_sharing
-      tables with records or
-      
-    - also, since the doc_sharing table is separate we can make it hidden for 
-      some users.  We can do this in the future of course.   
+In the future we might be able to use custom claims to speed up authentication.  
+
+With 1000 bytes this would allow about 125 groups MAX but in practice it's more 
+like 100 since I probably have to encode them.  I might want to just store these
+encoded in an efficient string.
+
+This would speed up auth but it's a bit more complicated right now. 
+
+# Transitive Discovery 
+
+This idea is generally that ANYONE that is sharing a document has access to 
+everyone else.
+
+I think we should consider making this a feature later but it would require 
+changes on the client.
+
+This is done by sharing the value of the doc_id AND updating the doc_permission.
+
+The USER has to change the doc_permissions setting.  Just because someone has
+the value of a id doesn't mean they can actually read the document.
+
+The idea here is that we implement this in the client such that we look at 
+everyone we've given access to, find their doc_peer settings, then automatically
+change OURS adding them and giving them permission.
+
+We would need to implement this on the client and make it a premium feature to 
+disable. 
+
+## TODO
 
 - Initially we have NO limits on who can be added.  We add everyone in the 
   chain this way people can discover one another indefinitely.  The one issue 
