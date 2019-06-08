@@ -40,8 +40,22 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
                  */
                 contact_id: '',
 
-                // the doc ID on this platform on what we have access to that is
-                // shared with us.
+                /**
+                 * The user ID of the owner, denormalized from the contact ID.
+                 */
+                user_id: '',
+            
+                // The `doc_id` is needed in the source so that we can use
+                // FileRef when the user calls BackendFileRefs.toBackendFileRefs
+                // I can compute/add the required metadata that needs to be
+                // attached to the FileRef to denote whether they are the owner
+                // or not and who the owner is and how we build the URL
+                // properly.
+                // 
+                // We then lookup the data on the backend permissions system so
+                // that we verify that the user actually DOES have access to the
+                // file.
+
                 doc_id: '0x000'
                 
                 /**
@@ -54,7 +68,14 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
         ]
                 
     },
+    
+    // The new permissions section includes who has access to this document for 
+    // reading our comments, notes, etc.  By default a document is private 
+    // and no one can access it.
+    
     permissions: {
+    
+        // who has been given access to this document.
         recipients: [
             'mailto:alice@example.com',
             'mailto:bob@example.com',
@@ -64,22 +85,22 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
         ]
         
     }
-        
     
 }
 ```
 
-## doc_id
-
-The `doc_id` is needed in the source so that we can use FileRef when the user
-calls BackendFileRefs.toBackendFileRefs I can compute/add the required metadata
-that needs to be attached to the FileRef to denote whether they are the owner or
-not and who the owner is and how we build the URL properly.  
-
-We then lookup the data on the backend permissions system so that we verify that
-the user actually DOES have access to the file.
-
 # Tables
+
+## doc_peer
+
+Grants permission for a user to access a document.  This is basically a 'grant'
+datastructure which gives the user the pointer to the doc_id to read.
+
+|| id || The DocID of the document ||
+|| from || The UID for this user ||
+|| to: || The fingerprint of the document in the doc repo ||
+|| reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
+|| message || string || A message given to the user in the original grant so that it can show up in the UI for them to understand why this document was given to them ||
 
 ## doc_permission
 
@@ -258,3 +279,53 @@ need to get basic sharing to work.
 The owner of the group controls the membership and then we do a get() on the 
 group membership for permissions within firebase security rules.
 
+
+# Data flow of sharing process
+
+ - Alice wants to share a doc  and clicks 'share' in the sidebar
+ 
+ - Alice gives access to a team (via her list of contacts) or via a (new) 
+   explicit email or recycles one from their contacts.  She eventually 
+   just grants Bob.
+   
+ - Bob goes into her 'contacts' as a table entry for auto-completion in the
+   future.
+   
+ - An email is sent to Bob letting him know what a document has been shared 
+   with him.
+   
+ - A doc_peer record is written to Bob and from Alice giving Bob access to the 
+   DocID created by Alice.  This DocID can then be used by Bob to access
+   all the resources of Alice's shared document (including image files).  
+   
+ - Bob logs into Polar and sees a new document shared with him via the
+   notifications bar at the top.
+   
+ - Bob accepts this document by clicking the 'add' button in the notifications 
+   dropdown.
+   
+ - Once added Bob has a sharing section with a peer reference to Alice's doc.
+   Has added Alice as a contact, and a reciprocal 'grant' is given to Alice 
+   directly.
+   
+ - At this point both Bob and Alice are sharing access to each others's documents.
+ 
+# Dynamic and realtime updates to the DocMeta / viewer.
+
+We've never had the ability to update the DocMeta and reload the viewer so we 
+have to add support for that.
+
+This will involved:
+
+- Adding a snapshot listener to wait for updates for any of the peer documents
+  and the master document.
+  
+- The datastore will need to support this.
+
+- When the update is detected the TARGET metadata will be merged with the new metadata
+
+- During the update we will disable persistence so that any updates we make are 
+  NOT written back out to disk. 
+   
+- We might have to have one MASTER document for persisting writes and one for 
+  showing in the UI.
