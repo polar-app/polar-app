@@ -100,11 +100,25 @@ Grants permission for a user to access a document.  This is basically a 'grant'
 datastructure which gives the user the pointer to the doc_id to read.
 
 || id || The DocID of the document ||
-|| from || FirebaseUIDStr || from this user ||
+|| from || UserIdentity || from this user. We do NOT expose their uid and keep this private.  We use the email addr see ```from_resolution``` footnote ||
 || to || FirebaseUIDStr ||  to this user ||
 || reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
 || message || string || A message given to the user in the original grant so that it can show up in the UI for them to understand why this document was given to them ||
 || accepted || boolean || True if the user accepted this document || 
+
+```text
+type UserIdentity {
+    email?: EmailSTR,
+    contact_id?: string    
+}
+```
+
+### Footnotes
+
+from_resolution:  We can't give out the uid due to security issues but what we
+do do is provide access to the email. This is then re-written to import the 
+email and contact info ito the users local contact database which is 
+de-normalized from the main datastore. 
 
 ## doc_permission
 
