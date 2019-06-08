@@ -131,18 +131,18 @@ interface DocPermission {
 }
 
 /**
- * A team string of team:foo where 'foo' is the name of the team
+ * A team string of team:0x000 where 'foo' is the ID of the team.
  */
 type TeamStr = string;
 
 /**
- * Normal email address.
+ * A mailto email address of mailto:alice@example.com
  */
 type EmailStr = string;
 
 /**
  * A bearer token to access this document when the user is sharing just by the
- * URL.
+ * URL.  token:0x0002
  */
 type TokenStr = string;
 

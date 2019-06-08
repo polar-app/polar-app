@@ -7,7 +7,7 @@ Sharing Design in Polar
 Update the DocMeta to include a new sharing section that's a sibling to DocInfo 
 (DocSharing?)
 
-```javascript
+```
 
 {
     /**
@@ -23,22 +23,45 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
          */
         peers: [
             {
-                source: {
-                    id: 'firebase',
-                    locale: 'us-central1',
-                    owner: {
-                        contact_id: '',
-                    }
-                },
+            
+                /**
+                  * True when this is the original user who granted us access
+                  * to the document.
+                  *
+                origin: true,
+
+                /**
+                 * The time we discovered this user.
+                 */                
+                discovered: "2008-09-15T15:53:00+05:00",
+                
+                /**
+                 * The owner of this document in our 'contact' table.     
+                 */
+                contact_id: '',
+
                 // the doc ID on this platform on what we have access to that is
                 // shared with us.
                 doc_id: '0x000'
+                
+                /**
+                 * The last version of this document we've seen.  This is used 
+                 * to determine if we need to update in the UI.
+                 */
+                uuid: string,
+                
             }            
         ]
                 
     },
     permissions: {
-        
+        recipients: [
+            'mailto:alice@example.com',
+            'mailto:bob@example.com',
+            'team:zivalkuru9zvjmc9oxvjzkuxvi',
+            'team:zxv9jweroiuzsvmioseurw',
+            'token:acvm9uqw3erjlzuxv'
+        ]
         
     }
         
@@ -63,6 +86,9 @@ the user actually DOES have access to the file.
 Contains the permissions set for the user for this document in their repo.
 
 By default the document is private (no permissions).
+
+TODO: there is a simpler version of this that needs to be stored within the 
+DocMeta directly...
 
 ### schema
 
@@ -105,8 +131,9 @@ Used to keep track of everyone you've collaborated with so auto-complete can wor
 ### fields
 
 || id || A unique contact ID for this user and they are sharing some selected information about their profile ||
-|| source || 'firebase-us-central1' || The source of this friend. Could be something outside of polar.
-|| rel || ReadonlyArray<RelType> || The list or relationships for this contact.  
+|| rel || ReadonlyArray<RelType> || The list or relationships for this contact.
+|| name || string || Their name ||
+|| image || Image || The image URL to their profile with src, width, and height ||    
  
 ### type RelType = 'friend' | 'shared';
 
@@ -182,11 +209,11 @@ https://firebase.google.com/docs/reference/rules/rules.Map
     https://firebase.google.com/docs/rules/rules-behavior
     
     "Some document access calls may be cached, and cached calls do not count towards the limits."
+
+    - FIXME: 
     
 ```
-  allow read: if get(/databases/$(database)/documents/doc_permission/$(resource.data.id)).data.admin == true
-  
-  
+  allow read: if resource.data.recipients.hasAny('mailto:' + request.user.email)
 ```                
 
     TODO: 
@@ -203,7 +230,12 @@ https://firebase.google.com/docs/reference/rules/rules.Map
 
     -       
       
-      
+- FIXME: how do we want to handle the case where a user has been invited to share
+  a document but it not yet a polar user?  
+    
+    - email addresses might be case sensitive so we can't just lowercase them...
+    - PUNT on this problem for now.  I could build some way to solve this in 
+    the future.       
 
 - the current 'permissions' system of 'private' or 'public' with the DocMeta 
   won't really work with the new system so we have to upgrade the permissions 
@@ -217,4 +249,12 @@ https://firebase.google.com/docs/reference/rules/rules.Map
 2.  Write the hook on the backend to pass the request through with the proper lookup mechanism.
 3.  Make sure the sharing data structure is serialize properly.  
 
+
+# Topic / Group strategy
+
+For now do not implement topics. It's going to be far more complicated.  We just
+need to get basic sharing to work.  
+
+The owner of the group controls the membership and then we do a get() on the 
+group membership for permissions within firebase security rules.
 
