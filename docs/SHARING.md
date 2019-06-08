@@ -240,6 +240,8 @@ migrated the records properly.
 
 This will have to be a boolean that we flag at the end.
 
+- TODO: we might need to do this on the backend so that the permissions works.
+
 # Custom Claims in the Future
 
 In the future we might be able to use custom claims to speed up authentication.  
@@ -342,31 +344,61 @@ group membership for permissions within firebase security rules.
 
  - Alice wants to share a doc  and clicks 'share' in the sidebar
  
- - Alice gives access to a team (via her list of contacts) or via a (new) 
-   explicit email or recycles one from their contacts.  She eventually 
-   just grants Bob.
+ - Alice gives access to either:
+
+     - ```share_target_team```: a team (via her list of contacts) that she has already
+       joined.
+     
+     - ```share_target_existing_email```: to an existing user contact (that she's
+       added previously)
+     
+     - ```share_target_new_email```: or via a (new) contact (via email address) 
+
+ - If ```share_target_new_email```
+     - New email (Bob) goes into her 'contacts' as a table entry for
+       auto-completion in the future.
+    
+     - An email is sent to Bob letting him know what a document has been shared 
+       with him.
+
+     - Alice will update ```doc_permission``` with a record pointing to Bob 
+       to allow him to read the document.
+        
+     - A ```doc_peer``` record is written to Bob and from Alice giving Bob access to
+       the DocID created by Alice.  This DocID can then be used by Bob to access all
+       the resources of Alice's shared document (including image files).
+           
+     - Bob logs into Polar and sees a new document shared with him via the
+       notifications bar at the top.  We can find this by looking at the 
+       ```doc_peer``` table to see which records have not been ```accepted```.
+       
+     - Bob accepts this document by clicking the 'add' button in the
+       notifications dropdown.
+       
+     - We then migrate the ```doc_peer``` ```from``` column to use a contact_id
+       and migrate this user into a contact. 
    
- - Bob goes into her 'contacts' as a table entry for auto-completion in the
-   future.
-   
- - An email is sent to Bob letting him know what a document has been shared 
-   with him.
-   
- - A doc_peer record is written to Bob and from Alice giving Bob access to the 
-   DocID created by Alice.  This DocID can then be used by Bob to access
-   all the resources of Alice's shared document (including image files).  
-   
- - Bob logs into Polar and sees a new document shared with him via the
-   notifications bar at the top.
-   
- - Bob accepts this document by clicking the 'add' button in the notifications 
-   dropdown.
-   
- - Once added Bob has a sharing section with a peer reference to Alice's doc.
-   Has added Alice as a contact, and a reciprocal 'grant' is given to Alice 
-   directly.
-   
- - At this point both Bob and Alice are sharing access to each others's documents.
+     - Once added Bob has a sharing section with a peer reference to Alice's doc.
+       Has added Alice as a contact, and a reciprocal 'grant' is given to Alice 
+       directly via the same mechanism of the ```doc_peer``` system only this 
+       time Alice automatically accepts it since it's ```reciprocal```.  Note
+       that we have to validate this reciprocity to make sure it's legitimate.
+       
+     - At this point both Bob and Alice are sharing access to each others's
+       documents.
+
+  - If ```share_target_team```: (this part is tentative)
+     - An email is sent to everyone in the 'team' letting them know that Alice
+       has shared a document with them.
+       
+     - Alice updates doc_peer granting access to anyone from that group access
+       to her document record.        
+  
+     - Alice will update ```doc_permission``` with a record pointing to the team to
+       allow him to read the document.
+       
+     - 
+
  
 # Dynamic and realtime updates to the DocMeta / viewer.
 
