@@ -206,18 +206,12 @@ these into doc_peer with the correct 'to' address.
 
 We then delete the originals.
 
+We are going to have to mark the 'account' so that we can know that we've 
+migrated the records properly.
+
+This will have to be a boolean that we flag at the end.
+
 ## TODO
-  
-- I think I might need a *generic* system for adding contacts + for people who
-  have not yet entered the system?  Maybe the hash of their email?  Can the user
-  change their primary email?  Also they might have secondary emails... 
-
-
-    - for now I think I just do a doc_peer_pending table to resolve this for
-      users who are NEW to the system.
-  
-- Make sure users who don't have an account can login and see their new 
-  documents if they're only just sending via email address.
 
 - It seems to be a privacy violation to allow the 'peers' object shared to 
   everyone especially who the owner of the document is sharing with.  We might 
