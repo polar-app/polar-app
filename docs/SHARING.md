@@ -217,9 +217,10 @@ Only the USER should be able to read their doc_peer but anyone can write to it.
 This is needed because we need to 'give' access to another person by writing 
 the new record.
 
-FIXME: will this work because I'm handing out the firebase uid and I think this 
-is bad... YES... it is because then we can compute someones documents and read 
-them.   
+## doc_permission
+
+Only the primary user has access to read/write this record.  This controls all
+their permissions
 
 # New users without accounts
 
