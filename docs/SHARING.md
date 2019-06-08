@@ -79,8 +79,8 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
         recipients: [
             'mailto:alice@example.com',
             'mailto:bob@example.com',
-            'team:zivalkuru9zvjmc9oxvjzkuxvi',
-            'team:zxv9jweroiuzsvmioseurw',
+            'group:zivalkuru9zvjmc9oxvjzkuxvi',
+            'group:zxv9jweroiuzsvmioseurw',
             'token:acvm9uqw3erjlzuxv'
         ]
         
@@ -97,10 +97,11 @@ Grants permission for a user to access a document.  This is basically a 'grant'
 datastructure which gives the user the pointer to the doc_id to read.
 
 || id || The DocID of the document ||
-|| from || The UID for this user ||
-|| to: || The fingerprint of the document in the doc repo ||
+|| from || FirebaseUIDStr || from this user ||
+|| to || FirebaseUIDStr ||  to this user ||
 || reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
 || message || string || A message given to the user in the original grant so that it can show up in the UI for them to understand why this document was given to them ||
+|| accepted || boolean || True if the user accepted this document || 
 
 ## doc_permission
 
@@ -172,7 +173,66 @@ that they are about to block the original author.
 
 However, you're essentially  GIVING the document to someone thi sway.
 
+# Firebase Rules / Permissions.
+    
+We store the permission and sharing structure in a separate doc. This way the
+actual sharing settings aren't shared across and given to people with their
+documents.
+
+These are stored in ```doc_permission``` and ```doc_peer``` tables.
+
+A new DocMeta rule should be:
+
+```
+
+  function hasRecipientByEmail() {
+    return resource.data.recipients.includes('mailto:' + request.user.email);
+  }
+
+  allow read: if hasRecipientByEmail();
+   
+```                
+
+# New users without accounts
+
+One issue is how do we give documents to users who have not yet entered the
+system.
+
+We're going to solve this via doc_peer_pending which is only resolved on initial
+account creation.
+
+On initial account creation we lookup the doc_peer_pending table and migrate
+these into doc_peer with the correct 'to' address.
+
+We then delete the originals.
+
 ## TODO
+  
+- I think I might need a *generic* system for adding contacts + for people who
+  have not yet entered the system?  Maybe the hash of their email?  Can the user
+  change their primary email?  Also they might have secondary emails... 
+
+
+    - for now I think I just do a doc_peer_pending table to resolve this for
+      users who are NEW to the system.
+  
+- Make sure users who don't have an account can login and see their new 
+  documents if they're only just sending via email address.
+
+- It seems to be a privacy violation to allow the 'peers' object shared to 
+  everyone especially who the owner of the document is sharing with.  We might 
+  need to keep these separate as copying the emails here seems to be a bad 
+  idea.
+  
+    - We could blind them via SHA1 hash BUT the problem here is that you can 
+      still find out who someone is sharing with if you have their email 
+      addresses.
+      
+    - both issues can be resolved with separate doc_peer and doc_sharing
+      tables with records or
+      
+    - also, since the doc_sharing table is separate we can make it hidden for 
+      some users.  We can do this in the future of course.   
 
 - Initially we have NO limits on who can be added.  We add everyone in the 
   chain this way people can discover one another indefinitely.  The one issue 
@@ -203,7 +263,23 @@ https://firebase.google.com/docs/reference/rules/rules.List
 https://firebase.google.com/docs/reference/rules/rules.Map
 
 
+## Groups 
+
+In the future we're going to need to have a separate group 
+
+## Rules behavior and caching. 
+    
+
+https://firebase.google.com/docs/rules/rules-behavior
+
+"Some document access calls may be cached, and cached calls do not count towards the limits."
+
+
 # Implementation Strategy
+
+- how do I allow the user to control who has access to see their shared contacts 
+  for documents?
+    I guess I could punt on this now and add it later?
 
 - the first big milestone I have to implement is changing the permissions with 
   one user and then fetching again with another user to make sure they can 
@@ -211,46 +287,6 @@ https://firebase.google.com/docs/reference/rules/rules.Map
 
     https://firebase.google.com/docs/firestore/security/rules-conditions#access_other_documents
 
-
-    The new rule should probably be
-
-    - I don't need any sort of unusual access to this record.  Just fetch 
-    by the available keys.
-    
-    
-    resource.permissions.recipients[public]
-    
-    - FIXME how do I determine if the user is in a specific team... ?
-
-    - maybe in the futrue I can use custom claims for this ... 
-    
-    - var/let/const cant' be used with functions... 
-    
-    
-    https://firebase.google.com/docs/rules/rules-behavior
-    
-    "Some document access calls may be cached, and cached calls do not count towards the limits."
-
-    - FIXME: 
-    
-```
-  allow read: if resource.data.recipients.hasAny('mailto:' + request.user.email)
-```                
-
-    TODO: 
-        - how is teh doc_id preserved from the resource.data.id
-
-    - I think we HAVE to have a doc_permission document becuase this needs to 
-      apply to doc_info I think.. not just doc_meta.  It DOES NOT make a difference
-      if we denormalize this.
-      
-      doc_meta
-      doc_permission permission in the DocMeta (which is de-duplicated on the 
-      root) and stored in DocHolder
-      doc_sharing
-
-    -       
-      
 - FIXME: how do we want to handle the case where a user has been invited to share
   a document but it not yet a polar user?  
     
@@ -329,3 +365,63 @@ This will involved:
    
 - We might have to have one MASTER document for persisting writes and one for 
   showing in the UI.
+
+# Top Friend Recommendation
+
+We need to have TWO top friend recommendation systems.
+
+The first is global. This is our fallback. This will be the top users in the 
+system. We use this to bootstrap and then we start migrating the user to their 
+own personalized system.
+
+Next, we just to a basic collaborative filtering system where we take the 
+users friends, then their friends, and rank them by counts on the backend with 
+a cloud function.
+
+We cache this and updated it if it's stale on login when the user logs in and
+it hasn't been updated in 24 hours. This should allow us to reduce our total 
+computational complexity for this component.
+
+The TOP recommender algorithm would probably need to use google cloud big query 
+or something or maybe pagerank (ideally) so that we have a robust top user 
+ranking system.       
+
+This would only run on top documents.
+
+I think I can get this query down to less than 5 seconds if done properly.
+
+https://docs.google.com/spreadsheets/d/1eYnlXwNVGiDHo07pNAVU_Fjc9UwHrdYyMbYhhK8L8SM/edit?usp=sharing
+
+This would only be about 100 requests and we can use both the global and local 
+data to compute this.  For example we can take the top ranking users local to 
+each user OR we can compute their local rank if there's overlap.
+
+The math for this worked out (for a basic algorithm) to be about $360 per month
+on firebase if we only focused this on the local graph and only read the friends
+of the user to 1 degree.  This wouldn't be a massive amount of data and we could
+recompute it every hour.
+
+The only way we enable the secondary / user-specific algorithm is if there is
+enough overlap for specialized recommendations.  We would need to have 5-10 head
+nodes with > 10 ranking.  Once these are ranked just fetch their metadata
+directly.
+
+
+
+# Recommended reading
+
+We would use a similar algorithm to this 
+
+# Future 
+
+- design the fan out system for the 'river of annotations' view for each  
+  user. I might have to have a cloud function do this and to the fanout directly 
+  and maybe via batches.  This might not scale too... if it's via a hook it might 
+  take a while though.
+    
+    - This is also needed for the group system so I can share this code.  Just
+      design the system, don't build it now.  Designing it means that I at least
+      think through all the problems so I don't back myself into a corner.
+      
+    - this won't be built out just yet...    
+
