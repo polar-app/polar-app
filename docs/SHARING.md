@@ -196,6 +196,17 @@ A new DocMeta rule should be:
    
 ```                
 
+## doc_peer
+
+Only the USER should be able to read their doc_peer but anyone can write to it.
+
+This is needed because we need to 'give' access to another person by writing 
+the new record.
+
+FIXME: will this work because I'm handing out the firebase uid and I think this 
+is bad... YES... it is because then we can compute someones documents and read 
+them.   
+
 # New users without accounts
 
 One issue is how do we give documents to users who have not yet entered the
@@ -270,7 +281,6 @@ https://firebase.google.com/docs/reference/rules/rules.Map
 In the future we're going to need to have a separate group 
 
 ## Rules behavior and caching. 
-    
 
 https://firebase.google.com/docs/rules/rules-behavior
 
