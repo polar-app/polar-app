@@ -222,13 +222,13 @@ A new DocMeta rule should be:
 ```text
   
     match /doc_peer/{document=**} {
-        allow read, write if resource.data.uid == request.auth.uid;
+        allow read, write: if resource.data.uid == request.auth.uid;
     }
     
     match /doc_peer_pending/{document=**} {
         
         // the user should only be able to read their OWN permissions.
-        allow read, delete if resource.data.to == request.auth.email;
+        allow read, delete: if resource.data.to == request.auth.email;
 
         // TODO: update this to use ALL of the users emails via custom claims  
 
@@ -236,19 +236,21 @@ A new DocMeta rule should be:
         
     }
 
+    // FIXME: I have to add rules on how to access the document when we have
+    // doc_permission records on it.
   
     match /doc_permission/{document=**} {
         
         // the user should only be able to read their OWN permissions.
-        allow read if resource.data.uid == request.auth.uid;
+        allow read: if resource.data.uid == request.auth.uid;
 
         // only update if you're the owner which I need to do when accepting 
         // an invitation to a document
-        allow update if resource.data.uid == request.auth.uid;
+        allow update: if resource.data.uid == request.auth.uid;
         
         // only delete it if we're the user otherwise you could delete someone's
         // peers without their permissions.       
-        allow delete if resource.data.uid == request.auth.uid;
+        allow delete: if resource.data.uid == request.auth.uid;
 
         // only done during the initial grand period and anyone should be able 
         // to do this so that we can give the user access to our document.
