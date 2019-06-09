@@ -236,18 +236,26 @@ https://firebase.google.com/docs/firestore/security/rules-conditions#access_othe
         /**
           * Get the doc permissions or an empty version with an empty recipients.
           */
-        function getDocPermission() {
-            return get(/databases/$(database)/documents/doc_permission/$(resource.data.id)) || {"data": {"recipients": []}};        
+        function hasDocPermission() {
+            return exists(/databases/$(database)/documents/doc_permission/$(resource.data.id));        
         }
+
+        /**
+          * Get the doc permissions or an empty version with an empty recipients.
+          */
+        function getDocPermission() {
+            return get(/databases/$(database)/documents/doc_permission/$(resource.data.id));        
+        }
+
         
         function getDocPermissionRecipients() {
             return getDocPermission().data.recipients;  
         }
-                    
+                            
         allow read: if request.auth != null && request.auth.uid == resource.data.uid;
         
         // TODO migrate to custom claims for all the users email addresses                     
-        allow read: if getDocPermissionRecipients().hasAny([request.auth.token.email]);
+        allow read: if hasDocPermission() && getDocPermissionRecipients().hasAny([request.auth.token.email]);
 
         allow write: if request.auth != null && (resource == null || request.auth.uid == resource.data.uid);
 
