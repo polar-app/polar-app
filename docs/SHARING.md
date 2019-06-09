@@ -70,25 +70,6 @@ Update the DocMeta to include a new sharing section that's a sibling to DocInfo
                 
     },
     
-    // FIXME: this is now a doc_permission table.
-    
-    // The new permissions section includes who has access to this document for 
-    // reading our comments, notes, etc.  By default a document is private 
-    // and no one can access it.
-    
-    permissions: {
-    
-        // who has been given access to this document.
-        recipients: [
-            'mailto:alice@example.com',
-            'mailto:bob@example.com',
-            'group:zivalkuru9zvjmc9oxvjzkuxvi',
-            'group:zxv9jweroiuzsvmioseurw',
-            'token:acvm9uqw3erjlzuxv'
-        ]
-        
-    }
-    
 }
 ```
 
@@ -100,11 +81,16 @@ Grants permission for a user to access a document.  This is basically a 'grant'
 datastructure which gives the user the pointer to the doc_id to read.
 
 || id || The DocID of the document ||
-|| from || UserIdentity || from this user. We do NOT expose their uid and keep this private.  We use the email addr see ```from_resolution``` footnote ||
-|| to || FirebaseUIDStr ||  to this user ||
+|| uid || FirebaseUIDStr || The owner of this record ||
+|| contact_id || The contact ID in our contact database || From this user. We do NOT expose their uid and keep this private.  We use the email addr see ```from_resolution``` footnote ||
 || reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
-|| message || string || A message given to the user in the original grant so that it can show up in the UI for them to understand why this document was given to them ||
-|| accepted || boolean || True if the user accepted this document || 
+
+## doc_peer_pending
+
+Used to grant docs to other people so that they can then store their own 
+uid there. For now we use the users primary email but we could query for all
+of them in the future as long as the user authenticates them properly.
+
 
 ```text
 type UserIdentity {
@@ -112,6 +98,13 @@ type UserIdentity {
     contact_id?: string    
 }
 ```
+
+### schema
+
+|| id || specific IUD for this pending invitation ||
+|| to || EmailStr || An email address for the user ||
+|| message || string || A message given to the user in the original grant so that it can show up in the UI for them to understand why this document was given to them ||
+|| reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
 
 ### Footnotes
 
@@ -126,15 +119,31 @@ Contains the permissions set for the user for this document in their repo.
 
 By default the document is private (no permissions).
 
-TODO: there is a simpler version of this that needs to be stored within the 
-DocMeta directly...
-
 ### schema
 
 || id || The DocID of the document ||
 || uid || The users uid that owns the id (DocID) ||
 || fingerprint || The fingerprint of the document in the doc repo ||
 || recipients || An array of encoded recipients who have access to the document || 
+
+### example:
+
+```text
+{
+    id: 10101,
+    uid: "12345",
+    fingerprint: "12345",
+    // who has been given access to this document.
+    recipients: [
+        'mailto:alice@example.com',
+        'mailto:bob@example.com',
+        'group:0001',
+        'group:0002',
+        'token:0003'
+    ]
+    
+}
+```
 
 ## message
 
@@ -209,6 +218,46 @@ A new DocMeta rule should be:
   allow read: if hasRecipientByEmail();
    
 ```                
+
+```text
+  
+    match /doc_peer/{document=**} {
+        allow read, write if resource.data.uid == request.auth.uid;
+    }
+    
+    match /doc_peer_pending/{document=**} {
+        
+        // the user should only be able to read their OWN permissions.
+        allow read, delete if resource.data.to == request.auth.email;
+
+        // TODO: update this to use ALL of the users emails via custom claims  
+
+        allow write;
+        
+    }
+
+  
+    match /doc_permission/{document=**} {
+        
+        // the user should only be able to read their OWN permissions.
+        allow read if resource.data.uid == request.auth.uid;
+
+        // only update if you're the owner which I need to do when accepting 
+        // an invitation to a document
+        allow update if resource.data.uid == request.auth.uid;
+        
+        // only delete it if we're the user otherwise you could delete someone's
+        // peers without their permissions.       
+        allow delete if resource.data.uid == request.auth.uid;
+
+        // only done during the initial grand period and anyone should be able 
+        // to do this so that we can give the user access to our document.
+        allow create;            
+    }
+  
+
+```
+
 
 ## doc_peer
 
@@ -305,18 +354,13 @@ https://firebase.google.com/docs/rules/rules-behavior
 
 # Implementation Strategy
 
+- The doc_peer_pending table is the main issue... 
+
 - the first big milestone I have to implement is changing the permissions with 
   one user and then fetching again with another user to make sure they can 
   access all the resources properly.
 
     https://firebase.google.com/docs/firestore/security/rules-conditions#access_other_documents
-
-- FIXME: how do we want to handle the case where a user has been invited to share
-  a document but it not yet a polar user?  
-    
-    - email addresses might be case sensitive so we can't just lowercase them...
-    - PUNT on this problem for now.  I could build some way to solve this in 
-    the future.       
 
 - the current 'permissions' system of 'private' or 'public' with the DocMeta 
   won't really work with the new system so we have to upgrade the permissions 
@@ -464,7 +508,7 @@ directly.
 
 # Recommended reading
 
-We would use a similar algorithm to this 
+We would use a similar algorithm to this:  
 
 # Future 
 
@@ -519,18 +563,19 @@ enough overlap for specialized recommendations.  We would need to have 5-10 head
 nodes with > 10 ranking.  Once these are ranked just fetch their metadata
 directly.
 
+# Multiple Email Addresses
+
+Allow users to add multiple email addresses to their account by just adding the
+email, sending a challenge nonce, then clicking a link to verify it properly.
+ 
+We can just use an email_challenge feature and then associate all these
+emails with your account via a set.     
+
 
 ## TODO
 
-- We need a inverted index for showing the timeline of groups and users. I think 
-  this should generally be the same structure and just store a ordered list of 
-  annotations which can then be viewed in the UI.  We're going to go after users
-  first and view their stream of annotations.
-
-- TODO: need the structure for user pages so that users can link to their 
-  timeline of documents, comments, and highlights.
-
-    // - We need 'anyone with the link can view' semantics which DOES require
-    //   a token BUT we can make a special recipient of 'token' that has the
-    //   token that you can use to view the document.
-
+- We need a reverse chronological timeline for groups and users. I think this
+should generally be the same structure and just store a ordered list of
+annotations which can then be viewed in the UI.  We're going to go after users
+first and view their stream of annotations.
+    
