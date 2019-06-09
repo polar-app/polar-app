@@ -72,6 +72,9 @@ SpectronRenderer.run(async (state) => {
 
     console.log("Got the document!");
 
+    // TODO: now log back in as the first user, revoke permission,
+    // login as the second, and make sure we do not have permission now.
+
     // now try to read directly via the document ID
 
 });

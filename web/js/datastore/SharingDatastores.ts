@@ -47,29 +47,29 @@ export class SharingDatastores {
 
         const fileRef = BackendFileRefs.toBackendFileRef(docMeta);
 
-        if (fileRef) {
-
-            const sharedURL = await DocPermissions.create(backendFileRef);
-
-            // Clean the URL when running in the desktop app.
-            const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
-
-            // we have to now replace the 'file' param with the proper URL.
-
-            const file = sharedURL;
-
-            const parsedURL = new URL(rawURL);
-            parsedURL.searchParams.set('file', file);
-            parsedURL.searchParams.set('shared', "true");
-
-            const userID = FirebaseDatastore.getUserID();
-            const doc = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint, userID);
-
-            parsedURL.searchParams.set('doc', doc);
-
-            return parsedURL.toString();
-
-        }
+        // if (fileRef) {
+        //
+        //     const sharedURL = await DocPermissions.create(backendFileRef);
+        //
+        //     // Clean the URL when running in the desktop app.
+        //     const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
+        //
+        //     // we have to now replace the 'file' param with the proper URL.
+        //
+        //     const file = sharedURL;
+        //
+        //     const parsedURL = new URL(rawURL);
+        //     parsedURL.searchParams.set('file', file);
+        //     parsedURL.searchParams.set('shared', "true");
+        //
+        //     const userID = FirebaseDatastore.getUserID();
+        //     const doc = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint, userID);
+        //
+        //     parsedURL.searchParams.set('doc', doc);
+        //
+        //     return parsedURL.toString();
+        //
+        // }
 
         return undefined;
 
