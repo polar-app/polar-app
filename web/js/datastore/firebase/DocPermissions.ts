@@ -51,8 +51,8 @@ export class DocPermissions {
      * Create a new shared URL which includes a download token which can be
      * shared publicly.
      */
-    public static async update(fingerprint: string,
-                               recipients: readonly Recipient[]) {
+    public static async write(fingerprint: string,
+                              recipients: readonly Recipient[]) {
 
         const user = await Firebase.currentUser();
 

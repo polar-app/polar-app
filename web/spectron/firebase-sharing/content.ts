@@ -3,6 +3,7 @@ import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {Logger} from '../../js/logger/Logger';
 import {Firebase} from '../../js/firebase/Firebase';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
+import {DocPermissions} from '../../js/datastore/firebase/DocPermissions';
 
 const log = Logger.create();
 
@@ -38,15 +39,21 @@ SpectronRenderer.run(async (state) => {
     console.log("Working with docID: " + docID);
 
     const writeDocPermission = async () => {
-        const ref = firestore.collection("doc_permission").doc(docID);
 
-        const id = docID;
-        const uid = FirebaseDatastore.getUserID();
-        const fingerprint = docMeta.docInfo.fingerprint;
         const recipients = [FIREBASE_USER1];
-        const data = {id, uid, fingerprint, recipients};
+        const fingerprint = docMeta.docInfo.fingerprint;
 
-        await ref.set(data);
+        await DocPermissions.write(fingerprint, recipients);
+
+        // const ref = firestore.collection("doc_permission").doc(docID);
+        //
+        // const id = docID;
+        // const uid = FirebaseDatastore.getUserID();
+        // const fingerprint = docMeta.docInfo.fingerprint;
+        // const recipients = [FIREBASE_USER1];
+        // const data = {id, uid, fingerprint, recipients};
+        //
+        // await ref.set(data);
 
     };
 
