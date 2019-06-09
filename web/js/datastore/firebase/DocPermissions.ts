@@ -1,20 +1,21 @@
 import {Firestore} from '../../firebase/Firestore';
 import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
-import {Hashcodes} from '../../Hashcodes';
+import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
 import {FirebaseDatastore} from '../FirebaseDatastore';
-import * as firebase from '../../firebase/lib/firebase';
-import {Backend} from '../Backend';
-import {BackendFileRef} from '../Datastore';
-import {Firebase} from '../../firebase/Firebase';
-import {Optional} from '../../util/ts/Optional';
 import {FirebaseDocMetaID} from '../FirebaseDatastore';
+import * as firebase from '../../firebase/lib/firebase';
+import {Firebase} from '../../firebase/Firebase';
 
 const COLLECTION_NAME = 'shared_url';
 
 /**
- * Provides a system so that we can taken a private / internal URL and convert
- * it to an external (shared) URL without exposing the private internal URL and
- * we also give users the ability to revoke permissions.
+ *
+ * The doc_permission table provides a system to allow us to lookup documents
+ * based on their primary doc ID and then grant access to readers directly.
+ *
+ * The backend hook system allow us to can take a private / internal URL and
+ * convert it to an external (shared) URL without exposing the private internal
+ * URL and we also give users the ability to revoke permissions.
  *
  * This system has three types of URLs:
  *
@@ -51,8 +52,7 @@ export class DocPermissions {
      * shared publicly.
      */
     public static async update(fingerprint: string,
-                               recipient: Recipient = 'public',
-                               type: 'add' | 'remove') {
+                               recipients: readonly Recipient[]) {
 
         const user = await Firebase.currentUser();
 
@@ -63,21 +63,17 @@ export class DocPermissions {
         const docPermission: DocPermission = {
             id,
             uid,
-            recipient,
-            type,
             fingerprint,
-            docID
+            recipients,
+            lastUpdated: ISODateTimeStrings.create()
         };
 
         await this.writeDocPermission(docPermission);
-
-        return sharedURL;
     }
 
     private static async writeDocPermission(docPermission: DocPermission) {
 
-        const {downloadToken} = sharedDoc;
-        const id = downloadToken;
+        const {id} = docPermission;
 
         const firestore = await this.getFirestore();
 
@@ -85,7 +81,7 @@ export class DocPermissions {
             .collection(COLLECTION_NAME)
             .doc(id);
 
-        await ref.set(sharedDoc);
+        await ref.set(docPermission);
 
     }
 
@@ -115,16 +111,19 @@ interface DocPermission {
     readonly id: FirebaseDocMetaID;
 
     /**
-     * The fingerprint for this document
-     */
-    readonly fingerprint: string;
-
-    /**
      * The uid of the user sharing this doc file.
      */
     readonly uid: string;
 
-    readonly recipients: Recipient;
+    /**
+     * The fingerprint for this document
+     */
+    readonly fingerprint: string;
+
+
+    readonly recipients: readonly Recipient[];
+
+    readonly lastUpdated: ISODateTimeString;
 
 }
 
@@ -138,4 +137,10 @@ export type TeamStr = string;
  */
 export type EmailStr = string;
 
-export type Recipient = 'public' | 'public-via-link' | TeamStr | EmailStr;
+/**
+ * A token:id string that we keep in the users account so that they can access
+ * documents JUST by token.
+ */
+export type TokenStr = string;
+
+export type Recipient = 'public' | TokenStr | TeamStr | EmailStr;
