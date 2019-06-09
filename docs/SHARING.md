@@ -219,16 +219,48 @@ A new DocMeta rule should be:
    
 ```                
 
+https://firebase.google.com/docs/firestore/security/rules-conditions#access_other_documents
+
 ```text
-  
+
+    match /doc_meta/{document=**} {
+            
+        // FIXME: this won't work right now and isn't very elegant.
+        //
+        // 1. we're getting an error if the document doesn't exist
+        //
+        // 2. we can do an exists here but I don't know how I'm charged for this
+        //
+        // 3. these are slow as hell right now.. taking 2-3 seconds per request.
+
+        /**
+          * Get the doc permissions or an empty version with an empty recipients.
+          */
+        function getDocPermission() {
+            return get(/databases/$(database)/documents/doc_permission/$(resource.data.id)) || {"data": {"recipients": []}};        
+        }
+        
+        function getDocPermissionRecipients() {
+            return getDocPermission().data.recipients;  
+        }
+                    
+        allow read: if request.auth != null && request.auth.uid == resource.data.uid;
+        
+        // TODO migrate to custom claims for all the users email addresses                     
+        allow read: if getDocPermissionRecipients().hasAny([request.auth.token.email]);
+
+        allow write: if request.auth != null && (resource == null || request.auth.uid == resource.data.uid);
+
+    }
+ 
     match /doc_peer/{document=**} {
         allow read, write: if resource.data.uid == request.auth.uid;
     }
     
     match /doc_peer_pending/{document=**} {
         
-        // the user should only be able to read their OWN permissions.
-        allow read, delete: if resource.data.to == request.auth.email;
+        // the user should only be able to read their OWN pending documents.
+        allow read, delete: if (resource.data.to || "") == request.auth.email;
 
         // TODO: update this to use ALL of the users emails via custom claims  
 
@@ -236,21 +268,16 @@ A new DocMeta rule should be:
         
     }
 
-    // FIXME: I have to add rules on how to access the document when we have
-    // doc_permission records on it.
-  
     match /doc_permission/{document=**} {
         
         // the user should only be able to read their OWN permissions.
-        allow read: if resource.data.uid == request.auth.uid;
-
+        //
         // only update if you're the owner which I need to do when accepting 
         // an invitation to a document
-        allow update: if resource.data.uid == request.auth.uid;
-        
+        //
         // only delete it if we're the user otherwise you could delete someone's
         // peers without their permissions.       
-        allow delete: if resource.data.uid == request.auth.uid;
+        allow read, update, delete: if resource.data.uid == request.auth.uid;
 
         // only done during the initial grand period and anyone should be able 
         // to do this so that we can give the user access to our document.
@@ -574,7 +601,34 @@ We can just use an email_challenge feature and then associate all these
 emails with your account via a set.     
 
 
+# Token sharing "anyone with the URL"
+
+- we expose the raw doc ID in the URL?
+    - are there any downsides to this?  I don't think leaking it is a problem
+    
+    - JUST create a sharing URL and then that URL adds it to the users doc repo 
+      by doc ID and we have a special 'token' in there or something or 'linked'  
+      
+    - 'public-via-link:' is the sharing mechanism there needs to be an associated 
+      permission with th is.  The link itself adds the doc to the users repo.
+
+    - TODO: the problem with this strategy is that there's no way to revoke
+      access once the URL is given out.
+
+    - TODO: 
+        - I can do a get() on the user_token for that user and the doc token 
+        to see if that user has access to that token but the gets are going to 
+        more expensive.  However, we can move on from this in the future
+        and provide a smarter mechanism later. 
+
+    - I think this is the only real way we can do this honestly.
+
 ## TODO
+
+- TODO: how do I do token sharing ??? it will work for everything BUT the 
+  firebase doc... and I am not sure how to support it...
+    - one thing is to expose the key directly as the token? Then I remove the 
+      token as part of the permissions in the future ?   
 
 - We need a reverse chronological timeline for groups and users. I think this
 should generally be the same structure and just store a ordered list of

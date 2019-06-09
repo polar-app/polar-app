@@ -103,8 +103,6 @@ export class DocPermissions {
 
 }
 
-export type Recipient = 'public';
-
 /**
  * We only need the backend and the name of the file to be able to compute the
  * internal URL.
@@ -133,17 +131,11 @@ interface DocPermission {
 /**
  * A team string of team:0x000 where 'foo' is the ID of the team.
  */
-type TeamStr = string;
+export type TeamStr = string;
 
 /**
  * A mailto email address of mailto:alice@example.com
  */
-type EmailStr = string;
+export type EmailStr = string;
 
-/**
- * A bearer token to access this document when the user is sharing just by the
- * URL.  token:0x0002
- */
-type TokenStr = string;
-
-type Recipient = 'public' | TeamStr | EmailStr | TokenStr;
+export type Recipient = 'public' | 'public-via-link' | TeamStr | EmailStr;
