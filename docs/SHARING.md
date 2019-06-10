@@ -227,14 +227,6 @@ https://firebase.google.com/docs/firestore/security/rules-conditions#access_othe
 ```text
 
     match /doc_meta/{document=**} {
-            
-        // FIXME: this won't work right now and isn't very elegant.
-        //
-        // 1. we're getting an error if the document doesn't exist
-        //
-        // 2. we can do an exists here but I don't know how I'm charged for this
-        //
-        // 3. these are slow as hell right now.. taking 2-3 seconds per request.
 
         /**
           * Get the doc permissions or an empty version with an empty recipients.
@@ -255,7 +247,7 @@ https://firebase.google.com/docs/firestore/security/rules-conditions#access_othe
             return getDocPermission().data.recipients;  
         }
                             
-        allow read: if request.auth != null && request.auth.uid == resource.data.uid;
+        allow read: if resource == null || (request.auth != null && request.auth.uid == resource.data.uid);
         
         // TODO migrate to custom claims for all the users email addresses                     
         allow read: if hasDocPermission() && getDocPermissionRecipients().hasAny([request.auth.token.email]);
