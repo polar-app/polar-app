@@ -5,6 +5,12 @@ import {Firebase} from '../../js/firebase/Firebase';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {DocPermissions} from '../../js/datastore/firebase/DocPermissions';
 import {DocTokens} from '../../js/datastore/firebase/DocTokens';
+import {DocPeerPending} from '../../js/datastore/firebase/DocPeerPendings';
+import {DocPeerPendings} from '../../js/datastore/firebase/DocPeerPendings';
+import {assert} from 'chai';
+import {RecipientTokenMap} from '../../js/datastore/firebase/DocPermissions';
+import {Sender} from '../../js/datastore/firebase/DocPeerPendings';
+import {DocPeer} from '../../js/datastore/firebase/DocPeers';
 
 const log = Logger.create();
 
@@ -43,14 +49,28 @@ SpectronRenderer.run(async (state) => {
 
         async function writeDocPermission() {
 
-            const recipientTokens = {FIREBASE_USER1: DocTokens.create()};
+            const recipientTokens: RecipientTokenMap = {};
+            recipientTokens[FIREBASE_USER1] = DocTokens.create();
             const fingerprint = docMeta.docInfo.fingerprint;
 
             await DocPermissions.write(fingerprint, recipientTokens);
 
         }
 
+        async function writeDocPeerPending() {
+
+            await DocPeerPendings.write({
+                to: FIREBASE_USER1,
+                message: 'here is your doc yo',
+                reciprocal: false,
+                token: DocTokens.create(),
+                docID
+            });
+
+        }
+
         await writeDocPermission();
+        await writeDocPeerPending();
 
         await firestore.collection("doc_meta").doc(docID).get();
         console.log("Got the doc with the primary user");
@@ -63,7 +83,22 @@ SpectronRenderer.run(async (state) => {
 
     async function verifyAccessToDocs() {
 
+        console.log("Verifying access to docs");
+
         await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+        console.log("Getting doc peer pendings");
+        const docPeerPendings = await DocPeerPendings.get();
+
+        assert.isTrue(docPeerPendings.length >= 1);
+
+        // verify that at least ONE of these is the doc we're looking for
+
+        assert.isTrue(docPeerPendings.filter(current => current.docID === docID).length >= 1);
+
+        const docPeerPending = docPeerPendings.filter(current => current.docID === docID)[0];
+
+        await DocPeerPendings.accept(docPeerPending);
 
         console.log("We are authenticated now with the new user.");
 
@@ -79,7 +114,8 @@ SpectronRenderer.run(async (state) => {
 
         async function writeDocPermission() {
 
-            const recipientTokens = {FIREBASE_USER1: DocTokens.create()};
+            const recipientTokens: RecipientTokenMap = {};
+
             const fingerprint = docMeta.docInfo.fingerprint;
 
             await DocPermissions.write(fingerprint, recipientTokens);

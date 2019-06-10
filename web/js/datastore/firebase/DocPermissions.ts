@@ -6,7 +6,7 @@ import {FirebaseDocMetaID} from '../FirebaseDatastore';
 import * as firebase from '../../firebase/lib/firebase';
 import {Firebase} from '../../firebase/Firebase';
 
-const COLLECTION_NAME = 'shared_url';
+const COLLECTION_NAME = 'doc_permission';
 
 /**
  *
@@ -138,7 +138,7 @@ interface DocPermission {
 export type TeamStr = string;
 
 /**
- * A mailto email address of mailto:alice@example.com
+ * A mailto email address of alice@example.com
  */
 export type EmailStr = string;
 

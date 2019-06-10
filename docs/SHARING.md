@@ -271,7 +271,7 @@ https://firebase.google.com/docs/firestore/security/rules-conditions#access_othe
     match /doc_peer_pending/{document=**} {
         
         // the user should only be able to read their OWN pending documents.
-        allow read, delete: if (resource.data.to || "") == request.auth.email;
+        allow read, delete: if resource.data.to == request.auth.token.email;
 
         // TODO: update this to use ALL of the users emails via custom claims  
 
