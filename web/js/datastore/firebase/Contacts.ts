@@ -6,29 +6,6 @@ const COLLECTION_NAME = 'contact';
 
 export class ContactsUsingEmail {
 
-    // public static async create(email: string) {
-    //
-    //     const firestore = await Firestore.getInstance();
-    //
-    //     const user = await Firebase.currentUser();
-    //
-    //     const query = firestore
-    //         .collection(COLLECTION_NAME)
-    //         .where('uid', '==', user!.uid)
-    //         .where('email', '==', email);
-    //
-    //     const snapshot = await query.get({source: 'server'});
-    //
-    //     const docs = snapshot.docs;
-    //
-    //     if (docs.length >= 1) {
-    //         return <Contact> docs[0].data();
-    //     }
-    //
-    //     return undefined;
-    //
-    // }
-
     public static async get(email: string): Promise<Contact | undefined> {
 
         const firestore = await Firestore.getInstance();
@@ -109,7 +86,6 @@ export class Contacts {
         await ref.set(record);
 
     }
-
 
 }
 
