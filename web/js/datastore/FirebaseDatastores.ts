@@ -9,6 +9,10 @@ import {StorageSettings} from './FirebaseDatastore';
 
 export class FirebaseDatastores {
 
+    public static computeSharedFileURL(request: FetchFileRequest) {
+        return "https://us-central1-polar-cors.cloudfunctions.net/fetch/?data=" + encodeURIComponent(JSON.stringify(request));
+    }
+
     public static computeStoragePath(backend: Backend, fileRef: FileRef): StoragePath {
 
         const ext = FilePaths.toExtension(fileRef.name);
@@ -122,5 +126,11 @@ export class FirebaseDatastores {
 
     }
 
+}
 
+interface FetchFileRequest {
+    readonly token: string;
+    readonly docID: string;
+    readonly backend: Backend;
+    readonly fileRef: FileRef;
 }
