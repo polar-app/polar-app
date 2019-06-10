@@ -39,6 +39,7 @@ import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
 import {Latch} from '../util/Latch';
 import {Firebase} from '../firebase/Firebase';
+import {FirebaseDatastores} from './FirebaseDatastores';
 
 const log = Logger.create();
 
@@ -344,7 +345,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         log.debug(`writeFile: ${backend}: `, ref);
 
-        const storagePath = this.computeStoragePath(backend, ref);
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
         const pendingFileWriteKey = storagePath.path;
 
         let latch = this.pendingFileWrites[pendingFileWriteKey];
@@ -510,7 +511,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     private createFileMetaID(backend: Backend, ref: FileRef) {
-        const storagePath = this.computeStoragePath(backend, ref);
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
         return Hashcodes.create(storagePath.path);
     }
 
@@ -524,7 +525,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const storage = this.storage!;
 
-        const storagePath = this.computeStoragePath(backend, ref);
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
 
         const storageRef = storage.ref().child(storagePath.path);
 
@@ -551,7 +552,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
 
-        const storagePath = this.computeStoragePath(backend, ref);
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
 
         const storage = this.storage!;
         const storageRef = storage.ref().child(storagePath.path);
@@ -571,7 +572,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const storage = this.storage!;
 
-            const storagePath = this.computeStoragePath(backend, ref);
+            const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
 
             const fileRef = storage.ref().child(storagePath.path);
             await fileRef.delete();
@@ -735,119 +736,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         }
 
         return result;
-
-    }
-
-    private computeStoragePath(backend: Backend, fileRef: FileRef): StoragePath {
-
-        const ext = FilePaths.toExtension(fileRef.name);
-
-        const suffix = ext.map(value => {
-
-                if ( ! value.startsWith('.') ) {
-                    // if the suffix doesn't begin with a '.' then add it.
-                    value = '.' + value;
-                }
-
-                return value;
-
-            })
-            .getOrElse('');
-
-        const settings = this.computeStorageSettings(ext).getOrUndefined();
-
-        let key: any;
-
-        const uid = FirebaseDatastore.getUserID();
-
-        if (fileRef.hashcode) {
-
-            key = {
-
-                // We include the uid of the user to avoid the issue of user
-                // conflicting on files and the ability to share them per file.
-                // The cloud storage costs for raw binary files are
-                // inconsequential so have one file per user.
-
-                uid,
-                backend,
-                alg: fileRef.hashcode.alg,
-                enc: fileRef.hashcode.enc,
-                data: fileRef.hashcode.data,
-                suffix
-
-            };
-
-        } else {
-
-            // Build a unique name from the filename and the UUID of the user.
-            // this shouldn't actually be used except in the cases of VERY old
-            // datastores.
-            //
-            key = {
-                uid,
-                filename: fileRef.name
-            };
-
-        }
-
-        const id = Hashcodes.createID(key, 40);
-
-        const path = `${backend}/${id}${suffix}`;
-
-        return {path, settings};
-
-    }
-
-    private computeStorageSettings(optionalExt: Optional<string>): Optional<StorageSettings> {
-
-        const PUBLIC_MAX_AGE_1WEEK = 'public,max-age=604800';
-
-        const ext = optionalExt.getOrElse('').toLowerCase();
-
-        if (ext === 'jpg' || ext === 'jpeg') {
-
-            return Optional.of({
-                cacheControl: PUBLIC_MAX_AGE_1WEEK,
-                contentType: 'image/jpeg'
-            });
-
-        }
-
-        if (ext === 'pdf') {
-
-            return Optional.of({
-                cacheControl: PUBLIC_MAX_AGE_1WEEK,
-                contentType: 'application/pdf'
-            });
-
-        }
-
-        if (ext === 'png') {
-
-            return Optional.of({
-                cacheControl: PUBLIC_MAX_AGE_1WEEK,
-                contentType: 'image/png'
-            });
-
-        }
-
-        if (ext === 'svg') {
-
-            return Optional.of({
-                cacheControl: PUBLIC_MAX_AGE_1WEEK,
-                contentType: 'image/svg'
-            });
-
-        }
-
-        // the fall through of cached data should work for PHZ files and other
-        // types of binary data.
-
-        return Optional.of({
-            cacheControl: PUBLIC_MAX_AGE_1WEEK,
-            contentType: 'application/octet-stream'
-        });
 
     }
 
@@ -1269,12 +1157,12 @@ function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): M
 
 }
 
-interface StoragePath {
+export interface StoragePath {
     readonly path: string;
     readonly settings?: StorageSettings;
 }
 
-interface StorageSettings {
+export interface StorageSettings {
     readonly cacheControl: string;
     readonly contentType: string;
 }
