@@ -400,8 +400,9 @@ https://firebase.google.com/docs/rules/rules-behavior
 
 # Implementation Strategy
 
-- Now I need to work on the 'fetch' system to read data using the token and 
-  computing the URL properly.
+- Test that I can fetch URLs properly
+    - update the security rules in the main polar firebase project
+    - run the tests THERE ... 
 
 - the current 'permissions' system of 'private' or 'public' with the DocMeta 
   won't really work with the new system so we have to upgrade the permissions 
