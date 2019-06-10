@@ -1,8 +1,8 @@
 
 export interface Hashcode {
     readonly enc: HashEncoding;
-    alg: HashAlgorithm;
-    data: string;
+    readonly alg: HashAlgorithm;
+    readonly data: string;
 }
 
 export enum HashEncoding {
