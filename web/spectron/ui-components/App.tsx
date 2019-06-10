@@ -67,6 +67,8 @@ import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premi
 import {Nav} from '../../js/ui/util/Nav';
 import {SubscriptionPlan} from './SubscriptionPlan';
 import {CrowdfundingBar} from '../../js/ui/crowdfunding/CrowdfundingBar';
+import {ShareContentControl} from '../../js/apps/viewer/ShareContentControl';
+import {NetworkLayers} from '../../js/datastore/Datastore';
 
 const styles = {
     swatch: {
@@ -170,112 +172,122 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <CrowdfundingBar/>
+                <ShareContentControl datastoreCapabilities={{
+                                        networkLayers: NetworkLayers.LOCAL_AND_WEB,
+                                        permission: {
+                                            mode: 'rw'}
+                                        }
+                                     }
+                                     createShareLink={async () => 'http://example.com?1=2'}
+                                     onVisibilityChanged={async () => console.log('visibility changed')}
+                                     onDone={NULL_FUNCTION}/>
+
+                {/*<CrowdfundingBar/>*/}
 
 
-                <Button className="ml-2"
-                        color="light"
-                        size="sm"
-                        onClick={NULL_FUNCTION}
-                        style={{
-                            backgroundColor: 'red',
-                            fontWeight: 'bold'
-                        }}>Go Premium</Button>
+                {/*<Button className="ml-2"*/}
+                {/*        color="light"*/}
+                {/*        size="sm"*/}
+                {/*        onClick={NULL_FUNCTION}*/}
+                {/*        style={{*/}
+                {/*            backgroundColor: 'red',*/}
+                {/*            fontWeight: 'bold'*/}
+                {/*        }}>Go Premium</Button>*/}
 
-                <div>
+                {/*<div>*/}
 
-                    <div style={{display: 'flex'}}>
+                {/*    <div style={{display: 'flex'}}>*/}
 
-                        <div className="mt-auto mb-auto">
-                            You're currently on the <b>BRONZE</b> plan.
-                        </div>
+                {/*        <div className="mt-auto mb-auto">*/}
+                {/*            You're currently on the <b>BRONZE</b> plan.*/}
+                {/*        </div>*/}
 
-                        <div className="ml-auto mt-auto mb-auto">
+                {/*        <div className="ml-auto mt-auto mb-auto">*/}
 
-                            <Button color="primary"
-                                    size="sm"
-                                    onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/pricing.html')}>
+                {/*            <Button color="primary"*/}
+                {/*                    size="sm"*/}
+                {/*                    onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/pricing.html')}>*/}
 
-                                <i className="fas fa-external-link-alt"></i>
-                                &nbsp;
-                                View Plans and Pricing
+                {/*                <i className="fas fa-external-link-alt"></i>*/}
+                {/*                &nbsp;*/}
+                {/*                View Plans and Pricing*/}
 
-                            </Button>
+                {/*            </Button>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                    <div style={{display: 'flex'}} className="mt-1">
+                {/*    <div style={{display: 'flex'}} className="mt-1">*/}
 
-                        <Button color="danger" size="md">
-                            <span>Cancel Subscription</span>
-                        </Button>
+                {/*        <Button color="danger" size="md">*/}
+                {/*            <span>Cancel Subscription</span>*/}
+                {/*        </Button>*/}
 
-                        <div className="ml-auto">
+                {/*        <div className="ml-auto">*/}
 
-                            <UncontrolledDropdown>
+                {/*            <UncontrolledDropdown>*/}
 
-                                <DropdownToggle color="secondary" caret>
-                                    Change Plan
-                                </DropdownToggle>
+                {/*                <DropdownToggle color="secondary" caret>*/}
+                {/*                    Change Plan*/}
+                {/*                </DropdownToggle>*/}
 
-                                <DropdownMenu>
-                                    <DropdownItem>BRONZE</DropdownItem>
-                                    <DropdownItem>SILVER</DropdownItem>
-                                    <DropdownItem>GOLD</DropdownItem>
-                                </DropdownMenu>
+                {/*                <DropdownMenu>*/}
+                {/*                    <DropdownItem>BRONZE</DropdownItem>*/}
+                {/*                    <DropdownItem>SILVER</DropdownItem>*/}
+                {/*                    <DropdownItem>GOLD</DropdownItem>*/}
+                {/*                </DropdownMenu>*/}
 
-                            </UncontrolledDropdown>
+                {/*            </UncontrolledDropdown>*/}
 
-                        </div>
+                {/*        </div>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                    <p>
-                        If you have any issues with billing or questions about
-                        your plan please contact <b>support@getpolarized.io</b>.
-                    </p>
+                {/*    <p>*/}
+                {/*        If you have any issues with billing or questions about*/}
+                {/*        your plan please contact <b>support@getpolarized.io</b>.*/}
+                {/*    </p>*/}
 
-                </div>
-
-
-                <hr/>
-
-                <div style={{display: 'flex'}}>
+                {/*</div>*/}
 
 
-                    <SubscriptionPlan name="Free" capacity="350" unit="MB" price="0.00"/>
-                    <SubscriptionPlan name="Bronze" capacity="2" unit="GB" price="4.99" selected/>
-                    <SubscriptionPlan name="Silver" capacity="50" unit="GB" price="9.99"/>
-                    <SubscriptionPlan name="Gold" capacity="1000" unit="GB" price="14.99"/>
+                {/*<hr/>*/}
 
-                </div>
+                {/*<div style={{display: 'flex'}}>*/}
 
 
-                <div style={{display: 'flex'}} className="mt-1">
+                {/*    <SubscriptionPlan name="Free" capacity="350" unit="MB" price="0.00"/>*/}
+                {/*    <SubscriptionPlan name="Bronze" capacity="2" unit="GB" price="4.99" selected/>*/}
+                {/*    <SubscriptionPlan name="Silver" capacity="50" unit="GB" price="9.99"/>*/}
+                {/*    <SubscriptionPlan name="Gold" capacity="1000" unit="GB" price="14.99"/>*/}
 
-                    <Button color="danger"
-                            size="sm">
-                        <span>Cancel Subscription</span>
-                    </Button>
-
-                    <div className="ml-auto">
-
-                        <Button color="primary"
-                                size="sm"
-                                onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/pricing.html')}>
-
-                            <i className="fas fa-external-link-alt"></i>
-                            &nbsp;
-                            View Plans and Pricing
-
-                        </Button>
+                {/*</div>*/}
 
 
-                    </div>
+                {/*<div style={{display: 'flex'}} className="mt-1">*/}
 
-                </div>
+                {/*    <Button color="danger"*/}
+                {/*            size="sm">*/}
+                {/*        <span>Cancel Subscription</span>*/}
+                {/*    </Button>*/}
+
+                {/*    <div className="ml-auto">*/}
+
+                {/*        <Button color="primary"*/}
+                {/*                size="sm"*/}
+                {/*                onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/pricing.html')}>*/}
+
+                {/*            <i className="fas fa-external-link-alt"></i>*/}
+                {/*            &nbsp;*/}
+                {/*            View Plans and Pricing*/}
+
+                {/*        </Button>*/}
+
+
+                {/*    </div>*/}
+
+                {/*</div>*/}
 
 
             </div>

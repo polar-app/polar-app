@@ -83,6 +83,7 @@ datastructure which gives the user the pointer to the doc_id to read.
 || id || The DocID of the document ||
 || uid || FirebaseUIDStr || The owner of this record ||
 || contact_id || The contact ID in our contact database || From this user. We do NOT expose their uid and keep this private.  We use the email addr see ```from_resolution``` footnote ||
+|| token || string || The token used by this user for accessing the resource ||
 || reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
 
 ## doc_peer_pending
@@ -103,6 +104,7 @@ type UserIdentity {
 
 || id || specific IUD for this pending invitation ||
 || to || EmailStr || An email address for the user ||
+|| token || string || The token used by this user for accessing the resource ||
 || message || string || A message given to the user in the original grant so that it can show up in the UI for them to understand why this document was given to them ||
 || reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
 
@@ -125,6 +127,7 @@ By default the document is private (no permissions).
 || uid || The users uid that owns the id (DocID) ||
 || fingerprint || The fingerprint of the document in the doc repo ||
 || recipients || An array of encoded recipients who have access to the document || 
+|| recipientTokens || A map of recipients and their tokens used ||  
 
 ### example:
 
@@ -308,6 +311,12 @@ the new record.
 Only the primary user has access to read/write this record.  This controls all
 their permissions
 
+# Building Fetch URLs
+
+As part of the doc permission system we need a way to grant+revoke and a token 
+needs to be used.  Otherwise, once the user has the token, they will have
+permissions in perpetuity. 
+
 # New users without accounts
 
 One issue is how do we give documents to users who have not yet entered the
@@ -390,8 +399,6 @@ https://firebase.google.com/docs/rules/rules-behavior
 "Some document access calls may be cached, and cached calls do not count towards the limits."
 
 # Implementation Strategy
-
-- The doc_peer_pending table is the main issue... 
 
 - the first big milestone I have to implement is changing the permissions with 
   one user and then fetching again with another user to make sure they can 
@@ -642,4 +649,10 @@ emails with your account via a set.
 should generally be the same structure and just store a ordered list of
 annotations which can then be viewed in the UI.  We're going to go after users
 first and view their stream of annotations.
+
+- backend components working first
     
+    - get the 'fetch' API call to work so I can fetch resources
+    - revoke permissions
+    - tokens to work and the sharing URL to work
+    - 

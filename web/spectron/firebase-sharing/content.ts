@@ -4,6 +4,7 @@ import {Logger} from '../../js/logger/Logger';
 import {Firebase} from '../../js/firebase/Firebase';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {DocPermissions} from '../../js/datastore/firebase/DocPermissions';
+import {DocTokens} from '../../js/datastore/firebase/DocTokens';
 
 const log = Logger.create();
 
@@ -21,61 +22,95 @@ SpectronRenderer.run(async (state) => {
     console.log("Running...");
 
     const app = Firebase.init();
-
-    await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
-    console.log("We are authenticated now");
-
-    const datastore = new FirebaseDatastore();
-    await datastore.init();
     const firestore = app.firestore();
 
     const docMeta = MockDocMetas.createMockDocMeta();
 
-    await datastore.writeDocMeta(docMeta);
+    async function writeInitialData() {
 
-    // keep the doc ID of the document so we can login with another user to test with.
-    const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+        await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+        console.log("We are authenticated now");
 
-    console.log("Working with docID: " + docID);
+        const datastore = new FirebaseDatastore();
+        await datastore.init();
 
-    const writeDocPermission = async () => {
+        await datastore.writeDocMeta(docMeta);
 
-        const recipients = [FIREBASE_USER1];
-        const fingerprint = docMeta.docInfo.fingerprint;
+        // keep the doc ID of the document so we can login with another user to test with.
+        const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
 
-        await DocPermissions.write(fingerprint, recipients);
+        console.log("Working with docID: " + docID);
 
-        // const ref = firestore.collection("doc_permission").doc(docID);
-        //
-        // const id = docID;
-        // const uid = FirebaseDatastore.getUserID();
-        // const fingerprint = docMeta.docInfo.fingerprint;
-        // const recipients = [FIREBASE_USER1];
-        // const data = {id, uid, fingerprint, recipients};
-        //
-        // await ref.set(data);
+        async function writeDocPermission() {
 
-    };
+            const recipientTokens = {FIREBASE_USER1: DocTokens.create()};
+            const fingerprint = docMeta.docInfo.fingerprint;
 
-    await writeDocPermission();
+            await DocPermissions.write(fingerprint, recipientTokens);
 
-    await firestore.collection("doc_meta").doc(docID).get();
-    console.log("Got the doc with the primary user");
+        }
 
-    await datastore.stop();
+        await writeDocPermission();
 
-    await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+        await firestore.collection("doc_meta").doc(docID).get();
+        console.log("Got the doc with the primary user");
 
-    console.log("We are authenticated now with the new user.");
+        await datastore.stop();
 
-    await firestore.collection("doc_meta").doc(docID).get();
+        return docID;
 
-    console.log("Got the document!");
+    }
 
-    // TODO: now log back in as the first user, revoke permission,
-    // login as the second, and make sure we do not have permission now.
+    async function verifyAccessToDocs() {
 
-    // now try to read directly via the document ID
+        await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+        console.log("We are authenticated now with the new user.");
+
+        await firestore.collection("doc_meta").doc(docID).get();
+
+        console.log("Got the document!");
+
+    }
+
+    async function revokeAccessToDocs() {
+
+        await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+
+        async function writeDocPermission() {
+
+            const recipientTokens = {FIREBASE_USER1: DocTokens.create()};
+            const fingerprint = docMeta.docInfo.fingerprint;
+
+            await DocPermissions.write(fingerprint, recipientTokens);
+
+        }
+
+        await writeDocPermission();
+
+        await firestore.collection("doc_meta").doc(docID).get();
+
+        console.log("We have now revoked access to the docs");
+
+    }
+
+    async function verifyAccessDeniedToDocs() {
+
+        await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+        try {
+            await firestore.collection("doc_meta").doc(docID).get();
+            throw new Error("Access was NOT denied");
+        } catch (e) {
+            console.log("Verified that we no longer have access to the docs");
+        }
+
+    }
+
+    const docID = await writeInitialData();
+    await verifyAccessToDocs();
+    await revokeAccessToDocs();
+    await verifyAccessDeniedToDocs();
 
 });
 

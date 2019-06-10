@@ -302,8 +302,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const capabilities = persistenceLayer.capabilities();
 
         const sharingEnabled =
-            this.props.doc.mutable &&
-            sessionStorage.getItem('sharing-enabled') === "true";
+            this.props.doc.mutable;
 
         const AnnotationHeader = () => {
 

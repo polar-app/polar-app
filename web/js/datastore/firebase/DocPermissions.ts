@@ -38,7 +38,7 @@ const COLLECTION_NAME = 'shared_url';
  *
  *      the download URL should be computed as
  *
- *          /fetch?id={doc_meta_id}&backend={backend}&file={file}
+ *          /fetch?id={doc_id}&backend={backend}&file={file}
  *
  *      this system is enough to compute the target URL that should be fetched
  *
@@ -52,7 +52,7 @@ export class DocPermissions {
      * shared publicly.
      */
     public static async write(fingerprint: string,
-                              recipients: readonly Recipient[]) {
+                              recipientTokens: RecipientTokenMap) {
 
         const user = await Firebase.currentUser();
 
@@ -60,11 +60,14 @@ export class DocPermissions {
 
         const id = FirebaseDatastore.computeDocMetaID(fingerprint, uid);
 
+        const recipients = Object.keys(recipientTokens);
+
         const docPermission: DocPermission = {
             id,
             uid,
             fingerprint,
             recipients,
+            recipientTokens,
             lastUpdated: ISODateTimeStrings.create()
         };
 
@@ -123,6 +126,8 @@ interface DocPermission {
 
     readonly recipients: readonly Recipient[];
 
+    readonly recipientTokens: RecipientTokenMap;
+
     readonly lastUpdated: ISODateTimeString;
 
 }
@@ -137,6 +142,8 @@ export type TeamStr = string;
  */
 export type EmailStr = string;
 
+export type TokenIDStr = string;
+
 /**
  * A token:id string that we keep in the users account so that they can access
  * documents JUST by token.
@@ -144,3 +151,10 @@ export type EmailStr = string;
 export type TokenStr = string;
 
 export type Recipient = 'public' | TokenStr | TeamStr | EmailStr;
+
+export interface RecipientTokenMap {
+    [recipient: string]: TokenIDStr;
+}
+
+
+

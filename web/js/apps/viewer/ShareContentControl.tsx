@@ -10,6 +10,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {SplitLayout} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../ui/split_layout/SplitLayoutRight';
+import CreatableSelect from 'react-select/lib/Creatable';
 
 const log = Logger.create();
 
@@ -203,6 +204,29 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                         </p>
 
                         <VisibilityDescription/>
+
+                        <div className="mt-1 mb-1">
+
+                            TODO:
+                                - only accept input that looks like an email address
+                                -
+
+                            <CreatableSelect
+                                isMulti
+                                isClearable
+                                autoFocus
+                                // onKeyDown={event => this.onKeyDown(event)}
+                                // className="basic-multi-select"
+                                classNamePrefix="select"
+                                // onChange={(selectedOptions) => this.handleChange(selectedOptions as TagOption[])}
+                                value={[]}
+                                defaultValue={[]}
+                                placeholder="Enter names or email addresses"
+                                // options={availableTagOptions}>
+                                >
+
+                            </CreatableSelect>
+                        </div>
 
                         <div className="text-right">
 
