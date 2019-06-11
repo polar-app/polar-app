@@ -722,6 +722,18 @@ emails with your account via a set.
       a group where it's open or moderated.
       
         - membership as 'open' or 'moderated'
+        
+        - if we lookup the group and it's public then we do not need to keep a 
+          membership record 
+
+    - We are going to need a reverse group -> document lookup but also a 
+      doc->group lookup
+
+    - we can store content for a doc via a group_content record which is 
+      basically an reverse index of the annotations+comments.  We might even 
+      want to group these into pages so that the number of reads we do is 
+      limited.  We could put this JSON behind a CDN too so that everything is 
+      cached.
 
 - TODO: how do I do token sharing ??? it will work for everything BUT the 
   firebase doc... and I am not sure how to support it...
@@ -738,4 +750,15 @@ first and view their stream of annotations.
     - get the 'fetch' API call to work so I can fetch resources
     - revoke permissions
     - tokens to work and the sharing URL to work
-    - 
+
+- review the following group permissions systems 
+    - google drive
+    - github
+    - slack
+
+# Use Cases
+
+## Sharing Documents between users
+## Private Moderated Groups
+## Private Moderated with Teams
+## Public Groups
