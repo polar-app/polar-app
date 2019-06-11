@@ -211,10 +211,21 @@ SpectronRenderer.run(async (state) => {
 
     }
 
+    // user0
     const docID = await writeInitialData();
+
+    // user1
     const docPeer = await verifyAccessToDocs();
+
+    // user0
     await revokeAccessToDocs();
+
+    // user1
     await verifyAccessRevoked(docPeer);
+
+    // TODO: grant access again
+    // TODO: make sure user0 has access to the doc from user1 and that it's
+    //       reciprocal.
 
     await state.testResultWriter.write(true);
 

@@ -4,7 +4,7 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 describe('Firebase Sharing', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(120000);
+    this.timeout(240000);
 
     it('basic tests', async function() {
 
