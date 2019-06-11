@@ -25,7 +25,6 @@ const FIREBASE_PASS = process.env.FIREBASE_PASS!;
 const FIREBASE_USER1 = process.env.FIREBASE_USER1!;
 const FIREBASE_PASS1 = process.env.FIREBASE_PASS1!;
 
-
 async function verifyFailed(delegate: () => Promise<any>) {
 
     let failed: boolean;
@@ -217,78 +216,8 @@ SpectronRenderer.run(async (state) => {
     await revokeAccessToDocs();
     await verifyAccessRevoked(docPeer);
 
+    await state.testResultWriter.write(true);
+
     console.log("ALL WORKED!");
 
 });
-
-class Maths {
-
-    public static stats(values: readonly number[]): Stats {
-
-        // compute min/max/mean 90 and 95th percentile.
-        const min = Math.min(...values);
-        const max = Math.max(...values);
-        const mean = this.mean(values);
-
-        // total duration
-        const duration = this.sum(values);
-        const percentile90 = this.percentile(90, values);
-        const percentile95 = this.percentile(95, values);
-
-        return {min, max, mean, duration, percentile90, percentile95};
-
-    }
-
-    public static percentile(percentile: number,
-                             values: readonly number[]) {
-
-        if (values.length === 0) {
-            return NaN;
-        }
-
-        const cutoff = Math.floor((values.length * (percentile / 100)) - 1);
-
-        if (cutoff < 0 || cutoff >= values.length) {
-            throw new Error("Invalid cutoff: " + cutoff);
-        }
-
-        const ranked = [...values].sort().reverse();
-
-        return ranked[cutoff];
-
-    }
-
-    public static sum(values: readonly number[]) {
-
-        let result: number = 0;
-
-        for (const value of values) {
-            result += value;
-        }
-
-        return result;
-
-    }
-
-    public static mean(values: readonly number[]) {
-
-        if (values.length === 0) {
-            return NaN;
-        }
-
-        const sum = Maths.sum(values);
-
-        return sum / values.length;
-
-    }
-
-}
-
-interface Stats {
-    readonly min: number;
-    readonly max: number;
-    readonly mean: number;
-    readonly duration: number;
-    readonly percentile90: number;
-    readonly percentile95: number;
-}
