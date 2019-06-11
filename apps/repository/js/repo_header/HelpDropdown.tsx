@@ -45,11 +45,11 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       link="https://getpolarized.io/docs/"
                                       icon="fas fa-book"/>
 
-                    <HelpDropdownItem id="feedback-link"
-                                      title="Feedback"
-                                      tooltip="Provide feedback to help us improve the App"
-                                      link={SURVEY_LINK}
-                                      icon="fas fa-poll-h"/>
+                    <HelpDropdownItem id="support-link"
+                                      title="Support"
+                                      tooltip="Get support on Polar"
+                                      link="#support"
+                                      icon="fas fa-hands-helping"/>
 
                     <HelpDropdownItem id="chat-link"
                                       title="Chat"
@@ -67,10 +67,10 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
                                       id="upgrade-to-premium-link"
-                                      title="Upgrade to Polar Premium"
+                                      title="Upgrade to Premium"
                                       tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
-                                      link="#premium"
-                                      icon="fas fa-money-bill-wave"/>
+                                      link="#plans"
+                                      icon="fas fa-certificate"/>
 
                     <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
 

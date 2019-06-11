@@ -245,6 +245,40 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                             </tr>
                             <tr>
                                 <td>
+                                    Related tag suggestions
+                                </td>
+
+                                <td className="">
+                                </td>
+                                <td className="">
+                                    <i className="fa fa-check"></i>
+                                </td>
+                                <td className="">
+                                    <i className="fa fa-check"></i>
+                                </td>
+                                <td className="">
+                                    <i className="fa fa-check"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Reading statistics
+                                </td>
+
+                                <td className="">
+                                </td>
+                                <td className="">
+                                    <i className="fa fa-check"></i>
+                                </td>
+                                <td className="">
+                                    <i className="fa fa-check"></i>
+                                </td>
+                                <td className="">
+                                    <i className="fa fa-check"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     Support
                                 </td>
 

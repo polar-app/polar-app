@@ -2,15 +2,16 @@
 import React from 'react';
 import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const LogoutButton = (props: IProps) => {
 
     return <Button id="cloud-sync-logout"
-            color="secondary"
-            outline
-            size="sm"
-            onClick={() => props.onLogout()}
-            className="ml-1">
+                   color="secondary"
+                   outline
+                   size="sm"
+                   onClick={() => props.onLogout()}
+                   className="ml-1">
 
         <i className="fas fa-sign-out-alt mr-1"></i>
 
@@ -42,9 +43,9 @@ const UserImage = (props: IProps) => {
 const InviteUsersButton = (props: IProps) => {
 
     return <Button id="cloud-sync-invite-users"
-            color="secondary"
-            size="sm"
-            onClick={() => props.onInvite()}>
+                   color="secondary"
+                   size="sm"
+                   onClick={() => props.onInvite()}>
 
         <i className="fas fa-user-plus mr-1"></i>
 
@@ -54,14 +55,22 @@ const InviteUsersButton = (props: IProps) => {
 
 };
 
-const ViewPlansAndPricingButton = (props: IProps) => {
+const ViewPlansAndPricingButton = () => {
+
+    const handler = () => {
+
+        RendererAnalytics.event({category: 'premium', action: 'view-plans-and-pricing-button'});
+
+        document.location.hash = "plans";
+
+    };
 
     return <Button color="success"
-            size="sm"
-            onClick={() => document.location.hash = "plans"}>
+                   size="md"
+                   onClick={handler}>
 
-        {/*<i className="fas fa-external-link-alt"></i>*/}
-        {/*&nbsp;*/}
+        <i className="fas fa-certificate"></i>
+        &nbsp;
         View Plans and Pricing
 
     </Button>;
@@ -121,7 +130,7 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
 
                     <div className="mt-2 pt-2 border-top text-center">
 
-                        <ViewPlansAndPricingButton {...props}/>
+                        <ViewPlansAndPricingButton/>
 
                     </div>
 
