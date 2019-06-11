@@ -392,6 +392,8 @@ https://firebase.google.com/docs/rules/rules-behavior
 
 # Implementation Strategy
 
+- Implement testing of the FULL user flow throughout the app...
+
 - Test that I can fetch URLs properly
     - update the security rules in the main polar firebase project
     - run the tests THERE ... 
