@@ -1,10 +1,10 @@
 import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 
-describe('Firebase Datastore', function() {
+describe('Firebase Sharing', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(30000);
+    this.timeout(120000);
 
     it('basic tests', async function() {
 
