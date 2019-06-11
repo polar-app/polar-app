@@ -392,7 +392,9 @@ https://firebase.google.com/docs/rules/rules-behavior
 
 # Implementation Strategy
 
-- Implement testing of the FULL user flow throughout the app...
+- Implement testing of the FULL user flow throughout the app including the rejection... 
+
+- Implement the proper getFile() in the API which reads the token from our doc_permission.
 
 - Test that I can fetch URLs properly
     - update the security rules in the main polar firebase project
