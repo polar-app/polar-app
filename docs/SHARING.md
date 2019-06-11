@@ -631,6 +631,8 @@ emails with your account via a set.
         and provide a smarter mechanism later. 
 
     - I think this is the only real way we can do this honestly.
+    
+    - 
 
 ## TODO
 
@@ -679,7 +681,47 @@ emails with your account via a set.
           - FIXME: How do we grant access to each users document?  We would have 
             to refer back to the root_doc_id         
            
- 
+          - FIXME: this will require hooos because the original user could 
+            go away. 
+            
+          - Maybe add recursive sharing later... or requests to access the 
+            document might be a better strategy for now... then we could make
+            automatic approval a pro feature.
+            
+          - 
+            
+    - consider reworking this entire thing as groups.  Regular named groups and 
+      headless groups that are created for subsets of users which don't have a 
+      name.  
+      
+    - using groups means that we can't do network analysis attacks to violate
+      a persons privacy.
+      
+    - we can have a groups field that explains which groups have access to a 
+      document and we can FIRST check if the groups field exists and that it has 
+      members before we do a lookup against the groups tables and this will save 
+      money from performing needless writes.
+      
+    - teams can be de-normalized on every write so that RBAC works properly.
+    
+    - only the team owner(s) can add and remove members from the group.  The 
+      owners can grant access to other owners of course but maybe not in the 
+      initial version.
+      
+    - We will need the ability to convert a headless group, to a real group in 
+      the future but we can do that by just going through the naming lookup 
+      process and then attaching the name.
+      
+    - make sure I can have a document that is shared with multiple groups and
+      that this model works.  Alice should share doc0 with Bob  and Carol could
+      share the same doc0 with Bob.  Both Alice and Carol could have found it
+      independently and both Alice and Carol wouldn't know about each other.
+      
+    - headless can have multiple owners too but this would have to be an 
+      'allow others to invite' and I think this would just be a 'mode' for 
+      a group where it's open or moderated.
+      
+        - membership as 'open' or 'moderated'
 
 - TODO: how do I do token sharing ??? it will work for everything BUT the 
   firebase doc... and I am not sure how to support it...
