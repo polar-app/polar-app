@@ -73,13 +73,19 @@ SpectronRenderer.run(async (state) => {
 
             await datastore.writeDocMeta(docMeta);
 
+            const fingerprint = docMeta.docInfo.fingerprint;
+
             // keep the doc ID of the document so we can login with another user to test with.
-            const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+            const docID = FirebaseDatastore.computeDocMetaID(fingerprint);
 
             console.log("Working with docID: " + docID);
 
             const token = DocTokens.create();
 
+
+            // FIXME: this should be ONE function becanse in accept() I have to
+            // write the same thing just in reverse so that the host can read
+            // the guests documents too.
             async function writeDocPermission() {
 
                 const recipientTokens: RecipientTokenMap = {};
@@ -97,7 +103,8 @@ SpectronRenderer.run(async (state) => {
                     message: 'here is your doc yo',
                     reciprocal: false,
                     token,
-                    docID
+                    docID,
+                    fingerprint
                 });
 
             }

@@ -634,6 +634,53 @@ emails with your account via a set.
 
 ## TODO
 
+- If Alice shares with Bob and Carol how does Bob discover Carol? Bob can
+  discover Alice and vice versa but Alice can't discover Bob.  Use the same 
+  token for everyone?  That would not work of course because then there is no 
+  way to revoke a specific user.
+  
+    - set permissions on doc_peer so that other users shared with those users 
+      can read from doc_peer directly...  
+         
+    - the major problem we have now is that this is a N^2 issue where we would 
+      have to push node_peer records out to everyone.  IF we instead used a 
+      hierarchical system that would work much better but node_peer would need
+      permissions to allow readers in doc_permission too but this doesn't seem 
+      too hard.
+
+    - we would have to rewrite doc_peer to accept just ONE record with a 
+      recipients set...  
+  
+    - We CAN NOT do that because each user has their own token that would be 
+      given out. We have a problem now with token distribution...
+      
+    - this is N-1*N edges per group... A better solution would be just having N 
+      records.  We would have to do this in a hierarchy though but what if the 
+      original user stopped sharing their document.  
+      
+      - Also, how do we clean up after the fact?   Maybe this is a feature.  If 
+        they want more complicated group membership use a team and add/remove
+        people from that team?
+        
+      - this way I can push people into private teams...
+      
+    - here's A solution:
+        - grant each user permission to write to the node_peer and 
+          node_permission table
+          
+          - allows us to make this configurable by the owner (allow users to 
+            add others)
+            
+          - is hierarchical and scales
+          
+          - FIXME: How do we allow the to NOT see the tokens of other users.  OH!  
+            these are in the doc_permission table not the doc_peer.
+            
+          - FIXME: How do we grant access to each users document?  We would have 
+            to refer back to the root_doc_id         
+           
+ 
+
 - TODO: how do I do token sharing ??? it will work for everything BUT the 
   firebase doc... and I am not sure how to support it...
     - one thing is to expose the key directly as the token? Then I remove the 

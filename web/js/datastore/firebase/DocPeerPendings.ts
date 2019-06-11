@@ -8,6 +8,8 @@ import {ContactsUsingEmail} from './Contacts';
 import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
 import {DocPeer} from './DocPeers';
+import {FirebaseDatastores} from '../FirebaseDatastores';
+import {FirebaseDatastore} from '../FirebaseDatastore';
 
 const COLLECTION_NAME = 'doc_peer_pending';
 
@@ -105,7 +107,19 @@ export class DocPeerPendings {
             token: primary.token,
             reciprocal: primary.reciprocal,
             contact_id: contact.id,
-            docID: primary.docID
+            docID: primary.docID,
+            fingerprint: primary.fingerprint
+        });
+
+        // TODO: these should be in batches I think...
+        // now write the pending record
+
+        const guestDocID = FirebaseDatastore.computeDocMetaID(pending.fingerprint);
+
+        await this.write({
+            to: primary.from.email,
+            docID: guestDocID,
+            fingerprint: pending.fingerprint
         });
 
         // now delete the remaining.
@@ -133,6 +147,8 @@ export interface DocPeerPendingInit {
      * The actual DocID we're working with.
      */
     readonly docID: DocIDStr;
+
+    readonly fingerprint: string;
 
 }
 

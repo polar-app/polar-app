@@ -60,6 +60,8 @@ export interface DocPeerInit {
      */
     readonly docID: DocIDStr;
 
+    readonly fingerprint: string;
+
 }
 
 export interface DocPeer extends DocPeerInit {
