@@ -759,6 +759,14 @@ first and view their stream of annotations.
 # Use Cases
 
 ## Sharing Documents between users
+
 ## Private Moderated Groups
+
 ## Private Moderated with Teams
+
 ## Public Groups
+
+End users can search for groups by name, tags and rank (descending).
+
+They then have the list of groups in their folders sidebar and can interact 
+with them directly.  Adding documents to the their document repo.   
