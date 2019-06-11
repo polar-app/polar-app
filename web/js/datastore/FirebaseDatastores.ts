@@ -9,7 +9,7 @@ import {StorageSettings} from './FirebaseDatastore';
 
 export class FirebaseDatastores {
 
-    public static computeSharedFileURL(request: FetchFileRequest) {
+    public static computeFetchURL(request: FetchFileRequest) {
         return "https://us-central1-polar-cors.cloudfunctions.net/fetch/?data=" + encodeURIComponent(JSON.stringify(request));
     }
 

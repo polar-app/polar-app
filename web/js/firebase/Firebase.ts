@@ -33,7 +33,7 @@ export class Firebase {
             return this.app;
         }
 
-        const config = CONFIG_STAGING;
+        const config = CONFIG_PRODUCTION;
 
         return this.app = firebase.initializeApp(config);
 

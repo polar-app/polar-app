@@ -7,6 +7,7 @@ import {Image} from './Contacts';
 import {ContactsUsingEmail} from './Contacts';
 import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
+import {DocPeer} from './DocPeers';
 
 const COLLECTION_NAME = 'doc_peer_pending';
 
@@ -84,7 +85,7 @@ export class DocPeerPendings {
 
     }
 
-    public static async accept(pending: DocPeerPending) {
+    public static async accept(pending: DocPeerPending): Promise<DocPeer>{
 
         // first get all the pending requests
         const docPeerPendings = await this.get();
@@ -100,7 +101,7 @@ export class DocPeerPendings {
 
         const contact = await ContactsUsingEmail.getOrCreate(primary.from.email, primary.from);
 
-        await DocPeers.write({
+        const docPeer = await DocPeers.write({
             token: primary.token,
             reciprocal: primary.reciprocal,
             contact_id: contact.id,
@@ -111,6 +112,8 @@ export class DocPeerPendings {
         for (const docPeerPending of docPeerPendings) {
             await this.delete(docPeerPending.id);
         }
+
+        return docPeer;
 
     }
 

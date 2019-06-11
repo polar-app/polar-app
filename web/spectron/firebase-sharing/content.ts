@@ -4,13 +4,14 @@ import {Logger} from '../../js/logger/Logger';
 import {Firebase} from '../../js/firebase/Firebase';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {DocPermissions} from '../../js/datastore/firebase/DocPermissions';
+import {RecipientTokenMap} from '../../js/datastore/firebase/DocPermissions';
 import {DocTokens} from '../../js/datastore/firebase/DocTokens';
-import {DocPeerPending} from '../../js/datastore/firebase/DocPeerPendings';
 import {DocPeerPendings} from '../../js/datastore/firebase/DocPeerPendings';
 import {assert} from 'chai';
-import {RecipientTokenMap} from '../../js/datastore/firebase/DocPermissions';
-import {Sender} from '../../js/datastore/firebase/DocPeerPendings';
-import {DocPeer} from '../../js/datastore/firebase/DocPeers';
+import {Backend} from '../../js/datastore/Backend';
+import {FilePaths} from '../../js/util/FilePaths';
+import {FileRef} from '../../js/datastore/Datastore';
+import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
 
 const log = Logger.create();
 
@@ -32,6 +33,12 @@ SpectronRenderer.run(async (state) => {
 
     const docMeta = MockDocMetas.createMockDocMeta();
 
+    const pdfPath = FilePaths.join(__dirname, "..", "..", "..", "docs", "examples", "pdf", "chubby.pdf");
+
+    const fileRef: FileRef = {
+        name: "chubby.pdf"
+    };
+
     async function writeInitialData() {
 
         await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
@@ -39,6 +46,8 @@ SpectronRenderer.run(async (state) => {
 
         const datastore = new FirebaseDatastore();
         await datastore.init();
+
+        await datastore.writeFile(Backend.STASH, fileRef, {path: pdfPath});
 
         await datastore.writeDocMeta(docMeta);
 
@@ -69,8 +78,18 @@ SpectronRenderer.run(async (state) => {
 
         }
 
+        async function verifyFileFetch() {
+            const file = datastore.getFile(Backend.STASH, fileRef);
+            await fetch(file.url);
+
+            console.log("We can fetch the doc as the user.");
+
+        }
+
         await writeDocPermission();
         await writeDocPeerPending();
+
+        await verifyFileFetch();
 
         await firestore.collection("doc_meta").doc(docID).get();
         console.log("Got the doc with the primary user");
@@ -98,7 +117,28 @@ SpectronRenderer.run(async (state) => {
 
         const docPeerPending = docPeerPendings.filter(current => current.docID === docID)[0];
 
-        await DocPeerPendings.accept(docPeerPending);
+        const docPeer = await DocPeerPendings.accept(docPeerPending);
+
+        async function verifyFileFetch() {
+
+            console.log("Making sure we can fetch the URL to the shared file in the backend");
+
+            const fetchURL = FirebaseDatastores.computeFetchURL({
+                token: docPeer.token,
+                docID: docPeer.docID,
+                fileRef,
+                backend: Backend.STASH
+            });
+
+            console.log({fetchURL});
+
+            await fetch(fetchURL);
+
+            console.log("It worked!");
+
+        }
+
+        await verifyFileFetch();
 
         console.log("We are authenticated now with the new user.");
 

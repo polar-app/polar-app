@@ -18,7 +18,7 @@ export class DocPeers {
      * Create a new shared URL which includes a download token which can be
      * shared publicly.
      */
-    public static async write(docPeer: DocPeerInit) {
+    public static async write(docPeer: DocPeerInit): Promise<DocPeer> {
 
         const id = this.createID();
 
@@ -37,6 +37,8 @@ export class DocPeers {
         const record: DocPeer = {id, created, uid, ...docPeer};
 
         await ref.set(record);
+
+        return record;
 
     }
 
