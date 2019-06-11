@@ -2,77 +2,6 @@
 
 Sharing Design in Polar
 
-# Datastructure
-
-Update the DocMeta to include a new sharing section that's a sibling to DocInfo 
-(DocSharing?)
-
-```
-
-{
-    /**
-     * Stores the high level sharing permissions for the document including 
-     * where we received and who has been given access.
-     */
-    sharing: {
-        
-        // FIXME: this is now a doc_peer table.
-        
-        /**
-         * Contains a list of users that are also sharing the same document that
-         * we're collaborating with (all the peers in the group).
-         */
-        peers: [
-            {
-            
-                /**
-                  * True when this is the original user who granted us access
-                  * to the document.
-                  *
-                origin: true,
-
-                /**
-                 * The time we discovered this user.
-                 */                
-                discovered: "2008-09-15T15:53:00+05:00",
-                
-                /**
-                 * The owner of this document in our 'contact' table.     
-                 */
-                contact_id: '',
-
-                /**
-                 * The user ID of the owner, denormalized from the contact ID.
-                 */
-                user_id: '',
-            
-                // The `doc_id` is needed in the source so that we can use
-                // FileRef when the user calls BackendFileRefs.toBackendFileRefs
-                // I can compute/add the required metadata that needs to be
-                // attached to the FileRef to denote whether they are the owner
-                // or not and who the owner is and how we build the URL
-                // properly.
-                // 
-                // We then lookup the data on the backend permissions system so
-                // that we verify that the user actually DOES have access to the
-                // file.
-
-                doc_id: '0x000'
-                
-                /**
-                 * The last version of this document we've seen.  This is used 
-                 * to determine if we need to update in the UI.
-                 */
-                uuid: string,
-                
-            }            
-        ]
-                
-    },
-    
-}
-```
-
 # Tables
 
 ## doc_peer
@@ -635,6 +564,13 @@ emails with your account via a set.
     - 
 
 ## TODO
+
+- if I have an 'origin' in a doc_peer can't I get most of what I want?  I would 
+  just reference a separate table which ONLY the other notes... 
+  
+    - shit ... I'm still back to the issue where I need too many tokens I think.
+    
+    - THAT and I need to have a way to keep the sysmem in sync with groups.  
 
 - The group ID for a document could be the doc ID the root / primary doc and 
   we could specify type=doc.   
