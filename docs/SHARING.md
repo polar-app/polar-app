@@ -612,7 +612,7 @@ emails with your account via a set.
 
 # Token sharing "anyone with the URL"
 
-- we expose the raw doc ID in the URL?
+ - we expose the raw doc ID in the URL?
     - are there any downsides to this?  I don't think leaking it is a problem
     
     - JUST create a sharing URL and then that URL adds it to the users doc repo 
@@ -635,6 +635,16 @@ emails with your account via a set.
     - 
 
 ## TODO
+
+- public/private has to do with what is or is not discoverable.  Not who can 
+  read/write to the group.  We might also want read/write access to groups.  
+  
+  It might be nice to have a group 'ro' where people in the given permission can 
+  see what people are talking about but not comment.
+  
+  - also:
+      - can it be indexed by google
+      - can it be discovered ?    
 
 - If Alice shares with Bob and Carol how does Bob discover Carol? Bob can
   discover Alice and vice versa but Alice can't discover Bob.  Use the same 
