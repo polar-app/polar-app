@@ -15,6 +15,7 @@ import {Rect} from '../../../Rect';
 import {BoxController} from "../../../boxes/controller/BoxController";
 import {PagemarkMode} from '../../../metadata/PagemarkMode';
 import {DocMetas} from "../../../metadata/DocMetas";
+import {isPresent} from '../../../Preconditions';
 
 const log = Logger.create();
 
@@ -140,13 +141,13 @@ export class AbstractPagemarkComponent extends Component {
         //   properly.
 
         const container = this.annotationEvent!.container;
-        Preconditions.assertNotNull(container, "container");
+        Preconditions.assertPresent(container, "container");
 
         if (!this.pagemark) {
             throw new Error("Pagemark is required");
         }
 
-        if (!this.pagemark.percentage) {
+        if (!isPresent(this.pagemark.percentage)) {
             throw new Error("Pagemark has no percentage");
         }
 
