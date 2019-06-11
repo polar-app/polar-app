@@ -705,6 +705,26 @@ first and view their stream of annotations.
     - github
     - slack
 
+# New Group Design
+
+## group table:
+
+Metadata for this group.
+
+id: unique ID for this group 
+name?: The name (optional) for this group.  Must be 
+slug?: The slug for this group (derived from the name).   
+org_id?: For organizations the org_id
+
+## group_doc table:
+
+id: the ID for this doc...  
+doc_info: The owner's doc info for this doc... 
+peers: []: 
+
+The documents that have been added to this group.
+ 
+
 # Use Cases
 
 ## Sharing Documents between users
