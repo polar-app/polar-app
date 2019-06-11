@@ -1,13 +1,5 @@
-import {assert} from 'chai';
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
-import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
-import {Backend} from '../../js/datastore/Backend';
-import {FileHandle} from '../../js/util/Files';
-import {Files} from '../../js/util/Files';
-import {FilePaths} from '../../js/util/FilePaths';
-import {DocPermissions} from '../../js/datastore/firebase/DocPermissions';
-import {BackendFileRef} from '../../js/datastore/Datastore';
 
 mocha.setup('bdd');
 mocha.timeout(10000);

@@ -12,6 +12,7 @@ import {Backend} from '../../js/datastore/Backend';
 import {FilePaths} from '../../js/util/FilePaths';
 import {FileRef} from '../../js/datastore/Datastore';
 import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
+import {DocPeer} from '../../js/datastore/firebase/DocPeers';
 
 const log = Logger.create();
 
@@ -23,6 +24,26 @@ const FIREBASE_PASS = process.env.FIREBASE_PASS!;
 
 const FIREBASE_USER1 = process.env.FIREBASE_USER1!;
 const FIREBASE_PASS1 = process.env.FIREBASE_PASS1!;
+
+
+async function verifyFailed(delegate: () => Promise<any>) {
+
+    let failed: boolean;
+
+    try {
+
+        await delegate();
+        failed = false;
+
+    } catch (e) {
+        failed = true;
+    }
+
+    if (! failed) {
+        throw new Error("Did not fail as expected");
+    }
+
+}
 
 SpectronRenderer.run(async (state) => {
 
@@ -38,6 +59,26 @@ SpectronRenderer.run(async (state) => {
     const fileRef: FileRef = {
         name: "chubby.pdf"
     };
+
+    async function verifyFileFetch(docPeer: DocPeer) {
+
+        console.log("Making sure we can fetch the URL to the shared file in the backend");
+
+        console.log("Trying with token: " + docPeer.token);
+
+        const fetchURL = FirebaseDatastores.computeFetchURL({
+            token: docPeer.token,
+            docID: docPeer.docID,
+            fileRef,
+            backend: Backend.STASH
+        });
+
+        console.log({fetchURL});
+
+        const response = await fetch(fetchURL);
+        assert.equal(response.status, 200);
+
+    }
 
     async function writeInitialData() {
 
@@ -56,10 +97,12 @@ SpectronRenderer.run(async (state) => {
 
         console.log("Working with docID: " + docID);
 
+        const token = DocTokens.create();
+
         async function writeDocPermission() {
 
             const recipientTokens: RecipientTokenMap = {};
-            recipientTokens[FIREBASE_USER1] = DocTokens.create();
+            recipientTokens[FIREBASE_USER1] = token;
             const fingerprint = docMeta.docInfo.fingerprint;
 
             await DocPermissions.write(fingerprint, recipientTokens);
@@ -72,24 +115,23 @@ SpectronRenderer.run(async (state) => {
                 to: FIREBASE_USER1,
                 message: 'here is your doc yo',
                 reciprocal: false,
-                token: DocTokens.create(),
+                token,
                 docID
             });
 
         }
 
-        async function verifyFileFetch() {
+        async function verifyGetFile() {
             const file = datastore.getFile(Backend.STASH, fileRef);
-            await fetch(file.url);
-
+            const response = await fetch(file.url);
+            assert.equal(response.status, 200);
             console.log("We can fetch the doc as the user.");
-
         }
 
         await writeDocPermission();
         await writeDocPeerPending();
 
-        await verifyFileFetch();
+        await verifyGetFile();
 
         await firestore.collection("doc_meta").doc(docID).get();
         console.log("Got the doc with the primary user");
@@ -119,32 +161,15 @@ SpectronRenderer.run(async (state) => {
 
         const docPeer = await DocPeerPendings.accept(docPeerPending);
 
-        async function verifyFileFetch() {
-
-            console.log("Making sure we can fetch the URL to the shared file in the backend");
-
-            const fetchURL = FirebaseDatastores.computeFetchURL({
-                token: docPeer.token,
-                docID: docPeer.docID,
-                fileRef,
-                backend: Backend.STASH
-            });
-
-            console.log({fetchURL});
-
-            await fetch(fetchURL);
-
-            console.log("It worked!");
-
-        }
-
-        await verifyFileFetch();
+        await verifyFileFetch(docPeer);
 
         console.log("We are authenticated now with the new user.");
 
         await firestore.collection("doc_meta").doc(docID).get();
 
         console.log("Got the document!");
+
+        return docPeer;
 
     }
 
@@ -170,23 +195,29 @@ SpectronRenderer.run(async (state) => {
 
     }
 
-    async function verifyAccessDeniedToDocs() {
+    async function verifyAccessRevoked(docPeer: DocPeer) {
 
         await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
 
-        try {
-            await firestore.collection("doc_meta").doc(docID).get();
-            throw new Error("Access was NOT denied");
-        } catch (e) {
-            console.log("Verified that we no longer have access to the docs");
+        async function verifyDocMetaRevoked() {
+            await verifyFailed(async () => await firestore.collection("doc_meta").doc(docID).get());
         }
+
+        async function verifyFileFetchRevoked() {
+            await verifyFailed(async () => await verifyFileFetch(docPeer));
+        }
+
+        await verifyDocMetaRevoked();
+        await verifyFileFetchRevoked();
 
     }
 
     const docID = await writeInitialData();
-    await verifyAccessToDocs();
+    const docPeer = await verifyAccessToDocs();
     await revokeAccessToDocs();
-    await verifyAccessDeniedToDocs();
+    await verifyAccessRevoked(docPeer);
+
+    console.log("ALL WORKED!");
 
 });
 
