@@ -61,8 +61,6 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.treeState = new TreeState(NULL_FUNCTION);
-
         this.persistenceLayerManager = this.props.persistenceLayerManager;
         this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
 
@@ -99,6 +97,8 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
         this.docRepoFilters =
             new DocRepoFilters(onRefreshed, repoDocInfosProvider);
+
+        this.treeState = new TreeState(tags => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current))));
 
         this.init();
 
@@ -346,7 +346,7 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
                                          treeState={this.treeState}
                                          noCreate={true}/>
 
-                                <TagList tags={this.state.tags}/>
+                                {/*<TagList tags={this.state.tags}/>*/}
 
                             </div>
 
@@ -494,10 +494,8 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
 
     private onFilterByTitle(title: string) {
-
         RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
         this.docRepoFilters.onFilterByTitle(title);
-
     }
 
     private refresh() {

@@ -8,6 +8,7 @@ import {Sets} from '../../../../web/js/util/Sets';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
 import {Optional} from '../../../../web/js/util/ts/Optional';
+import {Tag} from '../../../../web/js/tags/Tag';
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have
@@ -44,6 +45,20 @@ export class DocRepoFilters {
         this.refresh();
     }
 
+    public onTagged(tags: Tag[]) {
+
+        const isRootTag = () => {
+            return tags.length === 1 && tags[0].id === '/';
+        };
+
+        if (isRootTag()) {
+            this.filters.filteredTags.set([]);
+        } else {
+            this.filters.filteredTags.set(tags);
+        }
+
+        this.refresh();
+    }
 
     public refresh() {
         this.onRefreshed(this.filter(this.repoDocInfosProvider()));
