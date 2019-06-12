@@ -1,16 +1,11 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {FilteredTags} from '../FilteredTags';
-import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
-import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import DocRepoTable from './DocRepoTable';
-
-const log = Logger.create();
 
 export default class DocRepoApp extends React.Component<IProps, IState> {
 
@@ -30,8 +25,6 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
         this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
 
         this.state = {
-            data: [],
-            columns: new DocRepoTableColumns()
         };
 
     }
@@ -59,8 +52,6 @@ export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
-
-    readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
 
     readonly repoDocMetaManager: RepoDocMetaManager;
 

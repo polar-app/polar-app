@@ -445,6 +445,7 @@ interface IProps {
     readonly repoDocMetaManager: RepoDocMetaManager;
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
+
 }
 
 interface IState {
