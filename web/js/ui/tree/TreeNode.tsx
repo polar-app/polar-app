@@ -11,7 +11,8 @@ class Styles {
 
     public static NODE_PARENT: React.CSSProperties = {
         display: 'flex',
-        paddingTop: '2px'
+        paddingTop: '2px',
+        paddingLeft: '5px'
     };
 
     public static NODE_ICON: React.CSSProperties = {
@@ -208,11 +209,11 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                         </div>
 
                         <div style={Styles.NODE_SELECTOR}>
-                            {/*<Input className="m-0" type="checkbox" />*/}
-                            {/*X*/}
+
                             <input className="m-0"
                                    checked={selected}
                                    type="checkbox"
+                                   style={{display: 'block'}}
                                    onChange={event => this.onCheckbox(event)}/>
 
                         </div>

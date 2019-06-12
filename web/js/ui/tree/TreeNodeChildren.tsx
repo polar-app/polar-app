@@ -9,7 +9,7 @@ class Styles {
     public static NODE_CHILDREN: React.CSSProperties = {
         display: 'block',
         paddingLeft: '10px',
-        marginLeft: '5px',
+        marginLeft: '10px',
         borderLeft: '1px solid #c6c6c6'
     };
 

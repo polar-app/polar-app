@@ -320,7 +320,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                                     const tags: {[id: string]: Tag} = row.original.tags;
 
-                                    const formatted = Object.values(tags)
+                                    const formatted = Tags.onlyRegular(Object.values(tags))
                                         .map(tag => tag.label)
                                         .sort()
                                         .join(", ");
