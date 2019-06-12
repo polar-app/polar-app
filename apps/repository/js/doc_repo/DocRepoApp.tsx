@@ -33,6 +33,9 @@ import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';
 import {DocRepoTable} from './DocRepoTable';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
+import {TagDescriptor} from '../../../../web/js/tags/TagNode';
+import {TagTree} from '../../../../web/js/ui/tree/TagTree';
+import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 
 const log = Logger.create();
 
@@ -40,7 +43,9 @@ const log = Logger.create();
 
 export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> {
 
-    private static hasSentInitAnalyitics = false;
+    private readonly treeState: TreeState<TagDescriptor>;
+
+    private static hasSentInitAnalytics = false;
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
@@ -52,6 +57,8 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.treeState = new TreeState(NULL_FUNCTION);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
         this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
@@ -76,6 +83,7 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
         this.state = {
             data: [],
+            tags: [],
             columns: new DocRepoTableColumns(),
             selected: []
         };
@@ -113,9 +121,9 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
         this.releaser.register(
             this.props.repoDocMetaLoader.addEventListener(event => {
 
-                if (!DocRepoApp.hasSentInitAnalyitics && event.progress.progress === 100) {
+                if (!DocRepoApp.hasSentInitAnalytics && event.progress.progress === 100) {
                     this.emitInitAnalytics(this.props.repoDocMetaManager.repoDocInfoIndex.size());
-                    DocRepoApp.hasSentInitAnalyitics = true;
+                    DocRepoApp.hasSentInitAnalytics = true;
                 }
 
             })
@@ -274,12 +282,11 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
                                     overflow: 'auto'
                                  }}>
 
-                                <div className="m-1">
+                                <div className="p-1 border-top">
 
-                                    {/*<TagTree tags={this.state.tags}*/}
-                                    {/*         treeState={this.treeState}*/}
-                                    {/*         noCreate={true}/>*/}
-                                    this is the left...
+                                    <TagTree tags={this.state.tags}
+                                             treeState={this.treeState}
+                                             noCreate={true}/>
 
                                 </div>
 
@@ -442,7 +449,9 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
      */
     private doRefresh(data: ReadonlyArray<RepoDocInfo>) {
 
-        const state = {...this.state, data};
+        const tags = this.props.repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
+
+        const state = {...this.state, data, tags};
 
         setTimeout(() => {
 
@@ -478,6 +487,7 @@ interface IProps {
 
 interface IState {
     readonly data: ReadonlyArray<RepoDocInfo>;
+    readonly tags: ReadonlyArray<TagDescriptor>;
     readonly columns: DocRepoTableColumns;
     readonly selected: ReadonlyArray<number>;
 }
