@@ -273,7 +273,12 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                                    deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
                                    writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
                                    writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
-                                   refresh={() => this.refresh()}/>
+                                   refresh={() => this.refresh()}
+                                   onDocDeleteRequested={this.onDocDeleteRequested}
+                                   onDocDeleted={this.onDocDeleted}
+                                   onDocSetTitle={this.onDocSetTitle}
+                                   onDocTagged={this.onDocTagged}
+                                   onMultiDeleted={this.onMultiDeleted}/>
 
                 </FixedNavBody>
 

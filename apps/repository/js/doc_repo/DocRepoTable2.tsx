@@ -5,7 +5,6 @@ import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tag';
-import {isPresent} from '../../../../web/js/Preconditions';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
@@ -22,11 +21,8 @@ import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import Input from 'reactstrap/lib/Input';
 import {DocContextMenu} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
-import {ProgressTracker} from '../../../../web/js/util/ProgressTracker';
-import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
-import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 
@@ -40,15 +36,6 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
-
-        this.onDocTagged = this.onDocTagged.bind(this);
-        this.onDocDeleted = this.onDocDeleted.bind(this);
-        this.onDocSetTitle = this.onDocSetTitle.bind(this);
-        this.clearSelected = this.clearSelected.bind(this);
-        this.onMultiTagged = this.onMultiTagged.bind(this);
-        this.onMultiDeleted = this.onMultiDeleted.bind(this);
-
-        this.getSelected = this.getSelected.bind(this);
 
     }
 
@@ -98,57 +85,13 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private onMultiTagged(tags: ReadonlyArray<Tag>) {
-
-        const repoDocInfos = this.getSelected();
-
-        for (const repoDocInfo of repoDocInfos) {
-            const existingTags = Object.values(repoDocInfo.tags || {});
-            const effectTags = Tags.union(existingTags, tags || []);
-
-            this.onDocTagged(repoDocInfo, effectTags)
-                .catch(err => log.error(err));
-
-        }
-
-    }
-
-    private onMultiDeleted() {
-        const repoDocInfos = this.getSelected();
-        this.onDocDeleteRequested(...repoDocInfos);
-    }
-
-    private clearSelected() {
-
-        setTimeout(() => {
-            this.setState({...this.state, selected: []});
-        }, 1);
-
-    }
-
-    private getSelected(): RepoDocInfo[] {
-
-        const resolvedState = this.reactTable!.getResolvedState();
-
-        const sortedData = resolvedState.sortedData;
-
-        const result: RepoDocInfo[] =
-            this.props.selected
-                .map(selectedIdx => sortedData[selectedIdx])
-                .filter(item => isPresent(item))
-                .map(item => item._original);
-
-        return result;
-
-    }
-
     public render() {
 
         const { data } = this.props;
 
         const contextMenuProps = {
-            onDelete: this.onDocDeleteRequested,
-            onSetTitle: this.onDocSetTitle,
+            onDelete: this.props.onDocDeleteRequested,
+            onSetTitle: this.props.onDocSetTitle,
             onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => {
                 this.onDocumentLoadRequested(repoDocInfo);
             }
@@ -509,9 +452,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                                 <TagInput availableTags={this.props.tagsProvider()}
                                                           existingTags={existingTags}
                                                           relatedTags={this.props.relatedTags}
-                                                          onChange={(tags) =>
-                                                              this.onDocTagged(repoDocInfo, tags)
-                                                                  .catch(err => log.error("Unable to update tags: ", err))}/>
+                                                          onChange={(tags) => this.props.onDocTagged(repoDocInfo, tags)}/>
 
                                             </DocButton>
 
@@ -525,8 +466,8 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 
                                                 <DocDropdown id={'doc-dropdown-' + row.index}
                                                              repoDocInfo={repoDocInfo}
-                                                             onDelete={this.onDocDeleteRequested}
-                                                             onSetTitle={this.onDocSetTitle}
+                                                             onDelete={this.props.onDocDeleteRequested}
+                                                             onSetTitle={this.props.onDocSetTitle}
                                                              onDocumentLoadRequested={contextMenuProps.onDocumentLoadRequested}/>
 
                                             </DocButton>
@@ -648,89 +589,8 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
         if (event.key === "Delete") {
-            this.onMultiDeleted();
+            this.props.onMultiDeleted();
         }
-
-    }
-
-    private async onDocTagged(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
-
-        RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
-
-        await this.props.writeDocInfoTags(repoDocInfo, tags);
-        this.props.refresh();
-
-    }
-
-    private onDocDeleteRequested(...repoDocInfos: RepoDocInfo[]) {
-
-        Dialogs.confirm({
-            title: "Are you sure you want to delete these document(s)?",
-            subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
-            onCancel: NULL_FUNCTION,
-            onConfirm: () => this.onDocDeleted(...repoDocInfos),
-        });
-
-    }
-
-    private onDocDeleted(...repoDocInfos: RepoDocInfo[]) {
-
-        const doDeletes = async () => {
-
-            const stats = {
-                successes: 0,
-                failures: 0
-            };
-
-            this.clearSelected();
-
-            const progressTracker = new ProgressTracker(repoDocInfos.length, 'delete');
-
-            for (const repoDocInfo of repoDocInfos) {
-
-                log.info("Deleting document: ", repoDocInfo);
-
-                try {
-
-                    await this.props.deleteDocInfo(repoDocInfo);
-                    ++stats.successes;
-                    this.props.refresh();
-
-                } catch (e) {
-                    ++stats.failures;
-                    log.error("Could not delete doc: " , e);
-                } finally {
-                    const progress = progressTracker.incr();
-                    ProgressMessages.broadcast(progress);
-                }
-
-            }
-
-            this.clearSelected();
-
-            if (stats.failures === 0) {
-                Toaster.success(`${stats.successes} documents successfully deleted.`);
-            } else {
-                Toaster.error(`Failed to delete ${stats.failures} with ${stats.successes} successful.`);
-            }
-
-        };
-
-        doDeletes()
-            .catch(err => log.error("Unable to delete files: ", err));
-
-    }
-
-    private onDocSetTitle(repoDocInfo: RepoDocInfo, title: string) {
-
-        RendererAnalytics.event({category: 'user', action: 'set-doc-title'});
-
-        log.info("Setting doc title: " , title);
-
-        this.props.writeDocInfoTitle(repoDocInfo, title)
-            .catch(err => log.error("Could not write doc title: ", err));
-
-        this.props.refresh();
 
     }
 
@@ -807,6 +667,11 @@ interface IProps {
     readonly deleteDocInfo: (repoDocInfo: RepoDocInfo) => void;
     readonly writeDocInfoTitle: (repoDocInfo: RepoDocInfo, title: string) => Promise<void>;
     readonly writeDocInfo: (docInfo: IDocInfo) => Promise<void>;
+    readonly onMultiDeleted: () => void;
+    readonly onDocDeleted: (...repoDocInfos: RepoDocInfo[]) => void;
+    readonly onDocDeleteRequested: (...repoDocInfos: RepoDocInfo[]) => void;
+    readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
+    readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly refresh: () => void;
 }
 
