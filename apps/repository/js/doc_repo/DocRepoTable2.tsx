@@ -38,7 +38,6 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 
     private reactTable: any;
 
-
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -68,8 +67,8 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
             let min: number = 0;
             let max: number = 0;
 
-            if (this.state.selected.length > 0) {
-                const sorted = [...this.state.selected].sort((a, b) => a - b);
+            if (this.props.selected.length > 0) {
+                const sorted = [...this.props.selected].sort((a, b) => a - b);
                 min = Arrays.first(sorted)!;
                 max = Arrays.last(sorted)!;
             }
@@ -85,7 +84,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 
             // one at a time
 
-            selected = [...this.state.selected];
+            selected = [...this.props.selected];
 
             if (selected.includes(selectedIdx)) {
                 selected.splice(selected.indexOf(selectedIdx), 1);
@@ -134,7 +133,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
         const sortedData = resolvedState.sortedData;
 
         const result: RepoDocInfo[] =
-            this.state.selected
+            this.props.selected
                 .map(selectedIdx => sortedData[selectedIdx])
                 .filter(item => isPresent(item))
                 .map(item => item._original);
@@ -144,7 +143,8 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
     }
 
     public render() {
-        const { data } = this.state;
+
+        const { data } = this.props;
 
         const contextMenuProps = {
             onDelete: this.onDocDeleteRequested,
@@ -170,7 +170,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                     // TODO: move to a PureComponent to
                                     // improve performance
 
-                                    const checked = this.state.selected.length === col.data.length && col.data.length > 0;
+                                    const checked = this.props.selected.length === col.data.length && col.data.length > 0;
 
                                     return (<div>
 
@@ -194,7 +194,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 
                                                    const computeSelected = (): ReadonlyArray<number> => {
 
-                                                       if (this.state.selected.length !== col.data.length) {
+                                                       if (this.props.selected.length !== col.data.length) {
                                                            // all of
                                                            // them
                                                            return Numbers.range(0, col.data.length - 1);
@@ -229,7 +229,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 
                                     return (<div style={{lineHeight: '1em'}}>
 
-                                        <Input checked={this.state.selected.includes(viewIndex)}
+                                        <Input checked={this.props.selected.includes(viewIndex)}
                                                style={{
                                                    marginLeft: 'auto',
                                                    marginRight: 'auto',
@@ -281,7 +281,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                 // accessor: (row: any) => row.added,
                                 headerClassName: "d-none-mobile",
                                 accessor: 'lastUpdated',
-                                show: this.state.columns.lastUpdated.selected,
+                                show: this.props.columns.lastUpdated.selected,
                                 maxWidth: 85,
                                 defaultSortDesc: true,
                                 className: 'doc-table-col-updated d-none-mobile',
@@ -307,7 +307,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                 Header: 'Added',
                                 accessor: 'added',
                                 headerClassName: "d-none-mobile",
-                                show: this.state.columns.added.selected,
+                                show: this.props.columns.added.selected,
                                 maxWidth: 85,
                                 defaultSortDesc: true,
                                 className: 'doc-table-col-added d-none-mobile',
@@ -332,7 +332,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                 Header: 'Site',
                                 accessor: 'site',
                                 headerClassName: "d-none-mobile",
-                                show: (this.state.columns.site || {}).selected || false,
+                                show: (this.props.columns.site || {}).selected || false,
                                 // show: false,
                                 maxWidth: 200,
                                 sortable: false,
@@ -390,7 +390,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                 headerClassName: "d-none-mobile",
                                 width: 250,
                                 accessor: '',
-                                show: this.state.columns.tags.selected,
+                                show: this.props.columns.tags.selected,
                                 className: 'doc-table-col-tags d-none-mobile',
                                 sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
@@ -449,7 +449,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                 headerClassName: "d-none-mobile",
                                 accessor: 'nrAnnotations',
                                 maxWidth: 110,
-                                show: this.state.columns.nrAnnotations.selected,
+                                show: this.props.columns.nrAnnotations.selected,
                                 defaultSortDesc: true,
                                 resizable: false,
                                 className: "d-none-mobile",
@@ -459,7 +459,7 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                 Header: 'Progress',
                                 headerClassName: "d-none-mobile",
                                 accessor: 'progress',
-                                show: this.state.columns.progress.selected,
+                                show: this.props.columns.progress.selected,
                                 maxWidth: 100,
                                 defaultSortDesc: true,
                                 resizable: false,
@@ -565,8 +565,8 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
                                 // TODO: dark-mode.  Use CSS variable
                                 // names for colors
 
-                                background: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-background-color)' : 'var(--primary-background-color)',
-                                color: rowInfo && this.state.selected.includes(rowInfo.viewIndex) ? 'var(--selected-text-color)' : 'var(--primary-text-color)',
+                                background: rowInfo && this.props.selected.includes(rowInfo.viewIndex) ? 'var(--selected-background-color)' : 'var(--primary-background-color)',
+                                color: rowInfo && this.props.selected.includes(rowInfo.viewIndex) ? 'var(--selected-text-color)' : 'var(--primary-text-color)',
                             },
 
                             onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
@@ -797,6 +797,9 @@ export class DocRepoTable2 extends ReleasingReactComponent<IProps, IState> {
 }
 
 interface IProps {
+    readonly columns: DocRepoTableColumns;
+    readonly selected: ReadonlyArray<number>;
+    readonly data: ReadonlyArray<RepoDocInfo>;
     readonly relatedTags: RelatedTags;
     readonly synchronizingDocLoader: SynchronizingDocLoader;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
@@ -808,9 +811,6 @@ interface IProps {
 }
 
 interface IState {
-    readonly data: ReadonlyArray<RepoDocInfo>;
-    readonly columns: DocRepoTableColumns;
-    readonly selected: ReadonlyArray<number>;
 }
 
 
