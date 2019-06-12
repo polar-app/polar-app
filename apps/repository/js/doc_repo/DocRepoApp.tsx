@@ -32,6 +32,7 @@ import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessa
 import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';
 import {DocRepoTable} from './DocRepoTable';
+import {Dock} from '../../../../web/js/ui/dock/Dock';
 
 const log = Logger.create();
 
@@ -264,22 +265,47 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
                     <FixedNavBody>
 
-                        <DocRepoTable columns={this.state.columns}
-                                      selected={this.state.selected}
-                                      data={this.state.data}
-                                      relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                      synchronizingDocLoader={this.synchronizingDocLoader}
-                                      tagsProvider={tagsProvider}
-                                      writeDocInfoTags={this.props.repoDocMetaManager!.writeDocInfoTags}
-                                      deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
-                                      writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
-                                      writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
-                                      refresh={() => this.refresh()}
-                                      onDocDeleteRequested={this.onDocDeleteRequested}
-                                      onDocDeleted={this.onDocDeleted}
-                                      onDocSetTitle={this.onDocSetTitle}
-                                      onDocTagged={this.onDocTagged}
-                                      onMultiDeleted={this.onMultiDeleted}/>
+                        <Dock left={
+                            // TODO this should be its own component
+                            <div style={{
+                                    display: 'flex' ,
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    overflow: 'auto'
+                                 }}>
+
+                                <div className="m-1">
+
+                                    {/*<TagTree tags={this.state.tags}*/}
+                                    {/*         treeState={this.treeState}*/}
+                                    {/*         noCreate={true}/>*/}
+                                    this is the left...
+
+                                </div>
+
+                            </div>
+                          }
+                          right={
+                              <DocRepoTable columns={this.state.columns}
+                                            selected={this.state.selected}
+                                            data={this.state.data}
+                                            relatedTags={this.props.repoDocMetaManager!.relatedTags}
+                                            synchronizingDocLoader={this.synchronizingDocLoader}
+                                            tagsProvider={tagsProvider}
+                                            writeDocInfoTags={this.props.repoDocMetaManager!.writeDocInfoTags}
+                                            deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
+                                            writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
+                                            writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
+                                            refresh={() => this.refresh()}
+                                            onDocDeleteRequested={this.onDocDeleteRequested}
+                                            onDocDeleted={this.onDocDeleted}
+                                            onDocSetTitle={this.onDocSetTitle}
+                                            onDocTagged={this.onDocTagged}
+                                            onMultiDeleted={this.onMultiDeleted}/>
+                          }
+                          side='left'
+                          initialWidth={300}/>
+
 
                     </FixedNavBody>
 
