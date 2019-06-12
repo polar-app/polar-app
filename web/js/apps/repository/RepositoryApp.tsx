@@ -8,7 +8,6 @@ import {PersistenceLayerManager, PersistenceLayerTypes} from '../../datastore/Pe
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {SyncBar, SyncBarProgress} from '../../ui/sync_bar/SyncBar';
 import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
-import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
 import AnnotationRepoApp from '../../../../apps/repository/js/annotation_repo/AnnotationRepoApp';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from '../../logger/Logger';
@@ -45,6 +44,7 @@ import {UniqueMachines} from '../../telemetry/UniqueMachines';
 import {PremiumApp} from '../../../../apps/repository/js/splash/splashes/premium/PremiumApp';
 import {Accounts} from '../../accounts/Accounts';
 import {SupportApp} from '../../../../apps/repository/js/support/SupportApp';
+import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
 
 const log = Logger.create();
 
