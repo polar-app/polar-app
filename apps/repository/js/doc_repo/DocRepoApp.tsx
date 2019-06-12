@@ -38,6 +38,7 @@ import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
+import {TagList} from '../../../../web/js/ui/tree/TagList';
 
 const log = Logger.create();
 
@@ -344,6 +345,8 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
                                 <TagTree tags={this.state.tags}
                                          treeState={this.treeState}
                                          noCreate={true}/>
+
+                                <TagList tags={this.state.tags}/>
 
                             </div>
 
