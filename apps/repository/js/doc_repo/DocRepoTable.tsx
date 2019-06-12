@@ -100,7 +100,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
         return (
 
-            <div id="doc-table" className="ml-1" style={{height: '100%'}}>
+            <div id="doc-table" className="ml-1" style={{height: '100%', overflow: 'auto'}}>
                 <ReactTable
                     data={[...data]}
                     ref={(r: any) => this.reactTable = r}

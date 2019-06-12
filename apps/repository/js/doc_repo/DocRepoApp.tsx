@@ -214,7 +214,10 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
         const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
 
         return (
-            <div id="doc-repository" style={{height: '100%'}}>
+            <div id="doc-repository"
+                 style={{
+                     height: '100%'
+                 }}>
 
                 <FixedNav id="doc-repo-table">
 
@@ -271,50 +274,46 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
                     </header>
 
-                    <FixedNavBody>
 
-                        <Dock left={
-                            // TODO this should be its own component
-                            <div style={{
-                                    display: 'flex' ,
-                                    flexDirection: 'column',
-                                    height: '100%',
-                                    overflow: 'auto'
-                                 }}>
+                    <Dock left={
+                        <div style={{
+                                display: 'flex' ,
+                                flexDirection: 'column',
+                                height: '100%',
+                                overflow: 'auto'
+                             }}>
 
-                                <div className="p-1 border-top">
+                            <div className="p-1 border-top">
 
-                                    <TagTree tags={this.state.tags}
-                                             treeState={this.treeState}
-                                             noCreate={true}/>
-
-                                </div>
+                                <TagTree tags={this.state.tags}
+                                         treeState={this.treeState}
+                                         noCreate={true}/>
 
                             </div>
-                          }
-                          right={
-                              <DocRepoTable columns={this.state.columns}
-                                            selected={this.state.selected}
-                                            data={this.state.data}
-                                            relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                            synchronizingDocLoader={this.synchronizingDocLoader}
-                                            tagsProvider={tagsProvider}
-                                            writeDocInfoTags={this.props.repoDocMetaManager!.writeDocInfoTags}
-                                            deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
-                                            writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
-                                            writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
-                                            refresh={() => this.refresh()}
-                                            onDocDeleteRequested={this.onDocDeleteRequested}
-                                            onDocDeleted={this.onDocDeleted}
-                                            onDocSetTitle={this.onDocSetTitle}
-                                            onDocTagged={this.onDocTagged}
-                                            onMultiDeleted={this.onMultiDeleted}/>
-                          }
-                          side='left'
-                          initialWidth={300}/>
 
+                        </div>
+                      }
+                      right={
+                          <DocRepoTable columns={this.state.columns}
+                                        selected={this.state.selected}
+                                        data={this.state.data}
+                                        relatedTags={this.props.repoDocMetaManager!.relatedTags}
+                                        synchronizingDocLoader={this.synchronizingDocLoader}
+                                        tagsProvider={tagsProvider}
+                                        writeDocInfoTags={this.props.repoDocMetaManager!.writeDocInfoTags}
+                                        deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
+                                        writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
+                                        writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
+                                        refresh={() => this.refresh()}
+                                        onDocDeleteRequested={this.onDocDeleteRequested}
+                                        onDocDeleted={this.onDocDeleted}
+                                        onDocSetTitle={this.onDocSetTitle}
+                                        onDocTagged={this.onDocTagged}
+                                        onMultiDeleted={this.onMultiDeleted}/>
+                      }
+                      side='left'
+                      initialWidth={300}/>
 
-                    </FixedNavBody>
 
                 </FixedNav>
             </div>
