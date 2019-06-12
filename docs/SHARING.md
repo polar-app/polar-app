@@ -765,3 +765,16 @@ They then have the list of groups in their folders sidebar and can interact
 with them directly.  Adding documents to the their document repo.
 
 A group might not be discoverable .     
+
+# Key Firebase Documentation URLs:
+
+https://firebase.googleblog.com/2018/08/better-arrays-in-cloud-firestore.html
+
+# Requirements I need for a new system: 
+
+  - need a token storage system so that users can add tokens to HTTP requests 
+    and have them properly resolved to the target URL. 
+    
+  - Tokens should only be visible to their original owner
+  
+  - The owner should be able to revoke users but no one else
