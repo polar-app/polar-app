@@ -33,14 +33,10 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="doc-repository" style={{height: '100%'}}>
-
-                <DocRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                              repoDocMetaManager={this.props.repoDocMetaManager}
-                              repoDocMetaLoader={this.props.repoDocMetaLoader}/>
-
-            </div>
+            <DocRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
+                          updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                          repoDocMetaManager={this.props.repoDocMetaManager}
+                          repoDocMetaLoader={this.props.repoDocMetaLoader}/>
 
         );
     }

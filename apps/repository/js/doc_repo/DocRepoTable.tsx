@@ -205,84 +205,86 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
         const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
 
         return (
+            <div id="doc-repository" style={{height: '100%'}}>
 
-            <FixedNav id="doc-repo-table">
+                <FixedNav id="doc-repo-table">
 
-                <header>
+                    <header>
 
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                        <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    <div id="header-filter">
+                        <div id="header-filter">
 
-                        <div style={{display: 'flex'}}
-                             className="mt-1 mb-1">
+                            <div style={{display: 'flex'}}
+                                 className="mt-1 mb-1">
 
-                            <div className=""
-                                 style={{
-                                     whiteSpace: 'nowrap',
-                                     marginTop: 'auto',
-                                     marginBottom: 'auto',
-                                     display: 'flex'
-                                 }}>
+                                <div className=""
+                                     style={{
+                                         whiteSpace: 'nowrap',
+                                         marginTop: 'auto',
+                                         marginBottom: 'auto',
+                                         display: 'flex'
+                                     }}>
 
-                                <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
-                                                  tagsProvider={tagsProvider}
-                                                  onMultiTagged={tags => this.onMultiTagged(tags)}
-                                                  onMultiDeleted={() => this.onMultiDeleted()}/>
+                                    <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
+                                                      tagsProvider={tagsProvider}
+                                                      onMultiTagged={tags => this.onMultiTagged(tags)}
+                                                      onMultiDeleted={() => this.onMultiDeleted()}/>
 
-                            </div>
+                                </div>
 
-                            <div style={{marginLeft: 'auto'}}>
+                                <div style={{marginLeft: 'auto'}}>
 
-                                <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
-                                                  onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
-                                                  onFilterByTitle={(title) => this.onFilterByTitle(title)}
-                                                  tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                  refresher={() => this.refresh()}
-                                                  filteredTags={this.docRepoFilters.filters.filteredTags}
-                                                  right={
-                                               <div className="d-mobile-none"
-                                                    style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                                    <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
+                                                      onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
+                                                      onFilterByTitle={(title) => this.onFilterByTitle(title)}
+                                                      tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                      refresher={() => this.refresh()}
+                                                      filteredTags={this.docRepoFilters.filters.filteredTags}
+                                                      right={
+                                                   <div className="d-mobile-none"
+                                                        style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                                   <DocRepoTableDropdown id="table-dropdown"
-                                                                         options={Object.values(this.state.columns)}
-                                                                         onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
-                                               </div>
-                                           }
-                                />
+                                                       <DocRepoTableDropdown id="table-dropdown"
+                                                                             options={Object.values(this.state.columns)}
+                                                                             onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
+                                                   </div>
+                                               }
+                                    />
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                        <MessageBanner/>
 
-                    <MessageBanner/>
+                    </header>
 
-                </header>
+                    <FixedNavBody>
 
-                <FixedNavBody>
+                        <DocRepoTable2 columns={this.state.columns}
+                                       selected={this.state.selected}
+                                       data={this.state.data}
+                                       relatedTags={this.props.repoDocMetaManager!.relatedTags}
+                                       synchronizingDocLoader={this.synchronizingDocLoader}
+                                       tagsProvider={tagsProvider}
+                                       writeDocInfoTags={this.props.repoDocMetaManager!.writeDocInfoTags}
+                                       deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
+                                       writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
+                                       writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
+                                       refresh={() => this.refresh()}
+                                       onDocDeleteRequested={this.onDocDeleteRequested}
+                                       onDocDeleted={this.onDocDeleted}
+                                       onDocSetTitle={this.onDocSetTitle}
+                                       onDocTagged={this.onDocTagged}
+                                       onMultiDeleted={this.onMultiDeleted}/>
 
-                    <DocRepoTable2 columns={this.state.columns}
-                                   selected={this.state.selected}
-                                   data={this.state.data}
-                                   relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                   synchronizingDocLoader={this.synchronizingDocLoader}
-                                   tagsProvider={tagsProvider}
-                                   writeDocInfoTags={this.props.repoDocMetaManager!.writeDocInfoTags}
-                                   deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
-                                   writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
-                                   writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
-                                   refresh={() => this.refresh()}
-                                   onDocDeleteRequested={this.onDocDeleteRequested}
-                                   onDocDeleted={this.onDocDeleted}
-                                   onDocSetTitle={this.onDocSetTitle}
-                                   onDocTagged={this.onDocTagged}
-                                   onMultiDeleted={this.onMultiDeleted}/>
+                    </FixedNavBody>
 
-                </FixedNavBody>
-
-            </FixedNav>
+                </FixedNav>
+            </div>
 
         );
     }
