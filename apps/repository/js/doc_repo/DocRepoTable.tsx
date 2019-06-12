@@ -12,7 +12,6 @@ import {DocDropdown} from '../DocDropdown';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
-import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
 import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 import {DocButton} from '../ui/DocButton';
@@ -36,52 +35,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
-
-    }
-
-    public selectRow(selectedIdx: number, event: MouseEvent, checkbox: boolean = false) {
-
-        if (typeof selectedIdx === 'string') {
-            selectedIdx = parseInt(selectedIdx);
-        }
-
-        let selected: number[] = [selectedIdx];
-
-        if (event.getModifierState("Shift")) {
-
-            // select a range
-
-            let min: number = 0;
-            let max: number = 0;
-
-            if (this.props.selected.length > 0) {
-                const sorted = [...this.props.selected].sort((a, b) => a - b);
-                min = Arrays.first(sorted)!;
-                max = Arrays.last(sorted)!;
-            }
-
-            selected = [...Numbers.range(Math.min(min, selectedIdx),
-                                         Math.max(max, selectedIdx))];
-
-        }
-
-        const selectIndividual = (event.getModifierState("Control") || event.getModifierState("Meta")) || checkbox;
-
-        if (selectIndividual) {
-
-            // one at a time
-
-            selected = [...this.props.selected];
-
-            if (selected.includes(selectedIdx)) {
-                selected.splice(selected.indexOf(selectedIdx), 1);
-            } else {
-                selected = [...selected, selectedIdx];
-            }
-
-        }
-
-        this.setState({...this.state, selected});
 
     }
 
@@ -151,7 +104,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                                                    const selected = computeSelected();
 
-                                                   this.setState({...this.state, selected});
+                                                   this.props.onSelected(selected);
 
                                                }}
                                                type="checkbox"/>
@@ -184,7 +137,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                                                }}
                                                className="m-auto"
                                                onChange={NULL_FUNCTION}
-                                               onClick={(event) => this.selectRow(viewIndex, event.nativeEvent, true)}
+                                               onClick={(event) => this.props.selectRow(viewIndex, event.nativeEvent, true)}
                                                type="checkbox"/>
 
                                         {/*<i className="far fa-square"></i>*/}
@@ -531,7 +484,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                             const handleSelect = (event: MouseEvent) => {
                                 if (rowInfo) {
-                                    this.selectRow(rowInfo.viewIndex as number, event);
+                                    this.props.selectRow(rowInfo.viewIndex as number, event);
                                 }
                             };
 
@@ -672,6 +625,8 @@ interface IProps {
     readonly onDocDeleteRequested: (...repoDocInfos: RepoDocInfo[]) => void;
     readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
+    readonly selectRow: (selectedIdx: number, event: MouseEvent, checkbox?: boolean) => void;
+    readonly onSelected: (selected: readonly number[]) => void;
     readonly refresh: () => void;
 }
 

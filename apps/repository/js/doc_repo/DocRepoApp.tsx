@@ -36,6 +36,8 @@ import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
+import {Arrays} from '../../../../web/js/util/Arrays';
+import {Numbers} from '../../../../web/js/util/Numbers';
 
 const log = Logger.create();
 
@@ -75,6 +77,8 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
         this.onToggleFlaggedOnly = this.onToggleFlaggedOnly.bind(this);
 
         this.clearSelected = this.clearSelected.bind(this);
+        this.onSelected = this.onSelected.bind(this);
+        this.selectRow = this.selectRow.bind(this);
 
         this.onMultiTagged = this.onMultiTagged.bind(this);
         this.onMultiDeleted = this.onMultiDeleted.bind(this);
@@ -209,6 +213,58 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
     }
 
+
+    public selectRow(selectedIdx: number,
+                     event: MouseEvent, checkbox: boolean = false) {
+
+        if (typeof selectedIdx === 'string') {
+            selectedIdx = parseInt(selectedIdx);
+        }
+
+        let selected: number[] = [selectedIdx];
+
+        if (event.getModifierState("Shift")) {
+
+            // select a range
+
+            let min: number = 0;
+            let max: number = 0;
+
+            if (this.state.selected.length > 0) {
+                const sorted = [...this.state.selected].sort((a, b) => a - b);
+                min = Arrays.first(sorted)!;
+                max = Arrays.last(sorted)!;
+            }
+
+            selected = [...Numbers.range(Math.min(min, selectedIdx),
+                                         Math.max(max, selectedIdx))];
+
+        }
+
+        const selectIndividual = (event.getModifierState("Control") || event.getModifierState("Meta")) || checkbox;
+
+        if (selectIndividual) {
+
+            // one at a time
+
+            selected = [...this.state.selected];
+
+            if (selected.includes(selectedIdx)) {
+                selected.splice(selected.indexOf(selectedIdx), 1);
+            } else {
+                selected = [...selected, selectedIdx];
+            }
+
+        }
+
+        this.setState({...this.state, selected});
+
+    }
+
+    public onSelected(selected: readonly number[]) {
+        this.setState({ ...this.state, selected });
+    }
+
     public render() {
 
         const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
@@ -309,7 +365,9 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
                                         onDocDeleted={this.onDocDeleted}
                                         onDocSetTitle={this.onDocSetTitle}
                                         onDocTagged={this.onDocTagged}
-                                        onMultiDeleted={this.onMultiDeleted}/>
+                                        onMultiDeleted={this.onMultiDeleted}
+                                        selectRow={this.selectRow}
+                                        onSelected={this.onSelected}/>
                       }
                       side='left'
                       initialWidth={300}/>
