@@ -4,7 +4,6 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {Tag} from '../../../web/js/tags/Tag';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Preconditions} from '../../../web/js/Preconditions';
-import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
@@ -18,11 +17,7 @@ import {DataObjectIndex} from './DataObjectIndex';
 
 const log = Logger.create();
 
-// FIXME: migrate this into a more complicated data structure with tag metadata
-// too which we can update such that we have an exact set of each key annotation
-// and tag so that when it's updated we can add/delete without any GC issues.
-// AKA the counts are exact.
-export class RepoAnnotationIndex extends DataObjectIndex<RepoAnnotation> {
+export class RepoAnnotationDataObjectIndex extends DataObjectIndex<RepoAnnotation> {
 
     constructor() {
         super((repoAnnotation: RepoAnnotation) => Object.values(repoAnnotation.tags || {}) );
@@ -30,15 +25,25 @@ export class RepoAnnotationIndex extends DataObjectIndex<RepoAnnotation> {
 
 }
 
+export class RepoDocInfoDataObjectIndex extends DataObjectIndex<RepoDocInfo> {
+
+    constructor() {
+        super((repoDocInfo: RepoDocInfo) => Object.values(repoDocInfo.tags || {}) );
+    }
+
+}
+
+
+
 /**
  * The main interface to the DocRepository including updates, the existing
  * loaded document metadata, and tags database.
  */
 export class RepoDocMetaManager {
 
-    public readonly repoDocInfoIndex: RepoDocInfoIndex = {};
+    public readonly repoDocInfoIndex: RepoDocInfoDataObjectIndex = new RepoDocInfoDataObjectIndex();
 
-    public readonly repoAnnotationIndex: RepoAnnotationIndex = new RepoAnnotationIndex();
+    public readonly repoAnnotationIndex: RepoAnnotationDataObjectIndex = new RepoAnnotationDataObjectIndex();
 
     public readonly tagsDB = new TagsDB();
 
@@ -55,7 +60,8 @@ export class RepoDocMetaManager {
 
         if (repoDocMeta) {
 
-            this.repoDocInfoIndex[fingerprint] = repoDocMeta.repoDocInfo;
+            this.repoDocInfoIndex.add(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
+
             this.updateTagsDB(repoDocMeta.repoDocInfo);
 
             this.relatedTags.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
@@ -110,7 +116,7 @@ export class RepoDocMetaManager {
             };
 
             const deleteDoc = () => {
-                delete this.repoDocInfoIndex[fingerprint];
+                this.repoDocInfoIndex.remove(fingerprint);
             };
 
             deleteOrphanedAnnotations();
@@ -127,10 +133,10 @@ export class RepoDocMetaManager {
     public updateFromRepoDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
         if (repoDocInfo) {
-            this.repoDocInfoIndex[fingerprint] = repoDocInfo;
+            this.repoDocInfoIndex.add(fingerprint, repoDocInfo);
             this.updateTagsDB(repoDocInfo);
         } else {
-            delete this.repoDocInfoIndex[fingerprint];
+            this.repoDocInfoIndex.remove(fingerprint);
         }
 
     }
@@ -228,7 +234,7 @@ export class RepoDocMetaManager {
     private init() {
         // TODO: is this even needed anymore?
 
-        for (const repoDocInfo of Object.values(this.repoDocInfoIndex)) {
+        for (const repoDocInfo of this.repoDocInfoIndex.values()) {
             this.updateTagsDB(repoDocInfo);
         }
 

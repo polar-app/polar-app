@@ -101,7 +101,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
 
-        const repoDocInfosProvider = () => Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex);
+        const repoDocInfosProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.values();
 
         this.docRepoFilters =
             new DocRepoFilters(onRefreshed, repoDocInfosProvider);
@@ -133,7 +133,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
             this.props.repoDocMetaLoader.addEventListener(event => {
 
                 if (!DocRepoTable.hasSentInitAnalyitics && event.progress.progress === 100) {
-                    this.emitInitAnalytics(this.props.repoDocMetaManager.repoDocInfoIndex);
+                    this.emitInitAnalytics(this.props.repoDocMetaManager.repoDocInfoIndex.size());
                     DocRepoTable.hasSentInitAnalyitics = true;
                 }
 
@@ -164,11 +164,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private emitInitAnalytics(repoDocs: RepoDocInfoIndex) {
+    private emitInitAnalytics(nrDocs: number) {
 
         // TODO: move some of these analytics into the main RepoaitoryApp.tsx.
-
-        const nrDocs = Object.keys(repoDocs).length;
 
         RendererAnalytics.set({'nrDocs': nrDocs});
 
@@ -286,7 +284,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                 <header>
 
-
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
                     <div id="header-filter">
@@ -372,7 +369,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                 <FixedNavBody>
                     <div id="doc-table" className="ml-1" style={{height: '100%'}}>
                         <ReactTable
-                            data={data}
+                            data={[...data]}
                             ref={(r: any) => this.reactTable = r}
                             columns={
                                 [
@@ -998,7 +995,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
     /**
      * Perform the actual refresh.
      */
-    private doRefresh(data: RepoDocInfo[]) {
+    private doRefresh(data: ReadonlyArray<RepoDocInfo>) {
 
         const state = {...this.state, data};
 
@@ -1091,7 +1088,7 @@ interface IProps {
 }
 
 interface IState {
-    readonly data: RepoDocInfo[];
+    readonly data: ReadonlyArray<RepoDocInfo>;
     readonly columns: DocRepoTableColumns;
     readonly selected: ReadonlyArray<number>;
 }

@@ -106,6 +106,10 @@ export class DataObjectIndex<D> {
         return Object.values(this.index);
     }
 
+    public size(): number {
+        return Object.keys(this.index).length;
+    }
+
     public toTagDescriptors() {
         return this.tags.toTagDescriptors();
     }

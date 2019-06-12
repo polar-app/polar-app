@@ -18,7 +18,7 @@ export class DocRepoFilters {
     public readonly filters: Filters;
 
     constructor(private onRefreshed: RefreshedCallback,
-                private repoDocInfosProvider: Provider<RepoDocInfo[]>) {
+                private repoDocInfosProvider: Provider<ReadonlyArray<RepoDocInfo>>) {
 
         this.filters = {
             flagged: false,
@@ -49,7 +49,7 @@ export class DocRepoFilters {
         this.onRefreshed(this.filter(this.repoDocInfosProvider()));
     }
 
-    private filter(repoDocInfos: RepoDocInfo[]): RepoDocInfo[] {
+    private filter(repoDocInfos: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
@@ -63,11 +63,11 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterValid(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterValid(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
         return repoDocs.filter(current => RepoDocInfos.isValid(current));
     }
 
-    private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterByTitle(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         if (! Strings.empty(this.filters.title)) {
 
@@ -97,7 +97,7 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterFlagged(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterFlagged(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         if (this.filters.flagged) {
             return repoDocs.filter(current => current.flagged);
@@ -107,7 +107,7 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterArchived(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         if (! this.filters.archived) {
             return repoDocs.filter(current => !current.archived);
@@ -117,7 +117,7 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterByTags(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>): RepoDocInfo[] {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
 
@@ -165,5 +165,5 @@ interface Filters {
 
 }
 
-export type RefreshedCallback = (repoDocInfos: RepoDocInfo[]) => void;
+export type RefreshedCallback = (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
 
