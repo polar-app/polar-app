@@ -1,4 +1,10 @@
 
+# 1.19.9
+
+- Fixed small bug where a pagemark with zero percent says that it 
+  'has no percentage' but this is because zero is false and very misleading. 
+  I have to be more careful of that bug.
+
 # 1.19.8
 
 - New payment system for Polar premium

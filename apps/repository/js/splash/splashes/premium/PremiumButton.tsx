@@ -22,13 +22,13 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
     public render() {
 
-        const {to, from} = this.props;
+        const {to, from, userInfo} = this.props;
 
         // true when this is the current plan and we do not need to show the
         // button
         const currentPlan = to === from;
 
-        const {email} = this.props.userInfo!;
+        const email = userInfo ? userInfo.email : undefined;
 
         // true if we're BUYING a new plan...
         const buy = from === 'free';
@@ -39,7 +39,13 @@ export class PremiumButton extends React.Component<IProps, IState> {
             // if we're buying a NEW product go ahead and redirect us to
             // stripe and use their BUY package.  This is better than embedding
             // the stripe SDK and also stripe ALSO needs to run over HTTPS
-            Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${email}&plan=${to}`);
+
+            if (email) {
+                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${email}&plan=${to}`);
+            } else {
+                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?plan=${to}`);
+            }
+
         };
 
         const changeHandler = () => {

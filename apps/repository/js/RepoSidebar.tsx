@@ -159,12 +159,12 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          iconClassName="fas fa-info-circle"
                                          text="Logs"/>
 
-                        <RepoSidebarItem id="sidebar-item-community"
-                                         tooltip="Find community resources including links to discussions around Polar."
-                                         href="#community"
+                        <RepoSidebarItem id="sidebar-item-support"
+                                         tooltip="Get support for Polar."
+                                         href="#support"
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-hands-helping"
-                                         text="Community"/>
+                                         text="Support"/>
 
                         <RepoSidebarItem id="sidebar-item-upgrade-to-premium"
                                          tooltip="Upgrade to Polar Premium and get the best Polar experience possible."

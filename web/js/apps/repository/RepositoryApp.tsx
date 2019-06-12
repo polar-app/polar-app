@@ -49,6 +49,8 @@ import {MailingList} from './auth_handler/MailingList';
 import {UniqueMachines} from '../../telemetry/UniqueMachines';
 import {PremiumApp} from '../../../../apps/repository/js/splash/splashes/premium/PremiumApp';
 import {Accounts} from '../../accounts/Accounts';
+import {SupportContent} from '../../../../apps/repository/js/support/SupportContent';
+import {SupportApp} from '../../../../apps/repository/js/support/SupportApp';
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -161,13 +163,18 @@ export class RepositoryApp {
             return ( <EditorsPicksApp persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
-        const premium = () => {
+        const plan = account ? account.plan : 'free';
 
-            const plan = account ? account.plan : 'free';
+        const premium = () => {
 
             return (<PremiumApp persistenceLayerManager={this.persistenceLayerManager}
                                 plan={plan}
                                 userInfo={userInfo.getOrUndefined()}/>);
+        };
+
+        const support = () => {
+            return (<SupportApp persistenceLayerManager={this.persistenceLayerManager}
+                                plan={plan}/>);
         };
 
         const onNavChange = () => {
@@ -255,6 +262,7 @@ export class RepositoryApp {
                         <Route exact path='/logs' render={renderLogs}/>
                         <Route exact path='/editors-picks' render={editorsPicks}/>
                         <Route exact path='/plans' render={premium}/>
+                        <Route exact path='/support' render={support}/>
                     </Switch>
 
                 </HashRouter>

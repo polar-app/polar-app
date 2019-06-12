@@ -265,10 +265,18 @@ Install NodeJS and npm for your platform.
 
 ### To run:
 
+Install latest **stable** node and npm versions.
+
+You can check which version you need at 
+
+https://nodejs.org/
+
+... then run: 
+
 ```
 $ git clone https://github.com/burtonator/polar-bookshelf
 $ cd polar-bookshelf
-$ npm install && npm start
+$ npm install && npm run-script compile && npm start
 ```
 
 # Donations
