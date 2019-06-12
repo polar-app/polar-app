@@ -22,10 +22,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         this.persistenceLayerManager = this.props.persistenceLayerManager;
 
         this.state = {
-            // data: [],
         };
-
-        // this.init();
 
     }
 

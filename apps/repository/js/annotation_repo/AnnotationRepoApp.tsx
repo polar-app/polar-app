@@ -54,7 +54,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         this.treeState = new TreeState(values => this.onSelectedFolders(values));
 
-        // FIXME: move to method
         const setStateInBackground = (state: IState) => {
 
             setTimeout(() => {
@@ -67,7 +66,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
         };
 
-        // FIXME: move to method
         const onUpdated: UpdatedCallback = repoAnnotations => {
 
             const tags = this.props.repoDocMetaManager.repoAnnotationIndex.toTagDescriptors();

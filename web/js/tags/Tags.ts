@@ -101,7 +101,7 @@ export class Tags {
         return tags.filter(tag => this.validateTag(tag).isPresent());
     }
 
-    public static toMap(tags: Tag[]) {
+    public static toMap(tags: ReadonlyArray<Tag>) {
 
         const result: { [id: string]: Tag } = {};
 
@@ -116,7 +116,7 @@ export class Tags {
     /**
      * From a union of the two tag arrays.
      */
-    public static union(a: Tag[], b: Tag[]): Tag[] {
+    public static union(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
 
         const result: { [id: string]: Tag } = {};
 

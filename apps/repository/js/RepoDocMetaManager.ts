@@ -203,7 +203,7 @@ export class RepoDocMetaManager {
     /**
      * Update the RepoDocInfo object with the given tags.
      */
-    public async writeDocInfoTags(repoDocInfo: RepoDocInfo, tags: Tag[]) {
+    public async writeDocInfoTags(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
 
         Preconditions.assertPresent(repoDocInfo);
         Preconditions.assertPresent(repoDocInfo.docInfo);

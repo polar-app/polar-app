@@ -50,6 +50,7 @@ import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
+import {DocRepoButtonBar} from './DocRepoButtonBar';
 
 const log = Logger.create();
 
@@ -222,7 +223,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private onMultiTagged(tags: Tag[]) {
+    private onMultiTagged(tags: ReadonlyArray<Tag>) {
 
         const repoDocInfos = this.getSelected();
 
@@ -292,48 +293,17 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
                              className="mt-1 mb-1">
 
                             <div className=""
-                                 style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto', display: 'flex'}}>
+                                 style={{
+                                     whiteSpace: 'nowrap',
+                                     marginTop: 'auto',
+                                     marginBottom: 'auto',
+                                     display: 'flex'
+                                 }}>
 
-                                <div className="mr-1"
-                                     style={{
-                                         whiteSpace: 'nowrap',
-                                         marginTop: 'auto',
-                                         marginBottom: 'auto'
-                                     }}>
-
-                                    <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}
-                                                      captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
-
-                                </div>
-
-
-                                <div className="mr-1"
-                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                    <div style={{display: 'flex'}}>
-
-                                        {/*<FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}*/}
-                                                        {/*refresher={() => this.refresh()}*/}
-                                                        {/*disabled={this.state.selected.length === 0}*/}
-                                                        {/*filteredTags={this.filteredTags} />*/}
-
-                                        <div>
-
-                                            <TagButton id="tag-multiple-documents"
-                                                       disabled={this.state.selected.length <= 0}
-                                                       tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                       onSelectedTags={tags => this.onMultiTagged(tags)}/>
-
-                                        </div>
-
-                                        <div className="ml-1">
-                                            <MultiDeleteButton disabled={this.state.selected.length <= 0}
-                                                               onClick={() => this.onMultiDeleted()}/>
-                                        </div>
-
-                                    </div>
-
-                                </div>
+                                <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
+                                                  tagsProvider={() => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors()}
+                                                  onMultiTagged={tags => this.onMultiTagged(tags)}
+                                                  onMultiDeleted={() => this.onMultiDeleted()}/>
 
                             </div>
 
@@ -854,7 +824,6 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
                 </FixedNavBody>
 
-
             </FixedNav>
 
         );
@@ -868,7 +837,7 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
     }
 
-    private async onDocTagged(repoDocInfo: RepoDocInfo, tags: Tag[]) {
+    private async onDocTagged(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
 
         RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
 
