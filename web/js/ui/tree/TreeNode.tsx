@@ -122,9 +122,6 @@ class Styles {
 
 export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
-    public readonly id: string;
-    public readonly value: V;
-
     constructor(props: IProps<V>, context: any) {
         super(props, context);
 
@@ -134,9 +131,6 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.onCheckbox = this.onCheckbox.bind(this);
         this.onClick = this.onClick.bind(this);
         this.dispatchSelected = this.dispatchSelected.bind(this);
-
-        this.id = this.props.node.id;
-        this.value = this.props.node.value;
 
         this.state = {
         };
@@ -153,11 +147,13 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         const {node} = this.props;
         const children = node.children || [];
 
+        const {id} = this.props.node;
+
         // during expand/collapse new nodes are created and we have to keep the
         // index updated or we will access a component that no longer exists.
         // not sure why but this needs to be updated for each render and
         // components aren't always created.
-        treeState.index[this.id] = this;
+        treeState.index[id] = this;
 
         const createIcon = () => {
 
@@ -188,8 +184,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
             return "";
 
         };
-
-        const selected = isPresent(treeState.selected[this.id]);
+        const selected = isPresent(treeState.selected[id]);
 
         const closed = treeState.closed.contains(node.id);
 
@@ -286,7 +281,8 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     }
 
     private deselect() {
-        delete this.props.treeState.selected[this.id];
+        const {id} = this.props.node;
+        delete this.props.treeState.selected[id];
         this.setState({...this.state, idx: Date.now()});
     }
 
@@ -294,6 +290,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                    selected: boolean = true) {
 
         const {treeState} = this.props;
+        const {id} = this.props.node;
 
         if (!multi) {
 
@@ -310,12 +307,9 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         }
 
         if (selected) {
-
-            console.log("FIXME: marking selected: " + this.id);
-
-            treeState.selected[this.id] = true;
+            treeState.selected[id] = true;
         } else {
-            delete treeState.selected[this.id];
+            delete treeState.selected[id];
         }
 
         // FIXME: don't do this ... instead require the parent to call this...

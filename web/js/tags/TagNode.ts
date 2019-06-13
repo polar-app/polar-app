@@ -2,6 +2,7 @@ import {isPresent} from '../Preconditions';
 import {Tag} from './Tag';
 import {Reducers} from '../util/Reducers';
 import {TagPaths} from './TagPaths';
+import {Tags} from './Tags';
 
 export interface MutableTagNode<V> {
 
@@ -87,7 +88,23 @@ export class TagNodes {
                     const parent = tagNodeIndex.get(pathEntry.parent.path);
 
                     if (! tagNodeIndex.contains(pathEntry.path)) {
-                        const newNode = tagNodeIndex.register(pathEntry.path, pathEntry.basename, tag);
+
+                        const computeVirtualTagFromPathEntry = (): TagDescriptor => {
+
+                            if (tagIndex[pathEntry.path]) {
+                                // done as we already have a tag for this.
+                                return tagIndex[pathEntry.path];
+                            }
+
+                            const virtualTag = Tags.create(pathEntry.path);
+
+                            return {...virtualTag, count: 0};
+
+                        };
+
+                        const virtualTag = computeVirtualTagFromPathEntry();
+
+                        const newNode = tagNodeIndex.register(pathEntry.path, pathEntry.basename, virtualTag);
                         parent.children.push(newNode);
                     }
 
