@@ -739,7 +739,23 @@ id: unique ID for this group
 name?: The name (optional) for this group.  Must be 
 slug?: The slug for this group (derived from the name).   
 org_id?: For organizations the org_id
-nrMembers: 
+nrMembers: number
+moderated: boolean
+visibility?: 'public'  
+tags: Up to 5 tags picked for this group.  No more than five.  Only applies to 
+public groups.     
+
+#TODO:
+ - I think we need group admin and grown moderators.  Admins can control all main
+   settings and moderate but moderators can add / remove people.
+   
+#TODO: 
+ - we need a list of the users who are member of this group and flags for they are admin or moderator.  
+   I think it shoud be 'role' for now and should be admin | moderator | user    
+
+# group_admin
+
+Admin metadata for this group (this is not world readable or writable). 
 
 ## group_doc table:
 
