@@ -63,7 +63,7 @@ export class TreeState<V> {
     /**
      * Just the user tags that the user has selected.
      */
-    public tags: readonly Tag[] = [];
+    public tags: ReadonlyArray<Tag> = [];
 
     public dispatchSelected() {
 

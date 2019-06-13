@@ -626,7 +626,7 @@ interface IProps {
     readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly selectRow: (selectedIdx: number, event: MouseEvent, checkbox?: boolean) => void;
-    readonly onSelected: (selected: readonly number[]) => void;
+    readonly onSelected: (selected: ReadonlyArray<number>) => void;
     readonly refresh: () => void;
 }
 

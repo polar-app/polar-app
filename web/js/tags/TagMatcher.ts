@@ -10,7 +10,7 @@ export class TagMatcher {
     private readonly docTagPairs: TagPairs;
 
     public constructor(public readonly queryTagPairs: TagPairs,
-                       public readonly docTags: readonly Tag[]) {
+                       public readonly docTags: ReadonlyArray<Tag>) {
 
         this.docTagPairs = new TagPairs(this.docTags);
 
@@ -106,7 +106,7 @@ class TagPairs {
     public readonly folderTags: FolderTags;
     public readonly regularTags: RegularTags;
 
-    constructor(public readonly tags: readonly Tag[]) {
+    constructor(public readonly tags: ReadonlyArray<Tag>) {
         this.folderTags = new FolderTags(Tags.onlyFolderTags(this.tags));
         this.regularTags = new FolderTags(Tags.onlyRegular(this.tags));
     }
@@ -115,9 +115,9 @@ class TagPairs {
 
 class TypedTags {
 
-    public readonly tagIDs: readonly TagIDStr[];
+    public readonly tagIDs: ReadonlyArray<TagIDStr>;
 
-    constructor(public readonly tags: readonly Tag[]) {
+    constructor(public readonly tags: ReadonlyArray<Tag>) {
         this.tagIDs = Tags.toIDs(this.tags);
     }
 
@@ -143,11 +143,11 @@ export class TagMatcherFactory {
 
     private queryTagPairs: TagPairs;
 
-    public constructor(public readonly queryTags: readonly Tag[]) {
+    public constructor(public readonly queryTags: ReadonlyArray<Tag>) {
         this.queryTagPairs = new TagPairs(this.queryTags);
     }
 
-    public create(docTags: readonly Tag[]) {
+    public create(docTags: ReadonlyArray<Tag>) {
         return new TagMatcher(this.queryTagPairs, docTags);
     }
 
