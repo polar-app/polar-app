@@ -817,3 +817,64 @@ https://firebase.google.com/docs/firestore/security/rules-conditions#access_othe
   - Tokens should only be visible to their original owner
   
   - The owner should be able to revoke users but no one else
+
+
+
+
+- walk through the use cases of the protocol step by step and design it that way
+  and cover each use case including N way sharing.
+  
+# individual user to user sharing with headless groups.  
+  
+  - User is told about a new group (doc) that they can read
+    
+    - This is done by adding a new group_pending table.  This is also done
+      when they are invited to private groups.  Public groups don't need
+      this type of permission.  The user can just add themselves by the hook.  
+      
+        - The permission for interacting with the group is mediated via a hook
+          and the user can not mutate this data directly.
+          
+        - this also updates a user_group table which just has a list of the
+          users groups they have access too.
+      
+  - User then adds the document to their own repo
+        
+        - they mutate their doc to add a 'groups' field on it.  This is just
+          the group ID and gives anyone in that group access to their document.
+
+            - security rule will be 
+            
+            - groups != null && groups.length > 0
+                 - then read the user groups and see if their groups are within this set
+          
+        - they then call groupAddDoc which mutates group_docs which is just a 
+          single document with all the users who are collaborating with that 
+          group and sharing their doc_meta
+    
+            - this includes a token so that people can access the document
+              via the token directly.
+              
+            - we then store this token in doc_permission too so that when teh 
+              use performs a fetch they get validated against it via their
+              token.
+              
+        - TODO ... since we are using a HTTP fetch any via cloud functions do 
+          we even need the token?  We can just read the users group membership 
+          and read the doc.groups.
+          
+            - it might be best to have doc_permission too though becuase thats
+              a much faster read.  
+   
+    - user_group table
+    
+        - user only has read based on their uid
+        
+        - only written to via hook and admin because we have to mediate the 
+          permission of the         
+
+        - This is read on startup and is secure because only the admin can write
+          it. The user can READ it they just can't write it.
+
+
+    - 
