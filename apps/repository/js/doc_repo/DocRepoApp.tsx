@@ -20,7 +20,7 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {FixedNav, FixedNavBody} from '../FixedNav';
+import {FixedNav} from '../FixedNav';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
 import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
@@ -38,7 +38,6 @@ import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
-import {TagList} from '../../../../web/js/ui/tree/TagList';
 
 const log = Logger.create();
 
@@ -262,7 +261,7 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
     }
 
-    public onSelected(selected: readonly number[]) {
+    public onSelected(selected: ReadonlyArray<number>) {
         this.setState({ ...this.state, selected });
     }
 

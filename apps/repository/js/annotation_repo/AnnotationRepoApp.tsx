@@ -34,12 +34,12 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
     /**
      * The tags that are selected by the user.
      */
-    private selectedTags: readonly Tag[] = [];
+    private selectedTags: ReadonlyArray<Tag> = [];
 
     /**
      * The tags that are selected by the user.
      */
-    private selectedFolders: readonly Tag[] = [];
+    private selectedFolders: ReadonlyArray<Tag> = [];
 
     constructor(props: IProps, context: any) {
         super(props, context);

@@ -56,7 +56,7 @@ class TagIndex {
 
     }
 
-    public toTagDescriptors(): readonly TagDescriptor[] {
+    public toTagDescriptors(): ReadonlyArray<TagDescriptor> {
 
         return Object.values(this.backing).map(current => {
             return {
@@ -79,7 +79,7 @@ export class DataObjectIndex<D> {
 
     private tags = new TagIndex();
 
-    public constructor(private readonly toTags: (input: D) => readonly Tag[]) {
+    public constructor(private readonly toTags: (input: D) => ReadonlyArray<Tag>) {
 
     }
 
@@ -102,7 +102,7 @@ export class DataObjectIndex<D> {
 
     }
 
-    public values(): readonly D[] {
+    public values(): ReadonlyArray<D> {
         return Object.values(this.index);
     }
 
