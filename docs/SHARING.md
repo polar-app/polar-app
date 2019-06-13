@@ -565,6 +565,30 @@ emails with your account via a set.
 
 ## TODO
 
+- I don't think we need docPeer.token. which is used the the user to access 
+  another doc.  We just have to see if they are in the list of authorized 
+  access... but we DO need this for the HTTP requests I think so I'm wrong. 
+
+    - we can write our token to the group_permission but we but how would we remove it???
+    
+        - we could implement a hook for this... this is probably the best/only 
+          way to do it.  We would have to validate this on the server side.
+           
+    - the user could keep their OWN record of the token if they wanted
+    
+        - API call of groupAddMember  
+
+- ok.. it's hard to know for sure but I think teh way to do it is to have the 
+  group_permission table store the tokens and ALL documents in the same 'group'
+  reference this for lookup.  This way we do NOT perform permission exists 
+  if that doc isn't a member of a group.
+
+    - group_peer is only to discover members of that group...
+    
+    - anyone doc within that group uses that group_permission table unless
+      the group is open.  
+  
+
 - if I have an 'origin' in a doc_peer can't I get most of what I want?  I would 
   just reference a separate table which ONLY the other notes... 
   
@@ -718,12 +742,26 @@ org_id?: For organizations the org_id
 
 ## group_doc table:
 
-id: the ID for this doc...  
-doc_info: The owner's doc info for this doc... 
+The list of documents that have been shared with this group.  
+
+For individual sharing of users doc with headless groups the only document 
+is the main one and each has its own fingerprint.  
+
+TODO: For efficiency reasons we might want to consider only adding the users 
+doc to the group_doc if they add comments, or annotations. 
+
+id: the ID for this doc...
+fingerprint: string  
+doc_info: The owner's doc info for this doc...
+      Each user uses their own DocInfo (if present) to show this document.
 peers: []: 
 
 The documents that have been added to this group.
- 
+
+TODO: is this like doc_peer or doc_permission?  
+
+
+
 
 # Use Cases
 
@@ -742,7 +780,7 @@ Alice wants to create a private group named under her organization named
 
 Alice creates the named group under her own namespace and she's now the owner.
 
-She can invite other users and make then either owners or collaborators.  
+She can invite other users and make then either owners or collaborators.                                                                                                                                  
 
 Owners can invite others. 
 
@@ -769,6 +807,7 @@ A group might not be discoverable .
 # Key Firebase Documentation URLs:
 
 https://firebase.googleblog.com/2018/08/better-arrays-in-cloud-firestore.html
+https://firebase.google.com/docs/firestore/security/rules-conditions#access_other_documents
 
 # Requirements I need for a new system: 
 
