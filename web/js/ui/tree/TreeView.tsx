@@ -87,17 +87,24 @@ export class Marked {
         this.data[id] = true;
     }
 
+    public isMarked(id: string): boolean {
+        return isPresent(this.data[id]);
+    }
+
     public clear(id: string) {
         delete this.data[id];
     }
 
     public toggle(id: string) {
-        this.data[id] = ! this.data[id];
-        return this.data[id];
-    }
 
-    public contains(id: string): boolean {
-        return isPresent(this.data[id]);
+        const currentValue = this.data[id];
+
+        if (isPresent(currentValue) && currentValue) {
+            this.clear(id);
+        } else {
+            this.data[id] = true;
+        }
+
     }
 
     public reset() {

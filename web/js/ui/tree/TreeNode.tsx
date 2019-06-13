@@ -4,8 +4,6 @@ import {isPresent} from '../../Preconditions';
 import {Preconditions} from '../../Preconditions';
 import {TreeState} from './TreeView';
 import {TNode} from './TreeView';
-import {TagDescriptor} from '../../tags/TagNode';
-import {TagStr} from '../../tags/Tag';
 
 class Styles {
 
@@ -186,13 +184,14 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         };
         const selected = isPresent(treeState.selected[id]);
 
-        const closed = treeState.closed.contains(node.id);
+        const closed = treeState.closed.isMarked(node.id);
 
         const nodeButtonClazz = selected ? 'bg-primary text-white' : '';
 
         const icon = createIcon();
 
         return (
+
 
             <div style={{}}>
 
@@ -320,16 +319,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     }
 
     private dispatchSelected() {
-
-        const {treeState} = this.props;
-
-        const selected = Object.keys(treeState.selected)
-            .filter(nodeID => isPresent(nodeID))
-            .map(nodeID => treeState.index[nodeID])
-            .map(node => node.props.node.path);
-
         this.props.treeState.dispatchSelected();
-
     }
 
 }
