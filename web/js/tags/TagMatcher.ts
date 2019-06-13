@@ -151,4 +151,15 @@ export class TagMatcherFactory {
         return new TagMatcher(this.queryTagPairs, docTags);
     }
 
+    public filter<T>(list: ReadonlyArray<T>, toTags: (value: T) => ReadonlyArray<Tag>) {
+
+        return list.filter(current => {
+            const tags = toTags(current);
+            const tagMatcher = this.create(tags);
+            return tagMatcher.matches();
+
+        });
+
+    }
+
 }

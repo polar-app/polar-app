@@ -9,6 +9,7 @@ import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tag';
+import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have
@@ -132,31 +133,22 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>): RepoDocInfo[] {
+    private doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo>  {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
 
-        const tags = Tags.toIDs(this.filters.filteredTags.get());
+        const tags = this.filters.filteredTags.get()
+            .filter(current => current.id !== '/');
 
-        return repoDocs.filter(current => {
+        const tagMatcherFactory = new TagMatcherFactory(tags);
 
-            if (tags.length === 0) {
-                // there is no filter in place...
-                return true;
-            }
+        if (tags.length === 0) {
+            // we're done as there are no tags.
+            return repoDocs;
+        }
 
-            if (! isPresent(current.docInfo.tags)) {
-                // the document we're searching over has not tags.
-                return false;
-            }
-
-            const intersection =
-                Sets.intersection(tags, Tags.toIDs(Object.values(current.docInfo.tags!)));
-
-            return intersection.length === tags.length;
-
-
-        });
+        return tagMatcherFactory.filter(repoDocs,
+                                        current => Object.values(current.docInfo.tags || {}));
 
     }
 

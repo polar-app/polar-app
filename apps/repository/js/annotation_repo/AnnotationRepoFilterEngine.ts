@@ -101,24 +101,13 @@ export class AnnotationRepoFilterEngine {
 
         const tagMatcherFactory = new TagMatcherFactory(tags);
 
-        // FIXME: it's ALWAYS the folders AND the tags... though the tags COULD
-        // be OR tags...
-
-        // if (tagIDs.length > 0) {
-        //     RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
-        // }
-
         if (tags.length === 0) {
             // we're done as there are no tags.
             return repoAnnotations;
         }
 
-        return repoAnnotations.filter(current => {
-            const docTags = Object.values(current.docInfo.tags || {});
-            const tagMatcher = tagMatcherFactory.create(docTags);
-            return tagMatcher.matches();
-
-        });
+        return tagMatcherFactory.filter(repoAnnotations,
+                                        current => Object.values(current.docInfo.tags || {}));
 
     }
 
