@@ -787,7 +787,7 @@ TODO: is this like doc_peer or doc_permission?
 Alice wants to invite Bob and Carol to collaborate on a document.  She adds them 
 by email and they are invited and add the document to their doc repo.
 
-They can then see ach others annotations.  Alice can add more people and Bob 
+They can then see each others annotations.  Alice can add more people and Bob 
 and Carol automatically see the new users and their annotations.  
 
 ## Private Moderated Groups
