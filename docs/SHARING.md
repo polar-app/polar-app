@@ -739,6 +739,7 @@ id: unique ID for this group
 name?: The name (optional) for this group.  Must be 
 slug?: The slug for this group (derived from the name).   
 org_id?: For organizations the org_id
+nrMembers: 
 
 ## group_doc table:
 
@@ -795,6 +796,9 @@ We might might want to have a token URL that's handed out that allows everyone
 with the token to read the group.  If the token is removed the users no longer
 have access to the group. 
 
+This is "Anyone with the URL"... we could just encode the doc ID with a secret
+in the URL and check the group permissions before we add it.
+
 ## Public Groups
 
 End users can search for groups by name, tags and rank (descending).
@@ -803,6 +807,9 @@ They then have the list of groups in their folders sidebar and can interact
 with them directly.  Adding documents to the their document repo.
 
 A group might not be discoverable .     
+
+
+app.getpolarized.io/
 
 # Key Firebase Documentation URLs:
 
