@@ -119,7 +119,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
                     the 'read' pagemarks from the documents you're tracking.  If
                     it seems like there are too many pages read per day try
                     changing the 'mode' of the pagemark to either 'previously
-                    read' or 'ignored'.  Thsi can happen when importing documents
+                    read' or 'ignored'.  This can happen when importing documents
                     you're previously read and create a large pagemark.
                 </p>
 
