@@ -838,6 +838,7 @@ app.getpolarized.io/
 
 https://firebase.googleblog.com/2018/08/better-arrays-in-cloud-firestore.html
 https://firebase.google.com/docs/firestore/security/rules-conditions#access_other_documents
+https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
 
 # Requirements I need for a new system: 
 
