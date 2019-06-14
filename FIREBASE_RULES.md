@@ -19,6 +19,31 @@ service cloud.firestore {
   }
 
   match /databases/{database}/documents {
+
+	match /account/{document=**} {
+
+      // only allow the user to read their own account    
+      allow read: if request.auth.uid == resource.data.uid;
+      
+    }
+
+	match /unique_machines/{document=**} {
+	    allow read;
+        allow write;
+    }
+
+    match /machine_datastore/{document=**} {
+        allow write;
+    }
+
+    match /user_feedback/{document=**} {
+        allow write;
+    }
+
+    match /crowdfunding/{document=**} {
+        allow read;
+    }
+  
     match /{document=**} {
     
       // Reads: 
@@ -44,6 +69,8 @@ service cloud.firestore {
     }
   }
 }
+
+
 ```
 
 ## Default Rules (after the initial install)
