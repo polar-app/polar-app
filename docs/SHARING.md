@@ -565,6 +565,13 @@ emails with your account via a set.
 
 ## TODO
 
+- doc permissions should also still have visibility=public permissions because
+  in those situations we can use those documents for ML purposes, discovery, and 
+  permission verification is faster for public groups.  They're not even needed
+  
+- we have to have some sort of doc membership for the groups where users assert
+  that they have added a document to a group.
+
 - I don't think we need docPeer.token. which is used the the user to access 
   another doc.  We just have to see if they are in the list of authorized 
   access... but we DO need this for the HTTP requests I think so I'm wrong. 
