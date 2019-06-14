@@ -4,7 +4,7 @@ Sharing Design in Polar
 
 # Tables
 
-## doc_peer
+## doc_peer (FIXME rework)
 
 Grants permission for a user to access a document.  This is basically a 'grant'
 datastructure which gives the user the pointer to the doc_id to read.
@@ -15,7 +15,7 @@ datastructure which gives the user the pointer to the doc_id to read.
 || token || string || The token used by this user for accessing the resource ||
 || reciprocal || boolean || True if this is a reciprocal grant so that the original user can get access to the doc meta back ||
 
-## doc_peer_pending
+## doc_peer_pending (FIXME rework)
 
 Used to grant docs to other people so that they can then store their own 
 uid there. For now we use the users primary email but we could query for all
@@ -565,6 +565,9 @@ emails with your account via a set.
 
 ## TODO
 
+- We could have private, protected, public... protected could just be 
+  "anyone with the URL" I think and I like the metaphor.
+
 - doc permissions should also still have visibility=public permissions because
   in those situations we can use those documents for ML purposes, discovery, and 
   permission verification is faster for public groups.  They're not even needed
@@ -842,32 +845,51 @@ https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_
 
 # Requirements I need for a new system: 
 
-  - need a token storage system so that users can add tokens to HTTP requests 
-    and have them properly resolved to the target URL. 
-    
-  - Tokens should only be visible to their original owner
-  
-  - The owner should be able to revoke users but no one else
-
-
-
 
 - walk through the use cases of the protocol step by step and design it that way
   and cover each use case including N way sharing.
   
-# individual user to user sharing with headless groups.  
+# Protocol walk through.  
+
+## Individual user to user sharing with headless groups.  
+
+  - A user wants to share a document with their colleagues
+    
+    - They go into Polar and click the share button on the doc.  This brings
+      up a dialog box that prompts them for email addresses that they can add.
+
+    - The user then calls a cloud function called groupCreate (though this might
+      need to be groupCreate or groupCreatOrUpdate or groupSetup)
+      
+        - this provisions the group:
+        
+        - sets the permissions (private)
+        
+        - adds the users group_admin.members.pending
+
+        - we write a user_group_pending record for this user to accept/reject
+        
+        - this optionally has a document that the user can reference if it's 
+          one or more documents that are being shared with them. 
   
   - User is told about a new group (doc) that they can read
-    
-    - This is done by adding a new group_pending table.  This is also done
+  
+    - This is done by adding a new user_group_pending table.  This is also done
       when they are invited to private groups.  Public groups don't need
-      this type of permission.  The user can just add themselves by the hook.  
+      this type of permission.  The user can just add themselves by the hook.
+      
+        - But they can STILL be invited to a public group via this record if a 
+          new group is created plus we could use ML to match /suggest groups
+          for them to join.   
       
         - The permission for interacting with the group is mediated via a hook
           and the user can not mutate this data directly.
           
-        - this also updates a user_group table which just has a list of the
-          users groups they have access too.
+        - This also updates a user_group table which just has a list of the
+          users groups they have access too.  This is used for authentication 
+          later and we read the user_group table to compute the group IDs and 
+          then the doc itself has a 'groups' record or 'visibility' that can 
+          be used.
       
   - User then adds the document to their own repo
         
@@ -908,4 +930,8 @@ https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_
           it. The user can READ it they just can't write it.
 
 
-    - 
+
+## Public access / public groups 
+
+    - the doc is stored with the group as a ```group_doc``` record
+    - the doc is mutated by makign it 'public' by setting visibility. 
