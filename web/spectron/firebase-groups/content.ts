@@ -15,6 +15,9 @@ import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
 import {DocPeer} from '../../js/datastore/firebase/DocPeers';
 import {GroupProvisionRequest} from '../../js/datastore/sharing/GroupProvisions';
 import {GroupProvisions} from '../../js/datastore/sharing/GroupProvisions';
+import {ProfileUpdateRequest} from '../../js/datastore/sharing/ProfileUpdates';
+import {ProfileUpdates} from '../../js/datastore/sharing/ProfileUpdates';
+import {UserRequest} from '../../js/datastore/sharing/UserRequest';
 
 const log = Logger.create();
 
@@ -60,19 +63,46 @@ SpectronRenderer.run(async (state) => {
 
             const idToken = await user!.getIdToken();
 
-            const request: GroupProvisionRequest = {
+            const request: UserRequest<GroupProvisionRequest> = {
                 idToken,
-                docs: [],
-                invitations: {
-                    message: "Private invite to my special group",
-                    to: [
-                        'getpolarized.test+test1@gmail.com'
-                    ]
-                },
-                visibility: 'private'
+                request: {
+                    docs: [],
+                    invitations: {
+                        message: "Private invite to my special group",
+                        to: [
+                            'getpolarized.test+test1@gmail.com'
+                        ]
+                    },
+                    visibility: 'private'
+                }
             };
 
             await GroupProvisions.exec(request);
+
+        });
+
+
+        it("profile update", async function() {
+
+            const app = Firebase.init();
+
+            await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+
+            const user = app.auth().currentUser;
+
+            const idToken = await user!.getIdToken();
+
+            const request: UserRequest<ProfileUpdateRequest> = {
+                idToken,
+                request: {
+                    name: "Alice Smith",
+                    bio: "An example user from the land of Oz",
+                    location: "Capitol City, Oz",
+                    links: ['https://www.wonderland.org']
+                },
+            };
+
+            await ProfileUpdates.exec(request);
 
         });
 

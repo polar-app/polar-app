@@ -1,16 +1,15 @@
 import {ProfileInit} from './Profiles';
 import {JSONRPC} from './JSONRPC';
+import {UserRequest} from './UserRequest';
 
 export class ProfileUpdates {
 
-    public static async exec(request: ProfileUpdateRequest) {
+    public static async exec(request: UserRequest<ProfileUpdateRequest>) {
         await JSONRPC.exec('profileUpdate', request);
     }
 
 }
 
-interface ProfileUpdateRequest extends ProfileInit {
-
-    readonly idToken: string;
+export interface ProfileUpdateRequest extends ProfileInit {
 
 }
