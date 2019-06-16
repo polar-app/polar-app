@@ -1,8 +1,25 @@
+import {Firebase} from '../../firebase/Firebase';
+import {UserRequest} from './UserRequest';
+
 export class JSONRPC {
 
     public static endpoint = "https://us-central1-polar-test2.cloudfunctions.net";
 
     public static async exec<R, V>(func: string, request: R): Promise<V> {
+
+        const app = Firebase.init();
+        const user = app.auth().currentUser;
+
+        if (! user) {
+            throw new Error("User not authenticated");
+        }
+
+        const idToken = await user.getIdToken();
+
+        const userRequest: UserRequest<R> = {
+            idToken,
+            request,
+        };
 
         const url = `${this.endpoint}/${func}`;
 
@@ -11,7 +28,7 @@ export class JSONRPC {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(request)});
+            body: JSON.stringify(userRequest)});
 
         if (response.status !== 200) {
             throw new Error("Unable to handle RPC");

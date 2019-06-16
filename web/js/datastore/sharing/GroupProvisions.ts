@@ -8,7 +8,7 @@ import {UserRequest} from './UserRequest';
 
 export class GroupProvisions {
 
-    public static async exec(request: UserRequest<GroupProvisionRequest>): Promise<GroupProvisionResponse> {
+    public static async exec(request: GroupProvisionRequest): Promise<GroupProvisionResponse> {
         return await JSONRPC.exec('groupProvision', request);
     }
 
