@@ -116,11 +116,11 @@ export class DocPeerPendings {
 
         const guestDocID = FirebaseDatastore.computeDocMetaID(pending.fingerprint);
 
-        await this.write({
-            to: primary.from.email,
-            docID: guestDocID,
-            fingerprint: pending.fingerprint
-        });
+        // await this.write({
+        //     to: primary.from.email,
+        //     docID: guestDocID,
+        //     fingerprint: pending.fingerprint
+        // });
 
         // now delete the remaining.
         for (const docPeerPending of docPeerPendings) {

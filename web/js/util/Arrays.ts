@@ -64,7 +64,7 @@ export class Arrays {
             throw new Error("Neither an object or an array.");
         }
 
-        if(isObject && ! isArray) {
+        if (isObject && ! isArray) {
             // already done as this is a dictionary though we might consider
             // making this a
             return val;
@@ -74,11 +74,11 @@ export class Arrays {
             throw new Error("Not an array");
         }
 
-        let result: {[key: string]: any} = {};
+        const result: {[key: string]: any} = {};
 
-        let arrayVal: any[] = <any[]>val;
+        const arrayVal: any[] = <any[]> val;
 
-        for(let idx = 0; idx < arrayVal.length; ++idx) {
+        for (let idx = 0; idx < arrayVal.length; ++idx) {
             result[idx] = arrayVal[idx];
         }
 
@@ -107,9 +107,9 @@ export class Arrays {
         for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
 
             result.push(new ArrayPosition<T>(
-                Optional.of(arrayLikeObject[idx-1]).getOrUndefined(),
+                Optional.of(arrayLikeObject[idx - 1]).getOrUndefined(),
                 arrayLikeObject[idx],
-                Optional.of(arrayLikeObject[idx+1]).getOrUndefined()
+                Optional.of(arrayLikeObject[idx + 1]).getOrUndefined()
             ));
 
         }
@@ -203,6 +203,23 @@ export class Arrays {
         }
 
         return result;
+
+    }
+
+    /**
+     * Return true if the given `list` has any of the elements in `items`
+     */
+    public static hasAny<T>(list: ReadonlyArray<T>, items: ReadonlyArray<T>) {
+
+        for (const item of items) {
+
+            if (list.includes(item)) {
+                return true;
+            }
+
+        }
+
+        return false;
 
     }
 
