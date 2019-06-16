@@ -6,6 +6,9 @@ import {GroupProvisions} from '../../js/datastore/sharing/GroupProvisions';
 import {ProfileUpdateRequest} from '../../js/datastore/sharing/ProfileUpdates';
 import {ProfileUpdates} from '../../js/datastore/sharing/ProfileUpdates';
 import {GroupJoins} from '../../js/datastore/sharing/GroupJoins';
+import {assert} from 'chai';
+import {GroupIDStr} from '../../js/datastore/sharing/Groups';
+import {Groups} from '../../js/datastore/sharing/Groups';
 
 const log = Logger.create();
 
@@ -52,37 +55,66 @@ SpectronRenderer.run(async (state) => {
 
             const app = Firebase.init();
 
-            await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+            async function doGroupProvision() {
 
-            const request: GroupProvisionRequest = {
-                docs: [],
-                invitations: {
-                    message: "Private invite to my special group",
-                    to: [
-                        'getpolarized.test+test1@gmail.com'
-                    ]
-                },
-                visibility: 'private'
-            };
+                await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
 
-            const response = await GroupProvisions.exec(request);
+                const request: GroupProvisionRequest = {
+                    docs: [],
+                    invitations: {
+                        message: "Private invite to my special group",
+                        to: [
+                            'getpolarized.test+test1@gmail.com'
+                        ]
+                    },
+                    visibility: 'private'
+                };
 
-            const groupID = response.id;
+                const response = await GroupProvisions.exec(request);
+                return response.id;
 
-            // now switch to the user that was invited and join that group.
+            }
 
-            await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+            const groupID = await doGroupProvision();
 
-            const profileUpdateRequest: ProfileUpdateRequest = {
-                name: "Bob Johnson",
-                bio: "An example user from Mars",
-                location: "Capitol City, Mars",
-                links: ['https://www.mars.org']
-            };
+            async function doGroupJoin() {
 
-            await ProfileUpdates.exec(profileUpdateRequest);
+                // now switch to the user that was invited and join that group.
 
-            await GroupJoins.exec({groupID});
+                await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+                const profileUpdateRequest: ProfileUpdateRequest = {
+                    name: "Bob Johnson",
+                    bio: "An example user from Mars",
+                    location: "Capitol City, Mars",
+                    links: ['https://www.mars.org']
+                };
+
+                await ProfileUpdates.exec(profileUpdateRequest);
+
+                await GroupJoins.exec({groupID});
+
+            }
+
+            await doGroupJoin();
+
+            async function validateGroupSettings(groupID: GroupIDStr) {
+
+                const user = app.auth().currentUser!;
+                assert.equal(user.email, FIREBASE_USER1);
+
+                console.log("Testing permissions for user: " + user.uid);
+                console.log("Testing permissions for group: " + groupID);
+
+                const group = await Groups.get(groupID);
+
+                assert.isDefined(group);
+
+                assert.equal(group!.nrMembers, 1);
+
+            }
+
+            await validateGroupSettings(groupID);
 
         });
 
