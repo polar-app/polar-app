@@ -20,6 +20,16 @@ const CONFIG_STAGING = {
     appId: "1:706724471731:web:f4fe9fac758b2914"
 };
 
+const CONFIG_TEST = {
+    apiKey: "AIzaSyByrYfWcYQAFaBRroM-M96lWCyX0cp3SKg",
+    authDomain: "polar-test2.firebaseapp.com",
+    databaseURL: "https://polar-test2.firebaseio.com",
+    projectId: "polar-test2",
+    storageBucket: "polar-test2.appspot.com",
+    messagingSenderId: "1051837764975",
+    appId: "1:1051837764975:web:8f9f8fd4a3a9b76b"
+};
+
 export class Firebase {
 
     private static app?: firebase.app.App;
@@ -33,7 +43,9 @@ export class Firebase {
             return this.app;
         }
 
-        const config = CONFIG_PRODUCTION;
+        const config = CONFIG_TEST;
+
+        console.log("FIXME: using config: ", CONFIG_TEST);
 
         return this.app = firebase.initializeApp(config);
 

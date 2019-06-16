@@ -144,7 +144,8 @@ export class Dictionaries {
     /**
      *
      * Recursively work through this object and remove any fields that are
-     * stored with unassigned values.
+     * stored with undefined values.  This is primarily because Firebase doesn't
+     * support undefined.
      *
      * @param dict
      */
