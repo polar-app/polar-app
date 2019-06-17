@@ -1,6 +1,5 @@
 import {GroupInit} from './Groups';
 import {JSONRPC} from './JSONRPC';
-import {UserRequest} from './UserRequest';
 
 
 // TODO/FIXME: I could move a lot of this skeleton code to polar-sharing-rpc

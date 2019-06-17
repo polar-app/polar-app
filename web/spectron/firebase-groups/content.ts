@@ -9,6 +9,7 @@ import {GroupJoins} from '../../js/datastore/sharing/GroupJoins';
 import {assert} from 'chai';
 import {GroupIDStr} from '../../js/datastore/sharing/Groups';
 import {Groups} from '../../js/datastore/sharing/Groups';
+import {GroupMembers} from '../../js/datastore/sharing/GroupMembers';
 
 const log = Logger.create();
 
@@ -42,12 +43,24 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
+    // TODO: what is doc_file_meta ???
+
     // TODO: create TWO groups and make sure that the user has admin on those
     // groups and that the records are setup properly.
 
-    // TODO: make sure nrMembers counts on the groups are setup properly.
-
     // TODO: make sure profile values are updated to the correct values properly.
+
+    // TODO: make sure a 3rd party can't read the private groups
+
+    // TODO: make sure the user can see their group_member_invitation record
+
+    // TODO: make sure the group_member_invitation  records are present before
+    // and then removed FIXME: I confirmed that group_member_invitation is not
+    // being removed
+
+    // Future work:
+    //
+    //   - TODO: test public groups and protected groups
 
     describe("firebase-groups", async function() {
 
@@ -98,7 +111,7 @@ SpectronRenderer.run(async (state) => {
 
             await doGroupJoin();
 
-            async function validateGroupSettings(groupID: GroupIDStr) {
+            async function validateGroupSettingsAfterJoin(groupID: GroupIDStr) {
 
                 const user = app.auth().currentUser!;
                 assert.equal(user.email, FIREBASE_USER1);
@@ -110,11 +123,16 @@ SpectronRenderer.run(async (state) => {
 
                 assert.isDefined(group);
 
+                // make sure nrMembers counts on the groups are setup properly.
                 assert.equal(group!.nrMembers, 1);
+
+                const groupMembers = await GroupMembers.list(groupID);
+
+                assert.equal(groupMembers.length, 1);
 
             }
 
-            await validateGroupSettings(groupID);
+            await validateGroupSettingsAfterJoin(groupID);
 
         });
 

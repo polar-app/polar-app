@@ -34,3 +34,7 @@ export interface ProfileInit {
     readonly location?: string;
 
 }
+
+export type ProfileIDStr = string;
+
+export type HandleStr = string;
