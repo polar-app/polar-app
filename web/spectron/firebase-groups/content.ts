@@ -11,6 +11,7 @@ import {GroupIDStr} from '../../js/datastore/sharing/Groups';
 import {Groups} from '../../js/datastore/sharing/Groups';
 import {GroupMembers} from '../../js/datastore/sharing/GroupMembers';
 import {GroupMemberInvitations} from '../../js/datastore/sharing/GroupMemberInvitations';
+import {Profiles} from '../../js/datastore/sharing/Profiles';
 
 const log = Logger.create();
 
@@ -48,8 +49,6 @@ SpectronRenderer.run(async (state) => {
 
     // TODO: create TWO groups and make sure that the user has admin on those
     // groups and that the records are setup properly.
-
-    // TODO: make sure profile values are updated to the correct values properly.
 
     // TODO: make sure a 3rd party can't read the private groups
 
@@ -141,7 +140,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("profile update", async function() {
+        it("Profile update", async function() {
 
             const app = Firebase.init();
 
@@ -155,6 +154,14 @@ SpectronRenderer.run(async (state) => {
             };
 
             await ProfileUpdates.exec(request);
+
+            const profile = await Profiles.currentUserProfile();
+
+            assert.isDefined(profile);
+
+            assert.equal(profile!.name, request.name);
+            assert.equal(profile!.bio, request.bio);
+            assert.equal(profile!.location, request.location);
 
         });
 

@@ -1,9 +1,43 @@
 import {TagStr} from './Groups';
 import {Image} from './Images';
+import {Firestore} from '../../firebase/Firestore';
+import {Firebase} from '../../firebase/Firebase';
+import {ProfileOwners} from './ProfileOwners';
+import {Preconditions} from '../../Preconditions';
+import * as firebase from '../../firebase/lib/firebase';
+import DocumentReference = firebase.firestore.DocumentReference;
 
 export class Profiles {
 
-    public static get() {
+    public static readonly COLLECTION = 'profile';
+
+    public static async doc(id: ProfileIDStr): Promise<[HandleStr, DocumentReference]> {
+        const firestore = await Firestore.getInstance();
+        const doc = firestore.collection(this.COLLECTION).doc(id);
+        return [id, doc];
+    }
+
+    public static async get(id: ProfileIDStr): Promise<Profile | undefined> {
+        const [_, ref] = await this.doc(id);
+        const doc = await ref.get();
+        return <Profile> doc.data();
+    }
+
+
+    public static async currentUserProfile(): Promise<Profile | undefined> {
+
+        const app = Firebase.init();
+        const user = app.auth().currentUser;
+
+        Preconditions.assertPresent(user, "user");
+
+        const profileOwner = await ProfileOwners.get(user!.uid);
+
+        if (! profileOwner) {
+            throw new Error("No profile owner");
+        }
+
+        return await this.get(profileOwner.profileID);
 
     }
 
@@ -40,6 +74,12 @@ export interface ProfileInit {
      * The physical location for the user.
      */
     readonly location?: string;
+
+}
+
+export interface Profile extends ProfileInit {
+
+    readonly id: ProfileIDStr;
 
 }
 
