@@ -1,6 +1,14 @@
 import {TagStr} from './Groups';
 import {Image} from './Images';
 
+export class Profiles {
+
+    public static get() {
+
+    }
+
+}
+
 export interface ProfileInit {
 
     readonly name?: string;
@@ -38,3 +46,7 @@ export interface ProfileInit {
 export type ProfileIDStr = string;
 
 export type HandleStr = string;
+
+export type UserIDStr = string;
+
+export type EmailStr = string;

@@ -10,6 +10,7 @@ import {assert} from 'chai';
 import {GroupIDStr} from '../../js/datastore/sharing/Groups';
 import {Groups} from '../../js/datastore/sharing/Groups';
 import {GroupMembers} from '../../js/datastore/sharing/GroupMembers';
+import {GroupMemberInvitations} from '../../js/datastore/sharing/GroupMemberInvitations';
 
 const log = Logger.create();
 
@@ -52,12 +53,6 @@ SpectronRenderer.run(async (state) => {
 
     // TODO: make sure a 3rd party can't read the private groups
 
-    // TODO: make sure the user can see their group_member_invitation record
-
-    // TODO: make sure the group_member_invitation  records are present before
-    // and then removed FIXME: I confirmed that group_member_invitation is not
-    // being removed
-
     // Future work:
     //
     //   - TODO: test public groups and protected groups
@@ -90,11 +85,16 @@ SpectronRenderer.run(async (state) => {
 
             const groupID = await doGroupProvision();
 
-            async function doGroupJoin() {
+            async function doGroupJoin(groupID: GroupIDStr) {
 
                 // now switch to the user that was invited and join that group.
 
                 await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+                const groupMemberInvitations = await GroupMemberInvitations.list();
+
+                // it's important that the user can see their own invitations.
+                assert.equal(groupMemberInvitations.filter(current => current.groupID === groupID).length, 1);
 
                 const profileUpdateRequest: ProfileUpdateRequest = {
                     name: "Bob Johnson",
@@ -109,7 +109,7 @@ SpectronRenderer.run(async (state) => {
 
             }
 
-            await doGroupJoin();
+            await doGroupJoin(groupID);
 
             async function validateGroupSettingsAfterJoin(groupID: GroupIDStr) {
 
@@ -129,6 +129,11 @@ SpectronRenderer.run(async (state) => {
                 const groupMembers = await GroupMembers.list(groupID);
 
                 assert.equal(groupMembers.length, 1);
+
+                // now make sure there are no invitations for this group after ...
+                const groupMemberInvitations = await GroupMemberInvitations.list();
+
+                assert.equal(groupMemberInvitations.filter(current => current.groupID === groupID).length, 0);
 
             }
 
