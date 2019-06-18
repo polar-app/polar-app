@@ -48,7 +48,13 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
+    // TODO: next big thing is to audit how fast/slow this is on our production
+    // firestore instance.
+
     // TODO: what is doc_file_meta ???
+    // TODO: create a profileID for user1 and no profileID for user2 and make
+    // sure the contacts are updated appropriately.
+
 
     // Future work:
     //
