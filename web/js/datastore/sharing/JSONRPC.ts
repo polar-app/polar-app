@@ -35,6 +35,7 @@ export class JSONRPC {
         }
 
         return <V> await response.json();
+
     }
 
 }
