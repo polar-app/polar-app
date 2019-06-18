@@ -3,7 +3,7 @@ import {UserRequest} from './UserRequest';
 
 export class JSONRPC {
 
-    public static endpoint = "https://us-central1-polar-test2.cloudfunctions.net";
+    public static endpoint = "https://us-central1-polar-cors.cloudfunctions.net";
 
     public static async exec<R, V>(func: string, request: R): Promise<V> {
 

@@ -55,7 +55,6 @@ SpectronRenderer.run(async (state) => {
     // TODO: create a profileID for user1 and no profileID for user2 and make
     // sure the contacts are updated appropriately.
 
-
     // Future work:
     //
     //   - TODO: test public groups and protected groups
