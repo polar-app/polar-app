@@ -18,6 +18,8 @@ const log = Logger.create();
 mocha.setup('bdd');
 mocha.timeout(120000);
 
+// process.env.POLAR_TEST_PROJECT = 'polar-test2';
+
 const FIREBASE_USER = process.env.FIREBASE_USER!;
 const FIREBASE_PASS = process.env.FIREBASE_PASS!;
 

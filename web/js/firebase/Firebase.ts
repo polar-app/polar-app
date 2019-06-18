@@ -1,34 +1,42 @@
 import * as firebase from './lib/firebase';
+import {Preconditions} from '../Preconditions';
 
-const CONFIG_PRODUCTION = {
-    apiKey: "AIzaSyDokaZQO8TkmwtU4WKGnxKNyVumD79JYW0",
-    authDomain: "polar-32b0f.firebaseapp.com",
-    databaseURL: "https://polar-32b0f.firebaseio.com",
-    projectId: "polar-32b0f",
-    storageBucket: "polar-32b0f.appspot.com",
-    messagingSenderId: "919499255851",
-    // timestampsInSnapshots: true
-};
-
-const CONFIG_STAGING = {
-    apiKey: "AIzaSyB-MXbMazU0ag4g126NGXi0h6lUxk76XBc",
-    authDomain: "polar-cors.firebaseapp.com",
-    databaseURL: "https://polar-cors.firebaseio.com",
-    projectId: "polar-cors",
-    storageBucket: "polar-cors.appspot.com",
-    messagingSenderId: "706724471731",
-    appId: "1:706724471731:web:f4fe9fac758b2914"
-};
+// const CONFIG_STAGING = {
+//     apiKey: "AIzaSyB-MXbMazU0ag4g126NGXi0h6lUxk76XBc",
+//     authDomain: "polar-cors.firebaseapp.com",
+//     databaseURL: "https://polar-cors.firebaseio.com",
+//     projectId: "polar-cors",
+//     storageBucket: "polar-cors.appspot.com",
+//     messagingSenderId: "706724471731",
+//     appId: "1:706724471731:web:f4fe9fac758b2914"
+// };
 
 const CONFIG_TEST = {
-    apiKey: "AIzaSyByrYfWcYQAFaBRroM-M96lWCyX0cp3SKg",
-    authDomain: "polar-test2.firebaseapp.com",
-    databaseURL: "https://polar-test2.firebaseio.com",
-    projectId: "polar-test2",
-    storageBucket: "polar-test2.appspot.com",
-    messagingSenderId: "1051837764975",
-    appId: "1:1051837764975:web:8f9f8fd4a3a9b76b"
 };
+
+const PROJECTS: {[project: string]: any} = {
+
+    "polar-test2": {
+        apiKey: "AIzaSyByrYfWcYQAFaBRroM-M96lWCyX0cp3SKg",
+        authDomain: "polar-test2.firebaseapp.com",
+        databaseURL: "https://polar-test2.firebaseio.com",
+        projectId: "polar-test2",
+        storageBucket: "polar-test2.appspot.com",
+        messagingSenderId: "1051837764975",
+        appId: "1:1051837764975:web:8f9f8fd4a3a9b76b"
+    },
+    "prod": {
+        apiKey: "AIzaSyDokaZQO8TkmwtU4WKGnxKNyVumD79JYW0",
+        authDomain: "polar-32b0f.firebaseapp.com",
+        databaseURL: "https://polar-32b0f.firebaseio.com",
+        projectId: "polar-32b0f",
+        storageBucket: "polar-32b0f.appspot.com",
+        messagingSenderId: "919499255851",
+        // timestampsInSnapshots: true
+    }
+
+};
+
 
 export class Firebase {
 
@@ -43,9 +51,13 @@ export class Firebase {
             return this.app;
         }
 
-        const config = CONFIG_TEST;
+        const project = process.env.POLAR_TEST_PROJECT || 'prod';
 
-        console.log("FIXME: using config: ", CONFIG_TEST);
+        Preconditions.assertPresent(project, "project");
+
+        const config = PROJECTS[project];
+
+        Preconditions.assertPresent(config, "config");
 
         return this.app = firebase.initializeApp(config);
 
