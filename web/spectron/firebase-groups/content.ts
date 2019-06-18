@@ -50,11 +50,6 @@ SpectronRenderer.run(async (state) => {
 
     // TODO: what is doc_file_meta ???
 
-    // TODO: create TWO groups and make sure that the user has admin on those
-    // groups and that the records are setup properly.
-
-    // TODO: make sure a 3rd party can't read the private groups
-
     // Future work:
     //
     //   - TODO: test public groups and protected groups
@@ -141,6 +136,14 @@ SpectronRenderer.run(async (state) => {
 
             await validateGroupSettingsAfterJoin(groupID);
 
+            async function validatePermissionDeniedForOthers(groupID: GroupIDStr) {
+
+                await app.auth().signInWithEmailAndPassword(FIREBASE_USER2, FIREBASE_PASS2);
+
+                await verifyFailed(async () => await Groups.get(groupID));
+            }
+
+            await validatePermissionDeniedForOthers(groupID);
         });
 
         it("Profile update", async function() {
