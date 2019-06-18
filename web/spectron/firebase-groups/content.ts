@@ -24,6 +24,9 @@ const FIREBASE_PASS = process.env.FIREBASE_PASS!;
 const FIREBASE_USER1 = process.env.FIREBASE_USER1!;
 const FIREBASE_PASS1 = process.env.FIREBASE_PASS1!;
 
+const FIREBASE_USER2 = process.env.FIREBASE_USER2!;
+const FIREBASE_PASS2 = process.env.FIREBASE_PASS2!;
+
 async function verifyFailed(delegate: () => Promise<any>) {
 
     let failed: boolean;
@@ -58,7 +61,7 @@ SpectronRenderer.run(async (state) => {
 
     describe("firebase-groups", async function() {
 
-        it("group provision", async function() {
+        it("group provision of private group", async function() {
 
             const app = Firebase.init();
 
