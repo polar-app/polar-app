@@ -12,6 +12,10 @@ import {Groups} from '../../js/datastore/sharing/Groups';
 import {GroupMembers} from '../../js/datastore/sharing/GroupMembers';
 import {GroupMemberInvitations} from '../../js/datastore/sharing/GroupMemberInvitations';
 import {Profiles} from '../../js/datastore/sharing/Profiles';
+import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
+import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
+import {MockDocMetas} from '../../js/metadata/DocMetas';
+import {DocRefs} from '../../js/datastore/sharing/DocRefs';
 
 const log = Logger.create();
 
@@ -50,10 +54,11 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
+    // TODO: Test using actual docs not empty docs...
+
     // TODO: next big thing is to audit how fast/slow this is on our production
     // firestore instance.
 
-    // TODO: what is doc_file_meta ???
     // TODO: create a profileID for user1 and no profileID for user2 and make
     // sure the contacts are updated appropriately.
 
@@ -70,12 +75,30 @@ SpectronRenderer.run(async (state) => {
 
             const app = Firebase.init();
 
-            async function doGroupProvision() {
+            async function provisionAccountData() {
 
                 await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
 
+                const firebaseDatastore = new FirebaseDatastore();
+                await firebaseDatastore.init();
+
+                return await MockDocMetas.createMockDocMetaFromPDF(firebaseDatastore);
+
+            }
+
+            const mockDock = await provisionAccountData();
+
+            async function doGroupProvision() {
+
+                const {docMeta} = mockDock;
+                const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+
+                const docRef = DocRefs.fromDocMeta(docID, docMeta);
+
                 const request: GroupProvisionRequest = {
-                    docs: [],
+                    docs: [
+                        docRef
+                    ],
                     invitations: {
                         message: "Private invite to my special group",
                         to: [

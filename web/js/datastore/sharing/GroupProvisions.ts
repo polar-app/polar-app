@@ -1,5 +1,6 @@
 import {GroupInit} from './Groups';
 import {JSONRPC} from './JSONRPC';
+import {DocRef} from './DocRefs';
 
 
 // TODO/FIXME: I could move a lot of this skeleton code to polar-sharing-rpc
@@ -13,14 +14,6 @@ export class GroupProvisions {
 
 }
 
-export interface DocRef {
-    readonly docID: DocIDStr;
-    readonly fingerprint: string;
-    readonly title: string;
-    readonly nrPages: number;
-    readonly description?: string;
-    readonly url?: string;
-}
 
 export interface GroupProvisionRequest extends GroupInit {
 

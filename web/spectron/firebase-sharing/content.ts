@@ -69,6 +69,8 @@ SpectronRenderer.run(async (state) => {
             const datastore = new FirebaseDatastore();
             await datastore.init();
 
+            // FIXME: migrate this to MockDocMetas.createcreateMocDocFromPDF
+
             await datastore.writeFile(Backend.STASH, fileRef, {path: pdfPath});
 
             await datastore.writeDocMeta(docMeta);

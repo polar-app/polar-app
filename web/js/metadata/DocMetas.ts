@@ -13,6 +13,10 @@ import {TextHighlights} from './TextHighlights';
 import {Preconditions} from '../Preconditions';
 import {Errors} from '../util/Errors';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {FilePaths} from '../util/FilePaths';
+import {FileRef} from '../datastore/Datastore';
+import {Datastore} from '../datastore/Datastore';
+import {Backend} from '../datastore/Backend';
 
 const log = Logger.create();
 
@@ -282,5 +286,31 @@ export class MockDocMetas {
 
     }
 
+    public static async createMockDocMetaFromPDF(datastore: Datastore): Promise<MockDoc> {
 
+        const docMeta = MockDocMetas.createMockDocMeta();
+
+        const pdfPath = FilePaths.join(__dirname, "..", "..", "..", "docs", "examples", "pdf", "chubby.pdf");
+
+        const fileRef: FileRef = {
+            name: "chubby.pdf"
+        };
+
+        await datastore.writeFile(Backend.STASH, fileRef, {path: pdfPath});
+
+        await datastore.writeDocMeta(docMeta);
+
+        const result: MockDoc = {
+            docMeta, fileRef
+        };
+
+        return result;
+
+    }
+
+}
+
+interface MockDoc {
+    readonly docMeta: DocMeta;
+    readonly fileRef: FileRef;
 }
