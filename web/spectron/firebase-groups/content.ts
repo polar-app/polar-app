@@ -20,6 +20,7 @@ import {GroupDocs} from '../../js/datastore/sharing/GroupDocs';
 import {ProfileOwners} from '../../js/datastore/sharing/ProfileOwners';
 import {UserGroups} from '../../js/datastore/sharing/UserGroups';
 import {Promises} from '../../js/util/Promises';
+import {Contacts} from '../../js/datastore/sharing/Contacts';
 
 const log = Logger.create();
 
@@ -58,11 +59,6 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
-    // TODO: Test using actual docs not empty docs...
-
-    // TODO: next big thing is to audit how fast/slow this is on our production
-    // firestore instance.
-
     // TODO: create a profileID for user1 and no profileID for user2 and make
     // sure the contacts are updated appropriately.
 
@@ -72,7 +68,10 @@ SpectronRenderer.run(async (state) => {
     // Future work:
     //
     //   - TODO: test public groups and protected groups
-
+    //
+    //   - TODO: do a full lifecycle from no user accounts , to user accounts
+    //    created, to profile IDs updated.
+    //
     // TODO: rework the tests so that this uses staging data.. not real
     // production data.
 
@@ -204,6 +203,15 @@ SpectronRenderer.run(async (state) => {
             }
 
             await validateGroupSettingsAfterJoin(groupID);
+
+            async function validateContacts() {
+
+                const contacts = await Contacts.list();
+                assert.equal(contacts.length , 1);
+
+            }
+
+            await validateContacts();
 
             async function validateGroupDocs(groupID: GroupIDStr) {
 
