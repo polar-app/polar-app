@@ -12,14 +12,12 @@ import {Groups} from '../../js/datastore/sharing/Groups';
 import {GroupMembers} from '../../js/datastore/sharing/GroupMembers';
 import {GroupMemberInvitations} from '../../js/datastore/sharing/GroupMemberInvitations';
 import {Profiles} from '../../js/datastore/sharing/Profiles';
-import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {DocRefs} from '../../js/datastore/sharing/DocRefs';
 import {GroupDocs} from '../../js/datastore/sharing/GroupDocs';
 import {ProfileOwners} from '../../js/datastore/sharing/ProfileOwners';
 import {UserGroups} from '../../js/datastore/sharing/UserGroups';
-import {Promises} from '../../js/util/Promises';
 import {Contacts} from '../../js/datastore/sharing/Contacts';
 
 const log = Logger.create();
@@ -27,7 +25,7 @@ const log = Logger.create();
 mocha.setup('bdd');
 mocha.timeout(120000);
 
-// process.env.POLAR_TEST_PROJECT = 'polar-test2';
+process.env.POLAR_TEST_PROJECT = 'polar-test2';
 
 const FIREBASE_USER = process.env.FIREBASE_USER!;
 const FIREBASE_PASS = process.env.FIREBASE_PASS!;
@@ -72,8 +70,6 @@ SpectronRenderer.run(async (state) => {
     //   - TODO: do a full lifecycle from no user accounts , to user accounts
     //    created, to profile IDs updated.
     //
-    // TODO: rework the tests so that this uses staging data.. not real
-    // production data.
 
     describe("firebase-groups", async function() {
 
