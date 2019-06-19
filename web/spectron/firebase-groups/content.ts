@@ -16,6 +16,10 @@ import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {DocRefs} from '../../js/datastore/sharing/DocRefs';
+import {GroupDocs} from '../../js/datastore/sharing/GroupDocs';
+import {ProfileOwners} from '../../js/datastore/sharing/ProfileOwners';
+import {UserGroups} from '../../js/datastore/sharing/UserGroups';
+import {Promises} from '../../js/util/Promises';
 
 const log = Logger.create();
 
@@ -69,6 +73,9 @@ SpectronRenderer.run(async (state) => {
     //
     //   - TODO: test public groups and protected groups
 
+    // TODO: rework the tests so that this uses staging data.. not real
+    // production data.
+
     describe("firebase-groups", async function() {
 
         it("group provision of private group", async function() {
@@ -77,18 +84,26 @@ SpectronRenderer.run(async (state) => {
 
             async function provisionAccountData() {
 
+                console.log("provisionAccountData");
+
                 await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
 
                 const firebaseDatastore = new FirebaseDatastore();
                 await firebaseDatastore.init();
 
-                return await MockDocMetas.createMockDocMetaFromPDF(firebaseDatastore);
+                const result = await MockDocMetas.createMockDocMetaFromPDF(firebaseDatastore);
+
+                await firebaseDatastore.stop();
+
+                return result;
 
             }
 
             const mockDock = await provisionAccountData();
 
             async function doGroupProvision() {
+
+                console.log("doGroupProvision");
 
                 const {docMeta} = mockDock;
                 const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
@@ -117,11 +132,17 @@ SpectronRenderer.run(async (state) => {
 
             async function doGroupJoin(groupID: GroupIDStr) {
 
+                console.log("doGroupJoin");
+
                 // now switch to the user that was invited and join that group.
 
                 await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
 
+                console.log("Listing group invitations...");
+
                 const groupMemberInvitations = await GroupMemberInvitations.list();
+
+                console.log("Listing group invitations...done");
 
                 // it's important that the user can see their own invitations.
                 assert.equal(groupMemberInvitations.filter(current => current.groupID === groupID).length, 1);
@@ -133,15 +154,21 @@ SpectronRenderer.run(async (state) => {
                     links: ['https://www.mars.org']
                 };
 
+                console.log("Updating profile...");
                 await ProfileUpdates.exec(profileUpdateRequest);
+                console.log("Updating profile...done");
 
+                console.log("Joining group...");
                 await GroupJoins.exec({groupID});
+                console.log("Joining group...done");
 
             }
 
             await doGroupJoin(groupID);
 
             async function validateGroupSettingsAfterJoin(groupID: GroupIDStr) {
+
+                console.log("validateGroupSettingsAfterJoin");
 
                 const user = app.auth().currentUser!;
                 assert.equal(user.email, FIREBASE_USER1);
@@ -160,6 +187,15 @@ SpectronRenderer.run(async (state) => {
 
                 assert.equal(groupMembers.length, 1);
 
+                const groupMember = groupMembers[0];
+
+                console.log("Fetching profile owner to validate group member profileID");
+                const profileOwner = await ProfileOwners.get(user.uid);
+
+                assert.isDefined(profileOwner);
+
+                assert.equal(groupMember.profileID, profileOwner!.profileID);
+
                 // now make sure there are no invitations for this group after ...
                 const groupMemberInvitations = await GroupMemberInvitations.list();
 
@@ -169,7 +205,38 @@ SpectronRenderer.run(async (state) => {
 
             await validateGroupSettingsAfterJoin(groupID);
 
+            async function validateGroupDocs(groupID: GroupIDStr) {
+
+                const user = app.auth().currentUser!;
+
+                const userGroup = await UserGroups.get(user.uid);
+
+                assert.isTrue(userGroup.groups.includes(groupID), "We don't have the group ID in our user_group record");
+
+                console.log("validateGroupDocs");
+
+                console.log("FIXME: sleeping to see if that's the problem.")
+
+                // await Promises.waitFor(5000);
+
+                console.log(`Attempting to fetch group docs with uid=${user.uid}, groupID: ${groupID}`);
+                const groupDocs = await GroupDocs.list(groupID);
+
+                assert.equal(groupDocs.length, 1);
+
+                const groupDoc = groupDocs[0];
+
+                assert.equal(groupDoc.groupID, groupID);
+                assert.isDefined(groupDoc.id);
+                assert.isDefined(groupDoc.created);
+
+            }
+
+            await validateGroupDocs(groupID);
+
             async function validatePermissionDeniedForOthers(groupID: GroupIDStr) {
+
+                console.log("validatePermissionDeniedForOthers");
 
                 await app.auth().signInWithEmailAndPassword(FIREBASE_USER2, FIREBASE_PASS2);
 
@@ -177,6 +244,8 @@ SpectronRenderer.run(async (state) => {
             }
 
             await validatePermissionDeniedForOthers(groupID);
+
+
         });
 
         it("Profile update", async function() {
