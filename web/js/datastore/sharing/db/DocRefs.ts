@@ -1,5 +1,5 @@
-import {DocIDStr} from './GroupProvisions';
-import {DocMeta} from '../../metadata/DocMeta';
+import {DocIDStr} from '../rpc/GroupProvisions';
+import {DocMeta} from '../../../metadata/DocMeta';
 
 export class DocRefs {
 

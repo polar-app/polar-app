@@ -1,10 +1,6 @@
-import {GroupInit} from './Groups';
+import {GroupInit} from '../db/Groups';
 import {JSONRPC} from './JSONRPC';
-import {DocRef} from './DocRefs';
-
-
-// TODO/FIXME: I could move a lot of this skeleton code to polar-sharing-rpc
-// when completed
+import {DocRef} from '../db/DocRefs';
 
 export class GroupProvisions {
 

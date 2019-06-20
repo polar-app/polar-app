@@ -1,7 +1,7 @@
-import {Firestore} from '../../firebase/Firestore';
+import {Firestore} from '../../../firebase/Firestore';
 import {EmailStr} from './Profiles';
-import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
-import {Firebase} from '../../firebase/Firebase';
+import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
+import {Firebase} from '../../../firebase/Firebase';
 
 export class Contacts {
 

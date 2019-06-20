@@ -1,8 +1,8 @@
 import {UserIDStr} from './Profiles';
 import {HandleStr} from './Profiles';
-import {Firestore} from '../../firebase/Firestore';
+import {Firestore} from '../../../firebase/Firestore';
 import {ProfileIDStr} from './Profiles';
-import * as firebase from '../../firebase/lib/firebase';
+import * as firebase from '../../../firebase/lib/firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
 
 export class ProfileOwners {

@@ -1,5 +1,5 @@
 import {ProfileInit} from './Profiles';
-import {JSONRPC} from './JSONRPC';
+import {JSONRPC} from '../rpc/JSONRPC';
 
 export class ProfileUpdates {
 

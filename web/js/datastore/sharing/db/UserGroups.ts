@@ -1,5 +1,5 @@
 import {UserIDStr} from './Profiles';
-import {Firestore} from '../../firebase/Firestore';
+import {Firestore} from '../../../firebase/Firestore';
 import {GroupIDStr} from './Groups';
 
 export class UserGroups {

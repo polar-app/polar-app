@@ -1,7 +1,7 @@
-import {Firestore} from '../../firebase/Firestore';
+import {Firestore} from '../../../firebase/Firestore';
 import {ProfileIDStr} from './Profiles';
 import {DocRef} from './DocRefs';
-import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
+import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from './Groups';
 
 export class GroupDocs {

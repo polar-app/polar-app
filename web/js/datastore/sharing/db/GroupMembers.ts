@@ -1,6 +1,6 @@
 import {GroupIDStr} from './Groups';
-import {Firestore} from '../../firebase/Firestore';
-import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
+import {Firestore} from '../../../firebase/Firestore';
+import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {ProfileIDStr} from './Profiles';
 
 export class GroupMembers {

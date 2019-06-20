@@ -1,9 +1,9 @@
-import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
-import {Sender} from '../firebase/DocPeerPendings';
+import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
+import {Sender} from '../../firebase/DocPeerPendings';
 import {GroupIDStr} from './Groups';
 import {EmailStr} from './Profiles';
-import {Firestore} from '../../firebase/Firestore';
-import {Firebase} from '../../firebase/Firebase';
+import {Firestore} from '../../../firebase/Firestore';
+import {Firebase} from '../../../firebase/Firebase';
 import {DocRef} from './DocRefs';
 
 export class GroupMemberInvitations {

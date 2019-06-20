@@ -1,5 +1,5 @@
-import {Firebase} from '../../firebase/Firebase';
-import {UserRequest} from './UserRequest';
+import {Firebase} from '../../../firebase/Firebase';
+import {UserRequest} from '../db/UserRequest';
 
 
 export class JSONRPC {

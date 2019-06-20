@@ -1,5 +1,5 @@
-import {Firestore} from '../../firebase/Firestore';
-import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
+import {Firestore} from '../../../firebase/Firestore';
+import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 
 export class Groups {
 

@@ -1,10 +1,10 @@
 import {TagStr} from './Groups';
 import {Image} from './Images';
-import {Firestore} from '../../firebase/Firestore';
-import {Firebase} from '../../firebase/Firebase';
+import {Firestore} from '../../../firebase/Firestore';
+import {Firebase} from '../../../firebase/Firebase';
 import {ProfileOwners} from './ProfileOwners';
-import {Preconditions} from '../../Preconditions';
-import * as firebase from '../../firebase/lib/firebase';
+import {Preconditions} from '../../../Preconditions';
+import * as firebase from '../../../firebase/lib/firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
 
 export class Profiles {
