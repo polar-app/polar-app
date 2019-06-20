@@ -1,18 +1,8 @@
 import * as firebase from './lib/firebase';
 import {Preconditions} from '../Preconditions';
+import {Logger} from '../logger/Logger';
 
-// const CONFIG_STAGING = {
-//     apiKey: "AIzaSyB-MXbMazU0ag4g126NGXi0h6lUxk76XBc",
-//     authDomain: "polar-cors.firebaseapp.com",
-//     databaseURL: "https://polar-cors.firebaseio.com",
-//     projectId: "polar-cors",
-//     storageBucket: "polar-cors.appspot.com",
-//     messagingSenderId: "706724471731",
-//     appId: "1:706724471731:web:f4fe9fac758b2914"
-// };
-
-const CONFIG_TEST = {
-};
+const log = Logger.create();
 
 const PROJECTS: {[project: string]: any} = {
 
@@ -52,6 +42,8 @@ export class Firebase {
         }
 
         const project = process.env.POLAR_TEST_PROJECT || 'prod';
+
+        log.info("Connecting to firebase with project: " + project);
 
         Preconditions.assertPresent(project, "project");
 

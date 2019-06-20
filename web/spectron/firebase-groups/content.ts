@@ -60,8 +60,19 @@ SpectronRenderer.run(async (state) => {
     // TODO: create a profileID for user1 and no profileID for user2 and make
     // sure the contacts are updated appropriately.
 
+    // TODO: we're still not doing anything special to access the other docs.
+
     // TODO: test with tags and tag search for groups so we can try to delete
     // them...
+
+    // TODO: just do purges based on uid, and profileID before and after each
+    // test involving all the users here.  They should be able to delete their
+    // own data though maybe not because they should be involved in
+    // transactions..
+    //
+    //    - TODO: how am I going to purge on the client since there's no admin
+    //      client I can use really.. though maybe I should read the credentials
+    //      from the env first.
 
     // Future work:
     //
@@ -86,7 +97,9 @@ SpectronRenderer.run(async (state) => {
                 const firebaseDatastore = new FirebaseDatastore();
                 await firebaseDatastore.init();
 
+                console.log("Writing docMeta and PDF...");
                 const result = await MockDocMetas.createMockDocMetaFromPDF(firebaseDatastore);
+                console.log("Writing docMeta and PDF...done");
 
                 await firebaseDatastore.stop();
 
@@ -176,11 +189,11 @@ SpectronRenderer.run(async (state) => {
                 assert.isDefined(group);
 
                 // make sure nrMembers counts on the groups are setup properly.
-                assert.equal(group!.nrMembers, 1);
+                assert.equal(group!.nrMembers, 1, "nrMembers in group is wrong.");
 
                 const groupMembers = await GroupMembers.list(groupID);
 
-                assert.equal(groupMembers.length, 1);
+                assert.equal(groupMembers.length, 1, "Wrong number of groups members");
 
                 const groupMember = groupMembers[0];
 
@@ -201,9 +214,10 @@ SpectronRenderer.run(async (state) => {
             await validateGroupSettingsAfterJoin(groupID);
 
             async function validateContacts() {
+                const user = app.auth().currentUser!;
 
                 const contacts = await Contacts.list();
-                assert.equal(contacts.length , 1);
+                assert.equal(contacts.length , 1, "No contacts found for user: " + user.uid);
 
             }
 
@@ -219,14 +233,10 @@ SpectronRenderer.run(async (state) => {
 
                 console.log("validateGroupDocs");
 
-                console.log("FIXME: sleeping to see if that's the problem.")
-
-                // await Promises.waitFor(5000);
-
                 console.log(`Attempting to fetch group docs with uid=${user.uid}, groupID: ${groupID}`);
                 const groupDocs = await GroupDocs.list(groupID);
 
-                assert.equal(groupDocs.length, 1);
+                assert.equal(groupDocs.length, 1, "No group docs found.");
 
                 const groupDoc = groupDocs[0];
 

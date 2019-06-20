@@ -1,8 +1,0 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const SpectronWebappMain_1 = require("../../js/test/SpectronWebappMain");
-const FilePaths_1 = require("../../js/util/FilePaths");
-const webRoot = FilePaths_1.FilePaths.join(__dirname, "..", "..", "..");
-const appRoot = __dirname;
-SpectronWebappMain_1.SpectronWebappMain.run(webRoot, appRoot, "/web/spectron/firebase-datastore/content.html");
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLHlFQUFvRTtBQUNwRSx1REFBa0Q7QUFFbEQsTUFBTSxPQUFPLEdBQUcscUJBQVMsQ0FBQyxJQUFJLENBQUMsU0FBUyxFQUFFLElBQUksRUFBRSxJQUFJLEVBQUUsSUFBSSxDQUFDLENBQUM7QUFDNUQsTUFBTSxPQUFPLEdBQUcsU0FBUyxDQUFDO0FBRTFCLHVDQUFrQixDQUFDLEdBQUcsQ0FBQyxPQUFPLEVBQUUsT0FBTyxFQUFFLCtDQUErQyxDQUFDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge1NwZWN0cm9uV2ViYXBwTWFpbn0gZnJvbSAnLi4vLi4vanMvdGVzdC9TcGVjdHJvbldlYmFwcE1haW4nO1xuaW1wb3J0IHtGaWxlUGF0aHN9IGZyb20gJy4uLy4uL2pzL3V0aWwvRmlsZVBhdGhzJztcblxuY29uc3Qgd2ViUm9vdCA9IEZpbGVQYXRocy5qb2luKF9fZGlybmFtZSwgXCIuLlwiLCBcIi4uXCIsIFwiLi5cIik7XG5jb25zdCBhcHBSb290ID0gX19kaXJuYW1lO1xuXG5TcGVjdHJvbldlYmFwcE1haW4ucnVuKHdlYlJvb3QsIGFwcFJvb3QsIFwiL3dlYi9zcGVjdHJvbi9maXJlYmFzZS1kYXRhc3RvcmUvY29udGVudC5odG1sXCIpO1xuIl19

@@ -18,7 +18,7 @@ export class UserGroups {
 
 }
 
-interface UserGroupInit {
+export interface UserGroupInit {
 
     /**
      * The UID for this record so the user can read their own values.
@@ -39,6 +39,6 @@ interface UserGroupInit {
 
 }
 
-interface UserGroup extends UserGroupInit {
+export interface UserGroup extends UserGroupInit {
 
 }

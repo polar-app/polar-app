@@ -1,9 +1,13 @@
 import {Firebase} from '../../firebase/Firebase';
 import {UserRequest} from './UserRequest';
 
+
 export class JSONRPC {
 
-    public static endpoint = "https://us-central1-polar-cors.cloudfunctions.net";
+    private static createEndpoint() {
+        const project = process.env.POLAR_TEST_PROJECT || "polar-cors";
+        return `https://us-central1-${project}.cloudfunctions.net`;
+    }
 
     public static async exec<R, V>(func: string, request: R): Promise<V> {
 
@@ -21,7 +25,9 @@ export class JSONRPC {
             request,
         };
 
-        const url = `${this.endpoint}/${func}`;
+        const endpoint = this.createEndpoint();
+
+        const url = `${endpoint}/${func}`;
 
         const response = await fetch(url, {
             method: 'POST',
