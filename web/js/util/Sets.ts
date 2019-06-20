@@ -12,11 +12,14 @@ export class Sets {
         return a.filter(x => ! b.includes(x));
     }
 
-    public static union<T>(a: ReadonlyArray<T>, b: ReadonlyArray<T>): ReadonlyArray<T> {
+    public static union<T>(...arrays: ReadonlyArray<ReadonlyArray<T>>): ReadonlyArray<T> {
 
         const set = new Set<T>();
-        a.forEach( current => set.add(current));
-        b.forEach( current => set.add(current));
+
+        for (const arr of arrays) {
+            arr.forEach( current => set.add(current));
+        }
+
         return Array.from(set);
 
     }

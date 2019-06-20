@@ -19,6 +19,8 @@ import {GroupDocs} from '../../js/datastore/sharing/db/GroupDocs';
 import {ProfileOwners} from '../../js/datastore/sharing/db/ProfileOwners';
 import {UserGroups} from '../../js/datastore/sharing/db/UserGroups';
 import {Contacts} from '../../js/datastore/sharing/db/Contacts';
+import {Sets} from '../../js/util/Sets';
+import {GroupDeletes} from '../../js/datastore/sharing/rpc/GroupDeletes';
 
 const log = Logger.create();
 
@@ -83,6 +85,44 @@ SpectronRenderer.run(async (state) => {
     //
 
     describe("firebase-groups", async function() {
+
+        async function purgeGroups() {
+
+            const app = Firebase.init();
+
+            async function purgeGroupsForUser(username: string, password: string) {
+
+                await app.auth().signInWithEmailAndPassword(username, password);
+
+                const user = app.auth().currentUser!;
+                const {uid} = user;
+
+                const userGroup = await UserGroups.get(uid);
+
+                if (! userGroup) {
+                    return;
+                }
+
+                const groups = Sets.union(userGroup.admin || []);
+
+                for (const group of groups) {
+                    await GroupDeletes.exec({groupID: group});
+                }
+
+            }
+
+            await purgeGroupsForUser(FIREBASE_USER, FIREBASE_PASS);
+            await purgeGroupsForUser(FIREBASE_USER1, FIREBASE_PASS1);
+            await purgeGroupsForUser(FIREBASE_USER2, FIREBASE_PASS2);
+        }
+
+        beforeEach(async function() {
+            await purgeGroups();
+        });
+
+        afterEach(async function() {
+            await purgeGroups();
+        });
 
         it("group provision of private group", async function() {
 
@@ -228,6 +268,10 @@ SpectronRenderer.run(async (state) => {
                 const user = app.auth().currentUser!;
 
                 const userGroup = await UserGroups.get(user.uid);
+
+                if (! userGroup) {
+                    throw new Error("No user group");
+                }
 
                 assert.isTrue(userGroup.groups.includes(groupID), "We don't have the group ID in our user_group record");
 

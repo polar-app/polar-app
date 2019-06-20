@@ -23,7 +23,7 @@ describe('Sets', function() {
 
         });
 
-        it("Extra", function () {
+        it("Extra", function() {
 
             assert.deepEqual(Sets.difference(['a'], ['a', 'b']), []);
 

@@ -6,7 +6,7 @@ export class UserGroups {
 
     public static readonly COLLECTION = 'user_group';
 
-    public static async get(uid: UserIDStr): Promise<UserGroup> {
+    public static async get(uid: UserIDStr): Promise<UserGroup | undefined> {
 
         const firestore = await Firestore.getInstance();
 
