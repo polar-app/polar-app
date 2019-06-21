@@ -1,13 +1,9 @@
 import {Firebase} from '../../../firebase/Firebase';
 import {UserRequest} from '../db/UserRequest';
+import {CloudFunctions} from '../../firebase/CloudFunctions';
 
 
 export class JSONRPC {
-
-    private static createEndpoint() {
-        const project = process.env.POLAR_TEST_PROJECT || "polar-cors";
-        return `https://us-central1-${project}.cloudfunctions.net`;
-    }
 
     public static async exec<R, V>(func: string, request: R): Promise<V> {
 
@@ -25,7 +21,7 @@ export class JSONRPC {
             request,
         };
 
-        const endpoint = this.createEndpoint();
+        const endpoint = CloudFunctions.createEndpoint();
 
         const url = `${endpoint}/${func}`;
 

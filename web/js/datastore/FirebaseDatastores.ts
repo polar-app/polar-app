@@ -6,11 +6,13 @@ import {FirebaseDatastore} from './FirebaseDatastore';
 import {Optional} from '../util/ts/Optional';
 import {StoragePath} from './FirebaseDatastore';
 import {StorageSettings} from './FirebaseDatastore';
+import {CloudFunctions} from './firebase/CloudFunctions';
 
 export class FirebaseDatastores {
 
     public static computeDatastoreGetFileURL(request: DatastoreGetFileRequest) {
-        return "https://us-central1-polar-cors.cloudfunctions.net/datastoreGetFile/?data=" + encodeURIComponent(JSON.stringify(request));
+        const endpoint = CloudFunctions.createEndpoint();
+        return `${endpoint}/datastoreGetFile/?data=` + encodeURIComponent(JSON.stringify(request));
     }
 
     public static computeStoragePath(backend: Backend, fileRef: FileRef): StoragePath {

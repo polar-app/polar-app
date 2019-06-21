@@ -3,12 +3,11 @@ import {Hashcodes} from '../../Hashcodes';
 import {Firebase} from '../../firebase/Firebase';
 import {Firestore} from '../../firebase/Firestore';
 import {DocPeers} from './DocPeers';
+import {DocPeer} from './DocPeers';
 import {Image} from './Contacts';
 import {ContactsUsingEmail} from './Contacts';
 import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
-import {DocPeer} from './DocPeers';
-import {FirebaseDatastores} from '../FirebaseDatastores';
 import {FirebaseDatastore} from '../FirebaseDatastore';
 
 const COLLECTION_NAME = 'doc_peer_pending';
