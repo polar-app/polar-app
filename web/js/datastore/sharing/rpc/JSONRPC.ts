@@ -33,10 +33,21 @@ export class JSONRPC {
             body: JSON.stringify(userRequest)});
 
         if (response.status !== 200) {
-            throw new Error("Unable to handle RPC");
+            throw new JSONRPCError(response, "Unable to handle RPC");
         }
 
         return <V> await response.json();
+
+    }
+
+}
+
+export class JSONRPCError extends Error {
+
+    constructor(public readonly response: Response,
+                message: string) {
+
+        super(message);
 
     }
 

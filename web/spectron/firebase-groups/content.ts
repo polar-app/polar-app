@@ -33,6 +33,8 @@ import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
 import {MockDoc} from '../../js/metadata/DocMetas';
 import {GroupLeaves} from '../../js/datastore/sharing/rpc/GroupLeaves';
 import {assertJSON} from '../../js/test/Assertions';
+import {FetchError} from '@types/node-fetch';
+import {JSONRPCError} from '../../js/datastore/sharing/rpc/JSONRPC';
 
 const log = Logger.create();
 
@@ -225,6 +227,21 @@ SpectronRenderer.run(async (state) => {
             console.log("Joining group...done");
 
         }
+
+        async function getGroupCanonicalized(groupID: GroupIDStr): Promise<any> {
+
+            const group = await Groups.get(groupID);
+
+            if (group) {
+                const obj = <any> group;
+                delete obj.id;
+                delete obj.created;
+            }
+
+            return group;
+
+        }
+
         beforeEach(async function() {
             await purgeGroups();
         });
@@ -487,23 +504,9 @@ SpectronRenderer.run(async (state) => {
             await doGroupJoinForUser1(groupID);
             await waitForGroupDelay();
 
-            async function getGroupCanonicalized(): Promise<any> {
-
-                const group = await Groups.get(groupID)
-
-                if (group) {
-                    const obj = <any> group;
-                    delete obj.id;
-                    delete obj.created;
-                }
-
-                return group;
-
-            }
-
             async function assertGroupBefore() {
 
-                const group = await getGroupCanonicalized();
+                const group = await getGroupCanonicalized(groupID);
 
                 assertJSON(group, {
                     visibility: 'private',
@@ -521,7 +524,7 @@ SpectronRenderer.run(async (state) => {
                 const app = Firebase.init();
                 await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
 
-                const group = await getGroupCanonicalized();
+                const group = await getGroupCanonicalized(groupID);
 
                 assertJSON(group, {
                     visibility: 'private',
@@ -535,10 +538,43 @@ SpectronRenderer.run(async (state) => {
         });
 
         it("join group twice and validate metadata", async function() {
-            // noop just now
+
+            const mockDock = await provisionAccountData();
+            const groupID = await doGroupProvision(mockDock);
+            await doGroupJoinForUser1(groupID);
+
+            try {
+                await GroupJoins.exec({ groupID });
+                assert.fail("This should have failed");
+            } catch (e) {
+
+                assert.isTrue(e instanceof JSONRPCError);
+
+                const rpcError: JSONRPCError = e;
+                const text = await rpcError.response.text();
+
+                assert.equal(text, "{\"err\":\"We were not invited to this group\"}");
+
+            }
+
+            await waitForGroupDelay();
+
+            async function assertGroupAfter() {
+
+                const group = await getGroupCanonicalized(groupID);
+
+                assertJSON(group, {
+                    visibility: 'private',
+                    nrMembers: 1
+                });
+
+            }
+
+            await assertGroupAfter();
+
         });
 
-        it("Profile update", async function() {
+        xit("Profile update", async function() {
 
             const app = Firebase.init();
 
