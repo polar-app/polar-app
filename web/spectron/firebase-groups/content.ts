@@ -73,11 +73,8 @@ SpectronRenderer.run(async (state) => {
     // to sharing with an existing user who has a profile.  Verify that the
     // profileID is updated when they first login.
 
-    // TODO: we have to delay writing / reading the record SOMEWHERE... just not
-    // sure of the best place.  It's really only a 10s delay.
-
     // TODO: build a new Datastore impl that is a 'view' on the main one derived
-    // from teh docID such that we can call all the main operations...
+    // from the docID such that we can call all the main operations...
 
     // ## PUBLIC GROUPS
 
@@ -216,7 +213,7 @@ SpectronRenderer.run(async (state) => {
                     .collection(DatastoreCollection.DOC_META)
                     .doc(groupDoc.docID);
 
-                const doc = await ref.get()
+                const doc = await ref.get();
                 const recordHolder = <RecordHolder<DocMeta> | undefined> doc.data();
 
                 assert.isDefined(recordHolder);
@@ -425,12 +422,15 @@ SpectronRenderer.run(async (state) => {
                     await firebaseDatastore.init();
 
                     for (const groupDoc of groupDocs) {
+
                         console.log("Validating we can fetch doc: ", groupDoc);
 
                         const data = await firebaseDatastore.getDocMetaDirectly(groupDoc.docID);
                         const docMeta = DocMetas.deserialize(data!, groupDoc.fingerprint);
 
                         const backendFileRefs = BackendFileRefs.toBackendFileRefs(Either.ofLeft(docMeta));
+
+                        assert.equal(backendFileRefs.length, 1);
 
                         for (const backendFileRef of backendFileRefs) {
 
@@ -446,6 +446,10 @@ SpectronRenderer.run(async (state) => {
                             const response = await fetch(url);
 
                             assert.equal(response.status, 200);
+                            assert.equal(response.type, '');
+                            const arrayBuffer = await response.arrayBuffer();
+
+                            assert.equal(arrayBuffer.byteLength, 666);
 
                         }
 
