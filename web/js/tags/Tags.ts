@@ -1,7 +1,6 @@
 import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
-import {TypedTag} from './TypedTag';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
 
@@ -168,5 +167,20 @@ export interface Tag {
      * not be shown in the UI as they would just clutter the UI.
      */
     readonly hidden?: boolean;
+
+}
+
+/**
+ * A tag like deck:foo
+ */
+export interface TypedTag {
+
+    /**
+     */
+    readonly name: string;
+
+    /**
+     */
+    readonly value: string;
 
 }
