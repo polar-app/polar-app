@@ -574,7 +574,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Profile update", async function() {
+        it("Profile update", async function() {
 
             const app = Firebase.init();
 
