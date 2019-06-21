@@ -5,8 +5,8 @@ import {Blackout} from '../../../../web/js/ui/blackout/Blackout';
 import {TagOption} from '../TagOption';
 import {TagsDB} from '../TagsDB';
 import {TagOptions} from '../TagOptions';
-import {Tag} from '../../../../web/js/tags/Tag';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
+import {Tag} from '../../../../web/js/tags/Tags';
 
 // import {SyntheticKeyboardEvent} from 'react-dom';
 

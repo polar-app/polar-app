@@ -3,7 +3,7 @@ import {Logger} from '../../../web/js/logger/Logger';
 import {isPresent} from '../../../web/js/Preconditions';
 import Moment from 'react-moment';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
-import {Tag} from '../../../web/js/tags/Tag';
+import {Tag} from '../../../web/js/tags/Tags';
 
 const log = Logger.create();
 

@@ -15,7 +15,6 @@ import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfig
 import {HighlighterIcon} from '../../js/ui/standard_icons/HighlighterIcon';
 import {ToggleButton} from '../../js/ui/ToggleButton';
 import {TagInput} from '../../../apps/repository/js/TagInput';
-import {Tag} from '../../../web/js/tags/Tag';
 import {RelatedTags} from '../../js/tags/related/RelatedTags';
 import {CommentIcon} from '../../js/ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../../js/ui/standard_icons/FlashcardIcon';
@@ -69,6 +68,7 @@ import {SubscriptionPlan} from './SubscriptionPlan';
 import {CrowdfundingBar} from '../../js/ui/crowdfunding/CrowdfundingBar';
 import {ShareContentControl} from '../../js/apps/viewer/ShareContentControl';
 import {NetworkLayers} from '../../js/datastore/Datastore';
+import {Tag} from '../../js/tags/Tags';
 
 const styles = {
     swatch: {

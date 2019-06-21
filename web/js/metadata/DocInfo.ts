@@ -6,13 +6,13 @@ import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from './PagemarkType';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateString} from './ISODateTimeStrings';
-import {Tag} from '../tags/Tag';
 import {Hashcode} from './Hashcode';
 import {UUID} from './UUID';
 import {ReadingOverview} from './ReadingOverview';
 import {Visibility} from '../datastore/Datastore';
 import {Attachment} from './Attachment';
 import {Backend} from '../datastore/Backend';
+import {Tag} from '../tags/Tags';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 

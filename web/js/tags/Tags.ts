@@ -1,7 +1,6 @@
 import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
-import {Tag} from './Tag';
 import {TypedTag} from './TypedTag';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
@@ -152,3 +151,22 @@ export class Tags {
     }
 }
 
+export interface Tag {
+
+    /**
+     * The actual id for the tag which is unique across all tags.
+     */
+    readonly id: string;
+
+    /**
+     * The label to show in the UI.
+     */
+    readonly label: string;
+
+    /**
+     * True when the tag is hidden.  Used for special types of tags that should
+     * not be shown in the UI as they would just clutter the UI.
+     */
+    readonly hidden?: boolean;
+
+}

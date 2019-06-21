@@ -1,5 +1,5 @@
-import {Tag} from '../../../web/js/tags/Tag';
 import {RepoDocInfo} from './RepoDocInfo';
+import {Tag} from '../../../web/js/tags/Tags';
 
 /**
  * A simple in-memory database of tags which can be built when we load the .json

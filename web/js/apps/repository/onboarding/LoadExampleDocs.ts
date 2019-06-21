@@ -5,7 +5,6 @@ import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {Providers} from '../../../util/Providers';
 import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from '../../../logger/Logger';
-import {Tag} from '../../../tags/Tag';
 import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTimeStrings';
 import {Optional} from '../../../util/ts/Optional';
 import {DocMeta} from '../../../metadata/DocMeta';
@@ -22,6 +21,7 @@ import {DocInfo} from '../../../metadata/DocInfo';
 import {Datastores} from '../../../datastore/Datastores';
 import {PDFMeta} from '../importers/PDFMetadata';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
+import {Tag} from '../../../tags/Tags';
 
 const log = Logger.create();
 

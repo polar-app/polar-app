@@ -6,7 +6,6 @@ import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
-import {Tag} from '../../../../web/js/tags/Tag';
 import {isPresent} from '../../../../web/js/Preconditions';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
@@ -50,6 +49,7 @@ import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
+import {Tag} from '../../../../web/js/tags/Tags';
 
 const log = Logger.create();
 

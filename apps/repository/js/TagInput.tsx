@@ -1,6 +1,5 @@
 import * as React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
-import {Tag} from '../../../web/js/tags/Tag';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
 import {Tags} from '../../../web/js/tags/Tags';
@@ -14,6 +13,7 @@ import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from '../../../web/js/util/Functions';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
+import {Tag} from '../../../web/js/tags/Tags';
 
 const log = Logger.create();
 

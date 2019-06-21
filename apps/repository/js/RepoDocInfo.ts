@@ -4,8 +4,8 @@
  */
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
-import {Tag} from '../../../web/js/tags/Tag';
 import {Hashcode} from '../../../web/js/metadata/Hashcode';
+import {Tag} from '../../../web/js/tags/Tags';
 
 export interface RepoDocInfo {
 

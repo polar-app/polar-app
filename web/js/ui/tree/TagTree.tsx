@@ -4,13 +4,13 @@ import {TreeNode} from './TreeNode';
 import Input from 'reactstrap/lib/Input';
 import Button from 'reactstrap/lib/Button';
 import {Dictionaries} from '../../util/Dictionaries';
-import {Tag} from '../../tags/Tag';
 import {TNode} from './TreeView';
 import {TagNodes} from '../../tags/TagNode';
 import {TreeView} from './TreeView';
 import {Tags} from '../../tags/Tags';
 import {TagCreateButton} from './TagCreateButton';
 import {TagDescriptor} from '../../tags/TagNode';
+import {Tag} from '../../tags/Tags';
 
 class Styles {
 

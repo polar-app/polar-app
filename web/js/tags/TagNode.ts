@@ -1,6 +1,6 @@
 import {isPresent} from '../Preconditions';
-import {Tag} from './Tag';
 import {Reducers} from '../util/Reducers';
+import {Tag} from './Tags';
 
 export interface MutableTagNode<V> {
 

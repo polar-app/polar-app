@@ -1,7 +1,6 @@
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocInfo, IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
-import {Tag} from '../../../web/js/tags/Tag';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Preconditions} from '../../../web/js/Preconditions';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
@@ -14,6 +13,7 @@ import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 import {SetArrays} from '../../../web/js/util/SetArrays';
+import {Tag} from '../../../web/js/tags/Tags';
 
 const log = Logger.create();
 

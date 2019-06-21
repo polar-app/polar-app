@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Tag} from '../../tags/Tag';
 import Button from 'reactstrap/lib/Button';
 import {Dialogs} from '../dialogs/Dialogs';
 import {NULL_FUNCTION} from '../../util/Functions';
+import {Tag} from '../../tags/Tags';
 
 class Styles {
 

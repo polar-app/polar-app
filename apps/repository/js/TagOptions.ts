@@ -1,5 +1,5 @@
 import {TagOption} from './TagOption';
-import {Tag} from '../../../web/js/tags/Tag';
+import {Tag} from '../../../web/js/tags/Tags';
 
 export class TagOptions {
 
