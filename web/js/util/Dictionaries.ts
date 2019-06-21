@@ -1,6 +1,5 @@
 import {Preconditions} from '../Preconditions';
 import {Optional} from './ts/Optional';
-import {DocID} from '../tags/related/RelatedTags';
 
 export class Dictionaries {
 

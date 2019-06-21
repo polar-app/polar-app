@@ -4,6 +4,17 @@ import {Optional} from '../util/ts/Optional';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
 
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+// DO NOT MODIFY ... migrating this to polar-shared
+
 export class Tags {
 
     public static create(label: string): Tag {
