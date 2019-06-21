@@ -12,6 +12,7 @@ rules:
   no-bitwise: true
   no-conditional-assignment: true
   no-consecutive-blank-lines: false
+  space-before-function-paren: false
   no-console:
     severity: warning
     options:

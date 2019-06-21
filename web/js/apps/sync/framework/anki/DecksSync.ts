@@ -3,7 +3,7 @@
  * are missing.
  */
 import {DeckDescriptor} from './DeckDescriptor';
-import {Sets} from '../../../../util/Sets';
+import {SetArrays} from '../../../../util/SetArrays';
 import {CreateDeckClient, ICreateDeckClient} from './clients/CreateDeckClient';
 import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
 import {SyncProgressListener} from '../SyncProgressListener';
@@ -72,7 +72,7 @@ export class DecksSync {
         const currentDecks: string[] = Object.keys(deckNamesAndIds);
         const expectedDecks = deckDescriptors.map(current => current.name);
 
-        this.missingDecks.push(... Sets.difference(expectedDecks, currentDecks));
+        this.missingDecks.push(... SetArrays.difference(expectedDecks, currentDecks));
 
         const message = `Found ${this.missingDecks.length} missing decks from a total of ${currentDecks.length}`;
         log.info(message);

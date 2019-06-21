@@ -13,7 +13,7 @@ import {IProvider} from '../../../web/js/util/Providers';
 import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
-import {Sets} from '../../../web/js/util/Sets';
+import {SetArrays} from '../../../web/js/util/SetArrays';
 
 const log = Logger.create();
 
@@ -63,7 +63,7 @@ export class RepoDocMetaManager {
                     const newAnnotationIDs = repoDocMeta.repoAnnotations
                         .map(current => current.id);
 
-                    const deleteIDs = Sets.difference(currentAnnotationsIDs, newAnnotationIDs);
+                    const deleteIDs = SetArrays.difference(currentAnnotationsIDs, newAnnotationIDs);
 
                     for (const deleteID of deleteIDs) {
                         delete this.repoAnnotationIndex[deleteID];

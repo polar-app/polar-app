@@ -4,7 +4,7 @@ import {Strings} from '../../../../web/js/util/Strings';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {isPresent} from '../../../../web/js/Preconditions';
-import {Sets} from '../../../../web/js/util/Sets';
+import {SetArrays} from '../../../../web/js/util/SetArrays';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
 import {Optional} from '../../../../web/js/util/ts/Optional';
@@ -136,7 +136,7 @@ export class DocRepoFilters {
             }
 
             const intersection =
-                Sets.intersection(tags, Tags.toIDs(Object.values(current.docInfo.tags!)));
+                SetArrays.intersection(tags, Tags.toIDs(Object.values(current.docInfo.tags!)));
 
             return intersection.length === tags.length;
 

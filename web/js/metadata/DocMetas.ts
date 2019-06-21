@@ -313,7 +313,7 @@ export class MockDocMetas {
 
 }
 
-interface MockDoc {
+export interface MockDoc {
     readonly docMeta: DocMeta;
     readonly fileRef: FileRef;
 }

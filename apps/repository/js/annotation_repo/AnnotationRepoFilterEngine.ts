@@ -2,7 +2,7 @@ import {Strings} from '../../../../web/js/util/Strings';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {isPresent} from '../../../../web/js/Preconditions';
-import {Sets} from '../../../../web/js/util/Sets';
+import {SetArrays} from '../../../../web/js/util/SetArrays';
 import {Provider} from '../../../../web/js/util/Providers';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotations} from '../RepoAnnotations';
@@ -116,7 +116,7 @@ export class AnnotationRepoFilterEngine {
             }
 
             const intersection =
-                Sets.intersection(tags, Tags.toIDs(docTags));
+                SetArrays.intersection(tags, Tags.toIDs(docTags));
 
             return intersection.length === tags.length;
 

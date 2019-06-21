@@ -16,7 +16,7 @@ import {DocInfos} from '../../../../metadata/DocInfos';
 import {Tags} from '../../../../tags/Tags';
 import {DocInfo} from '../../../../metadata/DocInfo';
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
-import {Sets} from '../../../../util/Sets';
+import {SetArrays} from '../../../../util/SetArrays';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
 import {FlashcardDescriptors} from './FlashcardDescriptors';
 import {AnkiConnectFetch} from './AnkiConnectFetch';
@@ -39,7 +39,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
         const noteDescriptors = await this.toNoteDescriptors(deckNameStrategy, docMetaSupplierCollection);
 
-        const deckNames = Sets.toSet(noteDescriptors.map(noteDescriptor => noteDescriptor.deckName));
+        const deckNames = SetArrays.toSet(noteDescriptors.map(noteDescriptor => noteDescriptor.deckName));
 
         const deckDescriptors: DeckDescriptor[] = Array.from(deckNames)
             .map(deckName => {

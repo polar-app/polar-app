@@ -1,7 +1,7 @@
 /**
  * Set theoretic operations for Typescript arrays.
  */
-export class Sets {
+export class SetArrays {
 
     /**
      * Difference (a \ b): create a set that contains those elements of set a
@@ -12,6 +12,9 @@ export class Sets {
         return a.filter(x => ! b.includes(x));
     }
 
+    /**
+     * Compute a union of all the given sets.
+     */
     public static union<T>(...arrays: ReadonlyArray<ReadonlyArray<T>>): ReadonlyArray<T> {
 
         const set = new Set<T>();
@@ -28,6 +31,7 @@ export class Sets {
 
         const a = new Set(left);
         const b = new Set(right);
+
         const intersection = new Set(
             [...a].filter(x => b.has(x)));
 
@@ -35,7 +39,7 @@ export class Sets {
 
     }
 
-    public static toSet<T>(arr: T[]): Set<T> {
+    public static toSet<T>(arr: ReadonlyArray<T>): Set<T> {
 
         const set = new Set<T>();
 
