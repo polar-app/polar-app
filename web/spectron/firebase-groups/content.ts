@@ -25,6 +25,11 @@ import {DatastoreCollection} from '../../js/datastore/FirebaseDatastore';
 import {Promises} from '../../js/util/Promises';
 import {RecordHolder} from '../../js/datastore/FirebaseDatastore';
 import {DocMeta} from '../../js/metadata/DocMeta';
+import {GroupDocIDStr} from '../../js/datastore/sharing/db/GroupDocs';
+import {BackendFileRefs} from '../../js/datastore/BackendFileRefs';
+import {Either} from '../../js/util/Either';
+import {DocMetas} from '../../js/metadata/DocMetas';
+import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
 
 const log = Logger.create();
 
@@ -63,9 +68,6 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
-    // TODO: verify that I can actually read the .doc file associated with the
-    // record
-
     // TODO: delete the profiles after each run and then update them so that
     // we can verify everything during the lifecycle of the user from new signup
     // to sharing with an existing user who has a profile.  Verify that the
@@ -73,8 +75,6 @@ SpectronRenderer.run(async (state) => {
 
     // TODO: we have to delay writing / reading the record SOMEWHERE... just not
     // sure of the best place.  It's really only a 10s delay.
-
-    // TODO: another test with docs when I JOIN a group.
 
     // TODO: build a new Datastore impl that is a 'view' on the main one derived
     // from teh docID such that we can call all the main operations...
@@ -404,6 +404,60 @@ SpectronRenderer.run(async (state) => {
             }
 
             await validatePermissionsForDocMeta(groupID);
+
+            async function validateGetFile(groupID: GroupDocIDStr) {
+                console.log("validateGetFile");
+
+                const auth = app.auth();
+                const user = auth.currentUser!;
+
+                const idToken = await user.getIdToken();
+
+                // verify that I can actually fetch the data associated with the
+                // file...
+
+                const groupDocs = await GroupDocs.list(groupID);
+
+                const firebaseDatastore = new FirebaseDatastore();
+
+                try {
+
+                    await firebaseDatastore.init();
+
+                    for (const groupDoc of groupDocs) {
+                        console.log("Validating we can fetch doc: ", groupDoc);
+
+                        const data = await firebaseDatastore.getDocMetaDirectly(groupDoc.docID);
+                        const docMeta = DocMetas.deserialize(data!, groupDoc.fingerprint);
+
+                        const backendFileRefs = BackendFileRefs.toBackendFileRefs(Either.ofLeft(docMeta));
+
+                        for (const backendFileRef of backendFileRefs) {
+
+                            console.log("Validating we can fetch backend file ref: ", backendFileRef);
+
+                            const url = FirebaseDatastores.computeDatastoreGetFileURL({
+                                docID: groupDoc.docID,
+                                idToken,
+                                backend: backendFileRef.backend,
+                                fileRef: backendFileRef,
+                            });
+
+                            const response = await fetch(url);
+
+                            assert.equal(response.status, 200);
+
+                        }
+
+                    }
+
+                } finally {
+                    await firebaseDatastore.stop();
+                }
+
+            }
+
+            await validateGetFile(groupID);
 
         });
 
