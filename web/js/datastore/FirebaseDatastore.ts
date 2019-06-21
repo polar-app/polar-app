@@ -40,6 +40,7 @@ import {Datastores} from './Datastores';
 import {Latch} from '../util/Latch';
 import {Firebase} from '../firebase/Firebase';
 import {FirebaseDatastores} from './FirebaseDatastores';
+import {GroupIDStr} from './sharing/db/Groups';
 
 const log = Logger.create();
 
@@ -265,11 +266,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     /**
-     * Get the DocMeta if from teh raw ID.
-     * @param id
+     * Get the DocMeta if from teh raw docID encoded into the users account.
      */
-    public async getDocMetaDirectly(id: string,
-                                    opts: GetDocMetaOpts = {}): Promise<string | null> {
+    public async getDocMetaDirectly(id: string, opts: GetDocMetaOpts = {}): Promise<string | null> {
 
         const ref = this.firestore!
             .collection(DatastoreCollection.DOC_META)
@@ -1086,8 +1085,10 @@ export interface RecordHolder<T> {
     // the owner of this record.
     readonly uid: UserID;
 
-    // the visibilty of this record.
+    // the visibility of this record.
     readonly visibility: Visibility;
+
+    readonly groups?: ReadonlyArray<GroupIDStr>;
 
     readonly id: string;
 

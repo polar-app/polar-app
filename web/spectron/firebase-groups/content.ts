@@ -21,6 +21,10 @@ import {UserGroups} from '../../js/datastore/sharing/db/UserGroups';
 import {Contacts} from '../../js/datastore/sharing/db/Contacts';
 import {Sets} from '../../js/util/Sets';
 import {GroupDeletes} from '../../js/datastore/sharing/rpc/GroupDeletes';
+import {DatastoreCollection} from '../../js/datastore/FirebaseDatastore';
+import {Promises} from '../../js/util/Promises';
+import {RecordHolder} from '../../js/datastore/FirebaseDatastore';
+import {DocMeta} from '../../js/metadata/DocMeta';
 
 const log = Logger.create();
 
@@ -59,22 +63,26 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
-    // TODO: create a profileID for user1 and no profileID for user2 and make
-    // sure the contacts are updated appropriately.
+    // TODO: verify that I can actually read the .doc file associated with the
+    // record
 
-    // TODO: we're still not doing anything special to access the other docs.
+    // TODO: delete the profiles after each run and then update them so that
+    // we can verify everything during the lifecycle of the user from new signup
+    // to sharing with an existing user who has a profile.  Verify that the
+    // profileID is updated when they first login.
+
+    // TODO: we have to delay writing / reading the record SOMEWHERE... just not
+    // sure of the best place.  It's really only a 10s delay.
+
+    // TODO: another test with docs when I JOIN a group.
+
+    // TODO: build a new Datastore impl that is a 'view' on the main one derived
+    // from teh docID such that we can call all the main operations...
+
+    // ## PUBLIC GROUPS
 
     // TODO: test with tags and tag search for groups so we can try to delete
-    // them...
-
-    // TODO: just do purges based on uid, and profileID before and after each
-    // test involving all the users here.  They should be able to delete their
-    // own data though maybe not because they should be involved in
-    // transactions..
-    //
-    //    - TODO: how am I going to purge on the client since there's no admin
-    //      client I can use really.. though maybe I should read the credentials
-    //      from the env first.
+    // them
 
     // Future work:
     //
@@ -128,6 +136,16 @@ SpectronRenderer.run(async (state) => {
 
             const app = Firebase.init();
 
+            const GROUP_DELAY: number = 10000;
+
+            async function waitForGroupDelay() {
+
+                console.log(`Waiting for group delay of ${GROUP_DELAY}ms... `);
+                await Promises.waitFor(GROUP_DELAY);
+                console.log(`Waiting for group delay of ${GROUP_DELAY}ms... done`);
+
+            }
+
             async function provisionAccountData() {
 
                 console.log("provisionAccountData");
@@ -177,6 +195,40 @@ SpectronRenderer.run(async (state) => {
             }
 
             const groupID = await doGroupProvision();
+
+            async function validateGroupsOnDocMetaAndDocPermissions(groupID: GroupIDStr) {
+
+                console.log("validateGroupsOnDocMetaAndDocPermissions");
+
+                const groupDocs = await GroupDocs.list(groupID);
+
+                assert.equal(groupDocs.length, 1, "No group docs found.");
+
+                const groupDoc = groupDocs[0];
+
+                assert.equal(groupDoc.groupID, groupID);
+                assert.isDefined(groupDoc.id);
+                assert.isDefined(groupDoc.created);
+
+                const firestore = app.firestore();
+
+                const ref = firestore
+                    .collection(DatastoreCollection.DOC_META)
+                    .doc(groupDoc.docID);
+
+                const doc = await ref.get()
+                const recordHolder = <RecordHolder<DocMeta> | undefined> doc.data();
+
+                assert.isDefined(recordHolder);
+                assert.isDefined(recordHolder!.groups);
+
+                assert.isTrue(recordHolder!.groups!.includes(groupID), "Does not include group ID");
+
+                console.log("SUCCESS... groups properly has the right groupID");
+
+            }
+
+            await validateGroupsOnDocMetaAndDocPermissions(groupID);
 
             async function doGroupJoin(groupID: GroupIDStr) {
 
@@ -265,7 +317,11 @@ SpectronRenderer.run(async (state) => {
 
             async function validateGroupDocs(groupID: GroupIDStr) {
 
+                console.log("== validateGroupDocs");
+
                 const user = app.auth().currentUser!;
+
+                assert.equal(user.email, FIREBASE_USER1);
 
                 const userGroup = await UserGroups.get(user.uid);
 
@@ -275,9 +331,11 @@ SpectronRenderer.run(async (state) => {
 
                 assert.isTrue(userGroup.groups.includes(groupID), "We don't have the group ID in our user_group record");
 
-                console.log("validateGroupDocs");
-
                 console.log(`Attempting to fetch group docs with uid=${user.uid}, groupID: ${groupID}`);
+
+                await waitForGroupDelay();
+
+                // FIXME: this is failing for the user...
                 const groupDocs = await GroupDocs.list(groupID);
 
                 assert.equal(groupDocs.length, 1, "No group docs found.");
@@ -294,7 +352,7 @@ SpectronRenderer.run(async (state) => {
 
             async function validatePermissionDeniedForOthers(groupID: GroupIDStr) {
 
-                console.log("validatePermissionDeniedForOthers");
+                console.log("== validatePermissionDeniedForOthers");
 
                 await app.auth().signInWithEmailAndPassword(FIREBASE_USER2, FIREBASE_PASS2);
 
@@ -303,6 +361,49 @@ SpectronRenderer.run(async (state) => {
 
             await validatePermissionDeniedForOthers(groupID);
 
+            async function validatePermissionsForDocMeta(groupID: GroupIDStr) {
+
+                console.log("validatePermissionsForDocMeta");
+
+                const auth = app.auth();
+                await auth.signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+                const user = auth.currentUser!;
+
+                const firebaseDatastore = new FirebaseDatastore();
+
+                try {
+
+                    await firebaseDatastore.init();
+
+                    const groupDocs = await GroupDocs.list(groupID);
+
+                    console.log(`Attempting to read documents to validate permissions: uid: ${user.uid}...`);
+                    const firestore = app.firestore();
+
+                    for (const groupDoc of groupDocs) {
+
+                        console.log(`Validating docID: ${groupDoc.docID}`);
+
+                        console.log("Reading it directly from the firebase API...");
+
+                        const ref = firestore
+                            .collection(DatastoreCollection.DOC_META)
+                            .doc(groupDoc.docID);
+
+                        await ref.get();
+
+                        console.log("Reading it directly from the firebase API...done");
+
+                        await firebaseDatastore.getDocMetaDirectly(groupDoc.docID);
+                    }
+
+                } finally {
+                    await firebaseDatastore.stop();
+                }
+
+            }
+
+            await validatePermissionsForDocMeta(groupID);
 
         });
 
