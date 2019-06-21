@@ -33,7 +33,6 @@ import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
 import {MockDoc} from '../../js/metadata/DocMetas';
 import {GroupLeaves} from '../../js/datastore/sharing/rpc/GroupLeaves';
 import {assertJSON} from '../../js/test/Assertions';
-import {FetchError} from '@types/node-fetch';
 import {JSONRPCError} from '../../js/datastore/sharing/rpc/JSONRPC';
 
 const log = Logger.create();
