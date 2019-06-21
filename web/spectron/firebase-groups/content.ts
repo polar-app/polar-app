@@ -124,10 +124,10 @@ SpectronRenderer.run(async (state) => {
         beforeEach(async function() {
             await purgeGroups();
         });
-        //
-        // afterEach(async function() {
-        //     await purgeGroups();
-        // });
+
+        afterEach(async function() {
+            await purgeGroups();
+        });
 
         it("group provision of private group", async function() {
 
@@ -203,7 +203,7 @@ SpectronRenderer.run(async (state) => {
 
                 const groupDoc = groupDocs[0];
 
-                assert.equal(groupDoc.groupID, groupID);
+                assert.equal(groupDoc.groupID, groupID, "Wrong groupID");
                 assert.isDefined(groupDoc.id);
                 assert.isDefined(groupDoc.created);
 
@@ -242,7 +242,8 @@ SpectronRenderer.run(async (state) => {
                 console.log("Listing group invitations...done");
 
                 // it's important that the user can see their own invitations.
-                assert.equal(groupMemberInvitations.filter(current => current.groupID === groupID).length, 1);
+                assert.equal(groupMemberInvitations.filter(current => current.groupID === groupID).length, 1,
+                             "groupID not in the list of groups: " + groupID);
 
                 const profileUpdateRequest: ProfileUpdateRequest = {
                     name: "Bob Johnson",
@@ -268,7 +269,7 @@ SpectronRenderer.run(async (state) => {
                 console.log("validateGroupSettingsAfterJoin");
 
                 const user = app.auth().currentUser!;
-                assert.equal(user.email, FIREBASE_USER1);
+                assert.equal(user.email, FIREBASE_USER1,);
 
                 console.log("Testing permissions for user: " + user.uid);
                 console.log("Testing permissions for group: " + groupID);
@@ -446,10 +447,12 @@ SpectronRenderer.run(async (state) => {
                             const response = await fetch(url);
 
                             assert.equal(response.status, 200);
-                            assert.equal(response.type, '');
+                            assert.equal(response.type, 'cors')
+                            console.log(response.headers);
+                            assert.equal(response.headers.get('content-type'), 'application/pdf');
                             const arrayBuffer = await response.arrayBuffer();
 
-                            assert.equal(arrayBuffer.byteLength, 666);
+                            assert.equal(arrayBuffer.byteLength, 117687);
 
                         }
 
@@ -465,7 +468,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Profile update", async function() {
+        it("Profile update", async function() {
 
             const app = Firebase.init();
 
