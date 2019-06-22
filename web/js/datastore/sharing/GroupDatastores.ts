@@ -1,6 +1,7 @@
 import {DocRef} from 'polar-shared/src/groups/DocRef';
-import {PersistenceLayer, WriteOpts} from '../PersistenceLayer';
+import {PersistenceLayer} from '../PersistenceLayer';
 import {BackendFileRef} from '../Datastore';
+import {GroupIDStr} from '../Datastore';
 import {DocMetas} from '../../metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
 import {DocIDStr} from './rpc/GroupProvisions';
@@ -12,7 +13,7 @@ import {DocInfo} from '../../metadata/DocInfo';
 import {Either} from '../../util/Either';
 import {DocRefs} from './db/DocRefs';
 import {FirebaseDatastores} from '../FirebaseDatastores';
-import {GroupIDStr} from '../Datastore';
+import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 
 export class GroupDatastores {
 
@@ -20,110 +21,113 @@ export class GroupDatastores {
                                         groupDocRef: GroupDocRef) {
 
         const {groupID, docRef} = groupDocRef;
-        const {docID} = docRef;
+        const {fingerprint, docID} = docRef;
 
-        async function getDocInfoRecord(docID: DocIDStr) {
+        async function importBackendFileRef() {
 
-            const firestore = await Firestore.getInstance();
+            // TODO: I think it would be better to store the information directly
+            // in the DocRef in the original source wouldn't it?
+            async function getDocInfoRecord(docID: DocIDStr) {
 
-            const ref = firestore
-                .collection(DatastoreCollection.DOC_INFO)
-                .doc(docID);
+                const firestore = await Firestore.getInstance();
 
-            const snapshot = await ref.get();
+                const ref = firestore
+                    .collection(DatastoreCollection.DOC_INFO)
+                    .doc(docID);
 
-            return <RecordHolder<DocInfo> | undefined> snapshot.data();
+                const snapshot = await ref.get();
 
-        }
+                return <RecordHolder<DocInfo> | undefined> snapshot.data();
 
-        async function getDocInfo(docID: DocIDStr) {
-
-            const docInfoRecord = await getDocInfoRecord(docID);
-
-            if (! docInfoRecord) {
-                throw new Error("Unable to import. No docInfo");
             }
 
-            return docInfoRecord.value;
-
-        }
-
-        const docInfo = await getDocInfo(docID);
-
-        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
-
-        if (! backendFileRef) {
-            throw new Error("No backend file ref");
-        }
-
-        // this will perform an efficient copy of the data on the backend.
-        await DatastoreImportFiles.exec({
-            docID,
-            backend: backendFileRef.backend,
-            fileRef: backendFileRef
-        });
-
-        function createDocMeta(backendFileRef: BackendFileRef) {
-
-            const docMeta = DocMetas.create(docRef.fingerprint, docRef.nrPages);
-
-            DocRefs.toDocInfo(docRef, docMeta.docInfo);
-
-            docMeta.docInfo.filename = backendFileRef.name;
-            docMeta.docInfo.backend = backendFileRef.backend;
-            docMeta.docInfo.hashcode = backendFileRef.hashcode;
-
-            return docMeta;
-
-        }
-
-        const docMeta = createDocMeta(backendFileRef);
-
-        async function writeDocMeta() {
-
-            const docInfo = docMeta.docInfo;
-            const {fingerprint} = docInfo;
-
-            /**
-             * Compute the groups field for the record.
-             */
-            async function computeGroups(): Promise<ReadonlyArray<GroupIDStr>> {
-
-                // We have to read the previous groups and then merge it with
-                // the new groups if they exist.
-
-                const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
+            async function getDocInfo(docID: DocIDStr) {
 
                 const docInfoRecord = await getDocInfoRecord(docID);
 
-                if (docInfoRecord && docInfoRecord.groups) {
-                    return [groupID, ...docInfoRecord.groups];
+                if (! docInfoRecord) {
+                    throw new Error("Unable to import. No docInfo");
                 }
 
-                return [groupID];
+                return docInfoRecord.value;
 
             }
 
-            const groups = await computeGroups();
+            const docInfo = await getDocInfo(docID);
 
-            // FIXME: just read the current gruops + visibility and then
-            // write out the new groups + visibility if it they exist...
+            const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
 
-            const writeOpts: WriteOpts = {
-                groups
-            };
+            if (! backendFileRef) {
+                throw new Error("No backend file ref");
+            }
 
-            await persistenceLayer.write(fingerprint, docMeta, writeOpts);
-            return docInfo;
+            // this will perform an efficient copy of the data on the backend.
+            await DatastoreImportFiles.exec({
+                docID,
+                backend: backendFileRef.backend,
+                fileRef: backendFileRef
+            });
+
+            return backendFileRef;
 
         }
 
-        // FIXME: make sure the docs and visibility are setup properly.
+        async function importDocMeta(backendFileRef: BackendFileRef): Promise<DocRef> {
 
-        // FIXME: the groups and visibility of this document need to be set
-        // properly and ideally we wouldn't have to perform two writes.
+            function createDocMeta(backendFileRef: BackendFileRef) {
 
-        await writeDocMeta();
+                const docMeta = DocMetas.create(fingerprint, docRef.nrPages);
+
+                DocRefs.toDocInfo(docRef, docMeta.docInfo);
+
+                docMeta.docInfo.filename = backendFileRef.name;
+                docMeta.docInfo.backend = backendFileRef.backend;
+                docMeta.docInfo.hashcode = backendFileRef.hashcode;
+
+                return docMeta;
+
+            }
+
+            const docMeta = createDocMeta(backendFileRef);
+
+            async function writeDocMeta() {
+
+                const docInfo = docMeta.docInfo;
+
+                await persistenceLayer.write(fingerprint, docMeta);
+                return docInfo;
+
+            }
+
+            await writeDocMeta();
+
+            const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
+
+            return {...docRef, docID};
+
+        }
+
+        async function doImport(): Promise<DocRef> {
+
+            // TODO: in the future would be faster to work with the DocInfo instead
+            // but we don't have a getDocInfo method yet.
+            const docMeta = await persistenceLayer.getDocMeta(fingerprint);
+
+            if (! docMeta) {
+
+                const backendFileRef = await importBackendFileRef();
+                return await importDocMeta(backendFileRef);
+
+            } else {
+                const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
+                return DocRefs.fromDocMeta(docID, docMeta);
+            }
+
+        }
+
+        const myDocRef = await doImport();
+
+        await GroupDocsAdd.exec({groupID, docs: [myDocRef]});
 
     }
 

@@ -37,6 +37,10 @@ import {GroupDocsAdd} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
 import {GroupDocAddRequest} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
 import {Optional} from '../../js/util/ts/Optional';
 import {GroupIDStr} from '../../js/datastore/Datastore';
+import {GroupDatastores} from '../../js/datastore/sharing/GroupDatastores';
+import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
+import {GroupDocRef} from '../../js/datastore/sharing/GroupDatastores';
+import {Datastores} from '../../js/datastore/Datastores';
 
 const log = Logger.create();
 
@@ -77,6 +81,8 @@ SpectronRenderer.run(async (state) => {
 
     // TODO: test adding to a group...
 
+    // TODO: GropuJoin should be idempotent
+
     // TODO: make sure we don't have a group ID collision when creating by name.
 
     // TODO: delete the profiles after each run and then update them so that
@@ -105,11 +111,39 @@ SpectronRenderer.run(async (state) => {
 
     describe("firebase-groups", async function() {
 
+        async function purgeDatastores() {
+
+            const app = Firebase.init();
+
+            async function purgeForUser(username: string, password: string) {
+
+                await app.auth().signInWithEmailAndPassword(username, password);
+
+                const datastore = new FirebaseDatastore();
+
+                try {
+
+                    await datastore.init();
+
+                    await Datastores.purge(datastore);
+
+                } finally {
+                    await datastore.stop();
+                }
+
+            }
+
+            await purgeForUser(FIREBASE_USER, FIREBASE_PASS);
+            await purgeForUser(FIREBASE_USER1, FIREBASE_PASS1);
+            await purgeForUser(FIREBASE_USER2, FIREBASE_PASS2);
+
+        }
+
         async function purgeGroups() {
 
             const app = Firebase.init();
 
-            async function purgeGroupsForUser(username: string, password: string) {
+            async function purgeForUser(username: string, password: string) {
 
                 await app.auth().signInWithEmailAndPassword(username, password);
 
@@ -130,9 +164,15 @@ SpectronRenderer.run(async (state) => {
 
             }
 
-            await purgeGroupsForUser(FIREBASE_USER, FIREBASE_PASS);
-            await purgeGroupsForUser(FIREBASE_USER1, FIREBASE_PASS1);
-            await purgeGroupsForUser(FIREBASE_USER2, FIREBASE_PASS2);
+            await purgeForUser(FIREBASE_USER, FIREBASE_PASS);
+            await purgeForUser(FIREBASE_USER1, FIREBASE_PASS1);
+            await purgeForUser(FIREBASE_USER2, FIREBASE_PASS2);
+
+        }
+
+        async function purge() {
+            await purgeDatastores();
+            await purgeGroups();
         }
 
         const GROUP_DELAY: number = 10000;
@@ -172,7 +212,7 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        async function doGroupProvision(mockDoc: MockDoc) {
+        async function doGroupProvision(mockDoc: MockDoc): Promise<GroupDocRef> {
 
             console.log("doGroupProvision");
 
@@ -195,7 +235,7 @@ SpectronRenderer.run(async (state) => {
             };
 
             const response = await GroupProvisions.exec(request);
-            return response.id;
+            return {groupID: response.id, docRef};
 
         }
 
@@ -266,6 +306,41 @@ SpectronRenderer.run(async (state) => {
 
         }
 
+        interface AssertFetchOpts {
+            readonly status?: number;
+            readonly type?: string;
+            readonly contentType?: string;
+            readonly byteLength?: number;
+        }
+
+        /**
+         * Assert that we can fetch the given URL properly.
+         * @param url
+         */
+        async function assertFetch(url: string, opts: AssertFetchOpts) {
+
+            const response = await fetch(url);
+
+            if (opts.status !== undefined) {
+                assert.equal(response.status, 200);
+            }
+
+            if (opts.type !== undefined) {
+                assert.equal(response.type, 'cors');
+            }
+
+            if (opts.contentType !== undefined) {
+                assert.equal(response.headers.get('content-type'), 'application/pdf');
+            }
+
+            if (opts.byteLength !== undefined) {
+                const arrayBuffer = await response.arrayBuffer();
+
+                assert.equal(arrayBuffer.byteLength, opts.byteLength);
+            }
+
+        }
+
         async function getGroupCanonicalized(groupID: GroupIDStr): Promise<any> {
 
             const group = await Groups.get(groupID);
@@ -281,19 +356,19 @@ SpectronRenderer.run(async (state) => {
         }
 
         beforeEach(async function() {
-            await purgeGroups();
+            await purge();
         });
 
         afterEach(async function() {
-            await purgeGroups();
+            await purge();
         });
 
-        it("group provision of private group", async function() {
+        xit("group provision of private group", async function() {
 
             const app = Firebase.init();
 
             const mockDock = await provisionAccountData();
-            const groupID = await doGroupProvision(mockDock);
+            const {groupID} = await doGroupProvision(mockDock);
 
             async function validateGroupsOnDocMetaAndDocPermissions(groupID: GroupIDStr) {
 
@@ -511,15 +586,12 @@ SpectronRenderer.run(async (state) => {
                                 fileRef: backendFileRef,
                             });
 
-                            const response = await fetch(url);
-
-                            assert.equal(response.status, 200);
-                            assert.equal(response.type, 'cors');
-                            console.log(response.headers);
-                            assert.equal(response.headers.get('content-type'), 'application/pdf');
-                            const arrayBuffer = await response.arrayBuffer();
-
-                            assert.equal(arrayBuffer.byteLength, 117687);
+                            await assertFetch(url, {
+                                status: 200,
+                                type: 'cors',
+                                contentType: 'application/pdf',
+                                byteLength: 117687
+                            });
 
                         }
 
@@ -535,10 +607,10 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("join and then leave group", async function() {
+        xit("join and then leave group", async function() {
 
             const mockDock = await provisionAccountData();
-            const groupID = await doGroupProvision(mockDock);
+            const {groupID} = await doGroupProvision(mockDock);
             await doGroupJoinForUser1(groupID);
             await waitForGroupDelay();
 
@@ -575,7 +647,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("join and then add my own docs", async function() {
+        xit("join and then add my own docs", async function() {
 
             async function doUser0() {
                 const mockDock = await provisionAccountData();
@@ -584,7 +656,7 @@ SpectronRenderer.run(async (state) => {
                 return groupID;
             }
 
-            const groupID = await doUser0();
+            const {groupID} = await doUser0();
 
             async function doGroupJoinForUser1(groupID: GroupIDStr) {
 
@@ -631,10 +703,13 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("join group twice and validate metadata", async function() {
+        xit("join group twice and validate metadata (private group)", async function() {
+
+            // FIXME: we need this same function for public/protected groups
+            // as I think it will fail.
 
             const mockDock = await provisionAccountData();
-            const groupID = await doGroupProvision(mockDock);
+            const {groupID} = await doGroupProvision(mockDock);
             await doGroupJoinForUser1(groupID);
 
             try {
@@ -668,7 +743,53 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("Public group settings", async function() {
+        it("Import the doc from a private group into my datastore", async function() {
+
+            const mockDock = await provisionAccountData();
+            const {groupID, docRef} = await doGroupProvision(mockDock);
+            await doGroupJoinForUser1(groupID);
+
+            await waitForGroupDelay();
+
+            const datastore = new FirebaseDatastore();
+            const persistenceLayer = new DefaultPersistenceLayer(datastore);
+
+            try {
+
+                // FIXME: purge the files in the datastore at the end...
+
+                // https://storage.googleapis.com/polar-32b0f.appspot.com/stash/1Y91L28426iAkvUWoKeBYAj378r5zwkSgwH9n6L4.pdf
+
+                // stash/1DkF2nhfKbnzmNaaLFo7LritFAGg5nunancvCGVe.pdf
+
+                await persistenceLayer.init();
+
+                await GroupDatastores.importFromGroup(persistenceLayer, {groupID, docRef});
+
+                const docMeta = await persistenceLayer.getDocMeta(docRef.fingerprint);
+
+                assert.isDefined(docMeta);
+
+                const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofLeft(docMeta!));
+                assert.isDefined(backendFileRef);
+
+                const docFileMeta = await persistenceLayer.getFile(backendFileRef!.backend, backendFileRef!);
+
+                await assertFetch(docFileMeta.url, {
+                    status: 200,
+                    type: 'cors',
+                    contentType: 'application/pdf',
+                    byteLength: 117687
+                });
+
+            } finally {
+                await persistenceLayer.stop();
+            }
+
+
+        });
+
+        xit("Public group settings", async function() {
 
             const mockDock = await provisionAccountData();
 
@@ -695,7 +816,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("Public docs in public groups", async function() {
+        xit("Public docs in public groups", async function() {
 
             // FIXME: need to add support for this...
 
@@ -742,7 +863,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("Profile update", async function() {
+        xit("Profile update", async function() {
 
             const app = Firebase.init();
 

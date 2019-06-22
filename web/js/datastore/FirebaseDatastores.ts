@@ -2,15 +2,15 @@ import {Backend} from './Backend';
 import {FileRef} from './Datastore';
 import {FilePaths} from '../util/FilePaths';
 import {Hashcodes} from '../Hashcodes';
-import {FirebaseDatastore} from './FirebaseDatastore';
-import {Optional} from '../util/ts/Optional';
 import {StoragePath} from './FirebaseDatastore';
 import {StorageSettings} from './FirebaseDatastore';
+import {FirebaseDocMetaID} from './FirebaseDatastore';
+import {Optional} from '../util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
 import {UserID} from '../firebase/Firebase';
 import * as firebase from '../firebase/lib/firebase';
 import {Preconditions} from '../Preconditions';
-import {FirebaseDocMetaID} from './FirebaseDatastore';
+import {UserIDStr} from './sharing/db/Profiles';
 
 export class FirebaseDatastores {
 
@@ -19,7 +19,9 @@ export class FirebaseDatastores {
         return `${endpoint}/datastoreGetFile/?data=` + encodeURIComponent(JSON.stringify(request));
     }
 
-    public static computeStoragePath(backend: Backend, fileRef: FileRef): StoragePath {
+    public static computeStoragePath(backend: Backend,
+                                     fileRef: FileRef,
+                                     uid: UserIDStr = FirebaseDatastores.getUserID()): StoragePath {
 
         const ext = FilePaths.toExtension(fileRef.name);
 
@@ -38,8 +40,6 @@ export class FirebaseDatastores {
         const settings = this.computeStorageSettings(ext).getOrUndefined();
 
         let key: any;
-
-        const uid = FirebaseDatastores.getUserID();
 
         if (fileRef.hashcode) {
 

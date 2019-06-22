@@ -1224,7 +1224,9 @@ export class DownloadURLs {
 
             const path = toPath();
 
-            return `https://storage.googleapis.com/polar-32b0f.appspot.com/${path}`;
+            const project = process.env.POLAR_TEST_PROJECT || "polar-32b0f";
+
+            return `https://storage.googleapis.com/${project}.appspot.com/${path}`;
 
         };
 
