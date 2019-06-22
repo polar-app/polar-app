@@ -34,11 +34,14 @@ import {MockDoc} from '../../js/metadata/DocMetas';
 import {GroupLeaves} from '../../js/datastore/sharing/rpc/GroupLeaves';
 import {assertJSON} from '../../js/test/Assertions';
 import {JSONRPCError} from '../../js/datastore/sharing/rpc/JSONRPC';
+import {GroupDocsAdd} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
+import {GroupDocAddRequest} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
+import {Optional} from '../../js/util/ts/Optional';
 
 const log = Logger.create();
 
 mocha.setup('bdd');
-mocha.timeout(120000);
+mocha.timeout(300000);
 
 process.env.POLAR_TEST_PROJECT = 'polar-test2';
 
@@ -71,6 +74,10 @@ async function verifyFailed(delegate: () => Promise<any>) {
 }
 
 SpectronRenderer.run(async (state) => {
+
+    // TODO: test adding to a group...
+
+    // TODO: make sure we don't have a group ID collision when creating by name.
 
     // TODO: delete the profiles after each run and then update them so that
     // we can verify everything during the lifecycle of the user from new signup
@@ -138,13 +145,15 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        async function provisionAccountData() {
+        async function provisionAccountData(userPass?: UserPass) {
 
             const app = Firebase.init();
 
             console.log("provisionAccountData");
 
-            await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+            userPass = Optional.of(userPass).getOrElse({user: FIREBASE_USER, pass: FIREBASE_PASS});
+
+            await app.auth().signInWithEmailAndPassword(userPass.user, userPass.pass);
 
             const firebaseDatastore = new FirebaseDatastore();
             try {
@@ -189,6 +198,36 @@ SpectronRenderer.run(async (state) => {
             return response.id;
 
         }
+
+        async function doGroupProvisionPublic(mockDoc: MockDoc) {
+
+            console.log("doGroupProvisionPublic");
+
+            const {docMeta} = mockDoc;
+            const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+
+            const docRef = DocRefs.fromDocMeta(docID, docMeta);
+
+            const request: GroupProvisionRequest = {
+                docs: [
+                    docRef
+                ],
+                invitations: {
+                    message: "Private invite to my special group",
+                    to: [
+                        'getpolarized.test+test1@gmail.com'
+                    ]
+                },
+                name: 'linux',
+                tags: ['linux', 'ubuntu', 'debian'],
+                visibility: 'public'
+            };
+
+            const response = await GroupProvisions.exec(request);
+            return response.id;
+
+        }
+
 
         async function doGroupJoinForUser1(groupID: GroupIDStr) {
 
@@ -536,6 +575,59 @@ SpectronRenderer.run(async (state) => {
 
         });
 
+        it("join and then add my own docs", async function() {
+
+            async function doUser0() {
+                const mockDock = await provisionAccountData();
+                const groupID = await doGroupProvision(mockDock);
+                await waitForGroupDelay();
+                return groupID;
+            }
+
+            const groupID = await doUser0();
+
+            async function doGroupJoinForUser1(groupID: GroupIDStr) {
+
+                const app = Firebase.init();
+
+                console.log("doGroupJoin");
+
+                // now switch to the user that was invited and join that group.
+
+                await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+                await GroupJoins.exec({groupID});
+
+            }
+
+            await doGroupJoinForUser1(groupID);
+
+            async function doGroupDocsAdd(mockDoc: MockDoc) {
+
+                const {docMeta} = mockDoc;
+                const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+
+                const docRef = DocRefs.fromDocMeta(docID, docMeta);
+
+                const request: GroupDocAddRequest = {
+                    groupID,
+                    docs: [
+                        docRef
+                    ],
+                };
+
+                await GroupDocsAdd.exec(request);
+
+            }
+
+            const mockDock = await provisionAccountData({user: FIREBASE_USER1, pass: FIREBASE_PASS1});
+            await doGroupDocsAdd(mockDock);
+
+            const groupDocs = await GroupDocs.list(groupID);
+            assert.equal(groupDocs.length, 2);
+
+        });
+
         it("join group twice and validate metadata", async function() {
 
             const mockDock = await provisionAccountData();
@@ -570,6 +662,82 @@ SpectronRenderer.run(async (state) => {
             }
 
             await assertGroupAfter();
+
+        });
+
+        it("Public group settings", async function() {
+
+            const mockDock = await provisionAccountData();
+
+            const groupID = await doGroupProvisionPublic(mockDock);
+
+            async function assertGroup() {
+
+                const group = await getGroupCanonicalized(groupID);
+
+                assertJSON(group, {
+                    name: 'linux',
+                    visibility: 'public',
+                    nrMembers: 0,
+                    tags: [
+                        'linux',
+                        'ubuntu',
+                        'debian'
+                    ]
+                });
+
+            }
+
+            await assertGroup();
+
+        });
+
+        it("Public docs in public groups", async function() {
+
+            // FIXME: need to add support for this...
+
+            const mockDock = await provisionAccountData();
+
+            const groupID = await doGroupProvisionPublic(mockDock);
+
+
+            async function doGroupJoinForUser1(groupID: GroupIDStr) {
+
+                const app = Firebase.init();
+
+                console.log("doGroupJoin");
+
+                // now switch to the user that was invited and join that group.
+
+                await app.auth().signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+                console.log("Listing group invitations...");
+
+                const groupMemberInvitations = await GroupMemberInvitations.list();
+
+                console.log("Listing group invitations...done");
+
+                // it's important that the user can see their own invitations.
+                assert.equal(groupMemberInvitations.filter(current => current.groupID === groupID).length, 1,
+                             "groupID not in the list of groups: " + groupID);
+
+                const profileUpdateRequest: ProfileUpdateRequest = {
+                    name: "Bob Johnson",
+                    bio: "An example user from Mars",
+                    location: "Capitol City, Mars",
+                    links: ['https://www.mars.org']
+                };
+
+                console.log("Updating profile...");
+                await ProfileUpdates.exec(profileUpdateRequest);
+                console.log("Updating profile...done");
+
+                console.log("Joining group...");
+                await GroupJoins.exec({groupID});
+                console.log("Joining group...done");
+
+            }
+
 
         });
 
@@ -608,3 +776,9 @@ SpectronRenderer.run(async (state) => {
     });
 
 });
+
+interface UserPass {
+    readonly user: string;
+    readonly pass: string;
+}
+

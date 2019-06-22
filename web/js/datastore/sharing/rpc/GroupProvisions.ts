@@ -14,11 +14,6 @@ export class GroupProvisions {
 export interface GroupProvisionRequest extends GroupInit {
 
     /**
-     * When specified, mutate the given group with the given ID.
-     */
-    readonly id?: string;
-
-    /**
      * Used when we're provisioning a group with an initial set of documents.
      */
     readonly docs: ReadonlyArray<DocRef>;
