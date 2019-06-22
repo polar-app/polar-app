@@ -7,6 +7,10 @@ import {Optional} from '../util/ts/Optional';
 import {StoragePath} from './FirebaseDatastore';
 import {StorageSettings} from './FirebaseDatastore';
 import {CloudFunctions} from './firebase/CloudFunctions';
+import {UserID} from '../firebase/Firebase';
+import * as firebase from '../firebase/lib/firebase';
+import {Preconditions} from '../Preconditions';
+import {FirebaseDocMetaID} from './FirebaseDatastore';
 
 export class FirebaseDatastores {
 
@@ -35,7 +39,7 @@ export class FirebaseDatastores {
 
         let key: any;
 
-        const uid = FirebaseDatastore.getUserID();
+        const uid = FirebaseDatastores.getUserID();
 
         if (fileRef.hashcode) {
 
@@ -125,6 +129,36 @@ export class FirebaseDatastores {
             cacheControl: PUBLIC_MAX_AGE_1WEEK,
             contentType: 'application/octet-stream'
         });
+
+    }
+
+
+    // You can allow users to sign in to your app using multiple authentication
+    // providers by linking auth provider credentials to an existing user account.
+    // Users are identifiable by the same Firebase user ID regardless of the
+    // authentication provider they used to sign in. For example, a user who signed
+    // in with a password can link a Google account and sign in with either method
+    // in the future. Or, an anonymous user can link a Facebook account and then,
+    // later, sign in with Facebook to continue using your app.
+
+    public static getUserID(): UserID {
+
+        const app = firebase.app();
+
+        const auth = app.auth();
+        Preconditions.assertPresent(auth, "Not authenticated");
+
+        const user = auth.currentUser;
+        Preconditions.assertPresent(user, "Not authenticated");
+
+        return user!.uid;
+
+    }
+
+    public static computeDocMetaID(fingerprint: string,
+                                   uid: UserID = FirebaseDatastores.getUserID()): FirebaseDocMetaID {
+
+        return Hashcodes.createID(uid + ':' + fingerprint, 32);
 
     }
 

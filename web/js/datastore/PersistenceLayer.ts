@@ -12,6 +12,8 @@ import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
+import {Visibility} from './Datastore';
+import {GroupIDStr} from './Datastore';
 
 export interface PersistenceLayer {
 
@@ -93,6 +95,10 @@ export interface WriteOpts {
      * and that the operations are ordered properly.
      */
     readonly writeFile?: BackendFileRefData;
+
+    readonly visibility?: Visibility;
+
+    readonly groups?: ReadonlyArray<GroupIDStr>;
 
 }
 

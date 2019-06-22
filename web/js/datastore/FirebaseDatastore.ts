@@ -39,7 +39,7 @@ import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
 import {Latch} from '../util/Latch';
 import {FirebaseDatastores} from './FirebaseDatastores';
-import {GroupIDStr} from './sharing/db/Groups';
+import {GroupIDStr} from './Datastore';
 
 const log = Logger.create();
 
@@ -103,7 +103,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // setup the initial snapshot so that we query for the users existing
         // data...
 
-        const uid = FirebaseDatastore.getUserID();
+        const uid = FirebaseDatastores.getUserID();
 
         // start synchronizing the datastore.  You MUST register your listeners
         // BEFORE calling init if you wish to listen to the full stream of
@@ -216,7 +216,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         }
 
-        const id = FirebaseDatastore.computeDocMetaID(docMetaFileRef.fingerprint);
+        const id = FirebaseDatastores.computeDocMetaID(docMetaFileRef.fingerprint);
 
         const docInfoRef = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
@@ -258,7 +258,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      */
     public async getDocMeta(fingerprint: string, opts: GetDocMetaOpts = {}): Promise<string | null> {
 
-        const id = FirebaseDatastore.computeDocMetaID(fingerprint);
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint);
 
         return await this.getDocMetaDirectly(id, opts);
 
@@ -397,7 +397,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             let uploadTask: firebase.storage.UploadTask;
 
-            const uid = FirebaseDatastore.getUserID();
+            const uid = FirebaseDatastores.getUserID();
 
             // stick the uid into the metadata which we use for authorization of the
             // blob when not public.
@@ -596,7 +596,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async write(fingerprint: string,
                        data: string,
                        docInfo: DocInfo,
-                       opts: WriteOpts = {}) {
+                       opts: WriteOpts = new DefaultWriteOpts()) {
 
         await this.handleWriteFile(opts);
 
@@ -606,7 +606,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
 
-            const id = FirebaseDatastore.computeDocMetaID(fingerprint);
+            const id = FirebaseDatastores.computeDocMetaID(fingerprint);
 
             const docMetaRef = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
@@ -629,8 +629,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             log.info(`Write of doc with id ${id} and visibility: ${visibility}`);
 
-            batch.set(docMetaRef, this.createDocForDocMeta(docInfo, data, visibility));
-            batch.set(docInfoRef, this.createDocForDocInfo(docInfo, visibility));
+            batch.set(docMetaRef, this.createRecordHolderForDocMeta(docInfo, data, {visibility}));
+            batch.set(docInfoRef, this.createRecordHolderForDocInfo(docInfo, {visibility}));
 
             await batch.commit();
 
@@ -674,12 +674,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     /**
      * Create the document that we will store in for the DocMeta
      */
-    private createDocForDocMeta(docInfo: DocInfo,
-                                docMeta: string,
-                                visibility: Visibility = Visibility.PRIVATE) {
+    private createRecordHolderForDocMeta(docInfo: DocInfo,
+                                         docMeta: string,
+                                         opts: WriteOpts = new DefaultWriteOpts()) {
 
-        const uid = FirebaseDatastore.getUserID();
-        const id = FirebaseDatastore.computeDocMetaID(docInfo.fingerprint, uid);
+        const visibility = opts.visibility || Visibility.PRIVATE;
+
+        const uid = FirebaseDatastores.getUserID();
+        const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
 
         const docMetaHolder: DocMetaHolder = {
             docInfo,
@@ -697,11 +699,13 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private createDocForDocInfo(docInfo: DocInfo,
-                                visibility: Visibility = Visibility.PRIVATE) {
+    private createRecordHolderForDocInfo(docInfo: DocInfo,
+                                         opts: WriteOpts = new DefaultWriteOpts()) {
 
-        const uid = FirebaseDatastore.getUserID();
-        const id = FirebaseDatastore.computeDocMetaID(docInfo.fingerprint, uid);
+        const visibility = opts.visibility || Visibility.PRIVATE;
+
+        const uid = FirebaseDatastores.getUserID();
+        const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
 
         const recordHolder: RecordHolder<DocInfo> = {
             uid,
@@ -716,7 +720,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaRefs(): Promise<DocMetaRef[]> {
 
-        const uid = FirebaseDatastore.getUserID();
+        const uid = FirebaseDatastores.getUserID();
 
         const snapshot = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
@@ -863,7 +867,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // both at the same time (in parallel via Promises.all)
         const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
 
-            const uid = FirebaseDatastore.getUserID();
+            const uid = FirebaseDatastores.getUserID();
 
             const query = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
@@ -918,7 +922,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 }
 
                 const data = await dataProvider();
-                const docMetaID = FirebaseDatastore.computeDocMetaID(docInfo.fingerprint);
+                const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint);
                 Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
                 return DocMetas.deserialize(data!, docInfo.fingerprint);
             });
@@ -1025,35 +1029,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private toConsistency(snapshot: firebase.firestore.QuerySnapshot): DatastoreConsistency {
         return snapshot.metadata.fromCache ? 'written' : 'committed';
-    }
-
-    public static computeDocMetaID(fingerprint: string,
-                                   uid: UserID = FirebaseDatastore.getUserID()): FirebaseDocMetaID {
-
-        return Hashcodes.createID(uid + ':' + fingerprint, 32);
-
-    }
-
-    // You can allow users to sign in to your app using multiple authentication
-    // providers by linking auth provider credentials to an existing user account.
-    // Users are identifiable by the same Firebase user ID regardless of the
-    // authentication provider they used to sign in. For example, a user who signed
-    // in with a password can link a Google account and sign in with either method
-    // in the future. Or, an anonymous user can link a Facebook account and then,
-    // later, sign in with Facebook to continue using your app.
-
-    public static getUserID(): UserID {
-
-        const app = firebase.app();
-
-        const auth = app.auth();
-        Preconditions.assertPresent(auth, "Not authenticated");
-
-        const user = auth.currentUser;
-        Preconditions.assertPresent(user, "Not authenticated");
-
-        return user!.uid;
-
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
@@ -1263,4 +1238,8 @@ interface GetDocMetaOpts {
 
     readonly preferredSource?: FirestoreSource;
 
+}
+
+export class DefaultWriteOpts implements WriteOpts {
+    public readonly visibility = Visibility.PRIVATE;
 }

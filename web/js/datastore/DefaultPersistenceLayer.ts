@@ -3,6 +3,7 @@ import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreOverview} from './Datastore';
+import {DatastoreInitOpts} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -10,18 +11,16 @@ import {Logger} from '../logger/Logger';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {PersistenceLayer} from './PersistenceLayer';
+import {WriteOpts} from './PersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
 import {Reducers} from '../util/Reducers';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
-import {DatastoreInitOpts} from './Datastore';
-import {WriteOpts} from './PersistenceLayer';
 
 const log = Logger.create();
 
@@ -107,8 +106,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
-        Preconditions.assertNotNull(fingerprint, "fingerprint");
-        Preconditions.assertNotNull(docMeta, "docMeta");
+        Preconditions.assertPresent(fingerprint, "fingerprint");
+        Preconditions.assertPresent(docMeta, "docMeta");
 
         if (! (docMeta instanceof DocMeta)) {
             // check to make sure nothing from JS-land can call this

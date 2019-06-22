@@ -2,7 +2,7 @@ import {Firestore} from '../../../firebase/Firestore';
 import {ProfileIDStr} from './Profiles';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
-import {GroupIDStr} from './Groups';
+import {GroupIDStr} from '../../Datastore';
 
 export class GroupDocs {
 

@@ -1,10 +1,11 @@
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
-import {Sender} from '../../firebase/DocPeerPendings';
-import {GroupIDStr} from './Groups';
+import {GroupIDStr} from '../../Datastore';
 import {EmailStr} from './Profiles';
 import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
+import {ProfileIDStr} from './Profiles';
+import {Image} from './Images';
 
 export class GroupMemberInvitations {
 
@@ -59,5 +60,17 @@ export interface GroupMemberInvitation extends GroupMemberInvitationInit {
     readonly id: string;
 
     readonly created: ISODateTimeString;
+}
+
+export interface Sender {
+
+    readonly profileID: ProfileIDStr;
+
+    readonly name: string;
+
+    readonly email: string;
+
+    readonly image: Image | null;
+
 }
 

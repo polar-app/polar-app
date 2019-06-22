@@ -7,7 +7,6 @@ import {ProfileUpdateRequest} from '../../js/datastore/sharing/db/ProfileUpdates
 import {ProfileUpdates} from '../../js/datastore/sharing/db/ProfileUpdates';
 import {GroupJoins} from '../../js/datastore/sharing/rpc/GroupJoins';
 import {assert} from 'chai';
-import {GroupIDStr} from '../../js/datastore/sharing/db/Groups';
 import {Groups} from '../../js/datastore/sharing/db/Groups';
 import {GroupMembers} from '../../js/datastore/sharing/db/GroupMembers';
 import {GroupMemberInvitations} from '../../js/datastore/sharing/db/GroupMemberInvitations';
@@ -37,6 +36,7 @@ import {JSONRPCError} from '../../js/datastore/sharing/rpc/JSONRPC';
 import {GroupDocsAdd} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
 import {GroupDocAddRequest} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
 import {Optional} from '../../js/util/ts/Optional';
+import {GroupIDStr} from '../../js/datastore/Datastore';
 
 const log = Logger.create();
 
@@ -177,7 +177,7 @@ SpectronRenderer.run(async (state) => {
             console.log("doGroupProvision");
 
             const {docMeta} = mockDoc;
-            const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+            const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint);
 
             const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
@@ -204,7 +204,7 @@ SpectronRenderer.run(async (state) => {
             console.log("doGroupProvisionPublic");
 
             const {docMeta} = mockDoc;
-            const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+            const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint);
 
             const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
@@ -605,7 +605,7 @@ SpectronRenderer.run(async (state) => {
             async function doGroupDocsAdd(mockDoc: MockDoc) {
 
                 const {docMeta} = mockDoc;
-                const docID = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint);
+                const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint);
 
                 const docRef = DocRefs.fromDocMeta(docID, docMeta);
 

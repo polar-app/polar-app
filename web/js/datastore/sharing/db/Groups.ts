@@ -1,5 +1,6 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
+import {GroupIDStr} from '../../Datastore';
 
 export class Groups {
 
@@ -41,4 +42,3 @@ export type GroupVisibility = 'private' | 'protected' | 'public';
 
 export type TagStr = string;
 
-export type GroupIDStr = string;

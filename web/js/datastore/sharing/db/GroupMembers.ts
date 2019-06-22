@@ -1,4 +1,4 @@
-import {GroupIDStr} from './Groups';
+import {GroupIDStr} from '../../Datastore';
 import {Firestore} from '../../../firebase/Firestore';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {ProfileIDStr} from './Profiles';

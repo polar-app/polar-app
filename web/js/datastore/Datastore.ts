@@ -150,6 +150,7 @@ export abstract class AbstractDatastore {
         this.datastoreMutations = DatastoreMutations.create('written');
 
     }
+
     public async writeDocMeta(docMeta: DocMeta,
                               datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
@@ -216,6 +217,10 @@ export interface WriteOpts {
      * and that the operations are ordered properly.
      */
     readonly writeFile?: BackendFileRefData;
+
+    readonly visibility?: Visibility;
+
+    readonly groups?: ReadonlyArray<GroupIDStr>;
 
 }
 
@@ -778,7 +783,11 @@ export enum Visibility {
 
 }
 
+export type GroupIDStr = string;
+
 /**
+ *
+ *
  * The network layer specifies the access to a resource based on the network
  * type.  By default each datastore figures out the ideal network layer to
  * return file references from but based on the capabilities the caller

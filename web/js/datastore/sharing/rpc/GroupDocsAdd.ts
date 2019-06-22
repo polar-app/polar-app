@@ -1,6 +1,6 @@
-import {GroupIDStr} from '../db/Groups';
 import {JSONRPC} from './JSONRPC';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
+import {GroupIDStr} from '../../Datastore';
 
 export class GroupDocsAdd {
 

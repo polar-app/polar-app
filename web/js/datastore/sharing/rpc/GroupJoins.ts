@@ -1,5 +1,5 @@
-import {GroupIDStr} from '../db/Groups';
 import {JSONRPC} from './JSONRPC';
+import {GroupIDStr} from '../../Datastore';
 
 export class GroupJoins {
 

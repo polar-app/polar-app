@@ -1,6 +1,5 @@
 import {DocRef} from 'polar-shared/src/groups/DocRef';
-import {PersistenceLayer} from '../PersistenceLayer';
-import {Datastore} from '../Datastore';
+import {PersistenceLayer, WriteOpts} from '../PersistenceLayer';
 import {BackendFileRef} from '../Datastore';
 import {DocMetas} from '../../metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
@@ -12,11 +11,15 @@ import {BackendFileRefs} from '../BackendFileRefs';
 import {DocInfo} from '../../metadata/DocInfo';
 import {Either} from '../../util/Either';
 import {DocRefs} from './db/DocRefs';
+import {FirebaseDatastores} from '../FirebaseDatastores';
+import {GroupIDStr} from '../Datastore';
 
 export class GroupDatastores {
 
-    public static async importFromGroup(datastore: Datastore | PersistenceLayer, docRef: DocRef) {
+    public static async importFromGroup(persistenceLayer: PersistenceLayer,
+                                        groupDocRef: GroupDocRef) {
 
+        const {groupID, docRef} = groupDocRef;
         const {docID} = docRef;
 
         async function getDocInfoRecord(docID: DocIDStr) {
@@ -76,8 +79,57 @@ export class GroupDatastores {
 
         const docMeta = createDocMeta(backendFileRef);
 
-        await datastore.writeDocMeta(docMeta);
+        async function writeDocMeta() {
+
+            const docInfo = docMeta.docInfo;
+            const {fingerprint} = docInfo;
+
+            /**
+             * Compute the groups field for the record.
+             */
+            async function computeGroups(): Promise<ReadonlyArray<GroupIDStr>> {
+
+                // We have to read the previous groups and then merge it with
+                // the new groups if they exist.
+
+                const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
+
+                const docInfoRecord = await getDocInfoRecord(docID);
+
+                if (docInfoRecord && docInfoRecord.groups) {
+                    return [groupID, ...docInfoRecord.groups];
+                }
+
+                return [groupID];
+
+            }
+
+            const groups = await computeGroups();
+
+            // FIXME: just read the current gruops + visibility and then
+            // write out the new groups + visibility if it they exist...
+
+            const writeOpts: WriteOpts = {
+                groups
+            };
+
+            await persistenceLayer.write(fingerprint, docMeta, writeOpts);
+            return docInfo;
+
+        }
+
+        // FIXME: make sure the docs and visibility are setup properly.
+
+        // FIXME: the groups and visibility of this document need to be set
+        // properly and ideally we wouldn't have to perform two writes.
+
+        await writeDocMeta();
 
     }
 
+}
+
+export interface GroupDocRef {
+    readonly groupID: GroupIDStr;
+    readonly docRef: DocRef;
 }

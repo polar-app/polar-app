@@ -1,6 +1,6 @@
 import {GroupProvisionResponse} from './GroupProvisions';
 import {JSONRPC} from './JSONRPC';
-import {GroupIDStr} from '../db/Groups';
+import {GroupIDStr} from '../../Datastore';
 
 export class GroupDeletes {
     public static async exec(request: GroupDeleteRequest): Promise<GroupDeleteResponse> {
