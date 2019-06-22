@@ -1,6 +1,6 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {ProfileIDStr} from './Profiles';
-import {DocRef} from './DocRefs';
+import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from './Groups';
 

@@ -626,6 +626,9 @@ SpectronRenderer.run(async (state) => {
             const groupDocs = await GroupDocs.list(groupID);
             assert.equal(groupDocs.length, 2);
 
+            // FIXME: now make sure BOTH users can read these docs and
+            // download/fetch the PDFs
+
         });
 
         it("join group twice and validate metadata", async function() {

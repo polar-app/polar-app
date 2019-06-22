@@ -14,7 +14,7 @@ rules:
   no-consecutive-blank-lines: false
   space-before-function-paren: false
   no-console:
-    severity: warning
+    severity: none
     options:
     - debug
     - info

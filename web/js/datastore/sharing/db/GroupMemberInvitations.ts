@@ -4,7 +4,7 @@ import {GroupIDStr} from './Groups';
 import {EmailStr} from './Profiles';
 import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
-import {DocRef} from './DocRefs';
+import {DocRef} from 'polar-shared/src/groups/DocRef';
 
 export class GroupMemberInvitations {
 

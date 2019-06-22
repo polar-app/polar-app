@@ -1,5 +1,6 @@
 import {DocIDStr} from '../rpc/GroupProvisions';
 import {DocMeta} from '../../../metadata/DocMeta';
+import {DocRef} from 'polar-shared/src/groups/DocRef';
 
 export class DocRefs {
 
@@ -9,20 +10,16 @@ export class DocRefs {
             docID,
             fingerprint: docMeta.docInfo.fingerprint,
             title: docMeta.docInfo.title || "",
+            subtitle: docMeta.docInfo.subtitle,
             nrPages: docMeta.docInfo.nrPages,
             description: docMeta.docInfo.description,
-            url: docMeta.docInfo.url
+            url: docMeta.docInfo.url,
+            // TODO: only accept regular tags and non-special key/value tags.
+            tags: docMeta.docInfo.tags,
+            published: docMeta.docInfo.published,
+            doi: docMeta.docInfo.doi
         };
 
     }
 
-}
-
-export interface DocRef {
-    readonly docID: DocIDStr;
-    readonly fingerprint: string;
-    readonly title: string;
-    readonly nrPages: number;
-    readonly description?: string;
-    readonly url?: string;
 }

@@ -1,6 +1,6 @@
 import {GroupInit} from '../db/Groups';
 import {JSONRPC} from './JSONRPC';
-import {DocRef} from '../db/DocRefs';
+import {DocRef} from 'polar-shared/src/groups/DocRef';
 
 export class GroupProvisions {
 
