@@ -703,7 +703,6 @@ SpectronRenderer.run(async (state) => {
 
             const groupID = await doGroupProvisionPublic(mockDock);
 
-
             async function doGroupJoinForUser1(groupID: GroupIDStr) {
 
                 const app = Firebase.init();
@@ -740,7 +739,6 @@ SpectronRenderer.run(async (state) => {
                 console.log("Joining group...done");
 
             }
-
 
         });
 

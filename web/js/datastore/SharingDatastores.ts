@@ -1,15 +1,11 @@
-import {Datastores} from './Datastores';
-import {Backend} from './Backend';
 import {DocMeta} from '../metadata/DocMeta';
 import {PersistenceLayer} from './PersistenceLayer';
-import {FirebaseDatastore} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {isPresent} from '../Preconditions';
 import {URLStr} from '../util/Strings';
 import {SharingDatastore} from './SharingDatastore';
 import {Logger} from '../logger/Logger';
 import {BackendFileRef} from './Datastore';
-import {DocPermissions} from './firebase/DocPermissions';
 import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
