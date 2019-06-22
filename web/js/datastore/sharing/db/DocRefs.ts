@@ -1,6 +1,7 @@
 import {DocIDStr} from '../rpc/GroupProvisions';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
+import {IDocInfo} from '../../../metadata/DocInfo';
 
 export class DocRefs {
 
@@ -19,6 +20,22 @@ export class DocRefs {
             published: docMeta.docInfo.published,
             doi: docMeta.docInfo.doi
         };
+
+    }
+
+    public static toDocInfo(docRef: DocRef, docInfo: IDocInfo): IDocInfo {
+
+        docInfo.fingerprint = docRef.fingerprint;
+        docInfo.title = docRef.title;
+        docInfo.subtitle = docRef.subtitle;
+        docInfo.nrPages = docRef.nrPages;
+        docInfo.description = docRef.description;
+        docInfo.url = docRef.url;
+        docInfo.tags = docRef.tags;
+        docInfo.published = docRef.published;
+        docInfo.doi = docRef.doi;
+
+        return docInfo;
 
     }
 

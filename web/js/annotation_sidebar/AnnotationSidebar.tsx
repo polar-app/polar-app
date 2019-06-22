@@ -316,7 +316,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             };
 
             const createShareLink = async (): Promise<string | undefined> => {
-                return SharingDatastores.createURL(persistenceLayer, docMeta, backendFileRef);
+                // return SharingDatastores.createURL(persistenceLayer, docMeta, backendFileRef);
+                return undefined;
             };
 
             if (annotations.length === 0) {

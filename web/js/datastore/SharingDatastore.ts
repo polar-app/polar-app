@@ -15,20 +15,18 @@ import {GetFileOpts} from './Datastore';
 import {BinaryFileData} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {BackendFileRef} from './Datastore';
+import {WriteOpts} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {DocMetaFileRef} from './DocMetaRef';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Backend} from './Backend';
-import {Optional} from '../util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';
+import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {DocMetas} from '../metadata/DocMetas';
 import {DocMeta} from '../metadata/DocMeta';
-import {Datastores} from './Datastores';
-import {FirebaseDocMetaID} from './FirebaseDatastore';
-import {WriteOpts} from './Datastore';
 import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();
@@ -49,7 +47,6 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         super();
         this.id = 'shared';
     }
-
 
     public async init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<InitResult> {
 
