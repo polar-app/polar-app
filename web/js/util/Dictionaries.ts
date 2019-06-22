@@ -1,6 +1,5 @@
 import {Preconditions} from '../Preconditions';
 import {Optional} from './ts/Optional';
-import {DocID} from '../tags/related/RelatedTags';
 
 export class Dictionaries {
 
@@ -144,7 +143,8 @@ export class Dictionaries {
     /**
      *
      * Recursively work through this object and remove any fields that are
-     * stored with unassigned values.
+     * stored with undefined values.  This is primarily because Firebase doesn't
+     * support undefined.
      *
      * @param dict
      */

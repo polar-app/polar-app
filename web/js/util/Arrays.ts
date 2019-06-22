@@ -74,9 +74,9 @@ export class Arrays {
             throw new Error("Not an array");
         }
 
-        let result: {[key: string]: any} = {};
+        const result: {[key: string]: any} = {};
 
-        let arrayVal: any[] = <any[]>val;
+        const arrayVal: any[] = <any[]> val;
 
         for(let idx = 0; idx < arrayVal.length; ++idx) {
             result[idx] = arrayVal[idx];
@@ -203,6 +203,23 @@ export class Arrays {
         }
 
         return result;
+
+    }
+
+    /**
+     * Return true if the given `list` has any of the elements in `items`
+     */
+    public static hasAny<T>(list: ReadonlyArray<T>, items: ReadonlyArray<T>) {
+
+        for (const item of items) {
+
+            if (list.includes(item)) {
+                return true;
+            }
+
+        }
+
+        return false;
 
     }
 

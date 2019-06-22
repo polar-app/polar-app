@@ -91,6 +91,21 @@ export class Optional<T> {
         return this.value!;
     }
 
+    public getOrThrow(cause: string | Error): T {
+
+        if (! this.isPresent()) {
+
+            if (typeof cause === 'string') {
+                throw new Error(cause);
+            }
+
+            throw cause;
+
+        }
+
+        return this.value!;
+    }
+
     public isPresent(): boolean {
         return this.value !== undefined && this.value !== null;
     }
