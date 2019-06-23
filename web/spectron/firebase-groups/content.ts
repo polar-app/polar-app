@@ -41,6 +41,7 @@ import {GroupDatastores} from '../../js/datastore/sharing/GroupDatastores';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {GroupDocRef} from '../../js/datastore/sharing/GroupDatastores';
 import {Datastores} from '../../js/datastore/Datastores';
+import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 
 const log = Logger.create();
 
@@ -78,11 +79,6 @@ async function verifyFailed(delegate: () => Promise<any>) {
 }
 
 SpectronRenderer.run(async (state) => {
-
-    // TODO I should try to delete after an import. I don't think they are
-    //  working...
-
-    // TODO: restore the proper firestore permissions.
 
     // TODO: test adding to a group...
 
@@ -207,7 +203,11 @@ SpectronRenderer.run(async (state) => {
 
             userPass = Optional.of(userPass).getOrElse({user: FIREBASE_USER, pass: FIREBASE_PASS});
 
-            await app.auth().signInWithEmailAndPassword(userPass.user, userPass.pass);
+            const auth = app.auth();
+            await auth.signInWithEmailAndPassword(userPass.user, userPass.pass);
+            const uid = auth.currentUser!.uid;
+
+            console.log("Writing to datastore with uid: " + uid);
 
             const firebaseDatastore = new FirebaseDatastore();
             try {
@@ -765,16 +765,30 @@ SpectronRenderer.run(async (state) => {
 
             await waitForGroupDelay();
 
-            const datastore = new FirebaseDatastore();
-            const persistenceLayer = new DefaultPersistenceLayer(datastore);
+            async function withPersistenceLayer(delegate: (persistenceLayer: PersistenceLayer) => Promise<void>) {
 
-            try {
+                const datastore = new FirebaseDatastore();
+                const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
-                await persistenceLayer.init();
+                try {
+
+                    await persistenceLayer.init();
+
+                    return await delegate(persistenceLayer);
+
+                } finally {
+                    await persistenceLayer.stop();
+                }
+
+            }
+
+            await withPersistenceLayer(async (persistenceLayer: PersistenceLayer) => {
+
+                const {fingerprint} = docRef;
 
                 await GroupDatastores.importFromGroup(persistenceLayer, {groupID, docRef});
 
-                const docMeta = await persistenceLayer.getDocMeta(docRef.fingerprint);
+                const docMeta = await persistenceLayer.getDocMeta(fingerprint);
 
                 assert.isDefined(docMeta);
 
@@ -790,10 +804,13 @@ SpectronRenderer.run(async (state) => {
                     byteLength: 117687
                 });
 
-            } finally {
-                await persistenceLayer.stop();
-            }
+                await persistenceLayer.delete({
+                    fingerprint,
+                    docFile: backendFileRef!,
+                    docInfo: docMeta!.docInfo
+                });
 
+            });
 
         });
 
