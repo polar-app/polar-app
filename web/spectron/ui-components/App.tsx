@@ -69,6 +69,9 @@ import {CrowdfundingBar} from '../../js/ui/crowdfunding/CrowdfundingBar';
 import {ShareContentControl} from '../../js/apps/viewer/ShareContentControl';
 import {NetworkLayers} from '../../js/datastore/Datastore';
 import {Tag} from '../../js/tags/Tags';
+import {ContactsSelector} from '../../js/ui/group_sharing/ContactsSelector';
+import {GroupSharingControl} from '../../js/ui/group_sharing/GroupSharingControl';
+import {NotificationButton} from '../../js/ui/notifications/NotificationButton';
 
 const styles = {
     swatch: {
@@ -172,15 +175,32 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <ShareContentControl datastoreCapabilities={{
-                                        networkLayers: NetworkLayers.LOCAL_AND_WEB,
-                                        permission: {
-                                            mode: 'rw'}
-                                        }
-                                     }
-                                     createShareLink={async () => 'http://example.com?1=2'}
-                                     onVisibilityChanged={async () => console.log('visibility changed')}
-                                     onDone={NULL_FUNCTION}/>
+                <h1>ContactsSelector</h1>
+
+                <ContactsSelector options={
+                    [
+                        {value: '1', label: 'alice@example.com'},
+                        {value: '2', label: 'bob@example.com'}
+                    ]
+                }/>
+
+                <h1>GroupSharingControl</h1>
+
+                <GroupSharingControl/>
+
+                <h1>NotificationButton</h1>
+
+                <NotificationButton/>
+
+                {/*<ShareContentControl datastoreCapabilities={{*/}
+                {/*                        networkLayers: NetworkLayers.LOCAL_AND_WEB,*/}
+                {/*                        permission: {*/}
+                {/*                            mode: 'rw'}*/}
+                {/*                        }*/}
+                {/*                     }*/}
+                {/*                     createShareLink={async () => 'http://example.com?1=2'}*/}
+                {/*                     onVisibilityChanged={async () => console.log('visibility changed')}*/}
+                {/*                     onDone={NULL_FUNCTION}/>*/}
 
                 {/*<CrowdfundingBar/>*/}
 

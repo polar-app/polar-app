@@ -226,6 +226,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
                                 >
 
                             </CreatableSelect>
+
                         </div>
 
                         <div className="text-right">

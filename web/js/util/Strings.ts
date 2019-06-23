@@ -86,6 +86,11 @@ export type HTMLStr = string;
 export type URLStr = string;
 
 /**
+ * Represents an email-type of string (alice@example.com)
+ */
+export type EmailStr = string;
+
+/**
  * A string representing a local file path.
  */
 export type PathStr = string;

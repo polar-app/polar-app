@@ -14,8 +14,14 @@ import {Either} from '../../util/Either';
 import {DocRefs} from './db/DocRefs';
 import {FirebaseDatastores} from '../FirebaseDatastores';
 import {GroupDocsAdd} from './rpc/GroupDocsAdd';
+import {GroupProvisions} from './rpc/GroupProvisions';
+import {GroupProvisionRequest} from './rpc/GroupProvisions';
 
 export class GroupDatastores {
+
+    public static async provision(request: GroupProvisionRequest) {
+        await GroupProvisions.exec(request);
+    }
 
     public static async importFromGroup(persistenceLayer: PersistenceLayer,
                                         groupDocRef: GroupDocRef) {

@@ -3,6 +3,7 @@ import {Logger} from '../../js/logger/Logger';
 import {Firebase} from '../../js/firebase/Firebase';
 import {GroupProvisionRequest} from '../../js/datastore/sharing/rpc/GroupProvisions';
 import {GroupProvisions} from '../../js/datastore/sharing/rpc/GroupProvisions';
+import {DocIDStr} from '../../js/datastore/sharing/rpc/GroupProvisions';
 import {ProfileUpdateRequest} from '../../js/datastore/sharing/db/ProfileUpdates';
 import {ProfileUpdates} from '../../js/datastore/sharing/db/ProfileUpdates';
 import {GroupJoins} from '../../js/datastore/sharing/rpc/GroupJoins';
@@ -14,8 +15,10 @@ import {Profiles} from '../../js/datastore/sharing/db/Profiles';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {DatastoreCollection} from '../../js/datastore/FirebaseDatastore';
 import {RecordHolder} from '../../js/datastore/FirebaseDatastore';
+import {DocMetaHolder} from '../../js/datastore/FirebaseDatastore';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {DocMetas} from '../../js/metadata/DocMetas';
+import {MockDoc} from '../../js/metadata/DocMetas';
 import {DocRefs} from '../../js/datastore/sharing/db/DocRefs';
 import {GroupDocs} from '../../js/datastore/sharing/db/GroupDocs';
 import {GroupDocIDStr} from '../../js/datastore/sharing/db/GroupDocs';
@@ -29,7 +32,6 @@ import {DocMeta} from '../../js/metadata/DocMeta';
 import {BackendFileRefs} from '../../js/datastore/BackendFileRefs';
 import {Either} from '../../js/util/Either';
 import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
-import {MockDoc} from '../../js/metadata/DocMetas';
 import {GroupLeaves} from '../../js/datastore/sharing/rpc/GroupLeaves';
 import {assertJSON} from '../../js/test/Assertions';
 import {JSONRPCError} from '../../js/datastore/sharing/rpc/JSONRPC';
@@ -38,13 +40,12 @@ import {GroupDocAddRequest} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
 import {Optional} from '../../js/util/ts/Optional';
 import {GroupIDStr} from '../../js/datastore/Datastore';
 import {GroupDatastores} from '../../js/datastore/sharing/GroupDatastores';
-import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {GroupDocRef} from '../../js/datastore/sharing/GroupDatastores';
+import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
-import {DocIDStr} from '../../js/datastore/sharing/rpc/GroupProvisions';
-import {DocMetaHolder} from '../../js/datastore/FirebaseDatastore';
 import {DocMetaFileRef} from '../../js/datastore/DocMetaRef';
+import {canonicalize} from '../../js/util/Objects';
 
 const log = Logger.create();
 
@@ -85,9 +86,19 @@ SpectronRenderer.run(async (state) => {
 
     // TODO:
 
+
     // TODO:
-    // - for large documents we might need to fetch TOO MUCH data and we're
-    //   going to end up pulling down too much to the client.
+    //   - need to be able to store ProfileIDs in group invitations.. Not just
+    //     email addresses.
+
+    // TODO: I need to verify a plan for profiles...
+    //
+    // - make sure uninvited users get to see their documents once they sign up.
+    //
+    //
+
+    // TODO: it would be nice if users could just CHAT within a document...
+    // maybe like they do in twitch around videos...
 
     // TODO: delete the profiles after each run and then update them so that
     // we can verify everything during the lifecycle of the user from new signup
@@ -112,6 +123,10 @@ SpectronRenderer.run(async (state) => {
 
     // Future work:
     //
+
+    // TODO:
+    // - for large documents we might need to fetch TOO MUCH data and we're
+    //   going to end up pulling down too much to the client.
     // -   TODO: what happens if I call these methods twice ? they need to be
     //     idempotent.
     //
@@ -475,6 +490,23 @@ SpectronRenderer.run(async (state) => {
 
                 const contacts = await Contacts.list();
                 assert.equal(contacts.length , 1, "No contacts found for user: " + user.uid);
+
+                const contact = canonicalize(contacts[0], obj => {
+
+                    obj.profileID = obj.profileID ? 'xxx' : obj.profileID;
+
+                    delete obj.id;
+                    delete obj.created;
+                });
+
+                assertJSON(contact, {
+                       "profileID": "xxx",
+                       "reciprocal": true,
+                       "rel": [
+                         "shared"
+                       ],
+                       "uid": "SSVzZnZrmZbCnavWVw6LmoVVCeA3"
+                });
 
             }
 

@@ -66,8 +66,8 @@ export class Objects {
      * Create an instance of an object from its prototype and use some Typescript
      * generic promotion to make it work properly.
      */
-    static createInstance<T>(prototype: T, val: any) {
-        let result: T = Objects.create(prototype);
+    public static createInstance<T>(prototype: T, val: any) {
+        const result: T = Objects.create(prototype);
         Object.assign(result, val);
         return result;
     }
@@ -79,6 +79,22 @@ export class Objects {
 
 }
 
+
+/**
+ * Create a canonical representation of an object easily so the handler can
+ * delete values or set things and just return an object.
+ */
+export function canonicalize<V>(val: V, handler: (obj: any) => void): any {
+
+    if (val === undefined || val === null) {
+        return val;
+    }
+
+    const cpy = {...val}
+    handler(cpy);
+    return cpy;
+
+}
 
 function create<T>(proto: any): T {
     return Object.create(proto);

@@ -14,6 +14,14 @@ export class GroupProvisions {
 export interface GroupProvisionRequest extends GroupInit {
 
     /**
+     * Use a user specific 'key' to compute a groupID rather than using a global
+     * name.  They key could be anything as long as it's unique within the users
+     * 'namespace'.  This can be used for computing a unique group for a users
+     * document that they are sharing.
+     */
+    readonly key?: string;
+
+    /**
      * Used when we're provisioning a group with an initial set of documents.
      */
     readonly docs: ReadonlyArray<DocRef>;
