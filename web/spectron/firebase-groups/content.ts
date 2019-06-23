@@ -42,6 +42,9 @@ import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLaye
 import {GroupDocRef} from '../../js/datastore/sharing/GroupDatastores';
 import {Datastores} from '../../js/datastore/Datastores';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
+import {DocIDStr} from '../../js/datastore/sharing/rpc/GroupProvisions';
+import {DocMetaHolder} from '../../js/datastore/FirebaseDatastore';
+import {DocMetaFileRef} from '../../js/datastore/DocMetaRef';
 
 const log = Logger.create();
 
@@ -80,11 +83,11 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
-    // TODO: test adding to a group...
+    // TODO:
 
-    // TODO: GropuJoin should be idempotent
-
-    // TODO: make sure we don't have a group ID collision when creating by name.
+    // TODO:
+    // - for large documents we might need to fetch TOO MUCH data and we're
+    //   going to end up pulling down too much to the client.
 
     // TODO: delete the profiles after each run and then update them so that
     // we can verify everything during the lifecycle of the user from new signup
@@ -94,15 +97,23 @@ SpectronRenderer.run(async (state) => {
     // TODO: build a new Datastore impl that is a 'view' on the main one derived
     // from the docID such that we can call all the main operations...
 
-    // TODO: what happens if I call these methods twice ? they need to be
-    // idempotent.
-
     // ## PUBLIC GROUPS
+
+    // TODO: GroupJoin should be idempotent and it is for private groups just not
+    // public groups.
 
     // TODO: test with tags and tag search for groups so we can try to delete
     // them
 
+    // TODO: make sure we don't have a group ID collision when creating by name.
+    // I have to test what happens when we create by name.  We need to have a
+    // 'key' returned so that the UI can properly respond and explain what
+    // happened.
+
     // Future work:
+    //
+    // -   TODO: what happens if I call these methods twice ? they need to be
+    //     idempotent.
     //
     //   - TODO: test public groups and protected groups
     //
@@ -765,7 +776,7 @@ SpectronRenderer.run(async (state) => {
 
             await waitForGroupDelay();
 
-            async function withPersistenceLayer(delegate: (persistenceLayer: PersistenceLayer) => Promise<void>) {
+            async function withPersistenceLayer<T>(delegate: (persistenceLayer: PersistenceLayer) => Promise<T>) {
 
                 const datastore = new FirebaseDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(datastore);
@@ -782,7 +793,7 @@ SpectronRenderer.run(async (state) => {
 
             }
 
-            await withPersistenceLayer(async (persistenceLayer: PersistenceLayer) => {
+            const docMetaFileRef = await withPersistenceLayer(async (persistenceLayer: PersistenceLayer) => {
 
                 const {fingerprint} = docRef;
 
@@ -804,12 +815,51 @@ SpectronRenderer.run(async (state) => {
                     byteLength: 117687
                 });
 
-                await persistenceLayer.delete({
+                const docMetaFileRef: DocMetaFileRef = {
                     fingerprint,
                     docFile: backendFileRef!,
                     docInfo: docMeta!.docInfo
-                });
+                };
 
+                return docMetaFileRef;
+
+            });
+
+            async function verifyUserAccessToGroupDocs(groupID: GroupIDStr, userPass: UserPass) {
+
+                const app = Firebase.init();
+
+                const auth = app.auth();
+                await auth.signInWithEmailAndPassword(userPass.user, userPass.pass);
+
+                const groupDocs = await GroupDocs.list(groupID);
+
+                async function getDocMeta(docID: DocIDStr): Promise<RecordHolder<DocMetaHolder> | undefined> {
+
+                    const firestore = app.firestore();
+
+                    const ref = firestore
+                        .collection(DatastoreCollection.DOC_META)
+                        .doc(docID);
+
+                    const snapshot = await ref.get();
+
+                    return <RecordHolder<DocMetaHolder>> snapshot.data();
+
+                }
+
+                for (const groupDoc of groupDocs) {
+                    const docMeta = await getDocMeta(groupDoc.docID);
+                    assert.isDefined(docMeta, "Could not find doc for: " + groupDoc.docID);
+                }
+
+            }
+
+            await verifyUserAccessToGroupDocs(groupID, {user: FIREBASE_USER, pass: FIREBASE_PASS});
+            await verifyUserAccessToGroupDocs(groupID, {user: FIREBASE_USER1, pass: FIREBASE_PASS1});
+
+            await withPersistenceLayer(async (persistenceLayer: PersistenceLayer) => {
+                await persistenceLayer.delete(docMetaFileRef);
             });
 
         });
