@@ -33,7 +33,7 @@ export class JSONRPC {
             body: JSON.stringify(userRequest)});
 
         if (response.status !== 200) {
-            throw new JSONRPCError(response, "Unable to handle RPC");
+            throw new JSONRPCError(response, "Unable to handle RPC: " + func);
         }
 
         return <V> await response.json();

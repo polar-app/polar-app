@@ -79,6 +79,11 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
+    // TODO I should try to delete after an import. I don't think they are
+    //  working...
+
+    // TODO: restore the proper firestore permissions.
+
     // TODO: test adding to a group...
 
     // TODO: GropuJoin should be idempotent
@@ -731,7 +736,7 @@ SpectronRenderer.run(async (state) => {
                 const rpcError: JSONRPCError = e;
                 const text = await rpcError.response.text();
 
-                assert.equal(text, "{\"err\":\"We were not invited to this group\"}");
+                assertJSON(text, {"err": "We were not invited to this group"});
 
             }
 
