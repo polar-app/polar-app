@@ -117,7 +117,12 @@ SpectronRenderer.run(async (state) => {
 
             async function purgeForUser(username: string, password: string) {
 
-                await app.auth().signInWithEmailAndPassword(username, password);
+                const auth = app.auth();
+                await auth.signInWithEmailAndPassword(username, password);
+                const uid = auth.currentUser!.uid;
+
+                console.log("======= purge datastore for user: " + uid);
+
 
                 const datastore = new FirebaseDatastore();
 
@@ -171,8 +176,12 @@ SpectronRenderer.run(async (state) => {
         }
 
         async function purge() {
+            console.log("==== BEGIN purge");
+
             await purgeDatastores();
             await purgeGroups();
+            console.log("==== END purge");
+
         }
 
         const GROUP_DELAY: number = 10000;
@@ -363,7 +372,7 @@ SpectronRenderer.run(async (state) => {
             await purge();
         });
 
-        xit("group provision of private group", async function() {
+        it("group provision of private group", async function() {
 
             const app = Firebase.init();
 
@@ -607,7 +616,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join and then leave group", async function() {
+        it("join and then leave group", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -647,7 +656,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join and then add my own docs", async function() {
+        it("join and then add my own docs", async function() {
 
             async function doUser0() {
                 const mockDock = await provisionAccountData();
@@ -703,7 +712,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join group twice and validate metadata (private group)", async function() {
+        it("join group twice and validate metadata (private group)", async function() {
 
             // FIXME: we need this same function for public/protected groups
             // as I think it will fail.
@@ -756,12 +765,6 @@ SpectronRenderer.run(async (state) => {
 
             try {
 
-                // FIXME: purge the files in the datastore at the end...
-
-                // https://storage.googleapis.com/polar-32b0f.appspot.com/stash/1Y91L28426iAkvUWoKeBYAj378r5zwkSgwH9n6L4.pdf
-
-                // stash/1DkF2nhfKbnzmNaaLFo7LritFAGg5nunancvCGVe.pdf
-
                 await persistenceLayer.init();
 
                 await GroupDatastores.importFromGroup(persistenceLayer, {groupID, docRef});
@@ -789,7 +792,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Public group settings", async function() {
+        it("Public group settings", async function() {
 
             const mockDock = await provisionAccountData();
 
@@ -816,7 +819,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Public docs in public groups", async function() {
+        it("Public docs in public groups", async function() {
 
             // FIXME: need to add support for this...
 
@@ -863,7 +866,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Profile update", async function() {
+        it("Profile update", async function() {
 
             const app = Firebase.init();
 
