@@ -16,6 +16,9 @@ import {FirebaseDatastores} from '../FirebaseDatastores';
 import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 import {GroupProvisions} from './rpc/GroupProvisions';
 import {GroupProvisionRequest} from './rpc/GroupProvisions';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export class GroupDatastores {
 
@@ -34,6 +37,7 @@ export class GroupDatastores {
             // TODO: I think it would be better to store the information directly
             // in the DocRef in the original source wouldn't it?
             async function getDocInfoRecord(docID: DocIDStr) {
+                log.info("Getting doc info record: " + docID);
 
                 const firestore = await Firestore.getInstance();
 

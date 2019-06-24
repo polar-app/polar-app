@@ -6,6 +6,7 @@ import {GroupDocRef} from '../../datastore/sharing/GroupDatastores';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Toaster} from '../toaster/Toaster';
 import {Logger} from '../../logger/Logger';
+import {GroupJoins} from '../../datastore/sharing/rpc/GroupJoins';
 
 const log = Logger.create();
 
@@ -51,27 +52,33 @@ export class NotificationForPrivateGroupDoc extends React.PureComponent<IProps, 
 
         Toaster.info("Adding documents to document repository");
 
-        const doAdd = async () => {
+        const {invitation} = this.props;
+        const {groupID} = invitation;
 
-            for (const docRef of this.props.invitation.docs) {
+        const doGroupJoinAndAddDocs = async () => {
+
+            await GroupJoins.exec({groupID});
+
+            for (const docRef of invitation.docs) {
 
                 const groupDocRef: GroupDocRef = {
-                    groupID: this.props.invitation.groupID,
+                    groupID,
                     docRef
                 };
 
-                await GroupDatastores.importFromGroup(persistenceLayer, groupDocRef)
+                log.info("Going to importFromGroup");
+                await GroupDatastores.importFromGroup(persistenceLayer, groupDocRef);
 
             }
 
         };
 
-        doAdd()
+        doGroupJoinAndAddDocs()
             .then(() => Toaster.success("Added documents successfully to document repository."))
             .catch(err => {
                 const msg = "Failed to add document to repository: ";
                 log.error(msg, err);
-                Toaster.error(msg + err.message)
+                Toaster.error(msg + err.message);
             });
 
     }
