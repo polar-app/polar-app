@@ -6,6 +6,7 @@ import {Firebase} from '../../../firebase/Firebase';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ProfileIDStr} from './Profiles';
 import {Image} from './Images';
+import {Collections} from './Collections';
 
 export class GroupMemberInvitations {
 
@@ -26,6 +27,13 @@ export class GroupMemberInvitations {
 
         return snapshot.docs.map(current => <GroupMemberInvitation> current.data());
 
+    }
+
+    /**
+     * Delete all of the user contacts...
+     */
+    public static async purge() {
+        await Collections.deleteByID(this.COLLECTION, () => this.list());
     }
 
 }

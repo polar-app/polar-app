@@ -195,7 +195,11 @@ SpectronRenderer.run(async (state) => {
                     await GroupDeletes.exec({groupID: group});
                 }
 
+                // TODO: purge the other tables too
+
                 await Contacts.purge();
+                await GroupMemberInvitations.purge();
+                // UserGroups
 
             }
 

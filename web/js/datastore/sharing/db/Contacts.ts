@@ -2,6 +2,7 @@ import {Firestore} from '../../../firebase/Firestore';
 import {EmailStr} from './Profiles';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {Firebase} from '../../../firebase/Firebase';
+import {Collections} from './Collections';
 
 export class Contacts {
 
@@ -29,16 +30,7 @@ export class Contacts {
      * Delete all of the user contacts...
      */
     public static async purge() {
-
-        const contacts = await this.list();
-
-        const firestore = await Firestore.getInstance();
-
-        for (const contact of contacts) {
-            const ref = firestore.collection(this.COLLECTION).doc(contact.id);
-            await ref.delete();
-        }
-
+        await Collections.deleteByID(this.COLLECTION, () => this.list());
     }
 
 }
