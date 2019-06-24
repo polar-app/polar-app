@@ -5,6 +5,9 @@ import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {GroupDocRef} from '../../datastore/sharing/GroupDatastores';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Toaster} from '../toaster/Toaster';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export class NotificationForPrivateGroupDoc extends React.PureComponent<IProps, IState> {
 
@@ -65,9 +68,11 @@ export class NotificationForPrivateGroupDoc extends React.PureComponent<IProps, 
 
         doAdd()
             .then(() => Toaster.success("Added documents successfully to document repository."))
-            .catch(err => Toaster.error("Failed to add document to repository: " + err.message));
-
-
+            .catch(err => {
+                const msg = "Failed to add document to repository: ";
+                log.error(msg, err);
+                Toaster.error(msg + err.message)
+            });
 
     }
 

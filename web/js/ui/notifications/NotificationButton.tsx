@@ -13,7 +13,8 @@ const NotificationList = (props: IProps) => {
 
     return <ul>
         {invitations.map(invitation =>
-            <NotificationForPrivateGroupDoc invitation={invitation}
+            <NotificationForPrivateGroupDoc key={invitation.id}
+                                            invitation={invitation}
                                             persistenceLayerProvider={props.persistenceLayerProvider}/>)}
     </ul>;
 
@@ -54,7 +55,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
                             <NullCollapse open={count > 0}>
 
-                                &nbsp {count}
+                                &nbsp; {count}
 
                             </NullCollapse>
 
