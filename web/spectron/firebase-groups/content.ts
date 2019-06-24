@@ -255,7 +255,9 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        async function doGroupProvision(mockDoc: MockDoc, email: EmailStr = 'getpolarized.test+test1@gmail.com'): Promise<GroupDocRef> {
+        async function doGroupProvision(mockDoc: MockDoc,
+                                        email: EmailStr = 'getpolarized.test+test1@gmail.com',
+                                        key?: string): Promise<GroupDocRef> {
 
             console.log("doGroupProvision");
 
@@ -265,6 +267,7 @@ SpectronRenderer.run(async (state) => {
             const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
             const request: GroupProvisionRequest = {
+                key,
                 docs: [
                     docRef
                 ],
@@ -706,6 +709,80 @@ SpectronRenderer.run(async (state) => {
             }
 
             await assertGroupAfter();
+
+        });
+
+        it("double provision of group with key", async function() {
+
+
+            const mockDock = await provisionAccountData();
+            const email = 'getpolarized.test+test1@gmail.com';
+            const fingerprint = mockDock.docMeta.docInfo.fingerprint;
+
+            const groupDocRefBefore = await doGroupProvision(mockDock, email, fingerprint);
+            const groupDocRefAfter = await doGroupProvision(mockDock, email, fingerprint);
+
+            assert.equal(groupDocRefBefore.groupID, groupDocRefAfter.groupID);
+
+            const contacts = await Contacts.list();
+
+            assert.equal(contacts.length, 1);
+
+            const contact = canonicalize(contacts[0], obj => {
+                delete obj.id;
+                delete obj.created;
+                obj.profileID = 'xxx';
+            });
+
+            assertJSON(contact, {
+                "email": "getpolarized.test+test1@gmail.com",
+                "profileID": "xxx",
+                "reciprocal": false,
+                "rel": [
+                    "shared"
+                ],
+                "uid": "GdTRyWWIjsPtAcguFfH8FOiGryf1"
+            });
+
+            async function doTestGroupMemberInvitations() {
+                const app = Firebase.init();
+                const auth = app.auth();
+                await auth.signInWithEmailAndPassword(FIREBASE_USER1, FIREBASE_PASS1);
+
+                const invitations = await GroupMemberInvitations.list();
+
+                assert.equal(invitations.length, 1);
+
+                const invitation = canonicalize(invitations[0], obj => {
+                    delete obj.id;
+                    delete obj.created;
+                    obj.groupID = 'xxx';
+                });
+
+                assertJSON(invitation, {
+                    "docs": [
+                        {
+                            "docID": "121XWG5nPM492A1q6tFs1fLy5S6ndJZF",
+                            "fingerprint": "0x001",
+                            "nrPages": 4,
+                            "tags": {},
+                            "title": ""
+                        }
+                    ],
+                    "from": {
+                        "email": "getpolarized.test+test@gmail.com",
+                        "image": null,
+                        "name": "",
+                        "profileID": "12dTvf9C2P8oMQ7bWFhL"
+                    },
+                    "groupID": "xxx",
+                    "message": "Private invite to my special group",
+                    "to": "getpolarized.test+test1@gmail.com"
+                });
+
+            }
+
+            await doTestGroupMemberInvitations();
 
         });
 
