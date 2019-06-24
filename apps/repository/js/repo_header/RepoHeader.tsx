@@ -11,6 +11,7 @@ import {SettingsDropdown} from './SettingsDropdown';
 import {Providers} from '../../../../web/js/util/Providers';
 import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
+import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 
 const log = Logger.create();
 
@@ -59,6 +60,8 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
                     <SplitBarRight>
 
                         <ChromeExtensionInstallButton/>
+
+                        <Notifications persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
 
                         <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
 

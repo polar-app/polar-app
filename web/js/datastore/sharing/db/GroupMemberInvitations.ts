@@ -1,10 +1,11 @@
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {EmailStr} from './Profiles';
+import {ProfileIDStr} from './Profiles';
 import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
+import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
-import {ProfileIDStr} from './Profiles';
 import {Image} from './Images';
 import {Collections} from './Collections';
 
@@ -14,9 +15,8 @@ export class GroupMemberInvitations {
 
     public static async list(): Promise<ReadonlyArray<GroupMemberInvitation>> {
 
-        const firestore = await Firestore.getInstance();
-
         const app = Firebase.init();
+        const firestore = await Firestore.getInstance();
         const user = app.auth().currentUser;
 
         const query = firestore
@@ -26,6 +26,22 @@ export class GroupMemberInvitations {
         const snapshot = await query.get();
 
         return snapshot.docs.map(current => <GroupMemberInvitation> current.data());
+
+    }
+
+    public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void): Promise<SnapshotUnsubscriber> {
+
+        const app = Firebase.init();
+        const firestore = await Firestore.getInstance();
+        const user = app.auth().currentUser;
+
+        const query = firestore
+            .collection(this.COLLECTION)
+            .where('to', '==', user!.email);
+
+        return query.onSnapshot(snapshot => {
+            delegate(snapshot.docs.map(current => <GroupMemberInvitation> current.data()));
+        });
 
     }
 

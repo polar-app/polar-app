@@ -3,10 +3,21 @@ import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
 import {NullCollapse} from '../null_collapse/NullCollapse';
+import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
+import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
+import {NotificationForPrivateGroupDoc} from './NotificationForPrivateGroupDoc';
 
-class Styles {
+const NotificationList = (props: IProps) => {
 
-}
+    const invitations = props.invitations || [];
+
+    return <ul>
+        {invitations.map(invitation =>
+            <NotificationForPrivateGroupDoc invitation={invitation}
+                                            persistenceLayerProvider={props.persistenceLayerProvider}/>)}
+    </ul>;
+
+};
 
 export class NotificationButton extends React.PureComponent<IProps, IState> {
 
@@ -17,12 +28,14 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
         this.state = {
             open: false,
-            count: 0
         };
 
     }
 
     public render() {
+
+        const invitations = this.props.invitations || [];
+        const count = invitations.length;
 
         return (
 
@@ -37,11 +50,11 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
                         <span className="fa-layers fa-fw">
 
-                            <i className="fas fa-envelope"></i>
+                            <i className="fas fa-envelope"/>
 
-                            <NullCollapse open={this.state.count > 0}>
+                            <NullCollapse open={count > 0}>
 
-                                &nbsp {this.state.count}
+                                &nbsp {count}
 
                             </NullCollapse>
 
@@ -59,8 +72,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-
-                        .. this is the boty...
+                        <NotificationList {...this.props}/>
 
                     </PopoverBody>
 
@@ -79,13 +91,10 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
-
+    readonly invitations?: ReadonlyArray<GroupMemberInvitation>;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 
 interface IState {
-    readonly count: number;
     readonly open: boolean;
 }
-
-
-
