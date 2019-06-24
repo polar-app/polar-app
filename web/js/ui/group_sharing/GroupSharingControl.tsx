@@ -2,6 +2,7 @@ import React from 'react';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {ContactsSelector} from './ContactsSelector';
 import {ContactOption} from './ContactsSelector';
+import Button from 'reactstrap/lib/Button';
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -10,7 +11,6 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-
     }
 
     public render() {
@@ -26,7 +26,22 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
         });
 
         return <div>
+
             <ContactsSelector options={contactOptions}/>
+
+            <div className="mt-1 text-right">
+
+                <Button color="secondary"
+                        size="sm"
+                        onClick={() => this.props.onDone()}
+                        className="ml-1">
+
+                    Done
+
+                </Button>
+
+            </div>
+
         </div>;
 
     }
@@ -35,6 +50,7 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
 interface IProps {
     readonly contacts?: ReadonlyArray<Contact>;
+    readonly onDone: () => void;
 }
 
 interface IState {

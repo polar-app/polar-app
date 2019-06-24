@@ -26,6 +26,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {BackendFileRefs} from '../datastore/BackendFileRefs';
+import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 
 const log = Logger.create();
 
@@ -343,12 +344,16 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                             <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
 
-                            <ShareContentButton hidden={! sharingEnabled}
+                            <GroupSharingButton doc={this.props.doc}
                                                 datastoreCapabilities={capabilities}
-                                                createShareLink={createShareLink}
-                                                visibility={docMeta.docInfo.visibility}
-                                                onVisibilityChanged={onVisibilityChanged}
                                                 onDone={NULL_FUNCTION}/>
+
+                            {/*<ShareContentButton hidden={! sharingEnabled}*/}
+                            {/*                    datastoreCapabilities={capabilities}*/}
+                            {/*                    createShareLink={createShareLink}*/}
+                            {/*                    visibility={docMeta.docInfo.visibility}*/}
+                            {/*                    onVisibilityChanged={onVisibilityChanged}*/}
+                            {/*                    onDone={NULL_FUNCTION}/>*/}
 
 
                         </SplitBarRight>

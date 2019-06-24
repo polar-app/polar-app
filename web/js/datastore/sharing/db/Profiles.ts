@@ -34,6 +34,8 @@ export class Profiles {
         const profileOwner = await ProfileOwners.get(user!.uid);
 
         if (! profileOwner) {
+            // getting their user from teh database and writing it back out...
+
             throw new Error("No profile owner");
         }
 

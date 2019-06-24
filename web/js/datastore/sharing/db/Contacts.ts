@@ -25,6 +25,22 @@ export class Contacts {
 
     }
 
+    /**
+     * Delete all of the user contacts...
+     */
+    public static async purge() {
+
+        const contacts = await this.list();
+
+        const firestore = await Firestore.getInstance();
+
+        for (const contact of contacts) {
+            const ref = firestore.collection(this.COLLECTION).doc(contact.id);
+            await ref.delete();
+        }
+
+    }
+
 }
 
 export interface ContactInit {

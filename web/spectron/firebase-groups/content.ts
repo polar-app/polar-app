@@ -46,6 +46,7 @@ import {Datastores} from '../../js/datastore/Datastores';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {DocMetaFileRef} from '../../js/datastore/DocMetaRef';
 import {canonicalize} from '../../js/util/Objects';
+import {EmailStr} from '../../js/util/Strings';
 
 const log = Logger.create();
 
@@ -194,6 +195,8 @@ SpectronRenderer.run(async (state) => {
                     await GroupDeletes.exec({groupID: group});
                 }
 
+                await Contacts.purge();
+
             }
 
             await purgeForUser(FIREBASE_USER, FIREBASE_PASS);
@@ -252,7 +255,7 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        async function doGroupProvision(mockDoc: MockDoc): Promise<GroupDocRef> {
+        async function doGroupProvision(mockDoc: MockDoc, email: EmailStr = 'getpolarized.test+test1@gmail.com'): Promise<GroupDocRef> {
 
             console.log("doGroupProvision");
 
@@ -268,7 +271,7 @@ SpectronRenderer.run(async (state) => {
                 invitations: {
                     message: "Private invite to my special group",
                     to: [
-                        'getpolarized.test+test1@gmail.com'
+                        email
                     ]
                 },
                 visibility: 'private'
@@ -677,6 +680,7 @@ SpectronRenderer.run(async (state) => {
 
                 assertJSON(group, {
                     visibility: 'private',
+                    tags: [],
                     nrMembers: 1
                 });
 
@@ -695,6 +699,7 @@ SpectronRenderer.run(async (state) => {
 
                 assertJSON(group, {
                     visibility: 'private',
+                    tags: [],
                     nrMembers: 0
                 });
 
@@ -760,6 +765,32 @@ SpectronRenderer.run(async (state) => {
 
         });
 
+        it("provision a user for a group who isn't yet using polar", async function() {
+
+            const mockDock = await provisionAccountData();
+            await doGroupProvision(mockDock, 'alice@example.com');
+
+            // now make sure the contact are correct...
+
+            const contacts = await Contacts.list();
+
+            assert.equal(contacts.length, 1);
+            const contact = canonicalize(contacts[0], obj => {
+                delete obj.created;
+                delete obj.id;
+            });
+
+            assertJSON(contact, {
+                "email": "alice@example.com",
+                "reciprocal": false,
+                "rel": [
+                    "shared"
+                ],
+                "uid": "GdTRyWWIjsPtAcguFfH8FOiGryf1"
+            });
+
+        });
+
         it("join group twice and validate metadata (private group)", async function() {
 
             // FIXME: we need this same function for public/protected groups
@@ -791,6 +822,7 @@ SpectronRenderer.run(async (state) => {
 
                 assertJSON(group, {
                     visibility: 'private',
+                    tags: [],
                     nrMembers: 1
                 });
 
