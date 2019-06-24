@@ -10,6 +10,7 @@ import {DocRefs} from '../../datastore/sharing/db/DocRefs';
 import {FirebaseDatastores} from '../../datastore/FirebaseDatastores';
 import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
+import {ContactSelection} from './ContactsSelector';
 
 class Styles {
 
@@ -102,7 +103,7 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <GroupSharingControl onDone={() => this.onDone()}/>
+                        <GroupSharingControl onDone={(contactSelections) => this.onDone(contactSelections)}/>
 
                     </PopoverBody>
 
@@ -118,18 +119,18 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
         this.setState({...this.state, open});
     }
 
-    private onDone() {
+    private onDone(contactSelections: ReadonlyArray<ContactSelection>) {
         console.log("onDone...");
 
         this.toggle(false);
         this.props.onDone();
 
-        this.doGroupProvision()
+        this.doGroupProvision(contactSelections)
             .catch(err => Toaster.error("Could not provision group: " + err.message));
 
     }
 
-    private async doGroupProvision() {
+    private async doGroupProvision(contactSelections: ReadonlyArray<ContactSelection>) {
 
         const docMeta = this.props.doc.docMeta;
         const fingerprint = docMeta.docInfo.fingerprint;
@@ -138,7 +139,11 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
         const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
         const message = "no message for now";
-        const to = ['alice@example.com'];
+        // FIXME: this is going to be wrong and will not have profile IDs
+        // there... to share with.
+        const to = contactSelections.map(current => current.value);
+
+        console.log("FIXME: sending invitation to: " , to);
 
         Toaster.info("Sharing document with users ... ");
 
