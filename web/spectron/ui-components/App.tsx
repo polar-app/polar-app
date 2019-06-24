@@ -190,7 +190,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <h1>NotificationButton</h1>
 
-                <NotificationButton/>
+                {/*<NotificationButton/>*/}
 
                 {/*<ShareContentControl datastoreCapabilities={{*/}
                 {/*                        networkLayers: NetworkLayers.LOCAL_AND_WEB,*/}
