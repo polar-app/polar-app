@@ -11,7 +11,7 @@ export class EmailAddresses {
 
     public static parseList(input: string) {
 
-        input = input.replace(/[\r\n]/g, "")
+        input = input.replace(/[\r\n]/g, "");
 
         const parsed = parseAddressList(input);
 
