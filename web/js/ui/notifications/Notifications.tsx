@@ -33,12 +33,8 @@ export class Notifications extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div className="">
-
-                <NotificationButton persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                    invitations={this.state.invitations}/>
-
-            </div>
+            <NotificationButton persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                invitations={this.state.invitations}/>
 
         );
 

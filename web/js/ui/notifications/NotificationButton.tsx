@@ -2,10 +2,11 @@ import React from 'react';
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
-import {NullCollapse} from '../null_collapse/NullCollapse';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {NotificationForPrivateGroupDoc} from './NotificationForPrivateGroupDoc';
+import {NullCollapse} from '../null_collapse/NullCollapse';
+import {DropdownChevron} from '../util/DropdownChevron';
 
 const NotificationList = (props: IProps) => {
 
@@ -46,8 +47,8 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
                         id="notification-button"
                         size="sm"
                         onClick={() => this.toggle(true)}
-                        style={{fontSize: '15px'}}
-                        className="">
+                        // style={{fontSize: '15px'}}
+                        className="border">
 
                         <span className="fa-layers fa-fw">
 
@@ -58,6 +59,8 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
                                 &nbsp; {count}
 
                             </NullCollapse>
+
+                            <DropdownChevron/>
 
                         </span>
 
