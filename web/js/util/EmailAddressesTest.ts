@@ -1,6 +1,5 @@
 import {EmailAddresses} from './EmailAddresses';
 import {assertJSON} from '../test/Assertions';
-import ParsedMailbox = emailAddresses.ParsedMailbox;
 
 describe('EmailAddress', function() {
 
