@@ -2,6 +2,7 @@
 import {parseAddressList} from 'email-addresses';
 import ParsedMailbox = emailAddresses.ParsedMailbox;
 import {Optional} from './ts/Optional';
+import {isPresent} from '../Preconditions';
 
 /**
  * This is an RFC 5322 parser.
@@ -10,7 +11,13 @@ export class EmailAddresses {
 
     public static parseList(input: string) {
 
+        input = input.replace(/[\r\n]/g, "")
+
         const parsed = parseAddressList(input);
+
+        if (! isPresent(parsed)) {
+            return [];
+        }
 
         const result: EmailAddress[] = [];
 
