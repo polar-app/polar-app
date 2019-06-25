@@ -189,7 +189,8 @@ SpectronRenderer.run(async (state) => {
                     return;
                 }
 
-                const groups = SetArrays.union(userGroup.admin || []);
+                const groups = SetArrays.union(userGroup.invitations || [],
+                                               userGroup.admin || []);
 
                 for (const group of groups) {
                     await GroupDeletes.exec({groupID: group});
@@ -393,7 +394,15 @@ SpectronRenderer.run(async (state) => {
 
         async function getGroupCanonicalized(groupID: GroupIDStr): Promise<any> {
 
+            const app = Firebase.init();
+            const user = app.auth().currentUser!;
+
+            console.log("Reading with uid: " + user.uid);
+            console.log("Trying to read group " + groupID);
+
             const group = await Groups.get(groupID);
+
+            console.log("Read group properly.");
 
             if (group) {
                 const obj = <any> group;
@@ -760,6 +769,7 @@ SpectronRenderer.run(async (state) => {
                 const invitation = canonicalize(invitations[0], obj => {
                     delete obj.id;
                     delete obj.created;
+                    obj.from.profileID = 'xxx';
                     obj.groupID = 'xxx';
                 });
 
@@ -777,7 +787,7 @@ SpectronRenderer.run(async (state) => {
                         "email": "getpolarized.test+test@gmail.com",
                         "image": null,
                         "name": "",
-                        "profileID": "12dTvf9C2P8oMQ7bWFhL"
+                        "profileID": "xxx"
                     },
                     "groupID": "xxx",
                     "message": "Private invite to my special group",
@@ -874,26 +884,12 @@ SpectronRenderer.run(async (state) => {
 
         it("join group twice and validate metadata (private group)", async function() {
 
-            // FIXME: we need this same function for public/protected groups
-            // as I think it will fail.
-
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
             await doGroupJoinForUser1(groupID);
 
-            try {
-                await GroupJoins.exec({ groupID });
-                assert.fail("This should have failed");
-            } catch (e) {
-
-                assert.isTrue(e instanceof JSONRPCError);
-
-                const rpcError: JSONRPCError = e;
-                const text = await rpcError.response.text();
-
-                assertJSON(text, {"err": "We were not invited to this group"});
-
-            }
+            // now run the second group join twice.
+            await GroupJoins.exec({ groupID });
 
             await waitForGroupDelay();
 
@@ -910,6 +906,10 @@ SpectronRenderer.run(async (state) => {
             }
 
             await assertGroupAfter();
+
+            const groupMemberInvitations =  await GroupMemberInvitations.list();
+
+            assert.equal(groupMemberInvitations.length, 0);
 
         });
 

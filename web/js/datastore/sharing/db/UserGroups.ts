@@ -27,6 +27,8 @@ export interface UserGroupInit {
 
     readonly groups: ReadonlyArray<GroupIDStr>;
 
+    readonly invitations: ReadonlyArray<GroupIDStr>;
+
     /**
      * The groups in which the user is an admin.
      */
