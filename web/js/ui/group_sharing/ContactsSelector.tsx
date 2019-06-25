@@ -5,6 +5,7 @@ import {Contact} from '../../datastore/sharing/db/Contacts';
 import {EmailStr} from '../../util/Strings';
 import {ProfileIDStr} from '../../datastore/sharing/db/Profiles';
 import {NULL_FUNCTION} from '../../util/Functions';
+import {EmailAddresses} from '../../util/EmailAddresses';
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -15,6 +16,7 @@ export class ContactsSelector extends React.PureComponent<IProps, IState> {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.onPaste = this.onPaste.bind(this);
 
         this.state = {
             options: this.props.options || [],
@@ -37,8 +39,9 @@ export class ContactsSelector extends React.PureComponent<IProps, IState> {
         const options = convertToOptions(this.state.options);
         const selectedOptions = convertToOptions(this.state.selectedOptions);
 
-        return <div>
+        return <div onPaste={event => this.onPaste(event)}>
             <CreatableSelect
+
                 isMulti
                 isClearable
                 autoFocus
@@ -54,6 +57,30 @@ export class ContactsSelector extends React.PureComponent<IProps, IState> {
             </CreatableSelect>
 
         </div>;
+
+    }
+
+    private onPaste(event: React.ClipboardEvent<HTMLDivElement>) {
+
+        event.preventDefault();
+
+        const text = event.clipboardData.getData('text/plain');
+
+        const emailAddresses = EmailAddresses.parseList(text);
+
+        const newContacts: ContactOption[] = emailAddresses.map(current => {
+
+            return {
+                value: current.address,
+                label: EmailAddresses.format(current)
+            };
+
+        });
+
+        this.setState({
+            ...this.state,
+            selectedOptions: [...this.state.selectedOptions, ...newContacts]
+        });
 
     }
 

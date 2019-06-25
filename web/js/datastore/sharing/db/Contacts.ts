@@ -41,6 +41,13 @@ export interface ContactInit {
     readonly email?: EmailStr;
 
     /**
+     * The label for this contact.  This is either the parsed 'name' that we
+     * parsed from the email or it's going to be the profile name from their
+     * profile metadata.
+     */
+    readonly label?: string;
+
+    /**
      * The relationship with this contact.
      */
     readonly rel: ContactRelArray;

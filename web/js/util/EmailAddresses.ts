@@ -36,6 +36,16 @@ export class EmailAddresses {
 
     }
 
+    public static format(addr: EmailAddress) {
+
+        if (addr.name) {
+            return `"${addr.name}" <${addr.address}>`;
+        }
+
+        return addr.address;
+
+    }
+
 }
 
 export interface EmailAddress {

@@ -95,10 +95,11 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
                          isOpen={this.state.open}
                          toggle={() => this.toggle(false)}
                          target="share-control-button"
+                         delay={0}
                          className=""
                          style={{
-                             minWidth: '400px',
-                             maxWidth: '600px'
+                             minWidth: '500px',
+                             maxWidth: '800px'
                          }}>
 
                     <PopoverBody className="shadow">
