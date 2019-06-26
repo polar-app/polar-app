@@ -48,7 +48,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
                         size="sm"
                         onClick={() => this.toggle(true)}
                         // style={{fontSize: '15px'}}
-                        className="border">
+                        className="border mr-1">
 
                         <span className="fa-layers fa-fw">
 
@@ -68,6 +68,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
                 <Popover trigger="legacy"
                          placement="bottom"
+                         delay={{show: 0, hide: 0}}
                          isOpen={this.state.open}
                          toggle={() => this.toggle(false)}
                          target="notification-button"

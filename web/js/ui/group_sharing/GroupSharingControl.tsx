@@ -37,6 +37,16 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
                 <Button color="secondary"
                         size="sm"
+                        onClick={() => this.props.onCancel()}
+                        className="ml-1">
+
+                    Cancel
+
+                </Button>
+
+
+                <Button color="primary"
+                        size="sm"
                         onClick={() => this.props.onDone(this.contactSelections)}
                         className="ml-1">
 
@@ -54,6 +64,7 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
 interface IProps {
     readonly contacts?: ReadonlyArray<Contact>;
+    readonly onCancel: () => void;
     readonly onDone: (contactSelections: ReadonlyArray<ContactSelection>) => void;
 }
 

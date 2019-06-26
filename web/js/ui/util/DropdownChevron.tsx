@@ -17,7 +17,7 @@ const Styles: IStyleMap = {
         borderRight: '.3em solid transparent',
         borderBottom: 0,
         borderLeft: '.3em solid transparent',
-        color: 'var(--secondary)'
+        // color: 'var(--secondary)'
 
     }
 
@@ -35,7 +35,7 @@ export class DropdownChevron extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div className="text-white" style={Styles.dropdownChevron}></div>
+            <div style={Styles.dropdownChevron}></div>
 
         );
 

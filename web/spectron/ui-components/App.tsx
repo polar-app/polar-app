@@ -186,7 +186,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <h1>GroupSharingControl</h1>
 
-                <GroupSharingControl onDone={NULL_FUNCTION}/>
+                <GroupSharingControl onDone={NULL_FUNCTION} onCancel={NULL_FUNCTION}/>
 
                 <h1>NotificationButton</h1>
 

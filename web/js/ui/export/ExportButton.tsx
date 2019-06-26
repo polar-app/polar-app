@@ -20,19 +20,20 @@ export class ExportButton extends React.Component<IProps, IState> {
 
                 <UncontrolledDropdown direction="down"
                                       hidden={AppRuntime.isBrowser()}
-                                      size="sm">
+                                      className="mt-auto mb-auto"
+                                      size="md">
 
-                    <DropdownToggle color="secondary" caret style={{fontSize: '16px'}}>
+                    <DropdownToggle color="secondary" caret>
 
-                        <i className="fas fa-file-export" style={{marginRight: '5px'}}></i>
+                        <i className="fas fa-file-export" style={{ marginRight: '5px' }}/>
 
                     </DropdownToggle>
 
                     <DropdownMenu className="shadow">
-                        <DropdownItem size="sm" onClick={() => this.doExport('markdown')}>Markdown</DropdownItem>
-                        {/*<DropdownItem size="sm" onClick={() => this.doExport('html')}>HTML</DropdownItem>*/}
-                        <DropdownItem size="sm" onClick={() => this.doExport('json')}>JSON</DropdownItem>
+                        <DropdownItem onClick={() => this.doExport('markdown')}>Markdown</DropdownItem>
+                        <DropdownItem onClick={() => this.doExport('json')}>JSON</DropdownItem>
                     </DropdownMenu>
+
                 </UncontrolledDropdown>
 
             </div>

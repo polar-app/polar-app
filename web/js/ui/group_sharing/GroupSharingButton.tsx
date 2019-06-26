@@ -11,34 +11,9 @@ import {FirebaseDatastores} from '../../datastore/FirebaseDatastores';
 import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
 import {ContactSelection} from './ContactsSelector';
+import {DropdownChevron} from '../util/DropdownChevron';
 
 class Styles {
-
-    public static dropdownChevron: React.CSSProperties = {
-
-        display: 'inline-block',
-        width: 0,
-        height: 0,
-        marginLeft: '.255em',
-        verticalAlign: '.255em',
-        borderTop: '.3em solid',
-        borderRight: '.3em solid transparent',
-        borderBottom: 0,
-        borderLeft: '.3em solid transparent',
-        color: 'var(--secondary)'
-
-    };
-
-    public static shareControlButtonParent: React.CSSProperties = {
-
-        // position: 'absolute',
-        // top: '90px',
-        // right: '50px',
-        // zIndex: 10,
-
-        // marginLeft: '5px'
-
-    };
 
 }
 
@@ -62,8 +37,7 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div style={Styles.shareControlButtonParent}
-                 className="mr-1 ml-1">
+            <div className="mr-1 ml-1">
 
                 <Button color="primary"
                         id="share-control-button"
@@ -71,22 +45,15 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
                         disabled={this.props.disabled}
                         hidden={this.props.hidden}
                         onClick={() => this.toggle(true)}
-                        style={{fontSize: '15px'}}
-                        className="pl-2 pr-2 p-1">
+                        className="pl-2 pr-2">
 
-                    <div style={{display: 'flex',
-                        marginTop: 'auto',
-                        marginBottom: 'auto'}}>
+                    <i className="fas fa-share"/>
 
-                        <div className="mt-auto mb-auto">
-                            Share
-                        </div>
+                    &nbsp;
 
-                        <div className="mt-auto mb-auto">
-                            <span className="text-white" style={Styles.dropdownChevron}/>
-                        </div>
+                    Share
 
-                    </div>
+                    <DropdownChevron/>
 
                 </Button>
 
@@ -104,7 +71,8 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <GroupSharingControl onDone={(contactSelections) => this.onDone(contactSelections)}/>
+                        <GroupSharingControl onCancel={() => this.toggle(false)}
+                                             onDone={(contactSelections) => this.onDone(contactSelections)}/>
 
                     </PopoverBody>
 
@@ -132,6 +100,12 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
     }
 
     private async doGroupProvision(contactSelections: ReadonlyArray<ContactSelection>) {
+
+        if (contactSelections.length === 0) {
+            // there's nothing to be done so don't provision a group with zero
+            // members.
+            return;
+        }
 
         const docMeta = this.props.doc.docMeta;
         const fingerprint = docMeta.docInfo.fingerprint;

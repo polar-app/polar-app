@@ -34,7 +34,7 @@ const NoAnnotations = () => {
     return (
         <div className="p-2">
 
-            <h4 className="text-center text-muted">
+            <h4 className="text-center text-muted text-xxl">
                 No Annotations
             </h4>
 
@@ -297,33 +297,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { annotations } = this.state;
-
         const persistenceLayer = this.props.persistenceLayerProvider();
         const capabilities = persistenceLayer.capabilities();
 
-        const sharingEnabled =
-            this.props.doc.mutable;
-
         const AnnotationHeader = () => {
-
-            const docMeta = this.props.doc.docMeta;
-
-            const backendFileRef = BackendFileRefs.toBackendFileRef(docMeta)!;
-
-            const onVisibilityChanged = async (visibility: Visibility) => {
-                // FIXME: we need the ability to revoke ALL sharing URLs now...
-                await PersistenceLayers.changeVisibility(persistenceLayer, docMeta, visibility);
-            };
-
-            const createShareLink = async (): Promise<string | undefined> => {
-                // return SharingDatastores.createURL(persistenceLayer, docMeta, backendFileRef);
-                return undefined;
-            };
-
-            if (annotations.length === 0) {
-                return (<div></div>);
-            }
 
             return (
 
@@ -347,14 +324,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                             <GroupSharingButton doc={this.props.doc}
                                                 datastoreCapabilities={capabilities}
                                                 onDone={NULL_FUNCTION}/>
-
-                            {/*<ShareContentButton hidden={! sharingEnabled}*/}
-                            {/*                    datastoreCapabilities={capabilities}*/}
-                            {/*                    createShareLink={createShareLink}*/}
-                            {/*                    visibility={docMeta.docInfo.visibility}*/}
-                            {/*                    onVisibilityChanged={onVisibilityChanged}*/}
-                            {/*                    onDone={NULL_FUNCTION}/>*/}
-
 
                         </SplitBarRight>
 

@@ -10,27 +10,7 @@ import {IStyleMap} from '../../react/IStyleMap';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {AccountControlBar} from './AccountControlBar';
 import {AppRuntime} from '../../AppRuntime';
-
-const log = Logger.create();
-
-const Styles: IStyleMap = {
-
-    dropdownChevron: {
-
-        display: 'inline-block',
-        width: 0,
-        height: 0,
-        marginLeft: '.255em',
-        verticalAlign: '.255em',
-        borderTop: '.3em solid',
-        borderRight: '.3em solid transparent',
-        borderBottom: 0,
-        borderLeft: '.3em solid transparent',
-        color: 'var(--secondary)'
-
-    }
-
-};
+import {DropdownChevron} from '../util/DropdownChevron';
 
 export class AccountControlDropdown extends React.PureComponent<IProps, IState> {
 
@@ -48,7 +28,7 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
 
             <div>
 
-                <Button color="primary"
+                <Button color="light"
                         id="account-control-button"
                         size="sm"
                         onClick={() => NULL_FUNCTION}
@@ -57,17 +37,18 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
 
                     <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
 
-                    <span className="d-none-mobile">
-                        {AppRuntime.isBrowser() ? 'Account' : 'Cloud Sync'}
-                    </span>
+                    {/*<span className="d-none-mobile">*/}
+                    {/*    {AppRuntime.isBrowser() ? 'Account' : 'Cloud Sync'}*/}
+                    {/*</span>*/}
 
-                    <div className="text-white" style={Styles.dropdownChevron}></div>
+                    <DropdownChevron/>
 
                 </Button>
 
                 <UncontrolledPopover trigger="legacy"
                                      placement="bottom"
                                      target="account-control-button"
+                                     delay={{show: 0, hide: 0}}
                                      style={{maxWidth: '600px'}}>
 
                     <PopoverBody className="shadow">
