@@ -2,8 +2,8 @@ import React from 'react';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {ContactsSelector} from './ContactsSelector';
 import {ContactOption} from './ContactsSelector';
-import Button from 'reactstrap/lib/Button';
 import {ContactSelection} from './ContactsSelector';
+import Button from 'reactstrap/lib/Button';
 
 /**
  * Allow the user to select from one or more of their contacts.

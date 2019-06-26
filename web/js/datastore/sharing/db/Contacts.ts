@@ -3,6 +3,8 @@ import {EmailStr} from './Profiles';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {Firebase} from '../../../firebase/Firebase';
 import {Collections} from './Collections';
+import {Preconditions} from '../../../Preconditions';
+import {GroupMemberInvitation} from './GroupMemberInvitations';
 
 export class Contacts {
 
@@ -10,19 +12,19 @@ export class Contacts {
 
     public static async list(): Promise<ReadonlyArray<Contact>> {
 
-        const app = Firebase.init();
-        const user = app.auth().currentUser;
-        const uid = user!.uid;
+        const user = await Firebase.currentUser();
+        const {uid} = Preconditions.assertPresent(user, 'user');
 
-        const firestore = await Firestore.getInstance();
+        return await Collections.list(this.COLLECTION, [['uid' , '==', uid]]);
 
-        const query = firestore
-            .collection(this.COLLECTION)
-            .where('uid', '==', uid);
+    }
 
-        const snapshot = await query.get();
+    public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
 
-        return snapshot.docs.map(current => <Contact> current.data());
+        const user = await Firebase.currentUser();
+        const {uid} = Preconditions.assertPresent(user, 'user');
+
+        return await Collections.onSnapshot(this.COLLECTION, [['uid' , '==', uid]], delegate);
 
     }
 

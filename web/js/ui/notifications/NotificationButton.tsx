@@ -21,6 +21,30 @@ const NotificationList = (props: IProps) => {
 
 };
 
+const NotificationBody = (props: IProps) => {
+
+    const invitations = props.invitations || [];
+
+    const hasNotifications = invitations.length > 0;
+
+    return <div>
+
+        <NullCollapse open={! hasNotifications}>
+
+            <b>No new notifications available.</b>
+
+        </NullCollapse>
+
+        <NullCollapse open={hasNotifications}>
+            <NotificationList {...props}/>
+        </NullCollapse>
+
+    </div>;
+
+};
+
+
+
 export class NotificationButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
@@ -38,12 +62,14 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
         const invitations = this.props.invitations || [];
         const count = invitations.length;
+        const hasNotifications = count > 0;
+        const color = hasNotifications ? 'primary' : 'light';
 
         return (
 
             <div className="">
 
-                <Button color="primary"
+                <Button color={color}
                         id="notification-button"
                         size="sm"
                         onClick={() => this.toggle(true)}
@@ -77,7 +103,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <NotificationList {...this.props}/>
+                        <NotificationBody {...this.props}/>
 
                     </PopoverBody>
 

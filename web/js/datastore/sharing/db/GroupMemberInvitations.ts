@@ -2,12 +2,11 @@ import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {EmailStr} from './Profiles';
 import {ProfileIDStr} from './Profiles';
-import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
-import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
 import {Collections} from './Collections';
+import {Preconditions} from '../../../Preconditions';
 
 export class GroupMemberInvitations {
 
@@ -15,33 +14,19 @@ export class GroupMemberInvitations {
 
     public static async list(): Promise<ReadonlyArray<GroupMemberInvitation>> {
 
-        const app = Firebase.init();
-        const firestore = await Firestore.getInstance();
-        const user = app.auth().currentUser;
+        const user = await Firebase.currentUser();
+        Preconditions.assertPresent(user, 'user');
 
-        const query = firestore
-            .collection(this.COLLECTION)
-            .where('to', '==', user!.email);
-
-        const snapshot = await query.get();
-
-        return snapshot.docs.map(current => <GroupMemberInvitation> current.data());
+        return await Collections.list(this.COLLECTION, [['to' , '==', user!.email]]);
 
     }
 
-    public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void): Promise<SnapshotUnsubscriber> {
+    public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
 
-        const app = Firebase.init();
-        const firestore = await Firestore.getInstance();
-        const user = app.auth().currentUser;
+        const user = await Firebase.currentUser();
+        Preconditions.assertPresent(user, 'user');
 
-        const query = firestore
-            .collection(this.COLLECTION)
-            .where('to', '==', user!.email);
-
-        return query.onSnapshot(snapshot => {
-            delegate(snapshot.docs.map(current => <GroupMemberInvitation> current.data()));
-        });
+        return await Collections.onSnapshot(this.COLLECTION, [['to', '==', user!.email]], delegate);
 
     }
 
