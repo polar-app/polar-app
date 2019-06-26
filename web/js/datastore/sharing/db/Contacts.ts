@@ -19,7 +19,7 @@ export class Contacts {
 
     }
 
-    public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
+    public static async onSnapshot(delegate: (invitations: ReadonlyArray<Contact>) => void) {
 
         const user = await Firebase.currentUser();
         const {uid} = Preconditions.assertPresent(user, 'user');

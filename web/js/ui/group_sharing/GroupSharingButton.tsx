@@ -12,10 +12,12 @@ import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
 import {ContactSelection} from './ContactsSelector';
 import {DropdownChevron} from '../util/DropdownChevron';
+import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
+import {Contacts} from '../../datastore/sharing/db/Contacts';
+import {Contact} from '../../datastore/sharing/db/Contacts';
+import {Logger} from '../../logger/Logger';
 
-class Styles {
-
-}
+const log = Logger.create();
 
 export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
@@ -30,6 +32,17 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
         this.state = {
             open: false,
         };
+
+        Contacts.onSnapshot(contacts => {
+
+            this.setState({...this.state, contacts});
+
+        }).catch(err => {
+            const msg = "Unable to get group notifications: ";
+            log.error(msg, err);
+            Toaster.error(msg, err.message);
+        });
+
 
     }
 
@@ -71,7 +84,8 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <GroupSharingControl onCancel={() => this.toggle(false)}
+                        <GroupSharingControl contacts={this.state.contacts}
+                                             onCancel={() => this.toggle(false)}
                                              onDone={(contactSelections) => this.onDone(contactSelections)}/>
 
                     </PopoverBody>
@@ -153,5 +167,6 @@ interface IProps {
 }
 
 interface IState {
+    readonly contacts?: ReadonlyArray<Contact>;
     readonly open: boolean;
 }

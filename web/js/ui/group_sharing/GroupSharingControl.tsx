@@ -20,7 +20,7 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
         const contacts = this.props.contacts || [];
 
-        // FIXME: right now we only support email contacts
+        // TODO: right now we only support email contacts
         const contactOptions: ReadonlyArray<ContactOption> = contacts.map(current => {
             return {
                 value: current.email!,
