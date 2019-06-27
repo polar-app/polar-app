@@ -12,14 +12,20 @@ import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
 import {ContactSelection} from './ContactsSelector';
 import {DropdownChevron} from '../util/DropdownChevron';
-import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Logger} from '../../logger/Logger';
+import {GroupMembers} from '../../datastore/sharing/db/GroupMembers';
+import {Groups} from '../../datastore/sharing/db/Groups';
+import {Firebase} from '../../firebase/Firebase';
+import {Profile} from '../../datastore/sharing/db/Profiles';
+import {Releaser} from '../../reactor/EventListener';
 
 const log = Logger.create();
 
 export class GroupSharingButton extends React.PureComponent<IProps, IState> {
+
+    protected readonly releaser = new Releaser();
 
     constructor(props: IProps) {
         super(props);
@@ -33,17 +39,66 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
             open: false,
         };
 
-        Contacts.onSnapshot(contacts => {
+    }
 
-            this.setState({...this.state, contacts});
+    public componentDidMount(): void {
 
-        }).catch(err => {
+        const errorHandler = (err: Error) => {
             const msg = "Unable to get group notifications: ";
             log.error(msg, err);
             Toaster.error(msg, err.message);
-        });
+        };
 
+        const doHandle = async () => {
 
+            const user = await Firebase.currentUser();
+
+            const docMeta = this.props.doc.docMeta;
+            const fingerprint = docMeta.docInfo.fingerprint;
+
+            const groupID = Groups.createIDForKey(user!.uid, fingerprint);
+
+            const createGroupMembersListener = async () => {
+
+                return await GroupMembers.onSnapshot(groupID, records => {
+
+                    const profileIDs = records.map(current => current.profileID);
+
+                    // // TODO this is a bit ugly so clean it up.
+                    // Profiles.resolve(profileIDs)
+                    //     .then((members) => {
+                    //         this.setState({...this.state, members});
+                    //     })
+                    //     .catch(err => errorHandler(err));
+
+                });
+
+            };
+
+            const createContactsListener = async () => {
+                return await Contacts.onSnapshot(contacts => {
+
+                    if (this.releaser.released) {
+                        return;
+                    }
+
+                    this.setState({...this.state, contacts});
+
+                });
+
+            };
+
+            this.releaser.register(await createGroupMembersListener());
+            this.releaser.register(await createContactsListener());
+
+        };
+
+        doHandle().catch(err => errorHandler(err));
+
+    }
+
+    public componentWillUnmount(): void {
+        this.releaser.release();
     }
 
     public render() {
@@ -61,8 +116,6 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
                         className="pl-2 pr-2">
 
                     <i className="fas fa-share"/>
-
-                    &nbsp;
 
                     Share
 
@@ -85,6 +138,7 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
                     <PopoverBody className="shadow">
 
                         <GroupSharingControl contacts={this.state.contacts}
+                                             members={this.state.members}
                                              onCancel={() => this.toggle(false)}
                                              onDone={(contactSelections) => this.onDone(contactSelections)}/>
 
@@ -167,6 +221,16 @@ interface IProps {
 }
 
 interface IState {
+
+    /**
+     * The contacts that this user routinely shares with.
+     */
     readonly contacts?: ReadonlyArray<Contact>;
+
+    /**
+     * The members of this group by profile.
+     */
+    readonly members?: ReadonlyArray<Profile>;
+
     readonly open: boolean;
 }

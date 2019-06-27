@@ -1,23 +1,28 @@
 import {GroupIDStr} from '../../Datastore';
-import {Firestore} from '../../../firebase/Firestore';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {ProfileIDStr} from './Profiles';
+import {Firebase} from '../../../firebase/Firebase';
+import {Preconditions} from '../../../Preconditions';
+import {Collections} from './Collections';
 
 export class GroupMembers {
 
     public static readonly COLLECTION = 'group_member';
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMember>> {
+        const user = await Firebase.currentUser();
+        Preconditions.assertPresent(user, 'user');
+        return await Collections.list(this.COLLECTION, [['groupID' , '==', groupID]]);
+    }
 
-        const firestore = await Firestore.getInstance();
+    /**
+     *
+     * Get the members of this group.
+     */
+    public static async onSnapshot(groupID: GroupIDStr,
+                                   delegate: (records: ReadonlyArray<GroupMember>) => void) {
 
-        const query = firestore
-            .collection(this.COLLECTION)
-            .where('groupID', '==', groupID);
-
-        const snapshot = await query.get();
-
-        return snapshot.docs.map(current => <GroupMember> current.data());
+        return await Collections.onSnapshot(this.COLLECTION, [['groupID' , '==', groupID]], delegate);
 
     }
 

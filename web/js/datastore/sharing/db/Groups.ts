@@ -1,10 +1,18 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
+import {UserIDStr} from './Profiles';
+import {Hashcodes} from '../../../Hashcodes';
+
+const HASHCODE_LEN = 20;
 
 export class Groups {
 
     public static readonly COLLECTION = 'group';
+
+    public static createIDForKey(uid: UserIDStr, key: string) {
+        return Hashcodes.createID({key, uid}, HASHCODE_LEN);
+    }
 
     public static async get(id: GroupIDStr): Promise<Group | undefined> {
         const firestore = await Firestore.getInstance();

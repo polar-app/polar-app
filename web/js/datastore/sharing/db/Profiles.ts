@@ -23,6 +23,17 @@ export class Profiles {
         return <Profile> doc.data();
     }
 
+    /**
+     * Lookup all the profile IDs.
+     */
+    public static async resolve(profileIDs: ReadonlyArray<ProfileIDStr>): Promise<ReadonlyArray<Profile>> {
+
+        const promises = profileIDs.map(current => this.get(current));
+        const resolved = await Promise.all(promises);
+        return resolved.filter(current => current !== undefined)
+                       .map(current => <Profile> current);
+
+    }
 
     public static async currentUserProfile(): Promise<Profile | undefined> {
 

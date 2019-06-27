@@ -16,7 +16,6 @@ export class GroupMemberInvitations {
 
         const user = await Firebase.currentUser();
         Preconditions.assertPresent(user, 'user');
-
         return await Collections.list(this.COLLECTION, [['to' , '==', user!.email]]);
 
     }
