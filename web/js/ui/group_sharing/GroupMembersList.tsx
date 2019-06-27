@@ -5,7 +5,7 @@ import {GroupMember} from './GroupMember';
 /**
  * Allow the user to select from one or more of their contacts.
  */
-export class GroupMembers extends React.PureComponent<IProps, IState> {
+export class GroupMembersList extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);

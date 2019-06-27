@@ -5,27 +5,20 @@ import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {GroupSharingControl} from './GroupSharingControl';
-import {Doc} from '../../metadata/Doc';
 import {DocRefs} from '../../datastore/sharing/db/DocRefs';
 import {FirebaseDatastores} from '../../datastore/FirebaseDatastores';
 import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
 import {ContactSelection} from './ContactsSelector';
 import {DropdownChevron} from '../util/DropdownChevron';
-import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Logger} from '../../logger/Logger';
-import {GroupMembers} from '../../datastore/sharing/db/GroupMembers';
-import {Groups} from '../../datastore/sharing/db/Groups';
-import {Firebase} from '../../firebase/Firebase';
 import {Profile} from '../../datastore/sharing/db/Profiles';
-import {Releaser} from '../../reactor/EventListener';
+import {Doc} from '../../metadata/Doc';
 
 const log = Logger.create();
 
 export class GroupSharingButton extends React.PureComponent<IProps, IState> {
-
-    protected readonly releaser = new Releaser();
 
     constructor(props: IProps) {
         super(props);
@@ -41,65 +34,6 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
     }
 
-    public componentDidMount(): void {
-
-        const errorHandler = (err: Error) => {
-            const msg = "Unable to get group notifications: ";
-            log.error(msg, err);
-            Toaster.error(msg, err.message);
-        };
-
-        const doHandle = async () => {
-
-            const user = await Firebase.currentUser();
-
-            const docMeta = this.props.doc.docMeta;
-            const fingerprint = docMeta.docInfo.fingerprint;
-
-            const groupID = Groups.createIDForKey(user!.uid, fingerprint);
-
-            const createGroupMembersListener = async () => {
-
-                return await GroupMembers.onSnapshot(groupID, records => {
-
-                    const profileIDs = records.map(current => current.profileID);
-
-                    // // TODO this is a bit ugly so clean it up.
-                    // Profiles.resolve(profileIDs)
-                    //     .then((members) => {
-                    //         this.setState({...this.state, members});
-                    //     })
-                    //     .catch(err => errorHandler(err));
-
-                });
-
-            };
-
-            const createContactsListener = async () => {
-                return await Contacts.onSnapshot(contacts => {
-
-                    if (this.releaser.released) {
-                        return;
-                    }
-
-                    this.setState({...this.state, contacts});
-
-                });
-
-            };
-
-            this.releaser.register(await createGroupMembersListener());
-            this.releaser.register(await createContactsListener());
-
-        };
-
-        doHandle().catch(err => errorHandler(err));
-
-    }
-
-    public componentWillUnmount(): void {
-        this.releaser.release();
-    }
 
     public render() {
 
@@ -137,8 +71,7 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <GroupSharingControl contacts={this.state.contacts}
-                                             members={this.state.members}
+                        <GroupSharingControl doc={this.props.doc}
                                              onCancel={() => this.toggle(false)}
                                              onDone={(contactSelections) => this.onDone(contactSelections)}/>
 

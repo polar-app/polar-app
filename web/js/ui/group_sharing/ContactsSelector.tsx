@@ -19,7 +19,6 @@ export class ContactsSelector extends React.PureComponent<IProps, IState> {
         this.onPaste = this.onPaste.bind(this);
 
         this.state = {
-            options: this.props.options || [],
             selectedOptions: this.props.selectedOptions || []
         };
 
@@ -36,7 +35,7 @@ export class ContactsSelector extends React.PureComponent<IProps, IState> {
             });
         }
 
-        const options = convertToOptions(this.state.options);
+        const options = convertToOptions(this.props.options || []);
         const selectedOptions = convertToOptions(this.state.selectedOptions);
 
         return <div onPaste={event => this.onPaste(event)}>
@@ -102,7 +101,6 @@ interface IProps {
 }
 
 interface IState {
-    readonly options: ReadonlyArray<ContactOption>;
     readonly selectedOptions: ReadonlyArray<ContactOption>;
 }
 
