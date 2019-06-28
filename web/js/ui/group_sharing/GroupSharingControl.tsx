@@ -5,7 +5,7 @@ import {ContactsSelector} from './ContactsSelector';
 import {ContactOption} from './ContactsSelector';
 import {ContactSelection} from './ContactsSelector';
 import Button from 'reactstrap/lib/Button';
-import {Profile} from '../../datastore/sharing/db/Profiles';
+import {Profiles} from '../../datastore/sharing/db/Profiles';
 import {Toaster} from '../toaster/Toaster';
 import {Firebase} from '../../firebase/Firebase';
 import {Groups} from '../../datastore/sharing/db/Groups';
@@ -14,6 +14,10 @@ import {Logger} from '../../logger/Logger';
 import {Doc} from '../../metadata/Doc';
 import {GroupMembers} from '../../datastore/sharing/db/GroupMembers';
 import {GroupMembersList} from './GroupMembersList';
+import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
+import {Optional} from '../../util/ts/Optional';
+import {Promises} from '../../util/Promises';
+import {MemberRecord} from './MemberRecords';
 
 const log = Logger.create();
 
@@ -45,6 +49,9 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
             Toaster.error(msg, err.message);
         };
 
+        // FIXME: move this code into a helper function so it could in theory
+        // be tested...
+
         const doHandle = async () => {
 
             const user = await Firebase.currentUser();
@@ -52,43 +59,129 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
             const docMeta = this.props.doc.docMeta;
             const fingerprint = docMeta.docInfo.fingerprint;
 
-            const groupID = Groups.createIDForKey(user!.uid, fingerprint);
+            const uid = user!.uid;
 
-            const createGroupMembersListener = async () => {
+            const groupID = Groups.createIDForKey(uid, fingerprint);
 
-                return await GroupMembers.onSnapshot(groupID, records => {
+            const profile = await Profiles.currentUserProfile();
 
-                    const profileIDs = records.map(current => current.profileID);
+            if (! profile) {
+                throw new Error("No profile");
+            }
 
-                    // // TODO this is a bit ugly so clean it up.
-                    // Profiles.resolve(profileIDs)
-                    //     .then((members) => {
-                    //         this.setState({...this.state, members});
-                    //     })
-                    //     .catch(err => errorHandler(err));
+            const getGroupMemberInvitations = async (): Promise<ReadonlyArray<MemberRecord>> => {
+
+                const records
+                    = await GroupMemberInvitations.listByGroupIDAndProfileID(groupID, profile.id);
+
+                const memberRecordInits: MemberRecord[] = records.map(current => {
+
+                    return {
+                        profileID: current.from.profileID,
+                        label: current.to,
+                        created: current.created,
+                        type: 'group-member-invitation',
+                        value: current
+                    };
 
                 });
 
-            };
+                const resolvedProfiles = await Profiles.resolve(memberRecordInits);
 
-            const createContactsListener = async () => {
-                return await Contacts.onSnapshot(contacts => {
+                return resolvedProfiles.map(current => {
+                    const [memberRecordInit , profile] = current;
 
-                    if (this.releaser.released) {
-                        return;
+                    if (profile) {
+
+                        return {
+                            ...memberRecordInit,
+                            label: profile.name || memberRecordInit.label,
+                            image: Optional.of(profile.image).getOrUndefined()
+                        };
+
+                    } else {
+                        return memberRecordInit;
                     }
 
-                    console.log("FIXME: state updating...");
-                    this.setState({...this.state, contacts});
+                });
+
+            };
+
+            const getGroupMembers = async (): Promise<ReadonlyArray<MemberRecord>> => {
+
+                const records
+                    = await GroupMembers.list(groupID);
+
+                const memberRecordInits: MemberRecord[] = records.map(current => {
+
+                    return {
+                        profileID: current.profileID,
+                        // this is ugly but we're going to replace it below.
+                        label: current.profileID,
+                        created: current.created,
+                        type: 'group-member-invitation',
+                        value: current
+                    };
+
+                });
+
+                const resolvedProfiles = await Profiles.resolve(memberRecordInits);
+
+                return resolvedProfiles.map(current => {
+                    const [memberRecordInit , profile] = current;
+
+                    if (profile) {
+
+                        return {
+                            ...memberRecordInit,
+                            label: profile.name || "unnamed",
+                            image: Optional.of(profile.image).getOrUndefined()
+                        };
+
+                    } else {
+                        return memberRecordInit;
+                    }
 
                 });
 
             };
 
-            this.releaser.register(await createContactsListener());
-            this.releaser.register(await createGroupMembersListener());
+            const doHandleMembership = async () => {
+                const group = await Groups.get(groupID);
+
+                if (group) {
+
+                    // FIXME: these do not update teh states..
+
+                    Promises.executeInBackground([
+                        getGroupMembers(),
+                        getGroupMemberInvitations()
+                    ], err => errorHandler(err));
+
+                }
+
+            };
+
+            const doHandleContacts = async () => {
+
+                const contacts = await Contacts.list();
+
+                if (this.releaser.released) {
+                    return;
+                }
+
+                this.setState({...this.state, contacts});
+
+            };
+
+            Promises.executeInBackground([
+                doHandleContacts(),
+                doHandleMembership()
+            ], err => errorHandler(err));
 
         };
+
+
 
         console.log("FIXME: here ate least");
 
@@ -115,7 +208,6 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
         });
 
         console.log("FIXME: found contactOptions, ", contactOptions);
-
 
         return <div>
 
@@ -161,5 +253,6 @@ interface IProps {
 
 interface IState {
     readonly contacts: ReadonlyArray<Contact>;
-    readonly members: ReadonlyArray<Profile>;
+    readonly members: ReadonlyArray<MemberRecord>;
 }
+

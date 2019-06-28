@@ -1,5 +1,5 @@
 import React from 'react';
-import {Profile} from '../../datastore/sharing/db/Profiles';
+import {MemberRecord} from './MemberRecords';
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -14,7 +14,7 @@ export class GroupMember extends React.PureComponent<IProps, IState> {
     public render() {
 
         return <div>
-            member: {this.props.member.name}
+            member: {this.props.member.label}
         </div>;
 
     }
@@ -23,7 +23,7 @@ export class GroupMember extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
-    readonly member: Profile;
+    readonly member: MemberRecord;
 }
 
 interface IState {

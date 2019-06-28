@@ -2,8 +2,6 @@ import React from 'react';
 import {Logger} from '../../logger/Logger';
 import {Image} from '../../datastore/sharing/db/Images';
 
-const log = Logger.create();
-
 export class Img extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
@@ -41,7 +39,6 @@ export class UserImage extends React.PureComponent<IProps, IState> {
     public render() {
 
         return (
-
 
             <Img {...this.props}/>
 

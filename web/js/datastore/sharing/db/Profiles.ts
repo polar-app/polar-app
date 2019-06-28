@@ -26,12 +26,26 @@ export class Profiles {
     /**
      * Lookup all the profile IDs.
      */
-    public static async resolve(profileIDs: ReadonlyArray<ProfileIDStr>): Promise<ReadonlyArray<Profile>> {
+    public static async resolve<T extends ProfileIDRecord>(profileIDRecords: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecordTuple<T>>> {
 
-        const promises = profileIDs.map(current => this.get(current));
+        const promises = profileIDRecords.map(current => {
+
+            const handler = async (): Promise<ProfileRecordTuple<T>> => {
+
+                const profile = await this.get(current.profileID);
+
+                return [current, profile];
+
+            };
+
+            // call the handler but return it as a promise so we can call
+            // promise.all below
+            return handler();
+
+        });
+
         const resolved = await Promise.all(promises);
-        return resolved.filter(current => current !== undefined)
-                       .map(current => <Profile> current);
+        return resolved.map(current => current);
 
     }
 
@@ -103,3 +117,9 @@ export type HandleStr = string;
 export type UserIDStr = string;
 
 export type EmailStr = string;
+
+export interface ProfileIDRecord {
+    readonly profileID: ProfileIDStr;
+}
+
+export type ProfileRecordTuple<T> = [T, Profile | undefined];

@@ -7,6 +7,7 @@ import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
 import {Collections} from './Collections';
 import {Preconditions} from '../../../Preconditions';
+import {Clause} from './Collections';
 
 export class GroupMemberInvitations {
 
@@ -17,6 +18,18 @@ export class GroupMemberInvitations {
         const user = await Firebase.currentUser();
         Preconditions.assertPresent(user, 'user');
         return await Collections.list(this.COLLECTION, [['to' , '==', user!.email]]);
+
+    }
+
+    public static async listByGroupIDAndProfileID(groupID: GroupIDStr,
+                                                  profileID: ProfileIDStr): Promise<ReadonlyArray<GroupMemberInvitation>> {
+
+        const clauses: Clause[] = [
+            ['groupID' , '==', groupID],
+            ['profileID' , '==', profileID]
+        ];
+
+        return await Collections.list(this.COLLECTION, clauses);
 
     }
 
@@ -72,7 +85,7 @@ export interface GroupMemberInvitation extends GroupMemberInvitationInit {
 
 export interface Sender {
 
-    readonly profileID?: ProfileIDStr;
+    readonly profileID: ProfileIDStr;
 
     readonly name: string;
 

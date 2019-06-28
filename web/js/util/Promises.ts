@@ -42,6 +42,20 @@ export class Promises {
     }
 
     /**
+     * Execute all the promises in this array in the background and use all the
+     * error handler on all of them.
+     */
+    public static executeInBackground(promises: ReadonlyArray<Promise<any>>,
+                                      errorHandler: (err: Error) => void) {
+
+        for (const promise of promises) {
+            promise.then(NULL_FUNCTION)
+                   .catch(err => errorHandler(err));
+        }
+
+    }
+
+    /**
      * A promise based timeout.  This just returns a promise which returns
      * once the timeout has expired. You can then call .then() or just await
      * the timeout.

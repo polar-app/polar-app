@@ -1,10 +1,8 @@
-import {Firestore} from '../../../firebase/Firestore';
 import {EmailStr} from './Profiles';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {Firebase} from '../../../firebase/Firebase';
 import {Collections} from './Collections';
 import {Preconditions} from '../../../Preconditions';
-import {GroupMemberInvitation} from './GroupMemberInvitations';
 
 export class Contacts {
 
