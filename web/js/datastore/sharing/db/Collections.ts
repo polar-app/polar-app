@@ -3,6 +3,7 @@ import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
 import {Firebase} from '../../../firebase/Firebase';
 import {GroupMemberInvitation} from './GroupMemberInvitations';
+import {GroupDoc} from './GroupDocs';
 
 export class Collections {
 
@@ -71,3 +72,5 @@ export interface IDRecord {
 }
 
 export type Clause = [string, WhereFilterOp, any];
+
+export type SnapshotListener<T> = (record: ReadonlyArray<T>) => void;

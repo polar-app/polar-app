@@ -21,8 +21,7 @@ export class AnnotationSidebars {
 
         splitter.collapse();
 
-        const doc = Docs.create(docMeta,
-                                persistenceLayerProvider().capabilities().permission);
+        const doc = Docs.create(docMeta, persistenceLayerProvider().capabilities().permission);
 
         ReactDOM.render(
             <AnnotationSidebar doc={doc}

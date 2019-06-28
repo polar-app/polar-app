@@ -50,7 +50,7 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
                         className="pl-2 pr-2">
 
                     <i className="fas fa-share"/>
-
+                    &nbsp;
                     Share
 
                     <DropdownChevron/>

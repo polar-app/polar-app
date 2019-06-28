@@ -1,24 +1,33 @@
-import {Firestore} from '../../../firebase/Firestore';
 import {ProfileIDStr} from './Profiles';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
+import {Collections} from './Collections';
+import {Clause} from './Collections';
+import {SnapshotListener} from './Collections';
 
 export class GroupDocs {
 
     public static readonly COLLECTION = 'group_doc';
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupDoc>> {
+        return await Collections.list(this.COLLECTION, [['groupID', '==', groupID]]);
+    }
 
-        const firestore = await Firestore.getInstance();
+    public static async onSnapshot(groupID: GroupIDStr, handler: SnapshotListener<GroupDoc>) {
+        return await Collections.onSnapshot(this.COLLECTION, [['groupID', '==', groupID]], handler);
+    }
 
-        const query = firestore
-            .collection(this.COLLECTION)
-            .where('groupID', '==', groupID);
+    public static async onSnapshotForByGroupIDAndFingerprint(groupID: GroupIDStr,
+                                                             fingerprint: string,
+                                                             handler: SnapshotListener<GroupDoc> ) {
 
-        const snapshot = await query.get();
+        const clauses: Clause[] = [
+            ['groupID', '==', groupID],
+            ['fingerprint', '==', fingerprint],
+        ];
 
-        return snapshot.docs.map(current => <GroupDoc> current.data());
+        return await Collections.onSnapshot(this.COLLECTION, clauses, handler);
 
     }
 
