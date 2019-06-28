@@ -11,6 +11,7 @@ import {Preconditions} from '../../Preconditions';
 import {MemberRecord} from './GroupSharingRecords';
 import {GroupSharingRecords} from './GroupSharingRecords';
 import {GroupSharingControl} from './GroupSharingControl';
+import {InvitationRequest} from './GroupSharingControl';
 
 const log = Logger.create();
 
@@ -97,7 +98,7 @@ export class GroupSharing extends React.PureComponent<IProps, IState> {
 interface IProps {
     readonly doc: Doc;
     readonly onCancel: () => void;
-    readonly onDone: (contactSelections: ReadonlyArray<ContactSelection>) => void;
+    readonly onDone: (invitation: InvitationRequest) => void;
 }
 
 interface IState {

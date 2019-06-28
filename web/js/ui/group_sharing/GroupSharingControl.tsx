@@ -4,12 +4,10 @@ import {ContactsSelector} from './ContactsSelector';
 import {ContactOption} from './ContactsSelector';
 import {ContactSelection} from './ContactsSelector';
 import Button from 'reactstrap/lib/Button';
-import {Releaser} from '../../reactor/EventListener';
 import {Logger} from '../../logger/Logger';
-import {Doc} from '../../metadata/Doc';
 import {GroupMembersList} from './GroupMembersList';
 import {MemberRecord} from './GroupSharingRecords';
-import {SharingDisclaimer} from './SharingDisclaimer';
+import Input from 'reactstrap/lib/Input';
 
 const log = Logger.create();
 
@@ -19,6 +17,8 @@ const log = Logger.create();
 export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
     private contactSelections: ReadonlyArray<ContactSelection> = [];
+
+    private message: string = "";
 
     constructor(props: IProps) {
         super(props);
@@ -53,6 +53,20 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
             <ContactsSelector options={contactOptions}
                               onChange={contactSelections => this.contactSelections = contactSelections}/>
 
+            <div className="mt-1">
+
+                <Input type="textarea"
+                       name="message"
+                       className="p-2"
+                       placeholder="Message to send with the invitation ..."
+                       style={{
+                           width: '100%',
+                           height: '5em'
+                       }}
+                       onChange={event => this.message = event.target.value}/>
+
+            </div>
+
             <GroupMembersList members={this.props.members}/>
 
             {/*<SharingDisclaimer/>*/}
@@ -71,7 +85,10 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
                 <Button color="primary"
                         size="sm"
-                        onClick={() => this.props.onDone(this.contactSelections)}
+                        onClick={() => this.props.onDone({
+                            contactSelections: this.contactSelections,
+                            message: this.message
+                        })}
                         className="ml-1">
 
                     Done
@@ -88,7 +105,7 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
 interface IProps {
     readonly onCancel: () => void;
-    readonly onDone: (contactSelections: ReadonlyArray<ContactSelection>) => void;
+    readonly onDone: (invitation: InvitationRequest) => void;
     readonly contacts: ReadonlyArray<Contact>;
     readonly members: ReadonlyArray<MemberRecord>;
 }
@@ -96,3 +113,10 @@ interface IProps {
 interface IState {
 }
 
+/**
+ * A user initiated invitation with metadata before its' written
+ */
+export interface InvitationRequest {
+    readonly contactSelections: ReadonlyArray<ContactSelection>;
+    readonly message: string;
+}

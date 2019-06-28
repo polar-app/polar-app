@@ -10,6 +10,8 @@ import {Optional} from '../../util/ts/Optional';
 import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
+import {ProfileIDStr} from '../../datastore/sharing/db/Profiles';
+import {ProfileIDRecord} from '../../datastore/sharing/db/Profiles';
 
 export class GroupSharingRecords {
 
@@ -31,34 +33,15 @@ export class GroupSharingRecords {
             const records
                 = await GroupMemberInvitations.listByGroupIDAndProfileID(groupID, profile.id);
 
-            const memberRecordInits: MemberRecord[] = records.map(current => {
+            return records.map(current => {
 
                 return {
-                    profileID: current.from.profileID,
+                    id: current.id,
                     label: current.to,
                     created: current.created,
                     type: 'group-member-invitation',
                     value: current
                 };
-
-            });
-
-            const resolvedProfiles = await Profiles.resolve(memberRecordInits);
-
-            return resolvedProfiles.map(current => {
-                const [memberRecordInit , profile] = current;
-
-                if (profile) {
-
-                    return {
-                        ...memberRecordInit,
-                        label: profile.name || memberRecordInit.label,
-                        image: Optional.of(profile.image).getOrUndefined()
-                    };
-
-                } else {
-                    return memberRecordInit;
-                }
 
             });
 
@@ -68,9 +51,10 @@ export class GroupSharingRecords {
 
             const records = await GroupMembers.list(groupID);
 
-            const memberRecordInits: MemberRecord[] = records.map(current => {
+            const memberRecordInits: MemberRecordWithProfile[] = records.map(current => {
 
                 return {
+                    id: current.id,
                     profileID: current.profileID,
                     // this is ugly but we're going to replace it below.
                     label: current.profileID,
@@ -90,7 +74,7 @@ export class GroupSharingRecords {
 
                     return {
                         ...memberRecordInit,
-                        label: profile.name || "unnamed",
+                        label: profile.name || profile.handle || "unnamed",
                         image: Optional.of(profile.image).getOrUndefined()
                     };
 
@@ -152,11 +136,17 @@ export class GroupSharingRecords {
 
 export interface MemberRecord {
 
-    readonly profileID: string;
+    readonly id: string;
     readonly label: string;
     readonly type: 'group-member' | 'group-member-invitation';
     readonly value: GroupMember | GroupMemberInvitation;
     readonly created: ISODateTimeString;
     readonly image?: Image;
+
+}
+
+export interface MemberRecordWithProfile extends MemberRecord {
+
+    readonly profileID: string;
 
 }

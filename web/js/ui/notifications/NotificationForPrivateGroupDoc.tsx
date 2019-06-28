@@ -7,8 +7,6 @@ import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Toaster} from '../toaster/Toaster';
 import {Logger} from '../../logger/Logger';
 import {GroupJoins} from '../../datastore/sharing/rpc/GroupJoins';
-import {NullCollapse} from '../null_collapse/NullCollapse';
-import {isPresent} from '../../Preconditions';
 import {UserImage} from './UserImage';
 
 const log = Logger.create();
@@ -24,8 +22,9 @@ export class NotificationForPrivateGroupDoc extends React.Component<IProps, ISta
 
     public render() {
 
-        const doc = this.props.invitation.docs[0];
-        const from = this.props.invitation.from;
+        const {invitation} = this.props;
+        const doc = invitation.docs[0];
+        const from = invitation.from;
 
         return (
 
@@ -38,6 +37,10 @@ export class NotificationForPrivateGroupDoc extends React.Component<IProps, ISta
                 <div>
                     {doc.description || ""}
                 </div>
+
+                <p>
+                    {invitation.message}
+                </p>
 
                 <div style={{display: 'flex'}}>
 

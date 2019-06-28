@@ -16,6 +16,7 @@ import {Logger} from '../../logger/Logger';
 import {Profile} from '../../datastore/sharing/db/Profiles';
 import {Doc} from '../../metadata/Doc';
 import {GroupSharing} from './GroupSharing';
+import {InvitationRequest} from './GroupSharingControl';
 
 const log = Logger.create();
 
@@ -90,20 +91,20 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
         this.setState({...this.state, open});
     }
 
-    private onDone(contactSelections: ReadonlyArray<ContactSelection>) {
+    private onDone(invitation: InvitationRequest) {
         console.log("onDone...");
 
         this.toggle(false);
         this.props.onDone();
 
-        this.doGroupProvision(contactSelections)
+        this.doGroupProvision(invitation)
             .catch(err => Toaster.error("Could not provision group: " + err.message));
 
     }
 
-    private async doGroupProvision(contactSelections: ReadonlyArray<ContactSelection>) {
+    private async doGroupProvision(invitation: InvitationRequest) {
 
-        if (contactSelections.length === 0) {
+        if (invitation.contactSelections.length === 0) {
             // there's nothing to be done so don't provision a group with zero
             // members.
             return;
@@ -115,12 +116,11 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
         const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
         const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
-        const message = "no message for now";
+        const {message} = invitation;
+
         // FIXME: this is going to be wrong and will not have profile IDs
         // there... to share with.
-        const to = contactSelections.map(current => current.value);
-
-        console.log("FIXME: sending invitation to: " , to);
+        const to = invitation.contactSelections.map(current => current.value);
 
         Toaster.info("Sharing document with users ... ");
 
