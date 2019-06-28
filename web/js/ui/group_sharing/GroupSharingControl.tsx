@@ -8,13 +8,17 @@ import {Logger} from '../../logger/Logger';
 import {GroupMembersList} from './GroupMembersList';
 import {MemberRecord} from './GroupSharingRecords';
 import Input from 'reactstrap/lib/Input';
+import NavItem from 'reactstrap/lib/NavItem';
+import Nav from 'reactstrap/lib/Nav';
+import NavLink from 'reactstrap/lib/NavLink';
+import TabContent from 'reactstrap/lib/TabContent';
 
 const log = Logger.create();
 
 /**
  * Allow the user to select from one or more of their contacts.
  */
-export class GroupSharingControl extends React.PureComponent<IProps, IState> {
+export class GroupSharingControl extends React.Component<IProps, IState> {
 
     private contactSelections: ReadonlyArray<ContactSelection> = [];
 
@@ -46,8 +50,8 @@ export class GroupSharingControl extends React.PureComponent<IProps, IState> {
 
         return <div>
 
-            <div className="text-bold mb-1">
-                Share with others
+            <div className="font-weight-bold mb-1">
+                Share with others:
             </div>
 
             <ContactsSelector options={contactOptions}

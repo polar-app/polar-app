@@ -4,7 +4,7 @@ import {MemberRecord} from './GroupSharingRecords';
 /**
  * Allow the user to select from one or more of their contacts.
  */
-export class GroupMember extends React.PureComponent<IProps, IState> {
+export class GroupMember extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -14,7 +14,7 @@ export class GroupMember extends React.PureComponent<IProps, IState> {
     public render() {
 
         return <div>
-            member: {this.props.member.label}
+            {this.props.member.label}
         </div>;
 
     }

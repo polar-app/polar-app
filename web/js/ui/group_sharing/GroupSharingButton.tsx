@@ -20,7 +20,7 @@ import {InvitationRequest} from './GroupSharingControl';
 
 const log = Logger.create();
 
-export class GroupSharingButton extends React.PureComponent<IProps, IState> {
+export class GroupSharingButton extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);

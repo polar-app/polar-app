@@ -4,7 +4,7 @@ import {MemberRecord} from './GroupSharingRecords';
 /**
  * Allow the user to select from one or more of their contacts.
  */
-export class SharingDisclaimer extends React.PureComponent<IProps, IState> {
+export class SharingDisclaimer extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);

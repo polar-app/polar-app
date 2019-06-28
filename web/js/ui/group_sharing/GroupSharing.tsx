@@ -18,7 +18,7 @@ const log = Logger.create();
 /**
  * Allow the user to select from one or more of their contacts.
  */
-export class GroupSharing extends React.PureComponent<IProps, IState> {
+export class GroupSharing extends React.Component<IProps, IState> {
 
     protected readonly releaser = new Releaser();
 
