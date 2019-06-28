@@ -11,25 +11,31 @@ import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 
-export class MemberRecords {
+export class GroupSharingRecords {
 
-    public static async fetch(groupID: string,
-                              contactsHandler: (contacts: ReadonlyArray<Contact>) => void,
-                              membersHandler: (members: ReadonlyArray<MemberRecord>) => void,
-                              errorHandler: (err: Error) => void) {
-
-        const profile = await Profiles.currentUserProfile();
-
-        if (! profile) {
-            throw new Error("No profile");
-        }
+    public static fetch(groupID: string,
+                        contactsHandler: (contacts: ReadonlyArray<Contact>) => void,
+                        membersHandler: (members: ReadonlyArray<MemberRecord>) => void,
+                        errorHandler: (err: Error) => void) {
 
         let members: MemberRecord[] = [];
 
         const getGroupMemberInvitations = async (): Promise<ReadonlyArray<MemberRecord>> => {
 
+            const profile = await Profiles.currentUserProfile();
+
+            if (! profile) {
+                throw new Error("No profile");
+            }
+
+            console.log("FIXME333...");
+
+            console.log(`FIXME333: resolving for groupID: ${groupID} and profileID: ${profile.id}`)
+
             const records
                 = await GroupMemberInvitations.listByGroupIDAndProfileID(groupID, profile.id);
+
+            console.log("FIXME333...done");
 
             const memberRecordInits: MemberRecord[] = records.map(current => {
 
@@ -66,8 +72,11 @@ export class MemberRecords {
 
         const getGroupMembers = async (): Promise<ReadonlyArray<MemberRecord>> => {
 
-            const records
-                = await GroupMembers.list(groupID);
+            console.log("FIXME222...");
+
+            const records = await GroupMembers.list(groupID);
+
+            console.log("FIXME222...done");
 
             const memberRecordInits: MemberRecord[] = records.map(current => {
 

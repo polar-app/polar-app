@@ -422,7 +422,7 @@ SpectronRenderer.run(async (state) => {
             await purge();
         });
 
-        xit("group provision of private group", async function() {
+        it("group provision of private group", async function() {
 
             const app = Firebase.init();
 
@@ -683,7 +683,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join and then leave group", async function() {
+        it("join and then leave group", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -725,7 +725,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("double provision of group with key", async function() {
+        it("double provision of group with key", async function() {
 
 
             const mockDock = await provisionAccountData();
@@ -807,7 +807,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join and then add my own docs", async function() {
+        it("join and then add my own docs", async function() {
 
             async function doUser0() {
                 const mockDock = await provisionAccountData();
@@ -863,7 +863,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("provision a user for a group who isn't yet using polar", async function() {
+        it("provision a user for a group who isn't yet using polar", async function() {
 
             const mockDock = await provisionAccountData();
             await doGroupProvision(mockDock, 'alice@example.com');
@@ -889,7 +889,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join group twice and validate metadata (private group)", async function() {
+        it("join group twice and validate metadata (private group)", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -920,7 +920,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Import the doc from a private group into my datastore", async function() {
+        it("Import the doc from a private group into my datastore", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID, docRef} = await doGroupProvision(mockDock);
@@ -1016,7 +1016,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Public group settings", async function() {
+        it("Public group settings", async function() {
 
             const mockDock = await provisionAccountData();
 
@@ -1043,7 +1043,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Public docs in public groups", async function() {
+        it("Public docs in public groups", async function() {
 
             // FIXME: need to add support for this...
 
@@ -1090,7 +1090,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Profile update", async function() {
+        it("Profile update", async function() {
 
             const app = Firebase.init();
 

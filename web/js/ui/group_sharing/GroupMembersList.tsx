@@ -1,7 +1,7 @@
 import React from 'react';
 import {Profile} from '../../datastore/sharing/db/Profiles';
 import {GroupMember} from './GroupMember';
-import {MemberRecord} from './MemberRecords';
+import {MemberRecord} from './GroupSharingRecords';
 
 /**
  * Allow the user to select from one or more of their contacts.

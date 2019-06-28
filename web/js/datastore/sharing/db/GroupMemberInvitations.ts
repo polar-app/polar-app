@@ -26,7 +26,7 @@ export class GroupMemberInvitations {
 
         const clauses: Clause[] = [
             ['groupID' , '==', groupID],
-            ['profileID' , '==', profileID]
+            ['from.profileID' , '==', profileID]
         ];
 
         return await Collections.list(this.COLLECTION, clauses);

@@ -213,7 +213,10 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<h1>GroupSharingControl</h1>*/}
 
-                {/*<GroupSharingControl onDone={NULL_FUNCTION} onCancel={NULL_FUNCTION}/>*/}
+                <GroupSharingControl onDone={NULL_FUNCTION}
+                                     onCancel={NULL_FUNCTION}
+                                     contacts={[]}
+                                     members={[]}/>
 
                 <NotificationForPrivateGroupDoc invitation={invitation} persistenceLayerProvider={() => null!}/>
 

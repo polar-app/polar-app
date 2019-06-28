@@ -15,6 +15,7 @@ import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Logger} from '../../logger/Logger';
 import {Profile} from '../../datastore/sharing/db/Profiles';
 import {Doc} from '../../metadata/Doc';
+import {GroupSharing} from './GroupSharing';
 
 const log = Logger.create();
 
@@ -71,9 +72,9 @@ export class GroupSharingButton extends React.PureComponent<IProps, IState> {
 
                     <PopoverBody className="shadow">
 
-                        <GroupSharingControl doc={this.props.doc}
-                                             onCancel={() => this.toggle(false)}
-                                             onDone={(contactSelections) => this.onDone(contactSelections)}/>
+                        <GroupSharing doc={this.props.doc}
+                                      onCancel={() => this.toggle(false)}
+                                      onDone={(contactSelections) => this.onDone(contactSelections)}/>
 
                     </PopoverBody>
 
