@@ -889,6 +889,34 @@ SpectronRenderer.run(async (state) => {
 
         });
 
+        it("delete users from a group after they have joined", async function() {
+
+            const mockDock = await provisionAccountData();
+            const fingerprint = mockDock.docMeta.docInfo.fingerprint;
+            const {groupID} = await doGroupProvision(mockDock, undefined, fingerprint);
+            await doGroupJoinForUser1(groupID);
+
+            // now switch back to the main user and get the members of this group
+            // then try to delete via the profileID
+
+            const app = Firebase.init();
+            await app.auth().signInWithEmailAndPassword(FIREBASE_USER, FIREBASE_PASS);
+
+            const groupMembers = await GroupMembers.list(groupID);
+
+            assert.equal(groupMembers.length, 1);
+
+            const groupMember = groupMembers[0];
+
+            const userRef = UserRefs.fromProfileID(groupMember.profileID);
+            await GroupMemberDeletes.exec({groupID, userRefs: [userRef]});
+
+            const groupMembersAfter = await GroupMembers.list(groupID);
+
+            assert.equal(groupMembersAfter.length, 0);
+
+        });
+
         it("provision a user for a group who isn't yet using polar", async function() {
 
             const mockDock = await provisionAccountData();
