@@ -10,8 +10,6 @@ import {Optional} from '../../util/ts/Optional';
 import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
-import {ProfileIDStr} from '../../datastore/sharing/db/Profiles';
-import {ProfileIDRecord} from '../../datastore/sharing/db/Profiles';
 
 export class GroupSharingRecords {
 
@@ -21,6 +19,9 @@ export class GroupSharingRecords {
                         errorHandler: (err: Error) => void) {
 
         let members: MemberRecord[] = [];
+
+        // FIXME: these have to be snapshots because I'm going to be deleting
+        // from the members and the UI needs to update...
 
         const getGroupMemberInvitations = async (): Promise<ReadonlyArray<MemberRecord>> => {
 

@@ -1,5 +1,3 @@
-import {ResolvablePromise} from "./ResolvablePromise";
-
 /**
  * A latch that can be resolved. Like a ResolveablePromise by
  */
