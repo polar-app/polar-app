@@ -26,6 +26,8 @@ describe('DocMetas', function() {
             const fingerprint = "0x001";
 
             const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+            console.log(JSON.stringify(docMeta, null, "  "));
+
             DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50});
 
             const json = MetadataSerializer.serialize(docMeta, "  ");

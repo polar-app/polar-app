@@ -14,7 +14,7 @@ import {Attachment} from './Attachment';
 export class DocMeta extends SerializedObject implements  IDocMeta {
 
     public docInfo: DocInfo;
-    public pageMetas: {[id: number]: PageMeta};
+    public pageMetas: {[id: string]: PageMeta};
     public annotationInfo = AnnotationInfos.create();
     public version = 2;
 
@@ -42,7 +42,7 @@ export class DocMeta extends SerializedObject implements  IDocMeta {
 
     public getPageMeta(num: number) {
 
-        num = Preconditions.assertNotNull(num, "num");
+        num = Preconditions.assertPresent(num, "num");
 
         const pageMeta = this.pageMetas[num];
 
@@ -56,7 +56,7 @@ export class DocMeta extends SerializedObject implements  IDocMeta {
 
     public validate() {
         Preconditions.assertInstanceOf(this.docInfo, DocInfo, "docInfo");
-        Preconditions.assertNotNull(this.pageMetas, "pageMetas");
+        Preconditions.assertPresent(this.pageMetas, "pageMetas");
         Preconditions.assertNumber(this.version, "version");
     }
 

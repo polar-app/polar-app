@@ -102,7 +102,7 @@ export class Dictionaries {
 
     }
 
-    public static deepCopy(dict: any): any {
+    public static deepCopy(dict: any): object {
 
         if (dict === undefined || dict === null) {
             // nothing to do here.
@@ -113,7 +113,6 @@ export class Dictionaries {
             // if we're not a dictionary we're done
             return dict;
         }
-
 
         if (Array.isArray(dict)) {
 

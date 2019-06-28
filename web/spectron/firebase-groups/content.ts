@@ -798,7 +798,7 @@ SpectronRenderer.run(async (state) => {
 
             await doTestGroupMemberInvitations();
 
-            await doGroupJoinForUser1(groupID);
+            // await doGroupJoinForUser1(groupID);
 
             // TODO: have a second user join this group and then enumerage
             // the message
