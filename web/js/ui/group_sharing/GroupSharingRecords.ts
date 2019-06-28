@@ -28,14 +28,8 @@ export class GroupSharingRecords {
                 throw new Error("No profile");
             }
 
-            console.log("FIXME333...");
-
-            console.log(`FIXME333: resolving for groupID: ${groupID} and profileID: ${profile.id}`)
-
             const records
                 = await GroupMemberInvitations.listByGroupIDAndProfileID(groupID, profile.id);
-
-            console.log("FIXME333...done");
 
             const memberRecordInits: MemberRecord[] = records.map(current => {
 
@@ -72,11 +66,7 @@ export class GroupSharingRecords {
 
         const getGroupMembers = async (): Promise<ReadonlyArray<MemberRecord>> => {
 
-            console.log("FIXME222...");
-
             const records = await GroupMembers.list(groupID);
-
-            console.log("FIXME222...done");
 
             const memberRecordInits: MemberRecord[] = records.map(current => {
 
