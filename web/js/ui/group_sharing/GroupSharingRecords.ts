@@ -40,7 +40,7 @@ export class GroupSharingRecords {
                     id: current.id,
                     label: current.to,
                     created: current.created,
-                    type: 'group-member-invitation',
+                    type: 'pending',
                     value: current
                 };
 
@@ -60,7 +60,7 @@ export class GroupSharingRecords {
                     // this is ugly but we're going to replace it below.
                     label: current.profileID,
                     created: current.created,
-                    type: 'group-member-invitation',
+                    type: 'member',
                     value: current
                 };
 
@@ -139,7 +139,7 @@ export interface MemberRecord {
 
     readonly id: string;
     readonly label: string;
-    readonly type: 'group-member' | 'group-member-invitation';
+    readonly type: 'member' | 'pending';
     readonly value: GroupMember | GroupMemberInvitation;
     readonly created: ISODateTimeString;
     readonly image?: Image;
