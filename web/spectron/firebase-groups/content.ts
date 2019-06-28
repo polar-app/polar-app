@@ -47,6 +47,8 @@ import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {DocMetaFileRef} from '../../js/datastore/DocMetaRef';
 import {canonicalize} from '../../js/util/Objects';
 import {EmailStr} from '../../js/util/Strings';
+import {GroupMemberDeletes} from '../../js/datastore/sharing/rpc/GroupMemberDeletes';
+import {UserRefs} from '../../js/datastore/sharing/rpc/UserRefs';
 
 const log = Logger.create();
 
@@ -860,6 +862,30 @@ SpectronRenderer.run(async (state) => {
 
             // FIXME: now make sure BOTH users can read these docs and
             // download/fetch the PDFs
+
+        });
+
+        it("delete users from a group with just the invitation", async function() {
+
+            const alice = 'alice@example.com';
+
+            const mockDock = await provisionAccountData();
+            const fingerprint = mockDock.docMeta.docInfo.fingerprint;
+            const {groupID} = await doGroupProvision(mockDock, alice, fingerprint);
+
+            const profile = await Profiles.currentUserProfile();
+            assert.isDefined(profile);
+
+            const invitationBefore = await GroupMemberInvitations.listByGroupIDAndProfileID(groupID, profile!.id);
+
+            assert.equal(invitationBefore.length, 1);
+
+            const userRef = UserRefs.fromEmail(alice);
+            await GroupMemberDeletes.exec({groupID, userRefs: [userRef]});
+
+            const invitationAfter = await GroupMemberInvitations.listByGroupIDAndProfileID(groupID, profile!.id);
+
+            assert.equal(invitationAfter.length, 0);
 
         });
 

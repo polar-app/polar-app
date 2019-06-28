@@ -21,6 +21,16 @@ export class GroupMemberInvitations {
 
     }
 
+    public static async listByGroupID(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMemberInvitation>> {
+
+        const clauses: Clause[] = [
+            ['groupID' , '==', groupID],
+        ];
+
+        return await Collections.list(this.COLLECTION, clauses);
+
+    }
+
     public static async listByGroupIDAndProfileID(groupID: GroupIDStr,
                                                   profileID: ProfileIDStr): Promise<ReadonlyArray<GroupMemberInvitation>> {
 

@@ -6,6 +6,18 @@
 import {ProfileIDStr} from '../db/Profiles';
 import {EmailStr} from '../../../util/Strings';
 
+export class UserRefs {
+
+    public static fromEmail(email: EmailStr): UserRef {
+        return {value: email, type: 'email'};
+    }
+
+    public static fromProfileID(profileID: ProfileIDStr): UserRef {
+        return {value: profileID, type: 'profileID'};
+    }
+
+}
+
 export interface UserRef {
     readonly value: EmailStr | ProfileIDStr;
     readonly type: 'email' | 'profileID';
