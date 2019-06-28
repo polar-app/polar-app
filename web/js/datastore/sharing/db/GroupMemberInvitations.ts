@@ -72,11 +72,11 @@ export interface GroupMemberInvitation extends GroupMemberInvitationInit {
 
 export interface Sender {
 
-    readonly profileID: ProfileIDStr;
+    readonly profileID?: ProfileIDStr;
 
     readonly name: string;
 
-    readonly email: string;
+    readonly email?: string;
 
     readonly image: Image | null;
 

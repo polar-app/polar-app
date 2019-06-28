@@ -7,38 +7,71 @@ import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Toaster} from '../toaster/Toaster';
 import {Logger} from '../../logger/Logger';
 import {GroupJoins} from '../../datastore/sharing/rpc/GroupJoins';
+import {NullCollapse} from '../null_collapse/NullCollapse';
+import {isPresent} from '../../Preconditions';
+import {UserImage} from './UserImage';
 
 const log = Logger.create();
 
-export class NotificationForPrivateGroupDoc extends React.PureComponent<IProps, IState> {
+export class NotificationForPrivateGroupDoc extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
 
         this.onAdd = this.onAdd.bind(this);
 
-
     }
 
     public render() {
+
+        const doc = this.props.invitation.docs[0];
+        const from = this.props.invitation.from;
 
         return (
 
             <div className="">
 
-                <div className="notification-sender">
-                    {this.props.invitation.from.name}
+                <div className="text-lg">
+                    {doc.title}
                 </div>
 
-                <Button color="primary"
-                        size="sm"
-                        onClick={() => this.onAdd()}
-                        style={{fontSize: '15px'}}
-                        className="">
+                <div>
+                    {doc.description || ""}
+                </div>
 
-                    Add
+                <div style={{display: 'flex'}}>
 
-                </Button>
+                    <div className="mt-auto mb-auto"
+                         style={{
+                             flexGrow: 1,
+                             display: 'flex'
+                         }}>
+
+                        <UserImage name={from.name} image={from.image}/>
+
+                        <div className="mt-auto mb-auto ml-1">
+                            {from.name}
+                        </div>
+
+                    </div>
+
+                    <div className="mt-auto mb-auto">
+                        <Button color="success"
+                                size="sm"
+                                onClick={() => this.onAdd()}
+                                style={{
+                                    fontSize: '15px',
+                                    fontWeight: 'bold'
+                                }}
+                                className="">
+
+                            <i className="fas fa-plus" style={{ marginRight: '5px' }}/> Add &nbsp;
+
+                        </Button>
+
+                    </div>
+
+                </div>
 
             </div>
 

@@ -72,6 +72,9 @@ import {Tag} from '../../js/tags/Tags';
 import {ContactsSelector} from '../../js/ui/group_sharing/ContactsSelector';
 import {GroupSharingControl} from '../../js/ui/group_sharing/GroupSharingControl';
 import {NotificationButton} from '../../js/ui/notifications/NotificationButton';
+import {NotificationForPrivateGroupDoc} from '../../js/ui/notifications/NotificationForPrivateGroupDoc';
+import {GroupMemberInvitation} from '../../js/datastore/sharing/db/GroupMemberInvitations';
+import {ISODateTimeStrings} from '../../js/metadata/ISODateTimeStrings';
 
 const styles = {
     swatch: {
@@ -171,24 +174,50 @@ class App<P> extends React.Component<{}, IAppState> {
 
         // const root: TNode<Tag> = TagNodes.create(...tags);
 
+        const invitation: GroupMemberInvitation = {
+            id: '123',
+            from: {
+                name: "Alice Smith",
+                profileID: '235',
+                image: {
+                    url: "https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg",
+                    size: null
+                },
+            },
+            created: ISODateTimeStrings.create(),
+            groupID: '345',
+            message: "This is my doc",
+            to: 'alice@example.com',
+            docs: [
+                {
+                    docID: '789',
+                    fingerprint: '456',
+                    title: "this is the title",
+                    nrPages: 1
+                }
+            ]
+        };
+
         return (
 
             <div style={{margin: '5px'}}>
 
-                <h1>ContactsSelector</h1>
+                {/*<h1>ContactsSelector</h1>*/}
 
-                <ContactsSelector options={
-                    [
-                        {value: '1', label: 'alice@example.com'},
-                        {value: '2', label: 'bob@example.com'}
-                    ]
-                }/>
+                {/*<ContactsSelector options={*/}
+                {/*    [*/}
+                {/*        {value: '1', label: 'alice@example.com'},*/}
+                {/*        {value: '2', label: 'bob@example.com'}*/}
+                {/*    ]*/}
+                {/*}/>*/}
 
-                <h1>GroupSharingControl</h1>
+                {/*<h1>GroupSharingControl</h1>*/}
 
-                <GroupSharingControl onDone={NULL_FUNCTION} onCancel={NULL_FUNCTION}/>
+                {/*<GroupSharingControl onDone={NULL_FUNCTION} onCancel={NULL_FUNCTION}/>*/}
 
-                <h1>NotificationButton</h1>
+                <NotificationForPrivateGroupDoc invitation={invitation} persistenceLayerProvider={() => null!}/>
+
+                {/*<h1>NotificationButton</h1>*/}
 
                 {/*<NotificationButton/>*/}
 
