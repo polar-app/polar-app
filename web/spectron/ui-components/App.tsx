@@ -237,7 +237,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 <GroupSharingControl onDone={NULL_FUNCTION}
                                      onCancel={NULL_FUNCTION}
                                      onDelete={NULL_FUNCTION}
-                                     contacts={[]}
+                                     contactProfiles={[]}
                                      members={members}/>
 
                 <hr/>

@@ -2,10 +2,9 @@ import React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {ContactIDStr} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
-import {EmailStr} from '../../util/Strings';
-import {ProfileIDStr} from '../../datastore/sharing/db/Profiles';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {EmailAddresses} from '../../util/EmailAddresses';
+import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -26,19 +25,12 @@ export class ContactsSelector extends React.Component<IProps, IState> {
 
     public render() {
 
-        function convertToOptions(contacts: ReadonlyArray<ContactOption>) {
-            return contacts.map(current => {
-                return {
-                    value: current.value,
-                    label: current.label
-                };
-            });
-        }
 
-        const options = convertToOptions(this.props.options || []);
-        const selectedOptions = convertToOptions(this.state.selectedOptions);
+        const options = [...this.props.options || []];
+        const selectedOptions = [...this.state.selectedOptions];
 
         return <div onPaste={event => this.onPaste(event)}>
+
             <CreatableSelect
 
                 isMulti
@@ -97,7 +89,7 @@ export class ContactsSelector extends React.Component<IProps, IState> {
 interface IProps {
     readonly options?: ReadonlyArray<ContactOption>;
     readonly selectedOptions?: ReadonlyArray<ContactOption>;
-    readonly onChange?: (contactSelections: ReadonlyArray<ContactSelection>) => void;
+    readonly onChange?: (contactSelections: ReadonlyArray<UserRef>) => void;
 }
 
 interface IState {
@@ -109,14 +101,9 @@ export interface ContactOption {
     readonly label: string;
 }
 
-export interface ContactSelection {
-    readonly value: EmailStr | ProfileIDStr;
-    readonly type: 'email' | 'profileID';
-}
-
 export class ContactOptions {
 
-    public static fromContacts(contacts: ReadonlyArray<Contact> = []) {
+    public static fromContacts(contacts: ReadonlyArray<Contact> = []): ReadonlyArray<ContactOption> {
 
         return contacts.map(current => {
 
@@ -143,7 +130,7 @@ export class ContactOptions {
 
     }
 
-    public static toContactSelections(options: ReadonlyArray<ContactOption> = []): ReadonlyArray<ContactSelection> {
+    public static toContactSelections(options: ReadonlyArray<ContactOption> = []): ReadonlyArray<UserRef> {
 
         return options.map(current => {
 

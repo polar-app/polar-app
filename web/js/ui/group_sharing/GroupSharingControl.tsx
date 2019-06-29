@@ -2,12 +2,13 @@ import React from 'react';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {ContactsSelector} from './ContactsSelector';
 import {ContactOption} from './ContactsSelector';
-import {ContactSelection} from './ContactsSelector';
 import Button from 'reactstrap/lib/Button';
 import {Logger} from '../../logger/Logger';
 import {GroupMembersList} from './GroupMembersList';
 import {MemberRecord} from './GroupSharingRecords';
 import Input from 'reactstrap/lib/Input';
+import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
+import {ContactProfile} from './GroupSharingRecords';
 
 const log = Logger.create();
 
@@ -16,7 +17,7 @@ const log = Logger.create();
  */
 export class GroupSharingControl extends React.Component<IProps, IState> {
 
-    private contactSelections: ReadonlyArray<ContactSelection> = [];
+    private contactSelections: ReadonlyArray<UserRef> = [];
 
     private message: string = "";
 
@@ -32,14 +33,22 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
     public render() {
 
-        const contacts = this.props.contacts || [];
+        const contactProfiles = this.props.contactProfiles || [];
 
-        // TODO: right now we only support email contacts
-        const contactOptions: ReadonlyArray<ContactOption> = contacts.map(current => {
-            return {
-                value: current.email!,
-                label: current.email!
-            };
+        const contactOptions: ReadonlyArray<ContactOption> = contactProfiles.map(current => {
+
+            if (current.profile) {
+                return {
+                    value: current.contact.id,
+                    label: current.profile.name || current.profile.handle || current.contact.email || ""
+                };
+            } else {
+                return {
+                    value: current.contact.id,
+                    label: current.contact.email || current.contact.profileID || ""
+                };
+            }
+
         });
 
         return <div>
@@ -105,7 +114,7 @@ interface IProps {
     readonly onCancel: () => void;
     readonly onDone: (invitation: InvitationRequest) => void;
     readonly onDelete: (member: MemberRecord) => void;
-    readonly contacts: ReadonlyArray<Contact>;
+    readonly contactProfiles: ReadonlyArray<ContactProfile>;
     readonly members: ReadonlyArray<MemberRecord>;
 }
 
@@ -116,6 +125,6 @@ interface IState {
  * A user initiated invitation with metadata before its' written
  */
 export interface InvitationRequest {
-    readonly contactSelections: ReadonlyArray<ContactSelection>;
+    readonly contactSelections: ReadonlyArray<UserRef>;
     readonly message: string;
 }

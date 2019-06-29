@@ -32,9 +32,12 @@ export class Profiles {
 
             const handler = async (): Promise<ProfileRecordTuple<T>> => {
 
-                const profile = await this.get(current.profileID);
-
-                return [current, profile];
+                if (current.profileID) {
+                    const profile = await this.get(current.profileID);
+                    return [current, profile];
+                } else {
+                    return [current, undefined];
+                }
 
             };
 
@@ -119,7 +122,7 @@ export type UserIDStr = string;
 export type EmailStr = string;
 
 export interface ProfileIDRecord {
-    readonly profileID: ProfileIDStr;
+    readonly profileID?: ProfileIDStr;
 }
 
 export type ProfileRecordTuple<T> = [T, Profile | undefined];

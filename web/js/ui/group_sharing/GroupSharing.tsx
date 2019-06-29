@@ -1,6 +1,5 @@
 import React from 'react';
 import {Contact} from '../../datastore/sharing/db/Contacts';
-import {ContactSelection} from './ContactsSelector';
 import {Toaster} from '../toaster/Toaster';
 import {Firebase} from '../../firebase/Firebase';
 import {Groups} from '../../datastore/sharing/db/Groups';
@@ -10,6 +9,7 @@ import {Doc} from '../../metadata/Doc';
 import {Preconditions} from '../../Preconditions';
 import {MemberRecord} from './GroupSharingRecords';
 import {GroupSharingRecords} from './GroupSharingRecords';
+import {ContactProfile} from './GroupSharingRecords';
 import {GroupSharingControl} from './GroupSharingControl';
 import {InvitationRequest} from './GroupSharingControl';
 
@@ -26,7 +26,7 @@ export class GroupSharing extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            contacts: [],
+            contactProfiles: [],
             members: []
         };
 
@@ -41,13 +41,16 @@ export class GroupSharing extends React.Component<IProps, IState> {
         };
 
 
-        const contactsHandler = (contacts: ReadonlyArray<Contact>) => {
+        const contactsHandler = (contactProfiles: ReadonlyArray<ContactProfile>) => {
+
+            // FIXME: we have to join these against hte profile and have a
+            // ContactProfile object which has a join of both fields...
 
             if (this.releaser.released) {
                 return;
             }
 
-            this.setState({...this.state, contacts});
+            this.setState({...this.state, contactProfiles});
 
         };
 
@@ -101,7 +104,7 @@ interface IProps {
 }
 
 interface IState {
-    readonly contacts: ReadonlyArray<Contact>;
+    readonly contactProfiles: ReadonlyArray<ContactProfile>;
     readonly members: ReadonlyArray<MemberRecord>;
 }
 

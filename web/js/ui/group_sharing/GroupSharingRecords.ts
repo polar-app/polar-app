@@ -10,11 +10,12 @@ import {Optional} from '../../util/ts/Optional';
 import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
+import {Profile} from '../../datastore/sharing/db/Profiles';
 
 export class GroupSharingRecords {
 
     public static fetch(groupID: string,
-                        contactsHandler: (contacts: ReadonlyArray<Contact>) => void,
+                        contactsHandler: (contacts: ReadonlyArray<ContactProfile>) => void,
                         membersHandler: (members: ReadonlyArray<MemberRecord>) => void,
                         errorHandler: (err: Error) => void) {
 
@@ -123,7 +124,19 @@ export class GroupSharingRecords {
 
         const doHandleContacts = async () => {
             const contacts = await Contacts.list();
-            contactsHandler(contacts);
+
+            const resolvedProfiles = await Profiles.resolve(contacts);
+
+            const contactProfiles = resolvedProfiles.map(current => {
+
+                const [contact, profile] = current;
+
+                return {contact, profile};
+
+            });
+
+            contactsHandler(contactProfiles);
+
         };
 
         Promises.executeInBackground([
@@ -150,4 +163,9 @@ export interface MemberRecordWithProfile extends MemberRecord {
 
     readonly profileID: string;
 
+}
+
+export interface ContactProfile {
+    readonly contact: Contact;
+    readonly profile?: Profile;
 }
