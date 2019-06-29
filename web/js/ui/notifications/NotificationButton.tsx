@@ -12,12 +12,12 @@ const NotificationList = (props: IProps) => {
 
     const invitations = props.invitations || [];
 
-    return <ul>
+    return <div>
         {invitations.map(invitation =>
             <NotificationForPrivateGroupDoc key={invitation.id}
                                             invitation={invitation}
                                             persistenceLayerProvider={props.persistenceLayerProvider}/>)}
-    </ul>;
+    </div>;
 
 };
 
@@ -99,7 +99,10 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
                          toggle={() => this.toggle(false)}
                          target="notification-button"
                          className=""
-                         style={{maxWidth: '600px'}}>
+                         style={{
+                             minWidth: '450px',
+                             maxWidth: '600px'
+                         }}>
 
                     <PopoverBody className="shadow">
 
