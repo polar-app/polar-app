@@ -143,6 +143,8 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
 
     private onDelete(member: MemberRecord) {
 
+        console.log("Deleting member: ", member);
+
         const toUserRef = () => {
 
             switch (member.type) {

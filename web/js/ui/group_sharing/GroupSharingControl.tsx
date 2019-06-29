@@ -42,8 +42,6 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
             };
         });
 
-        console.log("FIXME: found contactOptions, ", contactOptions);
-
         return <div>
 
             <div className="font-weight-bold mb-1">
