@@ -15,7 +15,6 @@ export class PageMeta extends SerializedObject {
 
     /**
      * The pageInfo for this page.
-     * @type {PageInfo}
      */
     public readonly pageInfo: PageInfo;
 
@@ -43,7 +42,6 @@ export class PageMeta extends SerializedObject {
 
     /**
      *
-     * @type {Object<string,Flashcard>}
      */
     public readonly flashcards: {[id: string]: Flashcard} = {};
 
