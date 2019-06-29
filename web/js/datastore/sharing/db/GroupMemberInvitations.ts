@@ -8,6 +8,9 @@ import {Image} from './Images';
 import {Collections} from './Collections';
 import {Preconditions} from '../../../Preconditions';
 import {Clause} from './Collections';
+import {Logger} from '../../../logger/Logger';
+
+const log = Logger.create();
 
 export class GroupMemberInvitations {
 
@@ -46,7 +49,12 @@ export class GroupMemberInvitations {
     public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
 
         const user = await Firebase.currentUser();
-        Preconditions.assertPresent(user, 'user');
+
+        if (! user) {
+            // no current user so there's nothing we can do yet.
+            log.warn("No user. No notifications will be delivered");
+            return;
+        }
 
         return await Collections.onSnapshot(this.COLLECTION, [['to', '==', user!.email]], delegate);
 
