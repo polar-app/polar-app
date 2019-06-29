@@ -38,7 +38,7 @@ export class NotificationForPrivateGroupDoc extends React.Component<IProps, ISta
                     {doc.description || ""}
                 </div>
 
-                <p className="border-left border-secondary ml-1 pl-1">
+                <p className="border-left border-secondary ml-1 pl-1 mt-1">
                     {invitation.message}
                 </p>
 
