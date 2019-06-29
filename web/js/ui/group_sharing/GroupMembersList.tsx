@@ -1,5 +1,5 @@
 import React from 'react';
-import {GroupMember} from './GroupMember';
+import {GroupMemberEntry} from './GroupMemberEntry';
 import {MemberRecord} from './GroupSharingRecords';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 
@@ -31,7 +31,9 @@ export class GroupMembersList extends React.Component<IProps, IState> {
             </NullCollapse>
 
             {members.map(item =>
-                <GroupMember member={item} key={item.id} />)}
+                <GroupMemberEntry key={item.id}
+                                  member={item}
+                                  onDelete={this.props.onDelete}/>)}
         </div>;
 
     }
@@ -40,6 +42,7 @@ export class GroupMembersList extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    readonly onDelete: (member: MemberRecord) => void;
     readonly members?: ReadonlyArray<MemberRecord>;
 }
 

@@ -16,7 +16,8 @@ export class ConfirmButton extends React.Component<IProps, IState> {
 
         // 1. what if I hit the button twice in the same spot?
         //
-        // 2. there is now way to cancel
+        // 2. there is now way to cancel once I enter the second confirm and
+        // I would have to replace it with TWO buttons.
 
         return <div style={{display: 'flex'}}>
 
@@ -24,7 +25,6 @@ export class ConfirmButton extends React.Component<IProps, IState> {
         </div>;
 
     }
-
 
 }
 

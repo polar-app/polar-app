@@ -3,22 +3,24 @@ import React from 'react';
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
-import {DatastoreCapabilities} from '../../datastore/Datastore';
-import {GroupSharingControl} from './GroupSharingControl';
+import {InvitationRequest} from './GroupSharingControl';
 import {DocRefs} from '../../datastore/sharing/db/DocRefs';
 import {FirebaseDatastores} from '../../datastore/FirebaseDatastores';
 import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
-import {ContactSelection} from './ContactsSelector';
 import {DropdownChevron} from '../util/DropdownChevron';
-import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Logger} from '../../logger/Logger';
-import {Profile} from '../../datastore/sharing/db/Profiles';
-import {Doc} from '../../metadata/Doc';
 import {GroupSharing} from './GroupSharing';
-import {InvitationRequest} from './GroupSharingControl';
-
-const log = Logger.create();
+import {MemberRecord} from './GroupSharingRecords';
+import {Doc} from '../../metadata/Doc';
+import {DatastoreCapabilities} from '../../datastore/Datastore';
+import {UserRefs} from '../../datastore/sharing/rpc/UserRefs';
+import {GroupMember} from '../../datastore/sharing/db/GroupMembers';
+import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
+import {GroupMemberDeletes} from '../../datastore/sharing/rpc/GroupMemberDeletes';
+import {Groups} from '../../datastore/sharing/db/Groups';
+import {Firebase} from '../../firebase/Firebase';
+import {Preconditions} from '../../Preconditions';
 
 export class GroupSharingButton extends React.Component<IProps, IState> {
 
@@ -26,9 +28,9 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.doGroupProvision = this.doGroupProvision.bind(this);
-
         this.onDone = this.onDone.bind(this);
+        this.doGroupProvision = this.doGroupProvision.bind(this);
+        this.onDelete = this.onDelete.bind(this);
 
         this.state = {
             open: false,
@@ -75,6 +77,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
 
                         <GroupSharing doc={this.props.doc}
                                       onCancel={() => this.toggle(false)}
+                                      onDelete={member => this.onDelete(member)}
                                       onDone={(contactSelections) => this.onDone(contactSelections)}/>
 
                     </PopoverBody>
@@ -138,6 +141,49 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
 
     }
 
+    private onDelete(member: MemberRecord) {
+
+        const toUserRef = () => {
+
+            switch (member.type) {
+
+                case 'member':
+                    const groupMember = member.value as GroupMember;
+                    return UserRefs.fromProfileID(groupMember.profileID);
+                case 'pending':
+                    const groupMemberInvitation = member.value as GroupMemberInvitation;
+                    return UserRefs.fromEmail(groupMemberInvitation.to);
+
+            }
+
+        };
+
+        const handle = async () => {
+
+            const user = await Firebase.currentUser();
+            Preconditions.assertPresent(user, 'user');
+            const uid = user!.uid;
+
+            const {doc} = this.props;
+            const fingerprint = doc.docInfo.fingerprint;
+
+            const userRef = toUserRef();
+
+            const groupID = Groups.createIDForKey(uid, fingerprint);
+
+            await GroupMemberDeletes.exec({groupID, userRefs: [userRef]});
+
+        };
+
+        handle()
+            .catch(err => {
+                const msg = "Failed to delete user from group: ";
+                console.error(msg, err);
+                Toaster.error(msg + err.message);
+            });
+
+    }
+
 }
 
 interface IProps {
@@ -155,16 +201,6 @@ interface IProps {
 }
 
 interface IState {
-
-    /**
-     * The contacts that this user routinely shares with.
-     */
-    readonly contacts?: ReadonlyArray<Contact>;
-
-    /**
-     * The members of this group by profile.
-     */
-    readonly members?: ReadonlyArray<Profile>;
 
     readonly open: boolean;
 }

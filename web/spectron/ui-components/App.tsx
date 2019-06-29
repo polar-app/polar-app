@@ -75,6 +75,8 @@ import {NotificationButton} from '../../js/ui/notifications/NotificationButton';
 import {NotificationForPrivateGroupDoc} from '../../js/ui/notifications/NotificationForPrivateGroupDoc';
 import {GroupMemberInvitation} from '../../js/datastore/sharing/db/GroupMemberInvitations';
 import {ISODateTimeStrings} from '../../js/metadata/ISODateTimeStrings';
+import {MemberRecord} from '../../js/ui/group_sharing/GroupSharingRecords';
+import {GroupMember} from '../../js/datastore/sharing/db/GroupMembers';
 
 const styles = {
     swatch: {
@@ -186,17 +188,34 @@ class App<P> extends React.Component<{}, IAppState> {
             },
             created: ISODateTimeStrings.create(),
             groupID: '345',
-            message: "This is my doc",
+            message: "Here's the doc I was telling you about.  Let me know your thoughts.",
             to: 'alice@example.com',
             docs: [
                 {
                     docID: '789',
                     fingerprint: '456',
-                    title: "this is the title",
+                    title: "War and Peace. ",
                     nrPages: 1
                 }
             ]
         };
+
+        const groupMember: GroupMember = {
+            id: '345',
+            profileID: '234',
+            created: ISODateTimeStrings.create(),
+            groupID: '456',
+        };
+
+        const members: MemberRecord[] = [
+            {
+                id: '123',
+                label: 'Alice Smith',
+                type: 'member',
+                value: groupMember,
+                created: ISODateTimeStrings.create(),
+            }
+        ];
 
         return (
 
@@ -213,10 +232,15 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<h1>GroupSharingControl</h1>*/}
 
+                <hr/>
+
                 <GroupSharingControl onDone={NULL_FUNCTION}
                                      onCancel={NULL_FUNCTION}
+                                     onDelete={NULL_FUNCTION}
                                      contacts={[]}
-                                     members={[]}/>
+                                     members={members}/>
+
+                <hr/>
 
                 <NotificationForPrivateGroupDoc invitation={invitation} persistenceLayerProvider={() => null!}/>
 

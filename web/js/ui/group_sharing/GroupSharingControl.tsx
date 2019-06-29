@@ -8,10 +8,6 @@ import {Logger} from '../../logger/Logger';
 import {GroupMembersList} from './GroupMembersList';
 import {MemberRecord} from './GroupSharingRecords';
 import Input from 'reactstrap/lib/Input';
-import NavItem from 'reactstrap/lib/NavItem';
-import Nav from 'reactstrap/lib/Nav';
-import NavLink from 'reactstrap/lib/NavLink';
-import TabContent from 'reactstrap/lib/TabContent';
 
 const log = Logger.create();
 
@@ -71,7 +67,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
             </div>
 
-            <GroupMembersList members={this.props.members}/>
+            <GroupMembersList members={this.props.members} onDelete={this.props.onDelete}/>
 
             {/*<SharingDisclaimer/>*/}
 
@@ -110,6 +106,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 interface IProps {
     readonly onCancel: () => void;
     readonly onDone: (invitation: InvitationRequest) => void;
+    readonly onDelete: (member: MemberRecord) => void;
     readonly contacts: ReadonlyArray<Contact>;
     readonly members: ReadonlyArray<MemberRecord>;
 }

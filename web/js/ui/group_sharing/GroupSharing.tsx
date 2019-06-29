@@ -53,8 +53,6 @@ export class GroupSharing extends React.Component<IProps, IState> {
 
         const membersHandler = (members: ReadonlyArray<MemberRecord>) => {
 
-            console.log("FIXME memberS: ", members);
-
             if (this.releaser.released) {
                 return;
             }
@@ -99,6 +97,7 @@ interface IProps {
     readonly doc: Doc;
     readonly onCancel: () => void;
     readonly onDone: (invitation: InvitationRequest) => void;
+    readonly onDelete: (member: MemberRecord) => void;
 }
 
 interface IState {

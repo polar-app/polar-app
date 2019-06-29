@@ -2,14 +2,18 @@ import React from 'react';
 import {MemberRecord} from './GroupSharingRecords';
 import Button from 'reactstrap/lib/Button';
 import {NULL_FUNCTION} from '../../util/Functions';
+import {Dialogs} from '../dialogs/Dialogs';
+import {ConfirmProps} from '../dialogs/Confirm';
 
 /**
  * Allow the user to select from one or more of their contacts.
  */
-export class GroupMember extends React.Component<IProps, IState> {
+export class GroupMemberEntry extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.onDelete = this.onDelete.bind(this);
 
     }
 
@@ -42,14 +46,16 @@ export class GroupMember extends React.Component<IProps, IState> {
                     </div>
 
                     <div className="mt-auto mb-auto ml-1">
+
                         <Button color="light"
                                 size="sm"
-                                onClick={NULL_FUNCTION}
+                                onClick={() => this.onDelete(member)}
                                 className="pl-2 pr-2">
 
                             <i className="fas fa-trash"/>
 
                         </Button>
+
                     </div>
 
                 </div>
@@ -59,11 +65,24 @@ export class GroupMember extends React.Component<IProps, IState> {
 
     }
 
+    private onDelete(member: MemberRecord) {
+
+        const opts: ConfirmProps = {
+            title: 'Are you sure you want to delete this group member?',
+            onConfirm: () => this.props.onDelete(member),
+            onCancel: NULL_FUNCTION
+        };
+
+        Dialogs.confirm(opts);
+
+    }
+
 
 }
 
 interface IProps {
     readonly member: MemberRecord;
+    readonly onDelete: (member: MemberRecord) => void;
 }
 
 interface IState {
