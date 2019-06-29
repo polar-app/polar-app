@@ -5,6 +5,7 @@ import {NULL_FUNCTION} from '../../util/Functions';
 import {EmailAddresses} from '../../util/EmailAddresses';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
 import {ContactProfile} from './GroupSharingRecords';
+import {ContactOptions} from './ContactOptions';
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -80,7 +81,7 @@ export class ContactsSelector extends React.Component<IProps, IState> {
 
         const onChange = this.props.onChange || NULL_FUNCTION;
 
-        onChange(ContactOptions.toContactSelections(selectedOptions));
+        onChange(ContactOptions.toUserRefs(selectedOptions));
 
     }
 
@@ -101,48 +102,3 @@ export interface ContactOption {
     readonly label: string;
 }
 
-export class ContactOptions {
-
-    public static toContactOptions(contactProfiles: ReadonlyArray<ContactProfile>): ReadonlyArray<ContactOption> {
-
-        return  contactProfiles.map(current => {
-
-            if (current.profile) {
-                return {
-                    value: current.profile.id,
-                    label: current.profile.name || current.profile.handle || current.contact.email || ""
-                };
-            } else {
-                return {
-                    value: current.contact.email!,
-                    label: current.contact.email!
-                };
-            }
-
-        });
-
-    }
-
-    public static toContactSelections(options: ReadonlyArray<ContactOption> = []): ReadonlyArray<UserRef> {
-
-        return options.map(current => {
-
-            if (current.value.indexOf("@") !== -1) {
-
-                return {
-                    value: current.value,
-                    type: 'email'
-                };
-
-            }
-
-            return {
-                value: current.value,
-                type: 'profileID'
-            };
-
-        });
-
-    }
-
-}

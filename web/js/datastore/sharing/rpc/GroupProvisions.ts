@@ -1,6 +1,7 @@
 import {GroupInit} from '../db/Groups';
 import {JSONRPC} from './JSONRPC';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
+import {UserRef} from './UserRefs';
 
 export class GroupProvisions {
 
@@ -29,7 +30,7 @@ export interface GroupProvisionRequest extends GroupInit {
     /**
      * Invite the users in this set of invitations to a group of users.
      */
-    readonly invitations: Invitations;
+    readonly invitations: UserRefInvitations;
 
 }
 
@@ -47,14 +48,12 @@ export interface GroupProvisionResponse {
 
 }
 
-interface Invitations {
+interface UserRefInvitations {
 
     readonly message: string;
 
-    readonly to: ReadonlyArray<EmailStr>;
+    readonly to: ReadonlyArray<UserRef>;
 
 }
 
 export type DocIDStr = string;
-
-export type EmailStr = string;

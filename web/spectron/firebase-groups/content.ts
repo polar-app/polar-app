@@ -273,6 +273,8 @@ SpectronRenderer.run(async (state) => {
 
             const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
+            const userRef = UserRefs.fromEmail(email);
+
             const request: GroupProvisionRequest = {
                 key,
                 docs: [
@@ -281,7 +283,7 @@ SpectronRenderer.run(async (state) => {
                 invitations: {
                     message: "Private invite to my special group",
                     to: [
-                        email
+                        userRef
                     ]
                 },
                 visibility: 'private'
@@ -308,7 +310,7 @@ SpectronRenderer.run(async (state) => {
                 invitations: {
                     message: "Private invite to my special group",
                     to: [
-                        'getpolarized.test+test1@gmail.com'
+                        UserRefs.fromEmail('getpolarized.test+test1@gmail.com')
                     ]
                 },
                 name: 'linux',
@@ -553,7 +555,6 @@ SpectronRenderer.run(async (state) => {
 
                 await waitForGroupDelay();
 
-                // FIXME: this is failing for the user...
                 const groupDocs = await GroupDocs.list(groupID);
 
                 assert.equal(groupDocs.length, 1, "No group docs found.");
@@ -860,7 +861,7 @@ SpectronRenderer.run(async (state) => {
             const groupDocs = await GroupDocs.list(groupID);
             assert.equal(groupDocs.length, 2);
 
-            // FIXME: now make sure BOTH users can read these docs and
+            // TODO: now make sure BOTH users can read these docs and
             // download/fetch the PDFs
 
         });
@@ -1098,8 +1099,6 @@ SpectronRenderer.run(async (state) => {
         });
 
         it("Public docs in public groups", async function() {
-
-            // FIXME: need to add support for this...
 
             const mockDock = await provisionAccountData();
 

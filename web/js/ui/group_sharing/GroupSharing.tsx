@@ -43,9 +43,6 @@ export class GroupSharing extends React.Component<IProps, IState> {
 
         const contactsHandler = (contactProfiles: ReadonlyArray<ContactProfile>) => {
 
-            // FIXME: we have to join these against hte profile and have a
-            // ContactProfile object which has a join of both fields...
-
             if (this.releaser.released) {
                 return;
             }

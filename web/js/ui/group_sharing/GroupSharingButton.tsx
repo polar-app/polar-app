@@ -21,6 +21,7 @@ import {GroupMemberDeletes} from '../../datastore/sharing/rpc/GroupMemberDeletes
 import {Groups} from '../../datastore/sharing/db/Groups';
 import {Firebase} from '../../firebase/Firebase';
 import {Preconditions} from '../../Preconditions';
+import {ContactOptions} from './ContactOptions';
 
 export class GroupSharingButton extends React.Component<IProps, IState> {
 
@@ -121,10 +122,6 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
 
         const {message} = invitation;
 
-        // FIXME: this is going to be wrong and will not have profile IDs
-        // there... to share with.
-        const to = invitation.contactSelections.map(current => current.value);
-
         Toaster.info("Sharing document with users ... ");
 
         await GroupDatastores.provision({
@@ -133,7 +130,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
             docs: [docRef],
             invitations: {
                 message,
-                to
+                to: invitation.contactSelections
             }
         });
 

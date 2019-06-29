@@ -1,15 +1,13 @@
 import React from 'react';
-import {Contact} from '../../datastore/sharing/db/Contacts';
 import {ContactsSelector} from './ContactsSelector';
-import {ContactOption} from './ContactsSelector';
 import Button from 'reactstrap/lib/Button';
 import {Logger} from '../../logger/Logger';
 import {GroupMembersList} from './GroupMembersList';
 import {MemberRecord} from './GroupSharingRecords';
+import {ContactProfile} from './GroupSharingRecords';
 import Input from 'reactstrap/lib/Input';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
-import {ContactProfile} from './GroupSharingRecords';
-import {ContactOptions} from './ContactsSelector';
+import {ContactOptions} from './ContactOptions';
 
 const log = Logger.create();
 
