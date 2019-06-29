@@ -1,10 +1,10 @@
 import React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {ContactIDStr} from '../../datastore/sharing/db/Contacts';
-import {Contact} from '../../datastore/sharing/db/Contacts';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {EmailAddresses} from '../../util/EmailAddresses';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
+import {ContactProfile} from './GroupSharingRecords';
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -103,27 +103,20 @@ export interface ContactOption {
 
 export class ContactOptions {
 
-    public static fromContacts(contacts: ReadonlyArray<Contact> = []): ReadonlyArray<ContactOption> {
+    public static toContactOptions(contactProfiles: ReadonlyArray<ContactProfile>): ReadonlyArray<ContactOption> {
 
-        return contacts.map(current => {
+        return  contactProfiles.map(current => {
 
-            if (current.profileID) {
-
+            if (current.profile) {
                 return {
-                    value: current.profileID,
-                    // FIXME: this isn't a good value to put in the UI.
-                    label: current.profileID
+                    value: current.profile.id,
+                    label: current.profile.name || current.profile.handle || current.contact.email || ""
                 };
-
-            } else if (current.email) {
-
-                return {
-                    value: current.email.toLowerCase(),
-                    label: current.email
-                };
-
             } else {
-                throw new Error("No email or profileID");
+                return {
+                    value: current.contact.email!,
+                    label: current.contact.email!
+                };
             }
 
         });
@@ -137,14 +130,14 @@ export class ContactOptions {
             if (current.value.indexOf("@") !== -1) {
 
                 return {
-                    value: current.label,
+                    value: current.value,
                     type: 'email'
                 };
 
             }
 
             return {
-                value: current.label,
+                value: current.value,
                 type: 'profileID'
             };
 

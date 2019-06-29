@@ -9,6 +9,7 @@ import {MemberRecord} from './GroupSharingRecords';
 import Input from 'reactstrap/lib/Input';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
 import {ContactProfile} from './GroupSharingRecords';
+import {ContactOptions} from './ContactsSelector';
 
 const log = Logger.create();
 
@@ -35,21 +36,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
         const contactProfiles = this.props.contactProfiles || [];
 
-        const contactOptions: ReadonlyArray<ContactOption> = contactProfiles.map(current => {
-
-            if (current.profile) {
-                return {
-                    value: current.contact.id,
-                    label: current.profile.name || current.profile.handle || current.contact.email || ""
-                };
-            } else {
-                return {
-                    value: current.contact.id,
-                    label: current.contact.email || current.contact.profileID || ""
-                };
-            }
-
-        });
+        const contactOptions = ContactOptions.toContactOptions(contactProfiles);
 
         return <div>
 
