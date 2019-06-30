@@ -18,15 +18,11 @@ import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
-import {Visibility} from '../datastore/Datastore';
-import {PersistenceLayers} from '../datastore/PersistenceLayers';
-import {SharingDatastores} from '../datastore/SharingDatastores';
-import {ShareContentButton} from '../apps/viewer/ShareContentButton';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
 import {AreaHighlight} from '../metadata/AreaHighlight';
-import {BackendFileRefs} from '../datastore/BackendFileRefs';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
+import {DocMeta} from "../metadata/DocMeta";
 
 const log = Logger.create();
 
@@ -117,9 +113,24 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     }
 
+    public componentDidMount(): void {
+
+        this.init()
+            .catch(err => log.error("Failed init: ", err));
+
+    }
+
     private async init() {
 
-        const annotations = await DocAnnotations.getAnnotationsForPage(this.props.persistenceLayerProvider,
+        await this.rebuildInitialAnnotations();
+
+        this.registerListenerForPrimaryDocMeta();
+
+    }
+
+    private async rebuildInitialAnnotations() {
+
+        const annotations = await DocAnnoNtations.getAnnotationsForPage(this.props.persistenceLayerProvider,
                                                                        this.props.doc.docMeta);
 
         this.docAnnotationIndex
@@ -131,15 +142,14 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     }
 
-    public componentDidMount(): void {
-
-        this.init()
-            .catch(err => log.error("Failed init: ", err));
-
-        // TODO: remove all these listeners when the component unmounts... in
-        // our case though it never unmounts
-
+    private registerListenerForPrimaryDocMeta() {
         const {docMeta} = this.props.doc;
+
+        this.registerListenerForDocMeta(docMeta);
+
+    }
+
+    private registerListenerForDocMeta(docMeta: DocMeta) {
 
         new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
 
@@ -167,7 +177,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         });
 
-        new TextHighlightModel().registerListener(this.props.doc.docMeta, annotationEvent => {
+        new TextHighlightModel().registerListener(docMeta, annotationEvent => {
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,
@@ -180,7 +190,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                                        docAnnotation);
         });
 
-        new CommentModel().registerListener(this.props.doc.docMeta, annotationEvent => {
+        new CommentModel().registerListener(docMeta, annotationEvent => {
 
             const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromComment(docMeta, comment, annotationEvent.pageMeta);
@@ -191,7 +201,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         });
 
-        new FlashcardModel().registerListener(this.props.doc.docMeta, annotationEvent => {
+        new FlashcardModel().registerListener(docMeta, annotationEvent => {
 
             const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta, flashcard, annotationEvent.pageMeta);
@@ -201,7 +211,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                                             childDocAnnotation);
 
         });
-
     }
 
     private convertAnnotation<T>(value: any | undefined | null, converter: (input: any) => T) {
