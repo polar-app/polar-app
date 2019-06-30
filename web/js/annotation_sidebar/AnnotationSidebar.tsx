@@ -130,7 +130,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async rebuildInitialAnnotations() {
 
-        const annotations = await DocAnnoNtations.getAnnotationsForPage(this.props.persistenceLayerProvider,
+        const annotations = await DocAnnotations.getAnnotationsForPage(this.props.persistenceLayerProvider,
                                                                        this.props.doc.docMeta);
 
         this.docAnnotationIndex

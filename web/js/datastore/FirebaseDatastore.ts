@@ -1,20 +1,38 @@
-import {AbstractDatastore, BinaryFileData, Datastore, DatastoreConsistency, DatastoreInitOpts, DatastoreOverview, DeleteResult, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, FileRef, InitResult, MutationType, PrefsProvider, SnapshotResult, Visibility} from './Datastore';
-import {WritableBinaryMetaDatastore} from './Datastore';
-import {DefaultWriteFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {NetworkLayers} from './Datastore';
-import {WriteOpts} from './Datastore';
-import {FileMeta} from './Datastore';
+import {
+    AbstractDatastore,
+    BinaryFileData,
+    Datastore,
+    DatastoreCapabilities,
+    DatastoreConsistency,
+    DatastoreInitOpts,
+    DatastoreOverview,
+    DefaultWriteFileOpts,
+    DeleteResult,
+    DocMetaMutation,
+    DocMetaSnapshotEvent,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    FileMeta,
+    FileRef,
+    GetFileOpts,
+    GroupIDStr,
+    InitResult,
+    MutationType,
+    NetworkLayers,
+    PrefsProvider,
+    SnapshotResult,
+    Visibility,
+    WritableBinaryMetaDatastore,
+    WriteFileOpts,
+    WriteOpts
+} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Firestore} from '../firebase/Firestore';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
-import {Preconditions} from '../Preconditions';
-import {isPresent} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
@@ -26,8 +44,7 @@ import {Percentage, ProgressTracker} from '../util/ProgressTracker';
 import {AsyncProviders, Providers} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
 import {FileHandle, FileHandles} from '../util/Files';
-import {UserID} from '../firebase/Firebase';
-import {Firebase} from '../firebase/Firebase';
+import {Firebase, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
@@ -39,7 +56,7 @@ import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
 import {Latch} from '../util/Latch';
 import {FirebaseDatastores} from './FirebaseDatastores';
-import {GroupIDStr} from './Datastore';
+import {DocPermissions} from "./sharing/db/DocPermissions";
 
 const log = Logger.create();
 
@@ -608,6 +625,25 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const id = FirebaseDatastores.computeDocMetaID(fingerprint);
 
+            const createRecordPermission = async (): Promise<RecordPermission> => {
+
+                const docPermission = await DocPermissions.get(id, {source: 'server'});
+
+                if (docPermission) {
+                    return {
+                        visibility: docPermission.visibility,
+                        groups: docPermission.groups
+                    };
+                }
+
+                return {
+                    visibility: docInfo.visibility || Visibility.PRIVATE
+                };
+
+            };
+
+            const recordPermission = await createRecordPermission();
+
             const docMetaRef = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
                 .doc(id);
@@ -625,12 +661,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const batch = this.firestore!.batch();
 
-            const visibility = docInfo.visibility;
+            log.info(`Write of doc with id ${id} and permission: `, recordPermission);
 
-            log.info(`Write of doc with id ${id} and visibility: ${visibility}`);
-
-            batch.set(docMetaRef, this.createRecordHolderForDocMeta(docInfo, data, {visibility}));
-            batch.set(docInfoRef, this.createRecordHolderForDocInfo(docInfo, {visibility}));
+            batch.set(docMetaRef, this.createRecordHolderForDocMeta(docInfo, data, recordPermission));
+            batch.set(docInfoRef, this.createRecordHolderForDocInfo(docInfo, recordPermission));
 
             await batch.commit();
 
@@ -1049,20 +1083,24 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
 type FirestoreSource = 'default' | 'server' | 'cache';
 
-/**
- * Holds a data object literal by value. This contains the high level
- * information about a document including the ID and the visibility.  The value
- * object points to a more specific object which hold the actual data we need.
- */
-export interface RecordHolder<T> {
-
-    // the owner of this record.
-    readonly uid: UserID;
+export interface RecordPermission {
 
     // the visibility of this record.
     readonly visibility: Visibility;
 
     readonly groups?: ReadonlyArray<GroupIDStr>;
+
+}
+
+/**
+ * Holds a data object literal by value. This contains the high level
+ * information about a document including the ID and the visibility.  The value
+ * object points to a more specific object which hold the actual data we need.
+ */
+export interface RecordHolder<T> extends RecordPermission {
+
+    // the owner of this record.
+    readonly uid: UserID;
 
     readonly id: string;
 
