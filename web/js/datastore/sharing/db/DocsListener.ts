@@ -1,11 +1,12 @@
 import {GroupIDStr} from "../../Datastore";
-import {UserGroups} from "./UserGroups";
+import {UserGroup, UserGroups} from "./UserGroups";
 import {GroupDoc, GroupDocs} from "./GroupDocs";
 import {DocMeta} from "../../../metadata/DocMeta";
 import {SetArrays} from "../../../util/SetArrays";
 import {PageMeta} from "../../../metadata/PageMeta";
-import {DocumentChange} from "./Collections";
+import {Collections, DocumentChange} from "./Collections";
 import {DocIDStr} from "../rpc/GroupProvisions";
+import {DocMetaHolder, RecordHolder} from "../../FirebaseDatastore";
 
 export class DocsListener {
 
@@ -21,14 +22,36 @@ export class DocsListener {
         // FIXME: only emit on the FIRST time we see the doc and then give the caller a
         // proxied object after that...
 
-        const index: {[docID: string]: DocMeta} = {};
+        const docMetaIndex: {[docID: string]: DocMeta} = {};
 
-        const handleDocMeta = async (docID: DocIDStr) => {
+        const groupDocMonitors  = new Set<DocIDStr>();
 
-        }
+        const handleDocMetaRecord = async (docMetaRecord: DocMetaRecord | undefined) => {
+
+            // FIXME: listen to snapshots of this DocMeta and then perform the merger...
+
+            if (! docMetaRecord) {
+                // doc was removed
+                return;
+            }
+
+            //
+            // const getOrCreateDocMeta = () => {
+            //
+            //     if (docMetaIndex[docID]) {
+            //         return docMetaIndex[docID];
+            //     } else {
+            //
+            //     }
+            //
+            // };
+
+        };
 
         const handleGroupDoc = async (groupDocChange: DocumentChange<GroupDoc>) => {
 
+            // TODO: we technically need to keep track and unsubscribe when documents are
+            // removed from the group.
 
             if (groupDocChange.type === 'removed') {
                 // we only care about added or updated
@@ -39,27 +62,17 @@ export class DocsListener {
 
             const {docID} = groupDoc;
 
-            // FIXME: listen to snapshots of this DocMeta and then perform the merger...
+            if (! groupDocMonitors.has(docID)) {
 
-            // FIXME: read the DocMetas
+                // start listening to snapshots on this docID
+                await DocMetaRecords.onSnapshot(docID, record => {
 
-            // FIXME: start listening to snapshtos on this docID
+                    handleDocMetaRecord(record)
+                        .catch(err => errHandler(err));
 
-            const getOrCreateDocMeta = () => {
+                });
 
-                if (index[docID]) {
-
-                    return index[docID];
-
-                } else {
-
-                }
-
-            }
-
-            if (! monitoring.has(groupDoc.docID)) {
-
-                // we do not need to do anything here as we're already listening to this group.
+                groupDocMonitors.add(docID);
 
             }
 
@@ -182,7 +195,20 @@ class StringDicts {
 
 class DocMetaRecords {
 
+    public static readonly COLLECTION = 'doc_meta';
+
+    public static async onSnapshot(id: DocMetaIDStr, handler: (record: DocMetaRecord | undefined) => void) {
+
+        return await Collections.onDocumentSnapshot<DocMetaRecord>(this.COLLECTION,
+                                                                   id,
+                                                                   record => handler(record));
 
 
+    }
 
 }
+
+
+export type DocMetaIDStr = string;
+
+export type DocMetaRecord = RecordHolder<DocMetaHolder>;
