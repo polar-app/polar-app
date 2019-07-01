@@ -21,8 +21,6 @@ export class DocsListener {
                          docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
                          errHandler: (err: Error) => void) {
 
-        // FIXME: only emit on the FIRST time we see the doc and then give the caller a
-        // proxied object after that...
 
         const docMetaIndex: {[docID: string]: DocMeta} = {};
 
@@ -40,41 +38,17 @@ export class DocsListener {
 
             const {docID, fingerprint} = groupDoc;
 
-            interface DocMetaInstance {
-                readonly created: boolean;
-                readonly docMeta: DocMeta;
-            }
-
-            const getOrCreateDocMeta = (): DocMetaInstance => {
-
-                if (docMetaIndex[docID]) {
-
-                    const created = false;
-                    const docMeta = docMetaIndex[docID];
-
-                    return {created, docMeta};
-
-                } else {
-                    const created = true;
-                    const docMeta =
-
-                    return {created, docMeta};
-                }
-
-            };
-
             const prev = Optional.of(docMetaIndex[docID]).getOrUndefined();
             const curr = DocMetas.deserialize(docMetaRecord.value.value, fingerprint);
 
-
-
-            const docMetaInstance = getOrCreateDocMeta();
-
-            const {created, docMeta} = docMetaInstance;
-
-            // now merge the metadata so we get our events fired.
-
-
+            if (prev) {
+                // now merge the metadata so we get our events fired.
+                this.mergeDocMetaUpdate(curr, prev);
+            } else {
+                // only emit on the FIRST time we see the doc and then give the caller a
+                // proxied object after that...
+                docMetaHandler(curr, groupDoc);
+            }
 
         };
 
@@ -110,16 +84,6 @@ export class DocsListener {
 
         const handleGroup = async (groupID: GroupIDStr) => {
 
-            // FIXME this will load the initial documents but it will NOT
-            // load deltas from the server which is the MAIN problem at the moment...
-
-            // FIXME: we might have to refactor this to have it ALL be done in react
-            // moving forward which would mean a huge amount of wasted time but worth
-            // it for the long term.
-
-            // FIXME: this is going to give us a dumop of ALL the documents in this snapshot
-            // not just the changes..so we're goign to fetch EVERY time one updates... which is
-            // NOT what we want...
             await GroupDocs.onSnapshotForByGroupIDAndFingerprint(groupID, fingerprint, groupDocs => {
 
                 for (const groupDoc of groupDocs) {
@@ -168,10 +132,8 @@ export class DocsListener {
     /**
      * Start with the source and perform a diff against the target.
      *
-     * @param source
-     * @param target
      */
-    public static mergeUpdate(source: DocMeta, target: DocMeta) {
+    public static mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
 
         const mergePageMeta = (source: PageMeta, target: PageMeta) => {
 
@@ -232,7 +194,6 @@ class DocMetaRecords {
         return await Collections.onDocumentSnapshot<DocMetaRecord>(this.COLLECTION,
                                                                    id,
                                                                    record => handler(record));
-
 
     }
 
