@@ -59,14 +59,23 @@ button.dropdown-item:hover {
     font-size: 12px;
 }
 
+.text-sm input,
+.text-sm textarea,
+.text-sm button,
 .text-sm {
     font-size: 14px;
 }
 
+.text-md input,
+.text-md textarea,
+.text-md button,
 .text-md {
     font-size: 16px;
 }
 
+.text-lg input,
+.text-lg textarea,
+.text-lg button,
 .text-lg {
     font-size: 18px;
 }

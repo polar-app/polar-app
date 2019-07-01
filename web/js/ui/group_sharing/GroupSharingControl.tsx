@@ -36,7 +36,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
         const contactOptions = ContactOptions.toContactOptions(contactProfiles);
 
-        return <div>
+        return <div className="text-md">
 
             <div className="font-weight-bold mb-1">
                 Share with others:
@@ -45,11 +45,11 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
             <ContactsSelector options={contactOptions}
                               onChange={contactSelections => this.contactSelections = contactSelections}/>
 
-            <div className="mt-1">
+            <div className="mt-2">
 
                 <Input type="textarea"
                        name="message"
-                       className="p-2"
+                       className="p-2 text-md"
                        placeholder="Message to send with the invitation ..."
                        style={{
                            width: '100%',
@@ -63,7 +63,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
             {/*<SharingDisclaimer/>*/}
 
-            <div className="mt-1 text-right">
+            <div className="mt-2 text-right">
 
                 <Button color="secondary"
                         size="sm"

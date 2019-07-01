@@ -340,7 +340,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             return (
 
-                <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1">
+                <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1 text-md">
 
                     <SplitBar>
 
