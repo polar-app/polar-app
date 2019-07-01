@@ -31,10 +31,83 @@ export class DocMetaListener {
         // unsubscribe functions.
 
         const handleUserGroups = async () => {
-            await UserGroups.onSnapshot(userGroup => this.onUserGroup(userGroup));
+            await UserGroups.onSnapshot(userGroup => this.onSnapshotForUserGroup(userGroup));
         };
 
         handleUserGroups()
+            .catch(err => this.errHandler(err));
+
+    }
+
+    public onSnapshotForUserGroup(userGroup: UserGroup | undefined) {
+
+        if (! userGroup) {
+            return;
+        }
+
+        for (const groupID of userGroup.groups) {
+
+            if (this.monitoredGroups.has(groupID)) {
+                continue;
+            }
+
+            this.monitoredGroups.add(groupID);
+
+            this.handleGroup(groupID)
+                .catch(err => this.errHandler(err));
+
+        }
+
+    }
+
+    public async handleGroup(groupID: GroupIDStr) {
+
+        await GroupDocs.onSnapshotForByGroupIDAndFingerprint(groupID,
+                                                             this.fingerprint,
+                                                             groupDocs => this.onSnapshotForGroupDocs(groupDocs));
+
+    }
+
+    public onSnapshotForGroupDocs(groupDocs: ReadonlyArray<DocumentChange<GroupDoc>>) {
+
+        for (const groupDoc of groupDocs) {
+
+            this.handleGroupDoc(groupDoc)
+                .catch(err => this.errHandler(err));
+        }
+
+    }
+
+    public async handleGroupDoc(groupDocChange: DocumentChange<GroupDoc>) {
+
+        // TODO: we technically need to keep track and unsubscribe when documents are
+        // removed from the group.
+
+        if (groupDocChange.type === 'removed') {
+            // we only care about added or updated
+            return;
+        }
+
+        const groupDoc = groupDocChange.value;
+
+        const {docID} = groupDoc;
+
+        if (! this.groupDocMonitors.has(docID)) {
+
+            // start listening to snapshots on this docID
+            await DocMetaRecords.onSnapshot(docID,
+                                            docMetaRecord => this.onSnapshotForDocMetaRecord(groupDoc, docMetaRecord));
+
+            this.groupDocMonitors.add(docID);
+
+        }
+
+    }
+
+    public onSnapshotForDocMetaRecord(groupDoc: GroupDoc,
+                                      docMetaRecord: DocMetaRecord | undefined) {
+
+        this.handleDocMetaRecord(groupDoc, docMetaRecord)
             .catch(err => this.errHandler(err));
 
     }
@@ -65,76 +138,8 @@ export class DocMetaListener {
 
     }
 
-    public async handleGroupDoc(groupDocChange: DocumentChange<GroupDoc>) {
-
-        // TODO: we technically need to keep track and unsubscribe when documents are
-        // removed from the group.
-
-        if (groupDocChange.type === 'removed') {
-            // we only care about added or updated
-            return;
-        }
-
-        const groupDoc = groupDocChange.value;
-
-        const {docID} = groupDoc;
-
-        if (! this.groupDocMonitors.has(docID)) {
-
-            // start listening to snapshots on this docID
-            await DocMetaRecords.onSnapshot(docID, record => {
-
-                this.handleDocMetaRecord(groupDoc, record)
-                    .catch(err => this.errHandler(err));
-
-            });
-
-            this.groupDocMonitors.add(docID);
-
-        }
-
-    }
-
-    public async handleGroup(groupID: GroupIDStr) {
-
-        await GroupDocs.onSnapshotForByGroupIDAndFingerprint(groupID, this.fingerprint, groupDocs => {
-
-            // FIXME: make this a method so we can test it..
-
-            for (const groupDoc of groupDocs) {
-
-                this.handleGroupDoc(groupDoc)
-                    .catch(err => this.errHandler(err));
-            }
-
-        });
-
-    }
-
-    public onUserGroup(userGroup: UserGroup | undefined) {
-
-        if (! userGroup) {
-            return;
-        }
-
-        for (const groupID of userGroup.groups) {
-
-            if (this.monitoredGroups.has(groupID)) {
-                continue;
-            }
-
-            this.monitoredGroups.add(groupID);
-
-            this.handleGroup(groupID)
-                .catch(err => this.errHandler(err));
-
-        }
-
-    }
-
     /**
      * Start with the source and perform a diff against the target.
-     *
      */
     public mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
 
@@ -154,8 +159,6 @@ export class DocMetaListener {
         }
 
     }
-
-
 
 }
 
