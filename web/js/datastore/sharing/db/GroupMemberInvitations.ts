@@ -46,7 +46,7 @@ export class GroupMemberInvitations {
 
     }
 
-    public static async onSnapshot(delegate: (invitations: ReadonlyArray<DocumentChange<GroupMemberInvitation>>) => void) {
+    public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
 
         const user = await Firebase.currentUser();
 

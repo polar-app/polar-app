@@ -24,7 +24,7 @@ import {AreaHighlight} from '../metadata/AreaHighlight';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocMeta} from "../metadata/DocMeta";
 import {Firebase} from "../firebase/Firebase";
-import {DocMetaListener} from "../datastore/sharing/db/DocMetaListeners";
+import {DocMetaListener, DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
 import {GroupDoc} from "../datastore/sharing/db/GroupDocs";
 
 const log = Logger.create();
@@ -172,10 +172,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             log.error("Failed to handle docMeta group group: ", err);
         };
 
-        const docMetaListener
-            = new DocMetaListener(fingerprint, docMetaHandler, errHandler);
-
-        docMetaListener.start();
+        await DocMetaListeners.register(fingerprint, docMetaHandler, errHandler);
 
     }
 

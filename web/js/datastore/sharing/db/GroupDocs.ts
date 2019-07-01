@@ -15,7 +15,7 @@ export class GroupDocs {
     }
 
     public static async onSnapshot(groupID: GroupIDStr, handler: SnapshotListener<DocumentChange<GroupDoc>>) {
-        return await Collections.onQuerySnapshot(this.COLLECTION, [['groupID', '==', groupID]], handler);
+        return await Collections.onQuerySnapshotChanges(this.COLLECTION, [['groupID', '==', groupID]], handler);
     }
 
     public static async onSnapshotForByGroupIDAndFingerprint(groupID: GroupIDStr,
@@ -27,7 +27,7 @@ export class GroupDocs {
             ['fingerprint', '==', fingerprint],
         ];
 
-        return await Collections.onQuerySnapshot(this.COLLECTION, clauses, handler);
+        return await Collections.onQuerySnapshotChanges(this.COLLECTION, clauses, handler);
 
     }
 

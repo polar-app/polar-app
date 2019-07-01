@@ -22,7 +22,7 @@ export class Contacts {
         const user = await Firebase.currentUser();
         const {uid} = Preconditions.assertPresent(user, 'user');
 
-        return await Collections.onQuerySnapshot(this.COLLECTION, [['uid' , '==', uid]], delegate);
+        return await Collections.onQuerySnapshotChanges(this.COLLECTION, [['uid' , '==', uid]], delegate);
 
     }
 

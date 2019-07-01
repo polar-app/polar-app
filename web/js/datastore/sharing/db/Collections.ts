@@ -29,9 +29,12 @@ export class Collections {
 
     }
 
-    public static async onQuerySnapshot<T>(collection: string,
-                                           clauses: ReadonlyArray<Clause>,
-                                           delegate: (records: ReadonlyArray<DocumentChange<T>>) => void): Promise<SnapshotUnsubscriber> {
+    /**
+     * Query snapshot but only for changed documents.
+     */
+    public static async onQuerySnapshotChanges<T>(collection: string,
+                                                  clauses: ReadonlyArray<Clause>,
+                                                  delegate: (records: ReadonlyArray<DocumentChange<T>>) => void): Promise<SnapshotUnsubscriber> {
 
         const query = await this.createQuery(collection, clauses);
 
@@ -50,6 +53,21 @@ export class Collections {
 
             delegate(changes);
 
+        });
+
+    }
+
+    /**
+     * Query snapshot but only for changed documents.
+     */
+    public static async onQuerySnapshot<T>(collection: string,
+                                           clauses: ReadonlyArray<Clause>,
+                                           delegate: (records: ReadonlyArray<T>) => void): Promise<SnapshotUnsubscriber> {
+
+        const query = await this.createQuery(collection, clauses);
+
+        return query.onSnapshot(snapshot => {
+            delegate(snapshot.docs.map(current => <T> current.data()));
         });
 
     }
