@@ -9,6 +9,7 @@ import {DocIDStr} from "../rpc/GroupProvisions";
 import {DocMetaHolder, RecordHolder} from "../../FirebaseDatastore";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {Optional} from "../../../util/ts/Optional";
+import {Proxies} from "../../../proxies/Proxies";
 
 export class DocMetaListener {
 
@@ -125,7 +126,20 @@ export class DocMetaListener {
         const {docID, fingerprint} = groupDoc;
 
         const prev = Optional.of(this.docMetaIndex[docID]).getOrUndefined();
-        const curr = DocMetas.deserialize(docMetaRecord.value.value, fingerprint);
+
+        const createDocMeta = () => {
+
+            const result = DocMetas.deserialize(docMetaRecord.value.value, fingerprint);
+
+            if (prev) {
+                return result;
+            }
+
+            return Proxies.create(result);
+
+        };
+
+        const curr = createDocMeta();
 
         if (prev) {
             // now merge the metadata so we get our events fired.
@@ -135,6 +149,9 @@ export class DocMetaListener {
             // proxied object after that...
             this.docMetaHandler(curr, groupDoc);
         }
+
+        // now update the index...
+        this.docMetaIndex[docID] = curr;
 
     }
 
@@ -192,6 +209,8 @@ class StringDicts {
 
         // FIXME: I think we have to update this to ALSO look at the GUID... and if when the GUID
         // is updated we also have to update that too.
+        //
+        // I think the BEST way to do this would be to compute a key which is ID+guid (if guid is designed)...
 
         // *** copy new keys into the target
         const copyable = SetArrays.difference(Object.keys(source), Object.keys(target));

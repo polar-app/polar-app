@@ -23,6 +23,9 @@ import {Doc} from '../metadata/Doc';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocMeta} from "../metadata/DocMeta";
+import {Firebase} from "../firebase/Firebase";
+import {DocMetaListener} from "../datastore/sharing/db/DocMetaListeners";
+import {GroupDoc} from "../datastore/sharing/db/GroupDocs";
 
 const log = Logger.create();
 
@@ -126,6 +129,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         this.registerListenerForPrimaryDocMeta();
 
+        await this.registerListenersForGroupDocs();
+
     }
 
     private async rebuildInitialAnnotations() {
@@ -146,6 +151,33 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const {docMeta} = this.props.doc;
 
         this.registerListenerForDocMeta(docMeta);
+    }
+
+    /**
+     * Register listeners for group docs when using Firebase.
+     */
+    private async registerListenersForGroupDocs() {
+
+        const user = Firebase.currentUser();
+
+        if (!user) {
+            return;
+        }
+
+        const fingerprint = this.props.doc.docMeta.docInfo.fingerprint;
+
+        const docMetaHandler = (docMeta: DocMeta, groupDoc: GroupDoc) => {
+            this.registerListenerForDocMeta(docMeta);
+        };
+
+        const errHandler = (err: Error) => {
+            log.error("Failed to handle docMeta group group: ", err);
+        };
+
+        const docMetaListener
+            = new DocMetaListener(fingerprint, docMetaHandler, errHandler);
+
+        docMetaListener.start();
 
     }
 
