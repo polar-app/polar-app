@@ -10,6 +10,8 @@ import {DocMetaHolder, RecordHolder} from "../../FirebaseDatastore";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {Optional} from "../../../util/ts/Optional";
 import {Proxies} from "../../../proxies/Proxies";
+import {ProfileOwners} from "./ProfileOwners";
+import {ProfileIDStr} from "./Profiles";
 
 export class DocMetaListener {
 
@@ -21,12 +23,15 @@ export class DocMetaListener {
     private monitoredGroups = new Set<GroupIDStr>();
 
     constructor(private readonly fingerprint: string,
+                private readonly profileID: ProfileIDStr,
                 private readonly docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
                 private readonly errHandler: (err: Error) => void) {
 
     }
 
     public start() {
+
+        // TODO: exclude my OWN documents by getting my profile and excluding all the docs matching my profile.
 
         // TODO: we could have a stop method if we added support for keeping the
         // unsubscribe functions.
@@ -69,12 +74,13 @@ export class DocMetaListener {
 
     }
 
-    public onSnapshotForGroupDocs(groupDocs: ReadonlyArray<DocumentChange<GroupDoc>>) {
+    public onSnapshotForGroupDocs(groupDocChanges: ReadonlyArray<DocumentChange<GroupDoc>>) {
 
-        for (const groupDoc of groupDocs) {
+        for (const groupDocChange of groupDocChanges) {
 
-            this.handleGroupDoc(groupDoc)
+            this.handleGroupDoc(groupDocChange)
                 .catch(err => this.errHandler(err));
+
         }
 
     }
@@ -91,7 +97,12 @@ export class DocMetaListener {
 
         const groupDoc = groupDocChange.value;
 
-        const {docID} = groupDoc;
+        const {docID, profileID} = groupDoc;
+
+        if (profileID === this.profileID) {
+            // this is my OWN doc so sort of pointless to index it.
+            return;
+        }
 
         if (! this.groupDocMonitors.has(docID)) {
 
@@ -181,11 +192,19 @@ export class DocMetaListener {
 
 export class DocMetaListeners {
 
-    public static register(fingerprint: string,
-                           docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
-                           errHandler: (err: Error) => void) {
+    public static async register(fingerprint: string,
+                                 docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
+                                 errHandler: (err: Error) => void) {
 
-        new DocMetaListener(fingerprint, docMetaHandler, errHandler).start();
+        const profileOwner = await ProfileOwners.get();
+
+        if (! profileOwner) {
+            throw new Error("No profile");
+        }
+
+        const {profileID} = profileOwner;
+
+        new DocMetaListener(fingerprint, profileID, docMetaHandler, errHandler).start();
 
     }
 

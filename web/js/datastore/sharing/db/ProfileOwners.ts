@@ -4,6 +4,7 @@ import {ProfileIDStr} from './Profiles';
 import {Firestore} from '../../../firebase/Firestore';
 import * as firebase from '../../../firebase/lib/firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
+import {Firebase} from "../../../firebase/Firebase";
 
 export class ProfileOwners {
 
@@ -15,7 +16,13 @@ export class ProfileOwners {
         return [id, doc];
     }
 
-    public static async get(id: UserIDStr): Promise<ProfileOwner | undefined> {
+    public static async get(id?: UserIDStr): Promise<ProfileOwner | undefined> {
+
+        if (! id) {
+            const user = await Firebase.currentUser();
+            id = user!.uid;
+        }
+
         const [_, ref] = await this.doc(id);
         const doc = await ref.get();
         return <ProfileOwner> doc.data();
