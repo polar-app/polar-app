@@ -12,6 +12,10 @@ import {Optional} from "../../../util/ts/Optional";
 import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
 import {ProfileIDStr} from "./Profiles";
+import {Firebase} from "../../../firebase/Firebase";
+import {Preconditions} from "../../../Preconditions";
+import {Author} from "../../../metadata/Author";
+import {Annotation} from "../../../metadata/Annotation";
 
 export class DocMetaListener {
 
@@ -24,6 +28,7 @@ export class DocMetaListener {
 
     constructor(private readonly fingerprint: string,
                 private readonly profileID: ProfileIDStr,
+                private readonly author: Author,
                 private readonly docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
                 private readonly errHandler: (err: Error) => void) {
 
@@ -154,7 +159,7 @@ export class DocMetaListener {
 
         if (prev) {
             // now merge the metadata so we get our events fired.
-            this.mergeDocMetaUpdate(curr, prev);
+            DocMetaRecords.updateDocMeta(curr, prev, this.author);
         } else {
             // only emit on the FIRST time we see the doc and then give the caller a
             // proxied object after that...
@@ -166,27 +171,6 @@ export class DocMetaListener {
 
     }
 
-    /**
-     * Start with the source and perform a diff against the target.
-     */
-    public mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
-
-        const mergePageMeta = (source: PageMeta, target: PageMeta) => {
-
-            StringDicts.merge(source.textHighlights, target.textHighlights);
-            StringDicts.merge(source.areaHighlights, target.areaHighlights);
-            StringDicts.merge(source.notes, target.notes);
-            StringDicts.merge(source.comments, target.comments);
-            StringDicts.merge(source.questions, target.questions);
-            StringDicts.merge(source.flashcards, target.flashcards);
-
-        };
-
-        for (const page of Object.keys(source.pageMetas)) {
-            mergePageMeta(source.pageMetas[page], target.pageMetas[page]);
-        }
-
-    }
 
 }
 
@@ -204,7 +188,23 @@ export class DocMetaListeners {
 
         const {profileID} = profileOwner;
 
-        new DocMetaListener(fingerprint, profileID, docMetaHandler, errHandler).start();
+        const createAuthor = async () => {
+
+            const user = await Firebase.currentUser();
+            Preconditions.assertPresent(user, "user");
+
+            return new Author({
+                name: user!.displayName!,
+                image: {
+                    src: user!.photoURL!
+                }
+            });
+
+        };
+
+        const author = await createAuthor();
+
+        new DocMetaListener(fingerprint, profileID, author, docMetaHandler, errHandler).start();
 
     }
 
@@ -251,6 +251,64 @@ class DocMetaRecords {
         return await Collections.onDocumentSnapshot<DocMetaRecord>(this.COLLECTION,
                                                                    id,
                                                                    record => handler(record));
+
+    }
+
+
+    public static updateDocMeta(source: DocMeta,
+                                target: DocMeta,
+                                author: Author) {
+
+        this.applyAuthor(source, author);
+        this.mergeDocMetaUpdate(source, target);
+    }
+
+    /**
+     * Start with the source and perform a diff against the target.
+     */
+    private static mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
+
+        const mergePageMeta = (source: PageMeta, target: PageMeta) => {
+
+            StringDicts.merge(source.textHighlights, target.textHighlights);
+            StringDicts.merge(source.areaHighlights, target.areaHighlights);
+            StringDicts.merge(source.notes, target.notes);
+            StringDicts.merge(source.comments, target.comments);
+            StringDicts.merge(source.questions, target.questions);
+            StringDicts.merge(source.flashcards, target.flashcards);
+
+        };
+
+        for (const page of Object.keys(source.pageMetas)) {
+            mergePageMeta(source.pageMetas[page], target.pageMetas[page]);
+        }
+
+    }
+
+    private static applyAuthor(docMeta: DocMeta, author: Author) {
+
+        const applyAuthorToAnnotations = (dict: {[key: string]: Annotation}) => {
+
+            for (const annotation of Object.values(dict)) {
+                annotation.author = author;
+            }
+
+        };
+
+        const applyAuthorToPage = (pageMeta: PageMeta) => {
+
+            applyAuthorToAnnotations(pageMeta.textHighlights);
+            applyAuthorToAnnotations(pageMeta.areaHighlights);
+            applyAuthorToAnnotations(pageMeta.notes);
+            applyAuthorToAnnotations(pageMeta.comments);
+            applyAuthorToAnnotations(pageMeta.questions);
+            applyAuthorToAnnotations(pageMeta.flashcards);
+
+        };
+
+        for (const page of Object.keys(docMeta.pageMetas)) {
+            applyAuthorToPage(docMeta.pageMetas[page]);
+        }
 
     }
 

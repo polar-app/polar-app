@@ -1,4 +1,5 @@
 import {SerializedObject} from './SerializedObject';
+import {URLStr} from "../util/Strings";
 
 export class Author extends SerializedObject {
 
@@ -7,13 +8,32 @@ export class Author extends SerializedObject {
      */
     public name: string = "";
 
-    // TODO: include a link here and the name should not be optional.  If the
-    // author doesn't have a link metadata we're missing a major piece of
-    // metadata.
+    /**
+     * The URL to this author's profile.
+     */
+    public url?: string;
 
-    constructor(val: any) {
-        super(val);
+    public image?: AuthorImage;
 
+    constructor(val: IAuthor) {
+        super(<any> val);
     }
+
+}
+
+export interface AuthorImage {
+    readonly src: URLStr;
+}
+
+export interface IAuthor {
+
+    readonly name: string;
+
+    /**
+     * The URL to this author's profile.
+     */
+    readonly url?: string;
+
+    readonly image?: AuthorImage;
 
 }
