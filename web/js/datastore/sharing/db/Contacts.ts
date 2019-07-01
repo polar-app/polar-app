@@ -1,7 +1,7 @@
 import {EmailStr} from './Profiles';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {Firebase} from '../../../firebase/Firebase';
-import {Collections} from './Collections';
+import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from '../../../Preconditions';
 
 export class Contacts {
@@ -17,7 +17,7 @@ export class Contacts {
 
     }
 
-    public static async onSnapshot(delegate: (records: ReadonlyArray<Contact>) => void) {
+    public static async onSnapshot(delegate: (records: ReadonlyArray<DocumentChange<Contact>>) => void) {
 
         const user = await Firebase.currentUser();
         const {uid} = Preconditions.assertPresent(user, 'user');

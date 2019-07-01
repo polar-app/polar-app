@@ -1,11 +1,7 @@
 import {Firestore} from '../../../firebase/Firestore';
-import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
-import {Firebase} from '../../../firebase/Firebase';
-import {GroupMemberInvitation} from './GroupMemberInvitations';
-import {GroupDoc} from './GroupDocs';
+import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import DocumentChangeType = firebase.firestore.DocumentChangeType;
-import {UserGroup} from "./UserGroups";
 
 export class Collections {
 

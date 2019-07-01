@@ -5,7 +5,7 @@ import {ProfileIDStr} from './Profiles';
 import {Firebase} from '../../../firebase/Firebase';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
-import {Collections} from './Collections';
+import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from '../../../Preconditions';
 import {Clause} from './Collections';
 import {Logger} from '../../../logger/Logger';
@@ -46,7 +46,7 @@ export class GroupMemberInvitations {
 
     }
 
-    public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
+    public static async onSnapshot(delegate: (invitations: ReadonlyArray<DocumentChange<GroupMemberInvitation>>) => void) {
 
         const user = await Firebase.currentUser();
 

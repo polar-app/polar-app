@@ -58,8 +58,6 @@ const NoAnnotations = () => {
     );
 };
 
-
-
 function createItems(render: IRender) {
 
     // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778

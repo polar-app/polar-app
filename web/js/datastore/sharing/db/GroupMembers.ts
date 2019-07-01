@@ -3,7 +3,7 @@ import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {ProfileIDStr} from './Profiles';
 import {Firebase} from '../../../firebase/Firebase';
 import {Preconditions} from '../../../Preconditions';
-import {Collections} from './Collections';
+import {Collections, DocumentChange} from './Collections';
 
 export class GroupMembers {
 
@@ -20,7 +20,7 @@ export class GroupMembers {
      * Get the members of this group.
      */
     public static async onSnapshot(groupID: GroupIDStr,
-                                   delegate: (records: ReadonlyArray<GroupMember>) => void) {
+                                   delegate: (records: ReadonlyArray<DocumentChange<GroupMember>>) => void) {
 
         return await Collections.onQuerySnapshot(this.COLLECTION, [['groupID' , '==', groupID]], delegate);
 
