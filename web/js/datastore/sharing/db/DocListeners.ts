@@ -1,5 +1,5 @@
 import {GroupIDStr} from "../../Datastore";
-import {UserGroup, UserGroups} from "./UserGroups";
+import {UserGroups} from "./UserGroups";
 import {GroupDoc, GroupDocs} from "./GroupDocs";
 import {DocMeta} from "../../../metadata/DocMeta";
 import {SetArrays} from "../../../util/SetArrays";
@@ -10,16 +10,11 @@ import {DocMetaHolder, RecordHolder} from "../../FirebaseDatastore";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {Optional} from "../../../util/ts/Optional";
 
-export class DocsListener {
+export class DocListeners {
 
-    // FIXME: how do we behave when cloud sync isn't enable.
-
-    // FIXME: this should be its own class with its own snapshot methods so that I can
-    // call the snapshot methods directly for testing...
-
-    public static listen(fingerprint: string,
-                         docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
-                         errHandler: (err: Error) => void) {
+    public static register(fingerprint: string,
+                           docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
+                           errHandler: (err: Error) => void) {
 
 
         const docMetaIndex: {[docID: string]: DocMeta} = {};
@@ -198,7 +193,6 @@ class DocMetaRecords {
     }
 
 }
-
 
 export type DocMetaIDStr = string;
 

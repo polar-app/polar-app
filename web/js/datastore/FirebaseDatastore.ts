@@ -726,6 +726,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             uid,
             id,
             visibility,
+            groups: opts.groups,
             value: docMetaHolder
         };
 
@@ -745,6 +746,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             uid,
             id,
             visibility,
+            groups: opts.groups,
             value: docInfo
         };
 
