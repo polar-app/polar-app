@@ -4,6 +4,8 @@ import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
 import {Firebase} from '../../../firebase/Firebase';
 import {GroupMemberInvitation} from './GroupMemberInvitations';
 import {GroupDoc} from './GroupDocs';
+import DocumentChangeType = firebase.firestore.DocumentChangeType;
+import {UserGroup} from "./UserGroups";
 
 export class Collections {
 
@@ -31,14 +33,53 @@ export class Collections {
 
     }
 
-    public static async onSnapshot<T>(collection: string,
-                                      clauses: ReadonlyArray<Clause>,
-                                      delegate: (records: ReadonlyArray<T>) => void): Promise<SnapshotUnsubscriber> {
+    public static async onQuerySnapshot<T>(collection: string,
+                                           clauses: ReadonlyArray<Clause>,
+                                           delegate: (records: ReadonlyArray<DocumentChange<T>>) => void): Promise<SnapshotUnsubscriber> {
 
         const query = await this.createQuery(collection, clauses);
 
         return query.onSnapshot(snapshot => {
-            delegate(snapshot.docs.map(current => <T> current.data()));
+
+            const changes = snapshot.docChanges().map(current => {
+
+                const type = current.type;
+                const value = <T> current.doc.data();
+                return {
+                    type,
+                    value
+                };
+
+            });
+
+            delegate(changes);
+
+        });
+
+    }
+
+    public static async onDocumentSnapshot<T>(collection: string,
+                                              id: string,
+                                              delegate: (record: T | undefined) => void): Promise<SnapshotUnsubscriber> {
+
+        const firestore = await Firestore.getInstance();
+
+        const ref = firestore.collection(collection).doc(id);
+
+        return ref.onSnapshot(snapshot => {
+
+            const toValue = () => {
+
+                if (snapshot.exists) {
+                    return <T> snapshot.data();
+                }
+
+                return undefined;
+
+            };
+
+            delegate(toValue());
+
         });
 
     }
@@ -74,3 +115,8 @@ export interface IDRecord {
 export type Clause = [string, WhereFilterOp, any];
 
 export type SnapshotListener<T> = (record: ReadonlyArray<T>) => void;
+
+export interface DocumentChange<T> {
+    readonly type: DocumentChangeType;
+    readonly value: T;
+}

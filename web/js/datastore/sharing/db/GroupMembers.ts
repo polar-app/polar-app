@@ -22,7 +22,7 @@ export class GroupMembers {
     public static async onSnapshot(groupID: GroupIDStr,
                                    delegate: (records: ReadonlyArray<GroupMember>) => void) {
 
-        return await Collections.onSnapshot(this.COLLECTION, [['groupID' , '==', groupID]], delegate);
+        return await Collections.onQuerySnapshot(this.COLLECTION, [['groupID' , '==', groupID]], delegate);
 
     }
 

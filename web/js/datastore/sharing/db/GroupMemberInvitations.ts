@@ -56,7 +56,7 @@ export class GroupMemberInvitations {
             return;
         }
 
-        return await Collections.onSnapshot(this.COLLECTION, [['to', '==', user!.email]], delegate);
+        return await Collections.onQuerySnapshot(this.COLLECTION, [['to', '==', user!.email]], delegate);
 
     }
 

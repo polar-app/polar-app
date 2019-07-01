@@ -2,6 +2,7 @@ import {UserIDStr} from './Profiles';
 import {Firestore} from '../../../firebase/Firestore';
 import {GroupIDStr} from '../../Datastore';
 import {Firebase} from "../../../firebase/Firebase";
+import {Collections} from "./Collections";
 
 export class UserGroups {
 
@@ -17,20 +18,13 @@ export class UserGroups {
 
     }
 
-    public static async onSnapshot(handler: (userGroups: UserGroup) => void) {
+    public static async onSnapshot(handler: (userGroups: UserGroup | undefined) => void) {
 
         const user = await Firebase.currentUser();
 
-        const firestore = await Firestore.getInstance();
-
-        const ref = firestore.collection(this.COLLECTION).doc(user!.uid);
-        ref.onSnapshot(snapshot => {
-
-            if (snapshot.exists) {
-                handler(<UserGroup> snapshot.data());
-            }
-
-        });
+        return await Collections.onDocumentSnapshot<UserGroup>(this.COLLECTION,
+                                                               user!.uid,
+                                                               userGroups => handler(userGroups));
 
     }
 

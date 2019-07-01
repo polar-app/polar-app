@@ -2,7 +2,7 @@ import {ProfileIDStr} from './Profiles';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
-import {Collections} from './Collections';
+import {Collections, DocumentChange} from './Collections';
 import {Clause} from './Collections';
 import {SnapshotListener} from './Collections';
 
@@ -14,20 +14,20 @@ export class GroupDocs {
         return await Collections.list(this.COLLECTION, [['groupID', '==', groupID]]);
     }
 
-    public static async onSnapshot(groupID: GroupIDStr, handler: SnapshotListener<GroupDoc>) {
-        return await Collections.onSnapshot(this.COLLECTION, [['groupID', '==', groupID]], handler);
+    public static async onSnapshot(groupID: GroupIDStr, handler: SnapshotListener<DocumentChange<GroupDoc>>) {
+        return await Collections.onQuerySnapshot(this.COLLECTION, [['groupID', '==', groupID]], handler);
     }
 
     public static async onSnapshotForByGroupIDAndFingerprint(groupID: GroupIDStr,
                                                              fingerprint: string,
-                                                             handler: SnapshotListener<GroupDoc> ) {
+                                                             handler: SnapshotListener<DocumentChange<GroupDoc>> ) {
 
         const clauses: Clause[] = [
             ['groupID', '==', groupID],
             ['fingerprint', '==', fingerprint],
         ];
 
-        return await Collections.onSnapshot(this.COLLECTION, clauses, handler);
+        return await Collections.onQuerySnapshot(this.COLLECTION, clauses, handler);
 
     }
 

@@ -1,18 +1,69 @@
 import {GroupIDStr} from "../../Datastore";
 import {UserGroups} from "./UserGroups";
-import {GroupDoc} from "./GroupDocs";
+import {GroupDoc, GroupDocs} from "./GroupDocs";
 import {DocMeta} from "../../../metadata/DocMeta";
 import {SetArrays} from "../../../util/SetArrays";
 import {PageMeta} from "../../../metadata/PageMeta";
+import {DocumentChange} from "./Collections";
+import {DocIDStr} from "../rpc/GroupProvisions";
 
 export class DocsListener {
 
     // FIXME: how do we behave when cloud sync isn't enable.
+
+    // FIXME: this should be its own class with its own snapshot methods so that I can
+    // call the snapshot methods directly for testing...
+
     public static listen(fingerprint: string,
-                         handler: (groupDoc: GroupDoc) => void,
+                         docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
                          errHandler: (err: Error) => void) {
 
-        // FIXME: only emit on the FIRST time we see the doc and then give the caller a proxied object after that...
+        // FIXME: only emit on the FIRST time we see the doc and then give the caller a
+        // proxied object after that...
+
+        const index: {[docID: string]: DocMeta} = {};
+
+        const handleDocMeta = async (docID: DocIDStr) => {
+
+        }
+
+        const handleGroupDoc = async (groupDocChange: DocumentChange<GroupDoc>) => {
+
+
+            if (groupDocChange.type === 'removed') {
+                // we only care about added or updated
+                return;
+            }
+
+            const groupDoc = groupDocChange.value;
+
+            const {docID} = groupDoc;
+
+            // FIXME: listen to snapshots of this DocMeta and then perform the merger...
+
+            // FIXME: read the DocMetas
+
+            // FIXME: start listening to snapshtos on this docID
+
+            const getOrCreateDocMeta = () => {
+
+                if (index[docID]) {
+
+                    return index[docID];
+
+                } else {
+
+                }
+
+            }
+
+            if (! monitoring.has(groupDoc.docID)) {
+
+                // we do not need to do anything here as we're already listening to this group.
+
+            }
+
+        };
 
         const handleGroup = async (groupID: GroupIDStr) => {
 
@@ -23,8 +74,18 @@ export class DocsListener {
             // moving forward which would mean a huge amount of wasted time but worth
             // it for the long term.
 
-            // FIXME: this is going to give us a dumop of ALL the documents in this snapshot not just the changes..
-            // await GroupDocs.onSnapshotForByGroupIDAndFingerprint(groupID, fingerprint, groupDoc => handler(groupDoc));
+            // FIXME: this is going to give us a dumop of ALL the documents in this snapshot
+            // not just the changes..so we're goign to fetch EVERY time one updates... which is
+            // NOT what we want...
+            await GroupDocs.onSnapshotForByGroupIDAndFingerprint(groupID, fingerprint, groupDocs => {
+
+                for (const groupDoc of groupDocs) {
+
+                    handleGroupDoc(groupDoc)
+                        .catch(err => errHandler(err));
+                }
+
+            });
 
         };
 
@@ -33,9 +94,13 @@ export class DocsListener {
             // the current groups being monitored
             const monitoring = new Set<GroupIDStr>();
 
-            await UserGroups.onSnapshot(userGroup => {
+            await UserGroups.onSnapshot(userGroups => {
 
-                for (const groupID of userGroup.groups) {
+                if (! userGroups) {
+                    return;
+                }
+
+                for (const groupID of userGroups.groups) {
 
                     if (monitoring.has(groupID)) {
                         continue;
@@ -115,3 +180,9 @@ class StringDicts {
 
 }
 
+class DocMetaRecords {
+
+
+
+
+}
