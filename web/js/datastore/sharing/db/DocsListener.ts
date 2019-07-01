@@ -7,6 +7,8 @@ import {PageMeta} from "../../../metadata/PageMeta";
 import {Collections, DocumentChange} from "./Collections";
 import {DocIDStr} from "../rpc/GroupProvisions";
 import {DocMetaHolder, RecordHolder} from "../../FirebaseDatastore";
+import {DocMetas} from "../../../metadata/DocMetas";
+import {Optional} from "../../../util/ts/Optional";
 
 export class DocsListener {
 
@@ -26,25 +28,53 @@ export class DocsListener {
 
         const groupDocMonitors  = new Set<DocIDStr>();
 
-        const handleDocMetaRecord = async (docMetaRecord: DocMetaRecord | undefined) => {
+        const handleDocMetaRecord = async (groupDoc: GroupDoc,
+                                           docMetaRecord: DocMetaRecord | undefined) => {
 
-            // FIXME: listen to snapshots of this DocMeta and then perform the merger...
+            // listen to snapshots of this DocMeta and then perform the merger...
 
-            if (! docMetaRecord) {
+            if (!docMetaRecord) {
                 // doc was removed
                 return;
             }
 
-            //
-            // const getOrCreateDocMeta = () => {
-            //
-            //     if (docMetaIndex[docID]) {
-            //         return docMetaIndex[docID];
-            //     } else {
-            //
-            //     }
-            //
-            // };
+            const {docID, fingerprint} = groupDoc;
+
+            interface DocMetaInstance {
+                readonly created: boolean;
+                readonly docMeta: DocMeta;
+            }
+
+            const getOrCreateDocMeta = (): DocMetaInstance => {
+
+                if (docMetaIndex[docID]) {
+
+                    const created = false;
+                    const docMeta = docMetaIndex[docID];
+
+                    return {created, docMeta};
+
+                } else {
+                    const created = true;
+                    const docMeta =
+
+                    return {created, docMeta};
+                }
+
+            };
+
+            const prev = Optional.of(docMetaIndex[docID]).getOrUndefined();
+            const curr = DocMetas.deserialize(docMetaRecord.value.value, fingerprint);
+
+
+
+            const docMetaInstance = getOrCreateDocMeta();
+
+            const {created, docMeta} = docMetaInstance;
+
+            // now merge the metadata so we get our events fired.
+
+
 
         };
 
@@ -67,7 +97,7 @@ export class DocsListener {
                 // start listening to snapshots on this docID
                 await DocMetaRecords.onSnapshot(docID, record => {
 
-                    handleDocMetaRecord(record)
+                    handleDocMetaRecord(groupDoc, record)
                         .catch(err => errHandler(err));
 
                 });
