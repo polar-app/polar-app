@@ -21,7 +21,7 @@ export class GroupSharingRecords {
 
         let members: MemberRecord[] = [];
 
-        // FIXME: these have to be snapshots because I'm going to be deleting
+        // TODO: these have to be snapshots because I'm going to be deleting
         // from the members and the UI needs to update...
 
         const getGroupMemberInvitations = async (): Promise<ReadonlyArray<MemberRecord>> => {
