@@ -5,6 +5,8 @@ import {CommentDropdown} from '../CommentDropdown';
 import {Logger} from '../../../logger/Logger';
 import {IStyleMap} from '../../../react/IStyleMap';
 import {Doc} from '../../../metadata/Doc';
+import {DocAuthor} from "../../DocAuthor";
+import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 
 const log = Logger.create();
 
@@ -59,17 +61,10 @@ export class ViewComment extends React.Component<IProps, IState> {
                     <div style={Styles.barBody}
                          className="flexbar comment-bar border-bottom pt-0 pb-0 mb-1">
 
-                        FIXME: {comment.author ? comment.author!.name : "NONE"}
+                        <DocAuthor author={comment.author}/>
 
                         <div style={Styles.barChild} className="text-muted">
-                            {/*TODO: make this into its own component... */}
-                            <Moment style={{
-                                        fontSize: '12px'
-                                    }}
-                                    withTitle={true}
-                                    titleFormat="D MMM YYYY hh:MM A" fromNow>
-                                {comment.created}
-                            </Moment>
+                            <DocAnnotationMoment created={comment.created}/>
                         </div>
 
                         <div style={Styles.barChild} className="flexbar-right">

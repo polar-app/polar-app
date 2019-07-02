@@ -5,6 +5,8 @@ import {FlashcardDropdown} from './FlashcardDropdown';
 import {Logger} from '../../../logger/Logger';
 import {IStyleMap} from '../../../react/IStyleMap';
 import {Doc} from '../../../metadata/Doc';
+import {DocAnnotationMoment} from "../../DocAnnotationMoment";
+import {DocAuthor} from "../../DocAuthor";
 
 const log = Logger.create();
 
@@ -105,15 +107,10 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
                 <div style={Styles.barBody}
                      className="flexbar comment-bar border-bottom pb-0 mb-2">
 
+                    <DocAuthor author={flashcard.author}/>
+
                     <div style={Styles.barChild} className="text-muted">
-                        {/*TODO: make this into its own component... */}
-                        <Moment style={{
-                                    fontSize: '12px'
-                                }}
-                                withTitle={true}
-                                titleFormat="D MMM YYYY hh:MM A" fromNow>
-                            {flashcard.created}
-                        </Moment>
+                        <DocAnnotationMoment created={flashcard.created}/>
                     </div>
 
                     <div style={Styles.barChild} className="flexbar-right">

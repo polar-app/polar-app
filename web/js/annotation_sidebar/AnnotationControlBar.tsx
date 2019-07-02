@@ -21,6 +21,8 @@ import {ColorSelector} from '../ui/colors/ColorSelector';
 import {HighlightColor} from '../metadata/HighlightColor';
 import {TextHighlights} from '../metadata/TextHighlights';
 import {AreaHighlights} from '../metadata/AreaHighlights';
+import {DocAnnotationMoment} from "./DocAnnotationMoment";
+import {DocAuthor} from "./DocAuthor";
 
 const Styles: IStyleMap = {
 
@@ -71,19 +73,13 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 <div style={Styles.barBody}
                      className="flexbar annotation-buttons border-bottom pt-0 pb-0">
 
+                    <DocAuthor author={annotation.author}/>
+
                     <div style={Styles.barChild}
                          className="text-muted annotation-context-link">
                         {/*TODO: make this into its own component... */}
                         <a href="#" onClick={() => this.onJumpToContext(annotation)}>
-
-                            <Moment withTitle={true}
-                                    titleFormat="D MMM YYYY hh:MM A"
-                                    fromNow>
-
-                                {annotation.created}
-
-                            </Moment>
-
+                            <DocAnnotationMoment created={annotation.created}/>
                         </a>
                     </div>
 
