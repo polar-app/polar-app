@@ -11,6 +11,8 @@ import {Container} from './containers/Container';
 import {ContainerLifecycleState} from './containers/lifecycle/ContainerLifecycleState';
 import {ContainerLifecycleListener} from './containers/lifecycle/ContainerLifecycleListener';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
+import {DocMeta} from "../metadata/DocMeta";
+import {DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
 
 const log = Logger.create();
 
@@ -50,8 +52,6 @@ export class ComponentManager {
 
         log.debug("onDocumentLoaded: ", documentLoadedEvent.fingerprint);
 
-        const docMetaModel = this.createDocMetaModel();
-
         this.containers = this.containerProvider.getContainers();
 
         log.debug("Working with containers: ", this.containers);
@@ -61,7 +61,31 @@ export class ComponentManager {
         // onComponentEvent so that we can render/destroy the component and
         // and change it on page events.
 
-        docMetaModel.registerListener(documentLoadedEvent.docMeta, this.onComponentEvent.bind(this));
+        const {docMeta} = documentLoadedEvent;
+
+        this.registerListenerForDocMeta(docMeta);
+
+        this.registerListenerForSecondaryDocMetas(docMeta.docInfo.fingerprint);
+
+    }
+
+    private registerListenerForDocMeta(docMeta: DocMeta) {
+        const docMetaModel = this.createDocMetaModel();
+        docMetaModel.registerListener(docMeta, this.onComponentEvent.bind(this));
+    }
+
+    private registerListenerForSecondaryDocMetas(fingerprint: string) {
+
+        const docMetaHandler = (docMeta: DocMeta) => {
+            this.registerListenerForDocMeta(docMeta);
+        };
+
+        const errHandler = (err: Error) => {
+            log.error("Failed to handle docMeta group group: ", err);
+        };
+
+        DocMetaListeners.register(fingerprint, docMetaHandler, errHandler)
+            .catch(err => errHandler(err));
 
     }
 

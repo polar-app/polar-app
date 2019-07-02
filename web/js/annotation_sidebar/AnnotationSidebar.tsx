@@ -127,7 +127,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         this.registerListenerForPrimaryDocMeta();
 
-        await this.registerListenersForGroupDocs();
+        await this.registerListenersForSecondaryDocMetas();
 
     }
 
@@ -154,7 +154,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
     /**
      * Register listeners for group docs when using Firebase.
      */
-    private async registerListenersForGroupDocs() {
+    private async registerListenersForSecondaryDocMetas() {
 
         const user = Firebase.currentUser();
 
@@ -164,7 +164,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const fingerprint = this.props.doc.docMeta.docInfo.fingerprint;
 
-        const docMetaHandler = (docMeta: DocMeta, groupDoc: GroupDoc) => {
+        const docMetaHandler = (docMeta: DocMeta) => {
             this.registerListenerForDocMeta(docMeta);
         };
 
