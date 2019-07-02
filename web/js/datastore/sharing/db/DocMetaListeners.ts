@@ -11,9 +11,7 @@ import {DocMetas} from "../../../metadata/DocMetas";
 import {Optional} from "../../../util/ts/Optional";
 import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
-import {ProfileIDStr} from "./Profiles";
-import {Firebase} from "../../../firebase/Firebase";
-import {Preconditions} from "../../../Preconditions";
+import {ProfileIDStr, Profiles} from "./Profiles";
 import {Author} from "../../../metadata/Author";
 import {Annotation} from "../../../metadata/Annotation";
 
@@ -28,7 +26,6 @@ export class DocMetaListener {
 
     constructor(private readonly fingerprint: string,
                 private readonly profileID: ProfileIDStr,
-                private readonly author: Author,
                 private readonly docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
                 private readonly errHandler: (err: Error) => void) {
 
@@ -157,9 +154,11 @@ export class DocMetaListener {
 
         const curr = createDocMeta();
 
+        await DocMetaRecords.applyAuthorsFromProfile(curr, groupDoc);
+
         if (prev) {
             // now merge the metadata so we get our events fired.
-            DocMetaRecords.updateDocMeta(curr, prev, this.author);
+            DocMetaRecords.mergeDocMetaUpdate(curr, prev);
         } else {
             // only emit on the FIRST time we see the doc and then give the caller a
             // proxied object after that...
@@ -188,23 +187,25 @@ export class DocMetaListeners {
 
         const {profileID} = profileOwner;
 
-        const createAuthor = async () => {
+        // FIXME: this is the WRONG profile and is being built up from the curernt user...
+        //
+        // const createAuthor = async () => {
+        //
+        //     const user = await Firebase.currentUser();
+        //     Preconditions.assertPresent(user, "user");
+        //
+        //     return new Author({
+        //         name: user!.displayName!,
+        //         image: {
+        //             src: user!.photoURL!
+        //         }
+        //     });
+        //
+        // };
+        //
+        // const author = await createAuthor();
 
-            const user = await Firebase.currentUser();
-            Preconditions.assertPresent(user, "user");
-
-            return new Author({
-                name: user!.displayName!,
-                image: {
-                    src: user!.photoURL!
-                }
-            });
-
-        };
-
-        const author = await createAuthor();
-
-        new DocMetaListener(fingerprint, profileID, author, docMetaHandler, errHandler).start();
+        new DocMetaListener(fingerprint, profileID, docMetaHandler, errHandler).start();
 
     }
 
@@ -254,19 +255,10 @@ class DocMetaRecords {
 
     }
 
-
-    public static updateDocMeta(source: DocMeta,
-                                target: DocMeta,
-                                author: Author) {
-
-        this.applyAuthor(source, author);
-        this.mergeDocMetaUpdate(source, target);
-    }
-
     /**
      * Start with the source and perform a diff against the target.
      */
-    private static mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
+    public static mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
 
         const mergePageMeta = (source: PageMeta, target: PageMeta) => {
 
@@ -285,7 +277,23 @@ class DocMetaRecords {
 
     }
 
-    private static applyAuthor(docMeta: DocMeta, author: Author) {
+    public static async applyAuthorsFromProfile(docMeta: DocMeta, groupDoc: GroupDoc) {
+
+        const createAuthorFromProfile = async () => {
+
+            const profile = await Profiles.get(groupDoc.profileID);
+
+            const name = profile!.name || profile!.handle || 'unknown';
+
+            const image = {
+                src: profile!.image!.url
+            };
+
+            return new Author({name, image});
+
+        };
+
+        const author = await createAuthorFromProfile();
 
         const applyAuthorToAnnotations = (dict: {[key: string]: Annotation}) => {
 

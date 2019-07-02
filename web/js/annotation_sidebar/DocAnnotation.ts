@@ -12,6 +12,7 @@ import {ObjectID} from '../util/ObjectIDs';
 import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/HighlightColor';
 import {DocMeta} from '../metadata/DocMeta';
+import {Author} from "../metadata/Author";
 
 export interface DocAnnotation extends ObjectID {
 
@@ -41,6 +42,8 @@ export interface DocAnnotation extends ObjectID {
     readonly pageMeta: PageMeta;
 
     readonly original: Comment | Flashcard | AreaHighlight | TextHighlight;
+
+    readonly author?: Author;
 
 }
 

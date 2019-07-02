@@ -70,8 +70,8 @@ export class DocAnnotations {
             pageMeta,
             children: [],
             ref: flashcard.ref,
-            original: flashcard
-
+            original: flashcard,
+            author: flashcard.author
         };
 
     }
@@ -96,8 +96,8 @@ export class DocAnnotations {
             pageMeta,
             children: [],
             ref: comment.ref,
-            original: comment
-
+            original: comment,
+            author: comment.author
         };
 
     }
@@ -136,7 +136,8 @@ export class DocAnnotations {
             docMeta,
             pageMeta,
             children: [],
-            original: areaHighlight
+            original: areaHighlight,
+            author: areaHighlight.author
         };
 
     }
@@ -188,7 +189,9 @@ export class DocAnnotations {
             docMeta,
             pageMeta,
             children: [],
-            original: textHighlight
+            original: textHighlight,
+            author: textHighlight.author
+
         };
 
     }

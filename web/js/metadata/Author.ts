@@ -17,6 +17,9 @@ export class Author extends SerializedObject {
 
     constructor(val: IAuthor) {
         super(<any> val);
+        this.name = val.name;
+        this.url = val.url;
+        this.image = val.image;
     }
 
 }

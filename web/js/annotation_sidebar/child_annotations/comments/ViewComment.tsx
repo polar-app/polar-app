@@ -59,6 +59,8 @@ export class ViewComment extends React.Component<IProps, IState> {
                     <div style={Styles.barBody}
                          className="flexbar comment-bar border-bottom pt-0 pb-0 mb-1">
 
+                        FIXME: {comment.author ? comment.author!.name : "NONE"}
+
                         <div style={Styles.barChild} className="text-muted">
                             {/*TODO: make this into its own component... */}
                             <Moment style={{
