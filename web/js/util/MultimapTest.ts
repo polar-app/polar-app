@@ -17,4 +17,20 @@ describe('Multimap', function() {
     });
 
 
+    it("delete specific keys with a function", function() {
+
+        const multimap = new ArrayListMultimap<string, string>();
+        multimap.put('foo', 'bar');
+        multimap.put('foo', 'cat');
+
+        assertJSON(multimap.keys(), ['foo']);
+
+        assertJSON(multimap.get('foo'), ['bar', 'cat']);
+
+        multimap.delete('foo', undefined, (val: string) => val === 'cat');
+
+        assertJSON(multimap.get('foo'), ['bar']);
+
+    });
+
 });
