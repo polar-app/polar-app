@@ -13,7 +13,6 @@ import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/HighlightColor';
 import {DocMeta} from '../metadata/DocMeta';
 import {Author} from "../metadata/Author";
-import {MutationType} from "../proxies/MutationType";
 
 export interface IDocAnnotation extends ObjectID {
 
