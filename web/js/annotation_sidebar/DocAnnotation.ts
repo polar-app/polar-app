@@ -13,6 +13,7 @@ import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/HighlightColor';
 import {DocMeta} from '../metadata/DocMeta';
 import {Author} from "../metadata/Author";
+import {DocAnnotationIndex} from "./DocAnnotationIndex";
 
 export interface IDocAnnotation extends ObjectID {
 
@@ -88,9 +89,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly author?: Author;
 
-    private children: DocAnnotation[] = [];
-
-    constructor(obj: IDocAnnotation) {
+    constructor(private readonly index: DocAnnotationIndex,
+                private readonly obj: IDocAnnotation) {
         this.oid = obj.oid;
         this.id = obj.id;
         this.annotationType = obj.annotationType;
@@ -109,21 +109,22 @@ export class DefaultDocAnnotation implements DocAnnotation {
     }
 
     public getChildren(): ReadonlyArray<DocAnnotation> {
-        return this.children;
+        return this.index.getChildren(this.id);
     }
 
     public setChildren(children: ReadonlyArray<DocAnnotation>): void {
-        this.children = [...children];
+        this.index.setChildren(this.id, children);
     }
 
     public addChild(docAnnotation: DocAnnotation) {
-        this.children.push(docAnnotation);
-        this.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
+        this.index.addChild(this.id, docAnnotation);
+
+        // this.children.push(docAnnotation);
+        // this.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
     }
 
     public removeChild(id: string) {
-        this.children =
-            this.children.filter(current => current.id !== id);
+        this.index.removeChild(this.id, id);
     }
 
 }

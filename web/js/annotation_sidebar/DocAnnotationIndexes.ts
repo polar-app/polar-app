@@ -1,5 +1,6 @@
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {DocAnnotation, SortedDocAnnotations} from './DocAnnotation';
+import {ArrayListMultimap} from "../util/Multimap";
 
 export class DocAnnotationIndexes {
 
@@ -29,7 +30,7 @@ export class DocAnnotationIndexes {
 
                 const current = docAnnotationMap[docAnnotation.id];
 
-                // we have to merge the previously built command and children
+                // we have to merge the previously built annotation and children
 
                 docAnnotation.setChildren(current.getChildren());
 

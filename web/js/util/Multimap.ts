@@ -36,7 +36,7 @@ export class ArrayListMultimap<K, V> implements Multimap<K, V> {
             .length > 0;
     }
 
-    public delete(key: K, value?: V): boolean {
+    public delete(key: K, value?: V, filter?: (val: V) => boolean): boolean {
         const temp = this.backing;
         this.backing = this.backing
             .filter(entry => {
@@ -44,6 +44,11 @@ export class ArrayListMultimap<K, V> implements Multimap<K, V> {
                 if (value) {
                     return entry.key !== key || entry.value !== value;
                 }
+
+                if (filter) {
+                    return entry.key !== key || ! filter(entry.value);
+                }
+
                 return entry.key !== key;
             });
 
@@ -69,6 +74,15 @@ export class ArrayListMultimap<K, V> implements Multimap<K, V> {
         this.backing.push(new MultimapEntry(key, value));
         return this.backing;
     }
+
+    public putAll(key: K, values: ReadonlyArray<V>) {
+
+        for (const value of values) {
+            this.put(key, value);
+        }
+
+    }
+
 }
 
 class MultimapEntry<K, V> {

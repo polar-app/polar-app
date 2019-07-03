@@ -23,8 +23,7 @@ describe('DocAnnotationIndexes', function() {
 
         const docAnnotationMap = createDocAnnotationMap(a0, a1);
 
-        const docAnnotationIndex = new DocAnnotationIndex(docAnnotationMap,
-                                                          Object.values(docAnnotationMap));
+        const docAnnotationIndex = new DocAnnotationIndex(docAnnotationMap, Object.values(docAnnotationMap));
 
         const rebuiltDocAnnotationIndex = DocAnnotationIndexes.rebuild(docAnnotationIndex, a2);
 

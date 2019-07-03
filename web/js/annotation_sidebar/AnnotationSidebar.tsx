@@ -134,6 +134,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
     private async rebuildInitialAnnotations() {
 
         const annotations = await DocAnnotations.getAnnotationsForPage(this.props.persistenceLayerProvider,
+                                                                       this.docAnnotationIndex,
                                                                        this.props.doc.docMeta);
 
         this.docAnnotationIndex
@@ -186,6 +187,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                     const {persistenceLayerProvider} = this.props;
                     return DocAnnotations.createFromAreaHighlight(persistenceLayerProvider,
+                                                                  this.docAnnotationIndex,
                                                                   docMeta,
                                                                   annotationValue,
                                                                   annotationEvent.pageMeta);
@@ -208,7 +210,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,
-                                       annotationValue => DocAnnotations.createFromTextHighlight(docMeta,
+                                       annotationValue => DocAnnotations.createFromTextHighlight(this.docAnnotationIndex,
+                                                                                                 docMeta,
                                                                                                  annotationValue,
                                                                                                  annotationEvent.pageMeta));
 
@@ -220,7 +223,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         new CommentModel().registerListener(docMeta, annotationEvent => {
 
             const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromComment(docMeta, comment, annotationEvent.pageMeta);
+            const childDocAnnotation = DocAnnotations.createFromComment(this.docAnnotationIndex,
+                                                                        docMeta,
+                                                                        comment,
+                                                                        annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
                                             annotationEvent.traceEvent.mutationType,
@@ -231,7 +237,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         new FlashcardModel().registerListener(docMeta, annotationEvent => {
 
             const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta, flashcard, annotationEvent.pageMeta);
+            const childDocAnnotation = DocAnnotations.createFromFlashcard(this.docAnnotationIndex,
+                                                                          docMeta,
+                                                                          flashcard,
+                                                                          annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
                                             annotationEvent.traceEvent.mutationType,
@@ -262,17 +271,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const ref = Refs.parse(childDocAnnotation.ref!);
 
-        const annotation = this.docAnnotationIndex.docAnnotationMap[ref.value];
-
-        if (! annotation) {
-            log.warn("No annotation for ref:", ref.value);
-            return;
-        }
+        const parentID = ref.value;
 
         if (mutationType !== MutationType.DELETE) {
-            annotation.addChild(childDocAnnotation);
+            this.docAnnotationIndex.addChild(parentID, childDocAnnotation);
         } else {
-            annotation.removeChild(id);
+            this.docAnnotationIndex.removeChild(parentID, childDocAnnotation.id);
         }
 
         this.reload();
