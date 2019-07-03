@@ -28,13 +28,13 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { children } = this.props;
+        const docAnnotations = [...this.props.docAnnotations];
 
-        children.sort((a, b) => a.created.localeCompare(b.created));
+        docAnnotations.sort((a, b) => a.created.localeCompare(b.created));
 
         const result: any = [];
 
-        children.map(child => {
+        docAnnotations.map(child => {
 
             if (child.annotationType === AnnotationType.COMMENT) {
 
@@ -75,7 +75,7 @@ interface IProps {
 
     readonly parent: DocAnnotation;
 
-    readonly children: DocAnnotation[];
+    readonly docAnnotations: ReadonlyArray<DocAnnotation>;
 
 }
 

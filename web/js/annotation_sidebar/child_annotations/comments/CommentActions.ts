@@ -19,13 +19,19 @@ export class CommentActions {
         delete comment.pageMeta.comments[comment.id];
     }
 
-    public static create(annotation: DocAnnotation, html: string) {
+    public static create(docMeta: DocMeta,
+                         annotation: DocAnnotation,
+                         html: string) {
 
         const ref = Refs.createFromAnnotationType(annotation.id,
                                                   annotation.annotationType);
 
         const comment = Comments.createHTMLComment(html, ref);
-        annotation.pageMeta.comments[comment.id] = comment;
+
+        // make sure to update on the primary page meta
+        const pageMeta = DocMetas.getPageMeta(docMeta, annotation.pageMeta.pageInfo.num);
+
+        pageMeta.comments[comment.id] = comment;
 
     }
 

@@ -1,4 +1,4 @@
-import {DocAnnotation, DocAnnotationMap} from './DocAnnotation';
+import {DefaultDocAnnotation, DocAnnotation, DocAnnotationMap} from './DocAnnotation';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {Arrays} from '../util/Arrays';
 import {DocAnnotationIndexes} from './DocAnnotationIndexes';
@@ -263,7 +263,7 @@ function createAnnotation(id: string,
 
     const textHighlight = TextHighlights.createMockTextHighlight();
 
-    return {
+    return new DefaultDocAnnotation({
         oid: ObjectIDs.create(),
         id,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
@@ -275,9 +275,8 @@ function createAnnotation(id: string,
         created: '2009-06-15T13:45:30',
         pageMeta: null!,
         docMeta: null!,
-        children: [],
         original: textHighlight
-    };
+    });
 
 }
 

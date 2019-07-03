@@ -67,7 +67,7 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                 <div className="comments">
                     <ChildAnnotationSection doc={this.props.doc}
                                             parent={annotation}
-                                            children={annotation.children}/>
+                                            docAnnotations={annotation.getChildren()}/>
                 </div>
 
             </div>

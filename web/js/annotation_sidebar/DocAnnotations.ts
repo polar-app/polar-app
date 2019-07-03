@@ -6,7 +6,7 @@ import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
 import {Text} from '../metadata/Text';
-import {DocAnnotation} from './DocAnnotation';
+import {DefaultDocAnnotation, DocAnnotation} from './DocAnnotation';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {Optional} from '../util/ts/Optional';
@@ -53,7 +53,7 @@ export class DocAnnotations {
                                       flashcard: Flashcard,
                                       pageMeta: PageMeta): DocAnnotation {
 
-        return {
+        return new DefaultDocAnnotation({
             oid: ObjectIDs.create(),
             id: flashcard.id,
             annotationType: AnnotationType.FLASHCARD,
@@ -68,11 +68,10 @@ export class DocAnnotations {
             created: flashcard.created,
             docMeta,
             pageMeta,
-            children: [],
             ref: flashcard.ref,
             original: flashcard,
             author: flashcard.author
-        };
+        });
 
     }
 
@@ -80,7 +79,7 @@ export class DocAnnotations {
                                     comment: Comment,
                                     pageMeta: PageMeta): DocAnnotation {
 
-        return {
+        return new DefaultDocAnnotation({
             oid: ObjectIDs.create(),
             id: comment.id,
             annotationType: AnnotationType.COMMENT,
@@ -94,11 +93,10 @@ export class DocAnnotations {
             created: comment.created,
             docMeta,
             pageMeta,
-            children: [],
             ref: comment.ref,
             original: comment,
             author: comment.author
-        };
+        });
 
     }
 
@@ -123,7 +121,7 @@ export class DocAnnotations {
         const img = Images.toImg(persistenceLayerProvider, areaHighlight.image);
         const position = createPosition();
 
-        return {
+        return new DefaultDocAnnotation({
             oid: ObjectIDs.create(),
             id: areaHighlight.id,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
@@ -135,10 +133,9 @@ export class DocAnnotations {
             created: areaHighlight.created,
             docMeta,
             pageMeta,
-            children: [],
             original: areaHighlight,
             author: areaHighlight.author
-        };
+        });
 
     }
 
@@ -174,7 +171,7 @@ export class DocAnnotations {
 
         }
 
-        return {
+        return new DefaultDocAnnotation({
             oid: ObjectIDs.create(),
             id: textHighlight.id,
             annotationType: AnnotationType.TEXT_HIGHLIGHT,
@@ -188,11 +185,9 @@ export class DocAnnotations {
             created: textHighlight.created,
             docMeta,
             pageMeta,
-            children: [],
             original: textHighlight,
             author: textHighlight.author
-
-        };
+        });
 
     }
 

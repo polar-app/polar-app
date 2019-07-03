@@ -197,7 +197,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         // which I need to fix in the HTML sanitizer.
         // html = HTMLSanitizer.sanitize(html);
 
-        CommentActions.create(this.props.annotation, html);
+        CommentActions.create(this.props.doc.docMeta, this.props.annotation, html);
 
         this.setState({
             activeInputComponent: 'none'

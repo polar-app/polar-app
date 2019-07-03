@@ -269,20 +269,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             return;
         }
 
-        if (! annotation.children) {
-            annotation.children = [];
-        }
-
         if (mutationType !== MutationType.DELETE) {
-
-            annotation.children.push(childDocAnnotation);
-            annotation.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
-
+            annotation.addChild(childDocAnnotation);
         } else {
-
-            annotation.children =
-                annotation.children.filter(current => current.id !== id);
-
+            annotation.removeChild(id);
         }
 
         this.reload();

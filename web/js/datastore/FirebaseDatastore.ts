@@ -642,7 +642,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             };
 
-            const recordPermission = await createRecordPermission();
+            const recordPermission
+                = Dictionaries.onlyDefinedProperties(await createRecordPermission());
 
             const docMetaRef = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
@@ -726,7 +727,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             uid,
             id,
             visibility,
-            groups: opts.groups,
+            groups: opts.groups || null,
             value: docMetaHolder
         };
 
@@ -746,7 +747,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             uid,
             id,
             visibility,
-            groups: opts.groups,
+            groups: opts.groups || null,
             value: docInfo
         };
 
@@ -1090,7 +1091,7 @@ export interface RecordPermission {
     // the visibility of this record.
     readonly visibility: Visibility;
 
-    readonly groups?: ReadonlyArray<GroupIDStr>;
+    readonly groups?: ReadonlyArray<GroupIDStr> | null;
 
 }
 

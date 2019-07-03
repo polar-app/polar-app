@@ -31,7 +31,7 @@ export class DocAnnotationIndexes {
 
                 // we have to merge the previously built command and children
 
-                docAnnotation.children = current.children;
+                docAnnotation.setChildren(current.getChildren());
 
             }
 
