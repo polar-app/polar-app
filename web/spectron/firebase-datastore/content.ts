@@ -59,7 +59,7 @@ SpectronRenderer.run(async (state) => {
 
                 await persistenceLayer.write(fingerprint, docMeta, {datastoreMutation});
 
-                assert.isFalse(docReplicationEventListenerCalled);
+                assert.isFalse(docReplicationEventListenerCalled, "No doc replication event listener called");
 
                 await waitForExpect(async () => {
                     const docMetaFiles = await persistenceLayer.getDocMetaRefs();
