@@ -67,6 +67,8 @@ export class Dictionaries {
      */
     public static sorted(dict: any): any {
 
+        // TODO: this doesn't handle circular reference well and will chase its tail.
+
         if (dict === undefined || dict === null) {
             // nothing to do here.
             return dict;
@@ -76,7 +78,6 @@ export class Dictionaries {
             // if we're not a dictionary we're done
             return dict;
         }
-
 
         if (Array.isArray(dict)) {
 
@@ -92,9 +93,11 @@ export class Dictionaries {
 
             const result: any = {};
 
-            Object.keys(dict).sort().forEach(key => {
+            const sortedKeys = Object.keys(dict).sort();
+
+            for (const key of sortedKeys) {
                 result[key] = this.sorted(dict[key]);
-            });
+            }
 
             return result;
 

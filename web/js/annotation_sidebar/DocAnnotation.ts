@@ -60,6 +60,8 @@ export interface DocAnnotation extends IDocAnnotation {
 
 export class DefaultDocAnnotation implements DocAnnotation {
 
+    private readonly getIndex: () => DocAnnotationIndex;
+
     public readonly oid: number;
 
     public readonly id: string;
@@ -89,8 +91,11 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly author?: Author;
 
-    constructor(private readonly index: DocAnnotationIndex,
-                private readonly obj: IDocAnnotation) {
+    constructor(readonly index: DocAnnotationIndex,
+                public readonly obj: IDocAnnotation) {
+
+        this.getIndex = () => index;
+
         this.oid = obj.oid;
         this.id = obj.id;
         this.annotationType = obj.annotationType;
@@ -106,25 +111,26 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.pageMeta = obj.pageMeta;
         this.original = obj.original;
         this.author = obj.author;
+
     }
 
     public getChildren(): ReadonlyArray<DocAnnotation> {
-        return this.index.getChildren(this.id);
+        return this.getIndex().getChildren(this.id);
     }
 
     public setChildren(children: ReadonlyArray<DocAnnotation>): void {
-        this.index.setChildren(this.id, children);
+        this.getIndex().setChildren(this.id, children);
     }
 
     public addChild(docAnnotation: DocAnnotation) {
-        this.index.addChild(this.id, docAnnotation);
+        this.getIndex().addChild(this.id, docAnnotation);
 
         // this.children.push(docAnnotation);
         // this.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
     }
 
     public removeChild(id: string) {
-        this.index.removeChild(this.id, id);
+        this.getIndex().removeChild(this.id, id);
     }
 
 }
@@ -133,7 +139,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
  * A map from ID to the actual DocAnnotation.
  */
 // noinspection TsLint: interface-over-type-literal
-export type DocAnnotationMap = {[id: string]: DocAnnotation};
+export type DocAnnotationMap = {[id: string]: DefaultDocAnnotation};
 
 /**
  * Annotations according to their position in the document.

@@ -2,9 +2,8 @@ import * as React from 'react';
 import {Logger} from '../logger/Logger';
 import {Comment} from '../metadata/Comment';
 import {DocAnnotations} from './DocAnnotations';
-import {DocAnnotation} from './DocAnnotation';
-import {DocAnnotationIndex} from './DocAnnotationIndex';
-import {DocAnnotationIndexes} from './DocAnnotationIndexes';
+import {DocAnnotation, IDocAnnotation} from './DocAnnotation';
+import {DocAnnotationIndex, IDString} from './DocAnnotationIndex';
 import {AreaHighlightModel} from '../highlights/area/model/AreaHighlightModel';
 import {MutationType} from '../proxies/MutationType';
 import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
@@ -24,8 +23,7 @@ import {AreaHighlight} from '../metadata/AreaHighlight';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocMeta} from "../metadata/DocMeta";
 import {Firebase} from "../firebase/Firebase";
-import {DocMetaListener, DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
-import {GroupDoc} from "../datastore/sharing/db/GroupDocs";
+import {DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
 
 const log = Logger.create();
 
@@ -123,7 +121,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async init() {
 
-        await this.rebuildInitialAnnotations();
+        await this.buildInitialAnnotations();
 
         this.registerListenerForPrimaryDocMeta();
 
@@ -131,18 +129,15 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     }
 
-    private async rebuildInitialAnnotations() {
+    private async buildInitialAnnotations() {
 
-        const annotations = await DocAnnotations.getAnnotationsForPage(this.props.persistenceLayerProvider,
-                                                                       this.docAnnotationIndex,
-                                                                       this.props.doc.docMeta);
+        const docAnnotations = await DocAnnotations.getAnnotationsForPage(this.props.persistenceLayerProvider,
+                                                                         this.docAnnotationIndex,
+                                                                         this.props.doc.docMeta);
 
-        this.docAnnotationIndex
-            = DocAnnotationIndexes.rebuild(this.docAnnotationIndex, ...annotations);
+        this.docAnnotationIndex.addDocAnnotation(...docAnnotations);
 
-        this.setState({
-            annotations: this.docAnnotationIndex.sortedDocAnnotations
-        });
+        this.reload();
 
     }
 
@@ -187,7 +182,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                     const {persistenceLayerProvider} = this.props;
                     return DocAnnotations.createFromAreaHighlight(persistenceLayerProvider,
-                                                                  this.docAnnotationIndex,
                                                                   docMeta,
                                                                   annotationValue,
                                                                   annotationEvent.pageMeta);
@@ -210,8 +204,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,
-                                       annotationValue => DocAnnotations.createFromTextHighlight(this.docAnnotationIndex,
-                                                                                                 docMeta,
+                                       annotationValue => DocAnnotations.createFromTextHighlight(docMeta,
                                                                                                  annotationValue,
                                                                                                  annotationEvent.pageMeta));
 
@@ -223,8 +216,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         new CommentModel().registerListener(docMeta, annotationEvent => {
 
             const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromComment(this.docAnnotationIndex,
-                                                                        docMeta,
+            const childDocAnnotation = DocAnnotations.createFromComment(docMeta,
                                                                         comment,
                                                                         annotationEvent.pageMeta);
 
@@ -237,8 +229,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         new FlashcardModel().registerListener(docMeta, annotationEvent => {
 
             const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromFlashcard(this.docAnnotationIndex,
-                                                                          docMeta,
+            const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta,
                                                                           flashcard,
                                                                           annotationEvent.pageMeta);
 
@@ -261,7 +252,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private handleChildAnnotationEvent(id: string,
                                        mutationType: MutationType,
-                                       childDocAnnotation: DocAnnotation) {
+                                       childDocAnnotation: IDocAnnotation) {
 
         if (! childDocAnnotation.ref) {
             // this is an old annotation.  We can't show it in the sidebar yet.
@@ -274,9 +265,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const parentID = ref.value;
 
         if (mutationType !== MutationType.DELETE) {
-            this.docAnnotationIndex.addChild(parentID, childDocAnnotation);
+            this.docAnnotationIndex.deleteDocAnnotation(id);
         } else {
-            this.docAnnotationIndex.removeChild(parentID, childDocAnnotation.id);
+            this.docAnnotationIndex.addDocAnnotation(childDocAnnotation);
         }
 
         this.reload();
@@ -286,34 +277,34 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private handleAnnotationEvent(id: string,
                                   mutationType: MutationType,
-                                  docAnnotation: DocAnnotation | undefined) {
+                                  docAnnotation: IDocAnnotation | undefined) {
 
         if (mutationType === MutationType.DELETE) {
-
-            this.docAnnotationIndex
-                = DocAnnotationIndexes.delete(this.docAnnotationIndex, id);
-
-            this.reload();
-
+            this.deleteDocAnnotation(id);
         } else {
-            this.refresh(docAnnotation!);
+            this.addDocAnnotation(docAnnotation!);
         }
-
-    }
-
-    private refresh(docAnnotation: DocAnnotation) {
-
-        this.docAnnotationIndex
-            = DocAnnotationIndexes.rebuild(this.docAnnotationIndex, docAnnotation);
 
         this.reload();
 
     }
 
+    private deleteDocAnnotation(id: IDString) {
+        this.docAnnotationIndex.deleteDocAnnotation(id);
+        this.reload();
+    }
+
+    private addDocAnnotation(docAnnotation: IDocAnnotation) {
+        this.docAnnotationIndex.addDocAnnotation(docAnnotation);
+        this.reload();
+    }
+
     private reload() {
 
+        const annotations = this.docAnnotationIndex.getDocAnnotationsSorted();
+
         this.setState({
-            annotations: this.docAnnotationIndex.sortedDocAnnotations
+            annotations
         });
 
     }
@@ -387,7 +378,7 @@ interface IProps {
 }
 
 interface IState {
-    readonly annotations: DocAnnotation[];
+    readonly annotations: ReadonlyArray<DocAnnotation>;
 }
 
 interface IRender extends IProps, IState {

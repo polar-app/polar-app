@@ -6,7 +6,7 @@ import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
 import {Text} from '../metadata/Text';
-import {DefaultDocAnnotation, DocAnnotation} from './DocAnnotation';
+import {DefaultDocAnnotation, DocAnnotation, IDocAnnotation} from './DocAnnotation';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {Optional} from '../util/ts/Optional';
@@ -23,39 +23,31 @@ export class DocAnnotations {
 
     public static async getAnnotationsForPage(persistenceLayerProvider: PersistenceLayerProvider,
                                               docAnnotationIndex: DocAnnotationIndex,
-                                              docMeta: DocMeta): Promise<DocAnnotation[]> {
+                                              docMeta: DocMeta): Promise<IDocAnnotation[]> {
 
-        const result: DocAnnotation[] = [];
+        const result: IDocAnnotation[] = [];
 
         const pageMetas = Object.values(docMeta.pageMetas);
 
         for (const pageMeta of pageMetas) {
 
-            const areaHighlights = await this.getAreaHighlights(persistenceLayerProvider, docAnnotationIndex, docMeta, pageMeta);
-            const textHighlights = this.getTextHighlights(docAnnotationIndex, docMeta, pageMeta);
+            const areaHighlights = await this.getAreaHighlights(persistenceLayerProvider, docMeta, pageMeta);
+            const textHighlights = this.getTextHighlights(docMeta, pageMeta);
 
             result.push(...textHighlights);
             result.push(...areaHighlights);
 
         }
 
-        const index: {[id: string]: DocAnnotation} = {};
-
-        for (const docAnnotation of result) {
-            index[docAnnotation.id] = docAnnotation;
-        }
-
-        // now update the index of all our comments...
-
         return result;
 
     }
 
-    public static createFromFlashcard(docAnnotationIndex: DocAnnotationIndex,
-                                      docMeta: DocMeta,
+    public static createFromFlashcard(docMeta: DocMeta,
                                       flashcard: Flashcard,
-                                      pageMeta: PageMeta): DocAnnotation {
-        return new DefaultDocAnnotation(docAnnotationIndex, {
+                                      pageMeta: PageMeta): IDocAnnotation {
+
+        return {
             oid: ObjectIDs.create(),
             id: flashcard.id,
             annotationType: AnnotationType.FLASHCARD,
@@ -73,16 +65,15 @@ export class DocAnnotations {
             ref: flashcard.ref,
             original: flashcard,
             author: flashcard.author
-        });
+        };
 
     }
 
-    public static createFromComment(docAnnotationIndex: DocAnnotationIndex,
-                                    docMeta: DocMeta,
+    public static createFromComment(docMeta: DocMeta,
                                     comment: Comment,
-                                    pageMeta: PageMeta): DocAnnotation {
+                                    pageMeta: PageMeta): IDocAnnotation {
 
-        return new DefaultDocAnnotation(docAnnotationIndex, {
+        return {
             oid: ObjectIDs.create(),
             id: comment.id,
             annotationType: AnnotationType.COMMENT,
@@ -99,15 +90,14 @@ export class DocAnnotations {
             ref: comment.ref,
             original: comment,
             author: comment.author
-        });
+        };
 
     }
 
     public static createFromAreaHighlight(persistenceLayerProvider: PersistenceLayerProvider,
-                                          docAnnotationIndex: DocAnnotationIndex,
                                           docMeta: DocMeta,
                                           areaHighlight: AreaHighlight,
-                                          pageMeta: PageMeta): DocAnnotation {
+                                          pageMeta: PageMeta): IDocAnnotation {
 
         const createPosition = (): Point => {
 
@@ -125,7 +115,7 @@ export class DocAnnotations {
         const img = Images.toImg(persistenceLayerProvider, areaHighlight.image);
         const position = createPosition();
 
-        return new DefaultDocAnnotation(docAnnotationIndex, {
+        return {
             oid: ObjectIDs.create(),
             id: areaHighlight.id,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
@@ -139,14 +129,13 @@ export class DocAnnotations {
             pageMeta,
             original: areaHighlight,
             author: areaHighlight.author
-        });
+        };
 
     }
 
-    public static createFromTextHighlight(docAnnotationIndex: DocAnnotationIndex,
-                                          docMeta: DocMeta,
+    public static createFromTextHighlight(docMeta: DocMeta,
                                           textHighlight: TextHighlight,
-                                          pageMeta: PageMeta): DocAnnotation {
+                                          pageMeta: PageMeta): IDocAnnotation {
 
         let html: string = "";
 
@@ -176,7 +165,7 @@ export class DocAnnotations {
 
         }
 
-        return new DefaultDocAnnotation(docAnnotationIndex, {
+        return {
             oid: ObjectIDs.create(),
             id: textHighlight.id,
             annotationType: AnnotationType.TEXT_HIGHLIGHT,
@@ -192,35 +181,30 @@ export class DocAnnotations {
             pageMeta,
             original: textHighlight,
             author: textHighlight.author
-        });
+        };
 
     }
 
-    private static getTextHighlights(docAnnotationIndex: DocAnnotationIndex, docMeta: DocMeta, pageMeta: PageMeta): DocAnnotation[] {
+    private static getTextHighlights(docMeta: DocMeta, pageMeta: PageMeta): ReadonlyArray<IDocAnnotation> {
 
-        const result: DocAnnotation[] = [];
-
-        Object.values(pageMeta.textHighlights).forEach(textHighlight => {
-            result.push(this.createFromTextHighlight(docAnnotationIndex, docMeta, textHighlight, pageMeta));
+        return Object.values(pageMeta.textHighlights).map(textHighlight => {
+            return this.createFromTextHighlight(docMeta, textHighlight, pageMeta);
         });
-
-        return result;
 
     }
 
     private static async getAreaHighlights(persistenceLayerProvider: PersistenceLayerProvider,
-                                           docAnnotationIndex: DocAnnotationIndex,
                                            docMeta: DocMeta,
-                                           pageMeta: PageMeta): Promise<DocAnnotation[]> {
+                                           pageMeta: PageMeta): Promise<IDocAnnotation[]> {
 
-        const result: DocAnnotation[] = [];
+        const result: IDocAnnotation[] = [];
 
         const areaHighlights = Object.values(pageMeta.areaHighlights);
 
         for (const areaHighlight of areaHighlights) {
 
             const docAnnotation =
-                await this.createFromAreaHighlight(persistenceLayerProvider, docAnnotationIndex, docMeta, areaHighlight, pageMeta);
+                await this.createFromAreaHighlight(persistenceLayerProvider, docMeta, areaHighlight, pageMeta);
 
             result.push(docAnnotation);
 

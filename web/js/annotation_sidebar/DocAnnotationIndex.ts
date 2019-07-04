@@ -1,29 +1,96 @@
-import {DocAnnotation, DocAnnotationMap, SortedDocAnnotations} from './DocAnnotation';
+import {
+    DefaultDocAnnotation,
+    DocAnnotation,
+    DocAnnotationMap,
+    IDocAnnotation,
+    SortedDocAnnotations
+} from './DocAnnotation';
 import {ArrayListMultimap} from "../util/Multimap";
+import {Optional} from "../util/ts/Optional";
 
 export class DocAnnotationIndex {
 
-    public readonly docAnnotationMap: DocAnnotationMap = {};
-    public readonly sortedDocAnnotations: SortedDocAnnotations = [];
+    private readonly lookup: DocAnnotationMap = {};
+    private readonly children = new ArrayListMultimap<string, DocAnnotation>();
 
-    public readonly children = new ArrayListMultimap<string, DocAnnotation>();
+    constructor(docAnnotationMap: DocAnnotationMap = {}) {
+        this.lookup = docAnnotationMap;
+    }
 
-    constructor(docAnnotationMap: DocAnnotationMap = {},
-                sortedDocAnnotation: SortedDocAnnotations = []) {
+    public get(id: IDString): DocAnnotation | undefined {
+        return Optional.of(this.lookup[id]).getOrUndefined();
+    }
 
-        this.docAnnotationMap = docAnnotationMap;
-        this.sortedDocAnnotations = sortedDocAnnotation;
+    // FIXME: make these put + delete operations..
+
+    public addDocAnnotation(...docAnnotations: ReadonlyArray<IDocAnnotation>) {
+
+        for (const docAnnotation of docAnnotations) {
+
+            const entry = new DefaultDocAnnotation(this, docAnnotation);
+
+            this.lookup[docAnnotation.id] = entry;
+
+            if (docAnnotation.ref) {
+                this.addChild(docAnnotation.ref, entry);
+            }
+
+        }
+
 
     }
 
+    public deleteDocAnnotation(id: IDString) {
+
+        const current = this.get(id);
+
+        if (current && current.ref) {
+            this.removeChild(current.ref, current.id);
+        }
+
+        delete this.lookup[id];
+        this.children.delete(id);
+
+    }
+
+    public getDocAnnotations(): ReadonlyArray<DefaultDocAnnotation> {
+        return Object.values(this.lookup);
+    }
+
+    public getDocAnnotationsSorted(): ReadonlyArray<DefaultDocAnnotation> {
+
+        const computeScore = (item: DocAnnotation) => {
+            return (item.pageNum * 100000) + (item.position.y * 100) + item.position.x;
+        };
+
+        // TODO: I would prefer that this was a binary tree which was maintained sorted
+
+        return Object.values(this.lookup)
+            .sort((a, b) => {
+
+                const diff = computeScore(a) - computeScore(b);
+
+                if (diff === 0) {
+                    return a.id.localeCompare(b.id);
+                }
+
+                return diff;
+
+            });
+
+    }
+
+    // FIXME make private
     public getChildren(id: IDString): ReadonlyArray<DocAnnotation> {
         return this.children.get(id);
     }
 
+    // FIXME make private
     public setChildren(id: IDString, children: ReadonlyArray<DocAnnotation>): void {
         this.children.putAll(id, children);
     }
 
+    // FIXME make private
     public addChild(id: IDString, docAnnotation: DocAnnotation) {
         this.children.put(id, docAnnotation);
 
@@ -31,8 +98,9 @@ export class DocAnnotationIndex {
         // this.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
     }
 
+    // FIXME make private
     public removeChild(id: IDString, child: IDString) {
-        this.children.delete(id, undefined, (value: DocAnnotation) => value.id === id);
+        this.children.delete(id, undefined, (value: DocAnnotation) => value.id === child);
     }
 }
 
