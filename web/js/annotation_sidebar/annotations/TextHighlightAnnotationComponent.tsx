@@ -69,10 +69,12 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                         </div>
 
-                        <div style={{userSelect: 'none'}}>
+                        <div>
 
-                            <AnnotationControlBar doc={this.props.doc}
-                                                  annotation={annotation}/>
+                            <div style={{userSelect: 'none'}}>
+                                <AnnotationControlBar doc={this.props.doc}
+                                                      annotation={annotation}/>
+                            </div>
 
                             <div className="comments">
                                 <ChildAnnotationSection doc={this.props.doc}
