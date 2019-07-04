@@ -12,7 +12,10 @@ import {Refs} from "../metadata/Refs";
 export class DocAnnotationIndex {
 
     private readonly lookup: DocAnnotationMap = {};
+
     private readonly children = new ArrayListMultimap<string, DocAnnotation>();
+
+    private readonly parents: ParentMap = {};
 
     constructor(docAnnotationMap: DocAnnotationMap = {}) {
         this.lookup = docAnnotationMap;
@@ -41,10 +44,10 @@ export class DocAnnotationIndex {
 
     public delete(id: IDString) {
 
-        const current = this.get(id);
+        const parent = this._getParent(id);
 
-        if (current && current.ref) {
-            this._removeChild(current.ref, current.id);
+        if (parent) {
+            this._removeChild(parent.id, id);
         }
 
         delete this.lookup[id];
@@ -79,6 +82,18 @@ export class DocAnnotationIndex {
 
     }
 
+    public _getParent(id: IDString): DocAnnotation | undefined {
+
+        const pid = this.parents[id];
+
+        if (pid) {
+            return this.lookup[pid];
+        }
+
+        return undefined;
+
+    }
+
     public _getChildren(id: IDString): ReadonlyArray<DocAnnotation> {
         return this.children.get(id);
     }
@@ -89,12 +104,19 @@ export class DocAnnotationIndex {
 
     public _addChild(id: IDString, docAnnotation: DocAnnotation) {
         this.children.put(id, docAnnotation);
+        this.parents[docAnnotation.id] = id;
+
     }
 
     public _removeChild(id: IDString, child: IDString) {
         this.children.delete(id, undefined, (value: DocAnnotation) => value.id === child);
+        delete this.parents[child];
     }
 
+}
+
+export interface ParentMap {
+    [id: string]: string;
 }
 
 export type IDString = string;
