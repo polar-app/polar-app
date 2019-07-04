@@ -14,6 +14,9 @@ import {ProfileOwners} from "./ProfileOwners";
 import {ProfileIDStr, Profiles} from "./Profiles";
 import {Author} from "../../../metadata/Author";
 import {Annotation} from "../../../metadata/Annotation";
+import {Logger} from "../../../logger/Logger";
+
+const log = Logger.create();
 
 export class DocMetaListener {
 
@@ -50,6 +53,11 @@ export class DocMetaListener {
     public onSnapshotForUserGroup(userGroup: UserGroup | undefined) {
 
         if (! userGroup) {
+            return;
+        }
+
+        if (! userGroup.groups) {
+            log.warn("No user groups on object: ", userGroup);
             return;
         }
 
