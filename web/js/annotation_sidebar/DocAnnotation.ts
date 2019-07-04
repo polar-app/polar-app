@@ -115,22 +115,22 @@ export class DefaultDocAnnotation implements DocAnnotation {
     }
 
     public getChildren(): ReadonlyArray<DocAnnotation> {
-        return this.getIndex().getChildren(this.id);
+        return this.getIndex()._getChildren(this.id);
     }
 
     public setChildren(children: ReadonlyArray<DocAnnotation>): void {
-        this.getIndex().setChildren(this.id, children);
+        this.getIndex()._setChildren(this.id, children);
     }
 
     public addChild(docAnnotation: DocAnnotation) {
-        this.getIndex().addChild(this.id, docAnnotation);
+        this.getIndex()._addChild(this.id, docAnnotation);
 
         // this.children.push(docAnnotation);
         // this.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
     }
 
     public removeChild(id: string) {
-        this.getIndex().removeChild(this.id, id);
+        this.getIndex()._removeChild(this.id, id);
     }
 
 }
