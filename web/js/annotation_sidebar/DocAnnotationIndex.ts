@@ -24,8 +24,6 @@ export class DocAnnotationIndex {
 
     public put(...docAnnotations: ReadonlyArray<IDocAnnotation>) {
 
-        // FIXME: we should only have ROOT level nodes and children nodes here...
-
         for (const docAnnotation of docAnnotations) {
 
             const entry = new DefaultDocAnnotation(this, docAnnotation);
