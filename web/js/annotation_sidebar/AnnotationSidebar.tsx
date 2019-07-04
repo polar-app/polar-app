@@ -260,18 +260,13 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             return;
         }
 
-        const ref = Refs.parse(childDocAnnotation.ref!);
-
-        const parentID = ref.value;
-
-        if (mutationType !== MutationType.DELETE) {
-            this.docAnnotationIndex.deleteDocAnnotation(id);
+        if (mutationType === MutationType.DELETE) {
+            this.deleteDocAnnotation(id);
         } else {
-            this.docAnnotationIndex.addDocAnnotation(childDocAnnotation);
+            this.addDocAnnotation(childDocAnnotation);
         }
 
         this.reload();
-
 
     }
 

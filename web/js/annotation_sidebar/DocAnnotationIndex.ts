@@ -7,6 +7,7 @@ import {
 } from './DocAnnotation';
 import {ArrayListMultimap} from "../util/Multimap";
 import {Optional} from "../util/ts/Optional";
+import {Refs} from "../metadata/Refs";
 
 export class DocAnnotationIndex {
 
@@ -25,18 +26,20 @@ export class DocAnnotationIndex {
 
     public addDocAnnotation(...docAnnotations: ReadonlyArray<IDocAnnotation>) {
 
+        // FIXME: we should only have ROOT level nodes and children nodes here...
+
         for (const docAnnotation of docAnnotations) {
 
             const entry = new DefaultDocAnnotation(this, docAnnotation);
 
-            this.lookup[docAnnotation.id] = entry;
-
             if (docAnnotation.ref) {
-                this.addChild(docAnnotation.ref, entry);
+                const parsedRef = Refs.parse(docAnnotation.ref);
+                this.addChild(parsedRef.value, entry);
+            } else {
+                this.lookup[docAnnotation.id] = entry;
             }
 
         }
-
 
     }
 
