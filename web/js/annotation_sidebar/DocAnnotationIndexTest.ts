@@ -384,8 +384,6 @@ describe('DocAnnotationIndex', function() {
 
         assertJSON(docAnnotationIndex.get('text-area:1')!.getChildren().length, 0);
 
-        // FIXME: now delete the child and make sure all our data structures are correct still..
-
     });
 
 
