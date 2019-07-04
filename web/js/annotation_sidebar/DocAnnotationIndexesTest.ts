@@ -28,7 +28,7 @@ describe('DocAnnotationIndexes', function() {
         const a2 = createAnnotation('0003', 1, 0, 0 );
 
         const docAnnotationIndex = new DocAnnotationIndex();
-        docAnnotationIndex.addDocAnnotation(a0, a1, a2);
+        docAnnotationIndex.put(a0, a1, a2);
 
         // const rebuiltDocAnnotationIndex = DocAnnotationIndexes.rebuild(docAnnotationIndex, a2);
 
@@ -223,7 +223,7 @@ describe('DocAnnotationIndexes', function() {
         const a2 = createAnnotation('0003', 1, 25, 50);
 
         const docAnnotationIndex = new DocAnnotationIndex();
-        docAnnotationIndex.addDocAnnotation(a0, a1, a2);
+        docAnnotationIndex.put(a0, a1, a2);
 
         const expected: any = [
             {
@@ -369,7 +369,7 @@ describe('DocAnnotationIndexes', function() {
         const a1 = createAnnotation('comment:1', 1, 0, 0, 'text-area:1');
 
         const docAnnotationIndex = new DocAnnotationIndex();
-        docAnnotationIndex.addDocAnnotation(a0, a1);
+        docAnnotationIndex.put(a0, a1);
 
         assertJSON(docAnnotationIndex.getDocAnnotations().map(current => current.id), [
             "text-area:1",
@@ -381,7 +381,7 @@ describe('DocAnnotationIndexes', function() {
 
         assert.equal(children[0].id, "comment:1");
 
-        docAnnotationIndex.deleteDocAnnotation("comment:1");
+        docAnnotationIndex.delete("comment:1");
 
         assertJSON(docAnnotationIndex.get('text-area:1')!.getChildren().length, 0);
 
@@ -396,9 +396,9 @@ describe('DocAnnotationIndexes', function() {
         const a1 = createAnnotation('comment:1', 1, 0, 0, 'text-area:1');
 
         const docAnnotationIndex = new DocAnnotationIndex();
-        docAnnotationIndex.addDocAnnotation(a0, a1);
+        docAnnotationIndex.put(a0, a1);
 
-        docAnnotationIndex.deleteDocAnnotation("text-area:1");
+        docAnnotationIndex.delete("text-area:1");
 
         assert.isUndefined(docAnnotationIndex.get('text-area:1'));
 

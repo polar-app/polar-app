@@ -135,7 +135,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                                                                          this.docAnnotationIndex,
                                                                          this.props.doc.docMeta);
 
-        this.docAnnotationIndex.addDocAnnotation(...docAnnotations);
+        this.docAnnotationIndex.put(...docAnnotations);
 
         this.reload();
 
@@ -285,12 +285,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
     }
 
     private deleteDocAnnotation(id: IDString) {
-        this.docAnnotationIndex.deleteDocAnnotation(id);
+        this.docAnnotationIndex.delete(id);
         this.reload();
     }
 
     private addDocAnnotation(docAnnotation: IDocAnnotation) {
-        this.docAnnotationIndex.addDocAnnotation(docAnnotation);
+        this.docAnnotationIndex.put(docAnnotation);
         this.reload();
     }
 

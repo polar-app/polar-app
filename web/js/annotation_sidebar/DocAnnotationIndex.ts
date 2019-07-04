@@ -22,9 +22,7 @@ export class DocAnnotationIndex {
         return Optional.of(this.lookup[id]).getOrUndefined();
     }
 
-    // FIXME: make these put + delete operations..
-
-    public addDocAnnotation(...docAnnotations: ReadonlyArray<IDocAnnotation>) {
+    public put(...docAnnotations: ReadonlyArray<IDocAnnotation>) {
 
         // FIXME: we should only have ROOT level nodes and children nodes here...
 
@@ -43,7 +41,7 @@ export class DocAnnotationIndex {
 
     }
 
-    public deleteDocAnnotation(id: IDString) {
+    public delete(id: IDString) {
 
         const current = this.get(id);
 
