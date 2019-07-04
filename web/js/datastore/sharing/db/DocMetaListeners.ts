@@ -11,7 +11,7 @@ import {DocMetas} from "../../../metadata/DocMetas";
 import {Optional} from "../../../util/ts/Optional";
 import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
-import {ProfileIDStr, Profiles} from "./Profiles";
+import {Profile, ProfileIDStr, Profiles} from "./Profiles";
 import {Author} from "../../../metadata/Author";
 import {Annotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
@@ -137,9 +137,13 @@ export class DocMetaListener {
     public async handleDocMetaRecord(groupDoc: GroupDoc,
                                      docMetaRecord: DocMetaRecord | undefined) {
 
+        console.log("FIXME: handling docMetaRecord");
+
         // listen to snapshots of this DocMeta and then perform the merger...
 
         if (!docMetaRecord) {
+            console.log("FIXME66");
+
             // doc was removed
             return;
         }
@@ -162,7 +166,7 @@ export class DocMetaListener {
 
         const curr = createDocMeta();
 
-        await DocMetaRecords.applyAuthorsFromProfile(curr, groupDoc);
+        await DocMetaRecords.applyAuthorsFromGroupDoc(curr, groupDoc);
 
         if (prev) {
             // now merge the metadata so we get our events fired.
@@ -194,24 +198,6 @@ export class DocMetaListeners {
         }
 
         const {profileID} = profileOwner;
-
-        // FIXME: this is the WRONG profile and is being built up from the curernt user...
-        //
-        // const createAuthor = async () => {
-        //
-        //     const user = await Firebase.currentUser();
-        //     Preconditions.assertPresent(user, "user");
-        //
-        //     return new Author({
-        //         name: user!.displayName!,
-        //         image: {
-        //             src: user!.photoURL!
-        //         }
-        //     });
-        //
-        // };
-        //
-        // const author = await createAuthor();
 
         new DocMetaListener(fingerprint, profileID, docMetaHandler, errHandler).start();
 
@@ -251,7 +237,7 @@ class StringDicts {
 
 }
 
-class DocMetaRecords {
+export class DocMetaRecords {
 
     public static readonly COLLECTION = 'doc_meta';
 
@@ -285,11 +271,41 @@ class DocMetaRecords {
 
     }
 
-    public static async applyAuthorsFromProfile(docMeta: DocMeta, groupDoc: GroupDoc) {
+    public static async applyAuthorFromCurrentUser(docMeta: DocMeta) {
 
-        const createAuthorFromProfile = async () => {
+        const profileOwner = await ProfileOwners.get();
 
-            const profile = await Profiles.get(groupDoc.profileID);
+        if (! profileOwner) {
+            throw new Error("No profile");
+        }
+
+        const {profileID} = profileOwner;
+
+        return await this.applyAuthorsFromProfileID(docMeta, profileID);
+    }
+
+
+    public static async applyAuthorsFromGroupDoc(docMeta: DocMeta, groupDoc: GroupDoc) {
+        return await this.applyAuthorsFromProfileID(docMeta, groupDoc.profileID);
+    }
+
+    public static async applyAuthorsFromProfileID(docMeta: DocMeta, profileID: ProfileIDStr) {
+
+        const profile = await Profiles.get(profileID, {source: 'cache-then-server'});
+
+        if (! profile) {
+            throw new Error("No profile");
+        }
+
+        return this.applyAuthorsFromProfile(docMeta, profile);
+
+    }
+
+    public static applyAuthorsFromProfile(docMeta: DocMeta, profile: Profile) {
+
+        const createAuthorFromProfile = () => {
+
+            const profileID = profile.id;
 
             const name = profile!.name || profile!.handle || 'unknown';
 
@@ -297,11 +313,11 @@ class DocMetaRecords {
                 src: profile!.image!.url
             };
 
-            return new Author({name, image});
+            return new Author({name, image, profileID});
 
         };
 
-        const author = await createAuthorFromProfile();
+        const author = createAuthorFromProfile();
 
         const applyAuthorToAnnotations = (dict: {[key: string]: Annotation}) => {
 

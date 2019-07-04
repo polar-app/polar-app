@@ -6,6 +6,7 @@ import {ProfileOwners} from './ProfileOwners';
 import {Preconditions} from '../../../Preconditions';
 import * as firebase from '../../../firebase/lib/firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
+import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 
 export class Profiles {
 
@@ -17,9 +18,9 @@ export class Profiles {
         return [id, doc];
     }
 
-    public static async get(id: ProfileIDStr): Promise<Profile | undefined> {
+    public static async get(id: ProfileIDStr, opts: GetOptions = {}): Promise<Profile | undefined> {
         const [_, ref] = await this.doc(id);
-        const doc = await ref.get();
+        const doc = await DocumentReferences.get(ref, opts);
         return <Profile> doc.data();
     }
 
@@ -52,7 +53,7 @@ export class Profiles {
 
     }
 
-    public static async currentUserProfile(): Promise<Profile | undefined> {
+    public static async currentUserProfile(): Promise<Profile> {
 
         const app = Firebase.init();
         const user = app.auth().currentUser;
@@ -67,7 +68,13 @@ export class Profiles {
             throw new Error("No profile owner");
         }
 
-        return await this.get(profileOwner.profileID);
+        const profile = await this.get(profileOwner.profileID);
+
+        if ( ! profile) {
+            throw new Error("No current user profile");
+        }
+
+        return profile;
 
     }
 

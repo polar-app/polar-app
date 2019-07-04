@@ -23,7 +23,9 @@ import {AreaHighlight} from '../metadata/AreaHighlight';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocMeta} from "../metadata/DocMeta";
 import {Firebase} from "../firebase/Firebase";
-import {DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
+import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
+import {DocMetas} from "../metadata/DocMetas";
+import {Profiles} from "../datastore/sharing/db/Profiles";
 
 const log = Logger.create();
 
@@ -123,7 +125,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         await this.buildInitialAnnotations();
 
-        this.registerListenerForPrimaryDocMeta();
+        await this.registerListenerForPrimaryDocMeta();
 
         await this.registerListenersForSecondaryDocMetas();
 
@@ -141,8 +143,14 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     }
 
-    private registerListenerForPrimaryDocMeta() {
+    private async registerListenerForPrimaryDocMeta() {
         const {docMeta} = this.props.doc;
+
+        const profile = await Profiles.currentUserProfile();
+
+        DocMetas.withSkippedMutations(docMeta, () => {
+            DocMetaRecords.applyAuthorsFromProfile(docMeta, profile);
+        });
 
         this.registerListenerForDocMeta(docMeta);
     }
