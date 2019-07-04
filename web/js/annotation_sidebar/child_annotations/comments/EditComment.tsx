@@ -2,7 +2,6 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from "../../RichTextArea";
 import {Comment} from '../../../metadata/Comment';
-import {NullCollapse} from '../../../ui/null_collapse/NullCollapse';
 import {RichTextFeatureIntro} from '../../RichTextFeatureIntro';
 
 export class EditComment extends React.Component<IProps, IState> {

@@ -62,3 +62,7 @@ export interface GetOptions {
 }
 
 export type GetSource = 'default' | 'server'  | 'cache' | 'cache-then-server';
+
+export class CacheFirstThenServerGetOptions implements GetOptions {
+    public readonly source = 'cache-then-server';
+}

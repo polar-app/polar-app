@@ -137,13 +137,9 @@ export class DocMetaListener {
     public async handleDocMetaRecord(groupDoc: GroupDoc,
                                      docMetaRecord: DocMetaRecord | undefined) {
 
-        console.log("FIXME: handling docMetaRecord");
-
         // listen to snapshots of this DocMeta and then perform the merger...
 
         if (!docMetaRecord) {
-            console.log("FIXME66");
-
             // doc was removed
             return;
         }
@@ -181,7 +177,6 @@ export class DocMetaListener {
         this.docMetaIndex[docID] = curr;
 
     }
-
 
 }
 
@@ -291,11 +286,7 @@ export class DocMetaRecords {
 
     public static async applyAuthorsFromProfileID(docMeta: DocMeta, profileID: ProfileIDStr) {
 
-        const profile = await Profiles.get(profileID, {source: 'cache-then-server'});
-
-        if (! profile) {
-            throw new Error("No profile");
-        }
+        const profile = await Profiles.currentUserProfile();
 
         return this.applyAuthorsFromProfile(docMeta, profile);
 

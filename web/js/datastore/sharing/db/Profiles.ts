@@ -6,7 +6,11 @@ import {ProfileOwners} from './ProfileOwners';
 import {Preconditions} from '../../../Preconditions';
 import * as firebase from '../../../firebase/lib/firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
-import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
+import {
+    CacheFirstThenServerGetOptions,
+    DocumentReferences,
+    GetOptions
+} from "../../../firebase/firestore/DocumentReferences";
 
 export class Profiles {
 
@@ -25,9 +29,11 @@ export class Profiles {
     }
 
     /**
-     * Lookup all the profile IDs.
+     * Lookup all the profile IDs.  This is done in parallel for performance reasons.
      */
     public static async resolve<T extends ProfileIDRecord>(profileIDRecords: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecordTuple<T>>> {
+
+        // TODO prefer cache-first
 
         const promises = profileIDRecords.map(current => {
 
@@ -53,14 +59,14 @@ export class Profiles {
 
     }
 
-    public static async currentUserProfile(): Promise<Profile> {
+    public static async currentUserProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<Profile> {
 
         const app = Firebase.init();
         const user = app.auth().currentUser;
 
         Preconditions.assertPresent(user, "user");
 
-        const profileOwner = await ProfileOwners.get(user!.uid);
+        const profileOwner = await ProfileOwners.get(user!.uid, opts);
 
         if (! profileOwner) {
             // getting their user from teh database and writing it back out...
@@ -68,7 +74,7 @@ export class Profiles {
             throw new Error("No profile owner");
         }
 
-        const profile = await this.get(profileOwner.profileID);
+        const profile = await this.get(profileOwner.profileID, opts);
 
         if ( ! profile) {
             throw new Error("No current user profile");
