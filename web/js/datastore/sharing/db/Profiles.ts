@@ -121,9 +121,7 @@ export interface ProfileInit {
 }
 
 export interface Profile extends ProfileInit {
-
     readonly id: ProfileIDStr;
-
 }
 
 export type ProfileIDStr = string;

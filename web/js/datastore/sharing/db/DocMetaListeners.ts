@@ -15,6 +15,7 @@ import {Profile, ProfileIDStr, Profiles} from "./Profiles";
 import {Author} from "../../../metadata/Author";
 import {Annotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
+import {UserProfile, UserProfiles} from "./UserProfiles";
 
 const log = Logger.create();
 
@@ -266,33 +267,21 @@ export class DocMetaRecords {
 
     }
 
-    public static async applyAuthorFromCurrentUser(docMeta: DocMeta) {
-
-        const profileOwner = await ProfileOwners.get();
-
-        if (! profileOwner) {
-            throw new Error("No profile");
-        }
-
-        const {profileID} = profileOwner;
-
-        return await this.applyAuthorsFromProfileID(docMeta, profileID);
-    }
-
-
     public static async applyAuthorsFromGroupDoc(docMeta: DocMeta, groupDoc: GroupDoc) {
         return await this.applyAuthorsFromProfileID(docMeta, groupDoc.profileID);
     }
 
     public static async applyAuthorsFromProfileID(docMeta: DocMeta, profileID: ProfileIDStr) {
 
-        const profile = await Profiles.currentUserProfile();
+        const userProfile = await UserProfiles.get(profileID);
 
-        return this.applyAuthorsFromProfile(docMeta, profile);
+        return this.applyAuthorsFromUserProfile(docMeta, userProfile);
 
     }
 
-    public static applyAuthorsFromProfile(docMeta: DocMeta, profile: Profile) {
+    public static applyAuthorsFromUserProfile(docMeta: DocMeta, userProfile: UserProfile) {
+
+        const {profile} = userProfile;
 
         const createAuthorFromProfile = () => {
 
@@ -304,7 +293,7 @@ export class DocMetaRecords {
                 src: profile!.image!.url
             };
 
-            return new Author({name, image, profileID});
+            return new Author({name, image, profileID, guest: ! userProfile.self});
 
         };
 

@@ -19,7 +19,7 @@ export interface Doc extends ObjectID {
 
     /**
      * True if the underlying document is mutable based on the permission
-     * object and the datastore.
+     * object and the datastore being used.
      */
     readonly mutable: boolean;
 

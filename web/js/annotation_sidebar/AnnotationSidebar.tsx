@@ -26,6 +26,7 @@ import {Firebase} from "../firebase/Firebase";
 import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
 import {Profiles} from "../datastore/sharing/db/Profiles";
+import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
 
 const log = Logger.create();
 
@@ -146,10 +147,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
     private async registerListenerForPrimaryDocMeta() {
         const {docMeta} = this.props.doc;
 
-        const profile = await Profiles.currentUserProfile();
+        const userProfile = await UserProfiles.currentUserProfile();
 
         DocMetas.withSkippedMutations(docMeta, () => {
-            DocMetaRecords.applyAuthorsFromProfile(docMeta, profile);
+            DocMetaRecords.applyAuthorsFromUserProfile(docMeta, userProfile);
         });
 
         this.registerListenerForDocMeta(docMeta);

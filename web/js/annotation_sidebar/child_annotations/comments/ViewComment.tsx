@@ -7,6 +7,8 @@ import {IStyleMap} from '../../../react/IStyleMap';
 import {Doc} from '../../../metadata/Doc';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
+import {DocAnnotations} from "../../DocAnnotations";
+import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 
 const log = Logger.create();
 
@@ -41,6 +43,8 @@ export class ViewComment extends React.Component<IProps, IState> {
 
         const key = 'comment-' + comment.id;
 
+        const isMutable = DocAnnotations.isMutable(this.props.comment);
+
         return (
 
             <div className="m-1 mb-2">
@@ -69,11 +73,13 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                         <div style={Styles.barChild} className="flexbar-right">
 
-                            {this.props.editButton}
+                            <NullCollapse open={isMutable}>
+                                {this.props.editButton}
+                            </NullCollapse>
 
                             <div className="ml-1">
                                 <CommentDropdown id={'comment-dropdown-' + comment.id}
-                                                 disabled={! this.props.doc.mutable}
+                                                 disabled={! isMutable}
                                                  comment={comment}
                                                  onDelete={() => this.onDelete(comment)}/>
                             </div>

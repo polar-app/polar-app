@@ -21,6 +21,16 @@ import {DocAnnotationIndex} from "./DocAnnotationIndex";
 
 export class DocAnnotations {
 
+    public static isMutable(docAnnotation: DocAnnotation) {
+
+        if (docAnnotation.author && docAnnotation.author.guest) {
+            return false;
+        }
+
+        return true;
+
+    }
+
     public static async getAnnotationsForPage(persistenceLayerProvider: PersistenceLayerProvider,
                                               docAnnotationIndex: DocAnnotationIndex,
                                               docMeta: DocMeta): Promise<IDocAnnotation[]> {
