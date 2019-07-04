@@ -1,6 +1,5 @@
 import {IDocAnnotation} from './DocAnnotation';
 import {AnnotationType} from '../metadata/AnnotationType';
-import {DocAnnotationIndexes} from './DocAnnotationIndexes';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
@@ -13,7 +12,7 @@ function toDocAnnotations(docAnnotationIndex: DocAnnotationIndex) {
     return docAnnotationIndex.getDocAnnotationsSorted().map(current => current.obj);
 }
 
-describe('DocAnnotationIndexes', function() {
+describe('DocAnnotationIndex', function() {
 
     beforeEach(function() {
         TestingTime.freeze();
