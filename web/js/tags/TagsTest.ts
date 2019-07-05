@@ -72,7 +72,7 @@ describe('folders', function() {
         Tags.assertValid("/tmp/foo");
         Tags.assertValid("/tmp/foo/CatDog");
 
-        // FIXME this SHOULD pass but it does not... I think we should support
+        // TODO this SHOULD pass but it does not... I think we should support
         // spaces in tags now. even though they're not really supported in
         // other systems.
         // Tags.assertValid("/tmp/foo/Cat Dog");

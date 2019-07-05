@@ -311,7 +311,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
             delete treeState.selected[id];
         }
 
-        // FIXME: don't do this ... instead require the parent to call this...
+        // TODO: don't do this type of refresh
         this.setState({...this.state, idx: Date.now()});
 
         this.dispatchSelected();

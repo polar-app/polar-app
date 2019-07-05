@@ -89,9 +89,6 @@ export class TagTree extends React.Component<IProps, IState> {
 
     private onCreated(path: string) {
 
-        // FIXME: this needs to push out so that it's re-called again with new
-        // tags
-
         const tags = [...this.props.tags];
 
         tags.push({
