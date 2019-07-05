@@ -134,8 +134,6 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
                     </div>
                   }
                   right={
-                      // TODO/FIXME: this code should be updated because we are
-                      // NOT actually using the tags here.
                       <PreviewAndMainViewDock data={this.state.data}
                                               updateFilters={filters => this.filtersHandler.update(filters)}
                                               {...this.props}/>

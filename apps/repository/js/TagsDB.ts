@@ -22,8 +22,10 @@ export class TagsDB {
                 this.index[tag.id] = {...tag, count: 0};
             }
 
-            // FIXME: this is actually wrong because we can't add or delete
-            // records.
+            // TODO: this is actually wrong because we can't add or delete
+            // records.  UPDATE: I wasn't sure what this meant so I ended up
+            // changing this to a TODO task.  I might have to clean this up
+            // in the future.
             this.index[tag.id].count++;
 
         });
