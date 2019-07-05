@@ -114,32 +114,37 @@ export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, I
 
                 </header>
 
-                <Dock left={
-                    // TODO this should be its own component
-                    <div style={{
+                <Dock
+                    componentClassNames={{
+                        left: 'd-none-mobile',
+                        splitter: 'd-none-mobile'
+                    }}
+                    left={
+                        // TODO this should be its own component
+                        <div style={{
                             display: 'flex' ,
                             flexDirection: 'column',
                             height: '100%',
-                            overflow: 'auto'
-                         }}>
+                            overflow: 'auto',
+                        }}>
 
-                        <div className="m-1">
+                            <div className="m-1">
 
-                            <TagTree tags={this.state.tags}
-                                     treeState={this.treeState}
-                                     noCreate={true}/>
+                                <TagTree tags={this.state.tags}
+                                         treeState={this.treeState}
+                                         noCreate={true}/>
+
+                            </div>
 
                         </div>
-
-                    </div>
-                  }
-                  right={
-                      <PreviewAndMainViewDock data={this.state.data}
-                                              updateFilters={filters => this.filtersHandler.update(filters)}
-                                              {...this.props}/>
-                  }
-                  side='left'
-                  initialWidth={300}/>
+                    }
+                    right={
+                        <PreviewAndMainViewDock data={this.state.data}
+                                                updateFilters={filters => this.filtersHandler.update(filters)}
+                                                {...this.props}/>
+                    }
+                    side='left'
+                    initialWidth={300}/>
 
 
             </FixedNav>
