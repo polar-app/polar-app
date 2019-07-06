@@ -1,7 +1,6 @@
 import {Firebase} from '../firebase/Firebase';
 import fetch from '../util/Fetch';
-import {AccountPlan} from './Accounts';
-
+import {AccountPlan} from "./Account";
 
 export class AccountActions {
 
