@@ -4,7 +4,7 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Optional} from '../../../../web/js/util/ts/Optional';
-import {Tag} from '../../../../web/js/tags/Tag';
+import {Tag} from '../../../../web/js/tags/Tags';
 import {isPresent} from '../../../../web/js/Preconditions';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';

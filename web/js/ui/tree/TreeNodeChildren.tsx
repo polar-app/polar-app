@@ -2,7 +2,6 @@ import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {TNode} from './TreeView';
 import {TreeState} from './TreeView';
-import {TagStr} from '../../tags/Tag';
 
 class Styles {
 

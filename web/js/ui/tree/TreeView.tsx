@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {Dictionaries} from '../../util/Dictionaries';
-import {TagStr} from '../../tags/Tag';
-import {TagDescriptor} from '../../tags/TagNode';
 import {isPresent} from '../../Preconditions';
-import {Tag} from '../../tags/Tag';
+import {Tag, TagStr} from "../../tags/Tags";
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 

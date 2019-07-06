@@ -1,8 +1,7 @@
-import {Tag} from './Tag';
-import {TagIDStr} from './Tag';
+import {Tag, TagIDStr} from './Tags';
 import {Tags} from './Tags';
-import {Sets} from '../util/Sets';
 import {TagPaths} from './TagPaths';
+import {SetArrays} from "../util/SetArrays";
 
 
 export class TagMatcher {
@@ -93,7 +92,7 @@ export class TagMatcher {
         // }
 
         const intersection =
-            Sets.intersection(queryTagIDs, docTagIDs);
+            SetArrays.intersection(queryTagIDs, docTagIDs);
 
         return intersection.length === queryTagIDs.length;
 

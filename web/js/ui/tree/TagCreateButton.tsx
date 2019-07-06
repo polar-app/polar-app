@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Tag} from '../../tags/Tag';
+import {Tag} from '../../tags/Tags';
 import Button from 'reactstrap/lib/Button';
 import {Dialogs} from '../dialogs/Dialogs';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Tags} from '../../tags/Tags';
-import {TagStr} from '../../tags/Tag';
+import {TagStr} from '../../tags/Tags';
 
 export class TagCreateButton extends React.Component<IProps, IState> {
 

@@ -3,8 +3,6 @@ import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
-import {TagPaths} from './TagPaths';
-import {Sets} from '../util/Sets';
 
 // DO NOT MODIFY ... migrating this to polar-shared
 // DO NOT MODIFY ... migrating this to polar-shared
@@ -212,3 +210,14 @@ export interface TypedTag {
     readonly value: string;
 
 }
+
+
+/**
+ * A string representation of a tag.
+ */
+export type TagStr = string;
+
+/**
+ * Just the tag ID, not the TagStr (which might not be unique).
+ */
+export type TagIDStr = string;

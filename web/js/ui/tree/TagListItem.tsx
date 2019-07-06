@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Tag} from '../../tags/Tag';
 import {TagDescriptor} from '../../tags/TagNode';
+import {Tag} from "../../tags/Tags";
 
 export class TagListItem extends React.Component<IProps, IState> {
 

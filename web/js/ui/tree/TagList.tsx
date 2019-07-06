@@ -1,7 +1,4 @@
 import * as React from 'react';
-import {Tag} from '../../tags/Tag';
-import {TNode} from './TreeView';
-import {TagNodes} from '../../tags/TagNode';
 import {TagDescriptor} from '../../tags/TagNode';
 import {TagListItem} from './TagListItem';
 

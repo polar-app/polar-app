@@ -1,18 +1,10 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {FilterTagInput} from '../FilterTagInput';
-import {TagsDB} from '../TagsDB';
-import {FilteredTags} from '../FilteredTags';
-import InputGroup from 'reactstrap/lib/InputGroup';
-import Input from 'reactstrap/lib/Input';
-import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {AddContentButton} from '../ui/AddContentButton';
 import {AddContentActions} from '../ui/AddContentActions';
 import {TagButton} from './TagButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
-import {Tag} from '../../../../web/js/tags/Tag';
+import {Tag} from '../../../../web/js/tags/Tags';
 
 const log = Logger.create();
 

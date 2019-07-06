@@ -1,20 +1,9 @@
 import * as React from 'react';
-import {DeepPureComponent} from '../../react/DeepPureComponent';
-import {TreeNode} from './TreeNode';
-import Input from 'reactstrap/lib/Input';
-import Button from 'reactstrap/lib/Button';
-import {Dictionaries} from '../../util/Dictionaries';
-import {TNode} from './TreeView';
-import {TagNodes} from '../../tags/TagNode';
-import {TreeView} from './TreeView';
-import {Tags} from '../../tags/Tags';
-import {TagCreateButton} from './TagCreateButton';
-import {TagDescriptor} from '../../tags/TagNode';
-import {TagStr} from '../../tags/Tag';
+import {TNode, TreeState, TreeView} from './TreeView';
+import {TagDescriptor, TagNodes} from '../../tags/TagNode';
+import {Tag, Tags} from '../../tags/Tags';
 import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
-import {TreeState} from './TreeView';
-import {Tag} from '../../tags/Tags';
 
 class Styles {
 

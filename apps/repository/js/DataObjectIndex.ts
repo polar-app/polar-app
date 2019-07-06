@@ -1,4 +1,4 @@
-import {Tag} from '../../../web/js/tags/Tag';
+import {Tag} from '../../../web/js/tags/Tags';
 import {TagDescriptor} from '../../../web/js/tags/TagNode';
 
 

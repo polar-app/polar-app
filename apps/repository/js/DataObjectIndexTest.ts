@@ -1,4 +1,4 @@
-import {Tag} from '../../../web/js/tags/Tag';
+import {Tag} from '../../../web/js/tags/Tags';
 import {DataObjectIndex} from './DataObjectIndex';
 import {Tags} from '../../../web/js/tags/Tags';
 import {assertJSON} from '../../../web/js/test/Assertions';

@@ -2,13 +2,10 @@ import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocInfos} from '../RepoDocInfos';
 import {Strings} from '../../../../web/js/util/Strings';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {Tags} from '../../../../web/js/tags/Tags';
-import {isPresent} from '../../../../web/js/Preconditions';
-import {SetArrays} from '../../../../web/js/util/SetArrays';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
 import {Optional} from '../../../../web/js/util/ts/Optional';
-import {Tag} from '../../../../web/js/tags/Tag';
+import {Tag} from '../../../../web/js/tags/Tags';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 
 /**

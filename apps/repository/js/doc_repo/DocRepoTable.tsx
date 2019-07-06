@@ -4,9 +4,8 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
-import {Tag} from '../../../../web/js/tags/Tag';
 import {isPresent} from '../../../../web/js/Preconditions';
-import {Tags} from '../../../../web/js/tags/Tags';
+import {Tag, Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {DocDropdown} from '../DocDropdown';
@@ -27,8 +26,6 @@ import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
-import {Tag} from '../../../../web/js/tags/Tags';
-import {Tag} from '../../../../web/js/tags/Tag';
 
 const log = Logger.create();
 
