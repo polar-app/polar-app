@@ -14,6 +14,26 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
+                    <h3>Polar 1.20.0</h3>
+
+                    <p>
+                        Polar now has support for folders.  The folders sidebar is on the left side by default on the
+                        desktop and webapp but disabled on mobile.
+                    </p>
+
+                    <p>
+                        Folders are created by using a tag with a full path like <code>/Career/CompSci</code>
+                        and the folder tree in the left pane will handle showing the trees hierarchically.
+                    </p>
+
+                    <p>
+                        We've also made a massive amount of progress on sharing but I think it's going to take 1-2 more
+                        weeks to get out the door as there's still a bit mroe work required.
+                    </p>
+
+                </div>
+                <div>
+
                     <h3>Polar 1.19.8</h3>
 
                     <p>
