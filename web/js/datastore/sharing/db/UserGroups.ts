@@ -25,21 +25,7 @@ export class UserGroups {
 
         const ref = firestore.collection(this.COLLECTION).doc(uid);
         const doc = await ref.get();
-        const userGroupRaw = <UserGroupRaw> doc.data();
-
-        if (userGroupRaw) {
-
-            return {
-                uid: userGroupRaw.uid,
-                groups: userGroupRaw.groups || [],
-                invitations: userGroupRaw.invitations || [],
-                admin: userGroupRaw.admin || [],
-                moderator: userGroupRaw.moderator || []
-            };
-
-        }
-
-        return undefined;
+        return this.fromRaw(<UserGroupRaw> doc.data());
 
     }
 
@@ -47,9 +33,11 @@ export class UserGroups {
 
         const user = await Firebase.currentUser();
 
-        return await Collections.onDocumentSnapshot<UserGroup>(this.COLLECTION,
-                                                               user!.uid,
-                                                               userGroups => handler(userGroups));
+        return await Collections.onDocumentSnapshot<UserGroupRaw>(this.COLLECTION,
+                                                                  user!.uid,
+                                                                  userGroupRaw => {
+                handler(this.fromRaw(userGroupRaw));
+        });
 
     }
 
@@ -70,6 +58,24 @@ export class UserGroups {
         }
 
         return true;
+
+    }
+
+    private static fromRaw(userGroupRaw: UserGroupRaw | undefined): UserGroup | undefined {
+
+        if (userGroupRaw) {
+
+            return {
+                uid: userGroupRaw.uid,
+                groups: userGroupRaw.groups || [],
+                invitations: userGroupRaw.invitations || [],
+                admin: userGroupRaw.admin || [],
+                moderator: userGroupRaw.moderator || []
+            };
+
+        }
+
+        return undefined;
 
     }
 
