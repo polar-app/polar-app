@@ -9,15 +9,38 @@ export class ContactOptions {
         return  contactProfiles.map(current => {
 
             if (current.profile) {
+
+                const {profile} = current;
+                const {contact} = current;
+
+                const createLabel = () => {
+
+                    if (profile.name && profile.handle && contact.email) {
+                        return `${profile.name} (${contact.email}) AKA ${profile.handle}`;
+                    }
+
+                    if (profile.name && contact.email) {
+                        return `${profile.name} (${contact.email})`;
+                    }
+
+                    return profile.name || profile.handle || contact.email || "";
+
+                };
+
+                const label = createLabel();
+
                 return {
                     value: current.profile.id,
-                    label: current.profile.name || current.profile.handle || current.contact.email || ""
+                    label
                 };
+
             } else {
+
                 return {
                     value: current.contact.email!,
                     label: current.contact.email!
                 };
+
             }
 
         });
