@@ -11,6 +11,7 @@ import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Profile} from '../../datastore/sharing/db/Profiles';
+import {UserGroups} from "../../datastore/sharing/db/UserGroups";
 
 export class GroupSharingRecords {
 
@@ -96,6 +97,11 @@ export class GroupSharingRecords {
         };
 
         const doHandleMembership = async () => {
+
+            if (! await UserGroups.hasPermissionForGroup(groupID)) {
+                return;
+            }
+
             const group = await Groups.get(groupID);
 
             if (group) {
@@ -139,10 +145,17 @@ export class GroupSharingRecords {
 
         };
 
-        Promises.executeInBackground([
-           doHandleContacts(),
-           doHandleMembership()
-       ], err => errorHandler(err));
+        const doHandle = async () => {
+
+            await Promise.all([
+                doHandleContacts(),
+                doHandleMembership()
+            ]);
+
+        };
+
+        doHandle()
+            .catch(err => errorHandler(err));
 
     }
 

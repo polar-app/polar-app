@@ -8,13 +8,38 @@ export class UserGroups {
 
     public static readonly COLLECTION = 'user_group';
 
-    public static async get(uid: UserIDStr): Promise<UserGroup | undefined> {
+    public static async get(uid?: UserIDStr): Promise<UserGroup | undefined> {
+
+        if (! uid) {
+            const user = await Firebase.currentUser();
+
+            if (! user) {
+                return undefined;
+            }
+
+            uid = user.uid;
+
+        }
 
         const firestore = await Firestore.getInstance();
 
         const ref = firestore.collection(this.COLLECTION).doc(uid);
         const doc = await ref.get();
-        return <UserGroup> doc.data();
+        const userGroupRaw = <UserGroupRaw> doc.data();
+
+        if (userGroupRaw) {
+
+            return {
+                uid: userGroupRaw.uid,
+                groups: userGroupRaw.groups || [],
+                invitations: userGroupRaw.invitations || [],
+                admin: userGroupRaw.admin || [],
+                moderator: userGroupRaw.moderator || []
+            };
+
+        }
+
+        return undefined;
 
     }
 
@@ -28,8 +53,55 @@ export class UserGroups {
 
     }
 
+    public static async hasPermissionForGroup(groupID: GroupIDStr): Promise<boolean> {
+
+        const userGroup = await UserGroups.get();
+
+        if (! userGroup) {
+            return false;
+        }
+
+        if (! userGroup.groups.includes(groupID)) {
+            return false;
+        }
+
+        if (! userGroup.invitations.includes(groupID)) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+
 }
 
+export interface UserGroupRaw {
+    /**
+     * The UID for this record so the user can read their own values.
+     */
+    readonly uid: UserIDStr;
+
+    readonly groups?: ReadonlyArray<GroupIDStr>;
+
+    readonly invitations?: ReadonlyArray<GroupIDStr>;
+
+    /**
+     * The groups in which the user is an admin.
+     */
+    readonly admin?: ReadonlyArray<GroupIDStr>;
+
+    /**
+     * The groups in which the user is a moderator.
+     */
+    readonly moderator?: ReadonlyArray<GroupIDStr>;
+
+}
+
+/**
+ * Just like the UserGroup but it might be possible for the backend to be missing
+ * certain fields.
+ */
 export interface UserGroupInit {
 
     /**
@@ -41,15 +113,10 @@ export interface UserGroupInit {
 
     readonly invitations: ReadonlyArray<GroupIDStr>;
 
-    /**
-     * The groups in which the user is an admin.
-     */
     readonly admin: ReadonlyArray<GroupIDStr>;
 
-    /**
-     * The groups in which the user is a moderator.
-     */
     readonly moderator: ReadonlyArray<GroupIDStr>;
+
 
 }
 
