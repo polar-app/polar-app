@@ -1,32 +1,22 @@
 import * as React from 'react';
 import {Logger} from '../logger/Logger';
-import {Comment} from '../metadata/Comment';
 import {DocAnnotations} from './DocAnnotations';
-import {DocAnnotation, IDocAnnotation} from './DocAnnotation';
-import {DocAnnotationIndex, IDString} from './DocAnnotationIndex';
-import {AreaHighlightModel} from '../highlights/area/model/AreaHighlightModel';
-import {MutationType} from '../proxies/MutationType';
-import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
-import {isPresent} from '../Preconditions';
+import {DocAnnotation} from './DocAnnotation';
+import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
-import {CommentModel} from './CommentModel';
-import {Refs} from '../metadata/Refs';
-import {FlashcardModel} from './FlashcardModel';
-import {Flashcard} from '../metadata/Flashcard';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
-import {AreaHighlight} from '../metadata/AreaHighlight';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocMeta} from "../metadata/DocMeta";
 import {Firebase} from "../firebase/Firebase";
 import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
-import {Profiles} from "../datastore/sharing/db/Profiles";
 import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
+import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 
 const log = Logger.create();
 
@@ -102,10 +92,23 @@ const Annotations = (render: IRender) => {
 
 export class AnnotationSidebar extends React.Component<IProps, IState> {
 
-    private docAnnotationIndex: DocAnnotationIndex = new DocAnnotationIndex();
+    private docAnnotationIndex: DocAnnotationIndex;
+    private docAnnotationIndexManager: DocAnnotationIndexManager;
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        const {persistenceLayerProvider} = this.props;
+
+        this.docAnnotationIndex = new DocAnnotationIndex();
+
+        this.docAnnotationIndexManager
+            = new DocAnnotationIndexManager(persistenceLayerProvider,
+                                            this.docAnnotationIndex, annotations => {
+
+                this.setState({annotations});
+
+            });
 
         this.onExport = this.onExport.bind(this);
 
@@ -153,7 +156,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             DocMetaRecords.applyAuthorsFromUserProfile(docMeta, userProfile);
         });
 
-        this.registerListenerForDocMeta(docMeta);
+        this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
     }
 
     /**
@@ -170,7 +173,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const fingerprint = this.props.doc.docMeta.docInfo.fingerprint;
 
         const docMetaHandler = (docMeta: DocMeta) => {
-            this.registerListenerForDocMeta(docMeta);
+            this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
         };
 
         const errHandler = (err: Error) => {
@@ -179,128 +182,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         await DocMetaListeners.register(fingerprint, docMetaHandler, errHandler);
 
-    }
-
-    private registerListenerForDocMeta(docMeta: DocMeta) {
-
-        new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
-
-            const handleConversion = () => {
-
-                const converter = (annotationValue: AreaHighlight) => {
-
-                    const {persistenceLayerProvider} = this.props;
-                    return DocAnnotations.createFromAreaHighlight(persistenceLayerProvider,
-                                                                  docMeta,
-                                                                  annotationValue,
-                                                                  annotationEvent.pageMeta);
-                };
-
-                const docAnnotation =
-                    this.convertAnnotation(annotationEvent.value, converter);
-
-                this.handleAnnotationEvent(annotationEvent.id,
-                                           annotationEvent.traceEvent.mutationType,
-                                           docAnnotation);
-
-            };
-
-            handleConversion();
-
-        });
-
-        new TextHighlightModel().registerListener(docMeta, annotationEvent => {
-
-            const docAnnotation =
-                this.convertAnnotation(annotationEvent.value,
-                                       annotationValue => DocAnnotations.createFromTextHighlight(docMeta,
-                                                                                                 annotationValue,
-                                                                                                 annotationEvent.pageMeta));
-
-            this.handleAnnotationEvent(annotationEvent.id,
-                                       annotationEvent.traceEvent.mutationType,
-                                       docAnnotation);
-        });
-
-        new CommentModel().registerListener(docMeta, annotationEvent => {
-
-            const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromComment(docMeta,
-                                                                        comment,
-                                                                        annotationEvent.pageMeta);
-
-            this.handleChildAnnotationEvent(annotationEvent.id,
-                                            annotationEvent.traceEvent.mutationType,
-                                            childDocAnnotation);
-
-        });
-
-        new FlashcardModel().registerListener(docMeta, annotationEvent => {
-
-            const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta,
-                                                                          flashcard,
-                                                                          annotationEvent.pageMeta);
-
-            this.handleChildAnnotationEvent(annotationEvent.id,
-                                            annotationEvent.traceEvent.mutationType,
-                                            childDocAnnotation);
-
-        });
-    }
-
-    private convertAnnotation<T>(value: any | undefined | null, converter: (input: any) => T) {
-
-        if (! isPresent(value)) {
-            return undefined;
-        }
-
-        return converter(value);
-
-    }
-
-    private handleChildAnnotationEvent(id: string,
-                                       mutationType: MutationType,
-                                       childDocAnnotation: IDocAnnotation) {
-
-        if (! childDocAnnotation.ref) {
-            // this is an old annotation.  We can't show it in the sidebar yet.
-            log.warn("Annotation hidden from sidebar: ", childDocAnnotation);
-            return;
-        }
-
-        if (mutationType === MutationType.DELETE) {
-            this.deleteDocAnnotation(id);
-        } else {
-            this.addDocAnnotation(childDocAnnotation);
-        }
-
-        this.reload();
-
-    }
-
-    private handleAnnotationEvent(id: string,
-                                  mutationType: MutationType,
-                                  docAnnotation: IDocAnnotation | undefined) {
-
-        if (mutationType === MutationType.DELETE) {
-            this.deleteDocAnnotation(id);
-        } else {
-            this.addDocAnnotation(docAnnotation!);
-        }
-
-        this.reload();
-
-    }
-
-    private deleteDocAnnotation(id: IDString) {
-        this.docAnnotationIndex.delete(id);
-        this.reload();
-    }
-
-    private addDocAnnotation(docAnnotation: IDocAnnotation) {
-        this.docAnnotationIndex.put(docAnnotation);
-        this.reload();
     }
 
     private reload() {
