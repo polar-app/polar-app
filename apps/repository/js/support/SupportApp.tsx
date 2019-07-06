@@ -4,7 +4,7 @@ import {FixedNav} from '../FixedNav';
 import {FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {AccountPlan} from '../../../../web/js/accounts/Accounts';
+import {AccountPlan} from '../../../../web/js/accounts/Account';
 
 export class SupportApp extends React.Component<IProps, IState> {
 

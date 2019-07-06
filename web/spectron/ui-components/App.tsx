@@ -65,6 +65,7 @@ import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
 import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/SuggestionsModal';
 import {TagStr} from '../../../web/js/tags/Tag';
 import {MockFolderTree} from './MockFolderTree';
+import {AccountUpgradeBarView} from "./AccountUpgradeBarView";
 
 const styles = {
     swatch: {
@@ -101,6 +102,7 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
     public render() {
+
 
         //
         // const root: TNode<TagNode> = {
@@ -176,7 +178,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <MockFolderTree/>
+                {/*<MockFolderTree/>*/}
+
+                <AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}
