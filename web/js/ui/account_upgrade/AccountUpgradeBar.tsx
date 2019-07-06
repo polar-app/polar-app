@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {MachineDatastore, MachineDatastores} from "../../js/telemetry/MachineDatastores";
-import {Accounts} from "../../js/accounts/Accounts";
-import {Account} from "../../js/accounts/Account";
-import {Logger} from "../../js/logger/Logger";
-import {Firebase} from "../../js/firebase/Firebase";
+import {MachineDatastore, MachineDatastores} from "../../telemetry/MachineDatastores";
+import {Accounts} from "../../accounts/Accounts";
+import {Account} from "../../accounts/Account";
+import {Logger} from "../../logger/Logger";
+import {Firebase} from "../../firebase/Firebase";
 import {AccountUpgradeBarView} from "./AccountUpgradeBarView";
 
 const log = Logger.create();

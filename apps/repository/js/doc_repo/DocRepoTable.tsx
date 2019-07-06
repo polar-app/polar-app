@@ -24,6 +24,7 @@ import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
+import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
 
 const log = Logger.create();
 
@@ -53,7 +54,12 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
         return (
 
-            <div id="doc-table" className="ml-1" style={{height: '100%', overflow: 'auto'}}>
+            <div id="doc-table"
+                 className="ml-1"
+                 style={{height: '100%', overflow: 'auto'}}>
+
+                <AccountUpgradeBar/>
+
                 <ReactTable
                     data={[...data]}
                     ref={(r: any) => this.reactTable = r}

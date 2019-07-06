@@ -357,6 +357,7 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
                             </div>
                         }
                         right={
+
                             <DocRepoTable columns={this.state.columns}
                                           selected={this.state.selected}
                                           data={this.state.data}

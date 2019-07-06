@@ -65,7 +65,7 @@ import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
 import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/SuggestionsModal';
 import {TagStr} from '../../../web/js/tags/Tag';
 import {MockFolderTree} from './MockFolderTree';
-import {AccountUpgradeBarView} from "./AccountUpgradeBarView";
+import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
 
 const styles = {
     swatch: {

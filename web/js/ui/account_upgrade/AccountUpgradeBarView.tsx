@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {Logger} from "../../js/logger/Logger";
+import {Logger} from "../../logger/Logger";
 import {Button} from "reactstrap";
-import {AccountUpgrades, AccountUsage} from "../../js/accounts/AccountUpgrades";
-import {AccountPlan} from "../../js/accounts/Account";
+import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
+import {AccountPlan} from "../../accounts/Account";
+import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
 const log = Logger.create();
 
@@ -11,7 +12,14 @@ interface UpgradeRequiredProps {
 }
 const UpgradeRequired = (props: UpgradeRequiredProps) => {
 
-    return <div className="p-1 rounded"
+    RendererAnalytics.event({category: 'upgrade', action: 'triggered-upgrade-required'});
+
+    const onClick = () => {
+        RendererAnalytics.event({category: 'upgrade', action: 'clicked-button-to-plans'});
+        document.location.hash = 'plans';
+    };
+
+    return <div className="mt-1 mb-1 p-1 rounded"
                 style={{
                     backgroundColor: '#ffcccc',
                     fontWeight: 'bold'
@@ -19,7 +27,8 @@ const UpgradeRequired = (props: UpgradeRequiredProps) => {
 
         <Button color="danger"
                 size="sm"
-                onClick={() => document.location.hash = 'plans'}>
+                style={{fontWeight: 'bold'}}
+                onClick={() => onClick()}>
 
             <i className="fas fa-certificate"/>
             &nbsp;
