@@ -8,6 +8,8 @@ import {SetArrays} from '../../../../web/js/util/SetArrays';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
 import {Optional} from '../../../../web/js/util/ts/Optional';
+import {Tag} from '../../../../web/js/tags/Tag';
+import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have
@@ -18,7 +20,7 @@ export class DocRepoFilters {
     public readonly filters: Filters;
 
     constructor(private onRefreshed: RefreshedCallback,
-                private repoDocInfosProvider: Provider<RepoDocInfo[]>) {
+                private repoDocInfosProvider: Provider<ReadonlyArray<RepoDocInfo>>) {
 
         this.filters = {
             flagged: false,
@@ -44,12 +46,26 @@ export class DocRepoFilters {
         this.refresh();
     }
 
+    public onTagged(tags: Tag[]) {
+
+        const isRootTag = () => {
+            return tags.length === 1 && tags[0].id === '/';
+        };
+
+        if (isRootTag()) {
+            this.filters.filteredTags.set([]);
+        } else {
+            this.filters.filteredTags.set(tags);
+        }
+
+        this.refresh();
+    }
 
     public refresh() {
         this.onRefreshed(this.filter(this.repoDocInfosProvider()));
     }
 
-    private filter(repoDocInfos: RepoDocInfo[]): RepoDocInfo[] {
+    private filter(repoDocInfos: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
@@ -63,11 +79,11 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterValid(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterValid(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
         return repoDocs.filter(current => RepoDocInfos.isValid(current));
     }
 
-    private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterByTitle(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         if (! Strings.empty(this.filters.title)) {
 
@@ -97,7 +113,7 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterFlagged(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterFlagged(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         if (this.filters.flagged) {
             return repoDocs.filter(current => current.flagged);
@@ -107,7 +123,7 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterArchived(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo> {
 
         if (! this.filters.archived) {
             return repoDocs.filter(current => !current.archived);
@@ -117,31 +133,22 @@ export class DocRepoFilters {
 
     }
 
-    private doFilterByTags(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo>  {
 
         RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
 
-        const tags = Tags.toIDs(this.filters.filteredTags.get());
+        const tags = this.filters.filteredTags.get()
+            .filter(current => current.id !== '/');
 
-        return repoDocs.filter(current => {
+        const tagMatcherFactory = new TagMatcherFactory(tags);
 
-            if (tags.length === 0) {
-                // there is no filter in place...
-                return true;
-            }
+        if (tags.length === 0) {
+            // we're done as there are no tags.
+            return repoDocs;
+        }
 
-            if (! isPresent(current.docInfo.tags)) {
-                // the document we're searching over has not tags.
-                return false;
-            }
-
-            const intersection =
-                SetArrays.intersection(tags, Tags.toIDs(Object.values(current.docInfo.tags!)));
-
-            return intersection.length === tags.length;
-
-
-        });
+        return tagMatcherFactory.filter(repoDocs,
+                                        current => Object.values(current.docInfo.tags || {}));
 
     }
 
@@ -165,5 +172,5 @@ interface Filters {
 
 }
 
-export type RefreshedCallback = (repoDocInfos: RepoDocInfo[]) => void;
+export type RefreshedCallback = (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
 

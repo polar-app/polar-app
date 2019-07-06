@@ -6,7 +6,7 @@ import {FilteredTags} from '../FilteredTags';
  */
 export class AnnotationRepoFiltersHandler {
 
-    public readonly filters: AnnotationRepoFilters;
+    public readonly filters: MutableAnnotationRepoFilters;
 
     constructor(private onFiltered: FilteredCallback) {
         this.filters = new DefaultAnnotationRepoFilters();
@@ -32,6 +32,42 @@ export class AnnotationRepoFiltersHandler {
         this.dispatch();
     }
 
+    /**
+     * Update the filters with a given set of partial filters and dispatch
+     * when necessary.
+     *
+     * @param filters
+     */
+    public update(filters: PartialAnnotationRepoFilters) {
+
+        let modified = false;
+
+        if (filters.flagged !== undefined) {
+            this.filters.flagged = filters.flagged;
+            modified = true;
+        }
+
+        if (filters.archived !== undefined) {
+            this.filters.archived = filters.archived;
+            modified = true;
+        }
+
+        if (filters.text !== undefined) {
+            this.filters.text = filters.text;
+            modified = true;
+        }
+
+        if (filters.filteredTags !== undefined) {
+            this.filters.filteredTags = filters.filteredTags;
+            modified = true;
+        }
+
+        if (modified) {
+            this.dispatch();
+        }
+
+    }
+
     private dispatch() {
         this.onFiltered(this.filters);
     }
@@ -41,7 +77,7 @@ export class AnnotationRepoFiltersHandler {
 /**
  * The currently applied annotation filters.
  */
-export interface AnnotationRepoFilters {
+export interface MutableAnnotationRepoFilters {
 
     /**
      * When true, only show flagged documents.
@@ -59,7 +95,15 @@ export interface AnnotationRepoFilters {
 
 }
 
-export class DefaultAnnotationRepoFilters implements AnnotationRepoFilters {
+export interface AnnotationRepoFilters extends Readonly<MutableAnnotationRepoFilters> {
+
+}
+
+export interface PartialAnnotationRepoFilters extends Partial<Readonly<MutableAnnotationRepoFilters>> {
+
+}
+
+export class DefaultAnnotationRepoFilters implements MutableAnnotationRepoFilters {
 
     public readonly archived: boolean = true;
 
@@ -73,3 +117,4 @@ export class DefaultAnnotationRepoFilters implements AnnotationRepoFilters {
 
 export type FilteredCallback = (filters: AnnotationRepoFilters) => void;
 
+export type UpdateFiltersCallback = (filters: PartialAnnotationRepoFilters) => void;

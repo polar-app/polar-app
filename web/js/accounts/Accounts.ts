@@ -2,10 +2,10 @@
  * Handles listening for account changes for the user and telling them
  * of changes to their plan over time.
  */
-import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Firebase} from '../firebase/Firebase';
 import {Firestore} from '../firebase/Firestore';
 import {Dialogs} from '../ui/dialogs/Dialogs';
+import {Account} from './Account';
 
 const COLLECTION_NAME = "account";
 
@@ -39,6 +39,43 @@ export class Accounts {
         }
 
         return <Account> snapshot.data();
+
+    }
+
+    /**
+     * Callback for when we have new data for the account.
+     */
+    public static async onSnapshot(handler: (account: Account) => void) {
+
+        // TODO: migrate this to the new Collections code but it's not merged
+        // yet.
+
+        const user = await Firebase.currentUser();
+
+        if (! user) {
+            // the user is not logged in so we do not have an account that they
+            // can use.
+            return undefined;
+        }
+
+        const firestore = await Firestore.getInstance();
+
+        const id = user.uid;
+
+        const ref = firestore
+            .collection(COLLECTION_NAME)
+            .doc(id);
+
+        return ref.onSnapshot(snapshot => {
+
+            if (! snapshot.exists) {
+                return;
+            }
+
+            const account = <Account> snapshot.data();
+            handler(account);
+
+        });
 
     }
 
@@ -101,34 +138,4 @@ export class Accounts {
     }
 
 }
-
-interface AccountInit {
-
-    readonly plan: AccountPlan;
-
-}
-
-interface Account extends AccountInit {
-
-    readonly id: string;
-
-    /**
-     * The users uid in Firebase.
-     */
-    readonly uid: string;
-
-    /**
-     * The accounts primary email address.  We might add more in the future.
-     */
-    readonly email: string;
-
-    /**
-     * The last time any important action was changed on the account. Payment
-     * updated, etc.
-     */
-    readonly lastModified: ISODateTimeString;
-
-}
-
-export type AccountPlan = 'free' | 'bronze' | 'silver' | 'gold';
 

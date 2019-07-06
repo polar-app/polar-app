@@ -1,12 +1,13 @@
 import {assertJSON} from '../test/Assertions';
 import {TagNodes} from './TagNode';
 import {Tags} from './Tags';
+import {TagPaths} from './TagPaths';
 
 describe('TagNode', function() {
 
     it("split", function() {
 
-        assertJSON(TagNodes.split("/foo"), [
+        assertJSON(TagPaths.createPathEntries("/foo"), [
             {
                 "path": "/",
                 "basename": ""
@@ -21,7 +22,7 @@ describe('TagNode', function() {
             }
         ]);
 
-        assertJSON(TagNodes.split("/foo/bar"), [
+        assertJSON(TagPaths.createPathEntries("/foo/bar"), [
             {
                 "path": "/",
                 "basename": ""
@@ -44,7 +45,7 @@ describe('TagNode', function() {
             }
         ]);
 
-        assertJSON(TagNodes.split("/Hello World/The Dog"), [
+        assertJSON(TagPaths.createPathEntries("/Hello World/The Dog"), [
             {
                 "path": "/",
                 "basename": ""
@@ -90,8 +91,9 @@ describe('TagNode', function() {
                             {
                                 "children": [],
                                 "count": 1,
-                                "id": 2,
+                                "id": "/foo/bar",
                                 "name": "bar",
+                                "path": "/foo/bar",
                                 "value": {
                                     "count": 1,
                                     "id": "/foo/bar",
@@ -100,8 +102,9 @@ describe('TagNode', function() {
                             }
                         ],
                         "count": 1,
-                        "id": 1,
+                        "id": "/foo",
                         "name": "foo",
+                        "path": "/foo",
                         "value": {
                             "count": 1,
                             "id": "/foo",
@@ -110,10 +113,63 @@ describe('TagNode', function() {
                     }
                 ],
                 "count": 2,
-                "id": 0,
+                "id": "/",
                 "name": "/",
+                "path": "/",
                 "value": {
                     "count": 2,
+                    "id": "/",
+                    "label": "/"
+                }
+            });
+
+        });
+
+
+        it("broken id on parent folder", function() {
+
+            const tags = [
+                '/career/compsci',
+            ].map(current => Tags.create(current))
+                .map(current => {
+                    const count = 1;
+                    return {...current, count};
+                });
+
+            assertJSON(TagNodes.create(...tags), {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "count": 1,
+                                "id": "/career/compsci",
+                                "name": "compsci",
+                                "path": "/career/compsci",
+                                "value": {
+                                    "count": 1,
+                                    "id": "/career/compsci",
+                                    "label": "/career/compsci"
+                                }
+                            }
+                        ],
+                        "count": 0,
+                        "id": "/career",
+                        "name": "career",
+                        "path": "/career",
+                        "value": {
+                            "count": 0,
+                            "id": "/career",
+                            "label": "/career"
+                        }
+                    }
+                ],
+                "count": 1,
+                "id": "/",
+                "name": "/",
+                "path": "/",
+                "value": {
+                    "count": 1,
                     "id": "/",
                     "label": "/"
                 }
@@ -126,8 +182,9 @@ describe('TagNode', function() {
             assertJSON(TagNodes.create(), {
                 "children": [],
                 "count": 0,
-                "id": 0,
+                "id": "/",
                 "name": "/",
+                "path": "/",
                 "value": {
                     "count": 0,
                     "id": "/",

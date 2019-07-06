@@ -34,7 +34,7 @@ export class TagButton extends React.Component<IProps, IState> {
     public render() {
 
         const options: TagOption[] =
-            this.props.tagsDBProvider().tags().map( current => {
+            this.props.tagsProvider().map(current => {
                 return {
                     value: current.id,
                     label: current.label
@@ -160,9 +160,9 @@ interface IProps {
 
     readonly hidden?: boolean;
 
-    readonly tagsDBProvider: () => TagsDB;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
 
-    readonly onSelectedTags?: (tags: Tag[]) => void;
+    readonly onSelectedTags?: (tags: ReadonlyArray<Tag>) => void;
 
 }
 

@@ -26,7 +26,7 @@ export default class StatsApp extends React.Component<IProps, IState> {
     public render() {
 
         const docInfos =
-            Object.values(this.props.repoDocMetaManager.repoDocInfoIndex)
+            this.props.repoDocMetaManager.repoDocInfoIndex.values()
                 .map(current => current.docInfo);
 
         return (

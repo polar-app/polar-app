@@ -150,7 +150,7 @@ export interface CommentTriggerEvent extends AnnotationBarEvent {
 
 }
 
-// FIXME: this should be CommentCreatedEvent
+// TODO: this should be CommentCreatedEvent
 export type OnCommentCallback
     = (commentTriggerEvent: CommentTriggerEvent) => void;
 

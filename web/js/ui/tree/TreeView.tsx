@@ -1,37 +1,35 @@
 import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {Dictionaries} from '../../util/Dictionaries';
-
-class Styles {
-
-}
+import {TagStr} from '../../tags/Tag';
+import {TagDescriptor} from '../../tags/TagNode';
+import {isPresent} from '../../Preconditions';
+import {Tag} from '../../tags/Tag';
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
-    private readonly treeState: TreeState<V>;
-
     constructor(props: IProps<V>, context: any) {
         super(props, context);
-        this.treeState = new TreeState<V>(this.props.onSelected);
-
     }
 
     public render() {
 
-        return (
+        const {roots, treeState} = this.props;
 
-            <TreeNode node={this.props.root}
-                      treeState={this.treeState}/>
-
-        );
+        return <div>
+            {roots.map(node =>
+                   <TreeNode node={node}
+                             key={node.id}
+                             treeState={treeState}/>)}
+        </div>;
 
     }
 
 }
 
 interface IProps<V> {
-    readonly root: TNode<V>;
-    readonly onSelected: (nodes: ReadonlyArray<V>) => void;
+    readonly roots: ReadonlyArray<TNode<V>>;
+    readonly treeState: TreeState<V>;
 }
 
 interface IState {
@@ -45,7 +43,7 @@ interface IState {
  */
 export class TreeState<V> {
 
-    constructor(public readonly onSelected: (nodes: ReadonlyArray<V>) => void) {
+    constructor(public readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void) {
     }
 
     public readonly closed = new Marked();
@@ -58,32 +56,55 @@ export class TreeState<V> {
     /**
      * The list of the nodes that are selected by id
      */
-    public readonly selected: {[id: number]: number} = [];
+    public readonly selected: {[id: string]: boolean} = {};
 
-    public readonly index: {[id: number]: TreeNode<V>} = [];
+    public readonly index: {[id: string]: TreeNode<V>} = {};
+
+    /**
+     * Just the user tags that the user has selected.
+     */
+    public tags: ReadonlyArray<Tag> = [];
+
+    public dispatchSelected() {
+
+        const selectedFolders = Object.keys(this.selected);
+        const selectedTags = this.tags.map(current => current.id);
+
+        const selected = [...selectedTags, ...selectedFolders];
+
+        this.onSelected(selected);
+
+    }
 
 }
 
 
 export class Marked {
 
-    public readonly data: {[id: number]: boolean} = {};
+    public readonly data: {[id: string]: boolean} = {};
 
-    public mark(id: number) {
+    public mark(id: string) {
         this.data[id] = true;
     }
 
-    public clear(id: number) {
+    public isMarked(id: string): boolean {
+        return isPresent(this.data[id]);
+    }
+
+    public clear(id: string) {
         delete this.data[id];
     }
 
-    public toggle(id: number) {
-        this.data[id] = ! this.data[id];
-        return this.data[id];
-    }
+    public toggle(id: string) {
 
-    public contains(id: number) {
-        return this.data[id];
+        const currentValue = this.data[id];
+
+        if (isPresent(currentValue) && currentValue) {
+            this.clear(id);
+        } else {
+            this.data[id] = true;
+        }
+
     }
 
     public reset() {
@@ -96,6 +117,8 @@ export interface TNode<V> {
 
     readonly name: string;
 
+    readonly path: string;
+
     readonly children: ReadonlyArray<TNode<V>>;
 
     /**
@@ -106,9 +129,10 @@ export interface TNode<V> {
     /**
      * The UNIQUE id for this node.
      */
-    readonly id: number;
+    readonly id: string;
 
     readonly value: V;
 
 }
+
 

@@ -148,7 +148,7 @@ export class ARXIVSearchEngine implements search.Engine {
 
         };
 
-        // FIXME: arxiv:doi to include the DOI.
+        // TODO: arxiv:doi to include the DOI.
 
         const id = toText('id')!;
         const title = toText('title');

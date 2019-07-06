@@ -8,6 +8,7 @@ import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotations} from '../RepoAnnotations';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 
 /**
  * The actual engine that applies the filters once they are updated.
@@ -95,33 +96,18 @@ export class AnnotationRepoFilterEngine {
 
     private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        const tags = Tags.toIDs(this.filters.filteredTags.get());
+        const tags = this.filters.filteredTags.get()
+            .filter(current => current.id !== '/');
 
-        if (tags.length > 0) {
-            RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-tags'});
-        }
+        const tagMatcherFactory = new TagMatcherFactory(tags);
 
         if (tags.length === 0) {
             // we're done as there are no tags.
             return repoAnnotations;
         }
 
-        return repoAnnotations.filter(current => {
-
-            const docTags = Object.values(current.docInfo.tags || {});
-
-            if (docTags.length === 0) {
-                // the document we're searching over has no tags.
-                return false;
-            }
-
-            const intersection =
-                SetArrays.intersection(tags, Tags.toIDs(docTags));
-
-            return intersection.length === tags.length;
-
-
-        });
+        return tagMatcherFactory.filter(repoAnnotations,
+                                        current => Object.values(current.docInfo.tags || {}));
 
     }
 

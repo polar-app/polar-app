@@ -1,13 +1,10 @@
 import * as React from 'react';
+import {Tag} from '../../tags/Tag';
 import Button from 'reactstrap/lib/Button';
 import {Dialogs} from '../dialogs/Dialogs';
 import {NULL_FUNCTION} from '../../util/Functions';
-import {Tag} from '../../tags/Tags';
-
-class Styles {
-
-
-}
+import {Tags} from '../../tags/Tags';
+import {TagStr} from '../../tags/Tag';
 
 export class TagCreateButton extends React.Component<IProps, IState> {
 
@@ -23,7 +20,6 @@ export class TagCreateButton extends React.Component<IProps, IState> {
 
         const disabled = this.props.selected.length !== 1;
 
-        console.log("FIXME: ", this.props.selected);
         const tag = this.props.selected[0];
 
         return (
@@ -40,32 +36,28 @@ export class TagCreateButton extends React.Component<IProps, IState> {
 
     }
 
-    private onClick(tag: Tag) {
-
-        // FIXME: we need to constrain the input here so that users can't
-        // create invalid folders.  We might have to have a 'filter' method
-        // that's used with the dialog and invalid input shown instead of
-        // accepting the tag directly.
+    private onClick(tag: TagStr) {
 
         Dialogs.prompt({
             title: "Enter the name of a new folder:",
 
             onCancel: NULL_FUNCTION,
-
+            validator: createInputValidator(tag),
             onDone: value => this.onCreated(tag, value)
 
         });
+
     }
 
-    private onCreated(tag: Tag, name: string) {
-        const path = tag.label + '/' + name;
+    private onCreated(tag: TagStr, name: string) {
+        const path =  createTag(tag, name);
         this.props.onCreated(path);
     }
 
 }
 
 interface IProps {
-    readonly selected: ReadonlyArray<Tag>;
+    readonly selected: ReadonlyArray<TagStr>;
     readonly onCreated: (path: string) => void;
 }
 
@@ -73,4 +65,29 @@ interface IProps {
 interface IState {
 }
 
+function createInputValidator(tag: string) {
 
+    return (input: string) => {
+        const newTag = createTag(tag, input);
+
+        if (! Tags.validate(newTag).isPresent()) {
+            console.warn("Given invalid tag: ", newTag);
+            return {
+                message: "Invalid tag.  Tags may not contain spaces, quotes, etc."
+            };
+        }
+
+        return undefined;
+
+    };
+}
+
+function createTag(parent: string, child: string) {
+
+    if (parent === '/') {
+        return parent + child;
+    }
+
+    return parent + '/' + child;
+
+}

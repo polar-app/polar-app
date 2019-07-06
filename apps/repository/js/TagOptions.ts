@@ -16,7 +16,7 @@ export class TagOptions {
 
     }
 
-    public static fromTags(tags: Tag[]): TagOption[] {
+    public static fromTags(tags: ReadonlyArray<Tag>): TagOption[] {
 
         return tags.map( current => {
                    return {

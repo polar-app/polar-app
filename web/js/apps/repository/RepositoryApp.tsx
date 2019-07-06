@@ -6,10 +6,8 @@ import {IDocInfo} from '../../metadata/DocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
 import {PersistenceLayerManager, PersistenceLayerTypes} from '../../datastore/PersistenceLayerManager';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import {PrioritizedSplashes} from '../../../../apps/repository/js/splash/PrioritizedSplashes';
 import {SyncBar, SyncBarProgress} from '../../ui/sync_bar/SyncBar';
 import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
-import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
 import AnnotationRepoApp from '../../../../apps/repository/js/annotation_repo/AnnotationRepoApp';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from '../../logger/Logger';
@@ -38,19 +36,16 @@ import {AppOrigin} from '../AppOrigin';
 import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
-import {Premium} from '../../../../apps/repository/js/splash/splashes/premium/Premium';
 import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
-import {MobileDisclaimer} from './MobileDisclaimer';
 import {MobileDisclaimers} from './MobileDisclaimers';
-import {TabNav} from '../../ui/tabs/TabNav';
-import {NULL_FUNCTION} from '../../util/Functions';
 import {MachineDatastores} from '../../telemetry/MachineDatastores';
 import {MailingList} from './auth_handler/MailingList';
 import {UniqueMachines} from '../../telemetry/UniqueMachines';
 import {PremiumApp} from '../../../../apps/repository/js/splash/splashes/premium/PremiumApp';
 import {Accounts} from '../../accounts/Accounts';
-import {SupportContent} from '../../../../apps/repository/js/support/SupportContent';
 import {SupportApp} from '../../../../apps/repository/js/support/SupportApp';
+import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
+
 const log = Logger.create();
 
 export class RepositoryApp {
@@ -130,8 +125,7 @@ export class RepositoryApp {
             return ( <DocRepoApp persistenceLayerManager={this.persistenceLayerManager}
                                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                  repoDocMetaManager={this.repoDocInfoManager}
-                                 repoDocMetaLoader={this.repoDocInfoLoader}
-                                 syncBarProgress={syncBarProgress}/> );
+                                 repoDocMetaLoader={this.repoDocInfoLoader}/> );
         };
 
         const renderAnnotationRepoApp = () => {

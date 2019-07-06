@@ -1,3 +1,8 @@
+# 1.20.0
+
+- Forcing upgrades for users using large amounts of cloud storage.  
+
+- Implementation of folders now.
 
 # 1.19.9
 

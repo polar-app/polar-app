@@ -1,19 +1,16 @@
 import * as React from 'react';
-import {DeepPureComponent} from '../../react/DeepPureComponent';
 import {TreeNodeChildren} from './TreeNodeChildren';
-import Button from 'reactstrap/lib/Button';
-import {Dictionaries} from '../../util/Dictionaries';
 import {isPresent} from '../../Preconditions';
 import {Preconditions} from '../../Preconditions';
 import {TreeState} from './TreeView';
 import {TNode} from './TreeView';
-import {NullCollapse} from '../null_collapse/NullCollapse';
 
 class Styles {
 
     public static NODE_PARENT: React.CSSProperties = {
         display: 'flex',
-        paddingTop: '2px'
+        paddingTop: '2px',
+        paddingLeft: '5px'
     };
 
     public static NODE_ICON: React.CSSProperties = {
@@ -121,29 +118,7 @@ class Styles {
 
 }
 
-// TODO
-
-//   - what about long press?
-//   - what about context menus?
-//   - FIXME: implement the onSelect handler to callback which nodes are
-//    actually selected and an object for each node.
-
-//   - FIXME: I need to put the NUMBER of items in the tree to the right AND I need to
-//     support a 'create folder' option too for creating a nested folder.
-//
-//   - FIXME: I need the abiltiy to filter the tree view so that we can filter
-//            the tags easily.
-//
-//  - FIXME: hover needs to support clicking on the parent... to select the node.
-//
-//  - FIXME: need to support folder rename?
-//
-//  - FIXME: creating a NEW folder
-
 export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
-
-    public readonly id: number;
-    public readonly value: V;
 
     constructor(props: IProps<V>, context: any) {
         super(props, context);
@@ -154,9 +129,6 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.onCheckbox = this.onCheckbox.bind(this);
         this.onClick = this.onClick.bind(this);
         this.dispatchSelected = this.dispatchSelected.bind(this);
-
-        this.id = this.props.node.id;
-        this.value = this.props.node.value;
 
         this.state = {
         };
@@ -173,11 +145,13 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         const {node} = this.props;
         const children = node.children || [];
 
+        const {id} = this.props.node;
+
         // during expand/collapse new nodes are created and we have to keep the
         // index updated or we will access a component that no longer exists.
         // not sure why but this needs to be updated for each render and
         // components aren't always created.
-        treeState.index[this.id] = this;
+        treeState.index[id] = this;
 
         const createIcon = () => {
 
@@ -208,16 +182,16 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
             return "";
 
         };
+        const selected = isPresent(treeState.selected[id]);
 
-        const selected = isPresent(treeState.selected[this.id]);
-
-        const closed = treeState.closed.contains(node.id);
+        const closed = treeState.closed.isMarked(node.id);
 
         const nodeButtonClazz = selected ? 'bg-primary text-white' : '';
 
         const icon = createIcon();
 
         return (
+
 
             <div style={{}}>
 
@@ -229,11 +203,11 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                         </div>
 
                         <div style={Styles.NODE_SELECTOR}>
-                            {/*<Input className="m-0" type="checkbox" />*/}
-                            {/*X*/}
+
                             <input className="m-0"
                                    checked={selected}
                                    type="checkbox"
+                                   style={{display: 'block'}}
                                    onChange={event => this.onCheckbox(event)}/>
 
                         </div>
@@ -306,7 +280,8 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     }
 
     private deselect() {
-        delete this.props.treeState.selected[this.id];
+        const {id} = this.props.node;
+        delete this.props.treeState.selected[id];
         this.setState({...this.state, idx: Date.now()});
     }
 
@@ -314,10 +289,11 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                    selected: boolean = true) {
 
         const {treeState} = this.props;
+        const {id} = this.props.node;
 
         if (!multi) {
 
-            for (const id of Object.values(treeState.selected)) {
+            for (const id of Object.keys(treeState.selected)) {
 
                 const node = treeState.index[id];
                 Preconditions.assertPresent(node, "No node for id: " + id);
@@ -330,12 +306,12 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         }
 
         if (selected) {
-            console.log("FIXME: selecting IT");
-            treeState.selected[this.id] = this.id;
+            treeState.selected[id] = true;
         } else {
-            delete treeState.selected[this.id];
+            delete treeState.selected[id];
         }
 
+        // TODO: don't do this type of refresh
         this.setState({...this.state, idx: Date.now()});
 
         this.dispatchSelected();
@@ -343,17 +319,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     }
 
     private dispatchSelected() {
-        const {treeState} = this.props;
-
-        const selected = Object.values(treeState.selected)
-            .filter(nodeID => isPresent(nodeID))
-            .map(nodeID => treeState.index[nodeID])
-            .map(node => node.value);
-
-        console.log("FIXME: dispatching selected ", selected);
-
-        treeState.onSelected(selected);
-
+        this.props.treeState.dispatchSelected();
     }
 
 }

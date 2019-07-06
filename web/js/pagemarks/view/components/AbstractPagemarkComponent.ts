@@ -70,12 +70,6 @@ export class AbstractPagemarkComponent extends Component {
      */
     public onBoxMoved(boxMoveEvent: any) {
 
-        // TODO: actually I think this belongs in the controller... not the view
-        //
-        //
-
-        // TODO: remove the pagemark, then recreate it...
-
         log.info("Box moved to: ", boxMoveEvent);
 
         // boxRect, containerRect, pageRect...
@@ -84,9 +78,6 @@ export class AbstractPagemarkComponent extends Component {
                                                                         boxMoveEvent.restrictionRect);
 
         const rect = new PagemarkRect(annotationRect);
-
-        // FIXME: the lastUpdated here isn't being updated. I'm going to
-        // have to change the setters I think..
 
         if (boxMoveEvent.state === "completed") {
 
@@ -255,10 +246,6 @@ export class AbstractPagemarkComponent extends Component {
      * Create an internal div that allows us to turn off pointer-events
      */
     private createInternalDiv(pagemarkElement: HTMLElement) {
-
-        // FIXME: this works BUG we have a problem now with the context menu
-        // not showing that the pagemark is selected...  I think I have to use
-        // elementsAtPoint to reconstruct that this is on a pagemark.
 
         const createInternalDiv = () => {
 
@@ -431,7 +418,7 @@ export class AbstractPagemarkComponent extends Component {
 
         // TODO: this could be cleaned up a bit...
 
-        // FIXME: the offsetWidth does not properly have the width applied to
+        // TODO: the offsetWidth does not properly have the width applied to
         // it for some reason when scale is being used.  getBoundingClientRect
         // works though.
 

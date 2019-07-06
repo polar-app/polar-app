@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {AccountPlan} from '../../../../web/js/accounts/Accounts';
+import {AccountPlan} from '../../../../web/js/accounts/Account';
 import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
 import {MachineIDs} from '../../../../web/js/util/MachineIDs';
 

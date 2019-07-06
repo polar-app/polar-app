@@ -68,7 +68,7 @@ export class AnnotationBarService {
 
         CommentPopupBars.create(commentBarControlledPopupProps, commentPopupBarCallbacks);
 
-        // FIXME: just tie the visibility of the popup to the visiblity of the
+        // TODO: just tie the visibility of the popup to the visiblity of the
         // region.. when the region vanishes then just close the popup OR the
         // text area is close obviously.
 
