@@ -9,7 +9,6 @@ import {FormattedTags} from '../FormattedTags';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import Button from 'reactstrap/lib/Button';
-import {Datastores} from '../../../../web/js/datastore/Datastores';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {Img} from '../../../../web/js/metadata/Img';

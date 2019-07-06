@@ -63,10 +63,9 @@ import {Tags} from '../../js/tags/Tags';
 import {TagTree} from '../../js/ui/tree/TagTree';
 import {NPSModal} from '../../../apps/repository/js/splash2/nps/NPSModal';
 import {SuggestionsModal} from '../../../apps/repository/js/splash2/suggestions/SuggestionsModal';
-import {Premium} from '../../../apps/repository/js/splash/splashes/premium/Premium';
-import {Nav} from '../../js/ui/util/Nav';
-import {SubscriptionPlan} from './SubscriptionPlan';
-import {CrowdfundingBar} from '../../js/ui/crowdfunding/CrowdfundingBar';
+import {TagStr} from '../../../web/js/tags/Tag';
+import {MockFolderTree} from './MockFolderTree';
+import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
 
 const styles = {
     swatch: {
@@ -103,6 +102,7 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
     public render() {
+
 
         //
         // const root: TNode<TagNode> = {
@@ -159,123 +159,37 @@ class App<P> extends React.Component<{}, IAppState> {
             '/History/WWII',
             '/History/United States/WWII',
         ].map(current => Tags.create(current))
-            .map(current => {
-                const count = Math.floor(Math.random() * 100);
-                return {...current, count};
-            });
+         .map(current => {
+             const count = Math.floor(Math.random() * 100);
+             return {...current, count};
+         });
 
-        // const root: TNode<Tag> = TagNodes.create(...tags);
-
+        // // const root: TNode<Tag> = TagNodes.create(...tags);
+        // Dialogs.prompt({
+        //                    title: "Enter the name of a new folder:",
+        //                    validator: () => {
+        //                        return {message: "it failed dude"};
+        //                    },
+        //                    onCancel: NULL_FUNCTION,
+        //                    onDone: NULL_FUNCTION
+        //
+        //                });
         return (
 
             <div style={{margin: '5px'}}>
 
-                <CrowdfundingBar/>
+                {/*<MockFolderTree/>*/}
 
+                <AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>
 
-                <Button className="ml-2"
-                        color="light"
-                        size="sm"
-                        onClick={NULL_FUNCTION}
-                        style={{
-                            backgroundColor: 'red',
-                            fontWeight: 'bold'
-                        }}>Go Premium</Button>
+                {/*<TreeView root={root}*/}
+                {/*          />*/}
 
-                <div>
-
-                    <div style={{display: 'flex'}}>
-
-                        <div className="mt-auto mb-auto">
-                            You're currently on the <b>BRONZE</b> plan.
-                        </div>
-
-                        <div className="ml-auto mt-auto mb-auto">
-
-                            <Button color="primary"
-                                    size="sm"
-                                    onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/pricing.html')}>
-
-                                <i className="fas fa-external-link-alt"></i>
-                                &nbsp;
-                                View Plans and Pricing
-
-                            </Button>
-
-                        </div>
-
-                    </div>
-
-                    <div style={{display: 'flex'}} className="mt-1">
-
-                        <Button color="danger" size="md">
-                            <span>Cancel Subscription</span>
-                        </Button>
-
-                        <div className="ml-auto">
-
-                            <UncontrolledDropdown>
-
-                                <DropdownToggle color="secondary" caret>
-                                    Change Plan
-                                </DropdownToggle>
-
-                                <DropdownMenu>
-                                    <DropdownItem>BRONZE</DropdownItem>
-                                    <DropdownItem>SILVER</DropdownItem>
-                                    <DropdownItem>GOLD</DropdownItem>
-                                </DropdownMenu>
-
-                            </UncontrolledDropdown>
-
-                        </div>
-
-                    </div>
-
-                    <p>
-                        If you have any issues with billing or questions about
-                        your plan please contact <b>support@getpolarized.io</b>.
-                    </p>
-
-                </div>
-
-
-                <hr/>
-
-                <div style={{display: 'flex'}}>
-
-
-                    <SubscriptionPlan name="Free" capacity="350" unit="MB" price="0.00"/>
-                    <SubscriptionPlan name="Bronze" capacity="2" unit="GB" price="4.99" selected/>
-                    <SubscriptionPlan name="Silver" capacity="50" unit="GB" price="9.99"/>
-                    <SubscriptionPlan name="Gold" capacity="1000" unit="GB" price="14.99"/>
-
-                </div>
-
-
-                <div style={{display: 'flex'}} className="mt-1">
-
-                    <Button color="danger"
-                            size="sm">
-                        <span>Cancel Subscription</span>
-                    </Button>
-
-                    <div className="ml-auto">
-
-                        <Button color="primary"
-                                size="sm"
-                                onClick={() => Nav.openLinkWithNewTab('https://getpolarized.io/pricing.html')}>
-
-                            <i className="fas fa-external-link-alt"></i>
-                            &nbsp;
-                            View Plans and Pricing
-
-                        </Button>
-
-
-                    </div>
-
-                </div>
+                {/*<Dock side="left"*/}
+                {/*      left={<Folders/>}*/}
+                {/*      right={<Dock side="left"*/}
+                {/*                   left={<Preview/>}*/}
+                {/*                   right={<Main/>}/>}/>*/}
 
 
             </div>

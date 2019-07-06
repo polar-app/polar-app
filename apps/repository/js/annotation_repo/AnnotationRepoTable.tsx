@@ -7,13 +7,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
-import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
-import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
-import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
-import {ChannelCoupler} from '../../../../web/js/util/Channels';
-import {AnnotationRepoFilterEngine} from './AnnotationRepoFilterEngine';
-import {UpdatedCallback} from './AnnotationRepoFilterEngine';
 import {AnnotationPreview} from './AnnotationPreview';
 
 const log = Logger.create();
@@ -28,53 +22,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         this.persistenceLayerManager = this.props.persistenceLayerManager;
 
         this.state = {
-            data: [],
         };
-
-        this.init();
-
-    }
-
-    public init() {
-
-        const onUpdated: UpdatedCallback =
-            repoAnnotations => {
-
-            const state = {...this.state, data: repoAnnotations};
-
-            setTimeout(() => {
-
-                // The react table will not update when I change the state from
-                // within the event listener
-                this.setState(state);
-
-            }, 1);
-
-        };
-
-        const repoAnnotationsProvider =
-            () => Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex);
-
-        const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
-
-        // this will trigger the filter engine to be run which will then call
-        // onUpdated which then calls setState
-        this.props.setFiltered(filters => filterEngine.onFiltered(filters));
-
-        const doRefresh = () => filterEngine.onProviderUpdated();
-
-        PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
-
-            this.releaser.register(
-                persistenceLayer.addEventListener(() => doRefresh()));
-
-        });
-
-        this.releaser.register(
-            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => doRefresh()));
-
-        // do an initial refresh to get the first batch of data.
-        doRefresh();
 
     }
 
@@ -87,7 +35,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     }
 
     public render() {
-        const { data } = this.state;
+        const { data } = this.props;
 
         return (
 
@@ -290,13 +238,14 @@ interface IProps {
 
     readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
 
-    readonly setFiltered: ChannelCoupler<AnnotationRepoFilters>;
+    readonly data: ReadonlyArray<RepoAnnotation>;
+
+    // readonly setFiltered: ChannelCoupler<AnnotationRepoFilters>;
 
 }
 
 interface IState extends IReactTableState {
 
-    data: ReadonlyArray<RepoAnnotation>;
 
     /**
      * The currently selected repo annotation.

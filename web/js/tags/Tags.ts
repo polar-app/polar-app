@@ -5,8 +5,24 @@ import {Tag} from './Tag';
 import {TypedTag} from './TypedTag';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
+import {TagPaths} from './TagPaths';
+import {Sets} from '../util/Sets';
 
 export class Tags {
+
+    /**
+     * Only folders (no tags).
+     */
+    public static onlyFolderTags(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        return tags.filter(tag => tag.label.startsWith('/'));
+    }
+
+    /**
+     * Only tags (no folders).
+     */
+    public static onlyRegular(tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+        return tags.filter(tag => ! tag.label.startsWith('/'));
+    }
 
     public static create(label: string): Tag {
         return {id: label, label};
@@ -85,7 +101,7 @@ export class Tags {
         return tags.filter(tag => this.validateTag(tag).isPresent());
     }
 
-    public static toMap(tags: Tag[]) {
+    public static toMap(tags: ReadonlyArray<Tag>) {
 
         const result: { [id: string]: Tag } = {};
 
@@ -100,7 +116,7 @@ export class Tags {
     /**
      * From a union of the two tag arrays.
      */
-    public static union(a: Tag[], b: Tag[]): Tag[] {
+    public static union(a: ReadonlyArray<Tag>, b: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
 
         const result: { [id: string]: Tag } = {};
 
@@ -150,5 +166,6 @@ export class Tags {
             value: split[1]
         });
     }
+
 }
 

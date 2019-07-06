@@ -6,7 +6,7 @@ import {PersistenceLayerManager} from '../../../../../../web/js/datastore/Persis
 import {PremiumContent} from './PremiumContent';
 import {PremiumContent2} from './PremiumContent2';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
-import {AccountPlan} from '../../../../../../web/js/accounts/Accounts';
+import {AccountPlan} from '../../../../../../web/js/accounts/Account';
 
 export class PremiumApp extends React.Component<IProps, IState> {
 

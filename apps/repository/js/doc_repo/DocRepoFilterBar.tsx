@@ -87,7 +87,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="header-filter-box header-filter-tags mr-1"
+                <div className="header-filter-box header-filter-tags mr-1 d-none-desktop"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                     <FilterTagInput id="filter-tag-input"

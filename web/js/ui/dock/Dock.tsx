@@ -118,6 +118,8 @@ export class Dock extends React.Component<IProps, IState> {
         // force it to be 100% and make the inner elements use overflow
         sidebarStyle.height = '100%';
 
+        const componentClassNames = this.props.componentClassNames || {};
+
         return (
 
             <div className="dock"
@@ -125,7 +127,7 @@ export class Dock extends React.Component<IProps, IState> {
                  onMouseMove={() => this.onMouseMove()}
                  draggable={false}>
 
-                <div className="dock-left"
+                <div className={"dock-left" + ' ' + componentClassNames.left || ""}
                      style={leftStyle}
                      draggable={false}>
 
@@ -133,14 +135,14 @@ export class Dock extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="dock-splitter"
+                <div className={"dock-splitter" + ' ' + componentClassNames.splitter || ""}
                      draggable={false}
                      onMouseDown={() => this.onMouseDown()}
                      style={splitterStyle}>
 
                 </div>
 
-                <div className="dock-right"
+                <div className={"dock-right" + ' ' + componentClassNames.right || ""}
                      style={rightStyle}
                      draggable={false}>
                     {this.props.right}
@@ -253,6 +255,8 @@ interface IProps {
 
     readonly right: JSX.Element;
 
+    readonly componentClassNames?: ComponentClassNames;
+
     readonly toggleCoupler?: ChannelCoupler<void>;
 
     readonly setFlyoutCoupler?: ChannelCoupler<void>;
@@ -280,3 +284,9 @@ interface IState {
 export type DockSide = 'left' | 'right';
 
 export type DockMode = 'expanded' | 'collapsed';
+
+interface ComponentClassNames {
+    readonly left?: string;
+    readonly splitter?: string;
+    readonly right?: string;
+}

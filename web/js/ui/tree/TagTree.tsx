@@ -11,19 +11,22 @@ import {TreeView} from './TreeView';
 import {Tags} from '../../tags/Tags';
 import {TagCreateButton} from './TagCreateButton';
 import {TagDescriptor} from '../../tags/TagNode';
+import {TagStr} from '../../tags/Tag';
+import {TagFilter} from './TagFilter';
+import {NullCollapse} from '../null_collapse/NullCollapse';
+import {TreeState} from './TreeView';
 
 class Styles {
 
     public static PARENT: React.CSSProperties = {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: '#ffffff',
     };
 
-    public static HEADER: React.CSSProperties = {
-    };
-
-    public static BODY: React.CSSProperties = {
-        flexGrow: 1
+    public static BAR: React.CSSProperties = {
+        display: 'flex',
+        marginBottom: '7px'
     };
 
     public static FILTER_INPUT: React.CSSProperties = {
@@ -34,58 +37,49 @@ class Styles {
 
 }
 
-export class TagTree extends DeepPureComponent<IProps, IState> {
+export class TagTree extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onSelected = this.onSelected.bind(this);
+        this.onSelectedTags = this.onSelectedTags.bind(this);
         this.onFiltered = this.onFiltered.bind(this);
         this.onCreated = this.onCreated.bind(this);
 
         this.state = {
-            filter: "Comp",
-            tags: this.props.tags,
-            selected: []
+            filter: "",
         };
 
     }
 
     public render() {
 
-        // FIXME: this will NOT work I think because the IDs each time keep
-        // changing???  but the TreeState should be reset each time I think.
+        const tags = filterTags(this.props.tags, this.state.filter);
 
-        const root: TNode<TagDescriptor> = TagNodes.create(...this.state.tags);
+        const root: TNode<TagDescriptor> = TagNodes.create(...tags);
 
         return (
 
             <div style={Styles.PARENT}>
 
-                {/*FIXME: redo the way we do filters... filter the INPUT on the full*/}
-                {/*path and then filter pass this to the view once we've converted*/}
-                {/*them to full tags.*/}
+                <div style={Styles.BAR}>
 
-                {/*<InputGroup className="m-1"*/}
-                {/*            style={Styles.HEADER}>*/}
+                    <div style={{flexGrow: 1}}>
+                        <TagFilter tags={Tags.onlyRegular(this.props.tags)}
+                                   onChange={tags => this.onSelectedTags(tags)}/>
+                    </div>
 
-                {/*    <InputGroupAddon addonType="append">*/}
-                {/*        X*/}
-                {/*    </InputGroupAddon>*/}
+                    <NullCollapse open={!this.props.noCreate}>
 
-                <div style={{display: 'flex'}}>
+                        {/*<TagCreateButton selected={this.props.selected}*/}
+                        {/*                 onCreated={path => this.onCreated(path)}/>*/}
 
-                    <Input className="p-1 pb-0 pt-0"
-                           style={Styles.FILTER_INPUT}
-                           onChange={event => this.onFiltered(event.currentTarget.value)}
-                           placeholder="Filter by name..." />
-
-                    <TagCreateButton selected={this.state.selected}
-                                     onCreated={path => this.onCreated(path)}/>
+                    </NullCollapse>
 
                 </div>
 
-                <TreeView root={root} onSelected={values => this.onSelected(values)}/>
+                <TreeView roots={[root]}
+                          treeState={this.props.treeState}/>
 
             </div>
 
@@ -94,47 +88,51 @@ export class TagTree extends DeepPureComponent<IProps, IState> {
     }
 
     private onCreated(path: string) {
-        console.log("New tag created: " + path);
+
+        const tags = [...this.props.tags];
+
+        tags.push({
+            label: path,
+            id: path,
+            count: 0
+        });
+
+        this.setState({...this.state});
+
     }
 
-    private onSelected(selected: ReadonlyArray<TagDescriptor>) {
-
-        this.setState({...this.state, selected});
-
-        this.props.onSelected(...selected);
-
+    private onSelectedTags(selected: ReadonlyArray<Tag>) {
+        this.props.treeState.tags = selected;
+        this.props.treeState.dispatchSelected();
     }
 
     private onFiltered(filter: string) {
-
-        // TODO: one strategy here is to create ALL possible paths, then
-        // find just the unique ones, then filter just on those and then use
-        // THOSE as the result.
-
-        // FIXME: ... TODO... this doesn't break out all unique sub-paths.
-
-        filter = filter.toLocaleLowerCase();
-
-        const tags = this.props.tags.filter(tag => {
-            const label = tag.label.toLocaleLowerCase();
-            return label.indexOf(filter) !== -1;
-        });
-
-        this.setState({tags, filter});
-
+        this.setState({filter});
     }
 
 }
 
 interface IProps {
+    readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly onSelected: (...selected: ReadonlyArray<Tag>) => void;
+    readonly noCreate?: boolean;
 }
 
 interface IState {
     readonly filter: string;
-    readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly selected: ReadonlyArray<TagDescriptor>;
 }
 
+function filterTags(tags: ReadonlyArray<TagDescriptor>, filter: string): ReadonlyArray<TagDescriptor> {
 
+    if (filter.trim() === '') {
+        return tags;
+    }
+
+    filter = filter.toLocaleLowerCase();
+
+    return tags.filter(tag => {
+        const label = tag.label.toLocaleLowerCase();
+        return label.indexOf(filter) !== -1;
+    });
+
+}

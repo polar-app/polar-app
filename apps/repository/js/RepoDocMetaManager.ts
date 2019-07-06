@@ -4,7 +4,6 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {Tag} from '../../../web/js/tags/Tag';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Preconditions} from '../../../web/js/Preconditions';
-import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
@@ -14,12 +13,27 @@ import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 import {Sets} from '../../../web/js/util/Sets';
+import {DataObjectIndex} from './DataObjectIndex';
 
 const log = Logger.create();
 
-export interface RepoAnnotationIndex {
-    [id: string]: RepoAnnotation;
+export class RepoAnnotationDataObjectIndex extends DataObjectIndex<RepoAnnotation> {
+
+    constructor() {
+        super((repoAnnotation: RepoAnnotation) => Object.values(repoAnnotation.tags || {}) );
+    }
+
 }
+
+export class RepoDocInfoDataObjectIndex extends DataObjectIndex<RepoDocInfo> {
+
+    constructor() {
+        super((repoDocInfo: RepoDocInfo) => Object.values(repoDocInfo.tags || {}) );
+    }
+
+}
+
+
 
 /**
  * The main interface to the DocRepository including updates, the existing
@@ -27,9 +41,9 @@ export interface RepoAnnotationIndex {
  */
 export class RepoDocMetaManager {
 
-    public readonly repoDocInfoIndex: RepoDocInfoIndex = {};
+    public readonly repoDocInfoIndex: RepoDocInfoDataObjectIndex = new RepoDocInfoDataObjectIndex();
 
-    public readonly repoAnnotationIndex: RepoAnnotationIndex = {};
+    public readonly repoAnnotationIndex: RepoAnnotationDataObjectIndex = new RepoAnnotationDataObjectIndex();
 
     public readonly tagsDB = new TagsDB();
 
@@ -46,7 +60,8 @@ export class RepoDocMetaManager {
 
         if (repoDocMeta) {
 
-            this.repoDocInfoIndex[fingerprint] = repoDocMeta.repoDocInfo;
+            this.repoDocInfoIndex.add(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
+
             this.updateTagsDB(repoDocMeta.repoDocInfo);
 
             this.relatedTags.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
@@ -66,7 +81,7 @@ export class RepoDocMetaManager {
                     const deleteIDs = Sets.difference(currentAnnotationsIDs, newAnnotationIDs);
 
                     for (const deleteID of deleteIDs) {
-                        delete this.repoAnnotationIndex[deleteID];
+                        this.repoAnnotationIndex.remove(deleteID);
                     }
 
                 };
@@ -74,7 +89,7 @@ export class RepoDocMetaManager {
                 const updateExisting = () => {
 
                     for (const repoAnnotation of repoDocMeta.repoAnnotations) {
-                        this.repoAnnotationIndex[repoAnnotation.id] = repoAnnotation;
+                        this.repoAnnotationIndex.add(repoAnnotation.id, repoAnnotation);
                     }
 
                 };
@@ -94,14 +109,14 @@ export class RepoDocMetaManager {
                 for (const repoAnnotation of Object.values(this.repoAnnotationIndex)) {
 
                     if (repoAnnotation.fingerprint === fingerprint) {
-                        delete this.repoAnnotationIndex[repoAnnotation.id];
+                        this.repoAnnotationIndex.remove(repoAnnotation.id);
                     }
                 }
 
             };
 
             const deleteDoc = () => {
-                delete this.repoDocInfoIndex[fingerprint];
+                this.repoDocInfoIndex.remove(fingerprint);
             };
 
             deleteOrphanedAnnotations();
@@ -118,10 +133,10 @@ export class RepoDocMetaManager {
     public updateFromRepoDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
         if (repoDocInfo) {
-            this.repoDocInfoIndex[fingerprint] = repoDocInfo;
+            this.repoDocInfoIndex.add(fingerprint, repoDocInfo);
             this.updateTagsDB(repoDocInfo);
         } else {
-            delete this.repoDocInfoIndex[fingerprint];
+            this.repoDocInfoIndex.remove(fingerprint);
         }
 
     }
@@ -188,7 +203,7 @@ export class RepoDocMetaManager {
     /**
      * Update the RepoDocInfo object with the given tags.
      */
-    public async writeDocInfoTags(repoDocInfo: RepoDocInfo, tags: Tag[]) {
+    public async writeDocInfoTags(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
 
         Preconditions.assertPresent(repoDocInfo);
         Preconditions.assertPresent(repoDocInfo.docInfo);
@@ -219,7 +234,7 @@ export class RepoDocMetaManager {
     private init() {
         // TODO: is this even needed anymore?
 
-        for (const repoDocInfo of Object.values(this.repoDocInfoIndex)) {
+        for (const repoDocInfo of this.repoDocInfoIndex.values()) {
             this.updateTagsDB(repoDocInfo);
         }
 

@@ -18,6 +18,37 @@ const log = Logger.create();
  */
 export class MachineDatastores {
 
+    private static COLLECTION_NAME = "machine_datastore";
+
+    /**
+     * Callback for when we have new data for the account.
+     */
+    public static async onSnapshot(handler: (machineDatastore: MachineDatastore) => void) {
+
+        // TODO: migrate this to the new Collections code but it's not merged
+        // yet.
+
+        const firestore = await Firestore.getInstance();
+
+        const id = MachineIDs.get();
+
+        const ref = firestore
+            .collection(this.COLLECTION_NAME)
+            .doc(id);
+
+        return ref.onSnapshot(snapshot => {
+
+            if (! snapshot.exists) {
+                return;
+            }
+
+            const account = <MachineDatastore> snapshot.data();
+            handler(account);
+
+        });
+
+    }
+
     public static triggerBackgroundUpdates(persistenceLayerManager: PersistenceLayerManager) {
 
         if (AppRuntime.isElectron()) {
@@ -53,7 +84,7 @@ export class MachineDatastores {
 
         const id = machineDatastore.machine;
 
-        const ref = firestore.collection("machine_datastore").doc(id);
+        const ref = firestore.collection(this.COLLECTION_NAME).doc(id);
 
         await ref.set(machineDatastore);
 
@@ -110,7 +141,7 @@ export class MachineDatastores {
 
 }
 
-interface MachineDatastore {
+export interface MachineDatastore {
 
     readonly persistenceLayerType?: PersistenceLayerType;
 
