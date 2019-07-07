@@ -135,8 +135,20 @@ export class DocMetaListener {
 
     }
 
-    public async handleDocMetaRecord(docUpdateRef: DocUpdateRef,
+    public async handleDocMetaRecord(groupDoc: GroupDoc,
                                      docMetaRecord: DocMetaRecord | undefined) {
+
+        const {docID, fingerprint, profileID} = groupDoc;
+
+        const userProfile = await UserProfiles.get(profileID);
+
+        await this.handleDocMetaRecordWithUserProfile(groupDoc, userProfile, docMetaRecord);
+
+    }
+
+    public async handleDocMetaRecordWithUserProfile(docUpdateRef: DocUpdateRef,
+                                                    userProfile: UserProfile,
+                                                    docMetaRecord: DocMetaRecord | undefined) {
 
         // listen to snapshots of this DocMeta and then perform the merger...
 
@@ -163,7 +175,7 @@ export class DocMetaListener {
 
         const curr = createDocMeta();
 
-        await DocMetaRecords.applyAuthorsFromProfileID(curr, docUpdateRef.profileID);
+        await DocMetaRecords.applyAuthorsFromUserProfile(curr, userProfile);
 
         if (prev) {
 
@@ -341,5 +353,4 @@ export type DocMetaRecord = RecordHolder<DocMetaHolder>;
 export interface DocUpdateRef {
     readonly docID: DocIDStr;
     readonly fingerprint: string;
-    readonly profileID: ProfileIDStr;
 }

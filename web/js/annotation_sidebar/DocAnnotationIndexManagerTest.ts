@@ -3,16 +3,18 @@ import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {Backend} from "../datastore/Backend";
-import {FileRef, GetFileOpts} from "../datastore/Datastore";
+import {FileRef, GetFileOpts, Visibility} from "../datastore/Datastore";
 import {DocFileMeta} from "../datastore/DocFileMeta";
 import {
     DocMetaListener,
+    DocMetaRecord,
     DocMetaRecords
 } from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
 import {UserProfile} from "../datastore/sharing/db/UserProfiles";
 import {assert} from 'chai';
 import {Proxies} from "../proxies/Proxies";
+import {DocMeta} from "../metadata/DocMeta";
 
 describe('DocAnnotationIndexManager', function() {
 
@@ -20,7 +22,7 @@ describe('DocAnnotationIndexManager', function() {
         TestingTime.freeze();
     });
 
-    it("Updates and making sure the file is updated properly", function() {
+    it("Updates and making sure the file is updated properly", async function() {
 
         const docFileResolver: DocFileResolver = (backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta => {
             return {backend, ref, url: 'file:///fake/url/path.jpg'};
@@ -28,15 +30,15 @@ describe('DocAnnotationIndexManager', function() {
 
         const docAnnotationIndex = new DocAnnotationIndex();
         const docAnnotationIndexManager = new DocAnnotationIndexManager(docFileResolver, docAnnotationIndex, () => {
-            console.log("updated");
+            console.log("onUpdated called properly");
         });
 
         const fingerprint = "39b730b6e9d281b0eae91b2c2c29b842";
         const docID = 'docID:0x00001';
         const profileID = 'prof:0x00002';
 
-        const docMetaHandler = () => {
-
+        const docMetaHandler = (docMeta: DocMeta) => {
+            docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
         };
 
         const errHandler = () => {
@@ -49,7 +51,7 @@ describe('DocAnnotationIndexManager', function() {
             return DocMetas.deserialize(JSON.stringify(docMeta0), fingerprint);
         }
 
-        function handlePrimary() {
+        function handlePrimaryDoc() {
 
             const docMeta = Proxies.create(toDocMeta(docMeta0));
             const userProfile: UserProfile = {
@@ -67,7 +69,7 @@ describe('DocAnnotationIndexManager', function() {
         }
 
         assert.equal(docAnnotationIndex.getDocAnnotationsSorted().length, 0);
-        handlePrimary();
+        handlePrimaryDoc();
         assert.equal(docAnnotationIndex.getDocAnnotationsSorted().length, 1);
 
         function verify0() {
@@ -79,6 +81,43 @@ describe('DocAnnotationIndexManager', function() {
         }
 
         verify0();
+
+        const userProfile1: UserProfile = {
+            self: true,
+            profile: {
+                id: 'profile:1',
+                name: 'Alice',
+                handle: 'alice'
+            }
+        };
+
+        function createDocMetaRecord(docMeta: DocMeta): DocMetaRecord {
+
+            const docMetaRecord: DocMetaRecord = {
+                uid: 'uid:0x00001',
+                id: docID,
+                visibility: Visibility.PRIVATE,
+                value: {
+                    docInfo: docMeta.docInfo,
+                    value: JSON.stringify(docMeta)
+                }
+            };
+
+            return docMetaRecord;
+
+        }
+
+        async function handleSecondaryDoc() {
+
+            const docMetaRecord = createDocMetaRecord(docMeta1);
+
+            await docMetaListener.handleDocMetaRecordWithUserProfile({docID, fingerprint}, userProfile1, docMetaRecord);
+
+        }
+
+        await handleSecondaryDoc();
+
+        assert.equal(docAnnotationIndex.getDocAnnotationsSorted().length, 2);
 
     });
 
