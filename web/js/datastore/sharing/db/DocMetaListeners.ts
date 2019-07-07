@@ -28,10 +28,10 @@ export class DocMetaListener {
     // the current groups being monitored
     private monitoredGroups = new Set<GroupIDStr>();
 
-    constructor(private readonly fingerprint: string,
-                private readonly profileID: ProfileIDStr,
-                private readonly docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
-                private readonly errHandler: (err: Error) => void) {
+    public constructor(private readonly fingerprint: string,
+                       private readonly profileID: ProfileIDStr,
+                       private readonly docMetaHandler: (docMeta: DocMeta, docUpdateRef: DocUpdateRef) => void,
+                       private readonly errHandler: (err: Error) => void) {
 
     }
 
@@ -135,7 +135,7 @@ export class DocMetaListener {
 
     }
 
-    public async handleDocMetaRecord(groupDoc: GroupDoc,
+    public async handleDocMetaRecord(docUpdateRef: DocUpdateRef,
                                      docMetaRecord: DocMetaRecord | undefined) {
 
         // listen to snapshots of this DocMeta and then perform the merger...
@@ -145,7 +145,7 @@ export class DocMetaListener {
             return;
         }
 
-        const {docID, fingerprint} = groupDoc;
+        const {docID, fingerprint} = docUpdateRef;
 
         const prev = Optional.of(this.docMetaIndex[docID]).getOrUndefined();
 
@@ -163,15 +163,18 @@ export class DocMetaListener {
 
         const curr = createDocMeta();
 
-        await DocMetaRecords.applyAuthorsFromGroupDoc(curr, groupDoc);
+        await DocMetaRecords.applyAuthorsFromProfileID(curr, docUpdateRef.profileID);
 
         if (prev) {
+
+            console.log("FIXME: secondary updated: ", DocMetas.serialize(curr, "  "));
+
             // now merge the metadata so we get our events fired.
             DocMetaRecords.mergeDocMetaUpdate(curr, prev);
         } else {
             // only emit on the FIRST time we see the doc and then give the caller a
             // proxied object after that...
-            this.docMetaHandler(curr, groupDoc);
+            this.docMetaHandler(curr, docUpdateRef);
         }
 
         // now update the index...
@@ -184,7 +187,7 @@ export class DocMetaListener {
 export class DocMetaListeners {
 
     public static async register(fingerprint: string,
-                                 docMetaHandler: (docMeta: DocMeta, groupDoc: GroupDoc) => void,
+                                 docMetaHandler: (docMeta: DocMeta, docUpdateRef: DocUpdateRef) => void,
                                  errHandler: (err: Error) => void) {
 
         const profileOwner = await ProfileOwners.get();
@@ -267,10 +270,6 @@ export class DocMetaRecords {
 
     }
 
-    public static async applyAuthorsFromGroupDoc(docMeta: DocMeta, groupDoc: GroupDoc) {
-        return await this.applyAuthorsFromProfileID(docMeta, groupDoc.profileID);
-    }
-
     public static async applyAuthorsFromProfileID(docMeta: DocMeta, profileID: ProfileIDStr) {
 
         const userProfile = await UserProfiles.get(profileID);
@@ -289,9 +288,18 @@ export class DocMetaRecords {
 
             const name = profile!.name || profile!.handle || 'unknown';
 
-            const image = {
-                src: profile!.image!.url
+            const createImage  = () => {
+                if (profile.image) {
+                    return {
+                        src: profile!.image!.url
+                    };
+                }
+
+                return undefined;
+
             };
+
+            const image = createImage();
 
             return new Author({name, image, profileID, guest: ! userProfile.self});
 
@@ -329,3 +337,9 @@ export class DocMetaRecords {
 export type DocMetaIDStr = string;
 
 export type DocMetaRecord = RecordHolder<DocMetaHolder>;
+
+export interface DocUpdateRef {
+    readonly docID: DocIDStr;
+    readonly fingerprint: string;
+    readonly profileID: ProfileIDStr;
+}
