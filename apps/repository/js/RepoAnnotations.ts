@@ -94,7 +94,7 @@ export class RepoAnnotations {
             meta = {color: areaHighlight.color};
 
 
-            const docFileResolver = DocFileResolvers.create(persistenceLayerProvider);
+            const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
             img = Images.toImg(docFileResolver, areaHighlight.image);
 
         }

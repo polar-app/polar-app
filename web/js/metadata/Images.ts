@@ -36,7 +36,7 @@ export class Images {
             return undefined;
         }
 
-        const docFileMeta = docFileResolver.resolve(image.src.backend, image.src);
+        const docFileMeta = docFileResolver(image.src.backend, image.src);
 
         const img: Img = {
             width: image.width!,

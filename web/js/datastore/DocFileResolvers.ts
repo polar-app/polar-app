@@ -9,26 +9,17 @@ import {PersistenceLayerProvider} from "./PersistenceLayer";
  */
 export class DocFileResolvers {
 
-    public static create(persistenceLayerProvider: PersistenceLayerProvider) {
-        return new PersistenceLayerDocFileResolver(persistenceLayerProvider);
+    public static createForPersistenceLayer(persistenceLayerProvider: PersistenceLayerProvider) {
+
+        return (backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta => {
+            const persistenceLayer = persistenceLayerProvider();
+            return persistenceLayer.getFile(backend, ref, opts);
+        };
+
     }
 
 }
 
 
-export interface DocFileResolver {
-    resolve(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta;
-}
+export type DocFileResolver = (backend: Backend, ref: FileRef, opts?: GetFileOpts) => DocFileMeta;
 
-class PersistenceLayerDocFileResolver implements DocFileResolver {
-
-    constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {
-
-    }
-
-    public resolve(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
-        const persistenceLayer = this.persistenceLayerProvider();
-        return persistenceLayer.getFile(backend, ref, opts);
-    }
-
-}

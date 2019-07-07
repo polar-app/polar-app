@@ -104,7 +104,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         this.docAnnotationIndex = new DocAnnotationIndex();
 
         this.docAnnotationIndexManager
-            = new DocAnnotationIndexManager(DocFileResolvers.create(persistenceLayerProvider),
+            = new DocAnnotationIndexManager(DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider),
                                             this.docAnnotationIndex, annotations => {
 
                 this.setState({annotations});
@@ -138,7 +138,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async buildInitialAnnotations() {
 
-        const docFileResolver = DocFileResolvers.create(this.props.persistenceLayerProvider);
+        const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
         const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
                                                                           this.docAnnotationIndex,
                                                                           this.props.doc.docMeta);
