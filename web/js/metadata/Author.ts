@@ -12,6 +12,8 @@ export class Author extends SerializedObject {
 
     public readonly image?: AuthorImage;
 
+    // FIXME: I don't like this so we should find an alternative way to
+    //  represent this....
     public readonly guest?: boolean;
 
     constructor(val: IAuthor) {
@@ -20,7 +22,6 @@ export class Author extends SerializedObject {
         this.profileID = val.profileID;
         this.url = val.url;
         this.image = val.image;
-        this.guest = val.guest;
     }
 
 }

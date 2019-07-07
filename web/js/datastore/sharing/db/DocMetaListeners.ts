@@ -179,8 +179,6 @@ export class DocMetaListener {
 
         if (prev) {
 
-            console.log("FIXME: secondary updated: ", DocMetas.serialize(curr, "  "));
-
             // now merge the metadata so we get our events fired.
             DocMetaRecords.mergeDocMetaUpdate(curr, prev);
         } else {

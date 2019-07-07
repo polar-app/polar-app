@@ -209,13 +209,13 @@ export class Dictionaries {
     /**
      * Easily convert an array to a dict.
      */
-    public static toDict<V>(values: V[], converter: (value: V) => string): {[key: string]: V} {
+    public static toDict<V>(values: ReadonlyArray<V>, converter: (value: V) => string): {[key: string]: V} {
 
         const result: { [key: string]: V } = {};
 
-        values.forEach(value => {
+        for (const value of values) {
             result[converter(value)] = value;
-        });
+        }
 
         return result;
 

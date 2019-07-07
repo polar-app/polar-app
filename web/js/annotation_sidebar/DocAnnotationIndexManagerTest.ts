@@ -15,6 +15,7 @@ import {UserProfile} from "../datastore/sharing/db/UserProfiles";
 import {assert} from 'chai';
 import {Proxies} from "../proxies/Proxies";
 import {DocMeta} from "../metadata/DocMeta";
+import {DefaultDocAnnotation} from "./DocAnnotation";
 
 describe('DocAnnotationIndexManager', function() {
 
@@ -28,9 +29,12 @@ describe('DocAnnotationIndexManager', function() {
             return {backend, ref, url: 'file:///fake/url/path.jpg'};
         };
 
+        let nrUpdates = 0;
+
         const docAnnotationIndex = new DocAnnotationIndex();
         const docAnnotationIndexManager = new DocAnnotationIndexManager(docFileResolver, docAnnotationIndex, () => {
             console.log("onUpdated called properly");
+            ++nrUpdates;
         });
 
         const fingerprint = "39b730b6e9d281b0eae91b2c2c29b842";
@@ -117,7 +121,90 @@ describe('DocAnnotationIndexManager', function() {
 
         await handleSecondaryDoc();
 
-        assert.equal(docAnnotationIndex.getDocAnnotationsSorted().length, 2);
+        function dumpDocAnnotations(docAnnotations: ReadonlyArray<DefaultDocAnnotation>) {
+
+            for (const docAnnotation of docAnnotations) {
+                console.log("==========");
+                console.log("id: " + docAnnotation.id);
+                console.log(docAnnotation.html);
+
+                const children = docAnnotation.getChildren()
+                for (const child of children) {
+                    console.log("    ====");
+                    console.log("    id: ", child.id);
+                    console.log("    html: ", child.html);
+                }
+
+            }
+
+        }
+
+
+        function verify1() {
+
+            console.log("========== Verify1")
+
+            const docAnnotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
+            dumpDocAnnotations(docAnnotationsSorted);
+            assert.equal(docAnnotationsSorted.length, 2);
+            assert.equal(nrUpdates, 20);
+
+        }
+
+        verify1();
+
+        async function handleSecondaryDoc1() {
+
+            const docMetaRecord = createDocMetaRecord(docMeta2);
+
+            await docMetaListener.handleDocMetaRecordWithUserProfile({docID, fingerprint}, userProfile1, docMetaRecord);
+
+        }
+
+        await handleSecondaryDoc1();
+
+        function verify2() {
+
+            console.log("========== Verify2")
+
+            const docAnnotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
+            dumpDocAnnotations(docAnnotationsSorted);
+
+        }
+
+        verify2();
+
+
+
+
+
+
+
+
+
+
+        async function handleSecondaryDoc2() {
+
+            const docMetaRecord = createDocMetaRecord(docMeta3);
+
+            await docMetaListener.handleDocMetaRecordWithUserProfile({docID, fingerprint}, userProfile1, docMetaRecord);
+
+        }
+
+        await handleSecondaryDoc2();
+
+        function verify3() {
+
+            console.log("========== Verify3")
+
+            const docAnnotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
+            dumpDocAnnotations(docAnnotationsSorted);
+
+        }
+
+        verify3();
+
+
 
     });
 
