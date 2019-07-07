@@ -14,13 +14,15 @@ import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 import {SetArrays} from '../../../web/js/util/SetArrays';
 import {Tag} from '../../../web/js/tags/Tags';
 import {DataObjectIndex} from './DataObjectIndex';
+import {RepoAnnotations} from "./RepoAnnotations";
+import {RepoDocInfos} from "./RepoDocInfos";
 
 const log = Logger.create();
 
 export class RepoAnnotationDataObjectIndex extends DataObjectIndex<RepoAnnotation> {
 
     constructor() {
-        super((repoAnnotation: RepoAnnotation) => Object.values(repoAnnotation.tags || {}) );
+        super((repoAnnotation?: RepoAnnotation) => RepoAnnotations.toTags(repoAnnotation) );
     }
 
 }
@@ -28,12 +30,10 @@ export class RepoAnnotationDataObjectIndex extends DataObjectIndex<RepoAnnotatio
 export class RepoDocInfoDataObjectIndex extends DataObjectIndex<RepoDocInfo> {
 
     constructor() {
-        super((repoDocInfo: RepoDocInfo) => Object.values(repoDocInfo.tags || {}) );
+        super((repoDocInfo?: RepoDocInfo) => RepoDocInfos.toTags(repoDocInfo) );
     }
 
 }
-
-
 
 /**
  * The main interface to the DocRepository including updates, the existing

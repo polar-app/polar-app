@@ -79,7 +79,7 @@ export class DataObjectIndex<D> {
 
     private tags = new TagIndex();
 
-    public constructor(private readonly toTags: (input: D) => ReadonlyArray<Tag>) {
+    public constructor(private readonly toTags: (input?: D) => ReadonlyArray<Tag>) {
 
     }
 

@@ -7,7 +7,7 @@ describe('DataObjectIndex', function() {
 
     it("basic", function() {
 
-        const index = new DataObjectIndex<Person>((p: Person) => p.tags);
+        const index = new DataObjectIndex<Person>((p?: Person) => p!.tags);
 
         index.add('alice', {name: 'alice', tags: [Tags.create('nice'), Tags.create('happy')]});
         index.add('bob', {name: 'bob', tags: [Tags.create('mean'), Tags.create('bad')]});

@@ -4,6 +4,8 @@ import {Optional} from '../../../web/js/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {DocInfos} from '../../../web/js/metadata/DocInfos';
+import {RepoAnnotation} from "./RepoAnnotation";
+import {Tag} from "../../../web/js/tags/Tags";
 
 export class RepoDocInfos {
 
@@ -89,6 +91,16 @@ export class RepoDocInfos {
         }
 
         return current;
+
+    }
+
+    public static toTags(repoDocInfo?: RepoDocInfo): Tag[] {
+
+        if (repoDocInfo) {
+            return Object.values(repoDocInfo.tags || {});
+        }
+
+        return [];
 
     }
 

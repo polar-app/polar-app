@@ -12,6 +12,7 @@ import {Images} from '../../../web/js/metadata/Images';
 import {Img} from '../../../web/js/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
+import {Tag} from "../../../web/js/tags/Tags";
 
 export class RepoAnnotations {
 
@@ -115,6 +116,16 @@ export class RepoAnnotations {
 
     public static isValid(repoAnnotation: RepoAnnotation) {
         return true;
+    }
+
+    public static toTags(repoAnnotation?: RepoAnnotation): Tag[] {
+
+        if (repoAnnotation) {
+            return Object.values(repoAnnotation.tags || {});
+        }
+
+        return [];
+
     }
 
 }
