@@ -11,8 +11,8 @@ import {FlashcardModel} from "./FlashcardModel";
 import {Flashcard} from "../metadata/Flashcard";
 import {isPresent} from "../Preconditions";
 import {MutationType} from "../proxies/MutationType";
-import {PersistenceLayerProvider} from "../datastore/PersistenceLayer";
 import {Logger} from "../logger/Logger";
+import {DocFileResolver} from "../datastore/DocFileResolvers";
 
 const log = Logger.create();
 
@@ -21,7 +21,7 @@ const log = Logger.create();
  */
 export class DocAnnotationIndexManager {
 
-    constructor(private persistenceLayerProvider: PersistenceLayerProvider,
+    constructor(private docFileResolver: DocFileResolver,
                 private docAnnotationIndex: DocAnnotationIndex,
                 private onUpdated: (annotations: ReadonlyArray<DefaultDocAnnotation>) => void) {
 
@@ -29,7 +29,7 @@ export class DocAnnotationIndexManager {
 
     public registerListenerForDocMeta(docMeta: DocMeta) {
 
-        const {persistenceLayerProvider} = this;
+        const {docFileResolver} = this;
 
         new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
 
@@ -37,7 +37,7 @@ export class DocAnnotationIndexManager {
 
                 const converter = (annotationValue: AreaHighlight) => {
 
-                    return DocAnnotations.createFromAreaHighlight(persistenceLayerProvider,
+                    return DocAnnotations.createFromAreaHighlight(docFileResolver,
                         docMeta,
                         annotationValue,
                         annotationEvent.pageMeta);

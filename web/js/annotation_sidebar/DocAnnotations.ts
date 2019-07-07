@@ -18,6 +18,7 @@ import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {ObjectIDs} from '../util/ObjectIDs';
 import {Images} from '../metadata/Images';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
+import {DocFileResolver} from "../datastore/DocFileResolvers";
 
 export class DocAnnotations {
 
@@ -31,7 +32,7 @@ export class DocAnnotations {
 
     }
 
-    public static async getAnnotationsForPage(persistenceLayerProvider: PersistenceLayerProvider,
+    public static async getAnnotationsForPage(docFileResolver: DocFileResolver,
                                               docAnnotationIndex: DocAnnotationIndex,
                                               docMeta: DocMeta): Promise<IDocAnnotation[]> {
 
@@ -41,7 +42,7 @@ export class DocAnnotations {
 
         for (const pageMeta of pageMetas) {
 
-            const areaHighlights = await this.getAreaHighlights(persistenceLayerProvider, docMeta, pageMeta);
+            const areaHighlights = await this.getAreaHighlights(docFileResolver, docMeta, pageMeta);
             const textHighlights = this.getTextHighlights(docMeta, pageMeta);
 
             result.push(...textHighlights);
@@ -104,7 +105,7 @@ export class DocAnnotations {
 
     }
 
-    public static createFromAreaHighlight(persistenceLayerProvider: PersistenceLayerProvider,
+    public static createFromAreaHighlight(docFileResolver: DocFileResolver,
                                           docMeta: DocMeta,
                                           areaHighlight: AreaHighlight,
                                           pageMeta: PageMeta): IDocAnnotation {
@@ -122,7 +123,7 @@ export class DocAnnotations {
 
         };
 
-        const img = Images.toImg(persistenceLayerProvider, areaHighlight.image);
+        const img = Images.toImg(docFileResolver, areaHighlight.image);
         const position = createPosition();
 
         return {
@@ -203,7 +204,7 @@ export class DocAnnotations {
 
     }
 
-    private static async getAreaHighlights(persistenceLayerProvider: PersistenceLayerProvider,
+    private static async getAreaHighlights(docFileResolver: DocFileResolver,
                                            docMeta: DocMeta,
                                            pageMeta: PageMeta): Promise<IDocAnnotation[]> {
 
@@ -214,7 +215,7 @@ export class DocAnnotations {
         for (const areaHighlight of areaHighlights) {
 
             const docAnnotation =
-                await this.createFromAreaHighlight(persistenceLayerProvider, docMeta, areaHighlight, pageMeta);
+                await this.createFromAreaHighlight(docFileResolver, docMeta, areaHighlight, pageMeta);
 
             result.push(docAnnotation);
 

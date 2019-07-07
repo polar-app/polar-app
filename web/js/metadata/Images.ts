@@ -3,6 +3,7 @@ import {ImageType} from './Image';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {Img} from './Img';
 import {Image} from './Image';
+import {DocFileResolver} from "../datastore/DocFileResolvers";
 
 export class Images {
 
@@ -29,14 +30,13 @@ export class Images {
 
     }
 
-    public static toImg(persistenceLayerProvider: PersistenceLayerProvider, image?: Image): Img | undefined {
+    public static toImg(docFileResolver: DocFileResolver, image?: Image): Img | undefined {
 
         if (! image) {
             return undefined;
         }
 
-        const persistenceLayer = persistenceLayerProvider();
-        const docFileMeta = persistenceLayer.getFile(image.src.backend, image.src);
+        const docFileMeta = docFileResolver.resolve(image.src.backend, image.src);
 
         const img: Img = {
             width: image.width!,

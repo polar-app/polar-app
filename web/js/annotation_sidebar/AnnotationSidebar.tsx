@@ -17,6 +17,7 @@ import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaL
 import {DocMetas} from "../metadata/DocMetas";
 import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
+import {DocFileResolvers} from "../datastore/DocFileResolvers";
 
 const log = Logger.create();
 
@@ -103,7 +104,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         this.docAnnotationIndex = new DocAnnotationIndex();
 
         this.docAnnotationIndexManager
-            = new DocAnnotationIndexManager(persistenceLayerProvider,
+            = new DocAnnotationIndexManager(DocFileResolvers.create(persistenceLayerProvider),
                                             this.docAnnotationIndex, annotations => {
 
                 this.setState({annotations});
@@ -137,9 +138,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async buildInitialAnnotations() {
 
-        const docAnnotations = await DocAnnotations.getAnnotationsForPage(this.props.persistenceLayerProvider,
-                                                                         this.docAnnotationIndex,
-                                                                         this.props.doc.docMeta);
+        const docFileResolver = DocFileResolvers.create(this.props.persistenceLayerProvider);
+        const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
+                                                                          this.docAnnotationIndex,
+                                                                          this.props.doc.docMeta);
 
         this.docAnnotationIndex.put(...docAnnotations);
 

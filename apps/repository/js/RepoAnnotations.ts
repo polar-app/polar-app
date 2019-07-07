@@ -11,6 +11,7 @@ import {Texts} from '../../../web/js/metadata/Texts';
 import {Images} from '../../../web/js/metadata/Images';
 import {Img} from '../../../web/js/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
+import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 
 export class RepoAnnotations {
 
@@ -92,7 +93,9 @@ export class RepoAnnotations {
             const areaHighlight = <AreaHighlight> sourceAnnotation;
             meta = {color: areaHighlight.color};
 
-            img = Images.toImg(persistenceLayerProvider, areaHighlight.image);
+
+            const docFileResolver = DocFileResolvers.create(persistenceLayerProvider);
+            img = Images.toImg(docFileResolver, areaHighlight.image);
 
         }
 
