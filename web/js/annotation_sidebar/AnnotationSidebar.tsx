@@ -158,8 +158,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             DocMetaRecords.applyAuthorsFromUserProfile(docMeta, userProfile);
         });
 
-        console.log("FIXME: primary: ", DocMetas.serialize(docMeta, "  "));
-
         this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
 
     }
@@ -179,8 +177,6 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const docMetaHandler = (docMeta: DocMeta) => {
             this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
-            console.log("FIXME: secondary: ", DocMetas.serialize(docMeta, "  "));
-
         };
 
         const errHandler = (err: Error) => {

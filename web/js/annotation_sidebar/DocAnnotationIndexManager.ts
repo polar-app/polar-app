@@ -71,8 +71,6 @@ export class DocAnnotationIndexManager {
 
         new CommentModel().registerListener(docMeta, annotationEvent => {
 
-            console.log("FIXME: change to comment: ", annotationEvent);
-
             const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromComment(docMeta,
                 comment,

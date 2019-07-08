@@ -138,7 +138,7 @@ export class DocMetaListener {
     public async handleDocMetaRecord(groupDoc: GroupDoc,
                                      docMetaRecord: DocMetaRecord | undefined) {
 
-        const {docID, fingerprint, profileID} = groupDoc;
+        const {profileID} = groupDoc;
 
         const userProfile = await UserProfiles.get(profileID);
 
@@ -223,10 +223,6 @@ class StringDicts {
 
         const deletable = SetArrays.difference(Object.keys(target), Object.keys(source));
 
-        if  (deletable.length > 0) {
-            console.log("FIXME: deleting ", deletable);
-        }
-
         for (const key of deletable) {
             delete target[key];
         }
@@ -238,10 +234,6 @@ class StringDicts {
 
         // *** copy new keys into the target
         const copyable = SetArrays.difference(Object.keys(source), Object.keys(target));
-
-        if  (copyable.length > 0) {
-            console.log("FIXME: copyable ", copyable);
-        }
 
         for (const key of copyable) {
             target[key] = source[key];
