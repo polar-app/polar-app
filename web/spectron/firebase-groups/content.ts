@@ -49,6 +49,7 @@ import {canonicalize} from '../../js/util/Objects';
 import {EmailStr} from '../../js/util/Strings';
 import {GroupMemberDeletes} from '../../js/datastore/sharing/rpc/GroupMemberDeletes';
 import {UserRefs} from '../../js/datastore/sharing/rpc/UserRefs';
+import {isPresent} from "../../js/Preconditions";
 
 const log = Logger.create();
 
@@ -708,6 +709,33 @@ SpectronRenderer.run(async (state) => {
             }
 
             await validateGetFile(groupID);
+
+        });
+
+        it("group provision of private group and verify group members includes the group creator", async function() {
+
+            const mockDock = await provisionAccountData();
+            const {groupID} = await doGroupProvision(mockDock);
+
+            async function validateGroupMembers() {
+
+                const profile = await Profiles.currentProfile();
+
+                assert.isTrue(isPresent(profile));
+
+                const groupMembers = await GroupMembers.list(groupID);
+
+                assert.isTrue(isPresent(groupMembers));
+                assert.equal(groupMembers.length, 1);
+
+                const groupMember = groupMembers[0];
+
+                assert.equal(groupMember.groupID, groupID);
+                assert.equal(groupMember.profileID, profile!.id);
+
+            }
+
+            await validateGroupMembers();
 
         });
 
