@@ -48,7 +48,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
 
                 <Button color="primary"
                         id="share-control-button"
-                        size="sm"
+                        size="md"
                         disabled={this.props.disabled}
                         hidden={this.props.hidden}
                         onClick={() => this.toggle(true)}
