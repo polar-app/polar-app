@@ -433,6 +433,31 @@ SpectronRenderer.run(async (state) => {
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
 
+            async function validateUserGroupForPrimaryUser() {
+
+                const userGroup = await UserGroups.get();
+
+                const obj = canonicalize(userGroup, obj => {
+                    delete obj.uid;
+                });
+
+                assertJSON(obj, {
+                    "admin": [
+                        groupID
+                    ],
+                    "groups": [
+                        groupID
+                    ],
+                    "invitations": [
+                        groupID
+                    ],
+                    "moderator": [],
+                });
+
+            }
+
+            await validateUserGroupForPrimaryUser();
+
             async function validateGroupsOnDocMetaAndDocPermissions(groupID: GroupIDStr) {
 
                 console.log("validateGroupsOnDocMetaAndDocPermissions");
