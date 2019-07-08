@@ -1,4 +1,4 @@
-import {UserIDStr} from './Profiles';
+import {EmailStr, UserIDStr} from './Profiles';
 import {HandleStr} from './Profiles';
 import {ProfileIDStr} from './Profiles';
 import {Firestore} from '../../../firebase/Firestore';
@@ -32,7 +32,15 @@ export class ProfileOwners {
 }
 
 export interface ProfileOwner {
+
     readonly uid: UserIDStr;
+
     readonly profileID: ProfileIDStr;
+    /**
+     * The email for the profile.
+     */
+    readonly email: EmailStr;
+
     readonly handle?: HandleStr;
+
 }

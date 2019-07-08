@@ -142,6 +142,11 @@ export class DocMetaListener {
 
         const userProfile = await UserProfiles.get(profileID);
 
+        if (! userProfile) {
+            log.warn("No user profile");
+            return;
+        }
+
         await this.handleDocMetaRecordWithUserProfile(groupDoc, userProfile, docMetaRecord);
 
     }
@@ -200,7 +205,8 @@ export class DocMetaListeners {
         const profileOwner = await ProfileOwners.get();
 
         if (! profileOwner) {
-            throw new Error("No profile");
+            log.warn("No profile owner for user");
+            return;
         }
 
         const {profileID} = profileOwner;

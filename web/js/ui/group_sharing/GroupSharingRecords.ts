@@ -12,6 +12,9 @@ import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Profile} from '../../datastore/sharing/db/Profiles';
 import {UserGroups} from "../../datastore/sharing/db/UserGroups";
+import {Logger} from "../../logger/Logger";
+
+const log = Logger.create();
 
 export class GroupSharingRecords {
 
@@ -27,10 +30,11 @@ export class GroupSharingRecords {
 
         const getGroupMemberInvitations = async (): Promise<ReadonlyArray<MemberRecord>> => {
 
-            const profile = await Profiles.currentUserProfile();
+            const profile = await Profiles.currentProfile();
 
             if (! profile) {
-                throw new Error("No profile");
+                log.warn("No current user profile");
+                return [];
             }
 
             const records

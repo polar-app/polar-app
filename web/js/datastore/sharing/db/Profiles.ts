@@ -59,7 +59,7 @@ export class Profiles {
 
     }
 
-    public static async currentUserProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<Profile> {
+    public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<Profile | undefined> {
 
         const app = Firebase.init();
         const user = app.auth().currentUser;
@@ -69,15 +69,14 @@ export class Profiles {
         const profileOwner = await ProfileOwners.get(user!.uid, opts);
 
         if (! profileOwner) {
-            // getting their user from teh database and writing it back out...
-
-            throw new Error("No profile owner");
+            // getting their user from the database and writing it back out...
+            return undefined;
         }
 
         const profile = await this.get(profileOwner.profileID, opts);
 
         if ( ! profile) {
-            throw new Error("No current user profile");
+            return undefined;
         }
 
         return profile;

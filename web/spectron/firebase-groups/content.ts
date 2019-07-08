@@ -899,7 +899,7 @@ SpectronRenderer.run(async (state) => {
             const fingerprint = mockDock.docMeta.docInfo.fingerprint;
             const {groupID} = await doGroupProvision(mockDock, alice, fingerprint);
 
-            const profile = await Profiles.currentUserProfile();
+            const profile = await Profiles.currentProfile();
             assert.isDefined(profile);
 
             const invitationBefore = await GroupMemberInvitations.listByGroupIDAndProfileID(groupID, profile!.id);
@@ -1183,7 +1183,7 @@ SpectronRenderer.run(async (state) => {
 
             await ProfileUpdates.exec(request);
 
-            const profile = await Profiles.currentUserProfile();
+            const profile = await Profiles.currentProfile();
 
             assert.isDefined(profile);
 

@@ -154,9 +154,11 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const userProfile = await UserProfiles.currentUserProfile();
 
-        DocMetas.withSkippedMutations(docMeta, () => {
-            DocMetaRecords.applyAuthorsFromUserProfile(docMeta, userProfile);
-        });
+        if (userProfile) {
+            DocMetas.withSkippedMutations(docMeta, () => {
+                DocMetaRecords.applyAuthorsFromUserProfile(docMeta, userProfile);
+            });
+        }
 
         this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
 

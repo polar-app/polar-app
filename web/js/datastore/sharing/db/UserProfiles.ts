@@ -4,23 +4,30 @@ import {CacheFirstThenServerGetOptions, GetOptions} from "../../../firebase/fire
 export class UserProfiles {
 
     public static async get(profileID: ProfileIDStr,
-                            opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<UserProfile> {
+                            opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<UserProfile | undefined> {
 
-        const currentUserProfile = await Profiles.currentUserProfile(opts);
+        const currentUserProfile = await Profiles.currentProfile(opts);
         const profile = await Profiles.get(profileID, opts);
 
         if (! profile) {
-            throw new Error("No profile for ID: " + profileID);
+            return undefined;
         }
 
-        const self = currentUserProfile.id === profile.id;
+        const self = currentUserProfile !== null &&
+                     currentUserProfile !== undefined &&
+                     currentUserProfile.id === profile.id;
 
         return {self, profile};
 
     }
 
-    public static async currentUserProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<UserProfile> {
-        const profile = await Profiles.currentUserProfile(opts);
+    public static async currentUserProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<UserProfile | undefined> {
+        const profile = await Profiles.currentProfile(opts);
+
+        if (! profile) {
+            return undefined;
+        }
+
         return {self: true, profile};
     }
 
