@@ -11,7 +11,7 @@ import {DocMetas} from "../../../metadata/DocMetas";
 import {Optional} from "../../../util/ts/Optional";
 import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
-import {Profile, ProfileIDStr, Profiles} from "./Profiles";
+import {ProfileIDStr} from "./Profiles";
 import {Author} from "../../../metadata/Author";
 import {Annotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
@@ -178,17 +178,14 @@ export class DocMetaListener {
         await DocMetaRecords.applyAuthorsFromUserProfile(curr, userProfile);
 
         if (prev) {
-
             // now merge the metadata so we get our events fired.
             DocMetaRecords.mergeDocMetaUpdate(curr, prev);
         } else {
             // only emit on the FIRST time we see the doc and then give the caller a
             // proxied object after that...
             this.docMetaHandler(curr, docUpdateRef);
+            this.docMetaIndex[docID] = curr;
         }
-
-        // now update the index...
-        this.docMetaIndex[docID] = curr;
 
     }
 
@@ -226,6 +223,10 @@ class StringDicts {
 
         const deletable = SetArrays.difference(Object.keys(target), Object.keys(source));
 
+        if  (deletable.length > 0) {
+            console.log("FIXME: deleting ", deletable);
+        }
+
         for (const key of deletable) {
             delete target[key];
         }
@@ -237,6 +238,10 @@ class StringDicts {
 
         // *** copy new keys into the target
         const copyable = SetArrays.difference(Object.keys(source), Object.keys(target));
+
+        if  (copyable.length > 0) {
+            console.log("FIXME: copyable ", copyable);
+        }
 
         for (const key of copyable) {
             target[key] = source[key];
@@ -277,14 +282,6 @@ export class DocMetaRecords {
         for (const page of Object.keys(source.pageMetas)) {
             mergePageMeta(source.pageMetas[page], target.pageMetas[page]);
         }
-
-    }
-
-    public static async applyAuthorsFromProfileID(docMeta: DocMeta, profileID: ProfileIDStr) {
-
-        const userProfile = await UserProfiles.get(profileID);
-
-        return this.applyAuthorsFromUserProfile(docMeta, userProfile);
 
     }
 
