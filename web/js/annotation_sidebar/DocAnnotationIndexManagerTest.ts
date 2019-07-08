@@ -15,7 +15,8 @@ import {UserProfile} from "../datastore/sharing/db/UserProfiles";
 import {assert} from 'chai';
 import {Proxies} from "../proxies/Proxies";
 import {DocMeta} from "../metadata/DocMeta";
-import {DefaultDocAnnotation} from "./DocAnnotation";
+import {DefaultDocAnnotation, DocAnnotation} from "./DocAnnotation";
+import {Dictionaries} from "../util/Dictionaries";
 
 describe('DocAnnotationIndexManager', function() {
 
@@ -163,25 +164,34 @@ describe('DocAnnotationIndexManager', function() {
 
         await handleSecondaryDoc1();
 
+        function annotationsToMap(docAnnotations: ReadonlyArray<DocAnnotation>) {
+            return Dictionaries.toDict(docAnnotations, current => current.id);
+        }
+
         function verify2() {
 
             console.log("========== Verify2")
 
-            const docAnnotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
-            dumpDocAnnotations(docAnnotationsSorted);
+            const annotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
+
+            dumpDocAnnotations(annotationsSorted);
+
+            const annotationsMap = annotationsToMap(annotationsSorted);
+
+            const textHighlight = annotationsMap['12QDRhMd6B'];
+
+            assert.equal(textHighlight.html, "Highly available cloud storage is often implemented with");
+
+            const comments = textHighlight.getChildren();
+
+            const commentsMap = annotationsToMap(comments);
+
+            assert.equal(commentsMap['123zriqZgHZWjq7jRnEC'].html, "<p>kkkkkkdddddddaaa two</p>");
+
 
         }
 
         verify2();
-
-
-
-
-
-
-
-
-
 
         async function handleSecondaryDoc2() {
 
@@ -197,14 +207,22 @@ describe('DocAnnotationIndexManager', function() {
 
             console.log("========== Verify3")
 
-            const docAnnotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
-            dumpDocAnnotations(docAnnotationsSorted);
+            const annotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
+            dumpDocAnnotations(annotationsSorted);
+
+            const annotationsMap = annotationsToMap(annotationsSorted);
+
+            const textHighlight = annotationsMap['12QDRhMd6B'];
+
+            const comments = textHighlight.getChildren();
+
+            const commentsMap = annotationsToMap(comments);
+
+            assert.equal(commentsMap['12P5mqA4Ye3ofTyMhum5'].html, "<p>kkkkkkdddddddaaa three</p>");
 
         }
 
         verify3();
-
-
 
     });
 
