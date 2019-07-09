@@ -12,6 +12,7 @@ import {
     MemberRecord
 } from './GroupSharingRecords';
 import {GroupSharingControl, InvitationRequest} from './GroupSharingControl';
+import {LoginRequired} from "./LoginRequired";
 
 const log = Logger.create();
 
@@ -25,7 +26,10 @@ export class GroupSharing extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+        this.onConnectivity = this.onConnectivity.bind(this);
+
         this.state = {
+            connectivity: 'unknown',
             contactProfiles: [],
             members: []
         };
@@ -63,11 +67,18 @@ export class GroupSharing extends React.Component<IProps, IState> {
 
         const doHandle = async () => {
 
+            const user = await Firebase.currentUser();
+
+            if (! user) {
+                this.onConnectivity('unauthenticated')
+                return;
+            }
+
+            this.onConnectivity('authenticated')
+
             const docMeta = this.props.doc.docMeta;
             const fingerprint = docMeta.docInfo.fingerprint;
 
-            const user = await Firebase.currentUser();
-            Preconditions.assertPresent(user, 'user');
             const uid = user!.uid;
 
             const groupID = Groups.createIDForKey(uid, fingerprint);
@@ -88,7 +99,21 @@ export class GroupSharing extends React.Component<IProps, IState> {
     }
 
     public render() {
-        return <GroupSharingControl {...this.props} {...this.state}/>;
+
+        switch (this.state.connectivity) {
+
+            case "unknown":
+                return <div/>;
+            case "unauthenticated":
+                return <LoginRequired/>;
+            case "authenticated":
+                return <GroupSharingControl {...this.props} {...this.state}/>;
+        }
+
+    }
+
+    private onConnectivity(connectivity: Connectivity) {
+        this.setState({...this.state, connectivity});
     }
 
 }
@@ -103,5 +128,7 @@ interface IProps {
 interface IState {
     readonly contactProfiles: ReadonlyArray<ContactProfile>;
     readonly members: ReadonlyArray<MemberRecord>;
+    readonly connectivity: Connectivity;
 }
 
+export type Connectivity = 'unknown' | 'unauthenticated' | 'authenticated';
