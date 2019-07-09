@@ -38,6 +38,7 @@ import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Arrays} from '../../../../web/js/util/Arrays';
 import {Numbers} from '../../../../web/js/util/Numbers';
+import {Instance} from "react-table";
 
 const log = Logger.create();
 
@@ -53,7 +54,7 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
 
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
-    private reactTable: any;
+    private reactTable?: Instance;
 
     private readonly docRepoFilters: DocRepoFilters;
 
@@ -375,7 +376,8 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
                                           onDocTagged={this.onDocTagged}
                                           onMultiDeleted={this.onMultiDeleted}
                                           selectRow={this.selectRow}
-                                          onSelected={this.onSelected}/>
+                                          onSelected={this.onSelected}
+                                          onReactTable={reactTable => this.reactTable = reactTable}/>
                         }
                         side='left'
                         initialWidth={300}/>

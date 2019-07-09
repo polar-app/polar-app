@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable, {ColumnRenderProps} from "react-table";
+import ReactTable, {ColumnRenderProps, Instance} from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
@@ -33,8 +33,6 @@ const log = Logger.create();
 
 export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
-    private reactTable: any;
-
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -63,7 +61,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 <ReactTable
                     data={[...data]}
-                    ref={(r: any) => this.reactTable = r}
+                    ref={(reactTable: Instance) => this.props.onReactTable(reactTable)}
                     columns={
                         [
                             {
@@ -634,6 +632,7 @@ interface IProps {
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly selectRow: (selectedIdx: number, event: MouseEvent, checkbox?: boolean) => void;
     readonly onSelected: (selected: ReadonlyArray<number>) => void;
+    readonly onReactTable: (reactTable: Instance) => void;
     readonly refresh: () => void;
 }
 
