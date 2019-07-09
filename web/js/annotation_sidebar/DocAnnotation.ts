@@ -44,6 +44,8 @@ export interface IDocAnnotation extends ObjectID {
 
     readonly author?: Author;
 
+    readonly immutable?: boolean;
+
 }
 
 export interface DocAnnotation extends IDocAnnotation {

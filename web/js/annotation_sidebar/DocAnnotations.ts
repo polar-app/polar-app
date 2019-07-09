@@ -14,11 +14,11 @@ import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
-import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {ObjectIDs} from '../util/ObjectIDs';
 import {Images} from '../metadata/Images';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
+import {Author} from "../metadata/Author";
 
 export class DocAnnotations {
 
@@ -29,6 +29,16 @@ export class DocAnnotations {
         }
 
         return true;
+
+    }
+
+    private static isImmutable(author?: Author) {
+
+        if (author && author.guest) {
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -75,7 +85,8 @@ export class DocAnnotations {
             pageMeta,
             ref: flashcard.ref,
             original: flashcard,
-            author: flashcard.author
+            author: flashcard.author,
+            immutable: this.isImmutable(flashcard.author)
         };
 
     }
@@ -100,7 +111,8 @@ export class DocAnnotations {
             pageMeta,
             ref: comment.ref,
             original: comment,
-            author: comment.author
+            author: comment.author,
+            immutable: this.isImmutable(comment.author)
         };
 
     }
@@ -139,7 +151,8 @@ export class DocAnnotations {
             docMeta,
             pageMeta,
             original: areaHighlight,
-            author: areaHighlight.author
+            author: areaHighlight.author,
+            immutable: this.isImmutable(areaHighlight.author)
         };
 
     }
@@ -191,7 +204,8 @@ export class DocAnnotations {
             docMeta,
             pageMeta,
             original: textHighlight,
-            author: textHighlight.author
+            author: textHighlight.author,
+            immutable: this.isImmutable(textHighlight.author)
         };
 
     }

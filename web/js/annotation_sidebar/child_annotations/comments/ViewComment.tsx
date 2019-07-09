@@ -43,8 +43,6 @@ export class ViewComment extends React.Component<IProps, IState> {
 
         const key = 'comment-' + comment.id;
 
-        const isMutable = DocAnnotations.isMutable(this.props.comment);
-
         return (
 
             <div className="m-1 mb-2">
@@ -73,13 +71,13 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                         <div style={Styles.barChild} className="flexbar-right">
 
-                            <NullCollapse open={isMutable}>
+                            <NullCollapse open={! comment.immutable}>
                                 {this.props.editButton}
                             </NullCollapse>
 
                             <div className="ml-1">
                                 <CommentDropdown id={'comment-dropdown-' + comment.id}
-                                                 disabled={! isMutable}
+                                                 disabled={comment.immutable}
                                                  comment={comment}
                                                  onDelete={() => this.onDelete(comment)}/>
                             </div>
