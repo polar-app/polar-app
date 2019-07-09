@@ -22,6 +22,7 @@ export class Author extends SerializedObject {
         this.profileID = val.profileID;
         this.url = val.url;
         this.image = val.image;
+        this.guest = val.guest;
     }
 
 }

@@ -22,16 +22,6 @@ import {Author} from "../metadata/Author";
 
 export class DocAnnotations {
 
-    public static isMutable(docAnnotation: DocAnnotation) {
-
-        if (docAnnotation.author && docAnnotation.author.guest) {
-            return false;
-        }
-
-        return true;
-
-    }
-
     private static isImmutable(author?: Author) {
 
         if (author && author.guest) {

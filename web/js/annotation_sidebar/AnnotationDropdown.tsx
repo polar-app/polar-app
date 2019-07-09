@@ -82,6 +82,7 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
                         <DropdownItem style={Styles.DropdownItem}
                                       className="text-danger"
+                                      disabled={this.props.annotation.immutable}
                                       onClick={() => this.onDeleteSelected()}>
                             Delete
                         </DropdownItem>

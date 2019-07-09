@@ -1,5 +1,6 @@
 import {Profile, ProfileIDStr, Profiles} from "./Profiles";
 import {CacheFirstThenServerGetOptions, GetOptions} from "../../../firebase/firestore/DocumentReferences";
+import {isPresent} from "../../../Preconditions";
 
 export class UserProfiles {
 
@@ -13,9 +14,8 @@ export class UserProfiles {
             return undefined;
         }
 
-        const self = currentUserProfile !== null &&
-                     currentUserProfile !== undefined &&
-                     currentUserProfile.id === profile.id;
+        const self = isPresent(currentUserProfile) &&
+                     currentUserProfile!.id === profile.id;
 
         return {self, profile};
 

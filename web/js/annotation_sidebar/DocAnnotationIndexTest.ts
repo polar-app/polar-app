@@ -449,7 +449,8 @@ function createAnnotation(id: string,
         pageMeta: null!,
         docMeta: null!,
         original: textHighlight,
-        ref
+        ref,
+        immutable: false
     };
 
 }

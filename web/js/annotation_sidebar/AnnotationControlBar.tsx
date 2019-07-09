@@ -23,6 +23,7 @@ import {TextHighlights} from '../metadata/TextHighlights';
 import {AreaHighlights} from '../metadata/AreaHighlights';
 import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
+import {NullCollapse} from "../ui/null_collapse/NullCollapse";
 
 const Styles: IStyleMap = {
 
@@ -113,14 +114,16 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         </Button>
 
-                        <ColorSelector className="mt-auto mb-auto"
-                                       size='16px'
-                                       color={this.props.annotation.color || 'yellow'}
-                                       onSelected={color => this.onColor(color)}/>
+                        <NullCollapse open={!annotation.immutable}>
+                            <ColorSelector className="mt-auto mb-auto"
+                                           size='16px'
+                                           color={this.props.annotation.color || 'yellow'}
+                                           onSelected={color => this.onColor(color)}/>
+                        </NullCollapse>
 
                         <div className="ml-1">
                             <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
-                                                disabled={! this.props.doc.mutable}
+                                                disabled={this.props.annotation.immutable}
                                                 annotation={annotation}
                                                 onDelete={() => this.onDelete(annotation)}
                                                 onCreateComment={() => this.toggleActiveInputComponent('comment')}

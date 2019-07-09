@@ -306,7 +306,9 @@ export class DocMetaRecords {
 
             const image = createImage();
 
-            return new Author({name, image, profileID, guest: ! userProfile.self});
+            const guest = ! userProfile.self;
+
+            return new Author({name, image, profileID, guest});
 
         };
 

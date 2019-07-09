@@ -44,8 +44,7 @@ export interface IDocAnnotation extends ObjectID {
 
     readonly author?: Author;
 
-    readonly immutable?: boolean;
-
+    readonly immutable: boolean;
 }
 
 export interface DocAnnotation extends IDocAnnotation {
@@ -93,6 +92,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly author?: Author;
 
+    public readonly immutable: boolean;
+
     constructor(readonly index: DocAnnotationIndex,
                 public readonly obj: IDocAnnotation) {
 
@@ -113,6 +114,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.pageMeta = obj.pageMeta;
         this.original = obj.original;
         this.author = obj.author;
+        this.immutable = obj.immutable;
 
     }
 
