@@ -64,7 +64,9 @@ export class Profiles {
         const app = Firebase.init();
         const user = app.auth().currentUser;
 
-        Preconditions.assertPresent(user, "user");
+        if (! user) {
+            return undefined;
+        }
 
         const profileOwner = await ProfileOwners.get(user!.uid, opts);
 

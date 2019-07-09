@@ -1,5 +1,4 @@
 import React from 'react';
-import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Toaster} from '../toaster/Toaster';
 import {Firebase} from '../../firebase/Firebase';
 import {Groups} from '../../datastore/sharing/db/Groups';
@@ -7,11 +6,12 @@ import {Releaser} from '../../reactor/EventListener';
 import {Logger} from '../../logger/Logger';
 import {Doc} from '../../metadata/Doc';
 import {Preconditions} from '../../Preconditions';
-import {MemberRecord} from './GroupSharingRecords';
-import {GroupSharingRecords} from './GroupSharingRecords';
-import {ContactProfile} from './GroupSharingRecords';
-import {GroupSharingControl} from './GroupSharingControl';
-import {InvitationRequest} from './GroupSharingControl';
+import {
+    ContactProfile,
+    GroupSharingRecords,
+    MemberRecord
+} from './GroupSharingRecords';
+import {GroupSharingControl, InvitationRequest} from './GroupSharingControl';
 
 const log = Logger.create();
 

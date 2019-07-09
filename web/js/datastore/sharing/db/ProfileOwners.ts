@@ -21,6 +21,11 @@ export class ProfileOwners {
 
         if (! id) {
             const user = await Firebase.currentUser();
+
+            if (! user) {
+                return undefined;
+            }
+
             id = user!.uid;
         }
 
