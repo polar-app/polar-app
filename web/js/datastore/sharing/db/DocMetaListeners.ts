@@ -233,11 +233,6 @@ class StringDicts {
             delete target[key];
         }
 
-        // FIXME: I think we have to update this to ALSO look at the GUID... and if when the GUID
-        // is updated we also have to update that too.
-        //
-        // I think the BEST way to do this would be to compute a key which is ID+guid (if guid is designed)...
-
         // *** copy new keys into the target
         const copyable = SetArrays.difference(Object.keys(source), Object.keys(target));
 
