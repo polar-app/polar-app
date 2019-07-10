@@ -88,13 +88,6 @@ async function verifyFailed(delegate: () => Promise<any>) {
 
 SpectronRenderer.run(async (state) => {
 
-    // TODO:
-
-
-    // TODO:
-    //   - need to be able to store ProfileIDs in group invitations.. Not just
-    //     email addresses.
-
     // TODO: I need to verify a plan for profiles...
     //
     // - make sure uninvited users get to see their documents once they sign up.
