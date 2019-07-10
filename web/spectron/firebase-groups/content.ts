@@ -420,7 +420,7 @@ SpectronRenderer.run(async (state) => {
             await purge();
         });
 
-        xit("group provision of private group", async function() {
+        it("group provision of private group", async function() {
 
             const app = Firebase.init();
 
