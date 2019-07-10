@@ -411,16 +411,16 @@ SpectronRenderer.run(async (state) => {
             return group;
 
         }
+        //
+        // beforeEach(async function() {
+        //     await purge();
+        // });
+        //
+        // afterEach(async function() {
+        //     await purge();
+        // });
 
-        beforeEach(async function() {
-            await purge();
-        });
-
-        afterEach(async function() {
-            await purge();
-        });
-
-        it("group provision of private group", async function() {
+        xit("group provision of private group", async function() {
 
             const app = Firebase.init();
 
@@ -707,7 +707,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("group provision of private group and verify group members includes the group creator", async function() {
+        xit("group provision of private group and verify group members includes the group creator", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -737,7 +737,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("join and then leave group", async function() {
+        xit("join and then leave group", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -779,7 +779,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("double provision of group with key", async function() {
+        xit("double provision of group with key", async function() {
 
 
             const mockDock = await provisionAccountData();
