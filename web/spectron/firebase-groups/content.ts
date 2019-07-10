@@ -737,7 +737,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join and then leave group", async function() {
+        it("join and then leave group", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -779,7 +779,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("double provision of group with key", async function() {
+        it("double provision of group with key", async function() {
 
 
             const mockDock = await provisionAccountData();
