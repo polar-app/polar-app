@@ -123,7 +123,8 @@ describe('DocAnnotationIndex', function() {
                     "questions": {},
                     "flashcards": {},
                     "color": "yellow"
-                }
+                },
+                immutable: false
             },
             {
                 "oid": 1,
@@ -166,7 +167,8 @@ describe('DocAnnotationIndex', function() {
                     "questions": {},
                     "flashcards": {},
                     "color": "yellow"
-                }
+                },
+                immutable: false
             },
             {
                 "oid": 2,
@@ -209,7 +211,8 @@ describe('DocAnnotationIndex', function() {
                     "questions": {},
                     "flashcards": {},
                     "color": "yellow"
-                }
+                },
+                immutable: false
             }
         ]);
 
@@ -266,7 +269,8 @@ describe('DocAnnotationIndex', function() {
                     "questions": {},
                     "flashcards": {},
                     "color": "yellow"
-                }
+                },
+                immutable: false
             },
             {
                 "oid": 4,
@@ -309,7 +313,8 @@ describe('DocAnnotationIndex', function() {
                     "questions": {},
                     "flashcards": {},
                     "color": "yellow"
-                }
+                },
+                immutable: false
             },
             {
                 "oid": 3,
@@ -352,7 +357,8 @@ describe('DocAnnotationIndex', function() {
                     "questions": {},
                     "flashcards": {},
                     "color": "yellow"
-                }
+                },
+                immutable: false
             }
         ];
 
@@ -364,25 +370,24 @@ describe('DocAnnotationIndex', function() {
 
     it("Parent and child and delete child", function() {
 
-        const a0 = createAnnotation('text-area:1', 1, 0, 0 );
-        const a1 = createAnnotation('comment:1', 1, 0, 0, 'text-area:1');
+        const a0 = createAnnotation('textarea1', 1, 0, 0 );
+        const a1 = createAnnotation('comment1', 1, 0, 0, 'text-area:textarea1');
 
         const docAnnotationIndex = new DocAnnotationIndex();
         docAnnotationIndex.put(a0, a1);
 
         assertJSON(docAnnotationIndex.getDocAnnotations().map(current => current.id), [
-            "text-area:1",
-            "comment:1"
+            "textarea1",
         ]);
 
-        const children = docAnnotationIndex.get('text-area:1')!.getChildren();
-        assertJSON(children.length, 1);
+        const children = docAnnotationIndex.get('textarea1')!.getChildren();
+        assert.equal(children.length, 1);
 
-        assert.equal(children[0].id, "comment:1");
+        assert.equal(children[0].id, "comment1");
 
-        docAnnotationIndex.delete("comment:1");
+        docAnnotationIndex.delete("comment1");
 
-        assertJSON(docAnnotationIndex.get('text-area:1')!.getChildren().length, 0);
+        assertJSON(docAnnotationIndex.get('textarea1')!.getChildren().length, 0);
 
     });
 

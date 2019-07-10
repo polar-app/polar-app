@@ -60,9 +60,6 @@ export class GroupMemberInvitations {
 
     }
 
-    /**
-     * Delete all of the user contacts...
-     */
     public static async purge() {
         await Collections.deleteByID(this.COLLECTION, () => this.list());
     }

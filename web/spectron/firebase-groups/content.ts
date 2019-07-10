@@ -510,11 +510,13 @@ SpectronRenderer.run(async (state) => {
                 assert.isDefined(group);
 
                 // make sure nrMembers counts on the groups are setup properly.
-                assert.equal(group!.nrMembers, 1, "nrMembers in group is wrong.");
+                assert.equal(group!.nrMembers, 2, "nrMembers in group is wrong.");
 
                 const groupMembers = await GroupMembers.list(groupID);
 
-                assert.equal(groupMembers.length, 1, "Wrong number of groups members");
+                console.log("groupMembers: ", groupMembers);
+
+                assert.equal(groupMembers.length, 2, "Wrong number of groups members");
 
                 const groupMember = groupMembers[0];
 
@@ -733,6 +735,9 @@ SpectronRenderer.run(async (state) => {
                 assert.equal(groupMember.groupID, groupID);
                 assert.equal(groupMember.profileID, profile!.id);
 
+                const group = await Groups.get(groupID);
+                assert.equal(group!.nrMembers, 1);
+
             }
 
             await validateGroupMembers();
@@ -753,7 +758,7 @@ SpectronRenderer.run(async (state) => {
                 assertJSON(group, {
                     visibility: 'private',
                     tags: [],
-                    nrMembers: 1
+                    nrMembers: 2
                 });
 
             }
@@ -772,7 +777,7 @@ SpectronRenderer.run(async (state) => {
                 assertJSON(group, {
                     visibility: 'private',
                     tags: [],
-                    nrMembers: 0
+                    nrMembers: 1
                 });
 
             }
@@ -958,7 +963,7 @@ SpectronRenderer.run(async (state) => {
 
             const groupMembers = await GroupMembers.list(groupID);
 
-            assert.equal(groupMembers.length, 1);
+            assert.equal(groupMembers.length, 2);
 
             const groupMember = groupMembers[0];
 
@@ -967,7 +972,7 @@ SpectronRenderer.run(async (state) => {
 
             const groupMembersAfter = await GroupMembers.list(groupID);
 
-            assert.equal(groupMembersAfter.length, 0);
+            assert.equal(groupMembersAfter.length, 1);
 
         });
 
@@ -1015,7 +1020,7 @@ SpectronRenderer.run(async (state) => {
                 assertJSON(group, {
                     visibility: 'private',
                     tags: [],
-                    nrMembers: 1
+                    nrMembers: 2
                 });
 
             }
@@ -1137,7 +1142,7 @@ SpectronRenderer.run(async (state) => {
                 assertJSON(group, {
                     name: 'linux',
                     visibility: 'public',
-                    nrMembers: 0,
+                    nrMembers: 1,
                     tags: [
                         'linux',
                         'ubuntu',

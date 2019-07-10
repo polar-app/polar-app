@@ -1,15 +1,11 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Logger} from '../../logger/Logger';
 import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
-import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
-import {DropdownToggle, UncontrolledPopover} from 'reactstrap';
-import {IStyleMap} from '../../react/IStyleMap';
+import {UncontrolledPopover} from 'reactstrap';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {AccountControlBar} from './AccountControlBar';
-import {AppRuntime} from '../../AppRuntime';
 import {DropdownChevron} from '../util/DropdownChevron';
 
 export class AccountControlDropdown extends React.PureComponent<IProps, IState> {

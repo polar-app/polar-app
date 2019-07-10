@@ -2,7 +2,6 @@ import {Firebase} from '../../../firebase/Firebase';
 import {UserRequest} from '../db/UserRequest';
 import {CloudFunctions} from '../../firebase/CloudFunctions';
 
-
 export class JSONRPC {
 
     public static async exec<R, V>(func: string, request: R): Promise<V> {

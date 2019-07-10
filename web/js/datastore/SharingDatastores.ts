@@ -1,14 +1,8 @@
-import {DocMeta} from '../metadata/DocMeta';
-import {PersistenceLayer} from './PersistenceLayer';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {isPresent} from '../Preconditions';
 import {URLStr} from '../util/Strings';
 import {SharingDatastore} from './SharingDatastore';
-import {Logger} from '../logger/Logger';
-import {BackendFileRef} from './Datastore';
-import {BackendFileRefs} from './BackendFileRefs';
 
-const log = Logger.create();
 
 export class SharingDatastores {
 
@@ -24,50 +18,6 @@ export class SharingDatastores {
         }
 
         return new SharingDatastore(params.doc, params.fingerprint);
-
-    }
-
-    /**
-     * Create a URL to a sharing datastore.
-     */
-    public static async createURL(persistenceLayer: PersistenceLayer,
-                                  docMeta: DocMeta,
-                                  backendFileRef: BackendFileRef,
-                                  baseURL: URLStr = this.currentURL()) {
-
-        const datastoreCapabilities = persistenceLayer.capabilities();
-
-        if (! datastoreCapabilities.networkLayers.has('web')) {
-            return undefined;
-        }
-
-        const fileRef = BackendFileRefs.toBackendFileRef(docMeta);
-
-        // if (fileRef) {
-        //
-        //     const sharedURL = await DocPermissions.create(backendFileRef);
-        //
-        //     // Clean the URL when running in the desktop app.
-        //     const rawURL = baseURL.replace(/http:\/\/localhost:8500\//, "https://app.getpolarized.io/");
-        //
-        //     // we have to now replace the 'file' param with the proper URL.
-        //
-        //     const file = sharedURL;
-        //
-        //     const parsedURL = new URL(rawURL);
-        //     parsedURL.searchParams.set('file', file);
-        //     parsedURL.searchParams.set('shared', "true");
-        //
-        //     const userID = FirebaseDatastore.getUserID();
-        //     const doc = FirebaseDatastore.computeDocMetaID(docMeta.docInfo.fingerprint, userID);
-        //
-        //     parsedURL.searchParams.set('doc', doc);
-        //
-        //     return parsedURL.toString();
-        //
-        // }
-
-        return undefined;
 
     }
 
