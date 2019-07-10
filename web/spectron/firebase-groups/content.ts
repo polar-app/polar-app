@@ -415,10 +415,10 @@ SpectronRenderer.run(async (state) => {
         beforeEach(async function() {
             await purge();
         });
-        //
-        // afterEach(async function() {
-        //     await purge();
-        // });
+
+        afterEach(async function() {
+            await purge();
+        });
 
         xit("group provision of private group", async function() {
 
