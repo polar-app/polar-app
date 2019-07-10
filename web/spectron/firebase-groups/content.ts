@@ -1026,7 +1026,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Import the doc from a private group into my datastore", async function() {
+        it("Import the doc from a private group into my datastore", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID, docRef} = await doGroupProvision(mockDock);
@@ -1122,7 +1122,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Public group settings", async function() {
+        it("Public group settings", async function() {
 
             const mockDock = await provisionAccountData();
 
@@ -1149,7 +1149,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Public docs in public groups", async function() {
+        it("Public docs in public groups", async function() {
 
             const mockDock = await provisionAccountData();
 
@@ -1194,7 +1194,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("Profile update", async function() {
+        it("Profile update", async function() {
 
             const app = Firebase.init();
 
