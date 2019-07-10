@@ -420,7 +420,7 @@ SpectronRenderer.run(async (state) => {
             await purge();
         });
 
-        it("group provision of private group", async function() {
+        xit("group provision of private group", async function() {
 
             const app = Firebase.init();
 
@@ -707,7 +707,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("group provision of private group and verify group members includes the group creator", async function() {
+        xit("group provision of private group and verify group members includes the group creator", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -737,7 +737,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("join and then leave group", async function() {
+        xit("join and then leave group", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -779,7 +779,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("double provision of group with key", async function() {
+        xit("double provision of group with key", async function() {
 
 
             const mockDock = await provisionAccountData();
@@ -861,7 +861,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("join and then add my own docs", async function() {
+        xit("join and then add my own docs", async function() {
 
             async function doUser0() {
                 const mockDock = await provisionAccountData();
@@ -917,7 +917,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("delete users from a group with just the invitation", async function() {
+        xit("delete users from a group with just the invitation", async function() {
 
             const alice = 'alice@example.com';
 
@@ -941,7 +941,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("delete users from a group after they have joined", async function() {
+        xit("delete users from a group after they have joined", async function() {
 
             const mockDock = await provisionAccountData();
             const fingerprint = mockDock.docMeta.docInfo.fingerprint;
@@ -969,7 +969,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("provision a user for a group who isn't yet using polar", async function() {
+        xit("provision a user for a group who isn't yet using polar", async function() {
 
             const mockDock = await provisionAccountData();
             await doGroupProvision(mockDock, 'alice@example.com');
@@ -995,7 +995,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("join group twice and validate metadata (private group)", async function() {
+        xit("join group twice and validate metadata (private group)", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
@@ -1026,7 +1026,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("Import the doc from a private group into my datastore", async function() {
+        xit("Import the doc from a private group into my datastore", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID, docRef} = await doGroupProvision(mockDock);
@@ -1122,7 +1122,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("Public group settings", async function() {
+        xit("Public group settings", async function() {
 
             const mockDock = await provisionAccountData();
 
@@ -1149,7 +1149,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("Public docs in public groups", async function() {
+        xit("Public docs in public groups", async function() {
 
             const mockDock = await provisionAccountData();
 
@@ -1194,7 +1194,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        it("Profile update", async function() {
+        xit("Profile update", async function() {
 
             const app = Firebase.init();
 
