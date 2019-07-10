@@ -5,7 +5,7 @@ import {FirebaseTesting} from "../../js/firebase/FirebaseTesting";
 describe('firebase-groups', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(240000);
+    this.timeout(600000);
 
     it('valid users', async function() {
         FirebaseTesting.validateUsers();

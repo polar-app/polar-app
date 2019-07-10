@@ -54,7 +54,7 @@ import {isPresent} from "../../js/Preconditions";
 const log = Logger.create();
 
 mocha.setup('bdd');
-mocha.timeout(300000);
+mocha.timeout(600000);
 
 process.env.POLAR_TEST_PROJECT = 'polar-test2';
 
