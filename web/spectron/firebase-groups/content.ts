@@ -861,7 +861,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join and then add my own docs", async function() {
+        it("join and then add my own docs", async function() {
 
             async function doUser0() {
                 const mockDock = await provisionAccountData();
@@ -917,7 +917,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("delete users from a group with just the invitation", async function() {
+        it("delete users from a group with just the invitation", async function() {
 
             const alice = 'alice@example.com';
 
@@ -941,7 +941,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("delete users from a group after they have joined", async function() {
+        it("delete users from a group after they have joined", async function() {
 
             const mockDock = await provisionAccountData();
             const fingerprint = mockDock.docMeta.docInfo.fingerprint;
@@ -969,7 +969,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("provision a user for a group who isn't yet using polar", async function() {
+        it("provision a user for a group who isn't yet using polar", async function() {
 
             const mockDock = await provisionAccountData();
             await doGroupProvision(mockDock, 'alice@example.com');
@@ -995,7 +995,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        xit("join group twice and validate metadata (private group)", async function() {
+        it("join group twice and validate metadata (private group)", async function() {
 
             const mockDock = await provisionAccountData();
             const {groupID} = await doGroupProvision(mockDock);
