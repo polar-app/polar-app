@@ -412,9 +412,9 @@ SpectronRenderer.run(async (state) => {
 
         }
         //
-        // beforeEach(async function() {
-        //     await purge();
-        // });
+        beforeEach(async function() {
+            await purge();
+        });
         //
         // afterEach(async function() {
         //     await purge();
