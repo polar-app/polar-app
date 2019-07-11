@@ -1,5 +1,5 @@
 import {ContextMenuWrapper, addContextMenuEventListener} from '@burtonator/react-context-menu-wrapper';
-import {TestMenu} from '../../../spectron/ui-components/TestMenu';
+import {TestMenu} from '../../../spectron0/ui-components/TestMenu';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ContextMenu} from '../../ui/context_menu/ContextMenu';

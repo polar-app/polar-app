@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MousePositions} from '../../../spectron/ui-components/MousePositions';
+import {MousePositions} from '../../../spectron0/ui-components/MousePositions';
 import {ChannelCoupler} from '../../util/Channels';
 import {defaultValue} from '../../Preconditions';
 
