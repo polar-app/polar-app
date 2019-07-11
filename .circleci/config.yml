@@ -220,6 +220,6 @@ workflows:
   parallel_workflow:
     jobs:
       - build
-      - e2e-0
-      #- e2e-1
+      #- e2e-0
+      - e2e-1
       - build-webapp
