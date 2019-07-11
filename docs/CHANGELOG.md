@@ -1,3 +1,9 @@
+
+# 1.30.0
+
+- Group sharing support added to Polar. You can now directly share documents 
+  with other users.
+
 # 1.20.0
 
 - Forcing upgrades for users using large amounts of cloud storage.  
