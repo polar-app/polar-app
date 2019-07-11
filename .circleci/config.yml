@@ -54,16 +54,66 @@ jobs:
         name: Compile Typescript
         command: npx tsc
 
-#    - run:
-#        name: firebase-cloud-aware-datastore
-#        command: |
-#          export DISPLAY=:99 &&
-#          export SPECTRON_OFFSCREEN=true &&
-#          npx mocha web/spectron/firebase-cloud-aware-datastore/spec.js
-
     - run:
         name: npm test
         command: npm test
+
+  e2e-0:
+    docker:
+      # specify the version you desire here
+      #
+      # all images and tags here:
+      #   https://circleci.com/docs/2.0/docker-image-tags.json
+      #
+      - image: circleci/node:12.1-stretch
+
+    # Specify service dependencies here if necessary
+    # CircleCI maintains a library of pre-built images
+    # documented at https://circleci.com/docs/2.0/circleci-images/
+    # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: rm -rf node_modules/loader && npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Install packages needed for Electron testing.
+          command: sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2
+
+      - run:
+          name: XVFB installed?
+          command: whereis Xvfb
+
+      - run:
+          name: Running X virtual framebuffer
+          command: Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
+          background: true
+
+      - run:
+          name: Compile Typescript
+          command: npx tsc
+
+      - run:
+          name: e2e
+          command: |
+            export DISPLAY=:99 &&
+            export SPECTRON_OFFSCREEN=true &&
+            npm run-script e2e-0
 
   e2e-1:
     docker:
@@ -122,12 +172,6 @@ jobs:
             export SPECTRON_OFFSCREEN=true &&
             npm run-script e2e-1
 
-      - run:
-          name: build and verify webapp
-          command: |
-            npm run-script build-webapp && \
-            find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'
-
   build-webapp:
     docker:
       # specify the version you desire here
@@ -176,5 +220,6 @@ workflows:
   parallel_workflow:
     jobs:
       - build
+      - e2e-0
       - e2e-1
       - build-webapp
