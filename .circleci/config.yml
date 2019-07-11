@@ -300,6 +300,6 @@ workflows:
       - build
       #- e2e-0
       #- e2e-1
-      - e2e
+      - e2e:
         id: 0
       - build-webapp
