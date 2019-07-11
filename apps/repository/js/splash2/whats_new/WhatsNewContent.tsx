@@ -14,7 +14,33 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 <div>
 
-                    <h3>Polar 1.20.0</h3>
+                    <h3>Polar 1.30.0</h3>
+
+                    <p>
+                        <b>GREAT NEWS!</b>  Polar 1.30.0 is a big release for us
+                        and includes some amazing new features!  This includes support
+                        for easily sharing documents with other Polar users,
+                        folders (hierarchical tags) and lots of stability
+                        and bug fixes.
+                    </p>
+
+                    <h5>Group Sharing</h5>
+
+                    <p>
+                        This is by far the most important feature in this release.
+
+                        Group sharing allows you to invite other people to
+                        work with your Polar documents and collaborate with them
+                        in realtime.
+                    </p>
+
+                    <p>
+                        To use group sharing just open up a document and click the
+                        'share' button and enter their email or select their profile
+                        if you've added them in the past.
+                    </p>
+
+                    <h5>Folders</h5>
 
                     <p>
                         Polar now has support for folders.  The folders sidebar is on the left side by default on the
@@ -22,13 +48,8 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                     </p>
 
                     <p>
-                        Folders are created by using a tag with a full path like <code>/Career/CompSci</code>
-                        and the folder tree in the left pane will handle showing the trees hierarchically.
-                    </p>
-
-                    <p>
-                        We've also made a massive amount of progress on sharing but I think it's going to take 1-2 more
-                        weeks to get out the door as there's still a bit mroe work required.
+                        Folders are created by using a tag with a full path like <code>/Career/CompSci</code> and
+                        the folder tree in the left pane will handle showing the trees hierarchically.
                     </p>
 
                 </div>

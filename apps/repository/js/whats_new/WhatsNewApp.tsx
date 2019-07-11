@@ -30,7 +30,7 @@ export default class WhatsNewApp extends React.Component<IProps, IState> {
 
                     <div className="row">
 
-                        <div className="col-lg-12 w-100">
+                        <div className="col-lg-12 w-100 pt-2">
                             <WhatsNewContent/>
                         </div>
                     </div>
