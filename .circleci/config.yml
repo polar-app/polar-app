@@ -61,9 +61,9 @@ jobs:
   e2e:
 
     parameters:
-      num:
-        description: "The ID integer of this e2e spectron test (0-N)"
-        type: integer
+        num:
+            description: "The ID integer of this e2e spectron test (0-N)"
+            type: integer
 
     docker:
       # specify the version you desire here
