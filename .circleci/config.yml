@@ -109,6 +109,10 @@ jobs:
           command: npx tsc
 
       - run:
+          name: What is my IP
+          command: curl -X GET "https://httpbin.org/ip" -H "accept: application/json"
+
+      - run:
           name: e2e
           command: |
             export DISPLAY=:99 &&
@@ -164,6 +168,10 @@ jobs:
       - run:
           name: Compile Typescript
           command: npx tsc
+
+      - run:
+          name: What is my IP
+          command: curl -X GET "https://httpbin.org/ip" -H "accept: application/json"
 
       - run:
           name: e2e
