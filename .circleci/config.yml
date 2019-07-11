@@ -302,4 +302,6 @@ workflows:
       #- e2e-1
       - e2e:
           num: 0
+      - e2e:
+          num: 1
       - build-webapp
