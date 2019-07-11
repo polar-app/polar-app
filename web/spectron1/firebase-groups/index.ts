@@ -7,4 +7,4 @@ FirebaseTesting.validateUsers();
 const webRoot = FilePaths.join(__dirname, "..", "..", "..");
 const appRoot = __dirname;
 
-SpectronWebappMain.run(webRoot, appRoot, "/web/spectron/firebase-groups/content.html");
+SpectronWebappMain.run(webRoot, appRoot, "/web/spectron1/firebase-groups/content.html");
