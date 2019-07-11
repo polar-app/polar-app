@@ -147,3 +147,10 @@ jobs:
           command: |
             npm run-script build-webapp && \
             find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - e2e
