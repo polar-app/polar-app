@@ -16,7 +16,7 @@ import {Logger} from '../../js/logger/Logger';
 const log = Logger.create();
 
 mocha.setup('bdd');
-mocha.timeout(500000);
+mocha.timeout(600000);
 
 const fingerprint = "0x001";
 

@@ -4,7 +4,6 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 describe('Firebase Datastore', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(120000);
 
     it('basic tests', async function() {
 

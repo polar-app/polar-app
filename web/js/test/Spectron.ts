@@ -9,7 +9,7 @@ const {Application} = require('spectron');
 
 const log = Logger.create();
 
-const TIMEOUT = 120000;
+const TIMEOUT = 600000;
 
 // String path to the Electron application executable to launch. Note: If you
 // want to invoke electron directly with your app's main script then you should
