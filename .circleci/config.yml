@@ -65,26 +65,6 @@ jobs:
         name: npm test
         command: npm test
 
-#    - run:
-#        name: spectron repository-app
-#        command: |
-#          export DISPLAY=:99 &&
-#          export SPECTRON_OFFSCREEN=true &&
-#          npx mocha web/spectron/repository-app/spec.js
-
-    - run:
-        name: e2e
-        command: |
-          export DISPLAY=:99 &&
-          export SPECTRON_OFFSCREEN=true &&
-          npm run-script e2e
-
-    - run:
-        name: build and verify webapp
-        command: |
-          npm run-script build-webapp && \
-          find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'
-
   e2e-1:
     docker:
       # specify the version you desire here
