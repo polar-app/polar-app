@@ -10,7 +10,6 @@
     "publish": "firebase deploy",
     "push": "npm run-script build && npm run-script publish",
     "serve": "bundle exec jekyll serve",
-
     "prebuild": "npm run-script get-release",
     "prepublish": "npm run-script build"
   },
@@ -24,8 +23,6 @@
     "url": "https://github.com/burtonator/polar-site/issues"
   },
   "homepage": "https://github.com/burtonator/polar-site#readme",
-  "dependencies": {
-  },
-  "devDependencies": {
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
