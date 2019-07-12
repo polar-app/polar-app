@@ -32,7 +32,7 @@ for file in `find apps web/js -name '*Test.js' | sort -f`; do
 
     mochaFile=target/test-results/mocha/${parentDir}/${fileName}
 
-    npx mocha --timeout 20000 --reporter mocha-junit-reporter --reporter-options mochaFile=${mochaFile} --exit ${file}
+    npx mocha --timeout 20000 --reporter mocha-junit-reporter --reporter spec --reporter-options mochaFile=${mochaFile} --exit ${file}
     exit_code=$?
 
     total=$(expr ${total} + 1)

@@ -364,7 +364,7 @@ describe('DocAnnotationIndex', function() {
 
         const docAnnotations = toDocAnnotations(docAnnotationIndex);
 
-        assertJSON(docAnnotations, expected);
+        assertJSON(docAnnotations, expected, "main output wrong (1)");
 
     });
 
@@ -378,14 +378,18 @@ describe('DocAnnotationIndex', function() {
 
         assertJSON(docAnnotationIndex.getDocAnnotations().map(current => current.id), [
             "textarea1",
-        ]);
+        ], "textarea1 is wrong");
 
         const children = docAnnotationIndex.get('textarea1')!.getChildren();
-        assert.equal(children.length, 1);
 
-        assert.equal(children[0].id, "comment1");
+        assert.isDefined(children);
+        assert.equal(children.length, 1, "children not valid");
+
+        assert.equal(children[0].id, "comment1", "comment1 not valid");
 
         docAnnotationIndex.delete("comment1");
+
+        assert.isDefined(docAnnotationIndex.get('textarea1')!.getChildren());
 
         assertJSON(docAnnotationIndex.get('textarea1')!.getChildren().length, 0);
 
@@ -402,7 +406,7 @@ describe('DocAnnotationIndex', function() {
 
         docAnnotationIndex.delete("text-area:1");
 
-        assert.isUndefined(docAnnotationIndex.get('text-area:1'));
+        assert.isUndefined(docAnnotationIndex.get('text-area:1'), "text-area:1 was not undefined");
 
     });
     //
