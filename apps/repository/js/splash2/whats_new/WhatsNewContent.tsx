@@ -43,7 +43,8 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                     <h5>Folders</h5>
 
                     <p>
-                        Polar now has support for folders.  The folders sidebar is on the left side by default on the
+                        Polar now
+                        has <a href="https://getpolarized.io/docs/folders.html">support for folders</a>.  The folders sidebar is on the left side by default on the
                         desktop and webapp but disabled on mobile.
                     </p>
 
