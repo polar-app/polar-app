@@ -2,8 +2,12 @@ import {Firestore} from '../../../firebase/Firestore';
 import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import DocumentChangeType = firebase.firestore.DocumentChangeType;
+import {Logger} from "../../../logger/Logger";
+
+const log = Logger.create();
 
 export class Collections {
+
 
     public static async deleteByID(collection: string,
                                    provider: () => Promise<ReadonlyArray<IDRecord>>) {
@@ -34,7 +38,8 @@ export class Collections {
      */
     public static async onQuerySnapshotChanges<T>(collection: string,
                                                   clauses: ReadonlyArray<Clause>,
-                                                  delegate: (records: ReadonlyArray<DocumentChange<T>>) => void): Promise<SnapshotUnsubscriber> {
+                                                  delegate: (records: ReadonlyArray<DocumentChange<T>>) => void,
+                                                  errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
 
         const query = await this.createQuery(collection, clauses);
 
@@ -53,6 +58,8 @@ export class Collections {
 
             delegate(changes);
 
+        }, err => {
+            errHandler(err, collection, clauses);
         });
 
     }
@@ -62,19 +69,23 @@ export class Collections {
      */
     public static async onQuerySnapshot<T>(collection: string,
                                            clauses: ReadonlyArray<Clause>,
-                                           delegate: (records: ReadonlyArray<T>) => void): Promise<SnapshotUnsubscriber> {
+                                           delegate: (records: ReadonlyArray<T>) => void,
+                                           errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
 
         const query = await this.createQuery(collection, clauses);
 
         return query.onSnapshot(snapshot => {
             delegate(snapshot.docs.map(current => <T> current.data()));
+        }, err => {
+            errHandler(err, collection, clauses);
         });
 
     }
 
     public static async onDocumentSnapshot<T>(collection: string,
                                               id: string,
-                                              delegate: (record: T | undefined) => void): Promise<SnapshotUnsubscriber> {
+                                              delegate: (record: T | undefined) => void,
+                                              errHandler: SnapshotErrorHandler = DefaultSnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
 
         const firestore = await Firestore.getInstance();
 
@@ -94,6 +105,8 @@ export class Collections {
 
             delegate(toValue());
 
+        }, err => {
+            errHandler(err, collection);
         });
 
     }
@@ -134,3 +147,19 @@ export interface DocumentChange<T> {
     readonly type: DocumentChangeType;
     readonly value: T;
 }
+
+export type QuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => void;
+
+const DefaultQuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => {
+
+    log.error(`Unable to handle snapshot for collection ${collection}: `, clauses, err);
+
+};
+
+export type SnapshotErrorHandler = (err: Error, collection: string) => void;
+
+const DefaultSnapshotErrorHandler = (err: Error, collection: string) => {
+
+    log.error(`Unable to handle snapshot for collection ${collection}: `, err);
+
+};
