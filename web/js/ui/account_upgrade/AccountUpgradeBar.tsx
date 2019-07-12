@@ -64,4 +64,3 @@ interface IState {
     readonly machineDatastore?: MachineDatastore;
 }
 
-

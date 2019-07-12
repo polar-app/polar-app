@@ -45,7 +45,7 @@ export class MachineDatastores {
             const account = <MachineDatastore> snapshot.data();
             handler(account);
 
-        });
+        }, ERR_HANDLER);
 
     }
 
@@ -159,31 +159,5 @@ export interface MachineDatastore {
 
 }
 
+const ERR_HANDLER = (err: Error) => console.error("Could not create snapshot for account: ", err);
 
-// // FIXMEL
-//
-// for (const docMetaRef of docMetaRefs) {
-//
-//     try {
-//
-//         const docMeta = await persistenceLayer.getDocMeta(docMetaRef.fingerprint);
-//
-//         if (docMeta) {
-//
-//             const backendFileRef = Datastores.toBackendFileRef(docMeta);
-//
-//             if (backendFileRef && backendFileRef.name.endsWith(".phz")) {
-//                 ++nrCaptures;
-//             }
-//
-//         }
-//
-//     } catch (err) {
-//
-//         console.warn("Failed to parse docMeta when computing stats: ", err);
-//
-//     } finally {
-//         await Promises.waitFor(SLEEP_INTERVAL);
-//     }
-//
-// }

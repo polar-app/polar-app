@@ -793,7 +793,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                     resolve();
                 }
 
-            });
+            }, ERR_HANDLER);
 
         });
 
@@ -828,7 +828,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             }
 
-        });
+        }, ERR_HANDLER);
 
     }
 
@@ -1286,3 +1286,5 @@ interface GetDocMetaOpts {
 export class DefaultWriteOpts implements WriteOpts {
     public readonly visibility = Visibility.PRIVATE;
 }
+
+const ERR_HANDLER = (err: Error) => log.error("Could not create snapshot for account: ", err);

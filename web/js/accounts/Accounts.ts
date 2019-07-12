@@ -6,6 +6,9 @@ import {Firebase} from '../firebase/Firebase';
 import {Firestore} from '../firebase/Firestore';
 import {Dialogs} from '../ui/dialogs/Dialogs';
 import {Account} from './Account';
+import {Logger} from "../logger/Logger";
+
+const log = Logger.create();
 
 const COLLECTION_NAME = "account";
 
@@ -75,7 +78,7 @@ export class Accounts {
             const account = <Account> snapshot.data();
             handler(account);
 
-        });
+        }, ERR_HANDLER);
 
     }
 
@@ -112,6 +115,8 @@ export class Accounts {
 
         let account: Account | undefined;
 
+        // TODO: move this to the collections class for dealing with snapshots.
+
         ref.onSnapshot(doc => {
 
             const newAccount = <Account> doc.data();
@@ -133,9 +138,10 @@ export class Accounts {
                 account = newAccount;
             }
 
-        });
+        }, ERR_HANDLER);
 
     }
 
 }
 
+const ERR_HANDLER = (err: Error) => log.error("Could not create snapshot for account: ", err);
