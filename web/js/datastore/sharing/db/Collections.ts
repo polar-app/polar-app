@@ -2,6 +2,7 @@ import {Firestore} from '../../../firebase/Firestore';
 import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import DocumentChangeType = firebase.firestore.DocumentChangeType;
+import OrderByDirection = firebase.firestore.OrderByDirection;
 import {Logger} from "../../../logger/Logger";
 
 const log = Logger.create();
@@ -23,9 +24,11 @@ export class Collections {
 
     }
 
-    public static async list<T>(collection: string, clauses: ReadonlyArray<Clause>): Promise<ReadonlyArray<T>> {
+    public static async list<T>(collection: string,
+                                clauses: ReadonlyArray<Clause>,
+                                opts: QueryOpts = {}): Promise<ReadonlyArray<T>> {
 
-        const query = await this.createQuery(collection, clauses);
+        const query = await this.createQuery(collection, clauses, opts);
 
         const snapshot = await query.get();
 
@@ -112,7 +115,8 @@ export class Collections {
     }
 
     private static async createQuery(collection: string,
-                                     clauses: ReadonlyArray<Clause>) {
+                                     clauses: ReadonlyArray<Clause>,
+                                     opts: QueryOpts = {}) {
 
         const firestore = await Firestore.getInstance();
 
@@ -128,12 +132,33 @@ export class Collections {
             query = query.where(field, op, value);
         }
 
+        for (const orderBy of opts.orderBy || []) {
+            query = query.orderBy(orderBy[0], orderBy[1]);
+        }
+
+        if (opts.limit) {
+            query = query.limit(opts.limit);
+        }
+
         return query;
 
     }
 
 
 }
+
+export interface QueryOpts {
+
+    /**
+     * Limit the number of results.
+     */
+    readonly limit?: number;
+
+    readonly orderBy?: ReadonlyArray<OrderByClause>;
+
+}
+
+export type OrderByClause = [string, OrderByDirection | undefined];
 
 export interface IDRecord {
     readonly id: string;

@@ -5,6 +5,7 @@ import {UserIDStr} from './Profiles';
 import {Hashcodes} from '../../../Hashcodes';
 import {PlainTextString, URLStr} from "../../../util/Strings";
 import {ExternalLink} from "../rpc/GroupProvisions";
+import {Clause, Collections, OrderByClause} from "./Collections";
 
 const HASHCODE_LEN = 20;
 
@@ -23,7 +24,38 @@ export class Groups {
         return <Group> doc.data();
     }
 
+    public static async executeSearchWithTags(tags: ReadonlyArray<TagStr>): Promise<ReadonlyArray<Group>> {
+
+        // INDEXES NEEDED
+        //
+        // visibility, lang, tags, nrMembers
+        // visibility, tags, nrMembers
+
+        // search by tag and by number of members descending
+
+        // no paging yet.. just top groups to get this working and off the groupnd
+
+        const visibilityClauses: ReadonlyArray<Clause> = [
+            ['visibility', '==' , 'public']
+        ];
+
+        const tagClauses: ReadonlyArray<Clause>
+            = tags.map(current => ['tags', 'array-contains', current]);
+
+        const clauses: ReadonlyArray<Clause> = [...visibilityClauses, ...tagClauses];
+
+        const orderBy: ReadonlyArray<OrderByClause> = [
+            ['nrMembers', 'desc']
+        ];
+
+        const limit = 50;
+
+        return await Collections.list(this.COLLECTION,  clauses, {orderBy, limit});
+
+    }
+
 }
+
 
 export interface GroupInit {
 

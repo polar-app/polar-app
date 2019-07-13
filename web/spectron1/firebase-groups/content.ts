@@ -8,7 +8,7 @@ import {ProfileUpdateRequest} from '../../js/datastore/sharing/db/ProfileUpdates
 import {ProfileUpdates} from '../../js/datastore/sharing/db/ProfileUpdates';
 import {GroupJoins} from '../../js/datastore/sharing/rpc/GroupJoins';
 import {assert} from 'chai';
-import {Groups} from '../../js/datastore/sharing/db/Groups';
+import {GroupInit, Groups} from '../../js/datastore/sharing/db/Groups';
 import {GroupMembers} from '../../js/datastore/sharing/db/GroupMembers';
 import {GroupMemberInvitations} from '../../js/datastore/sharing/db/GroupMemberInvitations';
 import {Profiles} from '../../js/datastore/sharing/db/Profiles';
@@ -282,7 +282,8 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        async function doGroupProvisionPublic(mockDoc: MockDoc) {
+        async function doGroupProvisionPublic(mockDoc: MockDoc,
+                                              template: Partial<GroupInit> = {}) {
 
             console.log("doGroupProvisionPublic");
 
@@ -303,7 +304,10 @@ SpectronRenderer.run(async (state) => {
                 },
                 name: 'linux',
                 tags: ['linux', 'ubuntu', 'debian'],
-                visibility: 'public'
+                visibility: template.visibility || 'public',
+                description: template.description,
+                links: template.links
+
             };
 
             const response = await GroupProvisions.exec(request);
@@ -1141,6 +1145,37 @@ SpectronRenderer.run(async (state) => {
 
             await assertGroup();
 
+            async function assertGroupSearch() {
+                
+                const hits = await Groups.executeSearchWithTags(['linux']);
+
+                assert.equal(hits.length, 1);
+
+                const first = hits[0];
+
+                assert.isDefined(first.created);
+
+                const firstCanonicalized = canonicalize(hits[0], obj => {
+                    obj.created = 'xxx';
+                });
+
+                assertJSON(firstCanonicalized, {
+                        "created": "xxx",
+                        "id": "1iASZEzNPRe5xKreNty2",
+                        "name": "linux",
+                        "nrMembers": 1,
+                        "tags": [
+                            "linux",
+                            "ubuntu",
+                            "debian"
+                        ],
+                        "visibility": "public"
+                    });
+                
+            }
+            
+            await assertGroupSearch();
+            
         });
 
         it("Public docs in public groups", async function() {
