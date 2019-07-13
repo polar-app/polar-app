@@ -24,6 +24,32 @@ export class Collections {
 
     }
 
+    public static async getByFieldValue<T>(collection: string, field: string, value: ValueType): Promise<T | undefined> {
+        const results = await this.list<T>(collection, [[field, '==', value]]);
+        return this.first(collection, [field], results);
+    }
+
+    public static async getByFieldValues<T>(collection: string, clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
+        const results = await this.list<T>(collection, clauses);
+
+        const fields = clauses.map(current => current[0]);
+
+        return this.first(collection, fields, results);
+    }
+
+    private static first<T>(collection: string,
+                            fields: ReadonlyArray<string>,
+                            results: ReadonlyArray<T>): T | undefined {
+
+        if (results.length === 0) {
+            return undefined;
+        } else if (results.length === 1) {
+            return results[0];
+        } else {
+            throw new Error(`Too many records on collection ${collection} for fields ${fields} ` + results.length);
+        }
+
+    }
     public static async list<T>(collection: string,
                                 clauses: ReadonlyArray<Clause>,
                                 opts: QueryOpts = {}): Promise<ReadonlyArray<T>> {
@@ -163,6 +189,8 @@ export type OrderByClause = [string, OrderByDirection | undefined];
 export interface IDRecord {
     readonly id: string;
 }
+
+export type ValueType = object | string | number;
 
 export type Clause = [string, WhereFilterOp, any];
 

@@ -24,6 +24,20 @@ export class Groups {
         return <Group> doc.data();
     }
 
+
+
+    public static async getByName(name: string): Promise<Group | undefined> {
+
+        // protected and private groups can not have names and these must be public.
+        const clauses: ReadonlyArray<Clause> = [
+            ['visibility', '==' , 'public'],
+            ['name', '==', name]
+        ];
+
+        return Collections.getByFieldValues(this.COLLECTION, clauses);
+
+    }
+
     public static async executeSearchWithTags(tags: ReadonlyArray<TagStr>): Promise<ReadonlyArray<Group>> {
 
         // INDEXES NEEDED

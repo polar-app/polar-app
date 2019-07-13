@@ -8,7 +8,7 @@ import {ProfileUpdateRequest} from '../../js/datastore/sharing/db/ProfileUpdates
 import {ProfileUpdates} from '../../js/datastore/sharing/db/ProfileUpdates';
 import {GroupJoins} from '../../js/datastore/sharing/rpc/GroupJoins';
 import {assert} from 'chai';
-import {GroupInit, Groups} from '../../js/datastore/sharing/db/Groups';
+import {Group, GroupInit, Groups} from '../../js/datastore/sharing/db/Groups';
 import {GroupMembers} from '../../js/datastore/sharing/db/GroupMembers';
 import {GroupMemberInvitations} from '../../js/datastore/sharing/db/GroupMemberInvitations';
 import {Profiles} from '../../js/datastore/sharing/db/Profiles';
@@ -516,7 +516,9 @@ SpectronRenderer.run(async (state) => {
 
                 assert.isDefined(profileOwner);
 
-                assert.equal(groupMember.profileID, profileOwner!.profileID);
+                const groupMemberProfileIDs = groupMembers.map(current => current.profileID);
+
+                assert.isTrue(groupMemberProfileIDs.includes(profileOwner!.profileID), "Profile owner is not member of group");
 
                 // now make sure there are no invitations for this group after ...
                 const groupMemberInvitations = await GroupMemberInvitations.list();
@@ -1143,6 +1145,30 @@ SpectronRenderer.run(async (state) => {
 
             }
 
+            function assertGroupJSON(group: Group) {
+
+                assert.isDefined(group.created);
+
+                const groupCanonicalized = canonicalize(group, obj => {
+                    obj.created = 'xxx';
+                });
+
+                assertJSON(groupCanonicalized, {
+                    "created": "xxx",
+                    "id": "1iASZEzNPRe5xKreNty2",
+                    "name": "linux",
+                    "nrMembers": 1,
+                    "tags": [
+                        "linux",
+                        "ubuntu",
+                        "debian"
+                    ],
+                    "visibility": "public"
+                });
+
+
+            }
+            
             await assertGroup();
 
             async function assertGroupSearch() {
@@ -1152,29 +1178,20 @@ SpectronRenderer.run(async (state) => {
                 assert.equal(hits.length, 1);
 
                 const first = hits[0];
-
-                assert.isDefined(first.created);
-
-                const firstCanonicalized = canonicalize(hits[0], obj => {
-                    obj.created = 'xxx';
-                });
-
-                assertJSON(firstCanonicalized, {
-                        "created": "xxx",
-                        "id": "1iASZEzNPRe5xKreNty2",
-                        "name": "linux",
-                        "nrMembers": 1,
-                        "tags": [
-                            "linux",
-                            "ubuntu",
-                            "debian"
-                        ],
-                        "visibility": "public"
-                    });
-                
+                assertGroupJSON(first);
             }
             
             await assertGroupSearch();
+
+            async function assertGetByName() {
+                
+                const group = await Groups.getByName('linux');
+                assert.isDefined(group);
+                assertGroupJSON(group!);
+
+            }
+            
+            await assertGetByName();
             
         });
 
