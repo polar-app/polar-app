@@ -1,3 +1,6 @@
+# 1.30.1
+
+- Fixed security dependency issue with lodash.
 
 # 1.30.0
 

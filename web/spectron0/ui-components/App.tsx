@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {Tags} from '../../js/tags/Tags';
 import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
+import {SimpleTabs} from "../../js/ui/simple_tab/SimpleTabs";
+import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
 
 const styles = {
     swatch: {
@@ -115,7 +117,19 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<MockFolderTree/>*/}
 
-                <AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>
+                {/*<AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>*/}
+
+                <SimpleTabs>
+
+                    <SimpleTab href="#" text="Document Repository" active={true}>
+
+                    </SimpleTab>
+
+                    <SimpleTab href="#" text="Groups">
+
+                    </SimpleTab>
+
+                </SimpleTabs>
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}
