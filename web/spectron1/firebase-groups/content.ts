@@ -107,12 +107,6 @@ SpectronRenderer.run(async (state) => {
 
     // ## PUBLIC GROUPS
 
-    // TODO: GroupJoin should be idempotent and it is for private groups just not
-    // public groups.
-
-    // TODO: test with tags and tag search for groups so we can try to delete
-    // them
-
     // TODO: make sure we don't have a group ID collision when creating by name.
     // I have to test what happens when we create by name.  We need to have a
     // 'key' returned so that the UI can properly respond and explain what
@@ -424,8 +418,8 @@ SpectronRenderer.run(async (state) => {
 
             const app = Firebase.init();
 
-            const mockDock = await provisionAccountData();
-            const {groupID} = await doGroupProvision(mockDock);
+            const mockDoc = await provisionAccountData();
+            const {groupID} = await doGroupProvision(mockDoc);
 
             async function validateUserGroupForPrimaryUser() {
 
@@ -709,8 +703,8 @@ SpectronRenderer.run(async (state) => {
 
         it("group provision of private group and verify group members includes the group creator", async function() {
 
-            const mockDock = await provisionAccountData();
-            const {groupID} = await doGroupProvision(mockDock);
+            const mockDoc = await provisionAccountData();
+            const {groupID} = await doGroupProvision(mockDoc);
 
             async function validateGroupMembers() {
 
@@ -739,8 +733,8 @@ SpectronRenderer.run(async (state) => {
 
         it("join and then leave group", async function() {
 
-            const mockDock = await provisionAccountData();
-            const {groupID} = await doGroupProvision(mockDock);
+            const mockDoc = await provisionAccountData();
+            const {groupID} = await doGroupProvision(mockDoc);
             await doGroupJoinForUser1(groupID);
             await waitForGroupDelay();
 
@@ -782,12 +776,12 @@ SpectronRenderer.run(async (state) => {
         it("double provision of group with key", async function() {
 
 
-            const mockDock = await provisionAccountData();
+            const mockDoc = await provisionAccountData();
             const email = 'getpolarized.test+test1@gmail.com';
-            const fingerprint = mockDock.docMeta.docInfo.fingerprint;
+            const fingerprint = mockDoc.docMeta.docInfo.fingerprint;
 
-            const groupDocRefBefore = await doGroupProvision(mockDock, email, fingerprint);
-            const groupDocRefAfter = await doGroupProvision(mockDock, email, fingerprint);
+            const groupDocRefBefore = await doGroupProvision(mockDoc, email, fingerprint);
+            const groupDocRefAfter = await doGroupProvision(mockDoc, email, fingerprint);
 
             assert.equal(groupDocRefBefore.groupID, groupDocRefAfter.groupID);
 
@@ -864,8 +858,8 @@ SpectronRenderer.run(async (state) => {
         it("join and then add my own docs", async function() {
 
             async function doUser0() {
-                const mockDock = await provisionAccountData();
-                const groupID = await doGroupProvision(mockDock);
+                const mockDoc = await provisionAccountData();
+                const groupID = await doGroupProvision(mockDoc);
                 await waitForGroupDelay();
                 return groupID;
             }
@@ -906,8 +900,8 @@ SpectronRenderer.run(async (state) => {
 
             }
 
-            const mockDock = await provisionAccountData({user: FIREBASE_USER1, pass: FIREBASE_PASS1});
-            await doGroupDocsAdd(mockDock);
+            const mockDoc = await provisionAccountData({user: FIREBASE_USER1, pass: FIREBASE_PASS1});
+            await doGroupDocsAdd(mockDoc);
 
             const groupDocs = await GroupDocs.list(groupID);
             assert.equal(groupDocs.length, 2);
@@ -921,9 +915,9 @@ SpectronRenderer.run(async (state) => {
 
             const alice = 'alice@example.com';
 
-            const mockDock = await provisionAccountData();
-            const fingerprint = mockDock.docMeta.docInfo.fingerprint;
-            const {groupID} = await doGroupProvision(mockDock, alice, fingerprint);
+            const mockDoc = await provisionAccountData();
+            const fingerprint = mockDoc.docMeta.docInfo.fingerprint;
+            const {groupID} = await doGroupProvision(mockDoc, alice, fingerprint);
 
             const profile = await Profiles.currentProfile();
             assert.isDefined(profile);
@@ -943,9 +937,9 @@ SpectronRenderer.run(async (state) => {
 
         it("delete users from a group after they have joined", async function() {
 
-            const mockDock = await provisionAccountData();
-            const fingerprint = mockDock.docMeta.docInfo.fingerprint;
-            const {groupID} = await doGroupProvision(mockDock, undefined, fingerprint);
+            const mockDoc = await provisionAccountData();
+            const fingerprint = mockDoc.docMeta.docInfo.fingerprint;
+            const {groupID} = await doGroupProvision(mockDoc, undefined, fingerprint);
             await doGroupJoinForUser1(groupID);
 
             // now switch back to the main user and get the members of this group
@@ -971,8 +965,8 @@ SpectronRenderer.run(async (state) => {
 
         it("provision a user for a group who isn't yet using polar", async function() {
 
-            const mockDock = await provisionAccountData();
-            await doGroupProvision(mockDock, 'alice@example.com');
+            const mockDoc = await provisionAccountData();
+            await doGroupProvision(mockDoc, 'alice@example.com');
 
             // now make sure the contact are correct...
 
@@ -997,8 +991,8 @@ SpectronRenderer.run(async (state) => {
 
         it("join group twice and validate metadata (private group)", async function() {
 
-            const mockDock = await provisionAccountData();
-            const {groupID} = await doGroupProvision(mockDock);
+            const mockDoc = await provisionAccountData();
+            const {groupID} = await doGroupProvision(mockDoc);
             await doGroupJoinForUser1(groupID);
 
             // now run the second group join twice.
@@ -1028,8 +1022,8 @@ SpectronRenderer.run(async (state) => {
 
         it("Import the doc from a private group into my datastore", async function() {
 
-            const mockDock = await provisionAccountData();
-            const {groupID, docRef} = await doGroupProvision(mockDock);
+            const mockDoc = await provisionAccountData();
+            const {groupID, docRef} = await doGroupProvision(mockDoc);
             await doGroupJoinForUser1(groupID);
 
             await waitForGroupDelay();
@@ -1124,9 +1118,9 @@ SpectronRenderer.run(async (state) => {
 
         it("Public group settings", async function() {
 
-            const mockDock = await provisionAccountData();
+            const mockDoc = await provisionAccountData();
 
-            const groupID = await doGroupProvisionPublic(mockDock);
+            const groupID = await doGroupProvisionPublic(mockDoc);
 
             async function assertGroup() {
 
@@ -1151,9 +1145,9 @@ SpectronRenderer.run(async (state) => {
 
         it("Public docs in public groups", async function() {
 
-            const mockDock = await provisionAccountData();
+            const mockDoc = await provisionAccountData();
 
-            const groupID = await doGroupProvisionPublic(mockDock);
+            const groupID = await doGroupProvisionPublic(mockDoc);
 
             async function doGroupJoinForUser1(groupID: GroupIDStr) {
 

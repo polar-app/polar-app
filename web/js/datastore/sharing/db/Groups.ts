@@ -3,6 +3,8 @@ import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {UserIDStr} from './Profiles';
 import {Hashcodes} from '../../../Hashcodes';
+import {PlainTextString, URLStr} from "../../../util/Strings";
+import {ExternalLink} from "../rpc/GroupProvisions";
 
 const HASHCODE_LEN = 20;
 
@@ -36,6 +38,13 @@ export interface GroupInit {
     readonly visibility: GroupVisibility;
 
     readonly tags?: ReadonlyArray<TagStr>;
+
+    /**
+     * A string (not HTML) that is used as a description for this document.
+     */
+    readonly description?: PlainTextString;
+
+    readonly links?: ReadonlyArray<URLStr | ExternalLink>;
 
 }
 

@@ -100,3 +100,5 @@ export type PathStr = string;
  * prefix is assumed to be a path.
  */
 export type PathOrURLStr = string;
+
+export type PlainTextString = string;
