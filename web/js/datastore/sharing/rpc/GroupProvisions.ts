@@ -12,7 +12,6 @@ export class GroupProvisions {
 
 }
 
-
 export interface GroupProvisionRequest extends GroupInit {
 
     /**
@@ -38,7 +37,7 @@ export interface GroupProvisionRequest extends GroupInit {
 export interface GroupProvisionResponse {
 
     /**
-     * The ID fo the group that was provisioned.
+     * The ID of the group that was provisioned.
      */
     readonly id: string;
 
