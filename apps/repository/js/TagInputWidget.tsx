@@ -147,7 +147,7 @@ export class TagInputWidget extends React.Component<IProps, IState> {
 
         const tags = TagOptions.toTags(selectedOptions);
 
-        const validTags = Tags.findValidTags(...tags);
+        const newPendingTags = Tags.findValidTags(...tags);
         const invalidTags = Tags.findInvalidTags(...tags);
 
         if (invalidTags.length !== 0) {
@@ -163,7 +163,9 @@ export class TagInputWidget extends React.Component<IProps, IState> {
 
         }
 
-        this.setState({...this.state, pendingTags: validTags});
+        this.setState({...this.state, pendingTags: newPendingTags});
+
+        this.props.onChange(newPendingTags);
 
     }
 

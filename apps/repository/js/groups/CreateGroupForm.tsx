@@ -8,6 +8,11 @@ import {RelatedTags} from "../../../../web/js/tags/related/RelatedTags";
 import {TagInputWidget} from "../TagInputWidget";
 import Button from "reactstrap/lib/Button";
 import {Logger} from "../../../../web/js/logger/Logger";
+import {
+    GroupProvisionRequest,
+    GroupProvisions
+} from "../../../../web/js/datastore/sharing/rpc/GroupProvisions";
+import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 
 const log = Logger.create();
 
@@ -21,6 +26,9 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onTags = this.onTags.bind(this);
+        this.onDone = this.onDone.bind(this);
 
         this.state = {
         };
@@ -45,6 +53,7 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
 
                         <Form>
                             <FormGroup>
+
                                 <Label for="create-group-name">Name</Label>
 
                                 <Input type="text"
@@ -74,7 +83,7 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
                                 <TagInputWidget availableTags={this.props.tagsProvider()}
                                                 existingTags={[]}
                                                 relatedTags={this.props.relatedTags}
-                                                onChange={(tags) => this.formData.tags = tags.map(current => current.label)}/>
+                                                onChange={(tags) => this.onTags(tags)}/>
 
                                 <p className="text-secondary text-sm mt-1">
                                     Select up to 5 tags for this group.  Tags will be
@@ -101,9 +110,35 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
         );
     }
 
+    private onTags(tags: Tag[]) {
+        this.formData.tags = tags.map(current => current.label);
+    }
+
     private onDone() {
-        // noop for now...
-        log.info("Going to send data to create group: " , this.formData);
+
+        // TODO: first validate the name and that it looks acceptable...
+
+        const doGroupProvision = async () => {
+
+            const request: GroupProvisionRequest = {
+                ...this.formData,
+                docs: [],
+                visibility: 'public',
+                invitations: {
+                    message: "",
+                    to: []
+                }
+            };
+
+            await GroupProvisions.exec(request);
+
+            Toaster.info("Group has been provisioned!");
+
+        };
+
+        doGroupProvision()
+            .catch(err => log.error(err));
+
     }
 
 

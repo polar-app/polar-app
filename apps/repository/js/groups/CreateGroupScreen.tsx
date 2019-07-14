@@ -17,6 +17,8 @@ export class CreateGroupScreen extends React.Component<IProps, IState> {
 
     public render() {
 
+        // FIXME: filter out folders. Just basic tags only.
+        // FIXME: filter out folders on the backend too.
         const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
         const relatedTags = this.props.repoDocMetaManager!.relatedTags;
 
