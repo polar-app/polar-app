@@ -45,6 +45,8 @@ import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/prem
 import {Accounts} from '../../accounts/Accounts';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import DocRepoScreen from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
+import {CreateGroupScreen} from "../../../../apps/repository/js/groups/CreateGroupScreen";
+import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
 
 const log = Logger.create();
 
@@ -136,39 +138,48 @@ export class RepositoryApp {
                                            syncBarProgress={syncBarProgress}/> );
         };
 
-        const renderWhatsNew = () => {
+        const renderWhatsNewScreen = () => {
             return ( <WhatsNewScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
-        const renderCommunity = () => {
+        const renderCommunityScreen = () => {
             return ( <CommunityScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
-        const renderStats = () => {
+        const renderStatsScreen = () => {
             return ( <StatsScreen persistenceLayerManager={this.persistenceLayerManager}
                                   repoDocMetaManager={this.repoDocInfoManager}/> );
         };
 
-        const renderLogs = () => {
+        const renderLogsScreen = () => {
             return ( <LogsScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
-        const editorsPicks = () => {
+        const editorsPicksScreen = () => {
             return ( <EditorsPicksScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const plan = account ? account.plan : 'free';
 
-        const premium = () => {
+        const premiumScreen = () => {
 
             return (<PremiumScreen persistenceLayerManager={this.persistenceLayerManager}
                                    plan={plan}
                                    userInfo={userInfo.getOrUndefined()}/>);
         };
 
-        const support = () => {
+        const supportScreen = () => {
             return (<SupportScreen persistenceLayerManager={this.persistenceLayerManager}
                                    plan={plan}/>);
+        };
+
+        const renderGroupsScreen = () => {
+            return (<GroupsScreen persistenceLayerManager={this.persistenceLayerManager}/>);
+        };
+
+        const renderCreateGroupScreen = () => {
+            return (<CreateGroupScreen persistenceLayerManager={this.persistenceLayerManager}
+                                       repoDocMetaManager={this.repoDocInfoManager}/>);
         };
 
         const onNavChange = () => {
@@ -250,13 +261,17 @@ export class RepositoryApp {
                     <Switch>
                         <Route exact path='/(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
                         <Route exact path='/annotations' render={renderAnnotationRepoScreen}/>
-                        <Route exact path='/whats-new' render={renderWhatsNew}/>
-                        <Route exact path='/community' render={renderCommunity}/>
-                        <Route exact path='/stats' render={renderStats}/>
-                        <Route exact path='/logs' render={renderLogs}/>
-                        <Route exact path='/editors-picks' render={editorsPicks}/>
-                        <Route exact path='/plans' render={premium}/>
-                        <Route exact path='/support' render={support}/>
+                        <Route exact path='/whats-new' render={renderWhatsNewScreen}/>
+                        <Route exact path='/community' render={renderCommunityScreen}/>
+                        <Route exact path='/stats' render={renderStatsScreen}/>
+                        <Route exact path='/logs' render={renderLogsScreen}/>
+                        <Route exact path='/editors-picks' render={editorsPicksScreen}/>
+                        <Route exact path='/plans' render={premiumScreen}/>
+                        <Route exact path='/support' render={supportScreen}/>
+
+                        <Route exact path='/groups' render={renderGroupsScreen}/>
+                        <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
+
                     </Switch>
 
                 </HashRouter>
@@ -264,7 +279,7 @@ export class RepositoryApp {
                 <HashRouter hashType="noslash">
 
                     <Switch>
-                        <Route exact path='/premium' render={premium}/>
+                        <Route exact path='/premium' render={premiumScreen}/>
                     </Switch>
 
                 </HashRouter>

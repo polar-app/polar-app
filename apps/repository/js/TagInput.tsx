@@ -165,6 +165,8 @@ export class TagInput extends React.Component<IProps, IState> {
                     {/*style={{borderWidth: '1px', backgroundColor: true ? "#b94a48" : "#aaa"}}*/}
                     <PopoverBody style={Styles.popover} className="shadow">
 
+                        {/*TODO unify this with TagInputWidget*/}
+
                         <div className="pt-1 pb-1">
                             <strong>Assign tags to document:</strong>
                         </div>
