@@ -8,7 +8,7 @@ import {PersistenceLayerManager, PersistenceLayerTypes} from '../../datastore/Pe
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {SyncBar, SyncBarProgress} from '../../ui/sync_bar/SyncBar';
 import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
-import AnnotationRepoApp from '../../../../apps/repository/js/annotation_repo/AnnotationRepoApp';
+import AnnotationRepoScreen from '../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from '../../logger/Logger';
 import {UpdatesController} from '../../auto_updates/UpdatesController';
@@ -16,15 +16,15 @@ import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
-import WhatsNewApp from '../../../../apps/repository/js/whats_new/WhatsNewApp';
-import CommunityApp from '../../../../apps/repository/js/community/CommunityApp';
-import StatsApp from '../../../../apps/repository/js/stats/StatsApp';
-import LogsApp from '../../../../apps/repository/js/logs/LogsApp';
+import WhatsNewScreen from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
+import CommunityScreen from '../../../../apps/repository/js/community/CommunityScreen';
+import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
+import LogsScreen from '../../../../apps/repository/js/logs/LogsScreen';
 import {ToasterService} from '../../ui/toaster/ToasterService';
 import {ProgressService} from '../../ui/progress_bar/ProgressService';
 import {ProgressTracker} from '../../util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
-import EditorsPicksApp from '../../../../apps/repository/js/editors_picks/EditorsPicksApp';
+import EditorsPicksScreen from '../../../../apps/repository/js/editors_picks/EditorsPicksScreen';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from '../../util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
@@ -41,10 +41,10 @@ import {MobileDisclaimers} from './MobileDisclaimers';
 import {MachineDatastores} from '../../telemetry/MachineDatastores';
 import {MailingList} from './auth_handler/MailingList';
 import {UniqueMachines} from '../../telemetry/UniqueMachines';
-import {PremiumApp} from '../../../../apps/repository/js/splash/splashes/premium/PremiumApp';
+import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {Accounts} from '../../accounts/Accounts';
-import {SupportApp} from '../../../../apps/repository/js/support/SupportApp';
-import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
+import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
+import DocRepoScreen from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
 
 const log = Logger.create();
 
@@ -121,54 +121,54 @@ export class RepositoryApp {
 
         });
 
-        const renderDocRepoApp = () => {
-            return ( <DocRepoApp persistenceLayerManager={this.persistenceLayerManager}
-                                 updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                 repoDocMetaManager={this.repoDocInfoManager}
-                                 repoDocMetaLoader={this.repoDocInfoLoader}/> );
+        const renderDocRepoScreen = () => {
+            return ( <DocRepoScreen persistenceLayerManager={this.persistenceLayerManager}
+                                    updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                    repoDocMetaManager={this.repoDocInfoManager}
+                                    repoDocMetaLoader={this.repoDocInfoLoader}/> );
         };
 
-        const renderAnnotationRepoApp = () => {
-            return ( <AnnotationRepoApp persistenceLayerManager={this.persistenceLayerManager}
-                                        updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                        repoDocMetaManager={this.repoDocInfoManager}
-                                        repoDocMetaLoader={this.repoDocInfoLoader}
-                                        syncBarProgress={syncBarProgress}/> );
+        const renderAnnotationRepoScreen = () => {
+            return ( <AnnotationRepoScreen persistenceLayerManager={this.persistenceLayerManager}
+                                           updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                           repoDocMetaManager={this.repoDocInfoManager}
+                                           repoDocMetaLoader={this.repoDocInfoLoader}
+                                           syncBarProgress={syncBarProgress}/> );
         };
 
         const renderWhatsNew = () => {
-            return ( <WhatsNewApp persistenceLayerManager={this.persistenceLayerManager}/> );
+            return ( <WhatsNewScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const renderCommunity = () => {
-            return ( <CommunityApp persistenceLayerManager={this.persistenceLayerManager}/> );
+            return ( <CommunityScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const renderStats = () => {
-            return ( <StatsApp persistenceLayerManager={this.persistenceLayerManager}
-                               repoDocMetaManager={this.repoDocInfoManager}/> );
+            return ( <StatsScreen persistenceLayerManager={this.persistenceLayerManager}
+                                  repoDocMetaManager={this.repoDocInfoManager}/> );
         };
 
         const renderLogs = () => {
-            return ( <LogsApp persistenceLayerManager={this.persistenceLayerManager}/> );
+            return ( <LogsScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const editorsPicks = () => {
-            return ( <EditorsPicksApp persistenceLayerManager={this.persistenceLayerManager}/> );
+            return ( <EditorsPicksScreen persistenceLayerManager={this.persistenceLayerManager}/> );
         };
 
         const plan = account ? account.plan : 'free';
 
         const premium = () => {
 
-            return (<PremiumApp persistenceLayerManager={this.persistenceLayerManager}
-                                plan={plan}
-                                userInfo={userInfo.getOrUndefined()}/>);
+            return (<PremiumScreen persistenceLayerManager={this.persistenceLayerManager}
+                                   plan={plan}
+                                   userInfo={userInfo.getOrUndefined()}/>);
         };
 
         const support = () => {
-            return (<SupportApp persistenceLayerManager={this.persistenceLayerManager}
-                                plan={plan}/>);
+            return (<SupportScreen persistenceLayerManager={this.persistenceLayerManager}
+                                   plan={plan}/>);
         };
 
         const onNavChange = () => {
@@ -248,8 +248,8 @@ export class RepositoryApp {
                 <HashRouter hashType="noslash">
 
                     <Switch>
-                        <Route exact path='/(logout|overview|login|configured|invite|premium)?' render={renderDocRepoApp}/>
-                        <Route exact path='/annotations' render={renderAnnotationRepoApp}/>
+                        <Route exact path='/(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
+                        <Route exact path='/annotations' render={renderAnnotationRepoScreen}/>
                         <Route exact path='/whats-new' render={renderWhatsNew}/>
                         <Route exact path='/community' render={renderCommunity}/>
                         <Route exact path='/stats' render={renderStats}/>

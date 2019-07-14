@@ -6,7 +6,7 @@ import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {AccountPlan} from '../../../../web/js/accounts/Account';
 
-export class SupportApp extends React.Component<IProps, IState> {
+export class SupportScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

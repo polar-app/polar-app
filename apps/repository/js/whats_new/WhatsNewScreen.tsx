@@ -1,16 +1,10 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
-import LogsContent from './LogsContent';
-import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
-import ClearLogsButton from './ClearLogsButton';
+import {WhatsNewContent} from '../splash2/whats_new/WhatsNewContent';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
-const log = Logger.create();
-
-export default class LogsApp extends React.Component<IProps, IState> {
+export default class WhatsNewScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -30,32 +24,15 @@ export default class LogsApp extends React.Component<IProps, IState> {
 
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    <div style={{display: 'flex'}}>
-
-                        <div className="mb-1">
-                            <CopyLogsToClipboardButton/>
-                        </div>
-
-                        <div className="ml-1 mb-1">
-                            <ClearLogsButton/>
-                        </div>
-
-                    </div>
-
                 </header>
 
                 <FixedNavBody className="container-fluid">
 
                     <div className="row">
 
-                        <div className="col-lg-12">
-
-                            <div className="mb-2 pl-1 pr-1">
-                                <LogsContent/>
-                            </div>
-
+                        <div className="col-lg-12 w-100 pt-2">
+                            <WhatsNewContent/>
                         </div>
-
                     </div>
 
                 </FixedNavBody>

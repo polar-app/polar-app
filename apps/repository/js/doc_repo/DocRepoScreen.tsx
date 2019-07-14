@@ -44,7 +44,7 @@ const log = Logger.create();
 
 // TODO: go back to ExtendedReactTable
 
-export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> {
+export default class DocRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
     private readonly treeState: TreeState<TagDescriptor>;
 
@@ -126,9 +126,9 @@ export default class DocRepoApp extends ReleasingReactComponent<IProps, IState> 
         this.releaser.register(
             this.props.repoDocMetaLoader.addEventListener(event => {
 
-                if (!DocRepoApp.hasSentInitAnalytics && event.progress.progress === 100) {
+                if (!DocRepoScreen.hasSentInitAnalytics && event.progress.progress === 100) {
                     this.emitInitAnalytics(this.props.repoDocMetaManager.repoDocInfoIndex.size());
-                    DocRepoApp.hasSentInitAnalytics = true;
+                    DocRepoScreen.hasSentInitAnalytics = true;
                 }
 
             })

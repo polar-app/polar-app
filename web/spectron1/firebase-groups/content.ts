@@ -509,8 +509,6 @@ SpectronRenderer.run(async (state) => {
 
                 assert.equal(groupMembers.length, 2, "Wrong number of groups members");
 
-                const groupMember = groupMembers[0];
-
                 console.log("Fetching profile owner to validate group member profileID");
                 const profileOwner = await ProfileOwners.get(user.uid);
 

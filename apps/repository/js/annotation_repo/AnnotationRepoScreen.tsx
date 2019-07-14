@@ -23,7 +23,7 @@ import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 
-export default class AnnotationRepoApp extends ReleasingReactComponent<IProps, IState> {
+export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
     private readonly treeState: TreeState<TagDescriptor>;
 

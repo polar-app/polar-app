@@ -8,7 +8,7 @@ import {PremiumContent2} from './PremiumContent2';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountPlan} from '../../../../../../web/js/accounts/Account';
 
-export class PremiumApp extends React.Component<IProps, IState> {
+export class PremiumScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

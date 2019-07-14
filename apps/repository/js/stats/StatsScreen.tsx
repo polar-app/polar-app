@@ -13,7 +13,7 @@ import ReadingProgressTable from './ReadingProgressTable';
 
 const log = Logger.create();
 
-export default class StatsApp extends React.Component<IProps, IState> {
+export default class StatsScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

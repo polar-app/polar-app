@@ -1,14 +1,10 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
-import {MessageBanner} from '../MessageBanner';
-import CommunityContent from './CommunityContent';
+import {EditorsPicksContent} from './EditorsPicksContent';
 import {RepoHeader} from '../repo_header/RepoHeader';
+import {MessageBanner} from '../MessageBanner';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
-const log = Logger.create();
-
-export default class CommunityApp extends React.Component<IProps, IState> {
+export default class EditorsPicksScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -25,15 +21,26 @@ export default class CommunityApp extends React.Component<IProps, IState> {
             <div id="doc-repository">
 
                 <header>
-
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
-
                 </header>
 
-                <MessageBanner/>
 
                 <div className="m-1">
-                    <CommunityContent/>
+
+                    <h3>Suggested Content</h3>
+
+                    <p className="text-muted" style={{fontSize: '18px'}}>
+                        In order to get you up and running quickly, we've compiled
+                        a list of interesting documents you might like to start with.
+                    </p>
+
+                    <p>
+                        When you add any of these documents they will be automatically
+                        downloaded and added to your repository.
+                    </p>
+
+                    <EditorsPicksContent/>
+
                 </div>
 
             </div>
@@ -45,8 +52,10 @@ export default class CommunityApp extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
+
 }
 
 export interface IState {
 
 }
+
