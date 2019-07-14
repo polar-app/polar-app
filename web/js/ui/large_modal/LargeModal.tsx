@@ -15,27 +15,35 @@ export class LargeModal extends React.Component<IProps, IState> {
 
     public render() {
 
+        const minWidth = this.props.minWidth || '90%';
+
         // noinspection TsLint
         return (
+
             <Modal isOpen={this.props.isOpen}
                    size="lg"
                    fade={false}
+                   centered={this.props.centered}
                    toggle={this.props.toggle ? this.props.toggle : NULL_FUNCTION}
-                   style={{overflowY: 'initial', minWidth: '90%'}}>
+                   style={{
+                       overflowY: 'initial',
+                       minWidth
+                   }}>
 
                 {this.props.children}
 
             </Modal>
+
         );
     }
 
 }
 
 interface IProps {
-
-    isOpen: boolean;
-    toggle?: () => void;
-
+    readonly centered?: boolean;
+    readonly isOpen: boolean;
+    readonly toggle?: () => void;
+    readonly minWidth?: string;
 }
 
 interface IState {

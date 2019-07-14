@@ -38,7 +38,6 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
                 </LargeModal>
 
-
             </div>
 
         );

@@ -16,7 +16,10 @@ export class LargeModalBody extends React.Component<IProps, IState> {
 
         // noinspection TsLint
         return (
-            <ModalBody style={{overflowY: 'auto', maxHeight: 'calc(100vh - 150px)'}}>
+            <ModalBody style={{
+                          overflowY: 'auto',
+                          maxHeight: 'calc(100vh - 150px)'
+                       }}>
 
                 {this.props.children}
 

@@ -3,6 +3,13 @@ import {Tags} from '../../js/tags/Tags';
 import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
 import {SimpleTabs} from "../../js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
+import {LargeModal} from "../../js/ui/large_modal/LargeModal";
+import {LargeModalBody} from "../../js/ui/large_modal/LargeModalBody";
+import {WhatsNewContent} from "../../../apps/repository/js/splash2/whats_new/WhatsNewContent";
+import ModalFooter from "@types/reactstrap/lib/ModalFooter";
+import Button from "@types/reactstrap/lib/Button";
+import {Modal} from "@types/reactstrap";
+import {NULL_FUNCTION} from "../../js/util/Functions";
 
 const styles = {
     swatch: {
@@ -119,17 +126,38 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>*/}
 
-                <SimpleTabs>
+                <div>
 
-                    <SimpleTab href="#" text="Document Repository" active={true}>
+                    <LargeModal isOpen={true}
+                                centered={true}
+                                minWidth="20%">
 
-                    </SimpleTab>
+                        <LargeModalBody>
 
-                    <SimpleTab href="#" text="Groups">
+                            this is some modal content.
 
-                    </SimpleTab>
+                        </LargeModalBody>
 
-                </SimpleTabs>
+                        {/*<ModalFooter>*/}
+                        {/*    <Button color="primary" onClick={() => this.onDone()}>Close</Button>*/}
+                        {/*</ModalFooter>*/}
+
+                    </LargeModal>
+
+                </div>
+
+
+                {/*<SimpleTabs>*/}
+
+                {/*    <SimpleTab href="#" text="Document Repository" active={true}>*/}
+
+                {/*    </SimpleTab>*/}
+
+                {/*    <SimpleTab href="#" text="Groups">*/}
+
+                {/*    </SimpleTab>*/}
+
+                {/*</SimpleTabs>*/}
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}
