@@ -1,5 +1,7 @@
 # 1.30.1
 
+- Fixed bug with archive and flag not working.
+
 - Upgrade to Electron 5.0.6...
 
 - Fixed security dependency issue with lodash.
