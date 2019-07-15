@@ -6,10 +6,12 @@ import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
 import {LargeModal} from "../../js/ui/large_modal/LargeModal";
 import {LargeModalBody} from "../../js/ui/large_modal/LargeModalBody";
 import {WhatsNewContent} from "../../../apps/repository/js/splash2/whats_new/WhatsNewContent";
-import ModalFooter from "@types/reactstrap/lib/ModalFooter";
-import Button from "@types/reactstrap/lib/Button";
-import {Modal} from "@types/reactstrap";
+import ModalFooter from "reactstrap/lib/ModalFooter";
+import Button from "reactstrap/lib/Button";
+import {Modal} from "reactstrap";
 import {NULL_FUNCTION} from "../../js/util/Functions";
+import {GroupHit} from "./group_sharing/GroupHit";
+import {GroupHits} from "./group_sharing/GroupHits";
 
 const styles = {
     swatch: {
@@ -135,6 +137,11 @@ class App<P> extends React.Component<{}, IAppState> {
                         <LargeModalBody>
 
                             this is some modal content.
+
+                            <GroupHits>
+                                <GroupHit name="Linux" description="A group about Linux" nrMembers={10}/>
+                                <GroupHit name="Microsoft" description="A group about Microsoft" nrMembers={5}/>
+                            </GroupHits>
 
                         </LargeModalBody>
 
