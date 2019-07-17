@@ -89,27 +89,8 @@ export class NotificationForPrivateGroupDoc extends React.Component<IProps, ISta
         Toaster.info("Adding documents to document repository");
 
         const {invitation} = this.props;
-        const {groupID} = invitation;
 
-        const doGroupJoinAndAddDocs = async () => {
-
-            await GroupJoins.exec({groupID});
-
-            for (const docRef of invitation.docs) {
-
-                const groupDocRef: GroupDocRef = {
-                    groupID,
-                    docRef
-                };
-
-                log.info("Going to importFromGroup");
-                await GroupDatastores.importFromGroup(persistenceLayer, groupDocRef);
-
-            }
-
-        };
-
-        doGroupJoinAndAddDocs()
+        GroupJoins.execAndAdd(persistenceLayer, invitation)
             .then(() => Toaster.success("Added documents successfully to document repository."))
             .catch(err => {
                 const msg = "Failed to add document to repository: ";
