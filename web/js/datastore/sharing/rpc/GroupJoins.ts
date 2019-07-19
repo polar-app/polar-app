@@ -4,6 +4,8 @@ import {GroupDatastores, GroupDocRef} from "../GroupDatastores";
 import {GroupMemberInvitation} from "../db/GroupMemberInvitations";
 import {Logger} from "../../../logger/Logger";
 import {PersistenceLayer} from "../../PersistenceLayer";
+import {URLStr} from "../../../util/Strings";
+import {URLParams} from "../../../util/URLParams";
 
 const log = Logger.create();
 
@@ -34,6 +36,11 @@ export class GroupJoins {
 
         }
 
+    }
+
+    public static createShareURL(invitation: GroupMemberInvitation): URLStr {
+        const param = URLParams.createJSON(invitation);
+        return `http://app.getpolarized.io/add-shared-doc?invitation=${param}`;
     }
 
 }
