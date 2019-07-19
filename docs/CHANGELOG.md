@@ -1,3 +1,7 @@
+# 1.30.2
+
+- ability to handle add document requests from a URL
+
 # 1.30.1
 
 - Encourage users of free to go with Polar Premium...
