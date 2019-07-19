@@ -135,7 +135,7 @@ function  createRandomizedUpgradeMessage() {
     const messages = [
         "Want a dark mode? How about ePub support? Go premium and support Polar development!",
         "Premium users help support future Polar development and are generally pretty awesome.",
-        "Guess who else used Polar? Einstein! You want to be like Einstein don't you?",
+        "Guess who else used Polar Premium? Einstein! You want to be like Einstein don't you?",
         "It's scientifically proven that Polar premium adds 100 years to your life!",
     ];
 
