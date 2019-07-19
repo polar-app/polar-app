@@ -40,7 +40,7 @@ export class GroupJoins {
 
     public static createShareURL(invitation: GroupMemberInvitation): URLStr {
         const param = URLParams.createJSON(invitation);
-        return `http://app.getpolarized.io/add-shared-doc?invitation=${param}`;
+        return `https://app.getpolarized.io/apps/add-shared-doc?invitation=${param}`;
     }
 
 }

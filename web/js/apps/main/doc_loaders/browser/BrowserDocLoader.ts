@@ -22,7 +22,7 @@ export class BrowserDocLoader implements IDocLoader {
 
     public create(loadDocRequest: LoadDocRequest): IDocLoadRequest {
 
-        const linkLoader = Nav.createLinkLoader();
+        const linkLoader = Nav.createLinkLoader({focus: true, newWindow: loadDocRequest.newWindow});
 
         Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
         Preconditions.assertPresent(loadDocRequest.backendFileRef, "backendFileRef");
@@ -55,7 +55,6 @@ export class BrowserDocLoader implements IDocLoader {
                 const viewerURL = toViewerURL();
 
                 linkLoader.load(viewerURL);
-
             }
 
         };

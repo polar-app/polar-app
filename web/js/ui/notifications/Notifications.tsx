@@ -19,6 +19,8 @@ export class Notifications extends React.PureComponent<IProps, IState> {
 
         GroupMemberInvitations.onSnapshot(invitations => {
 
+            console.log("Got invitations: ", invitations);
+
             this.setState({invitations});
 
         }).catch(err => {
