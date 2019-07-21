@@ -3,6 +3,8 @@ import {Tags} from '../../js/tags/Tags';
 import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
 import {SimpleTabs} from "../../js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
+import {Feedback} from "../../js/ui/feedback/Feedback";
+import {NULL_FUNCTION} from "../../js/util/Functions";
 
 const styles = {
     swatch: {
@@ -119,17 +121,23 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>*/}
 
-                <SimpleTabs>
+                <Feedback category='net-promoter-score'
+                          title='How likely are you to recommend Polar?'
+                          from="Not likely"
+                          to="Very likely"
+                          onRated={NULL_FUNCTION}/>
 
-                    <SimpleTab href="#" text="Document Repository" active={true}>
+                {/*<SimpleTabs>*/}
 
-                    </SimpleTab>
+                {/*    <SimpleTab href="#" text="Document Repository" active={true}>*/}
 
-                    <SimpleTab href="#" text="Groups">
+                {/*    </SimpleTab>*/}
 
-                    </SimpleTab>
+                {/*    <SimpleTab href="#" text="Groups">*/}
 
-                </SimpleTabs>
+                {/*    </SimpleTab>*/}
+
+                {/*</SimpleTabs>*/}
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}

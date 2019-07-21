@@ -23,6 +23,8 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+        this.onChange = this.onChange.bind(this);
+
         this.state = {
             contacts: [],
             members: []
@@ -43,7 +45,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
             </div>
 
             <ContactsSelector options={contactOptions}
-                              onChange={contactSelections => this.contactSelections = contactSelections}/>
+                              onChange={contactSelections => this.onChange(contactSelections)}/>
 
             <div className="mt-2">
 
@@ -91,6 +93,11 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
         </div>;
 
+    }
+
+    private onChange(contactSelections: ReadonlyArray<UserRef>) {
+        console.log("contacts changed: ", contactSelections);
+        this.contactSelections = contactSelections;
     }
 
 }

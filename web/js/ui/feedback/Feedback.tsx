@@ -4,6 +4,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {LeftRightSplit} from '../left_right_split/LeftRightSplit';
 import {Nav} from '../util/Nav';
 import {SURVEY_LINK} from '../../../../apps/repository/js/splash/splashes/survey/Survey';
+import {BottomBar} from "../bottom_bar/BottomBar";
 
 export class Feedback extends React.Component<IProps, IState> {
 
@@ -153,14 +154,7 @@ export class Feedback extends React.Component<IProps, IState> {
 
         const FeedbackForm = () => {
 
-            return <div style={{
-                width: '600px',
-                position: 'fixed',
-                right: 25,
-                bottom: 25,
-                zIndex: 9999,
-            }}
-                        className="border rounded shadow bg-white p-3">
+            return <BottomBar>
 
                 <h3 className="text-center">{this.props.title}</h3>
 
@@ -176,7 +170,7 @@ export class Feedback extends React.Component<IProps, IState> {
 
                 {this.props.footer}
 
-            </div>;
+            </BottomBar>;
 
         };
 
