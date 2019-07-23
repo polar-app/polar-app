@@ -4,7 +4,6 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
-import {isPresent} from '../../../../web/js/Preconditions';
 import {Tag, Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
@@ -22,7 +21,6 @@ import {DocContextMenu} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
-import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
@@ -567,7 +565,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
     private doHandleToggleField(repoDocInfo: RepoDocInfo, field: string) {
 
         this.handleToggleField(repoDocInfo, field)
-            .catch(err => log.error(`Could not handle toggle on field: ${field}: `, err));
+            .catch(err => {
+                log.error(`Could not handle toggle on field: ${field}: `, err);
+            });
 
     }
 
@@ -605,7 +605,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         if (mutated) {
 
             await this.props.writeDocInfo(repoDocInfo.docInfo)
-                .catch(err => log.error(err));
+                .catch(err => log.error("Failed to write DocInfo", err));
 
             this.props.refresh();
         }

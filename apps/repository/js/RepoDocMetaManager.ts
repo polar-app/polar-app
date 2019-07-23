@@ -52,6 +52,7 @@ export class RepoDocMetaManager {
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
     constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
+        Preconditions.assertPresent(persistenceLayerProvider, 'persistenceLayerProvider');
         this.persistenceLayerProvider = persistenceLayerProvider;
         this.init();
     }
@@ -160,6 +161,8 @@ export class RepoDocMetaManager {
      *
      */
     public async writeDocInfo(docInfo: IDocInfo) {
+
+        Preconditions.assertPresent(this.persistenceLayerProvider, 'persistenceLayerProvider');
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 

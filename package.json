@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.30.0",
+  "version": "1.30.4",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -40,7 +40,8 @@
     "webpack": "npx webpack --config=webpack.config.js",
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
     "webpack-dev-server": "webpack-dev-server --https",
-    "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron0' | grep -v 'web/test' ; true"
+    "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron0' | grep -v 'web/test' ; true",
+    "serve": "node scripts/serve.js"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [

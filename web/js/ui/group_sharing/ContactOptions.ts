@@ -6,7 +6,8 @@ export class ContactOptions {
 
     public static toContactOptions(contactProfiles: ReadonlyArray<ContactProfile>): ReadonlyArray<ContactOption> {
 
-        return  contactProfiles.map(current => {
+        const contactProfilesMapped: ReadonlyArray<ContactOption | undefined>
+            = contactProfiles.map(current => {
 
             if (current.profile) {
 
@@ -34,16 +35,30 @@ export class ContactOptions {
                     label
                 };
 
-            } else {
+            } else if (current.contact.email) {
 
                 return {
                     value: current.contact.email!,
                     label: current.contact.email!
                 };
 
+            } else {
+
+                console.warn("Broken profile information: ", current);
+
+                // I think there is just a profileID here and we're not properly
+                // resolving it to show it in the UI.
+
+                // this one is broken
+                return undefined;
+
             }
 
         });
+
+        return contactProfilesMapped
+                .filter(current => current !== undefined)
+                .map(current => current!);
 
     }
 

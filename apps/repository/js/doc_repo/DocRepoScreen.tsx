@@ -364,19 +364,19 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                           data={this.state.data}
                                           relatedTags={this.props.repoDocMetaManager!.relatedTags}
                                           synchronizingDocLoader={this.synchronizingDocLoader}
-                                          tagsProvider={tagsProvider}
-                                          writeDocInfoTags={this.props.repoDocMetaManager!.writeDocInfoTags}
-                                          deleteDocInfo={this.props.repoDocMetaManager.deleteDocInfo}
-                                          writeDocInfoTitle={this.props.repoDocMetaManager.writeDocInfoTitle}
-                                          writeDocInfo={this.props.repoDocMetaManager.writeDocInfo}
+                                          tagsProvider={() => tagsProvider()}
+                                          writeDocInfoTags={(repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags)}
+                                          deleteDocInfo={repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)}
+                                          writeDocInfoTitle={(repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)}
+                                          writeDocInfo={docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo)}
                                           refresh={() => this.refresh()}
-                                          onDocDeleteRequested={this.onDocDeleteRequested}
-                                          onDocDeleted={this.onDocDeleted}
-                                          onDocSetTitle={this.onDocSetTitle}
-                                          onDocTagged={this.onDocTagged}
-                                          onMultiDeleted={this.onMultiDeleted}
-                                          selectRow={this.selectRow}
-                                          onSelected={this.onSelected}
+                                          onDocDeleteRequested={repoDocInfos => this.onDocDeleteRequested(repoDocInfos)}
+                                          onDocDeleted={repoDocInfos => this.onDocDeleted(repoDocInfos)}
+                                          onDocSetTitle={(repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title)}
+                                          onDocTagged={(repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags)}
+                                          onMultiDeleted={() => this.onMultiDeleted()}
+                                          selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
+                                          onSelected={selected => this.onSelected(selected)}
                                           onReactTable={reactTable => this.reactTable = reactTable}/>
                         }
                         side='left'

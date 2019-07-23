@@ -33,7 +33,7 @@ export class Nav {
      * by pre-creating a window and then changing the location later.
      *
      */
-    public static createLinkLoader(opts: LinkLoaderOpts = {focus: true}): LinkLoader {
+    public static createLinkLoader(opts: LinkLoaderOpts = {focus: true, newWindow: true}): LinkLoader {
 
         if (Platforms.type() === 'desktop') {
             return new DesktopLinkLoader(opts);
@@ -51,17 +51,21 @@ class DesktopLinkLoader implements LinkLoader {
 
     constructor(opts: LinkLoaderOpts) {
 
-        const win = window.open('', '_blank');
+        const win = opts.newWindow ? window.open('', '_blank') : window;
 
         if (win) {
 
             this.win = win;
 
-            if (opts.focus) {
-                win.focus();
-            }
+            if (opts.newWindow) {
 
-            win.document.write("Loading...");
+                if (opts.focus) {
+                    win.focus();
+                }
+
+                win.document.write("Loading...");
+
+            }
 
         } else {
             throw new Error("Unable to create window");
@@ -85,6 +89,7 @@ class MobileLinkLoader implements LinkLoader {
 
 export interface LinkLoaderOpts {
     readonly focus: boolean;
+    readonly newWindow: boolean;
 }
 
 export interface LinkLoader {

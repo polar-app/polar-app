@@ -25,6 +25,7 @@ module.exports = {
         "chrome": [ "./web/js/apps/chrome.ts"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "login": [ "./apps/repository/js/login.ts"],
+        "add-shared-doc": [ "./apps/add-shared-doc/js/index.ts"],
 
         // "all": [ "./web/js/apps/chrome.ts", "./apps/repository/js/entry.tsx", "./apps/repository/js/login.ts"],
 

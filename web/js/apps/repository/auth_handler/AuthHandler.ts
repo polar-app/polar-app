@@ -7,7 +7,12 @@ import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 
 export interface AuthHandler {
 
-    authenticate(): Promise<void>;
+    /**
+     *
+     * @param signInSuccessUrl The URL to redirect to if we're logging in to a
+     * specific portion of the app.
+     */
+    authenticate(signInSuccessUrl?: string): Promise<void>;
 
     status(): Promise<AuthStatus>;
 
@@ -39,12 +44,20 @@ export class AuthHandlers {
 
 abstract class DefaultAuthHandler implements AuthHandler {
 
-    public async authenticate(): Promise<void> {
+    public async authenticate(signInSuccessUrl?: string): Promise<void> {
 
-        const base = URLs.toBase(document.location!.href);
-        const newLocation = new URL('/apps/repository/login.html', base).toString();
+        const createNewLocation = () => {
 
-        window.location.href = newLocation;
+            if (signInSuccessUrl) {
+                return signInSuccessUrl;
+            }
+
+            const base = URLs.toBase(document.location!.href);
+            return new URL('/apps/repository/login.html', base).toString();
+
+        };
+
+        window.location.href = createNewLocation();;
 
     }
 

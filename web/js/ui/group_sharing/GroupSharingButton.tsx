@@ -95,20 +95,21 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
         this.setState({...this.state, open});
     }
 
-    private onDone(invitation: InvitationRequest) {
-        console.log("onDone...");
+    private onDone(invitationRequest: InvitationRequest) {
+        console.log("onDone...: ", invitationRequest);
 
         this.toggle(false);
         this.props.onDone();
 
-        this.doGroupProvision(invitation)
+        this.doGroupProvision(invitationRequest)
             .catch(err => Toaster.error("Could not provision group: " + err.message));
 
     }
 
-    private async doGroupProvision(invitation: InvitationRequest) {
+    private async doGroupProvision(invitationRequest: InvitationRequest) {
 
-        if (invitation.contactSelections.length === 0) {
+        if (invitationRequest.contactSelections.length === 0) {
+            console.log("No contacts to invite.  Done.")
             // there's nothing to be done so don't provision a group with zero
             // members.
             return;
@@ -120,7 +121,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
         const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
         const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
-        const {message} = invitation;
+        const {message} = invitationRequest;
 
         Toaster.info("Sharing document with users ... ");
 
@@ -130,7 +131,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
             docs: [docRef],
             invitations: {
                 message,
-                to: invitation.contactSelections
+                to: invitationRequest.contactSelections
             }
         });
 

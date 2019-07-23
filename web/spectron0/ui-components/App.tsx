@@ -3,15 +3,6 @@ import {Tags} from '../../js/tags/Tags';
 import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
 import {SimpleTabs} from "../../js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
-import {LargeModal} from "../../js/ui/large_modal/LargeModal";
-import {LargeModalBody} from "../../js/ui/large_modal/LargeModalBody";
-import {WhatsNewContent} from "../../../apps/repository/js/splash2/whats_new/WhatsNewContent";
-import ModalFooter from "reactstrap/lib/ModalFooter";
-import Button from "reactstrap/lib/Button";
-import {Modal} from "reactstrap";
-import {NULL_FUNCTION} from "../../js/util/Functions";
-import {GroupHit} from "./group_sharing/GroupHit";
-import {GroupHits} from "./group_sharing/GroupHits";
 
 const styles = {
     swatch: {
@@ -149,22 +140,15 @@ class App<P> extends React.Component<{}, IAppState> {
                         {/*    <Button color="primary" onClick={() => this.onDone()}>Close</Button>*/}
                         {/*</ModalFooter>*/}
 
-                    </LargeModal>
+                    <SimpleTab href="#" text="Document Repository" active={true}>
 
-                </div>
+                    </SimpleTab>
 
+                    <SimpleTab href="#" text="Groups">
 
-                {/*<SimpleTabs>*/}
+                    </SimpleTab>
 
-                {/*    <SimpleTab href="#" text="Document Repository" active={true}>*/}
-
-                {/*    </SimpleTab>*/}
-
-                {/*    <SimpleTab href="#" text="Groups">*/}
-
-                {/*    </SimpleTab>*/}
-
-                {/*</SimpleTabs>*/}
+                </SimpleTabs>
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}

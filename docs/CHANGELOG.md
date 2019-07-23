@@ -1,4 +1,21 @@
+# 1.30.5
+
+- analytics for adding documents...
+
+# 1.30.4
+
+
+- fixed bug with returning undefined values of profiles that lack metadata
+
+# 1.30.2
+
+- ability to handle add document requests from a URL
+
 # 1.30.1
+
+- Encourage users of free to go with Polar Premium...
+
+- Fixed bug with archive and flag not working.
 
 - Upgrade to Electron 5.0.6...
 
