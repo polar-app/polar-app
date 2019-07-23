@@ -4,11 +4,14 @@ import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {CreateGroupForm} from "./CreateGroupForm";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
+import {Tags} from "../../../../web/js/tags/Tags";
 
 export class CreateGroupScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.createTagsProvider = this.createTagsProvider.bind(this);
 
         this.state = {
         };
@@ -17,9 +20,7 @@ export class CreateGroupScreen extends React.Component<IProps, IState> {
 
     public render() {
 
-        // FIXME: filter out folders. Just basic tags only.
-        // FIXME: filter out folders on the backend too.
-        const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
+        const tagsProvider = this.createTagsProvider();
         const relatedTags = this.props.repoDocMetaManager!.relatedTags;
 
         return (
@@ -50,6 +51,17 @@ export class CreateGroupScreen extends React.Component<IProps, IState> {
             </FixedNav>
 
         );
+    }
+
+    private createTagsProvider() {
+
+        return () => {
+
+            const tags = this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
+            return Tags.onlyRegular(tags);
+
+        };
+
     }
 
 }
