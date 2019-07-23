@@ -8,6 +8,7 @@ import {BrowserDocLoader} from "../../../web/js/apps/main/doc_loaders/browser/Br
 import {Providers} from "../../../web/js/util/Providers";
 import {LoadDocRequest} from "../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {BackendFileRefs} from "../../../web/js/datastore/BackendFileRefs";
+import {RendererAnalytics} from "../../../web/js/ga/RendererAnalytics";
 
 // *****
 //
@@ -58,6 +59,8 @@ async function redirectToDocumentViewer(persistenceLayer: PersistenceLayer,
 }
 
 async function doHandle() {
+
+    RendererAnalytics.event({category: 'add-shared-doc', action: 'do-handle'});
 
     const authHandler = AuthHandlers.get();
 
