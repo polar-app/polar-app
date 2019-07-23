@@ -1,3 +1,7 @@
+# 1.30.4
+
+- fixed bug with returning undefined values of profiles that lack metadata
+
 # 1.30.2
 
 - ability to handle add document requests from a URL
