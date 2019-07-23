@@ -1,4 +1,9 @@
+# 1.30.5
+
+- analytics for adding documents...
+
 # 1.30.4
+
 
 - fixed bug with returning undefined values of profiles that lack metadata
 
