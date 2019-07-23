@@ -8,6 +8,7 @@ import {LargeModalBody} from "../../js/ui/large_modal/LargeModalBody";
 import {GroupHits} from "./group_sharing/GroupHits";
 import {GroupHit} from "./group_sharing/GroupHit";
 import {NULL_FUNCTION} from "../../js/util/Functions";
+import {GroupSearch} from "./group_sharing/GroupSearch";
 
 const styles = {
     swatch: {
@@ -133,6 +134,8 @@ class App<P> extends React.Component<{}, IAppState> {
                         <LargeModalBody>
 
                             this is some modal content.
+
+                            <GroupSearch/>
 
                             <GroupHits>
                                 <GroupHit name="Linux" description="A group about Linux" nrMembers={10} onAdd={NULL_FUNCTION}/>
