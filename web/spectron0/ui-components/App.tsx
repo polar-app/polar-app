@@ -3,6 +3,11 @@ import {Tags} from '../../js/tags/Tags';
 import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
 import {SimpleTabs} from "../../js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
+import {LargeModal} from "../../js/ui/large_modal/LargeModal";
+import {LargeModalBody} from "../../js/ui/large_modal/LargeModalBody";
+import {GroupHits} from "./group_sharing/GroupHits";
+import {GroupHit} from "./group_sharing/GroupHit";
+import {NULL_FUNCTION} from "../../js/util/Functions";
 
 const styles = {
     swatch: {
@@ -130,8 +135,8 @@ class App<P> extends React.Component<{}, IAppState> {
                             this is some modal content.
 
                             <GroupHits>
-                                <GroupHit name="Linux" description="A group about Linux" nrMembers={10}/>
-                                <GroupHit name="Microsoft" description="A group about Microsoft" nrMembers={5}/>
+                                <GroupHit name="Linux" description="A group about Linux" nrMembers={10} onAdd={NULL_FUNCTION}/>
+                                <GroupHit name="Microsoft" description="A group about Microsoft" nrMembers={5} onAdd={NULL_FUNCTION}/>
                             </GroupHits>
 
                         </LargeModalBody>
@@ -140,15 +145,9 @@ class App<P> extends React.Component<{}, IAppState> {
                         {/*    <Button color="primary" onClick={() => this.onDone()}>Close</Button>*/}
                         {/*</ModalFooter>*/}
 
-                    <SimpleTab href="#" text="Document Repository" active={true}>
 
-                    </SimpleTab>
-
-                    <SimpleTab href="#" text="Groups">
-
-                    </SimpleTab>
-
-                </SimpleTabs>
+                    </LargeModal>
+                </div>
 
                 {/*<TreeView root={root}*/}
                 {/*          />*/}
