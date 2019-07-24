@@ -3,16 +3,16 @@ import Input from "reactstrap/lib/Input";
 import {Form} from "reactstrap";
 import FormGroup from "reactstrap/lib/FormGroup";
 import Label from "reactstrap/lib/Label";
-import {Tag, TagStr} from "../../../../web/js/tags/Tags";
-import {RelatedTags} from "../../../../web/js/tags/related/RelatedTags";
-import {TagInputWidget} from "../TagInputWidget";
 import Button from "reactstrap/lib/Button";
-import {Logger} from "../../../../web/js/logger/Logger";
+import {Logger} from "../../../../../web/js/logger/Logger";
+import {TagInputWidget} from "../../TagInputWidget";
+import {Tag, TagStr} from "../../../../../web/js/tags/Tags";
 import {
     GroupProvisionRequest,
     GroupProvisions
-} from "../../../../web/js/datastore/sharing/rpc/GroupProvisions";
-import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+} from "../../../../../web/js/datastore/sharing/rpc/GroupProvisions";
+import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
+import {RelatedTags} from "../../../../../web/js/tags/related/RelatedTags";
 
 const log = Logger.create();
 
