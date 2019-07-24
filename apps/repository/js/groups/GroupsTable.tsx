@@ -7,11 +7,6 @@ export class GroupsTable extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
-
-        this.state = {
-            groups: []
-        };
-
     }
 
     public render() {
