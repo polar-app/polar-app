@@ -5,6 +5,7 @@ import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
 import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {Arrays} from "../../util/Arrays";
+import {UpgradeRequired} from "./UpgradeRequired";
 
 const log = Logger.create();
 
@@ -13,41 +14,6 @@ const MESSAGE = createRandomizedUpgradeMessage();
 interface UpgradeRequiredProps {
     readonly planRequired?: AccountPlan;
 }
-
-const UpgradeRequired = (props: UpgradeRequiredProps) => {
-
-    RendererAnalytics.event({category: 'upgrade', action: 'triggered-upgrade-required'});
-
-    const onClick = () => {
-        RendererAnalytics.event({category: 'upgrade', action: 'clicked-button-to-plans'});
-        document.location.hash = 'plans';
-    };
-
-    return <div className="mt-1 mb-1 p-1 rounded"
-                style={{
-                    backgroundColor: '#ffcccc',
-                    fontWeight: 'bold'
-                }}>
-
-        <Button color="danger"
-                size="sm"
-                style={{fontWeight: 'bold'}}
-                onClick={() => onClick()}>
-
-            <i className="fas fa-certificate"/>
-            &nbsp;
-            Upgrade Required
-
-        </Button>
-
-        <span className="ml-1">
-            Your account has exceeded limits for your current plan.  Please upgrade.
-        </span>
-
-    </div>;
-
-};
-
 
 const GoPremium = (props: UpgradeRequiredProps) => {
 

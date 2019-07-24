@@ -5,6 +5,7 @@ import {SimpleTabs} from "../../js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
 import {Feedback} from "../../js/ui/feedback/Feedback";
 import {NULL_FUNCTION} from "../../js/util/Functions";
+import {UpgradeRequired} from "../../js/ui/account_upgrade/UpgradeRequired";
 
 const styles = {
     swatch: {
@@ -121,11 +122,13 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>*/}
 
-                <Feedback category='net-promoter-score'
-                          title='How likely are you to recommend Polar?'
-                          from="Not likely"
-                          to="Very likely"
-                          onRated={NULL_FUNCTION}/>
+                <UpgradeRequired planRequired='gold'/>
+
+                {/*<Feedback category='net-promoter-score'*/}
+                {/*          title='How likely are you to recommend Polar?'*/}
+                {/*          from="Not likely"*/}
+                {/*          to="Very likely"*/}
+                {/*          onRated={NULL_FUNCTION}/>*/}
 
                 {/*<SimpleTabs>*/}
 
