@@ -4,6 +4,7 @@ import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Group, Groups} from "../../../../web/js/datastore/sharing/db/Groups";
 import {Logger} from "../../../../web/js/logger/Logger";
+import {GroupsTable} from "./GroupsTable";
 
 const log = Logger.create();
 
@@ -45,11 +46,29 @@ export class GroupsScreen extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody className="container-fluid">
+                <FixedNavBody className="container">
 
                     <div className="row">
 
-                        <div className="col-lg-12 w-100 pt-2">
+                        <div className="col">
+
+                            <div style={{display: 'flex'}}
+                                 className="w-100 mt-3">
+
+                                <div style={{flexGrow: 1}}>
+                                    <h3>Groups</h3>
+                                </div>
+
+                                <div className="text-right">
+                                    <a href="#groups/create"
+                                       className="btn btn-success btn-sm">Create Group</a>
+                                </div>
+
+
+                            </div>
+
+                            <GroupsTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                         groups={this.state.groups}/>
 
                         </div>
 

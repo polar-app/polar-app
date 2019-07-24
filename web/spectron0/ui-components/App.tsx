@@ -9,6 +9,9 @@ import {GroupHits} from "./group_sharing/GroupHits";
 import {GroupHit} from "./group_sharing/GroupHit";
 import {NULL_FUNCTION} from "../../js/util/Functions";
 import {GroupSearch} from "./group_sharing/GroupSearch";
+import {Group} from "../../js/datastore/sharing/db/Groups";
+import {ISODateTimeStrings} from "../../js/metadata/ISODateTimeStrings";
+import {GroupCard} from "../../../apps/repository/js/groups/GroupCard";
 
 const styles = {
     swatch: {
@@ -117,6 +120,16 @@ class App<P> extends React.Component<{}, IAppState> {
         //                    onDone: NULL_FUNCTION
         //
         //                });
+
+        const group: Group = {
+            nrMembers: 100,
+            name: 'Linux',
+            description: "A group about Linux, Ubuntu, Debian, and UNIX operating systems.",
+            id: "101",
+            visibility: 'public',
+            created: ISODateTimeStrings.create()
+        };
+
         return (
 
             <div style={{margin: '5px'}}>
@@ -127,29 +140,33 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <div>
 
-                    <LargeModal isOpen={true}
-                                centered={true}
-                                minWidth="20%">
+                    {/*<LargeModal isOpen={true}*/}
+                    {/*            centered={true}*/}
+                    {/*            minWidth="20%">*/}
 
-                        <LargeModalBody>
+                    {/*    <LargeModalBody>*/}
 
-                            this is some modal content.
+                    {/*        this is some modal content.*/}
 
-                            <GroupSearch/>
+                    {/*        <GroupSearch/>*/}
 
-                            <GroupHits>
-                                <GroupHit name="Linux" description="A group about Linux" nrMembers={10} onAdd={NULL_FUNCTION}/>
-                                <GroupHit name="Microsoft" description="A group about Microsoft" nrMembers={5} onAdd={NULL_FUNCTION}/>
-                            </GroupHits>
+                    {/*        <GroupHits>*/}
+                    {/*            <GroupHit name="Linux" description="A group about Linux" nrMembers={10} onAdd={NULL_FUNCTION}/>*/}
+                    {/*            <GroupHit name="Microsoft" description="A group about Microsoft" nrMembers={5} onAdd={NULL_FUNCTION}/>*/}
+                    {/*        </GroupHits>*/}
 
-                        </LargeModalBody>
+                    {/*    </LargeModalBody>*/}
 
-                        {/*<ModalFooter>*/}
-                        {/*    <Button color="primary" onClick={() => this.onDone()}>Close</Button>*/}
-                        {/*</ModalFooter>*/}
+                    {/*    /!*<ModalFooter>*!/*/}
+                    {/*    /!*    <Button color="primary" onClick={() => this.onDone()}>Close</Button>*!/*/}
+                    {/*    /!*</ModalFooter>*!/*/}
 
 
-                    </LargeModal>
+                    {/*</LargeModal>*/}
+
+
+                    <GroupCard group={group}/>
+
                 </div>
 
                 {/*<TreeView root={root}*/}
