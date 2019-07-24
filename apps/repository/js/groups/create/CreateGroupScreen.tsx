@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {FixedNav, FixedNavBody} from '../../FixedNav';
+import {RepoHeader} from '../../repo_header/RepoHeader';
+import {PersistenceLayerManager} from '../../../../../web/js/datastore/PersistenceLayerManager';
 import {CreateGroupForm} from "./CreateGroupForm";
-import {RepoDocMetaManager} from "../RepoDocMetaManager";
-import {Tags} from "../../../../web/js/tags/Tags";
+import {RepoDocMetaManager} from "../../RepoDocMetaManager";
+import {Tags} from "../../../../../web/js/tags/Tags";
 
 export class CreateGroupScreen extends React.Component<IProps, IState> {
 

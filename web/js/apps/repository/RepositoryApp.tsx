@@ -45,7 +45,7 @@ import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/prem
 import {Accounts} from '../../accounts/Accounts';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import DocRepoScreen from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
-import {CreateGroupScreen} from "../../../../apps/repository/js/groups/CreateGroupScreen";
+import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/CreateGroupScreen";
 import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
 
 const log = Logger.create();

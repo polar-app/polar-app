@@ -68,6 +68,34 @@ export class Groups {
 
     }
 
+
+    public static async topGroups(): Promise<ReadonlyArray<Group>> {
+
+        // INDEXES NEEDED
+        //
+        // visibility, lang, tags, nrMembers
+        // visibility, tags, nrMembers
+
+        // search by tag and by number of members descending
+
+        // no paging yet.. just top groups to get this working and off the groupnd
+
+        const visibilityClauses: ReadonlyArray<Clause> = [
+            ['visibility', '==' , 'public']
+        ];
+
+        const clauses: ReadonlyArray<Clause> = [...visibilityClauses];
+
+        const orderBy: ReadonlyArray<OrderByClause> = [
+            ['nrMembers', 'desc']
+        ];
+
+        const limit = 50;
+
+        return await Collections.list(this.COLLECTION,  clauses, {orderBy, limit});
+
+    }
+
 }
 
 
