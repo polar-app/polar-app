@@ -1,6 +1,6 @@
 # 1.30.5
 
-- Telling the user that their account will now be disabled.
+- Telling the user that their account will now be disabled
 
 - Analytics for adding documents...
 

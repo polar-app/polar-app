@@ -4,7 +4,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {LeftRightSplit} from '../left_right_split/LeftRightSplit';
 import {Nav} from '../util/Nav';
 import {SURVEY_LINK} from '../../../../apps/repository/js/splash/splashes/survey/Survey';
-import {BottomBar} from "../bottom_bar/BottomBar";
+import {MessageBox} from "../util/MessageBox";
 
 export class Feedback extends React.Component<IProps, IState> {
 
@@ -154,7 +154,7 @@ export class Feedback extends React.Component<IProps, IState> {
 
         const FeedbackForm = () => {
 
-            return <BottomBar>
+            return <MessageBox>
 
                 <h3 className="text-center">{this.props.title}</h3>
 
@@ -170,7 +170,7 @@ export class Feedback extends React.Component<IProps, IState> {
 
                 {this.props.footer}
 
-            </BottomBar>;
+            </MessageBox>;
 
         };
 
