@@ -1,5 +1,8 @@
 # 1.30.5
 
+- Users are required to upgrade now.  We won't allow more documents to be added
+  to the repository otherwise.
+
 - Telling the user that their account will now be disabled
 
 - Analytics for adding documents...
