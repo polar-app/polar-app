@@ -103,8 +103,6 @@ export class PDFImporter {
                             basename: string,
                             opts: PDFImportOpts = {}): Promise<Optional<ImportedFile>> {
 
-        console.log("FIXME: imported here. ", new Error());
-
         docPath = await this.prefetch(docPath, basename);
 
         const isPath = ! URLs.isURL(docPath);
