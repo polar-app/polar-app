@@ -9,6 +9,15 @@ const log = Logger.create();
 
 export class Collections {
 
+    public static async getByID<T>(collection: string, id: string): Promise<T | undefined> {
+
+        const firestore = await Firestore.getInstance();
+
+        const userGroupRef = firestore.collection(collection).doc(id);
+        const doc = await userGroupRef.get();
+        return <T> doc.data();
+
+    }
 
     public static async deleteByID(collection: string,
                                    provider: () => Promise<ReadonlyArray<IDRecord>>) {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {AccountPlan} from "../../accounts/Account";
 import {MessageBox} from "../util/MessageBox";
 import Button from "reactstrap/lib/Button";
 import {NULL_FUNCTION} from "../../util/Functions";
@@ -9,10 +8,23 @@ import {BlackoutBox} from "../util/BlackoutBox";
  * Listen to the machine datastore for this user and if their account isn't in
  * line with the machine data store then we have to force them to upgrade.
  */
-export class UpgradeRequiredBox extends React.Component<IProps, IState> {
+export class UpgradeRequiredMessageBox extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onUpgrade = this.onUpgrade.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+
+    }
+
+    private onCancel() {
+        this.props.dispose();
+    }
+
+    private onUpgrade() {
+        this.props.dispose();
+        document.location.href = '#plans';
     }
 
     public render() {
@@ -47,9 +59,9 @@ export class UpgradeRequiredBox extends React.Component<IProps, IState> {
                         document.
                     </p>
 
-                    <i className="fas fa-check text-success"></i> More storage for larger repositories. <br/>
-                    <i className="fas fa-check text-success"></i> Supports more devices for cross-device sync.<br/>
-                    <i className="fas fa-check text-success"></i> Helps fund future development of Polar.<br/>
+                    <i className="fas fa-check text-success"/> More storage for larger repositories. <br/>
+                    <i className="fas fa-check text-success"/> Supports more devices for cross-device sync.<br/>
+                    <i className="fas fa-check text-success"/> Helps fund future development of Polar.<br/>
 
                 </div>
 
@@ -58,7 +70,7 @@ export class UpgradeRequiredBox extends React.Component<IProps, IState> {
                     <Button color="secondary"
                             outline
                             size="md"
-                            onClick={NULL_FUNCTION}
+                            onClick={() => this.onCancel()}
                             className="">
 
                         No Thanks
@@ -67,7 +79,7 @@ export class UpgradeRequiredBox extends React.Component<IProps, IState> {
 
                     <Button color="success"
                             size="md"
-                            onClick={NULL_FUNCTION}
+                            onClick={() => this.onUpgrade()}
                             className="ml-1">
 
                         Upgrade
@@ -86,7 +98,7 @@ export class UpgradeRequiredBox extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly planRequired?: AccountPlan;
+    readonly dispose: () => void;
 }
 
 interface IState {

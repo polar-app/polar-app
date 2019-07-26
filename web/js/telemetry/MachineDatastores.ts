@@ -10,6 +10,8 @@ import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Executors} from '../util/Executors';
 import {Logger} from '../logger/Logger';
+import * as firebase from '../firebase/lib/firebase';
+import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 
 const log = Logger.create();
 
@@ -20,13 +22,7 @@ export class MachineDatastores {
 
     private static COLLECTION_NAME = "machine_datastore";
 
-    /**
-     * Callback for when we have new data for the account.
-     */
-    public static async onSnapshot(handler: (machineDatastore: MachineDatastore) => void) {
-
-        // TODO: migrate this to the new Collections code but it's not merged
-        // yet.
+    public static async ref() {
 
         const firestore = await Firestore.getInstance();
 
@@ -36,14 +32,44 @@ export class MachineDatastores {
             .collection(this.COLLECTION_NAME)
             .doc(id);
 
+        return ref;
+
+    }
+
+    public static async get() {
+
+        const ref = await this.ref();
+        const snapshot = await ref.get();
+        return this.toDoc(snapshot);
+
+    }
+
+    private static toDoc(snapshot: DocumentSnapshot) {
+
+        if (! snapshot.exists) {
+            return;
+        }
+
+        return <MachineDatastore> snapshot.data();
+
+    }
+
+    /**
+     * Callback for when we have new data for the account.
+     */
+    public static async onSnapshot(handler: (machineDatastore: MachineDatastore) => void) {
+
+        const ref = await this.ref();
+
         return ref.onSnapshot(snapshot => {
 
-            if (! snapshot.exists) {
+            const doc = this.toDoc(snapshot);
+
+            if (! doc) {
                 return;
             }
 
-            const account = <MachineDatastore> snapshot.data();
-            handler(account);
+            handler(doc);
 
         }, ERR_HANDLER);
 

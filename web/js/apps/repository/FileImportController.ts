@@ -17,6 +17,7 @@ import {AddFileRequest} from "./AddFileRequest";
 import {AppRuntime} from "../../AppRuntime";
 import {AddFileRequests} from "./AddFileRequests";
 import {ProgressTracker} from '../../util/ProgressTracker';
+import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 
 const log = Logger.create();
 
@@ -71,7 +72,6 @@ export class FileImportController {
 
         document.body.addEventListener('dragenter', (event) => this.onDragEnterOrOver(event), false);
         document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event), false);
-
         document.body.addEventListener('drop', event => this.onDrop(event));
 
     }
@@ -189,6 +189,13 @@ export class FileImportController {
     private async handleAddFileRequests(addFileRequests: AddFileRequest[]) {
 
         if (addFileRequests.length > 0) {
+
+            const accountUpgrader = new AccountUpgrader();
+
+            if (await accountUpgrader.upgradeRequired()) {
+                accountUpgrader.startUpgrade();
+                return;
+            }
 
             try {
                 await this.onImportFiles(addFileRequests);
