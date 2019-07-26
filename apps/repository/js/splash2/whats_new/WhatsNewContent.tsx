@@ -11,7 +11,19 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
         return (
 
             <div>
+                <div>
 
+                    <h3>Polar 1.30.6</h3>
+
+                    <p>
+                        A number of small improvements and bug fixes.  Groups
+                        sharing is more reliable and easier to use.  Emails
+                        with links to documents are now sent out to users
+                        directly.  Users are now also required to upgrade when
+                        they exceed their capacity.
+                    </p>
+
+                </div>
                 <div>
 
                     <h3>Polar 1.30.0</h3>
