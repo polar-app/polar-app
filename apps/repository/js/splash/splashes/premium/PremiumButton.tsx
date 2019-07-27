@@ -7,6 +7,7 @@ import {Logger} from '../../../../../../web/js/logger/Logger';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
+import {AccountPlan} from "../../../../../../web/js/accounts/Account";
 
 const log = Logger.create();
 
@@ -71,26 +72,28 @@ export class PremiumButton extends React.Component<IProps, IState> {
         const handler = buy ? buyHandler : changeHandler;
 
         return (
+            <div>
 
-            <NullCollapse open={! currentPlan}>
+                <NullCollapse open={! currentPlan}>
 
-                <Button color="secondary"
-                        onClick={() => handler()}>
+                    <Button color="secondary"
+                            onClick={() => handler()}>
 
-                    {text}
+                        {text}
 
-                </Button>
+                    </Button>
 
-            </NullCollapse>
+                </NullCollapse>
 
+            </div>
         );
     }
 
 }
 
 export interface IProps {
-    readonly from: Plan;
-    readonly to: Plan;
+    readonly from: AccountPlan;
+    readonly to: AccountPlan;
     readonly userInfo?: UserInfo;
 
 }
@@ -98,5 +101,3 @@ export interface IProps {
 export interface IState {
 
 }
-
-export type Plan = 'free' | 'bronze' | 'silver' | 'gold';
