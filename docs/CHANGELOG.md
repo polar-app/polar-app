@@ -1,3 +1,7 @@
+# 1.30.7 
+
+- Support for yearly payment plans
+
 # 1.30.6 
 
 - Users are required to upgrade now.  We won't allow more documents to be added
