@@ -1,4 +1,104 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-06-04T12:11:54-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.19.8 Released - Better Payments and Fixes</title><link href="https://getpolarized.io/2019/06/02/Polar-1-19-8.html" rel="alternate" type="text/html" title="Polar 1.19.8 Released - Better Payments and Fixes" /><published>2019-06-02T10:00:00-07:00</published><updated>2019-06-02T10:00:00-07:00</updated><id>https://getpolarized.io/2019/06/02/Polar-1-19-8</id><content type="html" xml:base="https://getpolarized.io/2019/06/02/Polar-1-19-8.html">&lt;h1 id=&quot;polar-1198-released---better-payments-and-fixes&quot;&gt;Polar 1.19.8 Released - Better Payments and Fixes&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-07-28T17:51:59-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
+
+&lt;p&gt;Being that my background is in CompSci I tend to think about thinks in terms of probabilities, statistics, game theory, 
+and distributed systems.&lt;/p&gt;
+
+&lt;p&gt;I’ve recently made what I think may be a unique observation about a number of social problems that might all be
+related to one root cause - defection.&lt;/p&gt;
+
+&lt;p&gt;I might be wrong but would love some feedback.  It’s an exceedingly complicated topic which has been researched for 
+hundreds of years so it might be that this observation has been made before.&lt;/p&gt;
+
+&lt;p&gt;My initial epiphany came while thinking about two main issues:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Corporations abusing their employees and the need to unionize.&lt;/li&gt;
+  &lt;li&gt;Corporations all rushing towards some non-optimal solution in the pursuit of profit&lt;/li&gt;
+  &lt;li&gt;Consumers unwilling to purchase products even if purchasing them would fund a product they cared about.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It’s my assertion that these are all related to the tragedy of the commons. I’ll just quote from Wikipedia to save you a step:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The tragedy of the commons is a situation in a shared-resource system where individual users, acting independently
+ according to their own self-interest, behave contrary to the common good of all users, by depleting or spoiling that
+ resource through their collective action. The theory originated in an essay written in 1833 by the British economist
+ William Forster Lloyd, who used a hypothetical example of the effects of unregulated grazing on common land (also known
+ as a “common”) in Great Britain and Ireland.[1] The concept became widely known as the “tragedy of the commons” over a
+ century later due to an article written by the American ecologist and philosopher Garrett Hardin in 1968.[2] In this
+ modern economic context, commons is taken to mean any shared and unregulated resource such as atmosphere, oceans,
+ rivers, fish stocks, roads and highways, or even an office refrigerator.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I’d assert that the tragedy of the commons is related a bit to the prisoners dilemma (again, from &lt;a href=&quot;https://en.wikipedia.org/wiki/Prisoner%27s_dilemma&quot;&gt;Wikipedia&lt;/a&gt;):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The prisoner’s dilemma is a standard example of a game analyzed in game theory that shows why two completely rational
+individuals might not cooperate, even if it appears that it is in their best interests to do so.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The prisoner’s dilemma could be considered a simpler version of the tragedy of the commons.  Instead of a prison term
+there’s the destruction of some resource and the tragedy of the commons is generalized to more actors.  Usually dozens.&lt;/p&gt;
+
+&lt;h1 id=&quot;cheating-and-cynicism&quot;&gt;Cheating and Cynicism&lt;/h1&gt;
+
+&lt;p&gt;I think the core issue in the above is defection - the idea that one player can decide to cheat the others for their own
+benefit.&lt;/p&gt;
+
+&lt;p&gt;The FEWER the actors the less probability that there will be defection.&lt;/p&gt;
+
+&lt;p&gt;If you know the other person well and trust them, you’re probably not going to defect.&lt;/p&gt;
+
+&lt;p&gt;However, if you have thousands of people you’re going to be far far less trusting that someone isn’t going to defect and 
+screw you over.  Hence &lt;em&gt;you’re&lt;/em&gt; more likely to defect as well!&lt;/p&gt;
+
+&lt;p&gt;This is a core observation.  The more actors in a class that CAN defect the higher the probability that they WILL defect.&lt;/p&gt;
+
+&lt;p&gt;This why unions are so hard to form and manage.  There are thousands of people in a company and they all have conflicting
+interests.  If they would hold their ground they could achieve their goals but they don’t.&lt;/p&gt;
+
+&lt;p&gt;Why is that?&lt;/p&gt;
+
+&lt;p&gt;The reason they don’t is game theoretic and hence deterministic.  We won’t ever solve this problem until we reduce
+the probability of defection.&lt;/p&gt;
+
+&lt;p&gt;Interestingly enough, the same situation applies to corporations creating externalities (destroying the environment, 
+hurting their employees, etc).  They’re essentially forced into this behavior due to defection.&lt;/p&gt;
+
+&lt;p&gt;If your company cares about the environment but all your customers care about is price then the companies that have 
+a higher priced product will go out of business.&lt;/p&gt;
+
+&lt;p&gt;Oddly enough these customers are also driven by defection.  Why care about the environment when no one else does?  Why
+are you the only one who cares?  Why pay $15 a pound for steak when you can just pay $5?&lt;/p&gt;
+
+&lt;p&gt;Interestingly enough, the optimum solution is always present when N=1.  If there’s just one actor (you) then you’re not
+likely to destroy your own property.  The more actors present the higher chance that someone’s going to abuse the system.&lt;/p&gt;
+
+&lt;h1 id=&quot;a-protocol-for-minimizing-defection&quot;&gt;A Protocol for Minimizing Defection?&lt;/h1&gt;
+
+&lt;p&gt;What if we could solve this problem through core changes in our society?&lt;/p&gt;
+
+&lt;p&gt;I can’t help thinking that maybe some sort of smart contract could be used here or a system of opt-in benefits and harsh 
+punishments for defection.&lt;/p&gt;
+
+&lt;p&gt;I’m still working through what this would mean but I’ll illustrate some (flawed) ideas below to illustrate some potential 
+solutions.&lt;/p&gt;
+
+&lt;p&gt;What if unions gave perks to employees including job references, health benefits, etc BUT to participate in the union 
+you had to put forth a $5k bond.  This could be deducted slowly over time from your paycheck.&lt;/p&gt;
+
+&lt;p&gt;If you defect, the bond is revoked and you lose that money - permanently.&lt;/p&gt;
+
+&lt;p&gt;I’ll agree that this is a week solution as I mentioned I’m still trying to work on an ideal way to handle this problem.&lt;/p&gt;
+
+&lt;p&gt;Consumers could do something similar for corporations as well.  Have reserved payments given out over time but only 
+if the companies don’t create any externalities for which the consumer doesn’t approve.&lt;/p&gt;
+
+&lt;p&gt;If these actors function collectively and make decisions as a group these could all be done automatically via simple
+majority.&lt;/p&gt;
+
+&lt;p&gt;I think regardless, identify the CORE issue here would allow us to keep working towards a goal.  The first step 
+towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></name></author><summary type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Polar 1.19.8 Released - Better Payments and Fixes</title><link href="https://getpolarized.io/2019/06/02/Polar-1-19-8.html" rel="alternate" type="text/html" title="Polar 1.19.8 Released - Better Payments and Fixes" /><published>2019-06-02T10:00:00-07:00</published><updated>2019-06-02T10:00:00-07:00</updated><id>https://getpolarized.io/2019/06/02/Polar-1-19-8</id><content type="html" xml:base="https://getpolarized.io/2019/06/02/Polar-1-19-8.html">&lt;h1 id=&quot;polar-1198-released---better-payments-and-fixes&quot;&gt;Polar 1.19.8 Released - Better Payments and Fixes&lt;/h1&gt;
 
 &lt;p&gt;
     We've revamped our payments system for Polar Premium and
@@ -1472,57 +1572,4 @@ users data with 3rd party APIs.&lt;/li&gt;
 
 &lt;p&gt;Some of the above features may fall under the following pricing model:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/iqR9RXD.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Google Killing Chrome Extensions with 1 Week Publishing Delays</title><link href="https://getpolarized.io/2019/04/05/Google-Will-Kill-Chrome-Extension-Innovation.html" rel="alternate" type="text/html" title="Google Killing Chrome Extensions with 1 Week Publishing Delays" /><published>2019-04-05T06:00:00-07:00</published><updated>2019-04-05T06:00:00-07:00</updated><id>https://getpolarized.io/2019/04/05/Google-Will-Kill-Chrome-Extension-Innovation</id><content type="html" xml:base="https://getpolarized.io/2019/04/05/Google-Will-Kill-Chrome-Extension-Innovation.html">&lt;h1 id=&quot;google-killing-chrome-extensions-with-1-week-publishing-delays&quot;&gt;Google Killing Chrome Extensions with 1 Week Publishing Delays&lt;/h1&gt;
-
-&lt;p&gt;Google has recently started performing reviews/code audits on any chrome
-extension that requests the &lt;all_urls&gt; permissions.&lt;/all_urls&gt;&lt;/p&gt;
-
-&lt;p&gt;I can understand the need to audit the code for safety since this is a 
-very specific use case and apps could (and have) abused this permission.&lt;/p&gt;
-
-&lt;p&gt;The problem is that they take 1 week to audit your code!  This isn’t just for 
-code changes but &lt;strong&gt;ANY&lt;/strong&gt; change even if you just change a &lt;em&gt;typo&lt;/em&gt; in your app 
-description.&lt;/p&gt;
-
-&lt;p&gt;This is the 3rd change we’ve made and each time it’s taken about a week.&lt;/p&gt;
-
-&lt;p&gt;We just added some images to the &lt;a href=&quot;https://chrome.google.com/webstore/detail/polar-pdf-web-and-documen/jkfdkjomocoaljglgddnmhcbolldcafd&quot;&gt;Polar Chrome Extension&lt;/a&gt; and
-this ended up triggering a full 1 week review.&lt;/p&gt;
-
-&lt;p&gt;I need to add a video and perform some other changes but this means that I now
-need to wait ANOTHER week for that to be accepted.&lt;/p&gt;
-
-&lt;h2 id=&quot;bypass-via-activetab&quot;&gt;Bypass via ActiveTab&lt;/h2&gt;
-
-&lt;p&gt;We need this permission because Polar needs to add CORS headers to allow it 
-to add PDFs to your document repository while you browse.&lt;/p&gt;
-
-&lt;p&gt;This way if you come across a cool research paper you can easily add it to Polar
-and start highlighting and taking notes on it.&lt;/p&gt;
-
-&lt;p&gt;It makes it super easy to stumble upon a URL and then easily add it to your 
-reading list.&lt;/p&gt;
-
-&lt;p&gt;Some developers can bypass this via extensive auditing with the ActiveTab
-permission but it doesn’t apply to Polar.&lt;/p&gt;
-
-&lt;h2 id=&quot;banning-obfuscated-code&quot;&gt;Banning Obfuscated Code&lt;/h2&gt;
-
-&lt;p&gt;I thought this might be related to the &lt;a href=&quot;https://www.zdnet.com/article/google-to-no-longer-allow-chrome-extensions-that-use-obfuscated-code/&quot;&gt;code obfuscation ban&lt;/a&gt; 
-but apparently this is not the case since it also impacts images and text.&lt;/p&gt;
-
-&lt;h2 id=&quot;chilling-effect&quot;&gt;Chilling Effect&lt;/h2&gt;
-
-&lt;p&gt;Chrome has about 80% of the market so this impacts a LOT of developers.&lt;/p&gt;
-
-&lt;p&gt;It shouldn’t take more than a few hours to update my app.  If I’m changing the 
-code and it’s a 5 line diff it should be published immediately.&lt;/p&gt;
-
-&lt;p&gt;I realize Google doesn’t make any money here but developers can always use 
-other platforms so it’s in their best interest to fix this.&lt;/p&gt;
-
-&lt;p&gt;By comparison, it takes Microsoft eight hours to publish a new version of our 
-app to their app store.&lt;/p&gt;
-
-&lt;p&gt;I really hope someone at Google see this posts and we see some sort of resolution 
-to this issue.&lt;/p&gt;</content><author><name></name></author><summary type="html">Google Killing Chrome Extensions with 1 Week Publishing Delays</summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/iqR9RXD.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
