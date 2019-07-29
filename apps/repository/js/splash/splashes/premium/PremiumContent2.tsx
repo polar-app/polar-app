@@ -224,13 +224,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td>
                                 </td>
                                 <td className="">
-                                    <PremiumButton from={this.props.plan} to="bronze" userInfo={this.props.userInfo}/>
+                                    <PremiumButton from={this.props.plan} to="bronze" userInfo={this.props.userInfo} interval={this.state.planInterval}/>
                                 </td>
                                 <td>
-                                    <PremiumButton from={this.props.plan} to="silver" userInfo={this.props.userInfo}/>
+                                    <PremiumButton from={this.props.plan} to="silver" userInfo={this.props.userInfo} interval={this.state.planInterval}/>
                                 </td>
                                 <td className="">
-                                    <PremiumButton from={this.props.plan} to="gold" userInfo={this.props.userInfo}/>
+                                    <PremiumButton from={this.props.plan} to="gold" userInfo={this.props.userInfo} interval={this.state.planInterval}/>
                                 </td>
                             </tr>
 
@@ -418,4 +418,4 @@ interface IState {
     readonly planInterval: PlanInterval;
 }
 
-type PlanInterval = 'month' | 'year';
+export type PlanInterval = 'month' | 'year';
