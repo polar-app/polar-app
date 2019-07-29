@@ -14,7 +14,7 @@ const COLLECTION_NAME = "account";
 
 export class Accounts {
 
-    public static async get(): Promise<Account | undefined> {
+    public static async ref() {
 
         const user = await Firebase.currentUser();
 
@@ -28,9 +28,19 @@ export class Accounts {
 
         const id = user.uid;
 
-        const ref = firestore
+        return firestore
             .collection(COLLECTION_NAME)
             .doc(id);
+
+    }
+
+    public static async get(): Promise<Account | undefined> {
+
+        const ref = await this.ref();
+
+        if (! ref) {
+            return undefined;
+        }
 
         // we always have to get the most up to date version from the server
         // otherwise we will have stale data and the user almost always wants
@@ -50,24 +60,11 @@ export class Accounts {
      */
     public static async onSnapshot(handler: (account: Account) => void) {
 
-        // TODO: migrate this to the new Collections code but it's not merged
-        // yet.
+        const ref = await this.ref();
 
-        const user = await Firebase.currentUser();
-
-        if (! user) {
-            // the user is not logged in so we do not have an account that they
-            // can use.
+        if (! ref) {
             return undefined;
         }
-
-        const firestore = await Firestore.getInstance();
-
-        const id = user.uid;
-
-        const ref = firestore
-            .collection(COLLECTION_NAME)
-            .doc(id);
 
         return ref.onSnapshot(snapshot => {
 

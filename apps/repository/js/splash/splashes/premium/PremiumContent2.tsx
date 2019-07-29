@@ -9,6 +9,8 @@ import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Logger} from '../../../../../../web/js/logger/Logger';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
+import {NULL_FUNCTION} from "../../../../../../web/js/util/Functions";
+import {Numbers} from "../../../../../../web/js/util/Numbers";
 
 const log = Logger.create();
 
@@ -44,10 +46,74 @@ const CancelSubscriptionButton = (props: IProps) => {
     </NullCollapse>;
 };
 
+interface PlanIntervalProps {
+    readonly planInterval: PlanInterval;
+    readonly togglePlanInterval: () => void;
+}
+const PlanIntervalButton = (props: PlanIntervalProps) => {
+
+    return <Button color="secondary"
+                   size="sm"
+                   onClick={() => props.togglePlanInterval()}>
+
+            Show {props.planInterval === 'month' ? 'Monthly' : 'Yearly'} Plans
+
+        </Button>;
+
+};
+
+
+interface PlanPricingProps {
+    readonly plan: AccountPlan;
+    readonly planInterval: PlanInterval;
+}
+const PlanPricing = (props: PlanPricingProps) => {
+
+    const computeMonthlyAmount = () => {
+
+        switch (props.plan) {
+
+            case "free":
+                return 0.0;
+            case "bronze":
+                return 4.99;
+            case "silver":
+                return 9.99;
+            case "gold":
+                return 14.99;
+        }
+
+    };
+
+
+    const computeYearlyAmount = () => {
+        const monthlyAmount = computeMonthlyAmount();
+        return Numbers.toFixedFloat(monthlyAmount * 11, 2);
+    };
+
+    const amount = props.planInterval === 'month' ? computeMonthlyAmount() : computeYearlyAmount();
+
+    return <div>
+        <h3 className="text-xxlarge">${amount}<span
+            className="text-small">/{props.planInterval}</span>
+        </h3>
+
+    </div>;
+
+};
+
+
 export class PremiumContent2 extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.togglePlanInterval = this.togglePlanInterval.bind(this);
+
+        this.state = {
+            planInterval: 'month'
+        };
+
     }
 
     public render() {
@@ -79,10 +145,29 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                         <table className="table">
                             <thead>
                             <tr>
-                                <th><h2 className="text-tint text-left">
-                                    Find a plan<br/><span
-                                    className="text-large">that's right for you.</span>
-                                </h2></th>
+                                <th>
+                                    <h2 className="text-tint text-left">
+
+                                    Find a plan<br/>
+
+                                    {/*<span className="text-large">that's right for you.</span>*/}
+
+                                    </h2>
+
+
+                                    <p>
+                                        We have both yearly and monthly plans.  Get a free
+                                        month of service if you buy for a whole year!
+                                    </p>
+
+                                    <p className="text-center">
+
+                                        <PlanIntervalButton planInterval={this.state.planInterval}
+                                                            togglePlanInterval={() => this.togglePlanInterval()}/>
+
+                                    </p>
+
+                                </th>
                                 <th className="">
                                     <p className="text-xlarge ">Free</p>
 
@@ -97,9 +182,8 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <th className="">
                                     <p className="text-xlarge  highlight">Bronze</p>
 
-                                    <h3 className="text-xxlarge">$4.99<span
-                                        className="text-small">/month</span>
-                                    </h3>
+                                    <PlanPricing plan='bronze' planInterval={this.state.planInterval}/>
+
                                     <p className="text-small text-tint">Less
                                         than the price of a cup of
                                         coffee. Need more storage and ready to
@@ -110,9 +194,8 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <th className="">
                                     <p className="text-xlarge ">Silver</p>
 
-                                    <h3 className="text-xxlarge">$9.99<span
-                                        className="text-small">/month</span>
-                                    </h3>
+                                    <PlanPricing plan='silver' planInterval={this.state.planInterval}/>
+
                                     <p className="text-small text-tint">
                                         Designed for Polar power users! Need
                                         more storage? Let's do this!
@@ -122,9 +205,8 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <th className="">
                                     <p className="text-xlarge ">Gold</p>
 
-                                    <h3 className="text-xxlarge">$14.99<span
-                                        className="text-small">/month</span>
-                                    </h3>
+                                    <PlanPricing plan='gold' planInterval={this.state.planInterval}/>
+
                                     <p className="text-small text-tint">
                                         You can't live without Polar
                                         and have a massive amount of data that
@@ -142,13 +224,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td>
                                 </td>
                                 <td className="">
-                                    <PremiumButton from={this.props.plan} to="bronze" userInfo={this.props.userInfo}/>
+                                    <PremiumButton from={this.props.plan} to="bronze" userInfo={this.props.userInfo} interval={this.state.planInterval}/>
                                 </td>
                                 <td>
-                                    <PremiumButton from={this.props.plan} to="silver" userInfo={this.props.userInfo}/>
+                                    <PremiumButton from={this.props.plan} to="silver" userInfo={this.props.userInfo} interval={this.state.planInterval}/>
                                 </td>
                                 <td className="">
-                                    <PremiumButton from={this.props.plan} to="gold" userInfo={this.props.userInfo}/>
+                                    <PremiumButton from={this.props.plan} to="gold" userInfo={this.props.userInfo} interval={this.state.planInterval}/>
                                 </td>
                             </tr>
 
@@ -317,6 +399,14 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
         );
     }
 
+    private togglePlanInterval() {
+
+        this.setState({
+            planInterval: this.state.planInterval === 'month' ? 'year' : 'month'
+        });
+
+    }
+
 }
 
 interface IProps {
@@ -325,5 +415,7 @@ interface IProps {
 }
 
 interface IState {
+    readonly planInterval: PlanInterval;
 }
 
+export type PlanInterval = 'month' | 'year';

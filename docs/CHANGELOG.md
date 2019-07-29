@@ -1,9 +1,19 @@
+# 1.30.7 
+
+- Support for yearly payment plans
+
+# 1.30.6 
+
+- Users are required to upgrade now.  We won't allow more documents to be added
+  to the repository otherwise.
+
 # 1.30.5
 
-- analytics for adding documents...
+- Telling the user that their account will now be disabled
+
+- Analytics for adding documents...
 
 # 1.30.4
-
 
 - fixed bug with returning undefined values of profiles that lack metadata
 

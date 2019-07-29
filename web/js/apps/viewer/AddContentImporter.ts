@@ -12,6 +12,7 @@ import {PreviewURLs} from './PreviewURLs';
 import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
 import {LoginURLs} from './LoginURLs';
 import {Logger} from '../../logger/Logger';
+import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 
 const log = Logger.create();
 
@@ -152,6 +153,13 @@ export class DefaultAddContentImporter  implements AddContentImporter {
     public async doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>): Promise<Optional<ImportedFile>> {
 
         try {
+
+            const accountUpgrader = new AccountUpgrader();
+
+            if (await accountUpgrader.upgradeRequired()) {
+                accountUpgrader.startUpgrade();
+                return Optional.empty();
+            }
 
             Toaster.info("Importing file into Polar document repository...");
 

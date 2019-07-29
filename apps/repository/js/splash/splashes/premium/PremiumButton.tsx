@@ -7,6 +7,8 @@ import {Logger} from '../../../../../../web/js/logger/Logger';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
+import {AccountPlan} from "../../../../../../web/js/accounts/Account";
+import {PlanInterval} from "./PremiumContent2";
 
 const log = Logger.create();
 
@@ -22,7 +24,7 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
     public render() {
 
-        const {to, from, userInfo} = this.props;
+        const {to, from, userInfo, interval} = this.props;
 
         // true when this is the current plan and we do not need to show the
         // button
@@ -35,15 +37,27 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
         const text = buy ? "Buy" : "Change";
 
+        const computePlan = () => {
+
+            if (interval === 'year') {
+                return `${to}_${interval}`;
+            }
+
+            return to;
+
+        };
+
+        const plan = computePlan();
+
         const buyHandler = () => {
             // if we're buying a NEW product go ahead and redirect us to
             // stripe and use their BUY package.  This is better than embedding
             // the stripe SDK and also stripe ALSO needs to run over HTTPS
 
             if (email) {
-                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${email}&plan=${to}`);
+                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${email}&plan=${plan}`);
             } else {
-                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?plan=${to}`);
+                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?plan=${plan}`);
             }
 
         };
@@ -71,26 +85,29 @@ export class PremiumButton extends React.Component<IProps, IState> {
         const handler = buy ? buyHandler : changeHandler;
 
         return (
+            <div>
 
-            <NullCollapse open={! currentPlan}>
+                <NullCollapse open={! currentPlan}>
 
-                <Button color="secondary"
-                        onClick={() => handler()}>
+                    <Button color="secondary"
+                            onClick={() => handler()}>
 
-                    {text}
+                        {text}
 
-                </Button>
+                    </Button>
 
-            </NullCollapse>
+                </NullCollapse>
 
+            </div>
         );
     }
 
 }
 
 export interface IProps {
-    readonly from: Plan;
-    readonly to: Plan;
+    readonly from: AccountPlan;
+    readonly to: AccountPlan;
+    readonly interval: PlanInterval;
     readonly userInfo?: UserInfo;
 
 }
@@ -98,5 +115,3 @@ export interface IProps {
 export interface IState {
 
 }
-
-export type Plan = 'free' | 'bronze' | 'silver' | 'gold';

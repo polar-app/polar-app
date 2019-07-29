@@ -1,7 +1,7 @@
-import {DefaultAddContentImporter} from './AddContentImporter';
-import {NullAddContentImporter} from './AddContentImporter';
-import {IProvider} from '../../util/Providers';
-import {PersistenceLayer} from '../../datastore/PersistenceLayer';
+import {
+    DefaultAddContentImporter,
+    NullAddContentImporter
+} from './AddContentImporter';
 import {PreviewURLs} from './PreviewURLs';
 
 export class AddContentImporters {

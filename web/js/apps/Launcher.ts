@@ -23,7 +23,6 @@ const log = Logger.create();
 /**
  * Basic class for connecting event listeners and then running a launchFunction
  * once the browser is ready.
- *
  */
 export class Launcher {
 

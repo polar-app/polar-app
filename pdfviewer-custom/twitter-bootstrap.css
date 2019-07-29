@@ -154,6 +154,46 @@ button.dropdown-item:hover {
     color: var(--grey000);
 }
 
+.text-danger900 {
+    color: var(--danger900);
+}
+
+.text-danger800 {
+    color: var(--danger800);
+}
+
+.text-danger700 {
+    color: var(--danger700);
+}
+
+.text-danger600 {
+    color: var(--danger600);
+}
+
+.text-danger500 {
+    color: var(--danger500);
+}
+
+.text-danger400 {
+    color: var(--danger400);
+}
+
+.text-danger300 {
+    color: var(--danger300);
+}
+
+.text-danger200 {
+    color: var(--danger200);
+}
+
+.text-danger100 {
+    color: var(--danger100);
+}
+
+.text-danger000 {
+    color: var(--danger000);
+}
+
 :root {
 
     --grey900: #222222;

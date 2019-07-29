@@ -7,6 +7,7 @@ import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
+// TODO: unify all SignInSuccessURLs / LoginURLs and any use of signInSuccessUrl
 class SignInSuccessURLs {
 
     /**
