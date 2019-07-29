@@ -114,6 +114,7 @@ button.dropdown-item:hover {
     background-color: var(--grey100);
 }
 
+/* text-grey */
 .text-grey900 {
     color: var(--grey900);
 }
@@ -154,6 +155,8 @@ button.dropdown-item:hover {
     color: var(--grey000);
 }
 
+/* text-danger */
+
 .text-danger900 {
     color: var(--danger900);
 }
@@ -193,6 +196,49 @@ button.dropdown-item:hover {
 .text-danger000 {
     color: var(--danger000);
 }
+
+/* bg-grey */
+
+.bg-grey900 {
+    background-color: var(--grey900);
+}
+
+.bg-grey800 {
+    background-color: var(--grey800);
+}
+
+.bg-grey700 {
+    background-color: var(--grey700);
+}
+
+.bg-grey600 {
+    background-color: var(--grey600);
+}
+
+.bg-grey500 {
+    background-color: var(--grey500);
+}
+
+.bg-grey400 {
+    background-color: var(--grey400);
+}
+
+.bg-grey300 {
+    background-color: var(--grey300);
+}
+
+.bg-grey200 {
+    background-color: var(--grey200);
+}
+
+.bg-grey100 {
+    background-color: var(--grey100);
+}
+
+.bg-grey000 {
+    background-color: var(--grey000);
+}
+
 
 :root {
 

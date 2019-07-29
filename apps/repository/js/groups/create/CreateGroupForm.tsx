@@ -120,6 +120,8 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
 
         const doGroupProvision = async () => {
 
+            Toaster.info("Creating your new group. Just a moment...");
+
             const request: GroupProvisionRequest = {
                 ...this.formData,
                 docs: [],
@@ -132,7 +134,9 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
 
             await GroupProvisions.exec(request);
 
-            Toaster.info("Group has been provisioned!");
+            // TODO: redirect RIGHT to the new group so they can start adding
+            // documents there.
+            Toaster.success("Your new group has been created!");
 
         };
 

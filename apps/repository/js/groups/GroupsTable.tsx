@@ -15,7 +15,7 @@ export class GroupsTable extends React.Component<IProps, IState> {
 
         return (
 
-            <div>
+            <div className="border-bottom">
                 {groups.map(group =>
                     <GroupCard key={group.id} group={group}/>)}
             </div>

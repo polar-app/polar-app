@@ -17,12 +17,12 @@ export class GroupCard extends React.Component<IProps, IState> {
 
         return (
 
-            <div>
+            <div className="border-top border-left border-right p-2">
 
                 <LeftRightSplit left={<div style={{display: 'flex'}}>
 
                                     <VerticalAlign>
-                                        <a className="ml-1" href={'#group/' + group.id}>{group.name}</a>
+                                        <a className="text-lg" href={'#group/' + group.id}>{group.name}</a>
                                     </VerticalAlign>
 
                                 </div>}
