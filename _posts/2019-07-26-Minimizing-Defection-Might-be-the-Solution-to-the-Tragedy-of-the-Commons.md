@@ -34,13 +34,12 @@ It's my assertion that these are all related to the tragedy of the commons. I'll
  modern economic context, commons is taken to mean any shared and unregulated resource such as atmosphere, oceans,
  rivers, fish stocks, roads and highways, or even an office refrigerator.
 
-I'd assert that the tragedy of the commons is related a bit to the prisoners dilemma (again, from [Wikipedia](https://en.wikipedia.org/wiki/Prisoner%27s_dilemma)):
+I'd assert that the tragedy of the commons is actually a more general form of the prisoners dilemma (again, from [Wikipedia](https://en.wikipedia.org/wiki/Prisoner%27s_dilemma)):
 
 > The prisoner's dilemma is a standard example of a game analyzed in game theory that shows why two completely rational
 individuals might not cooperate, even if it appears that it is in their best interests to do so.
 
-The prisoner's dilemma could be considered a simpler version of the tragedy of the commons.  Instead of a prison term
-there's the destruction of some resource and the tragedy of the commons is generalized to more actors.  Usually dozens.
+Instead of a prison term there's the destruction of some resource and the tragedy of the commons is generalized to more actors.  Usually hundreds to thousands.
 
 # Cheating and Cynicism
 
@@ -48,6 +47,15 @@ I think the core issue in the above is defection - the idea that one player can 
 benefit.
 
 The FEWER the actors the less probability that there will be defection.
+
+Here's a completely hypothetical chart at what I think the rate of defection would look like:
+
+<img class="img-fluid" src="https://i.imgur.com/GYGoVF4.png">
+
+This would need to be validated experimentally but I suspect that the probability of cooperation (the opposite of
+defection) would be inversely proportional to the size of the group. 
+
+This would explain fundamental problems with collective action and why systems like communism are doomed to failure. 
 
 If you know the other person well and trust them, you're probably not going to defect.
 

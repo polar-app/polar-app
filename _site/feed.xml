@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-07-28T17:51:59-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-07-28T18:36:55-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
 
 &lt;p&gt;Being that my background is in CompSci I tend to think about thinks in terms of probabilities, statistics, game theory, 
 and distributed systems.&lt;/p&gt;
@@ -30,15 +30,14 @@ hundreds of years so it might be that this observation has been made before.&lt;
  rivers, fish stocks, roads and highways, or even an office refrigerator.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;I’d assert that the tragedy of the commons is related a bit to the prisoners dilemma (again, from &lt;a href=&quot;https://en.wikipedia.org/wiki/Prisoner%27s_dilemma&quot;&gt;Wikipedia&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;I’d assert that the tragedy of the commons is actually a more general form of the prisoners dilemma (again, from &lt;a href=&quot;https://en.wikipedia.org/wiki/Prisoner%27s_dilemma&quot;&gt;Wikipedia&lt;/a&gt;):&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;The prisoner’s dilemma is a standard example of a game analyzed in game theory that shows why two completely rational
 individuals might not cooperate, even if it appears that it is in their best interests to do so.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;The prisoner’s dilemma could be considered a simpler version of the tragedy of the commons.  Instead of a prison term
-there’s the destruction of some resource and the tragedy of the commons is generalized to more actors.  Usually dozens.&lt;/p&gt;
+&lt;p&gt;Instead of a prison term there’s the destruction of some resource and the tragedy of the commons is generalized to more actors.  Usually hundreds to thousands.&lt;/p&gt;
 
 &lt;h1 id=&quot;cheating-and-cynicism&quot;&gt;Cheating and Cynicism&lt;/h1&gt;
 
@@ -46,6 +45,15 @@ there’s the destruction of some resource and the tragedy of the commons is gen
 benefit.&lt;/p&gt;
 
 &lt;p&gt;The FEWER the actors the less probability that there will be defection.&lt;/p&gt;
+
+&lt;p&gt;Here’s a completely hypothetical chart at what I think the rate of defection would look like:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/GYGoVF4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This would need to be validated experimentally but I suspect that the probability of cooperation (the opposite of
+defection) would be inversely proportional to the size of the group.&lt;/p&gt;
+
+&lt;p&gt;This would explain fundamental problems with collective action and why systems like communism are doomed to failure.&lt;/p&gt;
 
 &lt;p&gt;If you know the other person well and trust them, you’re probably not going to defect.&lt;/p&gt;
 
