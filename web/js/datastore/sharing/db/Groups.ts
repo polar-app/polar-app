@@ -6,6 +6,7 @@ import {Hashcodes} from '../../../Hashcodes';
 import {PlainTextString, URLStr} from "../../../util/Strings";
 import {ExternalLink} from "../rpc/GroupProvisions";
 import {Clause, Collections, OrderByClause} from "./Collections";
+import {Arrays} from "../../../util/Arrays";
 
 const HASHCODE_LEN = 20;
 
@@ -24,7 +25,11 @@ export class Groups {
         return <Group> doc.data();
     }
 
-
+    public  static async getAll(identifiers: ReadonlyArray<GroupIDStr>): Promise<ReadonlyArray<Group>> {
+        const promises = identifiers.map(id => this.get(id));
+        const resolved = await Promise.all(promises);
+        return Arrays.onlyDefined(resolved);
+    }
 
     public static async getByName(name: string): Promise<Group | undefined> {
 
