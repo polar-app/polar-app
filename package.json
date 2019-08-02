@@ -24,7 +24,7 @@
     "__dist-linux": "npm run-script setup-dist-default && npm run-script compile && npm run-script publish-linux ",
     "dist-macos": "npm run-script setup-dist-default && npm run-script compile && npm run-script publish-macos",
     "dist-win": "npm run-script setup-dist-default && npm run-script compile && npm run-script publish-win",
-    "dist-webapp": "npm run-script setup-dist-default && npm run-script compile && npm run-script publish-webapp",
+    "dist-webapp": "npm run-script setup-dist-default &&   npm run-script compile && npm run-script publish-webapp",
     "dist-prepare": "",
     "verify-electron-version": "./scripts/verify-electron-version",
     "compile": "tsc",
