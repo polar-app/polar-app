@@ -1,3 +1,7 @@
+# 1.30.8 
+
+- Small bug when dealing with account upgrades not allowing current plans to work.
+
 # 1.30.7 
 
 - Support for yearly payment plans

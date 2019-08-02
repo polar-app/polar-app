@@ -21,7 +21,13 @@ export class AccountUpgrader {
 
         const planRequiredForUpgrade = AccountUpgrades.upgradeRequired(account.plan, machineDatastore);
 
-        return account.plan !== planRequiredForUpgrade;
+        const result = planRequiredForUpgrade && account.plan !== planRequiredForUpgrade;
+
+        if (result) {
+            log.warn(`Current account needs to be upgrade from ${account.plan} to ${planRequiredForUpgrade}`);
+        }
+
+        return result;
 
     }
 
