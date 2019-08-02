@@ -3,6 +3,9 @@ import {MachineDatastores} from "../../telemetry/MachineDatastores";
 import {AccountUpgrades} from "../../accounts/AccountUpgrades";
 import {UpgradeRequiredMessageBoxes} from "./UpgradeRequiredMessageBoxes";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
+import {Logger} from "../../logger/Logger";
+
+const log = Logger.create();
 
 export class AccountUpgrader {
 
@@ -21,7 +24,13 @@ export class AccountUpgrader {
 
         const planRequiredForUpgrade = AccountUpgrades.upgradeRequired(account.plan, machineDatastore);
 
-        return account.plan !== planRequiredForUpgrade;
+        const result = planRequiredForUpgrade && account.plan !== planRequiredForUpgrade;
+
+        if (result) {
+            log.warn(`Current account needs to be upgrade from ${account.plan} to ${planRequiredForUpgrade}`);
+        }
+
+        return result;
 
     }
 
