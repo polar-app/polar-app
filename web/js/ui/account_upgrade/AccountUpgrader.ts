@@ -3,6 +3,9 @@ import {MachineDatastores} from "../../telemetry/MachineDatastores";
 import {AccountUpgrades} from "../../accounts/AccountUpgrades";
 import {UpgradeRequiredMessageBoxes} from "./UpgradeRequiredMessageBoxes";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
+import {Logger} from "../../logger/Logger";
+
+const log = Logger.create();
 
 export class AccountUpgrader {
 
