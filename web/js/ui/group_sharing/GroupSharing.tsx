@@ -70,11 +70,11 @@ export class GroupSharing extends React.Component<IProps, IState> {
             const user = await Firebase.currentUser();
 
             if (! user) {
-                this.onConnectivity('unauthenticated')
+                this.onConnectivity('unauthenticated');
                 return;
             }
 
-            this.onConnectivity('authenticated')
+            this.onConnectivity('authenticated');
 
             const docMeta = this.props.doc.docMeta;
             const fingerprint = docMeta.docInfo.fingerprint;

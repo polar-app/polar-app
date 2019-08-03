@@ -25,6 +25,9 @@ export class Groups {
         return <Group> doc.data();
     }
 
+    // TODO: get and getAll could be refactored to use Arrays.first and an empty
+    // array when the item is missing.
+
     public  static async getAll(identifiers: ReadonlyArray<GroupIDStr>): Promise<ReadonlyArray<Group>> {
         const promises = identifiers.map(id => this.get(id));
         const resolved = await Promise.all(promises);

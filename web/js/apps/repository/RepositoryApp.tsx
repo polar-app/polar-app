@@ -368,8 +368,8 @@ export class RepositoryApp {
 
             await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
 
-                // load the eample docs in the store.. on the first load we
-                // should propably make sure this doesn't happen more than once
+                // load the example docs in the store.. on the first load we
+                // should probably make sure this doesn't happen more than once
                 // as the user could just delete all the files in their repo.
                 // await new
                 const loadExampleDocs = new LoadExampleDocs(this.persistenceLayerManager.get());
