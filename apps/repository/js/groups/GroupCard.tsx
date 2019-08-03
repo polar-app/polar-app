@@ -22,11 +22,11 @@ export class GroupCard extends React.Component<IProps, IState> {
                 <LeftRightSplit left={<div style={{display: 'flex'}}>
 
                                     <VerticalAlign>
-                                        <a className="text-lg" href={'#group/' + group.id}>{group.name}</a>
+                                        <a className="text-lg" href={'#group/' + group.name!}>{group.name}</a>
                                     </VerticalAlign>
 
                                 </div>}
-                                right={<GroupJoinButton groupID={group.id}/>}/>
+                                right={<GroupJoinButton name={group.name!}/>}/>
 
                 <p>
                     {group.description}

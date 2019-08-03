@@ -9,6 +9,10 @@ import {
 } from "../../../../web/js/datastore/sharing/rpc/GroupJoins";
 import {Logger} from "../../../../web/js/logger/Logger";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+import {
+    GroupNameStr,
+    Groups
+} from "../../../../web/js/datastore/sharing/db/Groups";
 
 const log = Logger.create();
 
@@ -50,10 +54,17 @@ export class GroupJoinButton extends React.PureComponent<IProps, IState> {
 
         const handler = async () => {
 
+            const group = await Groups.getByName(this.props.name);
+
+            if (! group) {
+                Toaster.error("No group named: " + this.props.name);
+                return;
+            }
+
             Toaster.info("Joining group...");
 
             const request: GroupJoinRequest = {
-                groupID: this.props.groupID
+                groupID: group.id
             };
 
             await GroupJoins.exec(request);
@@ -69,7 +80,7 @@ export class GroupJoinButton extends React.PureComponent<IProps, IState> {
 
 interface IProps {
 
-    readonly groupID: GroupIDStr;
+    readonly name: GroupNameStr;
 
 }
 

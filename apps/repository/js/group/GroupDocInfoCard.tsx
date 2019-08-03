@@ -17,6 +17,7 @@ export class GroupDocInfoCard extends React.Component<IProps, IState> {
         return (
 
             <div className="border-top border-left border-right p-2">
+                FIXME:
 
                 {/*<LeftRightSplit left={<div style={{display: 'flex'}}>*/}
 
@@ -42,6 +43,8 @@ export class GroupDocInfoCard extends React.Component<IProps, IState> {
                 {/*    </VerticalAlign>*/}
 
                 {/*</div>*/}
+
+                title: {this.props.title}
 
             </div>
 

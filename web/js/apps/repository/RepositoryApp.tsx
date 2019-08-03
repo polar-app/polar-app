@@ -47,6 +47,7 @@ import {SupportScreen} from '../../../../apps/repository/js/support/SupportScree
 import DocRepoScreen from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
 import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/CreateGroupScreen";
 import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
+import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
 
 const log = Logger.create();
 
@@ -173,6 +174,10 @@ export class RepositoryApp {
                                    plan={plan}/>);
         };
 
+        const renderGroupScreen = () => {
+            return (<GroupScreen persistenceLayerManager={this.persistenceLayerManager}/>);
+        };
+
         const renderGroupsScreen = () => {
             return (<GroupsScreen persistenceLayerManager={this.persistenceLayerManager}/>);
         };
@@ -269,6 +274,7 @@ export class RepositoryApp {
                         <Route exact path='/plans' render={premiumScreen}/>
                         <Route exact path='/support' render={supportScreen}/>
 
+                        <Route path='/group/' render={renderGroupScreen}/>
                         <Route exact path='/groups' render={renderGroupsScreen}/>
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
 

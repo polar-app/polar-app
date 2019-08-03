@@ -5,6 +5,12 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {Group, Groups} from "../../../../web/js/datastore/sharing/db/Groups";
 import {Logger} from "../../../../web/js/logger/Logger";
 import {GroupTable} from "./GroupTable";
+import {Arrays} from "../../../../web/js/util/Arrays";
+import {
+    GroupDocInfo,
+    GroupDocInfos
+} from "../../../../web/js/datastore/sharing/GroupDocInfos";
+import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 
 const log = Logger.create();
 
@@ -14,19 +20,43 @@ export class GroupScreen extends React.Component<IProps, IState> {
         super(props, context);
 
         this.state = {
-            groups: []
+            groupDocInfos: []
         };
+
+        console.log("FIXME1");
 
     }
 
 
     public componentWillMount(): void {
 
+        // get the group name from the URL
+        const getGroupName = () => {
+
+            const parts = document.location.href.split("/");
+            return Arrays.last(parts);
+
+        };
+
         const doHandle = async (): Promise<void> => {
 
-            const groups = await Groups.topGroups();
+            const groupName = getGroupName();
 
-            this.setState({groups});
+            if (! groupName) {
+                Toaster.error("No group name");
+                return;
+            }
+
+            const group = await Groups.getByName(groupName);
+
+            if (! group) {
+                Toaster.error("No group named: " + groupName);
+                return;
+            }
+
+            const groupDocInfos = await GroupDocInfos.list(group.id);
+
+            this.setState({groupDocInfos});
 
         };
 
@@ -48,34 +78,35 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
                 <FixedNavBody className="container">
 
-                    {/*<div className="row">*/}
+                    <div className="row">
 
-                    {/*    <div className="col">*/}
+                        <div className="col">
 
-                    {/*        <div className="mt-2 p-2 border-top border-left border-right bg-grey000">*/}
+                            {/*<div className="mt-2 p-2 border-top border-left border-right bg-grey000">*/}
 
-                    {/*            <div style={{display: 'flex'}}*/}
-                    {/*                 className="w-100">*/}
+                            {/*    <div style={{display: 'flex'}}*/}
+                            {/*         className="w-100">*/}
 
-                    {/*                <div style={{flexGrow: 1}}>*/}
-                    {/*                    <h3>Groups</h3>*/}
-                    {/*                </div>*/}
+                            {/*        <div style={{flexGrow: 1}}>*/}
+                            {/*            <h3>Groups</h3>*/}
+                            {/*        </div>*/}
 
-                    {/*                <div className="text-right">*/}
-                    {/*                    <a href="#groups/create"*/}
-                    {/*                       className="btn btn-success btn-sm">Create Group</a>*/}
-                    {/*                </div>*/}
+                            {/*        <div className="text-right">*/}
+                            {/*            <a href="#groups/create"*/}
+                            {/*               className="btn btn-success btn-sm">Create Group</a>*/}
+                            {/*        </div>*/}
 
-                    {/*            </div>*/}
+                            {/*    </div>*/}
 
-                    {/*        </div>*/}
+                            {/*</div>*/}
 
-                    {/*        <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}*/}
-                    {/*                    groups={this.state.groups}/>*/}
+                            FIXME0
+                            <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                        groupDocInfos={this.state.groupDocInfos}/>
 
-                    {/*    </div>*/}
+                        </div>
 
-                    {/*</div>*/}
+                    </div>
 
                 </FixedNavBody>
 
@@ -91,5 +122,5 @@ export interface IProps {
 }
 
 export interface IState {
-    // readonly group: ReadonlyArray<Group>;
+    readonly groupDocInfos: ReadonlyArray<GroupDocInfo>;
 }

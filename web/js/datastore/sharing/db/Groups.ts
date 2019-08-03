@@ -140,3 +140,4 @@ export type GroupVisibility = 'private' | 'protected' | 'public';
 
 export type TagStr = string;
 
+export type GroupNameStr = string;
