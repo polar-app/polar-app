@@ -47,19 +47,27 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
         return <div className="text-md">
 
-            <div className="font-weight-bold mb-1">
-                Share with users:
+            <div className="mb-1">
+
+                <div className="font-weight-bold mb-1">
+                    Share with users:
+                </div>
+
+                <ContactsSelector options={contactOptions}
+                                  onChange={contactSelections => this.onChangeContacts(contactSelections)}/>
+
             </div>
 
-            <ContactsSelector options={contactOptions}
-                              onChange={contactSelections => this.onChangeContacts(contactSelections)}/>
+            <div className="mb-1">
 
-            <div className="font-weight-bold mb-1">
-                Share with groups:
+                <div className="font-weight-bold mb-1">
+                    Share with groups:
+                </div>
+
+                <GroupsSelector options={GroupOptions.toGroupOptions(this.props.groups)}
+                                onChange={groupSelections => this.onChangeGroups(groupSelections)}/>
+
             </div>
-
-            <GroupsSelector options={GroupOptions.toGroupOptions(this.props.groups)}
-                            onChange={groupSelections => this.onChangeGroups(groupSelections)}/>
 
             <div className="mt-2">
 
@@ -116,7 +124,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
     private onChangeGroups(groupSelections: ReadonlyArray<GroupNameStr>) {
         console.log("groups changed: ", groupSelections);
-        // this.contactSelections = groupSelections;
+        this.groupSelections = groupSelections;
     }
 
 }

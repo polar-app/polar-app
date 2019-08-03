@@ -36,7 +36,6 @@ export class GroupsSelector extends React.Component<IProps, IState> {
             <CreatableSelect
                 isMulti
                 isClearable
-                autoFocus
                 // onKeyDown={event => this.onKeyDown(event)}
                 // className="basic-multi-select"
                 classNamePrefix="select"
