@@ -104,7 +104,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
                         onClick={() => this.props.onDone({
                             contactSelections: this.contactSelections,
                             message: this.message
-                        })}
+                        }, this.groupSelections )}
                         className="ml-1">
 
                     Done
@@ -131,7 +131,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly onCancel: () => void;
-    readonly onDone: (invitation: InvitationRequest) => void;
+    readonly onDone: (invitation: InvitationRequest, groups: ReadonlyArray<GroupNameStr>) => void;
     readonly onDelete: (member: MemberRecord) => void;
     readonly contactProfiles: ReadonlyArray<ContactProfile>;
     readonly groups: ReadonlyArray<Group>;

@@ -18,10 +18,11 @@ import {UserRefs} from '../../datastore/sharing/rpc/UserRefs';
 import {GroupMember} from '../../datastore/sharing/db/GroupMembers';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {GroupMemberDeletes} from '../../datastore/sharing/rpc/GroupMemberDeletes';
-import {Groups} from '../../datastore/sharing/db/Groups';
+import {GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Firebase} from '../../firebase/Firebase';
 import {Preconditions} from '../../Preconditions';
 import {ContactOptions} from './ContactOptions';
+import {GroupDocsAdd} from "../../datastore/sharing/rpc/GroupDocsAdd";
 
 export class GroupSharingButton extends React.Component<IProps, IState> {
 
@@ -31,6 +32,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
         this.toggle = this.toggle.bind(this);
         this.onDone = this.onDone.bind(this);
         this.doGroupProvision = this.doGroupProvision.bind(this);
+        this.doGroupDocsAdd = this.doGroupDocsAdd.bind(this);
         this.onDelete = this.onDelete.bind(this);
 
         this.state = {
@@ -79,7 +81,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
                         <GroupSharing doc={this.props.doc}
                                       onCancel={() => this.toggle(false)}
                                       onDelete={member => this.onDelete(member)}
-                                      onDone={(contactSelections) => this.onDone(contactSelections)}/>
+                                      onDone={(contactSelections, groups) => this.onDone(contactSelections, groups)}/>
 
                     </PopoverBody>
 
@@ -95,7 +97,8 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
         this.setState({...this.state, open});
     }
 
-    private onDone(invitationRequest: InvitationRequest) {
+    private onDone(invitationRequest: InvitationRequest, groups: ReadonlyArray<GroupNameStr>) {
+
         console.log("onDone...: ", invitationRequest);
 
         this.toggle(false);
@@ -104,29 +107,28 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
         this.doGroupProvision(invitationRequest)
             .catch(err => Toaster.error("Could not provision group: " + err.message));
 
+        this.doGroupDocsAdd(groups)
+            .catch(err => Toaster.error("Could not add document to group: " + err.message));
+
     }
 
     private async doGroupProvision(invitationRequest: InvitationRequest) {
 
         if (invitationRequest.contactSelections.length === 0) {
-            console.log("No contacts to invite.  Done.")
+            console.log("No contacts to invite.  Done.");
             // there's nothing to be done so don't provision a group with zero
             // members.
             return;
         }
 
-        const docMeta = this.props.doc.docMeta;
-        const fingerprint = docMeta.docInfo.fingerprint;
-
-        const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
-        const docRef = DocRefs.fromDocMeta(docID, docMeta);
+        const docRef = this.createDocRef();
 
         const {message} = invitationRequest;
 
         Toaster.info("Sharing document with users ... ");
 
         await GroupDatastores.provision({
-            key: fingerprint,
+            key: docRef.fingerprint,
             visibility: 'private',
             docs: [docRef],
             invitations: {
@@ -136,6 +138,41 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
         });
 
         Toaster.success("Document shared successfully");
+
+    }
+
+    private createDocRef() {
+
+        const docMeta = this.props.doc.docMeta;
+        const fingerprint = docMeta.docInfo.fingerprint;
+        const docID = FirebaseDatastores.computeDocMetaID(fingerprint);
+        return DocRefs.fromDocMeta(docID, docMeta);
+
+    }
+
+    private async doGroupDocsAdd(groups: ReadonlyArray<GroupNameStr>) {
+
+        if (groups.length === 0) {
+            console.log("No groups to invite.  Done.");
+            return;
+        }
+
+        for (const groupName of groups) {
+
+            const docRef = this.createDocRef();
+            const group = await Groups.getByName(groupName);
+
+            if (! group) {
+                Toaster.error("No group named: " + groupName);
+                continue;
+            }
+
+            const groupID = group.id;
+
+            await GroupDocsAdd.exec({groupID, docs: [docRef]});
+            Toaster.success("Document added to group: " + groupName);
+
+        }
 
     }
 

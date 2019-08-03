@@ -1,7 +1,7 @@
 import React from 'react';
 import {Toaster} from '../toaster/Toaster';
 import {Firebase} from '../../firebase/Firebase';
-import {Group, Groups} from '../../datastore/sharing/db/Groups';
+import {Group, GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Releaser} from '../../reactor/EventListener';
 import {Logger} from '../../logger/Logger';
 import {Doc} from '../../metadata/Doc';
@@ -13,6 +13,7 @@ import {
 } from './GroupSharingRecords';
 import {GroupSharingControl, InvitationRequest} from './GroupSharingControl';
 import {LoginRequired} from "./LoginRequired";
+import {GroupNames} from "../../datastore/sharing/db/GroupNames";
 
 const log = Logger.create();
 
@@ -133,7 +134,7 @@ export class GroupSharing extends React.Component<IProps, IState> {
 interface IProps {
     readonly doc: Doc;
     readonly onCancel: () => void;
-    readonly onDone: (invitation: InvitationRequest) => void;
+    readonly onDone: (invitation: InvitationRequest, groups: ReadonlyArray<GroupNameStr>) => void;
     readonly onDelete: (member: MemberRecord) => void;
 }
 
