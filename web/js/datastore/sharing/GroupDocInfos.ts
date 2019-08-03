@@ -6,6 +6,7 @@ import {
     ISODateString,
     ISODateTimeString
 } from "../../metadata/ISODateTimeStrings";
+import { DocRef } from "polar-shared/src/groups/DocRef";
 
 export class GroupDocInfos {
 

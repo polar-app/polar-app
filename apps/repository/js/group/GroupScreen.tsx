@@ -100,7 +100,6 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
                             {/*</div>*/}
 
-                            FIXME0
                             <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}
                                         groupDocInfos={this.state.groupDocInfos}/>
 

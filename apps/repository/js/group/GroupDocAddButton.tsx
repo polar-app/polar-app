@@ -9,6 +9,14 @@ import {
 } from "../../../../web/js/datastore/sharing/rpc/GroupJoins";
 import {Logger} from "../../../../web/js/logger/Logger";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+import {
+    GroupDatastores,
+    GroupDocRef
+} from "../../../../web/js/datastore/sharing/GroupDatastores";
+import { DocRef } from 'polar-shared/src/groups/DocRef';
+import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {GroupDocs} from "../../../../web/js/datastore/sharing/db/GroupDocs";
 
 const log = Logger.create();
 
@@ -31,12 +39,12 @@ export class GroupDocAddButton extends React.PureComponent<IProps, IState> {
 
             <div className="mr-1 ml-1">
 
-                <Button color="primary"
+                <Button color="success"
                         size="sm"
                         onClick={() => this.onJoin()}
                         className="pl-2 pr-2">
 
-                    Join
+                    <i className="fas fa-plus" style={{marginRight: '5px'}}/> Add
 
                 </Button>
 
@@ -50,26 +58,43 @@ export class GroupDocAddButton extends React.PureComponent<IProps, IState> {
 
         const handler = async () => {
 
-            Toaster.info("Joining group...");
+            const {groupID, fingerprint} = this.props;
 
-            const request: GroupJoinRequest = {
-                groupID: this.props.groupID
+            Toaster.info("Adding document to your document repository...");
+
+            const docRefs = await GroupDocs.getByFingerprint(groupID, fingerprint);
+
+            if (docRefs.length === 0) {
+                Toaster.error("No group docs to add");
+                return;
+            }
+
+            const docRef = docRefs[0];
+
+            const groupDocRef: GroupDocRef = {
+                groupID,
+                docRef
             };
 
-            await GroupJoins.exec(request);
+            const persistenceLayer = this.props.persistenceLayerProvider();
 
-            Toaster.success("Joining group...done");
+            await GroupDatastores.importFromGroup(persistenceLayer, groupDocRef);
+
+            Toaster.success("Adding document to your document repository...done");
 
         };
 
-        handler().catch(err => log.error("Unable to join group: ", err));
+        handler()
+            .catch(err => log.error("Unable to join group: ", err));
     }
 
 }
 
 interface IProps {
 
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly groupID: GroupIDStr;
+    readonly fingerprint: string
 
 }
 

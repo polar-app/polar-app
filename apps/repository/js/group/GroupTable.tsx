@@ -16,9 +16,10 @@ export class GroupTable extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="border-bottom">
+            <div className="border-bottom mt-2">
                 {groupDocInfos.map(groupDocInfo =>
-                    <GroupDocInfoCard key={groupDocInfo.fingerprint} {...groupDocInfo}/>)}
+                    <GroupDocInfoCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                      key={groupDocInfo.fingerprint} {...groupDocInfo}/>)}
             </div>
 
         );
