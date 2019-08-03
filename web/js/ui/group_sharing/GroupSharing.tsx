@@ -1,7 +1,7 @@
 import React from 'react';
 import {Toaster} from '../toaster/Toaster';
 import {Firebase} from '../../firebase/Firebase';
-import {Groups} from '../../datastore/sharing/db/Groups';
+import {Group, Groups} from '../../datastore/sharing/db/Groups';
 import {Releaser} from '../../reactor/EventListener';
 import {Logger} from '../../logger/Logger';
 import {Doc} from '../../metadata/Doc';
@@ -31,7 +31,8 @@ export class GroupSharing extends React.Component<IProps, IState> {
         this.state = {
             connectivity: 'unknown',
             contactProfiles: [],
-            members: []
+            members: [],
+            groups: [],
         };
 
     }
@@ -65,6 +66,16 @@ export class GroupSharing extends React.Component<IProps, IState> {
 
         };
 
+        const groupsHandler = (groups: ReadonlyArray<Group>) => {
+
+            if (this.releaser.released) {
+                return;
+            }
+
+            this.setState({...this.state, groups});
+
+        };
+
         const doHandle = async () => {
 
             const user = await Firebase.currentUser();
@@ -86,6 +97,7 @@ export class GroupSharing extends React.Component<IProps, IState> {
             GroupSharingRecords.fetch(groupID,
                                       contacts => contactsHandler(contacts),
                                       members => membersHandler(members),
+                                      groups => groupsHandler(groups),
                                       err => errorHandler(err));
 
         };
@@ -127,6 +139,7 @@ interface IProps {
 
 interface IState {
     readonly contactProfiles: ReadonlyArray<ContactProfile>;
+    readonly groups: ReadonlyArray<Group>;
     readonly members: ReadonlyArray<MemberRecord>;
     readonly connectivity: Connectivity;
 }

@@ -8,6 +8,10 @@ import {ContactProfile} from './GroupSharingRecords';
 import Input from 'reactstrap/lib/Input';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
 import {ContactOptions} from './ContactOptions';
+import {GroupsSelector} from "./GroupsSelector";
+import {Group, GroupNameStr} from "../../datastore/sharing/db/Groups";
+import {GroupNames} from "../../datastore/sharing/db/GroupNames";
+import {GroupOptions} from "./GroupOptions";
 
 const log = Logger.create();
 
@@ -18,12 +22,15 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
     private contactSelections: ReadonlyArray<UserRef> = [];
 
+    private groupSelections: ReadonlyArray<GroupNameStr> = [];
+
     private message: string = "";
 
     constructor(props: IProps) {
         super(props);
 
-        this.onChange = this.onChange.bind(this);
+        this.onChangeContacts = this.onChangeContacts.bind(this);
+        this.onChangeGroups = this.onChangeGroups.bind(this);
 
         this.state = {
             contacts: [],
@@ -41,11 +48,18 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
         return <div className="text-md">
 
             <div className="font-weight-bold mb-1">
-                Share with others:
+                Share with users:
             </div>
 
             <ContactsSelector options={contactOptions}
-                              onChange={contactSelections => this.onChange(contactSelections)}/>
+                              onChange={contactSelections => this.onChangeContacts(contactSelections)}/>
+
+            <div className="font-weight-bold mb-1">
+                Share with groups:
+            </div>
+
+            <GroupsSelector options={GroupOptions.toGroupOptions(this.props.groups)}
+                            onChange={groupSelections => this.onChangeGroups(groupSelections)}/>
 
             <div className="mt-2">
 
@@ -95,9 +109,14 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
     }
 
-    private onChange(contactSelections: ReadonlyArray<UserRef>) {
+    private onChangeContacts(contactSelections: ReadonlyArray<UserRef>) {
         console.log("contacts changed: ", contactSelections);
         this.contactSelections = contactSelections;
+    }
+
+    private onChangeGroups(groupSelections: ReadonlyArray<GroupNameStr>) {
+        console.log("groups changed: ", groupSelections);
+        // this.contactSelections = groupSelections;
     }
 
 }
@@ -107,6 +126,7 @@ interface IProps {
     readonly onDone: (invitation: InvitationRequest) => void;
     readonly onDelete: (member: MemberRecord) => void;
     readonly contactProfiles: ReadonlyArray<ContactProfile>;
+    readonly groups: ReadonlyArray<Group>;
     readonly members: ReadonlyArray<MemberRecord>;
 }
 

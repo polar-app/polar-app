@@ -4,7 +4,7 @@ import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvit
 import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
 import {Image} from '../../datastore/sharing/db/Images';
-import {Groups} from '../../datastore/sharing/db/Groups';
+import {Group, Groups} from '../../datastore/sharing/db/Groups';
 import {Profiles} from '../../datastore/sharing/db/Profiles';
 import {Optional} from '../../util/ts/Optional';
 import {Promises} from '../../util/Promises';
@@ -13,6 +13,7 @@ import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Profile} from '../../datastore/sharing/db/Profiles';
 import {UserGroups} from "../../datastore/sharing/db/UserGroups";
 import {Logger} from "../../logger/Logger";
+import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembership";
 
 const log = Logger.create();
 
@@ -21,6 +22,7 @@ export class GroupSharingRecords {
     public static fetch(groupID: string,
                         contactsHandler: (contacts: ReadonlyArray<ContactProfile>) => void,
                         membersHandler: (members: ReadonlyArray<MemberRecord>) => void,
+                        groupsHandler: (groups: ReadonlyArray<Group>) => void,
                         errorHandler: (err: Error) => void) {
 
         let members: MemberRecord[] = [];
@@ -149,11 +151,17 @@ export class GroupSharingRecords {
 
         };
 
+        const doHandleGroups = async () => {
+            const groups = await UserGroupMembership.get();
+            groupsHandler(groups);
+        };
+
         const doHandle = async () => {
 
             await Promise.all([
                 doHandleContacts(),
-                doHandleMembership()
+                doHandleMembership(),
+                doHandleGroups()
             ]);
 
         };
