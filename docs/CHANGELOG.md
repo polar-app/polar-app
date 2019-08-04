@@ -1,3 +1,10 @@
+
+# 1.31.0
+
+- Initial version of polar public groups.  This is just a minimally viable
+  release to test out new features and get user feedback.  There's still a lot
+  left to do.
+
 # 1.30.8 
 
 - Small bug when dealing with account upgrades not allowing current plans to work.

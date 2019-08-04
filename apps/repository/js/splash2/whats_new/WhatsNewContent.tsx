@@ -11,6 +11,19 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
         return (
 
             <div>
+
+                <div>
+
+                    <h3>Polar 1.31.0</h3>
+
+                    <p>
+                        Public groups!  Polar finally has support for sharing
+                        documents in public groups.  We're really early in our
+                        support for this just now.
+                    </p>
+
+                </div>
+
                 <div>
 
                     <h3>Polar 1.30.6</h3>
