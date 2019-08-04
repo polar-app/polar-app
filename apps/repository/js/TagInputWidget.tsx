@@ -105,7 +105,6 @@ export class TagInputWidget extends React.Component<IProps, IState> {
                 <CreatableSelect
                     isMulti
                     isClearable
-                    autoFocus
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={(selectedOptions) => this.handleChange(selectedOptions as TagOption[])}

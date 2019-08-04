@@ -17,6 +17,7 @@ import { DocRef } from 'polar-shared/src/groups/DocRef';
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {GroupDocs} from "../../../../web/js/datastore/sharing/db/GroupDocs";
+import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 
 const log = Logger.create();
 
@@ -57,6 +58,8 @@ export class GroupDocAddButton extends React.PureComponent<IProps, IState> {
     private onJoin() {
 
         const handler = async () => {
+
+            await AuthHandlers.requireAuthentication();
 
             const {groupID, fingerprint} = this.props;
 

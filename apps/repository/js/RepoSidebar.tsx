@@ -140,6 +140,13 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          iconClassName="fas fa-layer-group"
                                          text="Annotations"/>
 
+                        <RepoSidebarItem id="sidebar-item-groups"
+                                         tooltip="Show public groups"
+                                         href="#groups"
+                                         onClick={() => this.toggle()}
+                                         iconClassName="fas fa-user-friends"
+                                         text="Groups"/>
+
                         {/*<RepoSidebarItem href="#editors-picks"*/}
                                          {/*onClick={() => this.toggle()}*/}
                                          {/*iconClassName="fas fa-star"*/}

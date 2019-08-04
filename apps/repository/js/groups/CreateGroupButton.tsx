@@ -17,12 +17,12 @@ import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/Auth
 
 const log = Logger.create();
 
-export class GroupJoinButton extends React.PureComponent<IProps, IState> {
+export class CreateGroupButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
 
-        this.onJoin = this.onJoin.bind(this);
+        this.onCreate = this.onCreate.bind(this);
 
         this.state = {
         };
@@ -34,57 +34,32 @@ export class GroupJoinButton extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div className="mr-1 ml-1">
-
-                <Button color="primary"
-                        size="sm"
-                        onClick={() => this.onJoin()}
-                        className="pl-2 pr-2">
-
-                    Join
-
-                </Button>
-
-            </div>
+            <a href="#groups/create" onClick={() => this.onCreate()} className="btn btn-success btn-sm">Create Group</a>
 
         );
 
     }
 
-    private onJoin() {
+    private onCreate() {
 
         const handler = async () => {
 
             await AuthHandlers.requireAuthentication();
 
-            const group = await Groups.getByName(this.props.name);
-
-            if (! group) {
-                Toaster.error("No group named: " + this.props.name);
-                return;
-            }
-
-            Toaster.info("Joining group...");
-
-            const request: GroupJoinRequest = {
-                groupID: group.id
-            };
-
-            await GroupJoins.exec(request);
-
-            Toaster.success("Joining group...done");
+            document.location.hash = 'groups/create';
 
         };
 
         handler()
             .catch(err => log.error("Unable to join group: ", err));
+
+        return false;
+
     }
 
 }
 
 interface IProps {
-
-    readonly name: GroupNameStr;
 
 }
 

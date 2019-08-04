@@ -18,6 +18,13 @@ export interface AuthHandler {
 
     userInfo(): Promise<Optional<UserInfo>>;
 
+    /**
+     * This operation requires authentication so redirect the user to login.
+     *
+     * @param signInSuccessUrl
+     */
+    requireAuthentication(signInSuccessUrl?: string): Promise<void>;
+
 }
 
 export class AuthHandlers {
@@ -40,6 +47,12 @@ export class AuthHandlers {
 
     }
 
+    public static async requireAuthentication(signInSuccessUrl?: string) {
+        const authHandler = this.get();
+        await authHandler.requireAuthentication(signInSuccessUrl);
+    }
+
+
 }
 
 abstract class DefaultAuthHandler implements AuthHandler {
@@ -57,7 +70,19 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
         };
 
-        window.location.href = createNewLocation();;
+        window.location.href = createNewLocation();
+
+    }
+
+    public async requireAuthentication(signInSuccessUrl?: string): Promise<void> {
+
+        const userInfo = await this.userInfo();
+
+        if (userInfo.isPresent()) {
+            return;
+        }
+
+        this.authenticate(signInSuccessUrl);
 
     }
 

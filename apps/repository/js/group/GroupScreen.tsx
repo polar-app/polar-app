@@ -11,6 +11,7 @@ import {
     GroupDocInfos
 } from "../../../../web/js/datastore/sharing/GroupDocInfos";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 
 const log = Logger.create();
 
@@ -23,10 +24,7 @@ export class GroupScreen extends React.Component<IProps, IState> {
             groupDocInfos: []
         };
 
-        console.log("FIXME1");
-
     }
-
 
     public componentWillMount(): void {
 
@@ -39,6 +37,8 @@ export class GroupScreen extends React.Component<IProps, IState> {
         };
 
         const doHandle = async (): Promise<void> => {
+
+            await AuthHandlers.requireAuthentication();
 
             const groupName = getGroupName();
 

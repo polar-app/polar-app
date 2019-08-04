@@ -5,6 +5,7 @@ import {PersistenceLayerManager} from '../../../../../web/js/datastore/Persisten
 import {CreateGroupForm} from "./CreateGroupForm";
 import {RepoDocMetaManager} from "../../RepoDocMetaManager";
 import {Tags} from "../../../../../web/js/tags/Tags";
+import {AuthHandlers} from "../../../../../web/js/apps/repository/auth_handler/AuthHandler";
 
 export class CreateGroupScreen extends React.Component<IProps, IState> {
 

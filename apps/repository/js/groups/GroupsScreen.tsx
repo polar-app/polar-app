@@ -5,6 +5,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {Group, Groups} from "../../../../web/js/datastore/sharing/db/Groups";
 import {Logger} from "../../../../web/js/logger/Logger";
 import {GroupsTable} from "./GroupsTable";
+import {CreateGroupButton} from "./CreateGroupButton";
 
 const log = Logger.create();
 
@@ -62,8 +63,7 @@ export class GroupsScreen extends React.Component<IProps, IState> {
                                     </div>
 
                                     <div className="text-right">
-                                        <a href="#groups/create"
-                                           className="btn btn-success btn-sm">Create Group</a>
+                                        <CreateGroupButton/>
                                     </div>
 
                                 </div>
