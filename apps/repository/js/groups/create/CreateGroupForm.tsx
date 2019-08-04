@@ -60,6 +60,7 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
                                        name="name"
                                        id="create-group-name"
                                        placeholder="Name of group"
+                                       required
                                        onChange={event => this.formData.name = event.currentTarget.value}
                                        />
 
