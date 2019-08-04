@@ -121,8 +121,6 @@ export interface GroupInit {
 
     readonly tags?: ReadonlyArray<TagStr>;
 
-    // FIXME: validate this plain text string on the backend...
-
     /**
      * A string (not HTML) that is used as a description for this document.
      */
