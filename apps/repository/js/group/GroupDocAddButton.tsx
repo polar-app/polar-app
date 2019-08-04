@@ -94,7 +94,7 @@ interface IProps {
 
     readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly groupID: GroupIDStr;
-    readonly fingerprint: string
+    readonly fingerprint: string;
 
 }
 
