@@ -64,7 +64,7 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
                                             onClick={() => this.doFileUpload()}>
 
                         <i className="fas fa-hdd"/>
-                        &nbsp; Upload Files from Disk
+                        &nbsp; Upload Documents
 
                     </AddContentDropdownItem>
 
