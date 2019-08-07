@@ -45,7 +45,7 @@ export class ComponentManager {
     }
 
     public start() {
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        this.model.registerListenerForDocumentLoaded((documentLoadedEvent) => this.onDocumentLoaded(documentLoadedEvent));
     }
 
     private onDocumentLoaded(documentLoadedEvent: DocumentLoadedEvent) {
@@ -65,6 +65,8 @@ export class ComponentManager {
 
         this.registerListenerForDocMeta(docMeta);
 
+        // TODO: I think this is wrong and that we we should NOT call this here
+        // and this is going to update too often.
         this.registerListenerForSecondaryDocMetas(docMeta.docInfo.fingerprint);
 
     }

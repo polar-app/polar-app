@@ -38,12 +38,19 @@ export class DocMetaListener {
 
     public start() {
 
+        console.log("Starting DocMetaListener.");
+
         // TODO: exclude my OWN documents by getting my profile and excluding all the docs matching my profile.
 
         // TODO: we could have a stop method if we added support for keeping the
         // unsubscribe functions.
 
         const handleUserGroups = async () => {
+
+            const userProfile = await UserProfiles.currentUserProfile();
+
+            console.log("Using userProfile: ", userProfile);
+
             await UserGroups.onSnapshot(userGroup => this.onSnapshotForUserGroup(userGroup));
         };
 

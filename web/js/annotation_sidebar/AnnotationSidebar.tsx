@@ -169,7 +169,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
      */
     private async registerListenersForSecondaryDocMetas() {
 
-        const user = Firebase.currentUser();
+        const user = await Firebase.currentUser();
 
         if (!user) {
             return;
