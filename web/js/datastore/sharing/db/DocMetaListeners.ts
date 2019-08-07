@@ -16,6 +16,7 @@ import {Author} from "../../../metadata/Author";
 import {Annotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
+import {FirebaseDatastores} from "../../FirebaseDatastores";
 
 const log = Logger.create();
 
@@ -137,6 +138,13 @@ export class DocMetaListener {
 
     public async handleDocMetaRecord(groupDoc: GroupDoc,
                                      docMetaRecord: DocMetaRecord | undefined) {
+
+        const primaryDocID = FirebaseDatastores.computeDocMetaID(this.fingerprint);
+
+        if (groupDoc.docID === primaryDocID) {
+            // we have to skip our own document or we're going to eat our own tail
+            return;
+        }
 
         const {profileID} = groupDoc;
 
