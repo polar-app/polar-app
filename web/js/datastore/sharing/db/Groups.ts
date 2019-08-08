@@ -94,8 +94,10 @@ export class Groups {
 
         const clauses: ReadonlyArray<Clause> = [...visibilityClauses];
 
+        // FIXME: also sort by name ascending for ties...
         const orderBy: ReadonlyArray<OrderByClause> = [
-            ['nrMembers', 'desc']
+            ['nrMembers', 'desc'],
+            ['name', 'asc']
         ];
 
         const limit = 50;
