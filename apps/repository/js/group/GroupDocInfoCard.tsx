@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
-import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
-import {LeftRightSplit} from "../../../../web/js/ui/left_right_split/LeftRightSplit";
 import {GroupDocAddButton} from "./GroupDocAddButton";
 import {GroupDocInfo} from "../../../../web/js/datastore/sharing/GroupDocInfos";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import Moment from "react-moment";
+import {LinkHost} from "./LinkHost";
 
 export class GroupDocInfoCard extends React.Component<IProps, IState> {
 
@@ -17,8 +15,7 @@ export class GroupDocInfoCard extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="border-top border-left border-right p-2"
-                 style={{display: 'flex'}}>
+            <div className="border-top border-left border-right p-2">
 
                 {/*<LeftRightSplit left={<div style={{display: 'flex'}}>*/}
 
@@ -45,16 +42,55 @@ export class GroupDocInfoCard extends React.Component<IProps, IState> {
 
                 {/*</div>*/}
 
-                <div style={{flexGrow: 1}} className="mt-auto mb-auto">
-                    {this.props.title}
+
+
+                <div style={{display: 'flex'}}>
+
+                    <div style={{flexGrow: 1}}
+                         className="mt-auto mb-auto text-lg">
+                        {this.props.title}
+                    </div>
+
+                    <div>
+
+                        <GroupDocAddButton persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                           groupID={this.props.groupID}
+                                           fingerprint={this.props.fingerprint}/>
+
+                    </div>
                 </div>
 
                 <div>
+                    {this.props.description}
+                </div>
 
-                    <GroupDocAddButton persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                       groupID={this.props.groupID}
-                                       fingerprint={this.props.fingerprint}/>
+                <div style={{display: 'flex'}} className="mt-2">
 
+                    <div style={{flexGrow: 1}} className="text-grey600">
+
+                        <div style={{display: 'flex'}}>
+
+                            <LinkHost url={this.props.url}/>
+
+                            <div>
+                                <b>{this.props.nrPages}</b> pages
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="text-grey600">
+
+                        <Moment withTitle={true}
+                                titleFormat="D MMM YYYY hh:MM A"
+                                format="MMM DD YYYY HH:mm A"
+                                ago
+                                filter={(value) => value.replace(/^an? /g, '1 ')}>
+                            {this.props.published}
+                        </Moment>
+
+                    </div>
                 </div>
 
             </div>
