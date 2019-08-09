@@ -12,6 +12,8 @@ import {
 } from "../../../../web/js/datastore/sharing/GroupDocInfos";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
+import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
+import {CreateGroupButton} from "../groups/CreateGroupButton";
 
 const log = Logger.create();
 
@@ -20,27 +22,33 @@ export class GroupScreen extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.getGroupName = this.getGroupName.bind(this);
+
         this.state = {
+            name: this.getGroupName(),
             groupDocInfos: []
         };
 
     }
 
+    private getGroupName() {
+
+        const parts = document.location.href.split("/");
+
+        if (parts.length === 0) {
+            throw new Error("No group");
+        }
+
+        return Arrays.last(parts)!;
+    }
+
     public componentWillMount(): void {
-
-        // get the group name from the URL
-        const getGroupName = () => {
-
-            const parts = document.location.href.split("/");
-            return Arrays.last(parts);
-
-        };
 
         const doHandle = async (): Promise<void> => {
 
             await AuthHandlers.requireAuthentication();
 
-            const groupName = getGroupName();
+            const groupName = this.getGroupName();
 
             if (! groupName) {
                 Toaster.error("No group name");
@@ -100,6 +108,23 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
                             {/*</div>*/}
 
+                            <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
+
+                                <div style={{display: 'flex'}}
+                                     className="w-100">
+
+                                    <div style={{flexGrow: 1}}>
+                                        <h3>{this.state.name}</h3>
+                                    </div>
+
+                                    <VerticalAlign>
+                                        {/*<CreateGroupButton/>*/}
+                                    </VerticalAlign>
+
+                                </div>
+
+                            </div>
+
                             <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}
                                         groupDocInfos={this.state.groupDocInfos}/>
 
@@ -121,5 +146,6 @@ export interface IProps {
 }
 
 export interface IState {
+    readonly name: string;
     readonly groupDocInfos: ReadonlyArray<GroupDocInfo>;
 }

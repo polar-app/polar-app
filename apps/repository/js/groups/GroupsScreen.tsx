@@ -6,6 +6,7 @@ import {Group, Groups} from "../../../../web/js/datastore/sharing/db/Groups";
 import {Logger} from "../../../../web/js/logger/Logger";
 import {GroupsTable} from "./GroupsTable";
 import {CreateGroupButton} from "./CreateGroupButton";
+import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 
 const log = Logger.create();
 
@@ -62,9 +63,9 @@ export class GroupsScreen extends React.Component<IProps, IState> {
                                         <h3>Groups</h3>
                                     </div>
 
-                                    <div className="text-right">
+                                    <VerticalAlign>
                                         <CreateGroupButton/>
-                                    </div>
+                                    </VerticalAlign>
 
                                 </div>
 
