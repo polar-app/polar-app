@@ -88,7 +88,7 @@ export class GroupDatastores {
 
                 const docMeta = DocMetas.create(fingerprint, docRef.nrPages);
 
-                DocRefs.toDocInfo(docRef, docMeta.docInfo);
+                DocRefs.copyToDocInfo(docRef, docMeta.docInfo);
 
                 docMeta.docInfo.filename = backendFileRef.name;
                 docMeta.docInfo.backend = backendFileRef.backend;

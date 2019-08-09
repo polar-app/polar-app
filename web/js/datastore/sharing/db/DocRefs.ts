@@ -23,7 +23,7 @@ export class DocRefs {
 
     }
 
-    public static toDocInfo(docRef: DocRef, docInfo: IDocInfo): IDocInfo {
+    public static copyToDocInfo(docRef: DocRef, docInfo: IDocInfo): IDocInfo {
 
         docInfo.fingerprint = docRef.fingerprint;
         docInfo.title = docRef.title;
