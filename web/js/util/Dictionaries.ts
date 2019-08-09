@@ -287,6 +287,18 @@ export class Dictionaries {
 
     }
 
+    public static clear(dict: {[key: string]: any} | null | undefined) {
+
+        if ( ! dict) {
+            return;
+        }
+
+        for (const key of Object.keys(dict)) {
+            delete dict[key];
+        }
+
+    }
+
 }
 
 

@@ -17,6 +17,7 @@ import {Annotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
 import {FirebaseDatastores} from "../../FirebaseDatastores";
+import {Dictionaries} from "../../../util/Dictionaries";
 
 const log = Logger.create();
 
@@ -181,9 +182,20 @@ export class DocMetaListener {
 
         const prev = Optional.of(this.docMetaIndex[docID]).getOrUndefined();
 
+        const initDocMeta = (docMeta: DocMeta) => {
+
+            // remove the pagemarks as that is user specific..
+            for (const pageMeta of Object.values(docMeta.pageMetas)) {
+                Dictionaries.clear(pageMeta.pagemarks);
+            }
+
+            return docMeta;
+
+        };
+
         const createDocMeta = () => {
 
-            const result = DocMetas.deserialize(docMetaRecord.value.value, fingerprint);
+            const result = initDocMeta(DocMetas.deserialize(docMetaRecord.value.value, fingerprint));
 
             if (prev) {
                 return result;
