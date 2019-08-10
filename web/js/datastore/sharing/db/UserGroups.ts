@@ -11,6 +11,7 @@ export class UserGroups {
     public static async get(uid?: UserIDStr): Promise<UserGroup | undefined> {
 
         if (! uid) {
+
             const user = await Firebase.currentUser();
 
             if (! user) {
@@ -60,6 +61,21 @@ export class UserGroups {
         return true;
 
     }
+
+    public static hasAdminForGroup(groupID: GroupIDStr, userGroup: UserGroup): boolean {
+
+        if (! userGroup) {
+            return false;
+        }
+
+        if (! userGroup.admin) {
+            return false;
+        }
+
+        return userGroup.admin.includes(groupID);
+
+    }
+
 
     private static fromRaw(userGroupRaw: UserGroupRaw | undefined): UserGroup | undefined {
 
@@ -127,5 +143,21 @@ export interface UserGroupInit {
 }
 
 export interface UserGroup extends UserGroupInit {
+
+}
+
+export class NullUserGroup implements UserGroup {
+
+    public constructor(public uid: UserIDStr) {
+
+    }
+
+    public readonly groups: ReadonlyArray<GroupIDStr> = [];
+
+    public readonly invitations: ReadonlyArray<GroupIDStr> = [];
+
+    public readonly admin: ReadonlyArray<GroupIDStr> = [];
+
+    public readonly moderator: ReadonlyArray<GroupIDStr> = [];
 
 }

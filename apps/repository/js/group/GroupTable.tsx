@@ -3,6 +3,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {GroupDocInfoCard} from "./GroupDocInfoCard";
 import {GroupDocInfo} from "../../../../web/js/datastore/sharing/GroupDocInfos";
+import {GroupData} from "./GroupData";
 
 export class GroupTable extends React.Component<IProps, IState> {
 
@@ -12,12 +13,16 @@ export class GroupTable extends React.Component<IProps, IState> {
 
     public render() {
 
-        const {groupDocInfos} = this.props;
+        const {groupData} = this.props;
+
+        if (! groupData) {
+            return <div/>;
+        }
 
         return (
 
             <div className="border-bottom">
-                {groupDocInfos.map(groupDocInfo =>
+                {groupData.groupDocInfos.map(groupDocInfo =>
                     <GroupDocInfoCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
                                       key={groupDocInfo.fingerprint} {...groupDocInfo}/>)}
             </div>
@@ -29,7 +34,7 @@ export class GroupTable extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly groupDocInfos: ReadonlyArray<GroupDocInfo>;
+    readonly groupData?: GroupData;
 }
 
 export interface IState {

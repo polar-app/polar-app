@@ -14,6 +14,13 @@ import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 import {CreateGroupButton} from "../groups/CreateGroupButton";
+import {GroupIDStr} from "../../../../web/js/datastore/Datastore";
+import {GroupData} from "./GroupData";
+import {
+    UserGroup,
+    UserGroups
+} from "../../../../web/js/datastore/sharing/db/UserGroups";
+import { GroupDeleteButton } from './GroupDeleteButton';
 
 const log = Logger.create();
 
@@ -26,7 +33,6 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
         this.state = {
             name: this.getGroupName(),
-            groupDocInfos: []
         };
 
     }
@@ -62,9 +68,26 @@ export class GroupScreen extends React.Component<IProps, IState> {
                 return;
             }
 
+            // TODO I dont' like how these are all dependent on each other
+            // as there is excess latency here.
+
             const groupDocInfos = await GroupDocInfos.list(group.id);
 
-            this.setState({groupDocInfos});
+            const userGroup = await UserGroups.get();
+
+            if (! userGroup) {
+                Toaster.error("No user groups for user");
+                return;
+            }
+
+            this.setState({
+                ...this.state,
+                groupData: {
+                    id: group.id,
+                    group,
+                    groupDocInfos,
+                    userGroup
+                }});
 
         };
 
@@ -118,7 +141,7 @@ export class GroupScreen extends React.Component<IProps, IState> {
                                     </div>
 
                                     <VerticalAlign>
-                                        {/*<CreateGroupButton/>*/}
+                                        <GroupDeleteButton groupData={this.state.groupData}/>
                                     </VerticalAlign>
 
                                 </div>
@@ -126,7 +149,7 @@ export class GroupScreen extends React.Component<IProps, IState> {
                             </div>
 
                             <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                        groupDocInfos={this.state.groupDocInfos}/>
+                                        groupData={this.state.groupData}/>
 
                         </div>
 
@@ -147,5 +170,5 @@ export interface IProps {
 
 export interface IState {
     readonly name: string;
-    readonly groupDocInfos: ReadonlyArray<GroupDocInfo>;
+    readonly groupData?: GroupData;
 }
