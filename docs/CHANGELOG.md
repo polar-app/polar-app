@@ -1,6 +1,9 @@
 
 # 1.31.0
 
+- Suggest that Anki users install the appropriate model names instead of a  
+  generic error.
+
 - Initial version of polar public groups.  This is just a minimally viable
   release to test out new features and get user feedback.  There's still a lot
   left to do.
