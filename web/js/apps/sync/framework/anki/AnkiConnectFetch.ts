@@ -36,12 +36,12 @@ export class AnkiConnectFetch {
                     return port;
 
                 } catch (e) {
-                    log.debug("Unable to connect on port: " + port);
+                    console.debug("Unable to connect on port: " + port);
                 }
 
             }
 
-            throw new Error("No Anki port detected!");
+            throw new Error(`Unable to connect to anki with ports ${this.PORTS} (make sure Polar Connect is installed)`);
 
         };
 
@@ -53,8 +53,6 @@ export class AnkiConnectFetch {
         };
 
         await configurePort();
-
-        log.error(`Unable to connect to anki with ports ${this.PORTS} (make sure Polar Connect is installed)`);
 
     }
 
