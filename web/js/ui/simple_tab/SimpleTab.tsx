@@ -1,4 +1,5 @@
 import * as React from 'react';
+import doc = Mocha.reporters.doc;
 
 export class SimpleTab extends React.Component<IProps, IState> {
 
@@ -15,9 +16,27 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
     public render() {
 
+        const isActive = () => {
+
+            const {href} = this.props;
+
+            if (href === "#" && document.location.hash === "") {
+                return true;
+            }
+
+            if (href.startsWith("#")) {
+                return document.location.hash === href;
+            }
+
+            return document.location.href === href;
+
+        };
+
+        const active = isActive();
+
         const computeBorderColor = () => {
 
-            if (this.props.active) {
+            if (active) {
                 return 'var(--primary600)';
             }
 
@@ -33,7 +52,7 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
         const borderBottom = `3px solid ${borderColor}`;
 
-        const color = this.props.active ? 'var(--grey900)' : 'var(--grey400)';
+        const color = active ? 'var(--grey900)' : 'var(--grey700)';
 
         return (
 
@@ -67,7 +86,6 @@ export class SimpleTab extends React.Component<IProps, IState> {
 export interface IProps {
     readonly href: string;
     readonly text: string;
-    readonly active?: boolean;
 }
 
 export interface IState {

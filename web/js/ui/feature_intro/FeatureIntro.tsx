@@ -5,7 +5,7 @@ import Button from 'reactstrap/lib/Button';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 import {SplitLayout} from '../split_layout/SplitLayout';
-import {SplitBarLeft} from '../../../../apps/repository/js/SplitBar';
+import {SplitBarLeft} from '../../../../apps/repository/js/SplitBarLeft';
 import {SplitLayoutLeft} from '../split_layout/SplitLayout';
 import {SplitLayoutRight} from '../split_layout/SplitLayoutRight';
 

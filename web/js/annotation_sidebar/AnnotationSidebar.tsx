@@ -6,7 +6,7 @@ import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
-import {SplitBar, SplitBarLeft, SplitBarRight} from '../../../apps/repository/js/SplitBar';
+import {SplitBar, SplitBarRight} from '../../../apps/repository/js/SplitBar';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
@@ -18,6 +18,7 @@ import {DocMetas} from "../metadata/DocMetas";
 import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
+import {SplitBarLeft} from '../../../apps/repository/js/SplitBarLeft';
 
 const log = Logger.create();
 

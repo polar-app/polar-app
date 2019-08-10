@@ -4,7 +4,7 @@ import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoSidebar} from '../RepoSidebar';
-import {SplitBar, SplitBarLeft, SplitBarRight} from '../SplitBar';
+import {SplitBar, SplitBarRight} from '../SplitBar';
 import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
 import {SettingsDropdown} from './SettingsDropdown';
@@ -12,6 +12,7 @@ import {Providers} from '../../../../web/js/util/Providers';
 import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
 import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
+import { SplitBarLeft } from '../SplitBarLeft';
 
 const log = Logger.create();
 
@@ -53,7 +54,7 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
             <div className="border-bottom">
                 <SplitBar>
 
-                    <SplitBarLeft>
+                    <SplitBarLeft width={500}>
                         <RepoSidebar/>
                     </SplitBarLeft>
 

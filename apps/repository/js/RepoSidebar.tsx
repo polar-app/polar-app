@@ -8,6 +8,8 @@ import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 import Button from 'reactstrap/lib/Button';
 import ListGroup from 'reactstrap/lib/ListGroup';
 import {SimpleTooltipEx} from '../../../web/js/ui/tooltip/SimpleTooltipEx';
+import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
+import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
 
 const log = Logger.create();
 
@@ -93,8 +95,19 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                     </SimpleTooltipEx>
                 </div>
 
-                <div style={{marginTop: 'auto', marginBottom: 'auto'}}>
+                <div className="mt-auto mb-auto">
                     <NavLogo/>
+                </div>
+
+                <div className="mt-auto mb-auto d-none-mobile">
+
+                    <div className="ml-4">
+                        <SimpleTabs>
+                            <SimpleTab href="#" text="Document Repository"/>
+                            <SimpleTab href="#groups" text="Groups"/>
+                        </SimpleTabs>
+                    </div>
+
                 </div>
 
             </div>

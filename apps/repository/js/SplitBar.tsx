@@ -27,28 +27,6 @@ export class SplitBar extends React.PureComponent<any, any> {
 
 }
 
-export class SplitBarLeft extends React.PureComponent<any, any> {
-
-    constructor(props: any, context: any) {
-        super(props, context);
-    }
-
-    public render() {
-
-        return (
-
-            <div className="split-bar-left"
-                 style={{marginTop: 'auto', marginBottom: 'auto', width: '250px', whiteSpace: 'nowrap'}}>
-
-                {this.props.children}
-
-            </div>
-
-        );
-    }
-
-}
-
 export class SplitBarRight extends React.PureComponent<any, any> {
 
     constructor(props: any, context: any) {
