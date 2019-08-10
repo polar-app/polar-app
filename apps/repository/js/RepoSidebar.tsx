@@ -88,7 +88,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                              className="mr-1">
                             <Button color='light'
                                     onClick={() => this.toggle()}>
-                                <i className="fas fa-bars"></i>
+                                <i className="fas fa-bars"/>
                             </Button>
                         </div>
 
