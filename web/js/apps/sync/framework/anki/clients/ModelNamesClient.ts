@@ -21,7 +21,7 @@ import * as TypeMoq from "typemoq";
  */
 export class ModelNamesClient implements IModelNamesClient {
 
-    public async execute(): Promise<number[]> {
+    public async execute(): Promise<string[]> {
 
         const body = {
             action: "modelNames",
@@ -30,14 +30,14 @@ export class ModelNamesClient implements IModelNamesClient {
 
         const init = { method: 'POST', body: JSON.stringify(body) };
 
-        return <number[]> await AnkiConnectFetch.fetch(init);
+        return <string[]> await AnkiConnectFetch.fetch(init);
 
     }
 
     /**
      * Create a mock that returns the given result.
      */
-    public static createMock(result: number[]) {
+    public static createMock(result: string[]) {
         const client = TypeMoq.Mock.ofType<IModelNamesClient>();
         client.setup(x => x.execute()).returns(() => Promise.resolve(result));
         return client.object;
@@ -47,6 +47,6 @@ export class ModelNamesClient implements IModelNamesClient {
 
 export interface IModelNamesClient {
 
-    execute(): Promise<number[]>;
+    execute(): Promise<string[]>;
 
 }

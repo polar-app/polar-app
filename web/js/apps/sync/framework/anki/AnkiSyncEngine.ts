@@ -21,6 +21,8 @@ import {FlashcardDescriptor} from './FlashcardDescriptor';
 import {FlashcardDescriptors} from './FlashcardDescriptors';
 import {AnkiConnectFetch} from './AnkiConnectFetch';
 import {Decks} from './Decks';
+import {ModelNamesClient} from "./clients/ModelNamesClient";
+import {ModelNames} from "./ModelNames";
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -37,6 +39,8 @@ export class AnkiSyncEngine implements SyncEngine {
         // determine how to connect to Anki
         await AnkiConnectFetch.initialize();
 
+        await this.verifyRequiredModels();
+
         const noteDescriptors = await this.toNoteDescriptors(deckNameStrategy, docMetaSupplierCollection);
 
         const deckNames = SetArrays.toSet(noteDescriptors.map(noteDescriptor => noteDescriptor.deckName));
@@ -48,6 +52,12 @@ export class AnkiSyncEngine implements SyncEngine {
 
         return new PendingAnkiSyncJob(progress, deckDescriptors, noteDescriptors);
 
+    }
+
+    private async verifyRequiredModels() {
+        const modelNotesClient = new ModelNamesClient();
+        const modelNames = await modelNotesClient.execute();
+        ModelNames.verifyRequired(modelNames);
     }
 
     protected async toNoteDescriptors(deckNameStrategy: DeckNameStrategy,
