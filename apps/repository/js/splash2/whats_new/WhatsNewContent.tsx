@@ -22,6 +22,18 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                         support for this just now.
                     </p>
 
+                    <p>
+                        Public groups allow you to share documents with other
+                        users of Polar and to share comments and annotations.
+                        With public groups you can:
+                    </p>
+
+                    <ul>
+                        <li>Easily share and add documents to groups.</li>
+                        <li>Add highlights and annotations and other users in that group will see the annotations.</li>
+                        <li>Add comments to a document and share the comments with other members of the group.</li>
+                    </ul>
+
                 </div>
 
                 <div>
