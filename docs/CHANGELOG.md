@@ -1,4 +1,9 @@
 
+# 1.31.1
+
+- /groups doesn't require auth now... auth is only triggered when you try to add
+  a document or create a group.
+
 # 1.31.0
 
 - Suggest that Anki users install the appropriate model names instead of a  
