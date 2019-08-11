@@ -52,8 +52,6 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
         const doHandle = async (): Promise<void> => {
 
-            await AuthHandlers.requireAuthentication();
-
             const groupName = this.getGroupName();
 
             if (! groupName) {
@@ -74,11 +72,6 @@ export class GroupScreen extends React.Component<IProps, IState> {
             const groupDocInfos = await GroupDocInfos.list(group.id);
 
             const userGroup = await UserGroups.get();
-
-            if (! userGroup) {
-                Toaster.error("No user groups for user");
-                return;
-            }
 
             this.setState({
                 ...this.state,

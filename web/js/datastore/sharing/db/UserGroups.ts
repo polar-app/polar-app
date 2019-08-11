@@ -62,7 +62,7 @@ export class UserGroups {
 
     }
 
-    public static hasAdminForGroup(groupID: GroupIDStr, userGroup: UserGroup): boolean {
+    public static hasAdminForGroup(groupID: GroupIDStr, userGroup?: UserGroup): boolean {
 
         if (! userGroup) {
             return false;
