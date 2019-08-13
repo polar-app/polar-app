@@ -41,7 +41,9 @@ export class AnkiConnectFetch {
 
             }
 
-            throw new Error(`Unable to connect to anki with ports ${this.PORTS} (make sure Polar Connect is installed)`);
+            const msg = `Unable to connect to anki with ports ${this.PORTS} (make sure Polar Connect is installed)`;
+            log.error(msg);
+            throw new Error(msg);
 
         };
 
