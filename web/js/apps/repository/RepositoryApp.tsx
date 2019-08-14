@@ -4,11 +4,15 @@ import {FileImportController} from './FileImportController';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
-import {PersistenceLayerManager, PersistenceLayerTypes} from '../../datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerManager,
+    PersistenceLayerTypes
+} from '../../datastore/PersistenceLayerManager';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {SyncBar, SyncBarProgress} from '../../ui/sync_bar/SyncBar';
 import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
-import AnnotationRepoScreen from '../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen';
+import AnnotationRepoScreen
+    from '../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from '../../logger/Logger';
 import {UpdatesController} from '../../auto_updates/UpdatesController';
@@ -16,15 +20,18 @@ import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
-import WhatsNewScreen from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
-import CommunityScreen from '../../../../apps/repository/js/community/CommunityScreen';
+import WhatsNewScreen
+    from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
+import CommunityScreen
+    from '../../../../apps/repository/js/community/CommunityScreen';
 import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
 import LogsScreen from '../../../../apps/repository/js/logs/LogsScreen';
 import {ToasterService} from '../../ui/toaster/ToasterService';
 import {ProgressService} from '../../ui/progress_bar/ProgressService';
 import {ProgressTracker} from '../../util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
-import EditorsPicksScreen from '../../../../apps/repository/js/editors_picks/EditorsPicksScreen';
+import EditorsPicksScreen
+    from '../../../../apps/repository/js/editors_picks/EditorsPicksScreen';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from '../../util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
@@ -44,10 +51,12 @@ import {UniqueMachines} from '../../telemetry/UniqueMachines';
 import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {Accounts} from '../../accounts/Accounts';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
-import DocRepoScreen from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
+import DocRepoScreen
+    from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
 import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/CreateGroupScreen";
 import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
 import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
+import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 
 const log = Logger.create();
 
@@ -68,75 +77,84 @@ export class RepositoryApp {
 
         AppOrigin.configure();
 
-        const authHandler = AuthHandlers.get();
-
-        if (await authHandler.status() === 'needs-authentication') {
-            await authHandler.authenticate();
-            return;
-        }
-
-        const userInfo = await authHandler.userInfo();
-        const account = await Accounts.get();
-
-        // subscribe but do it in the background as this isn't a high priority UI task.
-        MailingList.subscribeWhenNecessary()
-            .catch(err => log.error(err));
-
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
         const syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
-        new FileImportController(this.persistenceLayerManager, updatedDocInfoEventDispatcher)
-            .start();
+        const authHandler = AuthHandlers.get();
 
-        new DocRepoAnkiSyncController(this.persistenceLayerManager, syncBarProgress)
-            .start();
+        const authStatus = await authHandler.status();
 
-        new UpdatesController().start();
+        const userInfo = await authHandler.userInfo();
+        const account = await Accounts.get();
 
-        new ToasterService().start();
+        if (authStatus !== 'needs-authentication') {
 
-        new ProgressService().start();
+            // subscribe but do it in the background as this isn't a high priority UI task.
+            MailingList.subscribeWhenNecessary()
+                .catch(err => log.error(err));
 
-        await this.doLoadExampleDocs();
+            new FileImportController(this.persistenceLayerManager, updatedDocInfoEventDispatcher)
+                .start();
 
-        MachineDatastores.triggerBackgroundUpdates(this.persistenceLayerManager);
+            new DocRepoAnkiSyncController(this.persistenceLayerManager, syncBarProgress)
+                .start();
 
-        UniqueMachines.trigger();
+            new UpdatesController().start();
 
-        // PreviewDisclaimers.createWhenNecessary();
+            new ToasterService().start();
 
-        MobileDisclaimers.createWhenNecessary();
+            new ProgressService().start();
 
-        updatedDocInfoEventDispatcher.addEventListener(docInfo => {
-            this.onUpdatedDocInfo(docInfo);
-        });
+            await this.doLoadExampleDocs();
 
-        this.persistenceLayerManager.addEventListener(event => {
+            MachineDatastores.triggerBackgroundUpdates(this.persistenceLayerManager);
 
-            if (event.state === 'changed') {
-                event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
+            UniqueMachines.trigger();
 
-                    this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
+            // PreviewDisclaimers.createWhenNecessary();
 
-                });
-            }
+            MobileDisclaimers.createWhenNecessary();
 
-        });
+            updatedDocInfoEventDispatcher.addEventListener(docInfo => {
+                this.onUpdatedDocInfo(docInfo);
+            });
+
+            this.persistenceLayerManager.addEventListener(event => {
+
+                if (event.state === 'changed') {
+                    event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
+
+                        this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
+
+                    });
+                }
+
+            });
+
+        }
 
         const renderDocRepoScreen = () => {
-            return ( <DocRepoScreen persistenceLayerManager={this.persistenceLayerManager}
-                                    updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                    repoDocMetaManager={this.repoDocInfoManager}
-                                    repoDocMetaLoader={this.repoDocInfoLoader}/> );
+            return (
+                <AuthRequired authStatus={authStatus}>
+                    <DocRepoScreen persistenceLayerManager={this.persistenceLayerManager}
+                                        updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                        repoDocMetaManager={this.repoDocInfoManager}
+                                        repoDocMetaLoader={this.repoDocInfoLoader}/>
+                </AuthRequired>
+            );
         };
 
         const renderAnnotationRepoScreen = () => {
-            return ( <AnnotationRepoScreen persistenceLayerManager={this.persistenceLayerManager}
-                                           updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                           repoDocMetaManager={this.repoDocInfoManager}
-                                           repoDocMetaLoader={this.repoDocInfoLoader}
-                                           syncBarProgress={syncBarProgress}/> );
+            return (
+                <AuthRequired authStatus={authStatus}>
+                    <AnnotationRepoScreen persistenceLayerManager={this.persistenceLayerManager}
+                                               updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                               repoDocMetaManager={this.repoDocInfoManager}
+                                               repoDocMetaLoader={this.repoDocInfoLoader}
+                                               syncBarProgress={syncBarProgress}/>
+                </AuthRequired>
+            );
         };
 
         const renderWhatsNewScreen = () => {
@@ -144,26 +162,50 @@ export class RepositoryApp {
         };
 
         const renderCommunityScreen = () => {
-            return ( <CommunityScreen persistenceLayerManager={this.persistenceLayerManager}/> );
+            return (
+                <AuthRequired authStatus={authStatus}>
+                    <CommunityScreen persistenceLayerManager={this.persistenceLayerManager}/>
+                </AuthRequired>
+            );
         };
 
         const renderStatsScreen = () => {
-            return ( <StatsScreen persistenceLayerManager={this.persistenceLayerManager}
-                                  repoDocMetaManager={this.repoDocInfoManager}/> );
+            return (
+                <AuthRequired authStatus={authStatus}>
+                    <StatsScreen persistenceLayerManager={this.persistenceLayerManager}
+                                      repoDocMetaManager={this.repoDocInfoManager}/>
+                </AuthRequired>);
         };
 
         const renderLogsScreen = () => {
-            return ( <LogsScreen persistenceLayerManager={this.persistenceLayerManager}/> );
+            return (
+                <AuthRequired authStatus={authStatus}>
+                    <LogsScreen persistenceLayerManager={this.persistenceLayerManager}/>
+                </AuthRequired>
+            );
         };
 
         const editorsPicksScreen = () => {
-            return ( <EditorsPicksScreen persistenceLayerManager={this.persistenceLayerManager}/> );
+            return (
+                <AuthRequired authStatus={authStatus}>
+                    <EditorsPicksScreen persistenceLayerManager={this.persistenceLayerManager}/>
+                </AuthRequired>
+                );
+        };
+
+        const renderCreateGroupScreen = () => {
+
+            return (
+                <AuthRequired authStatus={authStatus}>
+                    <CreateGroupScreen persistenceLayerManager={this.persistenceLayerManager}
+                                           repoDocMetaManager={this.repoDocInfoManager}/>
+                </AuthRequired>
+            );
         };
 
         const plan = account ? account.plan : 'free';
 
         const premiumScreen = () => {
-
             return (<PremiumScreen persistenceLayerManager={this.persistenceLayerManager}
                                    plan={plan}
                                    userInfo={userInfo.getOrUndefined()}/>);
@@ -180,11 +222,6 @@ export class RepositoryApp {
 
         const renderGroupsScreen = () => {
             return (<GroupsScreen persistenceLayerManager={this.persistenceLayerManager}/>);
-        };
-
-        const renderCreateGroupScreen = () => {
-            return (<CreateGroupScreen persistenceLayerManager={this.persistenceLayerManager}
-                                       repoDocMetaManager={this.repoDocInfoManager}/>);
         };
 
         const onNavChange = () => {
@@ -222,7 +259,7 @@ export class RepositoryApp {
 
             <div style={{height: '100%'}}>
 
-                {/*<PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>*/}
+            {/*<PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>*/}
 
                 <Splashes persistenceLayerManager={this.persistenceLayerManager}/>
 
@@ -307,16 +344,20 @@ export class RepositoryApp {
 
         );
 
-        this.handleRepoDocInfoEvents();
+        if (authStatus !== 'needs-authentication') {
 
-        await this.repoDocInfoLoader.start();
+            this.handleRepoDocInfoEvents();
 
-        new CloudService(this.persistenceLayerManager)
-            .start();
+            await this.repoDocInfoLoader.start();
 
-        await this.persistenceLayerManager.start();
+            new CloudService(this.persistenceLayerManager)
+                .start();
 
-        log.info("Started repo doc loader.");
+            await this.persistenceLayerManager.start();
+
+            log.info("Started repo doc loader.");
+
+        }
 
         AppInstance.notifyStarted('RepositoryApp');
 
@@ -461,3 +502,4 @@ export class RepositoryApp {
     }
 
 }
+

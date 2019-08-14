@@ -172,6 +172,29 @@ export class Functions {
     }
 
 
+    /**
+     * Create a function that is a singleton and only runs once.
+     */
+    public static createAsyncSingleton(delegate: () => Promise<void>) {
+
+        let executed: boolean = false;
+
+        return async () => {
+
+            if (executed) {
+                return;
+            }
+
+            try {
+                await delegate();
+            } finally {
+                executed = true;
+            }
+
+        };
+
+    }
+
 }
 
 /**

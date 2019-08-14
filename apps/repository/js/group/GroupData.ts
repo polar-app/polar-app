@@ -7,5 +7,10 @@ export interface GroupData {
     readonly id: GroupIDStr;
     readonly group: Group;
     readonly groupDocInfos: ReadonlyArray<GroupDocInfo>;
-    readonly userGroup: UserGroup;
+
+    /**
+     * The groups for the user. Only known if the user is actually authenticated
+     */
+    readonly userGroup?: UserGroup;
+
 }

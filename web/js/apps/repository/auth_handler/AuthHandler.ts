@@ -12,7 +12,7 @@ export interface AuthHandler {
      * @param signInSuccessUrl The URL to redirect to if we're logging in to a
      * specific portion of the app.
      */
-    authenticate(signInSuccessUrl?: string): Promise<void>;
+    authenticate(signInSuccessUrl?: string): void;
 
     status(): Promise<AuthStatus>;
 
@@ -57,7 +57,7 @@ export class AuthHandlers {
 
 abstract class DefaultAuthHandler implements AuthHandler {
 
-    public async authenticate(signInSuccessUrl?: string): Promise<void> {
+    public authenticate(signInSuccessUrl?: string): void {
 
         const createNewLocation = () => {
 
