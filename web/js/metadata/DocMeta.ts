@@ -1,9 +1,9 @@
-import {DocInfo} from './DocInfo';
-import {PageMeta} from './PageMeta';
+import {DocInfo, IDocInfo} from './DocInfo';
+import {IPageMeta, PageMeta} from './PageMeta';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
-import {AnnotationInfo} from './AnnotationInfo';
+import {AnnotationInfo, IAnnotationInfo} from './AnnotationInfo';
 import {Attachment} from './Attachment';
 
 
@@ -11,7 +11,7 @@ import {Attachment} from './Attachment';
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-export class DocMeta extends SerializedObject implements  IDocMeta {
+export class DocMeta extends SerializedObject implements IDocMeta {
 
     public docInfo: DocInfo;
     public pageMetas: {[id: string]: PageMeta};
@@ -67,20 +67,20 @@ export interface IDocMeta {
     /**
      * The DocInfo which includes information like title, nrPages, etc.
      */
-    docInfo: DocInfo;
+    docInfo: IDocInfo;
 
 
     /**
      * A sparse dictionary of page number to page metadata.
      *
      */
-    pageMetas: {[id: number]: PageMeta};
+    pageMetas: {[id: number]: IPageMeta};
 
     /**
      * The annotation info for this document including the last annotation
      * time, progress, etc.
      */
-    annotationInfo: AnnotationInfo;
+    annotationInfo: IAnnotationInfo;
 
     /**
      * The version of this DocMeta version.

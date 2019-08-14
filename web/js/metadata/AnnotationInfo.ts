@@ -5,7 +5,7 @@ import {ISODateTimeString} from './ISODateTimeStrings';
  * High level information about the annotations in this document.
  *
  */
-export class AnnotationInfo extends SerializedObject {
+export class AnnotationInfo extends SerializedObject implements IAnnotationInfo {
 
     /**
      * The last time this document was annotated (pagemarks updated, text
@@ -27,4 +27,8 @@ export class AnnotationInfo extends SerializedObject {
         super.validate();
     }
 
+}
+
+export interface IAnnotationInfo {
+    lastAnnotated?: ISODateTimeString;
 }

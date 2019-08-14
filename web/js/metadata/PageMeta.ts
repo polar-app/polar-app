@@ -11,69 +11,26 @@ import {Pagemark} from './Pagemark';
 import {Question} from './Question';
 import {ReadingProgress} from './ReadingProgress';
 
-export class PageMeta extends SerializedObject {
+export class PageMeta extends SerializedObject implements IPageMeta {
 
-    /**
-     * The pageInfo for this page.
-     */
     public readonly pageInfo: PageInfo;
 
-    /**
-     * The index of page number to pagemark which stores the data we need
-     * for keeping track of pagemarks.  The index is the pagemark column.
-     *
-     */
     public readonly pagemarks: {[id: string]: Pagemark} = {};
 
-    /**
-     * The note for this annotation.
-     */
     public readonly notes: {[id: string]: Note} = {};
 
-    /**
-     * The note for this annotation.
-     */
     public readonly comments: {[id: string]: Comment} = {};
 
-    /**
-     *
-     */
     public readonly questions: {[id: string]: Question} = {};
 
-    /**
-     *
-     */
     public readonly flashcards: {[id: string]: Flashcard} = {};
 
-    /**
-     * An index of test highlights for the page.
-     *
-     */
     public readonly textHighlights: {[id: string]: TextHighlight} = {};
 
-
-    /**
-     * An index of area highlights for the page.
-     *
-     */
     public readonly areaHighlights: {[id: string]: AreaHighlight} = {};
 
-    /**
-     * Screenshots we've taken of this page while performing annotations.
-     *
-     * @Deprecated we're no longer using this and instead storing the
-     * screenshots directly along with the image with a 'rel' and then storing
-     * all the 'attachments' in the DocInfo.  The list of attachments is small
-     * plus we need to have the DocInfo be a smaller structure for the
-     * representation of the doc itself.
-     */
     public readonly screenshots: {[id: string]: Screenshot} = {};
 
-    /**
-     * The thumbnails for this page.  Usually, this is just one thumbnail
-     * but there might be multiple.  If we want a specific noe we can just
-     * look at the width and height.
-     */
     public readonly thumbnails: {[id: string]: Thumbnail} = {};
 
     public readonly readingProgress: {[id: string]: ReadingProgress} = {};
@@ -133,3 +90,72 @@ export class PageMeta extends SerializedObject {
  */
 export type PageNumber = number;
 
+export interface IPageMeta {
+
+    /**
+     * The pageInfo for this page.
+     */
+    readonly pageInfo: PageInfo;
+
+    /**
+     * The index of page number to pagemark which stores the data we need
+     * for keeping track of pagemarks.  The index is the pagemark column.
+     *
+     */
+    readonly pagemarks: {[id: string]: Pagemark};
+
+    /**
+     * The note for this annotation.
+     */
+    readonly notes: {[id: string]: Note};
+
+    /**
+     * The note for this annotation.
+     */
+    readonly comments: {[id: string]: Comment};
+
+    /**
+     *
+     */
+    readonly questions: {[id: string]: Question};
+
+    /**
+     *
+     */
+    readonly flashcards: {[id: string]: Flashcard};
+
+    /**
+     * An index of test highlights for the page.
+     *
+     */
+    readonly textHighlights: {[id: string]: TextHighlight};
+
+
+    /**
+     * An index of area highlights for the page.
+     *
+     */
+    readonly areaHighlights: {[id: string]: AreaHighlight};
+
+    /**
+     * Screenshots we've taken of this page while performing annotations.
+     *
+     * @Deprecated we're no longer using this and instead storing the
+     * screenshots directly along with the image with a 'rel' and then storing
+     * all the 'attachments' in the DocInfo.  The list of attachments is small
+     * plus we need to have the DocInfo be a smaller structure for the
+     * representation of the doc itself.
+     */
+    readonly screenshots: {[id: string]: Screenshot};
+
+    /**
+     * The thumbnails for this page.  Usually, this is just one thumbnail
+     * but there might be multiple.  If we want a specific noe we can just
+     * look at the width and height.
+     */
+    readonly thumbnails: {[id: string]: Thumbnail};
+
+    readonly readingProgress: {[id: string]: ReadingProgress};
+
+
+}
