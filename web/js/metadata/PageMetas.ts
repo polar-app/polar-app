@@ -7,12 +7,13 @@ import {DocMeta} from './DocMeta';
 import {isPresent, Preconditions} from '../Preconditions';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
 import {TraceEvent} from '../proxies/TraceEvent';
+import {IPageMeta} from "./IPageMeta";
 
 const log = Logger.create();
 
 export class PageMetas {
 
-    public static upgrade(pageMetas: {[key: number]: PageMeta}) {
+    public static upgrade(pageMetas: {[key: number]: IPageMeta}) {
 
         pageMetas = Object.assign({}, pageMetas);
 

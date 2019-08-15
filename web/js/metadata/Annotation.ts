@@ -1,6 +1,6 @@
-import {VersionedObject} from './VersionedObject';
+import {IVersionedObject, VersionedObject} from './VersionedObject';
 
-export abstract class Annotation extends VersionedObject {
+export abstract class Annotation extends VersionedObject implements IAnnotation {
 
     protected constructor(val: Annotation) {
 
@@ -9,5 +9,9 @@ export abstract class Annotation extends VersionedObject {
         this.init(val);
 
     }
+
+}
+
+export interface IAnnotation extends IVersionedObject {
 
 }

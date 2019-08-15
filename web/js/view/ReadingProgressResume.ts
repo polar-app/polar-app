@@ -1,7 +1,7 @@
 import {Elements} from '../util/Elements';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocMeta} from '../metadata/DocMeta';
-import {Pagemark} from '../metadata/Pagemark';
+import {IPagemark, Pagemark} from '../metadata/Pagemark';
 import {Rects} from '../Rects';
 import {Reducers} from '../util/Reducers';
 
@@ -191,6 +191,6 @@ interface TargetPagemark {
 
 interface PagemarkHolder {
     readonly pageNum: number;
-    readonly pagemark: Pagemark;
+    readonly pagemark: IPagemark;
 }
 

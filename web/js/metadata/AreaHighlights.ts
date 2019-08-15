@@ -3,7 +3,7 @@ import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {IAreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {Image} from './Image';
 import {Datastore} from '../datastore/Datastore';
 import {BackendFileRef} from '../datastore/Datastore';
@@ -27,6 +27,7 @@ import {ILTRect} from '../util/rects/ILTRect';
 import {DataURLs} from '../util/DataURLs';
 import {Rect} from '../Rect';
 import {Rects} from '../Rects';
+import {IPageMeta} from "./IPageMeta";
 
 const log = Logger.create();
 
@@ -217,9 +218,9 @@ export interface AreaHighlightDeleteOpts {
 
 export interface AreaHighlightWriteOpts {
     readonly datastore: Datastore | PersistenceLayer;
-    readonly docMeta: DocMeta;
-    readonly pageMeta: PageMeta;
-    readonly areaHighlight: AreaHighlight;
+    readonly docMeta: IDocMeta;
+    readonly pageMeta: IPageMeta;
+    readonly areaHighlight: IAreaHighlight;
     readonly rect: AreaHighlightRect;
     readonly position: Position;
     readonly extractedImage: ExtractedImage;

@@ -12,7 +12,7 @@ import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
-import {PageNumber} from '../metadata/PageMeta';
+import {PageNumber} from "../metadata/IPageMeta";
 
 const log = Logger.create();
 

@@ -1,5 +1,5 @@
 import {PagemarkRect} from './PagemarkRect';
-import {Pagemark, PagemarkRef} from './Pagemark';
+import {IPagemark, Pagemark, PagemarkRef} from './Pagemark';
 import {Logger} from '../logger/Logger';
 import {Hashcodes} from '../Hashcodes';
 import {Objects} from '../util/Objects';
@@ -12,7 +12,7 @@ import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
-import {PageMeta, PageNumber} from './PageMeta';
+import {PageMeta} from './PageMeta';
 import {Numbers} from "../util/Numbers";
 import {Reducers} from '../util/Reducers';
 import {ReadingProgresses} from './ReadingProgresses';
@@ -20,6 +20,7 @@ import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
 import {Percentages} from '../util/Percentages';
+import {IPageMeta, PageNumber} from "./IPageMeta";
 
 const log = Logger.create();
 
@@ -325,7 +326,7 @@ export class Pagemarks {
      *
      * @param pagemark The pagemark to update.
      */
-    public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: Pagemark) {
+    public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: IPagemark) {
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
@@ -504,7 +505,7 @@ export class Pagemarks {
     /**
      * Mutate the pagemarks on the PageMeta and also update the readingProgress
      */
-    private static doPageMetaMutation(pageMeta: PageMeta, pageMetaMutator?: VOID_FUNCTION): void {
+    private static doPageMetaMutation(pageMeta: IPageMeta, pageMetaMutator?: VOID_FUNCTION): void {
 
         if (! pageMetaMutator) {
             return;
@@ -571,7 +572,7 @@ export class Pagemarks {
 }
 
 interface PagemarkPageMetaRef {
-    readonly pageMeta: PageMeta;
+    readonly pageMeta: IPageMeta;
     readonly id: string;
 
 }

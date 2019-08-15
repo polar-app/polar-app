@@ -1,6 +1,6 @@
 import {PageMeta} from './PageMeta';
 import {Logger} from '../logger/Logger';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {PagemarkType} from './PagemarkType';
 import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';
@@ -202,11 +202,11 @@ export class DocMetas {
      * @param mutator  The function to execute which will mutation the
      * underlying DocMeta properly.
      */
-    public static withBatchedMutations<T>(docMeta: DocMeta, mutator: () => T) {
+    public static withBatchedMutations<T>(docMeta: IDocMeta, mutator: () => T) {
         return this.withMutating(docMeta, 'batch', mutator);
     }
 
-    public static withSkippedMutations<T>(docMeta: DocMeta, mutator: () => T) {
+    public static withSkippedMutations<T>(docMeta: IDocMeta, mutator: () => T) {
         return this.withMutating(docMeta, 'skip', mutator);
     }
 

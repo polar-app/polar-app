@@ -1,11 +1,12 @@
 /**
  * Main entrypoint for computing stats on underlying metadata...
  */
-import {DocInfo, IDocInfo} from './DocInfo';
+import {DocInfo} from './DocInfo';
 import {ISODateString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {Dictionaries} from '../util/Dictionaries';
 import {HitMap} from '../util/HitMap';
 import {Arrays} from '../util/Arrays';
+import {IDocInfo} from "./IDocInfo";
 
 export class Statistics {
 

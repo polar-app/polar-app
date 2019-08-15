@@ -1,5 +1,5 @@
 import {FlashcardType} from './FlashcardType';
-import {VersionedObject} from './VersionedObject';
+import {IVersionedObject, VersionedObject} from './VersionedObject';
 import {Text} from './Text';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
@@ -62,7 +62,7 @@ export class Flashcard extends VersionedObject implements IFlashcard {
 
 }
 
-export interface IFlashcard {
+export interface IFlashcard extends IVersionedObject {
 
     /**
      * The type of this flashcard.

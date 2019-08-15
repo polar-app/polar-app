@@ -1,8 +1,9 @@
-import {DocInfo, IDocInfo} from './DocInfo';
+import {DocInfo} from './DocInfo';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Optional} from '../util/ts/Optional';
 import {UUIDs} from './UUIDs';
 import {PagemarkType} from './PagemarkType';
+import {IDocInfo} from "./IDocInfo";
 
 export class DocInfos {
 

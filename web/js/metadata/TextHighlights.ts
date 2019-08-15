@@ -9,6 +9,7 @@ import {PageMeta} from './PageMeta';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
 import {DocMeta} from './DocMeta';
+import {IPageMeta} from "./IPageMeta";
 
 const log =  Logger.create();
 
@@ -53,7 +54,7 @@ export class TextHighlights {
         textHighlight.images[notNull(image.rel)] = image;
     }
 
-    public static deleteTextHighlight(pageMeta: PageMeta, textHighlight: TextHighlight) {
+    public static deleteTextHighlight(pageMeta: IPageMeta, textHighlight: ITextHighlight) {
 
         if (textHighlight.images) {
 

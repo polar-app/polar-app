@@ -1,6 +1,7 @@
 import {DocMeta} from './DocMeta';
 import {Dictionaries} from '../util/Dictionaries';
 import {PageMeta} from './PageMeta';
+import {IPageMeta} from "./IPageMeta";
 
 export class DocMetaMerger {
 
@@ -31,7 +32,7 @@ export class DocMetaMerger {
 
 }
 
-function deepCopyPageMeta(src: PageMeta, dest: PageMeta) {
+function deepCopyPageMeta(src: IPageMeta, dest: IPageMeta) {
     // pagemarks and reading progress should not be copied over.
 
     deepCopyInto(src.textHighlights, dest.textHighlights);

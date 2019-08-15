@@ -12,6 +12,7 @@ import {Flashcard} from './Flashcard';
 import {Author} from './Author';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {HighlightColor} from './HighlightColor';
+import {IAnnotation} from "./Annotation";
 
 export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
@@ -78,7 +79,7 @@ export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
 }
 
-export interface ITextHighlight {
+export interface ITextHighlight extends IAnnotation {
 
     readonly textSelections: {[id: number]: TextRect};
 
@@ -95,11 +96,6 @@ export interface ITextHighlight {
     readonly notes: {[key: string]: Note};
     readonly questions: {[key: string]: Question};
     readonly flashcards: {[key: string]: Flashcard};
-    readonly id: string;
-    readonly guid: string;
-    readonly created: ISODateTimeString;
-    readonly lastUpdated: ISODateTimeString;
-    readonly author?: Author;
     readonly color?: HighlightColor;
 
 }

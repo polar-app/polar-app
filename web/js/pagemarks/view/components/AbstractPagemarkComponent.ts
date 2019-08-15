@@ -4,7 +4,7 @@ import {Component} from '../../../components/Component';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
 import {DocFormat} from '../../../docformat/DocFormat';
 import {AnnotationEvent} from '../../../annotations/components/AnnotationEvent';
-import {Pagemark} from '../../../metadata/Pagemark';
+import {IPagemark, Pagemark} from '../../../metadata/Pagemark';
 import {AnnotationRects} from '../../../metadata/AnnotationRects';
 import {PagemarkRect} from '../../../metadata/PagemarkRect';
 import {Preconditions} from '../../../Preconditions';
@@ -30,7 +30,7 @@ export class AbstractPagemarkComponent extends Component {
 
     private readonly docFormat: DocFormat;
 
-    private pagemark?: Pagemark;
+    private pagemark?: IPagemark;
 
     private annotationEvent?: AnnotationEvent;
 
@@ -443,7 +443,7 @@ export class AbstractPagemarkComponent extends Component {
     // TODO: I have to improve this grammar... placement, positioned, etc..
     // which one is which.
 
-    private toOverlayRect(placementRect: Rect, pagemark: Pagemark) {
+    private toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
 
         const pagemarkRect = new PagemarkRect(pagemark.rect);
 
