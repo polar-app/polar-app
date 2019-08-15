@@ -1,18 +1,11 @@
 import {Preconditions} from '../Preconditions';
-import {Image} from './Image';
+import {IImage, Image} from './Image';
 import {ISODateTimeString} from './ISODateTimeStrings';
 
-export class Screenshot extends Image {
+export class Screenshot extends Image implements IScreenshot {
 
-    /**
-     * The unique ID for this object.
-     */
     public readonly id: string;
 
-    /**
-     * The time this object was created
-     *
-     */
     public created: ISODateTimeString;
 
     constructor(opts: any) {
@@ -34,5 +27,21 @@ export class Screenshot extends Image {
         Preconditions.assertPresent(this.created, "created");
 
     }
+
+}
+
+export interface IScreenshot extends IImage {
+
+
+    /**
+     * The unique ID for this object.
+     */
+    id: string;
+
+    /**
+     * The time this object was created
+     *
+     */
+    created: ISODateTimeString;
 
 }

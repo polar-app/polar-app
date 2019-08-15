@@ -5,21 +5,12 @@ import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {Ref} from './Refs';
 
-export class Flashcard extends VersionedObject {
+export class Flashcard extends VersionedObject implements IFlashcard {
 
-    /**
-     * The type of this flashcard.
-     */
     public type: FlashcardType;
 
-    /**
-     * The content of this flashcard created by the user.
-     */
     public fields: {[key: string]: Text} ;
 
-    /**
-     * The archetype ID used to create this flashcard.
-     */
     public archetype: string;
 
     // TODO: we don't have a way right now to attach these to specific
@@ -68,5 +59,24 @@ export class Flashcard extends VersionedObject {
         return Object.freeze(result);
 
     }
+
+}
+
+export interface IFlashcard {
+
+    /**
+     * The type of this flashcard.
+     */
+    type: FlashcardType;
+
+    /**
+     * The content of this flashcard created by the user.
+     */
+    fields: {[key: string]: Text} ;
+
+    /**
+     * The archetype ID used to create this flashcard.
+     */
+    archetype: string;
 
 }

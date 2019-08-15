@@ -2,17 +2,10 @@ import {Preconditions} from '../Preconditions';
 import {Image} from './Image';
 import {ISODateTimeString} from './ISODateTimeStrings';
 
-export class Thumbnail extends Image {
+export class Thumbnail extends Image implements IThumbnail {
 
-    /**
-     * The unique ID for this object.
-     */
     public readonly id: string;
 
-    /**
-     * The time this object was created
-     *
-     */
     public created: ISODateTimeString;
 
     constructor(opts: any) {
@@ -34,5 +27,20 @@ export class Thumbnail extends Image {
         Preconditions.assertPresent(this.created, "created");
 
     }
+
+}
+
+export interface IThumbnail {
+
+    /**
+     * The unique ID for this object.
+     */
+    readonly id: string;
+
+    /**
+     * The time this object was created
+     *
+     */
+    created: ISODateTimeString;
 
 }

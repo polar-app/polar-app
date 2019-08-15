@@ -28,4 +28,3 @@ export interface ProgressByMode {
     [id: string]: number;
 }
 
-
