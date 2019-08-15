@@ -1,7 +1,7 @@
 /**
  * Some type of follow up on content that we need to analyze.
  */
-import {Note} from './Note';
+import {INote, Note} from './Note';
 
 export class Question extends Note {
 
@@ -12,5 +12,9 @@ export class Question extends Note {
         this.init(val);
 
     }
+
+}
+
+export interface IQuestion extends INote {
 
 }

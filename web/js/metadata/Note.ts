@@ -6,11 +6,8 @@ import {Texts} from './Texts';
 /**
  * Private note describing this object.  Meant to last a long time.
  */
-export class Note extends VersionedObject {
+export class Note extends VersionedObject implements INote {
 
-    /**
-     * The content of this note.
-     */
     public content: Text;
 
     constructor(val: Note) {
@@ -38,5 +35,14 @@ export class Note extends VersionedObject {
         }
 
     }
+
+}
+
+export interface INote {
+
+    /**
+     * The content of this note.
+     */
+    content: Text;
 
 }

@@ -1,13 +1,13 @@
 import {SerializedObject} from './SerializedObject';
 import {PageInfo} from './PageInfo';
 import {Flashcard} from './Flashcard';
-import {Comment} from './Comment';
-import {Note} from './Note';
+import {Comment, IComment} from './Comment';
+import {INote, Note} from './Note';
 import {TextHighlight} from './TextHighlight';
 import {AreaHighlight} from './AreaHighlight';
 import {Screenshot} from './Screenshot';
 import {Thumbnail} from './Thumbnail';
-import {Pagemark} from './Pagemark';
+import {IPagemark, Pagemark} from './Pagemark';
 import {Question} from './Question';
 import {ReadingProgress} from './ReadingProgress';
 
@@ -98,21 +98,22 @@ export interface IPageMeta {
     readonly pageInfo: PageInfo;
 
     /**
-     * The index of page number to pagemark which stores the data we need
+     * The index of page number to pagemark which stores the
+     * data we need
      * for keeping track of pagemarks.  The index is the pagemark column.
      *
      */
-    readonly pagemarks: {[id: string]: Pagemark};
+    readonly pagemarks: {[id: string]: IPagemark};
 
     /**
      * The note for this annotation.
      */
-    readonly notes: {[id: string]: Note};
+    readonly notes: {[id: string]: INote};
 
     /**
      * The note for this annotation.
      */
-    readonly comments: {[id: string]: Comment};
+    readonly comments: {[id: string]: IComment};
 
     /**
      *
