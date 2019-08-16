@@ -1,6 +1,7 @@
 import {Preconditions} from '../Preconditions';
 import {Image} from './Image';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {IThumbnail} from "./IThumbnail";
 
 export class Thumbnail extends Image implements IThumbnail {
 
@@ -30,17 +31,3 @@ export class Thumbnail extends Image implements IThumbnail {
 
 }
 
-export interface IThumbnail {
-
-    /**
-     * The unique ID for this object.
-     */
-    readonly id: string;
-
-    /**
-     * The time this object was created
-     *
-     */
-    created: ISODateTimeString;
-
-}

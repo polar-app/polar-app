@@ -1,16 +1,16 @@
 import {SerializedObject} from './SerializedObject';
-import {IFlashcard} from './Flashcard';
-import {IComment} from './Comment';
-import {ITextHighlight} from './TextHighlight';
-import {IAreaHighlight} from './AreaHighlight';
-import {IScreenshot} from './Screenshot';
-import {IThumbnail} from './Thumbnail';
-import {IQuestion} from './Question';
 import {ReadingProgress} from './ReadingProgress';
 import {IPageMeta} from "./IPageMeta";
 import {IPageInfo} from "./IPageInfo";
 import {IPagemark} from "./IPagemark";
 import {INote} from "./INote";
+import {IComment} from "./IComment";
+import {IQuestion} from "./IQuestion";
+import {IFlashcard} from "./IFlashcard";
+import {ITextHighlight} from "./ITextHighlight";
+import {IAreaHighlight} from "./IAreaHighlight";
+import {IScreenshot} from "./IScreenshot";
+import {IThumbnail} from "./IThumbnail";
 
 export class PageMeta extends SerializedObject implements IPageMeta {
 

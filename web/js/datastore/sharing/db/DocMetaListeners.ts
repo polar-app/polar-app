@@ -13,13 +13,14 @@ import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
 import {ProfileIDStr} from "./Profiles";
 import {Author} from "../../../metadata/Author";
-import {Annotation, IAnnotation} from "../../../metadata/Annotation";
+import {Annotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
 import {FirebaseDatastores} from "../../FirebaseDatastores";
 import {Dictionaries} from "../../../util/Dictionaries";
 import {IPageMeta} from "../../../metadata/IPageMeta";
 import {IDocMeta} from "../../../metadata/IDocMeta";
+import {IAnnotation} from "../../../metadata/IAnnotation";
 
 const log = Logger.create();
 

@@ -4,7 +4,7 @@ import {Text} from './Text';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {Ref} from './Refs';
-import {IVersionedObject} from "./IVersionedObject";
+import {IFlashcard} from "./IFlashcard";
 
 export class Flashcard extends VersionedObject implements IFlashcard {
 
@@ -63,21 +63,3 @@ export class Flashcard extends VersionedObject implements IFlashcard {
 
 }
 
-export interface IFlashcard extends IVersionedObject {
-
-    /**
-     * The type of this flashcard.
-     */
-    type: FlashcardType;
-
-    /**
-     * The content of this flashcard created by the user.
-     */
-    fields: {[key: string]: Text} ;
-
-    /**
-     * The archetype ID used to create this flashcard.
-     */
-    archetype: string;
-
-}

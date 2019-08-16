@@ -1,7 +1,6 @@
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
-import {IAreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {DocMeta} from './DocMeta';
 import {IImage, Image} from './Image';
@@ -29,6 +28,7 @@ import {Rect} from '../Rect';
 import {Rects} from '../Rects';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
+import {IAreaHighlight} from "./IAreaHighlight";
 
 const log = Logger.create();
 

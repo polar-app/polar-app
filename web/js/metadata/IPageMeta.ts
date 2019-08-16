@@ -1,14 +1,14 @@
-import {IComment} from "./Comment";
-import {IQuestion} from "./Question";
-import {IFlashcard} from "./Flashcard";
-import {ITextHighlight} from "./TextHighlight";
-import {IAreaHighlight} from "./AreaHighlight";
-import {IScreenshot} from "./Screenshot";
-import {IThumbnail} from "./Thumbnail";
 import {ReadingProgress} from "./ReadingProgress";
 import {IPageInfo} from "./IPageInfo";
 import {IPagemark} from "./IPagemark";
 import {INote} from "./INote";
+import {IComment} from "./IComment";
+import {IQuestion} from "./IQuestion";
+import {IFlashcard} from "./IFlashcard";
+import {ITextHighlight} from "./ITextHighlight";
+import {IAreaHighlight} from "./IAreaHighlight";
+import {IScreenshot} from "./IScreenshot";
+import {IThumbnail} from "./IThumbnail";
 
 /**
  * A dedicated type for a page number.  From range [1,infinity)

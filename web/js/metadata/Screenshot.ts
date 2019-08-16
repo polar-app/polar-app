@@ -1,6 +1,7 @@
 import {Preconditions} from '../Preconditions';
-import {IImage, Image} from './Image';
+import {Image} from './Image';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {IScreenshot} from "./IScreenshot";
 
 export class Screenshot extends Image implements IScreenshot {
 
@@ -30,18 +31,3 @@ export class Screenshot extends Image implements IScreenshot {
 
 }
 
-export interface IScreenshot extends IImage {
-
-
-    /**
-     * The unique ID for this object.
-     */
-    id: string;
-
-    /**
-     * The time this object was created
-     *
-     */
-    created: ISODateTimeString;
-
-}

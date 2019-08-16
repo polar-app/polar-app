@@ -1,14 +1,14 @@
 import {DocMeta} from '../metadata/DocMeta';
 import {PageMeta} from '../metadata/PageMeta';
 import {isPresent} from '../Preconditions';
-import {Comment, IComment} from '../metadata/Comment';
+import {Comment} from '../metadata/Comment';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
 import {Text} from '../metadata/Text';
 import {DefaultDocAnnotation, DocAnnotation, IDocAnnotation} from './DocAnnotation';
-import {AreaHighlight, IAreaHighlight} from '../metadata/AreaHighlight';
-import {ITextHighlight, TextHighlight} from '../metadata/TextHighlight';
+import {AreaHighlight} from '../metadata/AreaHighlight';
+import {TextHighlight} from '../metadata/TextHighlight';
 import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
@@ -22,6 +22,9 @@ import {Author} from "../metadata/Author";
 import {IPageMeta} from "../metadata/IPageMeta";
 import {IBaseHighlight} from "../metadata/IBaseHighlight";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {IComment} from "../metadata/IComment";
+import {ITextHighlight} from "../metadata/ITextHighlight";
+import {IAreaHighlight} from "../metadata/IAreaHighlight";
 
 export class DocAnnotations {
 

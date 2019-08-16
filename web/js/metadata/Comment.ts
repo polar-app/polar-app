@@ -2,7 +2,7 @@
  * Basically just like a note but it's a comment in a discussion stream.
  */
 import {Note} from './Note';
-import {INote} from "./INote";
+import {IComment} from "./IComment";
 
 export class Comment extends Note implements IComment {
 
@@ -12,6 +12,3 @@ export class Comment extends Note implements IComment {
 
 }
 
-export interface IComment extends INote {
-
-}

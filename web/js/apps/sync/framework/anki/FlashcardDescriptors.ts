@@ -1,10 +1,11 @@
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
-import {Flashcard, IFlashcard} from '../../../../metadata/Flashcard';
+import {Flashcard} from '../../../../metadata/Flashcard';
 import {Dictionaries} from '../../../../util/Dictionaries';
 import * as _ from 'lodash';
 import {FlashcardType} from '../../../../metadata/FlashcardType';
 import {Logger} from '../../../../logger/Logger';
+import {IFlashcard} from "../../../../metadata/IFlashcard";
 
 const log = Logger.create();
 

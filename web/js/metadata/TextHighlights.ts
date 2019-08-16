@@ -2,7 +2,6 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {IRect} from '../util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
-import {ITextHighlight} from './TextHighlight';
 import {Image} from './Image';
 import {notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
@@ -11,6 +10,7 @@ import {Logger} from '../logger/Logger';
 import {DocMeta} from './DocMeta';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
+import {ITextHighlight} from "./ITextHighlight";
 
 const log =  Logger.create();
 

@@ -1,8 +1,8 @@
-import {IAnnotation} from "./Annotation";
 import {Note} from "./Note";
 import {PagemarkType} from "./PagemarkType";
 import {PagemarkRect} from "./PagemarkRect";
 import {PagemarkMode} from "./PagemarkMode";
+import {IAnnotation} from "./IAnnotation";
 
 export interface IPagemark extends IAnnotation {
 

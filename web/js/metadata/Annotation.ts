@@ -1,5 +1,5 @@
 import {VersionedObject} from './VersionedObject';
-import {IVersionedObject} from "./IVersionedObject";
+import {IAnnotation} from "./IAnnotation";
 
 export abstract class Annotation extends VersionedObject implements IAnnotation {
 
@@ -13,6 +13,3 @@ export abstract class Annotation extends VersionedObject implements IAnnotation 
 
 }
 
-export interface IAnnotation extends IVersionedObject {
-
-}

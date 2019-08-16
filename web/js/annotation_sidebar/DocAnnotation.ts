@@ -1,13 +1,13 @@
 import {AnnotationType} from '../metadata/AnnotationType';
-import {Comment, IComment} from '../metadata/Comment';
+import {Comment} from '../metadata/Comment';
 import {Point} from '../Point';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {PageMeta} from '../metadata/PageMeta';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from '../metadata/Refs';
-import {Flashcard, IFlashcard} from '../metadata/Flashcard';
-import {AreaHighlight, IAreaHighlight} from '../metadata/AreaHighlight';
-import {ITextHighlight, TextHighlight} from '../metadata/TextHighlight';
+import {Flashcard} from '../metadata/Flashcard';
+import {AreaHighlight} from '../metadata/AreaHighlight';
+import {TextHighlight} from '../metadata/TextHighlight';
 import {ObjectID} from '../util/ObjectIDs';
 import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/HighlightColor';
@@ -16,6 +16,10 @@ import {Author} from "../metadata/Author";
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {IPageMeta} from "../metadata/IPageMeta";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {IComment} from "../metadata/IComment";
+import {IFlashcard} from "../metadata/IFlashcard";
+import {ITextHighlight} from "../metadata/ITextHighlight";
+import {IAreaHighlight} from "../metadata/IAreaHighlight";
 
 export interface IDocAnnotation extends ObjectID {
 

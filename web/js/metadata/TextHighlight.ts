@@ -4,16 +4,7 @@ import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {BaseHighlight} from './BaseHighlight';
 import {Preconditions} from '../Preconditions';
-import {Rect} from '../Rect';
-import {IImage, Image} from './Image';
-import {Note} from './Note';
-import {IQuestion, Question} from './Question';
-import {Flashcard, IFlashcard} from './Flashcard';
-import {Author} from './Author';
-import {ISODateTimeString} from './ISODateTimeStrings';
-import {HighlightColor} from './HighlightColor';
-import {IAnnotation} from "./Annotation";
-import {INote} from "./INote";
+import {ITextHighlight} from "./ITextHighlight";
 
 export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
@@ -80,23 +71,3 @@ export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
 }
 
-export interface ITextHighlight extends IAnnotation {
-
-    readonly textSelections: {[id: number]: TextRect};
-
-    readonly text: Text | string;
-
-    /**
-     * User edited/revised text for the highlight.
-     */
-    readonly revisedText?: Text | string;
-
-    readonly rects: {[key: number]: Rect};
-    readonly image?: IImage;
-    readonly images: {[key: string]: IImage};
-    readonly notes: {[key: string]: INote};
-    readonly questions: {[key: string]: IQuestion};
-    readonly flashcards: {[key: string]: IFlashcard};
-    readonly color?: HighlightColor;
-
-}

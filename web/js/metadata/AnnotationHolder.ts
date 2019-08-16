@@ -1,12 +1,16 @@
 import {AnnotationType} from './AnnotationType';
-import {ITextHighlight, TextHighlight} from './TextHighlight';
-import {AreaHighlight, IAreaHighlight} from './AreaHighlight';
-import {Comment, IComment} from './Comment';
-import {Flashcard, IFlashcard} from './Flashcard';
+import {TextHighlight} from './TextHighlight';
+import {AreaHighlight} from './AreaHighlight';
+import {Comment} from './Comment';
+import {Flashcard} from './Flashcard';
 import {PageInfo} from './PageInfo';
 import {DocInfo} from './DocInfo';
 import {IDocInfo} from "./IDocInfo";
 import {IPageInfo} from "./IPageInfo";
+import {IComment} from "./IComment";
+import {IFlashcard} from "./IFlashcard";
+import {ITextHighlight} from "./ITextHighlight";
+import {IAreaHighlight} from "./IAreaHighlight";
 
 /**
  * Represents a detached annotation which can be passed across the system and
