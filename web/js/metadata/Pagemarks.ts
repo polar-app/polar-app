@@ -1,5 +1,5 @@
 import {PagemarkRect} from './PagemarkRect';
-import {IPagemark, Pagemark, PagemarkRef} from './Pagemark';
+import {Pagemark, PagemarkRef} from './Pagemark';
 import {Logger} from '../logger/Logger';
 import {Hashcodes} from '../Hashcodes';
 import {Objects} from '../util/Objects';
@@ -22,6 +22,7 @@ import {ReadingOverviews} from './ReadingOverviews';
 import {Percentages} from '../util/Percentages';
 import {IPageMeta, PageNumber} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
+import {IPagemark} from "./IPagemark";
 
 const log = Logger.create();
 

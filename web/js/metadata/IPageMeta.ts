@@ -1,5 +1,3 @@
-import {IPageInfo} from "./PageInfo";
-import {IPagemark} from "./Pagemark";
 import {INote} from "./Note";
 import {IComment} from "./Comment";
 import {IQuestion} from "./Question";
@@ -9,6 +7,8 @@ import {IAreaHighlight} from "./AreaHighlight";
 import {IScreenshot} from "./Screenshot";
 import {IThumbnail} from "./Thumbnail";
 import {ReadingProgress} from "./ReadingProgress";
+import {IPageInfo} from "./IPageInfo";
+import {IPagemark} from "./IPagemark";
 
 /**
  * A dedicated type for a page number.  From range [1,infinity)

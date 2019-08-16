@@ -6,8 +6,9 @@ import {AbstractExporter} from './AbstractExporter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
-import {IPageInfo, PageInfo} from '../PageInfo';
+import {PageInfo} from '../PageInfo';
 import {Optional} from "../../util/ts/Optional";
+import {IPageInfo} from "../IPageInfo";
 
 export class MarkdownExporter extends AbstractExporter {
 

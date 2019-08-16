@@ -1,7 +1,7 @@
 import {DocMeta} from "./DocMeta";
 import {AnnotationHolder} from "./AnnotationHolder";
 import {AreaHighlight, IAreaHighlight} from './AreaHighlight';
-import {IPageInfo, PageInfo} from './PageInfo';
+import {PageInfo} from './PageInfo';
 import {DocInfo} from './DocInfo';
 import {AnnotationType} from './AnnotationType';
 import {ITextHighlight, TextHighlight} from './TextHighlight';
@@ -9,6 +9,7 @@ import {Comment, IComment} from './Comment';
 import {Flashcard, IFlashcard} from './Flashcard';
 import {IDocInfo} from "./IDocInfo";
 import {IDocMeta} from "./IDocMeta";
+import {IPageInfo} from "./IPageInfo";
 
 export class AnnotationHolders {
 

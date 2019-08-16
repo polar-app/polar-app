@@ -4,7 +4,7 @@ import {Component} from '../../../components/Component';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
 import {DocFormat} from '../../../docformat/DocFormat';
 import {AnnotationEvent} from '../../../annotations/components/AnnotationEvent';
-import {IPagemark, Pagemark} from '../../../metadata/Pagemark';
+import {Pagemark} from '../../../metadata/Pagemark';
 import {AnnotationRects} from '../../../metadata/AnnotationRects';
 import {PagemarkRect} from '../../../metadata/PagemarkRect';
 import {Preconditions} from '../../../Preconditions';
@@ -16,6 +16,7 @@ import {BoxController} from "../../../boxes/controller/BoxController";
 import {PagemarkMode} from '../../../metadata/PagemarkMode';
 import {DocMetas} from "../../../metadata/DocMetas";
 import {isPresent} from '../../../Preconditions';
+import {IPagemark} from "../../../metadata/IPagemark";
 
 const log = Logger.create();
 

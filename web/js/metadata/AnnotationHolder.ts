@@ -3,9 +3,10 @@ import {ITextHighlight, TextHighlight} from './TextHighlight';
 import {AreaHighlight, IAreaHighlight} from './AreaHighlight';
 import {Comment, IComment} from './Comment';
 import {Flashcard, IFlashcard} from './Flashcard';
-import {IPageInfo, PageInfo} from './PageInfo';
+import {PageInfo} from './PageInfo';
 import {DocInfo} from './DocInfo';
 import {IDocInfo} from "./IDocInfo";
+import {IPageInfo} from "./IPageInfo";
 
 /**
  * Represents a detached annotation which can be passed across the system and
