@@ -1,7 +1,8 @@
 import {IDocInfo} from "./IDocInfo";
 import {IPageMeta} from "./IPageMeta";
-import {IAnnotationInfo} from "./AnnotationInfo";
 import {Attachment} from "./Attachment";
+import {IAnnotationInfo} from "./IAnnotationInfo";
+import {IAttachment} from "./IAttachment";
 
 export interface IDocMeta {
 
@@ -28,6 +29,6 @@ export interface IDocMeta {
      */
     version: number;
 
-    attachments: { [id: string]: Attachment };
+    attachments: { [id: string]: IAttachment };
 
 }

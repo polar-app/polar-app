@@ -1,12 +1,10 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {BackendFileRef} from '../datastore/Datastore';
+import {IAttachment} from "./IAttachment";
 
 export class Attachment extends SerializedObject implements IAttachment {
 
-    /**
-     * The data for this attachment as stored as a file ref.
-     */
     public readonly fileRef: BackendFileRef;
 
     public constructor(opts: any) {
@@ -28,9 +26,5 @@ export class Attachment extends SerializedObject implements IAttachment {
 
     }
 
-}
-
-export interface IAttachment {
-    readonly fileRef: BackendFileRef;
 }
 

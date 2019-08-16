@@ -1,5 +1,6 @@
 import {SerializedObject} from './SerializedObject';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {IAnnotationInfo} from "./IAnnotationInfo";
 
 /**
  * High level information about the annotations in this document.
@@ -29,6 +30,3 @@ export class AnnotationInfo extends SerializedObject implements IAnnotationInfo 
 
 }
 
-export interface IAnnotationInfo {
-    lastAnnotated?: ISODateTimeString;
-}
