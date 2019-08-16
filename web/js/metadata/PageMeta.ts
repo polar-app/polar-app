@@ -1,37 +1,37 @@
 import {SerializedObject} from './SerializedObject';
-import {IPageInfo, PageInfo} from './PageInfo';
-import {Flashcard, IFlashcard} from './Flashcard';
-import {Comment, IComment} from './Comment';
-import {INote, Note} from './Note';
-import {ITextHighlight, TextHighlight} from './TextHighlight';
-import {AreaHighlight, IAreaHighlight} from './AreaHighlight';
-import {IScreenshot, Screenshot} from './Screenshot';
-import {IThumbnail, Thumbnail} from './Thumbnail';
-import {IPagemark, Pagemark} from './Pagemark';
-import {IQuestion, Question} from './Question';
+import {PageInfo} from './PageInfo';
+import {Flashcard} from './Flashcard';
+import {Comment} from './Comment';
+import {Note} from './Note';
+import {TextHighlight} from './TextHighlight';
+import {AreaHighlight} from './AreaHighlight';
+import {Screenshot} from './Screenshot';
+import {Thumbnail} from './Thumbnail';
+import {Pagemark} from './Pagemark';
+import {Question} from './Question';
 import {ReadingProgress} from './ReadingProgress';
 
 export class PageMeta extends SerializedObject implements IPageMeta {
 
-    public readonly pageInfo: IPageInfo;
+    public readonly pageInfo: PageInfo;
 
-    public readonly pagemarks: {[id: string]: IPagemark} = {};
+    public readonly pagemarks: {[id: string]: Pagemark} = {};
 
-    public readonly notes: {[id: string]: INote} = {};
+    public readonly notes: {[id: string]: Note} = {};
 
-    public readonly comments: {[id: string]: IComment} = {};
+    public readonly comments: {[id: string]: Comment} = {};
 
-    public readonly questions: {[id: string]: IQuestion} = {};
+    public readonly questions: {[id: string]: Question} = {};
 
-    public readonly flashcards: {[id: string]: IFlashcard} = {};
+    public readonly flashcards: {[id: string]: Flashcard} = {};
 
-    public readonly textHighlights: {[id: string]: ITextHighlight} = {};
+    public readonly textHighlights: {[id: string]: TextHighlight} = {};
 
-    public readonly areaHighlights: {[id: string]: IAreaHighlight} = {};
+    public readonly areaHighlights: {[id: string]: AreaHighlight} = {};
 
-    public readonly screenshots: {[id: string]: IScreenshot} = {};
+    public readonly screenshots: {[id: string]: Screenshot} = {};
 
-    public readonly thumbnails: {[id: string]: IThumbnail} = {};
+    public readonly thumbnails: {[id: string]: Thumbnail} = {};
 
     public readonly readingProgress: {[id: string]: ReadingProgress} = {};
 
@@ -95,48 +95,47 @@ export interface IPageMeta {
     /**
      * The pageInfo for this page.
      */
-    readonly pageInfo: IPageInfo;
+    readonly pageInfo: PageInfo;
 
     /**
-     * The index of page number to pagemark which stores the
-     * data we need
+     * The index of page number to pagemark which stores the data we need
      * for keeping track of pagemarks.  The index is the pagemark column.
      *
      */
-    readonly pagemarks: {[id: string]: IPagemark};
+    readonly pagemarks: {[id: string]: Pagemark};
 
     /**
      * The note for this annotation.
      */
-    readonly notes: {[id: string]: INote};
+    readonly notes: {[id: string]: Note};
 
     /**
      * The note for this annotation.
      */
-    readonly comments: {[id: string]: IComment};
+    readonly comments: {[id: string]: Comment};
 
     /**
      *
      */
-    readonly questions: {[id: string]: IQuestion};
+    readonly questions: {[id: string]: Question};
 
     /**
      *
      */
-    readonly flashcards: {[id: string]: IFlashcard};
+    readonly flashcards: {[id: string]: Flashcard};
 
     /**
      * An index of test highlights for the page.
      *
      */
-    readonly textHighlights: {[id: string]: ITextHighlight};
+    readonly textHighlights: {[id: string]: TextHighlight};
 
 
     /**
      * An index of area highlights for the page.
      *
      */
-    readonly areaHighlights: {[id: string]: IAreaHighlight};
+    readonly areaHighlights: {[id: string]: AreaHighlight};
 
     /**
      * Screenshots we've taken of this page while performing annotations.
@@ -147,16 +146,15 @@ export interface IPageMeta {
      * plus we need to have the DocInfo be a smaller structure for the
      * representation of the doc itself.
      */
-    readonly screenshots: {[id: string]: IScreenshot};
+    readonly screenshots: {[id: string]: Screenshot};
 
     /**
      * The thumbnails for this page.  Usually, this is just one thumbnail
      * but there might be multiple.  If we want a specific noe we can just
      * look at the width and height.
      */
-    readonly thumbnails: {[id: string]: IThumbnail};
+    readonly thumbnails: {[id: string]: Thumbnail};
 
     readonly readingProgress: {[id: string]: ReadingProgress};
-
 
 }
