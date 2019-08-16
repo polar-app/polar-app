@@ -41,7 +41,7 @@ export class FlashcardDescriptors {
                     const flashcardDescriptors = _.chain(flashcards)
                         .map(current => <FlashcardDescriptor> {
                             docMeta,
-                            pageInfo: pageMeta.pageInfo,
+                            pageInfo: IPageMeta.pageInfo,
                             flashcard: current
                         })
                         .value();

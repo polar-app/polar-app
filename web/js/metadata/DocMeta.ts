@@ -36,7 +36,7 @@ export class DocMeta extends SerializedObject implements IDocMeta {
     //
     // }
 
-    constructor(docInfo: DocInfo, pageMetas: {[id: number]: PageMeta}) {
+    constructor(docInfo: DocInfo, pageMetas: {[id: number]: IPageMeta}) {
         super();
         this.docInfo = docInfo;
         this.pageMetas = pageMetas;

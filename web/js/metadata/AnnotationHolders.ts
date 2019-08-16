@@ -1,4 +1,4 @@
-import {DocMeta} from "./DocMeta";
+import {DocMeta, IDocMeta} from "./DocMeta";
 import {AnnotationHolder} from "./AnnotationHolder";
 import {AreaHighlight, IAreaHighlight} from './AreaHighlight';
 import {IPageInfo, PageInfo} from './PageInfo';
@@ -11,7 +11,7 @@ import {IDocInfo} from "./IDocInfo";
 
 export class AnnotationHolders {
 
-    public static fromDocMeta(docMeta: DocMeta): ReadonlyArray<AnnotationHolder> {
+    public static fromDocMeta(docMeta: IDocMeta): ReadonlyArray<AnnotationHolder> {
 
         const result: AnnotationHolder[] = [];
 

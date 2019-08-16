@@ -124,7 +124,7 @@ export class ReadingProgressResume {
             const pagemarkHolders =
                 pagemarks.map( pagemark => {
                     return {
-                        pageNum: pageMeta.pageInfo.num,
+                        pageNum: IPageMeta.pageInfo.num,
                         pagemark
                     };
                 });

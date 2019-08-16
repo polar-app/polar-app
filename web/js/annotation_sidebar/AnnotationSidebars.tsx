@@ -2,7 +2,7 @@ import {Splitter} from '../ui/splitter/Splitter';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {AnnotationSidebar} from './AnnotationSidebar';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Docs} from '../metadata/Docs';
@@ -11,7 +11,7 @@ const log = Logger.create();
 
 export class AnnotationSidebars {
 
-    public static create(docMeta: DocMeta,
+    public static create(docMeta: IDocMeta,
                          persistenceLayerProvider: () => PersistenceLayer): Splitter {
 
         const splitter = new Splitter('.polar-viewer', '.polar-sidebar');

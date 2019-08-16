@@ -1,8 +1,9 @@
 import {TraceEvent} from '../../proxies/TraceEvent';
 import {Preconditions} from '../../Preconditions';
 import {PageMeta} from '../../metadata/PageMeta';
-import {DocMeta} from '../../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../metadata/DocMeta';
 import {Container} from '../../components/containers/Container';
+import {IPageMeta} from "../../metadata/IPageMeta";
 
 export class AnnotationEvent extends TraceEvent {
 
@@ -18,13 +19,13 @@ export class AnnotationEvent extends TraceEvent {
      *
      * @type {DocMeta}
      */
-    public docMeta: DocMeta;
+    public docMeta: IDocMeta;
 
     /**
      *
      * @type {PageMeta}
      */
-    public pageMeta: PageMeta;
+    public pageMeta: IPageMeta;
 
     /**
      * The page we're working with.

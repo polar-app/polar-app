@@ -17,7 +17,7 @@ export class TextHighlights {
 
     public static update(id: string,
                          docMeta: DocMeta,
-                         pageMeta: PageMeta,
+                         pageMeta: IPageMeta,
                          updates: Partial<ITextHighlight>) {
 
         const existing = pageMeta.textHighlights[id]!;

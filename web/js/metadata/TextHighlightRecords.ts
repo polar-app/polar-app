@@ -1,5 +1,5 @@
 import {Hashcodes} from '../Hashcodes';
-import {TextHighlight} from './TextHighlight';
+import {ITextHighlight, TextHighlight} from './TextHighlight';
 import {Text} from './Text';
 import {Arrays} from '../util/Arrays';
 import {TextRect} from './TextRect';
@@ -51,5 +51,5 @@ export class TextHighlightRecords {
 
 export interface TextHighlightRecord {
     readonly id: string;
-    readonly value: TextHighlight;
+    readonly value: ITextHighlight;
 }

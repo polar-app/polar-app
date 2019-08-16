@@ -63,21 +63,21 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     }
 
-    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
 
         return await this.handleWrite(docMeta, async () => await this.delegate.writeDocMeta(docMeta, datastoreMutation));
 
     }
 
     public async write(fingerprint: string,
-                       docMeta: DocMeta,
+                       docMeta: IDocMeta,
                        opts?: WriteOpts): Promise<DocInfo> {
 
         return await this.handleWrite(docMeta, async () => await this.delegate.write(fingerprint, docMeta, opts));
 
     }
 
-    private async handleWrite(docMeta: DocMeta, handler: () => Promise<DocInfo>) {
+    private async handleWrite(docMeta: IDocMeta, handler: () => Promise<DocInfo>) {
 
         const docInfo = await handler();
 
@@ -96,7 +96,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     }
 
-    public async synchronizeDocs(...docMetaRefs: DocMetaRef[]): Promise<void> {
+    public async synchronizeDocs(...docMetaRefs: IDocMetaRef[]): Promise<void> {
         return this.delegate.synchronizeDocs(...docMetaRefs);
     }
 

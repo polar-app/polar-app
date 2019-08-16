@@ -32,7 +32,7 @@ export class TextHighlightComponent extends Component {
     /**
      *
      */
-    private pageMeta?: PageMeta;
+    private pageMeta?: IPageMeta;
 
     /**
      * The page we're working with.

@@ -17,6 +17,7 @@ import {FilePaths} from '../util/FilePaths';
 import {FileRef} from '../datastore/Datastore';
 import {Datastore} from '../datastore/Datastore';
 import {Backend} from '../datastore/Backend';
+import {IPageMeta} from "./IPageMeta";
 
 const log = Logger.create();
 
@@ -32,7 +33,7 @@ export class DocMetas {
 
         const docInfo = DocInfos.create(fingerprint, nrPages, filename);
 
-        const pageMetas: {[id: string]: PageMeta} = {};
+        const pageMetas: {[id: string]: IPageMeta} = {};
 
         for (let idx = 1; idx <= nrPages; ++idx) {
             const pageInfo = new PageInfo({num: idx});
@@ -210,7 +211,7 @@ export class DocMetas {
         return this.withMutating(docMeta, 'skip', mutator);
     }
 
-    private static withMutating<T>(docMeta: DocMeta,
+    private static withMutating<T>(docMeta: IDocMeta,
                                    value: 'skip' | 'batch',
                                    mutator: () => T) {
 
@@ -238,7 +239,7 @@ export class DocMetas {
     /**
      * Force a write of the DocMeta
      */
-    public static forceWrite(docMeta: DocMeta) {
+    public static forceWrite(docMeta: IDocMeta) {
         docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
     }
 

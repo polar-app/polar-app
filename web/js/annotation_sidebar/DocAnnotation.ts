@@ -1,19 +1,20 @@
 import {AnnotationType} from '../metadata/AnnotationType';
-import {Comment} from '../metadata/Comment';
+import {Comment, IComment} from '../metadata/Comment';
 import {Point} from '../Point';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {PageMeta} from '../metadata/PageMeta';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from '../metadata/Refs';
-import {Flashcard} from '../metadata/Flashcard';
-import {AreaHighlight} from '../metadata/AreaHighlight';
-import {TextHighlight} from '../metadata/TextHighlight';
+import {Flashcard, IFlashcard} from '../metadata/Flashcard';
+import {AreaHighlight, IAreaHighlight} from '../metadata/AreaHighlight';
+import {ITextHighlight, TextHighlight} from '../metadata/TextHighlight';
 import {ObjectID} from '../util/ObjectIDs';
 import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/HighlightColor';
 import {DocMeta} from '../metadata/DocMeta';
 import {Author} from "../metadata/Author";
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
+import {IPageMeta} from "../metadata/IPageMeta";
 
 export interface IDocAnnotation extends ObjectID {
 
@@ -38,9 +39,9 @@ export interface IDocAnnotation extends ObjectID {
 
     readonly docMeta: DocMeta;
 
-    readonly pageMeta: PageMeta;
+    readonly pageMeta: IPageMeta;
 
-    readonly original: Comment | Flashcard | AreaHighlight | TextHighlight;
+    readonly original: IComment | IFlashcard | IAreaHighlight | ITextHighlight;
 
     readonly author?: Author;
 
@@ -86,9 +87,9 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly docMeta: DocMeta;
 
-    public readonly pageMeta: PageMeta;
+    public readonly pageMeta: IPageMeta;
 
-    public readonly original: Comment | Flashcard | AreaHighlight | TextHighlight;
+    public readonly original: IComment | IFlashcard | IAreaHighlight | ITextHighlight;
 
     public readonly author?: Author;
 

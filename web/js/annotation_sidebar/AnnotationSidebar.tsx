@@ -11,7 +11,7 @@ import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
-import {DocMeta} from "../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../metadata/DocMeta";
 import {Firebase} from "../firebase/Firebase";
 import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
@@ -178,7 +178,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const fingerprint = this.props.doc.docMeta.docInfo.fingerprint;
 
-        const docMetaHandler = (docMeta: DocMeta) => {
+        const docMetaHandler = (docMeta: IDocMeta) => {
             this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
         };
 

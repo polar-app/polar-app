@@ -1,5 +1,5 @@
 import {Hashcodes} from '../Hashcodes';
-import {ImageType} from './Image';
+import {IImage, ImageType} from './Image';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {Img} from './Img';
 import {Image} from './Image';
@@ -30,7 +30,7 @@ export class Images {
 
     }
 
-    public static toImg(docFileResolver: DocFileResolver, image?: Image): Img | undefined {
+    public static toImg(docFileResolver: DocFileResolver, image?: IImage): Img | undefined {
 
         if (! image) {
             return undefined;

@@ -35,7 +35,7 @@ export class AreaHighlights {
 
     public static update(id: string,
                          docMeta: DocMeta,
-                         pageMeta: PageMeta,
+                         pageMeta: IPageMeta,
                          updates: Partial<IAreaHighlight>) {
 
         const existing = pageMeta.areaHighlights[id]!;
@@ -199,8 +199,8 @@ interface PageDimensions {
 
 export interface DoWriteOpts {
     readonly datastore: Datastore | PersistenceLayer;
-    readonly docMeta: DocMeta;
-    readonly pageMeta: PageMeta;
+    readonly docMeta: IDocMeta;
+    readonly pageMeta: IPageMeta;
     readonly pageNum: number;
     readonly areaHighlight: AreaHighlight;
     readonly target: HTMLElement;
@@ -211,7 +211,7 @@ export interface DoWriteOpts {
 export interface AreaHighlightDeleteOpts {
     readonly datastore: Datastore | PersistenceLayer;
     readonly docMeta: DocMeta;
-    readonly pageMeta: PageMeta;
+    readonly pageMeta: IPageMeta;
     readonly areaHighlight: AreaHighlight;
 
 }

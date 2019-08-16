@@ -288,7 +288,7 @@ export class DocMetaRecords {
      */
     public static mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
 
-        const mergePageMeta = (source: PageMeta, target: PageMeta) => {
+        const mergePageMeta = (source: IPageMeta, target: IPageMeta) => {
 
             StringDicts.merge(source.textHighlights, target.textHighlights);
             StringDicts.merge(source.areaHighlights, target.areaHighlights);
@@ -344,7 +344,7 @@ export class DocMetaRecords {
 
         };
 
-        const applyAuthorToPage = (pageMeta: PageMeta) => {
+        const applyAuthorToPage = (pageMeta: IPageMeta) => {
 
             applyAuthorToAnnotations(pageMeta.textHighlights);
             applyAuthorToAnnotations(pageMeta.areaHighlights);
