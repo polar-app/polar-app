@@ -8,7 +8,7 @@ import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from '../util/Dictionaries';
 import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
@@ -21,6 +21,7 @@ import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
 import {Percentages} from '../util/Percentages';
 import {IPageMeta, PageNumber} from "./IPageMeta";
+import {IDocMeta} from "./IDocMeta";
 
 const log = Logger.create();
 

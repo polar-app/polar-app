@@ -4,11 +4,12 @@ import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocFormat} from '../docformat/DocFormat';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from '../util/Functions';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {PrefsProvider} from '../datastore/Datastore';
 import {ReadingProgressResume} from './ReadingProgressResume';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

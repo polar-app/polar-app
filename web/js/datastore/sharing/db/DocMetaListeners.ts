@@ -1,7 +1,7 @@
 import {GroupIDStr} from "../../Datastore";
 import {UserGroup, UserGroups} from "./UserGroups";
 import {GroupDoc, GroupDocs} from "./GroupDocs";
-import {DocMeta, IDocMeta} from "../../../metadata/DocMeta";
+import {DocMeta} from "../../../metadata/DocMeta";
 import {SetArrays} from "../../../util/SetArrays";
 import {PageMeta} from "../../../metadata/PageMeta";
 import {Collections, DocumentChange} from "./Collections";
@@ -19,6 +19,7 @@ import {UserProfile, UserProfiles} from "./UserProfiles";
 import {FirebaseDatastores} from "../../FirebaseDatastores";
 import {Dictionaries} from "../../../util/Dictionaries";
 import {IPageMeta} from "../../../metadata/IPageMeta";
+import {IDocMeta} from "../../../metadata/IDocMeta";
 
 const log = Logger.create();
 

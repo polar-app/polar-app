@@ -1,9 +1,10 @@
 import {Elements} from '../util/Elements';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {IPagemark, Pagemark} from '../metadata/Pagemark';
 import {Rects} from '../Rects';
 import {Reducers} from '../util/Reducers';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 export class ReadingProgressResume {
 

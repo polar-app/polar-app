@@ -1,9 +1,10 @@
 import {TraceEvent} from '../../proxies/TraceEvent';
 import {Preconditions} from '../../Preconditions';
 import {PageMeta} from '../../metadata/PageMeta';
-import {DocMeta, IDocMeta} from '../../metadata/DocMeta';
+import {DocMeta} from '../../metadata/DocMeta';
 import {Container} from '../../components/containers/Container';
 import {IPageMeta} from "../../metadata/IPageMeta";
+import {IDocMeta} from "../../metadata/IDocMeta";
 
 export class AnnotationEvent extends TraceEvent {
 

@@ -1,7 +1,8 @@
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {Dictionaries} from '../util/Dictionaries';
 import {PageMeta} from './PageMeta';
 import {IPageMeta} from "./IPageMeta";
+import {IDocMeta} from "./IDocMeta";
 
 export class DocMetaMerger {
 

@@ -7,7 +7,7 @@ import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from '../../../logger/Logger';
 import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTimeStrings';
 import {Optional} from '../../../util/ts/Optional';
-import {DocMeta, IDocMeta} from '../../../metadata/DocMeta';
+import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Backend} from '../../../datastore/Backend';
 import {AppRuntime} from '../../../AppRuntime';
@@ -23,6 +23,7 @@ import {PDFMeta} from '../importers/PDFMetadata';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {Tag} from '../../../tags/Tags';
 import {IDocInfo} from "../../../metadata/IDocInfo";
+import {IDocMeta} from "../../../metadata/IDocMeta";
 
 const log = Logger.create();
 

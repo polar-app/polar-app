@@ -1,6 +1,6 @@
 import {Logger} from '../../../web/js/logger/Logger';
 import {RepoDocInfos} from './RepoDocInfos';
-import {DocMeta, IDocMeta} from '../../../web/js/metadata/DocMeta';
+import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
@@ -12,6 +12,7 @@ import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
 import {IndeterminateProgressBar} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
+import {IDocMeta} from "../../../web/js/metadata/IDocMeta";
 
 const log = Logger.create();
 

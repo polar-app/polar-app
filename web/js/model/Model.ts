@@ -1,4 +1,4 @@
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {Reactor} from '../reactor/Reactor';
 import {PagemarkType} from '../metadata/PagemarkType';
@@ -13,6 +13,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 import {PageNumber} from "../metadata/IPageMeta";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

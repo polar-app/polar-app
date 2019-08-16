@@ -6,7 +6,7 @@ import {DatastoreOverview} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
 import {BackendFileRefData} from './Datastore';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
@@ -15,6 +15,7 @@ import {DatastoreMutation} from './DatastoreMutation';
 import {Visibility} from './Datastore';
 import {GroupIDStr} from './Datastore';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 export interface PersistenceLayer {
 

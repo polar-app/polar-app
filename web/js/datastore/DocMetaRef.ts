@@ -2,9 +2,10 @@
  * Represents a light weight reference to a DocMeta file.
  */
 import {IDocInfo} from '../metadata/IDocInfo';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Preconditions} from '../Preconditions';
 import {FileRef} from './Datastore';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 export interface DocMetaRef {
 

@@ -4,7 +4,7 @@ import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
@@ -16,6 +16,7 @@ import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

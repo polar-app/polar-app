@@ -1,4 +1,4 @@
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from '../logger/Logger';
@@ -6,6 +6,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {Proxies} from '../proxies/Proxies';
 import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

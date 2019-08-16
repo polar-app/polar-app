@@ -9,11 +9,12 @@ import {UUIDs} from '../metadata/UUIDs';
 import {ProgressListener, ProgressTracker} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from "../Preconditions";
 import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
 import {BackendFileRefs} from './BackendFileRefs';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

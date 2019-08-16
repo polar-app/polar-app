@@ -7,7 +7,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
 import {Progress} from '../util/ProgressTracker';
 import {AsyncProvider} from '../util/Providers';
@@ -22,6 +22,7 @@ import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 

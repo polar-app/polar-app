@@ -3,11 +3,12 @@ import {Pagemarks} from "./Pagemarks";
 import {DocMetas} from "./DocMetas";
 import {TestingTime} from "../test/TestingTime";
 import {assert} from 'chai';
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Objects} from '../util/Objects';
 import {ReadingProgresses} from './ReadingProgresses';
 import {PagemarkMode} from './PagemarkMode';
+import {IDocMeta} from "./IDocMeta";
 
 
 function reset() {

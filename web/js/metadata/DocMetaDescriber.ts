@@ -1,5 +1,6 @@
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {forDict} from '../util/Functions';
+import {IDocMeta} from "./IDocMeta";
 
 export class DocMetaDescriber {
 

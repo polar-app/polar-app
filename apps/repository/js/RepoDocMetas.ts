@@ -1,4 +1,4 @@
-import {DocMeta, IDocMeta} from "../../../web/js/metadata/DocMeta";
+import {DocMeta} from "../../../web/js/metadata/DocMeta";
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepoAnnotations} from './RepoAnnotations';
@@ -6,6 +6,7 @@ import {Logger} from "../../../web/js/logger/Logger";
 import {RepoDocInfo} from './RepoDocInfo';
 import {isPresent} from '../../../web/js/Preconditions';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
+import {IDocMeta} from "../../../web/js/metadata/IDocMeta";
 
 const log = Logger.create();
 

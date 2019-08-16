@@ -10,7 +10,7 @@ import {Comment, IComment} from '../../../web/js/metadata/Comment';
 import {DocInfo} from '../../../web/js/metadata/DocInfo';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
-import {DocMeta, IDocMeta} from '../../../web/js/metadata/DocMeta';
+import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Flashcard, IFlashcard} from '../../../web/js/metadata/Flashcard';
 import {Text} from '../../../web/js/metadata/Text';
 import {Texts} from '../../../web/js/metadata/Texts';
@@ -20,6 +20,7 @@ import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLay
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "../../../web/js/tags/Tags";
 import {IDocInfo} from "../../../web/js/metadata/IDocInfo";
+import {IDocMeta} from "../../../web/js/metadata/IDocMeta";
 
 export class RepoAnnotations {
 

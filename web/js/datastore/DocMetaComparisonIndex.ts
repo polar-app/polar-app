@@ -1,9 +1,10 @@
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {IDocInfo} from '../metadata/IDocInfo';
 import {DocUUID} from './CloudAwareDatastore';
 import {isPresent} from '../Preconditions';
 import {DocMetaMutation} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 
 /**

@@ -2,8 +2,9 @@ import {AnnotationHolder} from '../AnnotationHolder';
 import {FileWriter} from './writers/FileWriter';
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
-import {DocMeta, IDocMeta} from '../DocMeta';
+import {DocMeta} from '../DocMeta';
 import {AnnotationHolders} from '../AnnotationHolders';
+import {IDocMeta} from "../IDocMeta";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON

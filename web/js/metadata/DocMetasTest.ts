@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
@@ -9,6 +9,7 @@ import {TextHighlights} from './TextHighlights';
 import {Proxies} from '../proxies/Proxies';
 import {MockDocMetas} from './DocMetas';
 import {Pagemarks} from './Pagemarks';
+import {IDocMeta} from "./IDocMeta";
 
 TestingTime.freeze();
 

@@ -1,6 +1,7 @@
-import {DocMeta, IDocMeta} from '../../../../metadata/DocMeta';
+import {DocMeta} from '../../../../metadata/DocMeta';
 import {IPageInfo, PageInfo} from '../../../../metadata/PageInfo';
 import {Flashcard, IFlashcard} from '../../../../metadata/Flashcard';
+import {IDocMeta} from "../../../../metadata/IDocMeta";
 
 export interface FlashcardDescriptor {
 

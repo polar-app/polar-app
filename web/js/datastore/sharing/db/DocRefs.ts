@@ -1,7 +1,8 @@
 import {DocIDStr} from '../rpc/GroupProvisions';
-import {DocMeta, IDocMeta} from '../../../metadata/DocMeta';
+import {DocMeta} from '../../../metadata/DocMeta';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {IDocInfo} from '../../../metadata/IDocInfo';
+import {IDocMeta} from "../../../metadata/IDocMeta";
 
 export class DocRefs {
 

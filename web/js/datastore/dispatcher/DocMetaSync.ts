@@ -1,4 +1,5 @@
-import {DocMeta, IDocMeta} from '../../metadata/DocMeta';
+import {DocMeta} from '../../metadata/DocMeta';
+import {IDocMeta} from "../../metadata/IDocMeta";
 
 export interface DocMetaSync {
     readonly fingerprint: string;

@@ -13,7 +13,8 @@ import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
 import {MetadataSerializer} from '../metadata/MetadataSerializer';
 import {Reducers} from '../util/Reducers';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 describe('DocMetaSnapshotEventListener', function() {
 

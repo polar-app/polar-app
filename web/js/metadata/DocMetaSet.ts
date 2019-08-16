@@ -1,4 +1,5 @@
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
+import {IDocMeta} from "./IDocMeta";
 
 /**
  * A set of documents as a bundle.

@@ -1,7 +1,8 @@
-import {DocMeta, IDocMeta} from '../../metadata/DocMeta';
+import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaModel} from '../../metadata/DocMetaModel';
 import {PageMetas} from '../../metadata/PageMetas';
 import {AnnotationEvent} from '../../annotations/components/AnnotationEvent';
+import {IDocMeta} from "../../metadata/IDocMeta";
 
 /**
  *

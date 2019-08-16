@@ -6,8 +6,9 @@ import {DocMetas, MockDocMetas} from '../metadata/DocMetas';
 import {assert} from 'chai';
 import {Promises} from "../util/Promises";
 import waitForExpect from 'wait-for-expect';
-import {DocMeta, IDocMeta} from "../metadata/DocMeta";
+import {DocMeta} from "../metadata/DocMeta";
 import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 describe('ModelPersister', function() {
 

@@ -12,9 +12,10 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {WriteOpts} from './PersistenceLayer';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.

@@ -1,7 +1,8 @@
 import {DocMetaModel} from '../metadata/DocMetaModel';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {AnnotationEventListener} from '../annotations/components/AnnotationEventListener';
 import {PageMetas} from '../metadata/PageMetas';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 export class CommentModel extends DocMetaModel {
 

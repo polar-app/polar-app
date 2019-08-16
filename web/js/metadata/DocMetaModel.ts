@@ -3,8 +3,9 @@
  * Allows us to register events and listen for specific events on a given DocMeta.
  *
  */
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
+import {IDocMeta} from "./IDocMeta";
 
 export abstract class DocMetaModel {
 

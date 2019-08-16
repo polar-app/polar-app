@@ -1,12 +1,11 @@
 import {DocInfo} from './DocInfo';
-import {PageMeta} from './PageMeta';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
 import {Attachment} from './Attachment';
 import {IPageMeta} from "./IPageMeta";
-import {IAnnotationInfo} from "./AnnotationInfo";
 import {IDocInfo} from "./IDocInfo";
+import {IDocMeta} from "./IDocMeta";
 
 
 /**
@@ -66,31 +65,3 @@ export class DocMeta extends SerializedObject implements IDocMeta {
 
 
 
-export interface IDocMeta {
-
-    /**
-     * The DocInfo which includes information like title, nrPages, etc.
-     */
-    docInfo: IDocInfo;
-
-
-    /**
-     * A sparse dictionary of page number to page metadata.
-     *
-     */
-    pageMetas: { [id: number]: IPageMeta };
-
-    /**
-     * The annotation info for this document including the last annotation
-     * time, progress, etc.
-     */
-    annotationInfo: IAnnotationInfo;
-
-    /**
-     * The version of this DocMeta version.
-     */
-    version: number;
-
-    attachments: {[id: string]: Attachment};
-
-}

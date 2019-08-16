@@ -5,7 +5,8 @@ import {Comment} from "../../../metadata/Comment";
 import {Comments} from "../../../metadata/Comments";
 import {ISODateTimeStrings} from "../../../metadata/ISODateTimeStrings";
 import {DocMetas} from "../../../metadata/DocMetas";
-import {DocMeta, IDocMeta} from "../../../metadata/DocMeta";
+import {DocMeta} from "../../../metadata/DocMeta";
+import {IDocMeta} from "../../../metadata/IDocMeta";
 
 const log = Logger.create();
 

@@ -1,7 +1,7 @@
 import {DefaultDocAnnotation, IDocAnnotation} from "./DocAnnotation";
 import {DocAnnotationIndex, IDString} from "./DocAnnotationIndex";
 import {DocAnnotations} from "./DocAnnotations";
-import {DocMeta, IDocMeta} from "../metadata/DocMeta";
+import {DocMeta} from "../metadata/DocMeta";
 import {AreaHighlightModel} from "../highlights/area/model/AreaHighlightModel";
 import {AreaHighlight} from "../metadata/AreaHighlight";
 import {TextHighlightModel} from "../highlights/text/model/TextHighlightModel";
@@ -13,6 +13,7 @@ import {isPresent} from "../Preconditions";
 import {MutationType} from "../proxies/MutationType";
 import {Logger} from "../logger/Logger";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

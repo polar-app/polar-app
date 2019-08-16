@@ -1,4 +1,4 @@
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {PageMeta} from '../metadata/PageMeta';
 import {isPresent} from '../Preconditions';
 import {Comment, IComment} from '../metadata/Comment';
@@ -21,6 +21,7 @@ import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {Author} from "../metadata/Author";
 import {IPageMeta} from "../metadata/IPageMeta";
 import {IBaseHighlight} from "../metadata/IBaseHighlight";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 export class DocAnnotations {
 

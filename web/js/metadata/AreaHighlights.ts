@@ -3,7 +3,7 @@ import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {IAreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {IImage, Image} from './Image';
 import {Datastore} from '../datastore/Datastore';
 import {BackendFileRef} from '../datastore/Datastore';
@@ -28,6 +28,7 @@ import {DataURLs} from '../util/DataURLs';
 import {Rect} from '../Rect';
 import {Rects} from '../Rects';
 import {IPageMeta} from "./IPageMeta";
+import {IDocMeta} from "./IDocMeta";
 
 const log = Logger.create();
 

@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from '../Preconditions';
 
 import os from 'os';
@@ -21,6 +21,7 @@ import {Datastores} from './Datastores';
 import {DiskDatastore} from './DiskDatastore';
 import {TestingTime} from '../test/TestingTime';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const tmpdir = os.tmpdir();
 

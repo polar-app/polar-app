@@ -6,10 +6,11 @@ import {Flashcard} from './Flashcard';
 import {Texts} from './Texts';
 import {Text} from './Text';
 import {TextType} from './TextType';
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from './Refs';
+import {IDocMeta} from "./IDocMeta";
 
 export class Flashcards {
 

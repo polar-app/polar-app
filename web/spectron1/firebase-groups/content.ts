@@ -28,7 +28,7 @@ import {Contacts} from '../../js/datastore/sharing/db/Contacts';
 import {SetArrays} from '../../js/util/SetArrays';
 import {GroupDeletes} from '../../js/datastore/sharing/rpc/GroupDeletes';
 import {Promises} from '../../js/util/Promises';
-import {DocMeta, IDocMeta} from '../../js/metadata/DocMeta';
+import {DocMeta} from '../../js/metadata/DocMeta';
 import {BackendFileRefs} from '../../js/datastore/BackendFileRefs';
 import {Either} from '../../js/util/Either';
 import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
@@ -50,6 +50,7 @@ import {EmailStr} from '../../js/util/Strings';
 import {GroupMemberDeletes} from '../../js/datastore/sharing/rpc/GroupMemberDeletes';
 import {UserRefs} from '../../js/datastore/sharing/rpc/UserRefs';
 import {isPresent} from "../../js/Preconditions";
+import {IDocMeta} from "../../js/metadata/IDocMeta";
 
 const log = Logger.create();
 

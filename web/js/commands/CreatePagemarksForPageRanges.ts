@@ -1,6 +1,7 @@
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Pagemarks} from '../metadata/Pagemarks';
 import {DocMetas} from "../metadata/DocMetas";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 export class CreatePagemarksForPageRanges {
 

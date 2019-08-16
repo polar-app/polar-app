@@ -13,7 +13,7 @@ import {Backend} from './Backend';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
 import {WriteOpts} from './Datastore';
@@ -21,6 +21,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {IDocInfo} from '../metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {DelegatedDatastore} from './DelegatedDatastore';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const tracer = RendererAnalytics.createTracer('datastore');
 

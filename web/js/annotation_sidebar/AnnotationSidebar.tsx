@@ -11,7 +11,7 @@ import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Doc} from '../metadata/Doc';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
-import {DocMeta, IDocMeta} from "../metadata/DocMeta";
+import {DocMeta} from "../metadata/DocMeta";
 import {Firebase} from "../firebase/Firebase";
 import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
@@ -19,6 +19,7 @@ import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
 import {SplitBarLeft} from '../../../apps/repository/js/SplitBarLeft';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

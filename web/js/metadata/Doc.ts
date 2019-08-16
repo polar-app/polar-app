@@ -1,8 +1,9 @@
 import {DocInfo} from './DocInfo';
 import {DatastorePermission} from '../datastore/Datastore';
-import {DocMeta, IDocMeta} from './DocMeta';
+import {DocMeta} from './DocMeta';
 import {ObjectID} from '../util/ObjectIDs';
 import {IDocInfo} from "./IDocInfo";
+import {IDocMeta} from "./IDocMeta";
 
 
 /**

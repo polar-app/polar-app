@@ -4,7 +4,7 @@ import {GetFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreOverview} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
@@ -22,6 +22,7 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

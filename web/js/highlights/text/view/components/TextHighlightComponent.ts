@@ -1,4 +1,4 @@
-import {DocMeta, IDocMeta} from '../../../../metadata/DocMeta';
+import {DocMeta} from '../../../../metadata/DocMeta';
 import {DocFormat} from '../../../../docformat/DocFormat';
 import {TextHighlight} from '../../../../metadata/TextHighlight';
 import {PageMeta} from '../../../../metadata/PageMeta';
@@ -13,6 +13,7 @@ import {Logger} from '../../../../logger/Logger';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
 import {HighlightColor} from '../../../../metadata/HighlightColor';
 import {IPageMeta} from "../../../../metadata/IPageMeta";
+import {IDocMeta} from "../../../../metadata/IDocMeta";
 
 const log = Logger.create();
 

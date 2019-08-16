@@ -21,7 +21,7 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Strings} from '../util/Strings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
 import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
@@ -33,6 +33,7 @@ import {BinaryFileData} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutations} from './DatastoreMutations';
 import { IDocInfo } from '../metadata/IDocInfo';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 

@@ -5,10 +5,11 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
 import {WriteOpts} from './PersistenceLayer';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {DelegatedListenablePersistenceLayer} from './DelegatedListenablePersistenceLayer';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocMeta} from "../metadata/IDocMeta";
 
 /**
  */

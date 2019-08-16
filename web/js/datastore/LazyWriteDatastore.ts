@@ -5,10 +5,11 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
-import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {WriteOpts} from './Datastore';
 import {IDocInfo} from '../metadata/IDocInfo';
+import {IDocMeta} from "../metadata/IDocMeta";
 
 const log = Logger.create();
 
