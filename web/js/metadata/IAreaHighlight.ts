@@ -1,4 +1,4 @@
-import {IBaseHighlight} from "./IBaseHighlight";
+import {HighlightColor, IBaseHighlight} from "./IBaseHighlight";
 import {Rect} from "../Rect";
 import {IImage} from "./Image";
 import {INote} from "./INote";
@@ -6,11 +6,11 @@ import {IQuestion} from "./IQuestion";
 import {IFlashcard} from "./IFlashcard";
 import {ISODateTimeString} from "./ISODateTimeStrings";
 import {Author} from "./Author";
-import {HighlightColor} from "./HighlightColor";
+import { IRect } from "../IRect";
 
 export interface IAreaHighlight extends IBaseHighlight {
 
-    readonly rects: { [key: number]: Rect };
+    readonly rects: { [key: number]: IRect };
     readonly image?: IImage;
     readonly images: { [key: string]: IImage };
     readonly notes: { [key: string]: INote };

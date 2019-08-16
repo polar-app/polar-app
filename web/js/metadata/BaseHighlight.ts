@@ -1,9 +1,12 @@
-import {IImage, Image} from './Image';
+import {IImage} from './Image';
 import {ExtendedAnnotation} from './ExtendedAnnotation';
 import {Preconditions} from '../Preconditions';
-import {Rect} from '../Rect';
-import {HighlightColor} from './HighlightColor';
-import {IBaseHighlight, Position} from "./IBaseHighlight";
+import {
+    HighlightColor,
+    HighlightRects,
+    IBaseHighlight,
+    Position
+} from "./IBaseHighlight";
 
 export class BaseHighlight extends ExtendedAnnotation implements IBaseHighlight {
 
@@ -32,9 +35,5 @@ export class BaseHighlight extends ExtendedAnnotation implements IBaseHighlight 
 
     }
 
-}
-
-export interface HighlightRects {
-    [key: string]: Rect;
 }
 

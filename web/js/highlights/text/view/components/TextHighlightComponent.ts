@@ -11,9 +11,9 @@ import {DocFormatFactory} from '../../../../docformat/DocFormatFactory';
 import {Rects} from '../../../../Rects';
 import {Logger} from '../../../../logger/Logger';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
-import {HighlightColor} from '../../../../metadata/HighlightColor';
 import {IPageMeta} from "../../../../metadata/IPageMeta";
 import {IDocMeta} from "../../../../metadata/IDocMeta";
+import {HighlightColor} from "../../../../metadata/IBaseHighlight";
 
 const log = Logger.create();
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {HighlightColor} from '../../metadata/HighlightColor';
+import {HighlightColor} from "../../metadata/IBaseHighlight";
 
 /**
  */

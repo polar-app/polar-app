@@ -4,7 +4,7 @@ import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";
 import {forDict} from "../../../../util/Functions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
-import {Position} from "../../../../metadata/IBaseHighlight";
+import {HighlightColor, Position} from "../../../../metadata/IBaseHighlight";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";
 import {AreaHighlightRect} from "../../../../metadata/AreaHighlightRect";
 import {AreaHighlightRects} from "../../../../metadata/AreaHighlightRects";
@@ -21,7 +21,6 @@ import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 import {Screenshots} from '../../../../screenshots/Screenshots';
 import {Arrays} from '../../../../util/Arrays';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
-import {HighlightColor} from '../../../../metadata/HighlightColor';
 import {ILTRect} from '../../../../util/rects/ILTRect';
 import {Rects} from '../../../../Rects';
 

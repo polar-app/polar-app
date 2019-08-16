@@ -5,8 +5,8 @@ import {IImage} from "./Image";
 import {INote} from "./INote";
 import {IQuestion} from "./IQuestion";
 import {IFlashcard} from "./IFlashcard";
-import {HighlightColor} from "./HighlightColor";
 import {IAnnotation} from "./IAnnotation";
+import {HighlightColor} from "./IBaseHighlight";
 
 export interface ITextHighlight extends IAnnotation {
 

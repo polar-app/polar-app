@@ -2,6 +2,7 @@ import {Preconditions} from '../Preconditions';
 import {Dimensions} from '../util/Dimensions';
 import {Interval} from '../math/Interval';
 import {Rects} from '../Rects';
+import {IAnnotationRect} from "./IAnnotationRect";
 
 const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100});
 
@@ -40,7 +41,7 @@ const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, hei
  * This would NOT be a square but a rectangle and the percentages confuse that.
  *
  */
-export class AnnotationRect {
+export class AnnotationRect implements IAnnotationRect {
 
     /**
      * @type {number}
@@ -160,3 +161,4 @@ export class AnnotationRect {
 
 
 }
+

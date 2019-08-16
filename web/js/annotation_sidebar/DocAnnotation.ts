@@ -10,7 +10,6 @@ import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {ObjectID} from '../util/ObjectIDs';
 import {Img} from '../metadata/Img';
-import {HighlightColor} from '../metadata/HighlightColor';
 import {DocMeta} from '../metadata/DocMeta';
 import {Author} from "../metadata/Author";
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
@@ -20,6 +19,7 @@ import {IComment} from "../metadata/IComment";
 import {IFlashcard} from "../metadata/IFlashcard";
 import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
+import {HighlightColor} from "../metadata/IBaseHighlight";
 
 export interface IDocAnnotation extends ObjectID {
 

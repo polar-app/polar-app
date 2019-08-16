@@ -1,11 +1,4 @@
-/**
- * The set of highlight colors.  We also provide transparent for text you want
- * to index but might not actually want visible in the document. We can use this
- * for secondary / anonymous highlights like notes and comments which might
- * not need to be visibly shown.
- */
 
-export type HighlightColor = NamedColor | RGBColor;
 
 /**
  * Older colors by name

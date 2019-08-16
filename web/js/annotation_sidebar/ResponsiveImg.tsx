@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Img} from '../metadata/Img';
 import {DeepPureComponent} from '../react/DeepPureComponent';
-import {HighlightColor} from '../metadata/HighlightColor';
+import {HighlightColor} from "../metadata/IBaseHighlight";
 
 /**
  * Shows a and image and re-sizes it to its parent properly.

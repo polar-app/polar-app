@@ -1,6 +1,5 @@
 import {IDocInfo} from "./IDocInfo";
 import {IPageMeta} from "./IPageMeta";
-import {Attachment} from "./Attachment";
 import {IAnnotationInfo} from "./IAnnotationInfo";
 import {IAttachment} from "./IAttachment";
 

@@ -1,11 +1,12 @@
 import {Dimensions} from './util/Dimensions';
 import {Line} from './util/Line';
 import {Preconditions} from './Preconditions';
+import {IRect} from "./IRect";
 
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.
  */
-export class Rect {
+export class Rect implements IRect {
 
     // TODO: some rects have x,y as well as left,top ... should we add them here
     // to be complete and closer to a DOMRect?
@@ -98,3 +99,4 @@ export class Rect {
 }
 
 export type Axis = 'x' | 'y';
+

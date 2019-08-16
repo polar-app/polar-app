@@ -4,13 +4,22 @@
  * represents this data.  This allow us to have an HTML version of the content,
  * MARKDOWN version, etc.
  */
-export class Text {
+export class Text implements IText {
 
-    public TEXT?: string;
+    public readonly TEXT?: string;
 
-    public MARKDOWN?: string;
+    public readonly MARKDOWN?: string;
 
-    public HTML?: string;
+    public readonly HTML?: string;
 
 }
 
+export interface IText {
+
+    readonly TEXT?: string;
+
+    readonly MARKDOWN?: string;
+
+    readonly HTML?: string;
+
+}

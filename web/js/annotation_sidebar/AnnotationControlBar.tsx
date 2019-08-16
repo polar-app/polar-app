@@ -18,12 +18,12 @@ import {CreateFlashcard} from './child_annotations/flashcards/CreateFlashcard';
 import {FlashcardActions} from './child_annotations/flashcards/FlashcardActions';
 import {Doc} from '../metadata/Doc';
 import {ColorSelector} from '../ui/colors/ColorSelector';
-import {HighlightColor} from '../metadata/HighlightColor';
 import {TextHighlights} from '../metadata/TextHighlights';
 import {AreaHighlights} from '../metadata/AreaHighlights';
 import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
 import {NullCollapse} from "../ui/null_collapse/NullCollapse";
+import {HighlightColor} from "../metadata/IBaseHighlight";
 
 const Styles: IStyleMap = {
 

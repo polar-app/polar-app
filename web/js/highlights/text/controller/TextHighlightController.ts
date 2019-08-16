@@ -17,8 +17,8 @@ import {Optional} from '../../../util/ts/Optional';
 import {TypedMessage} from '../../../util/TypedMessage';
 import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
 import {Elements} from '../../../util/Elements';
-import {HighlightColor} from '../../../metadata/HighlightColor';
 import {DocMetas} from "../../../metadata/DocMetas";
+import {HighlightColor} from "../../../metadata/IBaseHighlight";
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 

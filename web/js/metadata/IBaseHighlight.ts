@@ -1,6 +1,19 @@
-import {HighlightRects} from "./BaseHighlight";
 import {IImage} from "./Image";
-import {HighlightColor} from "./HighlightColor";
+import {NamedColor, RGBColor} from "./HighlightColor";
+import {IRect} from "../IRect";
+
+/**
+ * The set of highlight colors.  We also provide transparent for text you want
+ * to index but might not actually want visible in the document. We can use this
+ * for secondary / anonymous highlights like notes and comments which might
+ * not need to be visibly shown.
+ */
+
+export type HighlightColor = NamedColor | RGBColor;
+
+export interface HighlightRects {
+    [key: string]: IRect;
+}
 
 export interface IBaseHighlight {
 
