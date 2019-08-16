@@ -1,7 +1,8 @@
 /**
  * Some type of follow up on content that we need to analyze.
  */
-import {INote, Note} from './Note';
+import {Note} from './Note';
+import {INote} from "./INote";
 
 export class Question extends Note {
 

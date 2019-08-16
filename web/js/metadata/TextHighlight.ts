@@ -6,13 +6,14 @@ import {BaseHighlight} from './BaseHighlight';
 import {Preconditions} from '../Preconditions';
 import {Rect} from '../Rect';
 import {IImage, Image} from './Image';
-import {INote, Note} from './Note';
+import {Note} from './Note';
 import {IQuestion, Question} from './Question';
 import {Flashcard, IFlashcard} from './Flashcard';
 import {Author} from './Author';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {HighlightColor} from './HighlightColor';
 import {IAnnotation} from "./Annotation";
+import {INote} from "./INote";
 
 export class TextHighlight extends BaseHighlight implements ITextHighlight {
 

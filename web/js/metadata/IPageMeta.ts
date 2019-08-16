@@ -1,4 +1,3 @@
-import {INote} from "./Note";
 import {IComment} from "./Comment";
 import {IQuestion} from "./Question";
 import {IFlashcard} from "./Flashcard";
@@ -9,6 +8,7 @@ import {IThumbnail} from "./Thumbnail";
 import {ReadingProgress} from "./ReadingProgress";
 import {IPageInfo} from "./IPageInfo";
 import {IPagemark} from "./IPagemark";
+import {INote} from "./INote";
 
 /**
  * A dedicated type for a page number.  From range [1,infinity)

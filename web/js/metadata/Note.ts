@@ -1,7 +1,8 @@
 import {TextType} from './TextType';
-import {IVersionedObject, VersionedObject} from './VersionedObject';
+import {VersionedObject} from './VersionedObject';
 import {Text} from './Text';
 import {Texts} from './Texts';
+import {INote} from "./INote";
 
 /**
  * Private note describing this object.  Meant to last a long time.
@@ -38,11 +39,3 @@ export class Note extends VersionedObject implements INote {
 
 }
 
-export interface INote extends IVersionedObject {
-
-    /**
-     * The content of this note.
-     */
-    content: Text;
-
-}

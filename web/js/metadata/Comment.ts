@@ -1,7 +1,8 @@
 /**
  * Basically just like a note but it's a comment in a discussion stream.
  */
-import {INote, Note} from './Note';
+import {Note} from './Note';
+import {INote} from "./INote";
 
 export class Comment extends Note implements IComment {
 

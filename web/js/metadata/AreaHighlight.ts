@@ -1,13 +1,14 @@
 import {BaseHighlight} from './BaseHighlight';
 import {Rect} from '../Rect';
 import {IImage, Image} from './Image';
-import {INote, Note} from './Note';
+import {Note} from './Note';
 import {IQuestion, Question} from './Question';
 import {Flashcard, IFlashcard} from './Flashcard';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {Author} from './Author';
 import {HighlightColor} from './HighlightColor';
 import {IBaseHighlight} from "./IBaseHighlight";
+import {INote} from "./INote";
 
 export class AreaHighlight extends BaseHighlight implements IAreaHighlight {
 

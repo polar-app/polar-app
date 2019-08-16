@@ -1,4 +1,5 @@
-import {IVersionedObject, VersionedObject} from './VersionedObject';
+import {VersionedObject} from './VersionedObject';
+import {IVersionedObject} from "./IVersionedObject";
 
 export abstract class Annotation extends VersionedObject implements IAnnotation {
 
