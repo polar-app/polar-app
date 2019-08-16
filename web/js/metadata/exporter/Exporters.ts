@@ -18,7 +18,7 @@ export class Exporters {
 
     public static async doExport(path: string,
                                  format: ExportFormat,
-                                 docMeta: DocMeta): Promise<void> {
+                                 docMeta: IDocMeta): Promise<void> {
 
         const writer = new FileWriter(path);
 

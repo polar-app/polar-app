@@ -27,7 +27,7 @@ export class DocAnnotationIndexManager {
 
     }
 
-    public registerListenerForDocMeta(docMeta: DocMeta) {
+    public registerListenerForDocMeta(docMeta: IDocMeta) {
 
         const {docFileResolver} = this;
 

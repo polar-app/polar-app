@@ -1,17 +1,17 @@
 import {Elements} from '../util/Elements';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {IPagemark, Pagemark} from '../metadata/Pagemark';
 import {Rects} from '../Rects';
 import {Reducers} from '../util/Reducers';
 
 export class ReadingProgressResume {
 
-    public static resume(docMeta: DocMeta) {
+    public static resume(docMeta: IDocMeta) {
         setTimeout(() => this.doResume(docMeta), 1);
     }
 
-    private static doResume(docMeta: DocMeta) {
+    private static doResume(docMeta: IDocMeta) {
 
         const targetPagemark = this.computeTargetPagemark(docMeta);
 
@@ -113,7 +113,7 @@ export class ReadingProgressResume {
 
     }
 
-    private static computePagemarks(docMeta: DocMeta) {
+    private static computePagemarks(docMeta: IDocMeta) {
 
         const result: PagemarkHolder[] = [];
 
@@ -124,7 +124,7 @@ export class ReadingProgressResume {
             const pagemarkHolders =
                 pagemarks.map( pagemark => {
                     return {
-                        pageNum: IPageMeta.pageInfo.num,
+                        pageNum: pageMeta.pageInfo.num,
                         pagemark
                     };
                 });
@@ -137,7 +137,7 @@ export class ReadingProgressResume {
 
     }
 
-    private static computeTargetPagemark(docMeta: DocMeta): PagemarkHolder | undefined {
+    private static computeTargetPagemark(docMeta: IDocMeta): PagemarkHolder | undefined {
 
         const pagemarkHolders = this.computePagemarks(docMeta);
 

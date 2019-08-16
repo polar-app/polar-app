@@ -36,7 +36,7 @@ export class DocAnnotations {
 
     public static async getAnnotationsForPage(docFileResolver: DocFileResolver,
                                               docAnnotationIndex: DocAnnotationIndex,
-                                              docMeta: DocMeta): Promise<IDocAnnotation[]> {
+                                              docMeta: IDocMeta): Promise<IDocAnnotation[]> {
 
         const result: IDocAnnotation[] = [];
 
@@ -56,7 +56,7 @@ export class DocAnnotations {
 
     }
 
-    public static createFromFlashcard(docMeta: DocMeta,
+    public static createFromFlashcard(docMeta: IDocMeta,
                                       flashcard: Flashcard,
                                       pageMeta: IPageMeta): IDocAnnotation {
 
@@ -83,7 +83,7 @@ export class DocAnnotations {
 
     }
 
-    public static createFromComment(docMeta: DocMeta,
+    public static createFromComment(docMeta: IDocMeta,
                                     comment: Comment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
@@ -202,7 +202,7 @@ export class DocAnnotations {
 
     }
 
-    private static getTextHighlights(docMeta: DocMeta, pageMeta: IPageMeta): ReadonlyArray<IDocAnnotation> {
+    private static getTextHighlights(docMeta: IDocMeta, pageMeta: IPageMeta): ReadonlyArray<IDocAnnotation> {
 
         return Object.values(pageMeta.textHighlights).map(textHighlight => {
             return this.createFromTextHighlight(docMeta, textHighlight, pageMeta);
@@ -211,7 +211,7 @@ export class DocAnnotations {
     }
 
     private static async getAreaHighlights(docFileResolver: DocFileResolver,
-                                           docMeta: DocMeta,
+                                           docMeta: IDocMeta,
                                            pageMeta: IPageMeta): Promise<IDocAnnotation[]> {
 
         const result: IDocAnnotation[] = [];

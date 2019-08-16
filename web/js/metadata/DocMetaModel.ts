@@ -13,6 +13,6 @@ export abstract class DocMetaModel {
      * @param docMeta {DocMeta}
      * @param callback
      */
-    public abstract registerListener(docMeta: DocMeta, callback: (annotationEvent: AnnotationEvent) => void): void;
+    public abstract registerListener(docMeta: IDocMeta, callback: (annotationEvent: AnnotationEvent) => void): void;
 
 }

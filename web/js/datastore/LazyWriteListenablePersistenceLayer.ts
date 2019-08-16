@@ -32,11 +32,11 @@ export class LazyWriteListenablePersistenceLayer extends DelegatedListenablePers
         return docMeta;
     }
 
-    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
         return this.handleWrite(docMeta.docInfo, async () => super.writeDocMeta(docMeta, datastoreMutation));
     }
 
-    public async write(fingerprint: string, docMeta: DocMeta, opts?: WriteOpts): Promise<DocInfo> {
+    public async write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<DocInfo> {
         return this.handleWrite(docMeta.docInfo, async () => super.write(fingerprint, docMeta, opts));
     }
 

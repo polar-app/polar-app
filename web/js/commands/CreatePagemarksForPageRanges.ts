@@ -5,7 +5,7 @@ export class CreatePagemarksForPageRanges {
 
     private readonly docMeta: DocMeta;
 
-    constructor(docMeta: DocMeta) {
+    constructor(docMeta: IDocMeta) {
         this.docMeta = docMeta;
     }
 

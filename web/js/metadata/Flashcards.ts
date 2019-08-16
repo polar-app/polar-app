@@ -103,7 +103,7 @@ export class MockFlashcards {
     /**
      * Attach mock flashcards on the given DocMeta for testing
      */
-    public static attachFlashcards(docMeta: DocMeta) {
+    public static attachFlashcards(docMeta: IDocMeta) {
 
         let idx = 0;
 

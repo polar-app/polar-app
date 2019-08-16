@@ -103,7 +103,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                 if (data) {
 
                     try {
-                        const docMeta: DocMeta = JSON.parse(data);
+                        const docMeta: IDocMeta = JSON.parse(data);
 
                         if (docMeta && docMeta.docInfo && docMeta.docInfo.added) {
                             addedValues.push(docMeta.docInfo.added);

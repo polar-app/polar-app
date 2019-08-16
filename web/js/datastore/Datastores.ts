@@ -254,7 +254,7 @@ export class Datastores {
 
 }
 
-export type DocMetaListener = (docMeta: DocMeta) => void;
+export type DocMetaListener = (docMeta: IDocMeta) => void;
 
 export interface PurgeEvent {
     readonly completed: number;

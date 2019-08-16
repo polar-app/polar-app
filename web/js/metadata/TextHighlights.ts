@@ -16,7 +16,7 @@ const log =  Logger.create();
 export class TextHighlights {
 
     public static update(id: string,
-                         docMeta: DocMeta,
+                         docMeta: IDocMeta,
                          pageMeta: IPageMeta,
                          updates: Partial<ITextHighlight>) {
 

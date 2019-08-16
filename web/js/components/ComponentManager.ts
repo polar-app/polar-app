@@ -71,14 +71,14 @@ export class ComponentManager {
 
     }
 
-    private registerListenerForDocMeta(docMeta: DocMeta) {
+    private registerListenerForDocMeta(docMeta: IDocMeta) {
         const docMetaModel = this.createDocMetaModel();
         docMetaModel.registerListener(docMeta, this.onComponentEvent.bind(this));
     }
 
     private registerListenerForSecondaryDocMetas(fingerprint: string) {
 
-        const docMetaHandler = (docMeta: DocMeta) => {
+        const docMetaHandler = (docMeta: IDocMeta) => {
             this.registerListenerForDocMeta(docMeta);
         };
 

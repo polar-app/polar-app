@@ -16,7 +16,7 @@ export class ModelPersister {
     public nrDeferredWrites: number = 0;
 
     constructor(private readonly persistenceLayerHandler: PersistenceLayerHandler,
-                public readonly docMeta: DocMeta) {
+                public readonly docMeta: IDocMeta) {
 
         const batcher = new Batcher(async () => {
 

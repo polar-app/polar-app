@@ -5,7 +5,7 @@ import {AnnotationEventListener} from '../../../annotations/components/Annotatio
 
 export class TextHighlightModel extends DocMetaModel {
 
-    public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
+    public registerListener(docMeta: IDocMeta, annotationEventListener: AnnotationEventListener) {
         PageMetas.createModel(docMeta, "textHighlights", annotationEventListener);
         return annotationEventListener;
     }

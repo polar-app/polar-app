@@ -5,7 +5,7 @@ import {IDocInfo} from '../../../metadata/DocInfo';
 
 export class DocRefs {
 
-    public static fromDocMeta(docID: DocIDStr, docMeta: DocMeta): DocRef {
+    public static fromDocMeta(docID: DocIDStr, docMeta: IDocMeta): DocRef {
 
         return {
             docID,

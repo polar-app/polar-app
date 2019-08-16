@@ -5,7 +5,7 @@ import {PageMetas} from '../metadata/PageMetas';
 
 export class FlashcardModel extends DocMetaModel {
 
-    public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
+    public registerListener(docMeta: IDocMeta, annotationEventListener: AnnotationEventListener) {
         PageMetas.createModel(docMeta, "flashcards", annotationEventListener);
         return annotationEventListener;
     }

@@ -26,7 +26,7 @@ export class PersistenceLayers {
      *
      */
     public static async changeVisibility(store: PersistenceLayer,
-                                         docMeta: DocMeta,
+                                         docMeta: IDocMeta,
                                          visibility: Visibility) {
 
         log.info("Changing document visibility changed to: ", visibility);
@@ -96,7 +96,7 @@ export class PersistenceLayers {
 
             work.push(async () => {
 
-                let docMeta: DocMeta | undefined = docMetaRef.docMeta;
+                let docMeta: IDocMeta | undefined = docMetaRef.docMeta;
 
                 if (! docMeta) {
 

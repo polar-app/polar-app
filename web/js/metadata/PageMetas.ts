@@ -81,7 +81,7 @@ export class PageMetas {
      * Create a model for a specific key within PageMetas.
      *
      */
-    public static createModel(docMeta: DocMeta,
+    public static createModel(docMeta: IDocMeta,
                               memberName: string,
                               callback: (annotationEvent: AnnotationEvent) => void) {
 

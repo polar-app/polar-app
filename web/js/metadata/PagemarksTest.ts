@@ -515,7 +515,7 @@ describe('Pagemarks', function() {
 });
 
 
-const assertPagemark = (docMeta: DocMeta, pageNum: number, batch: string) => {
+const assertPagemark = (docMeta: IDocMeta, pageNum: number, batch: string) => {
 
     const pagemarks = Object.values(DocMetas.getPageMeta(docMeta, pageNum).pagemarks);
 

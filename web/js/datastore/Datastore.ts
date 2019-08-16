@@ -151,7 +151,7 @@ export abstract class AbstractDatastore {
 
     }
 
-    public async writeDocMeta(docMeta: DocMeta,
+    public async writeDocMeta(docMeta: IDocMeta,
                               datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
         const data = DocMetas.serialize(docMeta, "");
@@ -233,7 +233,7 @@ interface WritableDatastore {
      */
     delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<Readonly<DeleteResult>>;
 
-    writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
+    writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
      * Write the datastore to disk.  Writes should be idempotent.
@@ -638,7 +638,7 @@ export interface InitDocMetaEvent {
  * (consistency, snapshots, etc) then we can surface this data to the user
  * without doing a double init.
  */
-export type InitLoadListener = (docMeta: DocMeta) => void;
+export type InitLoadListener = (docMeta: IDocMeta) => void;
 
 /**
  * The result of a snapshot call with an optional unsubscribe callback.

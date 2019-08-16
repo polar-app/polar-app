@@ -22,7 +22,7 @@ export class DocMeta extends SerializedObject implements IDocMeta {
 
     public attachments: {[id: string]: Attachment} = {};
 
-    // constructor(template?: DocMeta) {
+    // constructor(template?: IDocMeta) {
     //
     //     super(template);
     //

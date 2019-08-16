@@ -51,7 +51,7 @@ export interface PersistenceLayer {
      */
     delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<DeleteResult>;
 
-    writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
+    writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
      * Make sure the docs with the given fingerprints are synchronized with
@@ -63,7 +63,7 @@ export interface PersistenceLayer {
      * Return the DocInfo written. The DocInfo may be updated on commit
      * including updating lastUpdated, etc.
      */
-    write(fingerprint: string, docMeta: DocMeta, opts?: WriteOpts): Promise<DocInfo>;
+    write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<DocInfo>;
 
     writeFile(backend: Backend,
               ref: FileRef,

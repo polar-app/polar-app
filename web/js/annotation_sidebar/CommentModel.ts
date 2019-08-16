@@ -5,7 +5,7 @@ import {PageMetas} from '../metadata/PageMetas';
 
 export class CommentModel extends DocMetaModel {
 
-    public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
+    public registerListener(docMeta: IDocMeta, annotationEventListener: AnnotationEventListener) {
         PageMetas.createModel(docMeta, "comments", annotationEventListener);
         return annotationEventListener;
     }

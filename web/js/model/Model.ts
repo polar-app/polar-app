@@ -24,7 +24,7 @@ export class Model {
     // be loaded yet and / or might be invalidated if the document is closed.
     //
     // TODO: we create a fake document which is eventually replaced.
-    public docMeta: DocMeta = NULL_DOC_META;
+    public docMeta: IDocMeta = NULL_DOC_META;
 
     public readonly persistenceLayerProvider: () => ListenablePersistenceLayer;
 

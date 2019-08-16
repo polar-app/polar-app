@@ -19,7 +19,7 @@ export class CommentActions {
         delete comment.pageMeta.comments[comment.id];
     }
 
-    public static create(docMeta: DocMeta,
+    public static create(docMeta: IDocMeta,
                          annotation: DocAnnotation,
                          html: string) {
 
@@ -35,7 +35,7 @@ export class CommentActions {
 
     }
 
-    public static update(docMeta: DocMeta,
+    public static update(docMeta: IDocMeta,
                          annotation: DocAnnotation,
                          html: string,
                          existingComment: Comment) {

@@ -3,7 +3,7 @@ import {DocMeta} from './DocMeta';
 
 export class DocMetaSuppliers {
 
-    public static literal(docMeta: DocMeta): DocMetaSupplier {
+    public static literal(docMeta: IDocMeta): DocMetaSupplier {
         return async () => docMeta;
     }
 

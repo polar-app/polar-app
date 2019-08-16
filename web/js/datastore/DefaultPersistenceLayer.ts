@@ -87,7 +87,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
 
         Preconditions.assertPresent(docMeta, "No docMeta");
         Preconditions.assertPresent(docMeta.docInfo, "No docInfo on docMeta");
@@ -101,7 +101,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
      * Write the datastore to disk.
      */
     public async write(fingerprint: string,
-                       docMeta: DocMeta,
+                       docMeta: IDocMeta,
                        opts: WriteOpts = {}): Promise<DocInfo> {
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();

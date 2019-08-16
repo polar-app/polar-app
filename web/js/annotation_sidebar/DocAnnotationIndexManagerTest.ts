@@ -42,7 +42,7 @@ describe('DocAnnotationIndexManager', function() {
         const docID = 'docID:0x00001';
         const profileID = 'prof:0x00002';
 
-        const docMetaHandler = (docMeta: DocMeta) => {
+        const docMetaHandler = (docMeta: IDocMeta) => {
             docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
         };
 
@@ -96,7 +96,7 @@ describe('DocAnnotationIndexManager', function() {
             }
         };
 
-        function createDocMetaRecord(docMeta: DocMeta): DocMetaRecord {
+        function createDocMetaRecord(docMeta: IDocMeta): DocMetaRecord {
 
             const docMetaRecord: DocMetaRecord = {
                 uid: 'uid:0x00001',

@@ -48,7 +48,7 @@ export class Pagemarks {
      *
      * @param percentage The percentage of the end page to create a pagemark.
      */
-    public static updatePagemarksForRange(docMeta: DocMeta,
+    public static updatePagemarksForRange(docMeta: IDocMeta,
                                           end: PageNumber,
                                           percentage: number = 100 ): ReadonlyArray<PagemarkRef> {
 
@@ -326,7 +326,7 @@ export class Pagemarks {
      *
      * @param pagemark The pagemark to update.
      */
-    public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: IPagemark) {
+    public static updatePagemark(docMeta: IDocMeta, pageNum: number, pagemark: IPagemark) {
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
@@ -343,7 +343,7 @@ export class Pagemarks {
      * Replace the pagemarks with a new pagemark with the given options
      * replaced.
      */
-    public static replacePagemark(docMeta: DocMeta,
+    public static replacePagemark(docMeta: IDocMeta,
                                   pagemarkPtr: PagemarkPTR,
                                   options: ReplacePagemarkOptions) {
 
@@ -404,7 +404,7 @@ export class Pagemarks {
      * @param id When id is specified we delete just a specific pagemark,
      * otherwise we delete all of them.
      */
-    public static deletePagemark(docMeta: DocMeta, pageNum: number, id?: string) {
+    public static deletePagemark(docMeta: IDocMeta, pageNum: number, id?: string) {
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
 
@@ -458,7 +458,7 @@ export class Pagemarks {
     /**
      * Scan all the pagemarks finding ones with the same batch.
      */
-    private static pagemarksWithinBatch(docMeta: DocMeta, batch: string): ReadonlyArray<PagemarkPageMetaRef> {
+    private static pagemarksWithinBatch(docMeta: IDocMeta, batch: string): ReadonlyArray<PagemarkPageMetaRef> {
 
         const result = [];
 
@@ -481,7 +481,7 @@ export class Pagemarks {
 
     }
 
-    private static doDocMetaMutation(docMeta: DocMeta,
+    private static doDocMetaMutation(docMeta: IDocMeta,
                                      pageNum: number,
                                      pagemarkMutator: () => void): void {
 

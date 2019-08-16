@@ -67,7 +67,7 @@ export class DocMetas {
         return MockDocMetas.createMockDocMeta();
     }
 
-    public static getPageMeta(docMeta: DocMeta, num: number) {
+    public static getPageMeta(docMeta: IDocMeta, num: number) {
 
         num = Preconditions.assertPresent(num, "num");
 
@@ -81,7 +81,7 @@ export class DocMetas {
 
     }
 
-    public static addPagemarks(docMeta: DocMeta, options: any) {
+    public static addPagemarks(docMeta: IDocMeta, options: any) {
 
         if (!options) {
             options = {};
@@ -117,13 +117,13 @@ export class DocMetas {
 
     }
 
-    public static serialize(docMeta: DocMeta, spacing: string = "  ") {
+    public static serialize(docMeta: IDocMeta, spacing: string = "  ") {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
 
     /**
      */
-    public static deserialize(data: string, fingerprint: string): DocMeta {
+    public static deserialize(data: string, fingerprint: string): IDocMeta {
 
         Preconditions.assertPresent(data, 'data');
 
@@ -131,7 +131,7 @@ export class DocMetas {
             throw new Error("We can only deserialize strings: " + typeof data);
         }
 
-        let docMeta: DocMeta = Object.create(DocMeta.prototype);
+        let docMeta: IDocMeta = Object.create(DocMeta.prototype);
 
         try {
 
@@ -149,7 +149,7 @@ export class DocMetas {
 
     }
 
-    public static upgrade(docMeta: DocMeta) {
+    public static upgrade(docMeta: IDocMeta) {
 
         // validate the JSON data and set defaults. In the future we should
         // migrate to using something like AJV to provide these defaults and
@@ -176,7 +176,7 @@ export class DocMetas {
     /**
      * Compute the progress of a document based on the pagemarks.
      */
-    public static computeProgress(docMeta: DocMeta): number {
+    public static computeProgress(docMeta: IDocMeta): number {
 
         let total = 0;
 

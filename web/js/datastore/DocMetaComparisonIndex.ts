@@ -26,7 +26,7 @@ export class DocMetaComparisonIndex {
         delete this.backing[fingerprint];
     }
 
-    public updateUsingDocMeta(docMeta: DocMeta) {
+    public updateUsingDocMeta(docMeta: IDocMeta) {
 
         this.backing[docMeta.docInfo.fingerprint] = {
             fingerprint: docMeta.docInfo.fingerprint,

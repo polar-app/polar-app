@@ -32,7 +32,7 @@ export class DocMetaListener {
 
     public constructor(private readonly fingerprint: string,
                        private readonly profileID: ProfileIDStr,
-                       private readonly docMetaHandler: (docMeta: DocMeta, docUpdateRef: DocUpdateRef) => void,
+                       private readonly docMetaHandler: (docMeta: IDocMeta, docUpdateRef: DocUpdateRef) => void,
                        private readonly errHandler: (err: Error) => void) {
 
     }
@@ -182,7 +182,7 @@ export class DocMetaListener {
 
         const prev = Optional.of(this.docMetaIndex[docID]).getOrUndefined();
 
-        const initDocMeta = (docMeta: DocMeta) => {
+        const initDocMeta = (docMeta: IDocMeta) => {
 
             // remove the pagemarks as that is user specific..
             for (const pageMeta of Object.values(docMeta.pageMetas)) {
@@ -226,7 +226,7 @@ export class DocMetaListener {
 export class DocMetaListeners {
 
     public static async register(fingerprint: string,
-                                 docMetaHandler: (docMeta: DocMeta, docUpdateRef: DocUpdateRef) => void,
+                                 docMetaHandler: (docMeta: IDocMeta, docUpdateRef: DocUpdateRef) => void,
                                  errHandler: (err: Error) => void) {
 
         const profileOwner = await ProfileOwners.get();
@@ -286,7 +286,7 @@ export class DocMetaRecords {
     /**
      * Start with the source and perform a diff against the target.
      */
-    public static mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
+    public static mergeDocMetaUpdate(source: IDocMeta, target: IDocMeta) {
 
         const mergePageMeta = (source: IPageMeta, target: IPageMeta) => {
 
@@ -305,7 +305,7 @@ export class DocMetaRecords {
 
     }
 
-    public static applyAuthorsFromUserProfile(docMeta: DocMeta, userProfile: UserProfile) {
+    public static applyAuthorsFromUserProfile(docMeta: IDocMeta, userProfile: UserProfile) {
 
         const {profile} = userProfile;
 

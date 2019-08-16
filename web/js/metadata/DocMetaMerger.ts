@@ -5,7 +5,7 @@ import {IPageMeta} from "./IPageMeta";
 
 export class DocMetaMerger {
 
-    public static merge(primary: DocMeta, ...secondaries: ReadonlyArray<DocMeta>) {
+    public static merge(primary: IDocMeta, ...secondaries: ReadonlyArray<DocMeta>) {
 
         // the primary contains the main document changes.
 

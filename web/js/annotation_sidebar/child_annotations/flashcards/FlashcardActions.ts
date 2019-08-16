@@ -30,7 +30,7 @@ export class FlashcardActions {
 
     }
 
-    public static update(docMeta: DocMeta,
+    public static update(docMeta: IDocMeta,
                          annotation: DocAnnotation,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields,

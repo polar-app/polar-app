@@ -35,7 +35,7 @@ export interface DocMetaFileRef extends DocMetaRef {
 
 export class DocMetaFileRefs {
 
-    public static createFromDocMeta(docMeta: DocMeta): DocMetaFileRef {
+    public static createFromDocMeta(docMeta: IDocMeta): DocMetaFileRef {
 
         return this.createFromDocInfo(docMeta.docInfo);
 

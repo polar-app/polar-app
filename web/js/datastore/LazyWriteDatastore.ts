@@ -28,7 +28,7 @@ export class LazyWriteDatastore extends DelegatedDatastore {
         this.id = 'lazy-write:' + delegate.id;
     }
 
-    public async writeDocMeta(docMeta: DocMeta,
+    public async writeDocMeta(docMeta: IDocMeta,
                               datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
         await this.handleWrite(docMeta.docInfo, async () => await super.writeDocMeta(docMeta, datastoreMutation));
