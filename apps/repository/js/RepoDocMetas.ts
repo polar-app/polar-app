@@ -1,4 +1,4 @@
-import {DocMeta} from "../../../web/js/metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../../../web/js/metadata/DocMeta";
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepoAnnotations} from './RepoAnnotations';
@@ -27,7 +27,7 @@ export class RepoDocMetas {
 
     public static convert(persistenceLayerProvider: PersistenceLayerProvider,
                           fingerprint: string,
-                          docMeta?: DocMeta): RepoDocMeta | undefined {
+                          docMeta?: IDocMeta): RepoDocMeta | undefined {
 
         if (! docMeta) {
             log.warn("No docMeta for file: ", fingerprint);

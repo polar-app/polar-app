@@ -8,7 +8,7 @@ import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from '../util/Dictionaries';
 import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
@@ -46,6 +46,8 @@ export class Pagemarks {
      * Create pagemarks over the given range.  We go back to either the first
      * page that has a pagemark or the beginning of the document.
      *
+     * @param docMeta
+     * @param end
      * @param percentage The percentage of the end page to create a pagemark.
      */
     public static updatePagemarksForRange(docMeta: IDocMeta,
@@ -553,7 +555,7 @@ export class Pagemarks {
 
     }
 
-    public static computeReadingProgressStats(docMetaProviders: ReadonlyArray<Provider<DocMeta>>) {
+    public static computeReadingProgressStats(docMetaProviders: ReadonlyArray<Provider<IDocMeta>>) {
 
         // TODO: we don't ahve the pageMeta here so maybe we could just write
         // out a minimal vector of day + number of the number of pages we've

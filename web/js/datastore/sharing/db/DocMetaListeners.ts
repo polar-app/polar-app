@@ -1,7 +1,7 @@
 import {GroupIDStr} from "../../Datastore";
 import {UserGroup, UserGroups} from "./UserGroups";
 import {GroupDoc, GroupDocs} from "./GroupDocs";
-import {DocMeta} from "../../../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../../../metadata/DocMeta";
 import {SetArrays} from "../../../util/SetArrays";
 import {PageMeta} from "../../../metadata/PageMeta";
 import {Collections, DocumentChange} from "./Collections";
@@ -13,17 +13,18 @@ import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
 import {ProfileIDStr} from "./Profiles";
 import {Author} from "../../../metadata/Author";
-import {Annotation} from "../../../metadata/Annotation";
+import {Annotation, IAnnotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
 import {FirebaseDatastores} from "../../FirebaseDatastores";
 import {Dictionaries} from "../../../util/Dictionaries";
+import {IPageMeta} from "../../../metadata/IPageMeta";
 
 const log = Logger.create();
 
 export class DocMetaListener {
 
-    private docMetaIndex: {[docID: string]: DocMeta} = {};
+    private docMetaIndex: {[docID: string]: IDocMeta} = {};
 
     private groupDocMonitors  = new Set<DocIDStr>();
 
@@ -299,7 +300,7 @@ export class DocMetaRecords {
 
         };
 
-        for (const page of Object.keys(source.pageMetas)) {
+        for (const page of Dictionaries.numberKeys(source.pageMetas)) {
             mergePageMeta(source.pageMetas[page], target.pageMetas[page]);
         }
 
@@ -336,7 +337,7 @@ export class DocMetaRecords {
 
         const author = createAuthorFromProfile();
 
-        const applyAuthorToAnnotations = (dict: {[key: string]: Annotation}) => {
+        const applyAuthorToAnnotations = (dict: {[key: string]: IAnnotation}) => {
 
             for (const annotation of Object.values(dict)) {
                 annotation.author = author;
@@ -355,7 +356,7 @@ export class DocMetaRecords {
 
         };
 
-        for (const page of Object.keys(docMeta.pageMetas)) {
+        for (const page of Dictionaries.numberKeys(docMeta.pageMetas)) {
             applyAuthorToPage(docMeta.pageMetas[page]);
         }
 

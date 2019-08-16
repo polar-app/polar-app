@@ -1,9 +1,29 @@
 import {Dictionaries} from './Dictionaries';
 import {assertJSON} from '../test/Assertions';
+import {assert} from 'chai';
 
 import * as _ from "lodash";
 
 describe('Dictionaries', function() {
+
+    it("numberKeys", async function () {
+
+        const dict: {[key: number]: string} = {
+            1: 'foo'
+        };
+
+        assert.equal(dict[1], 'foo');
+
+        const keys = Dictionaries.numberKeys(dict)
+
+        assert.equal(typeof keys[0] , 'number');
+
+
+        assert.equal(dict[keys[0]] , 'foo');
+        assertJSON(keys, [1]);
+
+    });
+
 
     it("basic", async function () {
 

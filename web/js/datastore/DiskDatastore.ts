@@ -21,7 +21,7 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Strings} from '../util/Strings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
 import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
@@ -32,6 +32,7 @@ import {isPresent} from '../Preconditions';
 import {BinaryFileData} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutations} from './DatastoreMutations';
+import { IDocInfo } from '../metadata/IDocInfo';
 
 const log = Logger.create();
 
@@ -324,7 +325,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
      */
     public async write(fingerprint: string,
                        data: string,
-                       docInfo: DocInfo,
+                       docInfo: IDocInfo,
                        opts: WriteOpts = {}) {
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();

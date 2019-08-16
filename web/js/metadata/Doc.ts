@@ -1,7 +1,8 @@
 import {DocInfo} from './DocInfo';
 import {DatastorePermission} from '../datastore/Datastore';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {ObjectID} from '../util/ObjectIDs';
+import {IDocInfo} from "./IDocInfo";
 
 
 /**
@@ -11,9 +12,9 @@ import {ObjectID} from '../util/ObjectIDs';
  */
 export interface Doc extends ObjectID {
 
-    readonly docInfo: DocInfo;
+    readonly docInfo: IDocInfo;
 
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
 
     readonly permission: DatastorePermission;
 

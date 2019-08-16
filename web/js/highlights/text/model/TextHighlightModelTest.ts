@@ -89,7 +89,7 @@ describe('TextHighlightModel', function() {
 
             const textHighlightRecord = createTextHighlightRecord();
 
-            docMeta.getPageMeta(3).textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+            DocMetas.getPageMeta(docMeta, 3).textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
             const expected = [
                 {
@@ -157,7 +157,7 @@ function createDocMeta() {
 
     const textHighlightRecord = createTextHighlightRecord();
 
-    docMeta.getPageMeta(1).textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+    DocMetas.getPageMeta(docMeta, 1).textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
     return Proxies.create(docMeta);
 

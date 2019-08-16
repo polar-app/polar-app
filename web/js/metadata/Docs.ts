@@ -1,6 +1,6 @@
 import {Doc} from './Doc';
 import {DatastorePermission} from '../datastore/Datastore';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {ObjectIDs} from '../util/ObjectIDs';
 
 export class Docs {

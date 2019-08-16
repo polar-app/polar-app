@@ -7,7 +7,7 @@ import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from '../../../logger/Logger';
 import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTimeStrings';
 import {Optional} from '../../../util/ts/Optional';
-import {DocMeta} from '../../../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Backend} from '../../../datastore/Backend';
 import {AppRuntime} from '../../../AppRuntime';
@@ -22,6 +22,7 @@ import {Datastores} from '../../../datastore/Datastores';
 import {PDFMeta} from '../importers/PDFMetadata';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {Tag} from '../../../tags/Tags';
+import {IDocInfo} from "../../../metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -44,7 +45,7 @@ export class LoadExampleDocs {
 
     }
 
-    public async load(onLoaded: (docInfo: DocInfo) => void) {
+    public async load(onLoaded: (docInfo: IDocInfo) => void) {
 
         if (await this.hasDocs()) {
             // we're done as there already docs in the repo
@@ -279,7 +280,7 @@ export class LoadExampleDocs {
 
     }
 
-    private async doDoc(relativePath: string, opts: DocOpts): Promise<DocMeta | undefined> {
+    private async doDoc(relativePath: string, opts: DocOpts): Promise<IDocMeta| undefined> {
 
         const doImport = async (): Promise<ImportedDoc> => {
 
@@ -433,7 +434,7 @@ interface DocOpts {
 
 interface ImportedDoc {
 
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
     readonly backendFileRef: BackendFileRef;
 
 }

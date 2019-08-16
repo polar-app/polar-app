@@ -28,7 +28,7 @@ import {Contacts} from '../../js/datastore/sharing/db/Contacts';
 import {SetArrays} from '../../js/util/SetArrays';
 import {GroupDeletes} from '../../js/datastore/sharing/rpc/GroupDeletes';
 import {Promises} from '../../js/util/Promises';
-import {DocMeta} from '../../js/metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../js/metadata/DocMeta';
 import {BackendFileRefs} from '../../js/datastore/BackendFileRefs';
 import {Either} from '../../js/util/Either';
 import {FirebaseDatastores} from '../../js/datastore/FirebaseDatastores';
@@ -471,7 +471,7 @@ SpectronRenderer.run(async (state) => {
                     .doc(groupDoc.docID);
 
                 const doc = await ref.get();
-                const recordHolder = <RecordHolder<DocMeta> | undefined> doc.data();
+                const recordHolder = <RecordHolder<IDocMeta> | undefined> doc.data();
 
                 assert.isDefined(recordHolder);
                 assert.isDefined(recordHolder!.groups);

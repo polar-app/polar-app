@@ -14,7 +14,7 @@ import {DocMetas} from "../metadata/DocMetas";
 import {UserProfile} from "../datastore/sharing/db/UserProfiles";
 import {assert} from 'chai';
 import {Proxies} from "../proxies/Proxies";
-import {DocMeta} from "../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../metadata/DocMeta";
 import {DefaultDocAnnotation, DocAnnotation} from "./DocAnnotation";
 import {Dictionaries} from "../util/Dictionaries";
 

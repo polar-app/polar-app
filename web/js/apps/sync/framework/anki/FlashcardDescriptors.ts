@@ -1,6 +1,6 @@
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
-import {Flashcard} from '../../../../metadata/Flashcard';
+import {Flashcard, IFlashcard} from '../../../../metadata/Flashcard';
 import {Dictionaries} from '../../../../util/Dictionaries';
 import * as _ from 'lodash';
 import {FlashcardType} from '../../../../metadata/FlashcardType';
@@ -24,7 +24,7 @@ export class FlashcardDescriptors {
 
                     // collect all flashcards for the current page.
 
-                    const flashcards: Flashcard[] = [];
+                    const flashcards: IFlashcard[] = [];
 
                     flashcards.push(... Dictionaries.values(pageMeta.flashcards));
 
@@ -41,7 +41,7 @@ export class FlashcardDescriptors {
                     const flashcardDescriptors = _.chain(flashcards)
                         .map(current => <FlashcardDescriptor> {
                             docMeta,
-                            pageInfo: IPageMeta.pageInfo,
+                            pageInfo: pageMeta.pageInfo,
                             flashcard: current
                         })
                         .value();

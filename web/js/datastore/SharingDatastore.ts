@@ -19,14 +19,14 @@ import {WriteOpts} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {DocMetaFileRef} from './DocMetaRef';
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {DocMetas} from '../metadata/DocMetas';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {BackendFileRefs} from './BackendFileRefs';
 
 const log = Logger.create();

@@ -3,7 +3,7 @@ import {Pagemarks} from "./Pagemarks";
 import {DocMetas} from "./DocMetas";
 import {TestingTime} from "../test/TestingTime";
 import {assert} from 'chai';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Objects} from '../util/Objects';
 import {ReadingProgresses} from './ReadingProgresses';

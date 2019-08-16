@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ReactInjector} from '../../ui/util/ReactInjector';
 import {ShareContentButton} from './ShareContentButton';
-import {IDocInfo} from '../../metadata/DocInfo';
+import {IDocInfo} from '../../metadata/IDocInfo';
 import {Visibility} from '../../datastore/Datastore';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {NULL_FUNCTION} from '../../util/Functions';

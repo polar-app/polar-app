@@ -1,5 +1,5 @@
 import {LeftEither} from '../util/Either';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {BackendFileRef} from './Datastore';
 import {Either} from '../util/Either';
 import {Backend} from './Backend';
@@ -15,7 +15,7 @@ export class BackendFileRefs {
      * Get the main BackendFileRef (PHZ or PDF) for this file (either the
      * PHZ or PDF file)
      */
-    public static toBackendFileRef(either: LeftEither<DocMeta, DocInfoLike>): BackendFileRef | undefined {
+    public static toBackendFileRef(either: LeftEither<IDocMeta, DocInfoLike>): BackendFileRef | undefined {
 
         if (! either) {
             log.warn("No 'either' param specified.");
@@ -52,7 +52,7 @@ export class BackendFileRefs {
      * Get all FileRefs for this DocMeta including the main doc but also
      * any image, audio, or video attachments.
      */
-    public static toBackendFileRefs(either: LeftEither<DocMeta, DocInfoLike>): ReadonlyArray<BackendFileRef> {
+    public static toBackendFileRefs(either: LeftEither<IDocMeta, DocInfoLike>): ReadonlyArray<BackendFileRef> {
 
         const result: BackendFileRef[] = [];
 

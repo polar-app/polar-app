@@ -1,5 +1,5 @@
 import {DocMetaModel} from '../metadata/DocMetaModel';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {AnnotationEventListener} from '../annotations/components/AnnotationEventListener';
 import {PageMetas} from '../metadata/PageMetas';
 

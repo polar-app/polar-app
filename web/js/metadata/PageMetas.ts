@@ -3,7 +3,7 @@ import {PageMeta} from './PageMeta';
 import {forDict} from '../util/Functions';
 import {Hashcodes} from '../Hashcodes';
 import {Pagemarks} from './Pagemarks';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {isPresent, Preconditions} from '../Preconditions';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
 import {TraceEvent} from '../proxies/TraceEvent';

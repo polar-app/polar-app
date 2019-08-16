@@ -15,6 +15,7 @@ import {AreaHighlightRects} from '../../../metadata/AreaHighlightRects';
 import {DoWriteOpts} from '../../../metadata/AreaHighlights';
 import {AreaHighlight} from '../../../metadata/AreaHighlight';
 import {Rects} from '../../../Rects';
+import {DocMetas} from "../../../metadata/DocMetas";
 
 
 const log = Logger.create();
@@ -84,7 +85,7 @@ export class AreaHighlightController {
         log.info("areaHighlight", areaHighlight);
 
         const docMeta = this.model.docMeta;
-        const pageMeta = docMeta.getPageMeta(contextMenuLocation.pageNum);
+        const pageMeta =  DocMetas.getPageMeta(docMeta, contextMenuLocation.pageNum);
 
         pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
 
@@ -100,7 +101,7 @@ export class AreaHighlightController {
         if (annotationPointer) {
 
             const datastore = this.model.persistenceLayerProvider();
-            const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
+            const pageMeta = DocMetas.getPageMeta(this.model.docMeta, annotationPointer.pageNum);
             const areaHighlight = pageMeta.areaHighlights[annotationPointer.id];
             const {docMeta} = this.model;
 

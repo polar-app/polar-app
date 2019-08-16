@@ -1,8 +1,8 @@
 /**
  * Represents a light weight reference to a DocMeta file.
  */
-import {IDocInfo} from '../metadata/DocInfo';
-import {DocMeta} from '../metadata/DocMeta';
+import {IDocInfo} from '../metadata/IDocInfo';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Preconditions} from '../Preconditions';
 import {FileRef} from './Datastore';
 
@@ -14,7 +14,7 @@ export interface DocMetaRef {
      * Store the DocMeta if we're passing this directly but have already read
      * the DocMeta elsewhere and it's not actually stale.
      */
-    readonly docMeta?: DocMeta;
+    readonly docMeta?: IDocMeta;
 
 }
 

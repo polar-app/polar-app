@@ -5,9 +5,10 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
 import {WriteOpts} from './PersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {DelegatedListenablePersistenceLayer} from './DelegatedListenablePersistenceLayer';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 /**
  */
@@ -21,7 +22,7 @@ export class LazyWriteListenablePersistenceLayer extends DelegatedListenablePers
         super(delegate);
     }
 
-    public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
+    public async getDocMeta(fingerprint: string): Promise<IDocMeta| undefined> {
 
         const docMeta = await super.getDocMeta(fingerprint);
 
@@ -32,15 +33,15 @@ export class LazyWriteListenablePersistenceLayer extends DelegatedListenablePers
         return docMeta;
     }
 
-    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo> {
         return this.handleWrite(docMeta.docInfo, async () => super.writeDocMeta(docMeta, datastoreMutation));
     }
 
-    public async write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<DocInfo> {
+    public async write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<IDocInfo> {
         return this.handleWrite(docMeta.docInfo, async () => super.write(fingerprint, docMeta, opts));
     }
 
-    private async handleWrite<T>(docInfo: DocInfo, completion: () => Promise<DocInfo>): Promise<DocInfo> {
+    private async handleWrite<T>(docInfo: IDocInfo, completion: () => Promise<IDocInfo>): Promise<IDocInfo> {
 
         let doUpdated = false;
 

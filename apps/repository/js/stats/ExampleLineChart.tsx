@@ -4,7 +4,7 @@ import {RepoSidebar} from '../RepoSidebar';
 import {MessageBanner} from '../MessageBanner';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
-import {DocInfo, IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
 import { ResponsiveBar } from '@nivo/bar';
 
 const log = Logger.create();

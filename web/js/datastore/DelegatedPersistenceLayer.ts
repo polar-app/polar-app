@@ -12,8 +12,9 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {WriteOpts} from './PersistenceLayer';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.
@@ -55,7 +56,7 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.delete(docMetaFileRef, datastoreMutation);
     }
 
-    public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
+    public async getDocMeta(fingerprint: string): Promise<IDocMeta| undefined> {
         return this.delegate.getDocMeta(fingerprint);
     }
 
@@ -83,11 +84,11 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.stop();
     }
 
-    public async write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<DocInfo> {
+    public async write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<IDocInfo> {
         return this.delegate.write(fingerprint, docMeta, opts);
     }
 
-    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo> {
         return this.delegate.writeDocMeta(docMeta, datastoreMutation);
     }
 

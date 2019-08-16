@@ -1,5 +1,5 @@
 import {DocMetaSupplier} from './DocMetaSupplier';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 
 export class DocMetaSuppliers {
 

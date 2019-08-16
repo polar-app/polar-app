@@ -45,7 +45,7 @@ export class DocMetas {
 
     }
 
-    // let result: DocInfo = Object.create(DocInfos.prototype);
+    // let result: IDocInfo = Object.create(DocInfos.prototype);
     //
     // result.fingerprint = fingerprint;
     // result.nrPages = nrPages;
@@ -149,7 +149,7 @@ export class DocMetas {
 
     }
 
-    public static upgrade(docMeta: IDocMeta) {
+    public static upgrade(docMeta: IDocMeta): IDocMeta {
 
         // validate the JSON data and set defaults. In the future we should
         // migrate to using something like AJV to provide these defaults and
@@ -253,7 +253,7 @@ export class MockDocMetas {
      * for testing.
      *
      */
-    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
+    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number): IDocMeta {
 
         const result = DocMetas.create(fingerprint, nrPages);
 
@@ -281,7 +281,7 @@ export class MockDocMetas {
 
         const textHighlight = TextHighlights.createMockTextHighlight();
 
-        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+        DocMetas.getPageMeta(docMeta, 1).textHighlights[textHighlight.id] = textHighlight;
 
         return docMeta;
 
@@ -315,6 +315,6 @@ export class MockDocMetas {
 }
 
 export interface MockDoc {
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
     readonly fileRef: FileRef;
 }

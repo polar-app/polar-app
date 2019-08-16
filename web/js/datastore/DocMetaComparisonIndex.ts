@@ -1,9 +1,10 @@
-import {DocMeta} from '../metadata/DocMeta';
-import {DocInfo, IDocInfo} from '../metadata/DocInfo';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {DocUUID} from './CloudAwareDatastore';
 import {isPresent} from '../Preconditions';
 import {DocMetaMutation} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
+
 
 /**
  * The DocComparisonIndex allows us to detect which documents are local already

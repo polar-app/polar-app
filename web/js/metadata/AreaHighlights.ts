@@ -4,7 +4,7 @@ import {AreaHighlight} from './AreaHighlight';
 import {IAreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {DocMeta, IDocMeta} from './DocMeta';
-import {Image} from './Image';
+import {IImage, Image} from './Image';
 import {Datastore} from '../datastore/Datastore';
 import {BackendFileRef} from '../datastore/Datastore';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
@@ -17,7 +17,7 @@ import {Logger} from '../logger/Logger';
 import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects} from './BaseHighlight';
-import {Position} from "./BaseHighlight";
+import {Position} from "./IBaseHighlight";
 import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
 import {ExtractedImage} from '../screenshots/Screenshot';
 import {Screenshots} from '../screenshots/Screenshots';
@@ -210,9 +210,9 @@ export interface DoWriteOpts {
 
 export interface AreaHighlightDeleteOpts {
     readonly datastore: Datastore | PersistenceLayer;
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
     readonly pageMeta: IPageMeta;
-    readonly areaHighlight: AreaHighlight;
+    readonly areaHighlight: IAreaHighlight;
 
 }
 
@@ -351,7 +351,7 @@ class DefaultAreaHighlightCommitter implements AreaHighlightCommitter {
     constructor(private readonly opts: AreaHighlightWriteOpts,
                 private readonly image: Image,
                 private readonly blob: Blob,
-                private readonly oldImage: Image | undefined) {
+                private readonly oldImage: IImage | undefined) {
     }
 
     public async commit(): Promise<void> {

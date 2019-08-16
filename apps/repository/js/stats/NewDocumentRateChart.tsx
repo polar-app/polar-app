@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
-import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
 import StatTitle from './StatTitle';
 import {ResponsiveBar} from '@nivo/bar';
 import {Arrays} from '../../../../web/js/util/Arrays';

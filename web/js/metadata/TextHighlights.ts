@@ -8,7 +8,7 @@ import {notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {IPageMeta} from "./IPageMeta";
 
 const log =  Logger.create();

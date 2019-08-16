@@ -4,10 +4,10 @@ import {DeleteResult} from './Datastore';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
-import {DocInfo, IDocInfo} from '../metadata/DocInfo';
+import {DocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
 import {Progress} from '../util/ProgressTracker';
 import {AsyncProvider} from '../util/Providers';
@@ -21,6 +21,7 @@ import {isPresent} from '../Preconditions';
 import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -152,7 +153,7 @@ export abstract class AbstractDatastore {
     }
 
     public async writeDocMeta(docMeta: IDocMeta,
-                              datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+                              datastoreMutation: DatastoreMutation<IDocInfo> = new DefaultDatastoreMutation()): Promise<IDocInfo> {
 
         const data = DocMetas.serialize(docMeta, "");
         const docInfo = docMeta.docInfo;
@@ -233,7 +234,7 @@ interface WritableDatastore {
      */
     delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<Readonly<DeleteResult>>;
 
-    writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
+    writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo>;
 
     /**
      * Write the datastore to disk.  Writes should be idempotent.
@@ -596,7 +597,7 @@ export interface DocMetaMutation {
      */
     readonly dataProvider: AsyncProvider<string | null>;
 
-    readonly docMetaProvider: AsyncProvider<DocMeta>;
+    readonly docMetaProvider: AsyncProvider<IDocMeta>;
 
     readonly docInfoProvider: AsyncProvider<IDocInfo>;
 
@@ -627,7 +628,7 @@ export interface DeleteResult {
 export type InitDocMetaEventListener = (initDocMetaEvent: InitDocMetaEvent) => void;
 
 export interface InitDocMetaEvent {
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
 }
 
 /**

@@ -1,5 +1,6 @@
 import {Logger} from '../../../web/js/logger/Logger';
-import {DocInfo, IDocInfo} from '../../../web/js/metadata/DocInfo';
+import {DocInfo} from '../../../web/js/metadata/DocInfo';
+import {IDocInfo} from '../../../web/js/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Preconditions} from '../../../web/js/Preconditions';

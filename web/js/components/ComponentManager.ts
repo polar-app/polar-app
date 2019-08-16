@@ -11,7 +11,7 @@ import {Container} from './containers/Container';
 import {ContainerLifecycleState} from './containers/lifecycle/ContainerLifecycleState';
 import {ContainerLifecycleListener} from './containers/lifecycle/ContainerLifecycleListener';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
-import {DocMeta} from "../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../metadata/DocMeta";
 import {DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
 
 const log = Logger.create();

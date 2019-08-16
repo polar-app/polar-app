@@ -16,12 +16,13 @@ import {Backend} from './Backend';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
 import {WriteOpts} from './PersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 const tracer = RendererAnalytics.createTracer('persistence-layer');
 
@@ -71,7 +72,7 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return tracer.traceAsync('delete', () => this.delegate.delete(docMetaFileRef, datastoreMutation));
     }
 
-    public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
+    public async getDocMeta(fingerprint: string): Promise<IDocMeta| undefined> {
         return tracer.traceAsync('getDocMeta', () => this.delegate.getDocMeta(fingerprint));
     }
 
@@ -99,11 +100,11 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return this.delegate.stop();
     }
 
-    public async write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<DocInfo> {
+    public async write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<IDocInfo> {
         return tracer.traceAsync('write', () => this.delegate.write(fingerprint, docMeta, opts));
     }
 
-    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo> {
         return tracer.traceAsync('writeDocMeta', () => this.delegate.writeDocMeta(docMeta, datastoreMutation));
     }
 

@@ -1,7 +1,7 @@
 import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {PageMeta} from '../metadata/PageMeta';
 import {isPresent} from '../Preconditions';
-import {Comment} from '../metadata/Comment';
+import {Comment, IComment} from '../metadata/Comment';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
@@ -84,7 +84,7 @@ export class DocAnnotations {
     }
 
     public static createFromComment(docMeta: IDocMeta,
-                                    comment: Comment,
+                                    comment: IComment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
         return {

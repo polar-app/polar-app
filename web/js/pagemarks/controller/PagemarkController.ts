@@ -203,7 +203,7 @@ export class PagemarkController {
         log.info("Working with annotationPointers: ", annotationPointers);
 
         return Optional.first(...annotationPointers).map(annotationPointer => {
-            const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
+            const pageMeta = DocMetas.getPageMeta(this.model.docMeta, annotationPointer.pageNum);
 
             return {
                 pageNum: annotationPointer.pageNum,

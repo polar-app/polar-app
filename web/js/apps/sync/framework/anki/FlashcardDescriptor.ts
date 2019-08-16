@@ -1,12 +1,12 @@
-import {DocMeta} from '../../../../metadata/DocMeta';
-import {PageInfo} from '../../../../metadata/PageInfo';
-import {Flashcard} from '../../../../metadata/Flashcard';
+import {DocMeta, IDocMeta} from '../../../../metadata/DocMeta';
+import {IPageInfo, PageInfo} from '../../../../metadata/PageInfo';
+import {Flashcard, IFlashcard} from '../../../../metadata/Flashcard';
 
 export interface FlashcardDescriptor {
 
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
 
-    readonly pageInfo: PageInfo;
+    readonly pageInfo: IPageInfo;
 
-    readonly flashcard: Flashcard;
+    readonly flashcard: IFlashcard;
 }

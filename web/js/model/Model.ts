@@ -1,4 +1,4 @@
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {Reactor} from '../reactor/Reactor';
 import {PagemarkType} from '../metadata/PagemarkType';
@@ -32,7 +32,7 @@ export class Model {
 
     private reactor: Reactor<any>;
 
-    private docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
+    private docMetaPromise: Promise<IDocMeta> = Promise.resolve(NULL_DOC_META);
 
     constructor(public readonly persistenceLayerHandler: PersistenceLayerHandler) {
 
@@ -133,7 +133,8 @@ export class Model {
 
         DocMetas.withBatchedMutations(this.docMeta, () => {
 
-            const pageMeta = this.docMeta.getPageMeta(pageNum);
+            const pageMeta = DocMetas.getPageMeta(this.docMeta, pageNum);
+
             if (!pageMeta.pageInfo.dimensions) {
                 const currentPageDetail = docFormat.getCurrentPageDetail();
 
@@ -240,7 +241,7 @@ export interface DocumentLoadedEvent {
     readonly fingerprint: string;
     readonly nrPages: number;
     readonly currentPageNumber: number;
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
 }
 
 export type DocumentLoadedCallback = (event: DocumentLoadedEvent) => void;

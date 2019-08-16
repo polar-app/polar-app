@@ -9,7 +9,7 @@ export class DocInfos {
 
     public static create(fingerprint: string, nrPages: number, filename?: string) {
 
-        const tmp: DocInfo = Object.create(DocInfos.prototype);
+        const tmp: IDocInfo = Object.create(DocInfos.prototype);
 
         tmp.fingerprint = fingerprint;
         tmp.nrPages = nrPages;
@@ -34,7 +34,7 @@ export class DocInfos {
 
     }
 
-    public static upgrade(docInfo: DocInfo) {
+    public static upgrade(docInfo: IDocInfo) {
 
         if (! docInfo) {
             // return whatever we were given (either undefined or null)

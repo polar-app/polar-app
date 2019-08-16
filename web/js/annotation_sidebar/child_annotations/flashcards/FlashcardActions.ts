@@ -7,7 +7,7 @@ import {Logger} from '../../../logger/Logger';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Refs} from '../../../metadata/Refs';
 import {Flashcards} from '../../../metadata/Flashcards';
-import {DocMeta} from '../../../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 
 const log = Logger.create();

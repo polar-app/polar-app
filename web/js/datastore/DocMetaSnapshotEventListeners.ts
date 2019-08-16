@@ -1,6 +1,6 @@
 import {DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener} from './Datastore';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 
 export class DocMetaSnapshotEventListeners {
 

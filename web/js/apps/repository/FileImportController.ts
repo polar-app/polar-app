@@ -4,7 +4,7 @@ import {remote} from 'electron';
 import {Logger} from '../../logger/Logger';
 import {ImportedFile, PDFImporter} from './importers/PDFImporter';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
-import {IDocInfo} from '../../metadata/DocInfo';
+import {IDocInfo} from '../../metadata/IDocInfo';
 import {Optional} from "../../util/ts/Optional";
 import {isPresent} from "../../Preconditions";
 import {Toaster} from "../../ui/toaster/Toaster";

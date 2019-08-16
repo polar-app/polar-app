@@ -24,6 +24,7 @@ import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
 import {Datastores} from '../../../datastore/Datastores';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
+import {IDocInfo} from "../../../metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -280,7 +281,7 @@ export interface ImportedFile {
     /**
      * The DocInfo for the file we just imported.
      */
-    readonly docInfo: DocInfo;
+    readonly docInfo: IDocInfo;
 
     /**
      * The basename of the file imported.

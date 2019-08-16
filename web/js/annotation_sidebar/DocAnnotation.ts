@@ -11,7 +11,7 @@ import {ITextHighlight, TextHighlight} from '../metadata/TextHighlight';
 import {ObjectID} from '../util/ObjectIDs';
 import {Img} from '../metadata/Img';
 import {HighlightColor} from '../metadata/HighlightColor';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Author} from "../metadata/Author";
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {IPageMeta} from "../metadata/IPageMeta";
@@ -37,7 +37,7 @@ export interface IDocAnnotation extends ObjectID {
      */
     readonly color?: HighlightColor;
 
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
 
     readonly pageMeta: IPageMeta;
 
@@ -85,7 +85,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
      */
     public readonly color?: HighlightColor;
 
-    public readonly docMeta: DocMeta;
+    public readonly docMeta: IDocMeta;
 
     public readonly pageMeta: IPageMeta;
 

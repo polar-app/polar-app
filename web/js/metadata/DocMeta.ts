@@ -15,7 +15,7 @@ import {IDocInfo} from "./IDocInfo";
  */
 export class DocMeta extends SerializedObject implements IDocMeta {
 
-    public docInfo: DocInfo;
+    public docInfo: IDocInfo;
     public pageMetas: {[id: string]: IPageMeta};
     public annotationInfo = AnnotationInfos.create();
     public version = 2;
@@ -36,7 +36,7 @@ export class DocMeta extends SerializedObject implements IDocMeta {
     //
     // }
 
-    constructor(docInfo: DocInfo, pageMetas: {[id: number]: IPageMeta}) {
+    constructor(docInfo: IDocInfo, pageMetas: {[id: number]: IPageMeta}) {
         super();
         this.docInfo = docInfo;
         this.pageMetas = pageMetas;
@@ -90,5 +90,7 @@ export interface IDocMeta {
      * The version of this DocMeta version.
      */
     version: number;
+
+    attachments: {[id: string]: Attachment};
 
 }

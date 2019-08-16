@@ -12,7 +12,7 @@ import {MessageBanner} from '../MessageBanner';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
-import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';

@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
@@ -203,11 +203,11 @@ describe('DocMetas', function() {
 
             assertJSON(docMeta, expected);
 
-            const pageMeta = docMeta.getPageMeta(1);
+            const pageMeta = DocMetas.getPageMeta(docMeta, 1);
 
             (pageMeta as any).pagemarks = {};
 
-            assert.deepEqual(docMeta.getPageMeta(1).pagemarks, {});
+            assert.deepEqual(DocMetas.getPageMeta(docMeta, 1).pagemarks, {});
 
         });
 
@@ -223,7 +223,7 @@ describe('DocMetas', function() {
                 let docMeta = createUpgradeDoc();
 
                 assert.notEqual(docMeta.docInfo, null);
-                delete (docMeta.getPageMeta(1) as any).textHighlights;
+                delete (DocMetas.getPageMeta(docMeta, 1) as any).textHighlights;
 
                 delete docMeta.docInfo.pagemarkType;
 
@@ -236,11 +236,11 @@ describe('DocMetas', function() {
             it("Pagemark without rect", function() {
                 let docMeta = createUpgradeDoc();
 
-                console.log(Object.keys(docMeta.getPageMeta(1).pagemarks));
+                console.log(Object.keys(DocMetas.getPageMeta(docMeta, 1).pagemarks));
 
-                assertJSON(Object.keys(docMeta.getPageMeta(1).pagemarks), ["1s2gw2Mkwb"]);
+                assertJSON(Object.keys(DocMetas.getPageMeta(docMeta, 1).pagemarks), ["1s2gw2Mkwb"]);
 
-                delete docMeta.getPageMeta(1).pagemarks["1s2gw2Mkwb"].rect ;
+                delete DocMetas.getPageMeta(docMeta, 1).pagemarks["1s2gw2Mkwb"].rect ;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
@@ -266,7 +266,7 @@ describe('DocMetas', function() {
 
                 ;
 
-                assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
+                assertJSON(DocMetas.getPageMeta(docMeta, 1).pagemarks, expected);
 
             });
 
@@ -274,11 +274,11 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete (docMeta.getPageMeta(1) as any).textHighlights;
+                delete (DocMetas.getPageMeta(docMeta, 1) as any).textHighlights;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
-                assert.deepEqual(docMeta.getPageMeta(1).textHighlights, {});
+                assert.deepEqual(DocMetas.getPageMeta(docMeta, 1).textHighlights, {});
 
             });
 
@@ -286,11 +286,11 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete (docMeta.getPageMeta(1) as any).pagemarks;
+                delete (DocMetas.getPageMeta(docMeta, 1) as any).pagemarks;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
-                assert.deepEqual(docMeta.getPageMeta(1).pagemarks, {});
+                assert.deepEqual(DocMetas.getPageMeta(docMeta, 1).pagemarks, {});
 
             });
 
@@ -298,11 +298,11 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                console.log(JSON.stringify(docMeta.getPageMeta(1).pagemarks, null, "  "));
+                console.log(JSON.stringify(DocMetas.getPageMeta(docMeta, 1).pagemarks, null, "  "));
 
-                assertJSON(Object.keys(docMeta.getPageMeta(1).pagemarks), ["1s2gw2Mkwb"]);
+                assertJSON(Object.keys(DocMetas.getPageMeta(docMeta, 1).pagemarks), ["1s2gw2Mkwb"]);
 
-                (<any> (docMeta.getPageMeta(1).pagemarks["1s2gw2Mkwb"].id)) = null;
+                (<any> (DocMetas.getPageMeta(docMeta, 1).pagemarks["1s2gw2Mkwb"].id)) = null;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
@@ -327,7 +327,7 @@ describe('DocMetas', function() {
                     }
                 ;
 
-                assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
+                assertJSON(DocMetas.getPageMeta(docMeta, 1).pagemarks, expected);
 
             });
 
@@ -335,7 +335,7 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].id;
+                delete DocMetas.getPageMeta(docMeta, 1).textHighlights["12pNUv1Y9S"].id;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
@@ -372,7 +372,8 @@ describe('DocMetas', function() {
                     }
                 };
 
-                assertJSON(docMeta.getPageMeta(1).textHighlights, expected);
+                
+                assertJSON(DocMetas.getPageMeta(docMeta, 1).textHighlights, expected);
 
             });
 
@@ -382,7 +383,7 @@ describe('DocMetas', function() {
 
 });
 
-function createUpgradeDoc() {
+function createUpgradeDoc(): IDocMeta {
 
     const fingerprint = "0x001";
     const nrPages = 1;
@@ -390,7 +391,7 @@ function createUpgradeDoc() {
 
     const textHighlight = TextHighlights.createMockTextHighlight();
 
-    docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+    DocMetas.getPageMeta(docMeta, 1).textHighlights[textHighlight.id] = textHighlight;
 
     return docMeta;
 

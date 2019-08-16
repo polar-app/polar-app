@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {isPresent} from '../Preconditions';
 
 import os from 'os';
@@ -20,6 +20,7 @@ import {Latch} from '../util/Latch';
 import {Datastores} from './Datastores';
 import {DiskDatastore} from './DiskDatastore';
 import {TestingTime} from '../test/TestingTime';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 const tmpdir = os.tmpdir();
 
@@ -36,7 +37,7 @@ export class DatastoreTester {
             let datastore: Datastore;
             let persistenceLayer: DefaultPersistenceLayer;
 
-            let docMeta: DocMeta;
+            let docMeta: IDocMeta;
 
             let directories: Directories;
 
@@ -81,7 +82,7 @@ export class DatastoreTester {
 
                     await MockPHZWriter.write(FilePaths.create(directories.stashDir, `${fingerprint}.phz`));
 
-                    const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
+                    const datastoreMutation = new DefaultDatastoreMutation<IDocInfo>();
 
                     await persistenceLayer.write(fingerprint, docMeta, { datastoreMutation });
 
