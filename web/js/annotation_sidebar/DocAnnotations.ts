@@ -1,14 +1,14 @@
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {PageMeta} from '../metadata/PageMeta';
 import {isPresent} from '../Preconditions';
-import {Comment} from '../metadata/Comment';
+import {Comment, IComment} from '../metadata/Comment';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
 import {Text} from '../metadata/Text';
 import {DefaultDocAnnotation, DocAnnotation, IDocAnnotation} from './DocAnnotation';
-import {AreaHighlight} from '../metadata/AreaHighlight';
-import {TextHighlight} from '../metadata/TextHighlight';
+import {AreaHighlight, IAreaHighlight} from '../metadata/AreaHighlight';
+import {ITextHighlight, TextHighlight} from '../metadata/TextHighlight';
 import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
@@ -19,6 +19,8 @@ import {Images} from '../metadata/Images';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {Author} from "../metadata/Author";
+import {IPageMeta} from "../metadata/IPageMeta";
+import {IBaseHighlight} from "../metadata/IBaseHighlight";
 
 export class DocAnnotations {
 
@@ -34,7 +36,7 @@ export class DocAnnotations {
 
     public static async getAnnotationsForPage(docFileResolver: DocFileResolver,
                                               docAnnotationIndex: DocAnnotationIndex,
-                                              docMeta: DocMeta): Promise<IDocAnnotation[]> {
+                                              docMeta: IDocMeta): Promise<IDocAnnotation[]> {
 
         const result: IDocAnnotation[] = [];
 
@@ -54,9 +56,9 @@ export class DocAnnotations {
 
     }
 
-    public static createFromFlashcard(docMeta: DocMeta,
+    public static createFromFlashcard(docMeta: IDocMeta,
                                       flashcard: Flashcard,
-                                      pageMeta: PageMeta): IDocAnnotation {
+                                      pageMeta: IPageMeta): IDocAnnotation {
 
         return {
             oid: ObjectIDs.create(),
@@ -81,9 +83,9 @@ export class DocAnnotations {
 
     }
 
-    public static createFromComment(docMeta: DocMeta,
-                                    comment: Comment,
-                                    pageMeta: PageMeta): IDocAnnotation {
+    public static createFromComment(docMeta: IDocMeta,
+                                    comment: IComment,
+                                    pageMeta: IPageMeta): IDocAnnotation {
 
         return {
             oid: ObjectIDs.create(),
@@ -108,9 +110,9 @@ export class DocAnnotations {
     }
 
     public static createFromAreaHighlight(docFileResolver: DocFileResolver,
-                                          docMeta: DocMeta,
-                                          areaHighlight: AreaHighlight,
-                                          pageMeta: PageMeta): IDocAnnotation {
+                                          docMeta: IDocMeta,
+                                          areaHighlight: IAreaHighlight,
+                                          pageMeta: IPageMeta): IDocAnnotation {
 
         const createPosition = (): Point => {
 
@@ -147,9 +149,9 @@ export class DocAnnotations {
 
     }
 
-    public static createFromTextHighlight(docMeta: DocMeta,
-                                          textHighlight: TextHighlight,
-                                          pageMeta: PageMeta): IDocAnnotation {
+    public static createFromTextHighlight(docMeta: IDocMeta,
+                                          textHighlight: ITextHighlight,
+                                          pageMeta: IPageMeta): IDocAnnotation {
 
         let html: string = "";
 
@@ -200,7 +202,7 @@ export class DocAnnotations {
 
     }
 
-    private static getTextHighlights(docMeta: DocMeta, pageMeta: PageMeta): ReadonlyArray<IDocAnnotation> {
+    private static getTextHighlights(docMeta: IDocMeta, pageMeta: IPageMeta): ReadonlyArray<IDocAnnotation> {
 
         return Object.values(pageMeta.textHighlights).map(textHighlight => {
             return this.createFromTextHighlight(docMeta, textHighlight, pageMeta);
@@ -209,8 +211,8 @@ export class DocAnnotations {
     }
 
     private static async getAreaHighlights(docFileResolver: DocFileResolver,
-                                           docMeta: DocMeta,
-                                           pageMeta: PageMeta): Promise<IDocAnnotation[]> {
+                                           docMeta: IDocMeta,
+                                           pageMeta: IPageMeta): Promise<IDocAnnotation[]> {
 
         const result: IDocAnnotation[] = [];
 
@@ -230,7 +232,7 @@ export class DocAnnotations {
     }
 
 
-    private static getScreenshot(pageMeta: PageMeta, highlight: BaseHighlight): Screenshot | undefined {
+    private static getScreenshot(pageMeta: IPageMeta, highlight: BaseHighlight): Screenshot | undefined {
 
         // tslint:disable-next-line:prefer-const
         let screenshot: Screenshot | undefined;
@@ -257,7 +259,7 @@ export class DocAnnotations {
 
     }
 
-    private static firstRect(highlight: BaseHighlight): Optional<Rect> {
+    private static firstRect(highlight: IBaseHighlight): Optional<Rect> {
         return Optional.of(highlight)
             .map(current => current.rects)
             .map(current => current[0]);

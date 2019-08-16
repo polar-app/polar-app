@@ -1,11 +1,11 @@
 import {isPresent, Preconditions} from '../../../web/js/Preconditions';
-import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {DocInfos} from '../../../web/js/metadata/DocInfos';
 import {RepoAnnotation} from "./RepoAnnotation";
 import {Tag} from "../../../web/js/tags/Tags";
+import {IDocInfo} from "../../../web/js/metadata/IDocInfo";
 
 export class RepoDocInfos {
 

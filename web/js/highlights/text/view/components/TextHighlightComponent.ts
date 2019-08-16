@@ -1,4 +1,4 @@
-import {DocMeta} from '../../../../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../../../metadata/DocMeta';
 import {DocFormat} from '../../../../docformat/DocFormat';
 import {TextHighlight} from '../../../../metadata/TextHighlight';
 import {PageMeta} from '../../../../metadata/PageMeta';
@@ -12,6 +12,7 @@ import {Rects} from '../../../../Rects';
 import {Logger} from '../../../../logger/Logger';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
 import {HighlightColor} from '../../../../metadata/HighlightColor';
+import {IPageMeta} from "../../../../metadata/IPageMeta";
 
 const log = Logger.create();
 
@@ -22,7 +23,7 @@ export class TextHighlightComponent extends Component {
     /**
      *
      */
-    private docMeta?: DocMeta;
+    private docMeta?: IDocMeta;
 
     /**
      *
@@ -32,7 +33,7 @@ export class TextHighlightComponent extends Component {
     /**
      *
      */
-    private pageMeta?: PageMeta;
+    private pageMeta?: IPageMeta;
 
     /**
      * The page we're working with.

@@ -18,6 +18,7 @@ import {TypedMessage} from '../../../util/TypedMessage';
 import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
 import {Elements} from '../../../util/Elements';
 import {HighlightColor} from '../../../metadata/HighlightColor';
+import {DocMetas} from "../../../metadata/DocMetas";
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -356,7 +357,7 @@ export class TextHighlightController {
 
         const textHighlightRecord = await factory();
 
-        const pageMeta = this.model.docMeta.getPageMeta(pageNum);
+        const pageMeta = DocMetas.getPageMeta(this.model.docMeta, pageNum);
 
         log.info("Added text highlight to model");
 
@@ -461,7 +462,7 @@ export class TextHighlightController {
 
             log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
 
-            const pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+            const pageMeta = DocMetas.getPageMeta(this.model.docMeta, annotationDescriptor.pageNum);
 
             // keep the current highlight.
             const textHighlight = pageMeta.textHighlights[annotationDescriptor.id];

@@ -1,6 +1,6 @@
 import {PageMeta} from './PageMeta';
 import {Logger} from '../logger/Logger';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {PagemarkType} from './PagemarkType';
 import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';
@@ -17,6 +17,7 @@ import {FilePaths} from '../util/FilePaths';
 import {FileRef} from '../datastore/Datastore';
 import {Datastore} from '../datastore/Datastore';
 import {Backend} from '../datastore/Backend';
+import {IPageMeta} from "./IPageMeta";
 
 const log = Logger.create();
 
@@ -32,7 +33,7 @@ export class DocMetas {
 
         const docInfo = DocInfos.create(fingerprint, nrPages, filename);
 
-        const pageMetas: {[id: string]: PageMeta} = {};
+        const pageMetas: {[id: string]: IPageMeta} = {};
 
         for (let idx = 1; idx <= nrPages; ++idx) {
             const pageInfo = new PageInfo({num: idx});
@@ -44,7 +45,7 @@ export class DocMetas {
 
     }
 
-    // let result: DocInfo = Object.create(DocInfos.prototype);
+    // let result: IDocInfo = Object.create(DocInfos.prototype);
     //
     // result.fingerprint = fingerprint;
     // result.nrPages = nrPages;
@@ -66,7 +67,7 @@ export class DocMetas {
         return MockDocMetas.createMockDocMeta();
     }
 
-    public static getPageMeta(docMeta: DocMeta, num: number) {
+    public static getPageMeta(docMeta: IDocMeta, num: number) {
 
         num = Preconditions.assertPresent(num, "num");
 
@@ -80,7 +81,7 @@ export class DocMetas {
 
     }
 
-    public static addPagemarks(docMeta: DocMeta, options: any) {
+    public static addPagemarks(docMeta: IDocMeta, options: any) {
 
         if (!options) {
             options = {};
@@ -116,13 +117,13 @@ export class DocMetas {
 
     }
 
-    public static serialize(docMeta: DocMeta, spacing: string = "  ") {
+    public static serialize(docMeta: IDocMeta, spacing: string = "  ") {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
 
     /**
      */
-    public static deserialize(data: string, fingerprint: string): DocMeta {
+    public static deserialize(data: string, fingerprint: string): IDocMeta {
 
         Preconditions.assertPresent(data, 'data');
 
@@ -130,7 +131,7 @@ export class DocMetas {
             throw new Error("We can only deserialize strings: " + typeof data);
         }
 
-        let docMeta: DocMeta = Object.create(DocMeta.prototype);
+        let docMeta: IDocMeta = Object.create(DocMeta.prototype);
 
         try {
 
@@ -148,7 +149,7 @@ export class DocMetas {
 
     }
 
-    public static upgrade(docMeta: DocMeta) {
+    public static upgrade(docMeta: IDocMeta): IDocMeta {
 
         // validate the JSON data and set defaults. In the future we should
         // migrate to using something like AJV to provide these defaults and
@@ -175,7 +176,7 @@ export class DocMetas {
     /**
      * Compute the progress of a document based on the pagemarks.
      */
-    public static computeProgress(docMeta: DocMeta): number {
+    public static computeProgress(docMeta: IDocMeta): number {
 
         let total = 0;
 
@@ -202,15 +203,15 @@ export class DocMetas {
      * @param mutator  The function to execute which will mutation the
      * underlying DocMeta properly.
      */
-    public static withBatchedMutations<T>(docMeta: DocMeta, mutator: () => T) {
+    public static withBatchedMutations<T>(docMeta: IDocMeta, mutator: () => T) {
         return this.withMutating(docMeta, 'batch', mutator);
     }
 
-    public static withSkippedMutations<T>(docMeta: DocMeta, mutator: () => T) {
+    public static withSkippedMutations<T>(docMeta: IDocMeta, mutator: () => T) {
         return this.withMutating(docMeta, 'skip', mutator);
     }
 
-    private static withMutating<T>(docMeta: DocMeta,
+    private static withMutating<T>(docMeta: IDocMeta,
                                    value: 'skip' | 'batch',
                                    mutator: () => T) {
 
@@ -238,7 +239,7 @@ export class DocMetas {
     /**
      * Force a write of the DocMeta
      */
-    public static forceWrite(docMeta: DocMeta) {
+    public static forceWrite(docMeta: IDocMeta) {
         docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
     }
 
@@ -252,7 +253,7 @@ export class MockDocMetas {
      * for testing.
      *
      */
-    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
+    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number): IDocMeta {
 
         const result = DocMetas.create(fingerprint, nrPages);
 
@@ -280,7 +281,7 @@ export class MockDocMetas {
 
         const textHighlight = TextHighlights.createMockTextHighlight();
 
-        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+        DocMetas.getPageMeta(docMeta, 1).textHighlights[textHighlight.id] = textHighlight;
 
         return docMeta;
 
@@ -314,6 +315,6 @@ export class MockDocMetas {
 }
 
 export interface MockDoc {
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
     readonly fileRef: FileRef;
 }

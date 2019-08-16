@@ -14,7 +14,7 @@ import {DocMetas} from "../metadata/DocMetas";
 import {UserProfile} from "../datastore/sharing/db/UserProfiles";
 import {assert} from 'chai';
 import {Proxies} from "../proxies/Proxies";
-import {DocMeta} from "../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../metadata/DocMeta";
 import {DefaultDocAnnotation, DocAnnotation} from "./DocAnnotation";
 import {Dictionaries} from "../util/Dictionaries";
 
@@ -42,7 +42,7 @@ describe('DocAnnotationIndexManager', function() {
         const docID = 'docID:0x00001';
         const profileID = 'prof:0x00002';
 
-        const docMetaHandler = (docMeta: DocMeta) => {
+        const docMetaHandler = (docMeta: IDocMeta) => {
             docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
         };
 
@@ -96,7 +96,7 @@ describe('DocAnnotationIndexManager', function() {
             }
         };
 
-        function createDocMetaRecord(docMeta: DocMeta): DocMetaRecord {
+        function createDocMetaRecord(docMeta: IDocMeta): DocMetaRecord {
 
             const docMetaRecord: DocMetaRecord = {
                 uid: 'uid:0x00001',

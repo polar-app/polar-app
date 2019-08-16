@@ -3,7 +3,7 @@ import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
-import {DocMeta} from '../../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from '../Datastore';
 import {WriteFileOpts} from '../Datastore';
@@ -20,6 +20,7 @@ import {DatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Releaseable} from '../../reactor/EventListener';
 import {WriteOpts} from '../PersistenceLayer';
+import {IDocInfo} from "../../metadata/IDocInfo";
 
 export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 
@@ -63,21 +64,21 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     }
 
-    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo> {
 
         return await this.handleWrite(docMeta, async () => await this.delegate.writeDocMeta(docMeta, datastoreMutation));
 
     }
 
     public async write(fingerprint: string,
-                       docMeta: DocMeta,
-                       opts?: WriteOpts): Promise<DocInfo> {
+                       docMeta: IDocMeta,
+                       opts?: WriteOpts): Promise<IDocInfo> {
 
         return await this.handleWrite(docMeta, async () => await this.delegate.write(fingerprint, docMeta, opts));
 
     }
 
-    private async handleWrite(docMeta: DocMeta, handler: () => Promise<DocInfo>) {
+    private async handleWrite(docMeta: IDocMeta, handler: () => Promise<IDocInfo>) {
 
         const docInfo = await handler();
 
@@ -134,7 +135,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         return result;
     }
 
-    public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
+    public async getDocMeta(fingerprint: string): Promise<IDocMeta| undefined> {
         return await this.delegate.getDocMeta(fingerprint);
     }
 

@@ -1,6 +1,6 @@
 import {Logger} from '../../../web/js/logger/Logger';
 import {RepoDocInfos} from './RepoDocInfos';
-import {DocMeta} from '../../../web/js/metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../../web/js/metadata/DocMeta';
 import {MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
@@ -143,7 +143,7 @@ export class RepoDocMetaLoader {
 
     private toRepoDocMeta(persistenceLayerProvider: PersistenceLayerProvider,
                           fingerprint: string,
-                          docMeta?: DocMeta): RepoDocMeta | undefined {
+                          docMeta?: IDocMeta): RepoDocMeta | undefined {
 
         if (docMeta) {
 

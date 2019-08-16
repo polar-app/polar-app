@@ -6,7 +6,7 @@ import {AbstractExporter} from './AbstractExporter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
-import {PageInfo} from '../PageInfo';
+import {IPageInfo, PageInfo} from '../PageInfo';
 import {Optional} from "../../util/ts/Optional";
 
 export class MarkdownExporter extends AbstractExporter {
@@ -26,7 +26,7 @@ export class MarkdownExporter extends AbstractExporter {
 
     }
 
-    protected pageInfoToText(pageInfo?: PageInfo): string {
+    protected pageInfoToText(pageInfo?: IPageInfo): string {
 
         if (!pageInfo) {
             return "";

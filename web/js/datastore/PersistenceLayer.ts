@@ -6,7 +6,7 @@ import {DatastoreOverview} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
 import {BackendFileRefData} from './Datastore';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
@@ -14,6 +14,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Visibility} from './Datastore';
 import {GroupIDStr} from './Datastore';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 export interface PersistenceLayer {
 
@@ -34,7 +35,7 @@ export interface PersistenceLayer {
      */
     contains(fingerprint: string): Promise<boolean>;
 
-    getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
+    getDocMeta(fingerprint: string): Promise<IDocMeta| undefined>;
 
     getDocMetaRefs(): Promise<DocMetaRef[]>;
 
@@ -51,7 +52,7 @@ export interface PersistenceLayer {
      */
     delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<DeleteResult>;
 
-    writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
+    writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo>;
 
     /**
      * Make sure the docs with the given fingerprints are synchronized with
@@ -63,7 +64,7 @@ export interface PersistenceLayer {
      * Return the DocInfo written. The DocInfo may be updated on commit
      * including updating lastUpdated, etc.
      */
-    write(fingerprint: string, docMeta: DocMeta, opts?: WriteOpts): Promise<DocInfo>;
+    write(fingerprint: string, docMeta: IDocMeta, opts?: WriteOpts): Promise<IDocInfo>;
 
     writeFile(backend: Backend,
               ref: FileRef,
@@ -88,7 +89,7 @@ export interface PersistenceLayer {
 
 export interface WriteOpts {
 
-    readonly datastoreMutation?: DatastoreMutation<DocInfo>;
+    readonly datastoreMutation?: DatastoreMutation<IDocInfo>;
 
     /**
      * Also write a file (PDF, PHZ) with the DocMeta data so that it's atomic

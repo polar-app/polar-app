@@ -11,7 +11,7 @@ import {Texts} from '../../../../metadata/Texts';
 import {TextType} from '../../../../metadata/TextType';
 import {Flashcards} from '../../../../metadata/Flashcards';
 import {FlashcardType} from '../../../../metadata/FlashcardType';
-import {MockDocMetas} from '../../../../metadata/DocMetas';
+import {DocMetas, MockDocMetas} from '../../../../metadata/DocMetas';
 
 xdescribe('AnkiSyncEngine', function() {
 
@@ -33,7 +33,7 @@ xdescribe('AnkiSyncEngine', function() {
 
         const flashcard = createMockFlashcard();
 
-        const pageMeta = docMeta.getPageMeta(1);
+        const pageMeta = DocMetas.getPageMeta(docMeta, 1);
 
         pageMeta.flashcards[flashcard.id] = flashcard;
 

@@ -1,16 +1,17 @@
-import {DocMeta} from "./DocMeta";
+import {DocMeta, IDocMeta} from "./DocMeta";
 import {AnnotationHolder} from "./AnnotationHolder";
-import {AreaHighlight} from './AreaHighlight';
-import {PageInfo} from './PageInfo';
+import {AreaHighlight, IAreaHighlight} from './AreaHighlight';
+import {IPageInfo, PageInfo} from './PageInfo';
 import {DocInfo} from './DocInfo';
 import {AnnotationType} from './AnnotationType';
-import {TextHighlight} from './TextHighlight';
-import {Comment} from './Comment';
-import {Flashcard} from './Flashcard';
+import {ITextHighlight, TextHighlight} from './TextHighlight';
+import {Comment, IComment} from './Comment';
+import {Flashcard, IFlashcard} from './Flashcard';
+import {IDocInfo} from "./IDocInfo";
 
 export class AnnotationHolders {
 
-    public static fromDocMeta(docMeta: DocMeta): ReadonlyArray<AnnotationHolder> {
+    public static fromDocMeta(docMeta: IDocMeta): ReadonlyArray<AnnotationHolder> {
 
         const result: AnnotationHolder[] = [];
 
@@ -37,20 +38,20 @@ export class AnnotationHolders {
 
     }
 
-    public static fromAreaHighlight(value: AreaHighlight, pageInfo?: PageInfo, docInfo?: DocInfo): AnnotationHolder {
+    public static fromAreaHighlight(value: IAreaHighlight, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
         return {type: AnnotationType.AREA_HIGHLIGHT, annotation: value, docInfo, pageInfo};
     }
 
 
-    public static fromTextHighlight(value: TextHighlight, pageInfo?: PageInfo, docInfo?: DocInfo): AnnotationHolder {
+    public static fromTextHighlight(value: ITextHighlight, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
         return {type: AnnotationType.TEXT_HIGHLIGHT, annotation: value, docInfo, pageInfo};
     }
 
-    public static fromComment(value: Comment, pageInfo?: PageInfo, docInfo?: DocInfo): AnnotationHolder {
+    public static fromComment(value: IComment, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
         return {type: AnnotationType.COMMENT, annotation: value, docInfo, pageInfo};
     }
 
-    public static fromFlashcard(value: Flashcard, pageInfo?: PageInfo, docInfo?: DocInfo): AnnotationHolder {
+    public static fromFlashcard(value: IFlashcard, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
         return {type: AnnotationType.FLASHCARD, annotation: value, docInfo, pageInfo};
     }
 

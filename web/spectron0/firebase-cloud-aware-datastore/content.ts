@@ -19,6 +19,7 @@ import {ASYNC_NULL_FUNCTION} from '../../js/util/Functions';
 import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import waitForExpect from 'wait-for-expect';
+import {IDocInfo} from "../../js/metadata/IDocInfo";
 
 const TIMEOUT = 30000;
 
@@ -314,7 +315,7 @@ SpectronRenderer.run(async (state) => {
 
                 const docMeta = MockDocMetas.createMockDocMeta();
 
-                const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
+                const datastoreMutation = new DefaultDatastoreMutation<IDocInfo>();
 
                 let writtenDuration: number = 0;
                 let committedDuration: number = 0;

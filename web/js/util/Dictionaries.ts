@@ -3,6 +3,14 @@ import {Optional} from './ts/Optional';
 
 export class Dictionaries {
 
+    /**
+     * Convert a dictionary to number keys. In JS all dictionaries use string keys
+     * but TS supports string keys.
+     */
+    public static numberKeys<T>(dict: {[key: number]: T}): ReadonlyArray<number> {
+        return Object.keys(dict).map(current => parseInt(current));
+    }
+
     public static values<T>(dict: {[key: string]: T} | undefined | null): T[] {
 
         const result: T[] = [];

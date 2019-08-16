@@ -3,8 +3,8 @@ import {Preconditions} from '../Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {IAreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
-import {DocMeta} from './DocMeta';
-import {Image} from './Image';
+import {DocMeta, IDocMeta} from './DocMeta';
+import {IImage, Image} from './Image';
 import {Datastore} from '../datastore/Datastore';
 import {BackendFileRef} from '../datastore/Datastore';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
@@ -17,7 +17,7 @@ import {Logger} from '../logger/Logger';
 import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects} from './BaseHighlight';
-import {Position} from "./BaseHighlight";
+import {Position} from "./IBaseHighlight";
 import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
 import {ExtractedImage} from '../screenshots/Screenshot';
 import {Screenshots} from '../screenshots/Screenshots';
@@ -27,14 +27,15 @@ import {ILTRect} from '../util/rects/ILTRect';
 import {DataURLs} from '../util/DataURLs';
 import {Rect} from '../Rect';
 import {Rects} from '../Rects';
+import {IPageMeta} from "./IPageMeta";
 
 const log = Logger.create();
 
 export class AreaHighlights {
 
     public static update(id: string,
-                         docMeta: DocMeta,
-                         pageMeta: PageMeta,
+                         docMeta: IDocMeta,
+                         pageMeta: IPageMeta,
                          updates: Partial<IAreaHighlight>) {
 
         const existing = pageMeta.areaHighlights[id]!;
@@ -198,8 +199,8 @@ interface PageDimensions {
 
 export interface DoWriteOpts {
     readonly datastore: Datastore | PersistenceLayer;
-    readonly docMeta: DocMeta;
-    readonly pageMeta: PageMeta;
+    readonly docMeta: IDocMeta;
+    readonly pageMeta: IPageMeta;
     readonly pageNum: number;
     readonly areaHighlight: AreaHighlight;
     readonly target: HTMLElement;
@@ -209,17 +210,17 @@ export interface DoWriteOpts {
 
 export interface AreaHighlightDeleteOpts {
     readonly datastore: Datastore | PersistenceLayer;
-    readonly docMeta: DocMeta;
-    readonly pageMeta: PageMeta;
-    readonly areaHighlight: AreaHighlight;
+    readonly docMeta: IDocMeta;
+    readonly pageMeta: IPageMeta;
+    readonly areaHighlight: IAreaHighlight;
 
 }
 
 export interface AreaHighlightWriteOpts {
     readonly datastore: Datastore | PersistenceLayer;
-    readonly docMeta: DocMeta;
-    readonly pageMeta: PageMeta;
-    readonly areaHighlight: AreaHighlight;
+    readonly docMeta: IDocMeta;
+    readonly pageMeta: IPageMeta;
+    readonly areaHighlight: IAreaHighlight;
     readonly rect: AreaHighlightRect;
     readonly position: Position;
     readonly extractedImage: ExtractedImage;
@@ -350,7 +351,7 @@ class DefaultAreaHighlightCommitter implements AreaHighlightCommitter {
     constructor(private readonly opts: AreaHighlightWriteOpts,
                 private readonly image: Image,
                 private readonly blob: Blob,
-                private readonly oldImage: Image | undefined) {
+                private readonly oldImage: IImage | undefined) {
     }
 
     public async commit(): Promise<void> {

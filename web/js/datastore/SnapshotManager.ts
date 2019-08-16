@@ -7,7 +7,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {Datastores} from './Datastores';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressTrackers} from "../util/ProgressTrackers";
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {DocMetas} from '../metadata/DocMetas';
 import {AsyncProviders} from '../util/Providers';
 

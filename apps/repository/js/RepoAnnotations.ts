@@ -1,11 +1,17 @@
-import {TextHighlight} from '../../../web/js/metadata/TextHighlight';
-import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
-import {Comment} from '../../../web/js/metadata/Comment';
+import {
+    ITextHighlight,
+    TextHighlight
+} from '../../../web/js/metadata/TextHighlight';
+import {
+    AreaHighlight,
+    IAreaHighlight
+} from '../../../web/js/metadata/AreaHighlight';
+import {Comment, IComment} from '../../../web/js/metadata/Comment';
 import {DocInfo} from '../../../web/js/metadata/DocInfo';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
-import {DocMeta} from '../../../web/js/metadata/DocMeta';
-import {Flashcard} from '../../../web/js/metadata/Flashcard';
+import {DocMeta, IDocMeta} from '../../../web/js/metadata/DocMeta';
+import {Flashcard, IFlashcard} from '../../../web/js/metadata/Flashcard';
 import {Text} from '../../../web/js/metadata/Text';
 import {Texts} from '../../../web/js/metadata/Texts';
 import {Images} from '../../../web/js/metadata/Images';
@@ -13,11 +19,12 @@ import {Img} from '../../../web/js/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "../../../web/js/tags/Tags";
+import {IDocInfo} from "../../../web/js/metadata/IDocInfo";
 
 export class RepoAnnotations {
 
     public static convert(persistenceLayerProvider: PersistenceLayerProvider,
-                          docMeta: DocMeta): RepoAnnotation[] {
+                          docMeta: IDocMeta): RepoAnnotation[] {
 
         const result: RepoAnnotation[] = [];
         const docInfo = docMeta.docInfo;
@@ -52,9 +59,9 @@ export class RepoAnnotations {
     }
 
     public static toRepoAnnotation(persistenceLayerProvider: PersistenceLayerProvider,
-                                   sourceAnnotation: TextHighlight | AreaHighlight | Comment | Flashcard,
+                                   sourceAnnotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
                                    type: AnnotationType,
-                                   docInfo: DocInfo): RepoAnnotation {
+                                   docInfo: IDocInfo): RepoAnnotation {
 
         // code shared with DocAnnotations and we should refactor to
         // standardize.

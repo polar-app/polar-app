@@ -31,7 +31,7 @@ import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Firestore} from '../firebase/Firestore';
-import {DocInfo, IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firebase/lib/firebase';
@@ -612,7 +612,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      */
     public async write(fingerprint: string,
                        data: string,
-                       docInfo: DocInfo,
+                       docInfo: IDocInfo,
                        opts: WriteOpts = new DefaultWriteOpts()) {
 
         await this.handleWriteFile(opts);
@@ -709,7 +709,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     /**
      * Create the document that we will store in for the DocMeta
      */
-    private createRecordHolderForDocMeta(docInfo: DocInfo,
+    private createRecordHolderForDocMeta(docInfo: IDocInfo,
                                          docMeta: string,
                                          opts: WriteOpts = new DefaultWriteOpts()) {
 
@@ -735,7 +735,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private createRecordHolderForDocInfo(docInfo: DocInfo,
+    private createRecordHolderForDocInfo(docInfo: IDocInfo,
                                          opts: WriteOpts = new DefaultWriteOpts()) {
 
         const visibility = opts.visibility || Visibility.PRIVATE;
@@ -743,7 +743,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const uid = FirebaseDatastores.getUserID();
         const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
 
-        const recordHolder: RecordHolder<DocInfo> = {
+        const recordHolder: RecordHolder<IDocInfo> = {
             uid,
             id,
             visibility,
@@ -940,7 +940,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const docMetaLookupProvider =
             AsyncProviders.memoize(() => createDocMetaLookup(snapshot.metadata.fromCache));
 
-        const docMetaMutationFromRecord = (record: RecordHolder<DocInfo>,
+        const docMetaMutationFromRecord = (record: RecordHolder<IDocInfo>,
                                            mutationType: MutationType = 'created') => {
 
             const id = record.id;
@@ -979,13 +979,13 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         };
 
         const docMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
-            const record = <RecordHolder<DocInfo>> docChange.doc.data();
+            const record = <RecordHolder<IDocInfo>> docChange.doc.data();
             return docMetaMutationFromRecord(record, toMutationType(docChange.type));
 
         };
 
         const docMetaMutationFromDoc = (doc: firebase.firestore.DocumentData) => {
-            const record = <RecordHolder<DocInfo>> doc;
+            const record = <RecordHolder<IDocInfo>> doc;
             return docMetaMutationFromRecord(record, 'created');
 
         };

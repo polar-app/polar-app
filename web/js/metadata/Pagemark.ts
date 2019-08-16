@@ -1,4 +1,4 @@
-import {Annotation} from './Annotation';
+import {Annotation, IAnnotation} from './Annotation';
 import {Note} from './Note';
 import {PagemarkType} from './PagemarkType';
 import {PagemarkRect} from './PagemarkRect';
@@ -50,7 +50,7 @@ export class Pagemark extends Annotation implements IPagemark {
 
     }
 
-    setup() {
+    public setup() {
 
         super.setup();
 
@@ -76,11 +76,11 @@ export class Pagemark extends Annotation implements IPagemark {
 
     }
 
-    validate() {
+    public validate() {
         super.validate();
     }
 
-    toString() {
+    public toString() {
         return MetadataSerializer.serialize(this);
     }
 
@@ -90,7 +90,7 @@ export interface PagemarkRef {
 
     readonly pageNum: number;
 
-    readonly pagemark: Pagemark;
+    readonly pagemark: IPagemark;
 
 }
 
@@ -102,7 +102,7 @@ export interface PagemarkIDRef {
 
 }
 
-export interface IPagemark {
+export interface IPagemark extends IAnnotation {
 
     /**
      * The note for this annotation.

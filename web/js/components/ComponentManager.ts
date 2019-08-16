@@ -11,7 +11,7 @@ import {Container} from './containers/Container';
 import {ContainerLifecycleState} from './containers/lifecycle/ContainerLifecycleState';
 import {ContainerLifecycleListener} from './containers/lifecycle/ContainerLifecycleListener';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
-import {DocMeta} from "../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../metadata/DocMeta";
 import {DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
 
 const log = Logger.create();
@@ -71,14 +71,14 @@ export class ComponentManager {
 
     }
 
-    private registerListenerForDocMeta(docMeta: DocMeta) {
+    private registerListenerForDocMeta(docMeta: IDocMeta) {
         const docMetaModel = this.createDocMetaModel();
         docMetaModel.registerListener(docMeta, this.onComponentEvent.bind(this));
     }
 
     private registerListenerForSecondaryDocMetas(fingerprint: string) {
 
-        const docMetaHandler = (docMeta: DocMeta) => {
+        const docMetaHandler = (docMeta: IDocMeta) => {
             this.registerListenerForDocMeta(docMeta);
         };
 

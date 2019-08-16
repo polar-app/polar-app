@@ -9,7 +9,7 @@ import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutation} from './DatastoreMutation';
 

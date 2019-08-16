@@ -1,5 +1,5 @@
 import {PagemarkRect} from './PagemarkRect';
-import {Pagemark, PagemarkRef} from './Pagemark';
+import {IPagemark, Pagemark, PagemarkRef} from './Pagemark';
 import {Logger} from '../logger/Logger';
 import {Hashcodes} from '../Hashcodes';
 import {Objects} from '../util/Objects';
@@ -8,11 +8,11 @@ import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from '../util/Dictionaries';
 import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
-import {PageMeta, PageNumber} from './PageMeta';
+import {PageMeta} from './PageMeta';
 import {Numbers} from "../util/Numbers";
 import {Reducers} from '../util/Reducers';
 import {ReadingProgresses} from './ReadingProgresses';
@@ -20,6 +20,7 @@ import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
 import {Percentages} from '../util/Percentages';
+import {IPageMeta, PageNumber} from "./IPageMeta";
 
 const log = Logger.create();
 
@@ -45,9 +46,11 @@ export class Pagemarks {
      * Create pagemarks over the given range.  We go back to either the first
      * page that has a pagemark or the beginning of the document.
      *
+     * @param docMeta
+     * @param end
      * @param percentage The percentage of the end page to create a pagemark.
      */
-    public static updatePagemarksForRange(docMeta: DocMeta,
+    public static updatePagemarksForRange(docMeta: IDocMeta,
                                           end: PageNumber,
                                           percentage: number = 100 ): ReadonlyArray<PagemarkRef> {
 
@@ -325,7 +328,7 @@ export class Pagemarks {
      *
      * @param pagemark The pagemark to update.
      */
-    public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: Pagemark) {
+    public static updatePagemark(docMeta: IDocMeta, pageNum: number, pagemark: IPagemark) {
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
@@ -342,7 +345,7 @@ export class Pagemarks {
      * Replace the pagemarks with a new pagemark with the given options
      * replaced.
      */
-    public static replacePagemark(docMeta: DocMeta,
+    public static replacePagemark(docMeta: IDocMeta,
                                   pagemarkPtr: PagemarkPTR,
                                   options: ReplacePagemarkOptions) {
 
@@ -403,7 +406,7 @@ export class Pagemarks {
      * @param id When id is specified we delete just a specific pagemark,
      * otherwise we delete all of them.
      */
-    public static deletePagemark(docMeta: DocMeta, pageNum: number, id?: string) {
+    public static deletePagemark(docMeta: IDocMeta, pageNum: number, id?: string) {
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
 
@@ -457,7 +460,7 @@ export class Pagemarks {
     /**
      * Scan all the pagemarks finding ones with the same batch.
      */
-    private static pagemarksWithinBatch(docMeta: DocMeta, batch: string): ReadonlyArray<PagemarkPageMetaRef> {
+    private static pagemarksWithinBatch(docMeta: IDocMeta, batch: string): ReadonlyArray<PagemarkPageMetaRef> {
 
         const result = [];
 
@@ -480,7 +483,7 @@ export class Pagemarks {
 
     }
 
-    private static doDocMetaMutation(docMeta: DocMeta,
+    private static doDocMetaMutation(docMeta: IDocMeta,
                                      pageNum: number,
                                      pagemarkMutator: () => void): void {
 
@@ -504,7 +507,7 @@ export class Pagemarks {
     /**
      * Mutate the pagemarks on the PageMeta and also update the readingProgress
      */
-    private static doPageMetaMutation(pageMeta: PageMeta, pageMetaMutator?: VOID_FUNCTION): void {
+    private static doPageMetaMutation(pageMeta: IPageMeta, pageMetaMutator?: VOID_FUNCTION): void {
 
         if (! pageMetaMutator) {
             return;
@@ -552,7 +555,7 @@ export class Pagemarks {
 
     }
 
-    public static computeReadingProgressStats(docMetaProviders: ReadonlyArray<Provider<DocMeta>>) {
+    public static computeReadingProgressStats(docMetaProviders: ReadonlyArray<Provider<IDocMeta>>) {
 
         // TODO: we don't ahve the pageMeta here so maybe we could just write
         // out a minimal vector of day + number of the number of pages we've
@@ -571,7 +574,7 @@ export class Pagemarks {
 }
 
 interface PagemarkPageMetaRef {
-    readonly pageMeta: PageMeta;
+    readonly pageMeta: IPageMeta;
     readonly id: string;
 
 }

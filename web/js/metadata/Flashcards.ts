@@ -6,7 +6,7 @@ import {Flashcard} from './Flashcard';
 import {Texts} from './Texts';
 import {Text} from './Text';
 import {TextType} from './TextType';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from './Refs';
@@ -103,7 +103,7 @@ export class MockFlashcards {
     /**
      * Attach mock flashcards on the given DocMeta for testing
      */
-    public static attachFlashcards(docMeta: DocMeta) {
+    public static attachFlashcards(docMeta: IDocMeta) {
 
         let idx = 0;
 

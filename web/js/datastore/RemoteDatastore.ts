@@ -8,7 +8,7 @@ import {Logger} from '../logger/Logger';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();

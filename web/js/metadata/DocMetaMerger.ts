@@ -1,21 +1,22 @@
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {Dictionaries} from '../util/Dictionaries';
 import {PageMeta} from './PageMeta';
+import {IPageMeta} from "./IPageMeta";
 
 export class DocMetaMerger {
 
-    public static merge(primary: DocMeta, ...secondaries: ReadonlyArray<DocMeta>) {
+    public static merge(primary: IDocMeta, ...secondaries: ReadonlyArray<IDocMeta>) {
 
         // the primary contains the main document changes.
 
         // the secondary docMetas contain what we need to merge/copy over.
-        const result = <DocMeta> Dictionaries.deepCopy(primary);
+        const result = <IDocMeta> Dictionaries.deepCopy(primary);
 
         for (const secondary of secondaries) {
 
             deepCopyInto(result.attachments, secondary.attachments);
 
-            for (const key of Object.keys(primary.pageMetas)) {
+            for (const key of Dictionaries.numberKeys(primary.pageMetas)) {
 
                 const src = primary.pageMetas[key];
                 const dest = result.pageMetas[key];
@@ -31,7 +32,7 @@ export class DocMetaMerger {
 
 }
 
-function deepCopyPageMeta(src: PageMeta, dest: PageMeta) {
+function deepCopyPageMeta(src: IPageMeta, dest: IPageMeta) {
     // pagemarks and reading progress should not be copied over.
 
     deepCopyInto(src.textHighlights, dest.textHighlights);

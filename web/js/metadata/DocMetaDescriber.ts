@@ -1,9 +1,9 @@
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {forDict} from '../util/Functions';
 
 export class DocMetaDescriber {
 
-    public static describe(docMeta: DocMeta) {
+    public static describe(docMeta: IDocMeta) {
 
         let nrPagemarks = 0;
         let nrTextHighlights = 0;

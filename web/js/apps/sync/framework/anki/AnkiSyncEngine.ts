@@ -23,6 +23,7 @@ import {AnkiConnectFetch} from './AnkiConnectFetch';
 import {Decks} from './Decks';
 import {ModelNamesClient} from "./clients/ModelNamesClient";
 import {ModelNames} from "./ModelNames";
+import {IDocInfo} from "../../../../metadata/IDocInfo";
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -98,7 +99,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
     }
 
-    protected computeDeckName(deckNameStrategy: DeckNameStrategy, docInfo: DocInfo): string {
+    protected computeDeckName(deckNameStrategy: DeckNameStrategy, docInfo: IDocInfo): string {
 
         let deckName: string | undefined;
 

@@ -1,13 +1,14 @@
 import {AbstractDatastore, Datastore, DatastoreID, DeleteResult} from './Datastore';
 import {DelegatedDatastore} from './DelegatedDatastore';
-import {IDocInfo, DocInfo} from '../metadata/DocInfo';
+import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {WriteOpts} from './Datastore';
+import {IDocInfo} from '../metadata/IDocInfo';
 
 const log = Logger.create();
 
@@ -28,8 +29,8 @@ export class LazyWriteDatastore extends DelegatedDatastore {
         this.id = 'lazy-write:' + delegate.id;
     }
 
-    public async writeDocMeta(docMeta: DocMeta,
-                              datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta,
+                              datastoreMutation: DatastoreMutation<IDocInfo> = new DefaultDatastoreMutation()): Promise<IDocInfo> {
 
         await this.handleWrite(docMeta.docInfo, async () => await super.writeDocMeta(docMeta, datastoreMutation));
 

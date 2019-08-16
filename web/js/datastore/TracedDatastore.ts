@@ -13,12 +13,12 @@ import {Backend} from './Backend';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
 import {WriteOpts} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {DelegatedDatastore} from './DelegatedDatastore';
 
@@ -89,7 +89,7 @@ export class TracedDatastore extends DelegatedDatastore {
         return tracer.traceAsync('write', () => this.delegate.write(fingerprint, data, docInfo, opts));
     }
 
-    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo> {
         return tracer.traceAsync('writeDocMeta', () => this.delegate.writeDocMeta(docMeta, datastoreMutation));
     }
 

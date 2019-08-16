@@ -2,12 +2,12 @@
  * Just like a DocDetail or DocInfo but designed to be used for in the UI so we
  * replace missing titles with Untitled and define other default values.
  */
-import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {Img} from '../../../web/js/metadata/Img';
 import {HighlightColor} from '../../../web/js/metadata/HighlightColor';
 import {Tag} from '../../../web/js/tags/Tags';
+import {IDocInfo} from "../../../web/js/metadata/IDocInfo";
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 

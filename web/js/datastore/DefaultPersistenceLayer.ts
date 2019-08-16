@@ -4,7 +4,7 @@ import {GetFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreOverview} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
@@ -21,6 +21,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -66,7 +67,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
      * Get the DocMeta object we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
-    public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
+    public async getDocMeta(fingerprint: string): Promise<IDocMeta | undefined> {
 
         const data = await this.datastore.getDocMeta(fingerprint);
 
@@ -87,7 +88,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+    public async writeDocMeta(docMeta: IDocMeta, datastoreMutation?: DatastoreMutation<IDocInfo>): Promise<IDocInfo> {
 
         Preconditions.assertPresent(docMeta, "No docMeta");
         Preconditions.assertPresent(docMeta.docInfo, "No docInfo on docMeta");
@@ -101,8 +102,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
      * Write the datastore to disk.
      */
     public async write(fingerprint: string,
-                       docMeta: DocMeta,
-                       opts: WriteOpts = {}): Promise<DocInfo> {
+                       docMeta: IDocMeta,
+                       opts: WriteOpts = {}): Promise<IDocInfo> {
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 

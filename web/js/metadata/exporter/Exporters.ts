@@ -2,7 +2,7 @@ import {AnnotationHolder} from '../AnnotationHolder';
 import {FileWriter} from './writers/FileWriter';
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
-import {DocMeta} from '../DocMeta';
+import {DocMeta, IDocMeta} from '../DocMeta';
 import {AnnotationHolders} from '../AnnotationHolders';
 
 /**
@@ -18,7 +18,7 @@ export class Exporters {
 
     public static async doExport(path: string,
                                  format: ExportFormat,
-                                 docMeta: DocMeta): Promise<void> {
+                                 docMeta: IDocMeta): Promise<void> {
 
         const writer = new FileWriter(path);
 

@@ -1,4 +1,4 @@
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from '../logger/Logger';
@@ -16,7 +16,7 @@ export class ModelPersister {
     public nrDeferredWrites: number = 0;
 
     constructor(private readonly persistenceLayerHandler: PersistenceLayerHandler,
-                public readonly docMeta: DocMeta) {
+                public readonly docMeta: IDocMeta) {
 
         const batcher = new Batcher(async () => {
 

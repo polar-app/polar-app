@@ -4,7 +4,7 @@ import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocFormat} from '../docformat/DocFormat';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from '../util/Functions';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {PrefsProvider} from '../datastore/Datastore';
 import {ReadingProgressResume} from './ReadingProgressResume';
@@ -81,7 +81,7 @@ export class WebView extends View {
     /**
      * @deprecated Moved to pagemark.ProgressView... remove this code.
      */
-    private computeProgress(docMeta: DocMeta) {
+    private computeProgress(docMeta: IDocMeta) {
 
         // I think this is an issue of being async maybel?
 
@@ -123,7 +123,7 @@ export class WebView extends View {
 
     }
 
-    private handleProgressDoubleClick(docMeta: DocMeta) {
+    private handleProgressDoubleClick(docMeta: IDocMeta) {
 
         document.querySelector("#polar-header")!.addEventListener('dblclick', () => {
 

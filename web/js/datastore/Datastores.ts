@@ -4,7 +4,7 @@ import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
@@ -15,6 +15,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -213,7 +214,7 @@ export class Datastores {
 
     }
 
-    public static async toDocInfoManifest(datastore: Datastore): Promise<ReadonlyArray<DocInfo>> {
+    public static async toDocInfoManifest(datastore: Datastore): Promise<ReadonlyArray<IDocInfo>> {
 
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
@@ -221,7 +222,7 @@ export class Datastores {
             (await datastore.getDocMetaRefs())
                 .sort((d0, d1) => d0.fingerprint.localeCompare(d1.fingerprint));
 
-        const result: DocInfo[] = [];
+        const result: IDocInfo[] = [];
 
         for (const docMetaFile of docMetaFiles) {
             const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
@@ -254,7 +255,7 @@ export class Datastores {
 
 }
 
-export type DocMetaListener = (docMeta: DocMeta) => void;
+export type DocMetaListener = (docMeta: IDocMeta) => void;
 
 export interface PurgeEvent {
     readonly completed: number;
@@ -266,6 +267,6 @@ export type PurgeListener = (purgeEvent: PurgeEvent) => void;
 
 export interface DatastoreConsistency {
     readonly consistent: boolean;
-    readonly manifest0: ReadonlyArray<DocInfo>;
-    readonly manifest1: ReadonlyArray<DocInfo>;
+    readonly manifest0: ReadonlyArray<IDocInfo>;
+    readonly manifest1: ReadonlyArray<IDocInfo>;
 }

@@ -25,6 +25,7 @@ import {Dictionaries} from '../util/Dictionaries';
 import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -185,7 +186,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public async write(fingerprint: string,
                        data: string,
-                       docInfo: DocInfo,
+                       docInfo: IDocInfo,
                        opts: WriteOpts = {}): Promise<void> {
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();

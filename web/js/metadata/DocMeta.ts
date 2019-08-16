@@ -1,10 +1,12 @@
-import {DocInfo, IDocInfo} from './DocInfo';
-import {IPageMeta, PageMeta} from './PageMeta';
+import {DocInfo} from './DocInfo';
+import {PageMeta} from './PageMeta';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
-import {AnnotationInfo, IAnnotationInfo} from './AnnotationInfo';
 import {Attachment} from './Attachment';
+import {IPageMeta} from "./IPageMeta";
+import {IAnnotationInfo} from "./AnnotationInfo";
+import {IDocInfo} from "./IDocInfo";
 
 
 /**
@@ -13,14 +15,14 @@ import {Attachment} from './Attachment';
  */
 export class DocMeta extends SerializedObject implements IDocMeta {
 
-    public docInfo: DocInfo;
-    public pageMetas: {[id: string]: PageMeta};
+    public docInfo: IDocInfo;
+    public pageMetas: {[id: string]: IPageMeta};
     public annotationInfo = AnnotationInfos.create();
     public version = 2;
 
     public attachments: {[id: string]: Attachment} = {};
 
-    // constructor(template?: DocMeta) {
+    // constructor(template?: IDocMeta) {
     //
     //     super(template);
     //
@@ -34,7 +36,7 @@ export class DocMeta extends SerializedObject implements IDocMeta {
     //
     // }
 
-    constructor(docInfo: DocInfo, pageMetas: {[id: number]: PageMeta}) {
+    constructor(docInfo: IDocInfo, pageMetas: {[id: number]: IPageMeta}) {
         super();
         this.docInfo = docInfo;
         this.pageMetas = pageMetas;
@@ -62,6 +64,8 @@ export class DocMeta extends SerializedObject implements IDocMeta {
 
 }
 
+
+
 export interface IDocMeta {
 
     /**
@@ -74,7 +78,7 @@ export interface IDocMeta {
      * A sparse dictionary of page number to page metadata.
      *
      */
-    pageMetas: {[id: number]: IPageMeta};
+    pageMetas: { [id: number]: IPageMeta };
 
     /**
      * The annotation info for this document including the last annotation
@@ -86,5 +90,7 @@ export interface IDocMeta {
      * The version of this DocMeta version.
      */
     version: number;
+
+    attachments: {[id: string]: Attachment};
 
 }

@@ -1,11 +1,12 @@
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {Pagemarks} from '../metadata/Pagemarks';
+import {DocMetas} from "../metadata/DocMetas";
 
 export class CreatePagemarksForPageRanges {
 
-    private readonly docMeta: DocMeta;
+    private readonly docMeta: IDocMeta;
 
-    constructor(docMeta: DocMeta) {
+    constructor(docMeta: IDocMeta) {
         this.docMeta = docMeta;
     }
 
@@ -19,7 +20,7 @@ export class CreatePagemarksForPageRanges {
 
             console.log("Creating pagemark for page: " + pageNum);
 
-            const pageMeta = this.docMeta.getPageMeta(pageNum);
+            const pageMeta = DocMetas.getPageMeta(this.docMeta, pageNum);
 
             const pagemark = Pagemarks.create();
 

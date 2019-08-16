@@ -8,6 +8,7 @@ import {AnnotationType} from '../../../metadata/AnnotationType';
 import {Model} from '../../../model/Model';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Toaster} from '../../../ui/toaster/Toaster';
+import {DocMetas} from "../../../metadata/DocMetas";
 
 const log = Logger.create();
 
@@ -42,7 +43,7 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
 
                 log.info("Going to add this flashcard to the model");
 
-                let pageMeta = this.model.docMeta.getPageMeta(descriptor.pageNum);
+                const pageMeta = DocMetas.getPageMeta(this.model.docMeta, descriptor.pageNum);
 
                 // FIXME: these need to be attached to the parent annotation not
                 // stored directly on the page...

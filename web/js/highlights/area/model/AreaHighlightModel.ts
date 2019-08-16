@@ -1,4 +1,4 @@
-import {DocMeta} from '../../../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../../../metadata/DocMeta';
 import {DocMetaModel} from '../../../metadata/DocMetaModel';
 import {PageMetas} from '../../../metadata/PageMetas';
 import {AnnotationEventListener} from '../../../annotations/components/AnnotationEventListener';
@@ -6,7 +6,7 @@ import {AnnotationEventListener} from '../../../annotations/components/Annotatio
 
 export class AreaHighlightModel extends DocMetaModel {
 
-    public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
+    public registerListener(docMeta: IDocMeta, annotationEventListener: AnnotationEventListener) {
         PageMetas.createModel(docMeta, "areaHighlights", annotationEventListener);
         return annotationEventListener;
     }

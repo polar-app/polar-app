@@ -21,7 +21,7 @@ import {DocContextMenu} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
-import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
 

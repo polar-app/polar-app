@@ -1,5 +1,5 @@
 import {TextType} from './TextType';
-import {VersionedObject} from './VersionedObject';
+import {IVersionedObject, VersionedObject} from './VersionedObject';
 import {Text} from './Text';
 import {Texts} from './Texts';
 
@@ -38,7 +38,7 @@ export class Note extends VersionedObject implements INote {
 
 }
 
-export interface INote {
+export interface INote extends IVersionedObject {
 
     /**
      * The content of this note.

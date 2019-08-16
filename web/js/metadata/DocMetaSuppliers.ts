@@ -1,9 +1,9 @@
 import {DocMetaSupplier} from './DocMetaSupplier';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 
 export class DocMetaSuppliers {
 
-    public static literal(docMeta: DocMeta): DocMetaSupplier {
+    public static literal(docMeta: IDocMeta): DocMetaSupplier {
         return async () => docMeta;
     }
 

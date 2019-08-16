@@ -3,16 +3,17 @@ import {PageMeta} from './PageMeta';
 import {forDict} from '../util/Functions';
 import {Hashcodes} from '../Hashcodes';
 import {Pagemarks} from './Pagemarks';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
 import {isPresent, Preconditions} from '../Preconditions';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
 import {TraceEvent} from '../proxies/TraceEvent';
+import {IPageMeta} from "./IPageMeta";
 
 const log = Logger.create();
 
 export class PageMetas {
 
-    public static upgrade(pageMetas: {[key: number]: PageMeta}) {
+    public static upgrade(pageMetas: {[key: number]: IPageMeta}) {
 
         pageMetas = Object.assign({}, pageMetas);
 
@@ -80,7 +81,7 @@ export class PageMetas {
      * Create a model for a specific key within PageMetas.
      *
      */
-    public static createModel(docMeta: DocMeta,
+    public static createModel(docMeta: IDocMeta,
                               memberName: string,
                               callback: (annotationEvent: AnnotationEvent) => void) {
 

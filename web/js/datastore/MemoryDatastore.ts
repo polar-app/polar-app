@@ -22,6 +22,7 @@ import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {WriteOpts} from './Datastore';
+import {IDocInfo} from "../metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -147,7 +148,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
      */
     public async write(fingerprint: string,
                        data: string,
-                       docInfo: DocInfo,
+                       docInfo: IDocInfo,
                        opts: WriteOpts = {}): Promise<void> {
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();

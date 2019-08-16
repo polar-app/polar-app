@@ -8,15 +8,16 @@ import {notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
-import {DocMeta} from './DocMeta';
+import {DocMeta, IDocMeta} from './DocMeta';
+import {IPageMeta} from "./IPageMeta";
 
 const log =  Logger.create();
 
 export class TextHighlights {
 
     public static update(id: string,
-                         docMeta: DocMeta,
-                         pageMeta: PageMeta,
+                         docMeta: IDocMeta,
+                         pageMeta: IPageMeta,
                          updates: Partial<ITextHighlight>) {
 
         const existing = pageMeta.textHighlights[id]!;
@@ -53,7 +54,7 @@ export class TextHighlights {
         textHighlight.images[notNull(image.rel)] = image;
     }
 
-    public static deleteTextHighlight(pageMeta: PageMeta, textHighlight: TextHighlight) {
+    public static deleteTextHighlight(pageMeta: IPageMeta, textHighlight: ITextHighlight) {
 
         if (textHighlight.images) {
 

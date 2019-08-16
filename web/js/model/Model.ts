@@ -1,4 +1,4 @@
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {Reactor} from '../reactor/Reactor';
 import {PagemarkType} from '../metadata/PagemarkType';
@@ -12,7 +12,7 @@ import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
-import {PageNumber} from '../metadata/PageMeta';
+import {PageNumber} from "../metadata/IPageMeta";
 
 const log = Logger.create();
 
@@ -24,7 +24,7 @@ export class Model {
     // be loaded yet and / or might be invalidated if the document is closed.
     //
     // TODO: we create a fake document which is eventually replaced.
-    public docMeta: DocMeta = NULL_DOC_META;
+    public docMeta: IDocMeta = NULL_DOC_META;
 
     public readonly persistenceLayerProvider: () => ListenablePersistenceLayer;
 
@@ -32,7 +32,7 @@ export class Model {
 
     private reactor: Reactor<any>;
 
-    private docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
+    private docMetaPromise: Promise<IDocMeta> = Promise.resolve(NULL_DOC_META);
 
     constructor(public readonly persistenceLayerHandler: PersistenceLayerHandler) {
 
@@ -133,7 +133,8 @@ export class Model {
 
         DocMetas.withBatchedMutations(this.docMeta, () => {
 
-            const pageMeta = this.docMeta.getPageMeta(pageNum);
+            const pageMeta = DocMetas.getPageMeta(this.docMeta, pageNum);
+
             if (!pageMeta.pageInfo.dimensions) {
                 const currentPageDetail = docFormat.getCurrentPageDetail();
 
@@ -240,7 +241,7 @@ export interface DocumentLoadedEvent {
     readonly fingerprint: string;
     readonly nrPages: number;
     readonly currentPageNumber: number;
-    readonly docMeta: DocMeta;
+    readonly docMeta: IDocMeta;
 }
 
 export type DocumentLoadedCallback = (event: DocumentLoadedEvent) => void;

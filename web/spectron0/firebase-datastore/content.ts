@@ -12,6 +12,7 @@ import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
+import {IDocInfo} from "../../js/metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -49,7 +50,7 @@ SpectronRenderer.run(async (state) => {
 
                 const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
-                const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
+                const datastoreMutation = new DefaultDatastoreMutation<IDocInfo>();
 
                 const docReplicationEventListenerCalled: boolean = false;
 

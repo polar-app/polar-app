@@ -6,7 +6,7 @@ import {DocMetas, MockDocMetas} from '../metadata/DocMetas';
 import {assert} from 'chai';
 import {Promises} from "../util/Promises";
 import waitForExpect from 'wait-for-expect';
-import {DocMeta} from "../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../metadata/DocMeta";
 import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 
 describe('ModelPersister', function() {
@@ -31,7 +31,7 @@ describe('ModelPersister', function() {
 
     let persistenceLayer: MockAdvertisingPersistenceLayer;
 
-    let docMeta: DocMeta;
+    let docMeta: IDocMeta;
 
     let modelPersister: ModelPersister;
 
@@ -70,7 +70,10 @@ describe('ModelPersister', function() {
             DocMetas.withBatchedMutations(docMeta, () => {
                 docMeta.docInfo.title = 'asdf';
                 docMeta.docInfo.description = 'hello world';
-                docMeta.getPageMeta(1).pageInfo.dimensions = {width: 100, height: 100};
+
+                const pageMeta = DocMetas.getPageMeta(docMeta, 1);
+                pageMeta.pageInfo.dimensions = {width: 100, height: 100};
+
             });
 
             await assertWrites(1);
@@ -94,9 +97,12 @@ describe('ModelPersister', function() {
         it("with skipped write", async function() {
 
             DocMetas.withSkippedMutations(docMeta, () => {
+
                 docMeta.docInfo.title = 'asdf';
                 docMeta.docInfo.description = 'hello world';
-                docMeta.getPageMeta(1).pageInfo.dimensions = {width: 100, height: 100};
+
+                const pageMeta = DocMetas.getPageMeta(docMeta, 1);
+                pageMeta.pageInfo.dimensions = {width: 100, height: 100};
             });
 
             await assertWrites(0);

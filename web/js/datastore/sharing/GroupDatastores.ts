@@ -17,6 +17,7 @@ import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 import {GroupProvisions} from './rpc/GroupProvisions';
 import {GroupProvisionRequest} from './rpc/GroupProvisions';
 import {Logger} from '../../logger/Logger';
+import {IDocInfo} from "../../metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -47,7 +48,7 @@ export class GroupDatastores {
 
                 const snapshot = await ref.get();
 
-                return <RecordHolder<DocInfo> | undefined> snapshot.data();
+                return <RecordHolder<IDocInfo> | undefined> snapshot.data();
 
             }
 

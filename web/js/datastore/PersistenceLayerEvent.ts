@@ -1,4 +1,4 @@
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo} from '../metadata/IDocInfo';
 import {DocMetaRef} from './DocMetaRef';
 import {PersistenceEventType} from './PersistenceEventType';
 

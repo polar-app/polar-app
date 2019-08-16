@@ -9,7 +9,7 @@ import {UUIDs} from '../metadata/UUIDs';
 import {ProgressListener, ProgressTracker} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
+import {DocMeta, IDocMeta} from '../metadata/DocMeta';
 import {isPresent} from "../Preconditions";
 import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
@@ -26,7 +26,7 @@ export class PersistenceLayers {
      *
      */
     public static async changeVisibility(store: PersistenceLayer,
-                                         docMeta: DocMeta,
+                                         docMeta: IDocMeta,
                                          visibility: Visibility) {
 
         log.info("Changing document visibility changed to: ", visibility);
@@ -96,7 +96,7 @@ export class PersistenceLayers {
 
             work.push(async () => {
 
-                let docMeta: DocMeta | undefined = docMetaRef.docMeta;
+                let docMeta: IDocMeta | undefined = docMetaRef.docMeta;
 
                 if (! docMeta) {
 

@@ -1,7 +1,7 @@
 import {GroupIDStr} from "../../Datastore";
 import {UserGroup, UserGroups} from "./UserGroups";
 import {GroupDoc, GroupDocs} from "./GroupDocs";
-import {DocMeta} from "../../../metadata/DocMeta";
+import {DocMeta, IDocMeta} from "../../../metadata/DocMeta";
 import {SetArrays} from "../../../util/SetArrays";
 import {PageMeta} from "../../../metadata/PageMeta";
 import {Collections, DocumentChange} from "./Collections";
@@ -13,17 +13,18 @@ import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
 import {ProfileIDStr} from "./Profiles";
 import {Author} from "../../../metadata/Author";
-import {Annotation} from "../../../metadata/Annotation";
+import {Annotation, IAnnotation} from "../../../metadata/Annotation";
 import {Logger} from "../../../logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
 import {FirebaseDatastores} from "../../FirebaseDatastores";
 import {Dictionaries} from "../../../util/Dictionaries";
+import {IPageMeta} from "../../../metadata/IPageMeta";
 
 const log = Logger.create();
 
 export class DocMetaListener {
 
-    private docMetaIndex: {[docID: string]: DocMeta} = {};
+    private docMetaIndex: {[docID: string]: IDocMeta} = {};
 
     private groupDocMonitors  = new Set<DocIDStr>();
 
@@ -32,7 +33,7 @@ export class DocMetaListener {
 
     public constructor(private readonly fingerprint: string,
                        private readonly profileID: ProfileIDStr,
-                       private readonly docMetaHandler: (docMeta: DocMeta, docUpdateRef: DocUpdateRef) => void,
+                       private readonly docMetaHandler: (docMeta: IDocMeta, docUpdateRef: DocUpdateRef) => void,
                        private readonly errHandler: (err: Error) => void) {
 
     }
@@ -182,7 +183,7 @@ export class DocMetaListener {
 
         const prev = Optional.of(this.docMetaIndex[docID]).getOrUndefined();
 
-        const initDocMeta = (docMeta: DocMeta) => {
+        const initDocMeta = (docMeta: IDocMeta) => {
 
             // remove the pagemarks as that is user specific..
             for (const pageMeta of Object.values(docMeta.pageMetas)) {
@@ -226,7 +227,7 @@ export class DocMetaListener {
 export class DocMetaListeners {
 
     public static async register(fingerprint: string,
-                                 docMetaHandler: (docMeta: DocMeta, docUpdateRef: DocUpdateRef) => void,
+                                 docMetaHandler: (docMeta: IDocMeta, docUpdateRef: DocUpdateRef) => void,
                                  errHandler: (err: Error) => void) {
 
         const profileOwner = await ProfileOwners.get();
@@ -286,9 +287,9 @@ export class DocMetaRecords {
     /**
      * Start with the source and perform a diff against the target.
      */
-    public static mergeDocMetaUpdate(source: DocMeta, target: DocMeta) {
+    public static mergeDocMetaUpdate(source: IDocMeta, target: IDocMeta) {
 
-        const mergePageMeta = (source: PageMeta, target: PageMeta) => {
+        const mergePageMeta = (source: IPageMeta, target: IPageMeta) => {
 
             StringDicts.merge(source.textHighlights, target.textHighlights);
             StringDicts.merge(source.areaHighlights, target.areaHighlights);
@@ -299,13 +300,13 @@ export class DocMetaRecords {
 
         };
 
-        for (const page of Object.keys(source.pageMetas)) {
+        for (const page of Dictionaries.numberKeys(source.pageMetas)) {
             mergePageMeta(source.pageMetas[page], target.pageMetas[page]);
         }
 
     }
 
-    public static applyAuthorsFromUserProfile(docMeta: DocMeta, userProfile: UserProfile) {
+    public static applyAuthorsFromUserProfile(docMeta: IDocMeta, userProfile: UserProfile) {
 
         const {profile} = userProfile;
 
@@ -336,7 +337,7 @@ export class DocMetaRecords {
 
         const author = createAuthorFromProfile();
 
-        const applyAuthorToAnnotations = (dict: {[key: string]: Annotation}) => {
+        const applyAuthorToAnnotations = (dict: {[key: string]: IAnnotation}) => {
 
             for (const annotation of Object.values(dict)) {
                 annotation.author = author;
@@ -344,7 +345,7 @@ export class DocMetaRecords {
 
         };
 
-        const applyAuthorToPage = (pageMeta: PageMeta) => {
+        const applyAuthorToPage = (pageMeta: IPageMeta) => {
 
             applyAuthorToAnnotations(pageMeta.textHighlights);
             applyAuthorToAnnotations(pageMeta.areaHighlights);
@@ -355,7 +356,7 @@ export class DocMetaRecords {
 
         };
 
-        for (const page of Object.keys(docMeta.pageMetas)) {
+        for (const page of Dictionaries.numberKeys(docMeta.pageMetas)) {
             applyAuthorToPage(docMeta.pageMetas[page]);
         }
 

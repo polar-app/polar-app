@@ -2,10 +2,10 @@
  * Just like a DocDetail or DocInfo but designed to be used for in the UI so we
  * replace missing titles with Untitled and define other default values.
  */
-import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {Hashcode} from '../../../web/js/metadata/Hashcode';
 import {Tag} from '../../../web/js/tags/Tags';
+import {IDocInfo} from "../../../web/js/metadata/IDocInfo";
 
 export interface RepoDocInfo {
 

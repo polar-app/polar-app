@@ -9,6 +9,7 @@ import {PagemarkMode} from './PagemarkMode';
 import {Reducers} from '../util/Reducers';
 import {Numbers} from '../util/Numbers';
 import {Tuples} from '../util/Tuples';
+import {IPageMeta} from "./IPageMeta";
 
 const PRE_EXISTING_DAY = '!preexisting';
 
@@ -75,7 +76,7 @@ export class ReadingOverviews {
 
     }
 
-    private static toLogicalPages(pageMeta: PageMeta) {
+    private static toLogicalPages(pageMeta: IPageMeta) {
 
         const dimensions = pageMeta.pageInfo.dimensions;
 
@@ -93,7 +94,7 @@ export class ReadingOverviews {
         return Numbers.toFixedFloat(value, 2);
     }
 
-    public static compute(pageMetas: ReadonlyArray<PageMeta>): ReadingOverview {
+    public static compute(pageMetas: ReadonlyArray<IPageMeta>): ReadingOverview {
 
         const hitMap = new HitMap();
 
