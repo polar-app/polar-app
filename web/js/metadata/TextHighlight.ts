@@ -1,4 +1,4 @@
-import {TextRect} from './TextRect';
+import {ITextRect, TextRect} from './TextRect';
 import {Text} from './Text';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
@@ -15,7 +15,7 @@ export class TextHighlight extends BaseHighlight implements ITextHighlight {
      * in the specific regions they selected.
      *
      */
-    public textSelections: {[id: number]: TextRect} = {};
+    public textSelections: {[id: number]: ITextRect} = {};
 
     /**
      * The text selections converted to a text string which may or may not be

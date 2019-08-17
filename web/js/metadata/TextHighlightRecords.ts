@@ -2,7 +2,7 @@ import {Hashcodes} from '../Hashcodes';
 import {TextHighlight} from './TextHighlight';
 import {Text} from './Text';
 import {Arrays} from '../util/Arrays';
-import {TextRect} from './TextRect';
+import {ITextRect, TextRect} from './TextRect';
 import {IRect} from '../util/rects/IRect';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {ITextHighlight} from "./ITextHighlight";
@@ -20,7 +20,7 @@ export class TextHighlightRecords {
      * TextHighlight to use.
      */
     public static create(rects: IRect[],
-                         textSelections: TextRect[],
+                         textSelections: ITextRect[],
                          text: Text,
                          color: HighlightColor = 'yellow'): TextHighlightRecord {
 

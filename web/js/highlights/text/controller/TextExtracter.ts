@@ -20,7 +20,7 @@ export class TextExtracter {
 
             textHighlightRow.rectElements.forEach(function(rectElement) {
 
-                let textSelection = new TextRect({
+                const textSelection = new TextRect({
                     rect: rectElement.rect,
                     text: $(rectElement.element).text()
                 });

@@ -1,4 +1,4 @@
-import {TextRect} from "./TextRect";
+import {ITextRect, TextRect} from "./TextRect";
 import {Text} from "./Text";
 import {Rect} from "../Rect";
 import {INote} from "./INote";
@@ -10,7 +10,7 @@ import {IImage} from "./IImage";
 
 export interface ITextHighlight extends IAnnotation {
 
-    readonly textSelections: { [id: number]: TextRect };
+    readonly textSelections: { [id: number]: ITextRect };
 
     readonly text: Text | string;
 

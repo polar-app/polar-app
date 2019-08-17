@@ -12,14 +12,14 @@ describe('TextHighlightRecords', function() {
 
         it("basic", function () {
 
-            let rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100})];
-            let textSelections: TextRect[] = [{text: "hello world"}];
-            let text = "hello world";
+            const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100})];
+            const textSelections: TextRect[] = [{text: "hello world", rect: rects[0]}];
+            const text = "hello world";
 
             // create a basic TextHighlight object..
-            let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
+            const textHighlightRecord = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
-            let expected = {
+            const expected = {
                 "id": "1Af41QXbBH",
                 "value": {
                     "id": "1Af41QXbBH",

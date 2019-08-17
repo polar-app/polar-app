@@ -2,17 +2,18 @@ import {IRect} from "../IRect";
 
 const {SerializedObject} = require("./SerializedObject.js");
 
-export class TextRect extends SerializedObject {
+export class TextRect extends SerializedObject implements ITextRect {
+
+    public readonly text: string;
+
+    public readonly rect: IRect;
 
     constructor(val: any) {
 
         super(val);
 
-        // the actual text in this rect.
-        this.text = null;
-
-        // A rect area that the user has selected text.
-        this.rect = null;
+        this.text = val.text;
+        this.rect = val.rect;
 
         this.init(val);
 
@@ -21,6 +22,15 @@ export class TextRect extends SerializedObject {
 }
 
 export interface ITextRect {
+
+    /**
+     * The actual text in this rect.
+     */
     readonly text: string;
+
+    /**
+     * A rect area that the user has selected text.
+     */
     readonly rect: IRect;
+
 }
