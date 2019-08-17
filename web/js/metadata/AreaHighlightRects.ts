@@ -1,6 +1,6 @@
 import {Rect} from "../Rect";
 import {AreaHighlightRect} from "./AreaHighlightRect";
-import {IRect} from "../util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 export class AreaHighlightRects {
 

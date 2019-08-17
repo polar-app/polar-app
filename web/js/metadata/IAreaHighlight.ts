@@ -5,7 +5,7 @@ import {IFlashcard} from "./IFlashcard";
 import {ISODateTimeString} from "./ISODateTimeStrings";
 import {IImage} from "./IImage";
 import {IAuthor} from "./IAuthor";
-import {IRect} from "../util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 export interface IAreaHighlight extends IBaseHighlight {
 

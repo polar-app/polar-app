@@ -1,7 +1,7 @@
 import {Dimensions} from './util/Dimensions';
 import {Line} from './util/Line';
 import {Preconditions} from './Preconditions';
-import {IRect} from "./util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.

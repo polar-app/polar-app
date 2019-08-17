@@ -1,5 +1,5 @@
 import {TextHighlightRecords} from './TextHighlightRecords';
-import {IRect} from '../util/rects/IRect';
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
 import {Image} from './Image';

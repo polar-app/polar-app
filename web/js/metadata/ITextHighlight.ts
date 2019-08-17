@@ -6,7 +6,7 @@ import {IAnnotation} from "./IAnnotation";
 import {HighlightColor} from "./IBaseHighlight";
 import {IImage} from "./IImage";
 import {ITextRect} from "./ITextRect";
-import {IRect} from "../util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 export interface ITextHighlight extends IAnnotation {
 

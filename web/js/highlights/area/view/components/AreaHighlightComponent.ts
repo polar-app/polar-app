@@ -21,7 +21,7 @@ import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 import {Screenshots} from '../../../../screenshots/Screenshots';
 import {Arrays} from '../../../../util/Arrays';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
-import {ILTRect} from '../../../../util/rects/ILTRect';
+import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Rects} from '../../../../Rects';
 
 const log = Logger.create();

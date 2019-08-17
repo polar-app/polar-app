@@ -1,7 +1,6 @@
 import {ITextRect} from "./ITextRect";
-import {IRect} from "../util/rects/IRect";
-
-const {SerializedObject} = require("./SerializedObject.js");
+import {IRect} from 'polar-shared/src/util/rects/IRect';
+import {SerializedObject} from "./SerializedObject";
 
 export class TextRect extends SerializedObject implements ITextRect {
 

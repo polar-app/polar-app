@@ -1,5 +1,5 @@
 import {ArrayBuffers} from './ArrayBuffers';
-import {ILTRect} from './rects/ILTRect';
+import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {ImageType, ExtractedImage} from '../screenshots/Screenshot';
 import {Preconditions} from '../Preconditions';
 import {DataURL} from './DataURLs';

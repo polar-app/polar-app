@@ -20,7 +20,7 @@ import {ExtractedImage} from '../screenshots/Screenshot';
 import {Screenshots} from '../screenshots/Screenshots';
 import {Dimensions} from '../util/Dimensions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {ILTRect} from '../util/rects/ILTRect';
+import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {DataURLs} from '../util/DataURLs';
 import {Rect} from '../Rect';
 import {Rects} from '../Rects';

@@ -4,7 +4,7 @@ import {Point} from './Point';
 import {Line} from './util/Line';
 import {Styles} from './util/Styles';
 import {Objects} from './util/Objects';
-import {IRect} from "./util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 export class Rects {
 

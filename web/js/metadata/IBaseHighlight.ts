@@ -1,6 +1,6 @@
 import {NamedColor, RGBColor} from "./HighlightColor";
 import {IImage} from "./IImage";
-import {IRect} from "../util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 /**
  * The set of highlight colors.  We also provide transparent for text you want

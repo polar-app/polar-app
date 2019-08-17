@@ -20,7 +20,7 @@ import {IComment} from "../metadata/IComment";
 import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
 import {IAuthor} from "../metadata/IAuthor";
-import {IRect} from "../util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 export class DocAnnotations {
 

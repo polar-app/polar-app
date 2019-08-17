@@ -1,4 +1,4 @@
-import {IXYRect} from '../util/rects/IXYRect';
+import {IXYRect} from 'polar-shared/src/util/rects/IXYRect';
 import {DataURL} from '../util/DataURLs';
 import {IDimensions} from "../util/IDimensions";
 

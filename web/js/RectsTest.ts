@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {Rects} from './Rects';
 import {assertJSON} from './test/Assertions';
 import {Rect} from './Rect';
-import {IRect} from './util/rects/IRect';
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {RectArt} from './util/RectArt';
 import {MOCK_RECTS} from './MockRects';
 

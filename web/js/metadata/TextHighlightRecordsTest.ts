@@ -3,6 +3,7 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {assertJSON} from '../test/Assertions';
 import {Rect} from '../Rect';
 import {TextRect} from './TextRect';
+import {ITextRect} from "./ITextRect";
 
 TestingTime.freeze();
 
@@ -13,7 +14,7 @@ describe('TextHighlightRecords', function() {
         it("basic", function () {
 
             const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100})];
-            const textSelections: TextRect[] = [{text: "hello world", rect: rects[0]}];
+            const textSelections: ITextRect[] = [{text: "hello world", rect: rects[0]}];
             const text = "hello world";
 
             // create a basic TextHighlight object..

@@ -1,4 +1,4 @@
-import {IRect} from "../util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 export interface ITextRect {
 

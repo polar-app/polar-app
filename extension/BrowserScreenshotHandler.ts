@@ -2,7 +2,7 @@ import {Results} from '../web/js/util/Results';
 import {Handlers} from './Handlers';
 import {webextensions} from './WebExtensions';
 import {Canvases} from '../web/js/util/Canvases';
-import {ILTRect} from '../web/js/util/rects/ILTRect';
+import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Stopwatches} from '../web/js/util/Stopwatches';
 import {DataURL} from '../web/js/util/DataURLs';
 

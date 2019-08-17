@@ -14,7 +14,7 @@ import {HighlightColors} from '../../../../metadata/HighlightColor';
 import {IPageMeta} from "../../../../metadata/IPageMeta";
 import {IDocMeta} from "../../../../metadata/IDocMeta";
 import {HighlightColor} from "../../../../metadata/IBaseHighlight";
-import {IRect} from "../../../../util/rects/IRect";
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 const log = Logger.create();
 
