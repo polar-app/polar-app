@@ -22,33 +22,41 @@ describe('TextHighlightRecords', function() {
             const expected = {
                 "id": "1Af41QXbBH",
                 "value": {
-                    "id": "1Af41QXbBH",
-                    "guid": "1Af41QXbBH",
+                    "color": "yellow",
                     "created": "2012-03-02T11:38:49.321Z",
+                    "flashcards": {},
+                    "guid": "1Af41QXbBH",
+                    "id": "1Af41QXbBH",
+                    "images": {},
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
+                    "notes": {},
+                    "questions": {},
                     "rects": {
                         "0": {
-                            "left": 100,
-                            "top": 100,
-                            "right": 200,
                             "bottom": 200,
-                            "width": 100,
-                            "height": 100
-                        }
-                    },
-                    "textSelections": {
-                        "0": {
-                            "text": "hello world"
+                            "height": 100,
+                            "left": 100,
+                            "right": 200,
+                            "top": 100,
+                            "width": 100
                         }
                     },
                     "text": {
                         "TEXT": "hello world"
                     },
-                    "images": {},
-                    "notes": {},
-                    "questions": {},
-                    "flashcards": {},
-                    "color": "yellow"
+                    "textSelections": {
+                        "0": {
+                            "rect": {
+                                "bottom": 200,
+                                "height": 100,
+                                "left": 100,
+                                "right": 200,
+                                "top": 100,
+                                "width": 100
+                            },
+                            "text": "hello world"
+                        }
+                    }
                 }
             };
 
