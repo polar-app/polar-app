@@ -5,8 +5,8 @@ import {Tag} from "../tags/Tags";
 import {UUID} from "./UUID";
 import {Hashcode} from "./Hashcode";
 import {ReadingOverview} from "./ReadingOverview";
-import {Visibility} from "../datastore/Datastore";
 import {IAttachment} from "./IAttachment";
+import {Visibility} from "../datastore/Visibility";
 
 export interface IDocInfo {
 

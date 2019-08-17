@@ -3,9 +3,9 @@ import React from 'react';
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
-import {Visibility} from '../../datastore/Datastore';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {ShareContentControl} from './ShareContentControl';
+import {Visibility} from "../../datastore/Visibility";
 
 class Styles {
 

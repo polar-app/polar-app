@@ -1,8 +1,9 @@
-import {GroupIDStr, Visibility} from "../../Datastore";
+import {GroupIDStr} from "../../Datastore";
 import {DatastoreCollection} from "../../FirebaseDatastore";
 import {Firestore} from "../../../firebase/Firestore";
 import * as firebase from "firebase";
 import GetOptions = firebase.firestore.GetOptions;
+import {Visibility} from "../../Visibility";
 
 export class DocPermissions {
 

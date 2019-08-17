@@ -6,7 +6,7 @@ import {Preconditions} from '../Preconditions';
 import * as firebase from '../firebase/lib/firebase';
 import {Optional} from '../util/ts/Optional';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {Visibility} from './Datastore';
+import {Visibility} from "./Visibility";
 
 export class Invitations {
 

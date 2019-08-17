@@ -2,7 +2,6 @@
 import React from 'react';
 import {Logger} from '../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {Visibility} from '../../datastore/Datastore';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import Input from 'reactstrap/lib/Input';
 import {SocialLinks} from '../../util/SocialLinks';
@@ -11,6 +10,7 @@ import {SplitLayout} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../ui/split_layout/SplitLayoutRight';
 import CreatableSelect from 'react-select/lib/Creatable';
+import {Visibility} from "../../datastore/Visibility";
 
 const log = Logger.create();
 

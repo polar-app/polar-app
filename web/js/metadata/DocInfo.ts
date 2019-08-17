@@ -8,11 +8,11 @@ import {Preconditions} from '../Preconditions';
 import {ISODateString, ISODateTimeString} from './ISODateTimeStrings';
 import {Hashcode} from './Hashcode';
 import {ReadingOverview} from './ReadingOverview';
-import {Visibility} from '../datastore/Datastore';
 import {Attachment} from './Attachment';
 import {Backend} from '../datastore/Backend';
 import {Tag} from '../tags/Tags';
 import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "./IDocInfo";
+import {Visibility} from "../datastore/Visibility";
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 

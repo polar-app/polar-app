@@ -21,7 +21,6 @@ import {
     NetworkLayers,
     PrefsProvider,
     SnapshotResult,
-    Visibility,
     WritableBinaryMetaDatastore,
     WriteFileOpts,
     WriteOpts
@@ -57,6 +56,7 @@ import {Datastores} from './Datastores';
 import {Latch} from '../util/Latch';
 import {FirebaseDatastores} from './FirebaseDatastores';
 import {DocPermissions} from "./sharing/db/DocPermissions";
+import {Visibility} from "./Visibility";
 
 const log = Logger.create();
 

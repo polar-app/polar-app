@@ -12,10 +12,10 @@ import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {Visibility} from './Datastore';
 import {GroupIDStr} from './Datastore';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {Visibility} from "./Visibility";
 
 export interface PersistenceLayer {
 

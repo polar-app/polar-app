@@ -20,6 +20,7 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
 import {BackendFileRef} from "./BackendFileRef";
+import {Visibility} from "./Visibility";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -751,25 +752,6 @@ export interface PrefsProvider {
      * Get the latest copy of the prefs we're using.
      */
     get(): Prefs;
-
-}
-
-export enum Visibility {
-
-    /**
-     * Only visible for the user.
-     */
-    PRIVATE = 'private', /* or 0 */
-
-    /**
-     * Only to users that this user is following.
-     */
-    FOLLOWING = 'following', /* or 1 */
-
-    /**
-     * To anyone on the service.
-     */
-    PUBLIC = 'public' /* or 2 */
 
 }
 
