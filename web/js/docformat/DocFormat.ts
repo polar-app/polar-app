@@ -1,7 +1,7 @@
 import {notNull, Preconditions} from '../Preconditions';
 import {Elements} from '../util/Elements';
 import {DocDetail} from '../metadata/DocDetail';
-import {IDimensions} from '../util/Dimensions';
+import {IDimensions} from "../util/IDimensions";
 
 /**
  * Get the proper docFormat to work with.

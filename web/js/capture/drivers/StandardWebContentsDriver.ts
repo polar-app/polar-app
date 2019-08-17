@@ -3,7 +3,6 @@ import {WebContentsDriver, WebContentsEvent, WebContentsEventName} from './WebCo
 import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
 import {Optional} from '../../util/ts/Optional';
-import {IDimensions} from '../../util/Dimensions';
 import {configureBrowser} from '../renderer/ContentCaptureFunctions';
 import {Functions} from '../../util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
@@ -21,6 +20,7 @@ import {ProgressTracker} from '../../util/ProgressTracker';
 import {ProgressMessages} from '../../ui/progress_bar/ProgressMessages';
 import {AppLauncher} from '../../apps/main/AppLauncher';
 import {PDFDownloadHandlers} from '../PDFDownloadHandlers';
+import {IDimensions} from "../../util/IDimensions";
 
 const log = Logger.create();
 

@@ -1,7 +1,7 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
-import {BackendFileRef} from '../datastore/Datastore';
 import {IImage, ImageType} from "./IImage";
+import {BackendFileRef} from "../datastore/BackendFileRef";
 
 export class Image extends SerializedObject implements IImage {
 

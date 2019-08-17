@@ -5,7 +5,6 @@ import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {DocMeta} from './DocMeta';
 import {Image} from './Image';
 import {Datastore} from '../datastore/Datastore';
-import {BackendFileRef} from '../datastore/Datastore';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Images} from './Images';
 import {DocMetas} from './DocMetas';
@@ -29,6 +28,7 @@ import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
 import {IAreaHighlight} from "./IAreaHighlight";
 import {IImage} from "./IImage";
+import {BackendFileRef} from "../datastore/BackendFileRef";
 
 const log = Logger.create();
 

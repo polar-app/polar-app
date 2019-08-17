@@ -1,6 +1,5 @@
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {PersistenceLayer} from '../PersistenceLayer';
-import {BackendFileRef} from '../Datastore';
 import {GroupIDStr} from '../Datastore';
 import {DocMetas} from '../../metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
@@ -18,6 +17,7 @@ import {GroupProvisions} from './rpc/GroupProvisions';
 import {GroupProvisionRequest} from './rpc/GroupProvisions';
 import {Logger} from '../../logger/Logger';
 import {IDocInfo} from "../../metadata/IDocInfo";
+import {BackendFileRef} from "../BackendFileRef";
 
 const log = Logger.create();
 

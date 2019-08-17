@@ -1,6 +1,6 @@
-import {IDimensions} from '../util/Dimensions';
 import {IXYRect} from '../util/rects/IXYRect';
 import {DataURL} from '../util/DataURLs';
+import {IDimensions} from "../util/IDimensions";
 
 export interface Screenshot {
 

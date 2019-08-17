@@ -5,9 +5,8 @@
 import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from './PagemarkType';
 import {Preconditions} from '../Preconditions';
-import {ISODateTimeString, ISODateString} from './ISODateTimeStrings';
+import {ISODateString, ISODateTimeString} from './ISODateTimeStrings';
 import {Hashcode} from './Hashcode';
-import {UUID} from './UUID';
 import {ReadingOverview} from './ReadingOverview';
 import {Visibility} from '../datastore/Datastore';
 import {Attachment} from './Attachment';
@@ -77,3 +76,5 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     }
 
 }
+
+export type DocInfoLike = DocInfo | IDocInfo;

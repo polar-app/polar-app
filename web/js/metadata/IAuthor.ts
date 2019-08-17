@@ -1,5 +1,9 @@
 import {ProfileIDStr} from "../datastore/sharing/db/Profiles";
-import {AuthorImage} from "./Author";
+import {URLStr} from "../util/Strings";
+
+export interface AuthorImage {
+    readonly src: URLStr;
+}
 
 export interface IAuthor {
 

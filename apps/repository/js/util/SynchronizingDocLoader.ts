@@ -1,8 +1,8 @@
-import {BackendFileRef} from '../../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {DocLoader} from '../../../../web/js/apps/main/doc_loaders/DocLoader';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
+import {BackendFileRef} from "../../../../web/js/datastore/BackendFileRef";
 
 const log = Logger.create();
 

@@ -1,3 +1,5 @@
+import {IRect} from "../IRect";
+
 const {SerializedObject} = require("./SerializedObject.js");
 
 export class TextRect extends SerializedObject {
@@ -16,4 +18,9 @@ export class TextRect extends SerializedObject {
 
     }
 
+}
+
+export interface ITextRect {
+    readonly text: string;
+    readonly rect: IRect;
 }

@@ -1,4 +1,4 @@
-import {IDimensions} from "../util/Dimensions";
+import {IDimensions} from "../util/IDimensions";
 
 export interface IPageInfo {
 

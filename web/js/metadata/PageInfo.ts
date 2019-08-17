@@ -1,7 +1,7 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
-import {IDimensions} from '../util/Dimensions';
 import {IPageInfo} from "./IPageInfo";
+import {IDimensions} from "../util/IDimensions";
 
 export class PageInfo extends SerializedObject implements IPageInfo {
 

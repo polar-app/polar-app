@@ -1,5 +1,5 @@
-import {IDimensions} from '../../js/util/Dimensions';
 import {Functions} from '../../js/util/Functions';
+import {IDimensions} from "../../js/util/IDimensions";
 
 const windowDimensions: IDimensions = {
     width: 800,

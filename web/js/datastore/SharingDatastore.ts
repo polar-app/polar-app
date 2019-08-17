@@ -14,7 +14,6 @@ import {DeleteResult} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {BinaryFileData} from './Datastore';
 import {WriteFileOpts} from './Datastore';
-import {BackendFileRef} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
@@ -29,6 +28,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DocMeta} from '../metadata/DocMeta';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "../metadata/IDocMeta";
+import {BackendFileRef} from "./BackendFileRef";
 
 const log = Logger.create();
 

@@ -1,12 +1,12 @@
 import {LeftEither} from '../util/Either';
 import {DocMeta} from '../metadata/DocMeta';
-import {BackendFileRef} from './Datastore';
 import {Either} from '../util/Either';
 import {Backend} from './Backend';
 import {Logger} from '../logger/Logger';
 import {isPresent} from '../Preconditions';
-import {DocInfoLike} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {BackendFileRef} from "./BackendFileRef";
+import {DocInfoLike} from "../metadata/DocInfo";
 
 const log = Logger.create();
 

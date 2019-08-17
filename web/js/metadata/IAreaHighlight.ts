@@ -7,6 +7,7 @@ import {ISODateTimeString} from "./ISODateTimeStrings";
 import {Author} from "./Author";
 import { IRect } from "../IRect";
 import {IImage} from "./IImage";
+import {IAuthor} from "./IAuthor";
 
 export interface IAreaHighlight extends IBaseHighlight {
 
@@ -20,7 +21,7 @@ export interface IAreaHighlight extends IBaseHighlight {
     readonly guid: string;
     readonly created: ISODateTimeString;
     readonly lastUpdated: ISODateTimeString;
-    readonly author?: Author;
+    readonly author?: IAuthor;
     readonly color?: HighlightColor;
 
 }

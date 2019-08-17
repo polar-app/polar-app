@@ -2,6 +2,7 @@
  * Simple dimension of a Rect.
  */
 import {Preconditions} from '../Preconditions';
+import {IDimensions} from "./IDimensions";
 
 export class Dimensions {
 
@@ -40,16 +41,3 @@ export class Dimensions {
 
 }
 
-export interface IDimensions {
-
-    /**
-     * This width of this rect.
-     */
-    readonly width: number;
-
-    /**
-     * This height of this rect.
-     */
-    readonly height: number;
-
-}

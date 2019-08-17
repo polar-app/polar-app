@@ -3,7 +3,6 @@ import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from "../util/Functions";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
 import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
-import {BackendFileRef} from './Datastore';
 import {Visibility} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
 import {ProgressListener, ProgressTracker} from '../util/ProgressTracker';
@@ -15,6 +14,7 @@ import {URLs} from "../util/URLs";
 import {Logger} from "../logger/Logger";
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "../metadata/IDocMeta";
+import {BackendFileRef} from "./BackendFileRef";
 
 const log = Logger.create();
 

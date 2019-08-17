@@ -1,4 +1,4 @@
-import {BackendFileRef} from "../datastore/Datastore";
+import {BackendFileRef} from "../datastore/BackendFileRef";
 
 export interface IAttachment {
 

@@ -3,11 +3,8 @@ import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
-import {DocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
 import {Progress} from '../util/ProgressTracker';
 import {AsyncProvider} from '../util/Providers';
@@ -18,11 +15,11 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {Prefs} from '../util/prefs/Prefs';
 import {isPresent} from '../Preconditions';
-import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {BackendFileRef} from "./BackendFileRef";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -372,15 +369,6 @@ export interface FileRef {
      * but not required.
      */
     readonly hashcode?: Hashcode;
-
-}
-
-/**
- * A FileRef with a backend.
- */
-export interface BackendFileRef extends FileRef {
-
-    readonly backend: Backend;
 
 }
 

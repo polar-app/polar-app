@@ -1,7 +1,6 @@
 import {SerializedObject} from './SerializedObject';
-import {URLStr} from "../util/Strings";
 import {ProfileIDStr} from "../datastore/sharing/db/Profiles";
-import {IAuthor} from "./IAuthor";
+import {AuthorImage, IAuthor} from "./IAuthor";
 
 export class Author extends SerializedObject implements IAuthor {
 
@@ -26,9 +25,5 @@ export class Author extends SerializedObject implements IAuthor {
         this.guest = val.guest;
     }
 
-}
-
-export interface AuthorImage {
-    readonly src: URLStr;
 }
 

@@ -1,15 +1,15 @@
-import {Note} from "./Note";
 import {PagemarkType} from "./PagemarkType";
-import {PagemarkRect} from "./PagemarkRect";
 import {PagemarkMode} from "./PagemarkMode";
 import {IAnnotation} from "./IAnnotation";
+import {INote} from "./INote";
+import {IPagemarkRect} from "./IPagemarkRect";
 
 export interface IPagemark extends IAnnotation {
 
     /**
      * The note for this annotation.
      */
-    notes: { [id: string]: Note };
+    notes: { [id: string]: INote };
 
     /**
      * The type of pagemark.
@@ -40,7 +40,7 @@ export interface IPagemark extends IAnnotation {
      * or the whole page.
      *
      */
-    rect: PagemarkRect;
+    rect: IPagemarkRect;
 
     /**
      * The mode of this pagemark (read, ignored, etc).
