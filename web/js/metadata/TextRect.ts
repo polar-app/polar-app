@@ -14,7 +14,7 @@ export class TextRect extends SerializedObject implements ITextRect {
         super(val);
 
         this.text = val.text;
-        this.rect = val.rect;
+        this.rect = val.rect || null;
 
         this.init(val);
 
