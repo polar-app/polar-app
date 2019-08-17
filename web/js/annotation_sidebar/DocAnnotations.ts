@@ -20,6 +20,7 @@ import {IComment} from "../metadata/IComment";
 import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
 import {IAuthor} from "../metadata/IAuthor";
+import {IRect} from "../util/rects/IRect";
 
 export class DocAnnotations {
 
@@ -258,7 +259,7 @@ export class DocAnnotations {
 
     }
 
-    private static firstRect(highlight: IBaseHighlight): Optional<Rect> {
+    private static firstRect(highlight: IBaseHighlight): Optional<IRect> {
         return Optional.of(highlight)
             .map(current => current.rects)
             .map(current => current[0]);

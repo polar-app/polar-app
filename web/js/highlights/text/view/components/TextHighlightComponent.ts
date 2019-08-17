@@ -14,6 +14,7 @@ import {HighlightColors} from '../../../../metadata/HighlightColor';
 import {IPageMeta} from "../../../../metadata/IPageMeta";
 import {IDocMeta} from "../../../../metadata/IDocMeta";
 import {HighlightColor} from "../../../../metadata/IBaseHighlight";
+import {IRect} from "../../../../util/rects/IRect";
 
 const log = Logger.create();
 
@@ -80,7 +81,7 @@ export class TextHighlightComponent extends Component {
 
         log.debug("render()");
 
-        Dictionaries.forDict<Rect>(this.textHighlight!.rects, (id, highlightRect) => {
+        Dictionaries.forDict<IRect>(this.textHighlight!.rects, (id, highlightRect) => {
 
             const pageElement = Preconditions.assertPresent(this.pageElement);
             const pageMeta = Preconditions.assertPresent(this.pageMeta);

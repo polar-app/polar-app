@@ -4,6 +4,7 @@ import {Point} from './Point';
 import {Line} from './util/Line';
 import {Styles} from './util/Styles';
 import {Objects} from './util/Objects';
+import {IRect} from "./util/rects/IRect";
 
 export class Rects {
 
@@ -22,7 +23,7 @@ export class Rects {
      * @param rect {Rect}
      * @param scale {number}
      */
-    public static scale(rect: Rect, scale: number) {
+    public static scale(rect: Rect | IRect, scale: number) {
 
         Preconditions.assertPresent(rect, "rect");
 

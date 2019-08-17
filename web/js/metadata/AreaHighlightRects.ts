@@ -1,9 +1,10 @@
 import {Rect} from "../Rect";
 import {AreaHighlightRect} from "./AreaHighlightRect";
+import {IRect} from "../util/rects/IRect";
 
 export class AreaHighlightRects {
 
-    public static createFromRect(rect: Rect) {
+    public static createFromRect(rect: Rect | IRect) {
 
         return new AreaHighlightRect({
             left: rect.left,

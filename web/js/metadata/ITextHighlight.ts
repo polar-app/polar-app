@@ -1,5 +1,4 @@
 import {Text} from "./Text";
-import {Rect} from "../Rect";
 import {INote} from "./INote";
 import {IQuestion} from "./IQuestion";
 import {IFlashcard} from "./IFlashcard";
@@ -7,6 +6,7 @@ import {IAnnotation} from "./IAnnotation";
 import {HighlightColor} from "./IBaseHighlight";
 import {IImage} from "./IImage";
 import {ITextRect} from "./ITextRect";
+import {IRect} from "../util/rects/IRect";
 
 export interface ITextHighlight extends IAnnotation {
 
@@ -19,7 +19,7 @@ export interface ITextHighlight extends IAnnotation {
      */
     readonly revisedText?: Text | string;
 
-    readonly rects: { [key: number]: Rect };
+    readonly rects: { [key: number]: IRect };
     readonly image?: IImage;
     readonly images: { [key: string]: IImage };
     readonly notes: { [key: string]: INote };

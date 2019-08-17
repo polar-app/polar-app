@@ -1,6 +1,6 @@
 import {NamedColor, RGBColor} from "./HighlightColor";
-import {Rect} from "../Rect";
 import {IImage} from "./IImage";
+import {IRect} from "../util/rects/IRect";
 
 /**
  * The set of highlight colors.  We also provide transparent for text you want
@@ -12,7 +12,7 @@ import {IImage} from "./IImage";
 export type HighlightColor = NamedColor | RGBColor;
 
 export interface HighlightRects {
-    [key: string]: Rect;
+    [key: string]: IRect;
 }
 
 export interface IBaseHighlight {
