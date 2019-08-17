@@ -5,7 +5,7 @@ describe('ClientRects', function() {
 
     it("basic", function () {
 
-        let clientRect = {
+        const clientRect = {
             left: 0,
             top: 0,
             width: 0,
