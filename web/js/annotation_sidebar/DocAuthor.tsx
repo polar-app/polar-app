@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Author} from "../metadata/Author";
+import {IAuthor} from "../metadata/IAuthor";
 
 const Image = (props: IProps) => {
 
@@ -46,7 +47,7 @@ export class DocAuthor extends React.Component<IProps, IState> {
 
 }
 interface IProps {
-    readonly author?: Author;
+    readonly author?: IAuthor;
 }
 
 interface IState {

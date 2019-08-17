@@ -1,6 +1,7 @@
 import {ISODateTimeString} from "./ISODateTimeStrings";
 import {Author} from "./Author";
 import {Ref} from "./Refs";
+import {IAuthor} from "./IAuthor";
 
 export interface IVersionedObject {
 
@@ -36,7 +37,7 @@ export interface IVersionedObject {
     /**
      * The author who created this object.
      */
-    author?: Author;
+    author?: IAuthor;
 
     ref?: Ref;
 

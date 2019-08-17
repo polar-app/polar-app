@@ -26,10 +26,11 @@ import {IComment} from "../metadata/IComment";
 import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
 import {IRect} from "../IRect";
+import {IAuthor} from "../metadata/IAuthor";
 
 export class DocAnnotations {
 
-    private static isImmutable(author?: Author) {
+    private static isImmutable(author?: IAuthor) {
 
         if (author && author.guest) {
             return true;

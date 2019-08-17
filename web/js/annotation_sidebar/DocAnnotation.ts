@@ -20,6 +20,7 @@ import {IFlashcard} from "../metadata/IFlashcard";
 import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
 import {HighlightColor} from "../metadata/IBaseHighlight";
+import {IAuthor} from "../metadata/IAuthor";
 
 export interface IDocAnnotation extends ObjectID {
 
@@ -48,7 +49,7 @@ export interface IDocAnnotation extends ObjectID {
 
     readonly original: IComment | IFlashcard | IAreaHighlight | ITextHighlight;
 
-    readonly author?: Author;
+    readonly author?: IAuthor;
 
     readonly immutable: boolean;
 }
@@ -96,7 +97,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly original: IComment | IFlashcard | IAreaHighlight | ITextHighlight;
 
-    public readonly author?: Author;
+    public readonly author?: IAuthor;
 
     public readonly immutable: boolean;
 
