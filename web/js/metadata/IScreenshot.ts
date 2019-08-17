@@ -1,5 +1,5 @@
-import {IImage} from "./Image";
 import {ISODateTimeString} from "./ISODateTimeStrings";
+import {IImage} from "./IImage";
 
 export interface IScreenshot extends IImage {
 

@@ -1,12 +1,12 @@
 import {HighlightColor, IBaseHighlight} from "./IBaseHighlight";
 import {Rect} from "../Rect";
-import {IImage} from "./Image";
 import {INote} from "./INote";
 import {IQuestion} from "./IQuestion";
 import {IFlashcard} from "./IFlashcard";
 import {ISODateTimeString} from "./ISODateTimeStrings";
 import {Author} from "./Author";
 import { IRect } from "../IRect";
+import {IImage} from "./IImage";
 
 export interface IAreaHighlight extends IBaseHighlight {
 

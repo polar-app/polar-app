@@ -1,9 +1,9 @@
 import {Hashcodes} from '../Hashcodes';
-import {IImage, ImageType} from './Image';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {Img} from './Img';
 import {Image} from './Image';
 import {DocFileResolver} from "../datastore/DocFileResolvers";
+import {IImage, ImageType} from "./IImage";
 
 export class Images {
 

@@ -1,12 +1,12 @@
 import {TextRect} from "./TextRect";
 import {Text} from "./Text";
 import {Rect} from "../Rect";
-import {IImage} from "./Image";
 import {INote} from "./INote";
 import {IQuestion} from "./IQuestion";
 import {IFlashcard} from "./IFlashcard";
 import {IAnnotation} from "./IAnnotation";
 import {HighlightColor} from "./IBaseHighlight";
+import {IImage} from "./IImage";
 
 export interface ITextHighlight extends IAnnotation {
 

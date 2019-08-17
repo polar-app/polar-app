@@ -1,5 +1,4 @@
 import {ISODateTimeString} from "./ISODateTimeStrings";
-import {Author} from "./Author";
 import {Ref} from "./Refs";
 import {IAuthor} from "./IAuthor";
 

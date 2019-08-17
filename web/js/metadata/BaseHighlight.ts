@@ -1,4 +1,3 @@
-import {IImage} from './Image';
 import {ExtendedAnnotation} from './ExtendedAnnotation';
 import {Preconditions} from '../Preconditions';
 import {
@@ -7,6 +6,7 @@ import {
     IBaseHighlight,
     Position
 } from "./IBaseHighlight";
+import {IImage} from "./IImage";
 
 export class BaseHighlight extends ExtendedAnnotation implements IBaseHighlight {
 

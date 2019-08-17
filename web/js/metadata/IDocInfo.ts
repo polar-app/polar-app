@@ -8,6 +8,7 @@ import {ReadingOverview} from "./ReadingOverview";
 import {Visibility} from "../datastore/Datastore";
 import {Attachment} from "./Attachment";
 import {DocInfo} from "./DocInfo";
+import {IAttachment} from "./IAttachment";
 
 export interface IDocInfo {
 
@@ -183,7 +184,7 @@ export interface IDocInfo {
      */
     visibility?: Visibility;
 
-    attachments: {[id: string]: Attachment};
+    attachments: {[id: string]: IAttachment};
 
 }
 

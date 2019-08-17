@@ -1,7 +1,7 @@
-import {IImage} from "./Image";
 import {NamedColor, RGBColor} from "./HighlightColor";
 import {IRect} from "../IRect";
 import {Rect} from "../Rect";
+import {IImage} from "./IImage";
 
 /**
  * The set of highlight colors.  We also provide transparent for text you want
