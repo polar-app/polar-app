@@ -1,10 +1,11 @@
-import {ITextRect, TextRect} from './TextRect';
+import {TextRect} from './TextRect';
 import {Text} from './Text';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {BaseHighlight} from './BaseHighlight';
 import {Preconditions} from '../Preconditions';
 import {ITextHighlight} from "./ITextHighlight";
+import {ITextRect} from "./ITextRect";
 
 export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
