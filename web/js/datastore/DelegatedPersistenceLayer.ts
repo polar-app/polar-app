@@ -1,4 +1,4 @@
-import {BinaryFileData, Datastore, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
+import {BinaryFileData, Datastore, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from './Datastore';
 import {DeleteResult} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
@@ -16,6 +16,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {WriteOpts} from './PersistenceLayer';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {FileRef} from "./FileRef";
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.

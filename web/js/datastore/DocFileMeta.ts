@@ -1,5 +1,6 @@
-import {FileMeta, FileRef} from './Datastore';
+import {FileMeta} from './Datastore';
 import {Backend} from './Backend';
+import {FileRef} from "./FileRef";
 
 export interface DocFileURLMeta {
 

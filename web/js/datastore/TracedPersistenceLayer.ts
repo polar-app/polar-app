@@ -1,7 +1,6 @@
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {PersistenceLayerListener} from './PersistenceLayerListener';
 import {DocMetaSnapshotEventListener} from './Datastore';
-import {FileRef} from './Datastore';
 import {DeleteResult} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {ErrorListener} from './Datastore';
@@ -24,6 +23,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {FileRef} from "./FileRef";
 
 const tracer = RendererAnalytics.createTracer('persistence-layer');
 

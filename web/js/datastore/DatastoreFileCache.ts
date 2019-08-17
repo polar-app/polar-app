@@ -1,10 +1,10 @@
 import {DocFileMeta} from './DocFileMeta';
 import {Backend} from './Backend';
-import {FileRef} from './Datastore';
 import {DocFileURLMeta} from './DocFileMeta';
 import {GetFileOpts} from './Datastore';
 import {Optional} from '../util/ts/Optional';
 import {Logger} from '../logger/Logger';
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

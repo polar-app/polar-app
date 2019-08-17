@@ -9,7 +9,6 @@ import {DatastoreInitOpts} from './Datastore';
 import {DatastoreOverview} from './Datastore';
 import {SnapshotResult} from './Datastore';
 import {InitResult} from './Datastore';
-import {FileRef} from './Datastore';
 import {DeleteResult} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {BinaryFileData} from './Datastore';
@@ -29,6 +28,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "../metadata/IDocMeta";
 import {BackendFileRef} from "./BackendFileRef";
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

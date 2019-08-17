@@ -1,6 +1,6 @@
 import {JSONRPC} from './JSONRPC';
-import {FileRef} from '../../Datastore';
 import {Backend} from '../../Backend';
+import {FileRef} from "../../FileRef";
 
 export class DatastoreImportFiles {
 

@@ -13,7 +13,6 @@ import {
     DocMetaSnapshotEventListener,
     ErrorListener,
     FileMeta,
-    FileRef,
     GetFileOpts,
     GroupIDStr,
     InitResult,
@@ -57,6 +56,7 @@ import {Latch} from '../util/Latch';
 import {FirebaseDatastores} from './FirebaseDatastores';
 import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "./Visibility";
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

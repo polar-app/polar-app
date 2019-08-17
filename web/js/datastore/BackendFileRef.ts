@@ -1,5 +1,5 @@
 import {Backend} from "./Backend";
-import {FileRef} from "./Datastore";
+import {FileRef} from "./FileRef";
 
 /**
  * A FileRef with a backend.

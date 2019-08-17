@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, FileRef, SnapshotResult, DatastoreOverview, PrefsProvider} from './Datastore';
+import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, SnapshotResult, DatastoreOverview, PrefsProvider} from './Datastore';
 import {isPresent, Preconditions} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from '../logger/Logger';
@@ -23,6 +23,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

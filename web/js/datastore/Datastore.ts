@@ -5,7 +5,6 @@ import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {FileHandle} from '../util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {Hashcode} from '../metadata/Hashcode';
 import {Progress} from '../util/ProgressTracker';
 import {AsyncProvider} from '../util/Providers';
 import {UUID} from '../metadata/UUID';
@@ -21,6 +20,7 @@ import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
 import {BackendFileRef} from "./BackendFileRef";
 import {Visibility} from "./Visibility";
+import {FileRef} from "./FileRef";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -358,18 +358,6 @@ export function isBinaryFileData(data: any): boolean {
     }
 
     return false;
-
-}
-
-export interface FileRef {
-
-    readonly name: string;
-
-    /**
-     * The hashcode for the content.  For now the hashcode is STRONGLY preferred
-     * but not required.
-     */
-    readonly hashcode?: Hashcode;
 
 }
 

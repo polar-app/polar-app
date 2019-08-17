@@ -1,7 +1,8 @@
 import {Backend} from "./Backend";
-import {FileRef, GetFileOpts} from "./Datastore";
+import {GetFileOpts} from "./Datastore";
 import {DocFileMeta} from "./DocFileMeta";
 import {PersistenceLayerProvider} from "./PersistenceLayer";
+import {FileRef} from "./FileRef";
 
 /**
  * Create resolvers that can lookup doc meta rather than providing a full

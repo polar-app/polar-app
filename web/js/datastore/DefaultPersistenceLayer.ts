@@ -1,4 +1,4 @@
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
@@ -23,6 +23,7 @@ import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

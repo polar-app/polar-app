@@ -1,5 +1,4 @@
 import {Backend} from './Backend';
-import {FileRef} from './Datastore';
 import {FilePaths} from '../util/FilePaths';
 import {Hashcodes} from '../Hashcodes';
 import {StoragePath} from './FirebaseDatastore';
@@ -11,6 +10,7 @@ import {UserID} from '../firebase/Firebase';
 import * as firebase from '../firebase/lib/firebase';
 import {Preconditions} from '../Preconditions';
 import {UserIDStr} from './sharing/db/Profiles';
+import {FileRef} from "./FileRef";
 
 export class FirebaseDatastores {
 

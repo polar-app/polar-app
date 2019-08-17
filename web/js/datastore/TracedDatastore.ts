@@ -1,4 +1,3 @@
-import {FileRef} from './Datastore';
 import {DeleteResult} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {ErrorListener} from './Datastore';
@@ -22,6 +21,7 @@ import {IDocInfo} from '../metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IDocMeta} from "../metadata/IDocMeta";
+import {FileRef} from "./FileRef";
 
 const tracer = RendererAnalytics.createTracer('datastore');
 

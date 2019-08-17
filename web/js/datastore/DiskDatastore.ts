@@ -1,4 +1,4 @@
-import {AbstractDatastore, Datastore, DatastoreInfo, DatastoreOverview, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
+import {AbstractDatastore, Datastore, DatastoreInfo, DatastoreOverview, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
@@ -34,6 +34,7 @@ import {WriteOpts} from './Datastore';
 import {DatastoreMutations} from './DatastoreMutations';
 import { IDocInfo } from '../metadata/IDocInfo';
 import {IDocMeta} from "../metadata/IDocMeta";
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

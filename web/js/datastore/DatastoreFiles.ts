@@ -1,4 +1,4 @@
-import {FileRef} from './Datastore';
+import {FileRef} from "./FileRef";
 
 export class DatastoreFiles {
 

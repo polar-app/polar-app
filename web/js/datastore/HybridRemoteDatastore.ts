@@ -1,5 +1,4 @@
 import {Datastore, DatastoreID, ErrorListener, InitResult} from './Datastore';
-import {FileRef} from './Datastore';
 import {BinaryFileData} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {isBinaryFileData} from './Datastore';
@@ -9,6 +8,7 @@ import {RemoteDatastore} from './RemoteDatastore';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Blobs} from '../util/Blobs';
+import {FileRef} from "./FileRef";
 
 /**
  * A datastore which extends RemoteDatastore but adds support for local disk

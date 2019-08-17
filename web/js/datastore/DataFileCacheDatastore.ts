@@ -1,5 +1,4 @@
 import {Datastore, DatastoreID, ErrorListener, InitResult} from './Datastore';
-import {FileRef} from './Datastore';
 import {BinaryFileData} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {isBinaryFileData} from './Datastore';
@@ -14,6 +13,7 @@ import {Optional} from '../util/ts/Optional';
 import {Logger} from '../logger/Logger';
 import {DatastoreFileCache} from './DatastoreFileCache';
 import {DelegatedDatastore} from './DelegatedDatastore';
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

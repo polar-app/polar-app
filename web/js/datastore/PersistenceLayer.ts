@@ -1,5 +1,5 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from './Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {DatastoreOverview} from './Datastore';
@@ -16,6 +16,7 @@ import {GroupIDStr} from './Datastore';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
 import {Visibility} from "./Visibility";
+import {FileRef} from "./FileRef";
 
 export interface PersistenceLayer {
 

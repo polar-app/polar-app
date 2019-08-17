@@ -1,4 +1,4 @@
-import {AbstractDatastore, BinaryFileData, Datastore, DatastoreOverview, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileRef, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, PrefsProvider, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore} from './Datastore';
+import {AbstractDatastore, BinaryFileData, Datastore, DatastoreOverview, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, PrefsProvider, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
@@ -26,6 +26,7 @@ import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "../metadata/IDocInfo";
+import {FileRef} from "./FileRef";
 
 const log = Logger.create();
 

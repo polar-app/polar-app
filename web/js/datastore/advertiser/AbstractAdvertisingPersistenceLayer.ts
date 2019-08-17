@@ -5,7 +5,7 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileRef, SnapshotResult} from '../Datastore';
+import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from '../Datastore';
 import {WriteFileOpts} from '../Datastore';
 import {GetFileOpts} from '../Datastore';
 import {DatastoreOverview} from '../Datastore';
@@ -22,6 +22,7 @@ import {Releaseable} from '../../reactor/EventListener';
 import {WriteOpts} from '../PersistenceLayer';
 import {IDocInfo} from "../../metadata/IDocInfo";
 import {IDocMeta} from "../../metadata/IDocMeta";
+import {FileRef} from "../FileRef";
 
 export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 

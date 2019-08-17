@@ -11,7 +11,6 @@ import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Backend} from '../../../datastore/Backend';
 import {AppRuntime} from '../../../AppRuntime';
-import {FileRef} from '../../../datastore/Datastore';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
 import {Hashcode} from '../../../metadata/Hashcode';
 import {HashAlgorithm} from '../../../metadata/Hashcode';
@@ -24,6 +23,7 @@ import {Tag} from '../../../tags/Tags';
 import {IDocInfo} from "../../../metadata/IDocInfo";
 import {IDocMeta} from "../../../metadata/IDocMeta";
 import {BackendFileRef} from "../../../datastore/BackendFileRef";
+import {FileRef} from "../../../datastore/FileRef";
 
 const log = Logger.create();
 

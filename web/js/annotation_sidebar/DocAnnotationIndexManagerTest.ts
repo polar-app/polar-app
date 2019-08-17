@@ -3,7 +3,7 @@ import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {Backend} from "../datastore/Backend";
-import {FileRef, GetFileOpts} from "../datastore/Datastore";
+import {GetFileOpts} from "../datastore/Datastore";
 import {DocFileMeta} from "../datastore/DocFileMeta";
 import {
     DocMetaListener,
@@ -19,6 +19,7 @@ import {DefaultDocAnnotation, DocAnnotation} from "./DocAnnotation";
 import {Dictionaries} from "../util/Dictionaries";
 import {IDocMeta} from "../metadata/IDocMeta";
 import {Visibility} from "../datastore/Visibility";
+import {FileRef} from "../datastore/FileRef";
 
 describe('DocAnnotationIndexManager', function() {
 

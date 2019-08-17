@@ -14,11 +14,11 @@ import {Preconditions} from '../Preconditions';
 import {Errors} from '../util/Errors';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {FilePaths} from '../util/FilePaths';
-import {FileRef} from '../datastore/Datastore';
 import {Datastore} from '../datastore/Datastore';
 import {Backend} from '../datastore/Backend';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
+import {FileRef} from "../datastore/FileRef";
 
 const log = Logger.create();
 

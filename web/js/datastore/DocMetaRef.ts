@@ -4,8 +4,8 @@
 import {IDocInfo} from '../metadata/IDocInfo';
 import {DocMeta} from '../metadata/DocMeta';
 import {Preconditions} from '../Preconditions';
-import {FileRef} from './Datastore';
 import {IDocMeta} from "../metadata/IDocMeta";
+import {FileRef} from "./FileRef";
 
 export interface DocMetaRef {
 
