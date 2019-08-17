@@ -1,4 +1,3 @@
-import {ProfileIDStr} from "../datastore/sharing/db/Profiles";
 import {URLStr} from "../util/Strings";
 
 export interface AuthorImage {
@@ -12,7 +11,7 @@ export interface IAuthor {
      */
     readonly name: string;
 
-    readonly profileID: ProfileIDStr;
+    readonly profileID: string;
 
     /**
      * The URL to this author's profile.
