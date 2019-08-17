@@ -25,6 +25,7 @@ import {IDocMeta} from "../metadata/IDocMeta";
 import {IComment} from "../metadata/IComment";
 import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
+import {IRect} from "../IRect";
 
 export class DocAnnotations {
 

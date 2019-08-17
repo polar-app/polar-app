@@ -6,20 +6,20 @@
  */
 export class Text implements IText {
 
-    public readonly TEXT?: string;
+    public TEXT?: string;
 
-    public readonly MARKDOWN?: string;
+    public MARKDOWN?: string;
 
-    public readonly HTML?: string;
+    public HTML?: string;
 
 }
 
 export interface IText {
 
-    readonly TEXT?: string;
+    TEXT?: string;
 
-    readonly MARKDOWN?: string;
+    MARKDOWN?: string;
 
-    readonly HTML?: string;
+    HTML?: string;
 
 }

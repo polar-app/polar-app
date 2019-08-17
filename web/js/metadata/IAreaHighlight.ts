@@ -10,7 +10,7 @@ import { IRect } from "../IRect";
 
 export interface IAreaHighlight extends IBaseHighlight {
 
-    readonly rects: { [key: number]: IRect };
+    readonly rects: { [key: number]: Rect };
     readonly image?: IImage;
     readonly images: { [key: string]: IImage };
     readonly notes: { [key: string]: INote };
