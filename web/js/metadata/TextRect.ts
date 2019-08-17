@@ -1,5 +1,5 @@
-import {IRect} from "../IRect";
 import {ITextRect} from "./ITextRect";
+import {IRect} from "../util/rects/IRect";
 
 const {SerializedObject} = require("./SerializedObject.js");
 

@@ -4,8 +4,6 @@ import {INote} from "./INote";
 import {IQuestion} from "./IQuestion";
 import {IFlashcard} from "./IFlashcard";
 import {ISODateTimeString} from "./ISODateTimeStrings";
-import {Author} from "./Author";
-import { IRect } from "../IRect";
 import {IImage} from "./IImage";
 import {IAuthor} from "./IAuthor";
 

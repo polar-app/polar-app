@@ -1,5 +1,4 @@
 import {NamedColor, RGBColor} from "./HighlightColor";
-import {IRect} from "../IRect";
 import {Rect} from "../Rect";
 import {IImage} from "./IImage";
 

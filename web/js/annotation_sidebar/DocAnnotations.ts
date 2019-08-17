@@ -1,14 +1,9 @@
-import {DocMeta} from '../metadata/DocMeta';
-import {PageMeta} from '../metadata/PageMeta';
 import {isPresent} from '../Preconditions';
-import {Comment} from '../metadata/Comment';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
 import {Text} from '../metadata/Text';
-import {DefaultDocAnnotation, DocAnnotation, IDocAnnotation} from './DocAnnotation';
-import {AreaHighlight} from '../metadata/AreaHighlight';
-import {TextHighlight} from '../metadata/TextHighlight';
+import {IDocAnnotation} from './DocAnnotation';
 import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
 import {Flashcard} from '../metadata/Flashcard';
@@ -18,14 +13,12 @@ import {ObjectIDs} from '../util/ObjectIDs';
 import {Images} from '../metadata/Images';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
-import {Author} from "../metadata/Author";
 import {IPageMeta} from "../metadata/IPageMeta";
 import {IBaseHighlight} from "../metadata/IBaseHighlight";
 import {IDocMeta} from "../metadata/IDocMeta";
 import {IComment} from "../metadata/IComment";
 import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
-import {IRect} from "../IRect";
 import {IAuthor} from "../metadata/IAuthor";
 
 export class DocAnnotations {

@@ -1,4 +1,4 @@
-import {IRect} from "../IRect";
+import {IRect} from "../util/rects/IRect";
 
 export interface ITextRect {
 

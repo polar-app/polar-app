@@ -1,7 +1,7 @@
 import {Dimensions} from './util/Dimensions';
 import {Line} from './util/Line';
 import {Preconditions} from './Preconditions';
-import {IRect} from "./IRect";
+import {IRect} from "./util/rects/IRect";
 
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.
