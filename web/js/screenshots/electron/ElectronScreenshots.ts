@@ -1,11 +1,18 @@
 import {IXYRect} from 'polar-shared/src/util/rects/IXYRect';
 import {IXYRects} from 'polar-shared/src/util/rects/IXYRects';
-import {Screenshot, CaptureOpts} from '../Screenshot';
-import {ScreenshotRequest} from '../Screenshot';
-import {DefaultCaptureOpts} from '../Screenshot';
+import {
+    CaptureOpts,
+    DefaultCaptureOpts,
+    Screenshot,
+    ScreenshotRequest
+} from '../Screenshot';
 import {ClientRects} from 'polar-shared/src/util/rects/ClientRects';
 import {Logger} from '../../logger/Logger';
-import {IScreenshotDelegate, ScreenshotDelegate, WebContentsID} from './ScreenshotDelegate';
+import {
+    IScreenshotDelegate,
+    ScreenshotDelegate,
+    WebContentsID
+} from './ScreenshotDelegate';
 import {remote} from 'electron';
 import {AppRuntime} from '../../AppRuntime';
 import {Promises} from '../../util/Promises';
