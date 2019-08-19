@@ -57,6 +57,7 @@ import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/Cr
 import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
 import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
+import {UIModes} from "../../ui/uimodes/UIModes";
 
 const log = Logger.create();
 
@@ -74,6 +75,8 @@ export class RepositoryApp {
     public async start() {
 
         log.info("Running with Polar version: " + Version.get());
+
+        UIModes.register();
 
         AppOrigin.configure();
 
