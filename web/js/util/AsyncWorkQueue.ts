@@ -1,5 +1,4 @@
 import {Latch} from './Latch';
-import {executeTasks} from 'electron-updater/out/differentialDownloader/multipleRangeDownloader';
 import {Logger} from '../logger/Logger';
 
 const log = Logger.create();

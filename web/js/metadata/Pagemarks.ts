@@ -221,10 +221,12 @@ export class Pagemarks {
 
         const mode = options.mode || PagemarkMode.READ;
 
+        const id = Pagemarks.createID(created);
         return new Pagemark({
 
             // per-pagemark fields.
-            id: Pagemarks.createID(created),
+            id,
+            guid: id,
             created,
 
             // the rest are from options.

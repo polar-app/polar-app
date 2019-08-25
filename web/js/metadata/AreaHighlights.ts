@@ -93,10 +93,12 @@ export class AreaHighlights {
 
         const created = ISODateTimeStrings.create();
 
+        const id = AreaHighlights.createID(created);
         return new AreaHighlight({
 
             // per-pagemark fields.
-            id: AreaHighlights.createID(created),
+            id,
+            guid: id,
 
             created,
 

@@ -23,6 +23,7 @@ import {Firebase} from '../../firebase/Firebase';
 import {Preconditions} from '../../Preconditions';
 import {ContactOptions} from './ContactOptions';
 import {GroupDocsAdd} from "../../datastore/sharing/rpc/GroupDocsAdd";
+import {Arrays} from "../../util/Arrays";
 
 export class GroupSharingButton extends React.Component<IProps, IState> {
 
@@ -157,6 +158,26 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
             return;
         }
 
+        const computeGroupsOverview = () => {
+
+            const nrGroups = groups.length;
+
+            let groupsText = "";
+
+            if (nrGroups <= 4) {
+                groupsText = groups.join(", ");
+            } else {
+                groupsText = Arrays.head(groups, 4) + ", ...";
+            }
+
+            return `${nrGroups} groups (${groupsText})`;
+
+        };
+
+        const groupsOverview = computeGroupsOverview();
+
+        const toastRef = Toaster.info(`Adding document to ${groupsOverview}`);
+
         for (const groupName of groups) {
 
             const docRef = this.createDocRef();
@@ -170,9 +191,12 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
             const groupID = group.id;
 
             await GroupDocsAdd.exec({groupID, docs: [docRef]});
-            Toaster.success("Document added to group: " + groupName);
 
         }
+
+        Toaster.remove();
+
+        Toaster.success(`Document added to ${groupsOverview}`);
 
     }
 

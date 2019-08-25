@@ -1,5 +1,4 @@
 import {PageMeta} from './PageMeta';
-import {Logger} from '../logger/Logger';
 import {DocMeta} from './DocMeta';
 import {PagemarkType} from './PagemarkType';
 import {PageInfo} from './PageInfo';
@@ -19,8 +18,6 @@ import {Backend} from '../datastore/Backend';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
 import {FileRef} from "../datastore/FileRef";
-
-const log = Logger.create();
 
 export class DocMetas {
 

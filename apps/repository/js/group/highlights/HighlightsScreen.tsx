@@ -1,21 +1,20 @@
 import * as React from 'react';
-import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {Groups} from "../../../../web/js/datastore/sharing/db/Groups";
-import {Logger} from "../../../../web/js/logger/Logger";
-import {GroupTable} from "./GroupTable";
-import {GroupDocInfos} from "../../../../web/js/datastore/sharing/GroupDocInfos";
-import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
-import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
-import {GroupData} from "./GroupData";
-import {UserGroups} from "../../../../web/js/datastore/sharing/db/UserGroups";
-import {GroupDeleteButton} from './GroupDeleteButton';
-import {GroupURLs} from "./GroupURLs";
+import {GroupURLs} from "../GroupURLs";
+import {
+    GroupNameStr,
+    Groups
+} from "../../../../../web/js/datastore/sharing/db/Groups";
+import {GroupDocAnnotations} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
+import {GroupHighlightsData} from "./GroupHighlightsData";
+import {Logger} from "../../../../../web/js/logger/Logger";
+import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
+import {FixedNav, FixedNavBody} from "../../FixedNav";
+import {RepoHeader} from "../../repo_header/RepoHeader";
+import {PersistenceLayerManager} from "../../../../../web/js/datastore/PersistenceLayerManager";
 
 const log = Logger.create();
 
-export class GroupScreen extends React.Component<IProps, IState> {
+export class HighlightsScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -34,11 +33,6 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
             const groupName = this.state.name;
 
-            if (! groupName) {
-                Toaster.error("No group name");
-                return;
-            }
-
             const group = await Groups.getByName(groupName);
 
             if (! group) {
@@ -46,20 +40,14 @@ export class GroupScreen extends React.Component<IProps, IState> {
                 return;
             }
 
-            // TODO I dont' like how these are all dependent on each other
-            // as there is excess latency here.
-
-            const groupDocInfos = await GroupDocInfos.list(group.id);
-
-            const userGroup = await UserGroups.get();
+            const groupDocAnnotations = await GroupDocAnnotations.list(group.id);
 
             this.setState({
                 ...this.state,
-                groupData: {
+                groupHighlightsData: {
                     id: group.id,
                     group,
-                    groupDocInfos,
-                    userGroup
+                    groupDocAnnotations,
                 }});
 
         };
@@ -110,19 +98,15 @@ export class GroupScreen extends React.Component<IProps, IState> {
                                      className="w-100">
 
                                     <div style={{flexGrow: 1}}>
-                                        <h3>{this.state.name}</h3>
+                                        <h3>Highlights for {this.state.name}</h3>
                                     </div>
-
-                                    <VerticalAlign>
-                                        <GroupDeleteButton groupData={this.state.groupData}/>
-                                    </VerticalAlign>
 
                                 </div>
 
                             </div>
 
-                            <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                        groupData={this.state.groupData}/>
+                            {/*<GroupTable persistenceLayerManager={this.props.persistenceLayerManager}*/}
+                            {/*            groupData={this.state.groupData}/>*/}
 
                         </div>
 
@@ -142,6 +126,6 @@ export interface IProps {
 }
 
 export interface IState {
-    readonly name: string;
-    readonly groupData?: GroupData;
+    readonly name: GroupNameStr;
+    readonly groupHighlightsData?: GroupHighlightsData;
 }

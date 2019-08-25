@@ -1,5 +1,5 @@
 /**
- * A latch that can be resolved. Like a ResolveablePromise by
+ * A latch that can be resolved. Like a ResolvablePromise by
  */
 export class Latch<T> {
 

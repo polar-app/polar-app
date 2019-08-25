@@ -53,4 +53,5 @@ export class DocInfos {
         return docInfo;
 
     }
+
 }

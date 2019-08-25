@@ -42,6 +42,26 @@ describe('DocMetas', function() {
 
         });
 
+        it("One page", function() {
+
+            const fingerprint = "0x001";
+
+            const docMeta = DocMetas.create(fingerprint, 1);
+            console.log(JSON.stringify(docMeta, null, "  "));
+
+            // DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 1, percentage: 50});
+
+            const json = MetadataSerializer.serialize(docMeta, "  ");
+
+            const actual = DocMetas.deserialize(json, fingerprint);
+
+            assertJSON(docMeta, actual);
+
+            assert.equal(actual instanceof DocMeta, true);
+
+
+        });
+
         it("Test with default values for serialized data", function() {
 
             const json = "{}";

@@ -6,30 +6,44 @@ import {Optional} from '../../util/ts/Optional';
 
 Toastr.options.toastClass = 'toastr';
 
-
 /**
  * High level interface to create toaster UI popups for messages.
  */
 export class Toaster {
 
-    public static info(message: string, title: string = "", options: ToasterOptions = {}) {
+    public static info(message: string, title: string = "", options: ToasterOptions = {}): ToasterRef {
         title = Optional.of(title).getOrElse("");
-        Toastr.info(message, title, this.augmentExtendedOptions(options));
+        return Toastr.info(message, title, this.augmentExtendedOptions(options));
     }
 
-    public static success(message: string, title: string = "", options: ToasterOptions = {}) {
+    public static success(message: string, title: string = "", options: ToasterOptions = {}): ToasterRef {
         title = Optional.of(title).getOrElse("");
-        Toastr.success(message, title, this.augmentExtendedOptions(options));
+        return Toastr.success(message, title, this.augmentExtendedOptions(options));
     }
 
-    public static warning(message: string, title: string = "", options: ToasterOptions = {}) {
+    public static warning(message: string, title: string = "", options: ToasterOptions = {}): ToasterRef {
         title = Optional.of(title).getOrElse("");
-        Toastr.warning(message, title, this.augmentExtendedOptions(options));
+        return Toastr.warning(message, title, this.augmentExtendedOptions(options));
     }
 
-    public static error(message: string, title: string = "", options: ToasterOptions = {}) {
+    public static error(message: string, title: string = "", options: ToasterOptions = {}): ToasterRef {
         title = Optional.of(title).getOrElse("");
-        Toastr.error(message, title, this.augmentExtendedOptions(options));
+        return Toastr.error(message, title, this.augmentExtendedOptions(options));
+    }
+
+    /**
+     * Clear a previously raised toast.
+     */
+    public static clear(ref: ToasterRef) {
+        Toastr.clear(<any> ref, {force: true});
+    }
+
+    /**
+     * We expose remove now but ideally we would remove just the primary toast
+     * not the secondary/ancillary ones that might be unrelated.
+     */
+    public static remove() {
+        Toastr.remove();
     }
 
     /**
@@ -65,6 +79,12 @@ export class Toaster {
     }
 
 }
+
+/**
+ * A reference to a toast but this is actually a jquery object. We just don't
+ * want to expose it directly for now.
+ */
+export type ToasterRef = object;
 
 export interface ToasterOptions {
     timeOut?: number;

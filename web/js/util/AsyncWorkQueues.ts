@@ -1,4 +1,3 @@
-import {Latch} from './Latch';
 import {AsyncWorkQueue} from './AsyncWorkQueue';
 
 export class AsyncWorkQueues {
@@ -17,7 +16,7 @@ export class AsyncWorkQueues {
             results.push(value);
         });
 
-        const asyncWorkQueue = new AsyncWorkQueue(work);
+        const asyncWorkQueue = new AsyncWorkQueue(work, concurrency);
 
         await asyncWorkQueue.execute();
 
