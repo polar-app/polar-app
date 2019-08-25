@@ -41,6 +41,7 @@ describe('Pagemarks', function() {
             const expected = [
                 {
                     "id": "1s2gw2Mkwb",
+                    "guid": "1s2gw2Mkwb",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "type": "SINGLE_COLUMN",
@@ -86,6 +87,7 @@ describe('Pagemarks', function() {
             const expected = [
                 {
                     "id": "1s2gw2Mkwb",
+                    "guid": "1s2gw2Mkwb",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "type": "SINGLE_COLUMN",
@@ -127,6 +129,7 @@ describe('Pagemarks', function() {
             const pagemark1 = [
                 {
                     "id": "1s2gw2Mkwb",
+                    "guid": "1s2gw2Mkwb",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "type": "SINGLE_COLUMN",
@@ -140,13 +143,14 @@ describe('Pagemarks', function() {
                     },
                     "batch": "1Y9CcEHSxc",
                     "mode": "READ",
-                    "notes": {},
+                    "notes": {}
                 }
             ];
 
             const pagemark2 = [
                     {
                         "id": "126nS8PMqF",
+                        "guid": "126nS8PMqF",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "type": "SINGLE_COLUMN",
@@ -314,6 +318,7 @@ describe('Pagemarks', function() {
                     "batch": "1Y9CcEHSxc",
                     "column": 0,
                     "created": "2012-03-02T11:38:49.321Z",
+                    "guid": "1s2gw2Mkwb",
                     "id": "1s2gw2Mkwb",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "mode": "PRE_READ",
@@ -334,6 +339,7 @@ describe('Pagemarks', function() {
                     "batch": "1Y9CcEHSxc",
                     "column": 0,
                     "created": "2012-03-02T11:38:49.321Z",
+                    "guid": "12CDjpvoCY",
                     "id": "12CDjpvoCY",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "mode": "PRE_READ",
@@ -411,6 +417,7 @@ describe('Pagemarks', function() {
                     "batch": "1SDFF4T2Rj",
                     "column": 0,
                     "created": "2012-03-09T11:38:49.321Z",
+                    "guid": "12mskuuTzp",
                     "id": "12mskuuTzp",
                     "lastUpdated": "2012-03-09T11:38:49.321Z",
                     "mode": "READ",
@@ -428,6 +435,7 @@ describe('Pagemarks', function() {
                     "batch": "1Y9CcEHSxc",
                     "column": 0,
                     "created": "2012-03-02T11:38:49.321Z",
+                    "guid": "1s2gw2Mkwb",
                     "id": "1s2gw2Mkwb",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "mode": "READ",

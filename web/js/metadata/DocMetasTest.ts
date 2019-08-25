@@ -137,6 +137,7 @@ describe('DocMetas', function() {
                                     "batch": "1Y9CcEHSxc",
                                     "column": 0,
                                     "created": "2012-03-02T11:38:49.321Z",
+                                    "guid": "1s2gw2Mkwb",
                                     "id": "1s2gw2Mkwb",
                                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "mode": "READ",
@@ -179,6 +180,7 @@ describe('DocMetas', function() {
                                     "batch": "1yNbsiPseh",
                                     "column": 0,
                                     "created": "2012-03-02T11:38:49.321Z",
+                                    "guid": "126nS8PMqF",
                                     "id": "126nS8PMqF",
                                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "mode": "READ",
@@ -270,6 +272,7 @@ describe('DocMetas', function() {
                             "batch": "1Y9CcEHSxc",
                             "column": 0,
                             "created": "2012-03-02T11:38:49.321Z",
+                            "guid": "1s2gw2Mkwb",
                             "id": "1s2gw2Mkwb",
                             "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "mode": "READ",
@@ -283,9 +286,7 @@ describe('DocMetas', function() {
                             },
                             "type": "SINGLE_COLUMN"
                         }
-                    }
-
-                ;
+                    };
 
                 assertJSON(DocMetas.getPageMeta(docMeta, 1).pagemarks, expected);
 
@@ -329,24 +330,24 @@ describe('DocMetas', function() {
 
                 const expected = {
                         "1s2gw2Mkwb": {
-                            "id": "1s2gw2Mkwb",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "lastUpdated": "2012-03-02T11:38:49.321Z",
-                            "type": "SINGLE_COLUMN",
-                            "percentage": 100,
+                            "batch": "1Y9CcEHSxc",
                             "column": 0,
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "guid": "1s2gw2Mkwb",
+                            "id": "1s2gw2Mkwb",
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
+                            "mode": "READ",
+                            "notes": {},
+                            "percentage": 100,
                             "rect": {
+                                "height": 100,
                                 "left": 0,
                                 "top": 0,
-                                "width": 100,
-                                "height": 100
+                                "width": 100
                             },
-                            "batch": "1Y9CcEHSxc",
-                            "mode": "READ",
-                            "notes": {}
+                            "type": "SINGLE_COLUMN"
                         }
-                    }
-                ;
+                    };
 
                 assertJSON(DocMetas.getPageMeta(docMeta, 1).pagemarks, expected);
 
