@@ -5,8 +5,7 @@ import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
-import {LazyProps} from '../../react/LazyComponents';
-import {LazyState} from '../../react/LazyComponents';
+import {LazyProps, LazyState} from '../../react/LazyComponents';
 import {HighlightColors} from '../../metadata/HighlightColor';
 
 /**

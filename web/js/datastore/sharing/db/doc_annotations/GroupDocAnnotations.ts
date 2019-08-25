@@ -12,7 +12,7 @@ export class GroupDocAnnotations {
         // so twe can watch when the data changes
 
         const orderBy: ReadonlyArray<OrderByClause> = [
-            ['added', 'desc']
+            ['lastUpdated', 'desc']
         ];
 
         const limit = 50;

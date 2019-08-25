@@ -12,6 +12,8 @@ import {GroupData} from "./GroupData";
 import {UserGroups} from "../../../../web/js/datastore/sharing/db/UserGroups";
 import {GroupDeleteButton} from './GroupDeleteButton';
 import {GroupURLs} from "./GroupURLs";
+import {SimpleTabs} from "../../../../web/js/ui/simple_tab/SimpleTabs";
+import {SimpleTab} from "../../../../web/js/ui/simple_tab/SimpleTab";
 
 const log = Logger.create();
 
@@ -109,8 +111,14 @@ export class GroupScreen extends React.Component<IProps, IState> {
                                 <div style={{display: 'flex'}}
                                      className="w-100">
 
-                                    <div style={{flexGrow: 1}}>
+                                    <div>
                                         <h3>{this.state.name}</h3>
+                                    </div>
+
+                                    <div style={{flexGrow: 1}}>
+                                        <SimpleTabs>
+                                            <SimpleTab href={`#group/${this.state.name}/highlights`} text="Highlights"/>
+                                        </SimpleTabs>
                                     </div>
 
                                     <VerticalAlign>

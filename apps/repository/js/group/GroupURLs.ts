@@ -4,7 +4,7 @@ export class GroupURLs {
 
     public static parse(url: string): GroupURL {
 
-        const regex = /\/group\/([^/]+)/;
+        const regex = /[/#]group\/([^/]+)/;
         const matches = url.match(regex);
         if (matches && matches[1]) {
             const name = matches[1];

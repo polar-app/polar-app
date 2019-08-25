@@ -58,6 +58,7 @@ import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
 import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 import {UIModes} from "../../ui/uimodes/UIModes";
+import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/HighlightsScreen";
 
 const log = Logger.create();
 
@@ -227,6 +228,10 @@ export class RepositoryApp {
             return (<GroupsScreen persistenceLayerManager={this.persistenceLayerManager}/>);
         };
 
+        const renderGroupHighlightsScreen = () => {
+            return (<HighlightsScreen persistenceLayerManager={this.persistenceLayerManager}/>);
+        };
+
         const onNavChange = () => {
 
             try {
@@ -314,7 +319,9 @@ export class RepositoryApp {
                         <Route exact path='/plans' render={premiumScreen}/>
                         <Route exact path='/support' render={supportScreen}/>
 
+                        <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
                         <Route path='/group/' render={renderGroupScreen}/>
+
                         <Route exact path='/groups' render={renderGroupsScreen}/>
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
 

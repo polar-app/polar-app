@@ -11,6 +11,7 @@ import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
 import {FixedNav, FixedNavBody} from "../../FixedNav";
 import {RepoHeader} from "../../repo_header/RepoHeader";
 import {PersistenceLayerManager} from "../../../../../web/js/datastore/PersistenceLayerManager";
+import {HighlightsTable} from "./HighlightsTable";
 
 const log = Logger.create();
 
@@ -105,8 +106,8 @@ export class HighlightsScreen extends React.Component<IProps, IState> {
 
                             </div>
 
-                            {/*<GroupTable persistenceLayerManager={this.props.persistenceLayerManager}*/}
-                            {/*            groupData={this.state.groupData}/>*/}
+                            <HighlightsTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                             groupHighlightsData={this.state.groupHighlightsData}/>
 
                         </div>
 

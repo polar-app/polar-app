@@ -1,11 +1,7 @@
-import {DocMeta} from '../../../../metadata/DocMeta';
 import {DocFormat} from '../../../../docformat/DocFormat';
-import {TextHighlight} from '../../../../metadata/TextHighlight';
-import {PageMeta} from '../../../../metadata/PageMeta';
 import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
 import {Preconditions} from '../../../../Preconditions';
 import {Dictionaries} from '../../../../util/Dictionaries';
-import {Rect} from '../../../../Rect';
 import {Component} from '../../../../components/Component';
 import {DocFormatFactory} from '../../../../docformat/DocFormatFactory';
 import {Rects} from '../../../../Rects';
@@ -15,6 +11,7 @@ import {IPageMeta} from "../../../../metadata/IPageMeta";
 import {IDocMeta} from "../../../../metadata/IDocMeta";
 import {HighlightColor} from "../../../../metadata/IBaseHighlight";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
+import {ITextHighlight} from "../../../../metadata/ITextHighlight";
 
 const log = Logger.create();
 
@@ -30,7 +27,7 @@ export class TextHighlightComponent extends Component {
     /**
      *
      */
-    private textHighlight?: TextHighlight = undefined;
+    private textHighlight?: ITextHighlight = undefined;
 
     /**
      *

@@ -21,6 +21,7 @@ import {ITextHighlight} from "../metadata/ITextHighlight";
 import {IAreaHighlight} from "../metadata/IAreaHighlight";
 import {IAuthor} from "../metadata/IAuthor";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
+import {TextHighlights} from "../metadata/TextHighlights";
 
 export class DocAnnotations {
 
@@ -153,33 +154,7 @@ export class DocAnnotations {
                                           textHighlight: ITextHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
 
-        let html: string = "";
-
-        if (typeof textHighlight.text === 'string') {
-            html = `<p>${textHighlight.text}</p>`;
-        }
-
-        // TODO: prefer to use revisedText so that the user can edit the text
-        // that we selected from the document without reverting to the original
-
-        if (isPresent(textHighlight.text) && typeof textHighlight.text === 'object') {
-
-            // TODO: move this to an isInstanceOf in Texts
-            if ('TEXT' in <any> (textHighlight.text) || 'HTML' in <any> (textHighlight.text)) {
-
-                const text = <Text> textHighlight.text;
-
-                if (text.TEXT) {
-                    html = `${text.TEXT}`;
-                }
-
-                if (text.HTML) {
-                    html = text.HTML;
-                }
-
-            }
-
-        }
+        const html = TextHighlights.toHTML(textHighlight);
 
         return {
             oid: ObjectIDs.create(),

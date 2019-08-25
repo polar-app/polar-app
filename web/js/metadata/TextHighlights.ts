@@ -3,7 +3,7 @@ import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
 import {Image} from './Image';
-import {notNull} from '../Preconditions';
+import {isPresent, notNull} from '../Preconditions';
 import {PageMeta} from './PageMeta';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
@@ -11,6 +11,8 @@ import {DocMeta} from './DocMeta';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
 import {ITextHighlight} from "./ITextHighlight";
+import {HTMLStr} from "../util/Strings";
+import {Text} from "./Text";
 
 const log =  Logger.create();
 
@@ -72,6 +74,40 @@ export class TextHighlights {
         }
 
         delete pageMeta.textHighlights[textHighlight.id];
+
+    }
+
+    public static toHTML(textHighlight: ITextHighlight): HTMLStr {
+
+        let html: string = "";
+
+        if (typeof textHighlight.text === 'string') {
+            html = `<p>${textHighlight.text}</p>`;
+        }
+
+        // TODO: prefer to use revisedText so that the user can edit the text
+        // that we selected from the document without reverting to the original
+
+        if (isPresent(textHighlight.text) && typeof textHighlight.text === 'object') {
+
+            // TODO: move this to an isInstanceOf in Texts
+            if ('TEXT' in <any> (textHighlight.text) || 'HTML' in <any> (textHighlight.text)) {
+
+                const text = <Text> textHighlight.text;
+
+                if (text.TEXT) {
+                    html = `${text.TEXT}`;
+                }
+
+                if (text.HTML) {
+                    html = text.HTML;
+                }
+
+            }
+
+        }
+
+        return html;
 
     }
 
