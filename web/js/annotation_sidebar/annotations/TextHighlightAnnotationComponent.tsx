@@ -8,9 +8,6 @@ import {Doc} from '../../metadata/Doc';
 import {LazyProps, LazyState} from '../../react/LazyComponents';
 import {HighlightColors} from '../../metadata/HighlightColor';
 
-/**
- * A generic wrapper that determines which sub-component to render.
- */
 export class TextHighlightAnnotationComponent extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {

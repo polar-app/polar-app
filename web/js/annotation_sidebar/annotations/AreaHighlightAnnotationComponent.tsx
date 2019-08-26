@@ -25,9 +25,6 @@ const Image = (props: IProps) => {
 
 };
 
-/**
- * A generic wrapper that determines which sub-component to render.
- */
 export class AreaHighlightAnnotationComponent extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {

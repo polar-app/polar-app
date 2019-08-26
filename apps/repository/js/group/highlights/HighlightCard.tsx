@@ -80,7 +80,8 @@ export class HighlightCard extends React.Component<IProps, IState> {
 
                     <div className="text-grey600">
 
-                        <DocAnnotationComponent docAnnotation={this.props.groupDocAnnotation}/>
+                        <DocAnnotationComponent persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                                docAnnotation={this.props.groupDocAnnotation}/>
 
                         {/*<Moment withTitle={true}*/}
                         {/*        titleFormat="D MMM YYYY hh:MM A"*/}

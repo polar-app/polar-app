@@ -4,6 +4,8 @@ import {TextHighlightDocAnnotationComponent} from "./TextHighlightDocAnnotationC
 import {Logger} from "../../../../../../web/js/logger/Logger";
 import {isPresent} from "../../../../../../web/js/Preconditions";
 import {AnnotationType} from "../../../../../../web/js/metadata/AnnotationType";
+import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
+import {AreaHighlightDocAnnotationComponent} from "./AreaHighlightDocAnnotationComponent";
 
 const log = Logger.create();
 
@@ -35,14 +37,13 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
 
         const key = 'doc-annotation-' + docAnnotation.id;
 
-        {/*<AreaHighlightAnnotationComponent key={key}*/}
-        {/*                                  annotation={annotation}*/}
-        {/*                                  doc={this.props.doc}/>*/}
-
         if (docAnnotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
 
             return (
-                <div/>
+
+                <AreaHighlightDocAnnotationComponent key={key}
+                                                     persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                                     docAnnotation={docAnnotation}/>
             );
 
         } else if (docAnnotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
@@ -61,6 +62,7 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
 
 }
 interface IProps {
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly docAnnotation: BaseDocAnnotation;
 }
 
