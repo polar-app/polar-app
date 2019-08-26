@@ -1,0 +1,76 @@
+import {Profile, ProfileIDStr, Profiles} from "./Profiles";
+import {Optional} from "../../../util/ts/Optional";
+
+/**
+ * Provides a way to join against profiles so that we can resolve the live profile
+ * metadata.  We then keep the original record and the profile and profileID back
+ * to back so that we can just use the right record.
+ */
+export class ProfileJoins {
+
+    public static async join<T extends ProfileIDRecord>(values: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecord<T>>> {
+
+        const resolvedProfiles: {[id: string]: Profile} = {};
+
+        const promises = values.map(value => {
+
+            const handler = async () => {
+
+                const {profileID} = value;
+
+                if (! profileID) {
+                    // nothing to do as there is no profileID
+                    return;
+                }
+
+                const profile = await Profiles.get(profileID);
+
+                if (profile) {
+                    resolvedProfiles[profileID] = profile;
+                }
+
+            };
+
+            return handler();
+
+        });
+
+        // now wait all the promises in parallel
+        await Promise.all(promises);
+
+        return values.map((value): ProfileRecord<T> => {
+
+            const {profileID} = value;
+            const profile = Optional.of(resolvedProfiles[profileID]).getOrUndefined();
+
+            return {
+                value,
+                profile,
+                profileID
+            };
+
+        });
+
+    }
+
+}
+
+export interface ProfileIDRecord {
+    readonly profileID: ProfileIDStr;
+}
+
+export interface ProfileRecord<T extends ProfileIDRecord> {
+
+    /**
+     * The value that we looked up the profileID on...
+     */
+    readonly value: T;
+
+    /**
+     * The profile that we resolved against.
+     */
+    readonly profile?: Profile;
+
+    readonly profileID?: ProfileIDStr;
+
+}

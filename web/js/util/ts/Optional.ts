@@ -1,5 +1,7 @@
 import {isPresent} from '../../Preconditions';
 
+// FIXME remove as this is in polar-shared now
+
 export class Optional<T> {
 
     constructor(value: T | undefined | null, name?: string) {
