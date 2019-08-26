@@ -1,12 +1,10 @@
 import * as React from 'react';
 import {AnnotationTypes} from "../../../../../../web/js/metadata/AnnotationTypes";
-import {Optional} from "../../../../../../web/js/util/ts/Optional";
 import {HighlightColors} from "../../../../../../web/js/metadata/HighlightColor";
 import {BaseDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
 import {ITextHighlight} from "../../../../../../web/js/metadata/ITextHighlight";
 import {TextHighlights} from "../../../../../../web/js/metadata/TextHighlights";
 import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
-import {GroupDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 
 /**
  * A generic wrapper that determines which sub-component to render.

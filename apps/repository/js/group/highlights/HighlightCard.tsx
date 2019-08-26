@@ -47,7 +47,7 @@ export class HighlightCard extends React.Component<IProps, IState> {
                     <div style={{flexGrow: 1}}
                          className="mt-auto mb-auto">
 
-                        <ProfileHeader profile={this.props.docAnnotationProfileRecord.profile}/>
+                        <ProfileHeader docAnnotationProfileRecord={this.props.docAnnotationProfileRecord}/>
 
                     </div>
 

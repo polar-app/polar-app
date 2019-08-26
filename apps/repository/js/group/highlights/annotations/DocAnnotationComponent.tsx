@@ -7,7 +7,6 @@ import {AnnotationType} from "../../../../../../web/js/metadata/AnnotationType";
 import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
 import {AreaHighlightDocAnnotationComponent} from "./AreaHighlightDocAnnotationComponent";
 import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
-import {GroupDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 
 const log = Logger.create();
 
