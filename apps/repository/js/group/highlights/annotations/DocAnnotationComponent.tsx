@@ -6,6 +6,8 @@ import {isPresent} from "../../../../../../web/js/Preconditions";
 import {AnnotationType} from "../../../../../../web/js/metadata/AnnotationType";
 import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
 import {AreaHighlightDocAnnotationComponent} from "./AreaHighlightDocAnnotationComponent";
+import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
+import {GroupDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 
 const log = Logger.create();
 
@@ -23,7 +25,8 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { docAnnotation } = this.props;
+        const {docAnnotationProfileRecord} = this.props;
+        const docAnnotation = docAnnotationProfileRecord.value;
 
         if (! isPresent(docAnnotation.id)) {
             log.warn("No annotation id!", docAnnotation);
@@ -43,14 +46,14 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
 
                 <AreaHighlightDocAnnotationComponent key={key}
                                                      persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                                     docAnnotation={docAnnotation}/>
+                                                     docAnnotationProfileRecord={docAnnotationProfileRecord}/>
             );
 
         } else if (docAnnotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
 
             return (
                 <TextHighlightDocAnnotationComponent key={key}
-                                                     docAnnotation={docAnnotation}/>
+                                                     docAnnotationProfileRecord={docAnnotationProfileRecord}/>
             );
 
         } else {
@@ -63,7 +66,7 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
 }
 interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly docAnnotation: BaseDocAnnotation;
+    readonly docAnnotationProfileRecord: ProfileRecord<BaseDocAnnotation>;
 }
 
 interface IState {

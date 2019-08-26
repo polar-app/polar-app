@@ -5,6 +5,8 @@ import {HighlightColors} from "../../../../../../web/js/metadata/HighlightColor"
 import {BaseDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
 import {ITextHighlight} from "../../../../../../web/js/metadata/ITextHighlight";
 import {TextHighlights} from "../../../../../../web/js/metadata/TextHighlights";
+import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
+import {GroupDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -20,7 +22,9 @@ export class TextHighlightDocAnnotationComponent extends React.Component<IProps,
 
     public render() {
 
-        const { docAnnotation } = this.props;
+        const {props} = this;
+        const {docAnnotationProfileRecord} = props;
+        const docAnnotation = docAnnotationProfileRecord.value;
         const original = docAnnotation.original as ITextHighlight;
 
         const attrType = AnnotationTypes.toDataAttribute(docAnnotation.annotationType);
@@ -81,7 +85,7 @@ export class TextHighlightDocAnnotationComponent extends React.Component<IProps,
 }
 interface IProps {
 
-    readonly docAnnotation: BaseDocAnnotation;
+    readonly docAnnotationProfileRecord: ProfileRecord<BaseDocAnnotation>;
 
 }
 

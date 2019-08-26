@@ -41,7 +41,7 @@ export class ProfileJoins {
         return values.map((value): ProfileRecord<T> => {
 
             const {profileID} = value;
-            const profile = Optional.of(resolvedProfiles[profileID]).getOrUndefined();
+            const profile = profileID ? Optional.of(resolvedProfiles[profileID]).getOrUndefined() : undefined;
 
             return {
                 value,
@@ -56,7 +56,7 @@ export class ProfileJoins {
 }
 
 export interface ProfileIDRecord {
-    readonly profileID: ProfileIDStr;
+    readonly profileID?: ProfileIDStr;
 }
 
 export interface ProfileRecord<T extends ProfileIDRecord> {

@@ -6,10 +6,14 @@ import {IAreaHighlight} from "../../../../../../web/js/metadata/IAreaHighlight";
 import {DocFileResolvers} from "../../../../../../web/js/datastore/DocFileResolvers";
 import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
 import {Images} from "../../../../../../web/js/metadata/Images";
+import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
+import {GroupDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 
 const Image = (props: IProps) => {
 
-    const {docAnnotation, persistenceLayerProvider} = props;
+    const {docAnnotationProfileRecord, persistenceLayerProvider} = props;
+    const docAnnotation = docAnnotationProfileRecord.value;
+
     const areaHighlight = docAnnotation.original as IAreaHighlight;
 
     const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
@@ -41,7 +45,8 @@ export class AreaHighlightDocAnnotationComponent extends React.Component<IProps,
 
     public render() {
         const {props} = this;
-        const {docAnnotation} = props;
+        const {docAnnotationProfileRecord} = props;
+        const docAnnotation = docAnnotationProfileRecord.value;
 
         const areaHighlight = docAnnotation.original as IAreaHighlight;
 
@@ -58,7 +63,7 @@ export class AreaHighlightDocAnnotationComponent extends React.Component<IProps,
                 }}>
 
                     <Image persistenceLayerProvider={this.props.persistenceLayerProvider}
-                           docAnnotation={docAnnotation}/>
+                           docAnnotationProfileRecord={docAnnotationProfileRecord}/>
 
                 </div>
 
@@ -70,7 +75,7 @@ export class AreaHighlightDocAnnotationComponent extends React.Component<IProps,
 }
 interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly docAnnotation: BaseDocAnnotation;
+    readonly docAnnotationProfileRecord: ProfileRecord<BaseDocAnnotation>;
 }
 
 interface IState {

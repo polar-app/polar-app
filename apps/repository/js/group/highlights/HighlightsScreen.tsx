@@ -12,6 +12,7 @@ import {FixedNav, FixedNavBody} from "../../FixedNav";
 import {RepoHeader} from "../../repo_header/RepoHeader";
 import {PersistenceLayerManager} from "../../../../../web/js/datastore/PersistenceLayerManager";
 import {HighlightsTable} from "./HighlightsTable";
+import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 
 const log = Logger.create();
 
@@ -41,14 +42,16 @@ export class HighlightsScreen extends React.Component<IProps, IState> {
                 return;
             }
 
-            const groupDocAnnotations = await GroupDocAnnotations.list(group.id);
+            const docAnnotations = await GroupDocAnnotations.list(group.id);
+
+            const docAnnotationProfileRecords = await ProfileJoins.join(docAnnotations);
 
             this.setState({
                 ...this.state,
                 groupHighlightsData: {
                     id: group.id,
                     group,
-                    groupDocAnnotations,
+                    docAnnotationProfileRecords,
                 }});
 
         };
