@@ -16,11 +16,6 @@ export class HighlightsTable extends React.Component<IProps, IState> {
         if (! groupHighlightsData) {
             return <div/>;
         }
-        // {/*<HighlightCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}*/}
-        // {/*               key={groupDocAnnotation.id} {...groupDocAnnotation}/>)}*/}
-
-        {/*<div key={groupDocAnnotation.id} {...groupDocAnnotation}>asdf</div>*/}
-
         return (
 
             <div className="border-bottom">

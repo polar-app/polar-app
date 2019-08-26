@@ -13,6 +13,7 @@ import {RepoHeader} from "../../repo_header/RepoHeader";
 import {PersistenceLayerManager} from "../../../../../web/js/datastore/PersistenceLayerManager";
 import {HighlightsTable} from "./HighlightsTable";
 import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
+import {GroupNavbar} from "../GroupNavbar";
 
 const log = Logger.create();
 
@@ -78,33 +79,10 @@ export class HighlightsScreen extends React.Component<IProps, IState> {
 
                         <div className="col">
 
-                            {/*<div className="mt-2 p-2 border-top border-left border-right bg-grey000">*/}
-
-                            {/*    <div style={{display: 'flex'}}*/}
-                            {/*         className="w-100">*/}
-
-                            {/*        <div style={{flexGrow: 1}}>*/}
-                            {/*            <h3>Groups</h3>*/}
-                            {/*        </div>*/}
-
-                            {/*        <div className="text-right">*/}
-                            {/*            <a href="#groups/create"*/}
-                            {/*               className="btn btn-success btn-sm">Create Group</a>*/}
-                            {/*        </div>*/}
-
-                            {/*    </div>*/}
-
-                            {/*</div>*/}
-
                             <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
 
-                                <div style={{display: 'flex'}}
-                                     className="w-100">
-
-                                    <div style={{flexGrow: 1}}>
-                                        <h3>Highlights for {this.state.name}</h3>
-                                    </div>
-
+                                <div>
+                                    <GroupNavbar groupName={this.state.name}/>
                                 </div>
 
                             </div>

@@ -14,6 +14,7 @@ import {GroupDeleteButton} from './GroupDeleteButton';
 import {GroupURLs} from "./GroupURLs";
 import {SimpleTabs} from "../../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../../web/js/ui/simple_tab/SimpleTab";
+import {GroupNavbar} from "./GroupNavbar";
 
 const log = Logger.create();
 
@@ -88,43 +89,16 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
                         <div className="col">
 
-                            {/*<div className="mt-2 p-2 border-top border-left border-right bg-grey000">*/}
-
-                            {/*    <div style={{display: 'flex'}}*/}
-                            {/*         className="w-100">*/}
-
-                            {/*        <div style={{flexGrow: 1}}>*/}
-                            {/*            <h3>Groups</h3>*/}
-                            {/*        </div>*/}
-
-                            {/*        <div className="text-right">*/}
-                            {/*            <a href="#groups/create"*/}
-                            {/*               className="btn btn-success btn-sm">Create Group</a>*/}
-                            {/*        </div>*/}
-
-                            {/*    </div>*/}
-
-                            {/*</div>*/}
-
                             <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
 
-                                <div style={{display: 'flex'}}
-                                     className="w-100">
+                                <div>
+                                    <GroupNavbar groupName={this.state.name}>
 
-                                    <div>
-                                        <h3>{this.state.name}</h3>
-                                    </div>
+                                        <VerticalAlign>
+                                            <GroupDeleteButton groupData={this.state.groupData}/>
+                                        </VerticalAlign>
 
-                                    <div style={{flexGrow: 1}}>
-                                        <SimpleTabs>
-                                            <SimpleTab href={`#group/${this.state.name}/highlights`} text="Highlights"/>
-                                        </SimpleTabs>
-                                    </div>
-
-                                    <VerticalAlign>
-                                        <GroupDeleteButton groupData={this.state.groupData}/>
-                                    </VerticalAlign>
-
+                                    </GroupNavbar>
                                 </div>
 
                             </div>

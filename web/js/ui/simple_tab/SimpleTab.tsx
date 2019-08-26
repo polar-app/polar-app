@@ -1,5 +1,4 @@
 import * as React from 'react';
-import doc = Mocha.reporters.doc;
 
 export class SimpleTab extends React.Component<IProps, IState> {
 
