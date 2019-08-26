@@ -21,7 +21,9 @@ export class HighlightsTable extends React.Component<IProps, IState> {
             <div className="border-bottom">
                 {groupHighlightsData.docAnnotationProfileRecords.map(docAnnotationProfileRecord =>
                     <HighlightCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
-                                   key={docAnnotationProfileRecord.value.id} docAnnotationProfileRecord={docAnnotationProfileRecord}/>)}
+                                   key={docAnnotationProfileRecord.value.id}
+                                   groupID={groupHighlightsData.group.id}
+                                   docAnnotationProfileRecord={docAnnotationProfileRecord}/>)}
             </div>
 
         );

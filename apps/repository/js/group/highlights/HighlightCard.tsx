@@ -4,6 +4,8 @@ import {GroupDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc
 import {DocAnnotationComponent} from "./annotations/DocAnnotationComponent";
 import {ProfileRecord} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 import {ProfileHeader} from "./ProfileHeader";
+import {DocFooter} from "./DocFooter";
+import {GroupIDStr} from "../../../../../web/js/datastore/Datastore";
 
 export class HighlightCard extends React.Component<IProps, IState> {
 
@@ -16,31 +18,6 @@ export class HighlightCard extends React.Component<IProps, IState> {
         return (
 
             <div className="border-top border-left border-right p-2">
-
-                {/*<LeftRightSplit left={<div style={{display: 'flex'}}>*/}
-
-                {/*                    <VerticalAlign>*/}
-                {/*                        <a className="text-lg" href={'#group/' + this.props.id}>{group.name}</a>*/}
-                {/*                    </VerticalAlign>*/}
-
-                {/*                </div>}*/}
-                {/*                right={<GroupDocAddButton groupID={group.id}/>}/>*/}
-
-                {/*<p>*/}
-                {/*    {group.description}*/}
-                {/*</p>*/}
-
-                {/*<div style={{display: 'flex'}}>*/}
-
-                {/*    <VerticalAlign>*/}
-                {/*        <i className="fa fa-users mr-1 text-muted" aria-hidden="true"/>*/}
-                {/*    </VerticalAlign>*/}
-
-                {/*    <VerticalAlign>*/}
-                {/*        {group.nrMembers} members*/}
-                {/*    </VerticalAlign>*/}
-
-                {/*</div>*/}
 
                 <div style={{display: 'flex'}}>
 
@@ -75,6 +52,14 @@ export class HighlightCard extends React.Component<IProps, IState> {
                     </div>
                 </div>
 
+                <div>
+
+                    <DocFooter persistenceLayerProvider={this.props.persistenceLayerProvider}
+                               groupID={this.props.groupID}
+                               docAnnotationProfileRecord={this.props.docAnnotationProfileRecord}/>
+
+                </div>
+
             </div>
 
         );
@@ -84,6 +69,7 @@ export class HighlightCard extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly groupID: GroupIDStr;
     readonly docAnnotationProfileRecord: ProfileRecord<GroupDocAnnotation>;
 
 }
