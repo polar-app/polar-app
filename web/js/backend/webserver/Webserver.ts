@@ -87,6 +87,7 @@ export class Webserver implements WebRequestHandler {
 
         this.registerFilesHandler();
         this.registerResourcesHandler();
+        this.registerRewrites();
 
         if (this.webserverConfig.useSSL) {
 
