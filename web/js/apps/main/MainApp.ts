@@ -25,6 +25,7 @@ import {RendererAnalyticsService} from '../../ga/RendererAnalyticsService';
 import {AnalyticsFileLoader} from './file_loaders/AnalyticsFileLoader';
 import {DefaultFileLoader} from './file_loaders/DefaultFileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
+import {DefaultRewrites} from "../../backend/webserver/DefaultRewrites";
 
 declare var global: any;
 
@@ -57,6 +58,7 @@ export class MainApp {
             port: WEBSERVER_PORT,
             host: 'localhost',
             useSSL: false,
+            rewrites: DefaultRewrites.create()
         });
 
         const fileRegistry = new FileRegistry(webserverConfig);

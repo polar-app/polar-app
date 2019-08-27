@@ -46,6 +46,10 @@ export class Webserver implements WebRequestHandler {
 
         this.app = express();
 
+        // handle rewrites FIRST so that we can send URLs to the right destination
+        // before all other handlers.
+        this.registerRewrites();
+
         this.app.use((req, res, next) => {
 
             next();
@@ -83,11 +87,11 @@ export class Webserver implements WebRequestHandler {
             next();
         };
 
+
         // this.app.use(requestLogger);
 
         this.registerFilesHandler();
         this.registerResourcesHandler();
-        this.registerRewrites();
 
         if (this.webserverConfig.useSSL) {
 

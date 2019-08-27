@@ -3,6 +3,7 @@ import {AppPath} from '../web/js/electron/app_path/AppPath';
 import {Webserver} from '../web/js/backend/webserver/Webserver';
 import {FileRegistry} from '../web/js/backend/webserver/FileRegistry';
 import {WebserverCerts} from '../web/js/backend/webserver/WebserverCerts';
+import {DefaultRewrites} from "../web/js/backend/webserver/DefaultRewrites";
 
 const webserverConfig = WebserverConfig.create({
    dir: 'dist/public',
@@ -12,7 +13,8 @@ const webserverConfig = WebserverConfig.create({
    ssl: {
        cert: WebserverCerts.CERT,
        key: WebserverCerts.KEY,
-   }
+   },
+   rewrites: DefaultRewrites.create()
 });
 
 const fileRegistry = new FileRegistry(webserverConfig);

@@ -8,17 +8,10 @@ export class WebserverConfig implements IWebserverConfig {
 
     public readonly host: string;
 
-    /**
-     * When true, use SSL. Otherwise just use HTTP.
-     */
     public readonly useSSL?: boolean;
 
     public readonly ssl?: SSLConfig;
 
-    /**
-     * Keeps track of URL rewrites that can be used within the app so that
-     * URLs can properly load.
-     */
     public readonly rewrites?: ReadonlyArray<Rewrite>;
 
     constructor(dir: string, port: number) {
@@ -57,6 +50,12 @@ export interface IWebserverConfig {
     readonly useSSL?: boolean;
 
     readonly ssl?: SSLConfig;
+
+    /**
+     * Keeps track of URL rewrites that can be used within the app so that
+     * URLs can properly load.
+     */
+    readonly rewrites?: ReadonlyArray<Rewrite>;
 
 }
 
