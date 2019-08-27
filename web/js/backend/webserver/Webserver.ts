@@ -1,6 +1,6 @@
 // start a simple static HTTP server only listening on localhost
 
-import {WebserverConfig} from './WebserverConfig';
+import {Rewrite, WebserverConfig} from './WebserverConfig';
 import {FileRegistry} from './FileRegistry';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
@@ -202,6 +202,42 @@ export class Webserver implements WebRequestHandler {
             } catch (e) {
                 log.error(`Could not handle serving file. (req.path=${req.path})`, e);
             }
+
+        });
+
+    }
+
+    private registerRewrites() {
+
+        const rewrites = this.webserverConfig.rewrites || [];
+
+        interface RewriteLookup {
+            [source: string]: Rewrite;
+        }
+
+        const createRewriteLookup = (): RewriteLookup => {
+
+            const result: RewriteLookup = {};
+
+            for (const rewrite of rewrites) {
+                result[rewrite.source] = rewrite;
+            }
+
+            return result;
+
+        };
+
+        const rewriteLookup = createRewriteLookup();
+
+        this.app!.use(function(req, res, next) {
+
+            const rewrite = rewriteLookup[req.url];
+
+            if (rewrite) {
+                req.url = rewrite.destination;
+            }
+
+            next();
 
         });
 

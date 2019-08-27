@@ -15,6 +15,12 @@ export class WebserverConfig implements IWebserverConfig {
 
     public readonly ssl?: SSLConfig;
 
+    /**
+     * Keeps track of URL rewrites that can be used within the app so that
+     * URLs can properly load.
+     */
+    public readonly rewrites?: ReadonlyArray<Rewrite>;
+
     constructor(dir: string, port: number) {
         this.dir = Preconditions.assertNotNull(dir, "dir");
         this.port = Preconditions.assertNotNull(port, "port");
@@ -52,4 +58,9 @@ export interface IWebserverConfig {
 
     readonly ssl?: SSLConfig;
 
+}
+
+export interface Rewrite {
+    readonly source: string;
+    readonly destination: string;
 }
