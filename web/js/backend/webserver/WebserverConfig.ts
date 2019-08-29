@@ -1,4 +1,5 @@
 import {Preconditions} from '../../Preconditions';
+import {Rewrite} from "./Rewrites";
 
 export class WebserverConfig implements IWebserverConfig {
 
@@ -59,7 +60,3 @@ export interface IWebserverConfig {
 
 }
 
-export interface Rewrite {
-    readonly source: string;
-    readonly destination: string;
-}

@@ -1,6 +1,6 @@
 // start a simple static HTTP server only listening on localhost
 
-import {Rewrite, WebserverConfig} from './WebserverConfig';
+import {WebserverConfig} from './WebserverConfig';
 import {FileRegistry} from './FileRegistry';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
@@ -14,6 +14,7 @@ import * as http from "http";
 import * as https from "https";
 import {PathParams} from 'express-serve-static-core';
 import {FilePaths} from '../../util/FilePaths';
+import {Rewrite} from "./Rewrites";
 
 const log = Logger.create();
 
@@ -236,6 +237,8 @@ export class Webserver implements WebRequestHandler {
 
         this.app!.use(function(req, res, next) {
 
+            // FIXME: this isn't going to work for /group/:group/highlights
+            // or anything that is a fuzzy path lookup ...
             const rewrite = rewriteLookup[req.url];
 
             if (rewrite) {

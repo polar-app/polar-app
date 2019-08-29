@@ -1,8 +1,9 @@
-import {Rewrite} from "./WebserverConfig";
+import {Rewrite} from "./Rewrites";
 
 export class DefaultRewrites {
 
     public static create(): ReadonlyArray<Rewrite> {
+
         return [
             {
                 "source": "/",
@@ -42,5 +43,20 @@ export class DefaultRewrites {
                 "destination": "/web/dist/pdfjsWorker-bundle.js"
             }
         ];
+
     }
+
 }
+
+export class RewriteURLs {
+
+    public static slugToRegex(pattern: string) {
+
+        return pattern.replace(/(\/)(:[^/]+)/g, (subst, ...args: any[]): string => {
+            return args[0] + ":[^/]+";
+        });
+
+    }
+
+}
+
