@@ -8,7 +8,7 @@ import {
     PersistenceLayerManager,
     PersistenceLayerTypes
 } from '../../datastore/PersistenceLayerManager';
-import {HashRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
 import {SyncBar, SyncBarProgress} from '../../ui/sync_bar/SyncBar';
 import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
 import AnnotationRepoScreen
@@ -306,36 +306,61 @@ export class RepositoryApp {
                             {/*}*/}
                         {/*]}/>*/}
 
-                <HashRouter hashType="noslash">
+                {/*FIXME: make a BrowserRouter nested with a HashRouter*/}
 
+                <BrowserRouter>
                     <Switch>
-                        <Route exact path='/(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
-                        <Route exact path='/annotations' render={renderAnnotationRepoScreen}/>
-                        <Route exact path='/whats-new' render={renderWhatsNewScreen}/>
-                        <Route exact path='/community' render={renderCommunityScreen}/>
-                        <Route exact path='/stats' render={renderStatsScreen}/>
-                        <Route exact path='/logs' render={renderLogsScreen}/>
-                        <Route exact path='/editors-picks' render={editorsPicksScreen}/>
-                        <Route exact path='/plans' render={premiumScreen}/>
-                        <Route exact path='/support' render={supportScreen}/>
+                        <Route exact path='/'>
 
+                            <HashRouter hashType="noslash">
+
+                                <Switch>
+
+                                    <Route exact path='/(logout|overview|login|configured|invite|premium)?'
+                                           render={renderDocRepoScreen}/>
+
+                                    <Route exact path='^/annotations$' render={renderAnnotationRepoScreen}/>
+
+                                    <Route exact path='^/whats-new$' render={renderWhatsNewScreen}/>
+
+                                    <Route exact path='/community' render={renderCommunityScreen}/>
+
+                                    <Route exact path='/stats' render={renderStatsScreen}/>
+
+                                    <Route exact path='/logs' render={renderLogsScreen}/>
+
+                                    <Route exact path='/editors-picks' render={editorsPicksScreen}/>
+
+                                    <Route exact path='/plans' render={premiumScreen}/>
+
+                                    <Route exact path='/support' render={supportScreen}/>
+
+                                    <Route exact path='/premium' render={premiumScreen}/>
+
+                                    <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
+                                    <Route path='/group/' render={renderGroupScreen}/>
+
+                                    <Route exact path='/groups' render={renderGroupsScreen}/>
+                                    <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
+
+                                </Switch>
+
+                            </HashRouter>
+
+                        </Route>
+                    </Switch>
+
+                </BrowserRouter>
+
+                <BrowserRouter>
+                    <Switch>
                         <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
                         <Route path='/group/' render={renderGroupScreen}/>
 
                         <Route exact path='/groups' render={renderGroupsScreen}/>
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
-
                     </Switch>
-
-                </HashRouter>
-
-                <HashRouter hashType="noslash">
-
-                    <Switch>
-                        <Route exact path='/premium' render={premiumScreen}/>
-                    </Switch>
-
-                </HashRouter>
+                </BrowserRouter>
 
 
                 {/*Used for file uploads.  This has to be on the page and can't be*/}
