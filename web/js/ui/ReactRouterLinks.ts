@@ -7,11 +7,11 @@ export class ReactRouterLinks {
         const canonicalizeHash = (hash?: string): string => {
 
             if (! hash) {
-                return "";
+                return "#";
             }
 
-            if (hash === '#') {
-                return "";
+            if (! hash.startsWith("#")) {
+                return "#" + hash;
             }
 
             return hash;
@@ -19,9 +19,9 @@ export class ReactRouterLinks {
         };
 
         return document.location.pathname === pathname &&
-            canonicalizeHash(document.location.hash) === canonicalizeHash(hash);
+               canonicalizeHash(document.location.hash) === canonicalizeHash(hash);
 
-    };
+    }
 
 }
 

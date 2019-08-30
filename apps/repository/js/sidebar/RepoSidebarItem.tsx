@@ -3,6 +3,7 @@ import ListGroupItem from 'reactstrap/lib/ListGroupItem';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {Link} from "react-router-dom";
 import {ReactRouterLinks} from "../../../../web/js/ui/ReactRouterLinks";
+import contentTracing = Electron.contentTracing;
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -18,6 +19,8 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
 
         const active = ReactRouterLinks.isActive(this.props.target);
 
+        const activeClassName = active ? 'active' : '';
+
         return (
 
             <SimpleTooltipEx text={this.props.tooltip || ""}
@@ -27,7 +30,7 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
                 <Link id="sidebar-item-stats"
                       to={this.props.target}
                       onClick={() => this.props.onClick()}
-                      className="list-group-item-action list-group-item">
+                      className={"list-group-item-action list-group-item " + activeClassName}>
 
                         <div style={{display: 'flex'}}>
 
@@ -42,28 +45,6 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
                         </div>
 
                 </Link>
-
-
-                {/*<a {...(this.props.id ? {id: this.props.id} : {})}*/}
-                {/*   active={active}*/}
-                {/*   tag="a"*/}
-                {/*   href={this.props.href}*/}
-                {/*   onClick={() => this.props.onClick()}*/}
-                {/*   className="list-group-item-action list-group-item">*/}
-
-                {/*    <div style={{display: 'flex'}}>*/}
-
-                {/*        <div style={{width: '1em', textAlign: 'right'}}>*/}
-                {/*            <i className={this.props.iconClassName}/>*/}
-                {/*        </div>*/}
-
-                {/*        <div style={{paddingLeft: '10px', fontWeight: 'normal'}}>*/}
-                {/*            {this.props.text}*/}
-                {/*        </div>*/}
-
-                {/*    </div>*/}
-
-                {/*</a>*/}
 
             </SimpleTooltipEx>
 
