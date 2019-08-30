@@ -54,20 +54,6 @@ export class DefaultRewrites {
 
 export class RewriteURLs {
 
-    // TODO: migrate to using: path-to-regexp as this is what react-router is
-    // using internally.
-    //
-    // https://github.com/pillarjs/path-to-regexp/tree/v1.7.0
-
-    public static slugToRegex(pattern: string) {
-
-        pattern = RegExps.escape(pattern);
-
-        return pattern.replace(/(\/)(:[^/]+)/g, (subst, ...args: any[]): string => {
-            return args[0] + "[^/]+";
-        });
-
-    }
 
 }
 

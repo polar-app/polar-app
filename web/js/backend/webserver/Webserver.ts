@@ -16,6 +16,7 @@ import {PathParams} from 'express-serve-static-core';
 import {FilePaths} from '../../util/FilePaths';
 import {Rewrite, Rewrites} from "./Rewrites";
 import {RewriteURLs} from "./DefaultRewrites";
+import {PathToRegexps} from "./PathToRegexps";
 
 const log = Logger.create();
 
@@ -224,7 +225,7 @@ export class Webserver implements WebRequestHandler {
 
                 // TODO: it's probably not efficient to build this regex each
                 // time
-                const regex = RewriteURLs.slugToRegex(rewrite.source);
+                const regex = PathToRegexps.pathToRegexp(rewrite.source);
 
                 if (Rewrites.matchesRegex(regex, url)) {
                     return rewrite;

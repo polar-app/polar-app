@@ -7,13 +7,14 @@ import {IAreaHighlight} from "../../../../metadata/IAreaHighlight";
 import {ITextHighlight} from "../../../../metadata/ITextHighlight";
 import {ProfileIDStr} from "../Profiles";
 import {ISODateTimeString} from "../../../../metadata/ISODateTimeStrings";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 export interface BaseDocAnnotation {
 
     /**
      * The main ID of this annotations which can change over time.
      */
-    readonly id: string;
+    readonly id: IDStr;
 
     readonly docID: DocIDStr;
 

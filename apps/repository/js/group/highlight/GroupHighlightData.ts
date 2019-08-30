@@ -1,10 +1,10 @@
 import {GroupIDStr} from "../../../../../web/js/datastore/Datastore";
 import {Group} from "../../../../../web/js/datastore/sharing/db/Groups";
-import {GroupDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 import {ProfileRecord} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
+import {GroupDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 
-export interface GroupHighlightsData {
+export interface GroupHighlightData {
     readonly id: GroupIDStr;
     readonly group: Group;
-    readonly docAnnotationProfileRecords: ReadonlyArray<ProfileRecord<GroupDocAnnotation>>;
+    readonly docAnnotationProfileRecord: ProfileRecord<GroupDocAnnotation>;
 }

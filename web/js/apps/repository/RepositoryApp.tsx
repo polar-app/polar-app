@@ -331,9 +331,11 @@ export class RepositoryApp {
                         <Route exact path='/#premium' render={premiumScreen}/>
 
                         <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
+
                         <Route path='/group/' render={renderGroupScreen}/>
 
                         <Route exact path='/groups' render={renderGroupsScreen}/>
+
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
 
                         <Route exact path='/' render={renderDocRepoScreen}/>
