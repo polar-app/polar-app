@@ -59,34 +59,9 @@ import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 import {UIModes} from "../../ui/uimodes/UIModes";
 import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/HighlightsScreen";
+import {ReactRouters} from "../../ui/ReactRouters";
 
 const log = Logger.create();
-
-/**
- * This is a big of a hack to support routes with hashes in them with react router.
- */
-const locationWithPathnameHash = () => {
-
-    const computePathname = () => {
-        return document.location.hash ?
-            document.location.pathname + '' + document.location.hash : document.location.pathname;
-
-    };
-
-    return {
-        get pathname() {
-            return computePathname();
-        },
-        get search() {
-            return document.location.search;
-        },
-        get hash() {
-            return document.location.hash;
-        },
-        state: null,
-    };
-
-};
 
 export class RepositoryApp {
 
@@ -333,7 +308,7 @@ export class RepositoryApp {
                         {/*]}/>*/}
 
                 <BrowserRouter>
-                    <Switch location={locationWithPathnameHash()}>
+                    <Switch location={ReactRouters.createLocationWithPathnameHash()}>
 
                         <Route exact path='/#annotations' render={renderAnnotationRepoScreen} />
 

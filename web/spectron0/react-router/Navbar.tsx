@@ -31,7 +31,8 @@ export class Navbar extends React.Component<IProps, IState> {
                 <p>
                     <Link
                         to={{
-                            pathname: "/hello",
+                            pathname: "/",
+                            hash: "hello"
                         }}>
 
                         #hello
