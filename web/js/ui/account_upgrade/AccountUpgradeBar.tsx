@@ -29,13 +29,10 @@ export class AccountUpgradeBar extends React.Component<IProps, IState> {
                 return;
             }
 
-            await Accounts.onSnapshot(account => {
-                this.setState({...this.state, account});
-            });
+            const account = await Accounts.get();
+            const machineDatastore = await MachineDatastores.get();
 
-            await MachineDatastores.onSnapshot(machineDatastore => {
-                this.setState({...this.state, machineDatastore});
-            });
+            this.setState({...this.state, accountData: {account, machineDatastore}});
 
         };
 
@@ -46,10 +43,16 @@ export class AccountUpgradeBar extends React.Component<IProps, IState> {
 
     public render() {
 
-        const plan = this.state.account ? this.state.account.plan : undefined;
+        if ( ! this.state.accountData) {
+            return <div/>;
+        }
+
+        const {account, machineDatastore} = this.state.accountData;
+
+        const plan = account ? account.plan : undefined;
 
         return (
-            <AccountUpgradeBarView plan={plan} accountUsage={this.state.machineDatastore}/>
+            <AccountUpgradeBarView plan={plan} accountUsage={machineDatastore}/>
         );
 
     }
@@ -60,7 +63,10 @@ interface IProps {
 }
 
 interface IState {
+    readonly accountData?: AccountData;
+}
+
+export interface AccountData {
     readonly account?: Account;
     readonly machineDatastore?: MachineDatastore;
 }
-
