@@ -16,42 +16,26 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <p>
-                    Location: {document.location.href}
-                </p>
-
                 <BrowserRouter>
 
                     <Switch>
 
+                        <Route exact path='/#hello'>
+
+                            <div>
+                                <Navbar/>
+
+                                this is the hello URL
+                            </div>
+
+                        </Route>
+
                         <Route exact path='/'>
+                            <div>
+                                <Navbar/>
 
-                            <HashRouter hashType="noslash">
-
-                                <Switch>
-
-                                    <Route exact path='/hello'>
-
-                                        <div>
-                                            <Navbar/>
-
-                                            this is the hello URL
-                                        </div>
-
-                                    </Route>
-
-                                    <Route exact path=''>
-                                        <div>
-                                            <Navbar/>
-
-                                            this is the default page.
-                                        </div>
-
-                                    </Route>
-
-                                </Switch>
-
-                            </HashRouter>
+                                this is the default page.
+                            </div>
 
                         </Route>
 

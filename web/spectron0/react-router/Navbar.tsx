@@ -13,6 +13,10 @@ export class Navbar extends React.Component<IProps, IState> {
             <div>
 
                 <p>
+                    Location: {document.location.href}
+                </p>
+
+                <p>
                     <Link
                         to={{
                             pathname: "/",
