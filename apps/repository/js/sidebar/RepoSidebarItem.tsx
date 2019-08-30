@@ -4,6 +4,7 @@ import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {Link} from "react-router-dom";
 import {ReactRouterLinks} from "../../../../web/js/ui/ReactRouterLinks";
 import contentTracing = Electron.contentTracing;
+import {ClassNames} from "../../../../web/js/ui/ClassNames";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -18,9 +19,7 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
     public render() {
 
         const active = ReactRouterLinks.isActive(this.props.target);
-
-        const activeClassName = active ? 'active' : '';
-
+        
         return (
 
             <SimpleTooltipEx text={this.props.tooltip || ""}
@@ -30,7 +29,7 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
                 <Link id="sidebar-item-stats"
                       to={this.props.target}
                       onClick={() => this.props.onClick()}
-                      className={"list-group-item-action list-group-item " + activeClassName}>
+                      className={ClassNames.withToggled(active, 'active', "list-group-item-action list-group-item")}>
 
                         <div style={{display: 'flex'}}>
 
