@@ -14,6 +14,7 @@ import {
     Groups
 } from "../../../../web/js/datastore/sharing/db/Groups";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
+import {Link} from "react-router-dom";
 
 const log = Logger.create();
 
@@ -34,7 +35,9 @@ export class CreateGroupButton extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <a href="#groups/create" onClick={() => this.onCreate()} className="btn btn-success btn-sm">Create Group</a>
+            <Link to={{pathname: "/groups/create"}}
+                  onClick={() => this.onCreate()}
+                  className="btn btn-success btn-sm">Create Group</Link>
 
         );
 

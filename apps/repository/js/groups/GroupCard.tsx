@@ -4,6 +4,7 @@ import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 import {LeftRightSplit} from "../../../../web/js/ui/left_right_split/LeftRightSplit";
 import {GroupJoinButton} from "./GroupJoinButton";
+import {Link} from "react-router-dom";
 
 export class GroupCard extends React.Component<IProps, IState> {
 
@@ -22,7 +23,14 @@ export class GroupCard extends React.Component<IProps, IState> {
                 <LeftRightSplit left={<div style={{display: 'flex'}}>
 
                                     <VerticalAlign>
-                                        <a className="text-lg" href={'#group/' + group.name!}>{group.name}</a>
+
+                                        <Link className="text-lg"
+                                              to={{pathname: '/group/' + group.name!}}>
+
+                                            {group.name}
+
+                                        </Link>
+
                                     </VerticalAlign>
 
                                 </div>}

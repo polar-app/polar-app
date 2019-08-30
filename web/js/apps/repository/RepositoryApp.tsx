@@ -306,16 +306,12 @@ export class RepositoryApp {
                             {/*}*/}
                         {/*]}/>*/}
 
-                {/*FIXME: make a BrowserRouter nested with a HashRouter*/}
-
                 <BrowserRouter>
                     <Switch>
 
-                        <Route exact path='/' render={renderDocRepoScreen}/>
+                        <Route exact path='/#annotations' render={renderAnnotationRepoScreen}/>
 
                         <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
-
-                        <Route exact path='^/annotations$' render={renderAnnotationRepoScreen}/>
 
                         <Route exact path='^/whats-new$' render={renderWhatsNewScreen}/>
 
@@ -338,6 +334,8 @@ export class RepositoryApp {
 
                         <Route exact path='/groups' render={renderGroupsScreen}/>
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
+
+                        <Route exact path='/' render={renderDocRepoScreen}/>
 
                     </Switch>
 

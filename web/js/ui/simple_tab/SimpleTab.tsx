@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Link} from "react-router-dom";
+import {ReactRouterLinks, Target} from "../ReactRouterLinks";
 
 export class SimpleTab extends React.Component<IProps, IState> {
 
@@ -16,30 +17,7 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
     public render() {
 
-        const isActive = () => {
-
-            const {pathname, hash} = this.props.target;
-
-            const canonicalizeHash = (hash?: string): string => {
-
-                if (! hash) {
-                    return "";
-                }
-
-                if (hash === '#') {
-                    return "";
-                }
-
-                return hash;
-
-            };
-
-            return document.location.pathname === pathname &&
-                   canonicalizeHash(document.location.hash) === canonicalizeHash(hash);
-
-        };
-
-        const active = isActive();
+        const active = ReactRouterLinks.isActive(this.props.target);
 
         const computeBorderColor = () => {
 
@@ -97,7 +75,3 @@ export interface IState {
     readonly hover: boolean;
 }
 
-export interface Target {
-    readonly pathname: string;
-    readonly hash?: string;
-}
