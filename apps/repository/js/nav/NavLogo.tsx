@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
+import {Link} from "react-router-dom";
 
 const Styles: IStyleMap = {
     parent: {
@@ -35,9 +36,9 @@ export class NavLogo extends React.PureComponent<IProps, IState> {
         return (
             <div style={Styles.parent}>
                 <div style={Styles.child}>
-                    <a href="#">
-                        <img src="/apps/repository/img/icon.svg" height="25"/>
-                    </a>
+                    <Link to={{pathname: '/', hash: '#'}}>
+                        <img src="/apps/repository/img/icon.svg" height="25" alt="Polar"/>
+                    </Link>
                 </div>
 
                 <div style={Styles.child}>
