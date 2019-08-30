@@ -4,4 +4,4 @@ import {FilePaths} from '../../js/util/FilePaths';
 const webRoot = FilePaths.join(__dirname, "..", "..", "..");
 const appRoot = __dirname;
 
-SpectronWebappMain.run(webRoot, appRoot, "/web/spectron0/firebase-cloud-aware-datastore/content.html");
+SpectronWebappMain.run({webRoot, appRoot, path: "/web/spectron0/firebase-cloud-aware-datastore/content.html"});

@@ -1,13 +1,21 @@
 import {AppPath} from '../electron/app_path/AppPath';
 import {SpectronMain2} from './SpectronMain2';
 import {PolarDataDir} from './PolarDataDir';
-import {WebserverConfig} from '../backend/webserver/WebserverConfig';
+import {
+    WebserverConfig,
+    WebserverConfigs
+} from '../backend/webserver/WebserverConfig';
 import {FileRegistry} from '../backend/webserver/FileRegistry';
 import {Webserver} from '../backend/webserver/Webserver';
+import {Rewrite} from "../backend/webserver/Rewrites";
 
 export class SpectronWebappMain {
 
-    public static run(webRoot: string, appRoot: string, path: string) {
+    public static run(opts: ISpectronWebappOpts) {
+
+        console.log("Running spectron webapp with: ", opts);
+
+        const {appRoot, webRoot, path, rewrites} = opts;
 
         AppPath.set(appRoot);
 
@@ -22,7 +30,7 @@ export class SpectronWebappMain {
 
             console.log("Running with web root: " + webRoot);
 
-            const webserverConfig = new WebserverConfig(webRoot, 8005);
+            const webserverConfig = WebserverConfigs.create({dir: webRoot, port: 8005, rewrites});
 
             const fileRegistry = new FileRegistry(webserverConfig);
             const webserver = new Webserver(webserverConfig, fileRegistry);
@@ -39,5 +47,20 @@ export class SpectronWebappMain {
         });
 
     }
+
+}
+
+export interface ISpectronWebappOpts {
+
+    readonly webRoot: string;
+
+    readonly appRoot: string;
+
+    /**
+     * The path to load in electron when the app is ready.
+     */
+    readonly path: string;
+
+    readonly rewrites?: ReadonlyArray<Rewrite>;
 
 }

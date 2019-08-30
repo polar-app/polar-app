@@ -21,13 +21,20 @@ export class WebserverConfig implements IWebserverConfig {
         this.host = "127.0.0.1";
     }
 
+}
+
+export class WebserverConfigs {
+
     public static create(config: IWebserverConfig): WebserverConfig {
 
+        const host = config.host || '127.0.0.1';
+
         const template = {
-            host: "127.0.0.1"
+            host
         };
 
-        return Object.assign(template, config);
+        return Object.assign(config, template);
+
     }
 
 }
@@ -43,7 +50,10 @@ export interface IWebserverConfig {
 
     readonly port: number;
 
-    readonly host: string;
+    /**
+     * The host address to use. Defaults to 127.0.0.1
+     */
+    readonly host?: string;
 
     /**
      * When true, use SSL. Otherwise just use HTTP.

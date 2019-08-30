@@ -1,11 +1,10 @@
-import {WebserverConfig} from '../web/js/backend/webserver/WebserverConfig';
-import {AppPath} from '../web/js/electron/app_path/AppPath';
 import {Webserver} from '../web/js/backend/webserver/Webserver';
 import {FileRegistry} from '../web/js/backend/webserver/FileRegistry';
 import {WebserverCerts} from '../web/js/backend/webserver/WebserverCerts';
 import {DefaultRewrites} from "../web/js/backend/webserver/DefaultRewrites";
+import {WebserverConfigs} from "../web/js/backend/webserver/WebserverConfig";
 
-const webserverConfig = WebserverConfig.create({
+const webserverConfig = WebserverConfigs.create({
    dir: 'dist/public',
    port: 443,
    host: 'localhost',
