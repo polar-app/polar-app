@@ -7,8 +7,8 @@ describe('DefaultRewrites', function() {
 
         it("basic", async function() {
 
-            assert.equal(RewriteURLs.slugToRegex("/:foo"), "/:[^/]+");
-            assert.equal(RewriteURLs.slugToRegex("/products/:product/page/:page"), "/products/:[^/]+/page/:[^/]+");
+            assert.equal(RewriteURLs.slugToRegex("/:foo"), "/[^/]+");
+            assert.equal(RewriteURLs.slugToRegex("/products/:product/page/:page"), "/products/[^/]+/page/[^/]+");
 
         });
 
