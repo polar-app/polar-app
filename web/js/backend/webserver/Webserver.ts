@@ -14,7 +14,8 @@ import * as http from "http";
 import * as https from "https";
 import {PathParams} from 'express-serve-static-core';
 import {FilePaths} from '../../util/FilePaths';
-import {Rewrite} from "./Rewrites";
+import {Rewrite, Rewrites} from "./Rewrites";
+import {RewriteURLs} from "./DefaultRewrites";
 
 const log = Logger.create();
 
@@ -217,33 +218,32 @@ export class Webserver implements WebRequestHandler {
 
         const rewrites = this.webserverConfig.rewrites || [];
 
-        interface RewriteLookup {
-            [source: string]: Rewrite;
-        }
-
-        const createRewriteLookup = (): RewriteLookup => {
-
-            const result: RewriteLookup = {};
+        const computeRewrite = (url: string): Rewrite | undefined => {
 
             for (const rewrite of rewrites) {
-                result[rewrite.source] = rewrite;
+
+                // TODO: it's probably not efficient to build this regex each
+                // time
+                const regex = RewriteURLs.slugToRegex(rewrite.source);
+
+                if (Rewrites.matchesRegex(regex, url)) {
+                    return rewrite;
+                }
+
             }
 
-            return result;
+            return undefined;
 
         };
 
-        const rewriteLookup = createRewriteLookup();
-
         this.app!.use(function(req, res, next) {
 
-            // FIXME: this isn't going to work for /group/:group/highlights
-            // or anything that is a fuzzy path lookup ...
-            const rewrite = rewriteLookup[req.url];
+            const rewrite = computeRewrite(req.url);
 
             if (rewrite) {
                 req.url = rewrite.destination;
             }
+
 
             next();
 

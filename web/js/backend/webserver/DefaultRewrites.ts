@@ -1,8 +1,12 @@
 import {Rewrite} from "./Rewrites";
+import {RegExps} from "../../util/RegExps";
 
 export class DefaultRewrites {
 
     public static create(): ReadonlyArray<Rewrite> {
+
+        // TODO: for now the source is a regular expression.  Make it into
+        // the same slug format that ReactRouter uses in the future.
 
         return [
             {
@@ -18,7 +22,7 @@ export class DefaultRewrites {
                 "destination": "/apps/repository/index.html"
             },
             {
-                "source": "/group",
+                "source": "/group/:group",
                 "destination": "/apps/repository/index.html"
             },
             {
@@ -52,8 +56,10 @@ export class RewriteURLs {
 
     public static slugToRegex(pattern: string) {
 
+        pattern = RegExps.escape(pattern);
+
         return pattern.replace(/(\/)(:[^/]+)/g, (subst, ...args: any[]): string => {
-            return args[0] + ":[^/]+";
+            return args[0] + "[^/]+";
         });
 
     }

@@ -9,6 +9,7 @@ describe('DefaultRewrites', function() {
 
             assert.equal(RewriteURLs.slugToRegex("/:foo"), "/:[^/]+");
             assert.equal(RewriteURLs.slugToRegex("/products/:product/page/:page"), "/products/:[^/]+/page/:[^/]+");
+
         });
 
     });
