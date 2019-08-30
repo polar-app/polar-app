@@ -20,7 +20,7 @@ export class Navbar extends React.Component<IProps, IState> {
                     <Link
                         to={{
                             pathname: "/",
-                            hash: "#",
+                            hash: "",
                         }}>
 
                         Link to #
@@ -31,8 +31,7 @@ export class Navbar extends React.Component<IProps, IState> {
                 <p>
                     <Link
                         to={{
-                            pathname: "/",
-                            hash: "#hello",
+                            pathname: "/hello",
                         }}>
 
                         #hello
@@ -45,6 +44,7 @@ export class Navbar extends React.Component<IProps, IState> {
                     <Link
                         to={{
                             pathname: "/user",
+                            hash: ""
                         }}>
 
                         /user

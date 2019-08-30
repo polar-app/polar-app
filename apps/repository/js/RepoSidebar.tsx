@@ -155,7 +155,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                         <RepoSidebarItem id="sidebar-item-groups"
                                          tooltip="Show public groups"
-                                         target={{pathname: "/", hash: "groups"}}
+                                         target={{pathname: "/groups"}}
                                          onClick={() => this.toggle()}
                                          iconClassName="fas fa-user-friends"
                                          text="Groups"/>

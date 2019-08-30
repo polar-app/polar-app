@@ -62,6 +62,32 @@ import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/
 
 const log = Logger.create();
 
+/**
+ * This is a big of a hack to support routes with hashes in them with react router.
+ */
+const locationWithPathnameHash = () => {
+
+    const computePathname = () => {
+        return document.location.hash ?
+            document.location.pathname + '' + document.location.hash : document.location.pathname;
+
+    };
+
+    return {
+        get pathname() {
+            return computePathname();
+        },
+        get search() {
+            return document.location.search;
+        },
+        get hash() {
+            return document.location.hash;
+        },
+        state: null,
+    };
+
+};
+
 export class RepositoryApp {
 
     private readonly persistenceLayerManager = new PersistenceLayerManager();
@@ -307,13 +333,13 @@ export class RepositoryApp {
                         {/*]}/>*/}
 
                 <BrowserRouter>
-                    <Switch>
+                    <Switch location={locationWithPathnameHash()}>
 
-                        <Route exact path='/#annotations' render={renderAnnotationRepoScreen}/>
+                        <Route exact path='/#annotations' render={renderAnnotationRepoScreen} />
+
+                        <Route exact path='/#whats-new' render={renderWhatsNewScreen} />
 
                         <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
-
-                        <Route exact path='^/whats-new$' render={renderWhatsNewScreen}/>
 
                         <Route exact path='/#community' render={renderCommunityScreen}/>
 
