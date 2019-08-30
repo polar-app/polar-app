@@ -310,58 +310,38 @@ export class RepositoryApp {
 
                 <BrowserRouter>
                     <Switch>
-                        <Route exact path='/'>
 
-                            <HashRouter hashType="noslash">
+                        <Route exact path='/' render={renderDocRepoScreen}/>
 
-                                <Switch>
+                        <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
 
-                                    <Route exact path='/(logout|overview|login|configured|invite|premium)?'
-                                           render={renderDocRepoScreen}/>
+                        <Route exact path='^/annotations$' render={renderAnnotationRepoScreen}/>
 
-                                    <Route exact path='^/annotations$' render={renderAnnotationRepoScreen}/>
+                        <Route exact path='^/whats-new$' render={renderWhatsNewScreen}/>
 
-                                    <Route exact path='^/whats-new$' render={renderWhatsNewScreen}/>
+                        <Route exact path='/#community' render={renderCommunityScreen}/>
 
-                                    <Route exact path='/community' render={renderCommunityScreen}/>
+                        <Route exact path='/#stats' render={renderStatsScreen}/>
 
-                                    <Route exact path='/stats' render={renderStatsScreen}/>
+                        <Route exact path='/#logs' render={renderLogsScreen}/>
 
-                                    <Route exact path='/logs' render={renderLogsScreen}/>
+                        <Route exact path='/#editors-picks' render={editorsPicksScreen}/>
 
-                                    <Route exact path='/editors-picks' render={editorsPicksScreen}/>
+                        <Route exact path='/#plans' render={premiumScreen}/>
 
-                                    <Route exact path='/plans' render={premiumScreen}/>
+                        <Route exact path='/#support' render={supportScreen}/>
 
-                                    <Route exact path='/support' render={supportScreen}/>
+                        <Route exact path='/#premium' render={premiumScreen}/>
 
-                                    <Route exact path='/premium' render={premiumScreen}/>
-
-                                    <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
-                                    <Route path='/group/' render={renderGroupScreen}/>
-
-                                    <Route exact path='/groups' render={renderGroupsScreen}/>
-                                    <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
-
-                                </Switch>
-
-                            </HashRouter>
-
-                        </Route>
-                    </Switch>
-
-                </BrowserRouter>
-
-                <BrowserRouter>
-                    <Switch>
                         <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
                         <Route path='/group/' render={renderGroupScreen}/>
 
                         <Route exact path='/groups' render={renderGroupsScreen}/>
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
-                    </Switch>
-                </BrowserRouter>
 
+                    </Switch>
+
+                </BrowserRouter>
 
                 {/*Used for file uploads.  This has to be on the page and can't be*/}
                 {/*selectively hidden by components.*/}

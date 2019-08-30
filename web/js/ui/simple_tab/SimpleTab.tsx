@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from "react-router-dom";
 
 export class SimpleTab extends React.Component<IProps, IState> {
 
@@ -17,17 +18,24 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
         const isActive = () => {
 
-            const {href} = this.props;
+            const {pathname, hash} = this.props.target;
 
-            if (href === "#" && document.location.hash === "") {
-                return true;
-            }
+            const canonicalizeHash = (hash?: string): string => {
 
-            if (href.startsWith("#")) {
-                return document.location.hash === href;
-            }
+                if (! hash) {
+                    return "";
+                }
 
-            return document.location.href === href;
+                if (hash === '#') {
+                    return "";
+                }
+
+                return hash;
+
+            };
+
+            return document.location.pathname === pathname &&
+                   canonicalizeHash(document.location.hash) === canonicalizeHash(hash);
 
         };
 
@@ -57,19 +65,17 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
             <div>
 
-                <a href={this.props.href}
-                   className="p-2 ml-1 mr-1"
-                   onMouseEnter={() => this.toggleHover()}
-                   onMouseLeave={() => this.toggleHover()}
-                   style={{
-                       color,
-                       textDecoration: 'none',
-                       borderBottom
-                   }}>
-
+                <Link to={this.props.target}
+                      className="p-2 ml-1 mr-1"
+                      onMouseEnter={() => this.toggleHover()}
+                      onMouseLeave={() => this.toggleHover()}
+                      style={{
+                        color,
+                        textDecoration: 'none',
+                        borderBottom
+                    }}>
                     {this.props.text}
-
-                </a>
+                </Link>
 
             </div>
 
@@ -83,11 +89,15 @@ export class SimpleTab extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly href: string;
+    readonly target: Target;
     readonly text: string;
 }
 
 export interface IState {
     readonly hover: boolean;
+}
 
+export interface Target {
+    readonly pathname: string;
+    readonly hash?: string;
 }

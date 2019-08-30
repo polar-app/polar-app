@@ -103,8 +103,8 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     <div className="ml-4">
                         <SimpleTabs>
-                            <SimpleTab href="#" text="Document Repository"/>
-                            <SimpleTab href="#groups" text="Groups"/>
+                            <SimpleTab target={{pathname: "/", hash: "#"}} text="Document Repository"/>
+                            <SimpleTab target={{pathname: "/groups"}} text="Groups"/>
                         </SimpleTabs>
                     </div>
 
