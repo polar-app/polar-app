@@ -12,6 +12,10 @@ export class Arrays {
 
     public static first<T>(values: ReadonlyArray<T>): T | undefined {
 
+        if (! values) {
+            return undefined;
+        }
+
         if (values.length === 0) {
             return undefined;
         }

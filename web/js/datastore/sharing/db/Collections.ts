@@ -13,8 +13,9 @@ export class Collections {
 
         const firestore = await Firestore.getInstance();
 
-        const userGroupRef = firestore.collection(collection).doc(id);
-        const doc = await userGroupRef.get();
+        const ref = firestore.collection(collection).doc(id);
+        const doc = await ref.get();
+
         return <T> doc.data();
 
     }
@@ -59,6 +60,7 @@ export class Collections {
         }
 
     }
+
     public static async list<T>(collection: string,
                                 clauses: ReadonlyArray<Clause>,
                                 opts: QueryOpts = {}): Promise<ReadonlyArray<T>> {
