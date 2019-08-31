@@ -1,6 +1,6 @@
 import {GroupIDStr} from "../../../Datastore";
 import {BaseDocAnnotation} from "./BaseDocAnnotation";
-import {Collections, OrderByClause} from "../Collections";
+import {Clause, Collections, OrderByClause} from "../Collections";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "../../../../util/Arrays";
 
@@ -19,16 +19,23 @@ export class GroupDocAnnotations {
 
         const limit = 50;
 
-        return await Collections.list(this.COLLECTION, [['groupID', '==', groupID]], {limit, orderBy});
+        const clauses: ReadonlyArray<Clause> = [['groupID', '==', groupID]];
+
+        return await Collections.list(this.COLLECTION, clauses, {limit, orderBy});
 
     }
 
-    public static async get(id: IDStr): Promise<GroupDocAnnotation | undefined> {
+    public static async get(groupID: GroupIDStr, id: IDStr): Promise<GroupDocAnnotation | undefined> {
 
         const limit = 1;
 
+        const clauses: ReadonlyArray<Clause> = [
+            ['groupID', '==', groupID],
+            ['id', '==', id]
+        ];
+
         const results: ReadonlyArray<GroupDocAnnotation>
-            = await Collections.list(this.COLLECTION, [['id', '==', id]], {limit});
+            = await Collections.list(this.COLLECTION, clauses, {limit});
 
         return Arrays.first(results);
     }

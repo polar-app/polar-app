@@ -39,7 +39,7 @@ export class GroupHighlightScreen extends React.Component<IProps, IState> {
                 return;
             }
 
-            const docAnnotation = await GroupDocAnnotations.get(this.state.id);
+            const docAnnotation = await GroupDocAnnotations.get(group.id, this.state.id);
 
             const docAnnotationProfileRecord = await ProfileJoins.record(docAnnotation);
 
@@ -81,10 +81,13 @@ export class GroupHighlightScreen extends React.Component<IProps, IState> {
 
                         <div className="col">
 
-                            <HighlightCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
-                                           groupID={groupHighlightData.group.id}
-                                           groupName={groupHighlightData.group.name!}
-                                           docAnnotationProfileRecord={groupHighlightData.docAnnotationProfileRecord}/>
+                            <div className="border-bottom mt-2">
+
+                                <HighlightCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                               groupID={groupHighlightData.group.id}
+                                               groupName={groupHighlightData.group.name!}
+                                               docAnnotationProfileRecord={groupHighlightData.docAnnotationProfileRecord}/>
+                            </div>
 
                         </div>
 
