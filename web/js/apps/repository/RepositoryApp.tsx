@@ -60,6 +60,7 @@ import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 import {UIModes} from "../../ui/uimodes/UIModes";
 import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/HighlightsScreen";
 import {ReactRouters} from "../../ui/ReactRouters";
+import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlight/GroupHighlightScreen";
 
 const log = Logger.create();
 
@@ -233,6 +234,9 @@ export class RepositoryApp {
             return (<HighlightsScreen persistenceLayerManager={this.persistenceLayerManager}/>);
         };
 
+        const renderGroupHighlightScreen = () => {
+            return (<GroupHighlightScreen persistenceLayerManager={this.persistenceLayerManager}/>);
+        };
         const onNavChange = () => {
 
             try {
@@ -331,6 +335,8 @@ export class RepositoryApp {
                         <Route exact path='/#premium' render={premiumScreen}/>
 
                         <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
+
+                        <Route path='/group/:group/highlight/:id' render={renderGroupHighlightScreen}/>
 
                         <Route path='/group/' render={renderGroupScreen}/>
 

@@ -6,8 +6,6 @@ export class GroupHighlightURLs {
 
     public static parse(url: string): GroupHighlightURL {
 
-        const keys: MutableGroupHighlightURL = {};
-
         const re = PathToRegexps.pathToRegexp('/group/:group/highlight/:id');
 
         const parsedURL = new URL(url);
@@ -23,15 +21,15 @@ export class GroupHighlightURLs {
             };
         }
 
-        return keys;
+        throw new Error("Could not parse URL");
 
     }
 
 }
 
 export interface MutableGroupHighlightURL {
-    name?: GroupNameStr;
-    id?: IDStr;
+    name: GroupNameStr;
+    id: IDStr;
 }
 
 

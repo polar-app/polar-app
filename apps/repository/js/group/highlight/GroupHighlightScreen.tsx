@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {GroupURLs} from "../GroupURLs";
-import {
-    GroupNameStr,
-    Groups
-} from "../../../../../web/js/datastore/sharing/db/Groups";
+import {Groups} from "../../../../../web/js/datastore/sharing/db/Groups";
 import {GroupDocAnnotations} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 import {Logger} from "../../../../../web/js/logger/Logger";
 import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
@@ -12,18 +8,20 @@ import {RepoHeader} from "../../repo_header/RepoHeader";
 import {PersistenceLayerManager} from "../../../../../web/js/datastore/PersistenceLayerManager";
 import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 import {GroupHighlightData} from "./GroupHighlightData";
+import {GroupHighlightURL, GroupHighlightURLs} from "./GroupHighlightURLs";
+import {HighlightCard} from "../highlights/HighlightCard";
 
 const log = Logger.create();
 
-export class HighlightScreen extends React.Component<IProps, IState> {
+export class GroupHighlightScreen extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        const groupURL = GroupURLs.parse(document.location.href);
+        const parsedURL = GroupHighlightURLs.parse(document.location.href);
 
         this.state = {
-            name: groupURL.name
+            ...parsedURL
         };
 
     }
@@ -41,17 +39,17 @@ export class HighlightScreen extends React.Component<IProps, IState> {
                 return;
             }
 
-            const docAnnotations = await GroupDocAnnotations.list(group.id);
+            const docAnnotation = await GroupDocAnnotations.get(this.state.id);
 
-            const docAnnotationProfileRecords = await ProfileJoins.join(docAnnotations);
+            const docAnnotationProfileRecord = await ProfileJoins.record(docAnnotation);
 
-            // this.setState({
-            //     ...this.state,
-            //     groupHighlightsData: {
-            //         id: group.id,
-            //         group,
-            //         docAnnotationProfileRecords,
-            //     }});
+            this.setState({
+                ...this.state,
+                groupHighlightData: {
+                    id: group.id,
+                    group,
+                    docAnnotationProfileRecord,
+                }});
 
         };
 
@@ -60,6 +58,12 @@ export class HighlightScreen extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        const {groupHighlightData} = this.state;
+
+        if (! groupHighlightData) {
+            return <div/>;
+        }
 
         return (
 
@@ -77,9 +81,10 @@ export class HighlightScreen extends React.Component<IProps, IState> {
 
                         <div className="col">
 
-
-                            {/*<HighlightsTable persistenceLayerManager={this.props.persistenceLayerManager}*/}
-                            {/*                 groupHighlightsData={this.state.groupHighlightsData}/>*/}
+                            <HighlightCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                           groupID={groupHighlightData.group.id}
+                                           groupName={groupHighlightData.group.name!}
+                                           docAnnotationProfileRecord={groupHighlightData.docAnnotationProfileRecord}/>
 
                         </div>
 
@@ -98,7 +103,6 @@ export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
 }
 
-export interface IState {
-    readonly name: GroupNameStr;
+export interface IState extends GroupHighlightURL {
     readonly groupHighlightData?: GroupHighlightData;
 }

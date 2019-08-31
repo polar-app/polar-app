@@ -6,6 +6,7 @@ import {ProfileRecord} from "../../../../../web/js/datastore/sharing/db/ProfileJ
 import {ProfileHeader} from "./ProfileHeader";
 import {DocFooter} from "./DocFooter";
 import {GroupIDStr} from "../../../../../web/js/datastore/Datastore";
+import {GroupNameStr} from "../../../../../web/js/datastore/sharing/db/Groups";
 
 export class HighlightCard extends React.Component<IProps, IState> {
 
@@ -14,6 +15,12 @@ export class HighlightCard extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        const {docAnnotationProfileRecord} = this.props;
+
+        if (! docAnnotationProfileRecord) {
+            return <div/>;
+        }
 
         return (
 
@@ -24,7 +31,8 @@ export class HighlightCard extends React.Component<IProps, IState> {
                     <div style={{flexGrow: 1}}
                          className="mt-auto mb-auto">
 
-                        <ProfileHeader docAnnotationProfileRecord={this.props.docAnnotationProfileRecord}/>
+                        <ProfileHeader groupName={this.props.groupName}
+                                       docAnnotationProfileRecord={docAnnotationProfileRecord}/>
 
                     </div>
 
@@ -39,7 +47,7 @@ export class HighlightCard extends React.Component<IProps, IState> {
                     <div className="text-grey600">
 
                         <DocAnnotationComponent persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                                docAnnotationProfileRecord={this.props.docAnnotationProfileRecord}/>
+                                                docAnnotationProfileRecord={docAnnotationProfileRecord}/>
 
                         {/*<Moment withTitle={true}*/}
                         {/*        titleFormat="D MMM YYYY hh:MM A"*/}
@@ -56,7 +64,7 @@ export class HighlightCard extends React.Component<IProps, IState> {
 
                     <DocFooter persistenceLayerProvider={this.props.persistenceLayerProvider}
                                groupID={this.props.groupID}
-                               docAnnotationProfileRecord={this.props.docAnnotationProfileRecord}/>
+                               docAnnotationProfileRecord={docAnnotationProfileRecord}/>
 
                 </div>
 
@@ -69,8 +77,9 @@ export class HighlightCard extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly groupName: GroupNameStr;
     readonly groupID: GroupIDStr;
-    readonly docAnnotationProfileRecord: ProfileRecord<GroupDocAnnotation>;
+    readonly docAnnotationProfileRecord?: ProfileRecord<GroupDocAnnotation>;
 
 }
 

@@ -16,6 +16,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/group/:group/highlight/:id",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/group",
         "destination": "/apps/repository/index.html"
       },

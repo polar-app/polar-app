@@ -1,12 +1,9 @@
 import * as React from 'react';
-import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
-import {GroupDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
-import {DocAnnotationComponent} from "./annotations/DocAnnotationComponent";
 import {ProfileRecord} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
-import {Profile} from "../../../../../web/js/datastore/sharing/db/Profiles";
-import {DocAnnotationMoment} from "../../../../../web/js/annotation_sidebar/DocAnnotationMoment";
 import {BaseDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
 import {RelativeMoment} from "../../../../../web/js/ui/util/RelativeMoment";
+import {Link} from 'react-router-dom';
+import {GroupNameStr} from "../../../../../web/js/datastore/sharing/db/Groups";
 
 export class ProfileHeader extends React.Component<IProps, IState> {
 
@@ -30,7 +27,9 @@ export class ProfileHeader extends React.Component<IProps, IState> {
                     <div>{profile.name || profile.handle}</div>
 
                     <div className="text-grey200 ml-1">
-                        <RelativeMoment datetime={docAnnotation.lastUpdated || docAnnotation.created}/>
+                        <Link to={{pathname: `/group/${this.props.groupName}/highlight/${docAnnotation.id}`}}>
+                            <RelativeMoment datetime={docAnnotation.lastUpdated || docAnnotation.created}/>
+                        </Link>
                     </div>
 
                 </div>
@@ -50,6 +49,7 @@ export class ProfileHeader extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
+    readonly groupName: GroupNameStr;
     readonly docAnnotationProfileRecord: ProfileRecord<BaseDocAnnotation>;
 }
 

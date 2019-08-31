@@ -37,7 +37,7 @@ class SignInSuccessURLs {
         const base = URLs.toBase(document.location!.href);
 
         const signInPath
-            = AppRuntime.isBrowser() ? "/" : '/apps/repository/index.html#configured';
+            = AppRuntime.isBrowser() ? "/" : '/#configured';
 
         return new URL(signInPath, base).toString();
 

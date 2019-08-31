@@ -8,6 +8,22 @@ import {Optional} from "../../../util/ts/Optional";
  */
 export class ProfileJoins {
 
+    public static async record<T extends ProfileIDRecord>(value?: T): Promise<ProfileRecord<T> | undefined> {
+
+        if (! value) {
+            return undefined;
+        }
+
+        const joined = await this.join([value]);
+
+        if (joined.length > 0) {
+            return joined[0];
+        }
+
+        return undefined;
+
+    }
+
     public static async join<T extends ProfileIDRecord>(values: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecord<T>>> {
 
         const resolvedProfiles: {[id: string]: Profile} = {};

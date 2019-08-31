@@ -6,5 +6,5 @@ import {GroupDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc
 export interface GroupHighlightData {
     readonly id: GroupIDStr;
     readonly group: Group;
-    readonly docAnnotationProfileRecord: ProfileRecord<GroupDocAnnotation>;
+    readonly docAnnotationProfileRecord?: ProfileRecord<GroupDocAnnotation>;
 }
