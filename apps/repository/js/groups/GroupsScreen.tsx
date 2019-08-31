@@ -16,7 +16,6 @@ export class GroupsScreen extends React.Component<IProps, IState> {
         super(props, context);
 
         this.state = {
-            groups: []
         };
 
     }
@@ -92,5 +91,5 @@ export interface IProps {
 }
 
 export interface IState {
-    readonly groups: ReadonlyArray<Group>;
+    readonly groups?: ReadonlyArray<Group>;
 }

@@ -7,6 +7,7 @@ import {ProfileHeader} from "./ProfileHeader";
 import {DocFooter} from "./DocFooter";
 import {GroupIDStr} from "../../../../../web/js/datastore/Datastore";
 import {GroupNameStr} from "../../../../../web/js/datastore/sharing/db/Groups";
+import {LoadingProgress} from "../../../../../web/js/ui/LoadingProgress";
 
 export class HighlightCard extends React.Component<IProps, IState> {
 
@@ -19,7 +20,7 @@ export class HighlightCard extends React.Component<IProps, IState> {
         const {docAnnotationProfileRecord} = this.props;
 
         if (! docAnnotationProfileRecord) {
-            return <div/>;
+            return <LoadingProgress/>;
         }
 
         return (

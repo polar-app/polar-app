@@ -312,6 +312,7 @@ export class RepositoryApp {
                         {/*]}/>*/}
 
                 <BrowserRouter>
+
                     <Switch location={ReactRouters.createLocationWithPathnameHash()}>
 
                         <Route exact path='/#annotations' render={renderAnnotationRepoScreen} />
@@ -335,10 +336,11 @@ export class RepositoryApp {
                         <Route exact path='/#premium' render={premiumScreen}/>
 
                         <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
+                        <Route path='/group/:group/docs' render={renderGroupScreen}/>
 
                         <Route path='/group/:group/highlight/:id' render={renderGroupHighlightScreen}/>
 
-                        <Route path='/group/' render={renderGroupScreen}/>
+                        <Route path='/group/:group' render={renderGroupHighlightsScreen}/>
 
                         <Route exact path='/groups' render={renderGroupsScreen}/>
 

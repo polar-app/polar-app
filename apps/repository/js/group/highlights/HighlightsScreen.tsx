@@ -36,16 +36,22 @@ export class HighlightsScreen extends React.Component<IProps, IState> {
 
             const groupName = this.state.name;
 
+            console.time('Groups.getByName');
             const group = await Groups.getByName(groupName);
+            console.timeEnd('Groups.getByName');
 
             if (! group) {
                 Toaster.error("No group named: " + groupName);
                 return;
             }
 
+            console.time('group-doc-annotations-list');
             const docAnnotations = await GroupDocAnnotations.list(group.id);
+            console.timeEnd('group-doc-annotations-list');
 
+            console.time('docAnnotationProfileRecords');
             const docAnnotationProfileRecords = await ProfileJoins.join(docAnnotations);
+            console.timeEnd('docAnnotationProfileRecords');
 
             this.setState({
                 ...this.state,

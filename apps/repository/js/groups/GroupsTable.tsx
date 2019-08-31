@@ -2,6 +2,7 @@ import * as React from 'react';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {GroupCard} from "./GroupCard";
+import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
 
 export class GroupsTable extends React.Component<IProps, IState> {
 
@@ -12,6 +13,10 @@ export class GroupsTable extends React.Component<IProps, IState> {
     public render() {
 
         const {groups} = this.props;
+
+        if (! groups) {
+            return <LoadingProgress/>;
+        }
 
         return (
 
@@ -27,7 +32,7 @@ export class GroupsTable extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly groups: ReadonlyArray<Group>;
+    readonly groups?: ReadonlyArray<Group>;
 }
 
 export interface IState {

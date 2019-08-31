@@ -22,6 +22,10 @@ export class DefaultRewrites {
                 "destination": "/apps/repository/index.html"
             },
             {
+                "source": "/group/:group/docs",
+                "destination": "/apps/repository/index.html"
+            },
+            {
                 "source": "/group/:group/highlight/:id",
                 "destination": "/apps/repository/index.html"
             },
