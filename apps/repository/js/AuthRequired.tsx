@@ -20,13 +20,7 @@ export class AuthRequired extends React.Component<IProps, IState> {
             return <div/>;
         }
 
-        return (
-
-            <div>
-                {this.props.children}
-            </div>
-
-        );
+        return this.props.children;
 
     }
 
