@@ -3,6 +3,8 @@ import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
+import {IDStr} from "../util/Strings";
+import {SetArrays} from "../util/SetArrays";
 
 // DO NOT MODIFY ... migrating this to polar-shared
 // DO NOT MODIFY ... migrating this to polar-shared
@@ -174,6 +176,26 @@ export class Tags {
         });
     }
 
+    /**
+     * Find any records in the given array with the given tags.
+     */
+    public static computeRecordsTagged<R extends TaggedRecord>(records: ReadonlyArray<R>,
+                                                               tags: ReadonlyArray<TagStr>): ReadonlyArray<R> {
+
+        const index: {[id: string]: R} = {};
+
+        for (const record of records) {
+
+            if (SetArrays.intersects(record.tags || [], tags)) {
+                index[record.id] = record;
+            }
+
+        }
+
+        return Object.values(index);
+
+    }
+
 }
 
 export interface Tag {
@@ -211,6 +233,13 @@ export interface TypedTag {
 
 }
 
+/**
+ * An object that contains tags.
+ */
+export interface TaggedRecord {
+    readonly id: IDStr;
+    readonly tags?: ReadonlyArray<TagStr>;
+}
 
 /**
  * A string representation of a tag.

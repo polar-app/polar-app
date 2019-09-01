@@ -39,6 +39,25 @@ export class SetArrays {
 
     }
 
+    /**
+     * Return true if the two sets intersect.  This is faster than computing
+     * the full intersection as we will terminate faster (on the first match).
+     */
+    public static intersects<T>(left: ReadonlyArray<T>, right: ReadonlyArray<T>): boolean {
+
+        for (const val of left) {
+
+            if (right.includes(val)) {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+
+
     public static toSet<T>(arr: ReadonlyArray<T>): Set<T> {
 
         const set = new Set<T>();

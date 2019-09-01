@@ -96,9 +96,14 @@ export type EmailStr = string;
 export type PathStr = string;
 
 /**
- * A string whichi can contain a URL or a path.  Anything without a scheme
+ * A string which can contain a URL or a path.  Anything without a scheme
  * prefix is assumed to be a path.
  */
 export type PathOrURLStr = string;
 
 export type PlainTextString = string;
+
+/**
+ * A string that contains a unique ID.
+ */
+export type IDStr = string;
