@@ -61,6 +61,7 @@ import {UIModes} from "../../ui/uimodes/UIModes";
 import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/HighlightsScreen";
 import {ReactRouters} from "../../ui/ReactRouters";
 import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlight/GroupHighlightScreen";
+import {UserGroupsBackgroundListener} from "../../datastore/sharing/db/UserGroupsBackgroundListener";
 
 const log = Logger.create();
 
@@ -111,6 +112,8 @@ export class RepositoryApp {
             new ToasterService().start();
 
             new ProgressService().start();
+
+            await UserGroupsBackgroundListener.start();
 
             await this.doLoadExampleDocs();
 
