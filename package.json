@@ -189,7 +189,7 @@
     "path-to-regexp": "^3.0.0",
     "pdfjs-dist": "~2.0.943",
     "polar-loader": "1.0.3",
-    "polar-shared": "^2.0.17",
+    "polar-shared": "^2.0.20",
     "popper.js": "~1.14.4",
     "prettify": "~0.1.7",
     "prop-types": "~15.6.2",

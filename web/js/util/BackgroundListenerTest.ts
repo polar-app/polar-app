@@ -9,7 +9,3 @@ describe('BackgroundListener', function() {
     });
 
 });
-
-class FooBackgroundListener extends BackgroundListener {
-
-}

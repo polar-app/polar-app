@@ -61,7 +61,7 @@ import {UIModes} from "../../ui/uimodes/UIModes";
 import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/HighlightsScreen";
 import {ReactRouters} from "../../ui/ReactRouters";
 import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlight/GroupHighlightScreen";
-import {UserGroupsBackgroundListener} from "../../datastore/sharing/db/UserGroupsBackgroundListener";
+import {PrefetchedUserGroupsBackgroundListener} from "../../datastore/sharing/db/PrefetchedUserGroupsBackgroundListener";
 
 const log = Logger.create();
 
@@ -113,7 +113,7 @@ export class RepositoryApp {
 
             new ProgressService().start();
 
-            await UserGroupsBackgroundListener.start();
+            await PrefetchedUserGroupsBackgroundListener.start();
 
             await this.doLoadExampleDocs();
 
