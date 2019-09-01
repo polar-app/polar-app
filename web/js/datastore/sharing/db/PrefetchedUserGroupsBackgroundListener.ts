@@ -36,9 +36,9 @@ export class PrefetchedUserGroups {
 
         const groupIDs =
             SetArrays.union(userGroup.admin || [],
-                userGroup.invitations || [],
-                userGroup.moderator || [],
-                userGroup.groups || []);
+                            userGroup.invitations || [],
+                            userGroup.moderator || [],
+                            userGroup.groups || []);
 
         const groups = await Groups.getAll(groupIDs);
 
