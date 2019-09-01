@@ -1,6 +1,9 @@
 
 # 1.32.0
 
+- Fixed a bug with the MessageBox modal where the background wasn't inherited 
+  and the zIndex was wrong.
+
 - Rewrite of URL handling so that /groups are real URLs not hash URLs.
 
 - Fixed bug with overflow handling and the app not properly using scrollbars.

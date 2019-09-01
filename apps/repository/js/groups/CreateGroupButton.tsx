@@ -33,6 +33,8 @@ export class CreateGroupButton extends React.PureComponent<IProps, IState> {
 
     public render() {
 
+        // TODO: this doesn't work the way I need it to work because the link
+        // is triggered BEFORE ... not after. we require authentication.
         return (
 
             <Link to={{pathname: "/groups/create"}}
@@ -48,8 +50,6 @@ export class CreateGroupButton extends React.PureComponent<IProps, IState> {
         const handler = async () => {
 
             await AuthHandlers.requireAuthentication();
-
-            document.location.hash = 'groups/create';
 
         };
 

@@ -3,6 +3,7 @@ import {Firestore} from '../../../firebase/Firestore';
 import {GroupIDStr} from '../../Datastore';
 import {Firebase, SnapshotUnsubscriber} from "../../../firebase/Firebase";
 import {Collections} from "./Collections";
+import {NULL_FUNCTION} from "../../../util/Functions";
 
 export class UserGroups {
 
@@ -33,6 +34,10 @@ export class UserGroups {
     public static async onSnapshot(handler: (userGroups: UserGroup | undefined) => void): Promise<SnapshotUnsubscriber> {
 
         const user = await Firebase.currentUser();
+
+        if  (! user) {
+            return NULL_FUNCTION;
+        }
 
         return await Collections.onDocumentSnapshot<UserGroupRaw>(this.COLLECTION,
                                                                   user!.uid,
@@ -131,6 +136,9 @@ export interface UserGroupInit {
      */
     readonly uid: UserIDStr;
 
+    /**
+     * All the groups this user is a member of
+     */
     readonly groups: ReadonlyArray<GroupIDStr>;
 
     readonly invitations: ReadonlyArray<GroupIDStr>;

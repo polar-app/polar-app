@@ -5,6 +5,7 @@ import {SetArrays} from "../../../util/SetArrays";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SnapshotUnsubscriber} from "../../../firebase/Firebase";
 import {Logger} from "../../../logger/Logger";
+import {GroupIDStr} from "../../Datastore";
 
 const log = Logger.create();
 
@@ -40,11 +41,14 @@ export class PrefetchedUserGroups {
                             userGroup.moderator || [],
                             userGroup.groups || []);
 
-        const groups = await Groups.getAll(groupIDs);
+        // get all the referenced groups for the user.
+        const referencedGroups = await Groups.getAll(groupIDs);
 
-        const prefetched = IDMaps.toIDMap(groups);
+        const prefetched = IDMaps.toIDMap(referencedGroups);
 
-        return {...userGroup, prefetched};
+        const groups = IDMaps.fetch(prefetched, userGroup.groups || []);
+
+        return {userGroup, prefetched, groups};
 
     }
 
@@ -67,9 +71,19 @@ export class PrefetchedUserGroupsBackgroundListener {
 
 }
 
-export interface PrefetchedUserGroup extends UserGroup {
+export interface PrefetchedUserGroup {
+
+    /**
+     * The original UserGroup we used to build this prefetched set.
+     */
+    readonly userGroup: UserGroup;
 
     readonly prefetched: UserGroupMap;
+
+    /**
+     * All the groups this user is a member of
+     */
+    readonly groups: ReadonlyArray<Group>;
 
 }
 

@@ -38,12 +38,13 @@ export class MessageBox extends React.Component<IProps, IState> {
         return <div style={style}>
 
             <div style={{
-                        width:  width + 'px',
-                        zIndex: 9999,
-                        marginLeft: 'auto',
-                        marginRight: 'auto'
-                  }}
-                  className="border rounded shadow bg-white p-3">
+                     width:  width + 'px',
+                     zIndex: 99999,
+                     marginLeft: 'auto',
+                     marginRight: 'auto',
+                     backgroundColor: 'var(--white)'
+                 }}
+                 className="border rounded shadow bg-white p-3">
 
                 {this.props.children}
 
