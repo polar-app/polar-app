@@ -1,5 +1,3 @@
-// start a simple static HTTP server only listening on localhost
-
 import {WebserverConfig} from './WebserverConfig';
 import {FileRegistry} from './FileRegistry';
 import {Logger} from '../../logger/Logger';
@@ -22,6 +20,9 @@ const log = Logger.create();
 
 const STATIC_CACHE_MAX_AGE = 365 * 24 * 60 * 60;
 
+/**
+ * Start a simple static HTTP server only listening on localhost
+ */
 export class Webserver implements WebRequestHandler {
 
     private readonly webserverConfig: WebserverConfig;

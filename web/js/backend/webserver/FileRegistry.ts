@@ -3,9 +3,6 @@ import {WebserverConfig} from './WebserverConfig';
 import {Hashcodes} from '../../Hashcodes';
 
 import path from 'path';
-import {Logger} from '../../logger/Logger';
-
-const log = Logger.create();
 
 /**
  * A registry of binary / local files to serve via HTTP so that pdf.js and
@@ -45,7 +42,7 @@ export class FileRegistry {
         const reqPath = "/files/" + key;
         this.registry[key] = filename;
 
-        log.info(`Registered new file at: ${reqPath} to ${filename}`);
+        // log.info(`Registered new file at: ${reqPath} to ${filename}`);
 
         const scheme = this.webserverConfig.useSSL ? 'https' : 'http';
 
@@ -53,7 +50,7 @@ export class FileRegistry {
 
         const result = {key, filename, url};
 
-        log.debug("Using file registry entry: ", result);
+        // log.debug("Using file registry entry: ", result);
 
         return result;
 
