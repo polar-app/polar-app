@@ -4,8 +4,13 @@ import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {Paths} from '../../util/Paths';
 
-import express, {Express, RequestHandler} from 'express';
-import {NextFunction, Request, Response} from 'express';
+import express, {
+    Express,
+    NextFunction,
+    Request,
+    RequestHandler,
+    Response
+} from 'express';
 import serveStatic from 'serve-static';
 import {ResourceRegistry} from './ResourceRegistry';
 import * as http from "http";
@@ -13,7 +18,6 @@ import * as https from "https";
 import {PathParams} from 'express-serve-static-core';
 import {FilePaths} from '../../util/FilePaths';
 import {Rewrite, Rewrites} from "./Rewrites";
-import {RewriteURLs} from "./DefaultRewrites";
 import {PathToRegexps} from "./PathToRegexps";
 
 const log = Logger.create();
