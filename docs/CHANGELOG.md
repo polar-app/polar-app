@@ -1,6 +1,8 @@
 
 # 1.32.0
 
+- Fixed wrap in dropdown buttons.
+
 - Fixed a bug with the MessageBox modal where the background wasn't inherited 
   and the zIndex was wrong.
 

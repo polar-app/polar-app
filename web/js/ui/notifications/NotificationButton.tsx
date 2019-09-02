@@ -74,6 +74,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
                         size="sm"
                         onClick={() => this.toggle(true)}
                         // style={{fontSize: '15px'}}
+                        style={{whiteSpace: 'nowrap'}}
                         className="border mr-1">
 
                         <span className="fa-layers fa-fw">
