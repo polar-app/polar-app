@@ -1,10 +1,18 @@
-import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {MainDatastore} from '../../js/datastore/MainDatastore';
+import {FilePaths} from "../../js/util/FilePaths";
+import {SpectronWebappMain} from "../../js/test/SpectronWebappMain";
+import {Rewrite} from "../../js/backend/webserver/Rewrites";
 
-SpectronMain2.create().run(async state => {
+const webRoot = FilePaths.join(__dirname, "..", "..", "..");
+const appRoot = __dirname;
 
-    MainDatastore.create();
+const rewrites: ReadonlyArray<Rewrite> = [
+    {
+        source: "/",
+        destination: "web/spectron0/repository-app/app.html"
+    }
+];
 
-    await state.window.loadURL(`file://${__dirname}/app.html`);
+MainDatastore.create();
 
-});
+SpectronWebappMain.run({webRoot, appRoot, path: "/", rewrites});

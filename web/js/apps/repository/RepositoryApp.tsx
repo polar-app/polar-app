@@ -271,6 +271,12 @@ export class RepositoryApp {
         Accounts.listenForPlanUpgrades()
             .catch(err => log.error("Unable to listen for plan upgrades: ", err));
 
+        const rootElement = document.getElementById('root') as HTMLElement;
+
+        if (! rootElement) {
+            throw new Error("No root element to render to");
+        }
+
         ReactDOM.render(
 
             <div style={{height: '100%'}}>
@@ -367,7 +373,7 @@ export class RepositoryApp {
 
             </div>,
 
-            document.getElementById('root') as HTMLElement
+            rootElement
 
         );
 
