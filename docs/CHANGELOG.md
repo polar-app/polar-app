@@ -1,6 +1,8 @@
 
 # 1.32.0
 
+- Fixed a bug that prevented mobile working properly.
+
 - Fixed wrap in dropdown buttons.
 
 - Fixed a bug with the MessageBox modal where the background wasn't inherited 
