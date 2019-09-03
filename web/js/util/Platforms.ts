@@ -37,21 +37,21 @@ export class Platforms {
 
             if (navigator.platform) {
 
-                if (navigator.platform.startsWith("MacIntel")) {
+                if (navigator.userAgent.indexOf("MacIntel") !== -1) {
                     return Platform.MACOS;
-                } else if (navigator.platform.startsWith("MacPPC")) {
+                } else if (navigator.userAgent.indexOf("MacPPC") !== -1) {
                     return Platform.MACOS;
-                } else if (navigator.platform.startsWith("Linux")) {
+                } else if (navigator.userAgent.indexOf("Linux") !== -1) {
                     return Platform.LINUX;
-                } else if (navigator.platform.startsWith("Win32")) {
+                } else if (navigator.userAgent.indexOf("Win32") !== -1) {
                     return Platform.WINDOWS;
-                } else if (navigator.platform.startsWith("Win64")) {
+                } else if (navigator.userAgent.indexOf("Win64") !== -1) {
                     return Platform.WINDOWS;
-                } else if (navigator.platform.startsWith("Android")) {
+                } else if (navigator.userAgent.indexOf("Android") !== -1) {
                     return Platform.ANDROID;
-                } else if (navigator.platform.startsWith("iPhone")) {
+                } else if (navigator.userAgent.indexOf("iPhone") !== -1) {
                     return Platform.IOS;
-                } else if (navigator.platform.startsWith("iPad")) {
+                } else if (navigator.userAgent.indexOf("iPad") !== -1) {
                     return Platform.IOS;
                 }
 
