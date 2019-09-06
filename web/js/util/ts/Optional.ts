@@ -229,24 +229,6 @@ export class Optional<T> {
 
     }
 
-    public static foo() {
-        // type MyFunc<T> = () => T;
-        //
-        // const myFunct = () => "hello";
-        //
-        // const myBar = <any> myFunct;
-        //
-        // if (typeof myBar === 'function') {
-        //     myBar();
-        // }
-
-        type ValueType = object | string | number | boolean;
-
-        const valueType: ValueType = () => "hello";
-
-
-    }
-
     public static empty<T>(name?: string): Optional<T> {
         return new Optional<T>(undefined, name);
     }
