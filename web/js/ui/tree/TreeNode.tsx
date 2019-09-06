@@ -220,7 +220,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                                     className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
                                     color="light">
 
-                                {node.name}
+                                {this.props.title || node.name}
 
                             </button>
 
@@ -325,8 +325,16 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 }
 
 interface IProps<V> {
+
+    /**
+     * An alternative human readable title for this node.
+     */
+    readonly title?: string;
+
     readonly node: TNode<V>;
+
     readonly treeState: TreeState<V>;
+
 }
 
 

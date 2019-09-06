@@ -17,6 +17,7 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
         return <div>
             {roots.map(node =>
                    <TreeNode node={node}
+                             title={node.title}
                              key={node.id}
                              treeState={treeState}/>)}
         </div>;
@@ -26,7 +27,7 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
 }
 
 interface IProps<V> {
-    readonly roots: ReadonlyArray<TNode<V>>;
+    readonly roots: ReadonlyArray<TRoot<V>>;
     readonly treeState: TreeState<V>;
 }
 
@@ -133,4 +134,9 @@ export interface TNode<V> {
 
 }
 
-
+/**
+ * Like a node but specifically for the root
+ */
+export interface TRoot<V> extends TNode<V> {
+    readonly title?: string;
+}

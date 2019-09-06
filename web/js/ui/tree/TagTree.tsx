@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {TNode, TreeState, TreeView} from './TreeView';
+import {TNode, TreeState, TreeView, TRoot} from './TreeView';
 import {TagDescriptor, TagNodes} from '../../tags/TagNode';
 import {Tag, Tags} from '../../tags/Tags';
 import {TagFilter} from './TagFilter';
@@ -45,7 +45,10 @@ export class TagTree extends React.Component<IProps, IState> {
 
         const tags = filterTags(this.props.tags, this.state.filter);
 
-        const root: TNode<TagDescriptor> = TagNodes.create(...tags);
+        const root: TRoot<TagDescriptor> = {
+            ...TagNodes.create(...tags),
+            title: this.props.rootTitle
+        };
 
         return (
 
@@ -105,6 +108,7 @@ interface IProps {
     readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly noCreate?: boolean;
+    readonly rootTitle?: string;
 }
 
 interface IState {

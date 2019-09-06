@@ -1,5 +1,7 @@
 # 1.32.1
 
+- Better name for the root node (Documents and Annotations)
+
 - URL nav should work in android now...
 
 # 1.32.0
