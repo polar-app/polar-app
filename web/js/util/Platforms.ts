@@ -1,3 +1,5 @@
+import {Optional} from "./ts/Optional";
+
 export class Platforms {
 
     /*
@@ -14,11 +16,69 @@ export class Platforms {
      */
     public static get(): Platform {
 
-        if (typeof process !== 'undefined' && process.platform) {
+        return Optional.first<Platform>(() => this.getWithUserAgent(),
+                                        () => this.getWithProcessPlatform()).getOrElse(Platform.UNKNOWN);
+
+    }
+
+    private static currentUserAgent() {
+        return typeof navigator !== 'undefined' ? navigator.userAgent : undefined;
+    }
+
+    /**
+     * @VisibleForTesting
+     */
+    public static getWithUserAgent(userAgent: string | undefined = this.currentUserAgent()): Platform | undefined {
+
+        if (userAgent) {
+
+            interface UserAgentMap {
+                [key: string]: Platform;
+            }
+
+            const userAgentMap: UserAgentMap = {
+                "MacIntel":  Platform.MACOS,
+                "MacPPC":    Platform.MACOS,
+                "Android":   Platform.ANDROID,
+                "iPhone":    Platform.IOS,
+                "iPad":      Platform.IOS,
+                "Linux":     Platform.LINUX,
+                "Win32":     Platform.WINDOWS,
+                "Win64":     Platform.WINDOWS,
+            };
+
+            if (userAgent) {
+
+                for (const key of Object.keys(userAgentMap)) {
+
+                    if (userAgent.indexOf(key) !== -1) {
+                        return userAgentMap[key];
+                    }
+
+                }
+
+            }
+
+        }
+
+        return undefined;
+
+    }
+
+    private static currentProcessPlatform() {
+        return typeof process !== 'undefined' && process.platform ? process.platform : undefined;
+    }
+
+    /**
+     * @VisibleForTesting
+     */
+    public static getWithProcessPlatform(processPlatform: NodeJS.Platform | undefined = this.currentProcessPlatform()): Platform | undefined {
+
+        if (processPlatform) {
 
             // NodeJS and Electron
 
-            switch (process.platform.toLowerCase()) {
+            switch (processPlatform.toLowerCase()) {
 
                 case 'win32':
                     return Platform.WINDOWS;
@@ -33,35 +93,7 @@ export class Platforms {
 
         }
 
-        if (typeof navigator !== 'undefined') {
-
-            if (navigator.platform) {
-
-                if (navigator.userAgent.indexOf("MacIntel") !== -1) {
-                    return Platform.MACOS;
-                } else if (navigator.userAgent.indexOf("MacPPC") !== -1) {
-                    return Platform.MACOS;
-                } else if (navigator.userAgent.indexOf("Linux") !== -1) {
-                    return Platform.LINUX;
-                } else if (navigator.userAgent.indexOf("Win32") !== -1) {
-                    return Platform.WINDOWS;
-                } else if (navigator.userAgent.indexOf("Win64") !== -1) {
-                    return Platform.WINDOWS;
-                } else if (navigator.userAgent.indexOf("Android") !== -1) {
-                    return Platform.ANDROID;
-                } else if (navigator.userAgent.indexOf("iPhone") !== -1) {
-                    return Platform.IOS;
-                } else if (navigator.userAgent.indexOf("iPad") !== -1) {
-                    return Platform.IOS;
-                }
-
-            }
-
-        }
-
-        // otherwise get it from the user agent.
-
-        return Platform.UNKNOWN;
+        return undefined;
 
     }
 

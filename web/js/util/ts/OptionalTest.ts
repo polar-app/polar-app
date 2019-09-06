@@ -47,6 +47,33 @@ describe('Optional', function() {
 
     });
 
+
+    it("first using functions", function() {
+
+        assert.equal(Optional.first<string>(() => "cat").get(), "cat");
+
+        assert.equal(Optional.first<string>(() => "cat",
+                                            () => "dog").get(), "cat");
+
+    });
+
+    it("first with second function never called", function() {
+
+        const funcA = () => "hello";
+
+        let called = false;
+
+        const funcB = () => {
+            called = true;
+            return "world";
+        };
+
+        assert.equal(Optional.first<string>(funcA, funcB).get(), "hello");
+        assert.equal(called, false);
+
+    });
+
+
     describe('validateString', function() {
 
         it("valid data", function() {
@@ -95,7 +122,7 @@ describe('Optional', function() {
 
             const test: Address = {
                 state: 'CA'
-            }
+            };
 
             const optional = Optional.of(test);
 
