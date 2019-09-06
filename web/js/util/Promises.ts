@@ -129,6 +129,22 @@ export class Promises {
         });
     }
 
+
+    public static toDelayed<T>(delegate: () => Promise<T>) {
+
+        return () => {
+            return new Promise((resolve, reject) => {
+                try {
+                    resolve(delegate());
+                } catch(err) {
+                    reject(err);
+                }
+            });
+
+        };
+
+    }
+
 }
 
 export interface Completion<T> {

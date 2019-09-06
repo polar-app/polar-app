@@ -493,21 +493,21 @@ export class DocMetaSnapshotEvents {
         Promise<ReadonlyArray<IDocInfo>> {
 
         return AsyncWorkQueues
-            .awaitPromises(docMetaSnapshotEvent.docMetaMutations.map(current => current.docInfoProvider()));
+            .awaitAsyncFunctions(docMetaSnapshotEvent.docMetaMutations.map(current => current.docInfoProvider));
 
     }
 
     public static async toSyncDocs(docMetaSnapshotEvent: DocMetaSnapshotEvent):
         Promise<ReadonlyArray<SyncDoc>> {
 
-        const promises = docMetaSnapshotEvent.docMetaMutations.map(docMetaMutation => {
+        const typedAsyncFunctions = docMetaSnapshotEvent.docMetaMutations.map(docMetaMutation => {
             return async () => {
                 const docInfo = await docMetaMutation.docInfoProvider();
                 return SyncDocs.fromDocInfo(docInfo, docMetaMutation.mutationType);
             };
-        }).map(current => current());
+        });
 
-        return await AsyncWorkQueues.awaitPromises(promises);
+        return await AsyncWorkQueues.awaitAsyncFunctions(typedAsyncFunctions);
 
     }
 

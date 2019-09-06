@@ -211,7 +211,7 @@ export class Logging {
 
         };
 
-        const level = Optional.first(fromENV(), fromLocalStorage(), fromSessionStorage())
+        const level = Optional.first<string>(fromENV(), fromLocalStorage(), fromSessionStorage())
             .map(level => LogLevels.fromName(level))
             .getOrElse(LogLevel.WARN);
 

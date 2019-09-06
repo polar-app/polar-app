@@ -36,9 +36,9 @@ export class AsyncWorkQueue {
 
     private terminated: boolean = false;
 
-    constructor(work: AsyncFunction[], concurrency: number = 25) {
+    constructor(work: ReadonlyArray<AsyncFunction>, concurrency: number = 25) {
         this.concurrency = concurrency;
-        this.work = work;
+        this.work = [...work];
     }
 
     public execute(): Promise<boolean> {

@@ -7,7 +7,7 @@ describe('AsyncWorkQueues', function() {
 
         it("with no work", async function() {
 
-            await AsyncWorkQueues.awaitPromises([]);
+            await AsyncWorkQueues.awaitAsyncFunctions([]);
 
         });
 
@@ -15,10 +15,10 @@ describe('AsyncWorkQueues', function() {
         it("with one job", async function() {
 
             const work = [
-                Promise.resolve(true)
+                async () => true
             ];
 
-            const results = await AsyncWorkQueues.awaitPromises(work);
+            const results = await AsyncWorkQueues.awaitAsyncFunctions(work);
 
             assertJSON(results, [true]);
 

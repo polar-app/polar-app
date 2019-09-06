@@ -1,3 +1,6 @@
+# 1.32.1
+
+- URL nav should work in android now...
 
 # 1.32.0
 
