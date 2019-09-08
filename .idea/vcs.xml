@@ -9,6 +9,7 @@
     <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf-secrets" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-hooks" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-shared-webserver" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-site" vcs="Git" />
   </component>
 </project>
