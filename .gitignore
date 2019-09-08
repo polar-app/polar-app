@@ -6,4 +6,6 @@ packages/polar-bookshelf-secrets
 packages/polar-site
 packages/polar-assets
 packages/polar-backend-shared
-
+packages/polar-shared-webserver
+packages
+node_modules
