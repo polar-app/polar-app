@@ -3,6 +3,7 @@
   "version": "1.32.1",
   "description": "Polar Bookshelf",
   "main": "main.js",
+  "private": true,
   "scripts": {
     "start": "electron .",
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
