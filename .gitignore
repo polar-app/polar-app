@@ -9,3 +9,5 @@ packages/polar-backend-shared
 packages/polar-shared-webserver
 packages
 node_modules
+lerna-debug.log
+.idea
