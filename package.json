@@ -8,7 +8,7 @@
     "start": "electron .",
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
     "build-appx": "npm run-script setup-dist-appx && npm run-script compile && electron-builder --config=electron-builder.yml --win appx --publish never",
-    "build-webapp": "npx webpack && ./scripts/build-webapp.sh",
+    "build-webapp": "npx tsc && npx webpack && ./scripts/build-webapp.sh",
     "setup-dist-default": "npm run-script verify-electron-version && cp web/js/dist_config/DefaultDistConfig.ts web/js/dist_config/DistConfig.ts",
     "setup-dist-appx": "cp web/js/dist_config/AppXDistConfig.ts web/js/dist_config/DistConfig.ts",
     "publish-linux-snapcraft": "snapcraft push --release stable ./dist/polar-bookshelf-${npm_package_version}-amd64.snap",
