@@ -1,6 +1,6 @@
 {
   "name": "polar-site",
-  "version": "1.0.0",
+  "version": "1.32.2",
   "description": "Polar Website",
   "main": "index.js",
   "private": true,
@@ -23,7 +23,5 @@
   "bugs": {
     "url": "https://github.com/burtonator/polar-site/issues"
   },
-  "homepage": "https://github.com/burtonator/polar-site#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "homepage": "https://github.com/burtonator/polar-site#readme"
 }
