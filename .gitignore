@@ -1,2 +1,6 @@
 packages/polar-hooks
 packages/polar-shared
+packages/polar-admin
+packages/polar-bookshelf-secrets
+packages/polar-site
+packages/polar-assets

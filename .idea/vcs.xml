@@ -2,7 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-admin" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf-secrets" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-hooks" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-site" vcs="Git" />
   </component>
 </project>
