@@ -82,7 +82,6 @@
     "dtsmake": "0.0.10",
     "electron": "^5.0.6",
     "electron-builder": "~20.34.0",
-    "electron-mocha": "~6.0.4",
     "fork-ts-checker-webpack-plugin": "^0.5.2",
     "install": "^0.12.2",
     "jsdom": "^15.0.0",

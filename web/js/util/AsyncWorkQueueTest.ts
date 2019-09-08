@@ -1,12 +1,7 @@
 import {assert} from 'chai';
-import {ProgressCalculator} from './ProgressCalculator';
-import {ResolvablePromise} from './ResolvablePromise';
 import {assertJSON} from '../test/Assertions';
 import {Latch} from './Latch';
 import waitForExpect from 'wait-for-expect';
-import {PolarDataDir} from '../test/PolarDataDir';
-import {FilePaths} from './FilePaths';
-import {Files} from './Files';
 import {AsyncFunction, AsyncWorkQueue} from './AsyncWorkQueue';
 
 interface Widget {

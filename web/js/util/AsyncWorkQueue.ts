@@ -36,9 +36,11 @@ export class AsyncWorkQueue {
 
     private terminated: boolean = false;
 
-    constructor(work: ReadonlyArray<AsyncFunction>, concurrency: number = 25) {
+    constructor(work: Array<AsyncFunction>, concurrency: number = 25) {
         this.concurrency = concurrency;
-        this.work = [...work];
+        // TODO: I don't like sharing the same array but creating a copy seems to break tests
+        // for some reasons and not sure why just yet.
+        this.work = work;
     }
 
     public execute(): Promise<boolean> {
