@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {RewriteURLs} from "./DefaultRewrites";
 import {Rewrites} from "./Rewrites";
 import {PathToRegexps} from "./PathToRegexps";
 

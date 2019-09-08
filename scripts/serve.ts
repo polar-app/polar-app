@@ -1,7 +1,7 @@
 import {Webserver} from '../web/js/backend/webserver/Webserver';
 import {FileRegistry} from '../web/js/backend/webserver/FileRegistry';
 import {WebserverCerts} from '../web/js/backend/webserver/WebserverCerts';
-import {DefaultRewrites} from "../web/js/backend/webserver/DefaultRewrites";
+import {DefaultRewrites} from "polar-backend-shared/src/webserver/DefaultRewrites";
 import {WebserverConfigs} from "../web/js/backend/webserver/WebserverConfig";
 
 const webserverConfig = WebserverConfigs.create({

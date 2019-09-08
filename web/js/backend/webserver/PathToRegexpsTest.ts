@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {RewriteURLs} from "./DefaultRewrites";
 import {PathToRegexps} from "./PathToRegexps";
 
 describe('PathToRegexps', function() {
