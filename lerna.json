@@ -1,0 +1,7 @@
+{
+  "packages": [
+    "packages/*",
+    "packages/polar-hooks/functions"
+  ],
+  "version": "0.0.0"
+}
