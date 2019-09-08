@@ -1,9 +1,9 @@
 {
   "name": "polar-webapp-dist",
-  "version": "1.32.4",
+  "version": "1.32.5",
   "description": "",
   "main": "index.js",
-  "private": true,
+  "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "_compile": "rm -rf public && mkdir -p public && cd ../polar-bookshelf && npm run-script build-webapp && cp -rp dist/public/* ../polar-webapp-dist/public"
