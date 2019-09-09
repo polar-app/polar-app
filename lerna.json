@@ -4,5 +4,5 @@
     "packages/polar-app-private/*",
     "packages/polar-hooks/functions"
   ],
-  "version": "1.32.7"
+  "version": "1.32.8"
 }
