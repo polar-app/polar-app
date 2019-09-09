@@ -1,6 +1,6 @@
 {
   "name": "polar-webapp-dist",
-  "version": "1.32.6",
+  "version": "1.32.7",
   "description": "",
   "main": "index.js",
   "private": false,
@@ -10,5 +10,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "files": [
+    "package.json",
+    "index.js",
+    "public"
+  ]
 }
