@@ -1,3 +1,9 @@
+
+# 1.32.2
+
+- Fixed a bad bug which caused the sidebar to continually reload over and over again. 
+  We can still make it faster by using pure components I think.
+
 # 1.32.1
 
 - Better name for the root node (Documents and Annotations)
