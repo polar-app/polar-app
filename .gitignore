@@ -7,6 +7,8 @@ packages/polar-site
 packages/polar-assets
 packages/polar-backend-shared
 packages/polar-shared-webserver
+packages/polar-app-private
+packages/polar-app-public
 packages
 node_modules
 lerna-debug.log
