@@ -11,10 +11,8 @@ import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 import {GroupData} from "./GroupData";
 import {UserGroups} from "../../../../web/js/datastore/sharing/db/UserGroups";
 import {GroupDeleteButton} from './GroupDeleteButton';
-import {GroupURLs} from "./GroupURLs";
-import {SimpleTabs} from "../../../../web/js/ui/simple_tab/SimpleTabs";
-import {SimpleTab} from "../../../../web/js/ui/simple_tab/SimpleTab";
 import {GroupNavbar} from "./GroupNavbar";
+import {GroupURLs} from "polar-webapp-links/src/groups/GroupURLs";
 
 const log = Logger.create();
 

@@ -1,5 +1,4 @@
 import {assertJSON} from "../../../../../web/js/test/Assertions";
-import {GroupURLs} from "../GroupURLs";
 import {GroupHighlightURLs} from "./GroupHighlightURLs";
 
 describe('GroupHighlightURLs', function() {

@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {GroupURLs} from "../GroupURLs";
-import {
-    GroupNameStr,
-    Groups
-} from "../../../../../web/js/datastore/sharing/db/Groups";
+import {GroupNameStr, Groups} from "../../../../../web/js/datastore/sharing/db/Groups";
 import {GroupDocAnnotations} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 import {GroupHighlightsData} from "./GroupHighlightsData";
 import {Logger} from "../../../../../web/js/logger/Logger";
@@ -14,6 +10,7 @@ import {PersistenceLayerManager} from "../../../../../web/js/datastore/Persisten
 import {HighlightsTable} from "./HighlightsTable";
 import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 import {GroupNavbar} from "../GroupNavbar";
+import {GroupURLs} from "polar-webapp-links/src/groups/GroupURLs";
 
 const log = Logger.create();
 

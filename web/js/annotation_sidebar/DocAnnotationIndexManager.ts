@@ -55,20 +55,20 @@ export class DocAnnotationIndexManager {
 
             handleConversion();
 
-        });
+        }, {noSync: true});
 
         new TextHighlightModel().registerListener(docMeta, annotationEvent => {
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,
                     annotationValue => DocAnnotations.createFromTextHighlight(docMeta,
-                        annotationValue,
-                        annotationEvent.pageMeta));
-
+                                                                              annotationValue,
+                                                                              annotationEvent.pageMeta));
             this.handleAnnotationEvent(annotationEvent.id,
-                annotationEvent.traceEvent.mutationType,
-                docAnnotation);
-        });
+                                       annotationEvent.traceEvent.mutationType,
+                                       docAnnotation);
+
+        }, {noSync: true});
 
         new CommentModel().registerListener(docMeta, annotationEvent => {
 
@@ -81,7 +81,7 @@ export class DocAnnotationIndexManager {
                 annotationEvent.traceEvent.mutationType,
                 childDocAnnotation);
 
-        });
+        }, {noSync: true});
 
         new FlashcardModel().registerListener(docMeta, annotationEvent => {
 
@@ -94,7 +94,8 @@ export class DocAnnotationIndexManager {
                 annotationEvent.traceEvent.mutationType,
                 childDocAnnotation);
 
-        });
+        }, {noSync: true});
+
     }
 
     private convertAnnotation<T>(value: any | undefined | null, converter: (input: any) => T) {
@@ -137,8 +138,6 @@ export class DocAnnotationIndexManager {
             this.addDocAnnotation(docAnnotation!);
         }
 
-        this.fireUpdated();
-
     }
 
     private deleteDocAnnotation(id: IDString) {
@@ -154,8 +153,8 @@ export class DocAnnotationIndexManager {
     private fireUpdated() {
 
         const annotations = this.docAnnotationIndex.getDocAnnotationsSorted();
-
         this.onUpdated(annotations);
 
     }
+
 }

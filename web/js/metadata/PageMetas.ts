@@ -84,7 +84,8 @@ export class PageMetas {
      */
     public static createModel(docMeta: IDocMeta,
                               memberName: string,
-                              callback: (annotationEvent: AnnotationEvent) => void) {
+                              callback: (annotationEvent: AnnotationEvent) => void,
+                              opts: ModelOpts = {}) {
 
         // TODO: it might be better to have this return an array of all
         // currently known values this way on startup I can send everything I
@@ -103,7 +104,7 @@ export class PageMetas {
                 log.warn("No member for key: " + key, memberName);
             }
 
-            member.addTraceListener((traceEvent: TraceEvent) => {
+            const traceListener = member.addTraceListener((traceEvent: TraceEvent) => {
 
                 if (! traceEvent.path.endsWith("/" + memberName)) {
                     return;
@@ -119,11 +120,19 @@ export class PageMetas {
 
                 return true;
 
-            }).sync();
+            });
+
+            if (! opts.noSync) {
+                traceListener.sync();
+            }
 
         });
 
 
     }
 
+}
+
+export interface ModelOpts {
+    readonly noSync?: boolean;
 }

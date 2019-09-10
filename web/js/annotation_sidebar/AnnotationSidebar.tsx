@@ -126,6 +126,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         this.init()
             .catch(err => log.error("Failed init: ", err));
 
+
     }
 
     private async init() {
@@ -152,14 +153,17 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
     }
 
     private async registerListenerForPrimaryDocMeta() {
+
         const {docMeta} = this.props.doc;
 
         const userProfile = await UserProfiles.currentUserProfile();
 
         if (userProfile) {
+
             DocMetas.withSkippedMutations(docMeta, () => {
                 DocMetaRecords.applyAuthorsFromUserProfile(docMeta, userProfile);
             });
+
         }
 
         this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
