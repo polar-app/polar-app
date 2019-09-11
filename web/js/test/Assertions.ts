@@ -1,6 +1,6 @@
 import {Dictionaries} from "../util/Dictionaries";
 
-const chai = require("chai");
+import chai from 'chai';
 // const chaiDiff = require("chai-diff");
 
 const assert = chai.assert;
@@ -25,7 +25,7 @@ export function assertJSON(actual: any,
     }
 
     try {
-        expect(actual).not. differentFrom(expected, message);
+        expect(actual).equal(expected, message);
     } catch (e) {
         console.error(e.message);
         throw e;
