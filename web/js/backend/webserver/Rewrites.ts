@@ -1,3 +1,5 @@
+import {ContentGenerator} from "../../../../../polar-shared-webserver/src/webserver/Rewrites";
+
 export class Rewrites {
 
     public static matchesRegex(regex: URLRegularExpressionStr, path: PathStr): boolean {
@@ -18,7 +20,7 @@ export class Rewrites {
 
 export interface Rewrite {
     readonly source: string;
-    readonly destination: string;
+    readonly destination: string | ContentGenerator;
 }
 
 export type PathStr = string;
