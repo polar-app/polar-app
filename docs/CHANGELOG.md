@@ -1,6 +1,8 @@
 
 # 1.32.11
 
+- Polar site now has SEO metadata for linked pages.  
+
 - cleanup of dependencies to avoid security issues.
 
 - Migrating to lerna for module management.  Things aren't perfect yet and version 
