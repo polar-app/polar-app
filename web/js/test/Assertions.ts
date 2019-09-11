@@ -1,13 +1,13 @@
 import {Dictionaries} from "../util/Dictionaries";
 
 const chai = require("chai");
-const chaiDiff = require("chai-diff");
+// const chaiDiff = require("chai-diff");
 
 const assert = chai.assert;
 const expect = chai.expect;
 
 chai.config.truncateThreshold = 0;
-chai.use(chaiDiff);
+// chai.use(chaiDiff);
 
 export function assertJSON(actual: any,
                            expected: any,

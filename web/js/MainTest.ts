@@ -5,7 +5,6 @@ import chai from 'chai';
 import {assertJSON} from './test/Assertions';
 import {DocMetas} from './metadata/DocMetas';
 import {DocMeta} from './metadata/DocMeta';
-// import chaiDiff from 'chai-diff';
 
 const utils = require("./utils");
 const {computeRangeBuffer} = require("./utils");
