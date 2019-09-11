@@ -63,8 +63,7 @@ export class MainApp {
 
         const fileRegistry = new FileRegistry(webserverConfig);
 
-        const proxyServerConfig = new ProxyServerConfig(PROXYSERVER_PORT);
-        const cacheRegistry = new CacheRegistry(proxyServerConfig);
+        const cacheRegistry = new CacheRegistry();
 
         const directories = new Directories();
 

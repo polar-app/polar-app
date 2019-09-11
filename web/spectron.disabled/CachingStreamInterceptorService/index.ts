@@ -22,9 +22,8 @@ async function defaultWindowFactory(): Promise<BrowserWindow> {
 
 SpectronMain2.create({windowFactory: defaultWindowFactory}).run(async state => {
     //
-    const proxyServerConfig = new ProxyServerConfig(1234);
 
-    const cacheRegistry = new CacheRegistry(proxyServerConfig);
+    const cacheRegistry = new CacheRegistry();
 
     const sess = session.fromPartition('persist:test');
 

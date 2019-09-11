@@ -11,19 +11,13 @@ const log = Logger.create();
 
 export class CacheRegistry {
 
-    private readonly proxyServerConfig: ProxyServerConfig;
-
     private readonly registry: {[url: string]: CacheEntry} = {};
 
     /**
      *
      */
-    constructor(proxyServerConfig: ProxyServerConfig) {
-
-        this.proxyServerConfig = Preconditions.assertNotNull(proxyServerConfig);
-
+    constructor() {
         this.registry = {};
-
     }
 
     /**
