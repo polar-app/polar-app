@@ -28,7 +28,7 @@ export class DocAnnotationIndexManager {
 
     }
 
-    public registerListenerForDocMeta(docMeta: IDocMeta) {
+    public registerListenerForDocMeta(docMeta: IDocMeta, noSync: boolean = false) {
 
         const {docFileResolver} = this;
 
@@ -55,7 +55,7 @@ export class DocAnnotationIndexManager {
 
             handleConversion();
 
-        }, {noSync: true});
+        }, {noSync});
 
         new TextHighlightModel().registerListener(docMeta, annotationEvent => {
 
@@ -68,7 +68,7 @@ export class DocAnnotationIndexManager {
                                        annotationEvent.traceEvent.mutationType,
                                        docAnnotation);
 
-        }, {noSync: true});
+        }, {noSync});
 
         new CommentModel().registerListener(docMeta, annotationEvent => {
 
@@ -81,7 +81,7 @@ export class DocAnnotationIndexManager {
                 annotationEvent.traceEvent.mutationType,
                 childDocAnnotation);
 
-        }, {noSync: true});
+        }, {noSync});
 
         new FlashcardModel().registerListener(docMeta, annotationEvent => {
 
@@ -94,7 +94,7 @@ export class DocAnnotationIndexManager {
                 annotationEvent.traceEvent.mutationType,
                 childDocAnnotation);
 
-        }, {noSync: true});
+        }, {noSync});
 
     }
 
@@ -138,6 +138,10 @@ export class DocAnnotationIndexManager {
             this.addDocAnnotation(docAnnotation!);
         }
 
+        // TODO: I think this is technically NOT needed but tests still depend on it and
+        // I have to step through and verify that this won't break anything.
+        this.fireUpdated();
+
     }
 
     private deleteDocAnnotation(id: IDString) {
@@ -153,8 +157,8 @@ export class DocAnnotationIndexManager {
     private fireUpdated() {
 
         const annotations = this.docAnnotationIndex.getDocAnnotationsSorted();
+
         this.onUpdated(annotations);
 
     }
-
 }

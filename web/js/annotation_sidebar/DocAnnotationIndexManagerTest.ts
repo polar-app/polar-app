@@ -74,6 +74,7 @@ describe('DocAnnotationIndexManager', function() {
             DocMetaRecords.applyAuthorsFromUserProfile(docMeta, userProfile);
 
             docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
+
         }
 
         assert.equal(docAnnotationIndex.getDocAnnotationsSorted().length, 0);
