@@ -1,4 +1,3 @@
-import {ProxyServerConfig} from '../../js/backend/proxyserver/ProxyServerConfig';
 import {CacheRegistry} from '../../js/backend/proxyserver/CacheRegistry';
 import {CacheInterceptorService} from '../../js/backend/interceptor/CacheInterceptorService';
 import {SpectronMain2} from '../../js/test/SpectronMain2';

@@ -1,4 +1,3 @@
-import {ProxyServerConfig} from './ProxyServerConfig';
 import {Preconditions} from '../../Preconditions';
 import {CachedRequestsHolder} from './CachedRequestsHolder';
 import {CacheEntry} from './CacheEntry';

@@ -1,5 +1,4 @@
 import {app, BrowserWindow} from 'electron';
-import {ProxyServerConfig} from '../../backend/proxyserver/ProxyServerConfig';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {Directories} from '../../datastore/Directories';
 import {CaptureController} from '../../capture/controller/CaptureController';

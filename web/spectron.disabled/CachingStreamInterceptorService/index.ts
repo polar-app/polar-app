@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {ProxyServerConfig} from '../../js/backend/proxyserver/ProxyServerConfig';
 import {CacheRegistry} from '../../js/backend/proxyserver/CacheRegistry';
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {WebContentsPromises} from '../../js/electron/framework/WebContentsPromises';

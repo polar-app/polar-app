@@ -1,6 +1,5 @@
 import {TestingTime} from '../../test/TestingTime';
 import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
-import {ProxyServerConfig} from './ProxyServerConfig';
 import {CacheRegistry} from './CacheRegistry';
 import {MockCapturedContent} from '../../capture/MockCapturedContent';
 import {FilePaths} from '../../util/FilePaths';
@@ -21,9 +20,7 @@ describe('CacheRegistryTest', function() {
             const capturedPHZWriter = new CapturedPHZWriter(path);
             await capturedPHZWriter.convert(captured);
 
-            const proxyServerConfig = new ProxyServerConfig(12345);
-
-            const cacheRegistry = new CacheRegistry(proxyServerConfig);
+            const cacheRegistry = new CacheRegistry();
 
             await cacheRegistry.registerFile(path);
 
