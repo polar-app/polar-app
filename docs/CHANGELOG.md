@@ -1,5 +1,5 @@
 
-# 1.32.11
+# 1.32.13
 
 - Polar site now has SEO metadata for linked pages.  
 
