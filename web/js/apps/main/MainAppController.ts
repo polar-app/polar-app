@@ -2,7 +2,6 @@ import {app, BrowserWindow, dialog} from 'electron';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {Logger} from '../../logger/Logger';
 import {Services} from '../../util/services/Services';
-import {Webserver} from '../../backend/webserver/Webserver';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {AppLauncher} from './AppLauncher';
 import {Hashcodes} from '../../Hashcodes';
@@ -17,6 +16,7 @@ import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
+import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 
 const log = Logger.create();
 

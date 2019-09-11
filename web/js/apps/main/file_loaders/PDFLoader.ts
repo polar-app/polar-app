@@ -1,10 +1,10 @@
 import {FileLoader} from './FileLoader';
 import {WebResource} from '../../../electron/webresource/WebResource';
-import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
 import {LoadedFile} from './LoadedFile';
 import {Logger} from '../../../logger/Logger';
 import {FilePaths} from '../../../util/FilePaths';
+import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
 
 const log = Logger.create();
 

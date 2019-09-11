@@ -1,13 +1,10 @@
 import {AppPath} from '../electron/app_path/AppPath';
 import {SpectronMain2} from './SpectronMain2';
 import {PolarDataDir} from './PolarDataDir';
-import {
-    WebserverConfig,
-    WebserverConfigs
-} from '../backend/webserver/WebserverConfig';
-import {FileRegistry} from '../backend/webserver/FileRegistry';
-import {Webserver} from '../backend/webserver/Webserver';
-import {Rewrite} from "../backend/webserver/Rewrites";
+import {WebserverConfigs} from "polar-shared-webserver/src/webserver/WebserverConfig";
+import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
+import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
+import {Rewrite} from "polar-shared-webserver/src/webserver/Rewrites";
 
 export class SpectronWebappMain {
 

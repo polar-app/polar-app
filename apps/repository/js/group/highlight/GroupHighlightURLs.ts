@@ -1,11 +1,12 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {GroupNameStr} from "../../../../../web/js/datastore/sharing/db/Groups";
-import {PathToRegexps} from "../../../../../web/js/backend/webserver/PathToRegexps";
+import {PathToRegexps} from "polar-shared-webserver/src/webserver/PathToRegexps";
 
 export class GroupHighlightURLs {
 
     public static parse(url: string): GroupHighlightURL {
 
+        // TODO: this pulls in a huge dependency graph just for this simple API call.
         const re = PathToRegexps.pathToRegexp('/group/:group/highlight/:id');
 
         const parsedURL = new URL(url);

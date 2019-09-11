@@ -7,8 +7,6 @@ import {BrowserWindow} from "electron";
 import BrowserRegistry from '../../web/js/capture/BrowserRegistry';
 import {BrowserProfiles} from '../../web/js/capture/BrowserProfiles';
 import {Capture} from '../../web/js/capture/Capture';
-import {FileRegistry} from '../../web/js/backend/webserver/FileRegistry';
-import {WebserverConfig} from '../../web/js/backend/webserver/WebserverConfig';
 
 //
 // const windowFactory: WindowFactory = async () => {

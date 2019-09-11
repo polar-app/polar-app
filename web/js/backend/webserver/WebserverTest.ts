@@ -1,14 +1,13 @@
 import {FilePaths} from "../../util/FilePaths";
 import {Files} from "../../util/Files";
-import {WebserverConfig} from './WebserverConfig';
-import {FileRegistry} from './FileRegistry';
-import {Webserver} from './Webserver';
 import {Hashcodes} from '../../Hashcodes';
 import {assertJSON} from '../../test/Assertions';
 import {Http} from '../../util/Http';
 import {assert} from 'chai';
-import {ResourceRegistry} from './ResourceRegistry';
-import {WebserverCerts} from './WebserverCerts';
+import {WebserverConfig} from "polar-shared-webserver/src/webserver/WebserverConfig";
+import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
+import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
+import {ResourceRegistry} from "polar-shared-webserver/src/webserver/ResourceRegistry";
 
 describe('Webserver', function() {
 

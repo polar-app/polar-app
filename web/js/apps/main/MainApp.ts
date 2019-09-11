@@ -1,12 +1,9 @@
 import {app, BrowserWindow} from 'electron';
-import {WebserverConfigs} from '../../backend/webserver/WebserverConfig';
-import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {ProxyServerConfig} from '../../backend/proxyserver/ProxyServerConfig';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {Directories} from '../../datastore/Directories';
 import {CaptureController} from '../../capture/controller/CaptureController';
 import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
-import {Webserver} from '../../backend/webserver/Webserver';
 import {MainAppController} from './MainAppController';
 import {MainAppMenu} from './MainAppMenu';
 import {Cmdline} from '../../electron/Cmdline';
@@ -26,6 +23,9 @@ import {AnalyticsFileLoader} from './file_loaders/AnalyticsFileLoader';
 import {DefaultFileLoader} from './file_loaders/DefaultFileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
 import {DefaultRewrites} from "polar-backend-shared/src/webserver/DefaultRewrites";
+import {WebserverConfigs} from "polar-shared-webserver/src/webserver/WebserverConfig";
+import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
+import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 
 declare var global: any;
 

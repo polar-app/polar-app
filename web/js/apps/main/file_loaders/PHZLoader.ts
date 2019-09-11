@@ -8,7 +8,7 @@ import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
 import {LoadedFile} from './LoadedFile';
 import {Descriptors} from '../../../viewer/html/Descriptors';
 import {FilePaths} from '../../../util/FilePaths';
-import {FileRegistry} from '../../../backend/webserver/FileRegistry';
+import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
 
 const log = Logger.create();
 

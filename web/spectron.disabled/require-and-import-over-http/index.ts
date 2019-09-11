@@ -1,9 +1,9 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
-import {WebserverConfig} from '../../js/backend/webserver/WebserverConfig';
-import {Webserver} from '../../js/backend/webserver/Webserver';
-import {FileRegistry} from '../../js/backend/webserver/FileRegistry';
 import {ResourceRegistry} from '../../js/backend/webserver/ResourceRegistry';
 import {FilePaths} from '../../js/util/FilePaths';
+import {WebserverConfig} from "../../../../polar-shared-webserver/src/webserver/WebserverConfig";
+import {FileRegistry} from "../../../../polar-shared-webserver/src/webserver/FileRegistry";
+import {Webserver} from "../../../../polar-shared-webserver/src/webserver/Webserver";
 
 SpectronMain2.create().run(async state => {
 

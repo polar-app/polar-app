@@ -1,12 +1,10 @@
-import express from 'express';
 import {CaptureOpts} from '../../capture/CaptureOpts';
-import {WebRequestHandler} from '../../backend/webserver/Webserver';
 import {Logger} from '../../logger/Logger';
-import {Capture} from '../../capture/Capture';
 import {MainAppController} from './MainAppController';
 import {Version} from '../../util/Version';
 import {FileImportClient} from '../repository/FileImportClient';
 import {FileImportRequests} from '../repository/FileImportRequests';
+import {WebRequestHandler} from "polar-shared-webserver/src/webserver/Webserver";
 
 const log = Logger.create();
 
@@ -34,7 +32,7 @@ export class MainAPI {
 
         const path = "/rest/v1/capture/trigger";
 
-        this.webRequestHandler.options(path, (req: express.Request, res: express.Response) => {
+        this.webRequestHandler.options(path, (req, res) => {
 
             log.info("Handling OPTIONS request: ", req.headers);
 
@@ -49,7 +47,7 @@ export class MainAPI {
 
         });
 
-        this.webRequestHandler.post(path, (req: express.Request, res: express.Response) => {
+        this.webRequestHandler.post(path, (req, res) => {
 
             log.info("Handling POST request for capture trigger: ", req.body);
 
@@ -81,7 +79,7 @@ export class MainAPI {
 
         const path = "/rest/v1/ping";
 
-        this.webRequestHandler.post(path, (req: express.Request, res: express.Response) => {
+        this.webRequestHandler.post(path, (req, res) => {
 
             res.header('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
 

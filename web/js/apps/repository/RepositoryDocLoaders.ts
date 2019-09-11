@@ -1,8 +1,7 @@
-import {Platform, Platforms} from "../../util/Platforms";
+import {Platforms} from "../../util/Platforms";
 import {FilePaths} from '../../util/FilePaths';
 import os from "os";
-import {FilePath} from '../../backend/webserver/ResourceRegistry';
-import {Files, Aborter, Aborters} from "../../util/Files";
+import {Aborter, Aborters, Files} from "../../util/Files";
 
 /**
  *

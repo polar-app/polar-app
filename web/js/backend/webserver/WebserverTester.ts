@@ -1,8 +1,8 @@
 import {AppPath} from "../../electron/app_path/AppPath";
-import {WebserverConfig} from "./WebserverConfig";
-import {FileRegistry} from "./FileRegistry";
-import {Webserver} from "./Webserver";
 import {AsyncFunction} from '../../util/AsyncWorkQueue';
+import {WebserverConfig} from "polar-shared-webserver/src/webserver/WebserverConfig";
+import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
+import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 
 export class WebserverTester {
 

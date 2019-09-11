@@ -11,7 +11,7 @@ import {StartCaptureMessage} from './CaptureClient';
 import {Directories} from '../../datastore/Directories';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {PHZLoader} from "../../apps/main/file_loaders/PHZLoader";
-import {FileRegistry} from '../../backend/webserver/FileRegistry';
+import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
 
 const log = Logger.create();
 
