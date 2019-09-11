@@ -1,5 +1,10 @@
 
-# 1.32.2
+# 1.32.11
+
+- cleanup of dependencies to avoid security issues.
+
+- Migrating to lerna for module management.  Things aren't perfect yet and version 
+  numbers might have gaps from here on out. 
 
 - Fixed a bad bug which caused the sidebar to continually reload over and over again. 
   We can still make it faster by using pure components I think.
