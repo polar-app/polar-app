@@ -40,17 +40,17 @@ export class DocAnnotationIndexManager {
                 const converter = (annotationValue: AreaHighlight) => {
 
                     return DocAnnotations.createFromAreaHighlight(docFileResolver,
-                        docMeta,
-                        annotationValue,
-                        annotationEvent.pageMeta);
+                                                                  docMeta,
+                                                                  annotationValue,
+                                                                  annotationEvent.pageMeta);
                 };
 
                 const docAnnotation =
                     this.convertAnnotation(annotationEvent.value, converter);
 
                 this.handleAnnotationEvent(annotationEvent.id,
-                    annotationEvent.traceEvent.mutationType,
-                    docAnnotation);
+                                           annotationEvent.traceEvent.mutationType,
+                                           docAnnotation);
 
             };
 
@@ -75,12 +75,12 @@ export class DocAnnotationIndexManager {
 
             const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromComment(docMeta,
-                comment,
-                annotationEvent.pageMeta);
+                                                                        comment,
+                                                                        annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
-                annotationEvent.traceEvent.mutationType,
-                childDocAnnotation);
+                                            annotationEvent.traceEvent.mutationType,
+                                            childDocAnnotation);
 
         }, opts);
 
@@ -88,12 +88,12 @@ export class DocAnnotationIndexManager {
 
             const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta,
-                flashcard,
-                annotationEvent.pageMeta);
+                                                                          flashcard,
+                                                                          annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
-                annotationEvent.traceEvent.mutationType,
-                childDocAnnotation);
+                                            annotationEvent.traceEvent.mutationType,
+                                            childDocAnnotation);
 
         }, opts);
 
