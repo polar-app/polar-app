@@ -16,7 +16,6 @@ terminate() {
 }
 
 # this is what we used to run...
-# find web/js -name '*Test.js' | xargs mocha-parallel-tests --timeout 20000 --max-parallel=1 --exit
 
 mkdir -p target/test-results/mocha/
 
