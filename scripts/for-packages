@@ -146,6 +146,8 @@ async function exec(args) {
             console.log("Running " + cmd);
             await run_script("bash", ["-c", cmd]);
 
+        } catch(e) {
+            console.log("Command failed with: ", e);
         } finally {
             process.chdir(dir);
         }
