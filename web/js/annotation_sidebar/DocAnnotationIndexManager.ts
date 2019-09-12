@@ -31,70 +31,70 @@ export class DocAnnotationIndexManager {
     public registerListenerForDocMeta(docMeta: IDocMeta, noSync: boolean = false) {
 
         const {docFileResolver} = this;
-
-        new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
-
-            const handleConversion = () => {
-
-                const converter = (annotationValue: AreaHighlight) => {
-
-                    return DocAnnotations.createFromAreaHighlight(docFileResolver,
-                        docMeta,
-                        annotationValue,
-                        annotationEvent.pageMeta);
-                };
-
-                const docAnnotation =
-                    this.convertAnnotation(annotationEvent.value, converter);
-
-                this.handleAnnotationEvent(annotationEvent.id,
-                    annotationEvent.traceEvent.mutationType,
-                    docAnnotation);
-
-            };
-
-            handleConversion();
-
-        }, {noSync});
-
-        new TextHighlightModel().registerListener(docMeta, annotationEvent => {
-
-            const docAnnotation =
-                this.convertAnnotation(annotationEvent.value,
-                    annotationValue => DocAnnotations.createFromTextHighlight(docMeta,
-                                                                              annotationValue,
-                                                                              annotationEvent.pageMeta));
-            this.handleAnnotationEvent(annotationEvent.id,
-                                       annotationEvent.traceEvent.mutationType,
-                                       docAnnotation);
-
-        }, {noSync});
-
-        new CommentModel().registerListener(docMeta, annotationEvent => {
-
-            const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromComment(docMeta,
-                comment,
-                annotationEvent.pageMeta);
-
-            this.handleChildAnnotationEvent(annotationEvent.id,
-                annotationEvent.traceEvent.mutationType,
-                childDocAnnotation);
-
-        }, {noSync});
-
-        new FlashcardModel().registerListener(docMeta, annotationEvent => {
-
-            const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
-            const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta,
-                flashcard,
-                annotationEvent.pageMeta);
-
-            this.handleChildAnnotationEvent(annotationEvent.id,
-                annotationEvent.traceEvent.mutationType,
-                childDocAnnotation);
-
-        }, {noSync});
+        //
+        // new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
+        //
+        //     const handleConversion = () => {
+        //
+        //         const converter = (annotationValue: AreaHighlight) => {
+        //
+        //             return DocAnnotations.createFromAreaHighlight(docFileResolver,
+        //                 docMeta,
+        //                 annotationValue,
+        //                 annotationEvent.pageMeta);
+        //         };
+        //
+        //         const docAnnotation =
+        //             this.convertAnnotation(annotationEvent.value, converter);
+        //
+        //         this.handleAnnotationEvent(annotationEvent.id,
+        //             annotationEvent.traceEvent.mutationType,
+        //             docAnnotation);
+        //
+        //     };
+        //
+        //     handleConversion();
+        //
+        // }, {noSync});
+        //
+        // new TextHighlightModel().registerListener(docMeta, annotationEvent => {
+        //
+        //     const docAnnotation =
+        //         this.convertAnnotation(annotationEvent.value,
+        //             annotationValue => DocAnnotations.createFromTextHighlight(docMeta,
+        //                                                                       annotationValue,
+        //                                                                       annotationEvent.pageMeta));
+        //     this.handleAnnotationEvent(annotationEvent.id,
+        //                                annotationEvent.traceEvent.mutationType,
+        //                                docAnnotation);
+        //
+        // }, {noSync});
+        //
+        // new CommentModel().registerListener(docMeta, annotationEvent => {
+        //
+        //     const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
+        //     const childDocAnnotation = DocAnnotations.createFromComment(docMeta,
+        //         comment,
+        //         annotationEvent.pageMeta);
+        //
+        //     this.handleChildAnnotationEvent(annotationEvent.id,
+        //         annotationEvent.traceEvent.mutationType,
+        //         childDocAnnotation);
+        //
+        // }, {noSync});
+        //
+        // new FlashcardModel().registerListener(docMeta, annotationEvent => {
+        //
+        //     const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
+        //     const childDocAnnotation = DocAnnotations.createFromFlashcard(docMeta,
+        //         flashcard,
+        //         annotationEvent.pageMeta);
+        //
+        //     this.handleChildAnnotationEvent(annotationEvent.id,
+        //         annotationEvent.traceEvent.mutationType,
+        //         childDocAnnotation);
+        //
+        // }, {noSync});
 
     }
 
@@ -132,15 +132,15 @@ export class DocAnnotationIndexManager {
                                   mutationType: MutationType,
                                   docAnnotation: IDocAnnotation | undefined) {
 
-        if (mutationType === MutationType.DELETE) {
-            this.deleteDocAnnotation(id);
-        } else {
-            this.addDocAnnotation(docAnnotation!);
-        }
-
-        // TODO: I think this is technically NOT needed but tests still depend on it and
-        // I have to step through and verify that this won't break anything.
-        this.fireUpdated();
+        // if (mutationType === MutationType.DELETE) {
+        //     this.deleteDocAnnotation(id);
+        // } else {
+        //     this.addDocAnnotation(docAnnotation!);
+        // }
+        //
+        // // TODO: I think this is technically NOT needed but tests still depend on it and
+        // // I have to step through and verify that this won't break anything.
+        // this.fireUpdated();
 
     }
 

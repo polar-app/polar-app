@@ -2,15 +2,12 @@ import {Files} from '../../../util/Files';
 import url from "url";
 import {FilePaths} from '../../../util/FilePaths';
 import {Optional} from '../../../util/ts/Optional';
-import {PDFJSStatic} from 'pdfjs-dist';
-import * as PDFJSDIST from 'pdfjs-dist';
+import PDFJS from 'pdfjs-dist';
 import {DOIs} from './DOIs';
 import {PathOrURLStr} from '../../../util/Strings';
 import {URLs} from '../../../util/URLs';
 
-const pdfjs: PDFJSStatic = <any> PDFJSDIST;
-
-(<any> pdfjs).GlobalWorkerOptions.workerSrc =
+PDFJS.GlobalWorkerOptions.workerSrc =
     '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
 export class PDFMetadata {
@@ -35,7 +32,8 @@ export class PDFMetadata {
 
         const docURL = toURL(docPathOrURL);
 
-        const doc = await pdfjs.getDocument(docURL);
+        const pdfLoadingTask = PDFJS.getDocument(docURL);
+        const doc = await pdfLoadingTask.promise;
 
         const metaHolder = await doc.getMetadata();
 

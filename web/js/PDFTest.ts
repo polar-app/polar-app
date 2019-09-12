@@ -2,10 +2,7 @@ import {Files} from './util/Files';
 
 import url from 'url';
 
-import * as PDFJSDIST from 'pdfjs-dist';
-import {PDFJSStatic} from 'pdfjs-dist';
-
-const pdfjs: PDFJSStatic = <any> PDFJSDIST;
+import PDFJS from 'pdfjs-dist';
 
 xdescribe('PDF', function() {
 
@@ -32,7 +29,9 @@ xdescribe('PDF', function() {
         // const fileURL = "file:///home/burton/incremental-reading/bitcoin/Mastering%20Bitcoin.pdf";
 
         // const doc = await pdfjs.getDocument(uint8!)
-        const doc = await pdfjs.getDocument(fileURL);
+
+        const pdfLoadingTask = PDFJS.getDocument(fileURL);
+        const doc = await pdfLoadingTask.promise;
 
         const metadata = await doc.getMetadata();
 
