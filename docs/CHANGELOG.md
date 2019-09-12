@@ -1,4 +1,10 @@
 
+# latest
+
+- Big upgrade of dependencies.  firebase and pdf.js
+
+- Actually fixed the sidebar stall loading bug.  Wasn't actually fixed. 
+
 # 1.32.13
 
 - Polar site now has SEO metadata for linked pages.  

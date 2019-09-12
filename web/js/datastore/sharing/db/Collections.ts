@@ -1,9 +1,9 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {SnapshotUnsubscriber} from '../../../firebase/Firebase';
+import {Logger} from "../../../logger/Logger";
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import DocumentChangeType = firebase.firestore.DocumentChangeType;
 import OrderByDirection = firebase.firestore.OrderByDirection;
-import {Logger} from "../../../logger/Logger";
 
 const log = Logger.create();
 

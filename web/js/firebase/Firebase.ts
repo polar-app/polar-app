@@ -1,3 +1,4 @@
+
 import * as firebase from './lib/firebase';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
@@ -26,7 +27,6 @@ const PROJECTS: {[project: string]: any} = {
     }
 
 };
-
 
 export class Firebase {
 
