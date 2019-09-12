@@ -166,7 +166,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         }
 
-        this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
+        this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta, {noSync: true});
 
     }
 
@@ -184,7 +184,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const fingerprint = this.props.doc.docMeta.docInfo.fingerprint;
 
         const docMetaHandler = (docMeta: IDocMeta) => {
-            this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
+            this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta, {noSync: true});
         };
 
         const errHandler = (err: Error) => {
