@@ -76,25 +76,27 @@ export class HighlightsScreen extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody className="container">
+                <FixedNavBody>
 
-                    <div className="row">
+                    <div className="container mb-1">
+                        <div className="row">
 
-                        <div className="col">
+                            <div className="col">
 
-                            <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
+                                <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
 
-                                <div>
-                                    <GroupNavbar groupName={this.state.name}/>
+                                    <div>
+                                        <GroupNavbar groupName={this.state.name}/>
+                                    </div>
+
                                 </div>
+
+                                <HighlightsTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                                 groupHighlightsData={this.state.groupHighlightsData}/>
 
                             </div>
 
-                            <HighlightsTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                             groupHighlightsData={this.state.groupHighlightsData}/>
-
                         </div>
-
                     </div>
 
                 </FixedNavBody>

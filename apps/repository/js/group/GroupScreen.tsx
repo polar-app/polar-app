@@ -81,31 +81,33 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody className="container">
+                <FixedNavBody>
 
-                    <div className="row">
+                    <div className="container">
+                        <div className="row">
 
-                        <div className="col">
+                            <div className="col">
 
-                            <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
+                                <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
 
-                                <div>
-                                    <GroupNavbar groupName={this.state.name}>
+                                    <div>
+                                        <GroupNavbar groupName={this.state.name}>
 
-                                        <VerticalAlign>
-                                            <GroupDeleteButton groupData={this.state.groupData}/>
-                                        </VerticalAlign>
+                                            <VerticalAlign>
+                                                <GroupDeleteButton groupData={this.state.groupData}/>
+                                            </VerticalAlign>
 
-                                    </GroupNavbar>
+                                        </GroupNavbar>
+                                    </div>
+
                                 </div>
+
+                                <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                            groupData={this.state.groupData}/>
 
                             </div>
 
-                            <GroupTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                        groupData={this.state.groupData}/>
-
                         </div>
-
                     </div>
 
                 </FixedNavBody>

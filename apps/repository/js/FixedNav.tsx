@@ -34,15 +34,17 @@ export class FixedNavBody extends React.Component<IProps, any> {
     }
 
     public render() {
+
         return (
 
             <div {...(this.props.id ? {id: this.props.id} : {})}
                  {...(this.props.className ? {className: this.props.className} : {})}
                  style={{
-                flexGrow: 1,
-                overflowY: 'auto',
-                height: '100%'
-            }}>
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    height: '100%',
+                    width: '100%'
+                 }}>
 
                 {this.props.children}
 

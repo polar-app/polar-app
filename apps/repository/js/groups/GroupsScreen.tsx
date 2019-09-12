@@ -47,34 +47,37 @@ export class GroupsScreen extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody className="container">
+                <FixedNavBody>
 
-                    <div className="row">
+                    <div className="container">
 
-                        <div className="col">
+                        <div className="row">
 
-                            <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
+                            <div className="col">
 
-                                <div style={{display: 'flex'}}
-                                     className="w-100">
+                                <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
 
-                                    <div style={{flexGrow: 1}}>
-                                        <h3>Groups</h3>
+                                    <div style={{display: 'flex'}}
+                                         className="w-100">
+
+                                        <div style={{flexGrow: 1}}>
+                                            <h3>Groups</h3>
+                                        </div>
+
+                                        <VerticalAlign>
+                                            <CreateGroupButton/>
+                                        </VerticalAlign>
+
                                     </div>
-
-                                    <VerticalAlign>
-                                        <CreateGroupButton/>
-                                    </VerticalAlign>
 
                                 </div>
 
+                                <GroupsTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                             groups={this.state.groups}/>
+
                             </div>
 
-                            <GroupsTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                         groups={this.state.groups}/>
-
                         </div>
-
                     </div>
 
                 </FixedNavBody>

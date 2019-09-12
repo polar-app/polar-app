@@ -75,18 +75,22 @@ export class GroupHighlightScreen extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody className="container">
+                <FixedNavBody>
 
-                    <div className="row">
+                    <div className="container">
 
-                        <div className="col">
+                        <div className="row">
 
-                            <div className="border-bottom mt-2">
+                            <div className="col">
 
-                                <HighlightCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
-                                               groupID={groupHighlightData.group.id}
-                                               groupName={groupHighlightData.group.name!}
-                                               docAnnotationProfileRecord={groupHighlightData.docAnnotationProfileRecord}/>
+                                <div className="border-bottom mt-2">
+
+                                    <HighlightCard persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                                   groupID={groupHighlightData.group.id}
+                                                   groupName={groupHighlightData.group.name!}
+                                                   docAnnotationProfileRecord={groupHighlightData.docAnnotationProfileRecord}/>
+                                </div>
+
                             </div>
 
                         </div>
