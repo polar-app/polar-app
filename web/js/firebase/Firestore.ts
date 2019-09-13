@@ -34,7 +34,7 @@ export class Firestore {
                 // TODO: this seems super slow and not sure why.  The tab sync
                 // seems to not impact performance at all.
                 await tracer.traceAsync('enablePersistence', async () => {
-                    await result.enablePersistence({ experimentalTabSynchronization: true });
+                    await result.enablePersistence({ synchronizeTabs: true });
                 });
             }
 
