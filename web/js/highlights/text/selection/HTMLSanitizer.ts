@@ -70,4 +70,21 @@ export class HTMLSanitizer {
 
     }
 
+    /**
+     * Sanitize but convert everything just to plain text.
+     */
+    public static toText(html: string) {
+
+        return sanitizeHtml(html, {
+
+            allowedTags: [],
+            allowedAttributes: {
+            },
+            allowedStyles: {
+            }
+
+        });
+
+    }
+
 }

@@ -24,4 +24,10 @@ describe('HTMLSanitizer', function () {
 
     });
 
+    it('toText', function () {
+
+        assert.equal(HTMLSanitizer.toText('<p>this is <b>some</b> text</p>'), 'this is some text');
+
+    });
+
 });

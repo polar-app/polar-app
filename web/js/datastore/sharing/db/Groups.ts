@@ -3,7 +3,7 @@ import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {UserIDStr} from './Profiles';
 import {Hashcodes} from '../../../Hashcodes';
-import {PlainTextString, URLStr} from "../../../util/Strings";
+import {PlainTextStr, URLStr} from "../../../util/Strings";
 import {ExternalLink} from "../rpc/GroupProvisions";
 import {Clause, Collections, OrderByClause} from "./Collections";
 import {Arrays} from "../../../util/Arrays";
@@ -125,7 +125,7 @@ export interface GroupInit {
     /**
      * A string (not HTML) that is used as a description for this document.
      */
-    readonly description?: PlainTextString;
+    readonly description?: PlainTextStr;
 
     readonly links?: ReadonlyArray<URLStr | ExternalLink>;
 

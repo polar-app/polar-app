@@ -8,8 +8,8 @@ import {RepoHeader} from "../../repo_header/RepoHeader";
 import {PersistenceLayerManager} from "../../../../../web/js/datastore/PersistenceLayerManager";
 import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 import {GroupHighlightData} from "./GroupHighlightData";
-import {GroupHighlightURL, GroupHighlightURLs} from "./GroupHighlightURLs";
 import {HighlightCard} from "../highlights/HighlightCard";
+import {GroupHighlightURL, GroupHighlightURLs} from "polar-webapp-links/src/groups/GroupHighlightURLs";
 
 const log = Logger.create();
 

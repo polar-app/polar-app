@@ -78,6 +78,9 @@ export class Strings {
 
 }
 
+/**
+ * An HTML string with valie HTML
+ */
 export type HTMLStr = string;
 
 /**
@@ -101,7 +104,10 @@ export type PathStr = string;
  */
 export type PathOrURLStr = string;
 
-export type PlainTextString = string;
+/**
+ * A simple plain text string without any HTML markup.
+ */
+export type PlainTextStr = string;
 
 /**
  * A string that contains a unique ID.

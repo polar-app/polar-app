@@ -2,7 +2,7 @@ import {GroupInit} from '../db/Groups';
 import {JSONRPC} from './JSONRPC';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserRef} from './UserRefs';
-import {PlainTextString, URLStr} from "../../../util/Strings";
+import {PlainTextStr, URLStr} from "../../../util/Strings";
 
 export class GroupProvisions {
 
@@ -49,7 +49,7 @@ export interface GroupProvisionResponse {
 }
 
 export interface ExternalLink {
-    readonly name: PlainTextString;
+    readonly name: PlainTextStr;
     readonly url: URLStr;
 }
 
