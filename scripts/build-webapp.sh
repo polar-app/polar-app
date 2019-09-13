@@ -51,6 +51,7 @@ cp *.ico dist/public
 cp *.png dist/public
 cp *.svg dist/public
 
+cp robots.txt dist/public
 cp manifest.json dist/public
 
 cp apps/repository/index.html dist/public

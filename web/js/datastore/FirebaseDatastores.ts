@@ -25,8 +25,12 @@ export class FirebaseDatastores {
      */
     public static async init() {
 
+        log.notice("Initializing FirebaseDatastores...");
+
         // set the current version before we return
         this.user = await Firebase.currentUser();
+
+        log.notice("Initializing FirebaseDatastores...done", this.user);
 
         // no update in the background.
         firebase.auth()
