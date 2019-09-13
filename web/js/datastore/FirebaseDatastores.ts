@@ -6,13 +6,37 @@ import {StorageSettings} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {Optional} from '../util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
-import {UserID} from '../firebase/Firebase';
+import {Firebase, UserID} from '../firebase/Firebase';
 import * as firebase from '../firebase/lib/firebase';
 import {Preconditions} from '../Preconditions';
 import {UserIDStr} from './sharing/db/Profiles';
 import {FileRef} from "./FileRef";
+import {Logger} from "../logger/Logger";
+
+const log = Logger.create();
 
 export class FirebaseDatastores {
+
+    private static user: firebase.User  | null;
+
+    /**
+     * Perform init against the FirebaseDatastores to keep the current user for all operations.  This is a bit
+     * of a hack in that it would be nice to have FB update this without it being async.
+     */
+    public static async init() {
+
+        // set the current version before we return
+        this.user = await Firebase.currentUser();
+
+        // no update in the background.
+        firebase.auth()
+            .onAuthStateChanged((user) => this.user = user,
+                                (err) => {
+                                    log.error("Unable to handle user: ", err);
+                                    this.user = null;
+                                });
+
+    }
 
     public static computeDatastoreGetFileURL(request: DatastoreGetFileRequest) {
         const endpoint = CloudFunctions.createEndpoint();
@@ -148,7 +172,7 @@ export class FirebaseDatastores {
         const auth = app.auth();
         Preconditions.assertPresent(auth, "Not authenticated (no auth)");
 
-        const user = auth.currentUser;
+        const user = this.user || auth.currentUser;
         Preconditions.assertPresent(user, "Not authenticated (no user)");
 
         return user!.uid;

@@ -110,6 +110,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         this.initialized = true;
 
+        await FirebaseDatastores.init();
+
         return {};
 
     }
