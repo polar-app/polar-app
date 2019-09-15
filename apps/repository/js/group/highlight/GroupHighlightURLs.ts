@@ -1,6 +1,6 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {GroupNameStr} from "../../../../../web/js/datastore/sharing/db/Groups";
-import {PathToRegexps} from "polar-shared-webserver/src/webserver/PathToRegexps";
+import {PathToRegexps} from "polar-shared/src/url/PathToRegexps";
 
 export class GroupHighlightURLs {
 

@@ -17,7 +17,9 @@ const log = Logger.create();
 
 export class FirebaseDatastores {
 
-    private static user: firebase.User  | null;
+    private static user: firebase.User | null;
+
+    private static initialized: boolean = false;
 
     /**
      * Perform init against the FirebaseDatastores to keep the current user for all operations.  This is a bit
@@ -25,20 +27,36 @@ export class FirebaseDatastores {
      */
     public static async init() {
 
+        if (this.initialized) {
+            return;
+        }
+
         log.notice("Initializing FirebaseDatastores...");
 
         // set the current version before we return
         this.user = await Firebase.currentUser();
 
-        log.notice("Initializing FirebaseDatastores...done", this.user);
+        const formatUser = (user: firebase.User | null) => {
 
-        // no update in the background.
+            if (user) {
+                return `${user.displayName}, uid=${user.uid}`;
+            }
+
+            return 'none';
+
+        };
+
+        log.notice("Initializing FirebaseDatastores...done", formatUser(this.user));
+
+        // update in the background
         firebase.auth()
             .onAuthStateChanged((user) => this.user = user,
                                 (err) => {
                                     log.error("Unable to handle user: ", err);
                                     this.user = null;
                                 });
+
+        this.initialized = true;
 
     }
 
