@@ -16,6 +16,7 @@ set -e
 ## make sure we're running the latest code.
 #npm install
 
+rm -rf dist/public
 mkdir -p dist/public
 
 copy apps "*.html"
