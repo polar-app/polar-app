@@ -9,6 +9,7 @@ console.log("Using N workers: " + workers);
 
 module.exports = {
     // mode: 'development',
+    // stats: 'verbose',
     entry: {
 
         // chrome + repository (individually) is about:
