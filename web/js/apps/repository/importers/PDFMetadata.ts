@@ -13,10 +13,12 @@ import {URLs} from '../../../util/URLs';
  */
 function createWorkerSourcePath() {
 
-    const basePath = '../../node_modules/pdfjs-dist/build/pdf.worker.js;
+    const basePath = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
     if (typeof window !== "undefined") {
 
+        // TODO: this might not be the best strategy because the
+        // URL isn't going to be in the manifest
         if (URLs.isWebScheme(document.location.href)) {
             return `${basePath}?version=${PDFJS.version}`;
         }
