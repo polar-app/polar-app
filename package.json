@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "lerna run compile",
     "publish": "lerna exec --no-private -- npm publish",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "push": "lerna run compile && lerna run dist && lerna && lerna exec --no-private -- npm publish"
   },
   "keywords": [],
   "author": "",
