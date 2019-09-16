@@ -1,0 +1,30 @@
+#!/bin/bash
+
+###
+#
+# run the given git command in each git repo.
+#
+#
+
+run_git() {
+    dir=$1
+
+    parent_dir=`pwd`
+
+    cd "${dir}"
+
+    echo "mgit: ==== working with ${dir}"
+
+    shift
+    git "$@"
+
+    cd "${parent_dir}"
+
+}
+
+set -e
+
+for repo in `cat conf/repos.conf`; do
+    dir=$(echo ${repo} | grep -Eo '[a-zA-Z0-9_.-]+.git$' | sed -E 's/\.git//g;')
+    run_git "packages/${dir}" "$@"
+done
