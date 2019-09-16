@@ -1,5 +1,4 @@
 import {Files} from '../../../util/Files';
-import url from "url";
 import {FilePaths} from '../../../util/FilePaths';
 import {Optional} from '../../../util/ts/Optional';
 import PDFJS from 'pdfjs-dist';
@@ -7,32 +6,10 @@ import {DOIs} from './DOIs';
 import {PathOrURLStr} from '../../../util/Strings';
 import {URLs} from '../../../util/URLs';
 
-/**
- * For browsers, we have to load the proper worker version or else we can load
- * the cached version and then the app will break.
- */
-function createWorkerSourcePath() {
-
-    const basePath = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
-
-    if (typeof window !== "undefined") {
-
-        // TODO: this might not be the best strategy because the
-        // URL isn't going to be in the manifest
-        if (URLs.isWebScheme(document.location.href)) {
-            return `${basePath}?version=${PDFJS.version}`;
-        }
-
-    }
-
-    return basePath;
-
-}
-
 console.log("Running with pdf.js version: " + PDFJS.version);
 
 // we must include the
-PDFJS.GlobalWorkerOptions.workerSrc = createWorkerSourcePath();
+PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
 console.log("Running with GlobalWorkerOptions workerSrc: " + PDFJS.GlobalWorkerOptions.workerSrc);
 
