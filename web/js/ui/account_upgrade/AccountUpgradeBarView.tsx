@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {Logger} from "../../logger/Logger";
 import {Button} from "reactstrap";
 import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
 import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {Arrays} from "../../util/Arrays";
 import {UpgradeRequired} from "./UpgradeRequired";
-
-const log = Logger.create();
 
 const MESSAGE = createRandomizedUpgradeMessage();
 
@@ -103,6 +100,8 @@ function  createRandomizedUpgradeMessage() {
         "Premium users help support future Polar development and are generally pretty awesome.",
         "Guess who else used Polar Premium? Einstein! You want to be like Einstein don't you?",
         "It's scientifically proven that Polar premium adds 100 years to your life!",
+        "Polar Premium users help keep Polar ad-free and no annoying banners (like this one).",
+        "Keep Polar ad-free!  Upgrading to premium helps support Polar and unlocks additional storage."
     ];
 
     const randomized = Arrays.shuffle(...messages);

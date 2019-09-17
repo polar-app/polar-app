@@ -55,6 +55,25 @@ export class GroupsScreen extends React.Component<IProps, IState> {
 
                             <div className="col">
 
+                                <div className="mt-4 mb-4 text-grey700">
+                                    <div className="text-xl">
+                                        Groups allow you to share documents and highlights.
+                                    </div>
+
+                                    <div className="mt-2">
+                                        This is still a <b>beta</b> feature but we're actively working on making
+                                        it production-ready.  You can add documents to groups, and see annotations
+                                        and comments by other users.  We're going to be adding improved commenting
+                                        and working on making it easy to share documents.
+                                    </div>
+
+                                    <div className="mt-1">
+                                    If you're interested in using group in your organization we'd love
+                                    to <a href="https://kevinburton1.typeform.com/to/Ze4mqY">get your feedback</a>.
+                                    </div>
+
+                                </div>
+
                                 <div className="mt-2 p-2 border-top border-left border-right bg-grey000">
 
                                     <div style={{display: 'flex'}}

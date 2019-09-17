@@ -139,7 +139,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<MockFolderTree/>*/}
 
-                {/*<AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 5000000000}}/>*/}
+                <AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 0}}/>
 
                 {/*<div>*/}
 
