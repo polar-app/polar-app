@@ -5,7 +5,6 @@
   "main": "index.js",
   "private": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dist": "rm -rf public && mkdir -p public && cd ../../polar-bookshelf && npm run-script build-webapp && cp -rp dist/public/* ../polar-app-private/polar-webapp-dist/public"
   },
   "keywords": [],
