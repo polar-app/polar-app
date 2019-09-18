@@ -189,6 +189,7 @@
     "polar-shared": "^1.32.29",
     "polar-shared-webserver": "^1.32.29",
     "polar-webapp-links": "^1.32.29",
+    "polar-pdf": "^1.32.29",
     "popper.js": "~1.14.4",
     "prettify": "~0.1.7",
     "prop-types": "~15.6.2",
