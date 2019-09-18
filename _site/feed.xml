@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-09-17T19:48:14-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-09-18T09:09:23-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
+
+&lt;p&gt;We had an outage last night for Polar cloud sync and our web application which was related to an issue in Google cloud.&lt;/p&gt;
+
+&lt;p&gt;Users would have been unable to use the web application and cloud sync wouldn’t work properly.&lt;/p&gt;
+
+&lt;p&gt;At 2 AM PST Google downgraded all of our accounts due to “activity”:&lt;/p&gt;
+
+&lt;p&gt;We received an email with:&lt;/p&gt;
+
+&lt;p&gt;“Billing was disabled for your project, or The billing account attached to your project was closed”&lt;/p&gt;
+
+&lt;p&gt;All of our accounts were downgraded to the Spark plan (their lowest plan).&lt;/p&gt;
+
+&lt;p&gt;Once we figured out what was happening we reverted our billing to blaze (the proper plan) and about ten minutes 
+later everything was functioning properly.&lt;/p&gt;
+
+&lt;p&gt;This also coincided with a release which was just a coincidence.  Some of our users were saying that Polar was failing
+after upgrading but it was just a timing issue.  Upon restart Polar does a full re-sync.&lt;/p&gt;
+
+&lt;p&gt;We apologize or the inconvenience.&lt;/p&gt;
+
+&lt;p&gt;We’re still trying to investigate &lt;em&gt;why&lt;/em&gt; this happened as there were no changes on our end and Google shouldn’t have
+taken our projects offline.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar Outage- Sept 18 2019</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
 
 &lt;p&gt;Being that my background is in CompSci I tend to think about thinks in terms of probabilities, statistics, game theory, 
 and distributed systems.&lt;/p&gt;
@@ -1405,179 +1428,4 @@ Now of course, if you’d like do donate more than $27 don’t let me stop you.&
 
 &lt;p&gt;This is an uphill battle - but we’re in this together.&lt;/p&gt;
 
-&lt;p&gt;Thanks for all your support.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Roadmap for Q2 and Q3 2019</title><link href="https://getpolarized.io/2019/04/10/Roadmap-Q2-Q3-2019.html" rel="alternate" type="text/html" title="Polar Roadmap for Q2 and Q3 2019" /><published>2019-04-10T06:00:00-07:00</published><updated>2019-04-10T06:00:00-07:00</updated><id>https://getpolarized.io/2019/04/10/Roadmap-Q2-Q3-2019</id><content type="html" xml:base="https://getpolarized.io/2019/04/10/Roadmap-Q2-Q3-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/long-road-scaled.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;polar-roadmap-for-q2-and-q3-2019&quot;&gt;Polar Roadmap for Q2 and Q3 2019&lt;/h1&gt;
-
-&lt;p&gt;I wanted to write up a quick blog post for the features I’d like to see in 
-Q2 and Q3 2019 for you guys to review.&lt;/p&gt;
-
-&lt;h2 id=&quot;q2-2019&quot;&gt;Q2 2019&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Initial version of sharing.  Single document only with public URL (public or private only)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Area highlights with support for annotations and storing them as screenshots along with the document as binary attachments.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Advanced sharing with teams and user to user + groups a month later&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Mobile PWA supported to use Polar on iOS and Android&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Polar bundled in app stores directly&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Native Flashcard support without having to need Anki&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Support for bibliographic information stored in Polar for scientific usage&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Full team sharing / collaboration including protected documents across teams and realtime collaboration.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Firefox extension support&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Web app out of preview (and fast!)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;More colors for highlights&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Binary attachments required for area highlights&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Actively engage the user to encourage reading progress via integrated reading tracking (partially implemented today)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Webpack refactor to make our app much smaller &amp;lt;1MB download size on mobile&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Comments + Notes + Flashcards directly on the document&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;New annotation bar so that user can add comments and flashcards without having to use the sidebar.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Thumbnails for documents&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;All CSS embedded in thin web archives.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Initial UI / UX re-design&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Better key bindings along with documentation&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Latex (math) in comments and flashcards&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;DOI lookup provided by unpaywall API.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Extended metadata support with metadata ‘profiles’ so that they can be merged&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Search documents on arxiv and import automatically&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Bulk import from directories recursively on install&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;New icon / logo&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;More documentation improvements&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Figure out a solution + UI for hierarchical tags. Many users have requested
-this and I think we can do this via our normal tag mechanism and just need to 
-figure out how to fix the UI for this to handle it properly.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Comments and annotations should themselves support tags not just inherit the 
-tag for the book with which they’re associated.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;q3-2019&quot;&gt;Q3 2019&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;New document viewer which supports ePub, and Mobi document formats&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Dark mode implemented once we’re on a new document viewer.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Full-text search in cloud but possibly in the standlone desktop version as well&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Plugin API for desktop applications&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Basic REST API for local desktop app for basic operations such as adding files and updating metadata for integration with 3rd party apps.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Active Capture where the chrome extension automatically saves content while you browse.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Web annotations without having to capture documents offline but support documents 
-which are just URLs references stored in polar.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Capture directly within the browser using the chrome extension which won’t  require the desktop app.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Annotations attached to shingles not based on absolute positioning.  Right now
-our annotation model positions an annotation at a specific place in on the page
-at an x,y coordinate offset.  This won’t work with fluid web layout or normal 
-web pages and possibly not with ePub so we need a system based on position the 
-annotations around text.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Import from Pocket, Zotero, Mendeley (if possible), Evernote.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Distributed and real-time annotations with federation when using document sharing.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Usability improvements to document viewer thanks to new architecture.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Support for note taking without having to have a document backing the note.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Support for feeds of content and edge aggregated data streams similar to RSS feeds&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Support for thin and fat captures with web archives. Right now we support thin
-content with just the CSS but we should also support images as well.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Tabbed browsing for desktop edition.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;More documentation improvements&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;q4-2019&quot;&gt;Q4 2019&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Rest API using OpenID to authenticate with the webapp and provide access to a 
-users data with 3rd party APIs.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;pricing&quot;&gt;Pricing&lt;/h1&gt;
-
-&lt;p&gt;Some of the above features may fall under the following pricing model:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/iqR9RXD.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;p&gt;Thanks for all your support.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>

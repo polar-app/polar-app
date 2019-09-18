@@ -4,6 +4,7 @@ date: 2019-07-26 09:00:00 -0800
 layout: post
 image: https://getpolarized.io/assets/logo/icon.png
 description: I've recently made what I think may be a unique observation about a number of social problems that might all be related to one root cause - defection.
+hidden: true
 ---
 
 # Minimizing Defection Might be the Solution to the Tragedy of the Commons.
