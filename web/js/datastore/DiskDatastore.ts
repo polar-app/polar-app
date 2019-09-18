@@ -19,7 +19,6 @@ import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
-import {Strings} from '../util/Strings';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
@@ -35,6 +34,7 @@ import {DatastoreMutations} from './DatastoreMutations';
 import { IDocInfo } from '../metadata/IDocInfo';
 import {IDocMeta} from "../metadata/IDocMeta";
 import {FileRef} from "./FileRef";
+import {Strings} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 

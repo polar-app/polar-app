@@ -8,7 +8,6 @@ import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener'
 import {WebRequestReactor} from '../webrequests/WebRequestReactor';
 import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContentsDriver';
 import {BrowserProfile} from './BrowserProfile';
-import {Strings} from '../util/Strings';
 import {Optional} from '../util/ts/Optional';
 import {Functions} from '../util/Functions';
 import {Promises} from '../util/Promises';
@@ -18,6 +17,7 @@ import BrowserRegistry from './BrowserRegistry';
 import {BrowserProfiles} from './BrowserProfiles';
 import {Objects} from '../util/Objects';
 import {Latch} from '../util/Latch';
+import {Strings} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 

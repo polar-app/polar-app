@@ -16,10 +16,10 @@ import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {Datastores} from '../../js/datastore/Datastores';
 import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
-import {Strings} from '../../js/util/Strings';
 import {AsyncFunction, AsyncWorkQueue} from '../../js/util/AsyncWorkQueue';
 import {FirestoreQueryCursor} from '../../js/firebase/FirestoreQueryCursor';
 import {Preconditions} from 'polar-shared/src/Preconditions';
+import {Strings} from "polar-shared/src/util/Strings";
 
 mocha.setup('bdd');
 mocha.timeout(10000);

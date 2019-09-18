@@ -1,4 +1,4 @@
-import {PathStr, URLStr} from '../Strings';
+import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 
 /**
  * Typed InputSource to allow us to create a stream from the underlying data.

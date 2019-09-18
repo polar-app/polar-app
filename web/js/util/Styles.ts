@@ -1,6 +1,6 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from './ts/Optional';
-import {Strings} from './Strings';
+import {Strings} from "polar-shared/src/util/Strings";
 
 export class Styles {
 

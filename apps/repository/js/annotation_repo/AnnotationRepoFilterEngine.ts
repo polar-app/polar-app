@@ -1,4 +1,3 @@
-import {Strings} from '../../../../web/js/util/Strings';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
@@ -9,6 +8,7 @@ import {RepoAnnotations} from '../RepoAnnotations';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
+import {Strings} from "polar-shared/src/util/Strings";
 
 /**
  * The actual engine that applies the filters once they are updated.

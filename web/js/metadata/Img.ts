@@ -1,4 +1,4 @@
-import {URLStr} from '../util/Strings';
+import {URLStr} from "polar-shared/src/util/Strings";
 
 /**
  * Image src with width, height, and URL.

@@ -1,5 +1,5 @@
-import {Strings} from '../util/Strings';
 import {DurationStr, TimeDurations} from '../util/TimeDurations';
+import {Strings} from "polar-shared/src/util/Strings";
 
 export type ISODateTimeString = string;
 

@@ -1,11 +1,11 @@
 import {TriggerEvent} from '../contextmenu/TriggerEvent';
 import {Logger} from '../logger/Logger';
 import {Model} from '../model/Model';
-import {Strings} from '../util/Strings';
 import {Toaster} from '../ui/toaster/Toaster';
 import {DialogWindowClient} from '../ui/dialog_window/DialogWindowClient';
 import {DialogWindowOptions, Resource, ResourceType} from '../ui/dialog_window/DialogWindow';
 import {DocInfos} from '../metadata/DocInfos';
+import {Strings} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 

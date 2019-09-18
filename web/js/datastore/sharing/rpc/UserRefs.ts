@@ -4,7 +4,7 @@
  * resolve to a user + profile.
  */
 import {ProfileIDStr} from '../db/Profiles';
-import {EmailStr} from '../../../util/Strings';
+import {EmailStr} from "polar-shared/src/util/Strings";
 
 export class UserRefs {
 

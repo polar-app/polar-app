@@ -3,10 +3,10 @@ import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {UserIDStr} from './Profiles';
 import {Hashcodes} from '../../../Hashcodes';
-import {PlainTextStr, URLStr} from "../../../util/Strings";
 import {ExternalLink} from "../rpc/GroupProvisions";
 import {Clause, Collections, OrderByClause} from "./Collections";
 import {Arrays} from "../../../util/Arrays";
+import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 
 const HASHCODE_LEN = 20;
 

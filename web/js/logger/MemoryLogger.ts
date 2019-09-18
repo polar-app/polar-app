@@ -1,9 +1,9 @@
 import {ILogger} from './ILogger';
-import {Strings} from '../util/Strings';
 import {FixedBuffer} from '../util/FixedBuffer';
 import {LogLevelName, LogMessage} from './Logging';
 import {EventListener, Releaseable} from '../reactor/EventListener';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {Strings} from "polar-shared/src/util/Strings";
 
 const capacity = Strings.toNumber(process.env.POLAR_LOG_CAPACITY, 250);
 

@@ -1,4 +1,4 @@
-import {URLStr} from "../util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 
 export interface AuthorImage {
     readonly src: URLStr;

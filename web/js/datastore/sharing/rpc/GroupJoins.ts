@@ -4,8 +4,8 @@ import {GroupDatastores, GroupDocRef} from "../GroupDatastores";
 import {GroupMemberInvitation} from "../db/GroupMemberInvitations";
 import {Logger} from "../../../logger/Logger";
 import {PersistenceLayer} from "../../PersistenceLayer";
-import {URLStr} from "../../../util/Strings";
 import {URLParams} from "../../../util/URLParams";
+import {URLStr} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 

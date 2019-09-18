@@ -11,9 +11,9 @@ import {DocMeta} from './DocMeta';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";
 import {ITextHighlight} from "./ITextHighlight";
-import {HTMLStr} from "../util/Strings";
 import {Text} from "./Text";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
+import {HTMLStr} from "polar-shared/src/util/Strings";
 
 export class TextHighlights {
 

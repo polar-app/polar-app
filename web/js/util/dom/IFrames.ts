@@ -1,5 +1,5 @@
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {URLStr} from '../Strings';
+import {URLStr} from "polar-shared/src/util/Strings";
 
 export class IFrames {
 

@@ -1,7 +1,6 @@
 import {Blobs} from './Blobs';
 import {ArrayBuffers} from './ArrayBuffers';
-import {Strings} from './Strings';
-import {URLStr} from './Strings';
+import {Strings, URLStr} from "polar-shared/src/util/Strings";
 
 // import fetch from './Fetch';
 

@@ -1,12 +1,12 @@
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocInfos} from '../RepoDocInfos';
-import {Strings} from '../../../../web/js/util/Strings';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from '../../../../web/js/util/Providers';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tags';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
+import {Strings} from "polar-shared/src/util/Strings";
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have

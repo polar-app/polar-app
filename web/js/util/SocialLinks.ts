@@ -2,7 +2,7 @@
  * Create links to share content on various platforms like Facebook, Twitter,
  * and GMail etc.
  */
-import {URLStr} from './Strings';
+import {URLStr} from "polar-shared/src/util/Strings";
 
 export class SocialLinks {
 

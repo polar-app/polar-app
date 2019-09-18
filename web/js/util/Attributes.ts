@@ -1,6 +1,6 @@
 import {Tokens} from './Tokens';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Strings} from './Strings';
+import {Strings} from "polar-shared/src/util/Strings";
 
 export class Attributes {
 

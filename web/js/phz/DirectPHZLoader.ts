@@ -1,5 +1,4 @@
-import {PathStr} from '../util/Strings';
-import {URLStr} from '../util/Strings';
+
 import {URLs} from '../util/URLs';
 import {PHZReader} from './PHZReader';
 import {Logger} from '../logger/Logger';
@@ -11,6 +10,7 @@ import {ResourceEntry} from './ResourceEntry';
 import {Optional} from '../util/ts/Optional';
 import {Latch} from '../util/Latch';
 import {DOM} from '../util/DOM';
+import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 

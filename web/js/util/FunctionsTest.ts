@@ -1,6 +1,6 @@
 import {Functions} from './Functions';
 import {assert} from 'chai';
-import {Strings} from './Strings';
+import {Strings} from "polar-shared/src/util/Strings";
 
 describe('Functions', function() {
 

@@ -1,5 +1,5 @@
-import {HTMLStr} from '../../../../util/Strings';
 import {Flashcard} from '../../../../metadata/Flashcard';
+import {HTMLStr} from "polar-shared/src/util/Strings";
 
 export type FlashcardInputFieldsType = FrontAndBackFields | ClozeFields;
 

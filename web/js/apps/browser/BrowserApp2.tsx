@@ -10,8 +10,8 @@ import BrowserRegistry from '../../capture/BrowserRegistry';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 import {BackgroundFrameResizer} from '../../viewer/html/BackgroundFrameResizer';
-import {Strings} from '../../util/Strings';
 import {URLs} from '../../util/URLs';
+import {Strings} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 

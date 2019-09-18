@@ -1,6 +1,6 @@
 import {Resources} from './Resources';
 import {ResourceEntry} from './ResourceEntry';
-import {PathStr} from '../util/Strings';
+import {PathStr} from "polar-shared/src/util/Strings";
 
 export interface CompressedReader {
 

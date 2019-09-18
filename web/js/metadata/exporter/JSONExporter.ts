@@ -6,7 +6,7 @@ import {AbstractExporter} from './AbstractExporter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
-import {Strings} from "../../util/Strings";
+import {Strings} from "polar-shared/src/util/Strings";
 
 export class JSONExporter extends AbstractExporter {
 

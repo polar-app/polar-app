@@ -3,8 +3,8 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';
-import {IDStr} from "../util/Strings";
 import {SetArrays} from "../util/SetArrays";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 // DO NOT MODIFY ... migrating this to polar-shared
 // DO NOT MODIFY ... migrating this to polar-shared
