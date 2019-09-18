@@ -12,7 +12,7 @@ import {AsyncProviders} from '../util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
 import {MetadataSerializer} from '../metadata/MetadataSerializer';
-import {Reducers} from '../util/Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 import {DocMeta} from '../metadata/DocMeta';
 import {IDocMeta} from "../metadata/IDocMeta";
 

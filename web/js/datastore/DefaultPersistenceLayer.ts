@@ -15,7 +15,7 @@ import {WriteOpts} from './PersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Reducers} from '../util/Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';

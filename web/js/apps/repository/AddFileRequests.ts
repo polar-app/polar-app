@@ -6,7 +6,7 @@ import {AppRuntime} from '../../AppRuntime';
 import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
 import {Aborters, Files} from '../../util/Files';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Reducers} from '../../util/Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 
 const TOASTER_DESTROY_DELAY = 500;
 const MAX_RECURSIVE_DIRECTORY_SCAN_DURATION = "30s";

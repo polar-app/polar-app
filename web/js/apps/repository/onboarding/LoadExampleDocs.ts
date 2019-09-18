@@ -17,7 +17,7 @@ import {HashAlgorithm} from '../../../metadata/Hashcode';
 import {HashEncoding} from '../../../metadata/Hashcode';
 import {DocInfo} from '../../../metadata/DocInfo';
 import {Datastores} from '../../../datastore/Datastores';
-import {PDFMeta} from '../importers/PDFMetadata';
+import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {Tag} from '../../../tags/Tags';
 import {IDocInfo} from "../../../metadata/IDocInfo";

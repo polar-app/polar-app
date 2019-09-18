@@ -6,7 +6,7 @@ import {ResponsiveCalendar} from '@nivo/calendar';
 import {HitMap} from '../../../../web/js/util/HitMap';
 import {Dictionaries} from '../../../../web/js/util/Dictionaries';
 import {ISODateTimeStrings} from '../../../../web/js/metadata/ISODateTimeStrings';
-import {Reducers} from '../../../../web/js/util/Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Numbers} from '../../../../web/js/util/Numbers';
 
 const log = Logger.create();

@@ -5,7 +5,7 @@ import {PHZReader} from './PHZReader';
 import {Logger} from '../logger/Logger';
 import {Captured} from '../capture/renderer/Captured';
 import {Resources} from './Resources';
-import {Reducers} from '../util/Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Blobs} from '../util/Blobs';
 import {ResourceEntry} from './ResourceEntry';
 import {Optional} from '../util/ts/Optional';

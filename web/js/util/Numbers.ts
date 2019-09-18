@@ -1,4 +1,4 @@
-import {Reducers} from './Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 
 export class Numbers {
 

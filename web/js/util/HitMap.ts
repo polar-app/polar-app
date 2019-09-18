@@ -1,5 +1,5 @@
 import {Dictionaries} from "./Dictionaries";
-import {Reducers} from "./Reducers";
+import {Reducers} from "polar-shared/src/util/Reducers";
 import {ArrayListMultimap, Multimap} from './Multimap';
 import {Arrays} from "./Arrays";
 

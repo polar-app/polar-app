@@ -1,4 +1,4 @@
-import {PDFMetadata} from "../web/js/apps/repository/importers/PDFMetadata";
+import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
 import {FilePaths} from '../web/js/util/FilePaths';
 import {PDFImporter} from '../web/js/apps/repository/importers/PDFImporter';
 

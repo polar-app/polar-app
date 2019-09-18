@@ -14,7 +14,7 @@ import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PageMeta} from './PageMeta';
 import {Numbers} from "../util/Numbers";
-import {Reducers} from '../util/Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from '../util/Providers';
 import {HitMap} from '../util/HitMap';

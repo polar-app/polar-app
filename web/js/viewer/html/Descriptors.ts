@@ -3,7 +3,7 @@ import {PHZMetadata} from '../../phz/PHZMetadata';
 import {Logger} from '../../logger/Logger';
 import {ScrollBox} from '../../capture/renderer/Captured';
 import {Optional} from '../../util/ts/Optional';
-import {Reducers} from '../../util/Reducers';
+import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDimensions} from "../../util/IDimensions";
 
 const log = Logger.create();
