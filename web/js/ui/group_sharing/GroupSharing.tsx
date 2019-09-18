@@ -5,7 +5,7 @@ import {Group, GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Releaser} from '../../reactor/EventListener';
 import {Logger} from '../../logger/Logger';
 import {Doc} from '../../metadata/Doc';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {
     ContactProfile,
     GroupSharingRecords,

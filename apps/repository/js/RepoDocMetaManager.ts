@@ -3,7 +3,7 @@ import {DocInfo} from '../../../web/js/metadata/DocInfo';
 import {IDocInfo} from '../../../web/js/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Tags} from '../../../web/js/tags/Tags';
-import {Preconditions} from '../../../web/js/Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';

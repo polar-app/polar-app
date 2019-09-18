@@ -1,4 +1,4 @@
-import {Preconditions} from './Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {keccak256} from 'js-sha3';
 import uuid from 'uuid';
 import {InputSource} from './util/input/InputSource';

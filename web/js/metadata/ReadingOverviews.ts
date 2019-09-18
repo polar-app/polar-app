@@ -1,6 +1,6 @@
 import {ReadingProgress} from './ReadingProgress';
 import {PageMeta} from './PageMeta';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverview} from './ReadingOverview';
 import {ArrayListMultimap} from '../util/Multimap';

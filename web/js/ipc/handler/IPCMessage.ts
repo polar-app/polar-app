@@ -6,7 +6,7 @@ import {IPCError} from './IPCError';
 import {ElectronContext} from './ElectronContext';
 import {ElectronContexts} from './ElectronContexts';
 import {Logger} from '../../logger/Logger';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();
 

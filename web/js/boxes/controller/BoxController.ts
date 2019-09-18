@@ -4,7 +4,7 @@ import {Rects} from '../../Rects';
 import {Rect} from '../../Rect';
 import {Objects} from '../../util/Objects';
 import {Logger} from '../../logger/Logger';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {RectEdges} from '../../pagemarks/controller/interact/edges/RectEdges';
 import {Optional} from '../../util/ts/Optional';
 import {DragRectAdjacencyCalculator} from '../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator';

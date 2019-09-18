@@ -1,5 +1,5 @@
 import {Hashcodes} from '../Hashcodes';
-import {notNull} from '../Preconditions';
+import {notNull} from 'polar-shared/src/Preconditions';
 
 export class Fingerprints {
 

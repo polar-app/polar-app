@@ -2,7 +2,7 @@
 import {app, remote} from 'electron';
 import path from 'path';
 import fs from 'fs';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {URLs} from '../../util/URLs';
 
 const USE_FILE_URL = true;

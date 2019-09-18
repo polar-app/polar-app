@@ -6,7 +6,7 @@ import {Firebase} from '../../../firebase/Firebase';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
 import {Collections, DocumentChange} from './Collections';
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Clause} from './Collections';
 import {Logger} from '../../../logger/Logger';
 

@@ -8,7 +8,7 @@ import {Optional} from '../util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
 import {Firebase, UserID} from '../firebase/Firebase';
 import * as firebase from '../firebase/lib/firebase';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {UserIDStr} from './sharing/db/Profiles';
 import {FileRef} from "./FileRef";
 import {Logger} from "../logger/Logger";

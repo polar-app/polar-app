@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Logger} from '../../logger/Logger';
 import {AnnotationType} from '../../metadata/AnnotationType';
 import {AreaHighlightAnnotationComponent} from './AreaHighlightAnnotationComponent';

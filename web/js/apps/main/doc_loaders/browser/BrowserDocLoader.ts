@@ -1,5 +1,5 @@
 import {LoadDocRequest} from '../LoadDocRequest';
-import {Preconditions} from '../../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IProvider} from '../../../../util/Providers';
 import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
 import {Backend} from '../../../../datastore/Backend';

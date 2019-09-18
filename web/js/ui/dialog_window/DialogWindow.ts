@@ -5,7 +5,7 @@ import {WebContentsPromises} from '../../electron/framework/WebContentsPromises'
 import {DialogWindowReference} from './DialogWindowReference';
 import {DialogWindowMenu} from './DialogWindowMenu';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();
 

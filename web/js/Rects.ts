@@ -1,5 +1,5 @@
 import {Rect} from './Rect';
-import {Preconditions} from './Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Point} from './Point';
 import {Line} from './util/Line';
 import {Styles} from './util/Styles';

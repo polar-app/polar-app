@@ -2,7 +2,7 @@ import {Model} from '../../../model/Model';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
 import {Logger} from '../../../logger/Logger';
 import {TextHighlightRow} from './TextHighlightRow';
-import {notNull, Preconditions} from '../../../Preconditions';
+import {notNull, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
 import {DocFormat} from '../../../docformat/DocFormat';
 import {KeyEvents} from '../../../KeyEvents';

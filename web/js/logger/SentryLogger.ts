@@ -1,7 +1,7 @@
 import {ILogger} from './ILogger';
 
 import { init, captureException } from '@sentry/electron';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import process from "process";
 
 // This configures the Electron CrashReporter for native app crashes and

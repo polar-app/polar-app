@@ -2,7 +2,7 @@ import fs, {PathLike, Stats} from "fs";
 import {promisify} from 'util';
 import {Logger} from '../logger/Logger';
 import ErrnoException = NodeJS.ErrnoException;
-import {isPresent, Preconditions} from "../Preconditions";
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {FilePaths} from "./FilePaths";
 import {Providers} from "./Providers";
 import {DurationStr, TimeDurations} from './TimeDurations';

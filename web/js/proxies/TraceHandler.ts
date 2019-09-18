@@ -2,7 +2,7 @@ import {Proxies} from "./Proxies";
 
 import {TraceListenerExecutor} from "./TraceListenerExecutor";
 import {TraceEvent} from "./TraceEvent";
-import {Preconditions} from "../Preconditions";
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {MutationType} from "./MutationType";
 import {FunctionalInterface} from "../util/FunctionalInterface";
 import {Reactor} from "../reactor/Reactor";

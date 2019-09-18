@@ -3,7 +3,7 @@ import {Rects} from "../../../../Rects";
 import {LineAdjustment} from "./LineAdjustment";
 import {Line} from "../../../../util/Line";
 import {Adjacency} from "./Adjacency";
-import {Preconditions} from '../../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 /**
  * If we have two rects, and the've moved to intersect, compute updated

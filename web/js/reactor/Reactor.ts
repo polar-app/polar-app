@@ -1,4 +1,4 @@
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Event} from './Event';
 import {EventListener, RegisteredEventListener} from './EventListener';
 import {Logger} from '../logger/Logger';

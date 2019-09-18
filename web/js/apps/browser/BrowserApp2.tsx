@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {BrowserNavBar} from './react/BrowserNavBar';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import BrowserRegistry from '../../capture/BrowserRegistry';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';

@@ -5,7 +5,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {GetFileOpts} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from '../util/ts/Optional';

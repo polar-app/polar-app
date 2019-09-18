@@ -1,5 +1,5 @@
 import {Hashcodes} from '../Hashcodes';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {DocMeta} from './DocMeta';

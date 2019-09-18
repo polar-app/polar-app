@@ -1,5 +1,5 @@
 import {Model} from '../model/Model';
-import {isPresent, notNull, Preconditions} from '../Preconditions';
+import {isPresent, notNull, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ContextMenuController} from '../contextmenu/ContextMenuController';
 import {KeyEvents} from '../KeyEvents';

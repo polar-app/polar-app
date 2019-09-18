@@ -9,7 +9,7 @@ import {MetadataSerializer} from './MetadataSerializer';
 import {PageMetas} from './PageMetas';
 import {forDict} from '../util/Functions';
 import {TextHighlights} from './TextHighlights';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Errors} from '../util/Errors';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {FilePaths} from '../util/FilePaths';

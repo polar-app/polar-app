@@ -1,5 +1,5 @@
 import {FlashcardArchetype} from './FlashcardArchetype';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {FlashcardField} from './FlashcardField';
 import {FlashcardFieldType} from './FlashcardFieldType';
 

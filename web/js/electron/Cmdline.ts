@@ -1,4 +1,4 @@
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {FilePaths} from '../util/FilePaths';
 
 export class Cmdline {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {MousePositions} from '../../../spectron0/ui-components/MousePositions';
 import {ChannelCoupler} from '../../util/Channels';
-import {defaultValue} from '../../Preconditions';
+import {defaultValue} from 'polar-shared/src/Preconditions';
 
 
 class Styles {

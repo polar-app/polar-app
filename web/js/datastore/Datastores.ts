@@ -13,7 +13,7 @@ import {AsyncProviders} from '../util/Providers';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";

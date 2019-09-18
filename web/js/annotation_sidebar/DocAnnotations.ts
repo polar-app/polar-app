@@ -1,4 +1,4 @@
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';

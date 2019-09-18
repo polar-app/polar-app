@@ -1,6 +1,6 @@
 import {AbstractDatastore, Datastore, DatastoreInfo, DatastoreOverview, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
 import {WriteFileOpts} from './Datastore';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FileDeleted, FileHandle, Files} from '../util/Files';
@@ -28,7 +28,7 @@ import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {GetFileOpts} from './Datastore';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {BinaryFileData} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutations} from './DatastoreMutations';

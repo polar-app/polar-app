@@ -1,5 +1,5 @@
 import {DocFormat, DocFormatName, PageDetail} from './DocFormat';
-import {notNull} from '../Preconditions';
+import {notNull} from 'polar-shared/src/Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {URLs} from '../util/URLs';
 

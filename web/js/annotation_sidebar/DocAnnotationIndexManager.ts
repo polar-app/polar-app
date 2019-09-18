@@ -9,7 +9,7 @@ import {CommentModel} from "./CommentModel";
 import {Comment} from "../metadata/Comment";
 import {FlashcardModel} from "./FlashcardModel";
 import {Flashcard} from "../metadata/Flashcard";
-import {isPresent} from "../Preconditions";
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {MutationType} from "../proxies/MutationType";
 import {Logger} from "../logger/Logger";
 import {DocFileResolver} from "../datastore/DocFileResolvers";

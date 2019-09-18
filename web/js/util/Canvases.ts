@@ -1,7 +1,7 @@
 import {ArrayBuffers} from './ArrayBuffers';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {ImageType, ExtractedImage} from '../screenshots/Screenshot';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {DataURL} from './DataURLs';
 
 const IMAGE_TYPE = 'image/png';

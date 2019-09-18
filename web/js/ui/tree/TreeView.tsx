@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {Dictionaries} from '../../util/Dictionaries';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Tag, TagStr} from "../../tags/Tags";
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {

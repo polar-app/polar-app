@@ -3,7 +3,7 @@ import {CacheRegistry} from '../proxyserver/CacheRegistry';
 import {CorrectStreamProtocolResponse, StreamInterceptors, StreamProtocolCallback} from './StreamInterceptors';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
 import {CacheStats} from './CacheStats';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();
 

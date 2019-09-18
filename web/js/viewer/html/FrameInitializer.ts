@@ -1,4 +1,4 @@
-import {notNull} from '../../Preconditions';
+import {notNull} from 'polar-shared/src/Preconditions';
 import {EventBridge} from './EventBridge';
 import {Logger} from '../../logger/Logger';
 

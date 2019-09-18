@@ -19,7 +19,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {Strings} from '../../js/util/Strings';
 import {AsyncFunction, AsyncWorkQueue} from '../../js/util/AsyncWorkQueue';
 import {FirestoreQueryCursor} from '../../js/firebase/FirestoreQueryCursor';
-import {Preconditions} from '../../js/Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 mocha.setup('bdd');
 mocha.timeout(10000);

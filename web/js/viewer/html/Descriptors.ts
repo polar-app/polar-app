@@ -1,4 +1,4 @@
-import {isPresent, notNull} from '../../Preconditions';
+import {isPresent, notNull} from 'polar-shared/src/Preconditions';
 import {PHZMetadata} from '../../phz/PHZMetadata';
 import {Logger} from '../../logger/Logger';
 import {ScrollBox} from '../../capture/renderer/Captured';

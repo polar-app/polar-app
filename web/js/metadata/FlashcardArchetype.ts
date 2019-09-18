@@ -1,5 +1,5 @@
 import {Objects} from "../util/Objects";
-import {Preconditions} from "../Preconditions";
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 /**
  * A defined archetype for creating a flashcard.  These provide a collection of

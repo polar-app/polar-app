@@ -1,4 +1,4 @@
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 // FIXME remove as this is in polar-shared now
 

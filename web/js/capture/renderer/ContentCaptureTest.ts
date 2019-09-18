@@ -5,7 +5,7 @@ import {ResourceLoader} from 'jsdom';
 import {FetchOptions} from 'jsdom';
 import {ContentCapture} from './ContentCapture';
 import {assertJSON} from '../../test/Assertions';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import waitForExpect from 'wait-for-expect';
 
 declare var global: any;

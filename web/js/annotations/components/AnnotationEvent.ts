@@ -1,5 +1,5 @@
 import {TraceEvent} from '../../proxies/TraceEvent';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {PageMeta} from '../../metadata/PageMeta';
 import {DocMeta} from '../../metadata/DocMeta';
 import {Container} from '../../components/containers/Container';

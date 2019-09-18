@@ -6,7 +6,7 @@ import {DatastoreOverview} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from '../logger/Logger';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';

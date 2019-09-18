@@ -3,7 +3,7 @@
  * serialization but also object validation once they are deserialized.
  */
 import {SerializedObject} from './SerializedObject';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 export class MetadataSerializer {
 

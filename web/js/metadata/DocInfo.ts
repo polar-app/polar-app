@@ -4,7 +4,7 @@
  */
 import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from './PagemarkType';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateString, ISODateTimeString} from './ISODateTimeStrings';
 import {Hashcode} from './Hashcode';
 import {ReadingOverview} from './ReadingOverview';

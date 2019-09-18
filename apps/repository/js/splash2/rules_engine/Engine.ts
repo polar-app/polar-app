@@ -1,7 +1,7 @@
 import {Rule} from './Rule';
 import {ISODateTimeString} from '../../../../../web/js/metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
-import {isPresent} from '../../../../../web/js/Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from '../../../../../web/js/util/Reducers';
 
 

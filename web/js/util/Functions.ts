@@ -1,4 +1,4 @@
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from './ts/Optional';
 
 export class Functions {

@@ -2,7 +2,7 @@
 // https://expressjs.com/en/4x/api.html#req
 // https://expressjs.com/en/4x/api.html#res
 
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Objects} from '../../util/Objects';
 
 export abstract class CacheEntry implements ICacheEntry {

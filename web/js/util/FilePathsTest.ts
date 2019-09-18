@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {BrowserFilePaths, FilePaths} from './FilePaths';
 import {Files} from './Files';
 import fetch from './Fetch';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 describe('FilePaths', function() {
 

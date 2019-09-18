@@ -2,7 +2,7 @@
 import {parseAddressList} from 'email-addresses';
 import ParsedMailbox = emailAddresses.ParsedMailbox;
 import {Optional} from './ts/Optional';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 /**
  * This is an RFC 5322 parser.

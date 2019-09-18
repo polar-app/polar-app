@@ -1,6 +1,6 @@
 import {Text} from './Text';
 import {TextType} from './TextType';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 export class Texts {
 

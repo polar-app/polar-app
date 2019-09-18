@@ -1,7 +1,7 @@
 import {Pagemark} from './Pagemark';
 import {PagemarkType} from './PagemarkType';
 import {PagemarkRect} from './PagemarkRect';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Rect} from '../Rect';
 import {Rects} from '../Rects';
 

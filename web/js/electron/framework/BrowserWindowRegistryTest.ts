@@ -2,7 +2,7 @@
 import * as assert from 'assert';
 import {BrowserWindowRegistry, ID, LiveWindowsProvider} from './BrowserWindowRegistry';
 import {assertJSON} from '../../test/Assertions';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 describe('BrowserWindowRegistry', function() {
 

@@ -3,7 +3,7 @@ import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
 import {Image} from './Image';
-import {isPresent, notNull} from '../Preconditions';
+import {isPresent, notNull} from 'polar-shared/src/Preconditions';
 import {PageMeta} from './PageMeta';
 import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';

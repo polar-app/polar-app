@@ -3,7 +3,7 @@ import {Engine} from './Engine';
 import {EventMaps} from './Engine';
 import {EventHandlers} from './Engine';
 import {NULL_FUNCTION} from '../../../../../web/js/util/Functions';
-import {isPresent} from '../../../../../web/js/Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {TestingTime} from '../../../../../web/js/test/TestingTime';
 import {assertJSON} from '../../../../../web/js/test/Assertions';
 

@@ -3,7 +3,7 @@ import {Image} from './Images';
 import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
 import {ProfileOwners} from './ProfileOwners';
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import * as firebase from '../../../firebase/lib/firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
 import {

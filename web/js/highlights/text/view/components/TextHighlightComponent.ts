@@ -1,6 +1,6 @@
 import {DocFormat} from '../../../../docformat/DocFormat';
 import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
-import {Preconditions} from '../../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Dictionaries} from '../../../../util/Dictionaries';
 import {Component} from '../../../../components/Component';
 import {DocFormatFactory} from '../../../../docformat/DocFormatFactory';

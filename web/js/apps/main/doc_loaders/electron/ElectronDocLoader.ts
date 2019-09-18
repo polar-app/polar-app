@@ -2,7 +2,7 @@ import {ElectronIPCPipe} from '../../../../ipc/handler/ElectronIPCPipe';
 import {ElectronRendererPipe} from '../../../../ipc/pipes/ElectronRendererPipe';
 import {IPCClient} from '../../../../ipc/handler/IPCClient';
 import {LoadDocRequest} from '../LoadDocRequest';
-import {Preconditions} from '../../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IProvider} from '../../../../util/Providers';
 import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';

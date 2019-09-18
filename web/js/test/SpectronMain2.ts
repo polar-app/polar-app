@@ -2,7 +2,7 @@ import {app, BrowserWindow} from 'electron';
 import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
 import {Logger} from '../logger/Logger';
 import {SpectronBrowserWindowOptions} from './SpectronBrowserWindowOptions';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();
 

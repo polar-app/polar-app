@@ -1,6 +1,6 @@
 import {IMutableReactor, IReactor, Reactor} from './Reactor';
 import {EventListener, RegisteredEventListener} from './EventListener';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 /**
  * A reactor that allows dispatchEvents to be queue'd up until the first

@@ -10,7 +10,7 @@ import {Platform, Platforms} from '../../util/Platforms';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {Menus} from './Menus';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Directories} from '../../datastore/Directories';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {AppUpdates} from '../../updates/AppUpdates';

@@ -6,7 +6,7 @@ import {ImportedFile, PDFImporter} from './importers/PDFImporter';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/IDocInfo';
 import {Optional} from "../../util/ts/Optional";
-import {isPresent} from "../../Preconditions";
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Toaster} from "../../ui/toaster/Toaster";
 import {IProvider} from "../../util/Providers";
 import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';

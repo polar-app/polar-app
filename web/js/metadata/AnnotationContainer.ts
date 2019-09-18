@@ -1,6 +1,6 @@
 import {Annotation} from './Annotation';
 import {AnnotationDescriptor} from './AnnotationDescriptor';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 export class AnnotationContainer<A extends Annotation> {
 

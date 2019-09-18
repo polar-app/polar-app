@@ -3,7 +3,7 @@ import {BrowserWindow, ipcMain, Menu, MenuItem, WebContents} from 'electron';
 import {Logger} from '../../logger/Logger';
 import {Arrays} from '../../util/Arrays';
 import {Broadcaster} from '../../ipc/Broadcaster';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ContextMenuType} from '../ContextMenuType';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {PagemarkModes} from '../../metadata/PagemarkModes';

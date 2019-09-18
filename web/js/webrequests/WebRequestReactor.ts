@@ -1,5 +1,5 @@
 import {WebRequest} from 'electron';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Reactor} from '../reactor/Reactor';
 import OnBeforeRedirectDetails = Electron.OnBeforeRedirectDetails;
 import OnBeforeRequestDetails = Electron.OnBeforeRequestDetails;

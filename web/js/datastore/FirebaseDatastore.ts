@@ -30,7 +30,7 @@ import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Firestore} from '../firebase/Firestore';
 import {IDocInfo} from '../metadata/IDocInfo';
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';

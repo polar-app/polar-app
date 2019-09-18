@@ -1,4 +1,4 @@
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Image} from './Image';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {IThumbnail} from "./IThumbnail";

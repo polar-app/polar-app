@@ -3,7 +3,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Either} from '../util/Either';
 import {Backend} from './Backend';
 import {Logger} from '../logger/Logger';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "../metadata/IDocMeta";
 import {BackendFileRef} from "./BackendFileRef";
 import {DocInfoLike} from "../metadata/DocInfo";

@@ -1,4 +1,4 @@
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Fingerprints} from '../../../util/Fingerprints';
 import {Logger} from '../../../logger/Logger';
 import {FileLoader} from './FileLoader';

@@ -1,5 +1,5 @@
 import {SerializedObject} from './SerializedObject';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
 
 /**

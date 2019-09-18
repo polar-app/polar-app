@@ -20,7 +20,7 @@ import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvit
 import {GroupMemberDeletes} from '../../datastore/sharing/rpc/GroupMemberDeletes';
 import {GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Firebase} from '../../firebase/Firebase';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ContactOptions} from './ContactOptions';
 import {GroupDocsAdd} from "../../datastore/sharing/rpc/GroupDocsAdd";
 import {Arrays} from "../../util/Arrays";

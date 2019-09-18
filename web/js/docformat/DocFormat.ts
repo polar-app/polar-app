@@ -1,4 +1,4 @@
-import {notNull, Preconditions} from '../Preconditions';
+import {notNull, Preconditions} from 'polar-shared/src/Preconditions';
 import {Elements} from '../util/Elements';
 import {DocDetail} from '../metadata/DocDetail';
 import {IDimensions} from "../util/IDimensions";

@@ -1,5 +1,5 @@
 import {Model} from '../model/Model';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocDetails} from '../metadata/DocDetails';
 import {DocDetail} from '../metadata/DocDetail';

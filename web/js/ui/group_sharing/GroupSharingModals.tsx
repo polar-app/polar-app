@@ -20,7 +20,7 @@ import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvit
 import {GroupMemberDeletes} from '../../datastore/sharing/rpc/GroupMemberDeletes';
 import {Groups} from '../../datastore/sharing/db/Groups';
 import {Firebase} from '../../firebase/Firebase';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ContactOptions} from './ContactOptions';
 
 export class GroupSharingButton extends React.Component<IProps, IState> {

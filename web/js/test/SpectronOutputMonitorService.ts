@@ -1,5 +1,5 @@
 // import {Application} from 'spectron';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 const TIMEOUT = 250;
 

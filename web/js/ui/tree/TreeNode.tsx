@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {TreeNodeChildren} from './TreeNodeChildren';
-import {isPresent} from '../../Preconditions';
-import {Preconditions} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {TreeState} from './TreeView';
 import {TNode} from './TreeView';
 

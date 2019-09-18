@@ -2,7 +2,7 @@ import {CaptureOpts, DefaultCaptureOpts} from './CaptureOpts';
 import {WebContents, WebRequest} from 'electron';
 import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {PendingWebRequestsListener} from '../webrequests/PendingWebRequestsListener';
 import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener';
 import {WebRequestReactor} from '../webrequests/WebRequestReactor';

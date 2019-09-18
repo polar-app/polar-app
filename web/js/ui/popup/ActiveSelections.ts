@@ -3,7 +3,7 @@ import {MouseDirection} from './Popup';
 import {Simulate} from 'react-dom/test-utils';
 import mouseMove = Simulate.mouseMove;
 import {Logger} from '../../logger/Logger';
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';
 

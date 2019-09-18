@@ -5,7 +5,7 @@ import {ContainerProvider} from './containers/providers/ContainerProvider';
 import {Component} from './Component';
 import {DocMetaModel} from '../metadata/DocMetaModel';
 import {DocFormat} from '../docformat/DocFormat';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {MutationState} from '../proxies/MutationState';
 import {Container} from './containers/Container';
 import {ContainerLifecycleState} from './containers/lifecycle/ContainerLifecycleState';

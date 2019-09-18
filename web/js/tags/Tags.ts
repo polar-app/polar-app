@@ -1,5 +1,5 @@
 import twitter_txt from 'twitter-text';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Dictionaries} from '../util/Dictionaries';
 import {Arrays} from '../util/Arrays';

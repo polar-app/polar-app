@@ -1,6 +1,6 @@
 import {ResourcePaths} from "../../electron/webresource/ResourcePaths";
 import {ipcMain} from 'electron';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from '../../logger/Logger';
 import BrowserRegistry from '../BrowserRegistry';
 import {BrowserProfiles} from '../BrowserProfiles';

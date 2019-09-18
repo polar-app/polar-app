@@ -1,5 +1,5 @@
 import {DocDetail} from '../metadata/DocDetail';
-import {notNull} from '../Preconditions';
+import {notNull} from 'polar-shared/src/Preconditions';
 
 export abstract class Viewer {
 

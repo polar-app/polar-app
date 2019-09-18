@@ -3,7 +3,7 @@ import {assertJSON} from '../test/Assertions';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 import os from 'os';
 import {Files} from '../util/Files';

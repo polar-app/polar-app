@@ -1,5 +1,5 @@
 import {DocDetail, UpdatableDocDetails} from './DocDetail';
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocInfo} from './DocInfo';
 import {IDocInfo} from "./IDocInfo";

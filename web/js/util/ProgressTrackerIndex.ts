@@ -1,5 +1,5 @@
 import {Progress} from "./ProgressTracker";
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from "./Reducers";
 import {Optional} from "./ts/Optional";
 

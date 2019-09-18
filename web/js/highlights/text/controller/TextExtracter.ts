@@ -1,6 +1,6 @@
 import {TextHighlightRow} from './TextHighlightRow';
 import {TextRect} from '../../../metadata/TextRect';
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import $ from '../../../ui/JQuery';
 
 /**

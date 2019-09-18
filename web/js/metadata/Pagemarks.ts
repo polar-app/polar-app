@@ -10,7 +10,7 @@ import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
 import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PageMeta} from './PageMeta';
 import {Numbers} from "../util/Numbers";

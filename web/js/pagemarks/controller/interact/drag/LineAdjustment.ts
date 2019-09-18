@@ -1,6 +1,6 @@
 import {Rect} from "../../../../Rect";
 import {Rects} from "../../../../Rects";
-import {Preconditions} from "../../../../Preconditions";
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Objects} from "../../../../util/Objects";
 
 export class LineAdjustment {

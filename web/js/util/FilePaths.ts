@@ -1,7 +1,7 @@
 import * as libpath from 'path';
 import * as os from 'os';
 import {Optional} from './ts/Optional';
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 
 /**
  * Work with file paths cross platform and work with the file separator using

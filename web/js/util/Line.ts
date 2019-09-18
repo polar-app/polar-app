@@ -1,4 +1,4 @@
-import {isPresent, notNull, Preconditions} from '../Preconditions';
+import {isPresent, notNull, Preconditions} from 'polar-shared/src/Preconditions';
 
 
 /**

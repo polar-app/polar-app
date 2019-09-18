@@ -2,7 +2,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {Reactor} from '../reactor/Reactor';
 import {PagemarkType} from '../metadata/PagemarkType';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Pagemarks} from '../metadata/Pagemarks';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {Logger} from '../logger/Logger';

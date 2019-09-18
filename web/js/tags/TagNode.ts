@@ -1,4 +1,4 @@
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from '../util/Reducers';
 import {TagPaths} from './TagPaths';
 import {Tags} from './Tags';

@@ -2,7 +2,7 @@
 import {TestResultReader} from '../TestResultReader';
 import {Results} from '../../../util/Results';
 import {TApplication} from '../../Spectron';
-import {isPresent} from '../../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Latch} from '../../../util/Latch';
 
 declare var window: any;

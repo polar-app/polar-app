@@ -2,7 +2,7 @@ import {DatastoreOverview} from '../../../../../web/js/datastore/Datastore';
 import {TimeDurations} from '../../../../../web/js/util/TimeDurations';
 import {ISODateTimeStrings} from '../../../../../web/js/metadata/ISODateTimeStrings';
 import {Logger} from '../../../../../web/js/logger/Logger';
-import {Preconditions} from '../../../../../web/js/Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();
 

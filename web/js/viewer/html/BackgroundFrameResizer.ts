@@ -1,5 +1,5 @@
 import {Logger} from '../../logger/Logger';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {FrameResizer} from './FrameResizer';
 import {NULL_FUNCTION} from '../../util/Functions';
 

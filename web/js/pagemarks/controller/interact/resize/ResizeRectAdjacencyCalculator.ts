@@ -2,7 +2,7 @@ import {Rect} from '../../../../Rect';
 import {Line} from '../../../../util/Line';
 import {LineEdges} from '../edges/LineEdges';
 import {RectEdges} from '../edges/RectEdges';
-import {Preconditions} from '../../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Objects} from '../../../../util/Objects';
 import {Rects} from '../../../../Rects';
 

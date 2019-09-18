@@ -4,7 +4,7 @@ import {RepoDocInfos} from './RepoDocInfos';
 import {RepoAnnotations} from './RepoAnnotations';
 import {Logger} from "../../../web/js/logger/Logger";
 import {RepoDocInfo} from './RepoDocInfo';
-import {isPresent} from '../../../web/js/Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {IDocMeta} from "../../../web/js/metadata/IDocMeta";
 

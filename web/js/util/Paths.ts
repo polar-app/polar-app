@@ -1,4 +1,4 @@
-import {isPresent} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 
 export class Paths {
 

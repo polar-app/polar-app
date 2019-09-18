@@ -2,7 +2,7 @@ import {GroupIDStr} from '../../Datastore';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {ProfileIDStr} from './Profiles';
 import {Firebase} from '../../../firebase/Firebase';
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Collections, DocumentChange} from './Collections';
 
 export class GroupMembers {

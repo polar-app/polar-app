@@ -1,5 +1,5 @@
 import {LoadDocRequest} from './LoadDocRequest';
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {DistRuntime} from '../../../dist_runtime/DistRuntime';
 import {ElectronDocLoader} from './electron/ElectronDocLoader';
 import {BrowserDocLoader} from './browser/BrowserDocLoader';

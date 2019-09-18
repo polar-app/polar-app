@@ -1,4 +1,4 @@
-import {Preconditions} from "../../../../Preconditions";
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 /**
  * Like {RectEdges} but only for lines and only for start and end.

@@ -1,4 +1,4 @@
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from '../../util/ts/Optional';
 import {IPoint} from '../../Point';
 

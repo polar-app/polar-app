@@ -2,7 +2,7 @@
  * Assumes that you have tried to change the URL for an iframe and watches for
  * it to start loading properly.
  */
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IFrames} from '../../util/dom/IFrames';
 import {Logger} from '../../logger/Logger';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';

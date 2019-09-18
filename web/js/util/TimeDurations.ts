@@ -1,5 +1,5 @@
 import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 export class TimeDurations {
 

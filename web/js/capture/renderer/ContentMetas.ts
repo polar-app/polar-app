@@ -1,5 +1,5 @@
 import {ContentMeta} from "./ContentMeta";
-import {isPresent} from '../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {Optional} from "../../util/ts/Optional";
 import {Logger} from "../../logger/Logger";
 import {Strings} from "../../util/Strings";

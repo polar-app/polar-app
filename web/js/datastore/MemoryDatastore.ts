@@ -2,7 +2,7 @@
  * Datastore just in memory with no on disk persistence.
  */
 import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, SnapshotResult, DatastoreOverview, PrefsProvider} from './Datastore';
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from '../logger/Logger';
 import {FileHandle, Files} from '../util/Files';

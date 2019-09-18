@@ -3,7 +3,7 @@
  */
 import {IDocInfo} from '../metadata/IDocInfo';
 import {DocMeta} from '../metadata/DocMeta';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "../metadata/IDocMeta";
 import {FileRef} from "./FileRef";
 

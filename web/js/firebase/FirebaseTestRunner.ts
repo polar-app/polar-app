@@ -3,8 +3,8 @@ import * as firebase from './lib/firebase';
 import {Logger} from '../logger/Logger';
 import {Firebase} from './Firebase';
 import {ASYNC_NULL_FUNCTION} from '../util/Functions';
-import {isPresent} from '../Preconditions';
-import {Preconditions} from '../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();
 

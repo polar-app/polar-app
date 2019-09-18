@@ -7,7 +7,7 @@ import {AnnotationEvent} from '../../../annotations/components/AnnotationEvent';
 import {Pagemark} from '../../../metadata/Pagemark';
 import {AnnotationRects} from '../../../metadata/AnnotationRects';
 import {PagemarkRect} from '../../../metadata/PagemarkRect';
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Styles} from '../../../util/Styles';
 import {Optional} from '../../../util/ts/Optional';
 import {Rects} from '../../../Rects';
@@ -15,7 +15,7 @@ import {Rect} from '../../../Rect';
 import {BoxController} from "../../../boxes/controller/BoxController";
 import {PagemarkMode} from '../../../metadata/PagemarkMode';
 import {DocMetas} from "../../../metadata/DocMetas";
-import {isPresent} from '../../../Preconditions';
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {IPagemark} from "../../../metadata/IPagemark";
 
 const log = Logger.create();

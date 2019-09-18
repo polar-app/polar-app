@@ -3,7 +3,7 @@
  */
 import {CacheEntry, DataCallback, ICacheEntry} from "./CacheEntry";
 import {PHZReader} from '../../phz/PHZReader';
-import {Preconditions} from '../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ResourceEntry} from '../../phz/ResourceEntry';
 import {CompressedReader} from "../../phz/CompressedReader";
 

@@ -1,7 +1,7 @@
 import {remote} from 'electron';
 import {CIDProvider} from './CIDProvider';
 import {Logger} from '../logger/Logger';
-import {isPresent, Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Providers} from '../util/Providers';
 

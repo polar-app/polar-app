@@ -1,4 +1,4 @@
-import {Preconditions} from "../../../../Preconditions";
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {LineEdges} from "./LineEdges";
 
 /**

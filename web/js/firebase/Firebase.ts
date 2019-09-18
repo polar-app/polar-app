@@ -1,6 +1,6 @@
 
 import * as firebase from './lib/firebase';
-import {Preconditions} from '../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from '../logger/Logger';
 
 const log = Logger.create();

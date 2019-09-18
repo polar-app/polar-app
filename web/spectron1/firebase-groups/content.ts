@@ -49,7 +49,7 @@ import {canonicalize} from '../../js/util/Objects';
 import {EmailStr} from '../../js/util/Strings';
 import {GroupMemberDeletes} from '../../js/datastore/sharing/rpc/GroupMemberDeletes';
 import {UserRefs} from '../../js/datastore/sharing/rpc/UserRefs';
-import {isPresent} from "../../js/Preconditions";
+import {isPresent} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "../../js/metadata/IDocMeta";
 
 const log = Logger.create();

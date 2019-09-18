@@ -2,7 +2,7 @@ import {EmailStr} from './Profiles';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 import {Firebase} from '../../../firebase/Firebase';
 import {Collections, DocumentChange} from './Collections';
-import {Preconditions} from '../../../Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 
 export class Contacts {
 
