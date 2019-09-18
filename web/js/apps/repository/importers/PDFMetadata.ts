@@ -1,10 +1,10 @@
 import {Files} from '../../../util/Files';
-import {FilePaths} from '../../../util/FilePaths';
-import {Optional} from '../../../util/ts/Optional';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import PDFJS from 'pdfjs-dist';
 import {DOIs} from './DOIs';
-import {PathOrURLStr} from '../../../util/Strings';
-import {URLs} from '../../../util/URLs';
+import {PathOrURLStr} from 'polar-shared/src/util/Strings';
+import {URLs} from 'polar-shared/src/util/URLs';
 
 console.log("Running with pdf.js version: " + PDFJS.version);
 
