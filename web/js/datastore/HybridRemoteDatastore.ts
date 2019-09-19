@@ -7,7 +7,7 @@ import {DiskDatastore} from './DiskDatastore';
 import {RemoteDatastore} from './RemoteDatastore';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Blobs} from '../util/Blobs';
+import {Blobs} from 'polar-shared/src/util/Blobs';
 import {FileRef} from "./FileRef";
 
 /**

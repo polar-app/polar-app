@@ -1,4 +1,4 @@
-import {Blobs} from './Blobs';
+import {Blobs} from 'polar-shared/src/util/Blobs';
 import {ArrayBuffers} from './ArrayBuffers';
 import {Strings, URLStr} from "polar-shared/src/util/Strings";
 
