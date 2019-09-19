@@ -39,7 +39,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {Percentage, ProgressTracker} from '../util/ProgressTracker';
-import {AsyncProviders, Providers} from '../util/Providers';
+import {AsyncProviders, Providers} from 'polar-shared/src/util/Providers';
 import {FilePaths} from '../util/FilePaths';
 import {FileHandle, FileHandles} from '../util/Files';
 import {Firebase, UserID} from '../firebase/Firebase';

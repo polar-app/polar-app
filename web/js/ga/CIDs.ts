@@ -1,6 +1,6 @@
 import {v4 as uuid} from 'uuid';
 import {remote} from 'electron';
-import {Provider} from '../util/Providers';
+import {Provider} from 'polar-shared/src/util/Providers';
 import {CIDProviders} from './CIDProviders';
 import {Optional} from '../util/ts/Optional';
 import {CIDProvider} from './CIDProvider';

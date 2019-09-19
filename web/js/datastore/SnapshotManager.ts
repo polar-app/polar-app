@@ -9,7 +9,7 @@ import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressTrackers} from "../util/ProgressTrackers";
 import {IDocInfo} from '../metadata/IDocInfo';
 import {DocMetas} from '../metadata/DocMetas';
-import {AsyncProviders} from '../util/Providers';
+import {AsyncProviders} from 'polar-shared/src/util/Providers';
 
 /**
  */

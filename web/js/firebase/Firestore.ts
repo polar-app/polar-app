@@ -1,6 +1,6 @@
 import * as firebase from './lib/firebase';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {AsyncProviders} from '../util/Providers';
+import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Firebase} from './Firebase';
 
 const tracer = RendererAnalytics.createTracer('firestore');

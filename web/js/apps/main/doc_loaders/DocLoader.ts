@@ -3,7 +3,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {DistRuntime} from '../../../dist_runtime/DistRuntime';
 import {ElectronDocLoader} from './electron/ElectronDocLoader';
 import {BrowserDocLoader} from './browser/BrowserDocLoader';
-import {IProvider} from '../../../util/Providers';
+import {IProvider} from 'polar-shared/src/util/Providers';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {IDocLoader, IDocLoadRequest} from './IDocLoader';
 

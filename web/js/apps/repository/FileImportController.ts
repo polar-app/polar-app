@@ -8,7 +8,7 @@ import {IDocInfo} from '../../metadata/IDocInfo';
 import {Optional} from "../../util/ts/Optional";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Toaster} from "../../ui/toaster/Toaster";
-import {IProvider} from "../../util/Providers";
+import {IProvider} from "polar-shared/src/util/Providers";
 import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';
 import {DocLoader} from "../main/doc_loaders/DocLoader";
 import {Blackout} from "../../ui/blackout/Blackout";

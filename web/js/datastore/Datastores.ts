@@ -9,7 +9,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
-import {AsyncProviders} from '../util/Providers';
+import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';

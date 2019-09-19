@@ -5,7 +5,7 @@ import {IEventDispatcher} from '../reactor/SimpleReactor';
 import {SyncBarProgress} from '../ui/sync_bar/SyncBar';
 import {AnkiSyncEngine} from '../apps/sync/framework/anki/AnkiSyncEngine';
 import {DocMetaSupplierCollection} from '../metadata/DocMetaSupplierCollection';
-import {IProvider} from '../util/Providers';
+import {IProvider} from 'polar-shared/src/util/Providers';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 
 const log = Logger.create();

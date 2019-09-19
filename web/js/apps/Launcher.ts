@@ -11,7 +11,7 @@ import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
 import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
 import {AddContentImporters} from './viewer/AddContentImporters';
-import {Providers} from '../util/Providers';
+import {Providers} from 'polar-shared/src/util/Providers';
 import {ProgressService} from '../ui/progress_bar/ProgressService';
 import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
 import {AppOrigin} from './AppOrigin';

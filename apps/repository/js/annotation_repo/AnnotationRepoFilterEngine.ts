@@ -2,7 +2,7 @@ import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {SetArrays} from '../../../../web/js/util/SetArrays';
-import {Provider} from '../../../../web/js/util/Providers';
+import {Provider} from 'polar-shared/src/util/Providers';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotations} from '../RepoAnnotations';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';

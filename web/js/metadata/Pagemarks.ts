@@ -16,7 +16,7 @@ import {PageMeta} from './PageMeta';
 import {Numbers} from "../util/Numbers";
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {ReadingProgresses} from './ReadingProgresses';
-import {Provider} from '../util/Providers';
+import {Provider} from 'polar-shared/src/util/Providers';
 import {HitMap} from '../util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
 import {Percentages} from '../util/Percentages';

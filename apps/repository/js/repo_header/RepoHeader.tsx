@@ -8,7 +8,7 @@ import {SplitBar, SplitBarRight} from '../SplitBar';
 import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
 import {SettingsDropdown} from './SettingsDropdown';
-import {Providers} from '../../../../web/js/util/Providers';
+import {Providers} from 'polar-shared/src/util/Providers';
 import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
 import {Notifications} from '../../../../web/js/ui/notifications/Notifications';

@@ -8,7 +8,7 @@ import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
-import {IProvider} from '../../../web/js/util/Providers';
+import {IProvider} from 'polar-shared/src/util/Providers';
 import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';

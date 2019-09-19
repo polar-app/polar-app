@@ -5,7 +5,7 @@ import {Optional} from '../util/ts/Optional';
 import {Settings, DefaultSettings} from './Settings';
 import {Logger} from '../logger/Logger';
 import {AppRuntime} from '../AppRuntime';
-import {Provider, Providers} from '../util/Providers';
+import {Provider, Providers} from 'polar-shared/src/util/Providers';
 
 const log = Logger.create();
 

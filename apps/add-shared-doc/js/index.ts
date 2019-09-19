@@ -5,7 +5,7 @@ import {WebPersistenceLayerFactory} from "../../../web/js/datastore/factories/We
 import {GroupMemberInvitation} from "../../../web/js/datastore/sharing/db/GroupMemberInvitations";
 import {PersistenceLayer} from "../../../web/js/datastore/PersistenceLayer";
 import {BrowserDocLoader} from "../../../web/js/apps/main/doc_loaders/browser/BrowserDocLoader";
-import {Providers} from "../../../web/js/util/Providers";
+import {Providers} from "polar-shared/src/util/Providers";
 import {LoadDocRequest} from "../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {BackendFileRefs} from "../../../web/js/datastore/BackendFileRefs";
 import {RendererAnalytics} from "../../../web/js/ga/RendererAnalytics";

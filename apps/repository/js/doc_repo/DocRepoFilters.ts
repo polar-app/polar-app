@@ -2,7 +2,7 @@ import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocInfos} from '../RepoDocInfos';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {FilteredTags} from '../FilteredTags';
-import {Provider} from '../../../../web/js/util/Providers';
+import {Provider} from 'polar-shared/src/util/Providers';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tags';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';

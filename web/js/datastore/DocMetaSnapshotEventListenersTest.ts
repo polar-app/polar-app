@@ -8,7 +8,7 @@ import {assertJSON} from '../test/Assertions';
 import {assert} from 'chai';
 import {UUIDs} from '../metadata/UUIDs';
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../util/Functions';
-import {AsyncProviders} from '../util/Providers';
+import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
 import {MetadataSerializer} from '../metadata/MetadataSerializer';

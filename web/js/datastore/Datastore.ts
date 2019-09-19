@@ -6,7 +6,7 @@ import {DocFileMeta} from './DocFileMeta';
 import {FileHandle} from '../util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Progress} from '../util/ProgressTracker';
-import {AsyncProvider} from '../util/Providers';
+import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from '../metadata/UUID';
 import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';

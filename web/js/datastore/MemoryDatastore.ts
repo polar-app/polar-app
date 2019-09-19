@@ -16,7 +16,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DictionaryPrefs} from '../util/prefs/Prefs';
-import {Providers} from '../util/Providers';
+import {Providers} from 'polar-shared/src/util/Providers';
 import {WriteFileOpts} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';

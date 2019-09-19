@@ -1,7 +1,7 @@
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {RemotePersistenceLayerFactory} from './factories/RemotePersistenceLayerFactory';
 import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFactory";
-import {IProvider} from "../util/Providers";
+import {IProvider} from "polar-shared/src/util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "../logger/Logger";
 import {RendererAnalytics} from '../ga/RendererAnalytics';

@@ -4,7 +4,7 @@ import {Logger} from '../logger/Logger';
 import ErrnoException = NodeJS.ErrnoException;
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {FilePaths} from "./FilePaths";
-import {Providers} from "./Providers";
+import {Providers} from "polar-shared/src/util/Providers";
 import {DurationStr, TimeDurations} from './TimeDurations';
 
 const ENABLE_ATOMIC_WRITES = true;

@@ -12,7 +12,7 @@ import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
 import {HashAlgorithm, Hashcode, HashEncoding} from '../../../metadata/Hashcode';
-import {IProvider} from '../../../util/Providers';
+import {IProvider} from 'polar-shared/src/util/Providers';
 import {BinaryFileData} from '../../../datastore/Datastore';
 import {BackendFileRefData} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
