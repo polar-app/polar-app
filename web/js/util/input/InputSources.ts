@@ -1,5 +1,5 @@
 import {InputSource, InputSourceType, InputSourceValue} from './InputSource';
-import {URLs} from '../URLs';
+import {URLs} from 'polar-shared/src/util/URLs';
 import {Files} from '../Files';
 import base = Mocha.reporters.base;
 

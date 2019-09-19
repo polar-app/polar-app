@@ -15,7 +15,7 @@ import {Nav} from '../util/Nav';
 import {InviteUsersModal} from './InviteUsersModal';
 import {Invitations} from '../../datastore/Invitations';
 import {SimpleTooltip} from '../tooltip/SimpleTooltip';
-import {URLs} from '../../util/URLs';
+import {URLs} from 'polar-shared/src/util/URLs';
 
 const log = Logger.create();
 

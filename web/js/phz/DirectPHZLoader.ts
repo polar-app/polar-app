@@ -1,5 +1,5 @@
 
-import {URLs} from '../util/URLs';
+import {URLs} from 'polar-shared/src/util/URLs';
 import {PHZReader} from './PHZReader';
 import {Logger} from '../logger/Logger';
 import {Captured} from '../capture/renderer/Captured';

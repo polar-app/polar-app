@@ -50,7 +50,7 @@ import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
-import {URLs} from '../util/URLs';
+import {URLs} from 'polar-shared/src/util/URLs';
 import {Datastores} from './Datastores';
 import {FirebaseDatastores} from './FirebaseDatastores';
 import {DocPermissions} from "./sharing/db/DocPermissions";

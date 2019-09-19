@@ -9,7 +9,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {URLs} from "../util/URLs";
+import {URLs} from "polar-shared/src/util/URLs";
 import {Logger} from "../logger/Logger";
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "../metadata/IDocMeta";

@@ -15,7 +15,7 @@ import {HashAlgorithm, Hashcode, HashEncoding} from '../../../metadata/Hashcode'
 import {IProvider} from '../../../util/Providers';
 import {BinaryFileData} from '../../../datastore/Datastore';
 import {BackendFileRefData} from '../../../datastore/Datastore';
-import {URLs} from '../../../util/URLs';
+import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from '../../../util/input/InputSources';
 import {AppRuntime} from '../../../AppRuntime';
 

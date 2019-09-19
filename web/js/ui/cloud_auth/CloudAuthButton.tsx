@@ -10,7 +10,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Nav} from '../util/Nav';
 import {InviteUsersModal} from './InviteUsersModal';
 import {Invitations} from '../../datastore/Invitations';
-import {URLs} from '../../util/URLs';
+import {URLs} from 'polar-shared/src/util/URLs';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';
 import {AuthHandlers, UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
