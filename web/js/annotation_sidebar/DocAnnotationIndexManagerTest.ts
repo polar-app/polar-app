@@ -152,7 +152,7 @@ describe('DocAnnotationIndexManager', function() {
             const docAnnotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
             dumpDocAnnotations(docAnnotationsSorted);
             assert.equal(docAnnotationsSorted.length, 2);
-            assert.equal(nrUpdates, 20);
+            assert.equal(nrUpdates, 2);
 
         }
 

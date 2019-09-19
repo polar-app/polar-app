@@ -159,7 +159,6 @@ export class DocAnnotationIndexManager {
     private fireUpdated() {
 
         const annotations = this.docAnnotationIndex.getDocAnnotationsSorted();
-        //const annotations = this.docAnnotationIndex.getDocAnnotations();
 
         if( ! this.registering) {
             this.onUpdated(annotations);
