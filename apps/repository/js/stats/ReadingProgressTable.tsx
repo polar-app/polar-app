@@ -3,7 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
 import StatTitle from './StatTitle';
 import {ResponsiveCalendar} from '@nivo/calendar';
-import {HitMap} from '../../../../web/js/util/HitMap';
+import {HitMap} from 'polar-shared/src/util/HitMap';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {ISODateTimeStrings} from '../../../../web/js/metadata/ISODateTimeStrings';
 import {Reducers} from 'polar-shared/src/util/Reducers';

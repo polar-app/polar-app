@@ -4,7 +4,7 @@
 import {DocInfo} from './DocInfo';
 import {ISODateString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {HitMap} from '../util/HitMap';
+import {HitMap} from 'polar-shared/src/util/HitMap';
 import {IDocInfo} from "./IDocInfo";
 import {Arrays} from "polar-shared/src/util/Arrays";
 

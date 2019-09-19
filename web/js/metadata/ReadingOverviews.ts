@@ -1,7 +1,7 @@
 import {ReadingProgress} from './ReadingProgress';
 import {PageMeta} from './PageMeta';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {HitMap} from '../util/HitMap';
+import {HitMap} from 'polar-shared/src/util/HitMap';
 import {ReadingOverview} from './ReadingOverview';
 import {ISODateString, ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {PagemarkMode} from './PagemarkMode';
