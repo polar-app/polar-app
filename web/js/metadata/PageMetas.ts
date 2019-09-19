@@ -1,6 +1,6 @@
 import {Logger} from '../logger/Logger';
 import {PageMeta} from './PageMeta';
-import {forDict} from '../util/Functions';
+import {forDict} from 'polar-shared/src/util/Functions';
 import {Hashcodes} from '../Hashcodes';
 import {Pagemarks} from './Pagemarks';
 import {DocMeta} from './DocMeta';

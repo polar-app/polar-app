@@ -3,7 +3,7 @@ import {Firestore} from '../../../firebase/Firestore';
 import {GroupIDStr} from '../../Datastore';
 import {Firebase, SnapshotUnsubscriber} from "../../../firebase/Firebase";
 import {Collections} from "./Collections";
-import {NULL_FUNCTION} from "../../../util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export class UserGroups {
 

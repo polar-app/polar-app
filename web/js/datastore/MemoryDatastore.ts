@@ -12,7 +12,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DictionaryPrefs} from '../util/prefs/Prefs';

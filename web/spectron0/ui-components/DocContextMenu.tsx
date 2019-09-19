@@ -4,7 +4,7 @@ import {ContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
 import {ContextMenu} from '../../js/ui/context_menu/ContextMenu';
 import Dropdown, {DropdownMenu, MenuItem} from '@burtonator/react-dropdown';
-import {NULL_FUNCTION} from '../../js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {KeyBoundMenuItem} from './KeyBoundMenuItem';
 
 let sequence: number = 0;

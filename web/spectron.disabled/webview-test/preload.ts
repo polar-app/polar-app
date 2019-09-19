@@ -1,4 +1,4 @@
-import {Functions} from '../../js/util/Functions';
+import {Functions} from 'polar-shared/src/util/Functions';
 import {IDimensions} from "../../js/util/IDimensions";
 
 const windowDimensions: IDimensions = {

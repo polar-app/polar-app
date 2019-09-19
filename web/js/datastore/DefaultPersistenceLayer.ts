@@ -20,7 +20,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
 import {FileRef} from "./FileRef";

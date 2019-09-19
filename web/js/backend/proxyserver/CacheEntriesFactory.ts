@@ -1,4 +1,4 @@
-import {forDict} from '../../util/Functions';
+import {forDict} from 'polar-shared/src/util/Functions';
 import {CacheEntriesHolder} from './CacheEntriesHolder';
 import {DiskCacheEntry} from './DiskCacheEntry';
 import {PHZCacheEntry} from './PHZCacheEntry';

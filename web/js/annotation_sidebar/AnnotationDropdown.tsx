@@ -6,7 +6,7 @@ import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {DocAnnotation} from './DocAnnotation';
 import {Dialogs} from '../ui/dialogs/Dialogs';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 const log = Logger.create();
 

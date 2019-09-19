@@ -8,7 +8,7 @@ import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {SplitBar, SplitBarRight} from '../../../apps/repository/js/SplitBar';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Doc} from '../metadata/Doc';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocMeta} from "../metadata/DocMeta";

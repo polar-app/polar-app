@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Tag} from '../../tags/Tags';
 import Button from 'reactstrap/lib/Button';
 import {Dialogs} from '../dialogs/Dialogs';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Tags} from '../../tags/Tags';
 import {TagStr} from '../../tags/Tags';
 

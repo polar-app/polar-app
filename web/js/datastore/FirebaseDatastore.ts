@@ -35,7 +35,7 @@ import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {Percentage, ProgressTracker} from '../util/ProgressTracker';

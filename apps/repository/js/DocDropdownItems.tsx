@@ -8,7 +8,7 @@ import {Clipboards} from '../../../web/js/util/system/clipboard/Clipboards';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
-import {NULL_FUNCTION} from '../../../web/js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 export class DocDropdownItems extends React.Component<IProps, IState> {
 

@@ -9,7 +9,7 @@ import {RectEdges} from '../../pagemarks/controller/interact/edges/RectEdges';
 import {Optional} from '../../util/ts/Optional';
 import {DragRectAdjacencyCalculator} from '../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator';
 import {ResizeRectAdjacencyCalculator} from '../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 import interact from 'interactjs';
 

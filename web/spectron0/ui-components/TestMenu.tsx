@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Dropdown, {DropdownButton, DropdownMenu, DropdownMenuWrapper, DropdownToggle, MenuItem} from '@burtonator/react-dropdown';
-import {NULL_FUNCTION} from '../../js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 export class TestMenu extends React.Component<any, any> {
 

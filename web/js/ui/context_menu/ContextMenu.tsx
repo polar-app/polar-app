@@ -1,7 +1,7 @@
 import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
 import * as React from 'react';
 import Dropdown, {DropdownMenu} from "@burtonator/react-dropdown";
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 /**
  * Basic context menu that allows you to just specify the menu items as

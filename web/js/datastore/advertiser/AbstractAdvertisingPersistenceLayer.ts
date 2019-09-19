@@ -17,7 +17,7 @@ import {DocFileMeta} from '../DocFileMeta';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation} from '../DatastoreMutation';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Releaseable} from '../../reactor/EventListener';
 import {WriteOpts} from '../PersistenceLayer';
 import {IDocInfo} from "../../metadata/IDocInfo";

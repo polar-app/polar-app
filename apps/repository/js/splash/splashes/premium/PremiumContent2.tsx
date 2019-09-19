@@ -9,7 +9,7 @@ import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Logger} from '../../../../../../web/js/logger/Logger';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
-import {NULL_FUNCTION} from "../../../../../../web/js/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Numbers} from "../../../../../../web/js/util/Numbers";
 
 const log = Logger.create();

@@ -1,5 +1,5 @@
 import {Logger} from '../logger/Logger';
-import {NULL_FUNCTION} from './Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ColorButton} from './ColorButton';
 
 interface ColorButtonsRowProps extends IProps {

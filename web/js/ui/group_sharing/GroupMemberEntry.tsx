@@ -1,7 +1,7 @@
 import React from 'react';
 import {MemberRecord} from './GroupSharingRecords';
 import Button from 'reactstrap/lib/Button';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Dialogs} from '../dialogs/Dialogs';
 import {ConfirmProps} from '../dialogs/Confirm';
 

@@ -4,7 +4,7 @@ import {PopoverBody} from 'reactstrap';
 import {Popover} from 'reactstrap';
 import {UncontrolledPopover} from 'reactstrap';
 // import {TwitterPicker} from 'react-color';
-import {NULL_FUNCTION} from '../../js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 
 interface ColorButtonProps extends IProps {

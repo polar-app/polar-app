@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Modal} from 'reactstrap';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 /**
  * Modal that is large and fits nearly the full screen. Must use this with a

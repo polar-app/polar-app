@@ -16,7 +16,7 @@ import {Logger} from "../logger/Logger";
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapshotEventListeners';
-import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../util/Functions';
+import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
 import * as firebase from '../firebase/lib/firebase';

@@ -18,7 +18,7 @@ import {Platform, Platforms} from "../util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';

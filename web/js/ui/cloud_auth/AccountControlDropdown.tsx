@@ -4,7 +4,7 @@ import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHand
 import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {UncontrolledPopover} from 'reactstrap';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {AccountControlBar} from './AccountControlBar';
 import {DropdownChevron} from '../util/DropdownChevron';
 

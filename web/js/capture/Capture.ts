@@ -9,7 +9,7 @@ import {WebRequestReactor} from '../webrequests/WebRequestReactor';
 import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContentsDriver';
 import {BrowserProfile} from './BrowserProfile';
 import {Optional} from '../util/ts/Optional';
-import {Functions} from '../util/Functions';
+import {Functions} from 'polar-shared/src/util/Functions';
 import {Promises} from '../util/Promises';
 import {ContentCaptureExecutor} from './ContentCaptureExecutor';
 import {ResolvablePromise} from '../util/ResolvablePromise';

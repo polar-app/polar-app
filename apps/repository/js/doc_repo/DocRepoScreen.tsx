@@ -22,7 +22,7 @@ import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {FixedNav} from '../FixedNav';
 import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
-import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
 import {Settings} from '../../../../web/js/datastore/Settings';

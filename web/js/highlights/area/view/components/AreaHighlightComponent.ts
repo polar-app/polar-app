@@ -2,7 +2,7 @@ import {Logger} from "../../../../logger/Logger";
 
 import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";
-import {forDict} from "../../../../util/Functions";
+import {forDict} from "polar-shared/src/util/Functions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
 import {HighlightColor, Position} from "../../../../metadata/IBaseHighlight";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";

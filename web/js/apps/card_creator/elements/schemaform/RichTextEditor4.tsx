@@ -6,7 +6,7 @@ import React from 'react';
 import {TypedWidgetProps} from './TypedWidgetProps';
 import {Logger} from '../../../../logger/Logger';
 import {ReactSummernote4} from './ReactSummernote4';
-import {NULL_FUNCTION} from '../../../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {RichTextMutator} from './RichTextMutator';
 const log = Logger.create();
 

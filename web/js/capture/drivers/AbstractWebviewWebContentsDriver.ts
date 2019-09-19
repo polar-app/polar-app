@@ -4,7 +4,7 @@ import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {BrowserWindows} from '../BrowserWindows';
 import {BrowserWindow} from "electron";
-import {Functions} from '../../util/Functions';
+import {Functions} from 'polar-shared/src/util/Functions';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 import {BrowserProfile} from '../BrowserProfile';
 import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebContentsNotifier';

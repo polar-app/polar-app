@@ -11,7 +11,7 @@ import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
-import {NULL_FUNCTION} from '../../../web/js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {Tag} from '../../../web/js/tags/Tags';
 

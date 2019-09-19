@@ -24,7 +24,7 @@
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {TextNodes} from './TextNodes';
 import {Rects} from '../../../Rects';
-import {createSiblings} from '../../../util/Functions';
+import {createSiblings} from 'polar-shared/src/util/Functions';
 import {Text} from '../../../util/Text';
 
 export class TextRegion {

@@ -14,7 +14,7 @@ import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {Datastores} from '../../js/datastore/Datastores';
-import {ASYNC_NULL_FUNCTION} from '../../js/util/Functions';
+import {ASYNC_NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import waitForExpect from 'wait-for-expect';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Dropdown, {DropdownButton, DropdownMenu, DropdownMenuWrapper, DropdownToggle, MenuItem} from '@burtonator/react-dropdown';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import Button from 'reactstrap/lib/Button';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {NullCollapse} from '../null_collapse/NullCollapse';

@@ -7,7 +7,7 @@ import {ProgressTracker} from '../util/ProgressTracker';
 import {assertJSON} from '../test/Assertions';
 import {assert} from 'chai';
 import {UUIDs} from '../metadata/UUIDs';
-import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../util/Functions';
+import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';

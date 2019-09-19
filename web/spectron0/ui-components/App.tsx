@@ -7,7 +7,7 @@ import {LargeModal} from "../../js/ui/large_modal/LargeModal";
 import {LargeModalBody} from "../../js/ui/large_modal/LargeModalBody";
 import {GroupHits} from "./group_sharing/GroupHits";
 import {GroupHit} from "./group_sharing/GroupHit";
-import {NULL_FUNCTION} from "../../js/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {GroupSearch} from "./group_sharing/GroupSearch";
 import {Group} from "../../js/datastore/sharing/db/Groups";
 import {ISODateTimeStrings} from "../../js/metadata/ISODateTimeStrings";

@@ -2,7 +2,7 @@ import {Optional} from '../../util/ts/Optional';
 import {Styles} from '../../util/Styles';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Functions} from '../../util/Functions';
+import {Functions} from 'polar-shared/src/util/Functions';
 import {Documents} from './Documents';
 
 const log = Logger.create();

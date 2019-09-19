@@ -7,7 +7,7 @@ import {AnnotationInfos} from './AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
 import {MetadataSerializer} from './MetadataSerializer';
 import {PageMetas} from './PageMetas';
-import {forDict} from '../util/Functions';
+import {forDict} from 'polar-shared/src/util/Functions';
 import {TextHighlights} from './TextHighlights';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Errors} from '../util/Errors';

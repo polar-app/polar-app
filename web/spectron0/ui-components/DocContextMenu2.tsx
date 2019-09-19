@@ -3,7 +3,7 @@ import {prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper
 import {ContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
 import {ContextMenu} from '../../js/ui/context_menu/ContextMenu';
-import {NULL_FUNCTION} from '../../js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {KeyBoundMenuItem} from './KeyBoundMenuItem';
 import {AppRuntime} from '../../js/AppRuntime';
 import {IStyleMap} from '../../js/react/IStyleMap';

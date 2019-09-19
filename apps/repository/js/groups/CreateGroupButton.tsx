@@ -2,7 +2,7 @@
 import React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {GroupIDStr} from "../../../../web/js/datastore/Datastore";
-import {NULL_FUNCTION} from "../../../../web/js/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
     GroupJoinRequest,
     GroupJoins

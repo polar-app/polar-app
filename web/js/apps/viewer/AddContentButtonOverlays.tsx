@@ -2,7 +2,7 @@ import {ReactInjector} from '../../ui/util/ReactInjector';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
 import React from 'react';
 import {AddContentButtonOverlay} from './AddContentButtonOverlay';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 export class AddContentButtonOverlays {
 

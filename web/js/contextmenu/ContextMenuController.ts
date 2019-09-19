@@ -8,7 +8,7 @@ import {Logger} from '../logger/Logger';
 import {TriggerEvent} from './TriggerEvent';
 import {DocDescriptor} from '../metadata/DocDescriptor';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {forDict} from '../util/Functions';
+import {forDict} from 'polar-shared/src/util/Functions';
 import {ElectronContextMenus} from './electron/ElectronContextMenus';
 import {BrowserContextMenus} from './browser/BrowserContextMenus';
 import {BrowserContextMenu} from './browser/BrowserContextMenu';

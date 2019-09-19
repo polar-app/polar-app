@@ -12,7 +12,7 @@ import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Numbers} from '../../../../web/js/util/Numbers';
-import {NULL_FUNCTION} from '../../../../web/js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocButton} from '../ui/DocButton';
 import {FlagDocButton} from '../ui/FlagDocButton';
 import {ArchiveDocButton} from '../ui/ArchiveDocButton';

@@ -3,7 +3,7 @@ import {prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper
 import {ContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
-import {NULL_FUNCTION} from '../../../web/js/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocDropdownItems} from './DocDropdownItems';
 import {RepoDocInfo} from './RepoDocInfo';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';

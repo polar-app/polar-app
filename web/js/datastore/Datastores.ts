@@ -6,7 +6,7 @@ import {Logger} from '../logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';

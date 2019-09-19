@@ -3,7 +3,7 @@ import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaFileRefs} from './DocMetaRef';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DiskDeleteResult} from './DiskDatastore';
-import {NULL_FUNCTION} from '../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Datastores} from './Datastores';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressTrackers} from "../util/ProgressTrackers";

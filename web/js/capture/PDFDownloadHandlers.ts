@@ -7,7 +7,7 @@ import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {FileImportClient} from '../apps/repository/FileImportClient';
 import {AppLauncher} from '../apps/main/AppLauncher';
 import {Logger} from '../logger/Logger';
-import {NULL_FUNCTION} from "../util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {FileImportRequests} from '../apps/repository/FileImportRequests';
 
 const log = Logger.create();

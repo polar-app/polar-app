@@ -3,7 +3,7 @@ import {CachedRequestsHolder} from './CachedRequestsHolder';
 import {CacheEntry} from './CacheEntry';
 import {CachedRequest} from './CachedRequest';
 import {CacheEntriesFactory} from './CacheEntriesFactory';
-import {forDict} from '../../util/Functions';
+import {forDict} from 'polar-shared/src/util/Functions';
 import {Logger} from '../../logger/Logger';
 
 const log = Logger.create();

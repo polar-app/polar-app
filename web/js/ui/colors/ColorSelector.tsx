@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {PopoverBody} from 'reactstrap';
 import {Popover} from 'reactstrap';
-import {NULL_FUNCTION} from '../../util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ColorButton} from './ColorButton';
 import {RGBColor} from './ColorButton';
 import {ColorSelectorBox} from './ColorSelectorBox';

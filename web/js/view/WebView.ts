@@ -3,7 +3,7 @@ import {View} from './View';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocFormat} from '../docformat/DocFormat';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
-import {forDict} from '../util/Functions';
+import {forDict} from 'polar-shared/src/util/Functions';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {PrefsProvider} from '../datastore/Datastore';

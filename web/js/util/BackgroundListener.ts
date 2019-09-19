@@ -1,5 +1,5 @@
 import {SnapshotUnsubscriber} from "../firebase/Firebase";
-import {NULL_FUNCTION} from "./Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export class BackgroundListeners {
 

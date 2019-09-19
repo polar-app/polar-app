@@ -1,7 +1,7 @@
 import {Duration} from './TimeDurations';
 import {TimeDurations} from './TimeDurations';
 import {defaultValue} from 'polar-shared/src/Preconditions';
-import {NULL_FUNCTION} from './Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 export class Executors {
 

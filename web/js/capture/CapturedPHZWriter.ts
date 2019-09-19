@@ -2,7 +2,7 @@
  * Writes out a PHZ archive from the given captured JSON data.
  */
 import {PHZWriter} from '../phz/PHZWriter';
-import {forOwnKeys} from '../util/Functions';
+import {forOwnKeys} from 'polar-shared/src/util/Functions';
 import {ResourceFactory} from '../phz/ResourceFactory';
 import {Objects} from '../util/Objects';
 import {Captured, CapturedDoc} from './renderer/Captured';

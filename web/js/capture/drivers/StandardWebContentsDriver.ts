@@ -4,7 +4,7 @@ import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
 import {Optional} from '../../util/ts/Optional';
 import {configureBrowser} from '../renderer/ContentCaptureFunctions';
-import {Functions} from '../../util/Functions';
+import {Functions} from 'polar-shared/src/util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
 import {Reactor} from '../../reactor/Reactor';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
