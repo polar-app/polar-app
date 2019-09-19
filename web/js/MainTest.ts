@@ -7,8 +7,8 @@ import {DocMetas} from './metadata/DocMetas';
 import {DocMeta} from './metadata/DocMeta';
 import { createSiblingTuples } from 'polar-shared/src/util/Functions';
 import {Delegator, getBoundingClientRectFromBCRs} from './utils';
+import {TextHighlightRows} from "./highlights/text/controller/TextHighlightRows";
 
-const {TextHighlightRows} = require("./highlights/text/controller/TextHighlightRows");
 
 //import * as utils from "./utils.js";
 
