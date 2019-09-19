@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {AnnotationType} from '../../metadata/AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {FlashcardIcon} from './FlashcardIcon';
 import {CommentIcon} from './CommentIcon';
 import {HighlighterIcon} from './HighlighterIcon';

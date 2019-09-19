@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {FlashcardType} from '../../../../metadata/FlashcardType';
+import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';

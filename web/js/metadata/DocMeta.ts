@@ -3,7 +3,7 @@ import {SerializedObject} from './SerializedObject';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
 import {Attachment} from './Attachment';
-import {IPageMeta} from "./IPageMeta";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 

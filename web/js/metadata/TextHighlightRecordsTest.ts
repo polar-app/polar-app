@@ -3,7 +3,7 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {assertJSON} from '../test/Assertions';
 import {Rect} from '../Rect';
 import {TextRect} from './TextRect';
-import {ITextRect} from "./ITextRect";
+import {ITextRect} from "polar-shared/src/metadata/ITextRect";
 
 TestingTime.freeze();
 

@@ -5,7 +5,7 @@ import {Pagemark} from '../metadata/Pagemark';
 import {Rects} from '../Rects';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {IPagemark} from "../metadata/IPagemark";
+import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 
 export class ReadingProgressResume {
 

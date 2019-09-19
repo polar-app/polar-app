@@ -1,4 +1,4 @@
-import {FlashcardType} from '../../../metadata/FlashcardType';
+import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FrontAndBackFields} from './flashcard_input/FlashcardInputs';
 import {ClozeFields} from './flashcard_input/FlashcardInputs';
 import {DocAnnotation} from '../../DocAnnotation';

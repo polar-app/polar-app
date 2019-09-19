@@ -1,5 +1,5 @@
 import {Dicts} from '../util/Dicts';
-import {FlashcardType} from './FlashcardType';
+import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Flashcard} from './Flashcard';

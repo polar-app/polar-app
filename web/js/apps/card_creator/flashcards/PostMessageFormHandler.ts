@@ -3,7 +3,7 @@ import {FormHandler} from '../elements/schemaform/FormHandler';
 import {AnnotationContainer} from '../../../metadata/AnnotationContainer';
 import {AnnotationDescriptor} from '../../../metadata/AnnotationDescriptor';
 import {Logger} from '../../../logger/Logger';
-import {AnnotationType} from '../../../metadata/AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
 import {ElectronContext} from '../../../ipc/handler/ElectronContext';
 import {IPCClient} from '../../../ipc/handler/IPCClient';

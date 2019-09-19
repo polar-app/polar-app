@@ -1,4 +1,4 @@
-import {AnnotationType} from './AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {TextHighlight} from './TextHighlight';
 import {AreaHighlight} from './AreaHighlight';
 import {Comment} from './Comment';
@@ -6,10 +6,10 @@ import {Flashcard} from './Flashcard';
 import {PageInfo} from './PageInfo';
 import {DocInfo} from './DocInfo';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {IPageInfo} from "./IPageInfo";
+import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
 import {IComment} from "polar-shared/src/metadata/IComment";
-import {IFlashcard} from "./IFlashcard";
-import {ITextHighlight} from "./ITextHighlight";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 
 /**

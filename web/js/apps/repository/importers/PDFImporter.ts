@@ -11,7 +11,7 @@ import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
-import {HashAlgorithm, Hashcode, HashEncoding} from '../../../metadata/Hashcode';
+import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
 import {IProvider} from 'polar-shared/src/util/Providers';
 import {BinaryFileData} from '../../../datastore/Datastore';
 import {BackendFileRefData} from '../../../datastore/Datastore';

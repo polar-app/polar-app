@@ -1,4 +1,4 @@
-import {ITextRect} from "./ITextRect";
+import {ITextRect} from "polar-shared/src/metadata/ITextRect";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {SerializedObject} from "./SerializedObject";
 

@@ -19,7 +19,7 @@ import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
 import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 import {Screenshots} from '../../../../screenshots/Screenshots';
-import {HighlightColors} from '../../../../metadata/HighlightColor';
+import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Rects} from '../../../../Rects';
 import {Arrays} from "polar-shared/src/util/Arrays";

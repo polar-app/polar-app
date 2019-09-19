@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {AnnotationType} from '../../js/metadata/AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
 import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';

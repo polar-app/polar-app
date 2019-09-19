@@ -8,7 +8,7 @@ import {PagemarkMode} from './PagemarkMode';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Numbers} from '../util/Numbers';
 import {Tuples} from '../util/Tuples';
-import {IPageMeta} from "./IPageMeta";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 
 const PRE_EXISTING_DAY = '!preexisting';

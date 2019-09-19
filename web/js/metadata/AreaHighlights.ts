@@ -24,10 +24,10 @@ import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {DataURLs} from '../util/DataURLs';
 import {Rect} from '../Rect';
 import {Rects} from '../Rects';
-import {IPageMeta} from "./IPageMeta";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {IImage} from "./IImage";
+import {IImage} from "polar-shared/src/metadata/IImage";
 import {BackendFileRef} from "../datastore/BackendFileRef";
 
 const log = Logger.create();

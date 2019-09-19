@@ -3,7 +3,7 @@ import {BaseDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/d
 import {TextHighlightDocAnnotationComponent} from "./TextHighlightDocAnnotationComponent";
 import {Logger} from "../../../../../../web/js/logger/Logger";
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {AnnotationType} from "../../../../../../web/js/metadata/AnnotationType";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
 import {AreaHighlightDocAnnotationComponent} from "./AreaHighlightDocAnnotationComponent";
 import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";

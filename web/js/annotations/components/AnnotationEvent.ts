@@ -3,7 +3,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {PageMeta} from '../../metadata/PageMeta';
 import {DocMeta} from '../../metadata/DocMeta';
 import {Container} from '../../components/containers/Container';
-import {IPageMeta} from "../../metadata/IPageMeta";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class AnnotationEvent extends TraceEvent {

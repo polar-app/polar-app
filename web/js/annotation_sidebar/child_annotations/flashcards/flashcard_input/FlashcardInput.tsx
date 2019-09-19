@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../../../logger/Logger';
-import {FlashcardType} from '../../../../metadata/FlashcardType';
+import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './FlashcardInputs';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';

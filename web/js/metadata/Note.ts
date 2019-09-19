@@ -2,7 +2,7 @@ import {TextType} from './TextType';
 import {VersionedObject} from './VersionedObject';
 import {Text} from './Text';
 import {Texts} from './Texts';
-import {INote} from "./INote";
+import {INote} from "polar-shared/src/metadata/INote";
 
 /**
  * Private note describing this object.  Meant to last a long time.

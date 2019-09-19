@@ -10,7 +10,7 @@ import {AnkiSyncEngine} from './AnkiSyncEngine';
 import {Texts} from '../../../../metadata/Texts';
 import {TextType} from '../../../../metadata/TextType';
 import {Flashcards} from '../../../../metadata/Flashcards';
-import {FlashcardType} from '../../../../metadata/FlashcardType';
+import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {DocMetas, MockDocMetas} from '../../../../metadata/DocMetas';
 
 xdescribe('AnkiSyncEngine', function() {

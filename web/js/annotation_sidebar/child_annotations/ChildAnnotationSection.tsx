@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
-import {AnnotationType} from '../../metadata/AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {ViewOrEditComment} from "./comments/ViewOrEditComment";
 import {CommentActions} from "./comments/CommentActions";
 import {ViewOrEditFlashcard} from './flashcards/ViewOrEditFlashcard';
 import {Comment} from '../../metadata/Comment';
-import {FlashcardType} from '../../metadata/FlashcardType';
+import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './flashcards/flashcard_input/FlashcardInputs';
 import {FlashcardActions} from './flashcards/FlashcardActions';
 import {Flashcard} from '../../metadata/Flashcard';

@@ -6,12 +6,12 @@ import {Component} from '../../../../components/Component';
 import {DocFormatFactory} from '../../../../docformat/DocFormatFactory';
 import {Rects} from '../../../../Rects';
 import {Logger} from '../../../../logger/Logger';
-import {HighlightColors} from '../../../../metadata/HighlightColor';
-import {IPageMeta} from "../../../../metadata/IPageMeta";
+import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {ITextHighlight} from "../../../../metadata/ITextHighlight";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 
 const log = Logger.create();
 

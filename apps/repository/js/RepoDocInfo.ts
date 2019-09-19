@@ -3,7 +3,7 @@
  * replace missing titles with Untitled and define other default values.
  */
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
-import {Hashcode} from '../../../web/js/metadata/Hashcode';
+import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
 import {Tag} from '../../../web/js/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 

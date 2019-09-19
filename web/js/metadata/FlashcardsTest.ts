@@ -2,7 +2,7 @@ import {assertJSON} from '../test/Assertions';
 import {Flashcards} from './Flashcards';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
-import {FlashcardType} from './FlashcardType';
+import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {Flashcard} from './Flashcard';
 import {TestingTime} from '../test/TestingTime';
 

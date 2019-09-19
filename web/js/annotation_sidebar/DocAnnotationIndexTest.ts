@@ -1,5 +1,5 @@
 import {IDocAnnotation} from './DocAnnotation';
-import {AnnotationType} from '../metadata/AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';

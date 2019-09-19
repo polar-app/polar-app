@@ -6,7 +6,7 @@ import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from './PagemarkType';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateString, ISODateTimeString} from './ISODateTimeStrings';
-import {Hashcode} from './Hashcode';
+import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
 import {ReadingOverview} from './ReadingOverview';
 import {Attachment} from './Attachment';
 import {Backend} from '../datastore/Backend';

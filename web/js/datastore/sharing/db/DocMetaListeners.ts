@@ -18,7 +18,7 @@ import {Logger} from "../../../logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
 import {FirebaseDatastores} from "../../FirebaseDatastores";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {IPageMeta} from "../../../metadata/IPageMeta";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IAnnotation} from "polar-shared/src/metadata/IAnnotation";
 

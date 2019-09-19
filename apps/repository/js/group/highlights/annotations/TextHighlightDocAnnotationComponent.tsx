@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {AnnotationTypes} from "../../../../../../web/js/metadata/AnnotationTypes";
-import {HighlightColors} from "../../../../../../web/js/metadata/HighlightColor";
+import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {BaseDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
-import {ITextHighlight} from "../../../../../../web/js/metadata/ITextHighlight";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {TextHighlights} from "../../../../../../web/js/metadata/TextHighlights";
 import {ProfileRecord} from "../../../../../../web/js/datastore/sharing/db/ProfileJoins";
 

@@ -4,7 +4,7 @@ import {PagemarkType} from './PagemarkType';
 import {PagemarkRect} from './PagemarkRect';
 import {MetadataSerializer} from './MetadataSerializer';
 import {PagemarkMode} from './PagemarkMode';
-import {IPagemark} from "./IPagemark";
+import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 
 export class Pagemark extends Annotation implements IPagemark {
 

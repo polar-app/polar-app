@@ -16,7 +16,7 @@ import {BoxController} from "../../../boxes/controller/BoxController";
 import {PagemarkMode} from '../../../metadata/PagemarkMode';
 import {DocMetas} from "../../../metadata/DocMetas";
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {IPagemark} from "../../../metadata/IPagemark";
+import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 
 const log = Logger.create();
 

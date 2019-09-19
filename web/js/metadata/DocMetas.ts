@@ -15,7 +15,7 @@ import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {FilePaths} from '../util/FilePaths';
 import {Datastore} from '../datastore/Datastore';
 import {Backend} from '../datastore/Backend';
-import {IPageMeta} from "./IPageMeta";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "../datastore/FileRef";
 

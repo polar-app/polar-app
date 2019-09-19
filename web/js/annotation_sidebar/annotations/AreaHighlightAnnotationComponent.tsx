@@ -5,7 +5,7 @@ import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSectio
 import {Doc} from '../../metadata/Doc';
 import {LazyProps} from '../../react/LazyComponents';
 import {ResponsiveImg} from '../ResponsiveImg';
-import {HighlightColors} from '../../metadata/HighlightColor';
+import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 
 const Image = (props: IProps) => {
 

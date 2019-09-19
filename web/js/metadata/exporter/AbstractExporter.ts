@@ -4,7 +4,7 @@ import {TextHighlight} from "../TextHighlight";
 import {AreaHighlight} from '../AreaHighlight';
 import {Comment} from '../Comment';
 import {Flashcard} from '../Flashcard';
-import {AnnotationType} from '../AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 
 export abstract class AbstractExporter implements Exporter {
 

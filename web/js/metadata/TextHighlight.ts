@@ -4,8 +4,8 @@ import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {BaseHighlight} from './BaseHighlight';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ITextHighlight} from "./ITextHighlight";
-import {ITextRect} from "./ITextRect";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {ITextRect} from "polar-shared/src/metadata/ITextRect";
 
 export class TextHighlight extends BaseHighlight implements ITextHighlight {
 

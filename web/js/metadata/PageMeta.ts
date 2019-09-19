@@ -1,16 +1,16 @@
 import {SerializedObject} from './SerializedObject';
 import {ReadingProgress} from './ReadingProgress';
-import {IPageMeta} from "./IPageMeta";
-import {IPageInfo} from "./IPageInfo";
-import {IPagemark} from "./IPagemark";
-import {INote} from "./INote";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
+import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {INote} from "polar-shared/src/metadata/INote";
 import {IComment} from "polar-shared/src/metadata/IComment";
-import {IQuestion} from "./IQuestion";
-import {IFlashcard} from "./IFlashcard";
-import {ITextHighlight} from "./ITextHighlight";
+import {IQuestion} from "polar-shared/src/metadata/IQuestion";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {IScreenshot} from "./IScreenshot";
-import {IThumbnail} from "./IThumbnail";
+import {IScreenshot} from "polar-shared/src/metadata/IScreenshot";
+import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
 
 export class PageMeta extends SerializedObject implements IPageMeta {
 

@@ -6,7 +6,7 @@ import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
 import {LazyProps, LazyState} from '../../react/LazyComponents';
-import {HighlightColors} from '../../metadata/HighlightColor';
+import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 
 export class TextHighlightAnnotationComponent extends React.Component<IProps, IState> {
 

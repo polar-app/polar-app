@@ -6,7 +6,7 @@ import {
     IBaseHighlight,
     Position
 } from "polar-shared/src/metadata/IBaseHighlight";
-import {IImage} from "./IImage";
+import {IImage} from "polar-shared/src/metadata/IImage";
 
 export class BaseHighlight extends ExtendedAnnotation implements IBaseHighlight {
 

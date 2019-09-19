@@ -1,4 +1,4 @@
-import {Hashcode} from "../metadata/Hashcode";
+import {Hashcode} from "polar-shared/src/metadata/Hashcode";
 
 export interface FileRef {
 

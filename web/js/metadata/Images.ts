@@ -3,7 +3,7 @@ import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {Img} from './Img';
 import {Image} from './Image';
 import {DocFileResolver} from "../datastore/DocFileResolvers";
-import {IImage, ImageType} from "./IImage";
+import {IImage, ImageType} from "polar-shared/src/metadata/IImage";
 
 export class Images {
 

@@ -7,7 +7,7 @@ import {
 import {Comment} from '../../../web/js/metadata/Comment';
 import {DocInfo} from '../../../web/js/metadata/DocInfo';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
-import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Flashcard} from '../../../web/js/metadata/Flashcard';
 import {Text} from '../../../web/js/metadata/Text';
@@ -20,8 +20,8 @@ import {Tag} from "../../../web/js/tags/Tags";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IComment} from "polar-shared/src/metadata/IComment";
-import {IFlashcard} from "../../../web/js/metadata/IFlashcard";
-import {ITextHighlight} from "../../../web/js/metadata/ITextHighlight";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 
 export class RepoAnnotations {
