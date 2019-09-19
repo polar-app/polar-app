@@ -1,5 +1,5 @@
 import util from 'util';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Strings} from "polar-shared/src/util/Strings";
 
 /**

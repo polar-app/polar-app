@@ -1,4 +1,4 @@
-import {Text} from './Text';
+import {Text} from 'polar-shared/src/metadata/Text';
 import {TextType} from './TextType';
 import {isPresent} from 'polar-shared/src/Preconditions';
 

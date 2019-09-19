@@ -3,11 +3,11 @@
  * with this object which makes it lightweight to pass around.
  */
 import {SerializedObject} from './SerializedObject';
-import {PagemarkType} from './PagemarkType';
+import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ISODateString, ISODateTimeString} from './ISODateTimeStrings';
+import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
-import {ReadingOverview} from './ReadingOverview';
+import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';
 import {Attachment} from './Attachment';
 import {Backend} from '../datastore/Backend';
 import {Tag} from '../tags/Tags';

@@ -1,9 +1,9 @@
-import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Comment} from './Comment';
 import {Hashcodes} from '../Hashcodes';
 import {TextType} from './TextType';
 import {Texts} from './Texts';
-import {Ref} from './Refs';
+import {Ref} from 'polar-shared/src/metadata/Refs';
 
 export class Comments {
 

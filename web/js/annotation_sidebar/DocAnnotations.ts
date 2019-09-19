@@ -2,7 +2,7 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
-import {Text} from '../metadata/Text';
+import {Text} from 'polar-shared/src/metadata/Text';
 import {IDocAnnotation} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Rect} from '../Rect';

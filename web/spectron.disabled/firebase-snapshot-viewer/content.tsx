@@ -7,7 +7,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import ReactJson from 'react-json-view';
-import {ISODateTimeStrings} from '../../js/metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 Logging.initForTesting();
 

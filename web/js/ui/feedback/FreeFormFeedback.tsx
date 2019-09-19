@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import Input from 'reactstrap/lib/Input';
 import {Rating} from './Feedback';
-import {ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {UserFeedbacks} from '../../telemetry/UserFeedback';
 import {MachineIDs} from '../../util/MachineIDs';
 

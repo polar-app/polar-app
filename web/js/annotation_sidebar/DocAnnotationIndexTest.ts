@@ -6,7 +6,7 @@ import {assertJSON} from '../test/Assertions';
 import {TextHighlights} from '../metadata/TextHighlights';
 import {TestingTime} from '../test/TestingTime';
 import {ObjectIDs} from '../util/ObjectIDs';
-import {Ref} from "../metadata/Refs";
+import {Ref} from "polar-shared/src/metadata/Refs";
 
 function toDocAnnotations(docAnnotationIndex: DocAnnotationIndex) {
     return docAnnotationIndex.getDocAnnotationsSorted().map(current => current.obj);

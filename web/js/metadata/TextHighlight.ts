@@ -1,5 +1,5 @@
 import {TextRect} from './TextRect';
-import {Text} from './Text';
+import {Text} from 'polar-shared/src/metadata/Text';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {BaseHighlight} from './BaseHighlight';

@@ -2,7 +2,7 @@ import {Logger} from '../../../logger/Logger';
 import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Flashcards} from '../../../metadata/Flashcards';
-import {Ref} from '../../../metadata/Refs';
+import {Ref} from 'polar-shared/src/metadata/Refs';
 
 const log = Logger.create();
 

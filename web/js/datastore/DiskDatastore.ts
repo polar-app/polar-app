@@ -19,7 +19,7 @@ import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
 import {Prefs, StringToStringDict} from '../util/prefs/Prefs';

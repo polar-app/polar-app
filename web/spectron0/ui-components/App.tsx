@@ -10,7 +10,7 @@ import {GroupHit} from "./group_sharing/GroupHit";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {GroupSearch} from "./group_sharing/GroupSearch";
 import {Group} from "../../js/datastore/sharing/db/Groups";
-import {ISODateTimeStrings} from "../../js/metadata/ISODateTimeStrings";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {GroupCard} from "../../../apps/repository/js/groups/GroupCard";
 import {LoadingProgress} from "../../js/ui/LoadingProgress";
 

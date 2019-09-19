@@ -5,7 +5,7 @@ import StatTitle from './StatTitle';
 import {ResponsiveCalendar} from '@nivo/calendar';
 import {HitMap} from 'polar-shared/src/util/HitMap';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {ISODateTimeStrings} from '../../../../web/js/metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Numbers} from '../../../../web/js/util/Numbers';
 

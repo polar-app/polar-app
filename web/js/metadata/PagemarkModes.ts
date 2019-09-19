@@ -1,4 +1,4 @@
-import {PagemarkMode} from "./PagemarkMode";
+import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 
 export class PagemarkModes {
 

@@ -14,7 +14,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DiskInitResult} from './DiskDatastore';
-import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DictionaryPrefs} from '../util/prefs/Prefs';
 import {Providers} from 'polar-shared/src/util/Providers';
 import {WriteFileOpts} from './Datastore';

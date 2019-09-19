@@ -5,7 +5,7 @@ import {DocAnnotation} from '../../DocAnnotation';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {Logger} from '../../../logger/Logger';
 import {Flashcard} from '../../../metadata/Flashcard';
-import {Refs} from '../../../metadata/Refs';
+import {Refs} from 'polar-shared/src/metadata/Refs';
 import {Flashcards} from '../../../metadata/Flashcards';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';

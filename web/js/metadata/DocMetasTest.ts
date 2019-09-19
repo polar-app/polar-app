@@ -3,7 +3,7 @@ import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
-import {PagemarkType} from './PagemarkType';
+import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {TestingTime} from '../test/TestingTime';
 import {TextHighlights} from './TextHighlights';
 import {Proxies} from '../proxies/Proxies';

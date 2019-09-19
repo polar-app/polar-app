@@ -1,6 +1,6 @@
 import {ProfileIDStr} from './Profiles';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
-import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {Collections, DocumentChange, OrderByClause} from './Collections';
 import {Clause} from './Collections';

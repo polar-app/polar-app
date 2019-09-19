@@ -6,7 +6,7 @@ import {AnnotationPointers} from '../../annotations/AnnotationPointers';
 import {Logger} from '../../logger/Logger';
 import {PagemarkPTR, Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
-import {PagemarkMode} from '../../metadata/PagemarkMode';
+import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {Rects} from '../../Rects';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';

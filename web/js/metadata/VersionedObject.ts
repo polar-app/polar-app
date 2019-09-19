@@ -1,8 +1,8 @@
 import {Author} from './Author';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ISODateTimeString} from './ISODateTimeStrings';
-import {Ref} from './Refs';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {Ref} from 'polar-shared/src/metadata/Refs';
 import {IVersionedObject} from "polar-shared/src/metadata/IVersionedObject";
 
 export abstract class VersionedObject extends SerializedObject implements IVersionedObject {

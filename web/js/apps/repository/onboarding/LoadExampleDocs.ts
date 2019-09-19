@@ -5,7 +5,7 @@ import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {Providers} from 'polar-shared/src/util/Providers';
 import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from '../../../logger/Logger';
-import {ISODateTimeString, ISODateTimeStrings} from '../../../metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';

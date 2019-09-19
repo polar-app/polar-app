@@ -2,7 +2,7 @@ import {GroupMember} from '../../datastore/sharing/db/GroupMembers';
 import {GroupMembers} from '../../datastore/sharing/db/GroupMembers';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
-import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Image} from '../../datastore/sharing/db/Images';
 import {Group, Groups} from '../../datastore/sharing/db/Groups';
 import {Profiles} from '../../datastore/sharing/db/Profiles';

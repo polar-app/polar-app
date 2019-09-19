@@ -6,7 +6,7 @@ import {
     SortedDocAnnotations
 } from './DocAnnotation';
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {Refs} from "../metadata/Refs";
+import {Refs} from "polar-shared/src/metadata/Refs";
 import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 
 export class DocAnnotationIndex {

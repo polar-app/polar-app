@@ -10,7 +10,7 @@ import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {PopupStateEvent} from './PopupStateEvent';
 import {Logger} from '../../logger/Logger';
 import {getSourceFile} from 'tslint';
-import {ISODateTimeString, ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 

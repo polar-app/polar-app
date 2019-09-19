@@ -1,4 +1,4 @@
-import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {EmailStr} from './Profiles';
 import {ProfileIDStr} from './Profiles';

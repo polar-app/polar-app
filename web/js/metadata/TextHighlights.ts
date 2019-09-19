@@ -11,7 +11,7 @@ import {DocMeta} from './DocMeta';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {Text} from "./Text";
+import {Text} from "polar-shared/src/metadata/Text";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
 import {HTMLStr} from "polar-shared/src/util/Strings";
 

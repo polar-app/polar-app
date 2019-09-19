@@ -7,7 +7,7 @@ import {KeyEvents} from '../../KeyEvents';
 import {Elements} from '../../util/Elements';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Percentages} from '../../util/Percentages';
-import {PagemarkMode} from '../../metadata/PagemarkMode';
+import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {DocMetas} from '../../metadata/DocMetas';
 

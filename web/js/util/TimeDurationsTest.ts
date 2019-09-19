@@ -2,7 +2,7 @@
 import {assert} from 'chai';
 import {TextArray} from './TextArray';
 import {DurationStr, TimeDurations} from './TimeDurations';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {TestingTime} from '../test/TestingTime';
 
 describe('TimeDurations', function() {

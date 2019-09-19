@@ -10,7 +10,7 @@ import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Flashcard} from '../../../web/js/metadata/Flashcard';
-import {Text} from '../../../web/js/metadata/Text';
+import {Text} from 'polar-shared/src/metadata/Text';
 import {Texts} from '../../../web/js/metadata/Texts';
 import {Images} from '../../../web/js/metadata/Images';
 import {Img} from '../../../web/js/metadata/Img';

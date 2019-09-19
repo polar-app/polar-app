@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Logger} from '../../../web/js/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import Moment from 'react-moment';
-import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 

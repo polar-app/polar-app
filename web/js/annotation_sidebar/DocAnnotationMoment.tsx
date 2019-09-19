@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import {ISODateTimeString} from "../metadata/ISODateTimeStrings";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 
 /**

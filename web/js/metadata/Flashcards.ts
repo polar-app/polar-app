@@ -4,12 +4,12 @@ import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Flashcard} from './Flashcard';
 import {Texts} from './Texts';
-import {Text} from './Text';
+import {Text} from 'polar-shared/src/metadata/Text';
 import {TextType} from './TextType';
 import {DocMeta} from './DocMeta';
-import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
-import {Ref} from './Refs';
+import {Ref} from 'polar-shared/src/metadata/Refs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class Flashcards {

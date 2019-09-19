@@ -19,7 +19,7 @@ import {PersistentErrorLogger} from './PersistentErrorLogger';
 
 import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
-import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {AppRuntime} from '../AppRuntime';
 import {GALogger} from './GALogger';
 

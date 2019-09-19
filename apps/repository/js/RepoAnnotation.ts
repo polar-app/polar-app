@@ -2,7 +2,7 @@
  * Just like a DocDetail or DocInfo but designed to be used for in the UI so we
  * replace missing titles with Untitled and define other default values.
  */
-import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Img} from '../../../web/js/metadata/Img';
 import {Tag} from '../../../web/js/tags/Tags';

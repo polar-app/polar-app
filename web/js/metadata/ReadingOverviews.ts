@@ -1,10 +1,10 @@
-import {ReadingProgress} from './ReadingProgress';
+import {ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
 import {PageMeta} from './PageMeta';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {HitMap} from 'polar-shared/src/util/HitMap';
-import {ReadingOverview} from './ReadingOverview';
-import {ISODateString, ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
-import {PagemarkMode} from './PagemarkMode';
+import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';
+import {ISODateString, ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Numbers} from '../util/Numbers';
 import {Tuples} from '../util/Tuples';

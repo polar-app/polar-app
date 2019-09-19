@@ -13,7 +13,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Rects} from '../../../Rects';
 import {Rect} from '../../../Rect';
 import {BoxController} from "../../../boxes/controller/BoxController";
-import {PagemarkMode} from '../../../metadata/PagemarkMode';
+import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {DocMetas} from "../../../metadata/DocMetas";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";

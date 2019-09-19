@@ -1,6 +1,6 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Image} from './Image';
-import {ISODateTimeString} from './ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
 
 export class Thumbnail extends Image implements IThumbnail {

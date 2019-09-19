@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {Img} from '../../../../web/js/metadata/Img';
-import {ISODateTimeString} from '../../../../web/js/metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DeepPureComponent} from '../../../../web/js/react/DeepPureComponent';
 
 const Body = (props: IProps) => {

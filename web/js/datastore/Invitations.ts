@@ -1,7 +1,7 @@
 import {RecordHolder} from './FirebaseDatastore';
 import {Firestore} from '../firebase/Firestore';
 import {Hashcodes} from '../Hashcodes';
-import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import * as firebase from '../firebase/lib/firebase';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

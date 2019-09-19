@@ -1,4 +1,4 @@
-import {UUID} from './UUID';
+import {UUID} from 'polar-shared/src/metadata/UUID';
 import {Sequences} from '../util/Sequences';
 
 export class UUIDs {

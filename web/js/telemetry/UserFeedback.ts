@@ -1,4 +1,4 @@
-import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Firestore} from '../firebase/Firestore';
 import {Hashcodes} from '../Hashcodes';
 import {MachineID} from '../util/MachineIDs';

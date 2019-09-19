@@ -1,5 +1,5 @@
 import {SerializedObject} from './SerializedObject';
-import {ReadingProgress} from './ReadingProgress';
+import {ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";

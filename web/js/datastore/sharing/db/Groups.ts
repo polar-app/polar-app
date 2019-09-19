@@ -1,5 +1,5 @@
 import {Firestore} from '../../../firebase/Firestore';
-import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {UserIDStr} from './Profiles';
 import {Hashcodes} from '../../../Hashcodes';

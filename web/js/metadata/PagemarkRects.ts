@@ -1,5 +1,5 @@
 import {Pagemark} from './Pagemark';
-import {PagemarkType} from './PagemarkType';
+import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRect} from './PagemarkRect';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Rect} from '../Rect';

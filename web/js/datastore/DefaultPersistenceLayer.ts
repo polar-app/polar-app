@@ -12,7 +12,7 @@ import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {PersistenceLayer} from './PersistenceLayer';
 import {WriteOpts} from './PersistenceLayer';
-import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';

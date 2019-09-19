@@ -1,7 +1,7 @@
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AreaHighlight} from './AreaHighlight';
-import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocMeta} from './DocMeta';
 import {Image} from './Image';
 import {Datastore} from '../datastore/Datastore';

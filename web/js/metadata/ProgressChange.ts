@@ -1,6 +1,6 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ISODateTimeString} from './ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 /**
  * Used so that we can track the history of the document as we're reading it

@@ -1,6 +1,6 @@
 import {PageMeta} from './PageMeta';
 import {DocMeta} from './DocMeta';
-import {PagemarkType} from './PagemarkType';
+import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';
 import {AnnotationInfos} from './AnnotationInfos';
@@ -11,7 +11,7 @@ import {forDict} from 'polar-shared/src/util/Functions';
 import {TextHighlights} from './TextHighlights';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Errors} from '../util/Errors';
-import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {FilePaths} from '../util/FilePaths';
 import {Datastore} from '../datastore/Datastore';
 import {Backend} from '../datastore/Backend';

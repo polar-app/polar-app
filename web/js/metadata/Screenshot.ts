@@ -1,6 +1,6 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Image} from './Image';
-import {ISODateTimeString} from './ISODateTimeStrings';
+import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IScreenshot} from "polar-shared/src/metadata/IScreenshot";
 
 export class Screenshot extends Image implements IScreenshot {

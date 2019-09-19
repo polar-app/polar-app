@@ -1,4 +1,4 @@
-import {ISODateTimeString} from "../metadata/ISODateTimeStrings";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export interface AccountUsage {
     readonly storageInBytes: number;

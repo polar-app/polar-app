@@ -4,10 +4,10 @@ import {DocMetas} from "./DocMetas";
 import {TestingTime} from "../test/TestingTime";
 import {assert} from 'chai';
 import {DocMeta} from './DocMeta';
-import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Objects} from '../util/Objects';
 import {ReadingProgresses} from './ReadingProgresses';
-import {PagemarkMode} from './PagemarkMode';
+import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 
