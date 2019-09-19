@@ -9,7 +9,7 @@ import {AnnotationRects} from '../../../metadata/AnnotationRects';
 import {PagemarkRect} from '../../../metadata/PagemarkRect';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Styles} from '../../../util/Styles';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Rects} from '../../../Rects';
 import {Rect} from '../../../Rect';
 import {BoxController} from "../../../boxes/controller/BoxController";

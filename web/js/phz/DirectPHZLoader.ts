@@ -7,7 +7,7 @@ import {Resources} from './Resources';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Blobs} from 'polar-shared/src/util/Blobs';
 import {ResourceEntry} from './ResourceEntry';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DOM} from '../util/DOM';
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {Latch} from "polar-shared/src/util/Latch";

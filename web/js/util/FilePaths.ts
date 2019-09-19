@@ -1,6 +1,6 @@
 import * as libpath from 'path';
 import * as os from 'os';
-import {Optional} from './ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 
 /**

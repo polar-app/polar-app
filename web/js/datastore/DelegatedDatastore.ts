@@ -8,7 +8,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {IDocInfo} from '../metadata/IDocInfo';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutation} from './DatastoreMutation';

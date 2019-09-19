@@ -8,7 +8,7 @@ import {Collections, DocumentChange} from "./Collections";
 import {DocIDStr} from "../rpc/GroupProvisions";
 import {DocMetaHolder, RecordHolder} from "../../FirebaseDatastore";
 import {DocMetas} from "../../../metadata/DocMetas";
-import {Optional} from "../../../util/ts/Optional";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
 import {ProfileIDStr} from "./Profiles";

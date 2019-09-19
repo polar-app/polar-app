@@ -1,4 +1,4 @@
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Styles} from '../../util/Styles';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';

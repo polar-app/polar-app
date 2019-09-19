@@ -1,5 +1,5 @@
 import {Screenshot} from '../../../screenshots/Screenshot';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 /**
  * Remove the selection, take a screenshot, then restore it.

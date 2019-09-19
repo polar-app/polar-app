@@ -13,7 +13,7 @@ import {DocFormat} from '../docformat/DocFormat';
 import {AreaHighlightController} from '../highlights/area/controller/AreaHighlightController';
 import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCoverageEventListener';
 import {DocDetails} from '../metadata/DocDetails';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ClipboardCleanser} from '../ui/ClipboardCleanser';
 
 

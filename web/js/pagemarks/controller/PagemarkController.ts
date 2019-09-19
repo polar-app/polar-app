@@ -8,7 +8,7 @@ import {PagemarkPTR, Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
 import {Rects} from '../../Rects';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {PagemarkIDRef} from '../../metadata/Pagemark';
 import {DocMetas} from '../../metadata/DocMetas';

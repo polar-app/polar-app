@@ -2,7 +2,7 @@ import {v4 as uuid} from 'uuid';
 import {remote} from 'electron';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {CIDProviders} from './CIDProviders';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {CIDProvider} from './CIDProvider';
 import {Logger} from '../logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';

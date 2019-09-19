@@ -9,7 +9,7 @@ import {Logger} from '../logger/Logger';
 import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {DocDetail} from '../metadata/DocDetail';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 import {PageNumber} from "../metadata/IPageMeta";

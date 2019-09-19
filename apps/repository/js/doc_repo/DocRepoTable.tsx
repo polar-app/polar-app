@@ -3,7 +3,7 @@ import ReactTable, {ColumnRenderProps, Instance} from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
-import {Optional} from '../../../../web/js/util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag, Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';

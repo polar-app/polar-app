@@ -13,7 +13,7 @@ import {SelectedContents} from '../selection/SelectedContents';
 import {Hashcodes} from '../../../Hashcodes';
 import {TextHighlights} from '../../../metadata/TextHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {TypedMessage} from '../../../util/TypedMessage';
 import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
 import {Elements} from '../../../util/Elements';

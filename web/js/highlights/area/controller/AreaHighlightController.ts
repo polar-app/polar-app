@@ -8,7 +8,7 @@ import {AnnotationRects} from '../../../metadata/AnnotationRects';
 import {AreaHighlights} from '../../../metadata/AreaHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AreaHighlightDeleteOpts} from '../../../metadata/AreaHighlights';
 import {AreaHighlightRects} from '../../../metadata/AreaHighlightRects';
 import {DoWriteOpts} from '../../../metadata/AreaHighlights';

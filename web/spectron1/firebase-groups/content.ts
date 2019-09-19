@@ -37,7 +37,7 @@ import {assertJSON} from '../../js/test/Assertions';
 import {JSONRPCError} from '../../js/datastore/sharing/rpc/JSONRPC';
 import {GroupDocsAdd} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
 import {GroupDocAddRequest} from '../../js/datastore/sharing/rpc/GroupDocsAdd';
-import {Optional} from '../../js/util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {GroupIDStr} from '../../js/datastore/Datastore';
 import {GroupDatastores} from '../../js/datastore/sharing/GroupDatastores';
 import {GroupDocRef} from '../../js/datastore/sharing/GroupDatastores';

@@ -1,6 +1,6 @@
 import {Progress} from '../../util/ProgressTracker';
 import {Logger} from '../../logger/Logger';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 
 const ID = 'polar-determinate-progress-bar';

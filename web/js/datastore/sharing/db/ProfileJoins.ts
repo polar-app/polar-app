@@ -1,5 +1,5 @@
 import {Profile, ProfileIDStr, Profiles} from "./Profiles";
-import {Optional} from "../../../util/ts/Optional";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 
 /**
  * Provides a way to join against profiles so that we can resolve the live profile

@@ -10,7 +10,7 @@ import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import * as _ from "lodash";
 import {DeckDescriptor} from './DeckDescriptor';
 import {NoteDescriptor} from './NoteDescriptor';
-import {Optional} from '../../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {PendingAnkiSyncJob} from './AnkiSyncJob';
 import {DocInfos} from '../../../../metadata/DocInfos';
 import {Tags} from '../../../../tags/Tags';

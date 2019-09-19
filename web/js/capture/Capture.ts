@@ -8,7 +8,7 @@ import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener'
 import {WebRequestReactor} from '../webrequests/WebRequestReactor';
 import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContentsDriver';
 import {BrowserProfile} from './BrowserProfile';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {Promises} from '../util/Promises';
 import {ContentCaptureExecutor} from './ContentCaptureExecutor';

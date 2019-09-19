@@ -9,7 +9,7 @@ import {MediaContents} from './MediaContents';
 import {AnkiFields} from './AnkiFields';
 import {CanAddNotesClient, ICanAddNotesClient} from './clients/CanAddNotesClient';
 import {SyncTaskResult} from '../SyncTask';
-import {Optional} from '../../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import * as util from "util";
 
 const log = Logger.create();

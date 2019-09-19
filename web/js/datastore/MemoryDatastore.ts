@@ -8,7 +8,7 @@ import {Logger} from '../logger/Logger';
 import {FileHandle, Files} from '../util/Files';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';

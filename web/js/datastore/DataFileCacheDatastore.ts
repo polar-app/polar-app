@@ -9,7 +9,7 @@ import {RemoteDatastore} from './RemoteDatastore';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Blobs} from 'polar-shared/src/util/Blobs';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Logger} from '../logger/Logger';
 import {DatastoreFileCache} from './DatastoreFileCache';
 import {DelegatedDatastore} from './DelegatedDatastore';

@@ -14,7 +14,7 @@ import {DatastoreInitOpts} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DocFileMeta} from '../DocFileMeta';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';

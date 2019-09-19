@@ -16,7 +16,7 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
 import {WriteOpts} from './PersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';

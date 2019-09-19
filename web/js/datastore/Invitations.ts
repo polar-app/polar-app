@@ -4,7 +4,7 @@ import {Hashcodes} from '../Hashcodes';
 import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import * as firebase from '../firebase/lib/firebase';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Visibility} from "./Visibility";
 

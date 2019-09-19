@@ -2,7 +2,7 @@ import Toastr from 'toastr';
 
 // needed to enforce that jquery is working.
 import $ from '../JQuery';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 Toastr.options.toastClass = 'toastr';
 

@@ -1,7 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import Tooltip from 'reactstrap/lib/Tooltip';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 export class SimpleTooltipEx extends React.Component<IProps, IState> {
 

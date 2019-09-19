@@ -7,7 +7,7 @@ import {Elements} from '../../util/Elements';
 import {Logger} from '../../logger/Logger';
 import * as ReactDOM from 'react-dom';
 import {Point} from '../../Point';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Points} from '../../Points';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';

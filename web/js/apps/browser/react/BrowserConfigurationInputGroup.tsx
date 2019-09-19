@@ -1,6 +1,6 @@
 import React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, InputGroupButtonDropdown} from 'reactstrap';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ToggleDropdownItem} from './ToggleDropdownItem';
 
 export class BrowserConfigurationInputGroup extends React.Component<Props, State> {

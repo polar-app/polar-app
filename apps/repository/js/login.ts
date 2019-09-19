@@ -4,7 +4,7 @@ import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
 import * as firebase from '../../../web/js/firebase/lib/firebase';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {AppRuntime} from '../../../web/js/AppRuntime';
-import {Optional} from '../../../web/js/util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
 // TODO: unify all SignInSuccessURLs / LoginURLs and any use of signInSuccessUrl

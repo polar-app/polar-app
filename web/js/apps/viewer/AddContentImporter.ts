@@ -2,7 +2,7 @@ import {PDFImporter} from '../repository/importers/PDFImporter';
 import {ImportedFile} from '../repository/importers/PDFImporter';
 import {IProvider} from 'polar-shared/src/util/Providers';
 import {FilePaths} from '../../util/FilePaths';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AddContentButtonOverlays} from './AddContentButtonOverlays';
 import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
 import {InjectedComponent} from '../../ui/util/ReactInjector';

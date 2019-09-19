@@ -1,5 +1,5 @@
 import {CurrentDocState, DocFormat} from './DocFormat';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 declare var window: any;
 

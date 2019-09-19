@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {TriggerPopupEvent} from './TriggerPopupEvent';
 import Popover from 'reactstrap/lib/Popover';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Point} from '../../Point';
 import {Points} from '../../Points';
 import {DocFormat} from '../../docformat/DocFormat';

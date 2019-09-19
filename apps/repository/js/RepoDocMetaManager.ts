@@ -5,7 +5,7 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {TagsDB} from './TagsDB';
-import {Optional} from '../../../web/js/util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IProvider} from 'polar-shared/src/util/Providers';

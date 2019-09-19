@@ -8,7 +8,7 @@ import {WriteOpts} from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {UUID} from '../metadata/UUID';

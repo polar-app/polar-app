@@ -1,7 +1,7 @@
 import {Progress} from "./ProgressTracker";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from "polar-shared/src/util/Reducers";
-import {Optional} from "./ts/Optional";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 
 export class ProgressTrackerIndex {
 

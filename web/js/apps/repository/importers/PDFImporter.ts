@@ -4,7 +4,7 @@ import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from '../../../logger/Logger';
 import {PDFMetadata} from 'polar-pdf/src/pdf/PDFMetadata';
 import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle, Files} from '../../../util/Files';
 import {Hashcodes} from '../../../Hashcodes';
 import {Backend} from '../../../datastore/Backend';

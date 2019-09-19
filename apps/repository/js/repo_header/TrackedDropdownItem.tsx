@@ -2,7 +2,7 @@ import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
-import {Optional} from '../../../../web/js/util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 /**
  */

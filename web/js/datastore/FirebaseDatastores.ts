@@ -4,7 +4,7 @@ import {Hashcodes} from '../Hashcodes';
 import {StoragePath} from './FirebaseDatastore';
 import {StorageSettings} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
 import {Firebase, UserID} from '../firebase/Firebase';
 import * as firebase from '../firebase/lib/firebase';

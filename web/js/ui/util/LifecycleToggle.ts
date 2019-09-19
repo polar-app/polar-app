@@ -1,4 +1,4 @@
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {LocalPrefs} from '../../util/LocalPrefs';
 
 export class LifecycleToggle extends LocalPrefs {

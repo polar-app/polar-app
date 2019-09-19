@@ -1,5 +1,5 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {IPoint} from '../../Point';
 
 export class FrameEvents {

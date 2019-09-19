@@ -1,6 +1,6 @@
 import {DocFormat, DocFormatName, PageDetail} from './DocFormat';
 import {notNull} from 'polar-shared/src/Preconditions';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {URLs} from 'polar-shared/src/util/URLs';
 
 export class HTMLFormat extends DocFormat {

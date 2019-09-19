@@ -1,7 +1,7 @@
 /**
  * A generic IPC request message with a type parameter.
  */
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {IPCError} from './IPCError';
 import {ElectronContext} from './ElectronContext';
 import {ElectronContexts} from './ElectronContexts';

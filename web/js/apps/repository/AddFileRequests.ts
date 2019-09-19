@@ -1,6 +1,6 @@
 import {FilePaths} from '../../util/FilePaths';
 import {AddFileRequest} from './AddFileRequest';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AppRuntime} from '../../AppRuntime';
 import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
 import {Aborters, Files} from '../../util/Files';

@@ -6,7 +6,7 @@ import {ISODateTimeString} from '../../metadata/ISODateTimeStrings';
 import {Image} from '../../datastore/sharing/db/Images';
 import {Group, Groups} from '../../datastore/sharing/db/Groups';
 import {Profiles} from '../../datastore/sharing/db/Profiles';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';

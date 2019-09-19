@@ -3,7 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import {Optional} from '../../../../web/js/util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Tags} from '../../../../web/js/tags/Tags';

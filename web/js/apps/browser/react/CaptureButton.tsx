@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button, InputGroupAddon} from 'reactstrap';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISimpleReactor} from '../../../reactor/SimpleReactor';
 import {NavigationEvent} from '../BrowserApp';
 

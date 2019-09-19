@@ -10,7 +10,7 @@ import {SyncProgressListener} from '../SyncProgressListener';
 import {Abortable} from '../Abortable';
 import {Logger} from '../../../../logger/Logger';
 import {SyncQueue} from '../SyncQueue';
-import {Optional} from '../../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {SyncTaskResult} from '../SyncTask';
 import {NormalizedNote} from './NotesSync';
 

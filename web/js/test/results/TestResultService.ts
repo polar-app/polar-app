@@ -2,7 +2,7 @@ import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
 import {TestResult} from './renderer/TestResult';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {app} from 'electron';
 

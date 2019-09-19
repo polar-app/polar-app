@@ -8,7 +8,7 @@ import {Directories} from '../datastore/Directories';
 import {LogLevel} from './LogLevel';
 import {Files} from '../util/Files';
 import {LogLevels} from './LogLevels';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {MultiLogger} from './MultiLogger';
 import {SentryLogger} from './SentryLogger';
 import {FilePaths} from '../util/FilePaths';

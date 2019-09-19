@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {AnnotationTypes} from '../../metadata/AnnotationTypes';
 import {DocAnnotation} from '../DocAnnotation';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';

@@ -1,5 +1,5 @@
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
-import {Optional} from '../../../web/js/util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {DocInfos} from '../../../web/js/metadata/DocInfos';

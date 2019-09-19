@@ -1,6 +1,6 @@
 import twitter_txt from 'twitter-text';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {SetArrays} from "../util/SetArrays";
 import {IDStr} from "polar-shared/src/util/Strings";

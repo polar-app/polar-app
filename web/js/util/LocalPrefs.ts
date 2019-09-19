@@ -1,4 +1,4 @@
-import {Optional} from './ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DurationStr, TimeDurations} from './TimeDurations';
 import {DurationMS} from './TimeDurations';
 

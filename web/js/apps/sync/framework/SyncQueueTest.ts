@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {SyncQueue} from './SyncQueue';
 import {Abortable} from './Abortable';
 import {SyncProgressListener} from './SyncProgressListener';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 
 describe('SyncQueueTest', function() {

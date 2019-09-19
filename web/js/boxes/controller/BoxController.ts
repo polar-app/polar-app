@@ -6,7 +6,7 @@ import {Objects} from '../../util/Objects';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {RectEdges} from '../../pagemarks/controller/interact/edges/RectEdges';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DragRectAdjacencyCalculator} from '../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator';
 import {ResizeRectAdjacencyCalculator} from '../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';

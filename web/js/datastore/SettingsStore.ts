@@ -1,7 +1,7 @@
 import {Directories} from './Directories';
 import {FilePaths} from '../util/FilePaths';
 import {Files} from '../util/Files';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Settings, DefaultSettings} from './Settings';
 import {Logger} from '../logger/Logger';
 import {AppRuntime} from '../AppRuntime';

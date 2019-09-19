@@ -2,7 +2,7 @@ import {isPresent, notNull} from 'polar-shared/src/Preconditions';
 import {PHZMetadata} from '../../phz/PHZMetadata';
 import {Logger} from '../../logger/Logger';
 import {ScrollBox} from '../../capture/renderer/Captured';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDimensions} from "../../util/IDimensions";
 

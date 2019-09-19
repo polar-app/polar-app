@@ -5,7 +5,7 @@ import {Logger} from '../../logger/Logger';
 import {ImportedFile, PDFImporter} from './importers/PDFImporter';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/IDocInfo';
-import {Optional} from "../../util/ts/Optional";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Toaster} from "../../ui/toaster/Toaster";
 import {IProvider} from "polar-shared/src/util/Providers";

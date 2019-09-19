@@ -7,7 +7,7 @@ import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
 import {PageInfo} from '../PageInfo';
-import {Optional} from "../../util/ts/Optional";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 import {IPageInfo} from "../IPageInfo";
 
 export class MarkdownExporter extends AbstractExporter {

@@ -2,7 +2,7 @@ import {URLs} from 'polar-shared/src/util/URLs';
 import {Firebase} from '../../../firebase/Firebase';
 import * as firebase from '../../../firebase/lib/firebase';
 import {AppRuntime} from '../../../AppRuntime';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString} from '../../../metadata/ISODateTimeStrings';
 
 export interface AuthHandler {

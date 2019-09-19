@@ -5,7 +5,7 @@ import {
     IDocAnnotation,
     SortedDocAnnotations
 } from './DocAnnotation';
-import {Optional} from "../util/ts/Optional";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 import {Refs} from "../metadata/Refs";
 import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 

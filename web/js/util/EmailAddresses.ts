@@ -1,7 +1,7 @@
 
 import {parseAddressList} from 'email-addresses';
 import ParsedMailbox = emailAddresses.ParsedMailbox;
-import {Optional} from './ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
 /**

@@ -2,7 +2,7 @@ import {BrowserWindow, DownloadItem, WebContents} from 'electron';
 import {WebContentsDriver, WebContentsEvent, WebContentsEventName} from './WebContentsDriver';
 import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {configureBrowser} from '../renderer/ContentCaptureFunctions';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {BrowserProfile} from '../BrowserProfile';

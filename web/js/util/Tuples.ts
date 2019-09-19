@@ -1,5 +1,5 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Optional} from './ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {IArrayPosition} from 'polar-shared/src/util/Functions';
 
 export class Tuples {

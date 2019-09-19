@@ -6,7 +6,7 @@ import {forOwnKeys} from 'polar-shared/src/util/Functions';
 import {ResourceFactory} from '../phz/ResourceFactory';
 import {Objects} from '../util/Objects';
 import {Captured, CapturedDoc} from './renderer/Captured';
-import {Optional} from '../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 export class CapturedPHZWriter {
 

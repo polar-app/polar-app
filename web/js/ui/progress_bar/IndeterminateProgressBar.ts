@@ -1,5 +1,5 @@
 import {Logger} from '../../logger/Logger';
-import {Optional} from '../../util/ts/Optional';
+import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 const ID = 'polar-progress-bar';
 
