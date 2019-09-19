@@ -1,11 +1,16 @@
-const {Elements, Styles, createSiblingTuples, elementOffset} = require("../../../utils.js");
-const {Objects} = require("../../../util/Objects");
-const {RectElement} = require("./RectElement");
-const {TextHighlightRow} = require("./TextHighlightRow");
-const {IntermediateRow} = require("./IntermediateRow");
-const {Rects} = require("../../../Rects");
-const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
-const {Preconditions} = require("../../../Preconditions");
+import {Preconditions} from "polar-shared/src/Preconditions";
+
+import {elementOffset, Styles} from "../../../utils";
+import {Objects} from "../../../util/Objects";
+import {RectElement} from "./RectElement";
+import {TextHighlightRow} from "./TextHighlightRow";
+import {IntermediateRow} from "./IntermediateRow";
+import {Rects} from "../../../Rects";
+import {DocFormatFactory} from "../../../docformat/DocFormatFactory";
+import {Elements} from "../../../util/Elements";
+import {createSiblingTuples} from "polar-shared/src/util/Functions";
+import {MutableIRect} from "polar-shared/src/util/rects/IRect";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 
 /**
  * TODO:
@@ -24,24 +29,24 @@ const {Preconditions} = require("../../../Preconditions");
  * as a stream of text, not of geometric points.
  *
  */
-class TextHighlightRows {
+export class TextHighlightRows {
 
     /**
      * Create a highlight from a CSS selector.
      */
-    static createFromSelector(selector) {
+    static createFromSelector(selector: string) {
 
         let docFormat = DocFormatFactory.getInstance();
 
         let targetDocument = docFormat.targetDocument();
 
-        let elements = Array.from(targetDocument.querySelectorAll(selector));
+        let elements = Array.from(targetDocument!.querySelectorAll(selector));
 
         if(! elements) {
             throw new Error("No elements");
         }
 
-        let rectElements = elements.map(current => this.computeOffset(current));
+        let rectElements = elements.map(current => this.computeOffset(<HTMLElement> current));
 
         //console.log("Working with raw rectElements: ", rectElements);
 
@@ -55,17 +60,16 @@ class TextHighlightRows {
      * @param selector
      * @return {Array}
      */
-    static createFromRects(selector) {
+    static createFromRects(selector: string) {
 
         // FIXME: this isn't working yet...
-
         //
 
-        let rectElements = elements.map(current => this.computeOffset(current));
-
-        //console.log("Working with raw rectElements: ", rectElements);
-
-        return TextHighlightRows.computeContiguousRects(rectElements);
+        // let rectElements = elements.map(current => this.computeOffset(current));
+        //
+        // //console.log("Working with raw rectElements: ", rectElements);
+        //
+        // return TextHighlightRows.computeContiguousRects(rectElements);
 
     }
 
@@ -76,14 +80,14 @@ class TextHighlightRows {
      * @param element The element which we're computing over.
      * @return A RectElement for the rect (result) and the element
      */
-    static computeOffset(element) {
+    static computeOffset(element: HTMLElement) {
 
         let docFormat = DocFormatFactory.getInstance();
 
         // make sure we're working on the right element or our math won't be right.
         Elements.requireClass(element, "text-highlight-span");
 
-        let textHighlightSpanOffset = Elements.offset(element);
+        let textHighlightSpanOffset: ILTRect = Elements.offset(element);
 
         if(docFormat.name === "html") {
 
@@ -105,7 +109,7 @@ class TextHighlightRows {
         let textLayerDivElement = element.parentElement;
 
         let textLayerDivOffset = elementOffset(textLayerDivElement);
-        let rect = textLayerDivOffset;
+        let rect: MutableIRect = textLayerDivOffset;
 
         if(docFormat.name === "html") {
 
@@ -117,7 +121,9 @@ class TextHighlightRows {
                 left: 0,
                 top: 0,
                 width: 0,
-                height: 0
+                height: 0,
+                bottom: 0,
+                right: 0
             };
 
         }
@@ -129,7 +135,7 @@ class TextHighlightRows {
         // FIXME: and couldn't another way to deal with this be to place these
         // into either the textLayerDivElement or my own annotationsDivElement
         // which has the same transform?
-        let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
+        let scaleX = Styles.parseTransformScaleX(textLayerDivElement!.style.transform);
         if(! scaleX) {
             // FIXME: return 1.0 from parseTransformScaleX
             scaleX = 1.0;
@@ -169,16 +175,16 @@ class TextHighlightRows {
      *
      * @param rectElements
      */
-    static computeRows(rectElements) {
+    static computeRows(rectElements: any) {
 
         let tuples = createSiblingTuples(rectElements);
 
         let result = [];
 
         // the current row
-        let row = [];
+        let row: any[] = [];
 
-        tuples.forEach(function (tuple) {
+        tuples.forEach(function (tuple: any) {
 
             if(!tuple.curr.rect) {
                 throw new Error("Not a RectElement");
@@ -202,7 +208,7 @@ class TextHighlightRows {
 
     // given a row of rects, compute a rect that covers the entire row maximizing
     // the height and width.
-    static computeRectForRow(row) {
+    static computeRectForRow(row: any) {
 
         if (row.length == null || row.length === 0)
             throw new Error("Invalid row data");
@@ -210,7 +216,7 @@ class TextHighlightRows {
         // duplicate the first entry... we will keep maximizing the bounds.
         let result = Rects.validate(Objects.duplicate(row[0].rect));
 
-        row.forEach(function (rectElement) {
+        row.forEach(function (rectElement: any) {
 
             if(rectElement.rect.left < result.left) {
                 result.left = rectElement.rect.left;
@@ -237,10 +243,10 @@ class TextHighlightRows {
 
     }
 
-    static computeIntermediateRows(rectElements) {
+    static computeIntermediateRows(rectElements: any) {
 
         let rows = TextHighlightRows.computeRows(rectElements)
-        let result = [];
+        let result: any[] = [];
 
         rows.forEach(function (rectElementsWithinRow) {
             let rect = TextHighlightRows.computeRectForRow(rectElementsWithinRow);
@@ -252,15 +258,15 @@ class TextHighlightRows {
 
     }
 
-    static computeContiguousRects(rectElements) {
+    static computeContiguousRects(rectElements: any[]) {
 
         let intermediateRows = TextHighlightRows.computeIntermediateRows(rectElements);
 
         let intermediateRowPager = createSiblingTuples(intermediateRows);
 
-        let result = [];
+        let result: any[] = [];
 
-        intermediateRowPager.forEach(function (page) {
+        intermediateRowPager.forEach(function (page: any) {
 
             if(!page.curr.rect || !page.curr.rectElements) {
                 throw new Error("Not a IntermediateRow");
@@ -270,7 +276,9 @@ class TextHighlightRows {
                 left: page.curr.rect.left,
                 top: page.curr.rect.top,
                 right: page.curr.rect.right,
-                bottom: page.curr.rect.bottom
+                bottom: page.curr.rect.bottom,
+                width: 0,
+                height: 0
             };
 
             // adjust the bottom of this div but ONLY if the next div is not on
@@ -297,5 +305,3 @@ class TextHighlightRows {
     }
 
 }
-
-module.exports.TextHighlightRows = TextHighlightRows;

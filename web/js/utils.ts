@@ -1,10 +1,7 @@
-const $ = require('jquery');
+import { Preconditions } from "polar-shared/src/Preconditions";
+import { Rects } from "./Rects";
 
-const {Preconditions} = require("./Preconditions");
-const {Rects} = require("./Rects");
-const {Functions} = require("./util/Functions");
-
-module.exports.injectScript = function(src,type) {
+export function injectScript(src: string, type?: string) {
 
     let script = document.createElement('script');
     script.src = src;
@@ -14,8 +11,9 @@ module.exports.injectScript = function(src,type) {
     script.async = false;
     script.defer = false;
 
-    if(type)
+    if(type) {
         script.type = type;
+    }
 
     return new Promise(function (resolve, reject) {
 
@@ -31,22 +29,24 @@ module.exports.injectScript = function(src,type) {
 
     });
 
-};
+}
 
 /**
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.
  */
-module.exports.Delegator = class {
+export class Delegator {
 
-    constructor(delegates) {
+    private delegates: any[]
+
+    constructor(delegates: any[]) {
         this.delegates = delegates;
     }
 
     /**
      * Apply the given function to all the delegates.
      */
-    apply(functionName) {
+    public apply(functionName: string, ...rest: any[]) {
 
         let args = Array.from(arguments);
         args.splice(0,1);
@@ -57,10 +57,10 @@ module.exports.Delegator = class {
         });
     }
 
-};
+}
 
 // @Deprecated use Functions.forDict
-module.exports.forDict = function(dict, callback) {
+export function forDict(dict: any, callback: any) {
 
     Preconditions.assertNotNull(dict, "dict");
     Preconditions.assertNotNull(callback, "callback");
@@ -74,15 +74,15 @@ module.exports.forDict = function(dict, callback) {
         callback(key,value);
     })
 
-};
+}
 
 /**
  * Get the bounding box for a list of elements, not just one.  This would be
  * the minimum bounding box for all the elements.
  */
-module.exports.getBoundingClientRectFromElements = function(elements) {
+export function getBoundingClientRectFromElements(elements: any[]) {
 
-    let boundingClientRects = elements.map(Element.getBoundingClientRect);
+    let boundingClientRects = elements.map(current => current.getBoundingClientRect());
     return getBoundingClientRectFromBCRs(boundingClientRects);
 
 };
@@ -90,7 +90,7 @@ module.exports.getBoundingClientRectFromElements = function(elements) {
 /**
  * Get the bounding box from a list of BCRs.
  */
-module.exports.getBoundingClientRectFromBCRs = function(boundingClientRects) {
+export function getBoundingClientRectFromBCRs(boundingClientRects: any[]) {
 
     let left = boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b));
     let top = boundingClientRects.map((brc) => brc.top).reduce((a,b) => Math.min(a,b));
@@ -104,13 +104,15 @@ module.exports.getBoundingClientRectFromBCRs = function(boundingClientRects) {
 /**
  * @Deprecated use Elements.offset instead.
  */
-module.exports.elementOffset = function(element) {
+export function elementOffset(element: any) {
 
     let result = {
         left: element.offsetLeft,
         top: element.offsetTop,
         width: element.offsetWidth,
-        height: element.offsetHeight
+        height: element.offsetHeight,
+        right: 0,
+        bottom: 0
     };
 
     result.right = result.left + result.width;
@@ -123,12 +125,12 @@ module.exports.elementOffset = function(element) {
 /**
  * Support the ability to calculate an offset relative to another element.
  */
-module.exports.OffsetCalculator = class {
+export class OffsetCalculator{
 
     // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
-    static calculate(element, rootElement) {
+    static calculate(element: any, rootElement: any) {
 
-        let offset = {left: 0, top: 0, width: 0, height: 0};
+        let offset = {left: 0, top: 0, width: 0, height: 0, right: 0, bottom: 0};
 
         while(true) {
 
@@ -154,7 +156,7 @@ module.exports.OffsetCalculator = class {
 
     }
 
-    static _toInt(value) {
+    static _toInt(value: any) {
 
         if ( isNaN( value ) ) {
             return 0;
@@ -164,11 +166,11 @@ module.exports.OffsetCalculator = class {
 
     }
 
-};
+}
 
-module.exports.Styles = class {
+export class Styles {
 
-    static parseTransformScaleX(transform) {
+    static parseTransformScaleX(transform: any) {
 
         let result = transform;
 
@@ -185,7 +187,7 @@ module.exports.Styles = class {
     /**
      * Take a string of '50px' and return a number of just the pixel count.
      */
-    static parsePixels(value) {
+    static parsePixels(value: any) {
 
         value = value.replace("px", "");
         return parseInt(value);
@@ -193,9 +195,3 @@ module.exports.Styles = class {
     }
 
 }
-
-module.exports.createSiblingTuples = Functions.createSiblingTuples;
-
-// @Deprecated.
-module.exports.Objects = require("./util/Objects.js").Objects;
-module.exports.Elements = require("./util/Elements.js").Elements;

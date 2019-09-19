@@ -14,7 +14,7 @@ export class Rects {
      * @param rect {Rect | DOMRect}
      * @return boolean True when the rect is visible.
      */
-    static isVisible(rect: Rect | DOMRect) {
+    static isVisible(rect: Rect | DOMRect | ClientRect) {
         return rect.height > 0 && rect.width > 0;
     }
 

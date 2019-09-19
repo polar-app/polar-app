@@ -1,10 +1,3 @@
-const {TextNodes} = require("./TextNodes");
-const {Rects} = require("../../../Rects");
-const {createSiblings} = require("../../../util/Functions");
-const {Text} = require("../../../util/Text");
-const {Preconditions} = require("../../../Preconditions");
-
-
 /**
  * A region of text within the document where the nodes are split and are back to
  * back without an element in between but MAY be between different rows.
@@ -28,13 +21,20 @@ const {Preconditions} = require("../../../Preconditions");
  * which would look far more appropriate
  *
  */
-class TextRegion {
+import {Preconditions} from "polar-shared/src/Preconditions";
+import {TextNodes} from './TextNodes';
+import {Rects} from '../../../Rects';
+import {createSiblings} from '../../../util/Functions';
+import {Text} from '../../../util/Text';
+
+export class TextRegion {
+
+    private textNodes: any[] = [];
 
     constructor() {
-        this.textNodes = [];
     }
 
-    push(textNode) {
+    push(textNode: any) {
 
         if(textNode.textContent.length > 1) {
             throw new Error("Nodes must be split");
@@ -90,28 +90,26 @@ class TextBlock extends TextRegion {
 
 class MergedTextBlock {
 
-    constructor(obj) {
+    /**
+     * The merged Node of type TEXT_NODE
+     */
+    public textNode: any;
 
-        /**
-         * The merged Node of type TEXT_NODE
-         * @type {Node}
-         */
-        this.textNode = null;
+    /**
+     * The rect of this node.
+     */
+    public rect: any;
 
-        /**
-         * The rect of this node.
-         *
-         * @type {DOMRect}
-         */
-        this.rect = null;
+    /**
+     * The text value of the node.
+     */
+    public text: string;
 
-        /**
-         * The text value of the node.
-         * @type {string}
-         */
-        this.text = null;
+    constructor(obj: any) {
 
-        Object.assign(this, obj);
+        this.textNode = obj.textNode;
+        this.rect = obj.rect;
+        this.text = obj.text;
 
     }
 
@@ -131,13 +129,15 @@ class MergedTextBlock {
 /**
  * Holds an array of nodes that we can work with.
  */
-class NodeArray {
+export class NodeArray {
+
+    private nodes: any;
 
     /**
      *
      * @param nodes {Array<Node>}
      */
-    constructor(nodes) {
+    constructor(nodes: any) {
         Preconditions.assertNotNull(nodes, "nodes");
         this.nodes = nodes;
     }
@@ -151,7 +151,7 @@ class NodeArray {
      * ALREADY a single text node just return that wrapped in an array.
      * @param element
      */
-    static createFromElement(element) {
+    static createFromElement(element: any) {
 
         if(element.nodeType === Node.ELEMENT_NODE) {
             return new NodeArray(element.childNodes);
@@ -178,14 +178,14 @@ class NodeArray {
  *   the text starts a new row vertically.
  *
  */
-class TextNodeRows {
+export class TextNodeRows {
 
     /**
      *
      * @param textNode {Node}
      * @return {Array<Node>}
      */
-    static fromTextNode(textNode) {
+    static fromTextNode(textNode: any) {
 
         if(textNode.nodeType !== Node.TEXT_NODE) {
             throw new Error("Not a text node");
@@ -193,7 +193,7 @@ class TextNodeRows {
 
         let nodeArray = TextNodeRows.splitTextNodePerCharacter(textNode);
 
-        let textRegions = TextNodeRows.computeTextRegions(nodeArray);
+        let textRegions = TextNodeRows.computeTextRegions(nodeArray, null);
 
         let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
 
@@ -201,7 +201,6 @@ class TextNodeRows {
 
         let result = mergedTextBlocks.map(current => current.textNode);
 
-        //console.log("FIXME: found N " + result.length);
         return result;
 
     }
@@ -211,12 +210,12 @@ class TextNodeRows {
      * @param textNodes {Array<Node>}
      * @return {Array<Node>}
      */
-    static fromTextNodes(textNodes) {
+    static fromTextNodes(textNodes: any[]) {
 
         /**
          * @type {Array<Node>}
          */
-        let result = [];
+        const result: any = [];
 
         textNodes.forEach(textNode => {
             result.push(...TextNodeRows.fromTextNode(textNode));
@@ -233,7 +232,7 @@ class TextNodeRows {
      * @param element {Element} The root node to split.
      * @return {number} The number of nodes split.
      */
-    static splitElement(element) {
+    static splitElement(element: HTMLElement) {
 
         let result = 0;
 
@@ -246,7 +245,7 @@ class TextNodeRows {
 
             if(current.nodeType === Node.ELEMENT_NODE) {
                 // this is a regular element recurse into it splitting that too.
-                result += TextNodeRows.splitElement(current);
+                result += TextNodeRows.splitElement(<HTMLElement> current);
             }
 
         });
@@ -263,7 +262,7 @@ class TextNodeRows {
      * @param [textRegions] {Array<TextRegion>} The starting text regions. Used mostly for recursion.
      * @return {Array<TextRegion>} The computed text regions
      */
-    static computeTextRegions(nodeArray, textRegions) {
+    static computeTextRegions(nodeArray: any, textRegions: any) {
 
         Preconditions.assertNotNull(nodeArray, "nodeArray");
 
@@ -324,12 +323,12 @@ class TextNodeRows {
      * @param textRegions {Array<TextRegion>}
      * @return {Array<TextBlock>}
      */
-    static computeTextBlocks(textRegions) {
+    static computeTextBlocks(textRegions: ReadonlyArray<TextRegion>) {
 
         /**
          * @type {Array<TextBlock>}
          */
-        let textBlocks = [];
+        const textBlocks: any[] = [];
 
         textRegions.forEach(textRegion => {
 
@@ -344,7 +343,7 @@ class TextNodeRows {
             /**
              * @type {DOMRect}
              */
-            let prevRect = null;
+            let prevRect: any = null;
 
             createSiblings(textRegion.getTextNodes()).forEach(position => {
 
@@ -396,13 +395,13 @@ class TextNodeRows {
      * @param textBlocks {Array<TextBlock>}
      * @return {Array<MergedTextBlock>}
      */
-    static mergeTextBlocks(textBlocks) {
+    static mergeTextBlocks(textBlocks: ReadonlyArray<TextBlock>): ReadonlyArray<MergedTextBlock> {
 
         /**
          *
          * @type {Array<MergedTextBlock>}
          */
-        let result = [];
+        const result: MergedTextBlock[] = [];
 
         textBlocks.forEach(textBlock => {
 
@@ -437,7 +436,7 @@ class TextNodeRows {
      * @param rect {DOMRect}
      * @return {string}
      */
-    static computeRowKey(rect) {
+    static computeRowKey(rect: DOMRect | ClientRect) {
         return `${rect.top}:${rect.bottom}`;
     }
 
@@ -447,7 +446,7 @@ class TextNodeRows {
      *
      * @return {NodeArray} The number of splits we performed.
      */
-    static splitTextNodePerCharacter(textNode) {
+    static splitTextNodePerCharacter(textNode: any) {
 
         let result = [
 
@@ -466,5 +465,3 @@ class TextNodeRows {
 
 }
 
-module.exports.NodeArray = NodeArray;
-module.exports.TextNodeRows = TextNodeRows;

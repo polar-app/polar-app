@@ -19,10 +19,10 @@ import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEve
 import {Elements} from '../../../util/Elements';
 import {DocMetas} from "../../../metadata/DocMetas";
 import {HighlightColor} from "../../../metadata/IBaseHighlight";
+import {TextSelections} from "./TextSelections";
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
-const {TextSelections} = require("./TextSelections");
 
 const log = Logger.create();
 

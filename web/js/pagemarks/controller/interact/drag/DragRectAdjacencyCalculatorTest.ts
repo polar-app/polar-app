@@ -1,18 +1,8 @@
 import {Rects} from "../../../../Rects";
-
 import {assert} from 'chai';
 import {DragRectAdjacencyCalculator} from "./DragRectAdjacencyCalculator";
 import {assertJSON} from "../../../../test/Assertions";
 import {RectArt} from "../../../../util/RectArt";
-
-
-// const {Rect} = require("../../../../Rect");
-// const {Rects} = require("../../../../Rects");
-// const {Objects} = require("../../../../util/Objects");
-// const {RectArt} = require("../../../../util/RectArt");
-//
-// const {DragRectAdjacencyCalculator} =
-// require("./DragRectAdjacencyCalculator");
 
 describe('DragRectAdjacencyCalculator', function() {
 

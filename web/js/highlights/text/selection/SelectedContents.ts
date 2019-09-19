@@ -1,14 +1,13 @@
-/**
- *
- */
 import {Ranges} from './Ranges';
 import {SelectedContent} from './SelectedContent';
 import {Selections} from './Selections';
 import {RectTexts} from '../controller/RectTexts';
 import {HTMLSanitizer} from 'polar-html/src/sanitize/HTMLSanitizer';
+import {TextNodeRows} from "./TextNodeRows";
 
-const {TextNodeRows} = require("./TextNodeRows");
-
+/**
+ *
+ */
 export class SelectedContents {
 
     /**

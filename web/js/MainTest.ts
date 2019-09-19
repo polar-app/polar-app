@@ -5,9 +5,8 @@ import chai from 'chai';
 import {assertJSON} from './test/Assertions';
 import {DocMetas} from './metadata/DocMetas';
 import {DocMeta} from './metadata/DocMeta';
-
-const utils = require("./utils");
-const {computeRangeBuffer} = require("./utils");
+import { createSiblingTuples } from 'polar-shared/src/util/Functions';
+import {Delegator, getBoundingClientRectFromBCRs} from './utils';
 
 const {TextHighlightRows} = require("./highlights/text/controller/TextHighlightRows");
 
@@ -331,19 +330,19 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with no entries', function() {
 
-        assert.deepEqual( utils.createSiblingTuples([]), []);
+        assert.deepEqual( createSiblingTuples([]), []);
 
     });
 
     it('Test with 1 entry', function() {
 
-        assert.deepEqual( utils.createSiblingTuples([1]), [ { curr: 1, prev: null, next: null } ]);
+        assert.deepEqual( createSiblingTuples([1]), [ { curr: 1, prev: null, next: null } ]);
 
     });
 
     it('Test with 2 entries', function() {
 
-        assert.deepEqual( utils.createSiblingTuples([1,2]),
+        assert.deepEqual( createSiblingTuples([1,2]),
                           [
                               { curr: 1, prev: null, next: 2 },
                               { curr: 2, prev: 1, next: null }
@@ -353,7 +352,7 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with 3 entries', function() {
 
-        assert.deepEqual( utils.createSiblingTuples([1,2,3]),
+        assert.deepEqual( createSiblingTuples([1,2,3]),
             [
                 { curr: 1, prev: null, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
@@ -364,7 +363,7 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with 4 entries', function() {
 
-        assert.deepEqual( utils.createSiblingTuples([1,2,3,4]),
+        assert.deepEqual( createSiblingTuples([1,2,3,4]),
             [
                 { curr: 1, prev: null, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
@@ -385,7 +384,7 @@ describe('Testing bounding client rect utils.', function() {
             {top: 10, left: 10, bottom: 50, right: 50}
         ];
 
-        var cbr = utils.getBoundingClientRectFromBCRs(boundingClientRects);
+        var cbr = getBoundingClientRectFromBCRs(boundingClientRects);
 
         assert.deepEqual(cbr, { left: 10, top: 10, bottom: 50, right: 50 });
 
@@ -400,7 +399,7 @@ describe('Testing bounding client rect utils.', function() {
             {top: 40, left: 10, bottom: 50, right: 55}
         ];
 
-        var cbr = utils.getBoundingClientRectFromBCRs(boundingClientRects);
+        var cbr = getBoundingClientRectFromBCRs(boundingClientRects);
 
         assert.deepEqual(cbr, { left: 5, top: 10, bottom: 55, right: 55 });
 
@@ -434,7 +433,7 @@ describe('Testing Delegates', function() {
         var delegate0 = new MyDelegate();
         var delegate1 = new MyDelegate();
 
-        var delegator = new utils.Delegator([delegate0, delegate1]);
+        var delegator = new Delegator([delegate0, delegate1]);
 
         delegator.apply("testFunction", "hello", "world");
 
@@ -532,14 +531,6 @@ describe('testing model interaction', function() {
     //
     //     assert.equal(model.computeInitialPagemarkPageNumbers(docMeta, 1),
     // []);  });
-
-    xit('Test computing the range buffers.', async function() {
-
-        assert.deepEqual(computeRangeBuffer(1, 3, 1, 10), { start: 1, end: 4 });
-        assert.deepEqual(computeRangeBuffer(1, 3, 1, 3), { start: 1, end: 3 });
-        assert.deepEqual(computeRangeBuffer(3, 3, 1, 10), { start: 1, end: 6 });
-
-    });
 
 
 });
