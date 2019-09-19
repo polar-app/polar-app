@@ -1,6 +1,5 @@
-const assert = require('assert');
-const {TextRect} = require("./TextRect");
-const {assertJSON} = require("../test/Assertions");
+import {TextRect} from "./TextRect";
+import {assertJSON} from "../test/Assertions";
 
 describe('TextRect', function() {
 

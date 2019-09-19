@@ -1,5 +1,5 @@
-const assert = require('assert');
-const {ArgsParser} = require('./ArgsParser');
+import {assert} from "chai";
+import {ArgsParser} from "./ArgsParser";
 
 describe('ArgsParser', function() {
 

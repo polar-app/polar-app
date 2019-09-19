@@ -1,15 +1,9 @@
+import {MOCK_RECTS} from "../../../../MockRects";
+import {RectEdges} from "../edges/RectEdges";
+import {RectArt} from "../../../../util/RectArt";
+import {ResizeRectAdjacencyCalculator} from "./ResizeRectAdjacencyCalculator";
+import {assertJSON} from "../../../../test/Assertions";
 
-const assert = require('assert');
-const {assertJSON} = require("../../../../test/Assertions");
-
-const {Rect} = require("../../../../Rect");
-const {Rects} = require("../../../../Rects");
-const {Objects} = require("../../../../util/Objects");
-const {RectEdges} = require("../edges/RectEdges");
-
-const {RectArt} = require("../../../../util/RectArt");
-const {ResizeRectAdjacencyCalculator} = require("./ResizeRectAdjacencyCalculator");
-const {MOCK_RECTS} = require("../../../../MockRects");
 
 describe('ResizeRectAdjacencyCalculator', function() {
 
@@ -50,7 +44,7 @@ describe('ResizeRectAdjacencyCalculator', function() {
     //         "bottom": true
     // }
 
-    function test(name, rectEdges, expected) {
+    function test(name: string, rectEdges: any, expected: any) {
 
         it(name, () => {
 
