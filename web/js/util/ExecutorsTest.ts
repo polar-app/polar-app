@@ -1,5 +1,5 @@
 import {Executors} from './Executors';
-import {Latch} from './Latch';
+import {Latch} from "polar-shared/src/util/Latch";
 
 describe('Executors', function() {
 

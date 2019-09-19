@@ -16,8 +16,8 @@ import {ResolvablePromise} from '../util/ResolvablePromise';
 import BrowserRegistry from './BrowserRegistry';
 import {BrowserProfiles} from './BrowserProfiles';
 import {Objects} from '../util/Objects';
-import {Latch} from '../util/Latch';
 import {Strings} from "polar-shared/src/util/Strings";
+import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();
 

@@ -1,6 +1,6 @@
-import {Latch} from '../util/Latch';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreConsistency} from './Datastore';
+import {Latch} from "polar-shared/src/util/Latch";
 
 export class DatastoreMutations {
 

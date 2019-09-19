@@ -1,6 +1,6 @@
 import {assert} from 'chai';
-import {Latch} from './Latch';
 import {fail} from 'assert';
+import {Latch} from "polar-shared/src/util/Latch";
 
 
 describe('Latch', function() {

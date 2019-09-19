@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
-import {Latch} from './Latch';
 import waitForExpect from 'wait-for-expect';
 import {AsyncFunction, AsyncWorkQueue} from './AsyncWorkQueue';
+import {Latch} from "polar-shared/src/util/Latch";
 
 interface Widget {
 

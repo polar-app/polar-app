@@ -16,7 +16,6 @@ import {Logger} from "../logger/Logger";
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapshotEventListeners';
-import {Latch} from '../util/Latch';
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../util/Functions';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
@@ -27,6 +26,7 @@ import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {FileRef} from "./FileRef";
+import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();
 

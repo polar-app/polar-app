@@ -1,5 +1,4 @@
 import React from 'react';
-import {Latch} from '../../util/Latch';
 import {Progress} from '../../util/ProgressTracker';
 import Modal from 'reactstrap/lib/Modal';
 import {LargeModal} from '../../ui/large_modal/LargeModal';
@@ -7,6 +6,7 @@ import {Button, ModalFooter, ModalHeader} from 'reactstrap';
 import {LargeModalBody} from '../../ui/large_modal/LargeModalBody';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {LocalPrefs} from '../../util/LocalPrefs';
+import {Latch} from "polar-shared/src/util/Latch";
 
 export class PreviewDisclaimer extends React.PureComponent<IProps, IState> {
 

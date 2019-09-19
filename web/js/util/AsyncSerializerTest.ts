@@ -1,8 +1,8 @@
 import {AsyncSerializer} from './AsyncSerializer';
 
 import {assert} from 'chai';
-import {Latch} from './Latch';
 import {assertJSON} from '../test/Assertions';
+import {Latch} from "polar-shared/src/util/Latch";
 
 describe('AsyncSerializer', function() {
 

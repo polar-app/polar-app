@@ -16,7 +16,6 @@ import {ElectronDocLoader} from '../../js/apps/main/doc_loaders/electron/Electro
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
-import {Latch} from '../../js/util/Latch';
 import {PersistenceLayerWorkers} from '../../js/datastore/dispatcher/PersistenceLayerWorkers';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
@@ -27,6 +26,7 @@ import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
 import {ProgressTracker} from '../../js/util/ProgressTracker';
 import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 import {Logging} from '../../js/logger/Logging';
+import {Latch} from "polar-shared/src/util/Latch";
 
 Logging.initForTesting();
 

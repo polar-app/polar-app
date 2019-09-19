@@ -2,7 +2,7 @@ import {ReactInjector} from '../util/ReactInjector';
 import {RestartForUpdateButton} from '../../auto_updates/RestartForUpdateButton';
 import React from 'react';
 import {ProgressToaster, ProgressUpdater, ProgressUpdate} from './ProgressToaster';
-import {Latch} from '../../util/Latch';
+import {Latch} from "polar-shared/src/util/Latch";
 
 export class ProgressToasters {
 

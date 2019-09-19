@@ -2,8 +2,8 @@
  * Creates a serializer that makes sure that only ONE operation can happen at
  * once.
  */
-import {Latch} from './Latch';
 import {ArrayQueue} from './ArrayQueue';
+import {Latch} from "polar-shared/src/util/Latch";
 
 /**
  * Async serialization is still important as N operations could be in flight and

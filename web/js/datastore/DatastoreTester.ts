@@ -16,12 +16,12 @@ import {Backend} from './Backend';
 import {Datastore} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
-import {Latch} from '../util/Latch';
 import {Datastores} from './Datastores';
 import {DiskDatastore} from './DiskDatastore';
 import {TestingTime} from '../test/TestingTime';
 import {IDocInfo} from "../metadata/IDocInfo";
 import {IDocMeta} from "../metadata/IDocMeta";
+import {Latch} from "polar-shared/src/util/Latch";
 
 const tmpdir = os.tmpdir();
 

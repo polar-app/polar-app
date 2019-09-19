@@ -52,11 +52,11 @@ import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
 import {URLs} from '../util/URLs';
 import {Datastores} from './Datastores';
-import {Latch} from '../util/Latch';
 import {FirebaseDatastores} from './FirebaseDatastores';
 import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "./Visibility";
 import {FileRef} from "./FileRef";
+import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();
 

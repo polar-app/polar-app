@@ -8,7 +8,7 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
 import {DatastoreInitOpts} from './Datastore';
-import {Latch} from '../util/Latch';
+import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();
 

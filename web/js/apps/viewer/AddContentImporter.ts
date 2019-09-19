@@ -4,7 +4,6 @@ import {IProvider} from '../../util/Providers';
 import {FilePaths} from '../../util/FilePaths';
 import {Optional} from '../../util/ts/Optional';
 import {AddContentButtonOverlays} from './AddContentButtonOverlays';
-import {Latch} from '../../util/Latch';
 import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
 import {Toaster} from '../../ui/toaster/Toaster';
@@ -13,6 +12,7 @@ import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
 import {LoginURLs} from './LoginURLs';
 import {Logger} from '../../logger/Logger';
 import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
+import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();
 

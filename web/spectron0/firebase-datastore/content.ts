@@ -7,12 +7,12 @@ import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
-import {Latch} from '../../js/util/Latch';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
 import {IDocInfo} from "../../js/metadata/IDocInfo";
+import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();
 

@@ -1,4 +1,4 @@
-import {Latch} from '../util/Latch';
+import {Latch} from "polar-shared/src/util/Latch";
 
 /**
  * The result of a Datastore mutation including latches for whether the result

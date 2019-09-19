@@ -1,5 +1,5 @@
 import {DurationStr, TimeDurations} from "./TimeDurations";
-import {Latch} from './Latch';
+import {Latch} from "polar-shared/src/util/Latch";
 
 /**
  * A Provider is just a function that returns a given type.

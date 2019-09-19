@@ -3,7 +3,7 @@ import {TestResultReader} from '../TestResultReader';
 import {Results} from '../../../util/Results';
 import {TApplication} from '../../Spectron';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Latch} from '../../../util/Latch';
+import {Latch} from "polar-shared/src/util/Latch";
 
 declare var window: any;
 
