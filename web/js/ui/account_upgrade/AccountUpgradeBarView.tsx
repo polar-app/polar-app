@@ -3,8 +3,8 @@ import {Button} from "reactstrap";
 import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
 import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
-import {Arrays} from "../../util/Arrays";
 import {UpgradeRequired} from "./UpgradeRequired";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 const MESSAGE = createRandomizedUpgradeMessage();
 

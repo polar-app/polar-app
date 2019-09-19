@@ -1,13 +1,13 @@
 import {Hashcodes} from '../Hashcodes';
 import {TextHighlight} from './TextHighlight';
 import {Text} from './Text';
-import {Arrays} from '../util/Arrays';
 import {TextRect} from './TextRect';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {ITextHighlight} from "./ITextHighlight";
 import {HighlightColor} from "./IBaseHighlight";
 import {ITextRect} from "./ITextRect";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class TextHighlightRecords {
 

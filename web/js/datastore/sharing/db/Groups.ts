@@ -5,8 +5,8 @@ import {UserIDStr} from './Profiles';
 import {Hashcodes} from '../../../Hashcodes';
 import {ExternalLink} from "../rpc/GroupProvisions";
 import {Clause, Collections, OrderByClause} from "./Collections";
-import {Arrays} from "../../../util/Arrays";
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 const HASHCODE_LEN = 20;
 

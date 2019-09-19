@@ -1,5 +1,5 @@
 import {Dictionaries} from "../../util/Dictionaries";
-import {Arrays} from "../../util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 /**
  * Related tag index for in memory related tags computation.  This does not

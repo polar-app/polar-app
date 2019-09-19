@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Alert from 'reactstrap/lib/Alert';
-import {Arrays} from '../../../web/js/util/Arrays';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 // <i className="fab fa-github"></i>
 

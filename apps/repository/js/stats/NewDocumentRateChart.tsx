@@ -4,7 +4,7 @@ import {Statistics} from '../../../../web/js/metadata/Statistics';
 import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
 import StatTitle from './StatTitle';
 import {ResponsiveBar} from '@nivo/bar';
-import {Arrays} from '../../../../web/js/util/Arrays';
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 const log = Logger.create();
 

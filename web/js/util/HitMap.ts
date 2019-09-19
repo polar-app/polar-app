@@ -1,7 +1,7 @@
 import {Dictionaries} from "./Dictionaries";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {ArrayListMultimap, Multimap} from './Multimap';
-import {Arrays} from "./Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 /**
  * Keeps track of hits for a given key...

@@ -2,7 +2,7 @@ import {GroupIDStr} from "../../../Datastore";
 import {BaseDocAnnotation} from "./BaseDocAnnotation";
 import {Clause, Collections, OrderByClause} from "../Collections";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Arrays} from "../../../../util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class GroupDocAnnotations {
 

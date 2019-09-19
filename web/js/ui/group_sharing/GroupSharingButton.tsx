@@ -23,7 +23,7 @@ import {Firebase} from '../../firebase/Firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ContactOptions} from './ContactOptions';
 import {GroupDocsAdd} from "../../datastore/sharing/rpc/GroupDocsAdd";
-import {Arrays} from "../../util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class GroupSharingButton extends React.Component<IProps, IState> {
 

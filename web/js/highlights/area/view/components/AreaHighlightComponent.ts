@@ -19,10 +19,10 @@ import {AreaHighlights} from '../../../../metadata/AreaHighlights';
 import {AreaHighlightWriteOpts} from '../../../../metadata/AreaHighlights';
 import {DoWriteOpts} from '../../../../metadata/AreaHighlights';
 import {Screenshots} from '../../../../screenshots/Screenshots';
-import {Arrays} from '../../../../util/Arrays';
 import {HighlightColors} from '../../../../metadata/HighlightColor';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Rects} from '../../../../Rects';
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 const log = Logger.create();
 

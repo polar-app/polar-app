@@ -1,7 +1,6 @@
 import {TriggerEvent} from '../TriggerEvent';
 import {BrowserWindow, ipcMain, Menu, MenuItem, WebContents} from 'electron';
 import {Logger} from '../../logger/Logger';
-import {Arrays} from '../../util/Arrays';
 import {Broadcaster} from '../../ipc/Broadcaster';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ContextMenuType} from '../ContextMenuType';
@@ -9,6 +8,7 @@ import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSideba
 import {PagemarkModes} from '../../metadata/PagemarkModes';
 import {ContextMenuMessages} from '../ContextMenuMessages';
 import PopupOptions = Electron.PopupOptions;
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 const log = Logger.create();
 

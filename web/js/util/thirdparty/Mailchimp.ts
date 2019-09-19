@@ -1,5 +1,5 @@
 import fetch from '../Fetch';
-import {Arrays} from '../Arrays';
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class Mailchimp {
 

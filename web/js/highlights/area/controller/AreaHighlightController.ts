@@ -9,13 +9,13 @@ import {AreaHighlights} from '../../../metadata/AreaHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
 import {Optional} from '../../../util/ts/Optional';
-import {Arrays} from '../../../util/Arrays';
 import {AreaHighlightDeleteOpts} from '../../../metadata/AreaHighlights';
 import {AreaHighlightRects} from '../../../metadata/AreaHighlightRects';
 import {DoWriteOpts} from '../../../metadata/AreaHighlights';
 import {AreaHighlight} from '../../../metadata/AreaHighlight';
 import {Rects} from '../../../Rects';
 import {DocMetas} from "../../../metadata/DocMetas";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 
 const log = Logger.create();
