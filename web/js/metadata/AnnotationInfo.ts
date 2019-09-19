@@ -1,6 +1,6 @@
 import {SerializedObject} from './SerializedObject';
 import {ISODateTimeString} from './ISODateTimeStrings';
-import {IAnnotationInfo} from "./IAnnotationInfo";
+import {IAnnotationInfo} from "polar-shared/src/metadata/IAnnotationInfo";
 
 /**
  * High level information about the annotations in this document.

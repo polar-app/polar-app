@@ -1,7 +1,7 @@
 import {DocMeta} from '../../../../metadata/DocMeta';
 import {PageInfo} from '../../../../metadata/PageInfo';
 import {Flashcard} from '../../../../metadata/Flashcard';
-import {IDocMeta} from "../../../../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageInfo} from "../../../../metadata/IPageInfo";
 import {IFlashcard} from "../../../../metadata/IFlashcard";
 

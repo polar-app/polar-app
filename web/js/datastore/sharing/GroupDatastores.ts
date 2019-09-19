@@ -16,7 +16,7 @@ import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 import {GroupProvisions} from './rpc/GroupProvisions';
 import {GroupProvisionRequest} from './rpc/GroupProvisions';
 import {Logger} from '../../logger/Logger';
-import {IDocInfo} from "../../metadata/IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "../BackendFileRef";
 
 const log = Logger.create();

@@ -8,8 +8,8 @@ import {UUIDs} from '../metadata/UUIDs';
 import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {WriteOpts} from './Datastore';
-import {IDocInfo} from '../metadata/IDocInfo';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

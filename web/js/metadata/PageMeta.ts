@@ -4,11 +4,11 @@ import {IPageMeta} from "./IPageMeta";
 import {IPageInfo} from "./IPageInfo";
 import {IPagemark} from "./IPagemark";
 import {INote} from "./INote";
-import {IComment} from "./IComment";
+import {IComment} from "polar-shared/src/metadata/IComment";
 import {IQuestion} from "./IQuestion";
 import {IFlashcard} from "./IFlashcard";
 import {ITextHighlight} from "./ITextHighlight";
-import {IAreaHighlight} from "./IAreaHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IScreenshot} from "./IScreenshot";
 import {IThumbnail} from "./IThumbnail";
 

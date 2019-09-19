@@ -31,8 +31,8 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {BinaryFileData} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutations} from './DatastoreMutations';
-import { IDocInfo } from '../metadata/IDocInfo';
-import {IDocMeta} from "../metadata/IDocMeta";
+import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "./FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
 

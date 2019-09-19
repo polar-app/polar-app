@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import StatTitle from './StatTitle';
 import {ResponsiveCalendar} from '@nivo/calendar';
 import {HitMap} from 'polar-shared/src/util/HitMap';

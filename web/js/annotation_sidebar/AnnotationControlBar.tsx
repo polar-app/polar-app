@@ -23,7 +23,7 @@ import {AreaHighlights} from '../metadata/AreaHighlights';
 import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
 import {NullCollapse} from "../ui/null_collapse/NullCollapse";
-import {HighlightColor} from "../metadata/IBaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 const Styles: IStyleMap = {
 

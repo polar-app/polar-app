@@ -3,7 +3,7 @@ import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {UUIDs} from './UUIDs';
 import {PagemarkType} from './PagemarkType';
-import {IDocInfo} from "./IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export class DocInfos {
 

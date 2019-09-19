@@ -9,7 +9,7 @@ import {Logger} from '../logger/Logger';
 import {PrefsProvider} from '../datastore/Datastore';
 import {ReadingProgressResume} from './ReadingProgressResume';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

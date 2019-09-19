@@ -2,7 +2,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Dimensions} from '../util/Dimensions';
 import {Interval} from '../math/Interval';
 import {Rects} from '../Rects';
-import {IAnnotationRect} from "./IAnnotationRect";
+import {IAnnotationRect} from "polar-shared/src/metadata/IAnnotationRect";
 
 const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100});
 

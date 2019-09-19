@@ -4,7 +4,7 @@ import {Either} from '../util/Either';
 import {Backend} from './Backend';
 import {Logger} from '../logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "./BackendFileRef";
 import {DocInfoLike} from "../metadata/DocInfo";
 

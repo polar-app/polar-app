@@ -7,13 +7,13 @@ import {AnnotationType} from './AnnotationType';
 import {TextHighlight} from './TextHighlight';
 import {Comment} from './Comment';
 import {Flashcard} from './Flashcard';
-import {IDocInfo} from "./IDocInfo";
-import {IDocMeta} from "./IDocMeta";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageInfo} from "./IPageInfo";
-import {IComment} from "./IComment";
+import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "./IFlashcard";
 import {ITextHighlight} from "./ITextHighlight";
-import {IAreaHighlight} from "./IAreaHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 
 export class AnnotationHolders {
 

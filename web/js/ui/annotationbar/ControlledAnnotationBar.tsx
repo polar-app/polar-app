@@ -3,7 +3,7 @@ import {Button} from 'reactstrap';
 import {ActiveSelection} from '../popup/ActiveSelections';
 import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
-import {HighlightColor} from "../../metadata/IBaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 /**
  * An annotation bar that is placed exactly.

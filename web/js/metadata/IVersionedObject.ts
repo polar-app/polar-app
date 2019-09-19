@@ -1,6 +1,6 @@
 import {ISODateTimeString} from "./ISODateTimeStrings";
 import {Ref} from "./Refs";
-import {IAuthor} from "./IAuthor";
+import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 
 export interface IVersionedObject {
 

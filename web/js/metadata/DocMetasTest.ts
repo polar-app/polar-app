@@ -9,7 +9,7 @@ import {TextHighlights} from './TextHighlights';
 import {Proxies} from '../proxies/Proxies';
 import {MockDocMetas} from './DocMetas';
 import {Pagemarks} from './Pagemarks';
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 TestingTime.freeze();
 

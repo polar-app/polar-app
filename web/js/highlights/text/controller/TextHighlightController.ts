@@ -18,7 +18,7 @@ import {TypedMessage} from '../../../util/TypedMessage';
 import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
 import {Elements} from '../../../util/Elements';
 import {DocMetas} from "../../../metadata/DocMetas";
-import {HighlightColor} from "../../../metadata/IBaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {TextSelections} from "./TextSelections";
 import {TextHighlightRows} from "./TextHighlightRows";
 

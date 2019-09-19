@@ -7,7 +7,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Datastores} from './Datastores';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressTrackers} from "../util/ProgressTrackers";
-import {IDocInfo} from '../metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DocMetas} from '../metadata/DocMetas';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 

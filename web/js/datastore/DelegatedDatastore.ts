@@ -9,7 +9,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {IDocInfo} from '../metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutation} from './DatastoreMutation';
 import {FileRef} from "./FileRef";

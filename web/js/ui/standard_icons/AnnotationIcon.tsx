@@ -3,7 +3,7 @@ import {AnnotationType} from '../../metadata/AnnotationType';
 import {FlashcardIcon} from './FlashcardIcon';
 import {CommentIcon} from './CommentIcon';
 import {HighlighterIcon} from './HighlighterIcon';
-import {HighlightColor} from "../../metadata/IBaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 /**
  */

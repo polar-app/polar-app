@@ -2,7 +2,7 @@ import {AdvertisingPersistenceLayer} from './AdvertisingPersistenceLayer';
 import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
 import {MemoryDatastore} from '../MemoryDatastore';
 import {MockDocMetas} from '../../metadata/DocMetas';
-import {IDocInfo} from '../../metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {assertJSON} from '../../test/Assertions';
 import {MockAdvertisingPersistenceLayer} from './MockAdvertisingPersistenceLayer';
 import {TestingTime} from '../../test/TestingTime';

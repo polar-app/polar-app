@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactTable from "react-table";
 import {Logger} from '../../../../web/js/logger/Logger';
-import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoAnnotation} from '../RepoAnnotation';

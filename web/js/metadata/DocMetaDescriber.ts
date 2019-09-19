@@ -1,6 +1,6 @@
 import {DocMeta} from './DocMeta';
 import {forDict} from 'polar-shared/src/util/Functions';
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class DocMetaDescriber {
 

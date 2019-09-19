@@ -17,7 +17,7 @@ import {Proxies} from "../proxies/Proxies";
 import {DocMeta} from "../metadata/DocMeta";
 import {DefaultDocAnnotation, DocAnnotation} from "./DocAnnotation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Visibility} from "../datastore/Visibility";
 import {FileRef} from "../datastore/FileRef";
 

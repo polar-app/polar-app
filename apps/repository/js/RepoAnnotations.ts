@@ -17,12 +17,12 @@ import {Img} from '../../../web/js/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "../../../web/js/tags/Tags";
-import {IDocInfo} from "../../../web/js/metadata/IDocInfo";
-import {IDocMeta} from "../../../web/js/metadata/IDocMeta";
-import {IComment} from "../../../web/js/metadata/IComment";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "../../../web/js/metadata/IFlashcard";
 import {ITextHighlight} from "../../../web/js/metadata/ITextHighlight";
-import {IAreaHighlight} from "../../../web/js/metadata/IAreaHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 
 export class RepoAnnotations {
 

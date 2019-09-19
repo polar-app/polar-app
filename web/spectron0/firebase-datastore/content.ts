@@ -11,7 +11,7 @@ import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
-import {IDocInfo} from "../../js/metadata/IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();

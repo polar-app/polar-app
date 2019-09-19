@@ -23,7 +23,7 @@ import {AnkiConnectFetch} from './AnkiConnectFetch';
 import {Decks} from './Decks';
 import {ModelNamesClient} from "./clients/ModelNamesClient";
 import {ModelNames} from "./ModelNames";
-import {IDocInfo} from "../../../../metadata/IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers

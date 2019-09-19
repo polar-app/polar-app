@@ -9,7 +9,7 @@ import {DocMetas} from './DocMetas';
 import {Logger} from '../logger/Logger';
 import {DocMeta} from './DocMeta';
 import {IPageMeta} from "./IPageMeta";
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ITextHighlight} from "./ITextHighlight";
 import {Text} from "./Text";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";

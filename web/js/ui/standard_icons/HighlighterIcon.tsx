@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {HighlightColor} from "../../metadata/IBaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 /**
  */

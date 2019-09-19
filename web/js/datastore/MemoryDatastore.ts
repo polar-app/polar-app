@@ -22,7 +22,7 @@ import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {WriteOpts} from './Datastore';
-import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "./FileRef";
 
 const log = Logger.create();

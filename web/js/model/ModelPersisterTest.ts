@@ -8,7 +8,7 @@ import {Promises} from "../util/Promises";
 import waitForExpect from 'wait-for-expect';
 import {DocMeta} from "../metadata/DocMeta";
 import {DefaultPersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 describe('ModelPersister', function() {
 

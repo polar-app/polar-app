@@ -6,7 +6,7 @@ import {Logger} from "../../../web/js/logger/Logger";
 import {RepoDocInfo} from './RepoDocInfo';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
-import {IDocMeta} from "../../../web/js/metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

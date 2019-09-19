@@ -14,8 +14,8 @@ import {DatastoreMutation} from './DatastoreMutation';
 import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {WriteOpts} from './PersistenceLayer';
-import {IDocInfo} from "../metadata/IDocInfo";
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "./FileRef";
 
 /**

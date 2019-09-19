@@ -1,6 +1,6 @@
 import {SerializedObject} from './SerializedObject';
 import {ProfileIDStr} from "../datastore/sharing/db/Profiles";
-import {AuthorImage, IAuthor} from "./IAuthor";
+import {AuthorImage, IAuthor} from "polar-shared/src/metadata/IAuthor";
 
 export class Author extends SerializedObject implements IAuthor {
 

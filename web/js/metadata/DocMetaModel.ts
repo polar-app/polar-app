@@ -5,7 +5,7 @@
  */
 import {DocMeta} from './DocMeta';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export abstract class DocMetaModel {
 

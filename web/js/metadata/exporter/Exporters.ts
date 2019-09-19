@@ -4,7 +4,7 @@ import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
 import {DocMeta} from '../DocMeta';
 import {AnnotationHolders} from '../AnnotationHolders';
-import {IDocMeta} from "../IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON

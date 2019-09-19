@@ -23,7 +23,7 @@ import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
 import {Datastores} from '../../../datastore/Datastores';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
-import {IDocInfo} from "../../../metadata/IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "../../../datastore/BackendFileRef";
 
 const log = Logger.create();

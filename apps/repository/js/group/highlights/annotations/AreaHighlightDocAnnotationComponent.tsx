@@ -2,7 +2,7 @@ import * as React from 'react';
 import {BaseDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
 import {HighlightColors} from "../../../../../../web/js/metadata/HighlightColor";
 import {ResponsiveImg} from "../../../../../../web/js/annotation_sidebar/ResponsiveImg";
-import {IAreaHighlight} from "../../../../../../web/js/metadata/IAreaHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {DocFileResolvers} from "../../../../../../web/js/datastore/DocFileResolvers";
 import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
 import {Images} from "../../../../../../web/js/metadata/Images";

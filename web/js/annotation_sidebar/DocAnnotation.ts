@@ -14,13 +14,13 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Author} from "../metadata/Author";
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {IPageMeta} from "../metadata/IPageMeta";
-import {IDocMeta} from "../metadata/IDocMeta";
-import {IComment} from "../metadata/IComment";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "../metadata/IFlashcard";
 import {ITextHighlight} from "../metadata/ITextHighlight";
-import {IAreaHighlight} from "../metadata/IAreaHighlight";
-import {HighlightColor} from "../metadata/IBaseHighlight";
-import {IAuthor} from "../metadata/IAuthor";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 
 export interface IDocAnnotation extends ObjectID {
 

@@ -10,7 +10,7 @@ import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from './Refs';
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class Flashcards {
 

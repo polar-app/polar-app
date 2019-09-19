@@ -2,7 +2,7 @@ import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaModel} from '../../metadata/DocMetaModel';
 import {PageMetas} from '../../metadata/PageMetas';
 import {AnnotationEvent} from '../../annotations/components/AnnotationEvent';
-import {IDocMeta} from "../../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 /**
  *

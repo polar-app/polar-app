@@ -6,8 +6,8 @@ import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {Img} from '../../../web/js/metadata/Img';
 import {Tag} from '../../../web/js/tags/Tags';
-import {IDocInfo} from "../../../web/js/metadata/IDocInfo";
-import {HighlightColor} from "../../../web/js/metadata/IBaseHighlight";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 

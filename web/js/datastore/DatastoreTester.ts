@@ -19,8 +19,8 @@ import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {DiskDatastore} from './DiskDatastore';
 import {TestingTime} from '../test/TestingTime';
-import {IDocInfo} from "../metadata/IDocInfo";
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Latch} from "polar-shared/src/util/Latch";
 
 const tmpdir = os.tmpdir();

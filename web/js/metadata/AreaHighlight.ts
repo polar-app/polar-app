@@ -1,5 +1,5 @@
 import {BaseHighlight} from './BaseHighlight';
-import {IAreaHighlight} from "./IAreaHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 
 export class AreaHighlight extends BaseHighlight implements IAreaHighlight {
 

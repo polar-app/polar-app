@@ -13,7 +13,7 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {MutationType} from "../proxies/MutationType";
 import {Logger} from "../logger/Logger";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ModelOpts} from "../metadata/PageMetas";
 
 const log = Logger.create();

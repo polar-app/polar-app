@@ -8,8 +8,8 @@ import {WriteOpts} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {DelegatedListenablePersistenceLayer} from './DelegatedListenablePersistenceLayer';
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
-import {IDocInfo} from "../metadata/IDocInfo";
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 /**
  */

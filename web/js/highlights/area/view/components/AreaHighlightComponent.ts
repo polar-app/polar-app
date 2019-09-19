@@ -4,7 +4,7 @@ import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";
 import {forDict} from "polar-shared/src/util/Functions";
 import {AreaHighlight} from "../../../../metadata/AreaHighlight";
-import {HighlightColor, Position} from "../../../../metadata/IBaseHighlight";
+import {HighlightColor, Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {AnnotationRects} from "../../../../metadata/AnnotationRects";
 import {AreaHighlightRect} from "../../../../metadata/AreaHighlightRect";
 import {AreaHighlightRects} from "../../../../metadata/AreaHighlightRects";

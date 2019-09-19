@@ -20,8 +20,8 @@ import {Datastores} from '../../../datastore/Datastores';
 import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {Tag} from '../../../tags/Tags';
-import {IDocInfo} from "../../../metadata/IDocInfo";
-import {IDocMeta} from "../../../metadata/IDocMeta";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "../../../datastore/BackendFileRef";
 import {FileRef} from "../../../datastore/FileRef";
 

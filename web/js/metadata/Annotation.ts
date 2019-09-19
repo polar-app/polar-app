@@ -1,5 +1,5 @@
 import {VersionedObject} from './VersionedObject';
-import {IAnnotation} from "./IAnnotation";
+import {IAnnotation} from "polar-shared/src/metadata/IAnnotation";
 
 export abstract class Annotation extends VersionedObject implements IAnnotation {
 

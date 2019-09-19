@@ -17,10 +17,10 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
 import {WriteOpts} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
-import {IDocInfo} from '../metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {DelegatedDatastore} from './DelegatedDatastore';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "./FileRef";
 
 const tracer = RendererAnalytics.createTracer('datastore');

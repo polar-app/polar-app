@@ -1,6 +1,6 @@
 import {ActiveSelection} from '../../ui/popup/ActiveSelections';
 import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
-import {HighlightColor} from "../../metadata/IBaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 export interface HighlightCreatedEvent {
     readonly activeSelection: ActiveSelection;

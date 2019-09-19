@@ -11,7 +11,7 @@ import {ReadingOverview} from './ReadingOverview';
 import {Attachment} from './Attachment';
 import {Backend} from '../datastore/Backend';
 import {Tag} from '../tags/Tags';
-import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "./IDocInfo";
+import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "polar-shared/src/metadata/IDocInfo";
 import {Visibility} from "../datastore/Visibility";
 
 export class DocInfo extends SerializedObject implements IDocInfo {

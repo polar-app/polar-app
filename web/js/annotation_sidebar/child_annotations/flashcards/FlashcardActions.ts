@@ -9,7 +9,7 @@ import {Refs} from '../../../metadata/Refs';
 import {Flashcards} from '../../../metadata/Flashcards';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
-import {IDocMeta} from "../../../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

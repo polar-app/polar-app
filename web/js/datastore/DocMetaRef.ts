@@ -1,10 +1,10 @@
 /**
  * Represents a light weight reference to a DocMeta file.
  */
-import {IDocInfo} from '../metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DocMeta} from '../metadata/DocMeta';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "./FileRef";
 
 export interface DocMetaRef {

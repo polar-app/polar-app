@@ -6,7 +6,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {Proxies} from '../proxies/Proxies';
 import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

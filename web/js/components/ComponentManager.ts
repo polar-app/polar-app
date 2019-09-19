@@ -13,7 +13,7 @@ import {ContainerLifecycleListener} from './containers/lifecycle/ContainerLifecy
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
 import {DocMeta} from "../metadata/DocMeta";
 import {DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

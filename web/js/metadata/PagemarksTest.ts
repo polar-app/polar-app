@@ -8,7 +8,7 @@ import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Objects} from '../util/Objects';
 import {ReadingProgresses} from './ReadingProgresses';
 import {PagemarkMode} from './PagemarkMode';
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 
 function reset() {

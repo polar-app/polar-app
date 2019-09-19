@@ -19,7 +19,7 @@ import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
 import {SplitBarLeft} from '../../../apps/repository/js/SplitBarLeft';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

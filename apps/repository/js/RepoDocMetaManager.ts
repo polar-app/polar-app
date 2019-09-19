@@ -1,6 +1,6 @@
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocInfo} from '../../../web/js/metadata/DocInfo';
-import {IDocInfo} from '../../../web/js/metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Preconditions} from 'polar-shared/src/Preconditions';

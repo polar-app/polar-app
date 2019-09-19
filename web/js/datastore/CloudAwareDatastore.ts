@@ -24,7 +24,7 @@ import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
-import {IDocInfo} from "../metadata/IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "./FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 

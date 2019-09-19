@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {DocRepoTableColumns} from '../doc_repo/DocRepoTableColumns';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import Moment from 'react-moment';

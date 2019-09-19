@@ -21,7 +21,7 @@ import {HitMap} from 'polar-shared/src/util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
 import {Percentages} from '../util/Percentages';
 import {IPageMeta, PageNumber} from "./IPageMeta";
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "./IPagemark";
 
 const log = Logger.create();

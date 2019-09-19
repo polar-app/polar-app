@@ -12,7 +12,7 @@ import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
 import {IndeterminateProgressBar} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
-import {IDocMeta} from "../../../web/js/metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

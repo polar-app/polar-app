@@ -1,5 +1,5 @@
 import {DocMeta} from './DocMeta';
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 /**
  * A set of documents as a bundle.

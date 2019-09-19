@@ -14,12 +14,12 @@ import {Images} from '../metadata/Images';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {IPageMeta} from "../metadata/IPageMeta";
-import {IBaseHighlight} from "../metadata/IBaseHighlight";
-import {IDocMeta} from "../metadata/IDocMeta";
-import {IComment} from "../metadata/IComment";
+import {IBaseHighlight} from "polar-shared/src/metadata/IBaseHighlight";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {IComment} from "polar-shared/src/metadata/IComment";
 import {ITextHighlight} from "../metadata/ITextHighlight";
-import {IAreaHighlight} from "../metadata/IAreaHighlight";
-import {IAuthor} from "../metadata/IAuthor";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {TextHighlights} from "../metadata/TextHighlights";
 

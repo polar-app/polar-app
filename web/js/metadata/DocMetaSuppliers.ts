@@ -1,6 +1,6 @@
 import {DocMetaSupplier} from './DocMetaSupplier';
 import {DocMeta} from './DocMeta';
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class DocMetaSuppliers {
 

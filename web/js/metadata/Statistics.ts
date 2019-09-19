@@ -5,7 +5,7 @@ import {DocInfo} from './DocInfo';
 import {ISODateString, ISODateTimeStrings} from './ISODateTimeStrings';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {HitMap} from 'polar-shared/src/util/HitMap';
-import {IDocInfo} from "./IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class Statistics {

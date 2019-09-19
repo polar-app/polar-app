@@ -5,7 +5,7 @@ import {TextRect} from './TextRect';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {ITextHighlight} from "./ITextHighlight";
-import {HighlightColor} from "./IBaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ITextRect} from "./ITextRect";
 import {Arrays} from "polar-shared/src/util/Arrays";
 

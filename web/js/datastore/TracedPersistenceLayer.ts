@@ -21,8 +21,8 @@ import {DocFileMeta} from './DocFileMeta';
 import {WriteOpts} from './PersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {IDocInfo} from "../metadata/IDocInfo";
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "./FileRef";
 
 const tracer = RendererAnalytics.createTracer('persistence-layer');

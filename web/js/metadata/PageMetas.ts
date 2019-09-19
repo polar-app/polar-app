@@ -8,7 +8,7 @@ import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {IPageMeta} from "./IPageMeta";
-import {IDocMeta} from "./IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

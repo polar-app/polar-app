@@ -17,7 +17,7 @@ import {WriteOpts} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {DocMetaFileRef} from './DocMetaRef';
-import {IDocInfo} from '../metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
@@ -26,7 +26,7 @@ import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {DocMetas} from '../metadata/DocMetas';
 import {DocMeta} from '../metadata/DocMeta';
 import {BackendFileRefs} from './BackendFileRefs';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "./BackendFileRef";
 import {FileRef} from "./FileRef";
 

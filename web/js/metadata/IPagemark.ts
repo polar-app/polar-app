@@ -1,6 +1,6 @@
 import {PagemarkType} from "./PagemarkType";
 import {PagemarkMode} from "./PagemarkMode";
-import {IAnnotation} from "./IAnnotation";
+import {IAnnotation} from "polar-shared/src/metadata/IAnnotation";
 import {INote} from "./INote";
 import {IPagemarkRect} from "./IPagemarkRect";
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Author} from "../metadata/Author";
-import {IAuthor} from "../metadata/IAuthor";
+import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 
 const Image = (props: IProps) => {
 

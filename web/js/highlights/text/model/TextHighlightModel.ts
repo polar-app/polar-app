@@ -1,7 +1,7 @@
 import {DocMetaModel} from '../../../metadata/DocMetaModel';
 import {ModelOpts, PageMetas} from '../../../metadata/PageMetas';
 import {AnnotationEventListener} from '../../../annotations/components/AnnotationEventListener';
-import {IDocMeta} from "../../../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class TextHighlightModel extends DocMetaModel {
 

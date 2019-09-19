@@ -6,7 +6,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from '../logger/Logger';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Docs} from '../metadata/Docs';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 

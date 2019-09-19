@@ -18,7 +18,7 @@ import {ASYNC_NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import waitForExpect from 'wait-for-expect';
-import {IDocInfo} from "../../js/metadata/IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Latch} from "polar-shared/src/util/Latch";
 
 const TIMEOUT = 30000;

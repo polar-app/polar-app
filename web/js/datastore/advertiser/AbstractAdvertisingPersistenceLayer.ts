@@ -20,8 +20,8 @@ import {DatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Releaseable} from '../../reactor/EventListener';
 import {WriteOpts} from '../PersistenceLayer';
-import {IDocInfo} from "../../metadata/IDocInfo";
-import {IDocMeta} from "../../metadata/IDocMeta";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "../FileRef";
 
 export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {

@@ -1,10 +1,10 @@
 import {DocMeta} from '../metadata/DocMeta';
-import {IDocInfo} from '../metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DocUUID} from './CloudAwareDatastore';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {DocMetaMutation} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
-import {IDocMeta} from "../metadata/IDocMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 
 /**

@@ -5,12 +5,12 @@ import {Comment} from './Comment';
 import {Flashcard} from './Flashcard';
 import {PageInfo} from './PageInfo';
 import {DocInfo} from './DocInfo';
-import {IDocInfo} from "./IDocInfo";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IPageInfo} from "./IPageInfo";
-import {IComment} from "./IComment";
+import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "./IFlashcard";
 import {ITextHighlight} from "./ITextHighlight";
-import {IAreaHighlight} from "./IAreaHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 
 /**
  * Represents a detached annotation which can be passed across the system and

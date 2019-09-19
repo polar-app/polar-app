@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import {IDocInfo} from '../../../../web/js/metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import AnnotationRepoTable from './AnnotationRepoTable';
