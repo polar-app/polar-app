@@ -166,7 +166,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         }
 
-        this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta, {noSync: true});
+        this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta, {noSync: false});
 
     }
 
@@ -184,19 +184,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const fingerprint = this.props.doc.docMeta.docInfo.fingerprint;
 
         const docMetaHandler = (docMeta: IDocMeta) => {
-
-            // TODO/FIXME this won't work when sharing HUGE documents yet... I need to test it
-            // more but there's probably an issue here.  What's happening is that I get ONE event
-            // per mutation on the initial pass and this calls too many methods at once rather than
-            // just seeing all the events come through at one time.  I do not think
-            // withBatchedMutations will work here and might need to refactor more of this.
-
-            // I can duplicate this with the 'Venture Deals' book I'm working on now.
-            //
-            DocMetas.withBatchedMutations(docMeta, () => {
-                this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta, {noSync: false});
-            });
-
+            this.docAnnotationIndexManager.registerListenerForDocMeta(docMeta, {noSync: false});
         };
 
         const errHandler = (err: Error) => {

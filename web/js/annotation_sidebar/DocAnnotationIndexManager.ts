@@ -23,6 +23,8 @@ const log = Logger.create();
  */
 export class DocAnnotationIndexManager {
 
+    private registering: boolean = false;
+
     constructor(private docFileResolver: DocFileResolver,
                 private docAnnotationIndex: DocAnnotationIndex,
                 private onUpdated: (annotations: ReadonlyArray<DefaultDocAnnotation>) => void) {
@@ -32,6 +34,8 @@ export class DocAnnotationIndexManager {
     public registerListenerForDocMeta(docMeta: IDocMeta, opts: ModelOpts = {}) {
 
         const {docFileResolver} = this;
+
+        this.registering = true;
 
         new AreaHighlightModel().registerListener(docMeta, annotationEvent => {
 
@@ -97,6 +101,9 @@ export class DocAnnotationIndexManager {
 
         }, opts);
 
+        this.registering = false;
+        this.fireUpdated();
+
     }
 
     private convertAnnotation<T>(value: any | undefined | null, converter: (input: any) => T) {
@@ -125,8 +132,6 @@ export class DocAnnotationIndexManager {
             this.addDocAnnotation(childDocAnnotation);
         }
 
-        this.fireUpdated();
-
     }
 
     private handleAnnotationEvent(id: string,
@@ -138,10 +143,6 @@ export class DocAnnotationIndexManager {
         } else {
             this.addDocAnnotation(docAnnotation!);
         }
-
-        // TODO: I think this is technically NOT needed but tests still depend on it and
-        // I have to step through and verify that this won't break anything.
-        this.fireUpdated();
 
     }
 
@@ -158,8 +159,11 @@ export class DocAnnotationIndexManager {
     private fireUpdated() {
 
         const annotations = this.docAnnotationIndex.getDocAnnotationsSorted();
+        //const annotations = this.docAnnotationIndex.getDocAnnotations();
 
-        this.onUpdated(annotations);
+        if( ! this.registering) {
+            this.onUpdated(annotations);
+        }
 
     }
 }
