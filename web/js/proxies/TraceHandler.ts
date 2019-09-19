@@ -7,7 +7,7 @@ import {MutationType} from "./MutationType";
 import {FunctionalInterface} from "../util/FunctionalInterface";
 import {Reactor} from "../reactor/Reactor";
 import {TraceListeners} from "./TraceListeners";
-import {Paths} from "../util/Paths";
+import {Paths} from "polar-shared/src/util/Paths";
 import {TraceListener} from './TraceListener';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
