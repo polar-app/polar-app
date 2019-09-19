@@ -7,7 +7,7 @@ import {CachingPHZReader} from './CachingPHZReader';
 import {PHZWriter} from './PHZWriter';
 import {TestingTime} from '../test/TestingTime';
 import {Time} from '../util/Time';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FilePaths} from '../util/FilePaths';
 
 TestingTime.freeze();

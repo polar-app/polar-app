@@ -1,4 +1,4 @@
-import {Dictionaries} from "../util/Dictionaries";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 import chai from 'chai';
 // const chaiDiff = require("chai-diff");

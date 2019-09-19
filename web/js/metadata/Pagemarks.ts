@@ -5,7 +5,7 @@ import {Hashcodes} from '../Hashcodes';
 import {Objects} from '../util/Objects';
 import {PagemarkType} from './PagemarkType';
 import {PagemarkRects} from './PagemarkRects';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
 import {DocMeta} from './DocMeta';

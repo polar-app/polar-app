@@ -8,7 +8,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from '../logger/Logger';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {PersistenceLayer} from './PersistenceLayer';
 import {WriteOpts} from './PersistenceLayer';

@@ -9,7 +9,7 @@ import {Reactor} from "../reactor/Reactor";
 import {TraceListeners} from "./TraceListeners";
 import {Paths} from "../util/Paths";
 import {TraceListener} from './TraceListener';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
 const EVENT_NAME = "onMutation";
 

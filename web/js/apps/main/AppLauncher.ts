@@ -3,7 +3,7 @@ import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrow
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import {Logger} from "../../logger/Logger";
-import {Dictionaries} from "../../util/Dictionaries";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {PDFDownloadHandlers} from '../../capture/PDFDownloadHandlers';
 
 const log =  Logger.create();

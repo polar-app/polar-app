@@ -1,4 +1,4 @@
-import {Dictionaries} from "./Dictionaries";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {ArrayListMultimap, Multimap} from "polar-shared/src/util/Multimap";

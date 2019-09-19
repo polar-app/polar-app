@@ -4,7 +4,7 @@ import {FindNotesClient, IFindNotesClient} from './clients/FindNotesClient';
 import {SyncQueue} from '../SyncQueue';
 import {Logger} from '../../../../logger/Logger';
 import {IStoreMediaFileClient, MediaFile, StoreMediaFileClient} from './clients/StoreMediaFileClient';
-import {Dictionaries} from '../../../../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {MediaContents} from './MediaContents';
 import {AnkiFields} from './AnkiFields';
 import {CanAddNotesClient, ICanAddNotesClient} from './clients/CanAddNotesClient';

@@ -1,4 +1,4 @@
-import {Dictionaries} from '../../js/util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
 export function canonicalize<T>(obj: T) {
     delete (<any> obj).uuid;

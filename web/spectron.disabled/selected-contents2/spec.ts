@@ -1,7 +1,7 @@
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
 import {Spectron} from '../../js/test/Spectron';
 import {assertJSON} from '../../js/test/Assertions';
-import {Dictionaries} from '../../js/util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
 const assert = require('assert');
 

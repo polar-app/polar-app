@@ -5,7 +5,7 @@ import {assertJSON} from '../test/Assertions';
 import {Files} from '../util/Files';
 import {PHZWriter} from './PHZWriter';
 import {PHZReader} from './PHZReader';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FilePaths} from '../util/FilePaths';
 import JSZip from 'jszip';
 import {Streams} from '../util/Streams';

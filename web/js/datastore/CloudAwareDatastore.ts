@@ -20,7 +20,7 @@ import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from 'polar-shared/src/util/Function
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
 import * as firebase from '../firebase/lib/firebase';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';

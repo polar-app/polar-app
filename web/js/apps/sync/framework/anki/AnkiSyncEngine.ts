@@ -6,7 +6,7 @@ import {PendingSyncJob} from '../SyncJob';
 import {DocMeta} from '../../../../metadata/DocMeta';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {PageInfo} from '../../../../metadata/PageInfo';
-import {Dictionaries} from '../../../../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import * as _ from "lodash";
 import {DeckDescriptor} from './DeckDescriptor';
 import {NoteDescriptor} from './NoteDescriptor';

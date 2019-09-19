@@ -1,5 +1,5 @@
 import {DocMeta} from './DocMeta';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {PageMeta} from './PageMeta';
 import {IPageMeta} from "./IPageMeta";
 import {IDocMeta} from "./IDocMeta";

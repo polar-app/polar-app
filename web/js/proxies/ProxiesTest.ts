@@ -10,7 +10,7 @@ import {MockDocMetas} from '../metadata/DocMetas';
 import {DocMetas} from '../metadata/DocMetas';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {Numbers} from '../util/Numbers';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
 describe('Proxies', function() {
 

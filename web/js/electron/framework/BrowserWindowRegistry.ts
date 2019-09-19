@@ -1,6 +1,6 @@
 import {BrowserWindow} from 'electron';
 import {SetArrays} from '../../util/SetArrays';
-import {Dictionaries} from '../../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
 export class BrowserWindowMeta {
 

@@ -6,7 +6,7 @@ import {CacheEntriesFactory} from './CacheEntriesFactory';
 import {assertJSON} from '../../test/Assertions';
 import {MockCapturedContent} from '../../capture/MockCapturedContent';
 import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
-import {Dictionaries} from '../../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FilePaths} from '../../util/FilePaths';
 import {Files} from '../../util/Files';
 

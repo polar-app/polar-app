@@ -8,7 +8,7 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import os from 'os';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
-import {Dictionaries} from '../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Directories, GlobalDataDir} from './Directories';
 import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';

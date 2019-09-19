@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {TreeNode} from './TreeNode';
-import {Dictionaries} from '../../util/Dictionaries';
+import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Tag, TagStr} from "../../tags/Tags";
 
