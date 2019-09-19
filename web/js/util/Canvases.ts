@@ -1,4 +1,4 @@
-import {ArrayBuffers} from './ArrayBuffers';
+import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {ImageType, ExtractedImage} from '../screenshots/Screenshot';
 import {Preconditions} from 'polar-shared/src/Preconditions';

@@ -9,7 +9,7 @@ import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Images} from './Images';
 import {DocMetas} from './DocMetas';
 import {Backend} from '../datastore/Backend';
-import {ArrayBuffers} from '../util/ArrayBuffers';
+import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
 import {Attachment} from './Attachment';
 import {Logger} from '../logger/Logger';
 import {PageMeta} from './PageMeta';
