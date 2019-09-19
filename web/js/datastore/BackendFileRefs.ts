@@ -25,14 +25,16 @@ export class BackendFileRefs {
             Either.ofLeft(either)
                 .convertLeftToRight(left => left.docInfo);
 
-        if (docInfo.filename) {
+        const filename = docInfo.filename;
+
+        if (filename) {
 
             // return the existing doc meta information.
 
             const backend = docInfo.backend || Backend.STASH;
 
             const backendFileRef: BackendFileRef = {
-                name: docInfo.filename,
+                name: filename,
                 hashcode: docInfo.hashcode,
                 backend
             };
