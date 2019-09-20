@@ -2,7 +2,7 @@ import {
     DefaultAddContentImporter,
     NullAddContentImporter
 } from './AddContentImporter';
-import {PreviewURLs} from './PreviewURLs';
+import {PreviewURLs} from 'polar-webapp-links/src/docs/PreviewURLs';
 
 export class AddContentImporters {
 

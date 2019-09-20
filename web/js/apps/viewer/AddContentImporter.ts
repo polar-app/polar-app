@@ -7,7 +7,7 @@ import {AddContentButtonOverlays} from './AddContentButtonOverlays';
 import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
 import {Toaster} from '../../ui/toaster/Toaster';
-import {PreviewURLs} from './PreviewURLs';
+import {PreviewURLs} from 'polar-webapp-links/src/docs/PreviewURLs';
 import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
 import {LoginURLs} from './LoginURLs';
 import {Logger} from 'polar-shared/src/logger/Logger';
