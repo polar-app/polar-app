@@ -19,7 +19,7 @@ import {DocMetaRef} from './DocMetaRef';
 import {DocMetaFileRef} from './DocMetaRef';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
@@ -27,8 +27,8 @@ import {DocMetas} from '../metadata/DocMetas';
 import {DocMeta} from '../metadata/DocMeta';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {BackendFileRef} from "./BackendFileRef";
-import {FileRef} from "./FileRef";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 const log = Logger.create();
 

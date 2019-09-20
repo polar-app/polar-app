@@ -10,7 +10,7 @@ import {Directories} from './Directories';
 import fs from 'fs';
 import os from 'os';
 
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
@@ -33,7 +33,7 @@ import {WriteOpts} from './Datastore';
 import {DatastoreMutations} from './DatastoreMutations';
 import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();

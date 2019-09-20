@@ -1,4 +1,4 @@
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {StoragePath} from './FirebaseDatastore';
@@ -10,7 +10,7 @@ import {Firebase, UserID} from '../firebase/Firebase';
 import * as firebase from '../firebase/lib/firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {UserIDStr} from './sharing/db/Profiles';
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Logger} from "../logger/Logger";
 
 const log = Logger.create();

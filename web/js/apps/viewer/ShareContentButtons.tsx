@@ -4,7 +4,7 @@ import {ShareContentButton} from './ShareContentButton';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Visibility} from "../../datastore/Visibility";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
 
 export class ShareContentButtons {
 

@@ -1,8 +1,8 @@
-import {Backend} from "./Backend";
+import {Backend} from "polar-shared/src/datastore/Backend";
 import {GetFileOpts} from "./Datastore";
 import {DocFileMeta} from "./DocFileMeta";
 import {PersistenceLayerProvider} from "./PersistenceLayer";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 /**
  * Create resolvers that can lookup doc meta rather than providing a full

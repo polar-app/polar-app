@@ -1,9 +1,9 @@
 import {Either, LeftEither} from '../util/Either';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Logger} from '../logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {BackendFileRef} from "./BackendFileRef";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {DocInfoLike} from "../metadata/DocInfo";
 
 const log = Logger.create();

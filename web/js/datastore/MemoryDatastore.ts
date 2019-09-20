@@ -6,7 +6,7 @@ import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from '../logger/Logger';
 import {FileHandle, Files} from 'polar-shared/src/util/Files';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
@@ -23,7 +23,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 const log = Logger.create();
 

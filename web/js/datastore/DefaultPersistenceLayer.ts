@@ -13,7 +13,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {PersistenceLayer} from './PersistenceLayer';
 import {WriteOpts} from './PersistenceLayer';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {DocInfo} from '../metadata/DocInfo';
@@ -23,7 +23,7 @@ import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 const log = Logger.create();
 

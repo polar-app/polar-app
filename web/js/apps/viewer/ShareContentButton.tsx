@@ -5,7 +5,7 @@ import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import {ShareContentControl} from './ShareContentControl';
-import {Visibility} from "../../datastore/Visibility";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
 
 class Styles {
 

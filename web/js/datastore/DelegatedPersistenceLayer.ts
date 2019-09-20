@@ -6,7 +6,7 @@ import {DatastoreOverview} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
@@ -16,7 +16,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {WriteOpts} from './PersistenceLayer';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.

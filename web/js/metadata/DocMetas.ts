@@ -14,10 +14,10 @@ import {Errors} from '../util/Errors';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Datastore} from '../datastore/Datastore';
-import {Backend} from '../datastore/Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {FileRef} from "../datastore/FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 export class DocMetas {
 

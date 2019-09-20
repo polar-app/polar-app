@@ -26,7 +26,7 @@ import {
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Firestore} from '../firebase/Firestore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
@@ -54,8 +54,8 @@ import {URLs} from 'polar-shared/src/util/URLs';
 import {Datastores} from './Datastores';
 import {FirebaseDatastores} from './FirebaseDatastores';
 import {DocPermissions} from "./sharing/db/DocPermissions";
-import {Visibility} from "./Visibility";
-import {FileRef} from "./FileRef";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();

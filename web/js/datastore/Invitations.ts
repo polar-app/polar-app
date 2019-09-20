@@ -6,7 +6,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import * as firebase from '../firebase/lib/firebase';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
-import {Visibility} from "./Visibility";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
 
 export class Invitations {
 

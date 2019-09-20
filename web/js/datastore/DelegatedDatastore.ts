@@ -6,13 +6,13 @@ import {GetFileOpts} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {WriteOpts} from './Datastore';
 import {DatastoreMutation} from './DatastoreMutation';
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 /**
  * A datastore that just forwards events to the given delegate.

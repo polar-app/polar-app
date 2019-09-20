@@ -5,10 +5,10 @@ import {isBinaryFileData} from './Datastore';
 import {DocMetaRef} from './DocMetaRef';
 import {DiskDatastore} from './DiskDatastore';
 import {RemoteDatastore} from './RemoteDatastore';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Blobs} from 'polar-shared/src/util/Blobs';
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 /**
  * A datastore which extends RemoteDatastore but adds support for local disk

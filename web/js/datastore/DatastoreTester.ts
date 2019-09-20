@@ -12,7 +12,7 @@ import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Directories, GlobalDataDir} from './Directories';
 import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Datastore} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';

@@ -1,5 +1,5 @@
 import {FirebaseDatastores} from './FirebaseDatastores';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {assertJSON} from '../test/Assertions';
 
 describe('FirebaseDatastores', function() {

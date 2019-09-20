@@ -7,7 +7,7 @@ import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {Backend} from '../../../datastore/Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
@@ -16,7 +16,7 @@ import {IProvider} from 'polar-shared/src/util/Providers';
 import {BinaryFileData} from '../../../datastore/Datastore';
 import {BackendFileRefData} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
-import {InputSources} from '../../../util/input/InputSources';
+import {InputSources} from 'polar-shared/src/util/input/InputSources';
 import {AppRuntime} from '../../../AppRuntime';
 
 import fs from 'fs';
@@ -24,7 +24,7 @@ import {Toaster} from '../../../ui/toaster/Toaster';
 import {Datastores} from '../../../datastore/Datastores';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {BackendFileRef} from "../../../datastore/BackendFileRef";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 
 const log = Logger.create();
 

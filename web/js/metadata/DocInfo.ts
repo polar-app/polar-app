@@ -9,10 +9,10 @@ import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODat
 import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
 import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';
 import {Attachment} from './Attachment';
-import {Backend} from '../datastore/Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Tag} from '../tags/Tags';
 import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "polar-shared/src/metadata/IDocInfo";
-import {Visibility} from "../datastore/Visibility";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 

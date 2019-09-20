@@ -8,7 +8,7 @@ import {Datastore} from '../datastore/Datastore';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Images} from './Images';
 import {DocMetas} from './DocMetas';
-import {Backend} from '../datastore/Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
 import {Attachment} from './Attachment';
 import {Logger} from '../logger/Logger';
@@ -28,7 +28,7 @@ import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IImage} from "polar-shared/src/metadata/IImage";
-import {BackendFileRef} from "../datastore/BackendFileRef";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 
 const log = Logger.create();
 

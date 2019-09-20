@@ -3,7 +3,7 @@ import {DatastoreCollection} from "../../FirebaseDatastore";
 import {Firestore} from "../../../firebase/Firestore";
 import * as firebase from "firebase";
 import GetOptions = firebase.firestore.GetOptions;
-import {Visibility} from "../../Visibility";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
 
 export class DocPermissions {
 

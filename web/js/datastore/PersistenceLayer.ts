@@ -7,7 +7,7 @@ import {DatastoreCapabilities} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
 import {BackendFileRefData} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
@@ -15,8 +15,8 @@ import {DatastoreMutation} from './DatastoreMutation';
 import {GroupIDStr} from './Datastore';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {Visibility} from "./Visibility";
-import {FileRef} from "./FileRef";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 export interface PersistenceLayer {
 

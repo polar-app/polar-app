@@ -5,7 +5,7 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DocMeta} from '../metadata/DocMeta';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 export interface DocMetaRef {
 

@@ -9,7 +9,7 @@ import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Directories, GlobalDataDir} from './Directories';
 import {Platform, Platforms} from '../util/Platforms';
 import {DatastoreTester} from './DatastoreTester';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DocMetaFileRef} from './DocMetaRef';

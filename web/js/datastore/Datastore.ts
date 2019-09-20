@@ -1,7 +1,7 @@
 // A datastore that supports ledgers and checkpoints.
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {FileHandle} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
@@ -18,9 +18,9 @@ import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {BackendFileRef} from "./BackendFileRef";
-import {Visibility} from "./Visibility";
-import {FileRef} from "./FileRef";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 

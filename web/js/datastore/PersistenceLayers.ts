@@ -13,8 +13,8 @@ import {URLs} from "polar-shared/src/util/URLs";
 import {Logger} from "../logger/Logger";
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {BackendFileRef} from "./BackendFileRef";
-import {Visibility} from "./Visibility";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
 
 const log = Logger.create();
 

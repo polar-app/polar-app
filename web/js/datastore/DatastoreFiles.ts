@@ -1,4 +1,4 @@
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 export class DatastoreFiles {
 

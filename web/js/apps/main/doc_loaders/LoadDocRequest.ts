@@ -1,4 +1,4 @@
-import {BackendFileRef} from "../../../datastore/BackendFileRef";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 
 export interface LoadDocRequest {
 

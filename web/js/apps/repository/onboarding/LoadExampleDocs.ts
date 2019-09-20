@@ -9,7 +9,7 @@ import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/I
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
-import {Backend} from '../../../datastore/Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {AppRuntime} from '../../../AppRuntime';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
 import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
@@ -22,8 +22,8 @@ import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {Tag} from '../../../tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {BackendFileRef} from "../../../datastore/BackendFileRef";
-import {FileRef} from "../../../datastore/FileRef";
+import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 const log = Logger.create();
 

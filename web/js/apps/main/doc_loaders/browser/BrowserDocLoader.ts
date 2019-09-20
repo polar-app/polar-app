@@ -2,7 +2,7 @@ import {LoadDocRequest} from '../LoadDocRequest';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IProvider} from 'polar-shared/src/util/Providers';
 import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
-import {Backend} from '../../../../datastore/Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Logger} from '../../../../logger/Logger';
 import {PDFLoader} from '../../file_loaders/PDFLoader';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';

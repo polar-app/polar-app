@@ -6,7 +6,7 @@ import {GetFileOpts} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
@@ -25,7 +25,7 @@ import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();

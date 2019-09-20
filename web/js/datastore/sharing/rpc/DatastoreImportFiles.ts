@@ -1,6 +1,6 @@
 import {JSONRPC} from './JSONRPC';
-import {Backend} from '../../Backend';
-import {FileRef} from "../../FileRef";
+import {Backend} from 'polar-shared/src/datastore/Backend';
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 export class DatastoreImportFiles {
 

@@ -2,7 +2,7 @@ import {TestingTime} from '../test/TestingTime';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
-import {Backend} from "../datastore/Backend";
+import {Backend} from "polar-shared/src/datastore/Backend";
 import {GetFileOpts} from "../datastore/Datastore";
 import {DocFileMeta} from "../datastore/DocFileMeta";
 import {
@@ -18,8 +18,8 @@ import {DocMeta} from "../metadata/DocMeta";
 import {DefaultDocAnnotation, DocAnnotation} from "./DocAnnotation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {Visibility} from "../datastore/Visibility";
-import {FileRef} from "../datastore/FileRef";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 describe('DocAnnotationIndexManager', function() {
 

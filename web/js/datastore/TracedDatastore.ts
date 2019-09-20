@@ -8,7 +8,7 @@ import {DatastoreOverview} from './Datastore';
 import {Datastore} from './Datastore';
 import {DatastoreID} from './Datastore';
 import {InitResult} from './Datastore';
-import {Backend} from './Backend';
+import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
@@ -21,7 +21,7 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {FileRef} from "./FileRef";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 const tracer = RendererAnalytics.createTracer('datastore');
 
