@@ -2,7 +2,7 @@ import {CacheRegistry} from '../../js/backend/proxyserver/CacheRegistry';
 import {CacheInterceptorService} from '../../js/backend/interceptor/CacheInterceptorService';
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {WebContentsPromises} from '../../js/electron/framework/WebContentsPromises';
-import {FilePaths} from '../../js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 SpectronMain2.create().run(async state => {
     //

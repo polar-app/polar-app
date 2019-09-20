@@ -25,7 +25,7 @@ import {GroupDocIDStr} from '../../js/datastore/sharing/db/GroupDocs';
 import {ProfileOwners} from '../../js/datastore/sharing/db/ProfileOwners';
 import {UserGroups} from '../../js/datastore/sharing/db/UserGroups';
 import {Contacts} from '../../js/datastore/sharing/db/Contacts';
-import {SetArrays} from '../../js/util/SetArrays';
+import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {GroupDeletes} from '../../js/datastore/sharing/rpc/GroupDeletes';
 import {Promises} from '../../js/util/Promises';
 import {DocMeta} from '../../js/metadata/DocMeta';

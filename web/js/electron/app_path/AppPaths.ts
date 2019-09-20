@@ -1,4 +1,4 @@
-import {FilePaths} from "../../util/FilePaths";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {AppPath} from "./AppPath";
 
 export class AppPaths {

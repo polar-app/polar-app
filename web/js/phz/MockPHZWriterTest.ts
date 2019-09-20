@@ -1,6 +1,6 @@
 import {TestingTime} from '../test/TestingTime';
 import {assert} from 'chai';
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {MockPHZWriter} from './MockPHZWriter';
 import * as fs from 'fs';
 

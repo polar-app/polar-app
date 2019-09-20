@@ -1,6 +1,6 @@
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {DurationStr} from '../TimeDurations';
-import {TimeDurations} from '../TimeDurations';
+import {DurationStr} from 'polar-shared/src/util/TimeDurations';
+import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 
 export abstract class Prefs {
 

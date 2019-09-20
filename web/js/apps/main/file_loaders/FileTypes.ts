@@ -1,5 +1,5 @@
 import {FileType} from './FileType';
-import {FilePaths} from '../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 export class FileTypes {
 

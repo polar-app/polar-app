@@ -12,7 +12,7 @@ import {TextHighlights} from './TextHighlights';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Errors} from '../util/Errors';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Datastore} from '../datastore/Datastore';
 import {Backend} from '../datastore/Backend';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";

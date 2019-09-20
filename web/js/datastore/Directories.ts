@@ -2,8 +2,8 @@
  * Represents key local directories for Polar when running locally.
  */
 import {DataDir, DataDirConfig, DiskDatastore} from './DiskDatastore';
-import {CreateDirResult, Files} from '../util/Files';
-import {FilePaths} from '../util/FilePaths';
+import {CreateDirResult, Files} from 'polar-shared/src/util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
 export class Directories {

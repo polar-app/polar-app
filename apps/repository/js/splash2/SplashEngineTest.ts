@@ -8,8 +8,8 @@ import {StorageBackends} from '../../../../web/js/util/LocalPrefs';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {assertJSON} from '../../../../web/js/test/Assertions';
-import {TimeDurations} from '../../../../web/js/util/TimeDurations';
-import {Duration} from '../../../../web/js/util/TimeDurations';
+import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
+import {Duration} from 'polar-shared/src/util/TimeDurations';
 
 describe('SplashEngine', function() {
 

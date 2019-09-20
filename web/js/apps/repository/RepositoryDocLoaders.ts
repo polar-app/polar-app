@@ -1,7 +1,7 @@
 import {Platforms} from "../../util/Platforms";
-import {FilePaths} from '../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import os from "os";
-import {Aborter, Aborters, Files} from "../../util/Files";
+import {Aborter, Aborters, Files} from "polar-shared/src/util/Files";
 
 /**
  *

@@ -1,6 +1,6 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {ResourceRegistry} from '../../js/backend/webserver/ResourceRegistry';
-import {FilePaths} from '../../js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {WebserverConfig} from "../../../../polar-shared-webserver/src/webserver/WebserverConfig";
 import {FileRegistry} from "../../../../polar-shared-webserver/src/webserver/FileRegistry";
 import {Webserver} from "../../../../polar-shared-webserver/src/webserver/Webserver";

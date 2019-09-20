@@ -1,5 +1,5 @@
 import {Firebase} from '../firebase/Firebase';
-import fetch from '../util/Fetch';
+import fetch from 'polar-shared/src/util/Fetch';
 import {AccountPlan} from "./Account";
 
 export class AccountActions {

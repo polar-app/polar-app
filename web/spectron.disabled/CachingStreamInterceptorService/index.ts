@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {CacheRegistry} from '../../js/backend/proxyserver/CacheRegistry';
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {WebContentsPromises} from '../../js/electron/framework/WebContentsPromises';
-import {FilePaths} from '../../js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {CachingStreamInterceptorService} from '../../js/backend/interceptor/CachingStreamInterceptorService';
 import {BrowserWindow, session, protocol} from 'electron';
 import waitForExpect from 'wait-for-expect';

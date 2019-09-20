@@ -1,4 +1,4 @@
-import {FilePaths} from '../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileImportRequest} from './FileImportRequest';
 import {AddFileRequests} from './AddFileRequests';
 

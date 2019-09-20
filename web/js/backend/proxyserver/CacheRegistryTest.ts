@@ -2,7 +2,7 @@ import {TestingTime} from '../../test/TestingTime';
 import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
 import {CacheRegistry} from './CacheRegistry';
 import {MockCapturedContent} from '../../capture/MockCapturedContent';
-import {FilePaths} from '../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 TestingTime.freeze();
 

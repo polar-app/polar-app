@@ -3,7 +3,7 @@ import {Logger} from '../../../../web/js/logger/Logger';
 import {PrioritizedComponentManager, PrioritizedComponentRef} from '../../../../web/js/ui/prioritized/PrioritizedComponentManager';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {DatastoreOverview} from '../../../../web/js/datastore/Datastore';
-import {TimeDurations} from '../../../../web/js/util/TimeDurations';
+import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {SplashLifecycle} from '../splash2/SplashLifecycle';
 
 const log = Logger.create();

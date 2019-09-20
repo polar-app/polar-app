@@ -1,4 +1,4 @@
-import fetch, {RequestInit} from '../../../../util/Fetch';
+import fetch, {RequestInit} from 'polar-shared/src/util/Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
 import {Logger} from '../../../../logger/Logger';
 

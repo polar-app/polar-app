@@ -1,5 +1,5 @@
 import {BrowserWindow, DownloadItem, WebContents} from "electron";
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ToasterMessages} from '../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../ui/toaster/Toaster';
 import {ProgressTracker} from '../util/ProgressTracker';

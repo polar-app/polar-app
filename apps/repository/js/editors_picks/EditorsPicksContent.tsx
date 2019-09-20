@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FilePaths} from '../../../../web/js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import ReactTable from 'react-table';
 import Button from 'reactstrap/lib/Button';
 

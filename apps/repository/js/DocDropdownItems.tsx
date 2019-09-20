@@ -2,7 +2,7 @@ import * as React from 'react';
 import {RepoDocInfo} from './RepoDocInfo';
 import {shell} from 'electron';
 import {Directories} from '../../../web/js/datastore/Directories';
-import {FilePaths} from '../../../web/js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {Clipboards} from '../../../web/js/util/system/clipboard/Clipboards';
 import DropdownItem from 'reactstrap/lib/DropdownItem';

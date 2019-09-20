@@ -1,6 +1,6 @@
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DurationStr, TimeDurations} from './TimeDurations';
-import {DurationMS} from './TimeDurations';
+import {DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDurations';
+import {DurationMS} from 'polar-shared/src/util/TimeDurations';
 
 /**
  * @Deprecated use the new IPrefs systems

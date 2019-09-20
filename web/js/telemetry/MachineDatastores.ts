@@ -4,7 +4,7 @@ import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
 import {PersistenceLayerType} from '../datastore/PersistenceLayerManager';
 import {AppRuntime} from '../AppRuntime';
 import {Directories} from '../datastore/Directories';
-import {Files} from '../util/Files';
+import {Files} from 'polar-shared/src/util/Files';
 import {Firestore} from '../firebase/Firestore';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';

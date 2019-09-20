@@ -5,7 +5,7 @@ import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from '../logger/Logger';
-import {FileHandle, Files} from '../util/Files';
+import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

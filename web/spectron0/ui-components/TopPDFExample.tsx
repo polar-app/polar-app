@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FilePaths} from '../../js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 class Styles {
 

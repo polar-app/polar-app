@@ -1,6 +1,6 @@
 import {Directories} from './Directories';
-import {FilePaths} from '../util/FilePaths';
-import {Files} from '../util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
+import {Files} from 'polar-shared/src/util/Files';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Settings, DefaultSettings} from './Settings';
 import {Logger} from '../logger/Logger';

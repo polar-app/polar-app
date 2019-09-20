@@ -2,11 +2,11 @@ import {assert} from 'chai';
 import {TestingTime} from '../test/TestingTime';
 import {ResourceFactory} from './ResourceFactory';
 import {assertJSON} from '../test/Assertions';
-import {Files} from '../util/Files';
+import {Files} from 'polar-shared/src/util/Files';
 import {PHZWriter} from './PHZWriter';
 import {PHZReader} from './PHZReader';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import JSZip from 'jszip';
 import {Streams} from '../util/Streams';
 

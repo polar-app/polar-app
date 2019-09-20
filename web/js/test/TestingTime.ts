@@ -1,6 +1,6 @@
 
 import timekeeper from 'timekeeper';
-import {DurationMS, DurationStr, TimeDurations} from '../util/TimeDurations';
+import {DurationMS, DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 
 const time = new Date(1330688329321);
 

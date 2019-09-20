@@ -3,7 +3,7 @@ import {CacheRegistry} from '../../../backend/proxyserver/CacheRegistry';
 import {PHZLoader} from './PHZLoader';
 import {PDFLoader} from './PDFLoader';
 import {LoadedFile} from './LoadedFile';
-import {FilePaths} from '../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
 
 export class DefaultFileLoader extends FileLoader {

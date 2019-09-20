@@ -10,7 +10,7 @@ import {Logger} from '../../js/logger/Logger';
 import {MainAppController} from '../../js/apps/main/MainAppController';
 import BrowserWindow = Electron.BrowserWindow;
 import {AppPath} from '../../js/electron/app_path/AppPath';
-import {FilePaths} from '../../js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 const log = Logger.create();
 

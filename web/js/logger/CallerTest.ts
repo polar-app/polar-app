@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {Callers} from './Callers';
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 describe('Callers', function() {
 

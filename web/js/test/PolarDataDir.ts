@@ -1,5 +1,5 @@
-import {FilePaths} from '../util/FilePaths';
-import {Files} from '../util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
+import {Files} from 'polar-shared/src/util/Files';
 import {Logger} from '../logger/Logger';
 import {Directories} from '../datastore/Directories';
 

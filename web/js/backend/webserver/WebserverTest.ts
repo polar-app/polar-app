@@ -1,5 +1,5 @@
-import {FilePaths} from "../../util/FilePaths";
-import {Files} from "../../util/Files";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {Files} from "polar-shared/src/util/Files";
 import {Hashcodes} from '../../Hashcodes';
 import {assertJSON} from '../../test/Assertions';
 import {Http} from '../../util/Http';

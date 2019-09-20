@@ -1,4 +1,4 @@
-import fetch from '../Fetch';
+import fetch from 'polar-shared/src/util/Fetch';
 import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class Mailchimp {

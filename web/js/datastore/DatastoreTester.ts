@@ -6,8 +6,8 @@ import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
 import os from 'os';
-import {Files} from '../util/Files';
-import {FilePaths} from '../util/FilePaths';
+import {Files} from 'polar-shared/src/util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Directories, GlobalDataDir} from './Directories';
 import {MockPHZWriter} from '../phz/MockPHZWriter';

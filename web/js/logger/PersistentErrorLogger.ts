@@ -4,7 +4,7 @@
 import {ILogger} from './ILogger';
 import {FileLogger} from './FileLogger';
 import {Directories} from '../datastore/Directories';
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 /**
  * A logger which writes to disk but ONLY if they are errors.  This is needed

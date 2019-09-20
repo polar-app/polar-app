@@ -1,6 +1,6 @@
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
-import {Files} from '../../js/util/Files';
-import {FilePaths} from '../../js/util/FilePaths';
+import {Files} from 'polar-shared/src/util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Spectron} from '../../js/test/Spectron';
 
 const assert = require('assert');

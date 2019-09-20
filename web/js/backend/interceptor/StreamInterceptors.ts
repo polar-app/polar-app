@@ -4,7 +4,7 @@ import {Duplex, PassThrough, Readable, Stream} from 'stream';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
 import StreamProtocolResponse = Electron.StreamProtocolResponse;
 import * as fs from 'fs';
-import {Files} from '../../util/Files';
+import {Files} from 'polar-shared/src/util/Files';
 
 const log = Logger.create();
 

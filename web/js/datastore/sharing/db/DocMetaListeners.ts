@@ -2,7 +2,7 @@ import {GroupIDStr} from "../../Datastore";
 import {UserGroup, UserGroups} from "./UserGroups";
 import {GroupDoc, GroupDocs} from "./GroupDocs";
 import {DocMeta} from "../../../metadata/DocMeta";
-import {SetArrays} from "../../../util/SetArrays";
+import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {PageMeta} from "../../../metadata/PageMeta";
 import {Collections, DocumentChange} from "./Collections";
 import {DocIDStr} from "../rpc/GroupProvisions";

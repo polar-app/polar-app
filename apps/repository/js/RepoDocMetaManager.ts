@@ -12,7 +12,7 @@ import {IProvider} from 'polar-shared/src/util/Providers';
 import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
-import {SetArrays} from '../../../web/js/util/SetArrays';
+import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {Tag} from '../../../web/js/tags/Tags';
 import {DataObjectIndex} from './DataObjectIndex';
 import {RepoAnnotations} from "./RepoAnnotations";

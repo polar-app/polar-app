@@ -1,6 +1,6 @@
 
 import assert from 'assert';
-import {Files} from '../../js/util/Files';
+import {Files} from 'polar-shared/src/util/Files';
 import {Spectron, TBrowser} from '../../js/test/Spectron';
 const path = require('path');
 

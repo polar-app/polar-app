@@ -9,7 +9,7 @@ import {BrowserProfile} from '../BrowserProfile';
 import {Reactor} from '../../reactor/Reactor';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
-import {FilePaths} from '../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ToasterMessages} from '../../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../../ui/toaster/Toaster';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;

@@ -3,7 +3,7 @@ import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Backend} from './Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {FileHandle} from '../util/Files';
+import {FileHandle} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Progress} from '../util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';

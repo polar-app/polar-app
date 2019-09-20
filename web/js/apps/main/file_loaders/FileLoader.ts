@@ -1,6 +1,6 @@
 import {LoadedFile} from './LoadedFile';
-import {Files} from '../../../util/Files';
-import {FilePaths} from '../../../util/FilePaths';
+import {Files} from 'polar-shared/src/util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Directories} from '../../../datastore/Directories';
 import {Logger} from '../../../logger/Logger';
 

@@ -8,7 +8,7 @@ import {PDFLoader} from '../../file_loaders/PDFLoader';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 import {Nav} from '../../../../ui/util/Nav';
 import {PHZLoader} from '../../file_loaders/PHZLoader';
-import {FilePaths} from '../../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 const log = Logger.create();
 

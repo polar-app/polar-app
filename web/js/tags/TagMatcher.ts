@@ -1,7 +1,7 @@
 import {Tag, TagIDStr} from './Tags';
 import {Tags} from './Tags';
 import {TagPaths} from './TagPaths';
-import {SetArrays} from "../util/SetArrays";
+import {SetArrays} from "polar-shared/src/util/SetArrays";
 
 
 export class TagMatcher {

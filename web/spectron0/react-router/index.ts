@@ -1,6 +1,6 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {DownloadItem, WebContents} from "electron";
-import {FilePaths} from "../../js/util/FilePaths";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {SpectronWebappMain} from "../../js/test/SpectronWebappMain";
 import {Rewrite} from "polar-shared-webserver/src/webserver/Rewrites";
 

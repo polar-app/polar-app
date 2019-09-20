@@ -1,4 +1,4 @@
-import {Files} from './util/Files';
+import {Files} from 'polar-shared/src/util/Files';
 
 import url from 'url';
 

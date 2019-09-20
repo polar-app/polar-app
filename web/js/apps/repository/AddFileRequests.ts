@@ -1,9 +1,9 @@
-import {FilePaths} from '../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {AddFileRequest} from './AddFileRequest';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AppRuntime} from '../../AppRuntime';
 import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
-import {Aborters, Files} from '../../util/Files';
+import {Aborters, Files} from 'polar-shared/src/util/Files';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {PathStr} from "polar-shared/src/util/Strings";

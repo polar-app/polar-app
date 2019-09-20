@@ -16,7 +16,7 @@ import {DocInfos} from '../../../../metadata/DocInfos';
 import {Tags} from '../../../../tags/Tags';
 import {DocInfo} from '../../../../metadata/DocInfo';
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
-import {SetArrays} from '../../../../util/SetArrays';
+import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {FlashcardDescriptor} from './FlashcardDescriptor';
 import {FlashcardDescriptors} from './FlashcardDescriptors';
 import {AnkiConnectFetch} from './AnkiConnectFetch';

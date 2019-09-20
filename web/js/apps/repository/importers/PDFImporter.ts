@@ -1,11 +1,11 @@
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
-import {FilePaths} from '../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from '../../../logger/Logger';
 import {PDFMetadata} from 'polar-pdf/src/pdf/PDFMetadata';
 import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {FileHandle, Files} from '../../../util/Files';
+import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Hashcodes} from '../../../Hashcodes';
 import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';

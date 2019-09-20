@@ -1,5 +1,5 @@
 import {DatastoreOverview} from '../../../../../web/js/datastore/Datastore';
-import {TimeDurations} from '../../../../../web/js/util/TimeDurations';
+import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Logger} from '../../../../../web/js/logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';

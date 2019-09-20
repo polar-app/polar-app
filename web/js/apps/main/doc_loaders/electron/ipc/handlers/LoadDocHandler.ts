@@ -4,7 +4,7 @@ import {IPCEvent} from '../../../../../../ipc/handler/IPCEvent';
 import {LoadDocRequest} from '../../../../doc_loaders/LoadDocRequest';
 import {Directories} from '../../../../../../datastore/Directories';
 import {MainAppController} from '../../../../MainAppController';
-import {FilePaths} from '../../../../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 export class LoadDocHandler  extends IPCHandler<LoadDocRequest> {
 

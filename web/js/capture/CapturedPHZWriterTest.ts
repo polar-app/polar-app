@@ -1,4 +1,4 @@
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {MockCapturedContent} from './MockCapturedContent';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
 import {TestingTime} from '../test/TestingTime';

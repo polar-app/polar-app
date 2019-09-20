@@ -1,5 +1,5 @@
 import {SpectronWebappMain} from '../../js/test/SpectronWebappMain';
-import {FilePaths} from '../../js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FirebaseTesting} from "../../js/firebase/FirebaseTesting";
 
 FirebaseTesting.validateUsers();

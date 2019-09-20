@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
-import {FilePaths} from '../../js/util/FilePaths';
-import {Files} from '../../js/util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
+import {Files} from 'polar-shared/src/util/Files';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {Directories} from '../../js/datastore/Directories';
 

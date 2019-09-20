@@ -3,7 +3,7 @@ import {WebResource} from '../../../electron/webresource/WebResource';
 import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
 import {LoadedFile} from './LoadedFile';
 import {Logger} from '../../../logger/Logger';
-import {FilePaths} from '../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
 
 const log = Logger.create();

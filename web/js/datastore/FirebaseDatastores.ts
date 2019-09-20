@@ -1,5 +1,5 @@
 import {Backend} from './Backend';
-import {FilePaths} from '../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Hashcodes} from '../Hashcodes';
 import {StoragePath} from './FirebaseDatastore';
 import {StorageSettings} from './FirebaseDatastore';

@@ -1,6 +1,6 @@
 import {InputSource, InputSourceType, InputSourceValue} from './InputSource';
 import {URLs} from 'polar-shared/src/util/URLs';
-import {Files} from '../Files';
+import {Files} from 'polar-shared/src/util/Files';
 import base = Mocha.reporters.base;
 
 export class InputSources {

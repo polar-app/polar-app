@@ -3,7 +3,7 @@
  * are missing.
  */
 import {DeckDescriptor} from './DeckDescriptor';
-import {SetArrays} from '../../../../util/SetArrays';
+import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {CreateDeckClient, ICreateDeckClient} from './clients/CreateDeckClient';
 import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
 import {SyncProgressListener} from '../SyncProgressListener';

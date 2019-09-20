@@ -7,7 +7,7 @@ import {WebResource} from '../../../electron/webresource/WebResource';
 import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
 import {LoadedFile} from './LoadedFile';
 import {Descriptors} from '../../../viewer/html/Descriptors';
-import {FilePaths} from '../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
 
 const log = Logger.create();

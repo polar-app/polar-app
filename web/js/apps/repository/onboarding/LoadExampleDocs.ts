@@ -1,5 +1,5 @@
 import {AppPath} from '../../../electron/app_path/AppPath';
-import {FilePaths} from '../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ImportedFile, PDFImporter} from '../importers/PDFImporter';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {Providers} from 'polar-shared/src/util/Providers';

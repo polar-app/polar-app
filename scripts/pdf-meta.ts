@@ -1,5 +1,5 @@
 import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
-import {FilePaths} from '../web/js/util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {PDFImporter} from '../web/js/apps/repository/importers/PDFImporter';
 
 // code that prints PDF metadata frmo files given on the command line.

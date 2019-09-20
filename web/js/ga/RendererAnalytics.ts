@@ -5,7 +5,7 @@ import {Version} from '../util/Version';
 import {Stopwatch} from '../util/Stopwatch';
 import {TrackedDuration} from '../util/Stopwatch';
 import {Stopwatches} from '../util/Stopwatches';
-import {DurationMS} from '../util/TimeDurations';
+import {DurationMS} from 'polar-shared/src/util/TimeDurations';
 
 // const TRACKING_ID = 'UA-122721184-1';
 const TRACKING_ID = 'UA-122721184-5';

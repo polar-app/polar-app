@@ -2,7 +2,7 @@ import {PolarDataDir} from '../../../test/PolarDataDir';
 import {DiskDatastore} from '../../../datastore/DiskDatastore';
 import {LoadExampleDocs} from './LoadExampleDocs';
 import {AppPath} from '../../../electron/app_path/AppPath';
-import {FilePaths} from '../../../util/FilePaths';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DefaultPersistenceLayer} from '../../../datastore/DefaultPersistenceLayer';
 
 describe('LoadExampleDocs', function() {

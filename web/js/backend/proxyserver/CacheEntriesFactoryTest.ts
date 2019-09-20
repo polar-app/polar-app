@@ -7,8 +7,8 @@ import {assertJSON} from '../../test/Assertions';
 import {MockCapturedContent} from '../../capture/MockCapturedContent';
 import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {FilePaths} from '../../util/FilePaths';
-import {Files} from '../../util/Files';
+import {FilePaths} from 'polar-shared/src/util/FilePaths';
+import {Files} from 'polar-shared/src/util/Files';
 
 const tmpdir = os.tmpdir();
 TestingTime.freeze();
