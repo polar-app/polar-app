@@ -1,5 +1,5 @@
 import {Firebase} from '../firebase/Firebase';
-import fetch from 'polar-shared/src/util/Fetch';
+import fetch, {RequestInit} from 'polar-shared/src/util/Fetch';
 import {AccountPlan} from "./Account";
 
 export class AccountActions {
@@ -25,7 +25,7 @@ export class AccountActions {
 
         const body = JSON.stringify(data);
 
-        const init = {
+        const init: RequestInit = {
             mode: 'cors',
             method: 'POST',
             headers: {

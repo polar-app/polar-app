@@ -64,11 +64,13 @@ export class AnkiConnectFetch {
 
         try {
 
-            init = Object.assign({}, init);
-            init.cache = 'no-cache';
-            init.headers = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+            init = {
+                ...init,
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
             };
 
             const response = await fetch('http://127.0.0.1:' + port, init);

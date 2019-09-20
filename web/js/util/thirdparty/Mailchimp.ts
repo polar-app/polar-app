@@ -1,4 +1,4 @@
-import fetch from 'polar-shared/src/util/Fetch';
+import fetch, {RequestInit} from 'polar-shared/src/util/Fetch';
 import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class Mailchimp {
@@ -21,7 +21,7 @@ export class Mailchimp {
 
         const body = JSON.stringify(data);
 
-        const init = {
+        const init: RequestInit = {
             mode: 'cors',
             method: 'POST',
             headers: {
