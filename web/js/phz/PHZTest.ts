@@ -8,7 +8,7 @@ import {PHZReader} from './PHZReader';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import JSZip from 'jszip';
-import {Streams} from '../util/Streams';
+import {Streams} from 'polar-shared/src/util/Streams';
 
 TestingTime.freeze();
 
