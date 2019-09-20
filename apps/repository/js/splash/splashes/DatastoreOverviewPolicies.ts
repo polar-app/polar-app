@@ -1,7 +1,7 @@
 import {DatastoreOverview} from '../../../../../web/js/datastore/Datastore';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Logger} from '../../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();

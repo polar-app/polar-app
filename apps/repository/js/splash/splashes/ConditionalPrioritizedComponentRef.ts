@@ -2,7 +2,7 @@ import {ConditionalSetting} from '../../../../../web/js/ui/util/ConditionalSetti
 import {PrioritizedComponentRef} from '../../../../../web/js/ui/prioritized/PrioritizedComponentManager';
 import {DatastoreOverview} from '../../../../../web/js/datastore/Datastore';
 import {DatastoreOverviewPolicies, UserLevel} from './DatastoreOverviewPolicies';
-import {Logger} from '../../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

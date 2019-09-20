@@ -1,4 +1,4 @@
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Flashcards} from '../../../metadata/Flashcards';

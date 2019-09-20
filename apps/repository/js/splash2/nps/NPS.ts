@@ -1,6 +1,6 @@
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
-import {Logger} from '../../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Version} from '../../../../../web/js/util/Version';
 import {LifecycleToggle} from '../../../../../web/js/ui/util/LifecycleToggle';
 import {UserState} from '../UserState';

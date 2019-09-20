@@ -1,4 +1,4 @@
-import {Logger} from "../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {AuthHandlers} from "../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {GroupJoins} from "../../../web/js/datastore/sharing/rpc/GroupJoins";
 import {WebPersistenceLayerFactory} from "../../../web/js/datastore/factories/WebPersistenceLayerFactory";

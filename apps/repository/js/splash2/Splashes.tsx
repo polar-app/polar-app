@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {UserFacts} from './SplashEngine';
 import {SplashEngine} from './SplashEngine';

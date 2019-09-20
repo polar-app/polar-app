@@ -3,7 +3,7 @@ import {Toaster} from '../toaster/Toaster';
 import {Firebase} from '../../firebase/Firebase';
 import {Group, GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Releaser} from '../../reactor/EventListener';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Doc} from '../../metadata/Doc';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {

@@ -1,6 +1,6 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {net} from "electron";
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

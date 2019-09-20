@@ -1,5 +1,5 @@
 import {ContentCapture} from './ContentCapture';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import electron, {ipcRenderer} from 'electron';
 
 const log = Logger.create();

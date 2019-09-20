@@ -3,7 +3,7 @@ import React from 'react';
 import {CloudLoginModal} from './CloudLoginModal';
 import {Firebase} from '../../firebase/Firebase';
 import * as firebase from '../../firebase/lib/firebase';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';

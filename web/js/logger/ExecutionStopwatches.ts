@@ -1,7 +1,7 @@
 import {DurationStr, Duration} from 'polar-shared/src/util/TimeDurations';
 import {Stopwatches} from '../util/Stopwatches';
 import {DurationMS} from 'polar-shared/src/util/TimeDurations';
-import {Logger} from './Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 // TODO: I would like to resume this in the future but the design here is
 // difficult:

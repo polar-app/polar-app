@@ -10,7 +10,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Blobs} from 'polar-shared/src/util/Blobs';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DatastoreFileCache} from './DatastoreFileCache';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {FileRef} from "polar-shared/src/datastore/FileRef";

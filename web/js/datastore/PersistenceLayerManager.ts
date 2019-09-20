@@ -3,7 +3,7 @@ import {RemotePersistenceLayerFactory} from './factories/RemotePersistenceLayerF
 import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFactory";
 import {IProvider} from "polar-shared/src/util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
-import {Logger} from "../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';

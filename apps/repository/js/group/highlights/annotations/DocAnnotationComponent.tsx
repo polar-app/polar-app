@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {BaseDocAnnotation} from "../../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
 import {TextHighlightDocAnnotationComponent} from "./TextHighlightDocAnnotationComponent";
-import {Logger} from "../../../../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";

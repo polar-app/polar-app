@@ -5,7 +5,7 @@ import {DocFormat} from '../docformat/DocFormat';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from 'polar-shared/src/util/Functions';
 import {DocMeta} from '../metadata/DocMeta';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PrefsProvider} from '../datastore/Datastore';
 import {ReadingProgressResume} from './ReadingProgressResume';
 import {RendererAnalytics} from '../ga/RendererAnalytics';

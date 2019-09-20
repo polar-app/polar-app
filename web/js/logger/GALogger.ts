@@ -1,4 +1,4 @@
-import {ILogger} from './ILogger';
+import {ILogger} from 'polar-shared/src/logger/ILogger';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {GALoggers} from './GALoggers';
 

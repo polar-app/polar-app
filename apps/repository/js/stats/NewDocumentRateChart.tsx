@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Statistics} from '../../../../web/js/metadata/Statistics';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import StatTitle from './StatTitle';

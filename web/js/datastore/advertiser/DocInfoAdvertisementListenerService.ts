@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron';
 import {DocInfoAdvertisement, DocInfoAdvertisementListener} from './DocInfoAdvertisement';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 
 const log = Logger.create();

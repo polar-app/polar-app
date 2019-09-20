@@ -1,7 +1,7 @@
 import {shell} from 'electron';
 import {SpectronMain} from '../../js/test/SpectronMain';
 import {BrowserWindow} from "electron";
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

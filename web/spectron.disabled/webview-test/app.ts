@@ -1,7 +1,7 @@
 import {webContents, webFrame} from 'electron';
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {Promises} from '../../js/util/Promises';
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

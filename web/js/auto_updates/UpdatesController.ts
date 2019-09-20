@@ -1,4 +1,4 @@
-import {Logger} from "../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {ProgressInfo} from "builder-util-runtime";
 import electron, {ipcRenderer} from 'electron';
 import {ProgressBar} from "../ui/progress_bar/ProgressBar";

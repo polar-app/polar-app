@@ -1,5 +1,5 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {AdvertisingPersistenceLayer} from '../../js/datastore/advertiser/AdvertisingPersistenceLayer';
 import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';

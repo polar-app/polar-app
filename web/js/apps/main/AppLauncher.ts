@@ -2,7 +2,7 @@ import {BrowserWindow} from "electron";
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
-import {Logger} from "../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {PDFDownloadHandlers} from '../../capture/PDFDownloadHandlers';
 

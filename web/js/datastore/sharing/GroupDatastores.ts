@@ -15,7 +15,7 @@ import {FirebaseDatastores} from '../FirebaseDatastores';
 import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 import {GroupProvisions} from './rpc/GroupProvisions';
 import {GroupProvisionRequest} from './rpc/GroupProvisions';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 

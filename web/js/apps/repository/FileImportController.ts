@@ -1,7 +1,7 @@
 import {PersistenceLayer} from "../../datastore/PersistenceLayer";
 import {ipcRenderer} from "electron";
 import {remote} from 'electron';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {ImportedFile, PDFImporter} from './importers/PDFImporter';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';

@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {AnnotationSidebar} from './AnnotationSidebar';
 import {DocMeta} from '../metadata/DocMeta';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Docs} from '../metadata/Docs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

@@ -6,7 +6,7 @@ import {Firebase} from '../firebase/Firebase';
 import {Firestore} from '../firebase/Firestore';
 import {Dialogs} from '../ui/dialogs/Dialogs';
 import {Account} from './Account';
-import {Logger} from "../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();
 

@@ -1,5 +1,5 @@
 import {TriggerEvent} from '../contextmenu/TriggerEvent';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Model} from '../model/Model';
 import {Toaster} from '../ui/toaster/Toaster';
 import {DialogWindowClient} from '../ui/dialog_window/DialogWindowClient';

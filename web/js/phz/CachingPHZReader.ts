@@ -1,6 +1,6 @@
 import {PHZReader} from './PHZReader';
 import {ResourceEntry} from './ResourceEntry';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {CompressedReader} from './CompressedReader';
 
 const log = Logger.create();

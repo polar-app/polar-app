@@ -1,6 +1,6 @@
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Styles} from '../../util/Styles';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {Documents} from './Documents';

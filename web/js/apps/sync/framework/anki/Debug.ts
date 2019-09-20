@@ -1,4 +1,4 @@
-import {Logger} from '../../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnkiSyncEngine} from './AnkiSyncEngine';
 import {MockDocMetas} from '../../../../metadata/DocMetas';
 import {MockFlashcards} from '../../../../metadata/Flashcards';

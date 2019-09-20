@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {EmbeddedImages} from '../splash2/whats_new/EmbeddedImages';
 import Card from 'reactstrap/lib/Card';
 import CardHeader from 'reactstrap/lib/CardHeader';

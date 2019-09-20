@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
 import {MessageBanner} from '../MessageBanner';
 import CommunityContent from './CommunityContent';

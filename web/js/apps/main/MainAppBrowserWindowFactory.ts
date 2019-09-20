@@ -1,5 +1,5 @@
 import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents, screen} from "electron";
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 
 const log = Logger.create();

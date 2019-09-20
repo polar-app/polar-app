@@ -6,7 +6,7 @@ import {MainApp} from '../../js/apps/main/MainApp';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {MainAppController} from '../../js/apps/main/MainAppController';
 import BrowserWindow = Electron.BrowserWindow;
 import {AppPath} from '../../js/electron/app_path/AppPath';

@@ -1,6 +1,6 @@
 import {DialogWindowOptions, Resource, ResourceType} from '../../ui/dialog_window/DialogWindow';
 import {DialogWindowClient} from '../../ui/dialog_window/DialogWindowClient';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {Nullable} from '../../util/ts/Nullable';
 import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';

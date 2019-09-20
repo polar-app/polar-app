@@ -11,7 +11,7 @@ import * as firebase from '../firebase/lib/firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {UserIDStr} from './sharing/db/Profiles';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {Logger} from "../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();
 

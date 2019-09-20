@@ -6,7 +6,7 @@ import {RepoAnnotation} from '../RepoAnnotation';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import Moment from 'react-moment';
 import {FormattedTags} from '../FormattedTags';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import Button from 'reactstrap/lib/Button';
 import {Either} from '../../../../web/js/util/Either';

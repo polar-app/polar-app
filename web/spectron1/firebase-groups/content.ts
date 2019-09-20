@@ -1,5 +1,5 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Firebase} from '../../js/firebase/Firebase';
 import {GroupProvisionRequest} from '../../js/datastore/sharing/rpc/GroupProvisions';
 import {GroupProvisions} from '../../js/datastore/sharing/rpc/GroupProvisions';

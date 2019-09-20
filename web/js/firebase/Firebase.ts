@@ -1,7 +1,7 @@
 
 import * as firebase from './lib/firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

@@ -4,7 +4,7 @@ import {ActiveSelectionEvent, ActiveSelections} from '../popup/ActiveSelections'
 import {ControlledPopupProps} from '../popup/ControlledPopup';
 import {ControlledAnnotationBar} from './ControlledAnnotationBar';
 import {Elements} from '../../util/Elements';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import * as ReactDOM from 'react-dom';
 import {Point} from '../../Point';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

@@ -1,5 +1,5 @@
 import {Pagemarks} from "../../../metadata/Pagemarks";
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Component} from '../../../components/Component';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
 import {DocFormat} from '../../../docformat/DocFormat';

@@ -1,4 +1,4 @@
-import {Logger} from "../../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {DocAnnotation} from "../../DocAnnotation";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {Comment} from "../../../metadata/Comment";

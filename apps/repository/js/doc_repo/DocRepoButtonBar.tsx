@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AddContentButton} from '../ui/AddContentButton';
 import {AddContentActions} from '../ui/AddContentActions';
 import {TagButton} from './TagButton';

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Image} from '../../datastore/sharing/db/Images';
 
 export class Img extends React.Component<IProps, IState> {

@@ -5,7 +5,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {IPCError} from './IPCError';
 import {ElectronContext} from './ElectronContext';
 import {ElectronContexts} from './ElectronContexts';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();

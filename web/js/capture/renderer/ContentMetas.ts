@@ -1,7 +1,7 @@
 import {ContentMeta} from "./ContentMeta";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {Logger} from "../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {Objects} from "../../util/Objects";
 import {Strings} from "polar-shared/src/util/Strings";
 

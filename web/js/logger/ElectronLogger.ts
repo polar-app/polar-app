@@ -1,7 +1,7 @@
 /**
  * Simple logger that just writes to the console.
  */
-import {ILogger} from './ILogger';
+import {ILogger} from 'polar-shared/src/logger/ILogger';
 import {Files} from 'polar-shared/src/util/Files';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
 import {ElectronContextType} from '../electron/context/ElectronContextType';

@@ -2,7 +2,7 @@
  * Handles attaching events to the title UI and prompting for new titles.
  */
 import {DocumentLoadedEvent, Model} from '../model/Model';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../ui/toaster/Toaster';
 import {Strings} from "polar-shared/src/util/Strings";
 

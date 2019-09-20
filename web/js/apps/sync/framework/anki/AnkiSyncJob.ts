@@ -5,7 +5,7 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {DecksSync} from './DecksSync';
 import {SyncQueue} from '../SyncQueue';
 import {NotesSync} from './NotesSync';
-import {Logger} from '../../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

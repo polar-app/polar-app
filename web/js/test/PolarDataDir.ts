@@ -1,6 +1,6 @@
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Files} from 'polar-shared/src/util/Files';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Directories} from '../datastore/Directories';
 
 const log = Logger.create();

@@ -2,7 +2,7 @@ import React from 'react';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../toaster/Toaster';
 import {NotificationButton} from './NotificationButton';
 

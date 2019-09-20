@@ -2,7 +2,7 @@ import {JSONRPC} from './JSONRPC';
 import {GroupIDStr} from '../../Datastore';
 import {GroupDatastores, GroupDocRef} from "../GroupDatastores";
 import {GroupMemberInvitation} from "../db/GroupMemberInvitations";
-import {Logger} from "../../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {PersistenceLayer} from "../../PersistenceLayer";
 import {URLParams} from "../../../util/URLParams";
 import {URLStr} from "polar-shared/src/util/Strings";

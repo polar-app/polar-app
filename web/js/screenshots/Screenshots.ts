@@ -5,7 +5,7 @@ import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Buffers} from '../util/Buffers';
 import {Canvases} from '../util/Canvases';
 import {ExtractedImage} from './Screenshot';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppRuntime} from '../AppRuntime';
 import {BrowserScreenshots} from './browser/BrowserScreenshots';
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocAnnotation} from './DocAnnotation';
 import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichTextEditor4';
 import Button from 'reactstrap/lib/Button';

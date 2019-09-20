@@ -4,7 +4,7 @@ import {Elements} from '../util/Elements';
 import {ContextMenuType, ContextMenuTypes} from './ContextMenuType';
 import {MatchingSelector} from './MatchingSelector';
 import {AnnotationDescriptors} from '../metadata/AnnotationDescriptors';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {TriggerEvent} from './TriggerEvent';
 import {DocDescriptor} from '../metadata/DocDescriptor';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';

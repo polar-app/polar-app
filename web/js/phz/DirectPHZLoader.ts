@@ -1,7 +1,7 @@
 
 import {URLs} from 'polar-shared/src/util/URLs';
 import {PHZReader} from './PHZReader';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Captured} from '../capture/renderer/Captured';
 import {Resources} from './Resources';
 import {Reducers} from 'polar-shared/src/util/Reducers';

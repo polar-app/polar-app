@@ -1,5 +1,5 @@
 import {Model} from '../../model/Model';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {forDict} from 'polar-shared/src/util/Functions';
 import {DocMetaDescriber} from '../../metadata/DocMetaDescriber';
 import {DocMetas} from '../../metadata/DocMetas';

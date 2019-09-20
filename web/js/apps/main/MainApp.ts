@@ -6,7 +6,7 @@ import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
 import {MainAppController} from './MainAppController';
 import {MainAppMenu} from './MainAppMenu';
 import {Cmdline} from '../../electron/Cmdline';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/electron/ScreenshotService';
 import {DocLoaderService} from './doc_loaders/electron/ipc/DocLoaderService';

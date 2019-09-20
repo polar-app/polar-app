@@ -1,5 +1,5 @@
 import {CaptureOpts} from '../../capture/CaptureOpts';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {MainAppController} from './MainAppController';
 import {Version} from '../../util/Version';
 import {FileImportClient} from '../repository/FileImportClient';

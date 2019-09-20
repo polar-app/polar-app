@@ -4,7 +4,7 @@ import {Group, Groups} from "./Groups";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SnapshotUnsubscriber} from "../../../firebase/Firebase";
-import {Logger} from "../../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {GroupIDStr} from "../../Datastore";
 
 const log = Logger.create();

@@ -1,6 +1,6 @@
 import {TestResultWriter} from '../TestResultWriter';
 import {TestResult} from '../renderer/TestResult';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();

@@ -3,7 +3,7 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Groups} from "../../../../web/js/datastore/sharing/db/Groups";
-import {Logger} from "../../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {GroupTable} from "./GroupTable";
 import {GroupDocInfos} from "../../../../web/js/datastore/sharing/GroupDocInfos";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";

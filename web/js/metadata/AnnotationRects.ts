@@ -1,5 +1,5 @@
 import {ContextMenuLocation} from '../contextmenu/ContextMenuLocation';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Rect} from '../Rect';
 import {AnnotationRect} from './AnnotationRect';

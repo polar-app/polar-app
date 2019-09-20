@@ -1,5 +1,5 @@
 import {LocalPrefs} from '../../../../web/js/util/LocalPrefs';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DurationMS} from 'polar-shared/src/util/TimeDurations';
 
 const log = Logger.create();

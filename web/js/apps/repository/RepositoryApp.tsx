@@ -14,7 +14,7 @@ import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncControl
 import AnnotationRepoScreen
     from '../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {UpdatesController} from '../../auto_updates/UpdatesController';
 import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';

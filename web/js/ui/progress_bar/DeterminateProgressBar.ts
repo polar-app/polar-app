@@ -1,5 +1,5 @@
 import {Progress} from '../../util/ProgressTracker';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 

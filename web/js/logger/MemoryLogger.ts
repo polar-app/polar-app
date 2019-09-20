@@ -1,4 +1,4 @@
-import {ILogger} from './ILogger';
+import {ILogger} from 'polar-shared/src/logger/ILogger';
 import {FixedBuffer} from '../util/FixedBuffer';
 import {LogLevelName, LogMessage} from './Logging';
 import {EventListener, Releaseable} from '../reactor/EventListener';

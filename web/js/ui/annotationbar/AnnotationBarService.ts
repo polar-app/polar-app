@@ -1,5 +1,5 @@
 import {DocumentLoadedEvent, Model} from '../../model/Model';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {ControlledPopupProps} from '../popup/ControlledPopup';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {TriggerPopupEvent} from '../popup/TriggerPopupEvent';

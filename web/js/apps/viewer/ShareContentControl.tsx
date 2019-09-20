@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import Input from 'reactstrap/lib/Input';

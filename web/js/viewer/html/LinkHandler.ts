@@ -1,7 +1,7 @@
 import {shell} from 'electron';
 import {IFrames} from '../../util/dom/IFrames';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Events} from '../../util/dom/Events';
 import {Nav} from '../../ui/util/Nav';
 

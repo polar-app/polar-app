@@ -2,7 +2,7 @@ import * as React from 'react';
 import {GroupNameStr, Groups} from "../../../../../web/js/datastore/sharing/db/Groups";
 import {GroupDocAnnotations} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 import {GroupHighlightsData} from "./GroupHighlightsData";
-import {Logger} from "../../../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
 import {FixedNav, FixedNavBody} from "../../FixedNav";
 import {RepoHeader} from "../../repo_header/RepoHeader";

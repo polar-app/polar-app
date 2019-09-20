@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {LogMessage} from '../../../../web/js/logger/Logging';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';

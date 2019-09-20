@@ -4,7 +4,7 @@ import {Form} from "reactstrap";
 import FormGroup from "reactstrap/lib/FormGroup";
 import Label from "reactstrap/lib/Label";
 import Button from "reactstrap/lib/Button";
-import {Logger} from "../../../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {TagInputWidget} from "../../TagInputWidget";
 import {Tag, TagStr} from "../../../../../web/js/tags/Tags";
 import {

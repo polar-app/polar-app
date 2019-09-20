@@ -3,7 +3,7 @@ import {BoxOptions} from './BoxOptions';
 import {Rects} from '../../Rects';
 import {Rect} from '../../Rect';
 import {Objects} from '../../util/Objects';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {RectEdges} from '../../pagemarks/controller/interact/edges/RectEdges';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

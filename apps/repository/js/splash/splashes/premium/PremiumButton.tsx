@@ -3,7 +3,7 @@ import Button from 'reactstrap/lib/Button';
 import {Nav} from '../../../../../../web/js/ui/util/Nav';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
-import {Logger} from '../../../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';

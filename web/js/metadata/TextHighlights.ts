@@ -6,7 +6,7 @@ import {Image} from './Image';
 import {isPresent, notNull} from 'polar-shared/src/Preconditions';
 import {PageMeta} from './PageMeta';
 import {DocMetas} from './DocMetas';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMeta} from './DocMeta';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocAnnotations} from './DocAnnotations';
 import {DocAnnotation} from './DocAnnotation';
 import {DocAnnotationIndex} from './DocAnnotationIndex';

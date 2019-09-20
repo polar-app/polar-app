@@ -1,4 +1,4 @@
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {WebContentsNotifiers} from '../../electron/web_contents_notifier/WebContentsNotifiers';
 import {BrowserAppEvent} from './BrowserAppEvent';
 import * as ReactDOM from 'react-dom';

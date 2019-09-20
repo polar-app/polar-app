@@ -1,4 +1,4 @@
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Viewer} from '../Viewer';
 import {DocDetail} from '../../metadata/DocDetail';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';

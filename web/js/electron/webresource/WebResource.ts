@@ -1,6 +1,6 @@
 import BrowserWindow = Electron.BrowserWindow;
 import WebContents = Electron.WebContents;
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import fs from 'fs';
 
 const log = Logger.create();

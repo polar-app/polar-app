@@ -1,4 +1,4 @@
-import {Logger} from '../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocInfo} from '../../../web/js/metadata/DocInfo';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';

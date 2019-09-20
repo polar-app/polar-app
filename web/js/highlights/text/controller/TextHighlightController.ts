@@ -1,6 +1,6 @@
 import {Model} from '../../../model/Model';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {TextHighlightRow} from './TextHighlightRow';
 import {notNull, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';

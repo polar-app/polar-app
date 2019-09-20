@@ -2,7 +2,7 @@ import {ipcRenderer} from "electron";
 import {ToasterMessage} from './ToasterMessage';
 import {ToasterMessages} from './ToasterMessages';
 import {ToasterMessageType, Toaster} from './Toaster';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

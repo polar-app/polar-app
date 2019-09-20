@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';

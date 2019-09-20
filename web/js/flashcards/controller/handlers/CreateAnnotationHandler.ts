@@ -3,7 +3,7 @@ import {AnnotationContainer} from '../../../metadata/AnnotationContainer';
 import {Annotation} from '../../../metadata/Annotation';
 import {IPCMessage} from '../../../ipc/handler/IPCMessage';
 import {IPCEvent} from '../../../ipc/handler/IPCEvent';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Model} from '../../../model/Model';
 import {Flashcard} from '../../../metadata/Flashcard';

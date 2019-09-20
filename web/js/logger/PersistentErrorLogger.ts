@@ -1,7 +1,7 @@
 /**
  * Simple logger that just writes to the console.
  */
-import {ILogger} from './ILogger';
+import {ILogger} from 'polar-shared/src/logger/ILogger';
 import {FileLogger} from './FileLogger';
 import {Directories} from '../datastore/Directories';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';

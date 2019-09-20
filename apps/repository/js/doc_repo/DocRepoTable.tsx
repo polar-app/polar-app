@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactTable, {ColumnRenderProps, Instance} from "react-table";
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

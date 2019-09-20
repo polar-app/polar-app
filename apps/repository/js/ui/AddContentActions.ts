@@ -1,6 +1,6 @@
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {remote} from 'electron';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

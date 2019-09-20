@@ -7,7 +7,7 @@ import {
     ScreenshotRequest
 } from '../Screenshot';
 import {ClientRects} from 'polar-shared/src/util/rects/ClientRects';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {
     IScreenshotDelegate,
     ScreenshotDelegate,

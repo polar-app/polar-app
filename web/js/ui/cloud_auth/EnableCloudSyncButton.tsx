@@ -6,7 +6,7 @@ import {CloudLoginModal} from './CloudLoginModal';
 import {Firebase} from '../../firebase/Firebase';
 import * as firebase from '../../firebase/lib/firebase';
 import {FirebaseUIAuth} from '../../firebase/FirebaseUIAuth';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncOverviewModal} from './CloudSyncOverviewModal';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';

@@ -1,4 +1,4 @@
-import {Logger} from '../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfos} from './RepoDocInfos';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';

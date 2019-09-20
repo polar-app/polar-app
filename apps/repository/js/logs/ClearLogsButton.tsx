@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import Button from 'reactstrap/lib/Button';
 

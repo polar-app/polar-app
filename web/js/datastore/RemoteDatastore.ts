@@ -4,7 +4,7 @@ import {WriteOpts} from './Datastore';
 import {Datastores} from './Datastores';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DefaultDatastoreMutation} from './DatastoreMutation';

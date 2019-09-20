@@ -1,5 +1,5 @@
 import {BrowserWindow} from 'electron';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserWindowPromises} from '../../electron/framework/BrowserWindowPromises';
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
 import {DialogWindowReference} from './DialogWindowReference';

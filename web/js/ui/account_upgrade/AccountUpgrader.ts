@@ -3,7 +3,7 @@ import {MachineDatastores} from "../../telemetry/MachineDatastores";
 import {AccountUpgrades} from "../../accounts/AccountUpgrades";
 import {UpgradeRequiredMessageBoxes} from "./UpgradeRequiredMessageBoxes";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
-import {Logger} from "../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();
 

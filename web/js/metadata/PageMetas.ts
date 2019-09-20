@@ -1,4 +1,4 @@
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PageMeta} from './PageMeta';
 import {forDict} from 'polar-shared/src/util/Functions';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';

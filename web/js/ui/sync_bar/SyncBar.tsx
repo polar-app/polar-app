@@ -6,7 +6,7 @@ import {Reactor} from '../../reactor/Reactor';
 import Collapse from 'reactstrap/lib/Collapse';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {EventListener} from '../../reactor/EventListener';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

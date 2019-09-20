@@ -1,7 +1,7 @@
 import {net, protocol} from 'electron';
 import {CacheRegistry} from '../proxyserver/CacheRegistry';
 import InterceptBufferProtocolRequest = Electron.InterceptBufferProtocolRequest;
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {CacheStats} from './CacheStats';
 
 const convertStream = require("convert-stream");

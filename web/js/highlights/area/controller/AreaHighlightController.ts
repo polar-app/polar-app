@@ -1,6 +1,6 @@
 import {DocumentLoadedEvent, Model} from '../../../model/Model';
 import {DocFormat} from '../../../docformat/DocFormat';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
 import {ContextMenuLocation} from '../../../contextmenu/ContextMenuLocation';

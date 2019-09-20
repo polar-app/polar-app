@@ -1,5 +1,5 @@
 import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Datastores} from '../Datastores';
 import {AdvertisingPersistenceLayer} from '../advertiser/AdvertisingPersistenceLayer';
 import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';

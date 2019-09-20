@@ -1,6 +1,6 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Fingerprints} from '../../../util/Fingerprints';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileLoader} from './FileLoader';
 import {CacheRegistry} from '../../../backend/proxyserver/CacheRegistry';
 import {WebResource} from '../../../electron/webresource/WebResource';

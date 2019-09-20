@@ -8,7 +8,7 @@ import {Points} from '../../Points';
 import {DocFormat} from '../../docformat/DocFormat';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {PopupStateEvent} from './PopupStateEvent';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {getSourceFile} from 'tslint';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 

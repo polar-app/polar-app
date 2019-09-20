@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import Moment from 'react-moment';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';

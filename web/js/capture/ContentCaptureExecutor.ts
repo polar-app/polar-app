@@ -3,7 +3,7 @@ import {Results} from '../util/Results';
 import {Filenames} from '../util/Filenames';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserProfile} from './BrowserProfile';
 import WebContents = Electron.WebContents;
 import {Directories} from '../datastore/Directories';

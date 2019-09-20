@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {ListOptionType, ListSelector} from "../../../../web/js/ui/list_selector/ListSelector";
 import {LightboxPopover} from '../../../../web/js/ui/lightbox_popover/LightboxPopover';

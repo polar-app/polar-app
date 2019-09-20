@@ -1,6 +1,6 @@
 import {DocumentLoadedEvent, Model} from '../model/Model';
 import {AnnotationSidebars} from './AnnotationSidebars';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Splitter} from '../ui/splitter/Splitter';
 import {LocalPrefs} from '../util/LocalPrefs';
 

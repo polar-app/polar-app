@@ -10,7 +10,7 @@ import {Toaster} from '../../ui/toaster/Toaster';
 import {PreviewURLs} from './PreviewURLs';
 import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
 import {LoginURLs} from './LoginURLs';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 import {Latch} from "polar-shared/src/util/Latch";
 

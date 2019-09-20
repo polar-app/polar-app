@@ -2,7 +2,7 @@ import * as React from 'react';
 import {MachineDatastore, MachineDatastores} from "../../telemetry/MachineDatastores";
 import {Accounts} from "../../accounts/Accounts";
 import {Account} from "../../accounts/Account";
-import {Logger} from "../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {Firebase} from "../../firebase/Firebase";
 import {AccountUpgradeBarView} from "./AccountUpgradeBarView";
 

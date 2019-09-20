@@ -1,5 +1,5 @@
 import {ipcRenderer} from "electron";
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {TestResult} from './renderer/TestResult';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

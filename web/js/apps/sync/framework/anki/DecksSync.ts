@@ -8,7 +8,7 @@ import {CreateDeckClient, ICreateDeckClient} from './clients/CreateDeckClient';
 import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
 import {SyncProgressListener} from '../SyncProgressListener';
 import {Abortable} from '../Abortable';
-import {Logger} from '../../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {SyncQueue} from '../SyncQueue';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {SyncTaskResult} from '../SyncTask';

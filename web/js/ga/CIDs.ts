@@ -4,7 +4,7 @@ import {Provider} from 'polar-shared/src/util/Providers';
 import {CIDProviders} from './CIDProviders';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {CIDProvider} from './CIDProvider';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 
 const log = Logger.create();

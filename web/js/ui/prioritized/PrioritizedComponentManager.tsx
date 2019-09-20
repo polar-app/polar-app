@@ -5,7 +5,7 @@ import {LifecycleEvents} from '../util/LifecycleEvents';
 import {LocalPrefs} from '../../util/LocalPrefs';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {DatastoreOverview} from '../../datastore/Datastore';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

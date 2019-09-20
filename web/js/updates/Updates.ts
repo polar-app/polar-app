@@ -1,7 +1,7 @@
 import {app, ipcMain} from 'electron';
 import {autoUpdater, UpdateCheckResult, UpdateInfo} from 'electron-updater';
 import {ProgressInfo} from "builder-util-runtime";
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 import process from 'process';
 import {Broadcasters} from '../ipc/Broadcasters';

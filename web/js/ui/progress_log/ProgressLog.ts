@@ -1,4 +1,4 @@
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Elements} from '../../util/Elements';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {ProgressEvent} from './ProgressEvent';

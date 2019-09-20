@@ -1,4 +1,4 @@
-import {ILogger} from './ILogger';
+import {ILogger} from 'polar-shared/src/logger/ILogger';
 
 import { init, captureException } from '@sentry/electron';
 import {isPresent} from 'polar-shared/src/Preconditions';

@@ -6,7 +6,7 @@
  *
  * https://mechanical-sympathy.blogspot.com/2011/10/smart-batching.html
  */
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

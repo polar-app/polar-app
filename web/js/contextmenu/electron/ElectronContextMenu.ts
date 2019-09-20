@@ -1,6 +1,6 @@
 import {TriggerEvent} from '../TriggerEvent';
 import {BrowserWindow, ipcMain, Menu, MenuItem, WebContents} from 'electron';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Broadcaster} from '../../ipc/Broadcaster';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ContextMenuType} from '../ContextMenuType';

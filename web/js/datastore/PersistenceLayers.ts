@@ -10,7 +10,7 @@ import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {URLs} from "polar-shared/src/util/URLs";
-import {Logger} from "../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";

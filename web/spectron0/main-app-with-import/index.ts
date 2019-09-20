@@ -5,7 +5,7 @@ import {MainApp} from '../../js/apps/main/MainApp';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileImportClient} from '../../js/apps/repository/FileImportClient';
 import {Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';

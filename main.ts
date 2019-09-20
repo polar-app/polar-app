@@ -1,5 +1,5 @@
 import {app} from 'electron';
-import {Logger} from './web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {MainApp} from './web/js/apps/main/MainApp';
 import {Cmdline} from './web/js/electron/Cmdline';
 import {Logging} from './web/js/logger/Logging';

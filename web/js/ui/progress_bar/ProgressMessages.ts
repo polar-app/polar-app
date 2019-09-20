@@ -3,7 +3,7 @@ import {ProgressMessage} from './ProgressMessage';
 import {AppRuntime} from '../../AppRuntime';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {TypedMessage} from '../../util/TypedMessage';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

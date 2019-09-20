@@ -11,7 +11,7 @@ import {FlashcardModel} from "./FlashcardModel";
 import {Flashcard} from "../metadata/Flashcard";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {MutationType} from "../proxies/MutationType";
-import {Logger} from "../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ModelOpts} from "../metadata/PageMetas";

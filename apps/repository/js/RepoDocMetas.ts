@@ -2,7 +2,7 @@ import {DocMeta} from "../../../web/js/metadata/DocMeta";
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepoAnnotations} from './RepoAnnotations';
-import {Logger} from "../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {RepoDocInfo} from './RepoDocInfo';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';

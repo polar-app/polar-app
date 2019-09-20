@@ -7,7 +7,7 @@ import {
     GroupJoinRequest,
     GroupJoins
 } from "../../../../web/js/datastore/sharing/rpc/GroupJoins";
-import {Logger} from "../../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import {
     GroupDatastores,

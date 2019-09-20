@@ -3,7 +3,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileURLMeta} from './DocFileMeta';
 import {GetFileOpts} from './Datastore';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 const log = Logger.create();

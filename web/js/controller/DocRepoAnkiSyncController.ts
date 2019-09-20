@@ -1,4 +1,4 @@
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {SyncProgressListener} from '../apps/sync/framework/SyncProgressListener';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {IEventDispatcher} from '../reactor/SimpleReactor';

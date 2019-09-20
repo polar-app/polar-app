@@ -3,7 +3,7 @@ import {app, BrowserWindow, dialog, Menu, shell} from "electron";
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
 import {Version} from '../../util/Version';
 import {AppLauncher} from './AppLauncher';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Promises} from '../../util/Promises';
 import {Updates} from '../../updates/Updates';
 import {Platform, Platforms} from '../../util/Platforms';

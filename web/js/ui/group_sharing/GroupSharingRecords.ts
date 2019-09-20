@@ -12,7 +12,7 @@ import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {Profile} from '../../datastore/sharing/db/Profiles';
 import {UserGroups} from "../../datastore/sharing/db/UserGroups";
-import {Logger} from "../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembership";
 
 const log = Logger.create();

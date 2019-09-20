@@ -1,7 +1,7 @@
 import * as React from '@types/react';
 import {SyncBar, SyncBarProgress} from '../../js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {LogEventViewer} from './LogEventViewer';
 
 const log = Logger.create();

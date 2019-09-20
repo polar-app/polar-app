@@ -2,7 +2,7 @@ import {BrowserWindow} from 'electron';
 import {SpectronMain} from '../../js/test/SpectronMain';
 import {WebRequestReactor} from '../../js/webrequests/WebRequestReactor';
 import {DebugWebRequestsListener} from '../../js/webrequests/DebugWebRequestsListener';
-import {LoggerDelegate} from '../../js/logger/LoggerDelegate';
+import {LoggerDelegate} from 'polar-shared/src/logger/LoggerDelegate';
 import {MemoryLogger} from '../../js/logger/MemoryLogger';
 
 import assert from 'assert';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {LargeModal} from '../../../../web/js/ui/large_modal/LargeModal';
 import {LargeModalBody} from '../../../../web/js/ui/large_modal/LargeModalBody';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';

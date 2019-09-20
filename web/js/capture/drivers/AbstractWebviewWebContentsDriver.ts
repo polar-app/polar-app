@@ -1,4 +1,4 @@
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {StandardWebContentsDriver} from './StandardWebContentsDriver';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {notNull} from 'polar-shared/src/Preconditions';

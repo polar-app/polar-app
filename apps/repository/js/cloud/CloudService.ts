@@ -1,6 +1,6 @@
 import {Firebase} from '../../../../web/js/firebase/Firebase';
 import * as firebase from '../../../../web/js/firebase/lib/firebase';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 
 const log = Logger.create();

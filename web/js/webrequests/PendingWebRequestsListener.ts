@@ -1,5 +1,5 @@
 import {INamedWebRequestEvent, IWebRequestDetails} from './WebRequestReactor';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {BaseWebRequestsListener} from './BaseWebRequestsListener';
 import {RequestState} from './RequestState';
 import {ProgressCalculator} from '../util/ProgressCalculator';

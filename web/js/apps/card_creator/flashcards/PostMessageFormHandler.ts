@@ -2,7 +2,7 @@ import {SchemaFormFlashcardConverter} from './SchemaFormFlashcardConverter';
 import {FormHandler} from '../elements/schemaform/FormHandler';
 import {AnnotationContainer} from '../../../metadata/AnnotationContainer';
 import {AnnotationDescriptor} from '../../../metadata/AnnotationDescriptor';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
 import {ElectronContext} from '../../../ipc/handler/ElectronContext';

@@ -6,7 +6,7 @@
 // size and be slightly larger. Default is false.
 
 import {ResourcePaths} from '../electron/webresource/ResourcePaths';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserProfile} from './BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
 import BrowserWindow = Electron.BrowserWindow;

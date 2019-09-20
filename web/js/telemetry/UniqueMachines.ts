@@ -3,7 +3,7 @@ import {MachineIDs} from '../util/MachineIDs';
 import {Firestore} from '../firebase/Firestore';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppRuntime} from '../AppRuntime';
 import {Version} from '../util/Version';
 

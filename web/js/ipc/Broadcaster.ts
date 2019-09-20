@@ -1,6 +1,6 @@
 
 import {BrowserWindow, ipcMain} from 'electron';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Broadcasters} from './Broadcasters';
 import {BrowserWindowReference} from '../ui/dialog_window/BrowserWindowReference';
 

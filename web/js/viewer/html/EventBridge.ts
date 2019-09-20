@@ -1,4 +1,4 @@
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {FrameEvents} from './FrameEvents';
 import {Events} from '../../util/dom/Events';
 import {IFrames} from '../../util/dom/IFrames';

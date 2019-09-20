@@ -11,7 +11,7 @@ import {DocMetas} from './DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
 import {Attachment} from './Attachment';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {HighlightRects, Position} from "polar-shared/src/metadata/IBaseHighlight";

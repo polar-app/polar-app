@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {GroupNameStr} from "../../../../web/js/datastore/sharing/db/Groups";
-import {Logger} from "../../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {SimpleTabs} from "../../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../../web/js/ui/simple_tab/SimpleTab";
 

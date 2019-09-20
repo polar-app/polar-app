@@ -1,7 +1,7 @@
 import {AbstractDatastore, Datastore, DatastoreInfo, DatastoreOverview, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FileDeleted, FileHandle, Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';

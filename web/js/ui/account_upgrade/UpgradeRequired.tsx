@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from "../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {Button} from "reactstrap";
 import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";

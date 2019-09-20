@@ -3,7 +3,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IProvider} from 'polar-shared/src/util/Providers';
 import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {Logger} from '../../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PDFLoader} from '../../file_loaders/PDFLoader';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 import {Nav} from '../../../../ui/util/Nav';

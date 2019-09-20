@@ -3,7 +3,7 @@ import {FrontAndBackFields} from './flashcard_input/FlashcardInputs';
 import {ClozeFields} from './flashcard_input/FlashcardInputs';
 import {DocAnnotation} from '../../DocAnnotation';
 import {Functions} from 'polar-shared/src/util/Functions';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Refs} from 'polar-shared/src/metadata/Refs';
 import {Flashcards} from '../../../metadata/Flashcards';

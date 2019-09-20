@@ -4,7 +4,7 @@
  */
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IFrames} from '../../util/dom/IFrames';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
 
 const log = Logger.create();

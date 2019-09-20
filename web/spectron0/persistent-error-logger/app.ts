@@ -1,5 +1,5 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {Logger} from '../../js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Logging} from '../../js/logger/Logging';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 

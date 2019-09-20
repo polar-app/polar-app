@@ -6,7 +6,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Feedback} from '../../ui/feedback/Feedback';
 import {SplitLayout, SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../ui/split_layout/SplitLayoutRight';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';

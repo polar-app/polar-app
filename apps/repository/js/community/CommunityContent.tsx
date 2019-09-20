@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import DonationsCard from './DonationsCard';
 import GithubStarsCard from './GithubStarsCard';
 import SurveyCard from './SurveyCard';

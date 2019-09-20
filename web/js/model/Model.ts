@@ -5,7 +5,7 @@ import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Pagemarks} from '../metadata/Pagemarks';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {DocDetail} from '../metadata/DocDetail';

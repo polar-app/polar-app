@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Logger} from '../../../web/js/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../../../web/js/ui/util/Nav';

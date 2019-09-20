@@ -3,7 +3,7 @@ import {isPresent, notNull, Preconditions} from 'polar-shared/src/Preconditions'
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ContextMenuController} from '../contextmenu/ContextMenuController';
 import {KeyEvents} from '../KeyEvents';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {Viewer} from '../viewer/Viewer';
 import {DocTitleController} from './DocTitleController';
 import {PagemarkController} from '../pagemarks/controller/PagemarkController';

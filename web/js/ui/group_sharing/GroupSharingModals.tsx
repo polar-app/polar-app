@@ -9,7 +9,7 @@ import {FirebaseDatastores} from '../../datastore/FirebaseDatastores';
 import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
 import {DropdownChevron} from '../util/DropdownChevron';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {GroupSharing} from './GroupSharing';
 import {MemberRecord} from './GroupSharingRecords';
 import {Doc} from '../../metadata/Doc';

@@ -14,7 +14,7 @@ import {ProfileOwners} from "./ProfileOwners";
 import {ProfileIDStr} from "./Profiles";
 import {Author} from "../../../metadata/Author";
 import {Annotation} from "../../../metadata/Annotation";
-import {Logger} from "../../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
 import {FirebaseDatastores} from "../../FirebaseDatastores";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";

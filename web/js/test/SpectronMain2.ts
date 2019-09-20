@@ -1,6 +1,6 @@
 import {app, BrowserWindow} from 'electron';
 import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {SpectronBrowserWindowOptions} from './SpectronBrowserWindowOptions';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 

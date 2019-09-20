@@ -2,7 +2,7 @@ import {LoadedFile} from './LoadedFile';
 import {Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Directories} from '../../../datastore/Directories';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

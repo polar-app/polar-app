@@ -1,6 +1,6 @@
 import {notNull} from 'polar-shared/src/Preconditions';
 import {EventBridge} from './EventBridge';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

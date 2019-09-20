@@ -1,5 +1,5 @@
 import ua, {EventParams} from 'universal-analytics';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {CIDs} from './CIDs';
 import {Version} from '../util/Version';
 import {Stopwatch} from '../util/Stopwatch';

@@ -8,7 +8,7 @@ import {ManualDropdown} from '../doc_repo/ManaulDropdown';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {AddContentDropdownItem} from './AddContentDropdownItem';
 import {AccountUpgrader} from "../../../../web/js/ui/account_upgrade/AccountUpgrader";
-import {Logger} from "../../../../web/js/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();
 

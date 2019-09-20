@@ -1,4 +1,4 @@
-import {Logger} from "../../../../logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 
 import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
 import {Component} from "../../../../components/Component";

@@ -5,7 +5,7 @@ import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {GroupDocRef} from '../../datastore/sharing/GroupDatastores';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Toaster} from '../toaster/Toaster';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {GroupJoins} from '../../datastore/sharing/rpc/GroupJoins';
 import {UserImage} from './UserImage';
 

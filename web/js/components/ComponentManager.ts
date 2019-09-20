@@ -1,5 +1,5 @@
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocumentLoadedEvent, Model} from '../model/Model';
 import {ContainerProvider} from './containers/providers/ContainerProvider';
 import {Component} from './Component';

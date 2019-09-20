@@ -1,4 +1,4 @@
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Latch} from "polar-shared/src/util/Latch";
 

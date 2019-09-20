@@ -2,7 +2,7 @@
 import electronPath from 'electron';
 import {SpectronOutputMonitorService} from './SpectronOutputMonitorService';
 import {TestResultReader} from './results/TestResultReader';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import process from 'process';
 
 const {Application} = require('spectron');

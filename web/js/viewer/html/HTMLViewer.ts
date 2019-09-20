@@ -1,6 +1,6 @@
 import $ from '../../ui/JQuery';
 import {Viewer} from '../Viewer';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {Model} from '../../model/Model';
 import {PHZMetadata} from '../../phz/PHZMetadata';

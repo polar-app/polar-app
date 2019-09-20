@@ -3,7 +3,7 @@ import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Files} from 'polar-shared/src/util/Files';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Settings, DefaultSettings} from './Settings';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppRuntime} from '../AppRuntime';
 import {Provider, Providers} from 'polar-shared/src/util/Providers';
 

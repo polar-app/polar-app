@@ -3,7 +3,7 @@ import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {DocFormat} from '../../docformat/DocFormat';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {AnnotationPointers} from '../../annotations/AnnotationPointers';
-import {Logger} from '../../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 import {PagemarkPTR, Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';

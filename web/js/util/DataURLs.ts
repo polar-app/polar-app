@@ -1,5 +1,5 @@
 import {Base64} from 'polar-shared/src/util/Base64';
-import {Logger} from '../logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 export type DataURL = string;
 
