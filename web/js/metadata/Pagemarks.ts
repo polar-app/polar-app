@@ -1,7 +1,7 @@
 import {PagemarkRect} from './PagemarkRect';
 import {Pagemark, PagemarkRef} from './Pagemark';
 import {Logger} from '../logger/Logger';
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Objects} from '../util/Objects';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRects} from './PagemarkRects';

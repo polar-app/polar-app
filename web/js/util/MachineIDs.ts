@@ -1,4 +1,4 @@
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 
 const KEY = "machine-identifier";
 

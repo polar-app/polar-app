@@ -10,7 +10,7 @@ import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {TextExtracter} from './TextExtracter';
 import {TextHighlightRecord, TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
 import {SelectedContents} from '../selection/SelectedContents';
-import {Hashcodes} from '../../../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TextHighlights} from '../../../metadata/TextHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

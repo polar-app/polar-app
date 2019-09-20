@@ -4,7 +4,7 @@ import {Logger} from '../../logger/Logger';
 import {Services} from '../../util/services/Services';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {AppLauncher} from './AppLauncher';
-import {Hashcodes} from '../../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import process from 'process';
 import {Capture} from '../../capture/Capture';

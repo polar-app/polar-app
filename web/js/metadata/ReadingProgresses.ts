@@ -1,5 +1,5 @@
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {ProgressByMode, ReadingProgress} from 'polar-shared/src/metadata/ReadingProgress';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 

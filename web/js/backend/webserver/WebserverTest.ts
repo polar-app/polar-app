@@ -1,6 +1,6 @@
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Files} from "polar-shared/src/util/Files";
-import {Hashcodes} from '../../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {assertJSON} from '../../test/Assertions';
 import {Http} from '../../util/Http';
 import {assert} from 'chai';

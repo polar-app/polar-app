@@ -1,7 +1,7 @@
 import {Logger} from '../logger/Logger';
 import {PageMeta} from './PageMeta';
 import {forDict} from 'polar-shared/src/util/Functions';
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Pagemarks} from './Pagemarks';
 import {DocMeta} from './DocMeta';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';

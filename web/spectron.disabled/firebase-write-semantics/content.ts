@@ -9,7 +9,7 @@ import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";
 import {DatastoreTester} from '../../js/datastore/DatastoreTester';
 import {Firestore} from '../../js/firebase/Firestore';
-import {Hashcodes} from '../../js/Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';

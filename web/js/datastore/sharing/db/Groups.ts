@@ -2,7 +2,7 @@ import {Firestore} from '../../../firebase/Firestore';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {UserIDStr} from './Profiles';
-import {Hashcodes} from '../../../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {ExternalLink} from "../rpc/GroupProvisions";
 import {Clause, Collections, OrderByClause} from "./Collections";
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";

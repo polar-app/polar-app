@@ -1,4 +1,4 @@
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AreaHighlight} from './AreaHighlight';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';

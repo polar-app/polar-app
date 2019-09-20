@@ -1,6 +1,6 @@
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Comment} from './Comment';
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TextType} from './TextType';
 import {Texts} from './Texts';
 import {Ref} from 'polar-shared/src/metadata/Refs';

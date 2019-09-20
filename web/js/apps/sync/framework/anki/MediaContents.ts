@@ -1,5 +1,5 @@
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Hashcodes} from '../../../../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {MediaFile} from './clients/StoreMediaFileClient';
 import {MediaContent} from './MediaContent';
 

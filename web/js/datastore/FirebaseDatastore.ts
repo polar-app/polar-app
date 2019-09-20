@@ -31,7 +31,7 @@ import {DocFileMeta} from './DocFileMeta';
 import {Firestore} from '../firebase/Firestore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';

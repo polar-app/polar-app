@@ -1,6 +1,6 @@
 import {Backend} from './Backend';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {StoragePath} from './FirebaseDatastore';
 import {StorageSettings} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';

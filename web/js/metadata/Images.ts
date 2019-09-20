@@ -1,4 +1,4 @@
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {Img} from './Img';
 import {Image} from './Image';

@@ -1,4 +1,4 @@
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TextHighlight} from './TextHighlight';
 import {Text} from 'polar-shared/src/metadata/Text';
 import {TextRect} from './TextRect';

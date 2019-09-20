@@ -6,7 +6,7 @@ import {PDFMetadata} from 'polar-pdf/src/pdf/PDFMetadata';
 import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle, Files} from 'polar-shared/src/util/Files';
-import {Hashcodes} from '../../../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';

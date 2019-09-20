@@ -8,7 +8,7 @@ import {BrowserProfile} from './BrowserProfile';
 import WebContents = Electron.WebContents;
 import {Directories} from '../datastore/Directories';
 import {CaptureResult} from './CaptureResult';
-import {Hashcodes} from '../Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Captured} from './renderer/Captured';
 
 const log = Logger.create();
