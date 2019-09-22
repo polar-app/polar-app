@@ -7,9 +7,12 @@
     "compile": "lerna run compile",
     "publish": "lerna exec --no-private -- npm publish",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dist-version": "lerna exec npm version patch",
     "dist-prepare": "./sbin/mgit clean -f && ./sbin/mgit reset --hard HEAD && ./sbin/mgit pull",
     "dist-release": "lerna bootstrap && lerna run compile && lerna run dist && lerna exec --no-private -- npm publish && lerna run dist-release"
+  },
+  "deprecated": {
+    "_dist_version_comment":  "this didn't work because npm version patch doesn't update dependency versions nor does it keep them globally in sync.",
+    "_dist-version": "lerna exec npm version patch"
   },
   "keywords": [],
   "author": "",
