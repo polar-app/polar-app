@@ -1,18 +1,22 @@
 ---
-title: "'Add Document' Links for Easily Adding Documents to Polar" 
+title: "'Add to Polar Button' for Easily Adding Documents to Polar" 
 layout: doc
 date: 2019-09-19 09:00:00 -0800
-permalink: /docs/add-document-links.html
-description: Polar supports a feature to allow allow any users to add a document to Polar simply by clicking on a link. 
+permalink: /docs/add-to-polar-button.html
+description: Polar supports a feature to allow allow any users to add a document to Polar simply by clicking on a link / button. 
 ---
 
-# "Add Document" Links for Easily Adding Documents to Polar
+# 'Add to Polar Button' for Easily Adding Documents to Polar
 
-Polar supports a feature to allow allow any users to add a document to Polar simply by clicking on a link.
+Polar supports a feature to allow allow any users to add a document to Polar simply by clicking on a link / button.
 
 The interesting part is that it supports any PDF document on the web that's publicly accessible.
 
-Here's an <a href="https://app.getpolarized.io/add/https://bitcoin.org/bitcoin.pdf">example link to the Bitcoin Whitepaper</a>.
+Here's a button that links to the Bitcoin Whitepaper.
+
+<img src="">
+    <a href="https://app.getpolarized.io/add/https://bitcoin.org/bitcoin.pdf">
+</a>
 
 Here's what it looks like when rendered in the user's browser.
 
