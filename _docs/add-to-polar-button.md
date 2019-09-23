@@ -14,9 +14,7 @@ The interesting part is that it supports any PDF document on the web that's publ
 
 Here's a button that links to the Bitcoin Whitepaper.
 
-<img src="">
-    <a href="https://app.getpolarized.io/add/https://bitcoin.org/bitcoin.pdf">
-</a>
+<a href="https://app.getpolarized.io/add/https://bitcoin.org/bitcoin.pdf">Add to Polar</a>
 
 Here's what it looks like when rendered in the user's browser.
 
