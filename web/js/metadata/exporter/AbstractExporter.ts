@@ -5,15 +5,18 @@ import {AreaHighlight} from '../AreaHighlight';
 import {Comment} from '../Comment';
 import {Flashcard} from '../Flashcard';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
+import { ReadableBinaryDatastore } from "../../datastore/Datastore";
 
 export abstract class AbstractExporter implements Exporter {
 
     public abstract readonly id: string;
 
     protected writer?: Writable;
+    protected datastore?: ReadableBinaryDatastore;
 
-    public async init(writer: Writable): Promise<void> {
+    public async init(writer: Writable, datastore: ReadableBinaryDatastore): Promise<void> {
         this.writer = writer;
+        this.datastore = datastore;
     }
 
     public async write(exportable: AnnotationHolder): Promise<void> {

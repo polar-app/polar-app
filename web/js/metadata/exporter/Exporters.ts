@@ -5,6 +5,7 @@ import {JSONExporter} from './JSONExporter';
 import {DocMeta} from '../DocMeta';
 import {AnnotationHolders} from '../AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {ReadableBinaryDatastore} from "../../datastore/Datastore";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -18,6 +19,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 export class Exporters {
 
     public static async doExport(path: string,
+                                 datastore: ReadableBinaryDatastore,
                                  format: ExportFormat,
                                  docMeta: IDocMeta): Promise<void> {
 
@@ -28,7 +30,7 @@ export class Exporters {
         // create the exporter (markdown, html, etc)
         const exporter = this.toExporter(format);
 
-        await exporter.init(writer);
+        await exporter.init(writer, datastore);
 
         const annotationHolders = [...AnnotationHolders.fromDocMeta(docMeta)]
             .sort((a, b) => a.annotation.created.localeCompare(b.annotation.created));
@@ -67,7 +69,7 @@ export interface Exporter {
 
     readonly id: string;
 
-    init(writer: Writable): Promise<void>;
+    init(writer: Writable, datastore: ReadableBinaryDatastore): Promise<void>;
 
     write(exportable: AnnotationHolder): Promise<void>;
 

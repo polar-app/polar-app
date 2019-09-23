@@ -5,6 +5,9 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {assert} from 'chai';
 import {assertJSON} from '../../test/Assertions';
 import {TestingTime} from '../../test/TestingTime';
+import {MockReadableBinaryDatastore} from "../../datastore/MockDatastore";
+
+const datastore = new MockReadableBinaryDatastore();
 
 describe('JSONExporter', function() {
 
@@ -20,7 +23,7 @@ describe('JSONExporter', function() {
 
         const converter = new JSONExporter();
 
-        await converter.init(writer);
+        await converter.init(writer, datastore);
 
         const comment = Comments.createTextComment("hello world", 'page:1');
 
@@ -57,7 +60,7 @@ describe('JSONExporter', function() {
 
         const converter = new JSONExporter();
 
-        await converter.init(writer);
+        await converter.init(writer, datastore);
 
         const comment0 = Comments.createTextComment("hello world", 'page:1');
         await converter.write({type: AnnotationType.COMMENT, annotation: comment0} );

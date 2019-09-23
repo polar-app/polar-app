@@ -3,7 +3,10 @@
  */
 import {MemoryDatastore} from './MemoryDatastore';
 import {MockDocMetas} from '../metadata/DocMetas';
-import {InitResult} from './Datastore';
+import {GetFileOpts, InitResult, ReadableBinaryDatastore} from './Datastore';
+import {DocFileMeta} from "./DocFileMeta";
+import { Backend } from 'polar-shared/src/datastore/Backend';
+import { FileRef } from 'polar-shared/src/datastore/FileRef';
 
 export class MockDatastore extends MemoryDatastore {
 
@@ -23,5 +26,20 @@ export class MockDatastore extends MemoryDatastore {
         return result;
 
     }
+
+}
+
+export class MockReadableBinaryDatastore implements ReadableBinaryDatastore {
+
+
+    public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        return false;
+    }
+
+    public getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta {
+        throw new Error("noop");
+    }
+
+
 
 }

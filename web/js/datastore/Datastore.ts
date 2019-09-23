@@ -261,11 +261,11 @@ interface WritableDatastore {
 /**
  * A datastore that support storage of binary data (images, videos, PDFs, etc).
  */
-interface BinaryDatastore extends ReadableBinaryDatastore, WritableBinaryDatastore {
+export interface BinaryDatastore extends ReadableBinaryDatastore, WritableBinaryDatastore {
 
 }
 
-interface ReadableBinaryDatastore {
+export interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 

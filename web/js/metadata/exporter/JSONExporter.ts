@@ -7,6 +7,7 @@ import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
 import {Strings} from "polar-shared/src/util/Strings";
+import {ReadableBinaryDatastore} from "../../datastore/Datastore";
 
 export class JSONExporter extends AbstractExporter {
 
@@ -14,8 +15,8 @@ export class JSONExporter extends AbstractExporter {
 
     private hasItem: boolean = false;
 
-    public async init(writer: Writable): Promise<void> {
-        await super.init(writer);
+    public async init(writer: Writable, datastore: ReadableBinaryDatastore): Promise<void> {
+        await super.init(writer, datastore);
 
         await writer.write("{\n");
         await writer.write("  \"version\": 1,\n");

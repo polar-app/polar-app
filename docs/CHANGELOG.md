@@ -1,6 +1,8 @@
 
 # latest
 
+- improved issue with markdown exports and text
+
 - Big upgrade of dependencies.  firebase and pdf.js
 
 - Actually fixed the sidebar stall loading bug.  Wasn't actually fixed. 

@@ -6,6 +6,7 @@ import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
 import {Texts} from "../Texts";
 import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
+import {FileRef} from "polar-shared/src/datastore/FileRef";
 
 export class MarkdownExporter extends AbstractExporter {
 
@@ -20,6 +21,27 @@ export class MarkdownExporter extends AbstractExporter {
         return `page: ${pageInfo.num}\n`;
     }
 
+    protected async writeImage(highlight: AreaHighlight | TextHighlight) {
+
+        if (highlight.image) {
+
+            const backend = highlight.image.src.backend;
+            const fileRef: FileRef = highlight.image.src;
+
+            const containsFile = await this.datastore!.containsFile(backend, fileRef);
+
+            if (containsFile) {
+
+                const file = this.datastore!.getFile(backend, fileRef);
+
+                await this.writer!.write(`image: ${file.url}\n`);
+
+            }
+
+        }
+
+    }
+
     protected async writeAreaHighlight(areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
         await this.writer!.write("---\n");
 
@@ -30,6 +52,7 @@ export class MarkdownExporter extends AbstractExporter {
         ;
 
         await this.writer!.write(output);
+        await this.writeImage(areaHighlight);
 
     }
 
@@ -46,6 +69,8 @@ export class MarkdownExporter extends AbstractExporter {
         ;
 
         await this.writer!.write(output);
+
+        await this.writeImage(textHighlight);
 
         const body = Texts.toString(textHighlight.text);
 
