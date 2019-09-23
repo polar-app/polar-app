@@ -22,7 +22,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
-import {AbstractPrefs, StringToStringDict} from '../util/prefs/AbstractPrefs';
+import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
@@ -811,7 +811,7 @@ export class DiskPrefsStore {
 /**
  * Prefs object just backed by a local dictionary.
  */
-export class DiskPrefs extends AbstractPrefs {
+export class DiskPrefs extends Prefs {
 
     private readonly delegate: StringToStringDict = {};
 

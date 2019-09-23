@@ -2,32 +2,7 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DurationStr} from 'polar-shared/src/util/TimeDurations';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 
-export interface Prefs {
-
-    /**
-     * The last time the prefs were updated.
-     */
-    readonly updated: Date;
-
-    mark(key: string, value: boolean): void;
-
-    toggleMarked(key: string, value: boolean): void;
-
-    isMarked(key: string, defaultValue: boolean): void;
-
-    markDelayed(key: string, duration: DurationStr): void;
-
-    isMarkedDelayed(key: string): boolean;
-
-    defined(key: string): void;
-
-    get<T>(key: string): Optional<T>;
-
-    set<T>(key: string, value: T): void;
-
-}
-
-export abstract class AbstractPrefs implements Prefs {
+export abstract class Prefs {
 
     // TODO: migrate to using KeyValueStore
 
@@ -87,19 +62,19 @@ export abstract class AbstractPrefs implements Prefs {
     /**
      * Get a current pref value.
      */
-    public abstract get<T>(key: string): Optional<T>;
+    public abstract get(key: string): Optional<string>;
 
     /**
      * Set a current pref value.
      */
-    public abstract set<T>(key: string, value: T): void;
+    public abstract set(key: string, value: string): void;
 
 }
 
 /**
  * Prefs object just backed by a local dictionary.
  */
-export class DictionaryPrefs extends AbstractPrefs {
+export class DictionaryPrefs extends Prefs {
 
     public delegate: StringToStringDict = {};
 
@@ -125,7 +100,7 @@ export class DictionaryPrefs extends AbstractPrefs {
 /**
  * Designed to be used in browsers.
  */
-export class LocalStoragePrefs extends AbstractPrefs {
+export class LocalStoragePrefs extends Prefs {
 
     public get(key: string): Optional<string> {
         return Optional.of(window.localStorage.getItem(key));

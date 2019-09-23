@@ -12,7 +12,7 @@ import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {AbstractPrefs} from '../util/prefs/AbstractPrefs';
+import {Prefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -739,7 +739,7 @@ export interface PrefsProvider {
     /**
      * Get the latest copy of the prefs we're using.
      */
-    get(): AbstractPrefs;
+    get(): Prefs;
 
 }
 

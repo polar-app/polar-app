@@ -9,7 +9,7 @@ import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
 import {SettingsDropdown} from './SettingsDropdown';
 import {Providers} from 'polar-shared/src/util/Providers';
-import {AbstractPrefs} from '../../../../web/js/util/prefs/AbstractPrefs';
+import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
 import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 import { SplitBarLeft } from '../SplitBarLeft';
@@ -33,7 +33,7 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 
         const Settings = () => {
 
-            const prefs = (): AbstractPrefs | undefined => {
+            const prefs = (): Prefs | undefined => {
 
                 const persistenceLayer = this.props.persistenceLayerManager.get();
 

@@ -44,7 +44,7 @@ import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {Firebase, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {LocalStoragePrefs} from '../util/prefs/AbstractPrefs';
+import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';

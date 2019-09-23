@@ -67,7 +67,7 @@ export class Texts {
             }
 
             if (text.HTML) {
-                return text.MARKDOWN;
+                return text.HTML;
             }
 
         }
@@ -83,9 +83,7 @@ export class Texts {
     public static isText(text?: any): boolean {
 
         if (text) {
-
             return isPresent(text.MARKDOWN) || isPresent(text.HTML) || isPresent(text.TEXT);
-
         }
 
         return false;
