@@ -2,7 +2,7 @@ import * as React from 'react';
 import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {LocalPrefs} from '../../../../web/js/util/LocalPrefs';
 import {PrefsProvider} from '../../../../web/js/datastore/Datastore';
-import {Prefs} from '../../../../web/js/util/prefs/Prefs';
+import {AbstractPrefs} from '../../../../web/js/util/prefs/AbstractPrefs';
 
 const ICON_ON = "fas fa-check text-primary";
 const ICON_OFF = "fas fa-minus";
@@ -63,7 +63,7 @@ interface IProps {
 
     readonly hidden?: boolean;
 
-    readonly prefs: () => Prefs | undefined;
+    readonly prefs: () => AbstractPrefs | undefined;
 
 }
 

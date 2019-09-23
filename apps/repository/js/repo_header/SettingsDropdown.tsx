@@ -3,7 +3,7 @@ import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {UncontrolledDropdown} from 'reactstrap';
 import {SettingsDropdownItem} from './SettingsDropdownItem';
-import {Prefs} from '../../../../web/js/util/prefs/Prefs';
+import {AbstractPrefs} from '../../../../web/js/util/prefs/AbstractPrefs';
 
 export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 
@@ -45,7 +45,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
-    readonly prefs: () => Prefs | undefined;
+    readonly prefs: () => AbstractPrefs | undefined;
 }
 
 interface IState {
