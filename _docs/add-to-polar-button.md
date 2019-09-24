@@ -1,12 +1,12 @@
 ---
-title: "'Add to Polar Button' for Easily Adding Documents to Polar" 
+title: "'Add to Polar' Button for Easily Adding Documents to Polar" 
 layout: doc
 date: 2019-09-19 09:00:00 -0800
 permalink: /docs/add-to-polar-button.html
 description: Polar supports a feature to allow allow any users to add a document to Polar simply by clicking on a link / button. 
 ---
 
-# 'Add to Polar Button' for Easily Adding Documents to Polar
+# 'Add to Polar' Button for Easily Adding Documents to Polar
 
 Polar supports a feature to allow allow any users to add a document to Polar simply by clicking on a link / button.
 
