@@ -5,5 +5,5 @@
     "packages/polar-app-public/*",
     "packages/polar-hooks/functions"
   ],
-  "version": "1.32.43"
+  "version": "1.32.44"
 }
