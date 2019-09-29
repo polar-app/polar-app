@@ -15,6 +15,15 @@ We support both basic tags and 'hierachical' tags.
 Regular tags are shown in the document to the right of the document title and hierarchical tags are shown in the left 
 pane/sidebar.
 
+## Creating folders
+
+Folders are just tags that have a path.  For example ```linux``` would be a regular tag.  But '/tech/linux' would be 
+a folder.  
+
+A document can be stored in multiple folders just like a document can have multiple tags. 
+
+## Filtering
+
 <img class="img-fluid img-shadow" src="https://i.imgur.com/IahYDAE.png">
 
 You can also select tags just on a specific folder for further filtering:
@@ -25,3 +34,4 @@ The annotations view also supports the folder setup. The main difference is that
 and not documents and the counts per folder are different (annotations vs documents).
 
 <img class="img-fluid img-shadow" src="https://i.imgur.com/BEwHOq6.png">
+
