@@ -10,7 +10,11 @@ description: Polar supports folders for managing your files in a hierarchy.
 
 Polar supports folders for managing your files in a hierarchy.
 
-We support both basic tags and 'hierachical' tags.
+We support both basic tags and 'hierarchical' tags.
+
+To create a hierarchical tag, prefix the tag with a /. Example: /my/custom/hierarchy.
+
+Once you tag a document with a hierarchical tag a folder will be created in the sidebar. 
 
 Regular tags are shown in the document to the right of the document title and hierarchical tags are shown in the left 
 pane/sidebar.
