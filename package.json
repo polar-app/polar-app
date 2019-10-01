@@ -7,10 +7,10 @@
     "compile": "lerna run compile",
     "publish": "lerna exec --no-private -- npm publish",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dist-version": "lerna --no-git-tag-version version patch",
     "dist-prepare": "./sbin/mgit clean -f && ./sbin/mgit reset --hard HEAD && ./sbin/mgit pull",
     "dist-publish": "lerna bootstrap && lerna run compile && lerna run dist && lerna exec --no-private -- npm publish",
-    "dist-release": "npm run-script dist-publish && lerna run dist-release",
-    "dist-version": "lerna --no-git-tag-version version patch"
+    "dist-release": "npm run-script dist-publish && lerna run dist-release"
   },
   "deprecated": {
   },
