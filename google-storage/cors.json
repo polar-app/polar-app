@@ -1,6 +1,6 @@
 [
   {
-    "origin": ["https://getpolarized.io", "https://localapp.getpolarized.io", "https://app.getpolarized.io"],
+    "origin": ["https://getpolarized.io", "https://localapp.getpolarized.io", "https://app.getpolarized.io", "http://localhost:8050", "http://127.0.0.1:8050"],
     "requestHeader": [
       "Content-Type",
       "Content-Length",
