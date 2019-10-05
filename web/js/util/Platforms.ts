@@ -116,6 +116,14 @@ export class Platforms {
 
     }
 
+    public static isMobile() {
+        return this.type() === 'mobile';
+    }
+
+    public static isDesktop() {
+        return this.type() === 'desktop';
+    }
+
     /**
      * Get the symbol name for the enum.
      */

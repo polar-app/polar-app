@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable, {ColumnRenderProps, Instance} from "react-table";
+import ReactTable, {ColumnRenderProps, Instance, Column, RowInfo} from "react-table";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
@@ -24,6 +24,7 @@ import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
+import {Platforms} from "../../../../web/js/util/Platforms";
 
 const log = Logger.create();
 
@@ -56,8 +57,14 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         this.createColumnAnnotations = this.createColumnAnnotations.bind(this);
         this.createColumnButtons = this.createColumnButtons.bind(this);
 
+        this.createColumns = this.createColumns.bind(this);
         this.createColumnsForTablet = this.createColumnsForTablet.bind(this);
         this.createColumnsForDesktop = this.createColumnsForDesktop.bind(this);
+
+
+        this.createCellProps = this.createCellProps.bind(this);
+        this.createCellPropsForMobile = this.createCellPropsForMobile.bind(this);
+        this.createCellPropsForDesktop = this.createCellPropsForDesktop.bind(this);
 
     }
 
@@ -463,6 +470,16 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
+    private createColumns() {
+
+        if (Platforms.isMobile()) {
+            return this.createColumnsForTablet();
+        } else {
+            return this.createColumnsForDesktop();
+        }
+
+    }
+
     private createColumnsForTablet() {
 
         return [
@@ -495,18 +512,120 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
+    private createCellProps(rowInfo?: RowInfo, column?: Column) {
+
+        if (Platforms.isMobile()) {
+            return this.createCellPropsForMobile(rowInfo, column);
+        } else {
+            return this.createCellPropsForDesktop(rowInfo, column);
+       }
+
+    }
+
+    private createCellPropsForMobile(rowInfo?: RowInfo, column?: Column) {
+
+        const DEFAULT_BEHAVIOR_COLUMNS = [
+            'doc-checkbox'
+        ];
+
+        if (column && column.id && DEFAULT_BEHAVIOR_COLUMNS.includes(column.id)) {
+
+            return {
+
+                onClick: ((e: any, handleOriginal?: () => void) => {
+
+                    if (handleOriginal) {
+                        // needed for react table to
+                        // function properly.
+                        handleOriginal();
+                    }
+
+                })
+
+            };
+
+        } else {
+
+            return {
+
+                onClick: (event: MouseEvent) => {
+
+                    if (rowInfo) {
+                        const repoDocInfo: RepoDocInfo = rowInfo.original;
+                        this.onDocumentLoadRequested(repoDocInfo);
+                    }
+
+                },
+
+            };
+
+        }
+
+    }
+
+    private createCellPropsForDesktop(rowInfo?: RowInfo, column?: Column) {
+
+        const DEFAULT_BEHAVIOR_COLUMNS = [
+            'tag-input',
+            'flagged',
+            'archived',
+            'doc-dropdown',
+            'doc-buttons',
+            'doc-checkbox'
+        ];
+
+        if (column && column.id && DEFAULT_BEHAVIOR_COLUMNS.includes(column.id)) {
+
+            return {
+
+                onClick: ((e: any, handleOriginal?: () => void) => {
+
+                    if (handleOriginal) {
+                        // needed for react table to
+                        // function properly.
+                        handleOriginal();
+                    }
+
+                })
+
+            };
+
+        } else {
+
+            const handleSelect = (event: MouseEvent) => {
+                if (rowInfo) {
+                    this.props.selectRow(rowInfo.viewIndex as number, event);
+                }
+            };
+
+            return {
+
+                onDoubleClick: (event: MouseEvent) => {
+
+                    if (rowInfo) {
+                        const repoDocInfo: RepoDocInfo = rowInfo.original;
+                        this.onDocumentLoadRequested(repoDocInfo);
+                    }
+
+                },
+
+                onContextMenu: (event: MouseEvent) => {
+                    handleSelect(event);
+                },
+
+                onClick: (event: MouseEvent, handleOriginal?: () => void) => {
+                    handleSelect(event);
+                },
+
+            };
+
+        }
+
+    }
+
     public render() {
 
         const { data } = this.props;
-
-        const contextMenuProps = {
-            onDelete: this.props.onDocDeleteRequested,
-            onSetTitle: this.props.onDocSetTitle,
-            onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => {
-                this.onDocumentLoadRequested(repoDocInfo);
-            }
-
-        };
 
         return (
 
@@ -519,7 +638,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 <ReactTable
                     data={[...data]}
                     ref={(reactTable: Instance) => this.props.onReactTable(reactTable)}
-                    columns={this.createColumnsForDesktop()}
+                    columns={this.createColumns()}
                     defaultPageSize={50}
                     noDataText="No documents available."
                     className="-striped -highlight"
@@ -557,68 +676,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                         };
                     }}
-                    getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
-
-                        const SINGLE_CLICK_COLUMNS = [
-                            'tag-input',
-                            'flagged',
-                            'archived',
-                            'doc-dropdown',
-                            'doc-buttons',
-                            'doc-checkbox'
-                        ];
-
-                        if (! SINGLE_CLICK_COLUMNS.includes(column.id)) {
-
-                            const handleSelect = (event: MouseEvent) => {
-                                if (rowInfo) {
-                                    this.props.selectRow(rowInfo.viewIndex as number, event);
-                                }
-                            };
-
-                            return {
-
-                                onDoubleClick: (event: MouseEvent) => {
-
-                                    if (rowInfo) {
-                                        const repoDocInfo: RepoDocInfo = rowInfo.original;
-                                        this.onDocumentLoadRequested(repoDocInfo);
-                                    }
-
-                                },
-
-                                onContextMenu: (event: MouseEvent) => {
-                                    handleSelect(event);
-                                },
-
-                                onClick: (event: MouseEvent, handleOriginal?: () => void) => {
-                                    handleSelect(event);
-                                },
-
-                            };
-
-                        }
-
-                        if (SINGLE_CLICK_COLUMNS.includes(column.id)) {
-
-                            return {
-
-                                onClick: ((e: any, handleOriginal?: () => void) => {
-
-                                    if (handleOriginal) {
-                                        // needed for react table to
-                                        // function properly.
-                                        handleOriginal();
-                                    }
-
-                                })
-
-                            };
-
-                        }
-
-                        return {};
-
+                    getTdProps={(state: any, rowInfo?: RowInfo, column?: Column, instance?: any) => {
+                        return this.createCellProps(rowInfo, column);
                     }}
 
                 />
