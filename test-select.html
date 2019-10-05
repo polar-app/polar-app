@@ -1,0 +1,54 @@
+<html>
+<head>
+    <style>
+        html {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et ultricies nisi. Duis semper molestie mauris eu aliquet. Nam id dapibus metus. Nullam consectetur, tellus sit amet viverra pretium, sem nulla vestibulum magna, id ultricies mi metus at ex. Sed sodales eros eu ligula pretium ornare. Nam augue dui, pretium id ultrices at, pretium vel arcu. Quisque faucibus auctor lacinia. Morbi risus augue, convallis id mi in, gravida auctor odio. Vivamus non ex sed ipsum molestie aliquam. Nullam quis augue rutrum, dapibus tellus eget, tristique quam. Proin rhoncus tortor et tellus tristique, at finibus sem porta. Etiam sed consectetur turpis.
+</p>
+
+<p>
+    <b>status: </b>
+    <span id="status"></span>
+</p>
+
+<script>
+
+    function setStatus(text) {
+
+        console.log("Setting status: " + text);
+        const statusElement = document.getElementById('status');
+        statusElement.textContent = text;
+
+    }
+
+    function interceptEvent(name) {
+
+        window.addEventListener(name, (event) => {
+            setStatus(name);
+            event.preventDefault();
+        });
+
+    }
+
+    interceptEvent('click');
+    interceptEvent('mousedown');
+    interceptEvent('mouseup');
+    interceptEvent('touchstart');
+    interceptEvent('touchend');
+    interceptEvent('touchcancel');
+    interceptEvent('touchmove');
+
+
+
+</script>
+
+</body>
+</html>
