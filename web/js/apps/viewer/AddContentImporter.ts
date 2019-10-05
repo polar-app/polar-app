@@ -56,19 +56,20 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
                 if (PreviewURLs.getDesktopAppState() === 'active') {
 
+                    log.notice("Completing import via web app desktop");
+
                     // see if we prefer to resolve this by adding to the desktop
                     this.completeImportViaDesktopApp();
 
                 } else {
 
                     if (authenticated) {
-
+                        log.notice("Completing import via web app");
                         this.completeImportViaWebApp();
 
                     } else {
-
+                        log.notice("Completing import via web app login");
                         this.completeImportViaWebAppLogin();
-
                     }
 
                 }
@@ -171,10 +172,16 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
             const url = this.getURL();
 
+            log.notice("Importing URL " + url);
+
             const basename = FilePaths.basename(url);
-            const response = await fetch(url);
+            const response = await fetch(url, {mode: 'cors'});
             const blob = await response.blob();
+
+            log.notice("URL converted to blob");
             const blobURL = URL.createObjectURL(blob);
+
+            log.notice("Created blob URL: " + blobURL);
 
             const pdfImporter = new PDFImporter(persistenceLayerProvider);
 

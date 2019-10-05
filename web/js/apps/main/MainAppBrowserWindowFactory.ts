@@ -107,6 +107,8 @@ export class MainAppBrowserWindowFactory {
 
         }
 
+        // log.notice("Creating browser window with options: ", browserWindowOptions);
+
         // Create the browser window.
         const browserWindow = new BrowserWindow(browserWindowOptions);
 
