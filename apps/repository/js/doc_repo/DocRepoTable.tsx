@@ -29,10 +29,469 @@ const log = Logger.create();
 
 // TODO: go back to ExtendedReactTable
 
+
 export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
+
+    private contextMenuProps: any;
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.contextMenuProps = {
+            onDelete: this.props.onDocDeleteRequested,
+            onSetTitle: this.props.onDocSetTitle,
+            onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => {
+                this.onDocumentLoadRequested(repoDocInfo);
+            }
+        };
+
+
+        this.createColumnCheckbox = this.createColumnCheckbox.bind(this);
+        this.createColumnTitle = this.createColumnTitle.bind(this);
+        this.createColumnUpdated = this.createColumnUpdated.bind(this);
+        this.createColumnAdded = this.createColumnAdded.bind(this);
+        this.createColumnSite = this.createColumnSite.bind(this);
+        this.createColumnTags = this.createColumnTags.bind(this);
+        this.createColumnProgress = this.createColumnProgress.bind(this);
+        this.createColumnAnnotations = this.createColumnAnnotations.bind(this);
+        this.createColumnButtons = this.createColumnButtons.bind(this);
+
+        this.createColumnsForTablet = this.createColumnsForTablet.bind(this);
+        this.createColumnsForDesktop = this.createColumnsForDesktop.bind(this);
+
+    }
+
+
+    private createColumnCheckbox() {
+
+        return {
+
+            id: 'doc-checkbox',
+            Header: (col: ColumnRenderProps) => {
+                // TODO: move to a PureComponent to
+                // improve performance
+
+                const checked = this.props.selected.length === col.data.length && col.data.length > 0;
+
+                return (<div>
+
+                    <Input checked={checked}
+                           style={{
+                               marginLeft: 'auto',
+                               marginRight: 'auto',
+                               margin: 'auto',
+                               position: 'relative',
+                               top: '2px',
+                               width: '16px',
+                               height: '16px',
+                           }}
+                           className="m-auto"
+                           onChange={NULL_FUNCTION}
+                           onClick={() => {
+                               // noop... now do we
+                               // select ALL the
+                               // items in the
+                               // state now
+
+                               const computeSelected = (): ReadonlyArray<number> => {
+
+                                   if (this.props.selected.length !== col.data.length) {
+                                       // all of
+                                       // them
+                                       return Numbers.range(0, col.data.length - 1);
+                                   } else {
+                                       // none of
+                                       // them
+                                       return [];
+                                   }
+
+                               };
+
+                               const selected = computeSelected();
+
+                               this.props.onSelected(selected);
+
+                           }}
+                           type="checkbox"/>
+
+                </div>);
+            },
+            accessor: '',
+            maxWidth: 25,
+            defaultSortDesc: true,
+            resizable: false,
+            sortable: false,
+            className: 'doc-checkbox',
+            Cell: (row: any) => {
+                // TODO: move to a PureComponent to
+                // improve performance
+
+                const viewIndex = row.viewIndex as number;
+
+                return (<div style={{lineHeight: '1em'}}>
+
+                    <Input checked={this.props.selected.includes(viewIndex)}
+                           style={{
+                               marginLeft: 'auto',
+                               marginRight: 'auto',
+                               margin: 'auto',
+                               position: 'relative',
+                               top: '2px',
+                               width: '16px',
+                               height: '16px',
+                           }}
+                           className="m-auto"
+                           onChange={NULL_FUNCTION}
+                           onClick={(event) => this.props.selectRow(viewIndex, event.nativeEvent, true)}
+                           type="checkbox"/>
+
+                    {/*<i className="far fa-square"></i>*/}
+
+                </div>);
+            }
+        };
+
+    }
+
+    private createColumnTitle() {
+
+        return {
+            Header: 'Title',
+            accessor: 'title',
+            className: 'doc-table-col-title',
+            Cell: (row: any) => {
+
+                const id = 'doc-repo-row-title' + row.index;
+                const repoDocInfo: RepoDocInfo = row.original;
+
+                return (
+
+                    <div id={id}>
+
+                        <DocContextMenu {...this.contextMenuProps}
+                                        id={'context-menu-' + row.index}
+                                        repoDocInfo={repoDocInfo}>
+
+                            <div>{row.value}</div>
+
+                        </DocContextMenu>
+
+                    </div>
+
+                );
+            }
+
+        };
+
+    }
+
+    private createColumnUpdated() {
+
+        return {
+            Header: 'Updated',
+            // accessor: (row: any) => row.added,
+            headerClassName: "d-none-mobile",
+            accessor: 'lastUpdated',
+            show: this.props.columns.lastUpdated.selected,
+            maxWidth: 85,
+            defaultSortDesc: true,
+            className: 'doc-table-col-updated d-none-mobile',
+            Cell: (row: any) => {
+
+                const repoDocInfo: RepoDocInfo = row.original;
+
+                return (
+
+                    <DocContextMenu {...this.contextMenuProps}
+                                    id={'context-menu-' + row.index}
+                                    repoDocInfo={repoDocInfo}>
+
+                        <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
+
+                    </DocContextMenu>
+
+                );
+            }
+
+        };
+
+    }
+
+    private createColumnAdded() {
+
+        return {
+            Header: 'Added',
+            accessor: 'added',
+            headerClassName: "d-none-mobile",
+            show: this.props.columns.added.selected,
+            maxWidth: 85,
+            defaultSortDesc: true,
+            className: 'doc-table-col-added d-none-mobile',
+            Cell: (row: any) => {
+
+                const repoDocInfo: RepoDocInfo = row.original;
+
+                return (
+
+                    <DocContextMenu {...this.contextMenuProps}
+                                    id={'context-menu-' + row.index}
+                                    repoDocInfo={repoDocInfo}>
+
+                        <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
+
+                    </DocContextMenu>
+
+                );
+            }
+        };
+
+    }
+
+    private createColumnSite() {
+
+        return {
+            Header: 'Site',
+            accessor: 'site',
+            headerClassName: "d-none-mobile",
+            show: (this.props.columns.site || {}).selected || false,
+            // show: false,
+            maxWidth: 200,
+            sortable: false,
+            className: "d-none-mobile",
+            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
+
+                const toSTR = (doc?: RepoDocInfo): string => {
+
+                    if (! doc) {
+                        return "";
+                    }
+
+                    if (doc.site) {
+                        return doc.site;
+                    }
+
+                    return "";
+
+                };
+
+                const aSTR = toSTR(a);
+                const bSTR = toSTR(b);
+
+                // if (aSTR === bSTR) {
+                //     return 0;
+                // }
+                //
+                // if (aSTR === "") {
+                //     return Number.MIN_VALUE;
+                // }
+                //
+                // if (bSTR === "") {
+                //     return Number.MAX_VALUE;
+                // }
+
+                return aSTR.localeCompare(bSTR);
+
+            },
+        };
+
+    }
+
+    private createColumnTags() {
+        return {
+            id: 'tags',
+            Header: 'Tags',
+            headerClassName: "d-none-mobile",
+            width: 250,
+            accessor: '',
+            show: this.props.columns.tags.selected,
+            className: 'doc-table-col-tags d-none-mobile',
+            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
+
+                const toSTR = (obj: any): string => {
+
+                    if (! obj) {
+                        return "";
+                    }
+
+                    if (typeof obj === 'string') {
+                        return obj;
+                    }
+
+                    return JSON.stringify(obj);
+
+                };
+
+                const cmp = toSTR(a.tags).localeCompare(toSTR(b.tags));
+
+                if (cmp !== 0) {
+                    return cmp;
+                }
+
+                // for ties use the date added...
+                return toSTR(a.added).localeCompare(toSTR(b.added));
+
+            },
+            Cell: (row: any) => {
+                // TODO: move to a PureComponent to
+                // improve performance
+
+                const tags: {[id: string]: Tag} = row.original.tags;
+
+                const formatted = Tags.onlyRegular(Object.values(tags))
+                    .map(tag => tag.label)
+                    .sort()
+                    .join(", ");
+
+                const repoDocInfo: RepoDocInfo = row.original;
+
+                return (
+
+                    <DocContextMenu {...this.contextMenuProps}
+                                    id={'context-menu-' + row.index}
+                                    repoDocInfo={repoDocInfo}>
+                        <div>{formatted}</div>
+                    </DocContextMenu>
+
+                );
+
+            }
+        };
+    }
+
+    private createColumnProgress() {
+
+        return {
+            id: 'progress',
+            Header: 'Progress',
+            headerClassName: "d-none-mobile",
+            accessor: 'progress',
+            show: this.props.columns.progress.selected,
+            maxWidth: 100,
+            defaultSortDesc: true,
+            resizable: false,
+            className: 'doc-table-col-progress d-none-mobile',
+            Cell: (row: any) => {
+
+                const repoDocInfo: RepoDocInfo = row.original;
+
+                return (
+
+                    <DocContextMenu {...this.contextMenuProps}
+                                    id={'context-menu-' + row.index}
+                                    repoDocInfo={repoDocInfo}>
+
+                        <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
+                            width: '100%'
+                        }} />
+
+                    </DocContextMenu>
+
+                );
+            }
+        };
+
+    }
+
+    private createColumnAnnotations() {
+
+        return {
+            id: 'nrAnnotations',
+            Header: 'Annotations',
+            headerClassName: "d-none-mobile",
+            accessor: 'nrAnnotations',
+            maxWidth: 110,
+            show: this.props.columns.nrAnnotations.selected,
+            defaultSortDesc: true,
+            resizable: false,
+            className: "d-none-mobile",
+        };
+
+    }
+
+    private createColumnButtons() {
+
+        return {
+            id: 'doc-buttons',
+            Header: '',
+            headerClassName: "d-none-mobile",
+            accessor: '',
+            maxWidth: 100,
+            defaultSortDesc: true,
+            resizable: false,
+            sortable: false,
+            className: 'doc-dropdown d-none-mobile',
+            Cell: (row: any) => {
+
+                const repoDocInfo: RepoDocInfo = row.original;
+
+                const existingTags: Tag[]
+                    = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
+
+                return (<div className="doc-buttons" style={{display: 'flex'}}>
+
+                    <DocButton>
+
+                        {/*WARNING: making this a function breaks the layout...*/}
+
+                        <TagInput availableTags={this.props.tagsProvider()}
+                                  existingTags={existingTags}
+                                  relatedTags={this.props.relatedTags}
+                                  onChange={(tags) => this.props.onDocTagged(repoDocInfo, tags)}/>
+
+                    </DocButton>
+
+                    <FlagDocButton active={repoDocInfo.flagged}
+                                   onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}/>
+
+                    <ArchiveDocButton active={repoDocInfo.archived}
+                                      onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
+
+                    <DocButton>
+
+                        <DocDropdown id={'doc-dropdown-' + row.index}
+                                     repoDocInfo={repoDocInfo}
+                                     onDelete={this.props.onDocDeleteRequested}
+                                     onSetTitle={this.props.onDocSetTitle}
+                                     onDocumentLoadRequested={this.contextMenuProps.onDocumentLoadRequested}/>
+
+                    </DocButton>
+
+                </div>);
+
+            }
+        };
+
+    }
+
+    private createColumnsForTablet() {
+
+        return [
+            this.createColumnCheckbox(),
+            this.createColumnTitle(),
+            // this.createColumnUpdated(),
+            // this.createColumnAdded(),
+            // this.createColumnSite(),
+            // this.createColumnTags(),
+            // this.createColumnAnnotations(),
+            this.createColumnProgress(),
+            // this.createColumnButtons()
+        ];
+
+    }
+
+    private createColumnsForDesktop() {
+
+        return [
+            this.createColumnCheckbox(),
+            this.createColumnTitle(),
+            this.createColumnUpdated(),
+            this.createColumnAdded(),
+            this.createColumnSite(),
+            this.createColumnTags(),
+            this.createColumnAnnotations(),
+            this.createColumnProgress(),
+            this.createColumnButtons()
+        ];
 
     }
 
@@ -60,381 +519,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 <ReactTable
                     data={[...data]}
                     ref={(reactTable: Instance) => this.props.onReactTable(reactTable)}
-                    columns={
-                        [
-                            {
-
-                                id: 'doc-checkbox',
-                                Header: (col: ColumnRenderProps) => {
-                                    // TODO: move to a PureComponent to
-                                    // improve performance
-
-                                    const checked = this.props.selected.length === col.data.length && col.data.length > 0;
-
-                                    return (<div>
-
-                                        <Input checked={checked}
-                                               style={{
-                                                   marginLeft: 'auto',
-                                                   marginRight: 'auto',
-                                                   margin: 'auto',
-                                                   position: 'relative',
-                                                   top: '2px',
-                                                   width: '16px',
-                                                   height: '16px',
-                                               }}
-                                               className="m-auto"
-                                               onChange={NULL_FUNCTION}
-                                               onClick={() => {
-                                                   // noop... now do we
-                                                   // select ALL the
-                                                   // items in the
-                                                   // state now
-
-                                                   const computeSelected = (): ReadonlyArray<number> => {
-
-                                                       if (this.props.selected.length !== col.data.length) {
-                                                           // all of
-                                                           // them
-                                                           return Numbers.range(0, col.data.length - 1);
-                                                       } else {
-                                                           // none of
-                                                           // them
-                                                           return [];
-                                                       }
-
-                                                   };
-
-                                                   const selected = computeSelected();
-
-                                                   this.props.onSelected(selected);
-
-                                               }}
-                                               type="checkbox"/>
-
-                                    </div>);
-                                },
-                                accessor: '',
-                                maxWidth: 25,
-                                defaultSortDesc: true,
-                                resizable: false,
-                                sortable: false,
-                                className: 'doc-checkbox',
-                                Cell: (row: any) => {
-                                    // TODO: move to a PureComponent to
-                                    // improve performance
-
-                                    const viewIndex = row.viewIndex as number;
-
-                                    return (<div style={{lineHeight: '1em'}}>
-
-                                        <Input checked={this.props.selected.includes(viewIndex)}
-                                               style={{
-                                                   marginLeft: 'auto',
-                                                   marginRight: 'auto',
-                                                   margin: 'auto',
-                                                   position: 'relative',
-                                                   top: '2px',
-                                                   width: '16px',
-                                                   height: '16px',
-                                               }}
-                                               className="m-auto"
-                                               onChange={NULL_FUNCTION}
-                                               onClick={(event) => this.props.selectRow(viewIndex, event.nativeEvent, true)}
-                                               type="checkbox"/>
-
-                                        {/*<i className="far fa-square"></i>*/}
-
-                                    </div>);
-                                }
-                            },
-                            {
-                                Header: 'Title',
-                                accessor: 'title',
-                                className: 'doc-table-col-title',
-                                Cell: (row: any) => {
-
-                                    const id = 'doc-repo-row-title' + row.index;
-                                    const repoDocInfo: RepoDocInfo = row.original;
-
-                                    return (
-
-                                        <div id={id}>
-
-                                            <DocContextMenu {...contextMenuProps}
-                                                            id={'context-menu-' + row.index}
-                                                            repoDocInfo={repoDocInfo}>
-
-                                                <div>{row.value}</div>
-
-                                            </DocContextMenu>
-
-                                        </div>
-
-                                    );
-                                }
-
-                            },
-                            {
-                                Header: 'Updated',
-                                // accessor: (row: any) => row.added,
-                                headerClassName: "d-none-mobile",
-                                accessor: 'lastUpdated',
-                                show: this.props.columns.lastUpdated.selected,
-                                maxWidth: 85,
-                                defaultSortDesc: true,
-                                className: 'doc-table-col-updated d-none-mobile',
-                                Cell: (row: any) => {
-
-                                    const repoDocInfo: RepoDocInfo = row.original;
-
-                                    return (
-
-                                        <DocContextMenu {...contextMenuProps}
-                                                        id={'context-menu-' + row.index}
-                                                        repoDocInfo={repoDocInfo}>
-
-                                            <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
-
-                                        </DocContextMenu>
-
-                                    );
-                                }
-
-                            },
-                            {
-                                Header: 'Added',
-                                accessor: 'added',
-                                headerClassName: "d-none-mobile",
-                                show: this.props.columns.added.selected,
-                                maxWidth: 85,
-                                defaultSortDesc: true,
-                                className: 'doc-table-col-added d-none-mobile',
-                                Cell: (row: any) => {
-
-                                    const repoDocInfo: RepoDocInfo = row.original;
-
-                                    return (
-
-                                        <DocContextMenu {...contextMenuProps}
-                                                        id={'context-menu-' + row.index}
-                                                        repoDocInfo={repoDocInfo}>
-
-                                            <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
-
-                                        </DocContextMenu>
-
-                                    );
-                                }
-                            },
-                            {
-                                Header: 'Site',
-                                accessor: 'site',
-                                headerClassName: "d-none-mobile",
-                                show: (this.props.columns.site || {}).selected || false,
-                                // show: false,
-                                maxWidth: 200,
-                                sortable: false,
-                                className: "d-none-mobile",
-                                sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
-
-                                    const toSTR = (doc?: RepoDocInfo): string => {
-
-                                        if (! doc) {
-                                            return "";
-                                        }
-
-                                        if (doc.site) {
-                                            return doc.site;
-                                        }
-
-                                        return "";
-
-                                    };
-
-                                    const aSTR = toSTR(a);
-                                    const bSTR = toSTR(b);
-
-                                    // if (aSTR === bSTR) {
-                                    //     return 0;
-                                    // }
-                                    //
-                                    // if (aSTR === "") {
-                                    //     return Number.MIN_VALUE;
-                                    // }
-                                    //
-                                    // if (bSTR === "") {
-                                    //     return Number.MAX_VALUE;
-                                    // }
-
-                                    return aSTR.localeCompare(bSTR);
-
-                                },
-                            },
-                            //
-                            // d => {
-                            //     return Moment(d.updated_at)
-                            //         .local()
-                            //         .format("DD-MM-YYYY hh:mm:ss a")
-                            // }
-
-                            // {
-                            //     Header: 'Last Name',
-                            //     id: 'lastName',
-                            //     accessor: (d: any) => d.lastName
-                            // },
-                            {
-                                id: 'tags',
-                                Header: 'Tags',
-                                headerClassName: "d-none-mobile",
-                                width: 250,
-                                accessor: '',
-                                show: this.props.columns.tags.selected,
-                                className: 'doc-table-col-tags d-none-mobile',
-                                sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
-
-                                    const toSTR = (obj: any): string => {
-
-                                        if (! obj) {
-                                            return "";
-                                        }
-
-                                        if (typeof obj === 'string') {
-                                            return obj;
-                                        }
-
-                                        return JSON.stringify(obj);
-
-                                    };
-
-                                    const cmp = toSTR(a.tags).localeCompare(toSTR(b.tags));
-
-                                    if (cmp !== 0) {
-                                        return cmp;
-                                    }
-
-                                    // for ties use the date added...
-                                    return toSTR(a.added).localeCompare(toSTR(b.added));
-
-                                },
-                                Cell: (row: any) => {
-                                    // TODO: move to a PureComponent to
-                                    // improve performance
-
-                                    const tags: {[id: string]: Tag} = row.original.tags;
-
-                                    const formatted = Tags.onlyRegular(Object.values(tags))
-                                        .map(tag => tag.label)
-                                        .sort()
-                                        .join(", ");
-
-                                    const repoDocInfo: RepoDocInfo = row.original;
-
-                                    return (
-
-                                        <DocContextMenu {...contextMenuProps}
-                                                        id={'context-menu-' + row.index}
-                                                        repoDocInfo={repoDocInfo}>
-                                            <div>{formatted}</div>
-                                        </DocContextMenu>
-
-                                    );
-
-                                }
-                            },
-                            {
-                                id: 'nrAnnotations',
-                                Header: 'Annotations',
-                                headerClassName: "d-none-mobile",
-                                accessor: 'nrAnnotations',
-                                maxWidth: 110,
-                                show: this.props.columns.nrAnnotations.selected,
-                                defaultSortDesc: true,
-                                resizable: false,
-                                className: "d-none-mobile",
-                            },
-                            {
-                                id: 'progress',
-                                Header: 'Progress',
-                                headerClassName: "d-none-mobile",
-                                accessor: 'progress',
-                                show: this.props.columns.progress.selected,
-                                maxWidth: 100,
-                                defaultSortDesc: true,
-                                resizable: false,
-                                className: 'doc-table-col-progress d-none-mobile',
-                                Cell: (row: any) => {
-
-                                    const repoDocInfo: RepoDocInfo = row.original;
-
-                                    return (
-
-                                        <DocContextMenu {...contextMenuProps}
-                                                        id={'context-menu-' + row.index}
-                                                        repoDocInfo={repoDocInfo}>
-
-                                            <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
-                                                width: '100%'
-                                            }} />
-
-                                        </DocContextMenu>
-
-                                    );
-                                }
-                            },
-                            {
-                                id: 'doc-buttons',
-                                Header: '',
-                                headerClassName: "d-none-mobile",
-                                accessor: '',
-                                maxWidth: 100,
-                                defaultSortDesc: true,
-                                resizable: false,
-                                sortable: false,
-                                className: 'doc-dropdown d-none-mobile',
-                                Cell: (row: any) => {
-
-                                    const repoDocInfo: RepoDocInfo = row.original;
-
-                                    const existingTags: Tag[]
-                                        = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
-
-                                    return (<div className="doc-buttons" style={{display: 'flex'}}>
-
-                                            <DocButton>
-
-                                                {/*WARNING: making this a function breaks the layout...*/}
-
-                                                <TagInput availableTags={this.props.tagsProvider()}
-                                                          existingTags={existingTags}
-                                                          relatedTags={this.props.relatedTags}
-                                                          onChange={(tags) => this.props.onDocTagged(repoDocInfo, tags)}/>
-
-                                            </DocButton>
-
-                                            <FlagDocButton active={repoDocInfo.flagged}
-                                                           onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}/>
-
-                                            <ArchiveDocButton active={repoDocInfo.archived}
-                                                              onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
-
-                                            <DocButton>
-
-                                                <DocDropdown id={'doc-dropdown-' + row.index}
-                                                             repoDocInfo={repoDocInfo}
-                                                             onDelete={this.props.onDocDeleteRequested}
-                                                             onSetTitle={this.props.onDocSetTitle}
-                                                             onDocumentLoadRequested={contextMenuProps.onDocumentLoadRequested}/>
-
-                                            </DocButton>
-
-                                        </div>);
-
-                                }
-                            }
-
-                        ]}
-
+                    columns={this.createColumnsForDesktop()}
                     defaultPageSize={50}
                     noDataText="No documents available."
                     className="-striped -highlight"
