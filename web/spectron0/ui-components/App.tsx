@@ -1,18 +1,13 @@
 import * as React from 'react';
 import {Tags} from '../../js/tags/Tags';
-import {AccountUpgradeBarView} from "../../js/ui/account_upgrade/AccountUpgradeBarView";
-import {SimpleTabs} from "../../js/ui/simple_tab/SimpleTabs";
-import {SimpleTab} from "../../js/ui/simple_tab/SimpleTab";
-import {LargeModal} from "../../js/ui/large_modal/LargeModal";
-import {LargeModalBody} from "../../js/ui/large_modal/LargeModalBody";
-import {GroupHits} from "./group_sharing/GroupHits";
-import {GroupHit} from "./group_sharing/GroupHit";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {GroupSearch} from "./group_sharing/GroupSearch";
 import {Group} from "../../js/datastore/sharing/db/Groups";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {GroupCard} from "../../../apps/repository/js/groups/GroupCard";
-import {LoadingProgress} from "../../js/ui/LoadingProgress";
+import {ManualDropdown} from "../../../apps/repository/js/doc_repo/ManaulDropdown";
+import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {DropdownMenu, DropdownToggle} from "reactstrap";
+import {FakePopup} from "./FakePopup";
+import { BasicPopup } from './BasicPopup';
 
 const styles = {
     swatch: {
@@ -135,11 +130,40 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-                <LoadingProgress/>
+
+                here at least.
+
+                {/*<ManualDropdown id="add-content-dropdown"*/}
+                {/*                direction="down"*/}
+                {/*                size="sm">*/}
+
+                {/*    <DropdownToggle size="sm" style={{fontWeight: 'bold'}} color="success" caret>*/}
+                {/*        this is it*/}
+                {/*    </DropdownToggle>*/}
+
+                {/*    <DropdownMenu className="shadow">*/}
+
+                {/*        <DropdownItem size="sm" onClick={NULL_FUNCTION}>*/}
+
+                {/*            this is a dropdown.*/}
+
+                {/*        </DropdownItem>*/}
+
+                {/*    </DropdownMenu>*/}
+
+                {/*</ManualDropdown>*/}
+
+                <FakePopup/>
+
+                <br/>
+
+                <BasicPopup/>
+
+                    {/*<LoadingProgress/>*/}
 
                 {/*<MockFolderTree/>*/}
 
-                <AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 0}}/>
+                {/*<AccountUpgradeBarView plan='free' accountUsage={{storageInBytes: 0}}/>*/}
 
                 {/*<div>*/}
 
