@@ -2,8 +2,6 @@
 <head>
     <style>
         html {
-            /*-webkit-user-select: none;*/
-            /*user-select: none;*/
         }
     </style>
 </head>
@@ -48,12 +46,16 @@
     function interceptEvent(name) {
 
         window.addEventListener(name, (event) => {
+            setStatus(name);
             event.preventDefault();
-        }, {passive: false});
+            return false;
+        });
 
         document.addEventListener(name, (event) => {
+            setStatus(name);
             event.preventDefault();
-        }, {passive: false});
+            return false;
+        });
 
     }
 
@@ -65,9 +67,9 @@
     interceptEvent('touchcancel');
     interceptEvent('touchmove');
 
-    selectPartOfDocument();
-
 </script>
+
+<input type="button" onClick="selectPartOfDocument()">asdf</body>
 
 </body>
 </html>
