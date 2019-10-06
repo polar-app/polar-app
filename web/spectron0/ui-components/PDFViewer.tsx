@@ -29,7 +29,20 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     private async doRender() {
 
-        var loadingTask = PDFJS.getDocument('../../../docs/examples/pdf/bigtable.pdf');
+        // TODO: determine the primary page that the user is viewing and only render N +- 10 pages
+        //
+        // TODO: use the same CSS elements and classes
+        //
+        // TODO: sidebar
+        //
+        // TODO: zoom in / out and page width , page height.
+
+        // TODO: search UI to search within the document
+
+        // TODO: center + change page height when the browser reloads
+
+
+        const loadingTask = PDFJS.getDocument('../../../docs/examples/pdf/bigtable.pdf');
 
         const pdf = await loadingTask.promise;
 
