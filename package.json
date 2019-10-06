@@ -80,7 +80,7 @@
     "cache-loader": "^2.0.1",
     "chai": "~4.2.0",
     "dtsmake": "0.0.10",
-    "electron": "^5.0.6",
+    "electron": "^5.0.11",
     "electron-builder": "~20.34.0",
     "firebase-tools": "^7.3.2",
     "fork-ts-checker-webpack-plugin": "^1.5.0",
@@ -102,7 +102,7 @@
     "typescript": "^3.4.3",
     "wait-for-expect": "~1.1.0",
     "webpack": "^4.40.2",
-    "webpack-bundle-analyzer": "^3.5.0",
+    "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0"
   },
