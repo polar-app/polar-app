@@ -1,9 +1,7 @@
 import {Point} from '../../Point';
 import {MouseDirection} from './Popup';
 import {Simulate} from 'react-dom/test-utils';
-import mouseMove = Simulate.mouseMove;
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {isPresent} from 'polar-shared/src/Preconditions';
 import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';
 
@@ -43,7 +41,7 @@ export class ActiveSelections {
 
         };
 
-        const onMouseUp = (event: MouseEvent, element: HTMLElement | undefined) => {
+        const onMouseUp = (event: MouseEvent | TouchEvent, element: HTMLElement | undefined) => {
 
             const handleMouseEvent = () => {
 
@@ -102,7 +100,9 @@ export class ActiveSelections {
 
         };
 
-        target.addEventListener('mousedown', (event: MouseEvent) => {
+        type EventType = 'mouse' | 'touch';
+
+        const onMouseDown = (event: MouseEvent | TouchEvent, type: EventType) => {
 
             if (!activeSelection) {
                 originPoint = this.eventToPoint(event);
@@ -110,12 +110,38 @@ export class ActiveSelections {
 
             const element = this.targetElementForEvent(event);
 
-            window.addEventListener('mouseup', event => {
-                // this code properly handles the mouse leaving the window
-                // during mouse up and then leaving wonky event handlers.
-                onMouseUp(event, element);
-            }, {once: true});
+            switch (type) {
 
+                case "mouse":
+
+                    window.addEventListener('mouseup', event => {
+                        // this code properly handles the mouse leaving the window
+                        // during mouse up and then leaving wonky event handlers.
+                        onMouseUp(event, element);
+                    }, {once: true});
+
+                    break;
+
+                case "touch":
+
+                    window.addEventListener('touchend', event => {
+                        // this code properly handles the mouse leaving the window
+                        // during mouse up and then leaving wonky event handlers.
+                        onMouseUp(event, element);
+                    }, {once: true});
+
+                    break;
+
+            }
+
+        };
+
+        target.addEventListener('mousedown', (event: MouseEvent) => {
+            onMouseDown(event, 'mouse');
+        });
+
+        target.addEventListener('touchstart', (event: TouchEvent) => {
+            onMouseDown(event, 'touch');
         });
 
         // TODO: I played with closing the annotation bar on right click but
@@ -159,7 +185,7 @@ export class ActiveSelections {
         setTimeout(() => callback(), 1);
     }
 
-    private static targetElementForEvent(event: MouseEvent): HTMLElement | undefined {
+    private static targetElementForEvent(event: MouseEvent | TouchEvent): HTMLElement | undefined {
 
         if (event.target instanceof Node) {
 
@@ -191,12 +217,31 @@ export class ActiveSelections {
 
     }
 
-    private static eventToPoint(event: MouseEvent) {
+    private static eventToPoint(event: MouseEvent | TouchEvent) {
 
-        return {
-            x: event.offsetX,
-            y: event.offsetY
-        };
+        if ('offsetX' in event) {
+
+            return {
+                x: event.offsetX,
+                y: event.offsetY
+            };
+
+        }
+
+        if (! event.target) {
+            throw new Error("No target");
+        }
+
+        if (event.targetTouches.length === 0) {
+            throw new Error("No touches");
+        }
+
+        const rect = (<HTMLElement> event.target).getBoundingClientRect();
+
+        const x = event.targetTouches[0].pageX - rect.left;
+        const y = event.targetTouches[0].pageY - rect.top;
+
+        return {x, y};
 
     }
 
