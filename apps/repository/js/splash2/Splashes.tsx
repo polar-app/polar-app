@@ -73,7 +73,8 @@ export class Splashes extends React.Component<IProps, IState> {
                 return <SuggestionsModal/>;
 
             case 'whats-new':
-                return <WhatsNewModal/>;
+                return <div/>;
+                // return <WhatsNewModal/>;
 
         }
 

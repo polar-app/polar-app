@@ -95,6 +95,10 @@ export class RepositoryApp {
         const userInfo = await authHandler.userInfo();
         const account = await Accounts.get();
 
+        const platform = Platforms.get();
+
+        log.notice("Running on platform: " + platform);
+
         if (authStatus !== 'needs-authentication') {
 
             // subscribe but do it in the background as this isn't a high priority UI task.
