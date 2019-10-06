@@ -11,6 +11,8 @@ PDFJS.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pd
 
 const log = Logger.create();
 
+console.log("FIXME: ", (PDFJS as any).renderTextLayer);
+
 export class PDFViewer extends React.Component<IProps, IState> {
 
     // https://mozilla.github.io/pdf.js/examples/
@@ -29,8 +31,30 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     private async doRender() {
 
+        // https://github.com/mozilla/pdf.js/tree/master/web
+
+        // https://github.com/mozilla/pdf.js/blob/master/src/pdf.js
+
+        // https://github.com/mozilla/pdf.js/blob/master/web/viewer.js
+        // https://github.com/mozilla/pdf.js/blob/master/web/app.js
+        // https://github.com/mozilla/pdf.js/blob/master/web/base_viewer.js
+        // https://github.com/mozilla/pdf.js/blob/master/web/pdf_outline_viewer.js
+        // https://github.com/mozilla/pdf.js/blob/master/web/pdf_thumbnail_viewer.js
+        // https://github.com/mozilla/pdf.js/blob/master/web/pdf_viewer.js
+
         // TODO: determine the primary page that the user is viewing and only render N +- 10 pages
         //
+        // FIXME: rendering the text layer is VERY confusing but we need to do it.  What's happening
+        // is that there's a missing symbol exported I think as not all symbols are exported in
+        // pdf.js but the aren't in the typescript definitions and the interfaces don't match up.
+        //
+        // further, the viewer seems to be designed around the pdfjs lib and vice versa so it's not
+        // clear how to use it properly.
+        //
+        // https://stackoverflow.com/questions/33063213/pdf-js-with-text-selection
+        //
+        // this is probably the closet we are going to get to being able to build this.
+
         // TODO: use the same CSS elements and classes
         //
         // TODO: sidebar
@@ -41,6 +65,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
         // TODO: center + change page height when the browser reloads
 
+        // TODO: when the component is unloaded we need to release the resources
 
         const loadingTask = PDFJS.getDocument('../../../docs/examples/pdf/bigtable.pdf');
 
@@ -52,9 +77,14 @@ export class PDFViewer extends React.Component<IProps, IState> {
         var viewport = page.getViewport({ scale: scale});
 
         const canvas = document.querySelector('#pdf canvas') as HTMLCanvasElement | null;
+        const textLayer = document.querySelector('#pdf .textLayer') as HTMLDivElement | null;
 
         if (! canvas) {
             throw new Error("No canvas");
+        }
+
+        if (! textLayer) {
+            throw new Error("No textLayer");
         }
 
         const context = canvas.getContext('2d')!;
@@ -62,9 +92,12 @@ export class PDFViewer extends React.Component<IProps, IState> {
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
+        // FIXME: I don't know how this should be implemented... do I need an imageLayer?
+
         const renderContext = {
             canvasContext: context,
-            viewport: viewport
+            viewport: viewport,
+            // textLayer
         };
 
         page.render(renderContext);
@@ -82,7 +115,12 @@ export class PDFViewer extends React.Component<IProps, IState> {
             return <div>
                 {range.map(page =>
                     <div className="page" data-page-num={page} key={page}>
-                        <canvas/>
+                        <div className="canvasWrapper">
+                            <canvas/>
+                        </div>
+                        <div className="textLayer">
+
+                        </div>
                     </div>)}
             </div>
 
