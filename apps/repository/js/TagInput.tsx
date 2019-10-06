@@ -144,19 +144,10 @@ export class TagInput extends React.Component<IProps, IState> {
                    onClick={() => this.activate()}
                    className="fa fa-tag doc-button doc-button-inactive"/>
 
-                {/*tag-input-popover {*/}
-                {/*width: 500px !important;*/}
-                {/*max-width: 9999px !important;*/}
-            {/*}*/}
-
-                {/*.tag-input-popover label {*/}
-                {/*font-weight: bold;*/}
-            {/*}*/}
-
                 <Popover placement="auto"
                          isOpen={this.state.open}
                          target={this.id}
-                         trigger="legacy"
+                         fade={false}
                          delay={0}
                          toggle={() => this.deactivate()}
                          className="tag-input-popover shadow">

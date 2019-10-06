@@ -67,6 +67,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
                          isOpen={this.state.open}
                          toggle={() => this.toggle(false)}
                          target="share-control-button"
+                         fade={false}
                          delay={0}
                          className=""
                          style={{

@@ -73,6 +73,8 @@ export class TagButton extends React.Component<IProps, IState> {
                          target={this.id}
                          toggle={this.toggle}
                          trigger="legacy"
+                         fade={false}
+                         delay={0}
                          className="tag-input-popover">
 
                     <PopoverBody>

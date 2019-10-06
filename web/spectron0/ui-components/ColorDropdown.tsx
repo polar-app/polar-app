@@ -220,6 +220,7 @@ export class ColorDropdown extends React.Component<IProps, IState> {
 
                 <Popover placement="bottom"
                          trigger="legacy"
+                         fade={false}
                          delay={0}
                          isOpen={this.state.open}
                          target="ColorButton1"

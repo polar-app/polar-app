@@ -93,6 +93,8 @@ export class ShareContentButton extends React.PureComponent<IProps, IState> {
 
                 <Popover trigger="legacy"
                          placement="bottom"
+                         fade={false}
+                         delay={0}
                          isOpen={this.state.open}
                          toggle={() => this.toggle(false)}
                          target="share-control-button"

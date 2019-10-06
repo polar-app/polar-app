@@ -57,6 +57,7 @@ export class ColorSelector extends React.PureComponent<IProps, IState> {
 
                 <Popover placement="bottom"
                          trigger="legacy"
+                         fade={false}
                          delay={0}
                          isOpen={this.state.open}
                          target={id}

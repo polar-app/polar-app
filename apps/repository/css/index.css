@@ -142,6 +142,7 @@ footer .buttons .button {
     margin-left: 5px;
 }
 
+.tag-input-popover .popover-inner,
 .tag-input-popover {
     width: 500px !important;
     max-width: calc(100vw - 5px) !important;
