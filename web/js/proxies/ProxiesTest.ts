@@ -9,8 +9,8 @@ import {Symbol} from '../metadata/Symbol';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DocMetas} from '../metadata/DocMetas';
 import {TextHighlight} from '../metadata/TextHighlight';
-import {Numbers} from '../util/Numbers';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 describe('Proxies', function() {
 

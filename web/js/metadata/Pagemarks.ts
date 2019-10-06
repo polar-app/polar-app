@@ -13,7 +13,6 @@ import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {PageMeta} from './PageMeta';
-import {Numbers} from "../util/Numbers";
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from 'polar-shared/src/util/Providers';
@@ -23,6 +22,7 @@ import {Percentages} from '../util/Percentages';
 import {IPageMeta, PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 const log = Logger.create();
 

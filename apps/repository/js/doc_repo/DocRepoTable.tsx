@@ -11,7 +11,6 @@ import {DocDropdown} from '../DocDropdown';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
-import {Numbers} from '../../../../web/js/util/Numbers';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocButton} from '../ui/DocButton';
 import {FlagDocButton} from '../ui/FlagDocButton';
@@ -25,6 +24,7 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
 import {Platforms} from "../../../../web/js/util/Platforms";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 const log = Logger.create();
 

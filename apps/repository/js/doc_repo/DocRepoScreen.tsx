@@ -36,9 +36,9 @@ import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
-import {Numbers} from '../../../../web/js/util/Numbers';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 const log = Logger.create();
 

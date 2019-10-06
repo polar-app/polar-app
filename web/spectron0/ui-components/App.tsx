@@ -8,6 +8,7 @@ import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {DropdownMenu, DropdownToggle} from "reactstrap";
 import {FakePopup} from "./FakePopup";
 import { BasicPopup } from './BasicPopup';
+import { PDFViewer } from './PDFViewer';
 
 const styles = {
     swatch: {
@@ -130,34 +131,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div style={{margin: '5px'}}>
 
-
-                here at least.
-
-                {/*<ManualDropdown id="add-content-dropdown"*/}
-                {/*                direction="down"*/}
-                {/*                size="sm">*/}
-
-                {/*    <DropdownToggle size="sm" style={{fontWeight: 'bold'}} color="success" caret>*/}
-                {/*        this is it*/}
-                {/*    </DropdownToggle>*/}
-
-                {/*    <DropdownMenu className="shadow">*/}
-
-                {/*        <DropdownItem size="sm" onClick={NULL_FUNCTION}>*/}
-
-                {/*            this is a dropdown.*/}
-
-                {/*        </DropdownItem>*/}
-
-                {/*    </DropdownMenu>*/}
-
-                {/*</ManualDropdown>*/}
-
-                <FakePopup/>
-
-                <br/>
-
-                <BasicPopup/>
+                <PDFViewer src="foo"/>
 
                     {/*<LoadingProgress/>*/}
 

@@ -10,7 +10,7 @@ import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Numbers} from "../../../../../../web/js/util/Numbers";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 const log = Logger.create();
 

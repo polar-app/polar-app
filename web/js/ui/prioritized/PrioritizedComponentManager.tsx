@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Numbers} from '../../util/Numbers';
 import {SplashLifecycle} from '../../../../apps/repository/js/splash2/SplashLifecycle';
 import {LifecycleEvents} from '../util/LifecycleEvents';
 import {LocalPrefs} from '../../util/LocalPrefs';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {DatastoreOverview} from '../../datastore/Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 const log = Logger.create();
 
