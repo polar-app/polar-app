@@ -232,14 +232,15 @@ export class ActiveSelections {
             throw new Error("No target");
         }
 
-        if (event.targetTouches.length === 0) {
+        if (event.changedTouches.length === 0) {
+            log.warn("No touches found in event: " , event);
             throw new Error("No touches");
         }
 
         const rect = (<HTMLElement> event.target).getBoundingClientRect();
 
-        const x = event.targetTouches[0].pageX - rect.left;
-        const y = event.targetTouches[0].pageY - rect.top;
+        const x = event.changedTouches[0].pageX - rect.left;
+        const y = event.changedTouches[0].pageY - rect.top;
 
         return {x, y};
 
