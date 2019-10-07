@@ -37,7 +37,7 @@ const Main = () => {
     return <div style={{backgroundColor: 'blue'}}>this is the right</div>;
 };
 
-class App<P> extends React.Component<{}, IAppState> {
+export class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
         super(props, context);
@@ -187,8 +187,6 @@ class App<P> extends React.Component<{}, IAppState> {
 
 
 }
-
-export default App;
 
 interface IAppState {
 
