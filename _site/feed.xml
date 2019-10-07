@@ -1,4 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-06T15:23:45-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-07T13:52:28-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
+
+&lt;p&gt;Polar has been rapidly adopted by alpha-geeks to combat information overload and looks like we’ve found another convert - 
+this time &lt;a href=&quot;https://superorganizers.substack.com/p/how-a-jeopardy-champion-remembers&quot;&gt;Roger Craig who used it to win $77k on Jeopardy&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;He’s a machine learning, data science, and AI practitioner who combined his computer skills and an interest in quiz
+games into something extraordinarily unique:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;He won more than half a million dollars on Jeopardy!, including a whopping $77,000 in a single day.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;He did this not just with raw intelligence, but by creating a system to help him fashion himself into a game-show
+superstar.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Roger and I have similar backgrounds - both machine learning and big data and it looks like we arrived at the same
+general strategy for managing knowledge.  Specifically, use tools like NLP, clustering, and spaced repetition to force
+material to be stored in your brain long term with high retention.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;How he uses Polarized to save and take notes on PDFs&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The next tool I use is called Polarized. A lot of the information I consume is in technical published papers, which are in PDFs, and Polarized helps with that.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;It takes in PDFs and web pages, and allows you to highlight and annotate them. You can also export them, so you can turn the annotations into Anki cards.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;So basically every paper that is of interest to me, I save it into one big directory, and then Polarized goes in and ingests all of the papers and makes them available for me to read and annotate.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What Roger did here was basically take his background in ML and built a set of tools to manage his learning.&lt;/p&gt;
+
+&lt;p&gt;I basically did the same thing when I first started working on Polar but I realized that this tool needs to be democratized.&lt;/p&gt;
+
+&lt;p&gt;We’re going to be building in more cloud learning and big data capabilities in Polar in the next few months including
+support for full-text search, clustering, auto-tagging, etc.&lt;/p&gt;
+
+&lt;p&gt;The entire point of Polar is that we’re trying to democratize this technology and make it usable to the average person.&lt;/p&gt;
+
+&lt;p&gt;As an aside, it’s been really interesting to see who’s been using Polar.  Lots of PhD students, VCs, researchers, 
+academics, scientists, etc.  Very exciting to see such amazingly smart people using the product.&lt;/p&gt;
+
+&lt;p&gt;Stay tuned!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
 
 &lt;p&gt;We had an outage last night for Polar cloud sync and our web application which was related to an issue in Google cloud.&lt;/p&gt;
 
@@ -1281,151 +1334,4 @@ to users might have PII data embedded within them and we also have to comply
 with local laws as well as be respectful of user privacy.  Initially this ]
 functionality won’t be enabled but it’s a sub-project we’d like to pursue in 
 the future and might be possible for some fraction of the documents indexed 
-when we can identify that they have zero PII.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Initial Crowdfunding Campaign</title><link href="https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html" rel="alternate" type="text/html" title="Polar Initial Crowdfunding Campaign" /><published>2019-04-11T06:00:00-07:00</published><updated>2019-04-11T06:00:00-07:00</updated><id>https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign</id><content type="html" xml:base="https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html">&lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
-&lt;iframe class=&quot;embed-responsive-item&quot; src=&quot;https://www.youtube.com/embed/wfxmsXxod-g&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;text-center&quot;&gt;
-    &lt;a class=&quot;btn btn-success btn-lg font-weight-bold m-3&quot; onclick=&quot;sendEvent('main-cta', 'click-crowdfunding-donate-button')&quot; href=&quot;https://opencollective.com/polar-bookshelf&quot;&gt;Donate Now&lt;/a&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-
-&lt;p&gt;I’m Kevin Burton, the creator of Polar and I need your help.&lt;/p&gt;
-
-&lt;p&gt;For the past six months I’ve been working on a project to address the problems 
-with the current Internet.&lt;/p&gt;
-
-&lt;p&gt;Polar is a new type of app which helps you build a personal knowledge repository 
-and keeps all your reading in one place.  It allows you to annotate all your 
-documents including highlighting and manage them with tags and notes.&lt;/p&gt;
-
-&lt;p&gt;Polar also supports advanced features like spaced repetition (so you never 
-forget anything again) and web archival so you can view a document forever even 
-if it’s deleted on the original site.&lt;/p&gt;
-
-&lt;p&gt;More importantly, it’s the starting ramp for a more long term vision around 
-content sharing and knowledge collaboration.&lt;/p&gt;
-
-&lt;h1 id=&quot;help-keep-polar-open-source&quot;&gt;Help Keep Polar Open Source&lt;/h1&gt;
-
-&lt;p&gt;I’ll touch upon this in a minute but Polar is something I’ve been thinking about for a decade.&lt;/p&gt;
-
-&lt;p&gt;Simply put - I want to reboot the Internet and take it to a time when data and knowledge was shared more freely.&lt;/p&gt;
-
-&lt;p&gt;Polar is the platform I’m building to enable this vision.&lt;/p&gt;
-
-&lt;p&gt;I see Polar as another layer on top of the existing Internet which includes easy content sharing, annotations, and archival.&lt;/p&gt;
-
-&lt;p&gt;To that end I’m starting a crowdfunding campaign to keep Polar open source and really put the project into overdrive - and I need your support.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-plan&quot;&gt;The Plan&lt;/h2&gt;
-
-&lt;p&gt;Here’s the plan.&lt;/p&gt;
-
-&lt;p&gt;First we’re going to raise twenty five thousand dollars from our current user base over the next month.&lt;/p&gt;
-
-&lt;p&gt;We polled our users and asked them what they would be willing do donate and the average was twenty seven dollars, and of course we have thousands of users - so I think this is a reasonable goal.
-Now of course, if you’d like do donate more than $27 don’t let me stop you.&lt;/p&gt;
-
-&lt;p&gt;We’re also going to allow donors to convert their donations to Polar Premium.&lt;/p&gt;
-
-&lt;p&gt;There’s a link below to the crowdfunding campaign and also one directly in Polar when you’re ready to donate.&lt;/p&gt;
-
-&lt;p&gt;Once we’ve raised this initial round, we’re then going to use that momentum to raise $150k from the Internet as a whole.&lt;/p&gt;
-
-&lt;p&gt;Possibly through a system like Kickstarter or Indiegogo but we’re still investigating our options.&lt;/p&gt;
-
-&lt;p&gt;This should get us through the next 6-9 months and allow us apply for grants to continue supporting development over the long term.&lt;/p&gt;
-
-&lt;p&gt;The grant application process itself can take 3-6 months but the funding could be much larger and allow us to build something really special.&lt;/p&gt;
-
-&lt;h2 id=&quot;how-your-support-will-help-polar&quot;&gt;How Your Support Will Help Polar&lt;/h2&gt;
-
-&lt;p&gt;The money will help us improve usability, reliability and focus on feature requests from our user base.&lt;/p&gt;
-
-&lt;p&gt;Additionally, we’re planning on adding mobile support including iOS and Android and improving our user interface (including a dark mode).&lt;/p&gt;
-
-&lt;p&gt;We’re also going to implement a new viewer to support most popular document formats including ePub and Mobi.&lt;/p&gt;
-
-&lt;p&gt;Most importantly we’re going to focus on team sharing and collaboration.  These are two major features of Polar we haven’t shipped yet but they’re the ones I’m most excited about.&lt;/p&gt;
-
-&lt;p&gt;There’s a lot under the surface of Polar that you haven’t seen yet.  Mostly architectural work but I think we’re really close to something amazing.&lt;/p&gt;
-
-&lt;p&gt;I’ve included links below to our roadmap if you’re interested in exactly what we’d like to accomplish..&lt;/p&gt;
-
-&lt;p&gt;The long term goal is to have Polar financially self sufficient but in order to get there we need more time to expand our initial user base.&lt;/p&gt;
-
-&lt;h2 id=&quot;freemium-model&quot;&gt;Freemium Model&lt;/h2&gt;
-
-&lt;p&gt;Polar will be funded by a freemium model with 95% of users using Polar for free.&lt;/p&gt;
-
-&lt;p&gt;More importantly, I want to continue to keep Polar Open Source.&lt;/p&gt;
-
-&lt;p&gt;I think it’s vital that a tool that holds your personal knowledge repository is built on a foundation that you can trust isn’t going to simply vanish.&lt;/p&gt;
-
-&lt;p&gt;Polar’s primary funding long term will be supported by sales of Polar premium.&lt;/p&gt;
-
-&lt;p&gt;We will always support using Polar as Open Source and users can build from source code directly.&lt;/p&gt;
-
-&lt;p&gt;We’re will also have free versions of Polar which will be very easy to install and without annoying ads or nagging you to constantly upgrade.&lt;/p&gt;
-
-&lt;h2 id=&quot;premium-versions&quot;&gt;Premium Versions&lt;/h2&gt;
-
-&lt;p&gt;The premium versions of Polar designed to be very affordable - $4.99 per month - about the price of a cup of coffee.&lt;/p&gt;
-
-&lt;p&gt;If we haven’t generated enough value for you that you wouldn’t buy me a cup of coffee I think we’re doing something wrong.&lt;/p&gt;
-
-&lt;p&gt;I’ve included a rough feature breakdown so you can see what features we intend on charging for at each level.&lt;/p&gt;
-
-&lt;p&gt;The funds we raise will primarily be used to allow me to concentrate on Polar but also bring in additional developers who are more skilled in specific areas including UI, design and React development.&lt;/p&gt;
-
-&lt;h2 id=&quot;polar-is-important&quot;&gt;Polar is Important&lt;/h2&gt;
-
-&lt;p&gt;Polar is an important project for me.&lt;/p&gt;
-
-&lt;p&gt;I’m very passionate about open content and open source and have devoted the last 20 years of my life to fighting for the open web.&lt;/p&gt;
-
-&lt;p&gt;I was one of the inventors of RSS and podcasting and helped create many projects within the Apache Software Foundation including Apache Maven.&lt;/p&gt;
-
-&lt;p&gt;The last ten years I’ve been running a search company I started named Datastreamer which is a petabyte-scale search engine which I built to index large scale web content on behalf of our customers.&lt;/p&gt;
-
-&lt;p&gt;I’m deeply troubled with the way the Internet is becoming more and more locked up behind walled gardens.&lt;/p&gt;
-
-&lt;p&gt;We’re in the middle of a data war.&lt;/p&gt;
-
-&lt;p&gt;Companies like Facebook, and Elsevier want to lock up the web and science.&lt;/p&gt;
-
-&lt;p&gt;But knowledge dies without oxygen. Science literally can’t work without active peer review.&lt;/p&gt;
-
-&lt;p&gt;This is also something that directly impacts education as a whole.&lt;/p&gt;
-
-&lt;p&gt;College has become a bubble with students taking on hundreds of thousands of dollars of debt just to finish their degree.&lt;/p&gt;
-
-&lt;p&gt;The price of textbooks alone has increased 1000% in the last 20 years.&lt;/p&gt;
-
-&lt;p&gt;What’s sad is that we’re losing.&lt;/p&gt;
-
-&lt;p&gt;Facebook made 53 billion dollars last year.  By comparison, Wikimedia, which shares their data openly, raised $100M in donations.&lt;/p&gt;
-
-&lt;p&gt;This means Facebook made 530x more than Wikimedia.&lt;/p&gt;
-
-&lt;p&gt;Now it’s a bit of an apples to oranges comparison but the challenge is that strictly non-profit organizations generally tend to lag behind for-profit corporations.&lt;/p&gt;
-
-&lt;p&gt;Mark Twain once said that by the time the truth is out of bed a lie is half-way around the world.&lt;/p&gt;
-
-&lt;p&gt;I feel the same about open and closed data.&lt;/p&gt;
-
-&lt;p&gt;Closed data models have the potential for such massive revenues that open data just lags behind.&lt;/p&gt;
-
-&lt;p&gt;Polar is more of a long term vision around distributed content and knowledge sharing which I think can break down these walled gardens and reboot the web to a time when content and knowledge was shared more freely.&lt;/p&gt;
-
-&lt;p&gt;The reason I’m so focused on Polar becoming economically self sufficient is that large organizations like Facebook have such a massive amount of cash compared to non-profits like Wikimedia that this puts us at a major disadvantage.&lt;/p&gt;
-
-&lt;p&gt;I want Polar to be able to stand by itself and have the capital needed to reboot the Internet but at the same time not infringe on the rights of our user base or lock up portions of the Internet the way other companies have done.&lt;/p&gt;
-
-&lt;p&gt;Edmund Burke said that for evil to win is for good men to do nothing.&lt;/p&gt;
-
-&lt;p&gt;This is an uphill battle - but we’re in this together.&lt;/p&gt;
-
-&lt;p&gt;Thanks for all your support.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+when we can identify that they have zero PII.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
