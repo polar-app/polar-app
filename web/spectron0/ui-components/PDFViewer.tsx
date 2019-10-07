@@ -55,6 +55,9 @@ export class PDFViewer extends React.Component<IProps, IState> {
         //
         // this is probably the closet we are going to get to being able to build this.
 
+        // this is the best example It hink.
+        // https://github.com/mozilla/pdf.js/blob/master/examples/components/pageviewer.js#L55
+
         // TODO: use the same CSS elements and classes
         //
         // TODO: sidebar

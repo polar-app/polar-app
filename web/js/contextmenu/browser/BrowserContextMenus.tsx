@@ -2,9 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {showContextMenu} from '@burtonator/react-context-menu-wrapper';
 import {TriggerEvent} from '../TriggerEvent';
-import {DropdownMenu, MenuItem} from "@burtonator/react-dropdown";
 import {BrowserContextMenu} from './BrowserContextMenu';
-import {isPresent} from 'polar-shared/src/Preconditions';
 
 export class BrowserContextMenus {
 

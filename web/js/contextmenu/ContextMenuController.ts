@@ -12,6 +12,7 @@ import {forDict} from 'polar-shared/src/util/Functions';
 import {ElectronContextMenus} from './electron/ElectronContextMenus';
 import {BrowserContextMenus} from './browser/BrowserContextMenus';
 import {BrowserContextMenu} from './browser/BrowserContextMenu';
+import {Platforms} from "../util/Platforms";
 
 const log = Logger.create();
 
@@ -48,11 +49,18 @@ export class ContextMenuController {
 
         log.info("Starting ContextMenuController");
 
-        BrowserContextMenus.create();
 
-        document.querySelectorAll(".page").forEach((targetElement) => {
-            this.registerPageContextMenuListener(<HTMLElement> targetElement);
-        });
+        if (Platforms.isDesktop()) {
+
+            BrowserContextMenus.create();
+
+            document.querySelectorAll(".page").forEach((targetElement) => {
+                this.registerPageContextMenuListener(<HTMLElement> targetElement);
+            });
+
+        } else {
+            log.warn("Not running context menu on mobile device");
+        }
 
     }
 
