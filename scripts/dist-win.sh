@@ -13,7 +13,7 @@ fi
 
 #export CSC_LINK=${WINDOWS_CSC_DIR}/spinn3r.p12
 #export CSC_LINK=/root/windows-csc/spinn3r.p12
-export CSC_LINK=/root/windows-csc/sectigo-csc-2019.crt
+export CSC_LINK=/root/windows-csc/2019/polar-2019.p12
 
 # Error: Cannot extract publisher name from code signing certificate, please
 # file issue. As workaround, set win.publisherName: Error: Exit code: 1. Command
