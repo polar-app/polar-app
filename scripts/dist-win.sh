@@ -6,10 +6,10 @@ WINDOWS_CSC_DIR=$(readlink -m ../polar-bookshelf-secrets/windows-csc)
 
 source ${WINDOWS_CSC_DIR}/windows.sh
 
-if [ "${CSC_KEY_PASSWORD}" == "" ]; then
-    echo "CSC_KEY_PASSWORD not set" > /dev/stderr
-    exit 1
-fi
+#if [ "${CSC_KEY_PASSWORD}" == "" ]; then
+#    echo "CSC_KEY_PASSWORD not set" > /dev/stderr
+#    exit 1
+#fi
 
 #export CSC_LINK=${WINDOWS_CSC_DIR}/spinn3r.p12
 #export CSC_LINK=/root/windows-csc/spinn3r.p12
