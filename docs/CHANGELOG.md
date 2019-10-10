@@ -1,7 +1,9 @@
 
-# latest
+# 1.32.48
 
-- improved issue with markdown exports and text
+- Fixed bug with polar not working when disconnected from the Internet.
+
+- Improved issue with markdown exports and text
 
 - Big upgrade of dependencies.  firebase and pdf.js
 
