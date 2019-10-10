@@ -7,6 +7,7 @@ import {Firestore} from '../firebase/Firestore';
 import {Dialogs} from '../ui/dialogs/Dialogs';
 import {Account} from './Account';
 import {Logger} from "polar-shared/src/logger/Logger";
+import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
 
 const log = Logger.create();
 
@@ -42,10 +43,7 @@ export class Accounts {
             return undefined;
         }
 
-        // we always have to get the most up to date version from the server
-        // otherwise we will have stale data and the user almost always wants
-        // fresh data.
-        const snapshot = await ref.get({ source: 'server' });
+        const snapshot = await DocumentReferences.get(ref, {source: 'server-then-cache'});
 
         if (! snapshot.exists) {
             return undefined;

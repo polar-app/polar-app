@@ -9,24 +9,33 @@ export class DocumentReferences {
      */
     public static async get(ref: DocumentReference, opts: GetOptions = {})   {
 
-        if (opts.source === 'cache-then-server') {
-            return this.getFromCacheFirstThenServer(ref);
-        }
+        const source = opts.source || 'default';
 
-        return await ref.get({source: opts.source});
+        if ('default' === source || 'server' === source || 'cache' === source) {
+            return await ref.get({source});
+        } else if (opts.source === 'cache-then-server') {
+            return this.getWithOrder(ref, 'cache', 'server');
+        } else if (opts.source === 'server-then-cache') {
+            return this.getWithOrder(ref, 'cache', 'server');
+        } else {
+            throw new Error("Unable to fetch reference");
+        }
 
     }
 
-    private static async getFromCacheFirstThenServer(ref: DocumentReference) {
+    private static async getWithOrder(ref: DocumentReference,
+                                      primarySource: DirectSource,
+                                      secondarySource: DirectSource) {
 
         try {
-            return await ref.get({source: 'cache'});
+            return await ref.get({source: primarySource});
         } catch (err) {
             // TODO: we have to see if this is the PROPER error for a missing cache
             // entry
-        }
+            console.warn(`Unable to fetch from primary source ${primarySource} and reverting to secondary ${secondarySource}`);
+            return await ref.get({source: secondarySource});
 
-        return await ref.get({source: 'server'});
+        }
 
     }
 
@@ -61,8 +70,10 @@ export interface GetOptions {
 
 }
 
-export type GetSource = 'default' | 'server'  | 'cache' | 'cache-then-server';
+export type DirectSource = 'server'  | 'cache';
+
+export type GetSource = 'default' | DirectSource | 'cache-then-server' | 'server-then-cache';
 
 export class CacheFirstThenServerGetOptions implements GetOptions {
-    public readonly source = 'cache-then-server';
+    public readonly source: GetSource = 'cache-then-server';
 }
