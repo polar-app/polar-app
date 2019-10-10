@@ -20,6 +20,8 @@ if [ "${branch}" != "master" ]; then
     die "Must be on master branch"
 fi
 
+source ../polar-bookshelf-secrets/credentials.sh
+
 # TODO: consider doing a full rm -rf node_modules first but the problem is that
 # we need to make sure we're still using the right npm binary.
 
