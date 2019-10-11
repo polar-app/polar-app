@@ -1,4 +1,25 @@
-import {AbstractDatastore, BinaryFileData, Datastore, DatastoreOverview, DeleteResult, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DocMetaSnapshotEvents, ErrorListener, FileSynchronizationEvent, FileSynchronizationEventListener, InitResult, PrefsProvider, SnapshotResult, SyncDocMap, SyncDocMaps, SynchronizationEvent, SynchronizationEventListener, SynchronizingDatastore} from './Datastore';
+import {
+    AbstractDatastore,
+    BinaryFileData,
+    Datastore,
+    DatastoreOverview,
+    DatastorePrefs,
+    DeleteResult,
+    DocMetaSnapshotEvent,
+    DocMetaSnapshotEventListener,
+    DocMetaSnapshotEvents,
+    ErrorListener,
+    FileSynchronizationEvent,
+    FileSynchronizationEventListener,
+    InitResult,
+    PrefsProvider,
+    SnapshotResult,
+    SyncDocMap,
+    SyncDocMaps,
+    SynchronizationEvent,
+    SynchronizationEventListener,
+    SynchronizingDatastore
+} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
@@ -27,6 +48,7 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
+import {CompositePrefs, PersistentPrefs} from "../util/prefs/Prefs";
 
 const log = Logger.create();
 
@@ -552,7 +574,24 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     }
 
     public getPrefs(): PrefsProvider {
-        return this.local.getPrefs();
+
+        const cloudPrefs = this.cloud.getPrefs();
+        const localPrefs = this.local.getPrefs();
+
+        // TODO: add support for the event listener version so I can get the most recent
+        // version of the prefs as I think we need that for firebase support.
+
+        const prefs = new CompositePrefs([cloudPrefs.get().prefs, localPrefs.get().prefs]);
+
+        return {
+            get(): DatastorePrefs {
+                return {
+                    prefs: prefs,
+                    unsubscribe: NULL_FUNCTION
+                };
+            }
+        };
+
     }
 
 }

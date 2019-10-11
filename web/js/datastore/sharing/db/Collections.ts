@@ -20,6 +20,12 @@ export class Collections {
 
     }
 
+    public static async createRef(collection: string, id: string) {
+        const firestore = await Firestore.getInstance();
+        const ref = firestore.collection(collection).doc(id);
+        return ref;
+    }
+
     public static async deleteByID(collection: string,
                                    provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
@@ -227,3 +233,5 @@ const DefaultSnapshotErrorHandler = (err: Error, collection: string) => {
     log.error(`Unable to handle snapshot for collection ${collection}: `, err);
 
 };
+
+export type UserIDStr = string;

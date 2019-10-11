@@ -12,7 +12,7 @@ import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Prefs} from '../util/prefs/Prefs';
+import {PersistentPrefs, Prefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -737,9 +737,25 @@ export interface DatastoreInitOpts {
 export interface PrefsProvider {
 
     /**
-     * Get the latest copy of the prefs we're using.
+     * Get the latest copy of the prefs we're using
+     *
+     * @param onUpdated when provided, called when we have an updated copy of our prefs.
      */
-    get(): Prefs;
+    get(onUpdated?: () => void): DatastorePrefs;
+
+}
+
+export interface DatastorePrefs {
+
+    /**
+     * The actual PersistentPrefs object that we're using.
+     */
+    readonly prefs: PersistentPrefs;
+
+    /**
+     * An unsubscribe function used when onUpdated is provided for listening to new events.
+     */
+    readonly unsubscribe: () => void;
 
 }
 

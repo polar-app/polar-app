@@ -1,7 +1,18 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, FileMeta, SnapshotResult, DatastoreOverview, PrefsProvider} from './Datastore';
+import {
+    AbstractDatastore,
+    Datastore,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    FileMeta,
+    SnapshotResult,
+    DatastoreOverview,
+    PrefsProvider,
+    DatastorePrefs
+} from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -15,7 +26,7 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {DictionaryPrefs} from '../util/prefs/Prefs';
+import {DictionaryPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
 import {Providers} from 'polar-shared/src/util/Providers';
 import {WriteFileOpts} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
@@ -37,7 +48,7 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     protected readonly files: {[key: string]: FileData} = {};
 
-    private readonly prefs = new DictionaryPrefs();
+    private readonly prefs = new NonPersistentPrefs();
 
     constructor() {
         super();
@@ -204,7 +215,18 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
     }
 
     public getPrefs(): PrefsProvider {
-        return Providers.toInterface(() => this.prefs);
+
+        return {
+
+            get(): DatastorePrefs {
+                return {
+                    prefs: this.prefs,
+                    unsubscribe: NULL_FUNCTION
+                };
+            }
+
+        };
+
     }
 
 }

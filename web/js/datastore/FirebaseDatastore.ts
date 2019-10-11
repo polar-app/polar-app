@@ -5,7 +5,7 @@ import {
     DatastoreCapabilities,
     DatastoreConsistency,
     DatastoreInitOpts,
-    DatastoreOverview,
+    DatastoreOverview, DatastorePrefs,
     DefaultWriteFileOpts,
     DeleteResult,
     DocMetaMutation,
@@ -44,7 +44,6 @@ import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {Firebase, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {LocalStoragePrefs} from '../util/prefs/Prefs';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from '../util/Stopwatches';
@@ -57,6 +56,8 @@ import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
+import {UserPrefs} from "./firebase/UserPrefs";
+import {FirestorePrefs} from "./firebase/FirestorePrefs";
 
 const log = Logger.create();
 
@@ -78,6 +79,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
+    private readonly prefs: FirestorePrefs = new FirestorePrefs();
+
     constructor() {
         super();
     }
@@ -92,6 +95,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         log.notice("Initializing FirebaseDatastore.");
 
         await FirebaseDatastores.init();
+
+        await this.prefs.init();
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
@@ -707,7 +712,16 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     public getPrefs(): PrefsProvider {
-        return Providers.toInterface(() => new LocalStoragePrefs());
+
+        return {
+            get(): DatastorePrefs {
+                return {
+                    prefs: this.prefs,
+                    unsubscribe: NULL_FUNCTION
+                };
+            }
+        };
+
     }
 
     /**

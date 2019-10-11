@@ -20,7 +20,7 @@ export abstract class Prefs {
     }
 
     public toggleMarked(key: string, value: boolean = false) {
-        this.mark(key, ! this.isMarked(key, value));
+        this.mark(key, !this.isMarked(key, value));
     }
 
     public isMarked(key: string, defaultValue: boolean = false) {
@@ -69,6 +69,20 @@ export abstract class Prefs {
      */
     public abstract set(key: string, value: string): void;
 
+    public abstract toDict(): StringToStringDict;
+
+}
+
+/**
+ * A prefs object that can be persisted to disk
+ */
+export interface PersistentPrefs extends Prefs {
+
+    /**
+     * Commit this prefs.
+     */
+    commit(): Promise<void>;
+
 }
 
 /**
@@ -76,7 +90,7 @@ export abstract class Prefs {
  */
 export class DictionaryPrefs extends Prefs {
 
-    public delegate: StringToStringDict = {};
+    protected delegate: StringToStringDict = {};
 
     constructor(delegate: StringToStringDict = {}) {
         super();
@@ -97,17 +111,74 @@ export class DictionaryPrefs extends Prefs {
 
 }
 
-/**
- * Designed to be used in browsers.
- */
-export class LocalStoragePrefs extends Prefs {
+export class CompositePrefs implements PersistentPrefs {
+
+    /**
+     * The primary delegate
+     */
+    private delegate: PersistentPrefs;
+
+    private delegates: ReadonlyArray<PersistentPrefs>;
+
+    constructor(delegates: ReadonlyArray<PersistentPrefs>) {
+        this.delegate = delegates[0];
+        this.delegates = delegates;
+    }
+
+    public defined(key: string): boolean {
+        return this.delegate.defined(key);
+    }
 
     public get(key: string): Optional<string> {
-        return Optional.of(window.localStorage.getItem(key));
+        return this.delegate.get(key);
+    }
+
+    public isMarked(key: string, defaultValue?: boolean): boolean {
+        return this.delegate.isMarked(key, defaultValue);
+    }
+
+    public isMarkedDelayed(key: string): boolean {
+        return this.delegate.isMarkedDelayed(key);
+    }
+
+    public mark(key: string, value?: boolean): void {
+        return this.delegate.mark(key, value);
+    }
+
+    public markDelayed(key: string, duration?: string): void {
+        return this.delegate.markDelayed(key, duration);
+    }
+
+    public toDict(): StringToStringDict {
+        return this.delegate.toDict();
+    }
+
+    public toggleMarked(key: string, value?: boolean): void {
+        return this.toggleMarked(key, value);
+    }
+
+    public async commit(): Promise<void> {
+
+        for (const delegate of this.delegates) {
+            await this.delegate.commit();
+        }
+
     }
 
     public set(key: string, value: string): void {
-        window.localStorage.setItem(key, value);
+
+        for (const delegate of this.delegates) {
+            this.delegate.set(key, value);
+        }
+
+    }
+
+}
+
+export class NonPersistentPrefs extends DictionaryPrefs implements PersistentPrefs {
+
+    public async commit(): Promise<void> {
+
     }
 
 }

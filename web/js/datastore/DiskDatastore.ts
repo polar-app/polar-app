@@ -1,4 +1,16 @@
-import {AbstractDatastore, Datastore, DatastoreInfo, DatastoreOverview, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, InitResult, PrefsProvider, SnapshotResult} from './Datastore';
+import {
+    AbstractDatastore,
+    Datastore,
+    DatastoreInfo,
+    DatastoreOverview,
+    DatastorePrefs,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    InitResult,
+    PrefsProvider,
+    SnapshotResult
+} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -22,7 +34,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from '../util/Stopwatches';
-import {Prefs, StringToStringDict} from '../util/prefs/Prefs';
+import {PersistentPrefs, Prefs, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
@@ -519,8 +531,11 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const diskPrefsStore = this.diskPrefsStore;
 
         return {
-            get() {
-                return diskPrefsStore.getPrefs();
+            get(): DatastorePrefs {
+                return {
+                    prefs: diskPrefsStore.getPrefs(),
+                    unsubscribe: NULL_FUNCTION
+                };
             }
         };
 
@@ -811,7 +826,7 @@ export class DiskPrefsStore {
 /**
  * Prefs object just backed by a local dictionary.
  */
-export class DiskPrefs extends Prefs {
+export class DiskPrefs extends Prefs implements PersistentPrefs {
 
     private readonly delegate: StringToStringDict = {};
 
@@ -828,10 +843,6 @@ export class DiskPrefs extends Prefs {
 
     public set(key: string, value: string): void {
         this.delegate[key] = value;
-
-        this.diskPrefsStore.commit()
-            .catch(err => log.error("Unable to write prefs: ", err));
-
     }
 
     public update(dict: StringToStringDict) {
@@ -846,5 +857,10 @@ export class DiskPrefs extends Prefs {
     public toDict(): StringToStringDict {
         return {...this.delegate};
     }
+
+    public async commit(): Promise<void> {
+        return await this.diskPrefsStore.commit();
+    }
+
 
 }
