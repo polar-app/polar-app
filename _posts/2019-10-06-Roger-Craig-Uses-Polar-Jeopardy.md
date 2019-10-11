@@ -22,8 +22,8 @@ this time <a href="https://superorganizers.substack.com/p/how-a-jeopardy-champio
 > superstar.
 
 Roger and I have similar backgrounds - both machine learning and big data and it looks like we arrived at the same
-general strategy for managing knowledge.  Specifically, use tools like NLP, clustering, and spaced repetition to force
-material to be stored in your brain long term with high retention.
+general strategy for managing knowledge.  Specifically, use tools like natural language parsing (NLP), clustering, and
+spaced repetition to force material to be stored in your brain long term with high retention.
 
 > How he uses Polarized to save and take notes on PDFs
   
@@ -45,4 +45,36 @@ The entire point of Polar is that we're trying to democratize this technology an
 As an aside, it's been really interesting to see who's been using Polar.  Lots of PhD students, VCs, researchers, 
 academics, scientists, etc.  Very exciting to see such amazingly smart people using the product.
 
-Stay tuned!
+## Machine Learning and Spaced Repetition
+
+<p class="text-center">
+<img class="img-fluid" src="https://i.imgur.com/UJ00QuW.png">
+</p>
+
+**UPDATED** I managed to schedule some time to talk to Roger about his use of Polar and Anki on Jeopardy.
+
+We both come from similar backgrounds so it was nice to compare notes about NLP and machine learning and how it can
+apply to optimized learning.
+
+He first competed in Jeopardy in 2010 and NLP (and machine learning) has come a long way since them.
+
+Back then, NLP technology was available but just VERY expensive.  Now it's essentially commodity and dirt cheap.  
+
+The NLP frameworks in Python can be used for free meaning if you're an alpha-geek you can build something pretty
+straight froward by putting together a few scripts.
+
+What we're trying to do in Polar is democratize a lot of this technology and make it "just work" right out of the box.
+
+I talked to Roger about using NLP and machine to automatically build flashcards from textbooks. There's still a lot of
+active research in this area with question and answer generation from text corpora.  
+
+There might be some low hanging fruit by parsing text the user is reading and finding the first named entities mentioned and
+building flashcards directly from those first sentences.
+
+Sentence boundary detection and NLP can be used to take a textbook and allow the user to easily generate flashcards 
+with one click.
+
+This is something I'm working on improving in future versions of Polar but first we have to improve usability.
+
+We're going to keep comparing notes and try to sync up again in another few weeks.  There's definitely a lot of 
+potential for using machine learning to improve the efficiency of education.

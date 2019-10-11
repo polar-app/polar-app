@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-08T09:23:16-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-10T17:51:22-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
 
@@ -20,8 +20,8 @@ superstar.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Roger and I have similar backgrounds - both machine learning and big data and it looks like we arrived at the same
-general strategy for managing knowledge.  Specifically, use tools like NLP, clustering, and spaced repetition to force
-material to be stored in your brain long term with high retention.&lt;/p&gt;
+general strategy for managing knowledge.  Specifically, use tools like natural language parsing (NLP), clustering, and
+spaced repetition to force material to be stored in your brain long term with high retention.&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;How he uses Polarized to save and take notes on PDFs&lt;/p&gt;
@@ -51,7 +51,36 @@ support for full-text search, clustering, auto-tagging, etc.&lt;/p&gt;
 &lt;p&gt;As an aside, it’s been really interesting to see who’s been using Polar.  Lots of PhD students, VCs, researchers, 
 academics, scientists, etc.  Very exciting to see such amazingly smart people using the product.&lt;/p&gt;
 
-&lt;p&gt;Stay tuned!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
+&lt;h2 id=&quot;machine-learning-and-spaced-repetition&quot;&gt;Machine Learning and Spaced Repetition&lt;/h2&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/UJ00QuW.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;UPDATED&lt;/strong&gt; I managed to schedule some time to talk to Roger about his use of Polar and Anki on Jeopardy.&lt;/p&gt;
+
+&lt;p&gt;We both come from similar backgrounds so it was nice to compare notes about NLP and machine learning and how it can
+apply to optimized learning.&lt;/p&gt;
+
+&lt;p&gt;He first competed in Jeopardy in 2010 and NLP (and machine learning) has come a long way since them.&lt;/p&gt;
+
+&lt;p&gt;Back then, NLP technology was available but just VERY expensive.  Now it’s essentially commodity and dirt cheap.&lt;/p&gt;
+
+&lt;p&gt;The NLP frameworks in Python can be used for free meaning if you’re an alpha-geek you can build something pretty
+straight froward by putting together a few scripts.&lt;/p&gt;
+
+&lt;p&gt;What we’re trying to do in Polar is democratize a lot of this technology and make it “just work” right out of the box.&lt;/p&gt;
+
+&lt;p&gt;I talked to Roger about using NLP and machine to automatically build flashcards from textbooks. There’s still a lot of
+active research in this area with question and answer generation from text corpora.&lt;/p&gt;
+
+&lt;p&gt;There might be some low hanging fruit by parsing text the user is reading and finding the first named entities mentioned and
+building flashcards directly from those first sentences.&lt;/p&gt;
+
+&lt;p&gt;Sentence boundary detection and NLP can be used to take a textbook and allow the user to easily generate flashcards 
+with one click.&lt;/p&gt;
+
+&lt;p&gt;This is something I’m working on improving in future versions of Polar but first we have to improve usability.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
 
 &lt;p&gt;We had an outage last night for Polar cloud sync and our web application which was related to an issue in Google cloud.&lt;/p&gt;
 
