@@ -90,7 +90,7 @@ export class LoadExampleDocs {
         return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'dremel.pdf'), {
             fingerprint: "69cf32b9ffbb82056a3ac0eadea447de",
             title: "Dremel: Interactive Analysis of Web-Scale Datasets",
-            tags: this.createTags('google', 'dremel'),
+            tags: this.createTags('google', 'dremel', '/technology/google'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 1,
@@ -108,7 +108,7 @@ export class LoadExampleDocs {
         return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'datacenter-as-a-computer.pdf'), {
             fingerprint: "a81fe1c43148c3448e1a4133a5c8005e",
             title: "The Datacenter as a Computer",
-            tags: this.createTags('google', 'datacenters'),
+            tags: this.createTags('google', 'datacenters', '/technology/google'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
@@ -126,7 +126,7 @@ export class LoadExampleDocs {
         return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'chubby.pdf'), {
             fingerprint: "c29bc1717788b1602a3cf4ed28ddfbcd",
             title: "The Chubby lock service for loosely-coupled distributed systems",
-            tags: this.createTags('google', 'chubby'),
+            tags: this.createTags('google', 'chubby', '/technology/google'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3h'),
             pagemarkEnd: 2,
@@ -144,7 +144,7 @@ export class LoadExampleDocs {
         return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'borg.pdf'), {
             fingerprint: "3417be32534083dea66d733604d36d75",
             title: "Large-scale cluster management at Google with Borg",
-            tags: this.createTags('google', 'borg', 'docker'),
+            tags: this.createTags('google', 'borg', 'docker', '/technology/docker'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-3d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-8h'),
             pagemarkEnd: 2,
@@ -163,7 +163,7 @@ export class LoadExampleDocs {
         return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'availability.pdf'), {
             fingerprint: "39b730b6e9d281b0eae91b2c2c29b842",
             title: "Availability in Globally Distributed Storage Systems",
-            tags: this.createTags('google', 'availability'),
+            tags: this.createTags('google', 'availability', '/technology/google'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2d'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-12h'),
             pagemarkEnd: 7,
@@ -200,7 +200,7 @@ export class LoadExampleDocs {
         return await this.doDoc(FilePaths.join('docs', 'examples', 'pdf', 'pub47492.pdf'), {
             fingerprint: "6ea16525b2e4eab7b946f68419a345a6",
             title: "Efficient Live Expansion for Clos Data Center Networks",
-            tags: this.createTags('google', 'datacenters'),
+            tags: this.createTags('google', 'datacenters', '/technology/networks', '/technology/datacenters'),
             added: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-2h'),
             lastUpdated: ISODateTimeStrings.adjust(ISODateTimeStrings.create(), '-1h'),
             pagemarkEnd: 17,
