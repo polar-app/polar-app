@@ -3,8 +3,8 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Point} from './Point';
 import {Line} from './util/Line';
 import {Styles} from './util/Styles';
-import {Objects} from './util/Objects';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
+import {Objects} from "polar-shared/src/util/Objects";
 
 export class Rects {
 

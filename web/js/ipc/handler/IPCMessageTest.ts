@@ -1,6 +1,6 @@
 import {IPCMessage} from './IPCMessage';
-import {Objects} from '../../util/Objects';
 import {IPCError} from './IPCError';
+import {Objects} from "polar-shared/src/util/Objects";
 
 const assert = require('assert');
 

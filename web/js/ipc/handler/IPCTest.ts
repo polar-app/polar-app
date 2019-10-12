@@ -1,7 +1,6 @@
 import {IPCRegistry} from './IPCRegistry';
 import {IPCHandler} from './IPCHandler';
 import {IPCMessage} from './IPCMessage';
-import {Objects} from '../../util/Objects';
 import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
 import {IPCPipe} from './IPCPipe';
@@ -9,6 +8,7 @@ import {IPCEvent} from './IPCEvent';
 import {Pipe, PipeNotification} from '../pipes/Pipe';
 import {MockPipes} from '../pipes/MockPipes';
 import {IPCClient} from './IPCClient';
+import {Objects} from "polar-shared/src/util/Objects";
 
 let mockChannels: MockPipes<PersonEvent, any>;
 

@@ -3,8 +3,8 @@ import {Line} from '../../../../util/Line';
 import {LineEdges} from '../edges/LineEdges';
 import {RectEdges} from '../edges/RectEdges';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Objects} from '../../../../util/Objects';
 import {Rects} from '../../../../Rects';
+import {Objects} from "polar-shared/src/util/Objects";
 
 export class ResizeRectAdjacencyCalculator {
 

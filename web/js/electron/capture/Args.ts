@@ -1,5 +1,5 @@
 import {ArgsParser} from '../../util/ArgsParser';
-import {Objects} from '../../util/Objects';
+import {Objects} from "polar-shared/src/util/Objects";
 
 
 export class Args {

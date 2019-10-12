@@ -4,7 +4,7 @@
 
 import * as firebase from './lib/firebase';
 import firebaseui from './lib/firebaseui';
-import {Objects} from '../util/Objects';
+import {Objects} from "polar-shared/src/util/Objects";
 
 // noinspection TsLint: max-line-length
 const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/content.html';

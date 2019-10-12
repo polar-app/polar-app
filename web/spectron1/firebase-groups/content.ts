@@ -45,12 +45,12 @@ import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLaye
 import {Datastores} from '../../js/datastore/Datastores';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {DocMetaFileRef} from '../../js/datastore/DocMetaRef';
-import {canonicalize} from '../../js/util/Objects';
 import {GroupMemberDeletes} from '../../js/datastore/sharing/rpc/GroupMemberDeletes';
 import {UserRefs} from '../../js/datastore/sharing/rpc/UserRefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {EmailStr} from "polar-shared/src/util/Strings";
+import {canonicalize} from "polar-shared/src/util/Objects";
 
 const log = Logger.create();
 

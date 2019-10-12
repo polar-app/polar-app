@@ -1,6 +1,6 @@
 import {FlashcardFieldType} from "./FlashcardFieldType";
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Objects} from "../util/Objects";
+import {Objects} from "polar-shared/src/util/Objects";
 
 
 export class FlashcardField {

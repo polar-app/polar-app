@@ -1,7 +1,6 @@
 import {Preconditions} from "polar-shared/src/Preconditions";
 
 import {elementOffset, Styles} from "../../../utils";
-import {Objects} from "../../../util/Objects";
 import {RectElement} from "./RectElement";
 import {TextHighlightRow} from "./TextHighlightRow";
 import {IntermediateRow} from "./IntermediateRow";
@@ -11,6 +10,7 @@ import {Elements} from "../../../util/Elements";
 import {createSiblingTuples} from "polar-shared/src/util/Functions";
 import {MutableIRect} from "polar-shared/src/util/rects/IRect";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {Objects} from "polar-shared/src/util/Objects";
 
 /**
  * TODO:

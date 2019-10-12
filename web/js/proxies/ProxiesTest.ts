@@ -4,13 +4,13 @@ import {Proxies} from './Proxies';
 import {assertJSON} from '../test/Assertions';
 import {TraceListener} from './TraceListener';
 import {TraceEvent} from './TraceEvent';
-import {Objects} from '../util/Objects';
 import {Symbol} from '../metadata/Symbol';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {DocMetas} from '../metadata/DocMetas';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {Objects} from "polar-shared/src/util/Objects";
 
 describe('Proxies', function() {
 

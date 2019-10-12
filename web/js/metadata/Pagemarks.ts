@@ -2,7 +2,6 @@ import {PagemarkRect} from './PagemarkRect';
 import {Pagemark, PagemarkRef} from './Pagemark';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {Objects} from '../util/Objects';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
@@ -23,6 +22,7 @@ import {IPageMeta, PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {Objects} from "polar-shared/src/util/Objects";
 
 const log = Logger.create();
 

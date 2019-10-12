@@ -15,9 +15,9 @@ import {ContentCaptureExecutor} from './ContentCaptureExecutor';
 import {ResolvablePromise} from '../util/ResolvablePromise';
 import BrowserRegistry from './BrowserRegistry';
 import {BrowserProfiles} from './BrowserProfiles';
-import {Objects} from '../util/Objects';
 import {Strings} from "polar-shared/src/util/Strings";
 import {Latch} from "polar-shared/src/util/Latch";
+import {Objects} from "polar-shared/src/util/Objects";
 
 const log = Logger.create();
 

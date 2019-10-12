@@ -2,7 +2,6 @@ import {BoxMoveEvent} from './BoxMoveEvent';
 import {BoxOptions} from './BoxOptions';
 import {Rects} from '../../Rects';
 import {Rect} from '../../Rect';
-import {Objects} from '../../util/Objects';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {RectEdges} from '../../pagemarks/controller/interact/edges/RectEdges';
@@ -12,6 +11,7 @@ import {ResizeRectAdjacencyCalculator} from '../../pagemarks/controller/interact
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 import interact from 'interactjs';
+import {Objects} from "polar-shared/src/util/Objects";
 
 const log = Logger.create();
 

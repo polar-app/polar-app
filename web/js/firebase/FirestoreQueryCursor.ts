@@ -1,5 +1,5 @@
 import {Firestore} from './Firestore';
-import {Objects} from '../util/Objects';
+import {Objects} from "polar-shared/src/util/Objects";
 
 /**
  * Build a simple query cursor for Firesotre queries.

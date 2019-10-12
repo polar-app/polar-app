@@ -1,5 +1,5 @@
 import {BrowserWindowReference} from './BrowserWindowReference';
-import {Objects} from '../../util/Objects';
+import {Objects} from "polar-shared/src/util/Objects";
 
 export class DialogWindowReference extends BrowserWindowReference {
 

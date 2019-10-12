@@ -8,12 +8,12 @@
  * so we have to use Proxy objects to implement this functionality.
  */
 import {TraceListeners} from "./TraceListeners";
-import {Objects} from "../util/Objects";
 import {TraceHandler} from "./TraceHandler";
 import {ObjectPaths} from "./ObjectPaths";
 import {Paths} from "polar-shared/src/util/Paths";
 import {TraceListener, TraceListenerFunction} from './TraceListener';
 import {TraceEvent} from './TraceEvent';
+import {Objects} from "polar-shared/src/util/Objects";
 
 /**
  * A sequence identifier generator so that we can assign objects a unique value
