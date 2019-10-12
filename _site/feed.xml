@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-11T10:04:28-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-12T11:18:31-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
 
@@ -83,7 +83,144 @@ with one click.&lt;/p&gt;
 &lt;p&gt;This is something I’m working on improving in future versions of Polar but first we have to improve usability.&lt;/p&gt;
 
 &lt;p&gt;We’re going to keep comparing notes and try to sync up again in another few weeks.  There’s definitely a lot of 
-potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
+potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/06/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Future-of-Polar-Cloud-Sync.html">&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+
+&lt;p&gt;We’re going to be changing some features in the ‘local’ mode version of Polar and some new cloud features won’t be 
+available in this mode.&lt;/p&gt;
+
+&lt;p&gt;I’ve tried to keep Polar’s local mode as full featured as possible but I’ve decided that this just isn’t possible 
+moving forward.&lt;/p&gt;
+
+&lt;p&gt;New features like full-text search, machine learning, and other features won’t be available in local mode.&lt;/p&gt;
+
+&lt;p&gt;I’ll explain more below but please read the full post if you’re concerned or have any suggestions.&lt;/p&gt;
+
+&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
+
+&lt;p&gt;Polar has three modes of operation.  Local, cloud, and web.  These are internal modes and you’ve probably never 
+really thought of them before.&lt;/p&gt;
+
+&lt;p&gt;When you first install Polar on the desktop it’s local only. No files are written to the cloud.&lt;/p&gt;
+
+&lt;p&gt;When you login to cloud on the desktop, it goes into cloud mode and transparently syncs between local and the cloud
+so that your local files are synchronized between all your devices.&lt;/p&gt;
+
+&lt;p&gt;The web mode is basically just the cloud mode bug without any local support.  It’s what you’re using when you login 
+to the webapp or use Polar on tablet or desktop devices.  It has the same features as cloud mode.&lt;/p&gt;
+
+&lt;h1 id=&quot;motivation&quot;&gt;Motivation&lt;/h1&gt;
+
+&lt;p&gt;Features like full-text search and other machine learning (ML) features have been requested by our users for a while now.&lt;/p&gt;
+
+&lt;p&gt;I want to add these features but they’re very complex and I can’t approach them as I would like adding a new UI button 
+or something trivial.  Complex performance issues, scale, power utilization, all factor into this decision.&lt;/p&gt;
+
+&lt;h1 id=&quot;reasoning&quot;&gt;Reasoning&lt;/h1&gt;
+
+&lt;p&gt;Mobile and tablet support are going to be a big part of Polar’s future.  After talking to our users it’s becoming 
+very clear that we’d probably have 50% of our users using these devices if they weren’t locked down to just desktop
+and the web.&lt;/p&gt;
+
+&lt;p&gt;This is by far the primary motivator for implementing these features in the cloud.&lt;/p&gt;
+
+&lt;p&gt;I can’t use Elasticsearch in mobile devices.  We can’t spin up tensor flow on your tablet.&lt;/p&gt;
+
+&lt;p&gt;Even if we could the power requirements would be insane.&lt;/p&gt;
+
+&lt;h2 id=&quot;portability&quot;&gt;Portability&lt;/h2&gt;
+
+&lt;p&gt;Any code based on cloud infrastructure will work across all devices.&lt;/p&gt;
+
+&lt;p&gt;Mobile, tablet, desktop. Android, iOS, MacOS, Windows, Linux.&lt;/p&gt;
+
+&lt;p&gt;If we’re using Elasticsearch in the cloud it doesn’t matter which frontend device you’re using.&lt;/p&gt;
+
+&lt;h2 id=&quot;complexity&quot;&gt;Complexity&lt;/h2&gt;
+
+&lt;p&gt;Supporting all platforms and operating systems for these features would be completely unworkable.&lt;/p&gt;
+
+&lt;h2 id=&quot;performance&quot;&gt;Performance&lt;/h2&gt;
+
+&lt;p&gt;Even if we could solve all the above the performance would be abysmal.  Importing a large document set could take 5-15 
+minutes when using full-text indexing.&lt;/p&gt;
+
+&lt;p&gt;With Elasticsearch I can index your documents across 100 nodes in parallel and have it done 100x faster.&lt;/p&gt;
+
+&lt;h2 id=&quot;feature-set&quot;&gt;Feature Set&lt;/h2&gt;
+
+&lt;p&gt;Frameworks like Elasticsearch and Tensorflow are very powerful. We might be able to get away with using something else 
+but for the most part it’s not going to be worth it.&lt;/p&gt;
+
+&lt;p&gt;Even simple features like language stemming aren’t really well documented in other desktop-only search libraries.&lt;/p&gt;
+
+&lt;h2 id=&quot;scale&quot;&gt;Scale&lt;/h2&gt;
+
+&lt;p&gt;Moving forward, I can bring in additional teams to easily manage these services on the backend.  This is going to help
+grow the team and make sure you’re a satisfied user.&lt;/p&gt;
+
+&lt;h1 id=&quot;pricing-and-access&quot;&gt;Pricing and Access&lt;/h1&gt;
+
+&lt;p&gt;Some of these cloud features will cost money.&lt;/p&gt;
+
+&lt;p&gt;I have some ideas on how to keep things more affordable (and free) for students and freemium users but generally
+speaking, users with larger repositories will have to pay to use these features.&lt;/p&gt;
+
+&lt;p&gt;… but believe me, it will be worth it!&lt;/p&gt;
+
+&lt;h2 id=&quot;unlocking-features&quot;&gt;Unlocking Features&lt;/h2&gt;
+
+&lt;p&gt;Some features of Polar may be unlocked in the future and in that case, if you don’t want to use any cloud services, we
+will just authenticate you and then allow you to opt out of cloud sync.&lt;/p&gt;
+
+&lt;h1 id=&quot;backups--snapshots&quot;&gt;Backups / Snapshots&lt;/h1&gt;
+
+&lt;p&gt;This will also allow us to support backups and snapshots of your data so that you can restore data directly from the 
+cloud.  Google cloud storage is insanely cheap so the plan is to enable a simple export/import mechanism which will 
+store your datastore directly on Google Cloud Storage.&lt;/p&gt;
+
+&lt;p&gt;The pricing for this is reasonable so we’re planning on taking regular backups for our users.&lt;/p&gt;
+
+&lt;h1 id=&quot;offline-first-and-data-privacy&quot;&gt;Offline First and Data Privacy&lt;/h1&gt;
+
+&lt;p&gt;We generally support the “offline-first” movement to keep data out of cloud devices but it’s a very complicated subject.&lt;/p&gt;
+
+&lt;p&gt;Some users don’t want any of their data in the cloud. Some are just concerned about which data providers are used.&lt;br /&gt;
+Some users don’t care at all as long as it’s reasonably secure.&lt;/p&gt;
+
+&lt;p&gt;One major issue is data storage location.&lt;/p&gt;
+
+&lt;p&gt;We’re going to improve our usability here by allowing the user to pick a primary location among the available Google 
+datacenters.&lt;/p&gt;
+
+&lt;p&gt;We’re going to support the United States and Western Europe.  &lt;a href=&quot;https://firebase.google.com/docs/firestore/locations&quot;&gt;Google’s Datacenters are located here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This will help our users concerned about where they have their physical data stored.&lt;/p&gt;
+
+&lt;p&gt;We probably won’t have this soon but we’d like to have it done in the near term (3-12 months).&lt;/p&gt;
+
+&lt;p&gt;We won’t be able to provide any non-Google issues as we’re using their Firebase platform and don’t have plans to move away.&lt;/p&gt;
+
+&lt;h1 id=&quot;additional-features&quot;&gt;Additional Features&lt;/h1&gt;
+
+&lt;p&gt;Cloud mode enables additional features as well including the ability to sync the URL of your document (or annotations)
+to Anki so that the context for a flashcard is available with one click.&lt;/p&gt;
+
+&lt;p&gt;We’re just simply not able to implement features like this without some type of cloud backend.&lt;/p&gt;
+
+&lt;h1 id=&quot;default-mode&quot;&gt;Default Mode&lt;/h1&gt;
+
+&lt;p&gt;In the future we will encourage users to use the cloud mode by default so that all features are enabled including sync.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;In summary, Polar will continue to support local mode into the near future with limited features compared to full cloud
+and web mode.&lt;/p&gt;
+
+&lt;p&gt;We’re also going to encourage users to use cloud mode by default moving forward and will also allow you to pick your 
+own datacenter and by default pick one closer to you.&lt;/p&gt;
+
+&lt;p&gt;With the new cloud support we also intend on supporting advanced features like full-text search, machine learning, and 
+backups.&lt;/p&gt;</content><author><name></name></author><summary type="html">Overview</summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
 
 &lt;p&gt;We had an outage last night for Polar cloud sync and our web application which was related to an issue in Google cloud.&lt;/p&gt;
 
@@ -1096,274 +1233,4 @@ functionality but it’s not enabled yet.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;Using the same account widget on web + desktop now.&lt;/li&gt;
 
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.18.0 Released</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Polar Mission Statement and Design for a Personal Knowledge Repository</title><link href="https://getpolarized.io/2019/04/11/Polar-Mission-Statement.html" rel="alternate" type="text/html" title="Polar Mission Statement and Design for a Personal Knowledge Repository" /><published>2019-04-11T06:00:00-07:00</published><updated>2019-04-11T06:00:00-07:00</updated><id>https://getpolarized.io/2019/04/11/Polar-Mission-Statement</id><content type="html" xml:base="https://getpolarized.io/2019/04/11/Polar-Mission-Statement.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/darts-scaled.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This document is under construction and still evolving.&lt;/p&gt;
-
-&lt;h1 id=&quot;polar-mission-statement-and-design-for-a-personal-knowledge-repository&quot;&gt;Polar Mission Statement and Design for a Personal Knowledge Repository&lt;/h1&gt;
-
-&lt;p&gt;Polar has a broad mission statement to provide high quality tools for document
-annotation, management of documents (tagging, storage, etc) and sharing of 
-content.&lt;/p&gt;
-
-&lt;p&gt;There’s a great deal of overlap in the technical requirements needed for these
-features so Polar provides a great deal of functionality to provide a
-comprehensive personal knowledge repository and distributed content management
-platform.&lt;/p&gt;
-
-&lt;h2 id=&quot;roadmap&quot;&gt;Roadmap&lt;/h2&gt;
-
-&lt;p&gt;See the roadmap for &lt;a href=&quot;https://getpolarized.io/2019/04/10/Roadmap-Q2-Q3-2019.html&quot;&gt;Q2/Q3/Q4 2019&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The roadmap living document so please check back over time to see how it evolves
-especially as new features are released.&lt;/p&gt;
-
-&lt;h2 id=&quot;use-cases&quot;&gt;Use Cases&lt;/h2&gt;
-
-&lt;p&gt;Polar focuses on a number of key use cases.&lt;/p&gt;
-
-&lt;p&gt;The core is document management which provides about 70% of the technical
-complexity and allows us to re-use this infrastructure for the other use cases.&lt;/p&gt;
-
-&lt;p&gt;Each additional use case builds upon but shares the core functionality to avoid
-technical complications.&lt;/p&gt;
-
-&lt;h3 id=&quot;document-management&quot;&gt;Document Management&lt;/h3&gt;
-
-&lt;p&gt;Document management is used by nearly all additional layers within Polar.  This
-includes basic functionality like adding documents, supporting multiple formats,
-storing metadata (title, author, etc) and handles replication, document
-integrity, etc.&lt;/p&gt;
-
-&lt;p&gt;Functionally, this includes features like tagging, flagging, archiving, updating
-metadata, etc.&lt;/p&gt;
-
-&lt;h3 id=&quot;incremental-reading&quot;&gt;Incremental Reading&lt;/h3&gt;
-
-&lt;p&gt;Allows the user to keep track of their position using pagemarks, update their
-pagemarks as they read documents, find new documents to read, etc.&lt;/p&gt;
-
-&lt;p&gt;We also keep track of core stats including number or documents read per day, etc
-to encourage the user to hit their reading goals.&lt;/p&gt;
-
-&lt;h3 id=&quot;annotation&quot;&gt;Annotation&lt;/h3&gt;
-
-&lt;p&gt;Supports text and area highlighting, comments, flashcards, etc. The user can
-attach annotations directly to documents.&lt;/p&gt;
-
-&lt;p&gt;Annotations are top level metadata and can be exported, copied, and shared 
-between users.&lt;/p&gt;
-
-&lt;h3 id=&quot;document-sharing-and-collaboration&quot;&gt;Document Sharing and Collaboration&lt;/h3&gt;
-
-&lt;p&gt;Document sharing allows others to view and share documents you’re reading, and annotating.&lt;/p&gt;
-
-&lt;p&gt;This is a key Polar function as we want to test collaborative sharing to improve
-knowledge retention using flashcards, and annotations to allow users who are 
-sharing the same documents to actively collaborate towards a better experience.&lt;/p&gt;
-
-&lt;p&gt;For example, users could collaboratively build flashcards, add video, etc.&lt;/p&gt;
-
-&lt;p&gt;We could also use this to automatically suggest flashcards for users of 
-documents that are being shared with Polar.&lt;/p&gt;
-
-&lt;p&gt;This way you could add a text-book and have pre-built flashcards already 
-compiled and easily added with one click.&lt;/p&gt;
-
-&lt;h3 id=&quot;bibliography-management&quot;&gt;Bibliography Management&lt;/h3&gt;
-
-&lt;p&gt;This is primarily used for the scientific community and involves lookup of
-document metadata via DOI, preserving extended metadata including author
-information, and supports exporting selected documents as a bibliography.&lt;/p&gt;
-
-&lt;h3 id=&quot;web-archival&quot;&gt;Web Archival&lt;/h3&gt;
-
-&lt;p&gt;Annotating web content is irrelevant if the document can be deleted by the site
-thereby invalidating your annotations.&lt;/p&gt;
-
-&lt;p&gt;Polar supports storing web content offline supporting annotations against
-content that may or may not be deleted (or updated) by the original site.&lt;/p&gt;
-
-&lt;p&gt;We plan on extending this use case to both improve archival in general but also 
-support more transparent archives that seem like real web pages within your web 
-browser.&lt;/p&gt;
-
-&lt;p&gt;We also intend on supporting annotations for content which isn’t necessarily
-cached.  This functionality should allow Polar to be used by more users as it
-should be much easier to annotate content when it’s just a native web page.&lt;/p&gt;
-
-&lt;h3 id=&quot;spaced-repetition-and-flashcard-management&quot;&gt;Spaced Repetition and Flashcard Management&lt;/h3&gt;
-
-&lt;p&gt;Having all your reading at your fingertips is pointless if it’s quickly
-forgotten.&lt;/p&gt;
-
-&lt;p&gt;Polar currently implements spaced repetition by supporting easy flashcard
-creation and attaching these to text/area highlights directly.&lt;/p&gt;
-
-&lt;p&gt;The Flashcards can then be sync’d directly to Anki.&lt;/p&gt;
-
-&lt;p&gt;We tend to continue supporting Anki for power users for the forseeable future
-but also want to support basic spaced repetition within Polar directly.&lt;/p&gt;
-
-&lt;p&gt;This will help people who aren’t Anki power users get started with SR without 
-having to commit to Anki, add the plugin, create an account for sync there, 
-install the app on their phone, etc.&lt;/p&gt;
-
-&lt;h2 id=&quot;5d-internet&quot;&gt;5D Internet&lt;/h2&gt;
-
-&lt;p&gt;Polar provides a five dimensional (5D) web platform.  We assert that the current
-Internet is three-dimensional (3D) with traditional pages and links forming
-nodes, edges and building a graph representation of the web.&lt;/p&gt;
-
-&lt;p&gt;We’re adding the following dimensions:&lt;/p&gt;
-
-&lt;h3 id=&quot;fourth-dimension-time&quot;&gt;Fourth Dimension: Time&lt;/h3&gt;
-
-&lt;p&gt;Polar supports a content addressable storage scheme where documents are 
-represented by their hash, not URL.&lt;/p&gt;
-
-&lt;p&gt;This allows us to store web pages in portable web archive formats (bundled as 
-one document) which can be stored in perpetuity.&lt;/p&gt;
-
-&lt;p&gt;This allows users to lookup content in their personal repository and have 
-multiple copies of the document based on time.&lt;/p&gt;
-
-&lt;p&gt;When connected this provides for an Internet-scale Internet Archive whereby 
-users are individually archiving portions of the Internet. [^internet-scale-archiving]&lt;/p&gt;
-
-&lt;h3 id=&quot;fifth-dimension-annotation&quot;&gt;Fifth Dimension: Annotation&lt;/h3&gt;
-
-&lt;p&gt;Users can annotate documents in Polar including adding text and area highlights,
-comments, and flashcards.&lt;/p&gt;
-
-&lt;p&gt;This data is valuable to the individual but also to the web community at large.&lt;/p&gt;
-
-&lt;p&gt;TODO: Expand on this in the future.&lt;/p&gt;
-
-&lt;h2 id=&quot;federated-data&quot;&gt;Federated Data&lt;/h2&gt;
-
-&lt;p&gt;The underlying Polar data model is not specific to any type of network or 
-storage infrastructure.&lt;/p&gt;
-
-&lt;h2 id=&quot;beyond-standards&quot;&gt;Beyond standards:&lt;/h2&gt;
-
-&lt;p&gt;Web standards are only one part of what we’re trying to address.  Without 
-millions of users using Polar as a integral part of our workflow we will not be
-successful.&lt;/p&gt;
-
-&lt;p&gt;To that end we have to have to focus on growth, UI/UX, support, mobile, and 
-accessibility.&lt;/p&gt;
-
-&lt;h2 id=&quot;corporate-and-non-profit-setup&quot;&gt;Corporate and Non-Profit Setup&lt;/h2&gt;
-
-&lt;p&gt;There will effectively be two organizations setup to support Polar.&lt;/p&gt;
-
-&lt;p&gt;PolarOrg will support Polar as an Open Source project.&lt;/p&gt;
-
-&lt;p&gt;PolarCom will sell cloud storage, private team sharing, and additional premium 
-features.&lt;/p&gt;
-
-&lt;p&gt;It’s our goal that the vast majority of users using Polar will use the platform 
-for free.&lt;/p&gt;
-
-&lt;p&gt;We’re trying to target roughly 95% of users on Polar will not pay and will be 
-on a freemium model.&lt;/p&gt;
-
-&lt;p&gt;In order for Polar to be competitive there must be an economic component to 
-continue funding development.&lt;/p&gt;
-
-&lt;p&gt;Otherwise, we risk our ideas and technology being stolen by other companies who
-wouldn’t aggressively support the rights (and goals) of our user base.&lt;/p&gt;
-
-&lt;h2 id=&quot;user-rights&quot;&gt;User Rights&lt;/h2&gt;
-
-&lt;p&gt;Polar wants to aggressively support the rights of our user base.&lt;/p&gt;
-
-&lt;p&gt;We’re not interested in doing anything evil.  Without your trust we believe 
-this will hurt our mission.&lt;/p&gt;
-
-&lt;p&gt;This includes but is not limited to:&lt;/p&gt;
-
-&lt;h3 id=&quot;data-portability&quot;&gt;Data Portability&lt;/h3&gt;
-
-&lt;p&gt;You should be able to easily access your data in easy to work with file formats
-and export to 3rd party services at any time.&lt;/p&gt;
-
-&lt;h3 id=&quot;you-data-is-your-data&quot;&gt;You Data is Your Data&lt;/h3&gt;
-
-&lt;p&gt;Polar will never attempt to take exclusive ownership of your data and will only 
-pursue reasonable rights to access your data for your use or the use of our data
-partners (cloud service infrastructure) when you give us access.&lt;/p&gt;
-
-&lt;p&gt;Polar will require non-exclusive rights to have access to your data when using
-cloud services including sync to mobile, web, etc.&lt;/p&gt;
-
-&lt;p&gt;We may also engage in data partnerships which will be disclosed and will only 
-do so for the benefits of our user base.&lt;/p&gt;
-
-&lt;p&gt;Basically, we’re not interested in doing anything evil and will only use your 
-data for your benefit.&lt;/p&gt;
-
-&lt;h3 id=&quot;encryption&quot;&gt;Encryption&lt;/h3&gt;
-
-&lt;p&gt;We will make reasonable attempts at making encrypting your data when reasonable
-and at rest.&lt;/p&gt;
-
-&lt;p&gt;We’re also investigating private encrypted end-to-end datastores for private 
-and sensitive data.&lt;/p&gt;
-
-&lt;h3 id=&quot;desktop-only&quot;&gt;Desktop-only&lt;/h3&gt;
-
-&lt;p&gt;We have every intention to continue to support desktop-only and offline-only 
-usage where your data is not sync’d to the cloud.&lt;/p&gt;
-
-&lt;p&gt;If cloud-only features are built (for example full-text search) we will not 
-force uses to use cloud services.&lt;/p&gt;
-
-&lt;h2 id=&quot;federation&quot;&gt;Federation&lt;/h2&gt;
-
-&lt;p&gt;Federation allows Polar to tie in different backend storage providers which 
-could have different properties, security and privacy features.&lt;/p&gt;
-
-&lt;p&gt;Polar supports federation through the concept of Datastores which provides a 
-high level interface for reading and writing data, subscribing to events, etc.&lt;/p&gt;
-
-&lt;p&gt;Currently Polar supports three datastores:&lt;/p&gt;
-
-&lt;h3 id=&quot;disk&quot;&gt;Disk&lt;/h3&gt;
-
-&lt;p&gt;Provides a local storage for the desktop app and allows user to read and
-write data without any major privacy considerations inherent with cloud.&lt;/p&gt;
-
-&lt;h3 id=&quot;firebase&quot;&gt;Firebase&lt;/h3&gt;
-
-&lt;p&gt;Stores data in Google Firebase to provide cloud functionality including web
-and mobile support.&lt;/p&gt;
-
-&lt;h3 id=&quot;cloud&quot;&gt;Cloud&lt;/h3&gt;
-
-&lt;p&gt;Provides a hybrid between Disk+Firebase for the desktop cloud sync across devices.&lt;/p&gt;
-
-&lt;h3 id=&quot;future-datastores&quot;&gt;Future Datastores&lt;/h3&gt;
-
-&lt;p&gt;Polar provides for a Datastore interface which means we can easily implement
-new technologies for data storage in the future.&lt;/p&gt;
-
-&lt;p&gt;Filecoin is an example of an attractive Datastore which we might implement in 
-the future.&lt;/p&gt;
-
-&lt;h2 id=&quot;long-term-archival&quot;&gt;Long-Term Archival&lt;/h2&gt;
-
-&lt;p&gt;Due to the importance of Polar data we’re committed to verifying that documents
-stored in Polar are preserved long-term.&lt;/p&gt;
-
-&lt;p&gt;This include selecting reliable file formats and using web standards as much as 
-possible.&lt;/p&gt;
-
-&lt;p&gt;[^internet-scale-archiving] At some point we might allow users to share documents
-but there are privacy concerns we have to address here as web documents served
-to users might have PII data embedded within them and we also have to comply
-with local laws as well as be respectful of user privacy.  Initially this ]
-functionality won’t be enabled but it’s a sub-project we’d like to pursue in 
-the future and might be possible for some fraction of the documents indexed 
-when we can identify that they have zero PII.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.18.0 Released</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry></feed>
