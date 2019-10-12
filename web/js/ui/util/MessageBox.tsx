@@ -23,6 +23,7 @@ export class MessageBox extends React.Component<IProps, IState> {
 
         const style: React.CSSProperties = {
             position: 'fixed',
+            zIndex: 999999999999999,
             width: '100%'
         };
 
@@ -39,7 +40,6 @@ export class MessageBox extends React.Component<IProps, IState> {
 
             <div style={{
                      width:  width + 'px',
-                     zIndex: 99999,
                      marginLeft: 'auto',
                      marginRight: 'auto',
                      backgroundColor: 'var(--white)'
