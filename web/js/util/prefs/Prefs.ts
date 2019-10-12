@@ -1,6 +1,7 @@
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DurationStr} from 'polar-shared/src/util/TimeDurations';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export abstract class Prefs {
 
@@ -121,7 +122,7 @@ export class CompositePrefs implements PersistentPrefs {
     private delegates: ReadonlyArray<PersistentPrefs>;
 
     constructor(delegates: ReadonlyArray<PersistentPrefs>) {
-        this.delegate = delegates[0];
+        this.delegate = Preconditions.assertPresent(delegates[0], 'delegate');
         this.delegates = delegates;
     }
 

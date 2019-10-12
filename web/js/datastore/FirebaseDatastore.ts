@@ -5,7 +5,8 @@ import {
     DatastoreCapabilities,
     DatastoreConsistency,
     DatastoreInitOpts,
-    DatastoreOverview, DatastorePrefs,
+    DatastoreOverview,
+    DatastorePrefs,
     DefaultWriteFileOpts,
     DeleteResult,
     DocMetaMutation,
@@ -39,7 +40,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {Percentage, ProgressTracker} from '../util/ProgressTracker';
-import {AsyncProviders, Providers} from 'polar-shared/src/util/Providers';
+import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {Firebase, UserID} from '../firebase/Firebase';
@@ -56,7 +57,6 @@ import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {UserPrefs} from "./firebase/UserPrefs";
 import {FirestorePrefs} from "./firebase/FirestorePrefs";
 
 const log = Logger.create();
@@ -713,10 +713,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public getPrefs(): PrefsProvider {
 
+        const prefs = Preconditions.assertPresent(this.prefs);
+
         return {
             get(): DatastorePrefs {
                 return {
-                    prefs: this.prefs,
+                    prefs,
                     unsubscribe: NULL_FUNCTION
                 };
             }
