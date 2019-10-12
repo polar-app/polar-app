@@ -5,7 +5,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 
 export class UserPrefs {
 
-    private static COLLECTION = 'pref';
+    private static COLLECTION = 'user_pref';
 
     private static async getUserID(): Promise<UserIDStr> {
         const user = Preconditions.assertPresent(await Firebase.currentUser());
