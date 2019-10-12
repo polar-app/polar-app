@@ -14,9 +14,8 @@ export class UserPrefs {
 
     public static async get(): Promise<Prefs> {
 
-        const userID  = await this.getUserID();
-
-        const userPref: UserPref | undefined = await Collections.getByID(this.COLLECTION, userID);
+        const uid  = await this.getUserID();
+        const userPref: UserPref | undefined = await Collections.getByID(this.COLLECTION, uid);
 
         if (userPref) {
             return new DictionaryPrefs(userPref.value);
@@ -27,10 +26,11 @@ export class UserPrefs {
     }
 
     public static async set(prefs: Prefs) {
-        const userID  = await this.getUserID();
-        const ref = await Collections.createRef(this.COLLECTION, userID);
+        const uid  = await this.getUserID();
+        const ref = await Collections.createRef(this.COLLECTION, uid);
 
         const userPref: UserPref = {
+            uid: uid,
             value: prefs.toDict()
         };
 
@@ -41,5 +41,6 @@ export class UserPrefs {
 }
 
 export interface UserPref {
+    readonly uid: UserIDStr;
     readonly value: StringToStringDict;
 }
