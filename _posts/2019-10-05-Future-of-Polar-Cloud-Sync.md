@@ -1,9 +1,9 @@
 ---
 title: The Future of Polar Cloud Sync  
-date: 2019-10-06 08:00:00 -0800
+date: 2019-10-05 08:00:00 -0800
 layout: post
 large_image: https://i.imgur.com/lkRjAkq.png
-description: The Future of Polar Cloud Sync    
+description: We're going to be changing some features in the 'local' mode version of Polar and some new cloud features won't be available in this mode.    
 hidden: true
 ---
 
@@ -50,6 +50,9 @@ This is by far the primary motivator for implementing these features in the clou
 I can't use Elasticsearch in mobile devices.  We can't spin up tensor flow on your tablet.  
 
 Even if we could the power requirements would be insane.  
+
+There are dozens of APIs and features we can use with cloud APIs that just aren't available any other way.  Thumbnails,
+text to speech, OCR, etc.
 
 ## Portability
 
