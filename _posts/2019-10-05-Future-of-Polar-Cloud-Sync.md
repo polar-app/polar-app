@@ -2,12 +2,12 @@
 title: The Future of Polar Cloud Sync  
 date: 2019-10-05 08:00:00 -0800
 layout: post
-large_image: https://i.imgur.com/lkRjAkq.png
+large_image: https://getpolarized.io/assets/images/firebase-sync-scaled.jpg
 description: We're going to be changing some features in the 'local' mode version of Polar and some new cloud features won't be available in this mode.    
-hidden: true
 ---
+<img class="img-fluid" src="https://getpolarized.io/assets/images/firebase-sync-scaled.jpg">
 
-# Overview
+# The Future of Polar Cloud Sync
 
 We're going to be changing some features in the 'local' mode version of Polar and some new cloud features won't be 
 available in this mode.
@@ -107,7 +107,7 @@ store your datastore directly on Google Cloud Storage.
 
 The pricing for this is reasonable so we're planning on taking regular backups for our users.
 
-# Offline First and Data Privacy
+## Offline First and Data Privacy
 
 We generally support the "offline-first" movement to keep data out of cloud devices but it's a very complicated subject.
 
@@ -127,14 +127,14 @@ We probably won't have this soon but we'd like to have it done in the near term 
 
 We won't be able to provide any non-Google issues as we're using their Firebase platform and don't have plans to move away.
 
-# Additional Features
+## Additional Features
 
 Cloud mode enables additional features as well including the ability to sync the URL of your document (or annotations)
 to Anki so that the context for a flashcard is available with one click.
 
 We're just simply not able to implement features like this without some type of cloud backend.
 
-# Default Mode
+## Default Mode
 
 In the future we will encourage users to use the cloud mode by default so that all features are enabled including sync. 
 

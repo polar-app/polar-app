@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-12T15:17:50-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-12T15:21:36-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
 
@@ -83,7 +83,9 @@ with one click.&lt;/p&gt;
 &lt;p&gt;This is something I’m working on improving in future versions of Polar but first we have to improve usability.&lt;/p&gt;
 
 &lt;p&gt;We’re going to keep comparing notes and try to sync up again in another few weeks.  There’s definitely a lot of 
-potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;the-future-of-polar-cloud-sync&quot;&gt;The Future of Polar Cloud Sync&lt;/h1&gt;
 
 &lt;p&gt;We’re going to be changing some features in the ‘local’ mode version of Polar and some new cloud features won’t be 
 available in this mode.&lt;/p&gt;
@@ -183,7 +185,7 @@ store your datastore directly on Google Cloud Storage.&lt;/p&gt;
 
 &lt;p&gt;The pricing for this is reasonable so we’re planning on taking regular backups for our users.&lt;/p&gt;
 
-&lt;h1 id=&quot;offline-first-and-data-privacy&quot;&gt;Offline First and Data Privacy&lt;/h1&gt;
+&lt;h2 id=&quot;offline-first-and-data-privacy&quot;&gt;Offline First and Data Privacy&lt;/h2&gt;
 
 &lt;p&gt;We generally support the “offline-first” movement to keep data out of cloud devices but it’s a very complicated subject.&lt;/p&gt;
 
@@ -203,14 +205,14 @@ datacenters.&lt;/p&gt;
 
 &lt;p&gt;We won’t be able to provide any non-Google issues as we’re using their Firebase platform and don’t have plans to move away.&lt;/p&gt;
 
-&lt;h1 id=&quot;additional-features&quot;&gt;Additional Features&lt;/h1&gt;
+&lt;h2 id=&quot;additional-features&quot;&gt;Additional Features&lt;/h2&gt;
 
 &lt;p&gt;Cloud mode enables additional features as well including the ability to sync the URL of your document (or annotations)
 to Anki so that the context for a flashcard is available with one click.&lt;/p&gt;
 
 &lt;p&gt;We’re just simply not able to implement features like this without some type of cloud backend.&lt;/p&gt;
 
-&lt;h1 id=&quot;default-mode&quot;&gt;Default Mode&lt;/h1&gt;
+&lt;h2 id=&quot;default-mode&quot;&gt;Default Mode&lt;/h2&gt;
 
 &lt;p&gt;In the future we will encourage users to use the cloud mode by default so that all features are enabled including sync.&lt;/p&gt;
 
@@ -223,7 +225,7 @@ and web mode.&lt;/p&gt;
 own datacenter and by default pick one closer to you.&lt;/p&gt;
 
 &lt;p&gt;With the new cloud support we also intend on supporting advanced features like full-text search, machine learning, and 
-backups.&lt;/p&gt;</content><author><name></name></author><summary type="html">Overview</summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
+backups.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
 
 &lt;p&gt;We had an outage last night for Polar cloud sync and our web application which was related to an issue in Google cloud.&lt;/p&gt;
 
