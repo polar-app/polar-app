@@ -1,8 +1,6 @@
 import {URLStr} from "polar-shared/src/util/Strings";
 
 import puppeteer from 'puppeteer';
-import {Files} from "polar-shared/src/util/Files";
-import {Promises} from "../../../../polar-bookshelf/web/js/util/Promises";
 
 export class ThumbnailGenerator {
 
@@ -12,7 +10,6 @@ export class ThumbnailGenerator {
         const page = await browser.newPage();
         await page.goto('https://mozilla.github.io/pdf.js/web/viewer.html#zoom=page-height');
         await page.setViewport({width: 850, height: 1100});
-
 
         await page.waitForNavigation({waitUntil : 'networkidle0'});
 
