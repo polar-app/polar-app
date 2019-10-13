@@ -12,7 +12,7 @@
     "lerna-npm-publish": "lerna exec --concurrency=1 --parallel=false --no-private -- npm publish",
     "dist-version": "lerna --no-git-tag-version version patch",
     "dist-prepare": "./sbin/mgit clean -f && ./sbin/mgit reset --hard HEAD && ./sbin/mgit pull",
-    "dist-publish": "npm run-script purge-node-modules && lerna bootstrap && npm run-script learna-run-compile && npm run-script learna-run-dist && npm run-script lerna-npm-publish",
+    "dist-publish": "npm run-script purge-node-modules && lerna bootstrap && npm run-script lerna-run-compile && npm run-script lerna-run-dist && npm run-script lerna-npm-publish",
     "dist-release": "npm run-script dist-publish && lerna run dist-release",
     "lerna-outdated": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && npm outdated'",
     "purge-node-modules": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && rm -rf node_modules'",
