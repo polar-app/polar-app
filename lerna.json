@@ -3,6 +3,7 @@
     "packages/*",
     "packages/polar-app-private/*",
     "packages/polar-app-public/*",
+    "packages/polar-app-public/@types/*",
     "packages/polar-hooks/functions"
   ],
   "version": "1.32.51"
