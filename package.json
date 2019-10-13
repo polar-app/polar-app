@@ -12,6 +12,7 @@
     "dist-publish": "lerna bootstrap && lerna run compile && lerna run dist && lerna exec --no-private -- npm publish",
     "dist-release": "npm run-script dist-publish && lerna run dist-release",
     "lerna-outdated": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && npm outdated'",
+    "purge-node-modules": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && rm -rf node_modules'",
     "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n"
   },
   "deprecated": {
