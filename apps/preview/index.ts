@@ -20,10 +20,12 @@ async function doLoad() {
     // const scale = 1;
     // const viewport = page.getViewport({ scale: scale, });
 
+
     const calculateScale = (page: PDFPageProxy, desiredWidth: number) => {
         const viewport = page.getViewport({ scale: 1, });
-        const scale = desiredWidth / viewport.width;
-        return scale;
+        console.log("FIXME: viewport width: " + viewport.width);
+
+        return desiredWidth / viewport.width;
     };
 
     const scale = calculateScale(page, 1024);
@@ -76,7 +78,38 @@ async function doLoad2() {
 
     viewer.setDocument(doc);
 
-    // viewer.currentScale = 2;
+    // FIXME: compute the scale from the height or the width (whichever is larger)
+    const calculateScaleFromWidth = (page: PDFPageProxy, desiredWidth: number) => {
+        const viewport = page.getViewport({ scale: 1, });
+        return calculateScale(desiredWidth, viewport.width);
+    };
+
+    const calculateScaleFromHeight = (page: PDFPageProxy, desiredHeight: number) => {
+        const viewport = page.getViewport({ scale: 1, });
+        console.log("FIXME: viewport.height: " + viewport.height);
+
+        return calculateScale(desiredHeight, viewport.height);
+    };
+
+    const calculateScale = (to: number, from: number) => {
+        return to / from;
+    };
+
+    const page = await doc.getPage(1);
+
+    // const width = document.body.clientWidth;
+    // const width = window.innerWidth;
+    // console.log("FIXME: width: " + width);
+    // const scale = calculateScaleFromWidth(page, width) - 1;
+
+    // const height = window.innerHeight;
+    // const height = ;
+    // console.log("FIXME: height: " + height);
+    const scale = calculateScale(window.innerHeight, container.offsetHeight);
+    console.log("FIXME: scale: " + scale);
+
+
+    viewer.currentScale = scale;
 
 }
 
