@@ -2,29 +2,32 @@ import {URLStr} from "polar-shared/src/util/Strings";
 
 import puppeteer from 'puppeteer';
 import {Files} from "polar-shared/src/util/Files";
+import {Promises} from "../../../../polar-bookshelf/web/js/util/Promises";
 
 export class ThumbnailGenerator {
 
     public static async generate(url: URLStr)  {
 
         const browser = await puppeteer.launch();
-        console.log("FIXME1");
         const page = await browser.newPage();
-        console.log("FIXME2");
         await page.goto('https://mozilla.github.io/pdf.js/web/viewer.html#zoom=page-height');
-        console.log("FIXME3");
-        await page.setViewport({width: 320, height: 480});
-        console.log("FIXME4");
+        await page.setViewport({width: 850, height: 1100});
+
 
         await page.waitForNavigation({waitUntil : 'networkidle0'});
-        console.log("FIXME5");
 
-        const buff = await page.screenshot({path: 'digg.png', fullPage: true});
-        console.log("FIXME6");
+        await page.addStyleTag({
+            content: "#viewerContainer { top: 0; } .toolbar { display: none; } #viewer :not(:first-child) { display: none; }"
+        });
 
-        await Files.writeFileAsync('/tmp/test.png', buff);
+        // await Promises.waitFor(5000);
+
+        // NOTE that we can specify a path and write to the FS directly.
+        const buff = await page.screenshot({fullPage: false});
 
         await browser.close();
+
+        return buff;
 
         // draw page to fit into 96x96 canvas
         //
