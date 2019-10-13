@@ -1,7 +1,7 @@
-import PDFJS, {PDFPageProxy} from 'pdfjs-dist';
+import PDFJS, {PDFPageProxy, DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-import {PDFSinglePageViewer} from 'pdfjs-dist/web/pdf_viewer'
+import {PDFSinglePageViewer, TextLayerMode} from 'pdfjs-dist/web/pdf_viewer';
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 // PDFJS.cMapUrl = '../../node_modules/pdfjs-dist/cmaps/';
@@ -46,18 +46,35 @@ async function doLoad() {
 
 async function doLoad2() {
 
+    // FIXME: this KIND of works and only renders a single page BUT what happens is that
+    // the fonts look like crap and scaled down they will probably look worse.
+
+    // FIXME: accept a URL to render..
+
     const url = FilePaths.toURL("/home/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/availability.pdf");
 
-    const doc = await PDFJS.getDocument(url).promise;
+    const init: DocumentInitParameters = {
+        url,
+        cMapPacked: true,
+        cMapUrl: '../../node_modules/pdfjs-dist/cmaps'
+    };
 
-    const container = <HTMLDivElement> document.getElementById('viewer')!;
+    const doc = await PDFJS.getDocument(init).promise;
+
+    const container = <HTMLDivElement> document.getElementById('viewerContainer')!;
+
+    if (container === null) {
+        throw new Error("No container");
+    }
 
     const viewer = new PDFSinglePageViewer({
         container,
-        // FIXME: textLayerMode: TextLayerMode.DISABLE
+        textLayerMode: 0
     });
 
     viewer.setDocument(doc);
+
+    viewer.currentScale = 2;
 
 }
 
