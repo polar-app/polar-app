@@ -42,7 +42,9 @@
         "test/sandbox/**/*",
         "scripts/**/*",
         "web/**/*",
-        "apps/**/*"
+        "apps/**/*",
+        "node_modules/@custom-types/polar-pdf-types"
+
     ],
     "exclude": [
         "web/spectron.disabled/*"
@@ -50,9 +52,12 @@
     "types": [
         "mocha",
         "electron",
-        "reflect-metadata"
+        "reflect-metadata",
+        "@custom-types/polar-pdf-types"
     ],
     "typeRoots": [
-        "./node_modules/@types"
+        "./node_modules/@types",
+        "./node_modules/@custom-types",
+        "./node_modules/*"
     ]
 }

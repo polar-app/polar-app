@@ -1,4 +1,4 @@
-import PDFJS, {PDFPageProxy, PDFSource} from 'pdfjs-dist';
+import PDFJS, {PDFPageProxy, DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
 import {PDFSinglePageViewer, TextLayerMode} from 'pdfjs-dist/web/pdf_viewer';
@@ -11,7 +11,7 @@ async function doLoad2() {
 
     const url = FilePaths.toURL("/home/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/availability.pdf");
 
-    const init: PDFSource = {
+    const init: DocumentInitParameters = {
         url,
         cMapPacked: true,
         cMapUrl: '../../node_modules/pdfjs-dist/cmaps/'
