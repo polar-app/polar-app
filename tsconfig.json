@@ -52,8 +52,7 @@
     "types": [
         "mocha",
         "electron",
-        "reflect-metadata",
-        "@custom-types/polar-pdf-types"
+        "reflect-metadata"
     ],
     "typeRoots": [
         "./node_modules/@types",
