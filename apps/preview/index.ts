@@ -4,8 +4,10 @@ import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PDFSinglePageViewer, TextLayerMode} from 'pdfjs-dist/web/pdf_viewer';
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
-// PDFJS.cMapUrl = '../../node_modules/pdfjs-dist/cmaps/';
-// PDFJS.cMapPacked = true;
+// (<any> PDFJS).cMapUrl = '../../node_modules/pdfjs-dist/cmaps/';
+// (<any> PDFJS).cMapPacked = true;
+
+console.log("FIXME: ", PDFJS);
 
 async function doLoad() {
 
@@ -56,7 +58,7 @@ async function doLoad2() {
     const init: DocumentInitParameters = {
         url,
         cMapPacked: true,
-        cMapUrl: '../../node_modules/pdfjs-dist/cmaps'
+        cMapUrl: '../../node_modules/pdfjs-dist/cmaps/'
     };
 
     const doc = await PDFJS.getDocument(init).promise;
@@ -74,7 +76,7 @@ async function doLoad2() {
 
     viewer.setDocument(doc);
 
-    viewer.currentScale = 2;
+    // viewer.currentScale = 2;
 
 }
 
