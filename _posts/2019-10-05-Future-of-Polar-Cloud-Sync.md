@@ -32,6 +32,36 @@ so that your local files are synchronized between all your devices.
 The web mode is basically just the cloud mode bug without any local support.  It's what you're using when you login 
 to the webapp or use Polar on tablet or desktop devices.  It has the same features as cloud mode.
 
+# Offline
+
+The local, cloud, and web modes don't accurately portray offline functionality.
+
+All three modes will work in offline (and disconnected) mode.
+
+For example, if you're using a tablet, and have Polar installed, and you've downloaded a PDF before, you can still open
+it again and continue reading and annotating while it's offline.
+
+What WILL NOT work is search and some of the features articulated below.
+
+## Offline vs Online Features
+
+Most core features of Polar will be designed to work offline.  Firebase itself has support for offline operation which
+means our webapp, and mobile and tablet apps will work just fine while offline.
+
+## Cloud-specific Features 
+
+Some features won't be ported to the desktop mode and will only work in cloud or web mode.
+
+|     | local | cloud | web |
+|-----|-------|-------|-----| 
+| full-text search | no | online | online |
+| thumbnails for documents | no [1] | online | online |
+| ML features like tags suggested from content | no | online | online |
+| search for new documents using Arxiv / Pubmed | online [2] | online | online |
+
+1. Probably not initially but perhaps in the future.
+2. This will use a web service and will run your queries online but the PDFs and metadata will only be stored locally.
+
 # Motivation
 
 Features like full-text search and other machine learning (ML) features have been requested by our users for a while now.
