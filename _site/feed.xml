@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-13T16:41:41-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-14T09:25:08-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
 
@@ -23,9 +23,7 @@ superstar.&lt;/p&gt;
 general strategy for managing knowledge.  Specifically, use tools like natural language parsing (NLP), clustering, and
 spaced repetition to force material to be stored in your brain long term with high retention.&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;How he uses Polarized to save and take notes on PDFs&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h2 id=&quot;how-roger-uses-polar-and-anki&quot;&gt;How Roger uses Polar and Anki&lt;/h2&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;The next tool I use is called Polarized. A lot of the information I consume is in technical published papers, which are in PDFs, and Polarized helps with that.&lt;/p&gt;
@@ -50,6 +48,15 @@ support for full-text search, clustering, auto-tagging, etc.&lt;/p&gt;
 
 &lt;p&gt;As an aside, it’s been really interesting to see who’s been using Polar.  Lots of PhD students, VCs, researchers, 
 academics, scientists, etc.  Very exciting to see such amazingly smart people using the product.&lt;/p&gt;
+
+&lt;h2 id=&quot;flashcards-and-spaced-repetition&quot;&gt;Flashcards and Spaced Repetition&lt;/h2&gt;
+
+&lt;p&gt;The key benefit Polar provides is a fully integrated environment for reading and managing flashcards. You can 
+work directly with PDF and web content, annotate it, create flashcards from your annotations, and then sync the 
+flashcards directly to Anki.&lt;/p&gt;
+
+&lt;p&gt;What’s nice about this is that not only do you have a high quality index of all your notes and highlights but this
+data is sync’d with Anki.&lt;/p&gt;
 
 &lt;h2 id=&quot;machine-learning-and-spaced-repetition&quot;&gt;Machine Learning and Spaced Repetition&lt;/h2&gt;
 
@@ -109,6 +116,68 @@ so that your local files are synchronized between all your devices.&lt;/p&gt;
 
 &lt;p&gt;The web mode is basically just the cloud mode bug without any local support.  It’s what you’re using when you login 
 to the webapp or use Polar on tablet or desktop devices.  It has the same features as cloud mode.&lt;/p&gt;
+
+&lt;h1 id=&quot;offline&quot;&gt;Offline&lt;/h1&gt;
+
+&lt;p&gt;The local, cloud, and web modes don’t accurately portray offline functionality.&lt;/p&gt;
+
+&lt;p&gt;All three modes will work in offline (and disconnected) mode.&lt;/p&gt;
+
+&lt;p&gt;For example, if you’re using a tablet, and have Polar installed, and you’ve downloaded a PDF before, you can still open
+it again and continue reading and annotating while it’s offline.&lt;/p&gt;
+
+&lt;p&gt;What WILL NOT work is search and some of the features articulated below.&lt;/p&gt;
+
+&lt;h2 id=&quot;offline-vs-online-features&quot;&gt;Offline vs Online Features&lt;/h2&gt;
+
+&lt;p&gt;Most core features of Polar will be designed to work offline.  Firebase itself has support for offline operation which
+means our webapp, and mobile and tablet apps will work just fine while offline.&lt;/p&gt;
+
+&lt;h2 id=&quot;cloud-specific-features&quot;&gt;Cloud-specific Features&lt;/h2&gt;
+
+&lt;p&gt;Some features won’t be ported to the desktop mode and will only work in cloud or web mode.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt;local&lt;/th&gt;
+      &lt;th&gt;cloud&lt;/th&gt;
+      &lt;th&gt;web&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;full-text search&lt;/td&gt;
+      &lt;td&gt;no&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;thumbnails for documents&lt;/td&gt;
+      &lt;td&gt;no [1]&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ML features like tags suggested from content&lt;/td&gt;
+      &lt;td&gt;no&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;search for new documents using Arxiv / Pubmed&lt;/td&gt;
+      &lt;td&gt;online [2]&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+      &lt;td&gt;online&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Probably not initially but perhaps in the future.&lt;/li&gt;
+  &lt;li&gt;This will use a web service and will run your queries online but the PDFs and metadata will only be stored locally.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;h1 id=&quot;motivation&quot;&gt;Motivation&lt;/h1&gt;
 

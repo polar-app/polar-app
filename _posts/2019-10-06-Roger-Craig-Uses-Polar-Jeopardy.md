@@ -25,8 +25,8 @@ Roger and I have similar backgrounds - both machine learning and big data and it
 general strategy for managing knowledge.  Specifically, use tools like natural language parsing (NLP), clustering, and
 spaced repetition to force material to be stored in your brain long term with high retention.
 
-> How he uses Polarized to save and take notes on PDFs
-  
+## How Roger uses Polar and Anki
+
 > The next tool I use is called Polarized. A lot of the information I consume is in technical published papers, which are in PDFs, and Polarized helps with that. 
   
 > It takes in PDFs and web pages, and allows you to highlight and annotate them. You can also export them, so you can turn the annotations into Anki cards.
@@ -44,6 +44,15 @@ The entire point of Polar is that we're trying to democratize this technology an
 
 As an aside, it's been really interesting to see who's been using Polar.  Lots of PhD students, VCs, researchers, 
 academics, scientists, etc.  Very exciting to see such amazingly smart people using the product.
+
+## Flashcards and Spaced Repetition
+
+The key benefit Polar provides is a fully integrated environment for reading and managing flashcards. You can 
+work directly with PDF and web content, annotate it, create flashcards from your annotations, and then sync the 
+flashcards directly to Anki.
+
+What's nice about this is that not only do you have a high quality index of all your notes and highlights but this
+data is sync'd with Anki.
 
 ## Machine Learning and Spaced Repetition
 
