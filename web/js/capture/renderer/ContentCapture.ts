@@ -2,9 +2,9 @@
  * @RendererContext
  */
 import {Dict} from '../../util/Dict';
-import {Result} from '../../util/Result';
+import {Result} from 'polar-shared/src/util/Result';
 import {Captured, CapturedDoc, DocTypeFormat, Overflow, ScrollBox} from './Captured';
-import {Results} from '../../util/Results';
+import {Results} from 'polar-shared/src/util/Results';
 import {AdBlocker} from './AdBlocker';
 
 export class ContentCapture {

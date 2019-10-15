@@ -1,6 +1,6 @@
 
 import {TestResultReader} from '../TestResultReader';
-import {Results} from '../../../util/Results';
+import {Results} from 'polar-shared/src/util/Results';
 import {TApplication} from '../../Spectron';
 import {ResolvablePromise} from '../../../util/ResolvablePromise';
 

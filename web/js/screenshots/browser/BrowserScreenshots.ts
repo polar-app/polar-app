@@ -1,9 +1,8 @@
-import {webextensions} from '../../../../../polar-app-public/polar-web-extension/WebExtensions';
-import {Result} from '../../util/Result';
-import {BrowserScreenshot} from '../../../../../polar-app-public/polar-web-extension/BrowserScreenshotHandler';
+import {webextensions} from 'polar-web-extension-api/src/WebExtensions';
+import {Result} from 'polar-shared/src/util/Result';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
-import {Results} from '../../util/Results';
-import {Canvases} from '../../util/Canvases';
+import {Results} from 'polar-shared/src/util/Results';
+import {Canvases} from 'polar-shared/src/util/Canvases';
 import {AnnotationToggler} from '../AnnotationToggler';
 import {Toaster} from '../../ui/toaster/Toaster';
 
@@ -93,4 +92,9 @@ export class BrowserScreenshots {
 
     }
 
+}
+
+export interface BrowserScreenshot {
+    readonly dataURL: string;
+    readonly type: 'image/png';
 }

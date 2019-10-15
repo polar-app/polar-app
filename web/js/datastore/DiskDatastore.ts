@@ -33,7 +33,7 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
-import {Stopwatches} from '../util/Stopwatches';
+import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {PersistentPrefs, Prefs, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';

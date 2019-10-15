@@ -47,7 +47,7 @@ import {Firebase, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
-import {Stopwatches} from '../util/Stopwatches';
+import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
 import {URLs} from 'polar-shared/src/util/URLs';

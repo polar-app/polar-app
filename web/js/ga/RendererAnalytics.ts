@@ -2,9 +2,9 @@ import ua, {EventParams} from 'universal-analytics';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {CIDs} from './CIDs';
 import {Version} from '../util/Version';
-import {Stopwatch} from '../util/Stopwatch';
-import {TrackedDuration} from '../util/Stopwatch';
-import {Stopwatches} from '../util/Stopwatches';
+import {Stopwatch} from 'polar-shared/src/util/Stopwatch';
+import {TrackedDuration} from 'polar-shared/src/util/Stopwatch';
+import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {DurationMS} from 'polar-shared/src/util/TimeDurations';
 
 // const TRACKING_ID = 'UA-122721184-1';

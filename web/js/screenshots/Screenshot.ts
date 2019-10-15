@@ -1,5 +1,5 @@
 import {IXYRect} from 'polar-shared/src/util/rects/IXYRect';
-import {DataURL} from '../util/DataURLs';
+import {DataURL} from 'polar-shared/src/util/DataURLs';
 import {IDimensions} from "../util/IDimensions";
 
 export interface Screenshot {

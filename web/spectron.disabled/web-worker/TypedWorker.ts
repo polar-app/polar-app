@@ -1,6 +1,6 @@
 
 // noinspection TsLint: array-type
-import {Result} from '../../js/util/Result';
+import {Result} from 'polar-shared/src/util/Result';
 
 export type Transfer = (ArrayBuffer | MessagePort | ImageBitmap)[];
 

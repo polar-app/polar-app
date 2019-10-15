@@ -4,7 +4,7 @@ import {DocDetail} from '../../metadata/DocDetail';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ViewerTours} from '../../apps/viewer/ViewerTours';
 import {Model} from '../../model/Model';
-import {Stopwatches} from '../../util/Stopwatches';
+import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {AppRuntime} from '../../AppRuntime';
 import {WindowEvents} from '../../util/dom/WindowEvents';
 

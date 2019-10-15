@@ -1,8 +1,8 @@
 import {DiskDatastore} from './DiskDatastore';
 
 import os from 'os';
-import {Stopwatch} from '../util/Stopwatch';
-import {Stopwatches} from '../util/Stopwatches';
+import {Stopwatch} from 'polar-shared/src/util/Stopwatch';
+import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {DocMetas} from '../metadata/DocMetas';
 
 const tmpdir = os.tmpdir();

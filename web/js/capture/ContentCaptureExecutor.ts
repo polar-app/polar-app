@@ -1,5 +1,5 @@
-import {IResult} from '../util/Result';
-import {Results} from '../util/Results';
+import {IResult} from 'polar-shared/src/util/Result';
+import {Results} from 'polar-shared/src/util/Results';
 import {Filenames} from '../util/Filenames';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
