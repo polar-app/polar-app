@@ -1,4 +1,4 @@
-import {DocTypeFormat} from '../capture/renderer/Captured';
+import {DocTypeFormat} from 'polar-content-capture/src/capture/Captured';
 
 export class Resource {
 

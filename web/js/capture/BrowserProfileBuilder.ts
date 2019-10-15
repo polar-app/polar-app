@@ -1,58 +1,6 @@
-import {BrowserProfile, BrowserProfileID} from './BrowserProfile';
-import {DefaultNavigation, Navigation} from './navigation/Navigation';
-
-export class Browser implements Readonly<IBrowser> {
-
-    public readonly name: string;
-
-    public readonly title: string;
-
-    public readonly type: BrowserType;
-
-    public readonly description: string;
-
-    public readonly userAgent: string;
-
-    public readonly deviceEmulation: Electron.Parameters;
-
-    public readonly inactive: boolean = false;
-
-    /**
-     *
-     * @param opts
-     */
-    constructor(opts: IBrowser) {
-        this.name = opts.name;
-        this.title = opts.title;
-        this.type = opts.type;
-        this.description = opts.description;
-        this.userAgent = opts.userAgent;
-        this.deviceEmulation = opts.deviceEmulation;
-    }
-
-}
-
-export interface IBrowser {
-
-    name: string;
-
-    title: string;
-
-    type: BrowserType;
-
-    description: string;
-
-    userAgent: string;
-
-    deviceEmulation: Electron.Parameters;
-
-    /**
-     * True if this is currently inactive for user selection.  IE just a test
-     * profile.
-     */
-    inactive: boolean;
-
-}
+import {BrowserProfile, BrowserProfileID} from "./BrowserProfile";
+import {DefaultNavigation, Navigation} from "./navigation/Navigation";
+import {Browser, BrowserType} from "polar-content-capture/src/capture/Browser";
 
 export class BrowserProfileBuilder implements BrowserProfile {
 
@@ -152,9 +100,3 @@ export class BrowserProfileBuilder implements BrowserProfile {
     private static sequence: number = 0;
 
 }
-
-export interface DeviceEmulation {
-
-}
-
-export type BrowserType = 'desktop' | 'tablet' | 'phone';

@@ -18,7 +18,7 @@ import {DocMetas} from '../../metadata/DocMetas';
 import {DirectPHZLoader} from '../../phz/DirectPHZLoader';
 import {LoadStrategy} from '../../apps/main/file_loaders/PHZLoader';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Captured} from '../../capture/renderer/Captured';
+import {Captured} from 'polar-content-capture/src/capture/Captured';
 import {IFrames} from '../../util/dom/IFrames';
 import {Documents} from './Documents';
 

@@ -1,4 +1,4 @@
-import {IBrowser} from './Browser';
+import {IBrowser} from 'polar-content-capture/src/capture/Browser';
 import {Navigation} from './navigation/Navigation';
 
 export interface BrowserProfile extends IBrowser {

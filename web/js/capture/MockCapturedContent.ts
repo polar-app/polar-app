@@ -1,4 +1,4 @@
-import {Captured} from "./renderer/Captured";
+import {Captured} from "polar-content-capture/src/capture/Captured";
 
 export class MockCapturedContent {
 

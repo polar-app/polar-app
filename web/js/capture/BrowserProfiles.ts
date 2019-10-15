@@ -1,5 +1,6 @@
-import {Browser, BrowserProfileBuilder} from './Browser';
+import {Browser} from 'polar-content-capture/src/capture/Browser';
 import {BrowserProfile} from './BrowserProfile';
+import {BrowserProfileBuilder} from "./BrowserProfileBuilder";
 
 // TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
 // but many documents are larger than this 10k limit if they have 10 pages or

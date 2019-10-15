@@ -10,7 +10,7 @@ import {BrowserProfile} from '../BrowserProfile';
 import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebContentsNotifier';
 import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
 import {BrowserAppEvent} from '../../apps/browser/BrowserAppEvent';
-import {Browser} from '../Browser';
+import {Browser} from 'polar-content-capture/src/capture/Browser';
 import {BrowserProfiles} from '../BrowserProfiles';
 import WebContents = Electron.WebContents;
 

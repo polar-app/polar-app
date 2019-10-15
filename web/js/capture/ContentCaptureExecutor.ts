@@ -9,7 +9,7 @@ import WebContents = Electron.WebContents;
 import {Directories} from '../datastore/Directories';
 import {CaptureResult} from './CaptureResult';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {Captured} from './renderer/Captured';
+import {Captured} from 'polar-content-capture/src/capture/Captured';
 
 const log = Logger.create();
 

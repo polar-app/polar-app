@@ -4,7 +4,7 @@ import {Resources} from './Resources';
 import {ResourceEntry} from './ResourceEntry';
 import {Files} from 'polar-shared/src/util/Files';
 import {CompressedReader} from './CompressedReader';
-import {Captured} from '../capture/renderer/Captured';
+import {Captured} from 'polar-content-capture/src/capture/Captured';
 import {PathStr} from "polar-shared/src/util/Strings";
 
 export class PHZReader implements CompressedReader {

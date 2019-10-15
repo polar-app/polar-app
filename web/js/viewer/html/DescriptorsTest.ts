@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {assertJSON} from '../../test/Assertions';
 import {Descriptors} from './Descriptors';
-import {ScrollBox} from '../../capture/renderer/Captured';
+import {ScrollBox} from 'polar-content-capture/src/capture/Captured';
 
 describe('Descriptors', function() {
 

@@ -3,7 +3,7 @@
  * Basic structure for defining
  *
  */
-import {Browser} from './Browser';
+import {Browser} from 'polar-content-capture/src/capture/Browser';
 
 // Electron 3.0 uses Chrome 66 by default.  Version 69 is the latest circa Oct 25 2018
 

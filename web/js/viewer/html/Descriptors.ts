@@ -1,7 +1,7 @@
 import {isPresent, notNull} from 'polar-shared/src/Preconditions';
 import {PHZMetadata} from '../../phz/PHZMetadata';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {ScrollBox} from '../../capture/renderer/Captured';
+import {ScrollBox} from 'polar-content-capture/src/capture/Captured';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDimensions} from "../../util/IDimensions";

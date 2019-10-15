@@ -1,5 +1,5 @@
 import BrowserWindow = Electron.BrowserWindow;
-import {Browser} from './Browser';
+import {Browser} from 'polar-content-capture/src/capture/Browser';
 import {BrowserProfile} from './BrowserProfile';
 
 export class BrowserProfileWindows {
