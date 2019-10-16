@@ -19,8 +19,7 @@
     "purge-node-modules": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && rm -rf node_modules'",
     "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n"
   },
-  "deprecated": {
-  },
+  "deprecated": {},
   "keywords": [],
   "author": "",
   "license": "ISC",

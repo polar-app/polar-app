@@ -5,11 +5,24 @@
     <mapping directory="$PROJECT_DIR$/packages/polar-admin" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-pdf/node_modules/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-search-api-client/node_modules/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-search-api/node_modules/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-search/node_modules/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-web-extension-api/node_modules/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-webapp-links/node_modules/polar-shared" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-assets" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-backend-shared" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf-secrets" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf/node_modules/polar-backend-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf/node_modules/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf/node_modules/polar-shared-webserver" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-hooks" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-hooks/functions/node_modules/polar-backend-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-hooks/functions/node_modules/polar-shared" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-hooks/functions/node_modules/polar-shared-webserver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-hooks/node_modules/polar-backend-shared" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-shared" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-shared-webserver" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-site" vcs="Git" />

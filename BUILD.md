@@ -3,13 +3,13 @@
 ```bash
 
 ### bump the version
-lerna version patch
+npm run-script dist-version
 
 ### compile latest verison of all modules
 lerna run compile
 
-### build the lastest webapp.
-lerna run dist
+### build the latest webapp.
+npm run-script dist-prepare && npm run-script dist-publish
 
 ### publish latest version of all packages
 npm run-script publish
