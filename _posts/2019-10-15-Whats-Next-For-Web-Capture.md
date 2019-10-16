@@ -41,9 +41,17 @@ finished.
 
 The advantages here are the ability to use regular chrome extensions like uBlock, Ad Block Pro, Mercury Reader, or Easy Reader.
 
+The new extension will completely bundle the pages resources and send them to the Polar cloud or desktop app.
 
-- Completely based on web extensions and not run within Electron
-    - This will solve issues with plugins 
+# Fluid Layout.
+
+The new format will not require a fixed document size like the previous version.  This was needed due to the layout
+algorithm for placing highlights.  The new version should support placing highlights based on text.
+
+One UI change might be that area highlights for HTML documents will anchor to images or figures.   
+
+
+
 - No longer static layout
     - Reflow  
     - Mobile and Desktop
