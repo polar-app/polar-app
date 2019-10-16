@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+get_git_dir_from_url() {
+
+    repo=${1}
+    echo "${repo}" | grep -Eo '[a-zA-Z0-9_.-]+.git$' | sed -E 's/\.git//g;'
+
+}
+
+###
+#
+# go through the configured repositories and pull them down to initialize them.
+
+for repo_url in `cat conf/repos.conf`; do
+
+    dir=$(get_git_dir_from_url "${repo_url}")
+
+    #echo ${dir}
+    if [ ! -d "${dir}" ]; then
+        git clone "${repo_url}"
+    else
+        echo "Skipping ${repo_url} in ${dir}.  Already cloned."
+    fi
+
+done
+
+echo "Telling git to store passwords locally..."
