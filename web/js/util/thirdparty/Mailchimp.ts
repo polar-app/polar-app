@@ -1,4 +1,4 @@
-import fetch, {RequestInit} from 'polar-shared/src/util/Fetch';
+import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class Mailchimp {
@@ -30,7 +30,7 @@ export class Mailchimp {
             body
         };
 
-        const response = await fetch(url, init);
+        const response = await Fetches.fetch(url, init);
 
         if (response.status !== 200) {
             throw new Error("Mailchimp failed request: " + response.status + ": " + response.statusText);

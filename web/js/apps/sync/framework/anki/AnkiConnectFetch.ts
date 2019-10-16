@@ -1,4 +1,4 @@
-import fetch, {RequestInit} from 'polar-shared/src/util/Fetch';
+import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
 import {Logger} from 'polar-shared/src/logger/Logger';
 
@@ -73,7 +73,7 @@ export class AnkiConnectFetch {
                 }
             };
 
-            const response = await fetch('http://127.0.0.1:' + port, init);
+            const response = await Fetches.fetch('http://127.0.0.1:' + port, init);
             const result: AnkiConnectResponse = await response.json();
 
             if (result.error) {
