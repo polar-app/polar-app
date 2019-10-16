@@ -78,6 +78,9 @@ research which is often stored as PDF.
 
 - **Portable** Run across any platform. ```Linux```, ```MacOS```, and ```Windows``` supported.  We also product snaps which means you can install our ```.deb``` files on ```Ubuntu``` or ```Debian``` but also any ```Linux``` distribution that supports snaps!
 
+
+We hit 1.0 in 2018, and Polar's mature enough to be nearing—or already—best-in-class for PDF and (especially) web annotations.
+
 # Screenshots
 
 <img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/pdf-loaded-shadow.png" align="center" title="PDF" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
@@ -219,18 +222,6 @@ repository.
 
 To specify the Anki deck for a document, add a tag starting with `deck:`.  Slashes are used to specify subdecks.
 For instance, to set a document to the Anki deck ML::100PageMLBook, use the Polar tag `deck:ML/100PageMLBook`.
-
-
-## Status
-
-This is currently a beta feature and we're working on implementing Anki sync
-to enable spaced repetition. Any flashcards created now will be stored with
-Anki in the future.
-
-Polar is very reliable to use for day to day PDF and web content annotation.
-
-We're expecting to release a 1.0 in Sept 2018 with Anki sync support and initial
-annotation support.
 
 # Hackable
 
