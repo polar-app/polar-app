@@ -1,4 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-16T17:56:21-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-17T09:59:17-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">What’s Next for Offline Web Capture of Web Pages in Polar</title><link href="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's Next for Offline Web Capture of Web Pages in Polar" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+
+&lt;p&gt;Since we shipped Polar we’ve been listening to feedback from our users as to the default behavior and functionality of 
+web capture.&lt;/p&gt;
+
+&lt;p&gt;Web capture (or just capture) is what we call converting an HTML page to a format that can be persisted and used within
+Polar.&lt;/p&gt;
+
+&lt;p&gt;This code started off as an advanced proof of concept but it had a few issues in practice that holds it back from 
+perfectly solving the problem of offline web pages as documents.&lt;/p&gt;
+
+&lt;p&gt;Here’s what we’re working on in the background.&lt;/p&gt;
+
+&lt;h2 id=&quot;epub&quot;&gt;EPUB&lt;/h2&gt;
+
+&lt;p&gt;EPUB will become the default format.  Internally, EPUB is just HTML and CSS and if we migrate web capture to use EPUB 
+then this means we &lt;em&gt;also&lt;/em&gt; support EPUB as a primary file format in Polar.&lt;/p&gt;
+
+&lt;p&gt;It also means less code to debug since everything is EPUB.&lt;/p&gt;
+
+&lt;p&gt;We’re going to work on a converter to take our PHZ format and convert it to EPUB so that existing documents will 
+convert in place.&lt;/p&gt;
+
+&lt;h2 id=&quot;based-on-web-extensions&quot;&gt;Based on Web Extensions&lt;/h2&gt;
+
+&lt;p&gt;We’re going to migrate everything to a web extension.&lt;/p&gt;
+
+&lt;p&gt;This means the native Electron capture will migrate to being completely browser based.&lt;/p&gt;
+
+&lt;p&gt;Our goal is to support Chrome, Firefox, and Safari extensions during this process as our Firefox extension is nearly 
+finished.&lt;/p&gt;
+
+&lt;p&gt;The advantages here are the ability to use regular chrome extensions like uBlock, Ad Block Pro, Mercury Reader, or Easy Reader.&lt;/p&gt;
+
+&lt;p&gt;The new extension will completely bundle the pages resources and send them to the Polar cloud or desktop app.&lt;/p&gt;
+
+&lt;h2 id=&quot;fluid-layout&quot;&gt;Fluid Layout.&lt;/h2&gt;
+
+&lt;p&gt;The new format will not require a fixed document size like the previous version.  This was needed due to the layout
+algorithm for placing highlights.  The new version should support placing highlights based on text.&lt;/p&gt;
+
+&lt;p&gt;One UI change might be that area highlights for HTML documents will anchor to images since the flow can change this 
+means that an area you select might move when you resize.&lt;/p&gt;
+
+&lt;h2 id=&quot;mobile-and-tablet-support&quot;&gt;Mobile and Tablet Support&lt;/h2&gt;
+
+&lt;p&gt;Once we’ve migrated to EPUB as a backend, captured content will work on mobile and tablet devices.&lt;/p&gt;
+
+&lt;p&gt;We’re also going to have capture work on mobile by sending the raw URL to the Polar cloud backend and having it 
+perform the capture for you in the background.&lt;/p&gt;
+
+&lt;p&gt;This way capture will work on all devices.&lt;/p&gt;
+
+&lt;h2 id=&quot;lightweight-capture-url-only&quot;&gt;Lightweight Capture (URL only)&lt;/h2&gt;
+
+&lt;p&gt;We’re also going to work on lightweight capture where we store the URL only.  I think for a lot of users it might not
+make sense to store 300k per document as part of Polar so storing just the URL and annotations will mean much 
+lower storage requirements.&lt;/p&gt;
+
+&lt;h2 id=&quot;overview-1&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;I think these issues will solve 95% of the initial problems we had with capture and make the entire platform much more
+reliable.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
 
@@ -90,62 +154,7 @@ with one click.&lt;/p&gt;
 &lt;p&gt;This is something I’m working on improving in future versions of Polar but first we have to improve usability.&lt;/p&gt;
 
 &lt;p&gt;We’re going to keep comparing notes and try to sync up again in another few weeks.  There’s definitely a lot of 
-potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">What’s next for web capture</title><link href="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's next for web capture" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-
-&lt;p&gt;Since we shipped Polar we’ve been listening to feedback from our users as to the default behavior and functionality of 
-web capture.&lt;/p&gt;
-
-&lt;p&gt;Web capture (or just capture) is what we call converting an HTML page to a format that can be persisted and used within
-Polar.&lt;/p&gt;
-
-&lt;p&gt;This code started off as an advanced proof of concept but it had a few issues in practice that holds it back from 
-perfectly solving the problem of offline web pages as documents.&lt;/p&gt;
-
-&lt;p&gt;Here’s what we’re working on in the background.&lt;/p&gt;
-
-&lt;h1 id=&quot;epub&quot;&gt;EPUB&lt;/h1&gt;
-
-&lt;p&gt;EPUB will become the default format.  Internally, EPUB is just HTML and CSS and if we migrate web capture to use EPUB 
-then this means we &lt;em&gt;also&lt;/em&gt; support EPUB as a primary file format in Polar.&lt;/p&gt;
-
-&lt;p&gt;It also means less code to debug since everything is EPUB.&lt;/p&gt;
-
-&lt;p&gt;We’re going to work on a converter to take our PHZ format and convert it to EPUB so that existing documents will 
-convert in place.&lt;/p&gt;
-
-&lt;h1 id=&quot;based-on-web-extensions&quot;&gt;Based on Web Extensions&lt;/h1&gt;
-
-&lt;p&gt;We’re going to migrate everything to a web extension.&lt;/p&gt;
-
-&lt;p&gt;This means the native Electron capture will migrate to being completely browser based.&lt;/p&gt;
-
-&lt;p&gt;Our goal is to support Chrome, Firefox, and Safari extensions during this process as our Firefox extension is nearly 
-finished.&lt;/p&gt;
-
-&lt;p&gt;The advantages here are the ability to use regular chrome extensions like uBlock, Ad Block Pro, Mercury Reader, or Easy Reader.&lt;/p&gt;
-
-&lt;p&gt;The new extension will completely bundle the pages resources and send them to the Polar cloud or desktop app.&lt;/p&gt;
-
-&lt;h1 id=&quot;fluid-layout&quot;&gt;Fluid Layout.&lt;/h1&gt;
-
-&lt;p&gt;The new format will not require a fixed document size like the previous version.  This was needed due to the layout
-algorithm for placing highlights.  The new version should support placing highlights based on text.&lt;/p&gt;
-
-&lt;p&gt;One UI change might be that area highlights for HTML documents will anchor to images or figures.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;No longer static layout
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;Reflow&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Mobile and Desktop&lt;/li&gt;
-      &lt;li&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Optionally capture on server when triggered from mobile/tablet&lt;/li&gt;
-  &lt;li&gt;Lightweight capture (URL only)&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Overview</summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
+potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;the-future-of-polar-cloud-sync&quot;&gt;The Future of Polar Cloud Sync&lt;/h1&gt;
 
