@@ -284,7 +284,7 @@ export class FileImportController {
 
     private async doImportFiles(files: AddFileRequest[]): Promise<Array<Optional<ImportedFile>>> {
 
-        const progressTracker = new ProgressTracker(files.length, 'import-files');
+        const progressTracker = new ProgressTracker({total: files.length, id: 'import-files'});
 
         const result: Array<Optional<ImportedFile>> = [];
 

@@ -90,8 +90,12 @@ export class PersistenceLayers {
         const work: AsyncFunction[] = [];
         const asyncWorkQueue = new AsyncWorkQueue(work);
 
-        const progressTracker = new ProgressTracker(docMetaRefs.length,
-                                                    `datastore:${datastore.id}#toSyncDocMapFromDocs`);
+        const init = {
+            total: docMetaRefs.length,
+            id: `datastore:${datastore.id}#toSyncDocMapFromDocs`
+        };
+
+        const progressTracker = new ProgressTracker(init);
 
         for (const docMetaRef of docMetaRefs) {
 
@@ -320,7 +324,7 @@ export class PersistenceLayers {
         const progressID
             = `transfer:source=${source.datastore.id},target=${target.datastore.id}`;
 
-        const progressTracker = new ProgressTracker(sourceSyncDocs.length, progressID);
+        const progressTracker = new ProgressTracker({total: sourceSyncDocs.length, id: progressID});
 
         for (const sourceSyncDoc of sourceSyncDocs) {
 

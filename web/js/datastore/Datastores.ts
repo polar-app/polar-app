@@ -81,8 +81,7 @@ export class Datastores {
 
         const docMetaFiles = await datastore.getDocMetaRefs();
 
-        const progressTracker = new ProgressTracker(docMetaFiles.length,
-                                                    `datastore:${datastore.id}#snapshot`);
+        const progressTracker = new ProgressTracker({total: docMetaFiles.length, id: `datastore:${datastore.id}#snapshot`});
 
         // TODO: we call the listener too many times here but we might want to
         // batch it in the future so that the listener doesn't get called too

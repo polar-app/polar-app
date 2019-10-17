@@ -54,7 +54,7 @@ export class PDFDownloadHandlers {
 
             downloadItem.setSavePath(tmpPath);
 
-            const progressTracker = new ProgressTracker(downloadItem.getTotalBytes(), 'download:' + basename);
+            const progressTracker = new ProgressTracker({total: downloadItem.getTotalBytes(), id: 'download:' + basename});
 
             downloadItem.once('done', (event, state) => {
 

@@ -1,15 +1,5 @@
-import {Datastore, DatastoreConsistency, DatastoreID, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, SnapshotProgress, SnapshotResult, SynchronizationEvent} from "./Datastore";
-import {Directories} from './Directories';
-import {DocMetaFileRef, DocMetaFileRefs} from './DocMetaRef';
-import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {DiskDeleteResult} from './DiskDatastore';
-import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Datastores} from './Datastores';
+import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener} from "./Datastore";
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {ProgressTrackers} from "../util/ProgressTrackers";
-import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {DocMetas} from '../metadata/DocMetas';
-import {AsyncProviders} from 'polar-shared/src/util/Providers';
 
 /**
  */

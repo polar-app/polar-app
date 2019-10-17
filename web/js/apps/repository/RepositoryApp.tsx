@@ -495,7 +495,7 @@ export class RepositoryApp {
 
                 this.repoDocInfoManager.updateFromRepoDocMeta(docInfo.fingerprint, repoDocMeta);
 
-                const progress = new ProgressTracker(1, 'doc-info-update').terminate();
+                const progress = new ProgressTracker({total: 1, id: 'doc-info-update'}).terminate();
 
                 this.repoDocInfoLoader.dispatchEvent({
                      mutations: [

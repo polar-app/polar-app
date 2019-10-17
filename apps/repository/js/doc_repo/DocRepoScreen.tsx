@@ -421,7 +421,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
             this.clearSelected();
 
-            const progressTracker = new ProgressTracker(repoDocInfos.length, 'delete');
+            const progressTracker = new ProgressTracker({total: repoDocInfos.length, id: 'delete'});
 
             for (const repoDocInfo of repoDocInfos) {
 
