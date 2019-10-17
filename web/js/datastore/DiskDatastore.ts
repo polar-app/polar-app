@@ -15,7 +15,7 @@ import {WriteFileOpts} from './Datastore';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, FileHandle, Files} from 'polar-shared/src/util/Files';
+import {FileDeleted, FileHandle, Files, StreamFactory} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Directories} from './Directories';
 
@@ -293,7 +293,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         // this would create the parent dir for the file when it does not exist.
         await Files.createDirAsync(fileReference.dir);
 
-        type DiskBinaryFileData = FileHandle | Buffer | string | NodeJS.ReadableStream;
+        // TODO maybe make this accept a function that creates a readable stream.
+        type DiskBinaryFileData = FileHandle | Buffer | string | NodeJS.ReadableStream | StreamFactory;
 
         const diskData = <DiskBinaryFileData> data;
 
