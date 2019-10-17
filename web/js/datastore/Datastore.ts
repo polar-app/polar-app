@@ -3,7 +3,7 @@ import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {FileHandle, FileHandles, ReadableStreamFactory} from 'polar-shared/src/util/Files';
+import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Progress, ProgressListener} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
@@ -21,6 +21,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {PathStr} from "polar-shared/src/util/Strings";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -338,7 +339,55 @@ export interface WritableBinaryMetaDatastore {
     // writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void>;
 }
 
-export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream | ReadableStreamFactory;
+export namespace sources {
+
+    export interface FileSource {
+        readonly file: PathStr;
+    }
+
+    export interface BufferSource {
+        readonly buffer: Buffer;
+    }
+
+    export interface StrSource {
+        readonly str: string;
+    }
+
+    export interface BlobSource {
+        readonly blob: Blob;
+    }
+
+    export interface StreamSource {
+        readonly stream: NodeJS.ReadableStream;
+    }
+
+    export type DataSourceLiteral = FileSource | BufferSource | StrSource | BlobSource | StreamSource;
+
+    /**
+     * Allows us to pass a function that then returns the DataSrc to handle.
+     */
+    export type DataSourceLiteralFactory = () => Promise<DataSourceLiteral>;
+
+    export type DataSource = DataSourceLiteral | DataSourceLiteralFactory;
+
+    export class DataSources {
+
+        public static async toLiteral(source: DataSource): Promise<DataSourceLiteral> {
+
+            if (typeof source === 'function') {
+                return source();
+            }
+
+            // we're already a literal now so just return that.
+            return source;
+
+        }
+
+    }
+
+}
+
+export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream;
 
 export type BinaryFileDataType = 'file-handle' | 'buffer' | 'string' | 'blob' | 'readable-stream';
 
