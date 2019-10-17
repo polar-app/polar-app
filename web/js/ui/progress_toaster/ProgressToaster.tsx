@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
 import {ipcRenderer} from "electron";
-import {Progress} from '../../util/ProgressTracker';
+import {Progress} from 'polar-shared/src/util/ProgressTracker';
 import {Latch} from "polar-shared/src/util/Latch";
 
 export class ProgressToaster extends React.Component<IProps, IState> {

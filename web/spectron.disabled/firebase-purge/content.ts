@@ -23,7 +23,7 @@ import waitForExpect from 'wait-for-expect';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
 import {PersistenceLayers, SyncOrigin} from '../../js/datastore/PersistenceLayers';
 import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
-import {ProgressTracker} from '../../js/util/ProgressTracker';
+import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 import {Logging} from '../../js/logger/Logging';
 import {Latch} from "polar-shared/src/util/Latch";

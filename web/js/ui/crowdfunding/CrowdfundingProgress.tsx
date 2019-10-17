@@ -2,7 +2,7 @@ import * as React from 'react';
 import Progress from 'reactstrap/lib/Progress';
 import {Firebase} from '../../firebase/Firebase';
 import {Firestore} from '../../firebase/Firestore';
-import {Percentages} from '../../util/Percentages';
+import {Percentages} from 'polar-shared/src/util/Percentages';
 
 export class CrowdfundingProgress extends React.Component<IProps, IState> {
 

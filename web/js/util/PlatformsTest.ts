@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {ProgressTracker} from './ProgressTracker';
+import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {Platform, Platforms} from './Platforms';
 
 describe('Platforms', function() {

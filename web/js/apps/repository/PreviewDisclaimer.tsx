@@ -1,5 +1,5 @@
 import React from 'react';
-import {Progress} from '../../util/ProgressTracker';
+import {Progress} from 'polar-shared/src/util/ProgressTracker';
 import Modal from 'reactstrap/lib/Modal';
 import {LargeModal} from '../../ui/large_modal/LargeModal';
 import {Button, ModalFooter, ModalHeader} from 'reactstrap';

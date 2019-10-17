@@ -5,7 +5,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {FileHandle} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {Progress} from '../util/ProgressTracker';
+import {Progress, ProgressListener} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
@@ -320,6 +320,12 @@ export interface WriteFileOpts {
     readonly updateMeta?: boolean;
 
     readonly datastoreMutation?: DatastoreMutation<boolean>;
+
+    /**
+     * Specify a progress listener so that when you're writing a file you can
+     * keep track of the progress
+     */
+    readonly progressListener?: ProgressListener;
 
 }
 

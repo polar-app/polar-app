@@ -1,4 +1,4 @@
-import {Progress} from '../../util/ProgressTracker';
+import {Progress} from 'polar-shared/src/util/ProgressTracker';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Preconditions} from 'polar-shared/src/Preconditions';

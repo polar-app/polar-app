@@ -4,7 +4,7 @@ import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
 import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
-import {ProgressListener, ProgressTracker} from '../util/ProgressTracker';
+import {ProgressListener, ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';

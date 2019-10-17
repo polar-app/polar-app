@@ -2,7 +2,7 @@ import {BrowserWindow, DownloadItem, WebContents} from "electron";
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ToasterMessages} from '../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../ui/toaster/Toaster';
-import {ProgressTracker} from '../util/ProgressTracker';
+import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {FileImportClient} from '../apps/repository/FileImportClient';
 import {AppLauncher} from '../apps/main/AppLauncher';

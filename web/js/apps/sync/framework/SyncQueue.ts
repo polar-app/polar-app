@@ -4,7 +4,7 @@ import {SyncProgress} from './SyncProgress';
 import {SyncState} from './SyncState';
 import {SyncTask} from './SyncTask';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {Percentages} from '../../../util/Percentages';
+import {Percentages} from 'polar-shared/src/util/Percentages';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
 const log = Logger.create();

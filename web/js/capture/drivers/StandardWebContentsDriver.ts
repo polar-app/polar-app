@@ -16,7 +16,7 @@ import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOption
 import base = Mocha.reporters.base;
 import {PDFImporter} from '../../apps/repository/importers/PDFImporter';
 import {FileImportClient} from '../../apps/repository/FileImportClient';
-import {ProgressTracker} from '../../util/ProgressTracker';
+import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {ProgressMessages} from '../../ui/progress_bar/ProgressMessages';
 import {AppLauncher} from '../../apps/main/AppLauncher';
 import {PDFDownloadHandlers} from '../PDFDownloadHandlers';

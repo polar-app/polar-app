@@ -16,7 +16,7 @@ import {FileImportRequest} from "./FileImportRequest";
 import {AddFileRequest} from "./AddFileRequest";
 import {AppRuntime} from "../../AppRuntime";
 import {AddFileRequests} from "./AddFileRequests";
-import {ProgressTracker} from '../../util/ProgressTracker';
+import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 
 const log = Logger.create();

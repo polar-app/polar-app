@@ -27,7 +27,7 @@ import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
 import {Settings} from '../../../../web/js/datastore/Settings';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
-import {ProgressTracker} from '../../../../web/js/util/ProgressTracker';
+import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
 import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';

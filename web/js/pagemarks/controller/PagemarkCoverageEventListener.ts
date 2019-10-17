@@ -6,7 +6,7 @@ import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {KeyEvents} from '../../KeyEvents';
 import {Elements} from '../../util/Elements';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {Percentages} from '../../util/Percentages';
+import {Percentages} from 'polar-shared/src/util/Percentages';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {DocMetas} from '../../metadata/DocMetas';

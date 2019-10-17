@@ -5,7 +5,7 @@ import {MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastor
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
-import {ProgressTrackerIndex} from '../../../web/js/util/ProgressTrackerIndex';
+import {ProgressTrackerIndex} from 'polar-shared/src/util/ProgressTrackerIndex';
 import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';

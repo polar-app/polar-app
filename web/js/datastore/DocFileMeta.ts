@@ -20,6 +20,8 @@ export interface DocFileMeta extends DocFileURLMeta {
 
     readonly ref: FileRef;
 
+    // TODO: return the hashcode for remotely adding the file.
+
     // readonly meta: FileMeta;
 
 }

@@ -28,7 +28,7 @@ import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
 import LogsScreen from '../../../../apps/repository/js/logs/LogsScreen';
 import {ToasterService} from '../../ui/toaster/ToasterService';
 import {ProgressService} from '../../ui/progress_bar/ProgressService';
-import {ProgressTracker} from '../../util/ProgressTracker';
+import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import EditorsPicksScreen
     from '../../../../apps/repository/js/editors_picks/EditorsPicksScreen';
