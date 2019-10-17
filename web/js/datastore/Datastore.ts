@@ -3,7 +3,7 @@ import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {FileHandle} from 'polar-shared/src/util/Files';
+import {FileHandle, FileHandles, ReadableStreamFactory} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Progress, ProgressListener} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
@@ -338,7 +338,29 @@ export interface WritableBinaryMetaDatastore {
     // writeFileMeta(backend: Backend, ref: FileRef, docFileMeta: DocFileMeta): Promise<void>;
 }
 
-export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream;
+export type BinaryFileData = FileHandle | Buffer | string | Blob | NodeJS.ReadableStream | ReadableStreamFactory;
+
+export type BinaryFileDataType = 'file-handle' | 'buffer' | 'string' | 'blob' | 'readable-stream';
+
+export class BinaryFileDatas {
+
+   public static toType(data: BinaryFileData): BinaryFileDataType {
+
+        if (typeof data === 'string') {
+            return 'string';
+        } else if (data instanceof Buffer) {
+            return 'buffer';
+        } else if (data instanceof Blob) {
+            return 'blob';
+        } else if (FileHandles.isFileHandle(data)) {
+            return 'file-handle';
+        } else {
+            return 'readable-stream';
+        }
+
+    }
+
+}
 
 export function isBinaryFileData(data: any): boolean {
 
