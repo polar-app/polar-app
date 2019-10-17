@@ -54,6 +54,7 @@ One UI change might be that area highlights for HTML documents will anchor to im
 
 - No longer static layout
     - Reflow  
+    
     - Mobile and Desktop
     - 
 - Optionally capture on server when triggered from mobile/tablet

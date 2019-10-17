@@ -3,7 +3,8 @@ title: Roger Craig used Polar to Win Jeopardy.
 date: 2019-10-06 08:00:00 -0800
 layout: post
 large_image: https://i.imgur.com/lkRjAkq.png
-description: Polar has been rapidly adopted by alpha-geeks to combat information overload and looks like we've found another convert -  this time Roger Craig who used it to win $77k on Jeopardy.   
+description: Polar has been rapidly adopted by alpha-geeks to combat information overload and looks like we've found another convert -  this time Roger Craig who used it to win $77k on Jeopardy.
+hidden: true   
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/lkRjAkq.png">
