@@ -21,7 +21,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {PathStr} from "polar-shared/src/util/Strings";
+import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -361,7 +361,14 @@ export namespace sources {
         readonly stream: NodeJS.ReadableStream;
     }
 
-    export type DataSourceLiteral = FileSource | BufferSource | StrSource | BlobSource | StreamSource;
+    /**
+     * Just a pointer to a URL that can be fetched (possibly remotely)
+     */
+    export interface URLSource {
+        readonly url: URLStr;
+    }
+
+    export type DataSourceLiteral = FileSource | BufferSource | StrSource | BlobSource | StreamSource | URLSource;
 
     /**
      * Allows us to pass a function that then returns the DataSrc to handle.
