@@ -97,7 +97,7 @@ export class GDPRNotice extends React.Component<any, IState> {
 
                         <p>
                             We do not sell your private data.  Your private data is
-                            your and we're not interested in selling, monetizing, or
+                            yours and we're not interested in selling, monetizing, or
                             distributing it to 3rd parties except when necessary to
                             provide data storage services.
                         </p>
