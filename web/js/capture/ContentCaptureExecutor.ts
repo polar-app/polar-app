@@ -2,7 +2,7 @@ import {IResult} from 'polar-shared/src/util/Result';
 import {Results} from 'polar-shared/src/util/Results';
 import {Filenames} from '../util/Filenames';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {CapturedPHZWriter} from './CapturedPHZWriter';
+import {CapturedPHZWriter} from 'polar-content-capture/src/phz/CapturedPHZWriter';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserProfile} from './BrowserProfile';
 import WebContents = Electron.WebContents;

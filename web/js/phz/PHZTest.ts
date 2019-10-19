@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {TestingTime} from '../test/TestingTime';
-import {ResourceFactory} from './ResourceFactory';
+import {ResourceFactory} from 'polar-content-capture/src/phz/ResourceFactory';
 import {assertJSON} from '../test/Assertions';
 import {Files} from 'polar-shared/src/util/Files';
 import {PHZReader} from './PHZReader';
