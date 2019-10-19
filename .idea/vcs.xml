@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-admin" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-private/polar-hooks" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-pdf/node_modules/polar-shared" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-search-api-client/node_modules/polar-shared" vcs="Git" />
