@@ -2,7 +2,7 @@ import {CaptureTarget} from './electron/ElectronScreenshots';
 import {ElectronScreenshots} from './electron/ElectronScreenshots';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
-import {Buffers} from '../util/Buffers';
+import {Buffers} from 'polar-shared/src/util/Buffers';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {ExtractedImage} from './Screenshot';
 import {Logger} from 'polar-shared/src/logger/Logger';

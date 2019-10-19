@@ -1,5 +1,5 @@
 import {CacheEntry, DataCallback} from './CacheEntry';
-import {Buffers} from '../../util/Buffers';
+import {Buffers} from 'polar-shared/src/util/Buffers';
 
 /**
  * Cache entry which is just buffered in memory.
