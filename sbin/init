@@ -21,7 +21,7 @@ for repo_url in `cat conf/repos.conf`; do
     if [ ! -d "${dir}" ]; then
 
         target_dir=$(basename ${repo_url} .git)
-        git clone "${repo_url}" "$target_dir"
+        git clone "${repo_url}" "packages/$target_dir"
     else
         echo "Skipping ${repo_url} in ${dir}.  Already cloned."
     fi
