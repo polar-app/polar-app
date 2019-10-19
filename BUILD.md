@@ -1,5 +1,13 @@
 # Current build notes
 
+## Install lerna 
+
+Must be installed globally because it has its own dependencies and will break node_modules otherwise.
+
+```bash
+sudo npm install -g lerna
+```
+
 ```bash
 
 ### bump the version
