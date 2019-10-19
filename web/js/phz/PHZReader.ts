@@ -1,7 +1,7 @@
 
 import JSZip from 'jszip';
-import {Resources} from './Resources';
-import {ResourceEntry} from './ResourceEntry';
+import {Resources} from 'polar-content-capture/src/phz/Resources';
+import {ResourceEntry} from 'polar-content-capture/src/phz/ResourceEntry';
 import {Files} from 'polar-shared/src/util/Files';
 import {CompressedReader} from './CompressedReader';
 import {Captured} from 'polar-content-capture/src/capture/Captured';

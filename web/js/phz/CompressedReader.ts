@@ -1,5 +1,5 @@
-import {Resources} from './Resources';
-import {ResourceEntry} from './ResourceEntry';
+import {Resources} from 'polar-content-capture/src/phz/Resources';
+import {ResourceEntry} from 'polar-content-capture/src/phz/ResourceEntry';
 import {PathStr} from "polar-shared/src/util/Strings";
 
 export interface CompressedReader {

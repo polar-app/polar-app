@@ -3,12 +3,12 @@ import {TestingTime} from '../test/TestingTime';
 import {ResourceFactory} from './ResourceFactory';
 import {assertJSON} from '../test/Assertions';
 import {Files} from 'polar-shared/src/util/Files';
-import {PHZWriter} from './PHZWriter';
 import {PHZReader} from './PHZReader';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import JSZip from 'jszip';
 import {Streams} from 'polar-shared/src/util/Streams';
+import {PHZWriter} from "polar-content-capture/src/phz/PHZWriter";
 
 TestingTime.freeze();
 

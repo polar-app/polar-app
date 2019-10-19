@@ -1,13 +1,13 @@
-/**
- * Writes out a PHZ archive from the given captured JSON data.
- */
-import {PHZWriter} from '../phz/PHZWriter';
 import {forOwnKeys} from 'polar-shared/src/util/Functions';
 import {ResourceFactory} from '../phz/ResourceFactory';
 import {Captured, CapturedDoc} from 'polar-content-capture/src/capture/Captured';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Objects} from "polar-shared/src/util/Objects";
+import {PHZWriter} from "polar-content-capture/src/phz/PHZWriter";
 
+/**
+ * Writes out a PHZ archive from the given captured JSON data.
+ */
 export class CapturedPHZWriter {
 
     public path: string;

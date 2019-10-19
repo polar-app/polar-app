@@ -4,7 +4,7 @@
 import {CacheEntry, DataCallback, ICacheEntry} from "./CacheEntry";
 import {PHZReader} from '../../phz/PHZReader';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ResourceEntry} from '../../phz/ResourceEntry';
+import {ResourceEntry} from 'polar-content-capture/src/phz/ResourceEntry';
 import {CompressedReader} from "../../phz/CompressedReader";
 
 export class PHZCacheEntry extends CacheEntry implements IPHZCacheEntry {

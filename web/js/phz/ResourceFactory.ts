@@ -1,5 +1,5 @@
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {Resource} from './Resource';
+import {Resource} from 'polar-content-capture/src/phz/Resource';
 
 export class ResourceFactory {
 
