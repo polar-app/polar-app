@@ -9,6 +9,8 @@ get_git_dir_from_url() {
 
 }
 
+mkdir -p packages
+
 ###
 #
 # go through the configured repositories and pull them down to initialize them.
