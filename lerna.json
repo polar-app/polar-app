@@ -2,7 +2,7 @@
   "packages": [
     "packages/*",
     "packages/polar-app-private/*",
-    "packages/polar-app-private/pcat olar-hooks/functions",
+    "packages/polar-app-private/polar-hooks/functions",
     "packages/polar-app-public/*"
   ],
   "version": "1.32.54"
