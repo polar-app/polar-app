@@ -1,0 +1,9 @@
+
+// Only allow get. do not allow read/list.  This allows us to give users
+// permission to read their own record but not run queries or list.
+// There is a amazingly mild security issue here which even if violated
+// wouldn't amount to anything significant.
+
+allow get;
+
+allow write;
