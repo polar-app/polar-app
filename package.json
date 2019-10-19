@@ -17,6 +17,7 @@
     "dist-release": "npm run-script dist-publish && lerna run dist-release",
     "lerna-outdated": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && npm outdated'",
     "purge-node-modules": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && rm -rf node_modules'",
+    "ls-packages": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd'",
     "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n"
   },
   "deprecated": {},
