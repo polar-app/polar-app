@@ -1,4 +1,4 @@
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolver} from "../datastore/DocFileResolvers";

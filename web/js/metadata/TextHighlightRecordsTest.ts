@@ -1,4 +1,4 @@
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {TextHighlightRecords} from './TextHighlightRecords';
 import {assertJSON} from '../test/Assertions';
 import {Rect} from '../Rect';

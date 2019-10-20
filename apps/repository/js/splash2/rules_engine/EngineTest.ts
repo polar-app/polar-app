@@ -4,7 +4,7 @@ import {EventMaps} from './Engine';
 import {EventHandlers} from './Engine';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {TestingTime} from '../../../../../web/js/test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {assertJSON} from '../../../../../web/js/test/Assertions';
 
 describe('Engine', function() {

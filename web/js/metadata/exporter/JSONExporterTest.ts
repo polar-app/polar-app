@@ -4,7 +4,7 @@ import {Comments} from '../Comments';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {assert} from 'chai';
 import {assertJSON} from '../../test/Assertions';
-import {TestingTime} from '../../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {MockReadableBinaryDatastore} from "../../datastore/MockDatastore";
 
 const datastore = new MockReadableBinaryDatastore();

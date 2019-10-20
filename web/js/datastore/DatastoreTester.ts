@@ -18,7 +18,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {DiskDatastore} from './DiskDatastore';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Latch} from "polar-shared/src/util/Latch";

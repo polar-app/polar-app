@@ -3,7 +3,7 @@ import {assertJSON} from '../test/Assertions';
 import {PagemarkRects} from './PagemarkRects';
 import {Rects} from '../Rects';
 import {MockDocMetas} from './DocMetas';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {Statistics} from './Statistics';
 
 describe('Statistics', function() {

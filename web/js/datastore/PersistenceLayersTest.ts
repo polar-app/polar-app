@@ -8,7 +8,7 @@ import {MemoryDatastore} from './MemoryDatastore';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {PersistenceLayer} from './PersistenceLayer';
 import {UUIDs} from "../metadata/UUIDs";
-import {TestingTime} from "../test/TestingTime";
+import {TestingTime} from "polar-shared/src/test/TestingTime";
 
 describe('PersistenceLayers', function() {
 

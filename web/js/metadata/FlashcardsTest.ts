@@ -4,7 +4,7 @@ import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {Flashcard} from './Flashcard';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 
 TestingTime.freeze();
 

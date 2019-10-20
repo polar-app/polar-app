@@ -5,7 +5,7 @@ import {DocMetas} from '../../../metadata/DocMetas';
 import {TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
 import {Rect} from '../../../Rect';
 import {TextRect} from '../../../metadata/TextRect';
-import {TestingTime} from '../../../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {Proxies} from '../../../proxies/Proxies';
 
 TestingTime.freeze();

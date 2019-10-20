@@ -4,7 +4,7 @@ import {assertJSON} from '../test/Assertions';
 import {Files} from 'polar-shared/src/util/Files';
 import {ResourceFactory} from 'polar-content-capture/src/phz/ResourceFactory';
 import {CachingPHZReader} from './CachingPHZReader';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {Time} from '../util/Time';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';

@@ -5,7 +5,7 @@ import {MockDocMetas} from '../../metadata/DocMetas';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {assertJSON} from '../../test/Assertions';
 import {MockAdvertisingPersistenceLayer} from './MockAdvertisingPersistenceLayer';
-import {TestingTime} from '../../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 
 describe('AdvertisingPersistenceLayer', function() {

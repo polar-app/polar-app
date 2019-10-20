@@ -1,4 +1,4 @@
-import {TestingTime} from '../../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {CapturedPHZWriter} from 'polar-content-capture/src/phz/CapturedPHZWriter';
 import {CacheRegistry} from './CacheRegistry';
 import {MockCapturedContent} from 'polar-content-capture/src/phz/MockCapturedContent';

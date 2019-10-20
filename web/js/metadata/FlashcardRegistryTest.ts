@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {FlashcardRegistry} from './FlashcardRegistry';
 import {assertJSON} from '../test/Assertions';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 
 TestingTime.freeze();
 

@@ -1,6 +1,6 @@
 import {FlashcardsController} from './FlashcardsController';
 import {Model} from '../../model/Model';
-import {TestingTime} from '../../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {MemoryDatastore} from '../../datastore/MemoryDatastore';
 import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DocMetas} from '../../metadata/DocMetas';

@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {TestingTime} from '../../../../web/js/test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {SplashEventHandlers} from './SplashEngine';
 import {SplashEngine} from './SplashEngine';
 import {MutableUserFacts} from './SplashEngine';

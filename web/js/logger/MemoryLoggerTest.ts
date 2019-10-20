@@ -1,6 +1,6 @@
 import {MemoryLogger} from "./MemoryLogger";
 import {assertJSON} from "../test/Assertions";
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 
 describe('MemoryLogger', function() {
 

@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {Cmdline} from './Cmdline';
 
 TestingTime.freeze();

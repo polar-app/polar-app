@@ -2,7 +2,7 @@
 import {DocMetaSnapshotEvent, DocMetaSnapshotEventListener, DatastoreConsistency, DocMetaMutation, MutationType} from './Datastore';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 import {MockDocMetas} from '../metadata/DocMetas';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {assertJSON} from '../test/Assertions';
 import {assert} from 'chai';

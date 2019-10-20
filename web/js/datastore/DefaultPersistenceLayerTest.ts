@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {TestingTime} from '../test/TestingTime';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import uuid from 'uuid';
 
 
