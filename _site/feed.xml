@@ -1,68 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-17T09:59:17-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">What’s Next for Offline Web Capture of Web Pages in Polar</title><link href="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's Next for Offline Web Capture of Web Pages in Polar" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-
-&lt;p&gt;Since we shipped Polar we’ve been listening to feedback from our users as to the default behavior and functionality of 
-web capture.&lt;/p&gt;
-
-&lt;p&gt;Web capture (or just capture) is what we call converting an HTML page to a format that can be persisted and used within
-Polar.&lt;/p&gt;
-
-&lt;p&gt;This code started off as an advanced proof of concept but it had a few issues in practice that holds it back from 
-perfectly solving the problem of offline web pages as documents.&lt;/p&gt;
-
-&lt;p&gt;Here’s what we’re working on in the background.&lt;/p&gt;
-
-&lt;h2 id=&quot;epub&quot;&gt;EPUB&lt;/h2&gt;
-
-&lt;p&gt;EPUB will become the default format.  Internally, EPUB is just HTML and CSS and if we migrate web capture to use EPUB 
-then this means we &lt;em&gt;also&lt;/em&gt; support EPUB as a primary file format in Polar.&lt;/p&gt;
-
-&lt;p&gt;It also means less code to debug since everything is EPUB.&lt;/p&gt;
-
-&lt;p&gt;We’re going to work on a converter to take our PHZ format and convert it to EPUB so that existing documents will 
-convert in place.&lt;/p&gt;
-
-&lt;h2 id=&quot;based-on-web-extensions&quot;&gt;Based on Web Extensions&lt;/h2&gt;
-
-&lt;p&gt;We’re going to migrate everything to a web extension.&lt;/p&gt;
-
-&lt;p&gt;This means the native Electron capture will migrate to being completely browser based.&lt;/p&gt;
-
-&lt;p&gt;Our goal is to support Chrome, Firefox, and Safari extensions during this process as our Firefox extension is nearly 
-finished.&lt;/p&gt;
-
-&lt;p&gt;The advantages here are the ability to use regular chrome extensions like uBlock, Ad Block Pro, Mercury Reader, or Easy Reader.&lt;/p&gt;
-
-&lt;p&gt;The new extension will completely bundle the pages resources and send them to the Polar cloud or desktop app.&lt;/p&gt;
-
-&lt;h2 id=&quot;fluid-layout&quot;&gt;Fluid Layout.&lt;/h2&gt;
-
-&lt;p&gt;The new format will not require a fixed document size like the previous version.  This was needed due to the layout
-algorithm for placing highlights.  The new version should support placing highlights based on text.&lt;/p&gt;
-
-&lt;p&gt;One UI change might be that area highlights for HTML documents will anchor to images since the flow can change this 
-means that an area you select might move when you resize.&lt;/p&gt;
-
-&lt;h2 id=&quot;mobile-and-tablet-support&quot;&gt;Mobile and Tablet Support&lt;/h2&gt;
-
-&lt;p&gt;Once we’ve migrated to EPUB as a backend, captured content will work on mobile and tablet devices.&lt;/p&gt;
-
-&lt;p&gt;We’re also going to have capture work on mobile by sending the raw URL to the Polar cloud backend and having it 
-perform the capture for you in the background.&lt;/p&gt;
-
-&lt;p&gt;This way capture will work on all devices.&lt;/p&gt;
-
-&lt;h2 id=&quot;lightweight-capture-url-only&quot;&gt;Lightweight Capture (URL only)&lt;/h2&gt;
-
-&lt;p&gt;We’re also going to work on lightweight capture where we store the URL only.  I think for a lot of users it might not
-make sense to store 300k per document as part of Polar so storing just the URL and annotations will mean much 
-lower storage requirements.&lt;/p&gt;
-
-&lt;h2 id=&quot;overview-1&quot;&gt;Overview&lt;/h2&gt;
-
-&lt;p&gt;I think these issues will solve 95% of the initial problems we had with capture and make the entire platform much more
-reliable.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-20T12:39:36-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="http://localhost:4000/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>http://localhost:4000/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="http://localhost:4000/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
 
@@ -154,7 +90,7 @@ with one click.&lt;/p&gt;
 &lt;p&gt;This is something I’m working on improving in future versions of Polar but first we have to improve usability.&lt;/p&gt;
 
 &lt;p&gt;We’re going to keep comparing notes and try to sync up again in another few weeks.  There’s definitely a lot of 
-potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
+potential for using machine learning to improve the efficiency of education.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="http://localhost:4000/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>http://localhost:4000/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="http://localhost:4000/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;the-future-of-polar-cloud-sync&quot;&gt;The Future of Polar Cloud Sync&lt;/h1&gt;
 
@@ -358,7 +294,7 @@ and web mode.&lt;/p&gt;
 own datacenter and by default pick one closer to you.&lt;/p&gt;
 
 &lt;p&gt;With the new cloud support we also intend on supporting advanced features like full-text search, machine learning, and 
-backups.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
+backups.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="http://localhost:4000/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>http://localhost:4000/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="http://localhost:4000/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
 
 &lt;p&gt;We had an outage last night for Polar cloud sync and our web application which was related to an issue in Google cloud.&lt;/p&gt;
 
@@ -381,7 +317,7 @@ after upgrading but it was just a timing issue.  Upon restart Polar does a full 
 &lt;p&gt;We apologize or the inconvenience.&lt;/p&gt;
 
 &lt;p&gt;We’re still trying to investigate &lt;em&gt;why&lt;/em&gt; this happened as there were no changes on our end and Google shouldn’t have
-taken our projects offline.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar Outage- Sept 18 2019</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
+taken our projects offline.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar Outage- Sept 18 2019</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="http://localhost:4000/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>http://localhost:4000/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="http://localhost:4000/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
 
 &lt;p&gt;Being that my background is in CompSci I tend to think about thinks in terms of probabilities, statistics, game theory, 
 and distributed systems.&lt;/p&gt;
@@ -489,7 +425,7 @@ if the companies don’t create any externalities for which the consumer doesn�
 majority.&lt;/p&gt;
 
 &lt;p&gt;I think regardless, identify the CORE issue here would allow us to keep working towards a goal.  The first step 
-towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></name></author><summary type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Polar 1.19.8 Released - Better Payments and Fixes</title><link href="https://getpolarized.io/2019/06/02/Polar-1-19-8.html" rel="alternate" type="text/html" title="Polar 1.19.8 Released - Better Payments and Fixes" /><published>2019-06-02T10:00:00-07:00</published><updated>2019-06-02T10:00:00-07:00</updated><id>https://getpolarized.io/2019/06/02/Polar-1-19-8</id><content type="html" xml:base="https://getpolarized.io/2019/06/02/Polar-1-19-8.html">&lt;h1 id=&quot;polar-1198-released---better-payments-and-fixes&quot;&gt;Polar 1.19.8 Released - Better Payments and Fixes&lt;/h1&gt;
+towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></name></author><summary type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Polar 1.19.8 Released - Better Payments and Fixes</title><link href="http://localhost:4000/2019/06/02/Polar-1-19-8.html" rel="alternate" type="text/html" title="Polar 1.19.8 Released - Better Payments and Fixes" /><published>2019-06-02T10:00:00-07:00</published><updated>2019-06-02T10:00:00-07:00</updated><id>http://localhost:4000/2019/06/02/Polar-1-19-8</id><content type="html" xml:base="http://localhost:4000/2019/06/02/Polar-1-19-8.html">&lt;h1 id=&quot;polar-1198-released---better-payments-and-fixes&quot;&gt;Polar 1.19.8 Released - Better Payments and Fixes&lt;/h1&gt;
 
 &lt;p&gt;
     We've revamped our payments system for Polar Premium and
@@ -552,7 +488,7 @@ towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></
     &lt;li&gt;New payment system for Polar premium based on Stripe.&lt;/li&gt;
     &lt;li&gt;Fixed bug when dragging area highlights.&lt;/li&gt;
     &lt;li&gt;Fixed regression in the webapp where PHZ files couldn't be loaded.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.19.8 Released - Better Payments and Fixes</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks</title><link href="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html" rel="alternate" type="text/html" title="GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks" /><published>2019-05-30T10:00:00-07:00</published><updated>2019-05-30T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks</id><content type="html" xml:base="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/V8RyHZ9.png&quot; /&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.19.8 Released - Better Payments and Fixes</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks</title><link href="http://localhost:4000/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html" rel="alternate" type="text/html" title="GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks" /><published>2019-05-30T10:00:00-07:00</published><updated>2019-05-30T10:00:00-07:00</updated><id>http://localhost:4000/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks</id><content type="html" xml:base="http://localhost:4000/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/V8RyHZ9.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;gpt-2-the-destruction-of-the-web-and-artificially-intelligent-textbooks&quot;&gt;GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks&lt;/h1&gt;
 
@@ -781,7 +717,7 @@ technology on the risks of trusting fake news and deep fakes.&lt;/p&gt;
 
 &lt;p&gt;This might be an uphill battle though. We already have fake news and we haven’t
 done a good job dealing with it already. How are we going to deal with it when
-its gets far far worse?&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
+its gets far far worse?&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="http://localhost:4000/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>http://localhost:4000/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="http://localhost:4000/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;13-lucky-tips-for-using-anki-and-spaced-repetition-in-2019&quot;&gt;13 Lucky Tips for using Anki and Spaced Repetition in 2019&lt;/h1&gt;
 
@@ -1066,7 +1002,7 @@ perspectives of from different authors.&lt;/p&gt;
 like Polar to easily create flashcards and sync them to Anki.&lt;/p&gt;
 
 &lt;p&gt;Make sure you’re also using the right Anki plugins and that you’re using it to
-full effect.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards</title><link href="https://getpolarized.io/2019/05/11/portable-web-documents.html" rel="alternate" type="text/html" title="Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards" /><published>2019-05-11T10:00:00-07:00</published><updated>2019-05-11T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/11/portable-web-documents</id><content type="html" xml:base="https://getpolarized.io/2019/05/11/portable-web-documents.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/portable-web-documents-scaled.png&quot; /&gt;&lt;/p&gt;
+full effect.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards</title><link href="http://localhost:4000/2019/05/11/portable-web-documents.html" rel="alternate" type="text/html" title="Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards" /><published>2019-05-11T10:00:00-07:00</published><updated>2019-05-11T10:00:00-07:00</updated><id>http://localhost:4000/2019/05/11/portable-web-documents</id><content type="html" xml:base="http://localhost:4000/2019/05/11/portable-web-documents.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/portable-web-documents-scaled.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;portable-web-documents---an-alternative-to-pdf-based-on-html5-and-web-standards&quot;&gt;Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards&lt;/h1&gt;
 
@@ -1268,7 +1204,7 @@ just like any PDF doc.&lt;/p&gt;
 &lt;p&gt;You get all the normal Polar features including tagging, annotation, flashcard
 creation, cloud sync, etc.&lt;/p&gt;
 
-&lt;p&gt;If you have any feedback please jump on our Discord or create a github issue.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</title><link href="https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights.html" rel="alternate" type="text/html" title="Polar 1.19 Released With Area Highlights and Updated Annotations View" /><published>2019-05-10T10:00:00-07:00</published><updated>2019-05-10T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights</id><content type="html" xml:base="https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights.html">&lt;h1 id=&quot;polar-119-released-with-area-highlights-and-updated-annotations-view&quot;&gt;Polar 1.19 Released With Area Highlights and Updated Annotations View&lt;/h1&gt;
+&lt;p&gt;If you have any feedback please jump on our Discord or create a github issue.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</title><link href="http://localhost:4000/2019/05/10/polar-1-19-0-with-area-highlights.html" rel="alternate" type="text/html" title="Polar 1.19 Released With Area Highlights and Updated Annotations View" /><published>2019-05-10T10:00:00-07:00</published><updated>2019-05-10T10:00:00-07:00</updated><id>http://localhost:4000/2019/05/10/polar-1-19-0-with-area-highlights</id><content type="html" xml:base="http://localhost:4000/2019/05/10/polar-1-19-0-with-area-highlights.html">&lt;h1 id=&quot;polar-119-released-with-area-highlights-and-updated-annotations-view&quot;&gt;Polar 1.19 Released With Area Highlights and Updated Annotations View&lt;/h1&gt;
 
 &lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
 &lt;iframe class=&quot;embed-responsive-item&quot; width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/TDYDOGGTPls&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
@@ -1333,4 +1269,42 @@ with larger documents and larger sets of annotations.&lt;/p&gt;
 browsing.&lt;/p&gt;
 
 &lt;p&gt;We had to disable it due to cross domain security issues we weren’t able to fix.
-This might be enabled again in a future version of Polar.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</summary></entry></feed>
+This might be enabled again in a future version of Polar.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</summary></entry><entry><title type="html">Polar 1.18.0 Released</title><link href="http://localhost:4000/2019/04/25/polar-1-18-0.html" rel="alternate" type="text/html" title="Polar 1.18.0 Released" /><published>2019-04-25T10:00:00-07:00</published><updated>2019-04-25T10:00:00-07:00</updated><id>http://localhost:4000/2019/04/25/polar-1-18-0</id><content type="html" xml:base="http://localhost:4000/2019/04/25/polar-1-18-0.html">&lt;h1 id=&quot;polar-1180-released&quot;&gt;Polar 1.18.0 Released&lt;/h1&gt;
+
+&lt;p&gt;This release mostly focused on improving stability
+and implementing a few key UI features.  This
+upgrades us to Electron 5.x which as needed for
+some users who were experiencing severe latency
+using Polar on Linux.  We also resolve a key issue
+with non-atomic writes.&lt;/p&gt;
+
+&lt;p&gt;This includes a good chunk of the new sharing
+functionality but it’s not enabled yet.&lt;/p&gt;
+
+&lt;ul&gt;
+
+&lt;li&gt;Big upgrade to latest version of Electron. Electron v5.0.0, Chromium v73.0.3683.119, Node v12.0.0, v8 v7.3.492.27-electron.0. This should hopefully fix a major latency issue some users were seeing on Ubuntu/Linux.
+
+&lt;/li&gt;&lt;li&gt;Major performance fix on large PDFs.  Scrolling should be dramatically improved.  There's still a small latency issue we're seeing but already performance is dramatically improved.
+
+&lt;/li&gt;&lt;li&gt;Enabled atomic writes again for all platforms.
+
+&lt;/li&gt;&lt;li&gt;Filtering for tags now lists the tags alphabetically
+
+&lt;/li&gt;&lt;li&gt;Right click on text highlight now add 'scroll into view'
+
+&lt;/li&gt;&lt;li&gt;Upgraded to latest version of Typescript 3.4.3
+
+&lt;/li&gt;&lt;li&gt;Fixed regression where progress wasn't being updated when progress messages were being sent from the renderer process.
+
+&lt;/li&gt;&lt;li&gt;Fixed bug which resorted in two file uploads to firebase while cloud sync was operational. For large files this was very painful and resorted in 2x data being uploaded.
+
+&lt;/li&gt;&lt;li&gt;Fixed bug where the UI would break when both filtering and removing tags on a document that was visible.
+
+&lt;/li&gt;
+&lt;li&gt;Increased the sidebar a bit to accommodate updating comments without overflow of the summernote bar.
+
+&lt;/li&gt;
+&lt;li&gt;Using the same account widget on web + desktop now.&lt;/li&gt;
+
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.18.0 Released</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry></feed>

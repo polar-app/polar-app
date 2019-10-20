@@ -25,89 +25,139 @@ image: https://getpolarized.io/assets/logo/icon.png
 
     }
 
+    .max-width-1280 {
+        max-width: 1280px;
+    }
+
 
 </style>
+
+
+<style>
+
+    .social-proof-logo img {
+        max-width: 125px;
+        max-height: 125px;
+        -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%);
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+</style>
+
 
 <div class="">
 
     {%- include header.html -%}
 
-    <section class="mb-0"
+    <section class="mb-0 "
              data-block-type="contents"
              data-id="1"
              draggable="false">
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col text-center">
+        <div class="container-fluid max-width-1280">
+            <div class="row mt-5 mb-3" style="margin-top: 30px;  ">
+                <div class="col col-md-6">
 
                     <div class="">
 
-                        <h1 class="intro"> <b>POLAR</b> makes it easy to manage your reading.</h1>
+                        <h1 class="intro"> We make it easy to manage your reading.</h1>
 
-                        <div class="subtitle banner">
+                        <div class="">
 
-                            <h2>
+                            <h2 class="mt-3 text-muted" style="font-size: 22px;">
 
-                                A <b>powerful</b> document manager for Mac, Windows, and
-                                Linux for managing web content, books, and notes -
-                                supports <b>tagging</b>, <b>annotation</b>, <b
+                                A <b>powerful</b> document manager for web pages, textbooks, PDFs, and anything you want to read.
+
+                                <br><br>
+                                Supports <b>tagging</b>, <b>annotation</b>, <b
                                     style="background-color: yellow;">highlighting</b> and
                                 keeps track of your reading progress.
 
                             </h2>
 
-                            <div class="mt-3 mb-1">
+                            <div class="text-center mb-3">
 
-                                <a class="btn btn-outline-secondary btn-lg font-weight-bold m-3"
-                                   onclick="sendEvent('main-cta', 'download-desktop-app')"
-                                   href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta&utm_medium=site">Download Desktop App</a>
+                                <!--<a class="btn btn-outline-secondary btn-lg font-weight-bold m-3"-->
+                                   <!--onclick="sendEvent('main-cta', 'download-desktop-app')"-->
+                                   <!--href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta&utm_medium=site">Download Desktop App</a>-->
 
                                 <a class="btn btn-success btn-lg font-weight-bold m-3"
                                    onclick="sendEvent('main-cta', 'open-polar-in-browser')"
-                                   href="https://app.getpolarized.io">Open Polar in Your Browser</a>
+                                   href="https://app.getpolarized.io">Create an Account</a>
+
+                                <div class="text-muted" style="font-size: 14px; ">
+                                    Already using Polar? <a href="https://app.getpolarized.io">Sign In</a>
+                                </div>
 
                             </div>
                         </div>
 
 
-                        <div class="img-shadow-wrapper pb-5">
-                            {%- include image.html
-                                        alt="Main Polar PDF document showing an deep learning book"
-                                        class="img-fluid img-shadow"
-                                        src="./assets/screenshots/cnn5.webp" -%}
-                        </div>
-
                     </div>
 
 
-                    <div class="mt-2">
+                    <!--<div class="mt-2">-->
 
-                        <a href="https://github.com/burtonator/polar-bookshelf/releases">
-                            <img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>
-                        </a>
+                        <!--<a href="https://github.com/burtonator/polar-bookshelf/releases">-->
+                            <!--<img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>-->
+                        <!--</a>-->
 
-                        <a href="https://discord.gg/GT8MhA6">
-                            <img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>
-                        </a>
+                        <!--<a href="https://discord.gg/GT8MhA6">-->
+                            <!--<img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>-->
+                        <!--</a>-->
 
-                        <a href="https://github.com/burtonator/polar-bookshelf">
-                            <img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
-                        </a>
+                        <!--<a href="https://github.com/burtonator/polar-bookshelf">-->
+                            <!--<img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>-->
+                        <!--</a>-->
 
-                        <a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">
-                            <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
-                        </a>
+                        <!--<a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">-->
+                            <!--<img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>-->
+                        <!--</a>-->
 
-                    </div>
+                    <!--</div>-->
 
-                    <div class="m-auto mb" style="max-width: 700px;">
+                    <!--<div class="m-auto mb" style="max-width: 700px;">-->
 
-                        <iframe src="./mailchimp-iframe.html" frameborder="0" style="width: 100%; height: 125px;" scrolling="no"></iframe>
+                        <!--<iframe src="./mailchimp-iframe.html" frameborder="0" style="width: 100%; height: 125px;" scrolling="no"></iframe>-->
 
+                    <!--</div>-->
+
+                </div>
+                <div class="col col-md-6 text-center">
+
+                    <div class="img-shadow-wrapper pb-5">
+                        {%- include image.html
+                                    alt="Main Polar PDF document showing an deep learning book"
+                                    class="img-fluid img-shadow"
+                                    style="max-width: 100%; min-width: 250px;"
+                                    src="./assets/screenshots/cnn5.webp" -%}
                     </div>
 
                 </div>
+            </div>
+            <div class="row">
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img src="assets/social-proof-logos/berkeley.png" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img src="assets/social-proof-logos/rutgers.svg" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img src="assets/social-proof-logos/stanford.png" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img src="assets/social-proof-logos/ucla.png" style=""/>
+                </div>
+
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img src="assets/social-proof-logos/columbia.jpg" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img src="assets/social-proof-logos/illinois.png" style=""/>
+                </div>
+
             </div>
         </div>
 
@@ -117,7 +167,7 @@ image: https://getpolarized.io/assets/logo/icon.png
 
 
 
-<section class="fdb-block" data-block-type="features" data-id="1" draggable="false" style="padding-top: 0 !important;">
+<section class="fdb-block mt-2" data-block-type="features" data-id="1" draggable="false" style="padding-top: 0 !important;">
     <div class="container">
         <div class="row text-center">
             <div class="col-12 text-center">
@@ -730,19 +780,6 @@ image: https://getpolarized.io/assets/logo/icon.png
 
 
 {%- include pricing.html -%}
-
-<style>
-
-    .social-proof-logo img {
-        max-width: 250px;
-        max-height: 250px;
-        -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-        filter: grayscale(100%);
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-
-</style>
 
 
 <section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
