@@ -1,7 +1,7 @@
 /**
  * Class that works around some insanity with the nodejs setTimeout API.
  */
-import {DOM} from './DOM';
+import {DOM} from "polar-shared/src/util/DOM";
 
 export class Timeouts {
 

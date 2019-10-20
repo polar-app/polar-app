@@ -8,9 +8,9 @@ import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Blobs} from 'polar-shared/src/util/Blobs';
 import {ResourceEntry} from 'polar-content-capture/src/phz/ResourceEntry';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DOM} from '../util/DOM';
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {Latch} from "polar-shared/src/util/Latch";
+import {DOM} from "polar-shared/src/util/DOM";
 
 const log = Logger.create();
 
