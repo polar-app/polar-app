@@ -5,6 +5,8 @@ import {PreviewURLs} from "polar-webapp-links/src/docs/PreviewURLs";
 
 export const DocAddFunction = functions.https.onRequest(async (req, res) => {
 
+    // TODO: accept a POST here with the data int the body with the proper mine type
+
     const parsedURL = AddURLs.parse(req.url);
 
     if (! parsedURL) {
