@@ -14,7 +14,7 @@ import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
+import {AsyncFunction, AsyncWorkQueue} from 'polar-shared/src/util/AsyncWorkQueue';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 

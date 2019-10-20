@@ -8,7 +8,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Progress, ProgressListener} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
-import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
+import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';

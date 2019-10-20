@@ -1,5 +1,7 @@
 # unreleased
 
+- upgrade jszip 
+
 - Upgraded to pdfjs-dist 2.2.228  
 
 # 1.32.48

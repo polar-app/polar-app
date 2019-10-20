@@ -1,6 +1,6 @@
 import {PersistenceLayer} from "./PersistenceLayer";
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
+import {AsyncFunction, AsyncWorkQueue} from 'polar-shared/src/util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
 import {Datastore, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';

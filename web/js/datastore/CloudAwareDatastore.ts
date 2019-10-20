@@ -39,7 +39,7 @@ import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapshotEventListeners';
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
-import {AsyncFunction} from '../util/AsyncWorkQueue';
+import {AsyncFunction} from 'polar-shared/src/util/AsyncWorkQueue';
 import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Datastores} from './Datastores';
