@@ -1,6 +1,6 @@
 
 import {URLs} from 'polar-shared/src/util/URLs';
-import {PHZReader} from './PHZReader';
+import {PHZReader} from 'polar-content-capture/src/phz/PHZReader';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Captured} from 'polar-content-capture/src/capture/Captured';
 import {Resources} from 'polar-content-capture/src/phz/Resources';
