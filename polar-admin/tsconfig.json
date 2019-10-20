@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+    "listEmittedFiles": true,
+    "noImplicitReturns": true,
+    "removeComments": true,
+    "strictFunctionTypes": true,
+    "module": "commonjs",
+    "target": "es2015",
+    "outDir": "lib",
+    "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "include": [
+    "."
+  ]
+}
