@@ -182,7 +182,6 @@
     "polar-web-extension-api": "^1.32.55",
     "polar-webapp-links": "^1.32.55",
     "popper.js": "~1.15.0",
-    "prettify": "~0.1.7",
     "prop-types": "~15.6.2",
     "raphael": "~2.2.7",
     "react": "~16.7.0",
