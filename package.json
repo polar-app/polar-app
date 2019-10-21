@@ -171,7 +171,6 @@
     "lodash": "^4.17.14",
     "markdown-plus": "~2.5.2",
     "micromodal": "~0.3.2",
-    "npm": "~6.5.0",
     "opencollective-postinstall": "~2.0.1",
     "path-to-regexp": "^3.0.0",
     "pdfjs-dist": "~2.2.228",
