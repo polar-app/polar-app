@@ -34,7 +34,13 @@ jobs:
         name: install lerna
         command: sudo npm install -g lerna
 
-    - run: rm -rf node_modules/loader && npm install
+    - run:
+        name: setup full dependencies
+        command: npm run-script purge-node-modules && lerna boostrap
+
+    - run:
+        name: full compile
+        command: lerna run compile
 
 #    - save_cache:
 #        paths:
