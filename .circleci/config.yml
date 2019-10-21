@@ -27,6 +27,8 @@ jobs:
         fingerprints:
           - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
           - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
+          - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
+          - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
 
     # Download and cache dependencies
     - restore_cache:
