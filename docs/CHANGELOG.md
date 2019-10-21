@@ -1,5 +1,7 @@
 # unreleased
 
+- Fixed about 250 errors with npm audit as 'npm' itself somehow became a dependency.
+
 - upgrade jszip 
 
 - Upgraded to pdfjs-dist 2.2.228  
