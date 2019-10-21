@@ -160,7 +160,6 @@
     "fontawesome": "~5.6.3",
     "glyphicons": "~0.2.0",
     "injector": "file:./web/injector",
-    "inliner": "~1.13.1",
     "interactjs": "^1.4.1",
     "jquery": "^3.4.1",
     "jquery-ui": "~1.12.1",
