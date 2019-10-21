@@ -35,6 +35,10 @@ jobs:
         command: sudo npm install -g lerna
 
     - run:
+        name: fetch submodules
+        command: ./sbin/init && ./sbin/mgit pull
+
+    - run:
         name: setup full dependencies
         command: npm run-script purge-node-modules && lerna bootstrap
 
