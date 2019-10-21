@@ -130,7 +130,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                                 <TagTree tags={this.state.tags}
                                          treeState={this.treeState}
-                                         rootTitle="Annotations"
+                                         rootTitle="Folders"
                                          noCreate={true}/>
 
                             </div>

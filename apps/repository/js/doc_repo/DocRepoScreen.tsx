@@ -349,7 +349,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
                                     <TagTree tags={this.state.tags}
                                              treeState={this.treeState}
-                                             rootTitle="Documents"
+                                             rootTitle="Folders"
                                              noCreate={true}/>
 
                                     {/*<TagList tags={this.state.tags}/>*/}
