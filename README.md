@@ -304,11 +304,11 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 # License
 
-Polar is distributed under the GPL license.  
+Polar is distributed under the GPLv3.  
 
-[PDF.js](https://github.com/mozilla/pdf.js) is available under  Apache License.
-[Electron](https://github.com/electron/electron) is released under MIT License.
-Rest of the code is MIT licensed.
+[PDF.js](https://github.com/mozilla/pdf.js) is available under the Apache License.
+[Electron](https://github.com/electron/electron) is released under the MIT License.
+Rest of the code is MIT-licensed.
 
 <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
