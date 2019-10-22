@@ -84,7 +84,7 @@ describe('TagNode', function() {
                     return {...current, count};
                 });
 
-            assertJSON(TagNodes.create({tags, type: 'folder'}), {
+            assertJSON(TagNodes.createFoldersRoot({tags, type: 'folder'}), {
                 "children": [
                     {
                         "children": [
@@ -136,7 +136,7 @@ describe('TagNode', function() {
                     return {...current, count};
                 });
 
-            assertJSON(TagNodes.create({tags, type: 'folder'}), {
+            assertJSON(TagNodes.createFoldersRoot({tags, type: 'folder'}), {
                 "children": [
                     {
                         "children": [
@@ -179,7 +179,7 @@ describe('TagNode', function() {
 
         it("empty", function() {
 
-            assertJSON(TagNodes.create({tags: [], type: 'folder'}), {
+            assertJSON(TagNodes.createFoldersRoot({tags: [], type: 'folder'}), {
                 "children": [],
                 "count": 0,
                 "id": "/",

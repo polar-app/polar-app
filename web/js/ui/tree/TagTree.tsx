@@ -52,7 +52,7 @@ export class TagTree extends React.Component<IProps, IState> {
         //     title: this.props.rootTitle
         // };
 
-        const root: TRoot<TagDescriptor> = TagNodes.createFlatTagRoot(tags);
+        const root: TRoot<TagDescriptor> = TagNodes.createTagsRoot(tags);
 
         console.log("FIXME: root", JSON.stringify(root, null, "  "));
 

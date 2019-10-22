@@ -7,10 +7,11 @@ import {TRoot} from "../ui/tree/TreeView";
 
 export class TagNodes {
 
-    public static createFlatTagRoot(tags: ReadonlyArray<TagDescriptor>): TagNode<TagDescriptor> {
+    public static createTagsRoot(tags: ReadonlyArray<TagDescriptor>): TagNode<TagDescriptor> {
 
         const children: ReadonlyArray<TagNode<TagDescriptor>> =
             [...tags].sort((a, b) => b.count - a.count)
+                .filter(tagDescriptor => ! tagDescriptor.label.startsWith('/'))
                 .map(tagDescriptor => {
                 return {
                     id: tagDescriptor.id,
@@ -45,7 +46,7 @@ export class TagNodes {
     /**
      * Create a hierarchical structure of tags from the tag descriptors.
      */
-    public static create(opts: CreateOpts): TagNode<TagDescriptor> {
+    public static createFoldersRoot(opts: CreateOpts): TagNode<TagDescriptor> {
 
         const {tags} = opts;
 
@@ -74,18 +75,9 @@ export class TagNodes {
 
         const sortedTagIndexKeys = Object.keys(tagIndex).sort();
 
-        console.log("FIXME: sortedTagIndexKeys: ", JSON.stringify(sortedTagIndexKeys,  null, "  "));
-
         for (const tagLabel of sortedTagIndexKeys) {
 
             let pathEntries = TagPaths.createPathEntries(tagLabel);
-
-            console.log("FIXME: tagLabel: " + tagLabel, pathEntries);
-
-            if (pathEntries.length === 0 ) {
-                // pathEntries = [{path: tagLabel, basename: tagLabel, parent: undefined}];
-                // console.log("FIXME: using fake path entry");
-            }
 
             for (const pathEntry of pathEntries) {
 
