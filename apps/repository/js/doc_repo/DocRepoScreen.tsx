@@ -357,6 +357,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                              treeState={this.treeState}
                                              rootTitle="Tags"
                                              tagType='regular'
+                                             filterDisabled={true}
                                              noCreate={true}/>
 
                                     {/*<TagList tags={this.state.tags}/>*/}

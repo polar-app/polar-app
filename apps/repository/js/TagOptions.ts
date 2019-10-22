@@ -16,15 +16,20 @@ export class TagOptions {
 
     }
 
-    public static fromTags(tags: ReadonlyArray<Tag>): TagOption[] {
+    public static fromTags(tags: ReadonlyArray<Tag>, noSort: boolean = false): TagOption[] {
 
-        return tags.map( current => {
-                   return {
-                       value: current.id,
-                       label: current.label
-                   };
-               })
-               .sort((a, b) => a.label.localeCompare(b.label));
+        const tagOptions = tags.map(current => {
+            return {
+                value: current.id,
+                label: current.label
+            };
+        });
+
+        if (noSort) {
+            return tagOptions;
+        }
+
+        return tagOptions.sort((a, b) => a.label.localeCompare(b.label));
 
     }
 
