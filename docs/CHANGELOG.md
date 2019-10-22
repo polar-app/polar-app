@@ -1,5 +1,9 @@
 # unreleased
 
+- We now have 'Folders' and 'Tags' in the sidebar.
+
+- It's not possible to display tags in the sidebar and select them. 
+
 - Fixed about 250 errors with npm audit as 'npm' itself somehow became a dependency.
 
 - upgrade jszip 
