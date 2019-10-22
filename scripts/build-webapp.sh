@@ -7,7 +7,7 @@ copy() {
 
     # https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure
 
-    find ${dir} -name "${pattern}" -type f -exec cp --parents \{\} dist/public \;
+    find ${dir} -name "${pattern}" -type f -exec cp --force --parents \{\} dist/public \;
 
 }
 
