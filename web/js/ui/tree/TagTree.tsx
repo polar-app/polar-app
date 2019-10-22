@@ -4,7 +4,7 @@ import {TagDescriptor} from '../../tags/TagNode';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
-import {TagNodes} from "../../tags/TagNodes";
+import {TagNodes, TagType} from "../../tags/TagNodes";
 
 class Styles {
 
@@ -46,15 +46,25 @@ export class TagTree extends React.Component<IProps, IState> {
 
         const tags = filterTags(this.props.tags, this.state.filter);
 
-        // const root: TRoot<TagDescriptor> = {
-        //     ...TagNodes.create({tags, type: 'folder'}),
-        //     // ...tags,
-        //     title: this.props.rootTitle
-        // };
+        const createRoot = (): TRoot<TagDescriptor> => {
 
-        const root: TRoot<TagDescriptor> = TagNodes.createTagsRoot(tags);
+            switch (this.props.tagType) {
+                case "folder":
+                    const root: TRoot<TagDescriptor> = {
+                        ...TagNodes.createFoldersRoot({tags, type: 'folder'}),
+                        title: this.props.rootTitle
+                    };
 
-        console.log("FIXME: root", JSON.stringify(root, null, "  "));
+                    return root;
+
+                case "regular":
+                    return TagNodes.createTagsRoot(tags);
+
+            }
+
+        };
+
+        const root = createRoot();
 
         return (
 
@@ -63,8 +73,7 @@ export class TagTree extends React.Component<IProps, IState> {
                 <div style={Styles.BAR}>
 
                     <div style={{flexGrow: 1}}>
-                        <TagFilter tags={Tags.onlyRegular(this.props.tags)}
-                                   onChange={tags => this.onSelectedTags(tags)}/>
+                        {/*<TagFilter tags={Tags.onlyRegular(this.props.tags)} onChange={tags => this.onSelectedTags(tags)}/>*/}
                     </div>
 
                     <NullCollapse open={!this.props.noCreate}>
@@ -113,6 +122,7 @@ export class TagTree extends React.Component<IProps, IState> {
 interface IProps {
     readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
+    readonly tagType: TagType;
     readonly noCreate?: boolean;
     readonly rootTitle?: string;
 }

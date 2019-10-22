@@ -23,6 +23,8 @@ export class TagNodes {
                 }
             });
 
+        const count = this.computeCount(tags);
+
         const name = 'Tags';
 
         const root: TRoot<TagDescriptor> = {
@@ -30,16 +32,27 @@ export class TagNodes {
             name,
             path: '/',
             children,
-            count: 666,
+            count,
             title: name,
             value: {
                 id: 'tags',
                 label: name,
-                count: 666
+                count
             }
         };
 
         return root;
+
+    }
+
+    private static computeCount(tags: ReadonlyArray<TagDescriptor>) {
+
+        const count =
+            tags.filter(current => current.label !== '/')
+                .map(current => current.count)
+                .reduce(Reducers.SUM, 0);
+
+        return count;
 
     }
 
@@ -65,10 +78,7 @@ export class TagNodes {
         const tagNodeIndex = new TagNodeIndex();
 
         // the global count for all nodes
-        const count =
-            tags.filter(current => current.label !== '/')
-                .map(current => current.count)
-                .reduce(Reducers.SUM, 0);
+        const count = this.computeCount(tags);
 
         // always register a root so we have at least one path
         const root = tagNodeIndex.register('/', '/', {id: '/', label: '/', count});
