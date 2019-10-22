@@ -18,9 +18,9 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
-import {Tag, TagStr} from '../../../../web/js/tags/Tags';
+import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
 import {TreeState} from '../../../../web/js/ui/tree/TreeView';
-import {Tags} from '../../../../web/js/tags/Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {

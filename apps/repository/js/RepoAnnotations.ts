@@ -16,7 +16,7 @@ import {Images} from '../../../web/js/metadata/Images';
 import {Img} from '../../../web/js/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
-import {Tag} from "../../../web/js/tags/Tags";
+import {Tag} from "polar-shared/src/tags/Tags";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IComment} from "polar-shared/src/metadata/IComment";

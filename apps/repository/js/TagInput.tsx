@@ -2,7 +2,7 @@ import * as React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
-import {Tags} from '../../../web/js/tags/Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
@@ -13,7 +13,7 @@ import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
-import {Tag} from '../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
 

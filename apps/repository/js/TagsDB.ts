@@ -1,6 +1,6 @@
 import {RepoDocInfo} from './RepoDocInfo';
 import {TagDescriptor} from '../../../web/js/tags/TagNode';
-import {Tag} from '../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 /**
  * A simple in-memory database of tags which can be built when we load the .json

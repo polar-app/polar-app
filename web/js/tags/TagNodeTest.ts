@@ -1,5 +1,5 @@
 import {assertJSON} from '../test/Assertions';
-import {Tags} from '../../../../polar-shared/src/util/tags/Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
 import {TagPaths} from './TagPaths';
 import {TagNodes} from "./TagNodes";
 
@@ -84,7 +84,7 @@ describe('TagNode', function() {
                     return {...current, count};
                 });
 
-            assertJSON(TagNodes.create(...tags), {
+            assertJSON(TagNodes.create({tags, type: 'folder'}), {
                 "children": [
                     {
                         "children": [
@@ -136,7 +136,7 @@ describe('TagNode', function() {
                     return {...current, count};
                 });
 
-            assertJSON(TagNodes.create(...tags), {
+            assertJSON(TagNodes.create({tags, type: 'folder'}), {
                 "children": [
                     {
                         "children": [
@@ -179,7 +179,7 @@ describe('TagNode', function() {
 
         it("empty", function() {
 
-            assertJSON(TagNodes.create(), {
+            assertJSON(TagNodes.create({tags: [], type: 'folder'}), {
                 "children": [],
                 "count": 0,
                 "id": "/",

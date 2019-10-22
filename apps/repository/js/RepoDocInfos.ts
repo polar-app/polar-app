@@ -4,7 +4,7 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocInfos} from '../../../web/js/metadata/DocInfos';
 import {RepoAnnotation} from "./RepoAnnotation";
-import {Tag} from "../../../web/js/tags/Tags";
+import {Tag} from "polar-shared/src/tags/Tags";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export class RepoDocInfos {

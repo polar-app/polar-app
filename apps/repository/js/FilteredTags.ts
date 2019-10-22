@@ -1,4 +1,4 @@
-import {Tag} from '../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 /**
  * The list of tags that the user has filtered.

@@ -1,4 +1,4 @@
-import {Tag} from '../../../../polar-shared/src/util/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 export interface MutableTagNode<V> {
 

@@ -1,5 +1,5 @@
 import {TagOption} from './TagOption';
-import {Tag} from '../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 export class TagOptions {
 

@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Tags} from './Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
 import {TagMatcherFactory} from './TagMatcher';
 
 

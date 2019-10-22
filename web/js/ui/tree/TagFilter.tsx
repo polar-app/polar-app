@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Select from 'react-select';
 import {TagOptions} from '../../../../apps/repository/js/TagOptions';
-import {Tag} from '../../tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 import {ActionMeta, ValueType} from 'react-select/lib/types';
 import {TagOption} from '../../../../apps/repository/js/TagOption';
 

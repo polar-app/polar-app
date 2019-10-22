@@ -4,7 +4,7 @@
  */
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
-import {Tag} from '../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export interface RepoDocInfo {

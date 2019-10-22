@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Tags} from '../../js/tags/Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Group} from "../../js/datastore/sharing/db/Groups";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";

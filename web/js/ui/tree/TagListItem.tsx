@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {TagDescriptor} from '../../tags/TagNode';
-import {Tag} from "../../tags/Tags";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 export class TagListItem extends React.Component<IProps, IState> {
 

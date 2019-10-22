@@ -4,7 +4,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Tag, Tags} from '../../../../web/js/tags/Tags';
+import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {DocDropdown} from '../DocDropdown';

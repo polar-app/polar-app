@@ -6,7 +6,7 @@ import {TagOption} from '../TagOption';
 import {TagsDB} from '../TagsDB';
 import {TagOptions} from '../TagOptions';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
-import {Tag} from '../../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 // import {SyntheticKeyboardEvent} from 'react-dom';
 

@@ -19,7 +19,7 @@ import {DocInfo} from '../../../metadata/DocInfo';
 import {Datastores} from '../../../datastore/Datastores';
 import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
-import {Tag} from '../../../tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";

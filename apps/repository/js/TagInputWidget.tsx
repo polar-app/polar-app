@@ -2,7 +2,7 @@ import * as React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
-import {Tag, Tags} from '../../../web/js/tags/Tags';
+import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Tag} from '../../tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 import Button from 'reactstrap/lib/Button';
 import {Dialogs} from '../dialogs/Dialogs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Tags} from '../../tags/Tags';
-import {TagStr} from '../../tags/Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
+import {TagStr} from 'polar-shared/src/tags/Tags';
 
 export class TagCreateButton extends React.Component<IProps, IState> {
 

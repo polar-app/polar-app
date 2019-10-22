@@ -1,7 +1,7 @@
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {TagPaths} from "./TagPaths";
-import {Tags} from "../../../../polar-shared/src/util/tags/Tags";
+import {Tags} from "polar-shared/src/tags/Tags";
 import {MutableTagNode, TagDescriptor, TagNode} from "./TagNode";
 
 export class TagNodes {

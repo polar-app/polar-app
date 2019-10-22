@@ -1,5 +1,5 @@
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {Tags} from '../../../../web/js/tags/Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {Provider} from 'polar-shared/src/util/Providers';

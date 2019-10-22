@@ -1,7 +1,7 @@
 import {GroupIDStr} from "../Datastore";
 import {Collections, OrderByClause} from "./db/Collections";
 import {GroupDoc} from "./db/GroupDocs";
-import {Tag} from "../../tags/Tags";
+import {Tag} from "polar-shared/src/tags/Tags";
 import {
     ISODateString,
     ISODateTimeString

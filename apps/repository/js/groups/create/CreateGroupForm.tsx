@@ -6,7 +6,7 @@ import Label from "reactstrap/lib/Label";
 import Button from "reactstrap/lib/Button";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {TagInputWidget} from "../../TagInputWidget";
-import {Tag, TagStr} from "../../../../../web/js/tags/Tags";
+import {Tag, TagStr} from "polar-shared/src/tags/Tags";
 import {
     GroupProvisionRequest,
     GroupProvisions

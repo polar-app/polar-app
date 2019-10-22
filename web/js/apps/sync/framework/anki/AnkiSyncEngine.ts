@@ -13,7 +13,7 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {PendingAnkiSyncJob} from './AnkiSyncJob';
 import {DocInfos} from '../../../../metadata/DocInfos';
-import {Tags} from '../../../../tags/Tags';
+import {Tags} from 'polar-shared/src/tags/Tags';
 import {DocInfo} from '../../../../metadata/DocInfo';
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';

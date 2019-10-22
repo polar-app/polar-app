@@ -4,7 +4,7 @@ import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Tag} from '../../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
 

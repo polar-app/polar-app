@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {TNode, TreeState, TreeView, TRoot} from './TreeView';
-import {TagDescriptor, TagNodes} from '../../tags/TagNode';
-import {Tag, Tags} from '../../tags/Tags';
+import {TreeState, TreeView, TRoot} from './TreeView';
+import {TagDescriptor} from '../../tags/TagNode';
+import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
+import {TagNodes} from "../../tags/TagNodes";
 
 class Styles {
 
@@ -46,7 +47,7 @@ export class TagTree extends React.Component<IProps, IState> {
         const tags = filterTags(this.props.tags, this.state.filter);
 
         const root: TRoot<TagDescriptor> = {
-            ...TagNodes.create(...tags),
+            ...TagNodes.create({tags, type: 'folder'}),
             title: this.props.rootTitle
         };
 

@@ -3,7 +3,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import Moment from 'react-moment';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Tag} from '../../../web/js/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
 
