@@ -5,10 +5,10 @@ import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {UserInterviews} from "./UserInterviews";
 import {UserInterview, UserInterviewReason} from "./UserInterview";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {UserInterviewMessages} from "./UserInterviewMessages";
+import {UserInterviewMessages, UserMessageType} from "./UserInterviewMessages";
 import {Sendgrid} from "../Sendgrid";
 
-const NR_EMAILS_PER_BATCH = 10;
+const NR_MESSAGES_PER_BATCH = 10;
 
 export type UserPredicate = (user: UserRecord) => boolean;
 
@@ -20,10 +20,15 @@ class UserPredicates {
     public static get(reason: UserInterviewReason): UserPredicate {
 
         switch(reason) {
+
             case "recent":
                 return this.recent;
+
             case "veteran":
                 return this.veteran;
+
+            case "churned":
+                return this.churned;
 
         }
 
@@ -45,6 +50,17 @@ class UserPredicates {
         return recentlyAuthenticated && accountVeteran;
 
     }
+
+    /**
+     * Last logged in more than 14 days ago they have a somewhat recent account.
+     */
+    public static churned(user: UserRecord) {
+        const notAuthenticatedRecently = TimeDurations.hasElapsed(user.metadata.lastSignInTime, '14d');
+        const accountRecent = ! TimeDurations.hasElapsed(user.metadata.creationTime, '30');
+
+        return notAuthenticatedRecently && accountRecent;
+    }
+
 
 }
 
@@ -96,11 +112,11 @@ class UsersRecentlyContacted {
 
 class MessageSender {
 
-    public static async sendMessages(users: ReadonlyArray<UserRecord>) {
+    public static async sendMessages(type: UserMessageType, users: ReadonlyArray<UserRecord>) {
 
         for(const user of users) {
 
-            const userInterviewMessage = UserInterviewMessages.computeStandard(user);
+            const userInterviewMessage = UserInterviewMessages.compute(type, user);
 
             const msg = {
                 from: 'burton@getpolarized.io',
@@ -146,16 +162,18 @@ export class UserInterviewer {
 
     }
 
-    private static async sendMessagesForReason(reason: UserInterviewReason) {
+    private static async sendMessagesForReason(type: UserMessageType,
+                                               reason: UserInterviewReason,
+                                               nrMessagesPerBatch: number = NR_MESSAGES_PER_BATCH) {
 
         console.log("Sending messages for batch reason: " + reason);
 
         const predicate = UserPredicates.get(reason);
-        const targets = await this.computeTargets(NR_EMAILS_PER_BATCH, predicate);
+        const targets = await this.computeTargets(nrMessagesPerBatch, predicate);
 
         // const targetEmails = targets.map(current => current.email);
 
-        await MessageSender.sendMessages(targets);
+        await MessageSender.sendMessages(type, targets);
 
         await UsersRecentlyContacted.write(targets, reason);
 
@@ -163,8 +181,9 @@ export class UserInterviewer {
 
     public static async exec() {
 
-        await this.sendMessagesForReason('recent');
-        await this.sendMessagesForReason('veteran');
+        await this.sendMessagesForReason('standard', 'recent');
+        await this.sendMessagesForReason('standard', 'veteran');
+        await this.sendMessagesForReason('churned', 'churned', 100);
 
         console.log("SENT!!!")
 

@@ -1,6 +1,21 @@
 import * as admin from "firebase-admin";
 
+export type UserMessageType = 'standard' | 'churned';
+
 export class UserInterviewMessages {
+
+    public static compute(type: UserMessageType, user: admin.auth.UserRecord) {
+
+        switch(type) {
+
+            case "standard":
+                return this.computeStandard(user);
+            case "churned":
+                return this.computeChurned(user);
+
+        }
+
+    }
 
     public static computeStandard(user: admin.auth.UserRecord): UserInterviewMessage {
         return new StandardUserInterviewMessageFactory(UserMetas.create(user)).create();
@@ -92,21 +107,15 @@ export class ChurnedUserInterviewMessageFactory implements UserInterviewMessageF
 
         return `Hey ${firstName},
 
-I'm Kevin, the author of Polar.  
-
-I need your help.  I'm just one developer trying to build an awesome product.  
+I'm Kevin, the author of Polar and I need your help.  
 
 It looks like you tried Polar but didn't continue to use the product.
 
-Maybe we're missing a key feature you need. Maybe it was too slow.  I just don't know!
-
-That's where you come in!
-
-If I could find out *why* this would really help me out! 
+Maybe we're missing a key feature you need? Maybe it was too slow?  I just don't know!
 
 Could I get 2 minutes of your time to take a survey?
 
-
+https://kevinburton1.typeform.com/to/O6
 
 Thanks!
 

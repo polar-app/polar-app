@@ -19,4 +19,4 @@ export interface UserInterview {
 /**
  * The reason we're requesting an interview (
  */
-export type UserInterviewReason = 'recent' | 'veteran';
+export type UserInterviewReason = 'recent' | 'veteran' | 'churned';
