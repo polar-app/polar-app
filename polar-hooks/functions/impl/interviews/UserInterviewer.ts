@@ -56,7 +56,7 @@ class UserPredicates {
      */
     public static churned(user: UserRecord) {
         const notAuthenticatedRecently = TimeDurations.hasElapsed(user.metadata.lastSignInTime, '14d');
-        const accountRecent = ! TimeDurations.hasElapsed(user.metadata.creationTime, '30');
+        const accountRecent = ! TimeDurations.hasElapsed(user.metadata.creationTime, '30d');
 
         return notAuthenticatedRecently && accountRecent;
     }
@@ -181,9 +181,9 @@ export class UserInterviewer {
 
     public static async exec() {
 
-        await this.sendMessagesForReason('standard', 'recent');
-        await this.sendMessagesForReason('standard', 'veteran');
-        await this.sendMessagesForReason('churned', 'churned', 100);
+        // await this.sendMessagesForReason('standard', 'recent');
+        // await this.sendMessagesForReason('standard', 'veteran');
+        await this.sendMessagesForReason('churned', 'churned', 25);
 
         console.log("SENT!!!")
 
