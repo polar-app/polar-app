@@ -2,24 +2,37 @@ import * as admin from "firebase-admin";
 
 export class UserInterviewMessages {
 
-    public static compute(user: admin.auth.UserRecord): UserInterviewMessage {
-        const firstName = this.computeFirstName(user);
-        const subject = this.computeMailSubject(firstName);
-        const body = this.computeMailBody(firstName);
+    public static computeStandard(user: admin.auth.UserRecord): UserInterviewMessage {
+        return new StandardUserInterviewMessageFactory(UserMetas.create(user)).create();
+    }
 
+    public static computeChurned(user: admin.auth.UserRecord): UserInterviewMessage {
+        return new ChurnedUserInterviewMessageFactory(UserMetas.create(user)).create();
+    }
+
+}
+
+export interface UserInterviewMessageFactory {
+
+    create(): UserInterviewMessage;
+
+}
+
+export class StandardUserInterviewMessageFactory implements UserInterviewMessageFactory {
+
+    constructor(private readonly userMeta: UserMeta) {
+
+    }
+
+    public create(): UserInterviewMessage {
+        const subject = this.computeMailSubject();
+        const body = this.computeMailBody();
         return {subject, body};
-
     }
 
-    private static computeFirstName(user: admin.auth.UserRecord) {
+    private computeMailBody() {
 
-        const displayName = user.displayName;
-        const firstName = displayName!.split(" ")[0];
-        return firstName;
-
-    }
-
-    private static computeMailBody(firstName: string) {
+        const {firstName} = this.userMeta;
 
         return `Hey ${firstName},
 
@@ -54,14 +67,84 @@ Kevin
 
     }
 
-    private static computeMailSubject(firstName: string ) {
+    private computeMailSubject() {
+        const {firstName} = this.userMeta;
         return`Hey ${firstName}, can I interview you about Polar?`;
     }
 
+}
+
+export class ChurnedUserInterviewMessageFactory implements UserInterviewMessageFactory {
+
+    constructor(private readonly userMeta: UserMeta) {
+
+    }
+
+    public create(): UserInterviewMessage {
+        const subject = this.computeMailSubject();
+        const body = this.computeMailBody();
+        return {subject, body};
+    }
+
+    private computeMailBody() {
+
+        const {firstName} = this.userMeta;
+
+        return `Hey ${firstName},
+
+I'm Kevin, the author of Polar.  
+
+I need your help.  I'm just one developer trying to build an awesome product.  
+
+It looks like you tried Polar but didn't continue to use the product.
+
+Maybe we're missing a key feature you need. Maybe it was too slow.  I just don't know!
+
+That's where you come in!
+
+If I could find out *why* this would really help me out! 
+
+Could I get 2 minutes of your time to take a survey?
+
+
+
+Thanks!
+
+Kevin
+
+`;
+
+    }
+
+    private computeMailSubject() {
+        const {firstName} = this.userMeta;
+        return`Hey ${firstName}, can I interview you about Polar?`;
+    }
 
 }
 
 export interface UserInterviewMessage {
     readonly subject: string;
     readonly body: string;
+}
+
+export interface UserMeta {
+    readonly firstName: string;
+}
+
+export class UserMetas {
+
+    public static create(user: admin.auth.UserRecord) {
+        const firstName = this.computeFirstName(user);
+        return {firstName};
+    }
+
+    private static computeFirstName(user: admin.auth.UserRecord) {
+
+        const displayName = user.displayName;
+        const firstName = displayName!.split(" ")[0];
+        return firstName;
+
+    }
+
 }

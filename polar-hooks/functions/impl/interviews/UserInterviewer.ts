@@ -100,7 +100,7 @@ class MessageSender {
 
         for(const user of users) {
 
-            const userInterviewMessage = UserInterviewMessages.compute(user);
+            const userInterviewMessage = UserInterviewMessages.computeStandard(user);
 
             const msg = {
                 from: 'burton@getpolarized.io',
