@@ -46,10 +46,15 @@ export class TagTree extends React.Component<IProps, IState> {
 
         const tags = filterTags(this.props.tags, this.state.filter);
 
-        const root: TRoot<TagDescriptor> = {
-            ...TagNodes.create({tags, type: 'folder'}),
-            title: this.props.rootTitle
-        };
+        // const root: TRoot<TagDescriptor> = {
+        //     ...TagNodes.create({tags, type: 'folder'}),
+        //     // ...tags,
+        //     title: this.props.rootTitle
+        // };
+
+        const root: TRoot<TagDescriptor> = TagNodes.createFlatTagRoot(tags);
+
+        console.log("FIXME: root", JSON.stringify(root, null, "  "));
 
         return (
 

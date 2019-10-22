@@ -3,8 +3,44 @@ import {Reducers} from "polar-shared/src/util/Reducers";
 import {TagPaths} from "./TagPaths";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {MutableTagNode, TagDescriptor, TagNode} from "./TagNode";
+import {TRoot} from "../ui/tree/TreeView";
 
 export class TagNodes {
+
+    public static createFlatTagRoot(tags: ReadonlyArray<TagDescriptor>): TagNode<TagDescriptor> {
+
+        const children: ReadonlyArray<TagNode<TagDescriptor>> =
+            [...tags].sort((a, b) => b.count - a.count)
+                .map(tagDescriptor => {
+                return {
+                    id: tagDescriptor.id,
+                    name: tagDescriptor.label,
+                    path: tagDescriptor.id,
+                    children: [],
+                    count: tagDescriptor.count,
+                    value: tagDescriptor,
+                }
+            });
+
+        const name = 'Tags';
+
+        const root: TRoot<TagDescriptor> = {
+            id: 'tags',
+            name,
+            path: '/',
+            children,
+            count: 666,
+            title: name,
+            value: {
+                id: 'tags',
+                label: name,
+                count: 666
+            }
+        };
+
+        return root;
+
+    }
 
     /**
      * Create a hierarchical structure of tags from the tag descriptors.
@@ -38,11 +74,18 @@ export class TagNodes {
 
         const sortedTagIndexKeys = Object.keys(tagIndex).sort();
 
+        console.log("FIXME: sortedTagIndexKeys: ", JSON.stringify(sortedTagIndexKeys,  null, "  "));
+
         for (const tagLabel of sortedTagIndexKeys) {
 
-            const tag = tagIndex[tagLabel];
+            let pathEntries = TagPaths.createPathEntries(tagLabel);
 
-            const pathEntries = TagPaths.createPathEntries(tagLabel);
+            console.log("FIXME: tagLabel: " + tagLabel, pathEntries);
+
+            if (pathEntries.length === 0 ) {
+                // pathEntries = [{path: tagLabel, basename: tagLabel, parent: undefined}];
+                // console.log("FIXME: using fake path entry");
+            }
 
             for (const pathEntry of pathEntries) {
 
