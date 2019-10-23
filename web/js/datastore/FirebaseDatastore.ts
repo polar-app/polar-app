@@ -784,6 +784,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             .where('uid', '==', uid)
             .get();
 
+        if (snapshot.empty) {
+            return [];
+        }
+
         const result: DocMetaRef[] = [];
 
         for (const doc of snapshot.docs) {
