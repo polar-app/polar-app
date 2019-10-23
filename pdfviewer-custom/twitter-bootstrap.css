@@ -114,6 +114,13 @@ button.dropdown-item:hover {
     background-color: var(--grey100);
 }
 
+.hover-highlight:hover *,
+.hover-highlight:hover {
+    /*TODO: this is still too dark I think*/
+    background-color: var(--grey100);
+}
+
+
 /* text-grey */
 .text-grey900 {
     color: var(--grey900);

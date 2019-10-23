@@ -4,7 +4,7 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Tag} from 'polar-shared/src/tags/Tags';
+import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
@@ -35,10 +35,11 @@ import {DocRepoTable} from './DocRepoTable';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
-import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {DraggingSelectedDocs} from "./SelectedDocs";
+import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 
 const log = Logger.create();
 
@@ -98,7 +99,11 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.docRepoFilters =
             new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
-        this.treeState = new TreeState(tags => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current))));
+        const onSelected = (tags: ReadonlyArray<TagStr>) => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current)));
+
+        const onDropped = (tag: TagDescriptor) => this.onMultiTagged([tag], DraggingSelectedDocs.get());
+
+        this.treeState = new TreeState(onSelected, onDropped);
 
         this.init();
 
@@ -170,15 +175,14 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onMultiTagged(tags: ReadonlyArray<Tag>) {
-
-        const repoDocInfos = this.getSelected();
+    private onMultiTagged(tags: ReadonlyArray<Tag>,
+                          repoDocInfos: ReadonlyArray<RepoDocInfo> = this.getSelected()) {
 
         for (const repoDocInfo of repoDocInfos) {
             const existingTags = Object.values(repoDocInfo.tags || {});
-            const effectTags = Tags.union(existingTags, tags || []);
+            const effectiveTags = Tags.union(existingTags, tags || []);
 
-            this.onDocTagged(repoDocInfo, effectTags)
+            this.onDocTagged(repoDocInfo, effectiveTags)
                 .catch(err => log.error(err));
 
         }
@@ -213,7 +217,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         return result;
 
     }
-
 
     public selectRow(selectedIdx: number,
                      event: MouseEvent, checkbox: boolean = false) {
@@ -386,7 +389,24 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                           onMultiDeleted={() => this.onMultiDeleted()}
                                           selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
                                           onSelected={selected => this.onSelected(selected)}
-                                          onReactTable={reactTable => this.reactTable = reactTable}/>
+                                          onReactTable={reactTable => this.reactTable = reactTable}
+                                          onDragStart={(event) => {
+
+                                              // TODO: move this to a dedicated function.
+
+                                              // TODO: this actually DOES NOT work but it's a better effect than the
+                                              // default and a lot less confusing.  In the future we should migrate
+                                              // to showing the thumbnail of the doc once we have this feature
+                                              // implemented.
+
+                                              const src: HTMLElement = document.createElement("div");
+
+                                              // https://kryogenix.org/code/browser/custom-drag-image.html
+                                              event.dataTransfer!.setDragImage(src, 0, 0);
+
+                                              DraggingSelectedDocs.set(this.getSelected())
+                                          }}
+                                          onDragEnd={() => DraggingSelectedDocs.clear()}/>
                         }
                         side='left'
                         initialWidth={300}/>

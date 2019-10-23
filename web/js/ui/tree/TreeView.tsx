@@ -2,7 +2,7 @@ import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Tag, TagStr} from "polar-shared/src/tags/Tags";
+import {TreeState} from "./TreeState";
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
@@ -36,62 +36,30 @@ interface IState {
 }
 
 
-/**
- * A state object for the entire tree to keep an index of expanded/collapsed
- * nodes, etc.
- */
-export class TreeState<V> {
+export class MarkSet {
 
-    constructor(public readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void) {
-    }
+    private readonly data: {[id: string]: boolean} = {};
 
-    public readonly closed = new Marked();
+    public mark(id: string, marked: boolean) {
 
-    /**
-     * The currently applied filter for the path we're searching for.
-     */
-    public readonly filter = "";
+        if (marked) {
+            this.data[id] = true;
+        } else {
+            delete this.data[id];
+        }
 
-    /**
-     * The list of the nodes that are selected by id
-     */
-    public readonly selected: {[id: string]: boolean} = {};
-
-    public readonly index: {[id: string]: TreeNode<V>} = {};
-
-    /**
-     * Just the user tags that the user has selected.
-     */
-    public tags: ReadonlyArray<Tag> = [];
-
-    public dispatchSelected() {
-
-        const selectedFolders = Object.keys(this.selected);
-        const selectedTags = this.tags.map(current => current.id);
-
-        const selected = [...selectedTags, ...selectedFolders];
-
-        this.onSelected(selected);
-
-    }
-
-}
-
-
-export class Marked {
-
-    public readonly data: {[id: string]: boolean} = {};
-
-    public mark(id: string) {
-        this.data[id] = true;
     }
 
     public isMarked(id: string): boolean {
         return isPresent(this.data[id]);
     }
 
-    public clear(id: string) {
+    public delete(id: string) {
         delete this.data[id];
+    }
+
+    public keys() {
+        return Object.keys(this.data);
     }
 
     public toggle(id: string) {
@@ -99,7 +67,7 @@ export class Marked {
         const currentValue = this.data[id];
 
         if (isPresent(currentValue) && currentValue) {
-            this.clear(id);
+            this.delete(id);
         } else {
             this.data[id] = true;
         }

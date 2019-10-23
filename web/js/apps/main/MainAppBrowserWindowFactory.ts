@@ -1,6 +1,7 @@
 import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents, screen} from "electron";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
+import {AuthHosts} from "./AuthHosts";
 
 const log = Logger.create();
 
@@ -141,11 +142,7 @@ export class MainAppBrowserWindowFactory {
 
             const host = parsedURL.hostname;
 
-            const allowedHosts = ["accounts.google.com",
-                                  "polar-32b0f.firebaseapp.com",
-                                  "accountchooser.com",
-                                  "www.accountchooser.com",
-                                  "localhost"];
+            const allowedHosts = AuthHosts.get();
 
             if (host === "localhost") {
                 log.info("Always allowing localhost URL");

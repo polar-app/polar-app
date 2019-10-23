@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {TreeState, TreeView, TRoot} from './TreeView';
+import {TreeView, TRoot} from './TreeView';
 import {TagDescriptor} from '../../tags/TagNode';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 import {TagNodes, TagType} from "../../tags/TagNodes";
+import {TreeState} from "./TreeState";
 
 class Styles {
 
@@ -73,7 +74,9 @@ export class TagTree extends React.Component<IProps, IState> {
                 <div style={Styles.BAR}>
 
                     <div style={{flexGrow: 1}}>
-                        <TagFilter tags={tags} onChange={tags => this.onSelectedTags(tags)} disabled={this.props.filterDisabled}/>
+                        <TagFilter tags={tags}
+                                   onChange={tags => this.onSelectedTags(tags)}
+                                   disabled={this.props.filterDisabled}/>
                     </div>
 
                     <NullCollapse open={!this.props.noCreate}>

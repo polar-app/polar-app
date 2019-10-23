@@ -21,6 +21,8 @@ import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 
 const log = Logger.create();
 
+const DISABLED = false;
+
 /**
  * Handles performing imports into the datastore when users select files from
  * the import dialog.
@@ -48,6 +50,10 @@ export class FileImportController {
     }
 
     public start(): void {
+
+        if (DISABLED) {
+            return;
+        }
 
         if (ipcRenderer) {
 
@@ -129,7 +135,11 @@ export class FileImportController {
 
         let depth = 0;
 
-        document.body.addEventListener('dragenter', () => {
+        document.body.addEventListener('dragenter', (event) => {
+
+            if (! this.isFileTransfer(event)) {
+                return;
+            }
 
             if (depth === 0) {
                 Blackout.enable();
@@ -139,7 +149,12 @@ export class FileImportController {
 
         });
 
-        const leaveOrDropHandler = () => {
+        const leaveOrDropHandler = (event: DragEvent) => {
+
+            if (! this.isFileTransfer(event)) {
+                return;
+            }
+
             --depth;
 
             if (depth === 0) {
@@ -148,17 +163,26 @@ export class FileImportController {
 
         };
 
-        document.body.addEventListener('dragleave', leaveOrDropHandler);
-        document.body.addEventListener('drop', leaveOrDropHandler);
+        document.body.addEventListener('dragleave', event => leaveOrDropHandler(event));
+        document.body.addEventListener('drop', event => leaveOrDropHandler(event));
 
     }
 
 
     private onDragEnterOrOver(event: DragEvent) {
+
+        if (! this.isFileTransfer(event)) {
+            return;
+        }
+
         event.preventDefault();
     }
 
     private onDrop(event: DragEvent) {
+
+        if (! this.isFileTransfer(event)) {
+            return;
+        }
 
         event.preventDefault();
 
@@ -174,14 +198,12 @@ export class FileImportController {
         // we have to do three main things here:
 
         if (event.dataTransfer) {
-
             const directly = AddFileRequests.computeDirectly(event);
             const recursively = await AddFileRequests.computeRecursively(event);
 
             const addFileRequests = [...directly, ...recursively.getOrElse([])];
 
             await this.handleAddFileRequests(addFileRequests);
-
         }
 
     }
@@ -324,6 +346,44 @@ export class FileImportController {
         });
 
         return importedFileResult;
+
+    }
+
+    /**
+     * Return true if this is a file transfer event otherwise we need to just
+     * ignore it as it could be any other type of drag event within the UI.
+     */
+    private isFileTransfer(event: DragEvent) {
+
+        if (! event.dataTransfer) {
+            return false;
+        }
+
+        // https://stackoverflow.com/questions/6848043/how-do-i-detect-a-file-is-being-dragged-rather-than-a-draggable-element-on-my-pa
+
+        if (event.dataTransfer.types) {
+
+            // we need to detect if this is using the files types because
+            // we do not have the actual files until the drop is complete.
+
+            if (event.dataTransfer.types.includes('Files') ||
+                event.dataTransfer.types.includes('application/x-moz-file')) {
+
+                return true;
+            }
+
+        }
+
+
+        if (! event.dataTransfer.files) {
+            return false;
+        }
+
+        if (event.dataTransfer.files.length === 0) {
+            return false;
+        }
+
+        return true;
 
     }
 

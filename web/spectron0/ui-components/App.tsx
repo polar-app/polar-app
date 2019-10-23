@@ -5,7 +5,7 @@ import {Group} from "../../js/datastore/sharing/db/Groups";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ManualDropdown} from "../../../apps/repository/js/doc_repo/ManaulDropdown";
 import DropdownItem from 'reactstrap/lib/DropdownItem';
-import {DropdownMenu, DropdownToggle} from "reactstrap";
+import {DropdownMenu, DropdownToggle, Input} from "reactstrap";
 import {FakePopup} from "./FakePopup";
 import { BasicPopup } from './BasicPopup';
 import { PDFViewer } from './PDFViewer';
@@ -127,11 +127,36 @@ export class App<P> extends React.Component<{}, IAppState> {
             created: ISODateTimeStrings.create()
         };
 
+        const keyBindingHandler = (event: React.KeyboardEvent) => {
+
+            if (event.key === 'F') {
+                console.log("YUP!")
+            }
+
+        };
+
         return (
 
             <div style={{margin: '5px'}}>
 
-                <PDFViewer src="foo"/>
+                {/*<Input type="text" name="text" id="example-text" placeholder="This is the text" onKeyPress={event => keyBindingHandler(event)}/>*/}
+
+                {/*<br/>*/}
+
+                {/*<Input type="textarea" name="text" id="example-textarea" placeholder="This is the text area"/>*/}
+
+                <div>
+                    this is the drop box.
+                </div>
+
+                <div draggable={true}
+                     onDragStart={event => console.log('tragging is starting...')}>
+
+                    this should be draggable
+
+                </div>
+
+                {/*<PDFViewer src="foo"/>*/}
 
                     {/*<LoadingProgress/>*/}
 
