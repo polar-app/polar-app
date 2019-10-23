@@ -1,5 +1,8 @@
 # unreleased
 
+- Fixed bug related to authentication and some accounts that would break when trying 
+  to login and this would fail intermittently.
+
 - It's now possible to drag documents from the document repository into the sidebar 
   on tags and folders.
 
