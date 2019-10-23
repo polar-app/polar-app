@@ -390,7 +390,22 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                           selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
                                           onSelected={selected => this.onSelected(selected)}
                                           onReactTable={reactTable => this.reactTable = reactTable}
-                                          onDragStart={() => DraggingSelectedDocs.set(this.getSelected())}
+                                          onDragStart={(event) => {
+
+                                              // TODO: move this to a dedicated function.
+
+                                              // TODO: this actually DOES NOT work but it's a better effect than the
+                                              // default and a lot less confusing.  In the future we should migrate
+                                              // to showing the thumbnail of the doc once we have this feature
+                                              // implemented.
+
+                                              const src: HTMLElement = document.createElement("div");
+
+                                              // https://kryogenix.org/code/browser/custom-drag-image.html
+                                              event.dataTransfer!.setDragImage(src, 0, 0);
+
+                                              DraggingSelectedDocs.set(this.getSelected())
+                                          }}
                                           onDragEnd={() => DraggingSelectedDocs.clear()}/>
                         }
                         side='left'

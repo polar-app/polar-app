@@ -657,8 +657,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                         return {
 
                             draggable: true,
-                            onDragStart: () => (this.props.onDragStart || NULL_FUNCTION)(),
-                            onDragEnd: () => (this.props.onDragEnd || NULL_FUNCTION)(),
+                            onDragStart: (event: DragEvent) => (this.props.onDragStart || NULL_FUNCTION)(event),
+                            onDragEnd: (event: DragEvent) => (this.props.onDragEnd || NULL_FUNCTION)(event),
+
 
                             // include the doc fingerprint in the table
                             // so that the tour can use
@@ -782,8 +783,8 @@ interface IProps {
     readonly onSelected: (selected: ReadonlyArray<number>) => void;
     readonly onReactTable: (reactTable: Instance) => void;
     readonly refresh: () => void;
-    readonly onDragStart?: () => void;
-    readonly onDragEnd?: () => void;
+    readonly onDragStart?: (event: DragEvent) => void;
+    readonly onDragEnd?: (event: DragEvent) => void;
 }
 
 interface IState {
