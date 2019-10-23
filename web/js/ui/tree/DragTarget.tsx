@@ -25,27 +25,53 @@ export class DragTarget extends React.Component<IProps, IState> {
         this.onDragOver = this.onDragOver.bind(this);
         this.onDragLeave = this.onDragLeave.bind(this);
         this.onDrop = this.onDrop.bind(this);
+        this.acceptDrag = this.acceptDrag.bind(this);
 
         this.state = {};
 
     }
 
+    private acceptDrag(): boolean {
+
+        if (this.props.acceptDrag) {
+            return this.props.acceptDrag();
+        }
+
+        return true;
+
+    }
+
     private onDragOver(event: React.DragEvent<HTMLDivElement>) {
+
+        if (! this.acceptDrag()) {
+            return;
+        }
+
         this.setState({active: true});
         event.preventDefault(); // called to allow the drop.
     }
 
     private onDragLeave(event: React.DragEvent<HTMLDivElement>) {
+
+        if (! this.acceptDrag()) {
+            return;
+        }
+
         this.setState({active: false});
+
     }
 
     private onDrop() {
+
+        if (! this.acceptDrag()) {
+            return;
+        }
+
         this.setState({active: false});
 
         const onDropped = this.props.onDropped || NULL_FUNCTION;
 
         onDropped();
-
     }
 
     public render() {
@@ -76,6 +102,8 @@ interface IProps {
      * Function to call when a drag has finished.
      */
     readonly onDropped?: () => void;
+
+    readonly acceptDrag?: () => boolean;
 
 }
 
