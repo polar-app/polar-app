@@ -57,4 +57,4 @@ cp manifest.json dist/public
 
 cp apps/repository/index.html dist/public
 
-workbox generateSW workbox-config.js
+npx workbox generateSW workbox-config.js
