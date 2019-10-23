@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 class Styles {
 
@@ -40,6 +41,11 @@ export class DragTarget extends React.Component<IProps, IState> {
 
     private onDrop() {
         this.setState({active: false});
+
+        const onDropped = this.props.onDropped || NULL_FUNCTION;
+
+        onDropped();
+
     }
 
     public render() {
@@ -65,6 +71,12 @@ export class DragTarget extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+
+    /**
+     * Function to call when a drag has finished.
+     */
+    readonly onDropped?: () => void;
+
 }
 
 interface IState {
