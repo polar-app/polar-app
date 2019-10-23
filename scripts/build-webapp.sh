@@ -26,7 +26,7 @@ set -e
 #npm install
 
 
-rm -rf dist/public
+purge dist/public
 
 mkdir -p dist/public
 
