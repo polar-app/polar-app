@@ -73,7 +73,9 @@ export class TagTree extends React.Component<IProps, IState> {
                 <div style={Styles.BAR}>
 
                     <div style={{flexGrow: 1}}>
-                        <TagFilter tags={tags} onChange={tags => this.onSelectedTags(tags)} disabled={this.props.filterDisabled}/>
+                        <TagFilter tags={tags}
+                                   onChange={tags => this.onSelectedTags(tags)}
+                                   disabled={this.props.filterDisabled}/>
                     </div>
 
                     <NullCollapse open={!this.props.noCreate}>
@@ -110,7 +112,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
     private onSelectedTags(selected: ReadonlyArray<Tag>) {
         this.props.treeState.tags = selected;
-        this.props.treeState.dispatchSelected();
+        this.props.treeState.dispatchUpdated();
     }
 
     private onFiltered(filter: string) {

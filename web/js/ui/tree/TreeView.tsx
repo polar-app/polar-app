@@ -42,20 +42,24 @@ interface IState {
  */
 export class TreeState<V> {
 
-    constructor(public readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void) {
+    /**
+     * @param onUpdated Called when the internal tree state is updated.
+     */
+    constructor(public readonly onUpdated: (nodes: ReadonlyArray<TagStr>) => void) {
     }
 
-    public readonly closed = new Marked();
+    public readonly closed = new MarkSet();
+
+
+    /**
+     * The list of the nodes that are selected by id
+     */
+    public readonly selected = new MarkSet();
 
     /**
      * The currently applied filter for the path we're searching for.
      */
     public readonly filter = "";
-
-    /**
-     * The list of the nodes that are selected by id
-     */
-    public readonly selected: {[id: string]: boolean} = {};
 
     public readonly index: {[id: string]: TreeNode<V>} = {};
 
@@ -64,34 +68,44 @@ export class TreeState<V> {
      */
     public tags: ReadonlyArray<Tag> = [];
 
-    public dispatchSelected() {
+    public dispatchUpdated() {
 
-        const selectedFolders = Object.keys(this.selected);
+        const selectedFolders = this.selected.keys();
         const selectedTags = this.tags.map(current => current.id);
 
         const selected = [...selectedTags, ...selectedFolders];
 
-        this.onSelected(selected);
+        this.onUpdated(selected);
 
     }
 
 }
 
 
-export class Marked {
+export class MarkSet {
 
-    public readonly data: {[id: string]: boolean} = {};
+    private readonly data: {[id: string]: boolean} = {};
 
-    public mark(id: string) {
-        this.data[id] = true;
+    public mark(id: string, marked: boolean) {
+
+        if (marked) {
+            this.data[id] = true;
+        } else {
+            delete this.data[id];
+        }
+
     }
 
     public isMarked(id: string): boolean {
         return isPresent(this.data[id]);
     }
 
-    public clear(id: string) {
+    public delete(id: string) {
         delete this.data[id];
+    }
+
+    public keys() {
+        return Object.keys(this.data);
     }
 
     public toggle(id: string) {
@@ -99,7 +113,7 @@ export class Marked {
         const currentValue = this.data[id];
 
         if (isPresent(currentValue) && currentValue) {
-            this.clear(id);
+            this.delete(id);
         } else {
             this.data[id] = true;
         }

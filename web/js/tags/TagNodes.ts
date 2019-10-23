@@ -27,15 +27,17 @@ export class TagNodes {
 
         const name = 'Tags';
 
+        // TODO: have to call this id with #tags to avoid double selection
+
         const root: TRoot<TagDescriptor> = {
-            id: 'tags',
+            id: '/#tags',
             name,
             path: '/',
             children,
             count,
             title: name,
             value: {
-                id: 'tags',
+                id: '/',
                 label: name,
                 count
             }

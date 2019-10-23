@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {TreeNodeChildren} from './TreeNodeChildren';
-import {isPresent} from 'polar-shared/src/Preconditions';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {TreeState} from './TreeView';
-import {TNode} from './TreeView';
+import {TNode, TreeState} from './TreeView';
+import {DragTarget} from "./DragTarget";
 
 class Styles {
 
@@ -130,6 +129,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.onClick = this.onClick.bind(this);
         this.dispatchSelected = this.dispatchSelected.bind(this);
 
+
         this.state = {
         };
 
@@ -138,6 +138,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     // public componentWillUnmount(): void {
     //     this.deselect();
     // }
+
 
     public render() {
 
@@ -182,7 +183,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
             return "";
 
         };
-        const selected = isPresent(treeState.selected[id]);
+        const selected = treeState.selected.isMarked(id);
 
         const closed = treeState.closed.isMarked(node.id);
 
@@ -192,10 +193,12 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
         return (
 
-
             <div style={{}}>
 
-                <div style={Styles.NODE_PARENT} className="hover-highlight">
+                <DragTarget>
+
+                    <div style={Styles.NODE_PARENT}
+                         className="hover-highlight">
 
                         <div style={Styles.NODE_ICON}
                              className={icon}
@@ -244,6 +247,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                         </div>
 
                     </div>
+                </DragTarget>
 
                 <TreeNodeChildren children={children}
                                   closed={closed}
@@ -275,14 +279,11 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
         this.props.treeState.closed.toggle(this.props.node.id);
 
-        this.setState({...this.state, idx: Date.now()});
-
     }
 
     private deselect() {
         const {id} = this.props.node;
-        delete this.props.treeState.selected[id];
-        this.setState({...this.state, idx: Date.now()});
+        this.props.treeState.selected.delete(id);
     }
 
     private select(multi: boolean = false,
@@ -293,33 +294,27 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
         if (!multi) {
 
-            for (const id of Object.keys(treeState.selected)) {
+            for (const id of treeState.selected.keys()) {
 
                 const node = treeState.index[id];
                 Preconditions.assertPresent(node, "No node for id: " + id);
 
                 node.deselect();
-                delete treeState.selected[id];
+                treeState.selected.delete(id);
 
             }
 
         }
 
-        if (selected) {
-            treeState.selected[id] = true;
-        } else {
-            delete treeState.selected[id];
-        }
+        treeState.selected.mark(id, selected);
 
         // TODO: don't do this type of refresh
-        this.setState({...this.state, idx: Date.now()});
-
         this.dispatchSelected();
 
     }
 
     private dispatchSelected() {
-        this.props.treeState.dispatchSelected();
+        this.props.treeState.dispatchUpdated();
     }
 
 }
@@ -339,7 +334,6 @@ interface IProps<V> {
 
 
 interface IState<V> {
-    readonly idx?: number;
 }
 
 

@@ -55,9 +55,7 @@ export class AddFileRequests {
     public static computeDirectly(event: DragEvent): AddFileRequest[] {
 
         if (event.dataTransfer && event.dataTransfer.files) {
-
             return this.computeFromFileList(event.dataTransfer.files);
-
         } else {
             return [];
         }

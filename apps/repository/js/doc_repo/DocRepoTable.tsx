@@ -656,6 +656,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                         return {
 
+                            draggable: true,
+
                             // include the doc fingerprint in the table
                             // so that the tour can use
                             'data-doc-fingerprint': ((rowInfo || {}).original || {}).fingerprint || '',

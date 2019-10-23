@@ -21,6 +21,8 @@ import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 
 const log = Logger.create();
 
+const DISABLED = true;
+
 /**
  * Handles performing imports into the datastore when users select files from
  * the import dialog.
@@ -48,6 +50,10 @@ export class FileImportController {
     }
 
     public start(): void {
+
+        if (DISABLED) {
+            return;
+        }
 
         if (ipcRenderer) {
 
@@ -174,14 +180,12 @@ export class FileImportController {
         // we have to do three main things here:
 
         if (event.dataTransfer) {
-
             const directly = AddFileRequests.computeDirectly(event);
             const recursively = await AddFileRequests.computeRecursively(event);
 
             const addFileRequests = [...directly, ...recursively.getOrElse([])];
 
             await this.handleAddFileRequests(addFileRequests);
-
         }
 
     }
