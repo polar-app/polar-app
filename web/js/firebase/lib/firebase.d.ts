@@ -111,7 +111,7 @@ declare namespace firebase {
     delete(): Promise<void>;
     emailVerified: boolean;
     getIdTokenResult(
-      forceRefresh?: boolean
+        forceRefresh?: boolean
     ): Promise<firebase.auth.IdTokenResult>;
     /**
      * Returns a JSON Web Token (JWT) used to identify the user to a Firebase
@@ -190,7 +190,7 @@ declare namespace firebase {
      * @param credential The auth credential.
      */
     linkAndRetrieveDataWithCredential(
-      credential: firebase.auth.AuthCredential
+        credential: firebase.auth.AuthCredential
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Links the user account with the given credentials.
@@ -253,7 +253,7 @@ declare namespace firebase {
      * @param credential The auth credential.
      */
     linkWithCredential(
-      credential: firebase.auth.AuthCredential
+        credential: firebase.auth.AuthCredential
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Links the user account with the given phone number.
@@ -296,8 +296,8 @@ declare namespace firebase {
      * @param applicationVerifier
      */
     linkWithPhoneNumber(
-      phoneNumber: string,
-      applicationVerifier: firebase.auth.ApplicationVerifier
+        phoneNumber: string,
+        applicationVerifier: firebase.auth.ApplicationVerifier
     ): Promise<firebase.auth.ConfirmationResult>;
     /**
      * Links the authenticated provider to the user account using a pop-up based
@@ -385,10 +385,10 @@ declare namespace firebase {
      *
      * @param provider The provider to authenticate.
      *     The provider has to be an OAuth provider. Non-OAuth providers like {@link
-     *     firebase.auth.EmailAuthProvider} will throw an error.
+        *     firebase.auth.EmailAuthProvider} will throw an error.
      */
     linkWithPopup(
-      provider: firebase.auth.AuthProvider
+        provider: firebase.auth.AuthProvider
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Links the authenticated provider to the user account using a full-page
@@ -416,7 +416,7 @@ declare namespace firebase {
      *
      * @param provider The provider to authenticate.
      *     The provider has to be an OAuth provider. Non-OAuth providers like {@link
-     *     firebase.auth.EmailAuthProvider} will throw an error.
+        *     firebase.auth.EmailAuthProvider} will throw an error.
      */
     linkWithRedirect(provider: firebase.auth.AuthProvider): Promise<void>;
     metadata: firebase.auth.UserMetadata;
@@ -469,7 +469,7 @@ declare namespace firebase {
      * @param credential
      */
     reauthenticateAndRetrieveDataWithCredential(
-      credential: firebase.auth.AuthCredential
+        credential: firebase.auth.AuthCredential
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Re-authenticates a user using a fresh credential. Use before operations
@@ -508,7 +508,7 @@ declare namespace firebase {
      * @param credential
      */
     reauthenticateWithCredential(
-      credential: firebase.auth.AuthCredential
+        credential: firebase.auth.AuthCredential
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Re-authenticates a user using a fresh credential. Use before operations
@@ -538,8 +538,8 @@ declare namespace firebase {
      * @param applicationVerifier
      */
     reauthenticateWithPhoneNumber(
-      phoneNumber: string,
-      applicationVerifier: firebase.auth.ApplicationVerifier
+        phoneNumber: string,
+        applicationVerifier: firebase.auth.ApplicationVerifier
     ): Promise<firebase.auth.ConfirmationResult>;
     /**
      * Reauthenticates the current user with the specified provider using a pop-up
@@ -603,10 +603,10 @@ declare namespace firebase {
      *
      * @param provider The provider to authenticate.
      *     The provider has to be an OAuth provider. Non-OAuth providers like {@link
-     *     firebase.auth.EmailAuthProvider} will throw an error.
+        *     firebase.auth.EmailAuthProvider} will throw an error.
      */
     reauthenticateWithPopup(
-      provider: firebase.auth.AuthProvider
+        provider: firebase.auth.AuthProvider
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Reauthenticates the current user with the specified OAuth provider using a
@@ -634,10 +634,10 @@ declare namespace firebase {
      *
      * @param provider The provider to authenticate.
      *     The provider has to be an OAuth provider. Non-OAuth providers like {@link
-     *     firebase.auth.EmailAuthProvider} will throw an error.
+        *     firebase.auth.EmailAuthProvider} will throw an error.
      */
     reauthenticateWithRedirect(
-      provider: firebase.auth.AuthProvider
+        provider: firebase.auth.AuthProvider
     ): Promise<void>;
     refreshToken: string;
     /**
@@ -705,7 +705,7 @@ declare namespace firebase {
      *     are configured in the same Firebase Auth project used.
      */
     sendEmailVerification(
-      actionCodeSettings?: firebase.auth.ActionCodeSettings | null
+        actionCodeSettings?: firebase.auth.ActionCodeSettings | null
     ): Promise<void>;
     /**
      * The current user's tenant ID. This is a read-only property, which indicates
@@ -808,7 +808,7 @@ declare namespace firebase {
      * @param phoneCredential
      */
     updatePhoneNumber(
-      phoneCredential: firebase.auth.AuthCredential
+        phoneCredential: firebase.auth.AuthCredential
     ): Promise<void>;
     /**
      * Updates a user's profile data.
@@ -966,10 +966,10 @@ declare namespace firebase {
    *
    * See
    * {@link
-   *   https://firebase.google.com/docs/web/setup#add_firebase_to_your_app
+      *   https://firebase.google.com/docs/web/setup#add_firebase_to_your_app
    *   Add Firebase to your app} and
    * {@link
-   *   https://firebase.google.com/docs/web/setup#multiple-projects
+      *   https://firebase.google.com/docs/web/setup#multiple-projects
    *   Initialize multiple projects} for detailed documentation.
    *
    * @example
@@ -1096,8 +1096,44 @@ declare namespace firebase {
    * If not passed, uses the default app.
    */
   function performance(
-    app?: firebase.app.App
+      app?: firebase.app.App
   ): firebase.performance.Performance;
+
+  /**
+   * Gets the {@link firebase.remoteConfig.RemoteConfig `RemoteConfig`} instance.
+   *
+   * @webonly
+   *
+   * @example
+   * ```javascript
+   * // Get the RemoteConfig instance for the default app
+   * const defaultRemoteConfig = firebase.remoteConfig();
+   * ```
+   *
+   * @param app The app to create a Remote Config service for. If not passed, uses the default app.
+   */
+  function remoteConfig(
+      app?: firebase.app.App
+  ): firebase.remoteConfig.RemoteConfig;
+
+  /**
+   * Gets the {@link firebase.analytics.Analytics `Analytics`} service.
+   *
+   * `firebase.analytics()` can be called with no arguments to access the default
+   * app's {@link firebase.analytics.Analytics `Analytics`} service.
+   *
+   * @webonly
+   *
+   * @example
+   * ```javascript
+   * // Get the Analytics service for the default app
+   * const defaultAnalytics = firebase.analytics();
+   * ```
+   *
+   * @param app The app to create an analytics service for.
+   * If not passed, uses the default app.
+   */
+  function analytics(app?: firebase.app.App): firebase.analytics.Analytics;
 }
 
 declare namespace firebase.app {
@@ -1250,6 +1286,33 @@ declare namespace firebase.app {
      * ```
      */
     performance(): firebase.performance.Performance;
+    /**
+     * Gets the {@link firebase.remoteConfig.RemoteConfig `RemoteConfig`} instance.
+     *
+     * @webonly
+     *
+     * @example
+     * ```javascript
+     * const rc = app.remoteConfig();
+     * // The above is shorthand for:
+     * // const rc = firebase.remoteConfig(app);
+     * ```
+     */
+    remoteConfig(): firebase.remoteConfig.RemoteConfig;
+    /**
+     * Gets the {@link firebase.analytics.Analytics `Analytics`} service for the
+     * current app. If the current app is not the default one, throws an error.
+     *
+     * @webonly
+     *
+     * @example
+     * ```javascript
+     * const analytics = app.analytics();
+     * // The above is shorthand for:
+     * // const analytics = firebase.analytics(app);
+     * ```
+     */
+    analytics(): firebase.analytics.Analytics;
   }
 }
 
@@ -1277,7 +1340,7 @@ declare namespace firebase.installations {
      *
      * @return Firebase Installation Authentication Token
      */
-    getToken(): Promise<string>;
+    getToken(forceRefresh?: boolean): Promise<string>;
 
     /**
      * Deletes the Firebase Installation and all associated data.
@@ -1338,12 +1401,12 @@ declare namespace firebase.performance {
      * custom attributes.
      */
     record(
-      startTime: number,
-      duration: number,
-      options?: {
-        metrics?: { [key: string]: number };
-        attributes?: { [key: string]: string };
-      }
+        startTime: number,
+        duration: number,
+        options?: {
+          metrics?: { [key: string]: number };
+          attributes?: { [key: string]: string };
+        }
     ): void;
     /**
      * Adds to the value of a custom metric. If a custom metric with the provided name does not
@@ -1397,6 +1460,175 @@ declare namespace firebase.performance {
      */
     getAttributes(): { [key: string]: string };
   }
+}
+
+/**
+ * @webonly
+ */
+declare namespace firebase.remoteConfig {
+  /**
+   * The Firebase Remote Config service interface.
+   *
+   * Do not call this constructor directly. Instead, use
+   * {@link firebase.remoteConfig `firebase.remoteConfig()`}.
+   */
+  export interface RemoteConfig {
+    /**
+     * Defines configuration for the Remote Config SDK.
+     */
+    settings: Settings;
+
+    /**
+     * Object containing default values for conigs.
+     */
+    defaultConfig: { [key: string]: string | number | boolean };
+
+    /**
+     * The Unix timestamp in milliseconds of the last <i>successful</i> fetch, or negative one if
+     * the {@link RemoteConfig} instance either hasn't fetched or initialization
+     * is incomplete.
+     */
+    fetchTimeMillis: number;
+
+    /**
+     * The status of the last fetch <i>attempt</i>.
+     */
+    lastFetchStatus: FetchStatus;
+
+    /**
+     * Makes the last fetched config available to the getters.
+     * Returns a promise which resolves to true if the current call activated the fetched configs.
+     * If the fetched configs were already activated, the promise will resolve to false.
+     */
+    activate(): Promise<boolean>;
+
+    /**
+     * Ensures the last activated config are available to the getters.
+     */
+    ensureInitialized(): Promise<void>;
+
+    /**
+     * Fetches and caches configuration from the Remote Config service.
+     */
+    fetch(): Promise<void>;
+
+    /**
+     * Performs fetch and activate operations, as a convenience.
+     * Returns a promise which resolves to true if the current call activated the fetched configs.
+     * If the fetched configs were already activated, the promise will resolve to false.
+     */
+    fetchAndActivate(): Promise<boolean>;
+
+    /**
+     * Gets all config.
+     */
+    getAll(): { [key: string]: Value };
+
+    /**
+     * Gets the value for the given key as a boolean.
+     *
+     * Convenience method for calling <code>remoteConfig.getValue(key).asBoolean()</code>.
+     */
+    getBoolean(key: string): boolean;
+
+    /**
+     * Gets the value for the given key as a number.
+     *
+     * Convenience method for calling <code>remoteConfig.getValue(key).asNumber()</code>.
+     */
+    getNumber(key: string): number;
+
+    /**
+     * Gets the value for the given key as a String.
+     *
+     * Convenience method for calling <code>remoteConfig.getValue(key).asString()</code>.
+     */
+    getString(key: string): string;
+
+    /**
+     * Gets the {@link Value} for the given key.
+     */
+    getValue(key: string): Value;
+
+    /**
+     * Defines the log level to use.
+     */
+    setLogLevel(logLevel: LogLevel): void;
+  }
+
+  /**
+   * Indicates the source of a value.
+   *
+   * <ul>
+   *   <li>"static" indicates the value was defined by a static constant.</li>
+   *   <li>"default" indicates the value was defined by default config.</li>
+   *   <li>"remote" indicates the value was defined by fetched config.</li>
+   * </ul>
+   */
+  export type ValueSource = 'static' | 'default' | 'remote';
+
+  /**
+   * Wraps a value with metadata and type-safe getters.
+   */
+  export interface Value {
+    /**
+     * Gets the value as a boolean.
+     *
+     * The following values (case insensitive) are interpreted as true:
+     * "1", "true", "t", "yes", "y", "on". Other values are interpreted as false.
+     */
+    asBoolean(): boolean;
+
+    /**
+     * Gets the value as a number. Comparable to calling <code>Number(value) || 0</code>.
+     */
+    asNumber(): number;
+
+    /**
+     * Gets the value as a string.
+     */
+    asString(): string;
+
+    /**
+     * Gets the {@link ValueSource} for the given key.
+     */
+    getSource(): ValueSource;
+  }
+
+  /**
+   * Defines configuration options for the Remote Config SDK.
+   */
+  export interface Settings {
+    /**
+     * Defines the maximum age in milliseconds of an entry in the config cache before
+     * it is considered stale. Defaults to 43200000 (Twelve hours).
+     */
+    minimumFetchIntervalMillis: number;
+
+    /**
+     * Defines the maximum amount of milliseconds to wait for a response when fetching
+     * configuration from the Remote Config server. Defaults to 60000 (One minute).
+     */
+    fetchTimeoutMillis: number;
+  }
+
+  /**
+   * Summarizes the outcome of the last attempt to fetch config from the Firebase Remote Config server.
+   *
+   * <ul>
+   *   <li>"no-fetch-yet" indicates the {@link RemoteConfig} instance has not yet attempted
+   *       to fetch config, or that SDK initialization is incomplete.</li>
+   *   <li>"success" indicates the last attempt succeeded.</li>
+   *   <li>"failure" indicates the last attempt failed.</li>
+   *   <li>"throttle" indicates the last attempt was rate-limited.</li>
+   * </ul>
+   */
+  export type FetchStatus = 'no-fetch-yet' | 'success' | 'failure' | 'throttle';
+
+  /**
+   * Defines levels of Remote Config logging.
+   */
+  export type LogLevel = 'debug' | 'error' | 'silent';
 }
 
 /**
@@ -1485,23 +1717,23 @@ declare namespace firebase.functions {
    *   credentials for the operation.
    */
   export type FunctionsErrorCode =
-    | 'ok'
-    | 'cancelled'
-    | 'unknown'
-    | 'invalid-argument'
-    | 'deadline-exceeded'
-    | 'not-found'
-    | 'already-exists'
-    | 'permission-denied'
-    | 'resource-exhausted'
-    | 'failed-precondition'
-    | 'aborted'
-    | 'out-of-range'
-    | 'unimplemented'
-    | 'internal'
-    | 'unavailable'
-    | 'data-loss'
-    | 'unauthenticated';
+      | 'ok'
+      | 'cancelled'
+      | 'unknown'
+      | 'invalid-argument'
+      | 'deadline-exceeded'
+      | 'not-found'
+      | 'already-exists'
+      | 'permission-denied'
+      | 'resource-exhausted'
+      | 'failed-precondition'
+      | 'aborted'
+      | 'out-of-range'
+      | 'unimplemented'
+      | 'internal'
+      | 'unavailable'
+      | 'data-loss'
+      | 'unauthenticated';
   export interface HttpsError extends Error {
     /**
      * A standard error code that will be returned to the client. This also
@@ -1828,8 +2060,8 @@ declare namespace firebase.auth {
      * @param password The user's chosen password.
      */
     createUserWithEmailAndPassword(
-      email: string,
-      password: string
+        email: string,
+        password: string
     ): Promise<firebase.auth.UserCredential>;
     /**
      * The currently signed-in user (or null).
@@ -1997,11 +2229,11 @@ declare namespace firebase.auth {
      * ```
      */
     onAuthStateChanged(
-      nextOrObserver:
-        | firebase.Observer<any>
-        | ((a: firebase.User | null) => any),
-      error?: (a: firebase.auth.Error) => any,
-      completed?: firebase.Unsubscribe
+        nextOrObserver:
+            | firebase.Observer<any>
+            | ((a: firebase.User | null) => any),
+        error?: (a: firebase.auth.Error) => any,
+        completed?: firebase.Unsubscribe
     ): firebase.Unsubscribe;
     /**
      * Adds an observer for changes to the signed-in user's ID token, which includes
@@ -2024,11 +2256,11 @@ declare namespace firebase.auth {
      *     observer is removed.
      */
     onIdTokenChanged(
-      nextOrObserver:
-        | firebase.Observer<any>
-        | ((a: firebase.User | null) => any),
-      error?: (a: firebase.auth.Error) => any,
-      completed?: firebase.Unsubscribe
+        nextOrObserver:
+            | firebase.Observer<any>
+            | ((a: firebase.User | null) => any),
+        error?: (a: firebase.auth.Error) => any,
+        completed?: firebase.Unsubscribe
     ): firebase.Unsubscribe;
     /**
      * Sends a sign-in email link to the user with the specified email.
@@ -2102,8 +2334,8 @@ declare namespace firebase.auth {
      *     are configured in the same Firebase Auth project used.
      */
     sendSignInLinkToEmail(
-      email: string,
-      actionCodeSettings: firebase.auth.ActionCodeSettings
+        email: string,
+        actionCodeSettings: firebase.auth.ActionCodeSettings
     ): Promise<void>;
 
     /**
@@ -2173,8 +2405,8 @@ declare namespace firebase.auth {
      *     are configured in the same Firebase Auth project used.
      */
     sendPasswordResetEmail(
-      email: string,
-      actionCodeSettings?: firebase.auth.ActionCodeSettings | null
+        email: string,
+        actionCodeSettings?: firebase.auth.ActionCodeSettings | null
     ): Promise<void>;
 
     /**
@@ -2271,7 +2503,7 @@ declare namespace firebase.auth {
      * @param credential The auth credential.
      */
     signInAndRetrieveDataWithCredential(
-      credential: firebase.auth.AuthCredential
+        credential: firebase.auth.AuthCredential
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Asynchronously signs in as an anonymous user.
@@ -2366,7 +2598,7 @@ declare namespace firebase.auth {
      * @param credential The auth credential.
      */
     signInWithCredential(
-      credential: firebase.auth.AuthCredential
+        credential: firebase.auth.AuthCredential
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Asynchronously signs in using a custom token.
@@ -2447,8 +2679,8 @@ declare namespace firebase.auth {
      * @param password The users password.
      */
     signInWithEmailAndPassword(
-      email: string,
-      password: string
+        email: string,
+        password: string
     ): Promise<firebase.auth.UserCredential>;
 
     /**
@@ -2503,8 +2735,8 @@ declare namespace firebase.auth {
      * @param applicationVerifier
      */
     signInWithPhoneNumber(
-      phoneNumber: string,
-      applicationVerifier: firebase.auth.ApplicationVerifier
+        phoneNumber: string,
+        applicationVerifier: firebase.auth.ApplicationVerifier
     ): Promise<firebase.auth.ConfirmationResult>;
     /**
      * Asynchronously signs in using an email and sign-in email link. If no link
@@ -2542,8 +2774,8 @@ declare namespace firebase.auth {
      *     URL is used instead.
      */
     signInWithEmailLink(
-      email: string,
-      emailLink?: string
+        email: string,
+        emailLink?: string
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Authenticates a Firebase client using a popup-based OAuth authentication
@@ -2633,15 +2865,15 @@ declare namespace firebase.auth {
      *
      * @param provider The provider to authenticate.
      *     The provider has to be an OAuth provider. Non-OAuth providers like {@link
-     *     firebase.auth.EmailAuthProvider} will throw an error.
+        *     firebase.auth.EmailAuthProvider} will throw an error.
      */
     signInWithPopup(
-      provider: firebase.auth.AuthProvider
+        provider: firebase.auth.AuthProvider
     ): Promise<firebase.auth.UserCredential>;
     /**
      * Authenticates a Firebase client using a full-page redirect flow. To handle
      * the results and errors for this operation, refer to {@link
-     * firebase.auth.Auth.getRedirectResult}.
+        * firebase.auth.Auth.getRedirectResult}.
      *
      * <h4>Error Codes</h4>
      * <dl>
@@ -2663,7 +2895,7 @@ declare namespace firebase.auth {
      *
      * @param provider The provider to authenticate.
      *     The provider has to be an OAuth provider. Non-OAuth providers like {@link
-     *     firebase.auth.EmailAuthProvider} will throw an error.
+        *     firebase.auth.EmailAuthProvider} will throw an error.
      */
     signInWithRedirect(provider: firebase.auth.AuthProvider): Promise<void>;
     /**
@@ -2874,8 +3106,8 @@ declare namespace firebase.auth {
      * @return The auth provider credential.
      */
     static credential(
-      email: string,
-      password: string
+        email: string,
+        password: string
     ): firebase.auth.AuthCredential;
     /**
      * Initialize an `EmailAuthProvider` credential using an email and an email link
@@ -2894,8 +3126,8 @@ declare namespace firebase.auth {
      * @return The auth provider credential.
      */
     static credentialWithLink(
-      email: string,
-      emailLink: string
+        email: string,
+        emailLink: string
     ): firebase.auth.AuthCredential;
   }
   /**
@@ -2909,7 +3141,7 @@ declare namespace firebase.auth {
    * An authentication error.
    * For method-specific error codes, refer to the specific methods in the
    * documentation. For common error codes, check the reference below. Use {@link
-   * firebase.auth.Error#code} to get the specific error code. For a detailed
+      * firebase.auth.Error#code} to get the specific error code. For a detailed
    * message, use {@link firebase.auth.Error.message}.
    * Errors with the code <strong>auth/account-exists-with-different-credential
    * </strong> will have the additional fields <strong>email</strong> and <strong>
@@ -3123,7 +3355,7 @@ declare namespace firebase.auth {
      * @return The provider instance itself.
      */
     setCustomParameters(
-      customOAuthParameters: Object
+        customOAuthParameters: Object
     ): firebase.auth.AuthProvider;
   }
 
@@ -3238,7 +3470,7 @@ declare namespace firebase.auth {
      * @return The provider instance itself.
      */
     setCustomParameters(
-      customOAuthParameters: Object
+        customOAuthParameters: Object
     ): firebase.auth.AuthProvider;
   }
 
@@ -3295,7 +3527,7 @@ declare namespace firebase.auth {
      * ```javascript
      * // \`googleUser\` from the onsuccess Google Sign In callback.
      * var credential = firebase.auth.GoogleAuthProvider.credential(
-                  googleUser.getAuthResponse().id_token);
+     googleUser.getAuthResponse().id_token);
      * firebase.auth().signInWithCredential(credential)
      * ```
      * @param idToken Google ID token.
@@ -3303,8 +3535,8 @@ declare namespace firebase.auth {
      * @return The auth provider credential.
      */
     static credential(
-      idToken?: string | null,
-      accessToken?: string | null
+        idToken?: string | null,
+        accessToken?: string | null
     ): firebase.auth.OAuthCredential;
   }
   /**
@@ -3332,7 +3564,7 @@ declare namespace firebase.auth {
      * @return The provider instance itself.
      */
     setCustomParameters(
-      customOAuthParameters: Object
+        customOAuthParameters: Object
     ): firebase.auth.AuthProvider;
   }
 
@@ -3399,8 +3631,8 @@ declare namespace firebase.auth {
      * @param accessToken The OAuth access token.
      */
     credential(
-      idToken?: string,
-      accessToken?: string
+        idToken?: string,
+        accessToken?: string
     ): firebase.auth.OAuthCredential;
     /**
      * Sets the OAuth custom parameters to pass in an OAuth request for popup
@@ -3412,7 +3644,7 @@ declare namespace firebase.auth {
      *     in the OAuth request.
      */
     setCustomParameters(
-      customOAuthParameters: Object
+        customOAuthParameters: Object
     ): firebase.auth.AuthProvider;
   }
 
@@ -3512,8 +3744,8 @@ declare namespace firebase.auth {
      * @return The auth provider credential.
      */
     static credential(
-      verificationId: string,
-      verificationCode: string
+        verificationId: string,
+        verificationCode: string
     ): firebase.auth.AuthCredential;
   }
   /**
@@ -3553,8 +3785,8 @@ declare namespace firebase.auth {
      * @return A Promise for the verification ID.
      */
     verifyPhoneNumber(
-      phoneNumber: string,
-      applicationVerifier: firebase.auth.ApplicationVerifier
+        phoneNumber: string,
+        applicationVerifier: firebase.auth.ApplicationVerifier
     ): Promise<string>;
   }
 
@@ -3585,11 +3817,11 @@ declare namespace firebase.auth {
    * @hidden
    */
   class RecaptchaVerifier_Instance
-    implements firebase.auth.ApplicationVerifier {
+      implements firebase.auth.ApplicationVerifier {
     constructor(
-      container: any | string,
-      parameters?: Object | null,
-      app?: firebase.app.App | null
+        container: any | string,
+        parameters?: Object | null,
+        app?: firebase.app.App | null
     );
     /**
      * Clears the reCAPTCHA widget from the page and destroys the current instance.
@@ -3662,8 +3894,8 @@ declare namespace firebase.auth {
      * @return The auth provider credential.
      */
     static credential(
-      token: string,
-      secret: string
+        token: string,
+        secret: string
     ): firebase.auth.OAuthCredential;
   }
   /**
@@ -3682,7 +3914,7 @@ declare namespace firebase.auth {
      * @return The provider instance itself.
      */
     setCustomParameters(
-      customOAuthParameters: Object
+        customOAuthParameters: Object
     ): firebase.auth.AuthProvider;
   }
 
@@ -3705,6 +3937,565 @@ declare namespace firebase.auth {
   interface UserMetadata {
     creationTime?: string;
     lastSignInTime?: string;
+  }
+}
+
+/**
+ * @webonly
+ */
+declare namespace firebase.analytics {
+  /**
+   * The Firebase Analytics service interface.
+   *
+   * Do not call this constructor directly. Instead, use
+   * {@link firebase.analytics `firebase.analytics()`}.
+   */
+  export interface Analytics {
+    /**
+     * The {@link firebase.app.App app} associated with the `Analytics` service
+     * instance.
+     *
+     * @example
+     * ```javascript
+     * var app = analytics.app;
+     * ```
+     */
+    app: firebase.app.App;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'add_to_cart' | 'add_to_wishlist' | 'remove_from_cart',
+        eventParams: {
+          currency?: EventParams['currency'];
+          value?: EventParams['value'];
+          items?: EventParams['items'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'begin_checkout',
+        eventParams: {
+          currency?: EventParams['currency'];
+          coupon?: EventParams['coupon'];
+          value?: EventParams['value'];
+          items?: EventParams['items'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'checkout_progress',
+        eventParams: {
+          currency?: EventParams['currency'];
+          coupon?: EventParams['coupon'];
+          value?: EventParams['value'];
+          items?: EventParams['items'];
+          checkout_step?: EventParams['checkout_step'];
+          checkout_option?: EventParams['checkout_option'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'exception',
+        eventParams: {
+          description?: EventParams['description'];
+          fatal?: EventParams['fatal'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'generate_lead',
+        eventParams: {
+          value?: EventParams['value'];
+          currency?: EventParams['currency'];
+          transaction_id?: EventParams['transaction_id'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'login',
+        eventParams: {
+          method?: EventParams['method'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'purchase',
+        eventParams: {
+          value?: EventParams['value'];
+          currency?: EventParams['currency'];
+          transaction_id: EventParams['transaction_id'];
+          tax?: EventParams['tax'];
+          shipping?: EventParams['shipping'];
+          items?: EventParams['items'];
+          coupon?: EventParams['coupon'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'refund',
+        eventParams: {
+          value?: EventParams['value'];
+          currency?: EventParams['currency'];
+          transaction_id: EventParams['transaction_id'];
+          tax?: EventParams['tax'];
+          shipping?: EventParams['shipping'];
+          items?: EventParams['items'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'screen_view',
+        eventParams: {
+          app_name: string;
+          screen_name: EventParams['screen_name'];
+          app_id?: string;
+          app_version?: string;
+          app_installer_id?: string;
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'search' | 'view_search_results',
+        eventParams: {
+          search_term?: EventParams['search_term'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'select_content',
+        eventParams: {
+          items?: EventParams['items'];
+          promotions?: EventParams['promotions'];
+          content_type?: EventParams['content_type'];
+          content_id?: EventParams['content_id'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'set_checkout_option',
+        eventParams: {
+          checkout_step?: EventParams['checkout_step'];
+          checkout_option?: EventParams['checkout_option'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'share',
+        eventParams: {
+          method?: EventParams['method'];
+          content_type?: EventParams['content_type'];
+          content_id?: EventParams['content_id'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'sign_up',
+        eventParams: {
+          method?: EventParams['method'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'timing_complete',
+        eventParams: {
+          name: string;
+          value: number;
+          event_category?: string;
+          event_label?: string;
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'view_item' | 'view_item_list',
+        eventParams: {
+          items?: EventParams['items'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent(
+        eventName: 'view_promotion',
+        eventParams: {
+          promotions?: EventParams['promotions'];
+          [key: string]: any;
+        },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sends analytics event with given `eventParams`. This method
+     * automatically associates this logged event with this Firebase web
+     * app instance on this device.
+     * List of official event parameters can be found in
+     * {@link https://developers.google.com/gtagjs/reference/event
+     * the gtag.js reference documentation}.
+     */
+    logEvent<T extends string>(
+        eventName: CustomEventName<T>,
+        eventParams?: { [key: string]: any },
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Use gtag 'config' command to set 'screen_name'.
+     */
+    setCurrentScreen(
+        screenName: string,
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Use gtag 'config' command to set 'user_id'.
+     */
+    setUserId(
+        id: string,
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Use gtag 'config' command to set all params specified.
+     */
+    setUserProperties(
+        properties: firebase.analytics.CustomParams,
+        options?: firebase.analytics.AnalyticsCallOptions
+    ): void;
+
+    /**
+     * Sets whether analytics collection is enabled for this app on this device.
+     * window['ga-disable-analyticsId'] = true;
+     */
+    setAnalyticsCollectionEnabled(enabled: boolean): void;
+  }
+
+  export type CustomEventName<T> = T extends EventNameString ? never : T;
+
+  /**
+   * Additional options that can be passed to Firebase Analytics method
+   * calls such as `logEvent`, `setCurrentScreen`, etc.
+   */
+  export interface AnalyticsCallOptions {
+    /**
+     * If true, this config or event call applies globally to all
+     * analytics properties on the page.
+     */
+    global: boolean;
+  }
+
+  /**
+   * Specifies custom options for your Firebase Analytics instance.
+   * You must set these before initializing `firebase.analytics()`.
+   */
+  export interface SettingsOptions {
+    /** Sets custom name for `gtag` function. */
+    gtagName?: string;
+    /** Sets custom name for `dataLayer` array used by gtag. */
+    dataLayerName?: string;
+  }
+
+  /**
+   * Configures Firebase Analytics to use custom `gtag` or `dataLayer` names.
+   * Intended to be used if `gtag.js` script has been installed on
+   * this page independently of Firebase Analytics, and is using non-default
+   * names for either the `gtag` function or for `dataLayer`.
+   * Must be called before calling `firebase.analytics()` or it won't
+   * have any effect.
+   */
+  export function settings(settings: firebase.analytics.SettingsOptions): void;
+
+  /**
+   * Standard gtag.js control parameters.
+   * For more information, see
+   * {@link https://developers.google.com/gtagjs/reference/parameter
+   * the gtag.js documentation on parameters}.
+   */
+  export interface ControlParams {
+    groups?: string | string[];
+    send_to?: string | string[];
+    event_callback?: () => void;
+    event_timeout?: number;
+  }
+
+  /**
+   * Standard gtag.js event parameters.
+   * For more information, see
+   * {@link https://developers.google.com/gtagjs/reference/parameter
+   * the gtag.js documentation on parameters}.
+   */
+  export interface EventParams {
+    checkout_option?: string;
+    checkout_step?: number;
+    content_id?: string;
+    content_type?: string;
+    coupon?: string;
+    currency?: string;
+    description?: string;
+    fatal?: boolean;
+    items?: Item[];
+    method?: string;
+    number?: string;
+    promotions?: Promotion[];
+    screen_name?: string;
+    search_term?: string;
+    shipping?: Currency;
+    tax?: Currency;
+    transaction_id?: string;
+    value?: number;
+    event_label?: string;
+    event_category: string;
+  }
+
+  /**
+   * Any custom params the user may pass to gtag.js.
+   */
+  export interface CustomParams {
+    [key: string]: any;
+  }
+
+  /**
+   * Type for standard gtag.js event names. `logEvent` also accepts any
+   * custom string and interprets it as a custom event name.
+   */
+  export type EventNameString =
+      | 'add_payment_info'
+      | 'add_to_cart'
+      | 'add_to_wishlist'
+      | 'begin_checkout'
+      | 'checkout_progress'
+      | 'exception'
+      | 'generate_lead'
+      | 'login'
+      | 'page_view'
+      | 'purchase'
+      | 'refund'
+      | 'remove_from_cart'
+      | 'screen_view'
+      | 'search'
+      | 'select_content'
+      | 'set_checkout_option'
+      | 'share'
+      | 'sign_up'
+      | 'timing_complete'
+      | 'view_item'
+      | 'view_item_list'
+      | 'view_promotion'
+      | 'view_search_results';
+
+  /**
+   * Enum of standard gtag.js event names provided for convenient
+   * developer usage. `logEvent` will also accept any custom string
+   * and interpret it as a custom event name.
+   */
+  export enum EventName {
+    ADD_PAYMENT_INFO = 'add_payment_info',
+    ADD_TO_CART = 'add_to_cart',
+    ADD_TO_WISHLIST = 'add_to_wishlist',
+    BEGIN_CHECKOUT = 'begin_checkout',
+    CHECKOUT_PROGRESS = 'checkout_progress',
+    EXCEPTION = 'exception',
+    GENERATE_LEAD = 'generate_lead',
+    LOGIN = 'login',
+    PAGE_VIEW = 'page_view',
+    PURCHASE = 'purchase',
+    REFUND = 'refund',
+    REMOVE_FROM_CART = 'remove_from_cart',
+    SCREEN_VIEW = 'screen_view',
+    SEARCH = 'search',
+    SELECT_CONTENT = 'select_content',
+    SET_CHECKOUT_OPTION = 'set_checkout_option',
+    SHARE = 'share',
+    SIGN_UP = 'sign_up',
+    TIMING_COMPLETE = 'timing_complete',
+    VIEW_ITEM = 'view_item',
+    VIEW_ITEM_LIST = 'view_item_list',
+    VIEW_PROMOTION = 'view_promotion',
+    VIEW_SEARCH_RESULTS = 'view_search_results'
+  }
+
+  export type Currency = string | number;
+
+  export interface Item {
+    brand?: string;
+    category?: string;
+    creative_name?: string;
+    creative_slot?: string;
+    id?: string;
+    location_id?: string;
+    name?: string;
+    price?: Currency;
+    quantity?: number;
+  }
+
+  export interface Promotion {
+    creative_name?: string;
+    creative_slot?: string;
+    id?: string;
+    name?: string;
   }
 }
 
@@ -3912,7 +4703,7 @@ declare namespace firebase.database {
      *   returning true.
      */
     forEach(
-      action: (a: firebase.database.DataSnapshot) => boolean | void
+        action: (a: firebase.database.DataSnapshot) => boolean | void
     ): boolean;
     /**
      * Gets the priority value of the data in this `DataSnapshot`.
@@ -3920,7 +4711,7 @@ declare namespace firebase.database {
      * Applications need not use priority but can order collections by
      * ordinary properties (see
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
      *  Sorting and filtering data}).
      */
     getPriority(): string | number | null;
@@ -4099,7 +4890,7 @@ declare namespace firebase.database {
    *
    * See
    * {@link
-   *   https://firebase.google.com/docs/database/web/start/
+      *   https://firebase.google.com/docs/database/web/start/
    *   Installation &amp; Setup in JavaScript}
    * for a full guide on how to use the Firebase Database service.
    */
@@ -4222,7 +5013,7 @@ declare namespace firebase.database {
    * applications where it is useful to detect how many clients are connected and
    * when other clients disconnect. See
    * {@link
-   *   https://firebase.google.com/docs/database/web/offline-capabilities
+      *   https://firebase.google.com/docs/database/web/offline-capabilities
    *   Enabling Offline Capabilities in JavaScript} for more information.
    *
    * To avoid problems when a connection is dropped before the requests can be
@@ -4279,7 +5070,7 @@ declare namespace firebase.database {
      * value should be changed or cleared when a user disconnects so that they
      * appear "offline" to other users. See
      * {@link
-     *   https://firebase.google.com/docs/database/web/offline-capabilities
+        *   https://firebase.google.com/docs/database/web/offline-capabilities
      *   Enabling Offline Capabilities in JavaScript} for more information.
      *
      * Note that `onDisconnect` operations are only triggered once. If you want an
@@ -4308,9 +5099,9 @@ declare namespace firebase.database {
      * new page, or network issues).
      */
     setWithPriority(
-      value: any,
-      priority: number | string | null,
-      onComplete?: (a: Error | null) => any
+        value: any,
+        priority: number | string | null,
+        onComplete?: (a: Error | null) => any
     ): Promise<any>;
     /**
      * Writes multiple values at this location when the client is disconnected (due
@@ -4353,11 +5144,11 @@ declare namespace firebase.database {
   }
 
   type EventType =
-    | 'value'
-    | 'child_added'
-    | 'child_changed'
-    | 'child_moved'
-    | 'child_removed';
+      | 'value'
+      | 'child_added'
+      | 'child_changed'
+      | 'child_moved'
+      | 'child_removed';
 
   /**
    * A `Query` sorts and filters the data at a Database location so only a subset
@@ -4373,7 +5164,7 @@ declare namespace firebase.database {
    *
    * Read our documentation on
    * {@link
-   *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
+      *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
    *  Sorting and filtering data} for more information.
    */
   interface Query {
@@ -4391,7 +5182,7 @@ declare namespace firebase.database {
      *
      * You can read more about `endAt()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
      *  Filtering data}.
      *
      * @example
@@ -4412,8 +5203,8 @@ declare namespace firebase.database {
      *   child, value, or priority.
      */
     endAt(
-      value: number | string | boolean | null,
-      key?: string
+        value: number | string | boolean | null,
+        key?: string
     ): firebase.database.Query;
     /**
      * Creates a `Query` that includes children that match the specified value.
@@ -4428,7 +5219,7 @@ declare namespace firebase.database {
      *
      * You can read more about `equalTo()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
      *  Filtering data}.
      *
      * @example
@@ -4449,8 +5240,8 @@ declare namespace firebase.database {
      *   child, value, or priority.
      */
     equalTo(
-      value: number | string | boolean | null,
-      key?: string
+        value: number | string | boolean | null,
+        key?: string
     ): firebase.database.Query;
     /**
      * Returns whether or not the current and provided queries represent the same
@@ -4506,7 +5297,7 @@ declare namespace firebase.database {
      *
      * You can read more about `limitToFirst()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
      *  Filtering data}.
      *
      * @example
@@ -4542,7 +5333,7 @@ declare namespace firebase.database {
      *
      * You can read more about `limitToLast()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
      *  Filtering data}.
      *
      * @example
@@ -4604,9 +5395,9 @@ declare namespace firebase.database {
      * @param context The context that was passed to `on()`.
      */
     off(
-      eventType?: EventType,
-      callback?: (a: firebase.database.DataSnapshot, b?: string | null) => any,
-      context?: Object | null
+        eventType?: EventType,
+        callback?: (a: firebase.database.DataSnapshot, b?: string | null) => any,
+        context?: Object | null
     ): void;
 
     /**
@@ -4722,10 +5513,10 @@ declare namespace firebase.database {
      *   function for later passing to `off()`.
      */
     on(
-      eventType: EventType,
-      callback: (a: firebase.database.DataSnapshot, b?: string | null) => any,
-      cancelCallbackOrContext?: Object | null,
-      context?: Object | null
+        eventType: EventType,
+        callback: (a: firebase.database.DataSnapshot, b?: string | null) => any,
+        cancelCallbackOrContext?: Object | null,
+        context?: Object | null
     ): (a: firebase.database.DataSnapshot | null, b?: string | null) => any;
 
     /**
@@ -4762,13 +5553,13 @@ declare namespace firebase.database {
      *   when calling your callback(s).
      */
     once(
-      eventType: EventType,
-      successCallback?: (
-        a: firebase.database.DataSnapshot,
-        b?: string | null
-      ) => any,
-      failureCallbackOrContext?: ((a: Error) => void) | Object | null,
-      context?: Object | null
+        eventType: EventType,
+        successCallback?: (
+            a: firebase.database.DataSnapshot,
+            b?: string | null
+        ) => any,
+        failureCallbackOrContext?: ((a: Error) => void) | Object | null,
+        context?: Object | null
     ): Promise<firebase.database.DataSnapshot>;
     /**
      * Generates a new `Query` object ordered by the specified child key.
@@ -4784,7 +5575,7 @@ declare namespace firebase.database {
      *
      * You can read more about `orderByChild()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
      *  Sort data}.
      *
      * @example
@@ -4803,7 +5594,7 @@ declare namespace firebase.database {
      *
      * You can read more about `orderByKey()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
      *  Sort data}.
      *
      * @example
@@ -4821,7 +5612,7 @@ declare namespace firebase.database {
      * Applications need not use priority but can order collections by
      * ordinary properties (see
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
      *  Sort data} for alternatives to priority.
      */
     orderByPriority(): firebase.database.Query;
@@ -4833,7 +5624,7 @@ declare namespace firebase.database {
      *
      * You can read more about `orderByValue()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#sort_data
      *  Sort data}.
      *
      * @example
@@ -4865,7 +5656,7 @@ declare namespace firebase.database {
      *
      * You can read more about `startAt()` in
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
      *  Filtering data}.
      *
      * @example
@@ -4885,8 +5676,8 @@ declare namespace firebase.database {
      *   if ordering by child, value, or priority.
      */
     startAt(
-      value: number | string | boolean | null,
-      key?: string
+        value: number | string | boolean | null,
+        key?: string
     ): firebase.database.Query;
     /**
      * Returns a JSON-serializable representation of this object.
@@ -4935,7 +5726,7 @@ declare namespace firebase.database {
    * Writing is done with the `set()` method and reading can be done with the
    * `on()` method. See
    * {@link
-   *   https://firebase.google.com/docs/database/web/read-and-write
+      *   https://firebase.google.com/docs/database/web/read-and-write
    *   Read and Write Data on the Web}
    */
   interface Reference extends firebase.database.Query {
@@ -4986,7 +5777,7 @@ declare namespace firebase.database {
     /**
      * Returns an `OnDisconnect` object - see
      * {@link
-     *   https://firebase.google.com/docs/database/web/offline-capabilities
+        *   https://firebase.google.com/docs/database/web/offline-capabilities
      *   Enabling Offline Capabilities in JavaScript} for more information on how
      * to use it.
      */
@@ -5030,11 +5821,11 @@ declare namespace firebase.database {
      *
      * See
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#append_to_a_list_of_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#append_to_a_list_of_data
      *  Append to a list of data}
      * </br>See
      * {@link
-     *  https://firebase.googleblog.com/2015/02/the-2120-ways-to-ensure-unique_68.html
+        *  https://firebase.googleblog.com/2015/02/the-2120-ways-to-ensure-unique_68.html
      *  The 2^120 Ways to Ensure Unique Identifiers}
      *
      * @example
@@ -5058,8 +5849,8 @@ declare namespace firebase.database {
      *   used immediately as the `Reference` to the child location.
      */
     push(
-      value?: any,
-      onComplete?: (a: Error | null) => any
+        value?: any,
+        onComplete?: (a: Error | null) => any
     ): firebase.database.ThenableReference;
     /**
      * Removes the data at this Database location.
@@ -5173,12 +5964,12 @@ declare namespace firebase.database {
      * Applications need not use priority but can order collections by
      * ordinary properties (see
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
      *  Sorting and filtering data}).
      */
     setPriority(
-      priority: string | number | null,
-      onComplete: (a: Error | null) => any
+        priority: string | number | null,
+        onComplete: (a: Error | null) => any
     ): Promise<any>;
     /**
      * Writes data the Database location. Like `set()` but also specifies the
@@ -5187,13 +5978,13 @@ declare namespace firebase.database {
      * Applications need not use priority but can order collections by
      * ordinary properties (see
      * {@link
-     *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
+        *  https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
      *  Sorting and filtering data}).
      */
     setWithPriority(
-      newVal: any,
-      newPriority: string | number | null,
-      onComplete?: (a: Error | null) => any
+        newVal: any,
+        newPriority: string | number | null,
+        onComplete?: (a: Error | null) => any
     ): Promise<any>;
     /**
      * Atomically modifies the data at this location.
@@ -5281,13 +6072,13 @@ declare namespace firebase.database {
      *   callback to handle success and failure.
      */
     transaction(
-      transactionUpdate: (a: any) => any,
-      onComplete?: (
-        a: Error | null,
-        b: boolean,
-        c: firebase.database.DataSnapshot | null
-      ) => any,
-      applyLocally?: boolean
+        transactionUpdate: (a: any) => any,
+        onComplete?: (
+            a: Error | null,
+            b: boolean,
+            c: firebase.database.DataSnapshot | null
+        ) => any,
+        applyLocally?: boolean
     ): Promise<any>;
     /**
      * Writes multiple values to the Database at once.
@@ -5319,7 +6110,7 @@ declare namespace firebase.database {
      *
      * See
      * {@link
-     *  https://firebase.googleblog.com/2015/09/introducing-multi-location-updates-and_86.html
+        *  https://firebase.googleblog.com/2015/09/introducing-multi-location-updates-and_86.html
      *  Introducing multi-location updates and more}.
      *
      * @example
@@ -5339,8 +6130,8 @@ declare namespace firebase.database {
   }
 
   interface ThenableReference
-    extends firebase.database.Reference,
-      Promise<Reference> {}
+      extends firebase.database.Reference,
+          Promise<Reference> {}
 
   /**
    * Logs debugging information to the console.
@@ -5378,8 +6169,8 @@ declare namespace firebase.database {
    *   refreshes if `true`.
    */
   function enableLogging(
-    logger?: boolean | ((a: string) => any),
-    persistent?: boolean
+      logger?: boolean | ((a: string) => any),
+      persistent?: boolean
   ): any;
 }
 
@@ -5412,7 +6203,7 @@ declare namespace firebase.messaging {
    *
    * See
    * {@link
-   *   https://firebase.google.com/docs/cloud-messaging/js/client
+      *   https://firebase.google.com/docs/cloud-messaging/js/client
    *   Set Up a JavaScript Firebase Cloud Messaging Client App}
    * for a full guide on how to use the Firebase Messaging service.
    *
@@ -5451,9 +6242,9 @@ declare namespace firebase.messaging {
      *    execute this returned function.
      */
     onMessage(
-      nextOrObserver: firebase.NextFn<any> | firebase.Observer<any>,
-      error?: firebase.ErrorFn,
-      completed?: firebase.CompleteFn
+        nextOrObserver: firebase.NextFn<any> | firebase.Observer<any>,
+        error?: firebase.ErrorFn,
+        completed?: firebase.CompleteFn
     ): firebase.Unsubscribe;
     /**
      * You should listen for token refreshes so your web app knows when FCM
@@ -5467,9 +6258,9 @@ declare namespace firebase.messaging {
      *   refresh events execute this returned function.
      */
     onTokenRefresh(
-      nextOrObserver: firebase.NextFn<any> | firebase.Observer<any>,
-      error?: firebase.ErrorFn,
-      completed?: firebase.CompleteFn
+        nextOrObserver: firebase.NextFn<any> | firebase.Observer<any>,
+        error?: firebase.ErrorFn,
+        completed?: firebase.CompleteFn
     ): firebase.Unsubscribe;
     /**
      * Notification permissions are required to send a user push messages.
@@ -5494,7 +6285,7 @@ declare namespace firebase.messaging {
      * @param callback The function to handle the push message.
      */
     setBackgroundMessageHandler(
-      callback: (payload: any) => Promise<any> | void
+        callback: (payload: any) => Promise<any> | void
     ): void;
     /**
      * To use your own service worker for receiving push messages, you
@@ -5620,8 +6411,8 @@ declare namespace firebase.storage {
      *     and manage the upload.
      */
     put(
-      data: Blob | Uint8Array | ArrayBuffer,
-      metadata?: firebase.storage.UploadMetadata
+        data: Blob | Uint8Array | ArrayBuffer,
+        metadata?: firebase.storage.UploadMetadata
     ): firebase.storage.UploadTask;
     /**
      * Uploads string data to this reference's location.
@@ -5634,9 +6425,9 @@ declare namespace firebase.storage {
      *     doesn't conform to the specified format.
      */
     putString(
-      data: string,
-      format?: firebase.storage.StringFormat,
-      metadata?: firebase.storage.UploadMetadata
+        data: string,
+        format?: firebase.storage.StringFormat,
+        metadata?: firebase.storage.UploadMetadata
     ): firebase.storage.UploadTask;
     /**
      * A reference to the root of this reference's bucket.
@@ -5780,7 +6571,7 @@ declare namespace firebase.storage {
    *
    * See
    * {@link
-   *   https://firebase.google.com/docs/storage/web/start/
+      *   https://firebase.google.com/docs/storage/web/start/
    *   Get Started on Web}
    * for a full guide on how to use the Firebase Storage service.
    */
@@ -6043,13 +6834,13 @@ declare namespace firebase.storage {
      *     callbacks.
      */
     on(
-      event: firebase.storage.TaskEvent,
-      nextOrObserver?:
-        | firebase.Observer<UploadTaskSnapshot>
-        | null
-        | ((a: UploadTaskSnapshot) => any),
-      error?: ((a: Error) => any) | null,
-      complete?: (firebase.Unsubscribe) | null
+        event: firebase.storage.TaskEvent,
+        nextOrObserver?:
+            | firebase.Observer<UploadTaskSnapshot>
+            | null
+            | ((a: UploadTaskSnapshot) => any),
+        error?: ((a: Error) => any) | null,
+        complete?: (firebase.Unsubscribe) | null
     ): Function;
     /**
      * Pauses a running task. Has no effect on a paused or failed task.
@@ -6073,8 +6864,8 @@ declare namespace firebase.storage {
      * @param onRejected The rejection callback.
      */
     then(
-      onFulfilled?: ((a: firebase.storage.UploadTaskSnapshot) => any) | null,
-      onRejected?: ((a: Error) => any) | null
+        onFulfilled?: ((a: firebase.storage.UploadTaskSnapshot) => any) | null,
+        onRejected?: ((a: Error) => any) | null
     ): Promise<any>;
   }
 
@@ -6337,7 +7128,7 @@ declare namespace firebase.firestore {
      *   error will be returned.
      */
     runTransaction<T>(
-      updateFunction: (transaction: Transaction) => Promise<T>
+        updateFunction: (transaction: Transaction) => Promise<T>
     ): Promise<T>;
 
     /**
@@ -6417,6 +7208,43 @@ declare namespace firebase.firestore {
      * acknowledged by the backend.
      */
     waitForPendingWrites(): Promise<void>;
+
+    /**
+     * Attaches a listener for a snapshots-in-sync event. The snapshots-in-sync
+     * event indicates that all listeners affected by a given change have fired,
+     * even if a single server-generated change affects multiple listeners.
+     *
+     * NOTE: The snapshots-in-sync event only indicates that listeners are in sync
+     * with each other, but does not relate to whether those snapshots are in sync
+     * with the server. Use SnapshotMetadata in the individual listeners to
+     * determine if a snapshot is from the cache or the server.
+     *
+     * @param observer A single object containing `next` and `error` callbacks.
+     * @return An unsubscribe function that can be called to cancel the snapshot
+     * listener.
+     */
+    onSnapshotsInSync(observer: {
+      next?: (value: void) => void;
+      error?: (error: Error) => void;
+      complete?: () => void;
+    }): () => void;
+
+    /**
+     * Attaches a listener for a snapshots-in-sync event. The snapshots-in-sync
+     * event indicates that all listeners affected by a given change have fired,
+     * even if a single server-generated change affects multiple listeners.
+     *
+     * NOTE: The snapshots-in-sync event only indicates that listeners are in sync
+     * with each other, but does not relate to whether those snapshots are in sync
+     * with the server. Use SnapshotMetadata in the individual listeners to
+     * determine if a snapshot is from the cache or the server.
+     *
+     * @param onSync A callback to be called every time all snapshot listeners are
+     * in sync with each other.
+     * @return An unsubscribe function that can be called to cancel the snapshot
+     * listener.
+     */
+    onSnapshotsInSync(onSync: () => void): () => void;
 
     /**
      * Terminates this Firestore instance.
@@ -6639,9 +7467,9 @@ declare namespace firebase.firestore {
      * @return This `Transaction` instance. Used for chaining method calls.
      */
     set(
-      documentRef: DocumentReference,
-      data: DocumentData,
-      options?: SetOptions
+        documentRef: DocumentReference,
+        data: DocumentData,
+        options?: SetOptions
     ): Transaction;
 
     /**
@@ -6673,10 +7501,10 @@ declare namespace firebase.firestore {
      * to the backend (Note that it won't resolve while you're offline).
      */
     update(
-      documentRef: DocumentReference,
-      field: string | FieldPath,
-      value: any,
-      ...moreFieldsAndValues: any[]
+        documentRef: DocumentReference,
+        field: string | FieldPath,
+        value: any,
+        ...moreFieldsAndValues: any[]
     ): Transaction;
 
     /**
@@ -6713,9 +7541,9 @@ declare namespace firebase.firestore {
      * @return This `WriteBatch` instance. Used for chaining method calls.
      */
     set(
-      documentRef: DocumentReference,
-      data: DocumentData,
-      options?: SetOptions
+        documentRef: DocumentReference,
+        data: DocumentData,
+        options?: SetOptions
     ): WriteBatch;
 
     /**
@@ -6746,10 +7574,10 @@ declare namespace firebase.firestore {
      * to the backend (Note that it won't resolve while you're offline).
      */
     update(
-      documentRef: DocumentReference,
-      field: string | FieldPath,
-      value: any,
-      ...moreFieldsAndValues: any[]
+        documentRef: DocumentReference,
+        field: string | FieldPath,
+        value: any,
+        ...moreFieldsAndValues: any[]
     ): WriteBatch;
 
     /**
@@ -6786,8 +7614,8 @@ declare namespace firebase.firestore {
   /**
    * An options object that configures the behavior of `set()` calls in
    * {@link firebase.firestore.DocumentReference.set DocumentReference}, {@link
-   * firebase.firestore.WriteBatch.set WriteBatch} and {@link
-   * firebase.firestore.Transaction.set Transaction}. These calls can be
+      * firebase.firestore.WriteBatch.set WriteBatch} and {@link
+      * firebase.firestore.Transaction.set Transaction}. These calls can be
    * configured to perform granular merges instead of overwriting the target
    * documents in their entirety by providing a `SetOptions` with `merge: true`.
    */
@@ -6924,9 +7752,9 @@ declare namespace firebase.firestore {
      * to the backend (Note that it won't resolve while you're offline).
      */
     update(
-      field: string | FieldPath,
-      value: any,
-      ...moreFieldsAndValues: any[]
+        field: string | FieldPath,
+        value: any,
+        ...moreFieldsAndValues: any[]
     ): Promise<void>;
 
     /**
@@ -6983,12 +7811,12 @@ declare namespace firebase.firestore {
      * the snapshot listener.
      */
     onSnapshot(
-      options: SnapshotListenOptions,
-      observer: {
-        next?: (snapshot: DocumentSnapshot) => void;
-        error?: (error: Error) => void;
-        complete?: () => void;
-      }
+        options: SnapshotListenOptions,
+        observer: {
+          next?: (snapshot: DocumentSnapshot) => void;
+          error?: (error: Error) => void;
+          complete?: () => void;
+        }
     ): () => void;
     /**
      * Attaches a listener for DocumentSnapshot events. You may either pass
@@ -7006,9 +7834,9 @@ declare namespace firebase.firestore {
      * the snapshot listener.
      */
     onSnapshot(
-      onNext: (snapshot: DocumentSnapshot) => void,
-      onError?: (error: Error) => void,
-      onCompletion?: () => void
+        onNext: (snapshot: DocumentSnapshot) => void,
+        onError?: (error: Error) => void,
+        onCompletion?: () => void
     ): () => void;
     /**
      * Attaches a listener for DocumentSnapshot events. You may either pass
@@ -7027,10 +7855,10 @@ declare namespace firebase.firestore {
      * the snapshot listener.
      */
     onSnapshot(
-      options: SnapshotListenOptions,
-      onNext: (snapshot: DocumentSnapshot) => void,
-      onError?: (error: Error) => void,
-      onCompletion?: () => void
+        options: SnapshotListenOptions,
+        onNext: (snapshot: DocumentSnapshot) => void,
+        onError?: (error: Error) => void,
+        onCompletion?: () => void
     ): () => void;
   }
 
@@ -7231,9 +8059,9 @@ declare namespace firebase.firestore {
      * @return The created Query.
      */
     where(
-      fieldPath: string | FieldPath,
-      opStr: WhereFilterOp,
-      value: any
+        fieldPath: string | FieldPath,
+        opStr: WhereFilterOp,
+        value: any
     ): Query;
 
     /**
@@ -7246,8 +8074,8 @@ declare namespace firebase.firestore {
      * @return The created Query.
      */
     orderBy(
-      fieldPath: string | FieldPath,
-      directionStr?: OrderByDirection
+        fieldPath: string | FieldPath,
+        directionStr?: OrderByDirection
     ): Query;
 
     /**
@@ -7401,12 +8229,12 @@ declare namespace firebase.firestore {
      * the snapshot listener.
      */
     onSnapshot(
-      options: SnapshotListenOptions,
-      observer: {
-        next?: (snapshot: QuerySnapshot) => void;
-        error?: (error: Error) => void;
-        complete?: () => void;
-      }
+        options: SnapshotListenOptions,
+        observer: {
+          next?: (snapshot: QuerySnapshot) => void;
+          error?: (error: Error) => void;
+          complete?: () => void;
+        }
     ): () => void;
     /**
      * Attaches a listener for QuerySnapshot events. You may either pass
@@ -7425,9 +8253,9 @@ declare namespace firebase.firestore {
      * the snapshot listener.
      */
     onSnapshot(
-      onNext: (snapshot: QuerySnapshot) => void,
-      onError?: (error: Error) => void,
-      onCompletion?: () => void
+        onNext: (snapshot: QuerySnapshot) => void,
+        onError?: (error: Error) => void,
+        onCompletion?: () => void
     ): () => void;
     /**
      * Attaches a listener for QuerySnapshot events. You may either pass
@@ -7447,10 +8275,10 @@ declare namespace firebase.firestore {
      * the snapshot listener.
      */
     onSnapshot(
-      options: SnapshotListenOptions,
-      onNext: (snapshot: QuerySnapshot) => void,
-      onError?: (error: Error) => void,
-      onCompletion?: () => void
+        options: SnapshotListenOptions,
+        onNext: (snapshot: QuerySnapshot) => void,
+        onError?: (error: Error) => void,
+        onCompletion?: () => void
     ): () => void;
   }
 
@@ -7502,8 +8330,8 @@ declare namespace firebase.firestore {
      * @param thisArg The `this` binding for the callback.
      */
     forEach(
-      callback: (result: QueryDocumentSnapshot) => void,
-      thisArg?: any
+        callback: (result: QueryDocumentSnapshot) => void,
+        thisArg?: any
     ): void;
 
     /**
@@ -7743,25 +8571,25 @@ declare namespace firebase.firestore {
    *   credentials for the operation.
    */
   export type FirestoreErrorCode =
-    | 'cancelled'
-    | 'unknown'
-    | 'invalid-argument'
-    | 'deadline-exceeded'
-    | 'not-found'
-    | 'already-exists'
-    | 'permission-denied'
-    | 'resource-exhausted'
-    | 'failed-precondition'
-    | 'aborted'
-    | 'out-of-range'
-    | 'unimplemented'
-    | 'internal'
-    | 'unavailable'
-    | 'data-loss'
-    | 'unauthenticated';
+      | 'cancelled'
+      | 'unknown'
+      | 'invalid-argument'
+      | 'deadline-exceeded'
+      | 'not-found'
+      | 'already-exists'
+      | 'permission-denied'
+      | 'resource-exhausted'
+      | 'failed-precondition'
+      | 'aborted'
+      | 'out-of-range'
+      | 'unimplemented'
+      | 'internal'
+      | 'unavailable'
+      | 'data-loss'
+      | 'unauthenticated';
 
   /** An error returned by a Firestore operation. */
-  // TODO(b/63008957): FirestoreError should extend firebase.FirebaseError
+    // TODO(b/63008957): FirestoreError should extend firebase.FirebaseError
   export interface FirestoreError {
     code: FirestoreErrorCode;
     message: string;

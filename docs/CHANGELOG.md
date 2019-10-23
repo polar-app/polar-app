@@ -1,5 +1,7 @@
 # unreleased
 
+- Upgraded to latest version of firebase
+
 - We now have 'Folders' and 'Tags' in the sidebar.
 
 - It's not possible to display tags in the sidebar and select them. 
