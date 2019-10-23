@@ -2,8 +2,7 @@ import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Tag, TagStr} from "polar-shared/src/tags/Tags";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {TreeState} from "./TreeState";
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
@@ -33,71 +32,6 @@ interface IProps<V> {
 }
 
 interface IState {
-
-}
-
-export type SelectedCallback = (nodes: ReadonlyArray<TagStr>) => void;
-export type DroppedCallback = (tag: TagStr) => void;
-
-export interface TreeEvents {
-    readonly onSelected: SelectedCallback;
-    readonly onDropped: DroppedCallback;
-}
-
-/**
- * A state object for the entire tree to keep an index of expanded/collapsed
- * nodes, etc.
- */
-export class TreeState<V> {
-
-    private readonly events: TreeEvents;
-
-    /**
-     * @param events The set of events called when the tree is updated.
-     */
-    constructor(events: Partial<TreeEvents>) {
-
-        this.events = {
-            onSelected: events.onSelected || NULL_FUNCTION,
-            onDropped: events.onDropped || NULL_FUNCTION
-        }
-
-    }
-
-    public readonly closed = new MarkSet();
-
-
-    /**
-     * The list of the nodes that are selected by id
-     */
-    public readonly selected = new MarkSet();
-
-    /**
-     * The currently applied filter for the path we're searching for.
-     */
-    public readonly filter = "";
-
-    public readonly index: {[id: string]: TreeNode<V>} = {};
-
-    /**
-     * Just the user tags that the user has selected.
-     */
-    public tags: ReadonlyArray<Tag> = [];
-
-    public dispatchSelected() {
-
-        const selectedFolders = this.selected.keys();
-        const selectedTags = this.tags.map(current => current.id);
-
-        const selected = [...selectedTags, ...selectedFolders];
-
-        this.events.onSelected(selected);
-
-    }
-
-    public dispatchDropped(tag: TagStr) {
-        this.events.onDropped(tag);
-    }
 
 }
 

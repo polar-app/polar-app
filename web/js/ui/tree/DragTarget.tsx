@@ -42,8 +42,6 @@ export class DragTarget extends React.Component<IProps, IState> {
     private onDrop() {
         this.setState({active: false});
 
-        console.log("FIXME: got onDrop");
-
         const onDropped = this.props.onDropped || NULL_FUNCTION;
 
         onDropped();

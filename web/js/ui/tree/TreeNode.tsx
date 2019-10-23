@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {TreeNodeChildren} from './TreeNodeChildren';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {TNode, TreeState} from './TreeView';
+import {TNode} from './TreeView';
 import {DragTarget} from "./DragTarget";
+import {TreeState} from "./TreeState";
 
 class Styles {
 
@@ -195,7 +196,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
             <div style={{}}>
 
-                <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.path)}>
+                <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.value)}>
 
                     <div style={Styles.NODE_PARENT}
                          className="hover-highlight">

@@ -19,9 +19,9 @@ import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
-import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
+import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -52,7 +52,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         const onSelected = (values: ReadonlyArray<TagStr>) => this.onSelectedFolders(values);
 
-        this.treeState = new TreeState({onSelected});
+        this.treeState = new TreeState(onSelected);
 
         const setStateInBackground = (state: IState) => {
 

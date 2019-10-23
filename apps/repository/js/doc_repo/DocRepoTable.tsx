@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable, {ColumnRenderProps, Instance, Column, RowInfo} from "react-table";
+import ReactTable, {Column, ColumnRenderProps, Instance, RowInfo} from "react-table";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {TagInput} from '../TagInput';
@@ -657,6 +657,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                         return {
 
                             draggable: true,
+                            onDragStart: () => (this.props.onDragStart || NULL_FUNCTION)(),
+                            onDragEnd: () => (this.props.onDragEnd || NULL_FUNCTION)(),
 
                             // include the doc fingerprint in the table
                             // so that the tour can use
@@ -780,6 +782,8 @@ interface IProps {
     readonly onSelected: (selected: ReadonlyArray<number>) => void;
     readonly onReactTable: (reactTable: Instance) => void;
     readonly refresh: () => void;
+    readonly onDragStart?: () => void;
+    readonly onDragEnd?: () => void;
 }
 
 interface IState {

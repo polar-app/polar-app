@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {TreeNode} from './TreeNode';
 import {TNode} from './TreeView';
-import {TreeState} from './TreeView';
+import {TreeState} from "./TreeState";
 
 class Styles {
 

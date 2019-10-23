@@ -35,10 +35,11 @@ import {DocRepoTable} from './DocRepoTable';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
-import {TreeState} from '../../../../web/js/ui/tree/TreeView';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {DraggingSelectedDocs} from "./SelectedDocs";
+import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 
 const log = Logger.create();
 
@@ -100,15 +101,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         const onSelected = (tags: ReadonlyArray<TagStr>) => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current)));
 
-        const onDropped = (tag: TagStr) => {
-            console.log("FIXME: something dropped on: " + tag);
+        const onDropped = (tag: TagDescriptor) => this.onMultiTagged([tag], DraggingSelectedDocs.get());
 
-            // FIXME: now I need to have something that can record the selected documents before and after
-            // and read them
-
-        };
-
-        this.treeState = new TreeState({onSelected, onDropped});
+        this.treeState = new TreeState(onSelected, onDropped);
 
         this.init();
 
@@ -180,15 +175,14 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onMultiTagged(tags: ReadonlyArray<Tag>) {
-
-        const repoDocInfos = this.getSelected();
+    private onMultiTagged(tags: ReadonlyArray<Tag>,
+                          repoDocInfos: ReadonlyArray<RepoDocInfo> = this.getSelected()) {
 
         for (const repoDocInfo of repoDocInfos) {
             const existingTags = Object.values(repoDocInfo.tags || {});
-            const effectTags = Tags.union(existingTags, tags || []);
+            const effectiveTags = Tags.union(existingTags, tags || []);
 
-            this.onDocTagged(repoDocInfo, effectTags)
+            this.onDocTagged(repoDocInfo, effectiveTags)
                 .catch(err => log.error(err));
 
         }
@@ -223,7 +217,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         return result;
 
     }
-
 
     public selectRow(selectedIdx: number,
                      event: MouseEvent, checkbox: boolean = false) {
@@ -396,7 +389,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                           onMultiDeleted={() => this.onMultiDeleted()}
                                           selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
                                           onSelected={selected => this.onSelected(selected)}
-                                          onReactTable={reactTable => this.reactTable = reactTable}/>
+                                          onReactTable={reactTable => this.reactTable = reactTable}
+                                          onDragStart={() => DraggingSelectedDocs.set(this.getSelected())}
+                                          onDragEnd={() => DraggingSelectedDocs.clear()}/>
                         }
                         side='left'
                         initialWidth={300}/>
