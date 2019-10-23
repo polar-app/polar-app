@@ -4,7 +4,7 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Tag} from 'polar-shared/src/tags/Tags';
+import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
@@ -98,7 +98,17 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.docRepoFilters =
             new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
-        this.treeState = new TreeState(tags => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current))));
+        const onSelected = (tags: ReadonlyArray<TagStr>) => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current)));
+
+        const onDropped = (tag: TagStr) => {
+            console.log("FIXME: something dropped on: " + tag);
+
+            // FIXME: now I need to have something that can record the selected documents before and after
+            // and read them
+
+        };
+
+        this.treeState = new TreeState({onSelected, onDropped});
 
         this.init();
 

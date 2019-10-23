@@ -195,7 +195,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
             <div style={{}}>
 
-                <DragTarget>
+                <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.path)}>
 
                     <div style={Styles.NODE_PARENT}
                          className="hover-highlight">
@@ -314,7 +314,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     }
 
     private dispatchSelected() {
-        this.props.treeState.dispatchUpdated();
+        this.props.treeState.dispatchSelected();
     }
 
 }

@@ -112,7 +112,7 @@ export class TagTree extends React.Component<IProps, IState> {
 
     private onSelectedTags(selected: ReadonlyArray<Tag>) {
         this.props.treeState.tags = selected;
-        this.props.treeState.dispatchUpdated();
+        this.props.treeState.dispatchSelected();
     }
 
     private onFiltered(filter: string) {

@@ -50,7 +50,9 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
             tags: [],
         };
 
-        this.treeState = new TreeState(values => this.onSelectedFolders(values));
+        const onSelected = (values: ReadonlyArray<TagStr>) => this.onSelectedFolders(values);
+
+        this.treeState = new TreeState({onSelected});
 
         const setStateInBackground = (state: IState) => {
 
