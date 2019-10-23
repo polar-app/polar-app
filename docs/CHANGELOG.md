@@ -1,5 +1,8 @@
 # unreleased
 
+- It's now possible to drag documents from the document repository into the sidebar 
+  on tags and folders.
+
 - Upgraded to latest version of firebase
 
 - We now have 'Folders' and 'Tags' in the sidebar.
