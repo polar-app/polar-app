@@ -7,7 +7,7 @@ import firebaseui from './lib/firebaseui';
 import {Objects} from "polar-shared/src/util/Objects";
 
 // noinspection TsLint: max-line-length
-const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/content.html';
+const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/';
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
 const PRIVACY_POLICY_URL = 'https://getpolarized.io/terms-of-service.html';
 
@@ -16,14 +16,15 @@ export class FirebaseUIAuth {
     /**
      * Start the login and render the login box to the given selector.
      *
-     * @param containerSelector
+     * @param partialOpts The opts to use when authenticating.
      */
     public static login(partialOpts: Partial<FirebaseUIAuthOptions> = {}): firebaseui.auth.AuthUI {
 
-        const opts = Objects.defaults(partialOpts, {
+        const opts = {
             containerSelector: '#firebaseui-auth-container',
-            signInSuccessUrl: SIGN_IN_SUCCESS_URL
-        });
+            signInSuccessUrl: SIGN_IN_SUCCESS_URL,
+            ...partialOpts,
+        };
 
         // FirebaseUI config.
         const uiConfig = {

@@ -94,14 +94,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         log.notice("Initializing FirebaseDatastore.");
 
-        await FirebaseDatastores.init();
-
-        await this.prefs.init();
-
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
         this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
+
+        await FirebaseDatastores.init();
+
+        await this.prefs.init();
 
         if (opts.noInitialSnapshot) {
             log.debug("Skipping initial snapshot");
@@ -776,6 +776,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+
+        Preconditions.assertPresent(this.firestore, 'firestore');
 
         const uid = FirebaseDatastores.getUserID();
 
