@@ -5,7 +5,8 @@
   "main": "index.js",
   "private": false,
   "scripts": {
-    "dist": "rm -rf public && mkdir -p public && cd ../../polar-bookshelf && npm run-script build-webapp && cp -rp dist/public/* ../polar-app-private/polar-webapp-dist/public"
+    "dist": "rm -rf public && mkdir -p public && cd ../../polar-bookshelf && npm run-script build-webapp && cp -rp dist/public/* ../polar-app-private/polar-webapp-dist/public",
+    "compile": "echo nothing to compile"
   },
   "keywords": [],
   "author": "",

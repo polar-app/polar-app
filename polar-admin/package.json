@@ -5,7 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "echo no tests"
+    "test": "echo no tests",
+    "compile": "npx tsc"
   },
   "author": "",
   "license": "ISC",
