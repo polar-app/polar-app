@@ -59,8 +59,7 @@ xdescribe('PDF', function() {
 
 function toArray(buf: Buffer) {
     if (!buf) return undefined;
-    if (buf.constructor.name === 'Uint8Array'
-        || buf.constructor === Uint8Array) {
+    if (buf.constructor.name === 'Uint8Array' /* || buf.constructor === Uint8Array*/) {
         return buf;
     }
     if (typeof buf === 'string') buf = Buffer.from(buf);

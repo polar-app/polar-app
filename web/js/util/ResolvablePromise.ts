@@ -44,6 +44,11 @@ export class ResolvablePromise<T> implements Promise<T> {
 
     }
 
+    public finally(onfinally?: (() => void) | undefined | null): Promise<T> {
+        return this.promise.finally(onfinally);
+    }
+
+
 }
 
 type OnResolvedCallback<T> = ((reason: any) => (PromiseLike<T> | T)) | null | undefined;

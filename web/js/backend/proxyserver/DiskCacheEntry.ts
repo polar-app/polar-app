@@ -1,6 +1,7 @@
 import {CacheEntry, DataCallback} from './CacheEntry';
 
 import fs from 'fs';
+import ErrnoException = NodeJS.ErrnoException;
 
 /**
  * Cache entry which is just buffered in memory.
@@ -30,7 +31,7 @@ export class DiskCacheEntry extends CacheEntry {
 
             // TODO: in the future migrate to a stream
 
-            fs.readFile(this.path, (err: NodeJS.ErrnoException, data: Buffer) => {
+            fs.readFile(this.path, (err: NodeJS.ErrnoException | null, data: Buffer) => {
 
                 if (err) {
                     reject(err);
@@ -51,7 +52,7 @@ export class DiskCacheEntry extends CacheEntry {
 
         return new Promise<Buffer>((resolve, reject) => {
 
-           fs.readFile(this.path, (err: NodeJS.ErrnoException, data: Buffer) => {
+           fs.readFile(this.path, (err: ErrnoException | null, data: Buffer) => {
 
                 if (err) {
                     reject(err);

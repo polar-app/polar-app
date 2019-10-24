@@ -179,7 +179,7 @@ export class EventMaps {
                 lastExecuted
             };
 
-            result[handlerName] = event;
+            (<any> result)[handlerName] = event;
 
         }
 
@@ -193,7 +193,7 @@ export class EventMaps {
 
         for (const eventName of Object.keys(eventMap)) {
             const event = eventMap[eventName];
-            result[eventName] = event.lastExecuted;
+            (<any> result)[eventName] = event.lastExecuted;
         }
 
         return result;
