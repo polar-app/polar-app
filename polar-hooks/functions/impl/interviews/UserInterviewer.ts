@@ -181,9 +181,9 @@ export class UserInterviewer {
 
     public static async exec() {
 
-        // await this.sendMessagesForReason('standard', 'recent');
-        // await this.sendMessagesForReason('standard', 'veteran');
-        await this.sendMessagesForReason('churned', 'churned', 25);
+        await this.sendMessagesForReason('churned', 'churned', 100);
+        await this.sendMessagesForReason('standard', 'recent');
+        await this.sendMessagesForReason('standard', 'veteran');
 
         console.log("SENT!!!")
 
