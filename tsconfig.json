@@ -47,9 +47,7 @@
         "node_modules/polar-pdf-types"
     ],
     "exclude": [
-        "web/spectron.disabled/*",
-        "node_modules/**/*",
-        "node_modules/*"
+        "web/spectron.disabled/*"
     ],
     "types": [
         "mocha",
