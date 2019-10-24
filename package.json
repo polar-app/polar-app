@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "test": "echo no tests",
+    "compile": "echo nothing to compile",
     "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"const polar_release = '%s';\n\" > assets/js/release.js",
     "build": "bundle exec jekyll build",
     "publish": "firebase deploy",
