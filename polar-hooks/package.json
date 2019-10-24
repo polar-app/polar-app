@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "emulator": "firebase emulators:start",
-    "dist-release": "firebase use polar-cors && firebase deploy --only functions && firebase use prod && firebase deploy"
+    "dist-release": "firebase use polar-cors && firebase deploy --only functions && firebase use prod && firebase deploy",
+    "compile": "echo nothing to compile"
   },
   "dependencies": {
     "@google-cloud/tasks": "^1.2.0",
