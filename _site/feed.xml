@@ -1,4 +1,121 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-24T06:56:12-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-24T11:21:01-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.40 Released</title><link href="https://getpolarized.io/2019/10/24/1-40-released.html" rel="alternate" type="text/html" title="Polar 1.40 Released" /><published>2019-10-24T09:00:00-07:00</published><updated>2019-10-24T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/24/1-40-released</id><content type="html" xml:base="https://getpolarized.io/2019/10/24/1-40-released.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+
+&lt;p&gt;Polar 1.40 is now available.  This release includes a number of new features upgrades and stability improvements.&lt;/p&gt;
+
+&lt;p&gt;First, I should apologize for the slower release cycle lately.  I’ve been working on a number of internal refactors
+to Polar to help us scale moving forward.  Among these was a pretty large refactor into a ‘monorepo’ using submodules
+to make Polar much easier to manage moving forward.&lt;/p&gt;
+
+&lt;p&gt;This will enable a number of new features which below.  It’s already improved our speed of development now that we’ve
+mostly finished the migration.&lt;/p&gt;
+
+&lt;h1 id=&quot;whats-in-this-release&quot;&gt;What’s In This Release&lt;/h1&gt;
+
+&lt;p&gt;Now let’s get into what we’ve changed in this release.&lt;/p&gt;
+
+&lt;h2 id=&quot;tags-on-the-sidebar&quot;&gt;Tags on the Sidebar&lt;/h2&gt;
+
+&lt;p&gt;We now have tags (not just folders) on the sidebar.  You can see the tags and the number of documents with the given
+tag.&lt;/p&gt;
+
+&lt;p&gt;This also works for the annotation view too and you can see the tag counts there as well.&lt;/p&gt;
+
+&lt;p&gt;Clicking on the tag will load the tag in the right pane.&lt;/p&gt;
+
+&lt;h2 id=&quot;drag-and-drop-of-folders&quot;&gt;Drag and Drop of Folders&lt;/h2&gt;
+
+&lt;p&gt;You can now drag and drop documents on to folders or tag.  Dragging the document will add the the folder or tag to the 
+dropped document.&lt;/p&gt;
+
+&lt;p&gt;This won’t yet work for annotations as we have to upgrade our viewer for this to happen but it’s on the roadmap.&lt;/p&gt;
+
+&lt;h2 id=&quot;fixed-bad-firebase-authentication-bug&quot;&gt;Fixed Bad Firebase Authentication Bug&lt;/h2&gt;
+
+&lt;p&gt;We fixed an issue with the desktop version of Polar (running on Electron) where it would intermittently fail to 
+authenticate to Firebase when trying to sync to cloud.&lt;/p&gt;
+
+&lt;p&gt;This was really tough to track down and I apologize to anyone bitten by this bug. It would only impact some users and
+only some small percentage of the time.&lt;/p&gt;
+
+&lt;h2 id=&quot;library-upgrades&quot;&gt;Library Upgrades&lt;/h2&gt;
+
+&lt;p&gt;We’ve upgraded to the latest versions of firebase, pdfjs, jszip.&lt;/p&gt;
+
+&lt;h1 id=&quot;whats-next&quot;&gt;What’s Next&lt;/h1&gt;
+
+&lt;p&gt;In the short/medium term we’re working on improving these issues.&lt;/p&gt;
+
+&lt;h2 id=&quot;improved-folders&quot;&gt;Improved Folders&lt;/h2&gt;
+
+&lt;p&gt;Many users have been confused with how folders work and in retrospect I can see why.  We shipped with a basic interface
+which was somewhat non-standard so it wasn’t really possible to figure out how it worked.&lt;/p&gt;
+
+&lt;p&gt;We’re going to add some UI changes to make this more accessible including a ‘+’ (create folder) button and the ability
+to create folders, and then drag files into them.&lt;/p&gt;
+
+&lt;h2 id=&quot;stable-groups-release&quot;&gt;Stable Groups Release&lt;/h2&gt;
+
+&lt;p&gt;We’re working on improving groups which are only about 80% complete.  I’m hoping that the drag and drop interface will
+make them easier to use.&lt;/p&gt;
+
+&lt;p&gt;I’m struggling with some UI issues here so my plan is to bring in a designer to help me understand the challenges I
+have with making it easy to use.&lt;/p&gt;
+
+&lt;h2 id=&quot;new-version-of-capture&quot;&gt;New Version of Capture&lt;/h2&gt;
+
+&lt;p&gt;We’re working on a redesign of the way web capture works.&lt;/p&gt;
+
+&lt;p&gt;Web capture is the ability for Polar to take a web document in HTML and store it within Polar.&lt;/p&gt;
+
+&lt;p&gt;Too many users are reporting that capture fails a significant percentage of the time.&lt;/p&gt;
+
+&lt;p&gt;Further, capture doesn’t currently support adblock, readability, or other chrome/firefox extensions.&lt;/p&gt;
+
+&lt;p&gt;The new design will allow it to work directly within the extension within the browser.&lt;/p&gt;
+
+&lt;p&gt;The intention is to target the web extension API which will mean it will work on Chrome, Firefox, Edge, and Safari.&lt;/p&gt;
+
+&lt;p&gt;I can’t commit to supporting all four major browsers out of the door but that’s the goal.  We have about 90% of our
+users on Chrome but Firefox and Safari are definitely important.&lt;/p&gt;
+
+&lt;h2 id=&quot;doi-lookup-and-extended-metadata&quot;&gt;DOI Lookup and Extended Metadata&lt;/h2&gt;
+
+&lt;p&gt;We’re working on supporting more 3rd party metadata lookup APIs.  Initially we will support just lookup of public
+documents via DOI using &lt;a href=&quot;https://unpaywall.org/&quot;&gt;unpaywall&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This will allow you to enter a DOI, fetch the document into your repository, and store the extended metadata.&lt;/p&gt;
+
+&lt;p&gt;We’ll also support resolving the metadata if the PDF has a DOI in stored in its metadata.&lt;/p&gt;
+
+&lt;p&gt;This will also serve as the basis for enhanced citation management.&lt;/p&gt;
+
+&lt;p&gt;The long term plans are to support the Pubmed API and the Fatcat API provided by the Internet Archive.&lt;/p&gt;
+
+&lt;h2 id=&quot;thumbnails&quot;&gt;Thumbnails&lt;/h2&gt;
+
+&lt;p&gt;We’re planning on adding thumbnail previews for documents added to Polar.  This has been on the agenda for a while now
+but is only just now possible due to some complexities regarding thumbnails and snapshots across operating systems.&lt;/p&gt;
+
+&lt;p&gt;I think initially this might only work when cloud-sync is enabled but I’d like to get it to work on the desktop version
+of Polar at some point.&lt;/p&gt;
+
+&lt;h2 id=&quot;electron-70&quot;&gt;Electron 7.0&lt;/h2&gt;
+
+&lt;p&gt;We’re going to migrate to Electron 7.0 now that it’s out. The major feature here is the updated Chrome backend but there
+are some other nice stability improvements here.&lt;/p&gt;
+
+&lt;h2 id=&quot;freemium-vs-premium&quot;&gt;Freemium vs Premium&lt;/h2&gt;
+
+&lt;p&gt;We’re working on some other features in the background to the premium version of Polar including full-text search.  Some
+of the citation management features will also be premium features like they are in other citation management tools.&lt;/p&gt;
+
+&lt;p&gt;I’m also working on working other ways to get access to Polar premium for students and others in developing nations 
+that might not be able to afford these tools.&lt;/p&gt;
+
+&lt;p&gt;I’ll be talking about these in the next few weeks.  Unfortunately, many of these features just flat out cost money 
+including features like cross-device full-text search, OCR, text to speech, and other premium features I’m considering.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roger-craig-used-polar-to-win-jeopardy&quot;&gt;Roger Craig used Polar to Win Jeopardy.&lt;/h1&gt;
 
@@ -1268,69 +1385,4 @@ just like any PDF doc.&lt;/p&gt;
 &lt;p&gt;You get all the normal Polar features including tagging, annotation, flashcard
 creation, cloud sync, etc.&lt;/p&gt;
 
-&lt;p&gt;If you have any feedback please jump on our Discord or create a github issue.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</title><link href="https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights.html" rel="alternate" type="text/html" title="Polar 1.19 Released With Area Highlights and Updated Annotations View" /><published>2019-05-10T10:00:00-07:00</published><updated>2019-05-10T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights</id><content type="html" xml:base="https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights.html">&lt;h1 id=&quot;polar-119-released-with-area-highlights-and-updated-annotations-view&quot;&gt;Polar 1.19 Released With Area Highlights and Updated Annotations View&lt;/h1&gt;
-
-&lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
-&lt;iframe class=&quot;embed-responsive-item&quot; width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/TDYDOGGTPls&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;Polar 1.19 has been a lot of work but it’s finally out the door.&lt;/p&gt;
-
-&lt;p&gt;If you haven’t updated Polar in a while make sure you’re on the latest version 
-by going to Help | About or Help | Check for Updates.&lt;/p&gt;
-
-&lt;p&gt;There are a few we want to highlight about this release.&lt;/p&gt;
-
-&lt;h2 id=&quot;area-highlights&quot;&gt;Area Highlights&lt;/h2&gt;
-
-&lt;p&gt;Area highlights are now shown in the sidebar and updated and resized while you
-drag the area highlight box.&lt;/p&gt;
-
-&lt;p&gt;This was frequently requested by our users and allows you to select mathematical
-figures and illustrations for annotation.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid img-shadow&quot; src=&quot;/assets/screenshots/1-19-sidebar.jpeg&quot; /&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;updated-annotations-view&quot;&gt;Updated Annotations View&lt;/h2&gt;
-
-&lt;p&gt;We’ve updated the annotations view to show preview annotations and a better view
-of each annotation including showing area highlights.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid img-shadow&quot; src=&quot;https://getpolarized.io/assets/screenshots/annotations-view.webp&quot; /&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;color-selector&quot;&gt;Color Selector&lt;/h2&gt;
-
-&lt;p&gt;There’s now an advanced color selector for highlights and this expands us to 12
-different colors.  We’re going to expand the palette in the future but this is
-already a step in the right directly.&lt;/p&gt;
-
-&lt;p&gt;Technically we support any RGB value but we’re limiting the colors you can
-select for now just to make the UI simpler and easy to use.&lt;/p&gt;
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;img class=&quot;img-fluid img-shadow&quot; src=&quot;/assets/screenshots/1-19-colors.png&quot; /&gt;
-&lt;/p&gt;
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;performance-improvements&quot;&gt;Performance Improvements&lt;/h2&gt;
-
-&lt;p&gt;We’ve also implemented some more major performance improvements when working
-with larger documents and larger sets of annotations.&lt;/p&gt;
-
-&lt;h2 id=&quot;native-pdf-handling-in-web-extension-disabled&quot;&gt;Native PDF Handling in Web Extension Disabled&lt;/h2&gt;
-
-&lt;p&gt;We’ve had to remove the native PDF handling in our web extension.&lt;/p&gt;
-
-&lt;p&gt;This feature automatically previewed and added a PDF to the Polar webapp while
-browsing.&lt;/p&gt;
-
-&lt;p&gt;We had to disable it due to cross domain security issues we weren’t able to fix.
-This might be enabled again in a future version of Polar.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</summary></entry></feed>
+&lt;p&gt;If you have any feedback please jump on our Discord or create a github issue.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
