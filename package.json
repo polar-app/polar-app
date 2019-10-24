@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "compile": "echo nothing to compile"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/burtonator/polar-bookshelf-secrets.git"
