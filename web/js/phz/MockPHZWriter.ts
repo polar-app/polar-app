@@ -3,6 +3,7 @@
  */
 import {MockCapturedContent} from 'polar-content-capture/src/phz/MockCapturedContent';
 import {CapturedPHZWriter} from 'polar-content-capture/src/phz/CapturedPHZWriter';
+import {PHZWriter} from "polar-content-capture/src/phz/PHZWriter";
 
 export class MockPHZWriter {
 
@@ -10,7 +11,8 @@ export class MockPHZWriter {
 
         const captured = MockCapturedContent.create();
 
-        const capturedPHZWriter = new CapturedPHZWriter(path);
+        const output = new PHZWriter(path);
+        const capturedPHZWriter = new CapturedPHZWriter(output);
         await capturedPHZWriter.convert(captured);
 
     }

@@ -10,6 +10,7 @@ import {Directories} from '../datastore/Directories';
 import {CaptureResult} from './CaptureResult';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Captured} from 'polar-content-capture/src/capture/Captured';
+import {PHZWriter} from "polar-content-capture/src/phz/PHZWriter";
 
 const log = Logger.create();
 
@@ -61,7 +62,8 @@ export class ContentCaptureExecutor {
 
         log.info("Writing PHZ to: " + phzPath);
 
-        const capturedPHZWriter = new CapturedPHZWriter(phzPath);
+        const output = new PHZWriter(phzPath);
+        const capturedPHZWriter = new CapturedPHZWriter(output);
         await capturedPHZWriter.convert(captured);
 
         // write the captured HTML to /tmp for debug purposes.  We can enable this

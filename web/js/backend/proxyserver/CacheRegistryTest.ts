@@ -3,6 +3,7 @@ import {CapturedPHZWriter} from 'polar-content-capture/src/phz/CapturedPHZWriter
 import {CacheRegistry} from './CacheRegistry';
 import {MockCapturedContent} from 'polar-content-capture/src/phz/MockCapturedContent';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
+import {PHZWriter} from "polar-content-capture/src/phz/PHZWriter";
 
 TestingTime.freeze();
 
@@ -17,7 +18,8 @@ describe('CacheRegistryTest', function() {
             const captured = MockCapturedContent.create();
 
             const path = FilePaths.tmpfile("cached-entries-factory.phz");
-            const capturedPHZWriter = new CapturedPHZWriter(path);
+            const output = new PHZWriter(path);
+            const capturedPHZWriter = new CapturedPHZWriter(output);
             await capturedPHZWriter.convert(captured);
 
             const cacheRegistry = new CacheRegistry();
