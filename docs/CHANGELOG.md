@@ -1,4 +1,4 @@
-# unreleased
+# 1.40.0
 
 - upgraded to the latest version of Typescript
 
