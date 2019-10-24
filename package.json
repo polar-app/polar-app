@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.32.57",
+  "version": "1.32.58",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "private": true,
@@ -71,12 +71,12 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "@types/node": "^12.11.1",
     "@types/chai": "~4.1.7",
     "@types/expect": "~1.20.3",
     "@types/jquery": "~3.3.31",
     "@types/jqueryui": "~1.12.6",
     "@types/mocha": "~5.2.5",
+    "@types/node": "^12.11.1",
     "@types/prop-types": "~15.5.8",
     "@types/react-jsonschema-form": "~1.0.12",
     "cache-loader": "^4.1.0",
@@ -175,16 +175,16 @@
     "opencollective-postinstall": "~2.0.1",
     "path-to-regexp": "^3.0.0",
     "pdfjs-dist": "~2.2.228",
-    "polar-backend-shared": "^1.32.57",
-    "polar-content-capture": "^1.32.57",
-    "polar-html": "^1.32.57",
+    "polar-backend-shared": "^1.32.58",
+    "polar-content-capture": "^1.32.58",
+    "polar-html": "^1.32.58",
     "polar-loader": "1.0.3",
-    "polar-pdf": "^1.32.57",
-    "polar-pdf-types": "^1.32.57",
-    "polar-shared": "^1.32.57",
-    "polar-shared-webserver": "^1.32.57",
-    "polar-web-extension-api": "^1.32.57",
-    "polar-webapp-links": "^1.32.57",
+    "polar-pdf": "^1.32.58",
+    "polar-pdf-types": "^1.32.58",
+    "polar-shared": "^1.32.58",
+    "polar-shared-webserver": "^1.32.58",
+    "polar-web-extension-api": "^1.32.58",
+    "polar-webapp-links": "^1.32.58",
     "popper.js": "~1.16.0",
     "prop-types": "~15.6.2",
     "raphael": "~2.2.7",
@@ -228,4 +228,3 @@
     "url": "https://opencollective.com/polar-bookshelf"
   }
 }
-
