@@ -14,6 +14,7 @@ import {Tag} from 'polar-shared/src/tags/Tags';
 import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "polar-shared/src/metadata/IDocInfo";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
+import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -53,6 +54,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public visibility?: Visibility;
     public attachments: {[id: string]: Attachment} = {};
     public authors?: ReadonlyArray<IDocAuthor>;
+    public thumbnails?: { [id: string]: IThumbnail };
 
     constructor(val: IDocInfo) {
 
@@ -75,7 +77,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
 
     public validate() {
         Preconditions.assertNumber(this.nrPages, "nrPages");
-        Preconditions.assertNotNull(this.fingerprint, "fingerprint");
+        Preconditions.assertPresent(this.fingerprint, "fingerprint");
     }
 
 }

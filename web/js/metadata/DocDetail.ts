@@ -5,6 +5,7 @@
 import {Image} from './Image';
 import {Author} from './Author';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
 
 export interface DocDetail {
 
@@ -35,6 +36,8 @@ export interface DocDetail {
     readonly thumbnail?: Image;
 
     readonly author?: Author;
+
+    readonly authors?: ReadonlyArray<IDocAuthor>;
 
     /**
      * The progress of this document (until completion) from 0 to 100.
