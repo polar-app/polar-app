@@ -14,6 +14,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
     public render() {
 
         return (
+
             <UncontrolledDropdown className="ml-1"
                                   size="sm"
                                   id="settings-dropdown">

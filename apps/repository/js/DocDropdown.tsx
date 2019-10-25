@@ -2,32 +2,22 @@ import * as React from 'react';
 import {RepoDocInfo} from './RepoDocInfo';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import Dropdown from 'reactstrap/lib/Dropdown';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {DocDropdownItems} from './DocDropdownItems';
+import {UncontrolledDropdown} from "reactstrap";
+import {SettingsDropdownItem} from "./repo_header/SettingsDropdownItem";
 
 const Styles: IStyleMap = {
 
     DropdownMenu: {
-        zIndex: 999,
-        fontSize: '14px'
     },
 
 };
 
 export class DocDropdown extends React.Component<IProps, IState> {
 
-    private open: boolean = false;
-
     constructor(props: IProps, context: any) {
         super(props, context);
-
-        this.toggle = this.toggle.bind(this);
-
-        this.state = {
-            open: this.open,
-        };
-
     }
 
     public render() {
@@ -36,9 +26,8 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
             <div className="doc-dropdown-parent">
 
-                <Dropdown id={this.props.id}
-                          isOpen={this.state.open}
-                          toggle={this.toggle}>
+                <UncontrolledDropdown id={this.props.id}
+                                      size="sm">
 
                     <DropdownToggle color="link"
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
@@ -48,34 +37,14 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                     </DropdownToggle>
 
-                    <DropdownMenu className="shadow"
-                                  style={Styles.DropdownMenu}>
-
+                    <DropdownMenu className="shadow" right>
                         <DocDropdownItems toggle={true} {...this.props}/>
-
                     </DropdownMenu>
 
-
-                </Dropdown>
+                </UncontrolledDropdown>
 
             </div>
         );
-
-    }
-
-    private toggle() {
-
-        this.open = ! this.state.open;
-
-        this.refresh();
-
-    }
-
-    private refresh() {
-
-        this.setState({
-            open: this.open,
-        });
 
     }
 
@@ -91,8 +60,6 @@ interface IProps {
 
 interface IState {
 
-    readonly open: boolean;
-    readonly message?: string;
 
 }
 
