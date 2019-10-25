@@ -1,4 +1,4 @@
-# next
+# 1.40.1
 
 - the dropdowns were broken and appearing off screen which is now fixed.
 
