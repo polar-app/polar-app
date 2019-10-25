@@ -115,7 +115,7 @@ Maybe we're missing a key feature you need? Maybe it was too slow?  I just don't
 
 Could I get 2 minutes of your time to take a survey?
 
-https://kevinburton1.typeform.com/to/O6
+https://kevinburton1.typeform.com/to/O6RAXf
 
 Thanks!
 
