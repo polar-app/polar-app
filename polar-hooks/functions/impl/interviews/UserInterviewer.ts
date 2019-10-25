@@ -8,7 +8,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {UserInterviewMessages, UserMessageType} from "./UserInterviewMessages";
 import {Sendgrid} from "../Sendgrid";
 
-const NR_MESSAGES_PER_BATCH = 10;
+const NR_MESSAGES_PER_BATCH = 20;
 
 export type UserPredicate = (user: UserRecord) => boolean;
 
@@ -181,7 +181,7 @@ export class UserInterviewer {
 
     public static async exec() {
 
-        await this.sendMessagesForReason('churned', 'churned', 100);
+        //await this.sendMessagesForReason('churned', 'churned', 100);
         await this.sendMessagesForReason('standard', 'recent');
         await this.sendMessagesForReason('standard', 'veteran');
 
