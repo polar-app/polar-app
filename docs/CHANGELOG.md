@@ -1,5 +1,7 @@
 # next
 
+- the dropdowns were broken and appearing off screen which is now fixed.
+
 - highlights in the annotation view have colors again.
 
 # 1.40.0
