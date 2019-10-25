@@ -6,7 +6,7 @@ large_image: https://i.imgur.com/HEKJEE2.png
 description: Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!
 ---
 
-<img class="img-fluid" src="https://i.imgur.com/HEKJEE2.png">
+<img class="img-fluid border border-dark rounded" src="https://i.imgur.com/HEKJEE2.png">
 
 # Overview
 
@@ -124,5 +124,21 @@ that might not be able to afford these tools.
 
 I'll be talking about these in the next few weeks.  Unfortunately, many of these features just flat out cost money 
 including features like cross-device full-text search, OCR, text to speech, and other premium features I'm considering.
+
+# Upgrading
+
+Want to make sure you're on the right version of Polar?
+
+## Web 
+
+If you're using the web version of Polar you're probably running the latest version.  
+
+## Desktop 
+
+If you're using a desktop app this release will be pushed to all users over the next week. If you'd like to see if
+you're already on the latest version just go to ```Help | About```.
+
+If you'd like to upgrade earlier you can go to ```Help | Check for Updates```.
+
 
 
