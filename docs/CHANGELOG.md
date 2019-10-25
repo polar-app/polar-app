@@ -1,3 +1,7 @@
+# next
+
+- highlights in the annotation view have colors again.
+
 # 1.40.0
 
 - upgraded to the latest version of Typescript

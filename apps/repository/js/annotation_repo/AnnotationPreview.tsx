@@ -4,18 +4,39 @@ import {DateTimeTableCell} from '../DateTimeTableCell';
 import {Img} from '../../../../web/js/metadata/Img';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DeepPureComponent} from '../../../../web/js/react/DeepPureComponent';
+import {RepoHighlightInfo} from "../RepoAnnotation";
 
 const Body = (props: IProps) => {
 
     const {text, img} = props;
 
-    if (img) {
+    const createStyle = (): React.CSSProperties => {
 
-        return <ResponsiveImg id={props.id} img={img} defaultText=" "/>;
+        if (props.meta && props.meta.color) {
+
+            return {
+                borderLeftColor: props.meta.color,
+                borderLeftWidth: '2px',
+                borderLeftStyle: 'solid',
+                paddingLeft: '5px'
+            }
+
+        }
+
+        return {};
+
+    };
+
+    const style = createStyle();
+
+    if (img) {
+        return <div style={style}>
+            <ResponsiveImg id={props.id} img={img} defaultText=" "/>
+        </div>;
 
     } else {
         return (
-            <div id={props.id}>
+            <div id={props.id} style={style}>
                 <div>{text || 'no text'}</div>
             </div>
         );
@@ -50,6 +71,7 @@ interface IProps {
     readonly text?: string;
     readonly img?: Img;
     readonly created: ISODateTimeString;
+    readonly meta?: RepoHighlightInfo
 }
 
 interface IState {

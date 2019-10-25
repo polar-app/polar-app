@@ -1,14 +1,7 @@
-import {
-    TextHighlight
-} from '../../../web/js/metadata/TextHighlight';
-import {
-    AreaHighlight
-} from '../../../web/js/metadata/AreaHighlight';
-import {Comment} from '../../../web/js/metadata/Comment';
-import {DocInfo} from '../../../web/js/metadata/DocInfo';
+import {TextHighlight} from '../../../web/js/metadata/TextHighlight';
+import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Flashcard} from '../../../web/js/metadata/Flashcard';
 import {Text} from 'polar-shared/src/metadata/Text';
 import {Texts} from '../../../web/js/metadata/Texts';
@@ -23,6 +16,7 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 
 export class RepoAnnotations {
 
@@ -94,7 +88,10 @@ export class RepoAnnotations {
         let meta: RepoHighlightInfo | undefined;
 
         if (type === AnnotationType.TEXT_HIGHLIGHT) {
-            meta = {color: (<TextHighlight> sourceAnnotation).color};
+            const textHighlight = <TextHighlight> sourceAnnotation;
+            meta = {
+                color: HighlightColors.toDefaultColor(textHighlight.color)
+            };
         }
 
         let img: Img | undefined;
@@ -102,8 +99,9 @@ export class RepoAnnotations {
         if (type === AnnotationType.AREA_HIGHLIGHT) {
 
             const areaHighlight = <AreaHighlight> sourceAnnotation;
-            meta = {color: areaHighlight.color};
-
+            meta = {
+                color: HighlightColors.toDefaultColor(areaHighlight.color)
+            };
 
             const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
             img = Images.toImg(docFileResolver, areaHighlight.image);

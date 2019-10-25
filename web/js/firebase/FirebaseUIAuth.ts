@@ -27,7 +27,7 @@ export class FirebaseUIAuth {
         };
 
         // FirebaseUI config.
-        const uiConfig = {
+        const uiConfig: firebaseui.auth.Config = {
 
             // popupMode: true,
             // signInFlow: 'popup',
@@ -75,6 +75,8 @@ export class FirebaseUIAuth {
             }
 
         };
+
+        // TODO: include metrics on teh number of authorizations started vs completed.
 
         // Initialize the FirebaseUI Widget using Firebase.
         const ui = new firebaseui.auth.AuthUI(firebase.auth());
