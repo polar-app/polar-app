@@ -15,7 +15,7 @@ import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCov
 import {DocDetails} from '../metadata/DocDetails';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ClipboardCleanser} from '../ui/ClipboardCleanser';
-
+import {ViewerScreenshots} from '../viewer/ViewerScreenshots';
 
 const log = Logger.create();
 
@@ -81,6 +81,8 @@ export class WebController extends Controller {
 
         this.setupContextMenu();
 
+        this.handleThumbnails();
+
     }
 
     public setupWindowWidth() {
@@ -112,6 +114,10 @@ export class WebController extends Controller {
 
         }
 
+    }
+
+    private handleThumbnails() {
+        ViewerScreenshots.doScreenshot(this.model);
     }
 
     public setupDocumentTitle() {
