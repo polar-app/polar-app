@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "emulator": "firebase emulators:start",
-    "dist-release": "firebase use polar-cors && firebase deploy --only functions && firebase use prod && firebase deploy",
+    "dist-release": "firebase use polar-cors && firebase deploy --only functions && firebase use polar-32b0f && firebase target:apply hosting app.getpolarized.io polar-webapp && firebase deploy",
     "compile": "echo nothing to compile",
     "dist": "echo noop"
   },
