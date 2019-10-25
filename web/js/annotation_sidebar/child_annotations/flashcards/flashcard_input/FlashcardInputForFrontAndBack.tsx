@@ -43,6 +43,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
                 <RichTextArea label="front"
                               id={`front-${this.props.id}`}
                               value={fields.front}
+                              defaultValue={this.props.defaultValue}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.fields.front = html}
@@ -145,6 +146,7 @@ export interface IProps {
 
     readonly existingFlashcard?: Flashcard;
 
+    readonly defaultValue?: string;
 }
 
 export interface IState {

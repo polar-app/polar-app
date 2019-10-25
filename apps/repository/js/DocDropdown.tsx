@@ -5,7 +5,6 @@ import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {DocDropdownItems} from './DocDropdownItems';
 import {UncontrolledDropdown} from "reactstrap";
-import {SettingsDropdownItem} from "./repo_header/SettingsDropdownItem";
 
 const Styles: IStyleMap = {
 

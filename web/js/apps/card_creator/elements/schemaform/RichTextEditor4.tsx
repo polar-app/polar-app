@@ -116,6 +116,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
         return (
             <ReactSummernote4
                 value={this.props.value || ''}
+                defaultValue={this.props.defaultValue}
                 options={{
                     id: this.typedWidgetProps.id,
                     lang: 'en-US',
@@ -177,6 +178,7 @@ interface IProps {
     readonly id: string;
     readonly autofocus?: boolean;
     readonly value?: string;
+    readonly defaultValue?: string;
     readonly onKeyDown?: (event: KeyboardEvent) => void;
     readonly onChange?: (newValue: string) => void;
     readonly onBlur?: (id: string, value: string) => void;

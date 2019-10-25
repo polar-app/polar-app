@@ -34,6 +34,8 @@ export class RichTextArea extends React.Component<IProps, IState> {
 
         };
 
+        console.log("FIXME: defaultValue: " + this.props.defaultValue);
+
         return (
 
             <div id={this.props.id} className="rich-text-area">
@@ -46,6 +48,7 @@ export class RichTextArea extends React.Component<IProps, IState> {
 
                         <RichTextEditor4 id={`rich-text-area-${this.props.id}`}
                                          value={this.props.value || ''}
+                                         defaultValue={this.props.defaultValue}
                                          autofocus={autofocus}
                                          onKeyDown={this.props.onKeyDown}
                                          onRichTextMutator={this.props.onRichTextMutator}
@@ -66,6 +69,7 @@ export class RichTextArea extends React.Component<IProps, IState> {
 export interface IProps {
     readonly id: string;
     readonly value?: string;
+    readonly defaultValue?: string;
     readonly label?: string;
     readonly autofocus?: boolean;
     readonly onChange: (html: htmlstring) => void;

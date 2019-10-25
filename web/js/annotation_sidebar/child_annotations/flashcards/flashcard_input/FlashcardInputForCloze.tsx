@@ -50,6 +50,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                 <RichTextArea id={`text-${this.props.id}`}
                               value={fields.text}
+                              defaultValue={this.props.defaultValue}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onRichTextMutator={richTextMutator => this.richTextMutator = richTextMutator}
@@ -205,6 +206,8 @@ export interface IProps {
     readonly cancelButton: JSX.Element;
 
     readonly existingFlashcard?: Flashcard;
+
+    readonly defaultValue?: string;
 
 }
 

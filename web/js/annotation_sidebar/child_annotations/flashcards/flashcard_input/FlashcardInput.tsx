@@ -32,6 +32,7 @@ export class FlashcardInput extends React.Component<IProps, IState> {
             return ( <FlashcardInputForFrontAndBack id={this.props.id}
                                                     cancelButton={this.props.cancelButton}
                                                     existingFlashcard={this.props.existingFlashcard}
+                                                    defaultValue={this.props.defaultValue}
                                                     onFlashcard={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
                                                     onFlashcardChangeType={flashcardType => this.onFlashcardChangeType(flashcardType)}/> );
 
@@ -40,6 +41,7 @@ export class FlashcardInput extends React.Component<IProps, IState> {
             return ( <FlashcardInputForCloze id={this.props.id}
                                              cancelButton={this.props.cancelButton}
                                              existingFlashcard={this.props.existingFlashcard}
+                                             defaultValue={this.props.defaultValue}
                                              onFlashcard={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
                                              onFlashcardChangeType={flashcardType => this.onFlashcardChangeType(flashcardType)}/> );
 
@@ -90,6 +92,11 @@ export class FlashcardInput extends React.Component<IProps, IState> {
 export interface IProps {
 
     readonly id: string;
+
+    /**
+     * The default value to show in the flashcard
+     */
+    readonly defaultValue?: string;
 
     readonly flashcardType?: FlashcardType;
 

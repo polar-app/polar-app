@@ -27,6 +27,7 @@ export class CreateFlashcard extends React.PureComponent<IProps, IState> {
             <ScrollIntoView>
                 <FlashcardInput id={'edit-flashcard-for' + this.props.id}
                                 onFlashcard={this.props.onFlashcardCreated}
+                                defaultValue={this.props.defaultValue}
                                 cancelButton={cancelButton}/>
             </ScrollIntoView>
 
@@ -52,6 +53,8 @@ interface IProps {
     readonly onFlashcardCreated: FlashcardCallback;
 
     readonly onCancel?: () => void;
+
+    readonly defaultValue?: string;
 
 }
 
