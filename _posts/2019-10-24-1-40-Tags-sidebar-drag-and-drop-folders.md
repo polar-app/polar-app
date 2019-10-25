@@ -1,13 +1,12 @@
 ---
-title: Polar 1.40 Released
+title: Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!
 date: 2019-10-24 08:00:00 -0800
 layout: post
-large_image: https://i.imgur.com/lLKEfKI.png
-description: 
-hidden: true
+large_image: https://i.imgur.com/HEKJEE2.png
+description: Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!
 ---
 
-<img class="img-fluid" src="https://i.imgur.com/lLKEfKI.png">
+<img class="img-fluid" src="https://i.imgur.com/HEKJEE2.png">
 
 # Overview
 
