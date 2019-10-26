@@ -22,7 +22,6 @@ export class DocThumbnail extends React.Component<IProps, IState> {
             const thumbnailFile = persistenceLayer.getFile(thumbnail.src.backend, thumbnail.src);
 
             return <img src={thumbnailFile.url} style={{maxWidth: '125px', maxHeight: '125px'}}/>;
-            // return <div/>;
 
         } else {
             return <div/>;
