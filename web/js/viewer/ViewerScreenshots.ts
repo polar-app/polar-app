@@ -17,6 +17,8 @@ import {isPresent} from "polar-shared/src/Preconditions";
 
 const log =  Logger.create();
 
+const DISABLED = false;
+
 export class ViewerScreenshots {
 
     private static documentDimensions(): IDimensions {
@@ -67,6 +69,10 @@ export class ViewerScreenshots {
     }
 
     public static doScreenshot(model: Model) {
+
+        if (DISABLED) {
+            return;
+        }
 
         if (! this.supportsScreenshot(model.docMeta)) {
             log.info("This document doesn't support screenshots");
