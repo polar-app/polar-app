@@ -181,6 +181,8 @@ export class UserInterviewer {
 
     public static async exec() {
 
+        // FIXME: do user interviews with PAYING customers.
+
         //await this.sendMessagesForReason('churned', 'churned', 100);
         await this.sendMessagesForReason('standard', 'recent');
         await this.sendMessagesForReason('standard', 'veteran');
