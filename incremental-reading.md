@@ -42,7 +42,7 @@ sort documents in the document repository by their reading progress..
 
 <div class="text-center">Screenshot showing a document with 4 pagemarks</div>
 
-# Create Pagemark to Point
+## Create Pagemark to Point
 
 When you right click and select "Create Pagemark to Point" Polar creates 
 pagemarks over all previous pages up until the previous pagemark (or the 
@@ -58,7 +58,24 @@ created across all previous pages.
 You can still pagemark the current page by selecting "Create Pagemark Box" to 
 or run "Control Alt N" to mark just the current page.  
 
-# Create Pagemark Box.
+## Reading Progress
+
+We have statistics for tracking the number of pages you read per day and an integrated calendar chart showing this
+visually in the stats page.
+
+<img class="img-fluid" src="https://getpolarized.io/assets/screenshots/reading-progress.webp">
+
+## Modes
+
+We support pagemark modes and can change the colors of the pagemark based on the mode. Additionally, this directly
+integrates with the reading progress calculation.  
+
+When you set the mode of a pagemark as 'table of contents' or 'ignored' or 'pre read' it will not factor this into
+your reading progress for that day.
+
+This allows you to import books you've read in the past and "grandfather" in the pages you've already read in the past.
+
+## Create Pagemark Box.
 
 When you right click and select "Create Pagemark Box" Polar creates a single
 pagemark box which you can resize and drag to cover parts of the page you've
@@ -67,7 +84,7 @@ read.
 This is useful when the document has multiple columns and you want to mark a 
 single column. 
 
-# Usage
+## Usage
 
 Pagemarks can be created with either the keyboard of the mouse.
 
@@ -75,13 +92,13 @@ When working with a document you can simply right click and "Create Pagemark at
 Point" which will create a pagemark on the current page to the current mouse
 position.
 
-## Linux / Windows key bindings
+### Linux / Windows key bindings
 
  - Control Alt N - create a new pagemark on the current page
  - Control Alt click - create a pagemark on the page up until the current mouse click
  - Control Alt E - erase the current pagemark
 
-## MacOS Key bindings
+### MacOS Key bindings
 
  - Meta-Command N - create a new pagemark on the current page
  - Meta-Command click - create a pagemark on the page up until the current mouse click
