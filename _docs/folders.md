@@ -12,7 +12,7 @@ Polar supports folders for managing your files in a hierarchy.
 
 We support both basic tags and 'hierarchical' tags.
 
-To create a hierarchical tag, prefix the tag with a /. Example: /my/custom/hierarchy.
+To create a hierarchical tag, prefix the tag with a "/". Example: /my/custom/hierarchy.
 
 Once you tag a document with a hierarchical tag a folder will be created in the sidebar. 
 
@@ -25,6 +25,19 @@ Folders are just tags that have a path.  For example ```linux``` would be a regu
 a folder.  
 
 A document can be stored in multiple folders just like a document can have multiple tags. 
+
+## Moving documents to folders
+
+Once a folder is created, documents can be dragged from the document repository and dropped directly 
+on the folder where you want it stored.
+
+## Differences between Filesystem Folders.
+
+Polar folders are different than regular folders on your local hard drive:
+
+- A file can be in one or more folders.
+
+- Moving a file in a folder does NOT change the physical storage location on your local hard drive.
 
 ## Filtering
 
