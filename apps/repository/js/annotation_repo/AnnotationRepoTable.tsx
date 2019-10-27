@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ReactTable from "react-table";
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
@@ -9,8 +8,6 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationPreview} from './AnnotationPreview';
-
-const log = Logger.create();
 
 export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
@@ -240,8 +237,6 @@ interface IProps {
     readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
 
     readonly data: ReadonlyArray<RepoAnnotation>;
-
-    // readonly setFiltered: ChannelCoupler<AnnotationRepoFilters>;
 
 }
 

@@ -9,6 +9,7 @@ import {DropdownMenu, DropdownToggle, Input} from "reactstrap";
 import {FakePopup} from "./FakePopup";
 import { BasicPopup } from './BasicPopup';
 import { PDFViewer } from './PDFViewer';
+import {Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
 
 const styles = {
     swatch: {
@@ -138,23 +139,7 @@ export class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div style={{margin: '5px'}}>
-
-                {/*<Input type="text" name="text" id="example-text" placeholder="This is the text" onKeyPress={event => keyBindingHandler(event)}/>*/}
-
-                {/*<br/>*/}
-
-                {/*<Input type="textarea" name="text" id="example-textarea" placeholder="This is the text area"/>*/}
-
-                <div>
-                    this is the drop box.
-                </div>
-
-                <div draggable={true}
-                     onDragStart={event => console.log('tragging is starting...')}>
-
-                    this should be draggable
-
-                </div>
+                <Reviewer/>
 
                 {/*<PDFViewer src="foo"/>*/}
 
