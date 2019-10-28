@@ -16,7 +16,7 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         const pending = [...this.props.reviews];
         const total = this.props.reviews.length;
-        const review = pending.pop()!;
+        const review = pending.shift()!;
 
         this.state = {
             review, pending, total, finished: 0
@@ -113,7 +113,7 @@ export class Reviewer extends React.Component<IProps, IState> {
             return;
         }
 
-        const review = this.state.pending.pop()!;
+        const review = this.state.pending.shift()!;
 
         this.setState({
             ...this.state,
