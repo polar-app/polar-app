@@ -26,7 +26,6 @@ export class Reviewer extends React.Component<IProps, IState> {
 
     public render() {
 
-
         const review = this.state.review;
 
         if (! review) {
@@ -155,7 +154,7 @@ export interface IProps {
 export interface IState {
 
     /**
-     * The review we're working with or undefned
+     * The review we're working with or undefined when there are no more.
      */
     readonly review?: Review | undefined;
 
