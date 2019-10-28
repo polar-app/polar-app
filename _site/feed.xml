@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-26T20:42:44-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!</title><link href="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html" rel="alternate" type="text/html" title="Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!" /><published>2019-10-24T09:00:00-07:00</published><updated>2019-10-24T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders</id><content type="html" xml:base="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://i.imgur.com/HEKJEE2.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-10-28T14:47:08-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!</title><link href="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html" rel="alternate" type="text/html" title="Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!" /><published>2019-10-24T09:00:00-07:00</published><updated>2019-10-24T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders</id><content type="html" xml:base="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://i.imgur.com/HEKJEE2.png&quot; /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+&lt;h1 id=&quot;polar-140---tags-in-the-sidebar-drag-and-drop-folders-and-more&quot;&gt;Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!&lt;/h1&gt;
 
 &lt;p&gt;Polar 1.40 is now available.  This release includes a number of new features upgrades and stability improvements.&lt;/p&gt;
 
@@ -130,87 +130,7 @@ including features like cross-device full-text search, OCR, text to speech, and 
 &lt;p&gt;If you’re using a desktop app this release will be pushed to all users over the next week. If you’d like to see if
 you’re already on the latest version just go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | About&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;If you’d like to upgrade earlier you can go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | Check for Updates&lt;/code&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roger Craig used Polar to Win Jeopardy.</title><link href="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.md.disabled" rel="alternate" type="text/html" title="Roger Craig used Polar to Win Jeopardy." /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.md</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Roger-Craig-Uses-Polar-Jeopardy.md.disabled">&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lkRjAkq.png&quot;&gt;
-
-# Roger Craig used Polar to Win Jeopardy.
-
-Polar has been rapidly adopted by alpha-geeks to combat information overload and looks like we've found another convert - 
-this time &lt;a href=&quot;https://superorganizers.substack.com/p/how-a-jeopardy-champion-remembers&quot;&gt;Roger Craig who used it to win $77k on Jeopardy&lt;/a&gt;.
-
-&gt; He’s a machine learning, data science, and AI practitioner who combined his computer skills and an interest in quiz
-&gt; games into something extraordinarily unique:
-  
-&gt; He won more than half a million dollars on Jeopardy!, including a whopping $77,000 in a single day.
-  
-&gt; He did this not just with raw intelligence, but by creating a system to help him fashion himself into a game-show
-&gt; superstar.
-
-Roger and I have similar backgrounds - both machine learning and big data and it looks like we arrived at the same
-general strategy for managing knowledge.  Specifically, use tools like natural language parsing (NLP), clustering, and
-spaced repetition to force material to be stored in your brain long term with high retention.
-
-## How Roger uses Polar and Anki
-
-&gt; The next tool I use is called Polarized. A lot of the information I consume is in technical published papers, which are in PDFs, and Polarized helps with that. 
-  
-&gt; It takes in PDFs and web pages, and allows you to highlight and annotate them. You can also export them, so you can turn the annotations into Anki cards.
-  
-&gt; So basically every paper that is of interest to me, I save it into one big directory, and then Polarized goes in and ingests all of the papers and makes them available for me to read and annotate. 
-
-What Roger did here was basically take his background in ML and built a set of tools to manage his learning.
-
-I basically did the same thing when I first started working on Polar but I realized that this tool needs to be democratized.
-
-We're going to be building in more cloud learning and big data capabilities in Polar in the next few months including
-support for full-text search, clustering, auto-tagging, etc.
-
-The entire point of Polar is that we're trying to democratize this technology and make it usable to the average person.
-
-As an aside, it's been really interesting to see who's been using Polar.  Lots of PhD students, VCs, researchers, 
-academics, scientists, etc.  Very exciting to see such amazingly smart people using the product.
-
-## Flashcards and Spaced Repetition
-
-The key benefit Polar provides is a fully integrated environment for reading and managing flashcards. You can 
-work directly with PDF and web content, annotate it, create flashcards from your annotations, and then sync the 
-flashcards directly to Anki.
-
-What's nice about this is that not only do you have a high quality index of all your notes and highlights but this
-data is sync'd with Anki.
-
-## Machine Learning and Spaced Repetition
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/UJ00QuW.png&quot;&gt;
-&lt;/p&gt;
-
-**UPDATED** I managed to schedule some time to talk to Roger about his use of Polar and Anki on Jeopardy.
-
-We both come from similar backgrounds so it was nice to compare notes about NLP and machine learning and how it can
-apply to optimized learning.
-
-He first competed in Jeopardy in 2010 and NLP (and machine learning) has come a long way since them.
-
-Back then, NLP technology was available but just VERY expensive.  Now it's essentially commodity and dirt cheap.  
-
-The NLP frameworks in Python can be used for free meaning if you're an alpha-geek you can build something pretty
-straight froward by putting together a few scripts.
-
-What we're trying to do in Polar is democratize a lot of this technology and make it &quot;just work&quot; right out of the box.
-
-I talked to Roger about using NLP and machine to automatically build flashcards from textbooks. There's still a lot of
-active research in this area with question and answer generation from text corpora.  
-
-There might be some low hanging fruit by parsing text the user is reading and finding the first named entities mentioned and
-building flashcards directly from those first sentences.
-
-Sentence boundary detection and NLP can be used to take a textbook and allow the user to easily generate flashcards 
-with one click.
-
-This is something I'm working on improving in future versions of Polar but first we have to improve usability.
-
-We're going to keep comparing notes and try to sync up again in another few weeks.  There's definitely a lot of 
-potential for using machine learning to improve the efficiency of education.</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">What’s Next for Offline Web Capture of Web Pages in Polar</title><link href="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's Next for Offline Web Capture of Web Pages in Polar" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you’d like to upgrade earlier you can go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | Check for Updates&lt;/code&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">What’s Next for Offline Web Capture of Web Pages in Polar</title><link href="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's Next for Offline Web Capture of Web Pages in Polar" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
@@ -1388,4 +1308,69 @@ just like any PDF doc.&lt;/p&gt;
 &lt;p&gt;You get all the normal Polar features including tagging, annotation, flashcard
 creation, cloud sync, etc.&lt;/p&gt;
 
-&lt;p&gt;If you have any feedback please jump on our Discord or create a github issue.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;p&gt;If you have any feedback please jump on our Discord or create a github issue.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</title><link href="https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights.html" rel="alternate" type="text/html" title="Polar 1.19 Released With Area Highlights and Updated Annotations View" /><published>2019-05-10T10:00:00-07:00</published><updated>2019-05-10T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights</id><content type="html" xml:base="https://getpolarized.io/2019/05/10/polar-1-19-0-with-area-highlights.html">&lt;h1 id=&quot;polar-119-released-with-area-highlights-and-updated-annotations-view&quot;&gt;Polar 1.19 Released With Area Highlights and Updated Annotations View&lt;/h1&gt;
+
+&lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
+&lt;iframe class=&quot;embed-responsive-item&quot; width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/TDYDOGGTPls&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Polar 1.19 has been a lot of work but it’s finally out the door.&lt;/p&gt;
+
+&lt;p&gt;If you haven’t updated Polar in a while make sure you’re on the latest version 
+by going to Help | About or Help | Check for Updates.&lt;/p&gt;
+
+&lt;p&gt;There are a few we want to highlight about this release.&lt;/p&gt;
+
+&lt;h2 id=&quot;area-highlights&quot;&gt;Area Highlights&lt;/h2&gt;
+
+&lt;p&gt;Area highlights are now shown in the sidebar and updated and resized while you
+drag the area highlight box.&lt;/p&gt;
+
+&lt;p&gt;This was frequently requested by our users and allows you to select mathematical
+figures and illustrations for annotation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid img-shadow&quot; src=&quot;/assets/screenshots/1-19-sidebar.jpeg&quot; /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;updated-annotations-view&quot;&gt;Updated Annotations View&lt;/h2&gt;
+
+&lt;p&gt;We’ve updated the annotations view to show preview annotations and a better view
+of each annotation including showing area highlights.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid img-shadow&quot; src=&quot;https://getpolarized.io/assets/screenshots/annotations-view.webp&quot; /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;color-selector&quot;&gt;Color Selector&lt;/h2&gt;
+
+&lt;p&gt;There’s now an advanced color selector for highlights and this expands us to 12
+different colors.  We’re going to expand the palette in the future but this is
+already a step in the right directly.&lt;/p&gt;
+
+&lt;p&gt;Technically we support any RGB value but we’re limiting the colors you can
+select for now just to make the UI simpler and easy to use.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid img-shadow&quot; src=&quot;/assets/screenshots/1-19-colors.png&quot; /&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;performance-improvements&quot;&gt;Performance Improvements&lt;/h2&gt;
+
+&lt;p&gt;We’ve also implemented some more major performance improvements when working
+with larger documents and larger sets of annotations.&lt;/p&gt;
+
+&lt;h2 id=&quot;native-pdf-handling-in-web-extension-disabled&quot;&gt;Native PDF Handling in Web Extension Disabled&lt;/h2&gt;
+
+&lt;p&gt;We’ve had to remove the native PDF handling in our web extension.&lt;/p&gt;
+
+&lt;p&gt;This feature automatically previewed and added a PDF to the Polar webapp while
+browsing.&lt;/p&gt;
+
+&lt;p&gt;We had to disable it due to cross domain security issues we weren’t able to fix.
+This might be enabled again in a future version of Polar.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar 1.19 Released With Area Highlights and Updated Annotations View</summary></entry></feed>

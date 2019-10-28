@@ -8,7 +8,7 @@ description: Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!
 
 <img class="img-fluid border border-dark rounded" src="https://i.imgur.com/HEKJEE2.png">
 
-# Overview
+# Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!
 
 Polar 1.40 is now available.  This release includes a number of new features upgrades and stability improvements.
 
