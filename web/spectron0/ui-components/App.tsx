@@ -9,7 +9,7 @@ import {DropdownMenu, DropdownToggle, Input} from "reactstrap";
 import {FakePopup} from "./FakePopup";
 import { BasicPopup } from './BasicPopup';
 import { PDFViewer } from './PDFViewer';
-import {Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
+import {Review, Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
 
 const styles = {
     swatch: {
@@ -136,10 +136,26 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         };
 
+        const reviews: ReadonlyArray<Review> = [
+            {
+                id: "10101",
+                text: "this is the first one",
+                created: ISODateTimeStrings.create(),
+                color: 'yellow'
+            },
+            {
+                id: "10102",
+                text: "this is the second one",
+                created: ISODateTimeStrings.create(),
+                color: 'yellow'
+            }
+        ];
+
         return (
 
             <div style={{margin: '5px'}}>
-                <Reviewer/>
+
+                <Reviewer reviews={reviews} onAnswer={NULL_FUNCTION} onFinished={NULL_FUNCTION}/>
 
                 {/*<PDFViewer src="foo"/>*/}
 
