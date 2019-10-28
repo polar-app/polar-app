@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
+import {Button, Progress} from "reactstrap";
 import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Answer} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/S2Plus";
@@ -28,7 +28,17 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         const {id, text, created, color} = this.state.review;
 
-        const perc = Percentages.calculate(this.state.finished, this.state.total);
+        const perc = Math.floor(Percentages.calculate(this.state.finished, this.state.total));
+
+        const createProgressText = () => {
+
+            if (this.state.finished === 0) {
+                return "";
+            }
+
+            return `${this.state.finished + 1} of ${this.state.total}`;
+
+        };
 
         return (
 
@@ -36,39 +46,50 @@ export class Reviewer extends React.Component<IProps, IState> {
 
                 <div style={{
                         display: 'flex',
-                        flexDirection: 'column'
-                     }}>
+                        flexDirection: 'column',
+                        maxHeight: '1000px',
+                        maxWidth: '800px'
+                     }}
+                     className="ml-auto mr-auto h-100">
 
-                    <div>
-                        {/*P<Progress bar value={50} color="success" className="w-100"/>*/}
-                        
-                        <progress value={perc} className="w-100"/>
+                    <div className="pt-1 pb-1">
+
+                        <Progress value={perc}>{createProgressText()}</Progress>
 
                     </div>
 
                     <div className="p-1"
                          style={{
-                            flexGrow: 1
+                            flexGrow: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
                          }}>
 
-                        <AnnotationPreview id={id}
-                                           text={text}
-                                           created={created}
-                                           meta={{color}}
-                        />
+                        <div style={{flexGrow: 1}}>
+                            <AnnotationPreview id={id}
+                                               text={text}
+                                               created={created}
+                                               meta={{color}}/>
+                        </div>
 
-                        <div className="text-center">
+                        <div className="text-center"
+                             style={{
+                                 display: 'flex',
+                             }}>
 
                             <Button color="danger"
                                     className="m-1"
+                                    style={{flexGrow: 1}}
                                     onClick={() => this.onAnswer(id, 0.0)}>Again</Button>
 
                             <Button color="secondary"
                                     className="m-1"
+                                    style={{flexGrow: 1}}
                                     onClick={() => this.onAnswer(id, 0.5)}>Good</Button>
 
                             <Button color="success"
                                     className="m-1"
+                                    style={{flexGrow: 1}}
                                     onClick={() => this.onAnswer(id, 1.0)}>Easy</Button>
 
                         </div>
