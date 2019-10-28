@@ -6,23 +6,23 @@ xdescribe('Collections', function() {
     it("basic", async function() {
 
         const firestore = Firestore.getInstance();
-        const collections = new Collections(firestore);
+        const collections = new Collections(firestore, 'group');
 
-        const groups = await collections.list('group', [['visibility', '==', 'public']]);
+        const groups = await collections.list([['visibility', '==', 'public']]);
 
     });
 
     it("iterator", async function() {
 
         const firestore = Firestore.getInstance();
-        const collections = new Collections(firestore);
+        const collections = new Collections(firestore, 'group');
 
         const orderBy: ReadonlyArray<OrderByClause> = [
             ['created', 'asc'],
             ['id', 'asc'],
         ];
 
-        const iterator = await collections.iterate('group', [['visibility', '==', 'public']], {orderBy, limit: 2});
+        const iterator = await collections.iterate([['visibility', '==', 'public']], {orderBy, limit: 2});
 
         while(iterator.hasNext()) {
             const page = await iterator.next();

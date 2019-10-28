@@ -11,14 +11,14 @@ export const Sitemap = functions.https.onRequest((req, resp) => {
     const createIterator = async () => {
         const firestore = Firestore.getInstance();
 
-        const collections = new Collections(firestore);
+        const collections = new Collections(firestore, 'group');
 
         const orderBy: ReadonlyArray<OrderByClause> = [
             ['created', 'asc'],
             ['id', 'asc'],
         ];
 
-        return await collections.iterate<Group>('group', [['visibility', '==', 'public']], {orderBy, limit: 500});
+        return await collections.iterate<Group>([['visibility', '==', 'public']], {orderBy, limit: 500});
 
     };
 

@@ -36,14 +36,14 @@ export const GroupSitemap = functions.https.onRequest((req, resp) => {
 
         const firestore = Firestore.getInstance();
 
-        const collections = new Collections(firestore);
+        const collections = new Collections(firestore, 'group_doc_annotation');
 
         const orderBy: ReadonlyArray<OrderByClause> = [
             ['lastUpdated', 'desc'],
             ['id', 'asc'],
         ];
 
-        return await collections.iterate<GroupDocAnnotation>('group_doc_annotation', [['groupID', '==', group.id]], {orderBy, limit: 500});
+        return await collections.iterate<GroupDocAnnotation>([['groupID', '==', group.id]], {orderBy, limit: 500});
 
     };
 
