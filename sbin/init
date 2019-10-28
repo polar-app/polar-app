@@ -17,13 +17,11 @@ mkdir -p packages
 
 for repo_url in `cat conf/repos.conf`; do
 
-    dir=$(get_git_dir_from_url "${repo_url}")
+    dir_name=$(get_git_dir_from_url "${repo_url}")
+    dir="packages/${dir_name}"
 
-    #echo ${dir}
     if [ ! -d "${dir}" ]; then
-
-        target_dir=$(basename ${repo_url} .git)
-        git clone "${repo_url}" "packages/$target_dir"
+        git clone "${repo_url}" "${dir}"
     else
         echo "Skipping ${repo_url} in ${dir}.  Already cloned."
     fi
