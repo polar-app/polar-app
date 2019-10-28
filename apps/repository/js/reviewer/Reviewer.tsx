@@ -50,7 +50,7 @@ export class Reviewer extends React.Component<IProps, IState> {
                         maxHeight: '1000px',
                         maxWidth: '800px'
                      }}
-                     className="ml-auto mr-auto h-100">
+                     className="ml-auto mr-auto h-100 border p-1">
 
                     <div className="pt-1 pb-1">
 
