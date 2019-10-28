@@ -1,4 +1,4 @@
-import {Collections, OrderByClause} from "./Collections2";
+import {Collections, OrderByClause} from "polar-firebase/src/firebase/Collections2";
 import {Firestore} from "../../util/Firestore";
 
 xdescribe('Collections', function() {

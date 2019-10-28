@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import {Group, Groups} from "../groups/db/Groups";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Firestore} from "../util/Firestore";
-import {Collections, OrderByClause} from "../groups/db/Collections2";
+import {Collections, OrderByClause} from "polar-firebase/src/firebase/Collections2";
 import {GroupDocAnnotation} from "../groups/db/doc_annotations/GroupDocAnnotations";
 
 /**

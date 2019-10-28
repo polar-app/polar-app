@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import {Firestore} from "../util/Firestore";
-import {Collections, OrderByClause} from "../groups/db/Collections2";
+import {Collections, OrderByClause} from "polar-firebase/src/firebase/Collections2";
 import {Group} from "../groups/db/Groups";
 
 /**
