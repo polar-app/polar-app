@@ -16,7 +16,7 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         const pending = [...this.props.reviews];
         const total = this.props.reviews.length;
-        const review = pending.shift()!;
+        const review = pending.shift();
 
         this.state = {
             review, pending, total, finished: 0
@@ -26,7 +26,15 @@ export class Reviewer extends React.Component<IProps, IState> {
 
     public render() {
 
-        const {id, text, created, color} = this.state.review;
+
+        const review = this.state.review;
+
+        if (! review) {
+            // we're done...
+            return <div/>;
+        }
+
+        const {id, text, created, color} = review;
 
         const perc = Math.floor(Percentages.calculate(this.state.finished, this.state.total));
 
@@ -115,12 +123,11 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         this.props.onAnswer(id, answer);
 
-        if (this.state.pending.length === 0) {
-            this.props.onFinished();
-            return;
-        }
+        const review = this.state.pending.shift();
 
-        const review = this.state.pending.shift()!;
+        if (! review) {
+            this.props.onFinished();
+        }
 
         this.setState({
             ...this.state,
@@ -147,7 +154,10 @@ export interface IProps {
 
 export interface IState {
 
-    readonly review: Review;
+    /**
+     * The review we're working with or undefned
+     */
+    readonly review?: Review | undefined;
 
     readonly pending: Review[];
 

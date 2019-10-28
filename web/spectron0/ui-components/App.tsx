@@ -194,7 +194,7 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
 
             <div style={{margin: '5px'}}>
 
-                <Reviewer reviews={reviews} onAnswer={NULL_FUNCTION} onFinished={NULL_FUNCTION}/>
+                <Reviewer reviews={reviews} onAnswer={(id, answer) => console.log("got answer: ", id, answer)} onFinished={() => console.log('finished')}/>
 
                 {/*<PDFViewer src="foo"/>*/}
 
