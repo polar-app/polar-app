@@ -281,7 +281,7 @@ export class RepositoryApp {
             throw new Error("No root element to render to");
         }
 
-        ReactDOM.render(
+        const foo = ReactDOM.render(
 
             <div style={{height: '100%'}}>
 

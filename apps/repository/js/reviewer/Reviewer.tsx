@@ -40,6 +40,8 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         };
 
+        // again, hard, good, easy
+
         return (
 
             <div>
@@ -63,36 +65,41 @@ export class Reviewer extends React.Component<IProps, IState> {
                             flexGrow: 1,
                             display: 'flex',
                             flexDirection: 'column',
+                            overflowY: 'auto'
                          }}>
 
-                        <div style={{flexGrow: 1}}>
+                        <div style={{
+                                flexGrow: 1
+                             }}>
+
                             <AnnotationPreview id={id}
                                                text={text}
                                                created={created}
                                                meta={{color}}/>
-                        </div>
-
-                        <div className="text-center"
-                             style={{
-                                 display: 'flex',
-                             }}>
-
-                            <Button color="danger"
-                                    className="m-1"
-                                    style={{flexGrow: 1}}
-                                    onClick={() => this.onAnswer(id, 0.0)}>Again</Button>
-
-                            <Button color="secondary"
-                                    className="m-1"
-                                    style={{flexGrow: 1}}
-                                    onClick={() => this.onAnswer(id, 0.5)}>Good</Button>
-
-                            <Button color="success"
-                                    className="m-1"
-                                    style={{flexGrow: 1}}
-                                    onClick={() => this.onAnswer(id, 1.0)}>Easy</Button>
 
                         </div>
+
+                    </div>
+
+                    <div className="text-center"
+                         style={{
+                             display: 'flex',
+                         }}>
+
+                        <Button color="danger"
+                                className="m-1"
+                                style={{flexGrow: 1}}
+                                onClick={() => this.onAnswer(id, 0.0)}>Again</Button>
+
+                        <Button color="secondary"
+                                className="m-1"
+                                style={{flexGrow: 1}}
+                                onClick={() => this.onAnswer(id, 0.5)}>Good</Button>
+
+                        <Button color="success"
+                                className="m-1"
+                                style={{flexGrow: 1}}
+                                onClick={() => this.onAnswer(id, 1.0)}>Easy</Button>
 
                     </div>
 
