@@ -190,8 +190,8 @@ export class Collections {
     }
 
     public async deleteByID(batch: WriteBatchLike,
-                                   collection: string,
-                                   provider: () => Promise<ReadonlyArray<IDRecord>>) {
+                            collection: string,
+                            provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
         const records = await provider();
 
