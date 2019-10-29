@@ -1,18 +1,15 @@
 import * as React from 'react';
-import {TagsDB} from '../TagsDB';
+import {TagsDB} from '../../TagsDB';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
-import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
+import {PartialAnnotationRepoFilters, UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
 import {Placement} from 'popper.js';
+import {HighlightColorFilterButton} from "./HighlightColorFilterButton";
 
 export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
-
-        this.state = {
-        };
-
     }
 
     public render() {
@@ -56,6 +53,33 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                     </div>
 
                 </div>
+
+                {/*<Button color="light" className="p-0">*/}
+                {/*    <i className="fas fa-swatchbook"/>*/}
+                {/*</Button>*/}
+
+
+                {/*<Popover placement="bottom"*/}
+                {/*         trigger="legacy"*/}
+                {/*         fade={false}*/}
+                {/*         delay={0}*/}
+                {/*         isOpen={this.state.open}*/}
+                {/*         target={id}*/}
+                {/*         toggle={this.deactivate}>*/}
+
+                {/*    <PopoverBody className="shadow rounded p-2"*/}
+                {/*                 style={{backgroundColor: '#ffffff'}}>*/}
+
+                {/*        <ColorSelectorBox onSelected={(color) => {*/}
+                {/*            this.deactivate();*/}
+                {/*            onSelected(color);*/}
+                {/*        }}/>*/}
+
+                {/*    </PopoverBody>*/}
+
+                {/*</Popover>*/}
+
+                <HighlightColorFilterButton onSelected={color => this.props.updateFilters({color})}/>
 
                 <Right/>
 

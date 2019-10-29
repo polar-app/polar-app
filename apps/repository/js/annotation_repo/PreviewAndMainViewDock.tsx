@@ -7,7 +7,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import AnnotationRepoTable from './AnnotationRepoTable';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
-import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
+import {AnnotationRepoFilterBar} from './filter_bar/AnnotationRepoFilterBar';
 import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";

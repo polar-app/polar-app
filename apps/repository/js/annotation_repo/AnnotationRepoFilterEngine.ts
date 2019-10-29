@@ -49,6 +49,17 @@ export class AnnotationRepoFilterEngine {
         // repoAnnotations = this.doFilterFlagged(repoAnnotations);
         // repoAnnotations = this.doFilterArchived(repoAnnotations);
         repoAnnotations = this.doFilterByTags(repoAnnotations);
+        repoAnnotations = this.doFilterByColor(repoAnnotations);
+
+        return repoAnnotations;
+
+    }
+
+    private doFilterByColor(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+
+        if (this.filters.color) {
+            return repoAnnotations.filter(current => current.meta && current.meta.color === this.filters.color);
+        }
 
         return repoAnnotations;
 

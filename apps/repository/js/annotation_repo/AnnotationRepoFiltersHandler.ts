@@ -1,4 +1,5 @@
 import {FilteredTags} from '../FilteredTags';
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 /**
  * Keeps track of the filters so that we can just call a function updating
@@ -62,6 +63,11 @@ export class AnnotationRepoFiltersHandler {
             modified = true;
         }
 
+        if (filters.color !== undefined) {
+            this.filters.color = filters.color;
+            modified = true;
+        }
+
         if (modified) {
             this.dispatch();
         }
@@ -82,12 +88,14 @@ export interface MutableAnnotationRepoFilters {
     /**
      * When true, only show flagged documents.
      */
-    flagged: boolean;
+    flagged?: boolean;
 
     /**
      *  When true, show both archived and non-archived documents.
      */
-    archived: boolean;
+    archived?: boolean;
+
+    color?: HighlightColor;
 
     text: string;
 
