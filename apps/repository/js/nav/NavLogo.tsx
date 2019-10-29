@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {Link} from "react-router-dom";
+import {Platforms} from "../../../../web/js/util/Platforms";
 
 const Styles: IStyleMap = {
     parent: {
@@ -33,10 +34,22 @@ export class NavLogo extends React.PureComponent<IProps, IState> {
 
     public render() {
 
+        const createLink = () => {
+
+            if (Platforms.isMobile()) {
+                return '/#annotations';
+            } else {
+                return '/';
+            }
+
+        };
+
+        const link = createLink();
+
         return (
             <div style={Styles.parent}>
                 <div style={Styles.child}>
-                    <Link to={{pathname: '/', hash: '#'}}>
+                    <Link to={{pathname: link, hash: '#'}}>
                         <img src="/apps/repository/img/icon.svg" height="25" alt="Polar"/>
                     </Link>
                 </div>

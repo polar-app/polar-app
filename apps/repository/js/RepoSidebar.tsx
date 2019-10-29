@@ -10,6 +10,8 @@ import ListGroup from 'reactstrap/lib/ListGroup';
 import {SimpleTooltipEx} from '../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
+import {Platforms} from "../../../web/js/util/Platforms";
+import {NullCollapse} from "../../../web/js/ui/null_collapse/NullCollapse";
 
 const log = Logger.create();
 
@@ -82,17 +84,22 @@ export class RepoSidebar extends React.Component<IProps, IState> {
             <div style={{display: 'flex'}}>
 
                 <div className="mt-auto mb-auto">
-                    <SimpleTooltipEx text="Toggle showing the sidebar">
 
-                        <div id="toggle-sidebar"
-                             className="mr-1">
-                            <Button color='light'
-                                    onClick={() => this.toggle()}>
-                                <i className="fas fa-bars"/>
-                            </Button>
-                        </div>
+                    <NullCollapse open={! isMobile}>
 
-                    </SimpleTooltipEx>
+                        <SimpleTooltipEx text="Toggle showing the sidebar">
+
+                            <div id="toggle-sidebar"
+                                 className="mr-1">
+                                <Button color='light'
+                                        onClick={() => this.toggle()}>
+                                    <i className="fas fa-bars"/>
+                                </Button>
+                            </div>
+
+                        </SimpleTooltipEx>
+                    </NullCollapse>
+
                 </div>
 
                 <div className="mt-auto mb-auto">
@@ -113,6 +120,8 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
             </div>
         );
+
+        const isMobile = Platforms.isMobile();
 
         return (
 
@@ -138,70 +147,74 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <ListGroup flush>
+                    <NullCollapse open={! isMobile}>
 
-                        <RepoSidebarItem id="sidebar-item-documents"
-                                         tooltip="Manage all documents you're reading including filtering and sorting."
-                                         target={{pathname: "/"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-archive"
-                                         text="Documents"/>
+                        <ListGroup flush>
 
-                        <RepoSidebarItem id="sidebar-item-annotations"
-                                         tooltip="Manage all annotations of all your documents in one central view."
-                                         target={{pathname: "/", hash: "annotations"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-layer-group"
-                                         text="Annotations"/>
+                            <RepoSidebarItem id="sidebar-item-documents"
+                                             tooltip="Manage all documents you're reading including filtering and sorting."
+                                             target={{pathname: "/"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-archive"
+                                             text="Documents"/>
 
-                        <RepoSidebarItem id="sidebar-item-groups"
-                                         tooltip="Show public groups"
-                                         target={{pathname: "/groups"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-user-friends"
-                                         text="Groups"/>
+                            <RepoSidebarItem id="sidebar-item-annotations"
+                                             tooltip="Manage all annotations of all your documents in one central view."
+                                             target={{pathname: "/", hash: "annotations"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-layer-group"
+                                             text="Annotations"/>
 
-                        {/*<RepoSidebarItem href="#editors-picks"*/}
-                                         {/*onClick={() => this.toggle()}*/}
-                                         {/*iconClassName="fas fa-star"*/}
-                                         {/*text="Editors Picks"/>*/}
+                            <RepoSidebarItem id="sidebar-item-groups"
+                                             tooltip="Show public groups"
+                                             target={{pathname: "/groups"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-user-friends"
+                                             text="Groups"/>
 
-                        <RepoSidebarItem id="sidebar-item-stats"
-                                         tooltip="Show stats on your usage of Polar including stats on tags, rate of document addition, etc."
-                                         target={{pathname: "/", hash: "stats"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-chart-line"
-                                         text="Statistics"/>
+                            {/*<RepoSidebarItem href="#editors-picks"*/}
+                                             {/*onClick={() => this.toggle()}*/}
+                                             {/*iconClassName="fas fa-star"*/}
+                                             {/*text="Editors Picks"/>*/}
 
-                        <RepoSidebarItem id="sidebar-item-logs"
-                                         tooltip="Show logs on internal activity during background operations like cloud activity and sync."
-                                         target={{pathname: "/", hash: "logs"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-info-circle"
-                                         text="Logs"/>
+                            <RepoSidebarItem id="sidebar-item-stats"
+                                             tooltip="Show stats on your usage of Polar including stats on tags, rate of document addition, etc."
+                                             target={{pathname: "/", hash: "stats"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-chart-line"
+                                             text="Statistics"/>
 
-                        <RepoSidebarItem id="sidebar-item-support"
-                                         tooltip="Get support for Polar."
-                                         target={{pathname: "/", hash: "support"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-hands-helping"
-                                         text="Support"/>
+                            <RepoSidebarItem id="sidebar-item-logs"
+                                             tooltip="Show logs on internal activity during background operations like cloud activity and sync."
+                                             target={{pathname: "/", hash: "logs"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-info-circle"
+                                             text="Logs"/>
 
-                        <RepoSidebarItem id="sidebar-item-upgrade-to-premium"
-                                         tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
-                                         target={{pathname: "/", hash: "plans"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-certificate"
-                                         text="Upgrade to Premium"/>
+                            <RepoSidebarItem id="sidebar-item-support"
+                                             tooltip="Get support for Polar."
+                                             target={{pathname: "/", hash: "support"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-hands-helping"
+                                             text="Support"/>
 
-                        <RepoSidebarItem id="sidebar-item-whatsnew"
-                                         tooltip="Find out what's new with each Polar release."
-                                         target={{pathname: "/", hash: "whats-new"}}
-                                         onClick={() => this.toggle()}
-                                         iconClassName="fas fa-bullhorn"
-                                         text="Whats New"/>
+                            <RepoSidebarItem id="sidebar-item-upgrade-to-premium"
+                                             tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
+                                             target={{pathname: "/", hash: "plans"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-certificate"
+                                             text="Upgrade to Premium"/>
 
-                    </ListGroup>
+                            <RepoSidebarItem id="sidebar-item-whatsnew"
+                                             tooltip="Find out what's new with each Polar release."
+                                             target={{pathname: "/", hash: "whats-new"}}
+                                             onClick={() => this.toggle()}
+                                             iconClassName="fas fa-bullhorn"
+                                             text="Whats New"/>
+
+                        </ListGroup>
+
+                    </NullCollapse>
 
                 </section>
             </div>

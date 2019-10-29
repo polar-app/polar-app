@@ -12,6 +12,7 @@ import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
 import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 import {SplitBarLeft} from '../SplitBarLeft';
+import {Platforms} from "../../../../web/js/util/Platforms";
 
 const log = Logger.create();
 
@@ -44,7 +45,7 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 
             };
 
-            return ( <SettingsDropdown prefs={prefs}/> );
+            return ( <SettingsDropdown prefs={prefs} hidden={Platforms.isMobile()}/> );
 
         };
 
@@ -65,7 +66,7 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 
                         <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
 
-                        <LinkDropdown/>
+                        <LinkDropdown hidden={Platforms.isMobile()}/>
 
                         <HelpDropdown/>
 

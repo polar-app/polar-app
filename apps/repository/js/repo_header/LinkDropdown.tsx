@@ -19,6 +19,7 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
 
             <UncontrolledDropdown className="ml-1"
                                   size="sm"
+                                  hidden={this.props.hidden}
                                   id="links-dropdown">
 
                 <DropdownToggle className="text-muted"
@@ -120,6 +121,7 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
+    readonly hidden?: boolean;
 }
 
 interface IState {

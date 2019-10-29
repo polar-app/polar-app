@@ -16,6 +16,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
         return (
 
             <UncontrolledDropdown className="ml-1"
+                                  hidden={this.props.hidden}
                                   size="sm"
                                   id="settings-dropdown">
 
@@ -47,6 +48,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 
 interface IProps {
     readonly prefs: () => Prefs | undefined;
+    readonly hidden?: boolean;
 }
 
 interface IState {

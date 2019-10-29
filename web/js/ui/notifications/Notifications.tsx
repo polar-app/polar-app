@@ -5,6 +5,7 @@ import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../toaster/Toaster';
 import {NotificationButton} from './NotificationButton';
+import {Platforms} from "../../util/Platforms";
 
 const log = Logger.create();
 
@@ -32,6 +33,10 @@ export class Notifications extends React.PureComponent<IProps, IState> {
     }
 
     public render() {
+
+        if (Platforms.isMobile()) {
+            return <div/>;
+        }
 
         return (
 

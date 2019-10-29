@@ -114,19 +114,18 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                 </header>
 
-                <Dock
-                    componentClassNames={{
+                <Dock componentClassNames={{
                         left: 'd-none-mobile',
                         splitter: 'd-none-mobile'
-                    }}
-                    left={
-                        // TODO this should be its own component
-                        <div style={{
-                            display: 'flex' ,
-                            flexDirection: 'column',
-                            height: '100%',
-                            overflow: 'auto',
-                        }}>
+                      }}
+                      left={
+                          // TODO this should be its own component
+                          <div style={{
+                              display: 'flex' ,
+                              flexDirection: 'column',
+                              height: '100%',
+                              overflow: 'auto',
+                          }}>
 
                             <div className="m-1">
 
@@ -146,15 +145,14 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                             </div>
 
                         </div>
-                    }
-                    right={
-                        <PreviewAndMainViewDock data={this.state.data}
-                                                updateFilters={filters => this.filtersHandler.update(filters)}
-                                                {...this.props}/>
-                    }
-                    side='left'
-                    initialWidth={300}/>
-
+                      }
+                      right={
+                          <PreviewAndMainViewDock data={this.state.data}
+                                                  updateFilters={filters => this.filtersHandler.update(filters)}
+                                                  {...this.props}/>
+                      }
+                      side='left'
+                      initialWidth={300}/>
 
             </FixedNav>
 

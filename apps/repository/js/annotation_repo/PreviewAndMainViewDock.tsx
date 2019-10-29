@@ -10,6 +10,8 @@ import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
 import {AnnotationRepoFilterBar} from './AnnotationRepoFilterBar';
 import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
+import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
+import {Platforms} from "../../../../web/js/util/Platforms";
 
 export default class PreviewAndMainViewDock extends React.Component<IProps, IState> {
 
@@ -25,7 +27,11 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
         return (
 
-            <Dock left={
+            <Dock componentClassNames={{
+                    right: 'd-none-mobile',
+                    splitter: 'd-none-mobile'
+                  }}
+                  left={
                     // TODO: this should become its own component.
                     <div style={{display: 'flex' , flexDirection: 'column', height: '100%'}}>
 
@@ -56,8 +62,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                     </div>
                   }
                   right={
-                      <div className="mt-2 pl-1 pr-1"
-                           style={{}}>
+                      <div className="mt-2 pl-1 pr-1">
                           <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
                                                   repoAnnotation={this.state.repoAnnotation}/>
                       </div>
