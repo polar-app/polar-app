@@ -2,10 +2,10 @@ import * as React from 'react';
 import {Button, Progress} from "reactstrap";
 import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Answer} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/S2Plus";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {Percentages} from "polar-shared/src/util/Percentages";
+import {Answer} from "../../../../../polar-app-public/polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 export class Reviewer extends React.Component<IProps, IState> {
 
