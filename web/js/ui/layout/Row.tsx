@@ -27,7 +27,7 @@ export class Row extends React.PureComponent<IProps, any> {
 
             return (
 
-                <div style={{flexGrow: 1}}>
+                <div className="react-row-main" style={{flexGrow: 1, overflow: 'auto'}}>
                     {this.props.children}
                 </div>
             );
@@ -35,7 +35,7 @@ export class Row extends React.PureComponent<IProps, any> {
 
     };
 
-    static Header = class extends React.PureComponent<any, any>{
+    static Left = class extends React.PureComponent<any, any>{
 
         public render() {
 
@@ -49,7 +49,7 @@ export class Row extends React.PureComponent<IProps, any> {
 
     };
 
-    static Footer = class extends React.PureComponent<any, any>{
+    static Right = class extends React.PureComponent<any, any>{
 
         public render() {
 

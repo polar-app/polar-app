@@ -27,7 +27,7 @@ export class Column extends React.PureComponent<IProps, any> {
 
             return (
 
-                <div style={{flexGrow: 1}}>
+                <div className="react-column-main" style={{flexGrow: 1, overflow: 'auto'}}>
                     {this.props.children}
                 </div>
             );

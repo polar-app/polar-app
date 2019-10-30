@@ -6,6 +6,8 @@ import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 import {TagNodes, TagType} from "../../tags/TagNodes";
 import {TreeState} from "./TreeState";
+import {Row} from "../layout/Row";
+import {Column} from "../layout/Column";
 
 class Styles {
 
@@ -71,25 +73,41 @@ export class TagTree extends React.Component<IProps, IState> {
 
             <div style={Styles.PARENT}>
 
-                <div style={Styles.BAR}>
+                <Column>
 
-                    <div style={{flexGrow: 1}}>
-                        <TagFilter tags={tags}
-                                   onChange={tags => this.onSelectedTags(tags)}
-                                   disabled={this.props.filterDisabled}/>
-                    </div>
+                    <Column.Header>
 
-                    <NullCollapse open={!this.props.noCreate}>
+                        <Row>
+                            <Row.Main>
+                                <TagFilter tags={tags}
+                                           onChange={tags => this.onSelectedTags(tags)}
+                                           disabled={this.props.filterDisabled}/>
+                            </Row.Main>
 
-                        {/*<TagCreateButton selected={this.props.selected}*/}
-                        {/*                 onCreated={path => this.onCreated(path)}/>*/}
+                            <Row.Right>
 
-                    </NullCollapse>
+                                <NullCollapse open={!this.props.noCreate}>
 
-                </div>
+                                    {/*<TagCreateButton selected={this.props.selected}*/}
+                                    {/*                 onCreated={path => this.onCreated(path)}/>*/}
 
-                <TreeView roots={[root]}
-                          treeState={this.props.treeState}/>
+                                </NullCollapse>
+
+                            </Row.Right>
+
+                        </Row>
+
+                    </Column.Header>
+
+                    <Column.Main>
+
+                        <TreeView roots={[root]}
+                                  treeState={this.props.treeState}/>
+
+                    </Column.Main>
+
+                </Column>
+
 
             </div>
 
