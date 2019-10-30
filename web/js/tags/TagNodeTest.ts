@@ -81,7 +81,8 @@ describe('TagNode', function() {
             ].map(current => Tags.create(current))
              .map(current => {
                     const count = 1;
-                    return {...current, count};
+                    const members = ['0101'];
+                    return {...current, count, members};
                 });
 
             assertJSON(TagNodes.createFoldersRoot({tags, type: 'folder'}), {
@@ -133,7 +134,8 @@ describe('TagNode', function() {
             ].map(current => Tags.create(current))
                 .map(current => {
                     const count = 1;
-                    return {...current, count};
+                    const members = ['0101'];
+                    return {...current, count, members};
                 });
 
             assertJSON(TagNodes.createFoldersRoot({tags, type: 'folder'}), {

@@ -20,7 +20,8 @@ export class MockFolderTree extends React.Component<IProps, IState> {
         ].map(current => Tags.create(current))
             .map(current => {
                 const count = Math.floor(Math.random() * 100);
-                return {...current, count};
+                const members = ['0x01'];
+                return {...current, count, members};
             });
 
 

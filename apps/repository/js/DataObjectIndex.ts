@@ -1,12 +1,13 @@
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {TagDescriptor} from '../../../web/js/tags/TagNode';
+import {Sets} from "polar-shared/src/util/Sets";
 
 
 /**
  * Keeps an index of our tag and the keys within this tag so that add/remove
  * is idempotent.
  */
-class TagSet {
+class TagMembers {
 
     private keys = new Set<string>();
 
@@ -26,16 +27,20 @@ class TagSet {
         return this.keys.size;
     }
 
+    public toArray() {
+        return Sets.toArray(this.keys);
+    }
+
 }
 
 class TagIndex {
 
-    private backing: {[id: string]: TagSet} = {};
+    private backing: {[id: string]: TagMembers} = {};
 
     public add(key: string, tag: Tag) {
 
         if (! this.backing[tag.id]) {
-            this.backing[tag.id] = new TagSet(tag);
+            this.backing[tag.id] = new TagMembers(tag);
         }
 
         this.backing[tag.id].add(key);
@@ -61,7 +66,8 @@ class TagIndex {
         return Object.values(this.backing).map(current => {
             return {
                 ...current.tag,
-                count: current.count()
+                count: current.count(),
+                members: current.toArray()
             };
 
         });

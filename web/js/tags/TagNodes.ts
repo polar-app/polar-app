@@ -4,6 +4,8 @@ import {TagPaths} from "./TagPaths";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {MutableTagNode, TagDescriptor, TagNode} from "./TagNode";
 import {TRoot} from "../ui/tree/TreeView";
+import {IDStr} from "polar-shared/src/util/Strings";
+import {Sets} from "polar-shared/src/util/Sets";
 
 export class TagNodes {
 
@@ -23,7 +25,7 @@ export class TagNodes {
                 }
             });
 
-        const count = this.computeCount(tags);
+        const tagMembership = this.computeTagMembership(tags);
 
         const name = 'Tags';
 
@@ -34,12 +36,12 @@ export class TagNodes {
             name,
             path: '/',
             children,
-            count,
+            ...tagMembership,
             title: name,
             value: {
                 id: '/',
                 label: name,
-                count
+                ...tagMembership
             }
         };
 
@@ -47,14 +49,25 @@ export class TagNodes {
 
     }
 
-    private static computeCount(tags: ReadonlyArray<TagDescriptor>) {
+    private static computeTagMembership(tags: ReadonlyArray<TagDescriptor>): TagMembership {
 
-        const count =
-            tags.filter(current => current.label !== '/')
-                .map(current => current.count)
-                .reduce(Reducers.SUM, 0);
+        const set = new Set<IDStr>();
 
-        return count;
+        // FIXME this is wrong because we're not de-duplicating the count of docs under the count.  If a doc is tagged
+        // twice it will increment the count of two tags.
+
+        const filtered = tags.filter(current => current.label !== '/');
+
+        for (const tag of filtered) {
+            for (const member of tag.members) {
+                set.add(member);
+            }
+        }
+
+        const count = set.size;
+        const members = Sets.toArray(set);
+
+        return {count, members};
 
     }
 
@@ -80,10 +93,10 @@ export class TagNodes {
         const tagNodeIndex = new TagNodeIndex();
 
         // the global count for all nodes
-        const count = this.computeCount(tags);
+        const tagMembership = this.computeTagMembership(tags);
 
         // always register a root so we have at least one path
-        const root = tagNodeIndex.register('/', '/', {id: '/', label: '/', count});
+        const root = tagNodeIndex.register('/', '/', {id: '/', label: '/', ...tagMembership});
 
         const sortedTagIndexKeys = Object.keys(tagIndex).sort();
 
@@ -108,7 +121,7 @@ export class TagNodes {
 
                             const virtualTag = Tags.create(pathEntry.path);
 
-                            return {...virtualTag, count: 0};
+                            return {...virtualTag, members: [], count: 0};
 
                         };
 
@@ -130,14 +143,17 @@ export class TagNodes {
 
 }
 
+export interface TagMembership {
+    readonly count: number;
+    readonly members: ReadonlyArray<IDStr>;
+}
+
 export type TagType = 'folder' | 'regular';
 
 export interface CreateOpts {
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly type: TagType;
 }
-
-
 
 export class TagNodeIndex {
 

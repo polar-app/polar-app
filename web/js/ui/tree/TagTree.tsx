@@ -104,6 +104,7 @@ export class TagTree extends React.Component<IProps, IState> {
         tags.push({
             label: path,
             id: path,
+            members: [],
             count: 0
         });
 
