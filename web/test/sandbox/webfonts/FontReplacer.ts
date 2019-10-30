@@ -1,4 +1,4 @@
-import {StringBuffer} from '../../../js/util/StringBuffer';
+import {StringBuffer} from 'polar-shared/src/util/StringBuffer';
 
 export interface StandardFontIndex {
     [name: string]: FontType;

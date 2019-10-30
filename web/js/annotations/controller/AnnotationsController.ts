@@ -2,7 +2,7 @@ import {DialogWindowOptions, Resource, ResourceType} from '../../ui/dialog_windo
 import {DialogWindowClient} from '../../ui/dialog_window/DialogWindowClient';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
-import {Nullable} from '../../util/ts/Nullable';
+import {Nullable} from 'polar-shared/src/util/Nullable';
 import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
 import {IPCClient} from '../../ipc/handler/IPCClient';
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
