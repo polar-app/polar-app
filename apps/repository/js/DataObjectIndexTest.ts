@@ -42,42 +42,60 @@ describe('DataObjectIndex', function() {
         ]);
 
         assertJSON(index.toTagDescriptors(), [
-               {
-                   "id": "nice",
-                   "label": "nice",
-                   "count": 1
-               },
-               {
-                   "id": "happy",
-                   "label": "happy",
-                   "count": 1
-               },
-               {
-                   "id": "mean",
-                   "label": "mean",
-                   "count": 1
-               },
-               {
-                   "id": "bad",
-                   "label": "bad",
-                   "count": 1
-               }
-           ]);
+            {
+                "id": "nice",
+                "label": "nice",
+                "count": 1,
+                "members": [
+                    "alice"
+                ]
+            },
+            {
+                "id": "happy",
+                "label": "happy",
+                "count": 1,
+                "members": [
+                    "alice"
+                ]
+            },
+            {
+                "id": "mean",
+                "label": "mean",
+                "count": 1,
+                "members": [
+                    "bob"
+                ]
+            },
+            {
+                "id": "bad",
+                "label": "bad",
+                "count": 1,
+                "members": [
+                    "bob"
+                ]
+            }
+        ]);
 
         index.remove('bob');
 
         assertJSON(index.toTagDescriptors(), [
-                       {
-                           "id": "nice",
-                           "label": "nice",
-                           "count": 1
-                       },
-                       {
-                           "id": "happy",
-                           "label": "happy",
-                           "count": 1
-                       }
-                   ]
+                {
+                    "id": "nice",
+                    "label": "nice",
+                    "count": 1,
+                    "members": [
+                        "alice"
+                    ]
+                },
+                {
+                    "id": "happy",
+                    "label": "happy",
+                    "count": 1,
+                    "members": [
+                        "alice"
+                    ]
+                }
+            ]
         );
 
     });
