@@ -54,31 +54,6 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
                 </div>
 
-                {/*<Button color="light" className="p-0">*/}
-                {/*    <i className="fas fa-swatchbook"/>*/}
-                {/*</Button>*/}
-
-
-                {/*<Popover placement="bottom"*/}
-                {/*         trigger="legacy"*/}
-                {/*         fade={false}*/}
-                {/*         delay={0}*/}
-                {/*         isOpen={this.state.open}*/}
-                {/*         target={id}*/}
-                {/*         toggle={this.deactivate}>*/}
-
-                {/*    <PopoverBody className="shadow rounded p-2"*/}
-                {/*                 style={{backgroundColor: '#ffffff'}}>*/}
-
-                {/*        <ColorSelectorBox onSelected={(color) => {*/}
-                {/*            this.deactivate();*/}
-                {/*            onSelected(color);*/}
-                {/*        }}/>*/}
-
-                {/*    </PopoverBody>*/}
-
-                {/*</Popover>*/}
-
                 <HighlightColorFilterButton onSelected={color => this.props.updateFilters({color})}/>
 
                 <Right/>
