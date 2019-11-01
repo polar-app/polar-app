@@ -1,3 +1,14 @@
+# pending
+
+- Flashcards now inherit the text of the annotation when created so that the
+  user doesn't have to do a duplicate copy/paste
+
+- More work on mobile including disabling some features when using the app.
+
+- we now have a *basic* dropdown selector.
+
+- fixed bug with the root folders having the wrong counts
+
 # 1.40.1
 
 - the dropdowns were broken and appearing off screen which is now fixed.
