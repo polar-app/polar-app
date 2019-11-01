@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {Button, Progress} from "reactstrap";
 import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Answer} from "../../../../../polar-app-public/polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Task} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 
 export class Reviewer extends React.Component<IProps, IState> {
 
@@ -14,26 +13,26 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         this.onAnswer = this.onAnswer.bind(this);
 
-        const pending = [...this.props.reviews];
-        const total = this.props.reviews.length;
-        const review = pending.shift();
+        const pending = [...this.props.tasks];
+        const total = this.props.tasks.length;
+        const task = pending.shift();
 
         this.state = {
-            review, pending, total, finished: 0
+            task, pending, total, finished: 0
         };
 
     }
 
     public render() {
 
-        const review = this.state.review;
+        const task = this.state.task;
 
-        if (! review) {
+        if (! task) {
             // we're done...
             return <div/>;
         }
 
-        const {id, text, created, color} = review;
+        const {id, text, created, color} = task;
 
         const perc = Math.floor(Percentages.calculate(this.state.finished, this.state.total));
 
@@ -122,15 +121,15 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         this.props.onAnswer(id, answer);
 
-        const review = this.state.pending.shift();
+        const task = this.state.pending.shift();
 
-        if (! review) {
+        if (! task) {
             this.props.onFinished();
         }
 
         this.setState({
             ...this.state,
-            review,
+            task,
             finished: this.state.finished + 1
         });
 
@@ -140,7 +139,7 @@ export class Reviewer extends React.Component<IProps, IState> {
 
 export interface IProps {
 
-    readonly reviews: ReadonlyArray<Review>;
+    readonly tasks: ReadonlyArray<Task>;
 
     /**
      * Callback for when we receive answers and their values.
@@ -156,24 +155,12 @@ export interface IState {
     /**
      * The review we're working with or undefined when there are no more.
      */
-    readonly review?: Review | undefined;
+    readonly task?: Task | undefined;
 
-    readonly pending: Review[];
+    readonly pending: Task[];
 
     readonly finished: number;
 
     readonly total: number;
-
-}
-
-export interface Review {
-
-    readonly id: IDStr;
-
-    readonly text: string;
-
-    readonly created: ISODateTimeString;
-
-    readonly color: HighlightColor;
 
 }

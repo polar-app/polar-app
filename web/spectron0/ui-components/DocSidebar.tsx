@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {DocDetail} from "../../js/metadata/DocDetail";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {PropertyTable} from "./PropertyTable";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 // TODO:
 //     - format the URL with an <a>
@@ -36,11 +37,13 @@ export class DocSidebar extends React.Component<IProps, IState> {
 
                 <PropertyTable>
                     <PropertyTable.Row name="Added" value={this.props.added}/>
+                    <PropertyTable.Row name="Updated" value={this.props.updated}/>
                     <PropertyTable.Row name="URL" value={this.props.url}/>
                     <PropertyTable.Row name="DOI" value={this.props.doi}/>
                     <PropertyTable.Row name="Year" value={this.props.published ? ISODateTimeStrings.toISOYear(this.props.published) : undefined}/>
                     <PropertyTable.Row name="Publisher" value={this.props.publisher}/>
                     <PropertyTable.Row name="Authors" value={(this.props.authors || []).map(current => current.displayName)}/>
+                    <PropertyTable.Row name="Tags" value={(this.props.tags || []).map(current => current.label)}/>
                 </PropertyTable>
 
             </div>
@@ -73,7 +76,8 @@ export class DocSidebar extends React.Component<IProps, IState> {
 }
 
 interface IProps extends DocDetail {
-
+    readonly updated: ISODateTimeString;
+    readonly tags?: ReadonlyArray<Tag>;
 }
 
 interface IState {
