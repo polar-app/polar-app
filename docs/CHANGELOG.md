@@ -5,7 +5,7 @@
 
 - More work on mobile including disabling some features when using the app.
 
-- we now have a *basic* dropdown selector.
+- We now have a *basic* dropdown selector for the annotation view.
 
 - fixed bug with the root folders having the wrong counts
 
