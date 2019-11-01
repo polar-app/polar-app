@@ -4,7 +4,7 @@
  */
 import {Image} from './Image';
 import {Author} from './Author';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
 
 export interface DocDetail {
@@ -55,6 +55,12 @@ export interface DocDetail {
      * The time this file was added to the repository.
      */
     readonly added?: ISODateTimeString;
+
+    readonly published?: ISODateString | ISODateTimeString;
+
+    readonly publisher?: string;
+
+    readonly doi?: string;
 
 }
 

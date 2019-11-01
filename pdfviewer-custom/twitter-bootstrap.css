@@ -62,6 +62,7 @@ button.dropdown-item:hover {
 .text-sm input,
 .text-sm textarea,
 .text-sm button,
+.text-sm p,
 .text-sm {
     font-size: 14px;
 }
@@ -69,6 +70,7 @@ button.dropdown-item:hover {
 .text-md input,
 .text-md textarea,
 .text-md button,
+.text-md p,
 .text-md {
     font-size: 16px;
 }
@@ -76,6 +78,7 @@ button.dropdown-item:hover {
 .text-lg input,
 .text-lg textarea,
 .text-lg button,
+.text-lg p,
 .text-lg {
     font-size: 18px;
 }

@@ -10,6 +10,7 @@ import {FakePopup} from "./FakePopup";
 import { BasicPopup } from './BasicPopup';
 import { PDFViewer } from './PDFViewer';
 import {Review, Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
+import {DocSidebar} from "./DocSidebar";
 
 const styles = {
     swatch: {
@@ -190,11 +191,29 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
             },
         ];
 
+        const authors = [
+            {displayName: 'Alice Smith'},
+            {displayName: 'John Barnes'}
+        ];
+
         return (
 
             <div style={{margin: '5px'}}>
 
-                <Reviewer reviews={reviews} onAnswer={(id, answer) => console.log("got answer: ", id, answer)} onFinished={() => console.log('finished')}/>
+                {/*<Reviewer reviews={reviews} onAnswer={(id, answer) => console.log("got answer: ", id, answer)} onFinished={() => console.log('finished')}/>*/}
+
+                <div className="border border-dark m-1" style={{width: '450px'}}>
+                    <DocSidebar fingerprint="0x01"/>
+                </div>
+
+                <div className="border border-dark m-1" style={{width: '450px'}}>
+                    <DocSidebar fingerprint="0x01"
+                                title="Bitcoin: A Peer-to-Peer Electronic Cash System"
+                                subtitle="A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution."
+                                authors={authors}
+                                url='http://www.example.com/this/is/a/long-path/00000000000000000000000000000000000000000000000000.pdf'
+                                published="2017"/>
+                </div>
 
                 {/*<PDFViewer src="foo"/>*/}
 
