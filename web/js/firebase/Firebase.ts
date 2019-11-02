@@ -75,12 +75,11 @@ export class Firebase {
 
     }
 
-
-
-
 }
 
-export type UserID = string;
+export type UserIDStr = string;
+
+export type UserID = UserIDStr;
 
 /**
  * Function who's sole purpose is unsubscribing to snapshots.

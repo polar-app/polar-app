@@ -9,6 +9,9 @@ import {
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
+import {IDMaps} from "polar-shared/src/util/IDMaps";
+import {Firebase} from "../../../../web/js/firebase/Firebase";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 
 export class ReviewerTasks {
 
@@ -27,12 +30,21 @@ export class ReviewerTasks {
                                   };
                               });
 
+        const uid = Optional.of(await Firebase.currentUser())
+            .map(user => user.uid)
+            .getOrUndefined();
 
-        // TODO: using an AsyncWorkQueue would be better/faster.
+        if (! uid) {
+            throw new Error("Not authenticated");
+        }
+
+        const spacedReps = await SpacedReps.list(uid);
+
+        const spacedRepsMap = IDMaps.toIDMap(spacedReps);
 
         const optionalTaskRepResolver: OptionalTaskRepResolver  = async (task: Task): Promise<TaskRep | undefined> => {
 
-            const spacedRep = await SpacedReps.get(task.id);
+            const spacedRep = spacedRepsMap[task.id];
 
             if (! spacedRep) {
                 return undefined;

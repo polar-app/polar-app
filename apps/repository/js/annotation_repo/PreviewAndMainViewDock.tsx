@@ -40,6 +40,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                             <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                      updateFilters={this.props.updateFilters}
                                                      tagPopoverPlacement="auto"
+                                                     repoAnnotations={this.props.data}
                                                      right={
                                                          <div/>
                                                      }

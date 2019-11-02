@@ -5,11 +5,17 @@ import Input from 'reactstrap/lib/Input';
 import {PartialAnnotationRepoFilters, UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
 import {Placement} from 'popper.js';
 import {HighlightColorFilterButton} from "./HighlightColorFilterButton";
+import {Button} from "reactstrap";
+import {Reviewers} from "../../reviewer/Reviewers";
+import {RepoAnnotation} from "../../RepoAnnotation";
 
 export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.startReviewer = this.startReviewer.bind(this);
+
     }
 
     public render() {
@@ -27,6 +33,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
         return (
 
             <div id="filter-bar"
+                 className="pr-1"
                  style={{
                      display: 'flex',
                  }}>
@@ -56,6 +63,15 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
                 <HighlightColorFilterButton onSelected={color => this.props.updateFilters({color})}/>
 
+                <Button color="success"
+                        size="sm"
+                        className="font-weight-bold"
+                        onClick={() => this.startReviewer()}>
+
+                        <i className="fas fa-graduation-cap"/> Start Review
+
+                </Button>
+
                 <Right/>
 
             </div>
@@ -64,9 +80,17 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
     }
 
+    private startReviewer() {
+
+        Reviewers.create(this.props.repoAnnotations, 10)
+            .catch(err => console.error("Unable to start review: ", err));
+    }
+
 }
 
 export interface IProps {
+
+    readonly repoAnnotations: ReadonlyArray<RepoAnnotation>;
 
     /**
      * An index of the currently available tags.
