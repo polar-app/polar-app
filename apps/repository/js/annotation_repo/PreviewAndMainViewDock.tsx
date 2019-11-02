@@ -35,19 +35,6 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                     // TODO: this should become its own component.
                     <div style={{display: 'flex' , flexDirection: 'column', height: '100%'}}>
 
-                        <div className="mb-1 mt-1">
-
-                            <AnnotationRepoFilterBar tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                     updateFilters={this.props.updateFilters}
-                                                     tagPopoverPlacement="auto"
-                                                     repoAnnotations={this.props.data}
-                                                     right={
-                                                         <div/>
-                                                     }
-                            />
-
-                        </div>
-
                         <div style={{flexGrow: 1, overflowY: 'auto'}}>
 
                             <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}

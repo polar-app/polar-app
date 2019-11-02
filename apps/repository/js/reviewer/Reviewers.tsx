@@ -18,6 +18,13 @@ const log = Logger.create();
 
 export class Reviewers {
 
+    public static start(repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
+
+        this.create(repoDocAnnotations, limit)
+            .catch(err => console.error("Unable to start review: ", err));
+
+    }
+
     public static async create(repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
 
         const firestore = await Firestore.getInstance();

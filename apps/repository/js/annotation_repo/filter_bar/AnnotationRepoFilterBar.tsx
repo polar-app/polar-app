@@ -1,22 +1,16 @@
 import * as React from 'react';
 import {TagsDB} from '../../TagsDB';
-import InputGroup from 'reactstrap/lib/InputGroup';
-import Input from 'reactstrap/lib/Input';
-import {PartialAnnotationRepoFilters, UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
+import {UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
 import {Placement} from 'popper.js';
-import {HighlightColorFilterButton} from "./HighlightColorFilterButton";
-import {Button} from "reactstrap";
 import {Reviewers} from "../../reviewer/Reviewers";
 import {RepoAnnotation} from "../../RepoAnnotation";
 import {StartReviewButton} from "./StartReviewButton";
+import {TextFilter} from "./TextFilter";
 
 export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
-
-        this.startReviewer = this.startReviewer.bind(this);
-
     }
 
     public render() {
@@ -39,45 +33,32 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                      display: 'flex',
                  }}>
 
-                <div className="header-filter-box mr-1 pl-1"
-                     style={{
-                         whiteSpace: 'nowrap',
-                         marginTop: 'auto',
-                         marginBottom: 'auto',
-                         flexGrow: 1
-                     }}>
+                {/*<div className="header-filter-box mr-1 pl-1"*/}
+                {/*     style={{*/}
+                {/*         whiteSpace: 'nowrap',*/}
+                {/*         marginTop: 'auto',*/}
+                {/*         marginBottom: 'auto',*/}
+                {/*         flexGrow: 1*/}
+                {/*     }}>*/}
 
-                    <div className="header-filter-box m-0">
+                {/*    <div className="header-filter-box m-0">*/}
 
-                        <InputGroup size="sm">
+                {/*        <TextFilter updateFilters={this.props.updateFilters}/>*/}
 
-                            <Input id="filter_title"
-                                   type="text"
-                                   placeholder="Filter by annotation text"
-                                   onChange={(value) => this.props.updateFilters({text: value.target.value})}/>
+                {/*    </div>*/}
 
-                        </InputGroup>
+                {/*</div>*/}
 
-                    </div>
+                {/*/!*<HighlightColorFilterButton onSelected={color => this.props.updateFilters({color})}/>*!/*/}
 
-                </div>
+                {/*<StartReviewButton onClick={() => Reviewers.start(this.props.repoAnnotations, 10)}/>*/}
 
-                {/*<HighlightColorFilterButton onSelected={color => this.props.updateFilters({color})}/>*/}
-
-                <StartReviewButton onClick={() => this.startReviewer()}/>
-
-                <Right/>
+                {/*<Right/>*/}
 
             </div>
 
         );
 
-    }
-
-    private startReviewer() {
-
-        Reviewers.create(this.props.repoAnnotations, 10)
-            .catch(err => console.error("Unable to start review: ", err));
     }
 
 }

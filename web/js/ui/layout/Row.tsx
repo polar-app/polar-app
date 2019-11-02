@@ -10,7 +10,8 @@ export class Row extends React.PureComponent<IProps, any> {
 
         return (
 
-            <div style={{
+            <div className={this.props.className || ""}
+                 style={{
                      display: 'flex',
                      flexDirection: 'row'
                  }}>
@@ -66,5 +67,5 @@ export class Row extends React.PureComponent<IProps, any> {
 }
 
 interface IProps {
-
+    readonly className?: string;
 }

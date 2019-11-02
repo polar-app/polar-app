@@ -54,6 +54,7 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
 
                 <Button color="light"
                         id={id}
+                        size="sm"
                         onClick={() => this.activate()}>
 
                     <i className="fas fa-swatchbook"/>

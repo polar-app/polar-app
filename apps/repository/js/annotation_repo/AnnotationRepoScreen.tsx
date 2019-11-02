@@ -22,6 +22,11 @@ import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
+import {Row} from "../../../../web/js/ui/layout/Row";
+import {StartReviewButton} from "./filter_bar/StartReviewButton";
+import {Reviewers} from "../reviewer/Reviewers";
+import {TextFilter} from "./filter_bar/TextFilter";
+import {HighlightColorFilterButton} from "./filter_bar/HighlightColorFilterButton";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -109,6 +114,23 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+
+                    <Row className="border-bottom pt-1 pb-1">
+                        <Row.Main>
+                            <StartReviewButton onClick={() => Reviewers.start(this.state.data, 10)}/>
+                        </Row.Main>
+
+                        <Row.Right>
+
+                            <div style={{display: 'flex'}}>
+                                <HighlightColorFilterButton onSelected={color => this.filtersHandler.update({color})}/>
+
+                                <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
+                            </div>
+
+                        </Row.Right>
+
+                    </Row>
 
                     <MessageBanner/>
 

@@ -334,7 +334,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
                     </header>
 
-
                     <Dock
                         componentClassNames={{
                             left: 'd-none-mobile',
