@@ -186,6 +186,7 @@
     "polar-web-extension-api": "^1.40.1",
     "polar-webapp-links": "^1.40.1",
     "polar-spaced-repetition": "^1.40.1",
+    "polar-firebase": "^1.40.1",
     "popper.js": "~1.16.0",
     "prop-types": "~15.6.2",
     "raphael": "~2.2.7",
