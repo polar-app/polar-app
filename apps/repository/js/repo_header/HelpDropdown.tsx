@@ -9,6 +9,7 @@ import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
+import {Platforms} from "../../../../web/js/util/Platforms";
 
 const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
 
@@ -52,12 +53,14 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       icon="fas fa-hands-helping"/>
 
                     <HelpDropdownItem id="chat-link"
+                                      hidden={Platforms.isMobile()}
                                       title="Chat"
                                       tooltip="Chat with other Polar users live via chat (Discord)"
                                       link="https://discord.gg/GT8MhA6"
                                       icon="fab fa-discord"/>
 
                     <HelpDropdownItem id="create-issue-link"
+                                      hidden={Platforms.isMobile()}
                                       title="Create Issue"
                                       tooltip="Create an issue (bug or feature) for the developer to investigate."
                                       link="https://github.com/burtonator/polar-bookshelf/issues/new/choose"
@@ -74,7 +77,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
 
-                    <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
+                    <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES || Platforms.isMobile()}
                                       id="donate-link"
                                       title="Donate"
                                       tooltip="Donate to Polar to support development."

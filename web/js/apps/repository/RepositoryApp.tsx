@@ -127,7 +127,7 @@ export class RepositoryApp {
 
             // PreviewDisclaimers.createWhenNecessary();
 
-            MobileDisclaimers.createWhenNecessary();
+            // MobileDisclaimers.createWhenNecessary();
 
             updatedDocInfoEventDispatcher.addEventListener(docInfo => {
                 this.onUpdatedDocInfo(docInfo);

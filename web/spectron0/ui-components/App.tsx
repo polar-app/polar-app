@@ -17,6 +17,7 @@ import {
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
 import {LightModal} from "../../js/ui/LightModal";
+import {StartReviewButton} from "../../../apps/repository/js/annotation_repo/filter_bar/StartReviewButton";
 
 const styles = {
     swatch: {
@@ -208,11 +209,13 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
 
             <div style={{margin: '5px'}}>
 
-                <LightModal>
-                    <Reviewer tasks={taskReps}
-                              onAnswer={(id, answer) => console.log("got answer: ", id, answer)}
-                              onFinished={() => console.log('finished')}/>
-                </LightModal>
+                <StartReviewButton onClick={NULL_FUNCTION}/>
+
+                {/*<LightModal>*/}
+                {/*    <Reviewer tasks={taskReps}*/}
+                {/*              onAnswer={(id, answer) => console.log("got answer: ", id, answer)}*/}
+                {/*              onFinished={() => console.log('finished')}/>*/}
+                {/*</LightModal>*/}
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01" updated={ISODateTimeStrings.create()}/>*/}

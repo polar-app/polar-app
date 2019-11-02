@@ -8,6 +8,7 @@ import {HighlightColorFilterButton} from "./HighlightColorFilterButton";
 import {Button} from "reactstrap";
 import {Reviewers} from "../../reviewer/Reviewers";
 import {RepoAnnotation} from "../../RepoAnnotation";
+import {StartReviewButton} from "./StartReviewButton";
 
 export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
 
@@ -46,7 +47,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                          flexGrow: 1
                      }}>
 
-                    <div className="header-filter-box">
+                    <div className="header-filter-box m-0 mr-1">
 
                         <InputGroup size="sm">
 
@@ -61,16 +62,9 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
                 </div>
 
-                <HighlightColorFilterButton onSelected={color => this.props.updateFilters({color})}/>
+                {/*<HighlightColorFilterButton onSelected={color => this.props.updateFilters({color})}/>*/}
 
-                <Button color="success"
-                        size="sm"
-                        className="font-weight-bold"
-                        onClick={() => this.startReviewer()}>
-
-                        <i className="fas fa-graduation-cap"/> Start Review
-
-                </Button>
+                <StartReviewButton onClick={() => this.startReviewer()}/>
 
                 <Right/>
 

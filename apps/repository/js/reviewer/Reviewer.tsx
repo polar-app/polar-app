@@ -56,7 +56,10 @@ export class Reviewer extends React.Component<IProps, IState> {
             background: 'var(--white)'
         };
 
-        if (! Platforms.isMobile()) {
+        if (Platforms.isMobile()) {
+            style.width = '100%';
+            style.height = '100%';
+        } else {
             style.maxHeight = '1000px';
             style.width = '800px';
             style.maxWidth = '800px';

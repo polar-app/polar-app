@@ -13,31 +13,33 @@ export class LightModal extends React.Component<IProps, IState> {
 
     public render() {
 
-        if (Platforms.isMobile()) {
+
+        const style: React.CSSProperties = {
+
+            // the positioning
+            position: "absolute",
+            zIndex: 999999999,
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+
+            // force things to be centered
+            display: 'flex',
+            alignItems: 'center'
+
+        };
+
+
+        if (! Platforms.isMobile()) {
             // on mobile we don't want to use a modal.
-            return this.props.children;
+            style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
         }
 
         return (
 
             <div className="p-auto"
-                 style={{
-
-                     // the positioning
-                     position: "absolute",
-                     zIndex: 999999999,
-                     left: 0,
-                     top: 0,
-                     width: '100%',
-                     height: '100%',
-
-                     // used so that we can have a dark background
-                     backgroundColor: 'rgba(0, 0, 0, 0.3)',
-
-                     display: 'flex',
-                     alignItems: 'center'
-
-                 }}>
+                 style={style}>
 
                 {this.props.children}
 

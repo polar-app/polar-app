@@ -41,7 +41,7 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
                                  placement="bottom">
 
                     <DropdownToggle size="sm" style={{fontWeight: 'bold'}} color="success" caret>
-                        <i className="fas fa-plus" style={{marginRight: '5px'}}/> Add &nbsp;
+                        <i className="fas fa-plus mr-1" /> Add &nbsp;
                     </DropdownToggle>
 
                 </SimpleTooltipEx>
