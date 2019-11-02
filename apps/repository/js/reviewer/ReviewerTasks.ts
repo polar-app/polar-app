@@ -30,9 +30,7 @@ export class ReviewerTasks {
                                   };
                               });
 
-        const uid = Optional.of(await Firebase.currentUser())
-            .map(user => user.uid)
-            .getOrUndefined();
+        const uid = await Firebase.currentUserID();
 
         if (! uid) {
             throw new Error("Not authenticated");

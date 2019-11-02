@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {Button, Progress} from "reactstrap";
 import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
-import {IDStr} from "polar-shared/src/util/Strings";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Answer} from "../../../../../polar-app-public/polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {Task} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {Task, TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 
 export class Reviewer extends React.Component<IProps, IState> {
 
@@ -12,6 +11,7 @@ export class Reviewer extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onAnswer = this.onAnswer.bind(this);
+        this.doNext = this.doNext.bind(this);
 
         const pending = [...this.props.tasks];
         const total = this.props.tasks.length;
@@ -95,17 +95,17 @@ export class Reviewer extends React.Component<IProps, IState> {
                     <Button color="danger"
                             className="m-1"
                             style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(id, 0.0)}>Again</Button>
+                            onClick={() => this.onAnswer(task, 0.0)}>Again</Button>
 
                     <Button color="secondary"
                             className="m-1"
                             style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(id, 0.5)}>Good</Button>
+                            onClick={() => this.onAnswer(task, 0.5)}>Good</Button>
 
                     <Button color="success"
                             className="m-1"
                             style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(id, 1.0)}>Easy</Button>
+                            onClick={() => this.onAnswer(task, 1.0)}>Easy</Button>
 
                 </div>
 
@@ -116,9 +116,14 @@ export class Reviewer extends React.Component<IProps, IState> {
 
     }
 
-    private onAnswer(id: IDStr, answer: Answer) {
+    private onAnswer(task: TaskRep, answer: Answer) {
 
-        this.props.onAnswer(id, answer);
+        this.props.onAnswer(task, answer);
+        this.doNext();
+
+    }
+
+    private doNext() {
 
         const task = this.state.pending.shift();
 
@@ -138,12 +143,12 @@ export class Reviewer extends React.Component<IProps, IState> {
 
 export interface IProps {
 
-    readonly tasks: ReadonlyArray<Task>;
+    readonly tasks: ReadonlyArray<TaskRep>;
 
     /**
      * Callback for when we receive answers and their values.
      */
-    readonly onAnswer: (id: IDStr, answer: Answer) => void;
+    readonly onAnswer: (task: TaskRep, answer: Answer) => void;
 
     readonly onFinished: () => void;
 
@@ -154,9 +159,9 @@ export interface IState {
     /**
      * The review we're working with or undefined when there are no more.
      */
-    readonly task?: Task | undefined;
+    readonly task?: TaskRep | undefined;
 
-    readonly pending: Task[];
+    readonly pending: TaskRep[];
 
     readonly finished: number;
 

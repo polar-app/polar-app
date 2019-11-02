@@ -75,6 +75,17 @@ export class Firebase {
 
     }
 
+    public static async currentUserID(): Promise<UserIDStr | undefined> {
+
+        const user = await this.currentUser();
+
+        if  (user) {
+            return user.uid;
+        }
+
+        return undefined;
+    }
+
 }
 
 export type UserIDStr = string;
