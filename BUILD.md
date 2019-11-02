@@ -13,6 +13,9 @@ sudo npm install -g lerna
 ### bump the version
 npm run-script dist-version
 
+### bootstrap we have the latest packages.
+lerna bootstrap
+
 ### compile latest verison of all modules
 lerna run compile
 
