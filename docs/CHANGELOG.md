@@ -1,5 +1,9 @@
 # pending
 
+- Annotation reviewer spaced repetition system finally integrated into Polar
+
+- Platform fonts changed on MacOS/Android/iOS to match the expected user fonts. 
+
 - Flashcards now inherit the text of the annotation when created so that the
   user doesn't have to do a duplicate copy/paste
 
@@ -7,7 +11,7 @@
 
 - We now have a *basic* dropdown selector for the annotation view.
 
-- fixed bug with the root folders having the wrong counts
+- Fixed bug with the root folders having the wrong counts
 
 # 1.40.1
 

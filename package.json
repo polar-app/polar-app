@@ -185,6 +185,7 @@
     "polar-shared": "^1.40.2",
     "polar-shared-webserver": "^1.40.2",
     "polar-spaced-repetition": "^1.40.2",
+    "polar-spaced-repetition-api": "^1.40.2",
     "polar-web-extension-api": "^1.40.2",
     "polar-webapp-links": "^1.40.2",
     "popper.js": "~1.16.0",
