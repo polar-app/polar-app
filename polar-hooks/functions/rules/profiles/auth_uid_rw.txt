@@ -7,5 +7,5 @@
 allow delete, read: if resource == null || resource.data == null;
 
 // only allow the user to read their own account
-allow read, write: if request.auth.uid == resource.data.uid;
+allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
 
