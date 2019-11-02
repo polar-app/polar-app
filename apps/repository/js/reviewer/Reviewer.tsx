@@ -5,6 +5,7 @@ import {Percentages} from "polar-shared/src/util/Percentages";
 import {Answer} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Platforms} from "../../../../web/js/util/Platforms";
+import {Row} from "../../../../web/js/ui/layout/Row";
 
 export class Reviewer extends React.Component<IProps, IState> {
 
@@ -14,27 +15,27 @@ export class Reviewer extends React.Component<IProps, IState> {
         this.onAnswer = this.onAnswer.bind(this);
         this.doNext = this.doNext.bind(this);
 
-        const pending = [...this.props.tasks];
-        const total = this.props.tasks.length;
-        const task = pending.shift();
+        const pending = [...this.props.taskReps];
+        const total = this.props.taskReps.length;
+        const taskRep = pending.shift();
 
         this.state = {
-            task, pending, total, finished: 0
+            taskRep, pending, total, finished: 0
         };
 
     }
 
     public render() {
 
-        const task = this.state.task;
+        const taskRep = this.state.taskRep;
 
-        if (! task) {
+        if (! taskRep) {
             // we're done...
             console.log("No tasks were given");
             return <div/>;
         }
 
-        const {id, text, created, color} = task;
+        const {id, text, created, color} = taskRep;
 
         const perc = Math.floor(Percentages.calculate(this.state.finished, this.state.total));
 
@@ -69,6 +70,32 @@ export class Reviewer extends React.Component<IProps, IState> {
 
             <div style={style}
                  className="ml-auto mr-auto h-100 border p-1">
+
+                <Row>
+                    <Row.Main>
+
+                        <b>Review</b>
+
+                    </Row.Main>
+
+                    <Row.Right>
+
+                        <Button size="sm" color="light" className="text-muted">
+                            <i className="fas fa-pause"/> suspend
+                        </Button>
+
+                        <Button size="sm"
+                                color="light"
+                                className="text-muted"
+                                onClick={() => this.props.onFinished(true)}>
+
+                            <i className="far fa-times-circle"/>
+
+                        </Button>
+
+                    </Row.Right>
+
+                </Row>
 
                 <div className="pt-1 pb-1">
 
@@ -105,17 +132,17 @@ export class Reviewer extends React.Component<IProps, IState> {
                     <Button color="danger"
                             className="m-1"
                             style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(task, 0.0)}>Again</Button>
+                            onClick={() => this.onAnswer(taskRep, 0.0)}>Again</Button>
 
                     <Button color="secondary"
                             className="m-1"
                             style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(task, 0.5)}>Good</Button>
+                            onClick={() => this.onAnswer(taskRep, 0.5)}>Good</Button>
 
                     <Button color="success"
                             className="m-1"
                             style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(task, 1.0)}>Easy</Button>
+                            onClick={() => this.onAnswer(taskRep, 1.0)}>Easy</Button>
 
                 </div>
 
@@ -126,24 +153,24 @@ export class Reviewer extends React.Component<IProps, IState> {
 
     }
 
-    private onAnswer(task: TaskRep, answer: Answer) {
+    private onAnswer(taskRep: TaskRep, answer: Answer) {
 
-        this.props.onAnswer(task, answer);
+        this.props.onAnswer(taskRep, answer);
         this.doNext();
 
     }
 
     private doNext() {
 
-        const task = this.state.pending.shift();
+        const taskRep = this.state.pending.shift();
 
-        if (! task) {
+        if (! taskRep) {
             this.props.onFinished();
         }
 
         this.setState({
             ...this.state,
-            task,
+            taskRep,
             finished: this.state.finished + 1
         });
 
@@ -151,16 +178,23 @@ export class Reviewer extends React.Component<IProps, IState> {
 
 }
 
+/**
+ * @param cancelled true if the user explicitly cancelled the review.
+ */
+export type FinishedCallback = (cancelled?: boolean) => void;
+
 export interface IProps {
 
-    readonly tasks: ReadonlyArray<TaskRep>;
+    readonly taskReps: ReadonlyArray<TaskRep>;
 
     /**
      * Callback for when we receive answers and their values.
      */
-    readonly onAnswer: (task: TaskRep, answer: Answer) => void;
+    readonly onAnswer: (taskRep: TaskRep, answer: Answer) => void;
 
-    readonly onFinished: () => void;
+    readonly onSuspended: (taskRep: TaskRep) => void;
+
+    readonly onFinished: (cancelled?: boolean) => void;
 
 }
 
@@ -169,7 +203,7 @@ export interface IState {
     /**
      * The review we're working with or undefined when there are no more.
      */
-    readonly task?: TaskRep | undefined;
+    readonly taskRep?: TaskRep | undefined;
 
     readonly pending: TaskRep[];
 

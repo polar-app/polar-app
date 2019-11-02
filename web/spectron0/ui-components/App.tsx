@@ -212,8 +212,9 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
                 {/*<StartReviewButton onClick={NULL_FUNCTION}/>*/}
 
                 <LightModal>
-                    <Reviewer tasks={taskReps}
+                    <Reviewer taskReps={taskReps}
                               onAnswer={(id, answer) => console.log("got answer: ", id, answer)}
+                              onSuspended={NULL_FUNCTION}
                               onFinished={() => console.log('finished')}/>
                 </LightModal>
 

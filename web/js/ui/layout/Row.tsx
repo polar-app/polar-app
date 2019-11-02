@@ -28,8 +28,17 @@ export class Row extends React.PureComponent<IProps, any> {
 
             return (
 
-                <div className="react-row-main" style={{flexGrow: 1, overflow: 'auto'}}>
-                    {this.props.children}
+                <div className="react-row-main"
+                     style={{
+                         flexGrow: 1,
+                         overflow: 'auto',
+                         display: 'flex'
+                     }}>
+
+                    <div className="mt-auto mb-auto">
+                        {this.props.children}
+                    </div>
+
                 </div>
             );
         }
@@ -42,7 +51,10 @@ export class Row extends React.PureComponent<IProps, any> {
 
             return (
 
-                <div style={{}}>
+                <div className="mt-auto mb-auto"
+                     style={{
+                         display: 'flex'
+                     }}>
                     {this.props.children}
                 </div>
             );
@@ -56,7 +68,10 @@ export class Row extends React.PureComponent<IProps, any> {
 
             return (
 
-                <div style={{}}>
+                <div className="mt-auto mb-auto"
+                     style={{
+                        display: 'flex'
+                     }}>
                     {this.props.children}
                 </div>
             );

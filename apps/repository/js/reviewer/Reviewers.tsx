@@ -4,7 +4,7 @@ import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
 import {RepoAnnotation} from "../RepoAnnotation";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
+import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {Firestore} from "../../../../web/js/firebase/Firestore";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
@@ -51,11 +51,20 @@ export class Reviewers {
             doClose();
         };
 
+        const onSuspended = (taskRep: TaskRep) => {
+
+            const spacedRep = Dictionaries.onlyDefinedProperties({uid, ...taskRep, suspended: true});
+
+            SpacedReps.set(taskRep.id, spacedRep)
+                 .catch(err => log.error("Could not save state: ", err));
+
+        };
+
         const onAnswer = (taskRep: TaskRep, answer: Answer) => {
 
             const next = TasksCalculator.computeNext(taskRep, answer);
 
-            const spacedRep = Dictionaries.onlyDefinedProperties({uid, ...next});
+            const spacedRep: SpacedRep = Dictionaries.onlyDefinedProperties({uid, ...next});
 
             SpacedReps.set(next.id, spacedRep)
                 .catch(err => log.error("Could not save state: ", err));
@@ -64,8 +73,9 @@ export class Reviewers {
 
         injected = ReactInjector.inject(
             <LightModal>
-                <Reviewer tasks={tasks}
+                <Reviewer taskReps={tasks}
                           onAnswer={onAnswer}
+                          onSuspended={onSuspended}
                           onFinished={onFinished}/>
             </LightModal>);
 
