@@ -10,7 +10,13 @@ import {FakePopup} from "./FakePopup";
 import { BasicPopup } from './BasicPopup';
 import { PDFViewer } from './PDFViewer';
 import {DocSidebar} from "./DocSidebar";
-import {Task} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {
+    Task,
+    TaskRep,
+    TasksCalculator
+} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
+import {LightModal} from "../../js/ui/LightModal";
 
 const styles = {
     swatch: {
@@ -191,6 +197,8 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
             },
         ];
 
+        const taskReps = tasks.map(task => TasksCalculator.createInitialLearningState(task));
+
         const authors = [
             {displayName: 'Alice Smith'},
             {displayName: 'John Barnes'}
@@ -200,21 +208,25 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
 
             <div style={{margin: '5px'}}>
 
-                {/*<Reviewer reviews={reviews} onAnswer={(id, answer) => console.log("got answer: ", id, answer)} onFinished={() => console.log('finished')}/>*/}
+                <LightModal>
+                    <Reviewer tasks={taskReps}
+                              onAnswer={(id, answer) => console.log("got answer: ", id, answer)}
+                              onFinished={() => console.log('finished')}/>
+                </LightModal>
 
-                <div className="border border-dark m-1" style={{width: '450px'}}>
-                    <DocSidebar fingerprint="0x01" updated={ISODateTimeStrings.create()}/>
-                </div>
+                {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
+                {/*    <DocSidebar fingerprint="0x01" updated={ISODateTimeStrings.create()}/>*/}
+                {/*</div>*/}
 
-                <div className="border border-dark m-1" style={{width: '450px'}}>
-                    <DocSidebar fingerprint="0x01"
-                                title="Bitcoin: A Peer-to-Peer Electronic Cash System"
-                                subtitle="A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution."
-                                authors={authors}
-                                updated={ISODateTimeStrings.create()}
-                                url='http://www.example.com/this/is/a/long-path/00000000000000000000000000000000000000000000000000.pdf'
-                                published="2017"/>
-                </div>
+                {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
+                {/*    <DocSidebar fingerprint="0x01"*/}
+                {/*                title="Bitcoin: A Peer-to-Peer Electronic Cash System"*/}
+                {/*                subtitle="A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution."*/}
+                {/*                authors={authors}*/}
+                {/*                updated={ISODateTimeStrings.create()}*/}
+                {/*                url='http://www.example.com/this/is/a/long-path/00000000000000000000000000000000000000000000000000.pdf'*/}
+                {/*                published="2017"/>*/}
+                {/*</div>*/}
 
                 {/*<PDFViewer src="foo"/>*/}
 

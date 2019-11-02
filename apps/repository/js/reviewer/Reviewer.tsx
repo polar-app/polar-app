@@ -4,6 +4,7 @@ import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Answer} from "../../../../../polar-app-public/polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Task, TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {Platforms} from "../../../../web/js/util/Platforms";
 
 export class Reviewer extends React.Component<IProps, IState> {
 
@@ -49,15 +50,21 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         // again, hard, good, easy
 
+        const style: React.CSSProperties = {
+            display: 'flex',
+            flexDirection: 'column',
+            background: 'var(--white)'
+        };
+
+        if (! Platforms.isMobile()) {
+            style.maxHeight = '1000px';
+            style.width = '800px';
+            style.maxWidth = '800px';
+        }
+
         return (
 
-            <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    maxHeight: '1000px',
-                    maxWidth: '800px',
-                    background: 'var(--white)'
-                 }}
+            <div style={style}
                  className="ml-auto mr-auto h-100 border p-1">
 
                 <div className="pt-1 pb-1">
