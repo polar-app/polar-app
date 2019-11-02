@@ -123,7 +123,10 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                         <Row.Right>
 
                             <div style={{display: 'flex'}}>
-                                <HighlightColorFilterButton onSelected={color => this.filtersHandler.update({color})}/>
+
+                                <div className="mr-1">
+                                    <HighlightColorFilterButton onSelected={color => this.filtersHandler.update({color})}/>
+                                </div>
 
                                 <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
                             </div>

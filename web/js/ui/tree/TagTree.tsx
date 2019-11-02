@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {TreeView, TRoot} from './TreeView';
 import {TagDescriptor} from '../../tags/TagNode';
-import {Tag, Tags} from 'polar-shared/src/tags/Tags';
+import {Tag} from 'polar-shared/src/tags/Tags';
 import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 import {TagNodes, TagType} from "../../tags/TagNodes";
 import {TreeState} from "./TreeState";
-import {Row} from "../layout/Row";
-import {Column} from "../layout/Column";
 
 class Styles {
 
@@ -73,41 +71,25 @@ export class TagTree extends React.Component<IProps, IState> {
 
             <div style={Styles.PARENT}>
 
-                <Column>
+                <div style={Styles.BAR}>
 
-                    <Column.Header>
+                    <div style={{flexGrow: 1}}>
+                        <TagFilter tags={tags}
+                                   onChange={tags => this.onSelectedTags(tags)}
+                                   disabled={this.props.filterDisabled}/>
+                    </div>
 
-                        <Row>
-                            <Row.Main>
-                                <TagFilter tags={tags}
-                                           onChange={tags => this.onSelectedTags(tags)}
-                                           disabled={this.props.filterDisabled}/>
-                            </Row.Main>
+                    <NullCollapse open={!this.props.noCreate}>
 
-                            <Row.Right>
+                        {/*<TagCreateButton selected={this.props.selected}*/}
+                        {/*                 onCreated={path => this.onCreated(path)}/>*/}
 
-                                <NullCollapse open={!this.props.noCreate}>
+                    </NullCollapse>
 
-                                    {/*<TagCreateButton selected={this.props.selected}*/}
-                                    {/*                 onCreated={path => this.onCreated(path)}/>*/}
+                </div>
 
-                                </NullCollapse>
-
-                            </Row.Right>
-
-                        </Row>
-
-                    </Column.Header>
-
-                    <Column.Main>
-
-                        <TreeView roots={[root]}
-                                  treeState={this.props.treeState}/>
-
-                    </Column.Main>
-
-                </Column>
-
+                <TreeView roots={[root]}
+                          treeState={this.props.treeState}/>
 
             </div>
 

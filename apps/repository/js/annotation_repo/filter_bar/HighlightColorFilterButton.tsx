@@ -47,11 +47,6 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
             <div className={this.props.className || ''}
                  style={this.props.style}>
 
-                {/*<ColorButton color={'yellow'}*/}
-                {/*             size={this.props.size}*/}
-                {/*             id={id}*/}
-                {/*             onSelected={() => this.activate()}/>*/}
-
                 <Button color="light"
                         id={id}
                         size="sm"
@@ -60,16 +55,6 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
                     <i className="fas fa-swatchbook"/>
 
                 </Button>
-
-                {/*</Button>*/}
-
-                {/*<Button color="light"*/}
-                {/*        className="p-0"*/}
-                {/*        size={this.props.size}*/}
-                {/*        id={id}*/}
-                {/*        onSelected={() => this.activate()}>*/}
-                {/*    <i className="fas fa-swatchbook"/>*/}
-                {/*</Button>*/}
 
                 <Popover placement="bottom"
                          trigger="legacy"
