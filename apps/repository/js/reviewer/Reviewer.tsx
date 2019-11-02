@@ -14,6 +14,7 @@ export class Reviewer extends React.Component<IProps, IState> {
 
         this.onAnswer = this.onAnswer.bind(this);
         this.doNext = this.doNext.bind(this);
+        this.onSuspended = this.onSuspended.bind(this);
 
         const pending = [...this.props.taskReps];
         const total = this.props.taskReps.length;
@@ -80,7 +81,10 @@ export class Reviewer extends React.Component<IProps, IState> {
 
                     <Row.Right>
 
-                        <Button size="sm" color="light" className="text-muted">
+                        <Button size="sm"
+                                color="light"
+                                className="text-muted mr-1"
+                                onClick={() => this.onSuspended(taskRep)}>
                             <i className="fas fa-pause"/> suspend
                         </Button>
 
@@ -153,6 +157,13 @@ export class Reviewer extends React.Component<IProps, IState> {
 
     }
 
+    private onSuspended(taskRep: TaskRep) {
+        this.props.onSuspended(taskRep);
+        this.doNext();
+
+    }
+
+
     private onAnswer(taskRep: TaskRep, answer: Answer) {
 
         this.props.onAnswer(taskRep, answer);
@@ -194,7 +205,7 @@ export interface IProps {
 
     readonly onSuspended: (taskRep: TaskRep) => void;
 
-    readonly onFinished: (cancelled?: boolean) => void;
+    readonly onFinished: FinishedCallback;
 
 }
 
