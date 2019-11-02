@@ -22,6 +22,7 @@ export class StartReviewButton extends React.PureComponent<IProps, IState> {
             <Button color="success"
                     size="sm"
                     className="font-weight-bold p-0 pl-2 pr-2"
+                    style={{whiteSpace: 'nowrap'}}
                     onClick={() => this.props.onClick()}>
 
                     <i className="fas fa-graduation-cap mr-1"/> Start Review

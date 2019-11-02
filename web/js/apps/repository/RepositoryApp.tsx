@@ -62,6 +62,7 @@ import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/
 import {ReactRouters} from "../../ui/ReactRouters";
 import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlight/GroupHighlightScreen";
 import {PrefetchedUserGroupsBackgroundListener} from "../../datastore/sharing/db/PrefetchedUserGroupsBackgroundListener";
+import {PlatformStyles} from "../../ui/PlatformStyles";
 
 const log = Logger.create();
 
@@ -81,6 +82,7 @@ export class RepositoryApp {
         log.info("Running with Polar version: " + Version.get());
 
         UIModes.register();
+        PlatformStyles.assign();
 
         AppOrigin.configure();
 

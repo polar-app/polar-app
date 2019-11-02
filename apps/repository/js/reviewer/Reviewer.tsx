@@ -3,7 +3,7 @@ import {Button, Progress} from "reactstrap";
 import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Answer} from "../../../../../polar-app-public/polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {Task, TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Platforms} from "../../../../web/js/util/Platforms";
 
 export class Reviewer extends React.Component<IProps, IState> {

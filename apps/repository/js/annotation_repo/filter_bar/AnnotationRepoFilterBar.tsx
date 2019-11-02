@@ -47,7 +47,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
                          flexGrow: 1
                      }}>
 
-                    <div className="header-filter-box m-0 mr-1">
+                    <div className="header-filter-box m-0">
 
                         <InputGroup size="sm">
 

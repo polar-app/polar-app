@@ -209,13 +209,13 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
 
             <div style={{margin: '5px'}}>
 
-                <StartReviewButton onClick={NULL_FUNCTION}/>
+                {/*<StartReviewButton onClick={NULL_FUNCTION}/>*/}
 
-                {/*<LightModal>*/}
-                {/*    <Reviewer tasks={taskReps}*/}
-                {/*              onAnswer={(id, answer) => console.log("got answer: ", id, answer)}*/}
-                {/*              onFinished={() => console.log('finished')}/>*/}
-                {/*</LightModal>*/}
+                <LightModal>
+                    <Reviewer tasks={taskReps}
+                              onAnswer={(id, answer) => console.log("got answer: ", id, answer)}
+                              onFinished={() => console.log('finished')}/>
+                </LightModal>
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01" updated={ISODateTimeStrings.create()}/>*/}

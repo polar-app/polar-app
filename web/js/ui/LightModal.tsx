@@ -33,7 +33,7 @@ export class LightModal extends React.Component<IProps, IState> {
 
         if (! Platforms.isMobile()) {
             // on mobile we don't want to use a modal.
-            style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+            style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
         }
 
         return (

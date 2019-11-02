@@ -16,6 +16,7 @@
 @import url('./summernote.css');
 @import url('./pricing.css');
 @import url('./ui-mode.css');
+@import url('./platforms.css');
 
 body {
     height: 100%;
