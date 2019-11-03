@@ -19,6 +19,14 @@ const log =  Logger.create();
 
 const DISABLED = false;
 
+/**
+ * The crop width of images.  We selected 300px because the sidebar is 300px
+ * by default and this way we can fit the entire width.
+ */
+const CROP_WIDTH = 300;
+
+const CROP_HEIGHT = Math.floor(CROP_WIDTH / (850 / 1100));
+
 export class ViewerScreenshots {
 
     private static documentDimensions(): IDimensions {
@@ -151,9 +159,6 @@ export class ViewerScreenshots {
         const dimensions = this.documentDimensions();
 
         const screenshot = await Screenshots.capture(1, {left: 0, top: 0, ...dimensions}, element);
-
-        const CROP_WIDTH = 250;
-        const CROP_HEIGHT = Math.floor(CROP_WIDTH / (850 / 1100));
 
         const targetDimensions = {width: CROP_WIDTH, height: CROP_HEIGHT};
 

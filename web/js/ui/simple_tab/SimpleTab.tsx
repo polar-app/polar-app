@@ -50,7 +50,8 @@ export class SimpleTab extends React.Component<IProps, IState> {
                       style={{
                         color,
                         textDecoration: 'none',
-                        borderBottom
+                        borderBottom,
+                        userSelect: 'none'
                     }}>
                     {this.props.text}
                 </Link>
