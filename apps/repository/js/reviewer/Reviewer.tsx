@@ -13,7 +13,7 @@ export class Reviewer extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onAnswer = this.onAnswer.bind(this);
+        this.onRating = this.onRating.bind(this);
         this.doNext = this.doNext.bind(this);
         this.onSuspended = this.onSuspended.bind(this);
 
@@ -129,12 +129,21 @@ export class Reviewer extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="text-center"
-                     style={{
-                         display: 'flex',
-                     }}>
+                <div>
 
-                    <RatingButtons taskRep={taskRep} stage={taskRep.stage} onRating={this.props.onRating}/>
+                    <div className="text-sm text-grey700 mb-1 ml-1">
+                        <b>stage: </b> {taskRep.stage}
+                    </div>
+
+                    <div style={{
+                            display: 'flex',
+                        }}>
+
+                        <RatingButtons taskRep={taskRep}
+                                       stage={taskRep.stage}
+                                       onRating={this.onRating}/>
+
+                    </div>
 
                 </div>
 
@@ -152,8 +161,7 @@ export class Reviewer extends React.Component<IProps, IState> {
     }
 
 
-    private onAnswer(taskRep: TaskRep, rating: Rating) {
-
+    private onRating(taskRep: TaskRep, rating: Rating) {
         this.props.onRating(taskRep, rating);
         this.doNext();
 

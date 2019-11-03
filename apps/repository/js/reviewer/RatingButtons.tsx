@@ -2,14 +2,12 @@ import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RatingCallback} from "./Reviewer";
 import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {RatingButton} from "./RatingButton";
+import {RatingButtonSet} from "./RatingButtonSet";
 
 export class RatingButtons extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
-
-
     }
 
     public render() {
@@ -25,11 +23,9 @@ export class RatingButtons extends React.Component<IProps, IState> {
     static Learning = class extends React.Component<IProps, any> {
 
         public render() {
-            return [
-                <RatingButton taskRep={this.props.taskRep} rating='again' onRating={this.props.onRating}/>,
-                <RatingButton taskRep={this.props.taskRep} rating='good' onRating={this.props.onRating}/>,
-                <RatingButton taskRep={this.props.taskRep} rating='easy' onRating={this.props.onRating}/>
-            ];
+            return <RatingButtonSet taskRep={this.props.taskRep}
+                                    ratings={['again', 'good', 'easy']}
+                                    onRating={this.props.onRating}/>;
         }
 
     };
@@ -37,12 +33,9 @@ export class RatingButtons extends React.Component<IProps, IState> {
     static Review = class extends React.Component<IProps, any> {
 
         public render() {
-            return [
-                <RatingButton taskRep={this.props.taskRep} rating='again' onRating={this.props.onRating}/>,
-                <RatingButton taskRep={this.props.taskRep} rating='hard' onRating={this.props.onRating}/>,
-                <RatingButton taskRep={this.props.taskRep} rating='good' onRating={this.props.onRating}/>,
-                <RatingButton taskRep={this.props.taskRep} rating='easy' onRating={this.props.onRating}/>
-            ];
+            return <RatingButtonSet taskRep={this.props.taskRep}
+                                    ratings={['again', 'hard', 'good', 'easy']}
+                                    onRating={this.props.onRating}/>;
         }
 
     };
