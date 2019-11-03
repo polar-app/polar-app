@@ -8,7 +8,7 @@ import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {Firestore} from "../../../../web/js/firebase/Firestore";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
-import {Answer} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep, TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
@@ -60,9 +60,9 @@ export class Reviewers {
 
         };
 
-        const onAnswer = (taskRep: TaskRep, answer: Answer) => {
+        const onRating = (taskRep: TaskRep, rating: Rating) => {
 
-            const next = TasksCalculator.computeNext(taskRep, answer);
+            const next = TasksCalculator.computeNext(taskRep, rating);
 
             const spacedRep: SpacedRep = Dictionaries.onlyDefinedProperties({uid, ...next});
 
@@ -74,7 +74,7 @@ export class Reviewers {
         injected = ReactInjector.inject(
             <LightModal>
                 <Reviewer taskReps={tasks}
-                          onAnswer={onAnswer}
+                          onRating={onRating}
                           onSuspended={onSuspended}
                           onFinished={onFinished}/>
             </LightModal>);

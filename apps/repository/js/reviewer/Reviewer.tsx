@@ -2,10 +2,11 @@ import * as React from 'react';
 import {Button, Progress} from "reactstrap";
 import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {Answer} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
+import {RatingButtons} from "./RatingButtons";
 
 export class Reviewer extends React.Component<IProps, IState> {
 
@@ -133,20 +134,7 @@ export class Reviewer extends React.Component<IProps, IState> {
                          display: 'flex',
                      }}>
 
-                    <Button color="danger"
-                            className="m-1"
-                            style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(taskRep, 0.0)}>Again</Button>
-
-                    <Button color="secondary"
-                            className="m-1"
-                            style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(taskRep, 0.5)}>Good</Button>
-
-                    <Button color="success"
-                            className="m-1"
-                            style={{flexGrow: 1}}
-                            onClick={() => this.onAnswer(taskRep, 1.0)}>Easy</Button>
+                    <RatingButtons taskRep={taskRep} stage={taskRep.stage} onRating={this.props.onRating}/>
 
                 </div>
 
@@ -164,9 +152,9 @@ export class Reviewer extends React.Component<IProps, IState> {
     }
 
 
-    private onAnswer(taskRep: TaskRep, answer: Answer) {
+    private onAnswer(taskRep: TaskRep, rating: Rating) {
 
-        this.props.onAnswer(taskRep, answer);
+        this.props.onRating(taskRep, rating);
         this.doNext();
 
     }
@@ -190,9 +178,19 @@ export class Reviewer extends React.Component<IProps, IState> {
 }
 
 /**
+ * Called when we're finished all the tasks.
+ *
  * @param cancelled true if the user explicitly cancelled the review.
  */
 export type FinishedCallback = (cancelled?: boolean) => void;
+
+
+/**
+ * Called when we're finished all the tasks.
+ *
+ * @param cancelled true if the user explicitly cancelled the review.
+ */
+export type RatingCallback = (taskRep: TaskRep, rating: Rating) => void;
 
 export interface IProps {
 
@@ -201,7 +199,7 @@ export interface IProps {
     /**
      * Callback for when we receive answers and their values.
      */
-    readonly onAnswer: (taskRep: TaskRep, answer: Answer) => void;
+    readonly onRating: RatingCallback;
 
     readonly onSuspended: (taskRep: TaskRep) => void;
 

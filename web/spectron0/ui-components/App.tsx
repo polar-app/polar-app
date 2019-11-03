@@ -213,7 +213,7 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
 
                 <LightModal>
                     <Reviewer taskReps={taskReps}
-                              onAnswer={(id, answer) => console.log("got answer: ", id, answer)}
+                              onRating={(id, answer) => console.log("got answer: ", id, answer)}
                               onSuspended={NULL_FUNCTION}
                               onFinished={() => console.log('finished')}/>
                 </LightModal>
