@@ -40,6 +40,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
+import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
 
 const log = Logger.create();
 
@@ -204,6 +205,10 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private getSelected(): RepoDocInfo[] {
 
+        if (! this.reactTable) {
+            return [];
+        }
+
         const resolvedState = this.reactTable!.getResolvedState();
 
         const sortedData = resolvedState.sortedData;
@@ -273,6 +278,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
 
+        const selectedDocs = this.getSelected();
+        const primaryDoc = selectedDocs.length > 0 ? selectedDocs[0] : undefined ;
+
         return (
             <div id="doc-repository"
                  style={{
@@ -339,6 +347,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                             left: 'd-none-mobile',
                             splitter: 'd-none-mobile'
                         }}
+                        side='left'
+                        initialWidth={300}
                         left={
                             <div style={{
                                 display: 'flex' ,
@@ -370,45 +380,62 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         }
                         right={
 
-                            <DocRepoTable columns={this.state.columns}
-                                          selected={this.state.selected}
-                                          data={this.state.data}
-                                          relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                          synchronizingDocLoader={this.synchronizingDocLoader}
-                                          tagsProvider={() => tagsProvider()}
-                                          writeDocInfoTags={(repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags)}
-                                          deleteDocInfo={repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)}
-                                          writeDocInfoTitle={(repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)}
-                                          writeDocInfo={docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo)}
-                                          refresh={() => this.refresh()}
-                                          onDocDeleteRequested={repoDocInfos => this.onDocDeleteRequested(repoDocInfos)}
-                                          onDocDeleted={repoDocInfos => this.onDocDeleted(repoDocInfos)}
-                                          onDocSetTitle={(repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title)}
-                                          onDocTagged={(repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags)}
-                                          onMultiDeleted={() => this.onMultiDeleted()}
-                                          selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
-                                          onSelected={selected => this.onSelected(selected)}
-                                          onReactTable={reactTable => this.reactTable = reactTable}
-                                          onDragStart={(event) => {
+                            <Dock
+                                componentClassNames={{
+                                    right: 'd-none-mobile',
+                                    splitter: 'd-none-mobile'
+                                }}
+                                side='right'
+                                initialWidth={300}
+                                left={
 
-                                              // TODO: move this to a dedicated function.
+                                    <DocRepoTable columns={this.state.columns}
+                                                  selected={this.state.selected}
+                                                  data={this.state.data}
+                                                  relatedTags={this.props.repoDocMetaManager!.relatedTags}
+                                                  synchronizingDocLoader={this.synchronizingDocLoader}
+                                                  tagsProvider={() => tagsProvider()}
+                                                  writeDocInfoTags={(repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags)}
+                                                  deleteDocInfo={repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)}
+                                                  writeDocInfoTitle={(repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)}
+                                                  writeDocInfo={docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo)}
+                                                  refresh={() => this.refresh()}
+                                                  onDocDeleteRequested={repoDocInfos => this.onDocDeleteRequested(repoDocInfos)}
+                                                  onDocDeleted={repoDocInfos => this.onDocDeleted(repoDocInfos)}
+                                                  onDocSetTitle={(repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title)}
+                                                  onDocTagged={(repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags)}
+                                                  onMultiDeleted={() => this.onMultiDeleted()}
+                                                  selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
+                                                  onSelected={selected => this.onSelected(selected)}
+                                                  onReactTable={reactTable => this.reactTable = reactTable}
+                                                  onDragStart={(event) => {
 
-                                              // TODO: this actually DOES NOT work but it's a better effect than the
-                                              // default and a lot less confusing.  In the future we should migrate
-                                              // to showing the thumbnail of the doc once we have this feature
-                                              // implemented.
+                                                      // TODO: move this to a dedicated function.
 
-                                              const src: HTMLElement = document.createElement("div");
+                                                      // TODO: this actually DOES NOT work but it's a better effect than the
+                                                      // default and a lot less confusing.  In the future we should migrate
+                                                      // to showing the thumbnail of the doc once we have this feature
+                                                      // implemented.
 
-                                              // https://kryogenix.org/code/browser/custom-drag-image.html
-                                              event.dataTransfer!.setDragImage(src, 0, 0);
+                                                      const src: HTMLElement = document.createElement("div");
 
-                                              DraggingSelectedDocs.set(this.getSelected())
-                                          }}
-                                          onDragEnd={() => DraggingSelectedDocs.clear()}/>
-                        }
-                        side='left'
-                        initialWidth={300}/>
+                                                      // https://kryogenix.org/code/browser/custom-drag-image.html
+                                                      event.dataTransfer!.setDragImage(src, 0, 0);
+
+                                                      DraggingSelectedDocs.set(this.getSelected())
+                                                  }}
+                                                  onDragEnd={() => DraggingSelectedDocs.clear()}/>
+
+                                }
+                                right={
+                                    <div>
+                                        <DocSidebar meta={primaryDoc ? primaryDoc.docInfo : undefined}
+                                                    persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
+                                    </div>
+                                }
+                            />
+
+                        }/>
 
 
                 </FixedNav>

@@ -125,7 +125,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                             <div style={{display: 'flex'}}>
 
                                 <div className="mr-1">
-                                    <HighlightColorFilterButton onSelected={color => this.filtersHandler.update({color})}/>
+                                    <HighlightColorFilterButton selectedColors={this.filtersHandler.filters.color ? [this.filtersHandler.filters.color] : undefined}
+                                                                onSelected={color => this.filtersHandler.update({color})}/>
                                 </div>
 
                                 <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
@@ -212,6 +213,7 @@ export interface IProps {
     readonly repoDocMetaManager: RepoDocMetaManager;
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
+
 }
 
 export interface IState {

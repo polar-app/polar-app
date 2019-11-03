@@ -31,10 +31,10 @@ export class PropertyTable extends React.Component<IProps, IState> {
 
                 if (typeof this.props.value === 'string') {
                     return this.props.value;
-                } else if (this.props.value === undefined) {
-                    return "";
-                } else {
+                } else if (Array.isArray(this.props.value)) {
                     return this.props.value.join(", ");
+                } else {
+                    return "";
                 }
 
             };

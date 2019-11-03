@@ -68,7 +68,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
                         </div>
 
                         <div>
-                            <DocThumbnail docInfo={repoAnnotation.docInfo}
+                            <DocThumbnail thumbnails={repoAnnotation.docInfo.thumbnails}
                                           persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
                         </div>
 

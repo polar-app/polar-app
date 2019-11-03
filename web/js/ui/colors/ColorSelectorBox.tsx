@@ -8,9 +8,11 @@ interface ColorButtonsRowProps extends IProps {
 
 const ColorButtonsRow = (props: ColorButtonsRowProps) => {
 
+    const selectedColors = props.selectedColors || [];
+
     return <div>
         {props.colors.map(color =>
-          <ColorButton key={color} {...props} color={color}/>)}
+          <ColorButton selected={selectedColors.includes(color)} key={color} {...props} color={color}/>)}
     </div>;
 
 };
@@ -55,6 +57,18 @@ const ColorButtons = (props: IProps) => {
             <ColorButtonsRow2 {...props}/>
         </div>
 
+        {/*<div className="mt-1">*/}
+        {/*    <div style={{display: 'flex'}}>*/}
+
+        {/*        <Button size="sm"*/}
+        {/*                color="secondary"*/}
+        {/*                className="ml-auto mr-auto" outline>*/}
+        {/*            reset*/}
+        {/*        </Button>*/}
+
+        {/*    </div>*/}
+        {/*</div>*/}
+
     </div>;
 
 };
@@ -90,8 +104,6 @@ export class ColorSelectorBox extends React.PureComponent<IProps, IState> {
 
         const props = this.props;
 
-        const onSelected = props.onSelected || NULL_FUNCTION;
-
         return (
             <div>
 
@@ -104,8 +116,16 @@ export class ColorSelectorBox extends React.PureComponent<IProps, IState> {
 }
 
 
+export type ColorStr = string;
+
 interface IProps {
-    readonly onSelected?: (color: string) => void;
+
+    readonly selectedColors?: ReadonlyArray<ColorStr>;
+
+    readonly onSelected?: (color: ColorStr) => void;
+
+    // readonly clearable?: boolean;
+
 }
 
 interface IState {

@@ -35,10 +35,13 @@ export class ColorButton extends React.PureComponent<IProps, IState> {
 
         const size = props.size || '30px';
 
-        return <Button size="lg"
+        const className = props.selected ? 'border border-primary' : "";
+
+        return <div className="ml-1 mr-1" style={{display: 'inline-block'}}>
+            <Button size="lg"
                        id={props.id}
                        type="button"
-                       className="ml-1 mr-1 p-0"
+                       className={"p-0 " + className}
                        title=""
                        aria-label=""
                        color="light"
@@ -51,7 +54,8 @@ export class ColorButton extends React.PureComponent<IProps, IState> {
                            height: size
                        }}>
 
-        </Button>;
+            </Button>
+        </div>;
 
     }
 
@@ -61,6 +65,7 @@ interface IProps {
     readonly color: RGBColor;
     readonly size?: string;
     readonly id?: string;
+    readonly selected?: boolean;
     readonly onSelected?: (color: string) => void;
 }
 

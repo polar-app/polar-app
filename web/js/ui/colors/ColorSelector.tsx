@@ -90,9 +90,6 @@ interface IProps {
 
     readonly size?: string;
 
-    /**
-     * The current color
-     */
     readonly color: RGBColor;
 
     readonly onSelected?: (color: string) => void;

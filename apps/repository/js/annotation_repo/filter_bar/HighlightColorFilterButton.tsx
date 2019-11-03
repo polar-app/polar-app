@@ -3,7 +3,7 @@ import {Button, Popover, PopoverBody} from 'reactstrap';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IDs} from "../../../../../web/js/util/IDs";
 import {ColorButton} from '../../../../../web/js/ui/colors/ColorButton';
-import {ColorSelectorBox} from "../../../../../web/js/ui/colors/ColorSelectorBox";
+import {ColorSelectorBox, ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 
 export class HighlightColorFilterButton extends React.PureComponent<IProps, IState> {
 
@@ -69,7 +69,8 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
 
                         {/*FIXME: reset button and multi-colors*/}
 
-                        <ColorSelectorBox onSelected={(color) => {
+                        <ColorSelectorBox selectedColors={this.props.selectedColors}
+                                          onSelected={(color) => {
                             this.deactivate();
                             onSelected(color);
                         }}/>
@@ -94,6 +95,8 @@ interface IProps {
     readonly size?: string;
 
     readonly onSelected?: (color: string) => void;
+
+    readonly selectedColors?: ReadonlyArray<ColorStr>;
 
 }
 
