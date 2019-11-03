@@ -3,6 +3,7 @@ import {Button} from "reactstrap";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RatingCallback} from "./Reviewer";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Strings} from "polar-shared/src/util/Strings";
 
 export class RatingButton extends React.Component<IProps, IState> {
 
@@ -33,10 +34,12 @@ export class RatingButton extends React.Component<IProps, IState> {
 
         const color = createColor();
 
+        const text = Strings.upperFirst(this.props.rating);
+
         return <Button color={color}
                        className="m-1"
                        style={{flexGrow: 1}}
-                       onClick={() => this.props.onRating(taskRep, 'again')}>Again</Button>;
+                       onClick={() => this.props.onRating(taskRep, 'again')}>{text}</Button>;
 
     }
 
