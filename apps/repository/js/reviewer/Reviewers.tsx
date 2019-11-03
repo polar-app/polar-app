@@ -62,7 +62,7 @@ export class Reviewers {
 
         const onRating = (taskRep: TaskRep, rating: Rating) => {
 
-            const next = TasksCalculator.computeNext(taskRep, rating);
+            const next = TasksCalculator.computeNextSpacedRep(taskRep, rating);
 
             const spacedRep: SpacedRep = Dictionaries.onlyDefinedProperties({uid, ...next});
 
