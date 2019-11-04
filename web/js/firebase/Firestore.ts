@@ -34,7 +34,12 @@ export class Firestore {
                 // TODO: this seems super slow and not sure why.  The tab sync
                 // seems to not impact performance at all.
                 await tracer.traceAsync('enablePersistence', async () => {
-                    await result.enablePersistence({ synchronizeTabs: true });
+                    try {
+                        await result.enablePersistence({synchronizeTabs: true});
+                    } catch(e) {
+                        // we've probably exceeded the local quota so we can't run with caching for now.
+                        console.warn("Unable to use persistence. Data will not be cached locally: ", e);
+                    }
                 });
             }
 
