@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import {TimeDurations} from "../../polar-app-public/polar-shared/src/util/TimeDurations";
 
 const serviceAccount: admin.ServiceAccount = {
     projectId: "polar-32b0f",
@@ -19,9 +20,17 @@ async function computeStats() {
 
     const snapshot = await firestore.collection("unique_machines").get();
 
+    const isRecentlyUpdated = (uniqueMachine: UniqueMachine) => {
+        return !TimeDurations.hasElapsed(uniqueMachine.updated, '30d');
+    };
+
+    const recentlyUpdated = snapshot.docs.map(doc => doc.data() as UniqueMachine)
+                                         .filter(isRecentlyUpdated);
+
     const total = snapshot.docs.length;
 
     console.log(`Found total docs ${total}`);
+    console.log(`Recently updated ${recentlyUpdated.length}`);
 
 }
 
