@@ -14,7 +14,8 @@ description: Polar documentation including how to use pagemarks, annotations, PD
   {%- if site.posts.size > 0 -%}
 
     <div class="post-list">
-      {%- for post in site.pages -%}
+      {% assign pages = site.pages | sort: 'priority' %}
+      {%- for post in pages -%}
 
       {%- if post.layout == 'doc' and post.permalink != '/docs/index.html' and post.permalink != '/blog/index.html' -%}
 

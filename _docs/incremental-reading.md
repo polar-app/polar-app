@@ -1,7 +1,7 @@
 ---
-
 title: Incremental Reading (Pagemarks and Tracking Progress)
 layout: doc
+permalink: /docs/incremental-reading.html
 description: Incremental reading is a strategy around suspending and resuming reading of a document over time to track progress using a a 'pagemark.' 
 ---
 
@@ -38,7 +38,7 @@ Pagemarks allow you to specify a range, or multiple ranges.  Additionally,
 pagemarks are used to keep track of the total progress of the document and to
 sort documents in the document repository by their reading progress..
 
-<img class="img-fluid" src="./assets/screenshots/annotations-shadow.png">
+<img class="img-fluid" src="../assets/screenshots/annotations-shadow.png">
 
 <div class="text-center">Screenshot showing a document with 4 pagemarks</div>
 
