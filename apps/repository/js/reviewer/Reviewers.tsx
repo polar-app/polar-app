@@ -13,14 +13,18 @@ import {TaskRep, TasksCalculator} from "polar-spaced-repetition/src/spaced_repet
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {Latch} from "polar-shared/src/util/Latch";
+import {PreviewWarnings} from "./PreviewWarnings";
+import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 
 const log = Logger.create();
 
 export class Reviewers {
 
-    public static start(repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
+    public static start(prefs: PersistentPrefs,
+                        repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
 
-        this.create(repoDocAnnotations, limit)
+        this.create(prefs, repoDocAnnotations, limit)
             .catch(err => console.error("Unable to start review: ", err));
 
     }
@@ -38,10 +42,21 @@ export class Reviewers {
 
     }
 
-    public static async create(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+    private static async notifyPreview(prefs: PersistentPrefs) {
+        const latch = new Latch();
+
+        await PreviewWarnings.doWarning(prefs, () => latch.resolve(true));
+
+        await latch.get();
+    }
+
+    public static async create(prefs: PersistentPrefs,
+                               repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
                                limit: number = 10) {
 
         await this.configureFirestore();
+
+        await this.notifyPreview(prefs)
 
         const tasks = await ReviewerTasks.createTasks(repoDocAnnotations, limit);
 

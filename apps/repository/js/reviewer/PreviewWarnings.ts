@@ -1,6 +1,9 @@
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 export class PreviewWarnings {
 
@@ -21,7 +24,20 @@ export class PreviewWarnings {
             return onConfirm();
         }
 
-        return this.createDialog(onConfirm);
+        // FIXME: before we are confirmed, we need to first
+        //  await the persistent prefs commit after setting the
+        // mark
+
+        const writePrefsAndConfirm = async () => {
+            prefs.mark(prefKey);
+            await prefs.commit();
+            onConfirm();
+        };
+
+        return this.createDialog(() => {
+            writePrefsAndConfirm()
+                .catch(err => log.error(err));
+        });
 
     }
 

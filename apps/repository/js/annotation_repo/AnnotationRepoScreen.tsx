@@ -49,6 +49,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         this.onSelectedFolders = this.onSelectedFolders.bind(this);
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
+        this.startReview = this.startReview.bind(this);
 
         this.state = {
             data: [],
@@ -118,7 +119,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                     <Row id="header-filter"
                          className="border-bottom p-1">
                         <Row.Main>
-                            <StartReviewButton onClick={() => Reviewers.start(this.state.data, 10)}/>
+                            <StartReviewButton onClick={() => this.startReview()}/>
                         </Row.Main>
 
                         <Row.Right>
@@ -201,6 +202,12 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.filtersHandler.update({filteredTags});
     }
 
+    private startReview() {
+        const persistenceLayer = this.props.persistenceLayerManager.get();
+        const prefs = persistenceLayer.datastore.getPrefs();
+        Reviewers.start(prefs.get().prefs, this.state.data, 10);
+    }
+
 }
 
 export interface IProps {
@@ -214,6 +221,7 @@ export interface IProps {
     readonly repoDocMetaManager: RepoDocMetaManager;
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
+
 }
 
 export interface IState {
