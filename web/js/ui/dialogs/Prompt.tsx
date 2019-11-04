@@ -51,37 +51,42 @@ export class Prompt extends React.PureComponent<PromptProps, IState> {
 
             <DialogContainer open={true}>
 
-                <InputValidationMessage/>
+               <div className="p-2">
 
-                <Label className="font-weight-bold"
-                       for={id}>{this.props.title}</Label>
+                   <InputValidationMessage/>
 
-                <Input type="text"
-                       name={id}
-                       id={id}
-                       style={{
-                           width: '450px',
-                           maxWidth: '100vh'
-                       }}
-                       onKeyDown={event => this.onKeyDown(event)}
-                       defaultValue={this.props.defaultValue  || ''}
-                       onChange={(event) => this.value = event.target.value}
-                       autoFocus
-                       placeholder={this.props.placeholder || ''}/>
+                   <Label className="font-weight-bold"
+                          for={id}>{this.props.title}</Label>
 
-                <div className="text-right mt-2">
+                   <div className="mt-1 mb-2">
+                       <Input type="text"
+                              name={id}
+                              id={id}
+                              style={{
+                                  width: '450px',
+                                  maxWidth: '100vh'
+                              }}
+                              onKeyDown={event => this.onKeyDown(event)}
+                              defaultValue={this.props.defaultValue  || ''}
+                              onChange={(event) => this.value = event.target.value}
+                              autoFocus
+                              placeholder={this.props.placeholder || ''}/>
+                   </div>
 
-                    <Button color="secondary"
-                            size="sm"
-                            className=""
-                            onClick={() => this.onCancel()}>Cancel</Button>
+                    <div className="text-right">
 
-                    <Button color="primary"
-                            size="sm"
-                            className="ml-1"
-                            onClick={() => this.onDone(this.value)}>Done</Button>
+                        <Button color="secondary"
+                                size="sm"
+                                className=""
+                                onClick={() => this.onCancel()}>Cancel</Button>
 
-                </div>
+                        <Button color="primary"
+                                size="sm"
+                                className="ml-1"
+                                onClick={() => this.onDone(this.value)}>Done</Button>
+
+                    </div>
+               </div>
 
             </DialogContainer>
 

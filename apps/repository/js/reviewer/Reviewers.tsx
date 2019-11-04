@@ -25,11 +25,23 @@ export class Reviewers {
 
     }
 
-    public static async create(repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
+    private static async configureFirestore() {
+
+        if (SpacedReps.firestoreProvider) {
+            return;
+        }
+
+        // TODO: dependency injection would rock here.
 
         const firestore = await Firestore.getInstance();
-
         SpacedReps.firestoreProvider = () => firestore as any as FirestoreLike;
+
+    }
+
+    public static async create(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                               limit: number = 10) {
+
+        await this.configureFirestore();
 
         const tasks = await ReviewerTasks.createTasks(repoDocAnnotations, limit);
 

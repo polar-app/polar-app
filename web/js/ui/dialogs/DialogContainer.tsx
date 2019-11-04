@@ -17,24 +17,28 @@ export class DialogContainer extends React.PureComponent<ConfirmProps, IState> {
 
             <NullCollapse open={this.props.open}>
 
-                <div style={{
+                <div className=""
+                     style={{
                         position: 'absolute',
                         top: 0,
                         left: 0,
-                        width: '100vw',
-                        height: '100vh',
+                        width: '100%',
+                        height: '100%',
                         display: 'flex'
                     }}>
 
-                    <div className="rounded border p-2"
-                         style={{
+                    <div style={{
                             margin: 'auto',
-                            minHeight: '100px',
-                            zIndex: 1000000,
-                            backgroundColor: 'var(--white)'
+                            zIndex: 100000000,
                          }}>
 
-                        {this.props.children}
+                        <div className="m-1 rounded"
+                             style={{
+                                 backgroundColor: 'var(--white)',
+                                 maxWidth: '650px'
+                             }}>
+                            {this.props.children}
+                        </div>
 
                     </div>
 

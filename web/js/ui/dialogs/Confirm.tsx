@@ -2,6 +2,7 @@ import React from 'react';
 import {Button} from 'reactstrap';
 import {DialogContainer} from './DialogContainer';
 import {NullCollapse} from '../null_collapse/NullCollapse';
+import {DialogConfirmProps} from "./Dialogs";
 
 class Styles {
 
@@ -11,16 +12,17 @@ class Styles {
     };
 
     public static subtitle: React.CSSProperties = {
-        fontSize: "16px"
+        fontSize: "17px"
     };
 
     public static button: React.CSSProperties = {
-        fontSize: "14px"
+        fontSize: "14px",
+        fontWeight: "bold"
     };
 
 }
 
-export class Confirm extends React.PureComponent<ConfirmProps, IState> {
+export class Confirm extends React.PureComponent<IProps, IState> {
 
     constructor(props: any) {
         super(props);
@@ -33,21 +35,39 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
     public render() {
 
+        const opts = {
+            buttonColor: 'primary',
+            titlebarClassName: 'bg-dark'
+        };
+
+        const {type} = this.props;
+
+        if (type) {
+            opts.buttonColor = type;
+            opts.titlebarClassName = 'bg-' + type;
+        }
+
         return (
 
             <DialogContainer open={true}>
 
                 <div onKeyDown={(event) => this.onKeyDown(event)}>
 
-                    <div className="w-100 p-1" style={Styles.title}>
+                    <div className={"w-100 p-1 pl-2 pr-2 " + opts.titlebarClassName}
+                         style={Styles.title}>
+
                         {this.props.title}
+
                     </div>
 
-                    <div className="w-100 p-1 text-muted" style={Styles.subtitle}>
-                        {this.props.subtitle || ""}
+                    <div className="w-100 p-1 m-1 text-muted text-grey800 text-xl"
+                         style={Styles.subtitle}>
+
+                        {this.props.subtitle}
+
                     </div>
 
-                    <div className="text-right mt-1">
+                    <div className="text-right m-1">
 
                         <NullCollapse open={! this.props.noCancel}>
 
@@ -59,7 +79,7 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
                         </NullCollapse>
 
-                        <Button color="danger"
+                        <Button color={opts.buttonColor}
                                 style={Styles.button}
                                 size="sm"
                                 className="m-1"
@@ -97,14 +117,7 @@ export class Confirm extends React.PureComponent<ConfirmProps, IState> {
 
 }
 
-export interface ConfirmProps {
-
-    readonly title: string;
-    readonly subtitle?: string;
-    readonly onCancel?: () => void;
-    readonly onConfirm: () => void;
-    readonly type?: 'danger';
-    readonly noCancel?: boolean;
+export interface IProps extends DialogConfirmProps {
 
 }
 
