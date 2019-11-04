@@ -16,15 +16,18 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Latch} from "polar-shared/src/util/Latch";
 import {PreviewWarnings} from "./PreviewWarnings";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
+import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
+import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 
 const log = Logger.create();
 
 export class Reviewers {
 
-    public static start(prefs: PersistentPrefs,
+    public static start(datastoreCapabilities: DatastoreCapabilities,
+                        prefs: PersistentPrefs,
                         repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
 
-        this.create(prefs, repoDocAnnotations, limit)
+        this.create(datastoreCapabilities, prefs, repoDocAnnotations, limit)
             .catch(err => console.error("Unable to start review: ", err));
 
     }
@@ -50,13 +53,30 @@ export class Reviewers {
         await latch.get();
     }
 
-    public static async create(prefs: PersistentPrefs,
+    private static displayWebRequiredError() {
+
+        Dialogs.confirm({
+            title: 'Cloud sync required',
+            subtitle: 'Cloud sync is required to review annotations.  This is needed for mobile review.',
+            type: 'danger',
+            onConfirm: NULL_FUNCTION
+        });
+
+    }
+
+    public static async create(datastoreCapabilities: DatastoreCapabilities,
+                               prefs: PersistentPrefs,
                                repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
                                limit: number = 10) {
 
+        if (! datastoreCapabilities.networkLayers.has('web')) {
+            this.displayWebRequiredError();
+            return;
+        }
+
         await this.configureFirestore();
 
-        await this.notifyPreview(prefs)
+        await this.notifyPreview(prefs);
 
         const tasks = await ReviewerTasks.createTasks(repoDocAnnotations, limit);
 
