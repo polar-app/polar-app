@@ -115,7 +115,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    <Row className="border-bottom pt-1 pb-1">
+                    <Row id="header-filter"
+                         className="border-bottom p-1">
                         <Row.Main>
                             <StartReviewButton onClick={() => Reviewers.start(this.state.data, 10)}/>
                         </Row.Main>
@@ -129,6 +130,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                                 </div>
 
                                 <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
+
                             </div>
 
                         </Row.Right>
