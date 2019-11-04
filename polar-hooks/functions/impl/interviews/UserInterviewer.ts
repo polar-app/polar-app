@@ -15,7 +15,7 @@ export type UserPredicate = (user: UserRecord) => boolean;
 /**
  * Predicates for accepting a user to interview.
  */
-class UserPredicates {
+export class UserPredicates {
 
     public static get(reason: UserInterviewReason): UserPredicate {
 
@@ -44,7 +44,7 @@ class UserPredicates {
 
     public static veteran(user: UserRecord) {
 
-        const recentlyAuthenticated = ! TimeDurations.hasElapsed(user.metadata.lastSignInTime, '7d');
+        const recentlyAuthenticated = ! TimeDurations.hasElapsed(user.metadata.lastSignInTime, '30d');
         const accountVeteran = TimeDurations.hasElapsed(user.metadata.creationTime, '60d');
 
         return recentlyAuthenticated && accountVeteran;
@@ -159,7 +159,6 @@ export class UserInterviewer {
 
         return result.slice(0, maxUsers);
 
-
     }
 
     private static async sendMessagesForReason(type: UserMessageType,
@@ -176,6 +175,8 @@ export class UserInterviewer {
         await MessageSender.sendMessages(type, targets);
 
         await UsersRecentlyContacted.write(targets, reason);
+
+        console.log(`Sent messages to ${targets.length} recipients.`)
 
     }
 
