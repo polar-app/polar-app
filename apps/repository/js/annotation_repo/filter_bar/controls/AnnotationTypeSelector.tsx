@@ -45,7 +45,7 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
                                 size="sm"
                                 caret>
 
-                    <i className="fas fa-filter"/> Annotation Types
+                    <i className="fas fa-filter"/> <span className="d-none-mobile">Annotation Types</span>
 
                 </DropdownToggle>
 

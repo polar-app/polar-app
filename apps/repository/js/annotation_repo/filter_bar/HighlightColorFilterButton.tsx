@@ -55,7 +55,7 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
                         }}
                         onClick={() => this.activate()}>
 
-                    <i className="fas fa-swatchbook"/> Colors <DropdownChevron/>
+                    <i className="fas fa-swatchbook"/> <span className="d-none-mobile">Colors</span> <DropdownChevron/>
 
                 </Button>
 
