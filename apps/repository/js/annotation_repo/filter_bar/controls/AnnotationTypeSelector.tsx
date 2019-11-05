@@ -37,11 +37,30 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
 
         ];
 
+        interface ButtonProps {
+            readonly outline: boolean;
+            readonly color: 'primary' | 'light';
+        }
+
+        const buttonActive: ButtonProps = {
+            outline: true,
+            color: 'primary'
+        };
+
+        const buttonInactive: ButtonProps = {
+            outline: false,
+            color: 'light'
+        };
+
+
+        const buttonProps = this.props.selected.length > 0 ? buttonActive : buttonInactive;
+
         return (
 
             <UncontrolledDropdown>
 
-                <DropdownToggle color="light"
+                <DropdownToggle color={buttonProps.color}
+                                outline={buttonProps.outline}
                                 size="sm"
                                 caret>
 
