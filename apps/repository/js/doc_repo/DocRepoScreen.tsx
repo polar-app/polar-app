@@ -275,6 +275,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         return (
             <div id="doc-repository"
+                 className=""
                  style={{
                      height: '100%'
                  }}>
