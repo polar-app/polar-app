@@ -72,6 +72,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
+        this.onDocSidebarVisible = this.onDocSidebarVisible.bind(this);
+
 
         this.onFilterByTitle = this.onFilterByTitle.bind(this);
         this.onToggleFilterArchived = this.onToggleFilterArchived.bind(this);
@@ -90,7 +92,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             data: [],
             tags: [],
             columns: new DocRepoTableColumns(),
-            selected: []
+            selected: [],
+            docSidebarVisible: false
         };
 
         const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
@@ -281,6 +284,19 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         const selectedDocs = this.getSelected();
         const primaryDoc = selectedDocs.length > 0 ? selectedDocs[0] : undefined ;
 
+        const docActive = {
+            right: 'd-none-mobile',
+            splitter: 'd-none-mobile'
+        };
+
+        const docInactive = {
+            right: 'd-none',
+            splitter: 'd-none'
+        };
+
+
+        const rightDocComponentClassNames = this.state.docSidebarVisible ? docActive : docInactive;
+
         return (
             <div id="doc-repository"
                  className=""
@@ -322,6 +338,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                       tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                       refresher={() => this.refresh()}
                                                       filteredTags={this.docRepoFilters.filters.filteredTags}
+                                                      docSidebarVisible={this.state.docSidebarVisible}
+                                                      onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}
                                                       right={
                                                    <div className="d-mobile-none"
                                                         style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -380,12 +398,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                             </div>
                         }
                         right={
-
                             <Dock
-                                componentClassNames={{
-                                    right: 'd-none-mobile',
-                                    splitter: 'd-none-mobile'
-                                }}
+                                componentClassNames={rightDocComponentClassNames}
                                 side='right'
                                 initialWidth={300}
                                 left={
@@ -463,6 +477,10 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             onConfirm: () => this.onDocDeleted(...repoDocInfos),
         });
 
+    }
+
+    private onDocSidebarVisible(docSidebarVisible: boolean) {
+        this.setState({...this.state, docSidebarVisible});
     }
 
     private onDocDeleted(...repoDocInfos: RepoDocInfo[]) {
@@ -611,6 +629,7 @@ interface IState {
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly columns: DocRepoTableColumns;
     readonly selected: ReadonlyArray<number>;
+    readonly docSidebarVisible: boolean;
 }
 
 
