@@ -49,9 +49,20 @@ complex PDFs easier as you can pre-read them on desktop devices and then review 
 Polar allows you to review annotations directly and you can go to the annotation view and then select "Start Review"
 which will review ten cards at a time.   
 
+<p class="text-center">
 <img class="img-fluid border" src="https://i.imgur.com/FNEYGTj.png">
+</p>
 
 These will then be scheduled for the future so that you can review them at a later date.
+
+# User Interface
+
+We will compute 10 or more 'tasks' that need to be completed.  Right now these are reading reviews but in the future
+will also be flashcards.
+
+<p class="text-center">
+<img class="img-fluid border" src="https://i.imgur.com/BKkEVKl.png">
+</p>
 
 # Scheduling 
 
