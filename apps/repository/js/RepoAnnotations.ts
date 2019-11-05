@@ -90,7 +90,7 @@ export class RepoAnnotations {
         if (type === AnnotationType.TEXT_HIGHLIGHT) {
             const textHighlight = <TextHighlight> sourceAnnotation;
             meta = {
-                color: HighlightColors.toDefaultColor(textHighlight.color)
+                color: HighlightColors.withDefaultColor(textHighlight.color)
             };
         }
 
@@ -100,7 +100,7 @@ export class RepoAnnotations {
 
             const areaHighlight = <AreaHighlight> sourceAnnotation;
             meta = {
-                color: HighlightColors.toDefaultColor(areaHighlight.color)
+                color: HighlightColors.withDefaultColor(areaHighlight.color)
             };
 
             const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);

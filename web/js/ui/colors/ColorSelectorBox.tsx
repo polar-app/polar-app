@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ColorButton} from './ColorButton';
 
 interface ColorButtonsRowProps extends IProps {
@@ -8,11 +7,14 @@ interface ColorButtonsRowProps extends IProps {
 
 const ColorButtonsRow = (props: ColorButtonsRowProps) => {
 
-    const selectedColors = props.selectedColors || [];
+    const selected = props.selected || [];
 
     return <div style={{display: 'flex'}}>
         {props.colors.map(color =>
-          <ColorButton selected={selectedColors.includes(color)} key={color} {...props} color={color}/>)}
+          <ColorButton key={color}
+                       selected={selected.includes(color)}
+                       onSelected={props.onSelected}
+                       color={color}/>)}
     </div>;
 
 };
@@ -120,7 +122,7 @@ export type ColorStr = string;
 
 interface IProps {
 
-    readonly selectedColors?: ReadonlyArray<ColorStr>;
+    readonly selected?: ReadonlyArray<ColorStr>;
 
     readonly onSelected?: (color: ColorStr) => void;
 

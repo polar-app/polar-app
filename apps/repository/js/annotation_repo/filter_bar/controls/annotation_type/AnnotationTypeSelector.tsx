@@ -2,6 +2,7 @@ import * as React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {AnnotationTypeDropdownItem} from "./AnnotationTypeDropdownItem";
+import {Buttons} from "../Buttons";
 
 export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> {
 
@@ -37,23 +38,7 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
 
         ];
 
-        interface ButtonProps {
-            readonly outline: boolean;
-            readonly color: 'primary' | 'light';
-        }
-
-        const buttonActive: ButtonProps = {
-            outline: true,
-            color: 'primary'
-        };
-
-        const buttonInactive: ButtonProps = {
-            outline: false,
-            color: 'light'
-        };
-
-
-        const buttonProps = this.props.selected.length > 0 ? buttonActive : buttonInactive;
+        const buttonProps = Buttons.activeProps(this.props.selected.length > 0);
 
         return (
 

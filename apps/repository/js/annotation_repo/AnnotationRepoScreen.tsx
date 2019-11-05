@@ -26,8 +26,8 @@ import {Row} from "../../../../web/js/ui/layout/Row";
 import {StartReviewButton} from "./filter_bar/StartReviewButton";
 import {Reviewers} from "../reviewer/Reviewers";
 import {TextFilter} from "./filter_bar/TextFilter";
-import {HighlightColorFilterButton} from "./filter_bar/HighlightColorFilterButton";
-import {AnnotationTypeSelector} from "./filter_bar/controls/AnnotationTypeSelector";
+import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightColorFilterButton";
+import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/AnnotationTypeSelector";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
@@ -130,12 +130,12 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                                 <div className="mr-1">
                                     <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
-                                                            onSelected={selected => this.filtersHandler.update({annotationTypes: selected})}/>
+                                                            onSelected={annotationTypes => this.filtersHandler.update({annotationTypes})}/>
                                 </div>
 
                                 <div className="mr-1">
-                                    <HighlightColorFilterButton selectedColors={this.filtersHandler.filters.color ? [this.filtersHandler.filters.color] : undefined}
-                                                                onSelected={color => this.filtersHandler.update({color})}/>
+                                    <HighlightColorFilterButton selected={this.filtersHandler.filters.colors}
+                                                                onSelected={selected => this.filtersHandler.update({colors: selected})}/>
                                 </div>
 
                                 <div className="d-none-mobile">

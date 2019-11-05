@@ -22,7 +22,7 @@ export class ReviewerTasks {
                               .filter(current => current.text !== undefined && current.text !== '')
                               .map(current => {
 
-                                  const color = HighlightColors.toDefaultColor((current.meta || {}).color);
+                                  const color = HighlightColors.withDefaultColor((current.meta || {}).color);
                                   return {
                                       ...current,
                                       text: current.text || "",

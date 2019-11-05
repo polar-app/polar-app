@@ -20,7 +20,7 @@ import {LightModal} from "../../js/ui/LightModal";
 import {StartReviewButton} from "../../../apps/repository/js/annotation_repo/filter_bar/StartReviewButton";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {PreviewWarnings} from "../../../apps/repository/js/reviewer/PreviewWarnings";
-import {AnnotationTypeSelector} from "../../../apps/repository/js/annotation_repo/filter_bar/controls/AnnotationTypeSelector";
+import {AnnotationTypeSelector} from "../../../apps/repository/js/annotation_repo/filter_bar/controls/annotation_type/AnnotationTypeSelector";
 import { AnnotationType } from 'polar-shared/src/metadata/AnnotationType';
 import {ColorSelectorBox} from "../../js/ui/colors/ColorSelectorBox";
 

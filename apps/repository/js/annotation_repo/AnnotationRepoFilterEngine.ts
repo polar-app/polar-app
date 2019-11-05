@@ -9,6 +9,7 @@ import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
+import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 
 /**
  * The actual engine that applies the filters once they are updated.
@@ -58,8 +59,11 @@ export class AnnotationRepoFilterEngine {
 
     private doFilterByColor(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
-        if (this.filters.color) {
-            return repoAnnotations.filter(current => current.meta && current.meta.color === this.filters.color);
+        if (this.filters.colors.length > 0) {
+            return repoAnnotations.filter(current => {
+                const color = HighlightColors.withDefaultColor(current.meta ? current.meta.color : undefined);
+                return current.meta && this.filters.colors.includes(color);
+            });
         }
 
         return repoAnnotations;
