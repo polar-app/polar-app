@@ -27,6 +27,8 @@ import {StartReviewButton} from "./filter_bar/StartReviewButton";
 import {Reviewers} from "../reviewer/Reviewers";
 import {TextFilter} from "./filter_bar/TextFilter";
 import {HighlightColorFilterButton} from "./filter_bar/HighlightColorFilterButton";
+import {AnnotationTypeSelector} from "./filter_bar/controls/AnnotationTypeSelector";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -49,6 +51,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         this.onSelectedFolders = this.onSelectedFolders.bind(this);
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
+        this.startReview = this.startReview.bind(this);
 
         this.state = {
             data: [],
@@ -115,9 +118,10 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                 <header>
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    <Row className="border-bottom pt-1 pb-1">
+                    <Row id="header-filter"
+                         className="border-bottom p-1">
                         <Row.Main>
-                            <StartReviewButton onClick={() => Reviewers.start(this.state.data, 10)}/>
+                            <StartReviewButton onClick={() => this.startReview()}/>
                         </Row.Main>
 
                         <Row.Right>
@@ -125,11 +129,19 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                             <div style={{display: 'flex'}}>
 
                                 <div className="mr-1">
+                                    <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
+                                                            onSelected={selected => this.filtersHandler.update({annotationTypes: selected})}/>
+                                </div>
+
+                                <div className="mr-1">
                                     <HighlightColorFilterButton selectedColors={this.filtersHandler.filters.color ? [this.filtersHandler.filters.color] : undefined}
                                                                 onSelected={color => this.filtersHandler.update({color})}/>
                                 </div>
 
-                                <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
+                                <div className="d-none-mobile">
+                                    <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
+                                </div>
+
                             </div>
 
                         </Row.Right>
@@ -198,6 +210,14 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         filteredTags.set(tags);
 
         this.filtersHandler.update({filteredTags});
+    }
+
+    private startReview() {
+        const persistenceLayer = this.props.persistenceLayerManager.get();
+        const datastoreCapabilities = persistenceLayer.capabilities();
+        const prefs = persistenceLayer.datastore.getPrefs();
+
+        Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, 10);
     }
 
 }

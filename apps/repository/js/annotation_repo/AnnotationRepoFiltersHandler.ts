@@ -1,5 +1,6 @@
 import {FilteredTags} from '../FilteredTags';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 /**
  * Keeps track of the filters so that we can just call a function updating
@@ -68,6 +69,11 @@ export class AnnotationRepoFiltersHandler {
             modified = true;
         }
 
+        if (filters.annotationTypes !== undefined) {
+            this.filters.annotationTypes = filters.annotationTypes;
+            modified = true;
+        }
+
         if (modified) {
             this.dispatch();
         }
@@ -101,6 +107,8 @@ export interface MutableAnnotationRepoFilters {
 
     filteredTags: FilteredTags;
 
+    annotationTypes: ReadonlyArray<AnnotationType>;
+
 }
 
 export interface AnnotationRepoFilters extends Readonly<MutableAnnotationRepoFilters> {
@@ -120,6 +128,8 @@ export class DefaultAnnotationRepoFilters implements MutableAnnotationRepoFilter
     public readonly flagged: boolean = false;
 
     public readonly text: string = "";
+
+    public readonly annotationTypes: ReadonlyArray<AnnotationType> = [];
 
 }
 

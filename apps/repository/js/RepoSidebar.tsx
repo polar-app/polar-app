@@ -26,8 +26,8 @@ const Styles: IStyleMap = {
         zIndex: 99999,
         height: 'calc(100%)',
         width: '200px',
-        paddingLeft: '1px',
-        paddingTop: '1px'
+        // paddingLeft: '1px',
+        // paddingTop: '1px'
     },
 
     subheader: {
@@ -141,7 +141,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                          data-expanded={this.state.expanded}
                          onKeyUp={event => this.onKeyUp(event)}>
 
-                    <div className="subheader p-1" style={Styles.subheader}>
+                    <div className="subheader" style={Styles.subheader}>
 
                         <NavButtons/>
 

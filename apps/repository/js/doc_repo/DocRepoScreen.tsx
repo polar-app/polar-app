@@ -283,6 +283,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         return (
             <div id="doc-repository"
+                 className=""
                  style={{
                      height: '100%'
                  }}>
@@ -296,7 +297,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         <div id="header-filter">
 
                             <div style={{display: 'flex'}}
-                                 className="mt-1 mb-1">
+                                 className="p-1">
 
                                 <div className=""
                                      style={{

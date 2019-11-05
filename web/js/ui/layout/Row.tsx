@@ -10,8 +10,10 @@ export class Row extends React.PureComponent<IProps, any> {
 
         return (
 
-            <div className={this.props.className || ""}
+            <div className={this.props.className}
+                 id={this.props.id}
                  style={{
+                     ...(this.props.style || {}),
                      display: 'flex',
                      flexDirection: 'row'
                  }}>
@@ -20,6 +22,7 @@ export class Row extends React.PureComponent<IProps, any> {
 
             </div>
         );
+
     }
 
     static Main = class extends React.PureComponent<any, any>{
@@ -82,5 +85,7 @@ export class Row extends React.PureComponent<IProps, any> {
 }
 
 interface IProps {
+    readonly id?: string;
     readonly className?: string;
+    readonly style?: React.CSSProperties;
 }

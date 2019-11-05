@@ -18,7 +18,6 @@ export class UIModes {
             return <UIMode> uiMode;
         }
 
-        console.warn("FIXME: using default ui mode");
         return "light";
 
     }

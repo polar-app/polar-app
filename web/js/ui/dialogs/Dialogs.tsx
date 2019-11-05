@@ -1,13 +1,12 @@
-import {Confirm, ConfirmProps} from './Confirm';
+import {Confirm} from './Confirm';
 import * as React from 'react';
-import {ReactInjector} from '../util/ReactInjector';
-import {InjectedComponent} from '../util/ReactInjector';
+import {InjectedComponent, ReactInjector} from '../util/ReactInjector';
 import {Prompt, PromptProps} from './Prompt';
 import {Blackout} from '../blackout/Blackout';
 
 export class Dialogs {
 
-    public static confirm(opts: ConfirmProps) {
+    public static confirm(opts: DialogConfirmProps) {
 
         let injected: InjectedComponent | undefined;
 
@@ -62,3 +61,13 @@ export class Dialogs {
 
 }
 
+export interface DialogConfirmProps {
+
+    readonly title: string;
+    readonly subtitle: string;
+    readonly onCancel?: () => void;
+    readonly onConfirm: () => void;
+    readonly type?: 'danger' | 'warning';
+    readonly noCancel?: boolean;
+
+}
