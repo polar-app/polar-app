@@ -1,15 +1,13 @@
-import Joyride, {ACTIONS, CallBackProps, EVENTS, placement, STATUS} from 'react-joyride';
+import Joyride, {ACTIONS, CallBackProps, EVENTS, STATUS} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {Feedback} from '../../ui/feedback/Feedback';
-import {SplitLayout, SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
-import {SplitLayoutRight} from '../../ui/split_layout/SplitLayoutRight';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
+import {Platforms} from "../../util/Platforms";
 
 const log = Logger.create();
 
@@ -63,6 +61,10 @@ export class RepositoryTour extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        if (Platforms.isMobile()) {
+            return <div/>;
+        }
 
         return (
 

@@ -6,13 +6,6 @@ import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {DocDropdownItems} from './DocDropdownItems';
 import {UncontrolledDropdown} from "reactstrap";
 
-const Styles: IStyleMap = {
-
-    DropdownMenu: {
-    },
-
-};
-
 export class DocDropdown extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -32,7 +25,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
                                     id={this.props.id + '-dropdown-toggle'}>
 
-                        <i className="fas fa-ellipsis-h"></i>
+                        <i className="fas fa-ellipsis-h"/>
 
                     </DropdownToggle>
 
