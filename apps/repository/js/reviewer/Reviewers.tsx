@@ -59,7 +59,8 @@ export class Reviewers {
             title: 'Cloud sync required',
             subtitle: 'Cloud sync is required to review annotations.  This is needed for mobile review.',
             type: 'danger',
-            onConfirm: NULL_FUNCTION
+            onConfirm: NULL_FUNCTION,
+            noCancel: true
         });
 
     }
@@ -109,11 +110,14 @@ export class Reviewers {
 
         const onRating = (taskRep: TaskRep, rating: Rating) => {
 
+            console.log("Saving rating... ")
+
             const next = TasksCalculator.computeNextSpacedRep(taskRep, rating);
 
             const spacedRep: SpacedRep = Dictionaries.onlyDefinedProperties({uid, ...next});
 
             SpacedReps.set(next.id, spacedRep)
+                .then(() => console.log("Saving rating... done", JSON.stringify(spacedRep, null, '  ')))
                 .catch(err => log.error("Could not save state: ", err));
 
         };
