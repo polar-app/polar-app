@@ -10,7 +10,7 @@ const ColorButtonsRow = (props: ColorButtonsRowProps) => {
 
     const selectedColors = props.selectedColors || [];
 
-    return <div>
+    return <div style={{display: 'flex'}}>
         {props.colors.map(color =>
           <ColorButton selected={selectedColors.includes(color)} key={color} {...props} color={color}/>)}
     </div>;

@@ -22,6 +22,7 @@ import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {PreviewWarnings} from "../../../apps/repository/js/reviewer/PreviewWarnings";
 import {AnnotationTypeSelector} from "../../../apps/repository/js/annotation_repo/filter_bar/controls/AnnotationTypeSelector";
 import { AnnotationType } from 'polar-shared/src/metadata/AnnotationType';
+import {ColorSelectorBox} from "../../js/ui/colors/ColorSelectorBox";
 
 const styles = {
     swatch: {
@@ -224,7 +225,9 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
 
             <div>
 
-                <AnnotationTypeSelector selected={[AnnotationType.FLASHCARD]} onSelected={selected => console.log('selected: ', selected)}/>
+                {/*<AnnotationTypeSelector selected={[AnnotationType.FLASHCARD]} onSelected={selected => console.log('selected: ', selected)}/>*/}
+
+                <ColorSelectorBox/>
 
                 {/*<StartReviewButton onClick={NULL_FUNCTION}/>*/}
 

@@ -37,17 +37,21 @@ export class ColorButton extends React.PureComponent<IProps, IState> {
 
         const className = props.selected ? 'border border-primary' : "";
 
-        return <div className="ml-1 mr-1" style={{display: 'inline-block'}}>
+        return <div className="ml-1 mr-1 border border-primary rounded"
+                    style={{
+                        display: 'flex',
+                        // borderWidth: '4px',
+                        // padding: '4px',
+                    }}>
             <Button size="lg"
                        id={props.id}
                        type="button"
-                       className={"p-0 " + className}
+                       className={"p-0"}
                        title=""
                        aria-label=""
                        color="light"
                        onClick={() => onSelected(props.color)}
                        style={{
-                           display: 'inline-block',
                            backgroundColor,
                            border: '1pt solid rgba(0, 0, 0, 0.1)',
                            width: size,

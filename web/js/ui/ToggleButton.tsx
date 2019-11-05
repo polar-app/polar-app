@@ -14,8 +14,22 @@ export class ToggleButton extends React.Component<IProps, IState> {
 
     public render() {
 
+        const createIconClassName = () => {
+
+            if (this.props.iconClassName) {
+                return this.props.iconClassName;
+            }
+
+            if (this.state.value) {
+                return 'fas fa-check';
+            } else {
+                return 'fas fa-minus';
+            }
+
+        };
+
         const bgClassName = this.state.value ? 'bg-primary' : 'bg-secondary';
-        const iconClassName = this.state.value ? 'fas fa-check' : 'fas fa-minus';
+        const iconClassName = createIconClassName();;
 
         return (
 
@@ -62,6 +76,7 @@ interface IProps {
     readonly id?: string;
     readonly initialValue?: boolean;
     readonly label: string;
+    readonly iconClassName?: string;
     readonly onChange: (value: boolean) => void;
 }
 

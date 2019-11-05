@@ -8,6 +8,7 @@ import {FilteredTags} from '../FilteredTags';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import Input from 'reactstrap/lib/Input';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
+import {Button} from "reactstrap";
 
 const log = Logger.create();
 
@@ -56,6 +57,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                             <ToggleButton id="toggle-flagged"
                                           label="flagged"
+                                          iconClassName="fas fa-flag"
                                           initialValue={false}
                                           onChange={value => this.props.onToggleFlaggedOnly(value)}/>
 
@@ -78,6 +80,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                             <ToggleButton id="toggle-archived"
                                           label="archived"
+                                          iconClassName="fas fa-check"
                                           initialValue={false}
                                           onChange={value => this.props.onToggleFilterArchived(value)}/>
 
@@ -95,6 +98,15 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                                     refresher={this.props.refresher}
                                     tooltip="Filter the document list by a specific tag."
                                     filteredTags={this.props.filteredTags} />
+
+                </div>
+
+                <div className="header-filter-box mr-1"
+                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                    {/*<Button size="sm" color="primary">*/}
+                    {/*    <i className="fas fa-info-circle"/>*/}
+                    {/*</Button>*/}
 
                 </div>
 
