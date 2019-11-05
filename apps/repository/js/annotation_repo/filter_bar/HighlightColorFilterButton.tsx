@@ -2,8 +2,8 @@ import * as React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IDs} from "../../../../../web/js/util/IDs";
-import {ColorButton} from '../../../../../web/js/ui/colors/ColorButton';
 import {ColorSelectorBox} from "../../../../../web/js/ui/colors/ColorSelectorBox";
+import {DropdownChevron} from "../../../../../web/js/ui/util/DropdownChevron";
 
 export class HighlightColorFilterButton extends React.PureComponent<IProps, IState> {
 
@@ -50,9 +50,12 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
                 <Button color="light"
                         id={id}
                         size="sm"
+                        style={{
+                            whiteSpace: 'nowrap'
+                        }}
                         onClick={() => this.activate()}>
 
-                    <i className="fas fa-swatchbook"/>
+                    <i className="fas fa-swatchbook"/> Colors <DropdownChevron/>
 
                 </Button>
 

@@ -27,6 +27,8 @@ import {StartReviewButton} from "./filter_bar/StartReviewButton";
 import {Reviewers} from "../reviewer/Reviewers";
 import {TextFilter} from "./filter_bar/TextFilter";
 import {HighlightColorFilterButton} from "./filter_bar/HighlightColorFilterButton";
+import {AnnotationTypeSelector} from "./filter_bar/controls/AnnotationTypeSelector";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -125,6 +127,11 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                         <Row.Right>
 
                             <div style={{display: 'flex'}}>
+
+                                <div className="mr-1">
+                                    <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
+                                                            onSelected={selected => this.filtersHandler.update({annotationTypes: selected})}/>
+                                </div>
 
                                 <div className="mr-1">
                                     <HighlightColorFilterButton onSelected={color => this.filtersHandler.update({color})}/>

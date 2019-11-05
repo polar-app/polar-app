@@ -50,6 +50,7 @@ export class AnnotationRepoFilterEngine {
         // repoAnnotations = this.doFilterArchived(repoAnnotations);
         repoAnnotations = this.doFilterByTags(repoAnnotations);
         repoAnnotations = this.doFilterByColor(repoAnnotations);
+        repoAnnotations = this.doFilterByAnnotationTypes(repoAnnotations);
 
         return repoAnnotations;
 
@@ -59,6 +60,16 @@ export class AnnotationRepoFilterEngine {
 
         if (this.filters.color) {
             return repoAnnotations.filter(current => current.meta && current.meta.color === this.filters.color);
+        }
+
+        return repoAnnotations;
+
+    }
+
+    private doFilterByAnnotationTypes(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+
+        if (this.filters.annotationTypes.length > 0) {
+            return repoAnnotations.filter(current => this.filters.annotationTypes.includes(current.type));
         }
 
         return repoAnnotations;

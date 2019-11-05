@@ -20,6 +20,8 @@ import {LightModal} from "../../js/ui/LightModal";
 import {StartReviewButton} from "../../../apps/repository/js/annotation_repo/filter_bar/StartReviewButton";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {PreviewWarnings} from "../../../apps/repository/js/reviewer/PreviewWarnings";
+import {AnnotationTypeSelector} from "../../../apps/repository/js/annotation_repo/filter_bar/controls/AnnotationTypeSelector";
+import { AnnotationType } from 'polar-shared/src/metadata/AnnotationType';
 
 const styles = {
     swatch: {
@@ -113,7 +115,7 @@ export class App<P> extends React.Component<{}, IAppState> {
         //                 onCancel: NULL_FUNCTION,
         //                 onDone: NULL_FUNCTION});
 
-        PreviewWarnings.createDialog(NULL_FUNCTION);
+        // PreviewWarnings.createDialog(NULL_FUNCTION);
 
         const tags = [
             '/CompSci/Google',
@@ -221,6 +223,8 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
         return (
 
             <div>
+
+                <AnnotationTypeSelector selected={[AnnotationType.FLASHCARD]} onSelected={selected => console.log('selected: ', selected)}/>
 
                 {/*<StartReviewButton onClick={NULL_FUNCTION}/>*/}
 
