@@ -57,7 +57,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                                              repoDocMetaManager={this.props.repoDocMetaManager}
                                              repoDocMetaLoader={this.props.repoDocMetaLoader}
                                              data={this.props.data}
-                                             onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}}/>
+                                             onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
 
                     </div>
 
