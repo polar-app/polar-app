@@ -42,7 +42,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
     }
 
     private onRepoAnnotationSelected(repoAnnotation: RepoAnnotation) {
-        console.log("A repo annotation was selected: " , repoAnnotation);
+        // console.log("A repo annotation was selected: " , repoAnnotation);
 
         this.setState({repoAnnotation});
 
