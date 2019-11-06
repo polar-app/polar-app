@@ -219,19 +219,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, 10);
     }
 
-    static PhoneScreen = class extends AnnotationRepoScreen {
-
-        public render() {
-            return <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                 updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                 repoDocMetaManager={this.props.repoDocMetaManager}
-                                 repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                 data={this.props.data}
-                                 onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
-        }
-
-    }
-
 }
 
 export interface IProps {
