@@ -18,8 +18,7 @@ import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
-import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
-import {Tags} from 'polar-shared/src/tags/Tags';
+import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {Row} from "../../../../web/js/ui/layout/Row";
@@ -28,7 +27,7 @@ import {Reviewers} from "../reviewer/Reviewers";
 import {TextFilter} from "./filter_bar/TextFilter";
 import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightColorFilterButton";
 import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/AnnotationTypeSelector";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import AnnotationRepoTable from "./AnnotationRepoTable";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -218,6 +217,19 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         const prefs = persistenceLayer.datastore.getPrefs();
 
         Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, 10);
+    }
+
+    static PhoneScreen = class extends AnnotationRepoScreen {
+
+        public render() {
+            return <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                 updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                 repoDocMetaManager={this.props.repoDocMetaManager}
+                                 repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                 data={this.props.data}
+                                 onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
+        }
+
     }
 
 }
