@@ -27,16 +27,22 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
     public render() {
 
+        const onSelected = (repoAnnotation: RepoAnnotation) => this.onRepoAnnotationSelected(repoAnnotation);
+
         if (Devices.get() === 'phone') {
-            return <PreviewAndMainViewDock.Phone {...this.props}/>
+            return <PreviewAndMainViewDock.Phone {...this.props}
+                                                 repoAnnotation={this.state.repoAnnotation}
+                                                 onSelected={onSelected}/>
         } else {
-            return <PreviewAndMainViewDock.Default {...this.props}/>
+            return <PreviewAndMainViewDock.Default {...this.props}
+                                                   repoAnnotation={this.state.repoAnnotation}
+                                                   onSelected={onSelected}/>
         }
 
     }
 
     private onRepoAnnotationSelected(repoAnnotation: RepoAnnotation) {
-        // console.log("A repo annotation was selected: " , repoAnnotation);
+        console.log("A repo annotation was selected: " , repoAnnotation);
 
         this.setState({repoAnnotation});
 
@@ -52,14 +58,12 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
                     <div style={{flexGrow: 1, overflowY: 'auto'}}>
 
-                        {/*FIXME: this is broken because it's setting teh state on the wrong object... */}
-
                         <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
                                              repoDocMetaManager={this.props.repoDocMetaManager}
                                              repoDocMetaLoader={this.props.repoDocMetaLoader}
                                              data={this.props.data}
-                                             onSelected={repoAnnotation => this.onRepoAnnotationSelected(repoAnnotation)}/>
+                                             onSelected={this.props.onSelected || NULL_FUNCTION}/>
 
                     </div>
 
@@ -85,7 +89,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                       right={
                           <div className="mt-2 pl-1 pr-1">
                               <RepoAnnotationMetaView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                      repoAnnotation={this.state.repoAnnotation}/>
+                                                      repoAnnotation={this.props.repoAnnotation}/>
                           </div>
                       }
                       side='left'
@@ -123,6 +127,10 @@ export interface IProps {
     readonly updateFilters: UpdateFiltersCallback;
 
     readonly data: ReadonlyArray<RepoAnnotation>;
+
+    readonly onSelected?: (repoAnnotation: RepoAnnotation) => void;
+
+    readonly repoAnnotation?: RepoAnnotation;
 
 }
 
