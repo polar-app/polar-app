@@ -54,9 +54,13 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
             return (
 
-                <div style={{display: 'flex' , flexDirection: 'column', height: '100%'}}>
+                <div style={{
+                        display: 'flex' ,
+                        flexDirection: 'column',
+                        height: '100%'
+                    }}>
 
-                    <div style={{flexGrow: 1, overflowY: 'auto'}}>
+                    <div style={{overflowY: 'auto'}}>
 
                         <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
@@ -80,8 +84,6 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
             return (
 
                 <Dock componentClassNames={{
-                    right: 'd-none-mobile',
-                    splitter: 'd-none-mobile'
                 }}
                       left={
                           <PreviewAndMainViewDock.Main {...this.props}/>

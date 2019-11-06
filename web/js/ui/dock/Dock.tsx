@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {MousePositions} from '../../../spectron0/ui-components/MousePositions';
+import {MousePositions} from './MousePositions';
 import {ChannelCoupler} from '../../util/Channels';
 import {defaultValue} from 'polar-shared/src/Preconditions';
-import {Platforms} from "../../util/Platforms";
 
 
 class Styles {
@@ -111,12 +110,10 @@ export class Dock extends React.Component<IProps, IState> {
             sidebarStyle.position = 'absolute';
         }
 
-        if (! Platforms.isMobile()) {
-            sidebarStyle.width = width;
-            sidebarStyle.minWidth = width;
-            sidebarStyle.maxWidth = width;
-        }
-
+        sidebarStyle.width = width;
+        sidebarStyle.minWidth = width;
+        sidebarStyle.maxWidth = width;
+        
         contentStyle.flexGrow = 1;
 
         // force it to be 100% and make the inner elements use overflow
