@@ -6,6 +6,8 @@ permalink: /docs/sharing.html
 description: Polar supports sharing documents and collaborating directly with other users. 
 ---
 
+**sharing is currently beta**
+
 # Sharing and Collaboration
 
 Polar supports sharing files with other users and commenting and sharing annotations and comments allow you to 
