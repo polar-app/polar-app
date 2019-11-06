@@ -12,7 +12,9 @@ export class PropertyTable extends React.Component<IProps, IState> {
         return (
 
             <table className="">
-                {this.props.children}
+                <tbody>
+                    {this.props.children}
+                </tbody>
             </table>
 
         );
@@ -24,7 +26,7 @@ export class PropertyTable extends React.Component<IProps, IState> {
         public render() {
 
             if (this.props.value === undefined) {
-                return <div/>;
+                return [];
             }
 
             const toValue = () => {
