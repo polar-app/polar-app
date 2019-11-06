@@ -179,7 +179,7 @@ export class RepositoryApp {
                 return renderAnnotationRepoScreen();
             }
 
-            return renderDocRepoScreen;
+            return renderDocRepoScreen();
 
         };
 

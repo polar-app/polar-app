@@ -52,6 +52,8 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
                     <div style={{flexGrow: 1, overflowY: 'auto'}}>
 
+                        {/*FIXME: this is broken because it's setting teh state on the wrong object... */}
+
                         <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
                                              repoDocMetaManager={this.props.repoDocMetaManager}
