@@ -69,6 +69,7 @@ export class GroupMemberEntry extends React.Component<IProps, IState> {
         const opts: DialogConfirmProps = {
             title: 'Delete group member?',
             subtitle: 'Are you sure you want to delete this group member?',
+            type: 'warning',
             onConfirm: () => this.props.onDelete(member),
             onCancel: NULL_FUNCTION
         };
