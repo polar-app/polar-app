@@ -14,10 +14,10 @@ It supports tagging, annotation, highlighting and keeps track of your reading pr
 1. [Getting Started](/docs/getting-started.html)
 1. [Frequently Asked Questions](/docs/faq.html) 
     - a. [Key Bindings](/docs/key-bindings.html) 
-1. [Mobile](/docs/mobile.html)
-1. [Bulk Import](/docs/bulk-import.html)
-1. [Web Capture](/docs/web-page-capture-and-archival-of-html-content.html)
-1. [Annotation Sidebar](/docs/annotation-sidebar.html)
+1. [Mobile](/docs/mobile.html) - Using Polar on mobile devices
+1. [Bulk Import](/docs/bulk-import.html) - Adding documents in bulk 
+1. [Web Capture](/docs/web-page-capture-and-archival-of-html-content.html) Store web content within polar as a native document.
+1. [Annotation Sidebar](/docs/annotation-sidebar.html) - Create text annotations and area annotations and store them on the sidebar.
 1. [Sync](/docs/device-sync.html)
     - a. [Cloud Sync](/docs/cloud-sync.html)
     - b. [Git Sync](/docs/git-sync.html)
