@@ -1,7 +1,7 @@
 import {RepoAnnotation} from "../RepoAnnotation";
 import {
     createDefaultTaskRepResolver,
-    OptionalTaskRepResolver,
+    OptionalTaskRepResolver, ReadTaskAction,
     Task,
     TaskRep,
     TasksCalculator
@@ -17,7 +17,7 @@ export class ReviewerTasks {
 
     public static async createTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
 
-        const potential: ReadonlyArray<Task> =
+        const potential: ReadonlyArray<Task<ReadTaskAction>> =
             repoDocAnnotations.filter(current => current.type === AnnotationType.TEXT_HIGHLIGHT)
                               .filter(current => current.text !== undefined && current.text !== '')
                               .map(current => {
@@ -25,7 +25,7 @@ export class ReviewerTasks {
                                   const color = HighlightColors.withDefaultColor((current.meta || {}).color);
                                   return {
                                       ...current,
-                                      text: current.text || "",
+                                      action: current.text || "",
                                       color
                                   };
                               });
@@ -40,7 +40,8 @@ export class ReviewerTasks {
 
         const spacedRepsMap = IDMaps.toIDMap(spacedReps);
 
-        const optionalTaskRepResolver: OptionalTaskRepResolver  = async (task: Task): Promise<TaskRep | undefined> => {
+        const optionalTaskRepResolver: OptionalTaskRepResolver<ReadTaskAction>
+            = async (task: Task<ReadTaskAction>): Promise<TaskRep<ReadTaskAction> | undefined> => {
 
             const spacedRep = spacedRepsMap[task.id];
 

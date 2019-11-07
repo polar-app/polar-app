@@ -5,12 +5,10 @@ import {RatingCallback} from "./Reviewer";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Strings} from "polar-shared/src/util/Strings";
 
-export class RatingButton extends React.Component<IProps, IState> {
+export class RatingButton<A> extends React.Component<IProps<A>, IState> {
 
-    constructor(props: IProps, context: any) {
+    constructor(props: IProps<A>, context: any) {
         super(props, context);
-
-
     }
 
     public render() {
@@ -45,11 +43,11 @@ export class RatingButton extends React.Component<IProps, IState> {
 
 }
 
-export interface IProps {
+export interface IProps<A> {
 
-    readonly taskRep: TaskRep;
+    readonly taskRep: TaskRep<A>;
     readonly rating: Rating;
-    readonly onRating: RatingCallback;
+    readonly onRating: RatingCallback<A>;
 
 }
 

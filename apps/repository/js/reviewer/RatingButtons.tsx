@@ -4,49 +4,41 @@ import {RatingCallback} from "./Reviewer";
 import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {RatingButtonSet} from "./RatingButtonSet";
 
-export class RatingButtons extends React.Component<IProps, IState> {
+export class RatingButtons<A> extends React.Component<IProps<A>, IState> {
 
-    constructor(props: IProps, context: any) {
+    constructor(props: IProps<A>, context: any) {
         super(props, context);
     }
 
     public render() {
 
+        const Learning = () => {
+            return <RatingButtonSet taskRep={this.props.taskRep}
+                                    ratings={['again', 'good', 'easy']}
+                                    onRating={this.props.onRating}/>;
+        };
+
+        const Review = () => {
+            return <RatingButtonSet taskRep={this.props.taskRep}
+                                    ratings={['again', 'hard', 'good', 'easy']}
+                                    onRating={this.props.onRating}/>;
+        };
+
         if (['new', 'learning'].includes(this.props.stage)) {
-            return <RatingButtons.Learning {...this.props}/>;
+            return <Learning/>;
         } else {
-            return <RatingButtons.Review {...this.props}/>;
+            return <Review/>;
         }
 
     }
 
-    static Learning = class extends React.Component<IProps, any> {
-
-        public render() {
-            return <RatingButtonSet taskRep={this.props.taskRep}
-                                    ratings={['again', 'good', 'easy']}
-                                    onRating={this.props.onRating}/>;
-        }
-
-    };
-
-    static Review = class extends React.Component<IProps, any> {
-
-        public render() {
-            return <RatingButtonSet taskRep={this.props.taskRep}
-                                    ratings={['again', 'hard', 'good', 'easy']}
-                                    onRating={this.props.onRating}/>;
-        }
-
-    };
-
 }
 
-export interface IProps {
+export interface IProps<A> {
 
-    readonly taskRep: TaskRep;
+    readonly taskRep: TaskRep<A>;
     readonly stage: Stage;
-    readonly onRating: RatingCallback;
+    readonly onRating: RatingCallback<A>;
 
 }
 

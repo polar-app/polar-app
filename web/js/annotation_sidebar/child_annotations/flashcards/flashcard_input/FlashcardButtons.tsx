@@ -3,12 +3,6 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import {Flashcard} from '../../../../metadata/Flashcard';
 
-const log = Logger.create();
-
-class Styles {
-
-}
-
 export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {

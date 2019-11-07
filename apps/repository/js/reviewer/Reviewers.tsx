@@ -9,7 +9,11 @@ import {Firestore} from "../../../../web/js/firebase/Firestore";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
 import {Answer, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {TaskRep, TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {
+    ReadTaskAction,
+    TaskRep,
+    TasksCalculator
+} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
@@ -99,7 +103,7 @@ export class Reviewers {
             doClose();
         };
 
-        const onSuspended = (taskRep: TaskRep) => {
+        const onSuspended = (taskRep: TaskRep<ReadTaskAction>) => {
 
             const spacedRep = Dictionaries.onlyDefinedProperties({uid, ...taskRep, suspended: true});
 
@@ -108,9 +112,9 @@ export class Reviewers {
 
         };
 
-        const onRating = (taskRep: TaskRep, rating: Rating) => {
+        const onRating = (taskRep: TaskRep<ReadTaskAction>, rating: Rating) => {
 
-            console.log("Saving rating... ")
+            console.log("Saving rating... ");
 
             const next = TasksCalculator.computeNextSpacedRep(taskRep, rating);
 

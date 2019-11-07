@@ -8,9 +8,9 @@ import {Platforms} from "../../../../web/js/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
 import {RatingButtons} from "./RatingButtons";
 
-export class Reviewer extends React.Component<IProps, IState> {
+export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
-    constructor(props: IProps, context: any) {
+    constructor(props: IProps<A>, context: any) {
         super(props, context);
 
         this.onRating = this.onRating.bind(this);
@@ -37,7 +37,7 @@ export class Reviewer extends React.Component<IProps, IState> {
             return <div/>;
         }
 
-        const {id, text, created, color} = taskRep;
+        const {id, action, created, color} = taskRep;
 
         const perc = Math.floor(Percentages.calculate(this.state.finished, this.state.total));
 
@@ -67,6 +67,19 @@ export class Reviewer extends React.Component<IProps, IState> {
             style.width = '800px';
             style.maxWidth = '800px';
         }
+
+        const Main = () => {
+
+            if (typeof action === 'string') {
+                return <AnnotationPreview id={id}
+                                          text={action}
+                                          created={created}
+                                          meta={{color}}/>
+            } else {
+                return <div/>;
+            }
+
+        };
 
         return (
 
@@ -120,10 +133,7 @@ export class Reviewer extends React.Component<IProps, IState> {
                             flexGrow: 1
                          }}>
 
-                        <AnnotationPreview id={id}
-                                           text={text}
-                                           created={created}
-                                           meta={{color}}/>
+                        <Main/>
 
                     </div>
 
@@ -154,14 +164,14 @@ export class Reviewer extends React.Component<IProps, IState> {
 
     }
 
-    private onSuspended(taskRep: TaskRep) {
+    private onSuspended(taskRep: TaskRep<A>) {
         this.props.onSuspended(taskRep);
         this.doNext();
 
     }
 
 
-    private onRating(taskRep: TaskRep, rating: Rating) {
+    private onRating(taskRep: TaskRep<A>, rating: Rating) {
         this.props.onRating(taskRep, rating);
         this.doNext();
 
@@ -198,31 +208,33 @@ export type FinishedCallback = (cancelled?: boolean) => void;
  *
  * @param cancelled true if the user explicitly cancelled the review.
  */
-export type RatingCallback = (taskRep: TaskRep, rating: Rating) => void;
+export interface RatingCallback<A> {
+    (taskRep: TaskRep<A>, rating: Rating): void;
+}
 
-export interface IProps {
+export interface IProps<A> {
 
-    readonly taskReps: ReadonlyArray<TaskRep>;
+    readonly taskReps: ReadonlyArray<TaskRep<A>>;
 
     /**
      * Callback for when we receive answers and their values.
      */
-    readonly onRating: RatingCallback;
+    readonly onRating: RatingCallback<A>;
 
-    readonly onSuspended: (taskRep: TaskRep) => void;
+    readonly onSuspended: (taskRep: TaskRep<A>) => void;
 
     readonly onFinished: FinishedCallback;
 
 }
 
-export interface IState {
+export interface IState<A> {
 
     /**
      * The review we're working with or undefined when there are no more.
      */
-    readonly taskRep?: TaskRep | undefined;
+    readonly taskRep?: TaskRep<A> | undefined;
 
-    readonly pending: TaskRep[];
+    readonly pending: TaskRep<A>[];
 
     readonly finished: number;
 

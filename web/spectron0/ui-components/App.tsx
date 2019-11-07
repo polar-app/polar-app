@@ -193,22 +193,22 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
 
 `;
 
-        const tasks: ReadonlyArray<Task> = [
+        const tasks: ReadonlyArray<Task<string>> = [
             {
                 id: "10102",
-                text: lorem,
+                action: lorem,
                 created: ISODateTimeStrings.create(),
                 color: 'red'
             },
             {
                 id: "10101",
-                text: "this is the first one",
+                action: "this is the first one",
                 created: ISODateTimeStrings.create(),
                 color: 'yellow'
             },
             {
                 id: "10102",
-                text: "this is the second one",
+                action: "this is the second one",
                 created: ISODateTimeStrings.create(),
                 color: 'yellow'
             },
