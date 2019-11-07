@@ -23,7 +23,7 @@ export class Flashcards {
 
     public static create(type: FlashcardType, fields: {[key: string]: Text}, archetype: string, ref: Ref) {
 
-        Preconditions.assertNotNull(fields, "fields");
+        Preconditions.assertPresent(fields, "fields");
 
         const created = ISODateTimeStrings.create();
         const lastUpdated = created;

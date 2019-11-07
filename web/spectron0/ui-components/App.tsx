@@ -198,19 +198,22 @@ Vivamus ullamcorper massa vitae dui placerat, et vehicula odio sollicitudin. Nul
                 id: "10102",
                 action: lorem,
                 created: ISODateTimeStrings.create(),
-                color: 'red'
+                color: 'red',
+                mode: 'reading'
             },
             {
                 id: "10101",
                 action: "this is the first one",
                 created: ISODateTimeStrings.create(),
-                color: 'yellow'
+                color: 'yellow',
+                mode: 'reading'
             },
             {
                 id: "10102",
                 action: "this is the second one",
                 created: ISODateTimeStrings.create(),
-                color: 'yellow'
+                color: 'yellow',
+                mode: 'reading'
             },
         ];
 

@@ -34,11 +34,11 @@ export class Flashcard extends VersionedObject implements IFlashcard {
 
         super.validate();
 
-        Preconditions.assertNotNull(this.id, "id");
-        Preconditions.assertNotNull(this.type, "type");
-        Preconditions.assertNotNull(this.guid, "guid");
-        Preconditions.assertNotNull(this.fields, "fields");
-        Preconditions.assertNotNull(this.archetype, "archetype");
+        Preconditions.assertPresent(this.id, "id");
+        Preconditions.assertPresent(this.type, "type");
+        Preconditions.assertPresent(this.guid, "guid");
+        Preconditions.assertPresent(this.fields, "fields");
+        Preconditions.assertPresent(this.archetype, "archetype");
 
         // TODO: assert that the guid is not null.
 

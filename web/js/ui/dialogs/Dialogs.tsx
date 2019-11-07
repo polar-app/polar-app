@@ -67,7 +67,7 @@ export interface DialogConfirmProps {
     readonly subtitle: string;
     readonly onCancel?: () => void;
     readonly onConfirm: () => void;
-    readonly type?: 'danger' | 'warning';
+    readonly type?: 'danger' | 'warning' | 'success';
     readonly noCancel?: boolean;
 
 }

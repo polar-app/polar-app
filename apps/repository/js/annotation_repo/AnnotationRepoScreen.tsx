@@ -50,7 +50,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         this.onSelectedFolders = this.onSelectedFolders.bind(this);
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
-        this.startReview = this.startReview.bind(this);
+        this.startReadingReview = this.startReadingReview.bind(this);
 
         this.state = {
             data: [],
@@ -120,7 +120,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                     <Row id="header-filter"
                          className="border-bottom p-1">
                         <Row.Main>
-                            <StartReviewButton onClick={() => this.startReview()}/>
+                            <StartReviewButton onClick={() => this.startReadingReview()}/>
                         </Row.Main>
 
                         <Row.Right>
@@ -211,12 +211,12 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.filtersHandler.update({filteredTags});
     }
 
-    private startReview() {
+    private startReadingReview() {
         const persistenceLayer = this.props.persistenceLayerManager.get();
         const datastoreCapabilities = persistenceLayer.capabilities();
         const prefs = persistenceLayer.datastore.getPrefs();
 
-        Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, 10);
+        Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, 'reading', 10);
     }
 
 }

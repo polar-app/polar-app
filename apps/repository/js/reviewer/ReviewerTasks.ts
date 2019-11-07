@@ -12,10 +12,16 @@ import {SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {Optional} from "polar-shared/src/util/ts/Optional";
+import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 export class ReviewerTasks {
 
-    public static async createTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
+    public static async createTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                                    mode: RepetitionMode,
+                                    limit: number = 10) {
+
+        // TODO: we also need to be able to review images.... we also need a dedicated provider to
+        // return the right type of annotation type...
 
         const potential: ReadonlyArray<Task<ReadTaskAction>> =
             repoDocAnnotations.filter(current => current.type === AnnotationType.TEXT_HIGHLIGHT)
@@ -26,7 +32,8 @@ export class ReviewerTasks {
                                   return {
                                       ...current,
                                       action: current.text || "",
-                                      color
+                                      color,
+                                      mode
                                   };
                               });
 

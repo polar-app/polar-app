@@ -8,7 +8,7 @@ import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {Firestore} from "../../../../web/js/firebase/Firestore";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
-import {Answer, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, Rating, RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
     ReadTaskAction,
     TaskRep,
@@ -29,9 +29,11 @@ export class Reviewers {
 
     public static start(datastoreCapabilities: DatastoreCapabilities,
                         prefs: PersistentPrefs,
-                        repoDocAnnotations: ReadonlyArray<RepoAnnotation>, limit: number = 10) {
+                        repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                        mode: RepetitionMode,
+                        limit: number = 10) {
 
-        this.create(datastoreCapabilities, prefs, repoDocAnnotations, limit)
+        this.create(datastoreCapabilities, prefs, repoDocAnnotations, mode, limit)
             .catch(err => console.error("Unable to start review: ", err));
 
     }
@@ -69,9 +71,22 @@ export class Reviewers {
 
     }
 
+    private static displayNoTasksMessage() {
+
+        Dialogs.confirm({
+            title: 'No tasks to complete',
+            subtitle: "Awesome.  Looks like you're all caught up and have no tasks to complete.",
+            type: 'success',
+            onConfirm: NULL_FUNCTION,
+            noCancel: true
+        });
+
+    }
+
     public static async create(datastoreCapabilities: DatastoreCapabilities,
                                prefs: PersistentPrefs,
                                repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                               mode: RepetitionMode,
                                limit: number = 10) {
 
         if (! datastoreCapabilities.networkLayers.has('web')) {
@@ -83,7 +98,12 @@ export class Reviewers {
 
         await this.notifyPreview(prefs);
 
-        const tasks = await ReviewerTasks.createTasks(repoDocAnnotations, limit);
+        const tasks = await ReviewerTasks.createTasks(repoDocAnnotations, mode, limit);
+
+        if (tasks.length === 0) {
+            this.displayNoTasksMessage();
+            return;
+        }
 
         console.log("Found N tasks: " + tasks.length);
 

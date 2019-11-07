@@ -1,5 +1,7 @@
 # pending
 
+- TODO: do I want to call this 2.0??  I think so!!
+
 - Annotation reviewer spaced repetition system finally integrated into Polar
 
 - Flashcards now inherit the text of the annotation when created so that the
