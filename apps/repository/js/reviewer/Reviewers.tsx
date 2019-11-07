@@ -10,7 +10,7 @@ import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
 import {Answer, Rating, RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
-    ReadTaskAction,
+    ReadingTaskAction,
     TaskRep,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
@@ -98,7 +98,7 @@ export class Reviewers {
 
         await this.notifyPreview(prefs);
 
-        const tasks = await ReviewerTasks.createTasks(repoDocAnnotations, mode, limit);
+        const tasks = await ReviewerTasks.createReadingTasks(repoDocAnnotations, limit);
 
         if (tasks.length === 0) {
             this.displayNoTasksMessage();
@@ -123,7 +123,7 @@ export class Reviewers {
             doClose();
         };
 
-        const onSuspended = (taskRep: TaskRep<ReadTaskAction>) => {
+        const onSuspended = (taskRep: TaskRep<ReadingTaskAction>) => {
 
             const spacedRep = Dictionaries.onlyDefinedProperties({uid, ...taskRep, suspended: true});
 
@@ -132,7 +132,7 @@ export class Reviewers {
 
         };
 
-        const onRating = (taskRep: TaskRep<ReadTaskAction>, rating: Rating) => {
+        const onRating = (taskRep: TaskRep<ReadingTaskAction>, rating: Rating) => {
 
             console.log("Saving rating... ");
 
