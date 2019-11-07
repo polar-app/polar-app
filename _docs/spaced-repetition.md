@@ -69,11 +69,23 @@ will also be flashcards.
 Polar implements a variant of SM2 to schedule cards. This is the same algorithm used in Anki, and SuperMemo with a few 
 modifications which effectively do not change the core scheduler algorithm but just make it easier to work with.
 
-## High-level Overview
+# Selecting Specific Tags/Folders, colors, etc
+
+When you click ```Start Review``` only the currently shown annotations are considered for review.  This will allow you
+to narrow a review to a specific folder or tag.  You can also filter by annotation color as well.
+
+# High-level Overview
+
+## Stages
 
 All cards go into a 'learning' mode until you've been able to get a good grasp of the core material.  At that point they
 'graduate' to a 'review' mode which schedules the jobs at higher and higher intervals when you accurately complete each 
 task.
+
+Once in reading the intervals keep increasing if you keep selecting 'good' until, at some future point, the card becomes
+so mature that you're only reviewing it every year or so.
+
+
 
 <!--
 FIXME: 
