@@ -1,6 +1,6 @@
 # pending
 
-- TODO: do I want to call this 2.0??  I think so!!
+- Flashcard reviewer now integrated.
 
 - Annotation reviewer spaced repetition system finally integrated into Polar
 
@@ -9,7 +9,9 @@
 
 - More work on mobile including disabling some features when using the app.
 
-- We now have a *basic* dropdown selector for the annotation view.
+- active filters are now light blue so that users know they have filters enabled.
+
+- color and annotation type filters
 
 - Fixed bug with the root folders having the wrong counts
 
