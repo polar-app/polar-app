@@ -16,6 +16,8 @@ import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {Preconditions} from "polar-shared/src/Preconditions";
+import {Reducers} from "polar-shared/src/util/Reducers";
 
 /**
  * Take tasks and then build a
@@ -62,11 +64,29 @@ export class ReviewerTasks {
 
         const taskBuilder: TasksBuilder<FlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<FlashcardTaskAction>> => {
 
+            const toTasks = (repoAnnotation: RepoAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
+
+                const toTask = (action: FlashcardTaskAction): Task<FlashcardTaskAction> => {
+
+                    return {
+                        id: repoAnnotation.id,
+                        action,
+                        created: repoAnnotation.created,
+                        mode
+                    };
+
+                };
+
+                const actions = FlashcardTaskActions.create(<IFlashcard> repoAnnotation.original);
+
+                return actions.map(toTask);
+
+            };
+
             return repoDocAnnotations
                 .filter(current => current.type === AnnotationType.FLASHCARD)
-                .map(current => current.original)
-                .map(current => FlashcardTaskActions.create(<IFlashcard>current))
-                .flat();
+                .map(toTasks)
+                .reduce(Reducers.FLAT)
 
         };
 
@@ -78,6 +98,8 @@ export class ReviewerTasks {
                                        mode: RepetitionMode,
                                        tasksBuilder: TasksBuilder<A>,
                                        limit: number = 10): Promise<ReadonlyArray<TaskRep<A>>> {
+
+        Preconditions.assertPresent(mode, 'mode');
 
         // TODO: we also need to be able to review images.... we also need a dedicated provider to
         // return the right type of annotation type...
