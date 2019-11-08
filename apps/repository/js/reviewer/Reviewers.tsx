@@ -22,6 +22,7 @@ import {PreviewWarnings} from "./PreviewWarnings";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
@@ -88,6 +89,8 @@ export class Reviewers {
                                repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
                                mode: RepetitionMode,
                                limit: number = 10) {
+
+        Preconditions.assertPresent(mode, 'mode');
 
         if (! datastoreCapabilities.networkLayers.has('web')) {
             this.displayWebRequiredError();

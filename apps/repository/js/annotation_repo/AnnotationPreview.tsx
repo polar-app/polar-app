@@ -37,7 +37,7 @@ const Body = (props: IProps) => {
     } else {
         return (
             <div id={props.id} style={style}>
-                <div>{text || 'no text'}</div>
+                <div dangerouslySetInnerHTML={{__html: text || 'no text'}}></div>
             </div>
         );
     }

@@ -30,12 +30,8 @@ export class FlashcardTaskActions {
         const back = Texts.toString(flashcard.fields.back);
 
         const result = {
-            front: <div>
-                {front}
-            </div>,
-            back: <div>
-                {back}
-            </div>
+            front: <div dangerouslySetInnerHTML={{__html: front || ""}}/>,
+            back: <div dangerouslySetInnerHTML={{__html: back || ""}}/>
         };
 
         return [result];
@@ -63,7 +59,7 @@ export class FlashcardTaskActions {
         const regionToElement = (region: Region, id: number) => {
 
             if (region.type === 'cloze' && (region as ClozeRegion).id === id) {
-                return <span className="text-danger font-weight-bold">[...]</span>
+                return `<span className="text-danger font-weight-bold">[...]</span>`;
             } else {
                 return region.text;
             }
@@ -72,11 +68,11 @@ export class FlashcardTaskActions {
 
         const toFlashcard = (id: number) => {
 
-            const front = regions.map(region => regionToElement(region, id));
+            const front = regions.map(region => regionToElement(region, id)).join('');
 
             return {
-                front: <div>{front}</div>,
-                back: <div>{clozeAsText}</div>
+                front: <div dangerouslySetInnerHTML={{__html: front}}/>,
+                back: <div dangerouslySetInnerHTML={{__html: clozeAsText}}/>
             }
 
         };
