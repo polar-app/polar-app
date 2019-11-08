@@ -1,10 +1,16 @@
 import * as React from 'react';
 import {Button} from "reactstrap";
+import {CardBody} from "./CardBody";
+import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
+import {RatingButtons} from "../RatingButtons";
+import {FlashcardTaskAction} from "./FlashcardTaskAction";
+import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {RatingCallback} from "../Reviewer";
 
 /**
  * Basic flashcard component which allows us to display any type of card as long as it has a front/back design.
  */
-export class Flashcard extends React.Component<IProps, IState> {
+export class FlashcardCard extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -18,6 +24,8 @@ export class Flashcard extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        const {taskRep} = this.props;
 
         const Main = () => {
 
@@ -43,33 +51,24 @@ export class Flashcard extends React.Component<IProps, IState> {
                     </Button>;
 
                 case 'back':
-                    return this.props.answers;
+                    return <RatingButtons taskRep={taskRep}
+                                          stage={taskRep.stage}
+                                          onRating={this.props.onRating}/>
 
             }
         };
 
-        return (
+        return <CardBody taskRep={taskRep}>
 
-            <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1
-                }}>
+            <CardBody.Main taskRep={taskRep}>
+                <Main/>
+            </CardBody.Main>
 
-                <div className="p-1"
-                     style={{flexGrow: 1}}>
+            <CardBody.Footer taskRep={taskRep}>
+                <Buttons/>
+            </CardBody.Footer>
 
-                    <Main/>
-
-                </div>
-
-                <div className="text-center p-1 mt-1">
-                    <Buttons/>
-                </div>
-
-            </div>
-
-        );
+        </CardBody>;
 
     }
 
@@ -84,11 +83,13 @@ export type FlashcardSide = 'front' | 'back';
 
 export interface IProps {
 
+    readonly taskRep: TaskRep<FlashcardTaskAction>;
+
+    readonly onRating: RatingCallback<FlashcardTaskAction>;
+
     readonly front: React.ReactElement<any>;
 
     readonly back: React.ReactElement<any>;
-
-    readonly answers: React.ReactElement<any>;
 
 }
 

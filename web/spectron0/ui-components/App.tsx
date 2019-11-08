@@ -17,9 +17,9 @@ import {Refs} from "polar-shared/src/metadata/Refs";
 import {RepoAnnotations} from "../../../apps/repository/js/RepoAnnotations";
 import {DocInfos} from "../../js/metadata/DocInfos";
 import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
-import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/FlashcardTaskAction";
-import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/FlashcardTaskActions";
-import {Flashcard} from "../../../apps/repository/js/reviewer/Flashcard";
+import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskAction";
+import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskActions";
+import {FlashcardCard} from "../../../apps/repository/js/reviewer/cards/FlashcardCard";
 
 const styles = {
     swatch: {

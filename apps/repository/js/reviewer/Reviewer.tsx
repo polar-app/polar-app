@@ -3,12 +3,16 @@ import {Button, Progress} from "reactstrap";
 import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Answer, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {
+    ReadingTaskAction,
+    TaskRep
+} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
 import {RatingButtons} from "./RatingButtons";
-import {Flashcard} from "./Flashcard";
-import {FlashcardTaskAction} from "./FlashcardTaskAction";
+import {FlashcardCard} from "./cards/FlashcardCard";
+import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
+import {ReadingCard} from "./cards/ReadingCard";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -70,22 +74,56 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
             style.maxWidth = '800px';
         }
 
-        const Main = () => {
+        // const Main = () => {
+        //
+        //     if (typeof action === 'string') {
+        //         return <AnnotationPreview id={id}
+        //                                   text={action}
+        //                                   created={created}
+        //                                   meta={{color}}/>
+        //     } else {
+        //
+        //         const flashcardTaskAction: FlashcardTaskAction
+        //             = action as any as FlashcardTaskAction;
+        //         const front = flashcardTaskAction.front;
+        //         const back = flashcardTaskAction.back;
+        //         const answers = <div/>;
+        //
+        //         return <FlashcardCard front={front} back={back} answers={answers}/>
+        //     }
+        //
+        // };
+
+        const DoReadingCard = () => {
+
+            const readingTaskRep = taskRep as any as TaskRep<ReadingTaskAction>;
+
+            return <ReadingCard taskRep={readingTaskRep}
+                                onRating={(_, rating) => this.onRating(taskRep, rating)}/>
+
+        };
+
+        const DoFlashcardCard = () => {
+
+            const flashcardTaskRep = taskRep as any as TaskRep<FlashcardTaskAction>;
+
+            const flashcardTaskAction = flashcardTaskRep.action;
+            const front = flashcardTaskAction.front;
+            const back = flashcardTaskAction.back;
+
+            return <FlashcardCard taskRep={flashcardTaskRep}
+                                  front={front}
+                                  back={back}
+                                  onRating={(_, rating) => this.onRating(taskRep, rating)}/>
+        };
+
+        const Card = () => {
 
             if (typeof action === 'string') {
-                return <AnnotationPreview id={id}
-                                          text={action}
-                                          created={created}
-                                          meta={{color}}/>
+                return <DoReadingCard/>;
+
             } else {
-
-                const flashcardTaskAction: FlashcardTaskAction
-                    = action as any as FlashcardTaskAction;
-                const front = flashcardTaskAction.front;
-                const back = flashcardTaskAction.back;
-                const answers = <div/>;
-
-                return <Flashcard front={front} back={back} answers={answers}/>
+                return <DoFlashcardCard/>;
             }
 
         };
@@ -130,44 +168,46 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                 </div>
 
-                <div className="p-1"
-                     style={{
-                        flexGrow: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        overflowY: 'auto'
-                     }}>
 
-                    <div style={{
-                            flexGrow: 1
-                         }}>
+                <Card/>
 
-                        <Main/>
+                {/*<div className="p-1"*/}
+                {/*     style={{*/}
+                {/*        flexGrow: 1,*/}
+                {/*        display: 'flex',*/}
+                {/*        flexDirection: 'column',*/}
+                {/*        overflowY: 'auto'*/}
+                {/*     }}>*/}
 
-                    </div>
+                {/*    <div style={{*/}
+                {/*            flexGrow: 1*/}
+                {/*         }}>*/}
 
-                </div>
+                {/*        <Main/>*/}
 
-                <div>
+                {/*    </div>*/}
 
-                    <div className="text-sm text-grey700 mb-1 ml-1">
-                        <b>stage: </b> {taskRep.stage}
-                    </div>
+                {/*</div>*/}
 
-                    <div style={{
-                            display: 'flex',
-                        }}>
+                {/*<div>*/}
 
-                        <RatingButtons taskRep={taskRep}
-                                       stage={taskRep.stage}
-                                       onRating={this.onRating}/>
+                {/*    <div className="text-sm text-grey700 mb-1 ml-1">*/}
+                {/*        <b>stage: </b> {taskRep.stage}*/}
+                {/*    </div>*/}
 
-                    </div>
+                {/*    <div style={{*/}
+                {/*            display: 'flex',*/}
+                {/*        }}>*/}
 
-                </div>
+                {/*        <RatingButtons taskRep={taskRep}*/}
+                {/*                       stage={taskRep.stage}*/}
+                {/*                       onRating={this.onRating}/>*/}
+
+                {/*    </div>*/}
+
+                {/*</div>*/}
 
             </div>
-
 
         );
 

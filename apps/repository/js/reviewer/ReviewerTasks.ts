@@ -13,8 +13,8 @@ import {SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {FlashcardTaskAction} from "./FlashcardTaskAction";
-import {FlashcardTaskActions} from "./FlashcardTaskActions";
+import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
+import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 
 /**
