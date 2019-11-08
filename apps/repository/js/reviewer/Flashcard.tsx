@@ -8,38 +8,20 @@ export class Flashcard extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onShowAnswer = this.onShowAnswer.bind(this);
+
+        this.state = {
+            side: 'front'
+        }
+
     }
 
     public render() {
 
-        return (
+        const Main = () => {
 
-            <div style={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                }}>
-
-                <div className="p-1"
-                     style={{flexGrow: 1}}>
-
-                    <Flashcard.Main {...this.props}/>
-
-                </div>
-
-                <div className="text-center p-1 mt-1">
-                    <Flashcard.Buttons {...this.props}/>
-                </div>
-
-            </div>
-
-        );
-
-    }
-
-    static Main = class extends React.Component<IProps, IState> {
-        public render() {
-
-            switch (this.props.side) {
+            switch (this.state.side) {
 
                 case 'front':
                     return this.props.front;
@@ -49,23 +31,50 @@ export class Flashcard extends React.Component<IProps, IState> {
 
             }
 
-        }
-    };
+        };
 
-    static Buttons = class extends React.Component<IProps, IState> {
-        public render() {
-
-            switch (this.props.side) {
+        const Buttons = () => {
+            switch (this.state.side) {
 
                 case 'front':
-                    return <Button color="primary" onClick={this.props.onShowAnswer}>Show Answer</Button>
+                    return <Button color="primary"
+                                   onClick={() => this.onShowAnswer()}>
+                        Show Answer
+                    </Button>;
 
                 case 'back':
                     return this.props.answers;
 
             }
-        }
+        };
 
+        return (
+
+            <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1
+                }}>
+
+                <div className="p-1"
+                     style={{flexGrow: 1}}>
+
+                    <Main/>
+
+                </div>
+
+                <div className="text-center p-1 mt-1">
+                    <Buttons/>
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+    private onShowAnswer() {
+        this.setState({side: 'back'});
     }
 
 }
@@ -75,18 +84,14 @@ export type FlashcardSide = 'front' | 'back';
 
 export interface IProps {
 
-    readonly onShowAnswer: () => void;
+    readonly front: React.ReactElement<any>;
 
-    readonly front: React.ReactNode;
+    readonly back: React.ReactElement<any>;
 
-    readonly back: React.ReactNode;
-
-    readonly side: FlashcardSide;
-
-    readonly answers: React.ReactNode;
+    readonly answers: React.ReactElement<any>;
 
 }
 
 export interface IState {
-
+    readonly side: FlashcardSide;
 }

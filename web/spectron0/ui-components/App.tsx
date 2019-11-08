@@ -19,6 +19,7 @@ import {DocInfos} from "../../js/metadata/DocInfos";
 import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
 import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/FlashcardTaskAction";
 import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/FlashcardTaskActions";
+import {Flashcard} from "../../../apps/repository/js/reviewer/Flashcard";
 
 const styles = {
     swatch: {
@@ -243,6 +244,15 @@ export class App<P> extends React.Component<{}, IAppState> {
                               onSuspended={NULL_FUNCTION}
                               onFinished={() => console.log('finished')}/>
                 </LightModal>
+
+                {/*<div style={{width: '500px', height: '700px', display: 'flex'}}*/}
+                {/*     className="border">*/}
+
+                {/*    <Flashcard front={<div>front</div>}*/}
+                {/*               back={<div>back</div>}*/}
+                {/*               answers={<div>answers</div>}/>*/}
+
+                {/*</div>*/}
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01" updated={ISODateTimeStrings.create()}/>*/}

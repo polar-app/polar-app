@@ -25,12 +25,15 @@ export class FlashcardTaskActions {
 
     private static createBasicFrontBackFlashcard(flashcard: IFlashcard): ReadonlyArray<FlashcardTaskAction> {
 
+        const front = Texts.toString(flashcard.fields.front);
+        const back = Texts.toString(flashcard.fields.back);
+
         const result = {
             front: <div>
-                {flashcard.fields.front}
+                {front}
             </div>,
             back: <div>
-                {flashcard.fields.back}
+                {back}
             </div>
         };
 
@@ -49,18 +52,19 @@ export class FlashcardTaskActions {
                    .map(current => (current as ClozeRegion).id);
 
 
-        const toElement = (region: Region, id: number) => {
+        const regionToElement = (region: Region, id: number) => {
 
             if (region.type === 'cloze' && (region as ClozeRegion).id === id) {
                 return <span className="text-danger font-weight-bold">...</span>
             } else {
                 return region.text;
             }
+
         };
 
         const toFlashcard = (id: number) => {
 
-            const front = regions.map(region => toElement(region, id));
+            const front = regions.map(region => regionToElement(region, id));
 
             return {
                 front: <div>{front}</div>,

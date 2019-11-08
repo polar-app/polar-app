@@ -7,6 +7,8 @@ import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
 import {RatingButtons} from "./RatingButtons";
+import {Flashcard} from "./Flashcard";
+import {FlashcardTaskAction} from "./FlashcardTaskAction";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -76,7 +78,14 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
                                           created={created}
                                           meta={{color}}/>
             } else {
-                return <div/>;
+
+                const flashcardTaskAction: FlashcardTaskAction
+                    = action as any as FlashcardTaskAction;
+                const front = flashcardTaskAction.front;
+                const back = flashcardTaskAction.back;
+                const answers = <div/>;
+
+                return <Flashcard front={front} back={back} answers={answers}/>
             }
 
         };

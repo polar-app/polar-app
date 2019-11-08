@@ -5,8 +5,8 @@ import * as React from 'react';
  */
 export interface FlashcardTaskAction {
 
-    readonly front: React.ReactNode;
+    readonly front: React.ReactElement<any>;
 
-    readonly back: React.ReactNode;
+    readonly back: React.ReactElement<any>;
 
 }
