@@ -22,12 +22,10 @@ import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {Row} from "../../../../web/js/ui/layout/Row";
-import {StartReviewButton} from "./filter_bar/StartReviewButton";
 import {Reviewers} from "../reviewer/Reviewers";
 import {TextFilter} from "./filter_bar/TextFilter";
 import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightColorFilterButton";
 import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/AnnotationTypeSelector";
-import AnnotationRepoTable from "./AnnotationRepoTable";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
@@ -122,8 +120,9 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                     <Row id="header-filter"
                          className="border-bottom p-1">
                         <Row.Main>
-                            <StartReviewButton onClick={() => this.startReview('flashcard')}/>
-                            {/*<StartReviewDropdown/>*/}
+                            {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
+                            <StartReviewDropdown onFlashcards={() => this.startReview('flashcard')}
+                                                 onReading={() => this.startReview('reading')}/>
                         </Row.Main>
 
                         <Row.Right>

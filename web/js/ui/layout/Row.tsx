@@ -34,7 +34,6 @@ export class Row extends React.PureComponent<IProps, any> {
                 <div className="react-row-main"
                      style={{
                          flexGrow: 1,
-                         overflow: 'auto',
                          display: 'flex'
                      }}>
 
