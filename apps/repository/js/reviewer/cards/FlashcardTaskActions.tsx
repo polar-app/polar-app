@@ -8,6 +8,7 @@ import {
     Region
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/util/ClozeParser";
 import {Texts} from "../../../../../web/js/metadata/Texts";
+import { Preconditions } from 'polar-shared/src/Preconditions';
 
 export class FlashcardTaskActions {
 
@@ -43,14 +44,19 @@ export class FlashcardTaskActions {
 
     private static createClozeFlashcard(flashcard: IFlashcard): ReadonlyArray<FlashcardTaskAction> {
 
-        const text = Texts.toString(flashcard.fields.cloze);
-        const regions = ClozeParser.toRegions(text!);
+        const cloze = Texts.toString(flashcard.fields.cloze || flashcard.fields.text);
+        Preconditions.assertPresent(cloze, 'cloze');
+        const regions = ClozeParser.toRegions(cloze!);
 
         // the identifiers for all the cloze deletions to expand
         const identifiers =
             regions.filter(current => current.type === 'cloze')
                    .map(current => (current as ClozeRegion).id);
 
+        if (identifiers.length === 0) {
+            console.warn(`No cloze texts parsed from '${cloze}'`);
+            return [];
+        }
 
         const regionToElement = (region: Region, id: number) => {
 

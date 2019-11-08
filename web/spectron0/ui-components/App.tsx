@@ -207,16 +207,32 @@ export class App<P> extends React.Component<{}, IAppState> {
         const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> => {
             const ref = Refs.create('1234', 'text-highlight');
 
-            const flashcard = Flashcards.createFrontBack('What is the capital of California? ', 'Sacramento', ref);
-            const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
+            const createFrontAndBackAction = () => {
+                const flashcard = Flashcards.createFrontBack('What is the capital of California? ', 'Sacramento', ref);
+                const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
+                return flashcardTaskActions[0];
+            };
+
+            const createClozeAction = () => {
+                const flashcard = Flashcards.createCloze('The capital of california is {{c1:Sacramento}}.', ref);
+                const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
+                return flashcardTaskActions[0];
+            };
 
             const tasks: ReadonlyArray<Task<FlashcardTaskAction>> = [
                 {
                     id: "10102",
-                    action: flashcardTaskActions[0],
+                    action: createClozeAction(),
                     created: ISODateTimeStrings.create(),
                     color: 'red',
-                    mode: 'reading'
+                    mode: 'flashcard'
+                },
+                {
+                    id: "10102",
+                    action: createFrontAndBackAction(),
+                    created: ISODateTimeStrings.create(),
+                    color: 'red',
+                    mode: 'flashcard'
                 }
             ];
 
