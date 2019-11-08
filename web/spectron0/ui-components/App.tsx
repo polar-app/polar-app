@@ -20,6 +20,7 @@ import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks"
 import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskActions";
 import {FlashcardCard} from "../../../apps/repository/js/reviewer/cards/FlashcardCard";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const styles = {
     swatch: {
@@ -214,15 +215,19 @@ export class App<P> extends React.Component<{}, IAppState> {
             };
 
             const createClozeAction = () => {
-                const flashcard = Flashcards.createCloze('The capital of california is {{c1:Sacramento}}.', ref);
+                const flashcard = Flashcards.createCloze('The capital of california is {{c1::Sacramento}}.', ref);
                 const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
                 return flashcardTaskActions[0];
             };
 
+            const clozeAction = createClozeAction();
+
+            Preconditions.assertPresent(clozeAction, 'clozeAction');
+
             const tasks: ReadonlyArray<Task<FlashcardTaskAction>> = [
                 {
                     id: "10102",
-                    action: createClozeAction(),
+                    action: clozeAction,
                     created: ISODateTimeStrings.create(),
                     color: 'red',
                     mode: 'flashcard'

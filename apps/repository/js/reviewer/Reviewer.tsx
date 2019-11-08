@@ -9,7 +9,6 @@ import {
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
-import {RatingButtons} from "./RatingButtons";
 import {FlashcardCard} from "./cards/FlashcardCard";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {ReadingCard} from "./cards/ReadingCard";

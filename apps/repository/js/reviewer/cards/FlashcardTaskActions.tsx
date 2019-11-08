@@ -54,14 +54,16 @@ export class FlashcardTaskActions {
                    .map(current => (current as ClozeRegion).id);
 
         if (identifiers.length === 0) {
-            console.warn(`No cloze texts parsed from '${cloze}'`);
+            console.warn(`No cloze texts parsed from '${cloze}': `, regions);
             return [];
         }
+
+        const clozeAsText = ClozeParser.regionsToText(regions);
 
         const regionToElement = (region: Region, id: number) => {
 
             if (region.type === 'cloze' && (region as ClozeRegion).id === id) {
-                return <span className="text-danger font-weight-bold">...</span>
+                return <span className="text-danger font-weight-bold">[...]</span>
             } else {
                 return region.text;
             }
@@ -74,7 +76,7 @@ export class FlashcardTaskActions {
 
             return {
                 front: <div>{front}</div>,
-                back: <div>text</div>
+                back: <div>{clozeAsText}</div>
             }
 
         };
