@@ -14,6 +14,9 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class Flashcards {
 
+    public static CLOZE_ARCHETYPE = "76152976-d7ae-4348-9571-d65e48050c3f";
+    public static FRONT_BACK_ARCHETYPE = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+
     public static createMutable(flashcard: Flashcard): Flashcard {
         // TODO: an idiosyncracy of the proxies system is that it mutates the
         // object so if it's read only it won't work.  This is a bug with
@@ -39,7 +42,7 @@ export class Flashcards {
 
     public static createCloze(text: HTMLString, ref: Ref) {
 
-        const archetype = "76152976-d7ae-4348-9571-d65e48050c3f";
+        const archetype = this.CLOZE_ARCHETYPE;
 
         const fields: {[key: string]: Text } = {};
 
@@ -54,7 +57,7 @@ export class Flashcards {
      */
     public static createFrontBack(front: HTMLString, back: HTMLString, ref: Ref) {
 
-        const archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+        const archetype = this.FRONT_BACK_ARCHETYPE;
 
         const fields: {[key: string]: Text } = {};
 

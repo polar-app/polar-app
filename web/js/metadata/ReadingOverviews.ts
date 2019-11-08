@@ -6,7 +6,7 @@ import {ReadingOverview} from 'polar-shared/src/metadata/ReadingOverview';
 import {ISODateString, ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {Reducers} from 'polar-shared/src/util/Reducers';
-import {Tuples} from '../util/Tuples';
+import {Tuples} from 'polar-shared/src/util/Tuples';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 import {Numbers} from "polar-shared/src/util/Numbers";
