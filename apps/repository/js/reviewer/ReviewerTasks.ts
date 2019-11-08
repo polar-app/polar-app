@@ -12,6 +12,8 @@ import {SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {FlashcardTaskAction} from "./FlashcardTaskAction";
+import {FlashcardTaskActions} from "./FlashcardTaskActions";
 
 /**
  * Take tasks and then build a
@@ -29,7 +31,8 @@ export class ReviewerTasks {
 
         const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>) => {
 
-            return repoDocAnnotations.filter(current => current.type === AnnotationType.TEXT_HIGHLIGHT)
+            return repoDocAnnotations
+                .filter(current => current.type === AnnotationType.TEXT_HIGHLIGHT)
                 .filter(current => current.text !== undefined && current.text !== '')
                 .map(current => {
 
@@ -49,23 +52,20 @@ export class ReviewerTasks {
     }
 
     // public static async createFlashcardTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
-    //                                          limit: number = 10): Promise<ReadonlyArray<Task<ReadingTaskAction>>> {
+    //                                          limit: number = 10): Promise<ReadonlyArray<Task<FlashcardTaskAction>>> {
     //
     //     const mode = 'flashcard';
     //
+    //     // TODO/FIXME now the main issue is how do I get the original annotation back so I can convert
+    //     // the flashcard directly...
+    //
     //     const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>) => {
     //
-    //         return repoDocAnnotations.filter(current => current.type === AnnotationType.TEXT_HIGHLIGHT)
-    //             .filter(current => current.text !== undefined && current.text !== '')
+    //         return repoDocAnnotations
+    //             .filter(current => current.type === AnnotationType.FLASHCARD)
+    //             .map(current => current.original)
     //             .map(current => {
-    //
-    //                 const color = HighlightColors.withDefaultColor((current.meta || {}).color);
-    //                 return {
-    //                     ...current,
-    //                     action: current.text || "",
-    //                     color,
-    //                     mode
-    //                 };
+    //                 FlashcardTaskActions.create(current)
     //             });
     //
     //     };
