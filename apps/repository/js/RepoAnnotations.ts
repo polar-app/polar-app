@@ -117,7 +117,8 @@ export class RepoAnnotations {
             tags: docInfo.tags || {},
             meta,
             docInfo,
-            img
+            img,
+            original: sourceAnnotation
         };
 
     }

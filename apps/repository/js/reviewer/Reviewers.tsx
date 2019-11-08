@@ -10,7 +10,7 @@ import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
 import {Answer, Rating, RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
-    ReadingTaskAction,
+    ReadingTaskAction, Task,
     TaskRep,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
@@ -98,7 +98,17 @@ export class Reviewers {
 
         await this.notifyPreview(prefs);
 
-        const tasks = await ReviewerTasks.createReadingTasks(repoDocAnnotations, limit);
+        const createTaskReps = async (): Promise<ReadonlyArray<TaskRep<any>>> => {
+            switch (mode) {
+                case "flashcard":
+                    return await ReviewerTasks.createFlashcardTasks(repoDocAnnotations, limit);
+                case "reading":
+                    return await ReviewerTasks.createReadingTasks(repoDocAnnotations, limit);
+
+            }
+        };
+
+        const tasks = await createTaskReps();
 
         if (tasks.length === 0) {
             this.displayNoTasksMessage();

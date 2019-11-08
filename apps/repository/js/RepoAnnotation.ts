@@ -8,6 +8,10 @@ import {Img} from '../../../web/js/metadata/Img';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IComment} from 'polar-shared/src/metadata/IComment';
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 
@@ -43,6 +47,7 @@ export interface RepoAnnotation {
 
     readonly img?: Img;
 
+    readonly original: IFlashcard | IAreaHighlight | ITextHighlight | IComment;
 
 }
 
