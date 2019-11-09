@@ -11,6 +11,37 @@ Polar is an advanced document management and knowledge repository for people ver
 
 It provides tools to manage documents, annotations, and includes flashcards and incremental reading powered by spaced repetition.
 
+# Document Repository
+
+The first thing you will see when using Polar is the document repository.
+
+<div class="pb-3">
+{%- include image.html
+            alt="Document Repository"
+            class="img-fluid img-shadow"
+            src="/assets/screenshots/2019-11-document-view.png"
+            style="" -%}
+</div>
+
+This holds all your documents in one place, supports tags, folders, filtering the view by flags or showing archived documents, etc.
+
+You can also sort by any column to build reading queues and mix and match the above to build powerful views of your document repository. 
+
+# Annotation Viewer
+
+When reading your documents with Polar you can create highlights (either text or area highlights) and manage them
+using the annotation viewer.
+
+<div class="pb-3">
+{%- include image.html
+            alt="Document Repository"
+            class="img-fluid img-shadow"
+            src="/assets/screenshots/2019-11-annotation-view.png"
+            style="" -%}
+</div>
+
+Like the document repository, the annotation viewer allows you to filter the view, sort by columns, etc.
+
 # Pick the Right Platform
 
 Polar supports both desktop and web and supports cloud sync and storage and sync of your across devices.
