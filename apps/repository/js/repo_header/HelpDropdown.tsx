@@ -10,6 +10,7 @@ import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {Platforms} from "../../../../web/js/util/Platforms";
+import {RepoSidebarItem} from "../sidebar/RepoSidebarItem";
 
 const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
 
@@ -93,6 +94,15 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                          trackingCategory="help-check-for-update"
                                          hidden={!updatesEnabled}
                                          onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
+
+                    <DropdownItem divider/>
+
+                    <TrackedDropdownItem id="sidebar-item-logs"
+                                         title="Logs"
+                                         tooltip="Show logs on internal activity during background operations like cloud activity and sync."
+                                         icon="fas fa-info-circle"
+                                         onClick={() => document.location.href = '/#logs'}
+                                         trackingCategory="help-logs"/>
 
                 </DropdownMenu>
 

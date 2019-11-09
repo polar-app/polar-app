@@ -35,7 +35,7 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
                            style={{
                                fontSize: '20px',
                                margin: 'auto',
-                           }}></i>
+                           }}/>
 
                     </div>
 

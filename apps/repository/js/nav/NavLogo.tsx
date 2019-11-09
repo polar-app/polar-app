@@ -46,12 +46,18 @@ export class NavLogo extends React.PureComponent<IProps, IState> {
 
         const link = createLink();
 
+        const NavLink = (props: any) => {
+            return <Link to={{pathname: link, hash: '#'}}>
+                {props.children}
+            </Link>
+        };
+
         return (
             <div style={Styles.parent}>
                 <div style={Styles.child}>
-                    <Link to={{pathname: link, hash: '#'}}>
+                    <NavLink>
                         <img src="/apps/repository/img/icon.svg" height="25" alt="Polar"/>
-                    </Link>
+                    </NavLink>
                 </div>
 
                 <div style={Styles.child}>

@@ -13,8 +13,6 @@ import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
 import {Platforms} from "../../../web/js/util/Platforms";
 import {NullCollapse} from "../../../web/js/ui/null_collapse/NullCollapse";
 
-const log = Logger.create();
-
 const Styles: IStyleMap = {
 
     sidebar: {
@@ -112,6 +110,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                         <SimpleTabs>
                             <SimpleTab target={{pathname: "/", hash: "#"}} text="Document Repository"/>
                             <SimpleTab target={{pathname: "/", hash: "#annotations"}} text="Annotations"/>
+                            <SimpleTab target={{pathname: "/", hash: "#stats"}} text="Statistics"/>
                             <SimpleTab target={{pathname: "/groups"}} text="Groups"/>
                         </SimpleTabs>
                     </div>

@@ -13,6 +13,7 @@ import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
 import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 import {SplitBarLeft} from '../SplitBarLeft';
 import {Platforms} from "../../../../web/js/util/Platforms";
+import {RepoNavbar} from "../RepoNavbar";
 
 const log = Logger.create();
 
@@ -52,29 +53,42 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
         return (
 
             <div className="border-bottom">
-                <SplitBar>
 
-                    <SplitBarLeft width={500}>
-                        <RepoSidebar/>
-                    </SplitBarLeft>
+                <div className="ml-1 mr-1 mt-1"
+                     style={{
+                        display: 'flex'
+                     }}>
 
-                    <SplitBarRight>
+                    <div>
+                        <RepoNavbar/>
+                    </div>
 
-                        <ChromeExtensionInstallButton/>
+                    <div style={{
+                            flexGrow: 1,
+                            display: 'flex'
+                         }}>
 
-                        <Notifications persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
+                        <div className="ml-auto mt-auto mb-auto"
+                             style={{display: 'flex'}}>
 
-                        <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
+                            <ChromeExtensionInstallButton/>
 
-                        <LinkDropdown hidden={Platforms.isMobile()}/>
+                            <Notifications persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
 
-                        <HelpDropdown/>
+                            <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
 
-                        <Settings/>
+                            <LinkDropdown hidden={Platforms.isMobile()}/>
 
-                    </SplitBarRight>
+                            <HelpDropdown/>
 
-                </SplitBar>
+                            <Settings/>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
         );
