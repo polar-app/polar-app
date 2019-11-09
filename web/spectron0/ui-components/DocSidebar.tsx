@@ -40,10 +40,10 @@ export class DocSidebar extends React.Component<IProps, IState> {
 
                 <div style={{display: 'flex'}}>
                     <div className="ml-auto mr-auto">
-                        <DocThumbnail thumbnails={meta.thumbnails}
-                                      maxWidth={300}
-                                      maxHeight={300}
-                                      persistenceLayerProvider={this.props.persistenceLayerProvider}/>
+                        {/*<DocThumbnail thumbnails={meta.thumbnails}*/}
+                        {/*              maxWidth={300}*/}
+                        {/*              maxHeight={300}*/}
+                        {/*              persistenceLayerProvider={this.props.persistenceLayerProvider}/>*/}
                     </div>
                 </div>
 
