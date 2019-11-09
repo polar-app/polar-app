@@ -1,7 +1,7 @@
 ---
 title: Getting Started
 layout: doc
-permalink: /docs/getting-started.html
+permalink: /docs/index.html
 description:  
 ---
 
