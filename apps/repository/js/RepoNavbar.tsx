@@ -60,10 +60,10 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
                     <div className="ml-4">
                         <SimpleTabs>
-                            <SimpleTab target={{pathname: "/", hash: "#"}} text="Document Repository"/>
-                            <SimpleTab target={{pathname: "/", hash: "#annotations"}} text="Annotations"/>
-                            <SimpleTab target={{pathname: "/", hash: "#stats"}} text="Statistics"/>
-                            <SimpleTab target={{pathname: "/groups"}} text="Groups"/>
+                            <SimpleTab id="nav-tab-document-repository" target={{pathname: "/", hash: "#"}} text="Document Repository"/>
+                            <SimpleTab id="nav-tab-annotations" target={{pathname: "/", hash: "#annotations"}} text="Annotations"/>
+                            <SimpleTab id="nav-tab-statistics" target={{pathname: "/", hash: "#stats"}} text="Statistics"/>
+                            <SimpleTab id="nav-tab-groups" target={{pathname: "/groups"}} text="Groups"/>
                         </SimpleTabs>
                     </div>
 

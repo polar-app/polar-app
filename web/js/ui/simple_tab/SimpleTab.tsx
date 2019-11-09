@@ -41,7 +41,7 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
         return (
 
-            <div>
+            <div id={this.props.id}>
 
                 <Link to={this.props.target}
                       className="p-2 ml-1 mr-1"
@@ -68,6 +68,7 @@ export class SimpleTab extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
+    readonly id: string;
     readonly target: Target;
     readonly text: string;
 }

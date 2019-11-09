@@ -160,12 +160,14 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                         <li><b>Annotate</b>, <b>tag</b>, and <span className="text-dark" style={{backgroundColor: 'yellow'}}><b>highlight</b></span> all your documents and build a personal knowledge repository.</li>
 
+                        <li>Use <b>spaced repetition</b> and <b>incremental reading</b> to help you permanently remember everything you study!</li>
+
                     </ul>
 
                     <p>
                         Additionally, Polar supports <b>not just PDF</b> documents
                         but capturing <b>web content</b> and storing
-                        it offline in your archive in perpetuity.
+                        it offline in your archive - forever!
                     </p>
 
                     <p>
@@ -214,7 +216,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             }),
 
             JoyrideTours.createImageStep({
-                target: '#doc-repo-table .rt-tbody > div:nth-child(-n+1)',
+                target: '#nav-tab-document-repository',
                 title: <Title>Document Repository</Title>,
                 content: <div>
                     <p>
@@ -375,6 +377,11 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         also filter by tags or search by title.
                     </p>
 
+                    <p>
+                        You can also sort by the columns to build queues to determine what you should read next.
+                        Flags can be used to manage your primary/active reading.
+                    </p>
+
                 </div>,
                 styles: {
                     tooltip: {
@@ -383,237 +390,37 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 },
             },
 
-
-            {
-                target: '#toggle-sidebar',
-                content: <div>
-
-                    <Term>Click</Term> this button to display the sidebar.
-
-                </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                hideCloseButton: true,
-                autoNext: true,
-            },
-            // TODO: needs to be positioned about a 3rd of the way down the
-            // page...
-            {
-                title: <Title>Sidebar</Title>,
-                target: '.repo-sidebar section[data-expanded=true]',
-                content: <div>
-                    The <Term>sidebar</Term> allows you to select different
-                    views including
-                    the <Term>annotation</Term> and <Term>statistics</Term> views.
-                </div>,
-                disableBeacon: true,
-                placement: 'right-start',
-                offset: 10,
-                spotlightPadding: 0,
-                hideBackButton: true
-            },
             {
                 title: <Title>Annotations</Title>,
-                target: 'section[data-expanded=true] #sidebar-item-annotations',
+                target: '#nav-tab-annotations',
                 content: <div>
-                    Now <Term>click here</Term> to view the <Term>annotations view</Term>.
-
+                    The <Term>annotations view</Term> allows you to view all your annotations including highlights,
+                    comments, and flashcards.
                 </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                spotlightPadding: 0,
-                styles: {
-                    options: {
-                        zIndex: Z_INDEX
-                    }
-                },
-                autoNext: true
             },
-
             JoyrideTours.createImageStep({
-                target: '.annotations-view header',
-                title: <Title>Annotations View</Title>,
-                content: <div>
-                    <p>
-                        This is the <Term>annotations view</Term>.  It allows you
-                        to view all your annotations including highlights,
-                        comments, and flashcards.
-                    </p>
-                </div>,
-                image: "/web/assets/images/doc.svg",
-                placement: 'center',
-                hideBackButton: true
-            }),
-
-            {
-                target: '#toggle-sidebar',
-                content: <div>
-
-                    <p>
-                        Now let's go to the <Term>statistics view.</Term>
-                    </p>
-
-                    <p>
-                        <Term>Click</Term> this button to display the sidebar.
-                    </p>
-
-                </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                hideCloseButton: true,
-                autoNext: true,
-            },
-
-
-            {
-                title: <Title>Sidebar</Title>,
-                target: 'section[data-expanded=true] #sidebar-item-stats',
-                content: <div>
-                    Now <Term>click here</Term> to view the <Term>statistics view</Term>.
-
-                </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                spotlightPadding: 0,
-                styles: {
-                    options: {
-                        zIndex: Z_INDEX
-                    }
-                },
-                autoNext: true
-            },
-
-            JoyrideTours.createImageStep({
-                target: '.statistics-view header',
+                target: '#nav-tab-statistics',
                 title: <Title>Statistics View</Title>,
                 content: <div>
                     <p>
-                        This is the <Term>statistics view</Term>.  It allows you
-                        to view importants statistics regarding your reading,
+                        The <Term>statistics view</Term> allows you
+                        to view important statistics regarding your reading,
                         documents, and annotations including the rate of new
                         documents and statistics on your tags.
                     </p>
                 </div>,
                 image: "/web/assets/images/statistics.svg",
-                hideBackButton: true,
-                placement: 'center',
             }),
-
-            {
-                title: <Title>Daily Reading Progress</Title>,
-                target: '#reading-progress-table',
-                content: <div>
-                    <p>
-                        The <Term>reading progress</Term> metric allows you to track
-                        how often you're reading to encourage you to hit your goals.
-                    </p>
-
-                    <p>
-                        Each column is one week and we display 52 weeks to
-                        represent the entire year.
-                    </p>
-
-                </div>,
-                disableBeacon: true,
-            },
-
-            {
-                target: '#toggle-sidebar',
-                content: <div>
-
-                    <p>
-                        Now let's go back to the <Term>documents view.</Term>
-                    </p>
-
-                    <p>
-                        <Term>Click</Term> this button to display the sidebar.
-                    </p>
-
-                </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                hideCloseButton: true,
-                autoNext: true,
-            },
-
-
-            {
-                title: <Title>Select documents view...</Title>,
-                target: 'section[data-expanded=true] #sidebar-item-documents',
-                content: <div>
-                    Now <Term>click</Term> to view the <Term>documents view</Term>.
-
-                </div>,
-                spotlightClicks: true,
-                disableBeacon: true,
-                placement: 'right',
-                hideFooter: true,
-                spotlightPadding: 0,
-                styles: {
-                    options: {
-                        zIndex: Z_INDEX
-                    }
-                },
-                autoNext: true,
-                hideBackButton: true
-            },
-
-            // TODO this breaks HARD unless we have the example documents loaded
-            // and maybe I should consider just selecting the first or Nth
-            // document which would always work for the most part.
-            //
-            // :nth-child(4n) could/should work.
-
-            JoyrideTours.createImageStep({
-                target: `#doc-table div[data-doc-fingerprint='${LoadExampleDocs.MAIN_ANNOTATIONS_EXAMPLE_FINGERPRINT}']`,
-                title: <Title>Open a document</Title>,
-                content: <div>
-
-                    <p>
-                        Let's open a document.
-                    </p>
-
-                    <p>
-                        Go ahead and <Term>double click</Term> on the
-                        highlighted document row and a new window will open.
-                    </p>
-
-                    <p>
-                        This specific document has some example annotations.
-                    </p>
-
-                </div>,
-                spotlightClicks: true,
-                hideBackButton: true,
-                image:
-                    <Icon className="far fa-file-pdf"/>
-            }),
-
-            // TODO: auto advance to this once the document has been opened and
-            // we 've done the viewer tour and I think this should be more of a
-            // checklist.
-
 
             JoyrideTours.createImageStep({
                 target: 'header',
                 content: <div>
 
-                    <h2>Thanks for Taking the Tour</h2>
+                    <h2>Thanks for taking the Tour</h2>
 
                     <p>
-                        From time to time we'll check-in to see if Polar is
-                        working for you and whether you have any other
-                        suggestions to improve Polar for your use case.
+                        You next step needs to be adding documents.  Just click the <Term>add</Term> button or install
+                        the chrome extension to capture web pages.
                     </p>
 
                 </div>,
