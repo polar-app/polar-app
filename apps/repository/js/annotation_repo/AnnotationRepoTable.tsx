@@ -118,6 +118,8 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                             ]}
 
                         defaultPageSize={50}
+                        style={{height: '100%'}}
+                        showPageSizeOptions={false}
                         noDataText="No annotations available."
                         className="-striped -highlight"
                         defaultSorted={[
