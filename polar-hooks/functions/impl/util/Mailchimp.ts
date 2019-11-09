@@ -53,7 +53,7 @@ export class Mailchimp {
         // right now just the main mailchimp list
         const url = this.createURL(email);
 
-        const response = await fetch(url, init);
+        const response = await Fetches.fetch(url, init);
 
         if (response.status === 404) {
             // this is normal as the user is not subscribed.
@@ -85,7 +85,7 @@ export class Mailchimp {
         // right now just the main mailchimp list
         const url = this.createURL(email);
 
-        const response = await fetch(url, init);
+        const response = await Fetches.fetch(url, init);
 
         if (response.status !== 200) {
             // console.log(await response.text());
