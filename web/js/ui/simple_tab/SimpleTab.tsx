@@ -48,11 +48,12 @@ export class SimpleTab extends React.Component<IProps, IState> {
                       onMouseEnter={() => this.toggleHover()}
                       onMouseLeave={() => this.toggleHover()}
                       style={{
-                        color,
-                        textDecoration: 'none',
-                        borderBottom,
-                        userSelect: 'none'
-                    }}>
+                          color,
+                          textDecoration: 'none',
+                          borderBottom,
+                          userSelect: 'none',
+                          whiteSpace: 'nowrap'
+                      }}>
                     {this.props.text}
                 </Link>
 
