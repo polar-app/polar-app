@@ -1,16 +1,13 @@
 import * as React from 'react';
-import {prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
-import {ContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
-import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
-import {ContextMenu} from '../../js/ui/context_menu/ContextMenu';
+import {
+    ContextMenuHandlers,
+    ContextMenuWrapper,
+    prepareContextMenuHandlers
+} from '@burtonator/react-context-menu-wrapper';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {KeyBoundMenuItem} from './KeyBoundMenuItem';
 import {AppRuntime} from '../../js/AppRuntime';
 import {IStyleMap} from '../../js/react/IStyleMap';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import Dropdown from 'reactstrap/lib/Dropdown';
-import {DropdownToggle} from 'reactstrap';
 import Button from 'reactstrap/lib/Button';
 
 let sequence: number = 0;

@@ -1,9 +1,4 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {LeftRightSplit} from '../left_right_split/LeftRightSplit';
-import {Nav} from './Nav';
-import {SURVEY_LINK} from '../../../../apps/repository/js/splash/splashes/survey/Survey';
 
 export class BlackoutBox extends React.Component<IProps, IState> {
 

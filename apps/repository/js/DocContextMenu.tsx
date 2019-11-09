@@ -42,7 +42,7 @@ export class DocContextMenu extends React.Component<IProps, IState> {
                 </div>
 
                 <ContextMenuWrapper id={this.id}>
-A
+
                     <div className="border shadow rounded pt-2 pb-2"
                          style={{backgroundColor: 'white'}}>
 

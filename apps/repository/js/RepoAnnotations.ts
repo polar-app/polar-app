@@ -65,13 +65,15 @@ export class RepoAnnotations {
 
         let text: string | undefined;
 
-        if ((<any> sourceAnnotation).text) {
-            const sourceText: Text = (<any> sourceAnnotation).text;
+        const anySourceAnnotation = <any> sourceAnnotation;
+
+        if (anySourceAnnotation.text) {
+            const sourceText: Text = anySourceAnnotation.revisedText || anySourceAnnotation.text;
             text = Texts.toPlainText(sourceText);
         }
 
-        if ((<any> sourceAnnotation).content) {
-            const sourceText: Text = (<any> sourceAnnotation).content;
+        if (anySourceAnnotation.content) {
+            const sourceText: Text = anySourceAnnotation.content;
             text = Texts.toPlainText(sourceText);
         }
 
