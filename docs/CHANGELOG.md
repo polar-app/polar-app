@@ -1,5 +1,7 @@
 # pending
 
+- added two more colors to the annotation bar. Was frequently requested by our users so just added it.
+
 - Mobile now a supported platform.
 
 - Flashcards now inherit the text of the annotation when being created to avoid double copy / pasting of text.

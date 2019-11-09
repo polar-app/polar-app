@@ -1,9 +1,19 @@
 import * as React from 'react';
-import {Button} from 'reactstrap';
 import {ActiveSelection} from '../popup/ActiveSelections';
 import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {AnnotationHighlightButton} from "./AnnotationHighlightButton";
+import {IStyleMap} from "../../react/IStyleMap";
+
+const Styles: IStyleMap = {
+
+    bar: {
+        backgroundColor: '#333333',
+        width: '200px'
+    }
+
+};
 
 /**
  * An annotation bar that is placed exactly.
@@ -23,49 +33,27 @@ export class ControlledAnnotationBar extends React.Component<IProps, IState> {
         return (
             <div>
 
-                <div className="rounded p-1 annotationbar text-center" style={{}}>
+                <div className="rounded p-1 annotationbar text-center" style={Styles.bar}>
 
-                    <Button size="lg"
-                            type="button"
-                            className="btn p-1 m-1 annotationbar-btn"
-                            title=""
-                            aria-label=""
-                            onClick={() => this.dispatchOnHighlighted('yellow')}
-                            style={{ }}>
+                    <AnnotationHighlightButton dispatchColor='yellow'
+                                               styleColor='rgba(255,255,0)'
+                                               onHighlightedColor={color => this.dispatchOnHighlighted(color)}/>
 
-                        <span className="fas fa-highlighter"
-                              aria-hidden="true"
-                              style={{ color: 'rgba(255,255,0)' }}/>
+                    <AnnotationHighlightButton dispatchColor='red'
+                                               styleColor='rgba(255,0,0)'
+                                               onHighlightedColor={color => this.dispatchOnHighlighted(color)}/>
 
-                    </Button>
+                    <AnnotationHighlightButton dispatchColor='green'
+                                               styleColor='rgba(0,255,0)'
+                                               onHighlightedColor={color => this.dispatchOnHighlighted(color)}/>
 
-                    <Button size="lg"
-                            type="button"
-                            className="btn p-1 m-1 annotationbar-btn"
-                            title=""
-                            aria-label=""
-                            onClick={() => this.dispatchOnHighlighted('red')}
-                            style={{ }}>
+                    <AnnotationHighlightButton dispatchColor='#9900EF'
+                                               styleColor='#9900EF'
+                                               onHighlightedColor={color => this.dispatchOnHighlighted(color)}/>
 
-                        <span className="fas fa-highlighter annotationbar-btn-highlighter"
-                              aria-hidden="true"
-                              style={{color: 'rgba(255,0,0)'}}/>
-
-                    </Button>
-
-                    <Button size="lg"
-                            type="button"
-                            className="btn p-1 m-1 annotationbar-btn annotationbar-btn-highlighter"
-                            title=""
-                            aria-label=""
-                            onClick={() => this.dispatchOnHighlighted('green')}
-                            style={{ }}>
-
-                        <span className="fas fa-highlighter"
-                              aria-hidden="true"
-                              style={{color: 'rgba(0,255,0)'}}/>
-
-                    </Button>
+                    <AnnotationHighlightButton dispatchColor='#FF6900'
+                                               styleColor='#FF6900'
+                                               onHighlightedColor={color => this.dispatchOnHighlighted(color)}/>
 
                 </div>
 

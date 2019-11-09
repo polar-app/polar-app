@@ -8,6 +8,9 @@ import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {EventListener, Releaseable} from '../../reactor/EventListener';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
+/**
+ * @Deprecated we're using ControlledAnnotationBar and we should remove this code.
+ */
 export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
     private releaser?: Releaseable;
@@ -52,7 +55,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                         <span className="fas fa-highlighter"
                               aria-hidden="true"
-                              style={{ color: 'rgba(255,255,0)' }}/>
+                              style={{ color: 'rgba(255,255,255)' }}/>
 
                     </Button>
 

@@ -21,7 +21,7 @@ const ColorButtonsRow = (props: ColorButtonsRowProps) => {
 
 const ColorButtonsRow0 = (props: IProps) => {
 
-    const colors = ['yellow', 'red', 'green', '#FFFF00', '#F96676'];
+    const colors = ['yellow', 'red', 'green', '#9900EF', '#FF6900'];
 
     return <ColorButtonsRow {...props} colors={colors}/>;
 
@@ -36,8 +36,7 @@ const ColorButtonsRow1 = (props: IProps) => {
 };
 
 const ColorButtonsRow2 = (props: IProps) => {
-
-    const colors = ['#F78DA7', '#9900EF', '#FF6900', '#FCB900', '#7BDCB5'];
+    const colors = ['#F78DA7', '#FFFF00', '#F96676', '#FCB900', '#7BDCB5'];
 
     return <ColorButtonsRow {...props} colors={colors}/>;
 
@@ -58,18 +57,6 @@ const ColorButtons = (props: IProps) => {
         <div className="mt-2">
             <ColorButtonsRow2 {...props}/>
         </div>
-
-        {/*<div className="mt-1">*/}
-        {/*    <div style={{display: 'flex'}}>*/}
-
-        {/*        <Button size="sm"*/}
-        {/*                color="secondary"*/}
-        {/*                className="ml-auto mr-auto" outline>*/}
-        {/*            reset*/}
-        {/*        </Button>*/}
-
-        {/*    </div>*/}
-        {/*</div>*/}
 
     </div>;
 

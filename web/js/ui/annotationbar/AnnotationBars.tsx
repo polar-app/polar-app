@@ -5,6 +5,9 @@ import {ActiveSelections} from '../popup/ActiveSelections';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {ControlledPopupProps} from '../popup/ControlledPopup';
 
+/**
+ * @Deprecated we're using ControlledAnnotationBar and we should remove this code.
+ */
 export class AnnotationBars {
 
     public static create(controlledPopupProps: ControlledPopupProps,
