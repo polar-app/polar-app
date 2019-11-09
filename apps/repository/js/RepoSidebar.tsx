@@ -39,6 +39,7 @@ const Styles: IStyleMap = {
 
 /**
  * Simple header for the repository which supports arbitrary children.
+ * @Deprecated
  */
 export class RepoSidebar extends React.Component<IProps, IState> {
 
@@ -108,10 +109,10 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     <div className="ml-4">
                         <SimpleTabs>
-                            <SimpleTab target={{pathname: "/", hash: "#"}} text="Document Repository"/>
-                            <SimpleTab target={{pathname: "/", hash: "#annotations"}} text="Annotations"/>
-                            <SimpleTab target={{pathname: "/", hash: "#stats"}} text="Statistics"/>
-                            <SimpleTab target={{pathname: "/groups"}} text="Groups"/>
+                            {/*<SimpleTab target={{pathname: "/", hash: "#"}} text="Document Repository"/>*/}
+                            {/*<SimpleTab target={{pathname: "/", hash: "#annotations"}} text="Annotations"/>*/}
+                            {/*<SimpleTab target={{pathname: "/", hash: "#stats"}} text="Statistics"/>*/}
+                            {/*<SimpleTab target={{pathname: "/groups"}} text="Groups"/>*/}
                         </SimpleTabs>
                     </div>
 

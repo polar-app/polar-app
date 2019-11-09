@@ -88,6 +88,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         this.getSelected = this.getSelected.bind(this);
 
+        this.onDragStart = this.onDragStart.bind(this);
+        this.onDragEnd = this.onDragEnd.bind(this);
+
         this.state = {
             data: [],
             tags: [],
@@ -206,19 +209,31 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private getSelected(): RepoDocInfo[] {
+    private getSelected(): ReadonlyArray<RepoDocInfo> {
 
         if (! this.reactTable) {
             return [];
         }
 
-        const resolvedState = this.reactTable!.getResolvedState();
+        interface TableItem {
+            readonly _original: RepoDocInfo;
+        }
+
+        interface IResolvedState {
+            readonly sortedData: ReadonlyArray<TableItem>;
+            readonly page: number;
+            readonly pageSize: number;
+        }
+
+        const resolvedState: IResolvedState = this.reactTable!.getResolvedState();
 
         const sortedData = resolvedState.sortedData;
 
+        const offset = (resolvedState.page) * resolvedState.pageSize;
+
         const result: RepoDocInfo[] =
             this.state.selected
-                .map(selectedIdx => sortedData[selectedIdx])
+                .map(selectedIdx => sortedData[offset + selectedIdx])
                 .filter(item => isPresent(item))
                 .map(item => item._original);
 
@@ -423,23 +438,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
                                                   onSelected={selected => this.onSelected(selected)}
                                                   onReactTable={reactTable => this.reactTable = reactTable}
-                                                  onDragStart={(event) => {
-
-                                                      // TODO: move this to a dedicated function.
-
-                                                      // TODO: this actually DOES NOT work but it's a better effect than the
-                                                      // default and a lot less confusing.  In the future we should migrate
-                                                      // to showing the thumbnail of the doc once we have this feature
-                                                      // implemented.
-
-                                                      const src: HTMLElement = document.createElement("div");
-
-                                                      // https://kryogenix.org/code/browser/custom-drag-image.html
-                                                      event.dataTransfer!.setDragImage(src, 0, 0);
-
-                                                      DraggingSelectedDocs.set(this.getSelected())
-                                                  }}
-                                                  onDragEnd={() => DraggingSelectedDocs.clear()}/>
+                                                  onDragStart={event => this.onDragStart(event)}
+                                                  onDragEnd={() => this.onDragEnd()}/>
 
                                 }
                                 right={
@@ -457,6 +457,31 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             </div>
 
         );
+    }
+
+    private onDragStart(event: DragEvent) {
+
+        const configureDragImage = () => {
+            // TODO: this actually DOES NOT work but it's a better effect than the
+            // default and a lot less confusing.  In the future we should migrate
+            // to showing the thumbnail of the doc once we have this feature
+            // implemented.
+
+            const src: HTMLElement = document.createElement("div");
+
+            // https://kryogenix.org/code/browser/custom-drag-image.html
+            event.dataTransfer!.setDragImage(src, 0, 0);
+        };
+
+        configureDragImage();
+
+        const selected = this.getSelected();
+        DraggingSelectedDocs.set(selected);
+
+    }
+
+    private onDragEnd() {
+        DraggingSelectedDocs.clear();
     }
 
     private async onDocTagged(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {

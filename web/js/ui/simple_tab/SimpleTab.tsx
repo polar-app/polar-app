@@ -60,6 +60,7 @@ export class SimpleTab extends React.Component<IProps, IState> {
             </div>
 
         );
+
     }
 
     private toggleHover() {

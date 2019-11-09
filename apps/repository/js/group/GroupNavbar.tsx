@@ -30,8 +30,8 @@ export class GroupNavbar extends React.Component<IProps, IState> {
                 </div>
 
                 <SimpleTabs>
-                    <SimpleTab target={{pathname: `/group/${this.props.groupName}`}} text="Highlights"/>
-                    <SimpleTab target={{pathname: `/group/${this.props.groupName}/docs`}} text="Documents"/>
+                    <SimpleTab id="group-nav-highlights" target={{pathname: `/group/${this.props.groupName}`}} text="Highlights"/>
+                    <SimpleTab id="group-nav-documents" target={{pathname: `/group/${this.props.groupName}/docs`}} text="Documents"/>
                 </SimpleTabs>
             </div>
 
