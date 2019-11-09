@@ -1,5 +1,7 @@
 # pending
 
+- the header and footer in the doc repo is fixed now...
+
 - Fixed bug with drag and drop and working with items from the second page of results.
 
 - added two more colors to the annotation bar. Was frequently requested by our users so just added it.
