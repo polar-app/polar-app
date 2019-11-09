@@ -5,12 +5,13 @@ permalink: /docs/spaced-repetition.html
 description: Polar implements spaced repetition and review of annotations on mobile and desktop devices. 
 ---
 
-# Spaced Repetition and Reading Review
+# Spaced Repetition
 
-Polar implements spaced repetition and review of annotations on mobile and desktop devices.
+Polar implements spaced repetition for flashcards and annotations on mobile and desktop devices.
 
 For spaced repetition you must be logged in via cloud sync.  Part of the advantage of spaced repetition is reviewing
-on mobile devices, tablets, and your web browser and this requires the cloud.
+on mobile devices, tablets, and your web browser and this requires the cloud sync and online storage of your 
+annotations.
 
 # Background
 
@@ -34,15 +35,18 @@ durability that memory traces in the brain. The stronger the memory, the longer 
 recall it. A typical graph of the forgetting curve purports to show that humans tend to halve their memory of newly
 learned knowledge in a matter of days or weeks unless they consciously review the learned material.
 
-# Reading Review
+# Flashcards and Incremental Reading
 
-Polar implements spaced repetition around reviewing your annotations on a given schedule  We currently do not allow you 
-to review your flashcards directly in Polar and for now you can use Anki directly.
+We support spaced repetition for flashcards and your annotations.  Reading your annotations with spaced repetition 
+intervals allows you to pursue incremental reading where you re-read important parts of documents you've highlighted.
 
-At some point we will probably have basic flashcard support and more advanced users can use Anki directly.
+# Anki vs Polar
 
-Polar's reading review allows you to schedule review of your annotations while mobile and makes reading of text and 
-complex PDFs easier as you can pre-read them on desktop devices and then review on mobile or tablets.
+Polar supports Anki sync and our own native flashcard and spaced repetition based on similar technology and concepts.
+
+If you're a more advanced user, or an existing Anki user, you might still want to use Anki directly.  
+
+Read our documentation on [Anki Sync](/docs/anki-sync-for-spaced-repetition.html) if you want to use Anki.  
 
 # Start Review
 
@@ -53,7 +57,8 @@ which will review ten cards at a time.
 <img class="img-fluid border" src="https://i.imgur.com/FNEYGTj.png">
 </p>
 
-These will then be scheduled for the future so that you can review them at a later date.
+When you create an annotation or flashcard, they will then be scheduled for the future so that you can review them at a
+later date.
 
 # User Interface
 
@@ -85,13 +90,6 @@ task.
 Once in reading the intervals keep increasing if you keep selecting 'good' until, at some future point, the card becomes
 so mature that you're only reviewing it every year or so.
 
+When you're reviewing a card and you can't remember it you can hit 'again' and it will lapse and revert back to the 
+learning stage.  If you remember it the second time it will go back to review mode with a lower interval. 
 
-
-<!--
-FIXME: 
- - how to 'install' the mobile app
- - lapses
- - intervals for the learning stage
- - example of delays
- - graph of the forgetting curve  
--->
