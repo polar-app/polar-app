@@ -1,5 +1,9 @@
 # pending
 
+- Mobile now a supported platform.
+
+- Flashcards now inherit the text of the annotation when being created to avoid double copy / pasting of text.
+
 - Flashcard reviewer now integrated.
 
 - Annotation reviewer spaced repetition system finally integrated into Polar

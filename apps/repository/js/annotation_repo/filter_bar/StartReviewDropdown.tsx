@@ -1,6 +1,10 @@
 import * as React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
 
+const ICON_STYLE: React.CSSProperties = {
+    width: '20px'
+};
+
 export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -27,13 +31,13 @@ export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
 
                     <DropdownItem size="sm"
                                   onClick={this.props.onReading}>
-                        <i className="fas fa-book-reader"/> Reading
+                        <i className="fas fa-book-reader" style={ICON_STYLE}/> Reading
                     </DropdownItem>
 
 
                     <DropdownItem size="sm"
                                   onClick={this.props.onFlashcards}>
-                        <i className="fas fa-bolt"/> Flashcards
+                        <i className="fas fa-bolt" style={ICON_STYLE}/> Flashcards
                     </DropdownItem>
 
                 </DropdownMenu>

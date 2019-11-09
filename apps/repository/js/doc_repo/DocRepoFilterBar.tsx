@@ -128,13 +128,13 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="header-filter-box mr-1"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                {/*<div className="header-filter-box mr-1"*/}
+                {/*     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>*/}
 
-                    <DocSidebarButton selected={this.props.docSidebarVisible}
-                                      onChange={() => this.props.onDocSidebarVisible(! this.props.docSidebarVisible)}/>
+                {/*    <DocSidebarButton selected={this.props.docSidebarVisible}*/}
+                {/*                      onChange={() => this.props.onDocSidebarVisible(! this.props.docSidebarVisible)}/>*/}
 
-                </div>
+                {/*</div>*/}
 
                 <Right/>
 
