@@ -10,9 +10,6 @@ import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {Platforms} from "../../../../web/js/util/Platforms";
-import {RepoSidebarItem} from "../sidebar/RepoSidebarItem";
-
-const SURVEY_LINK = 'https://kevinburton1.typeform.com/to/BuX1Ef';
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -33,7 +30,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                 color="light"
                                 caret>
 
-                    <i className="fas fa-question" style={{fontSize: '17px'}}></i>
+                    <i className="fas fa-question" style={{fontSize: '17px'}}/>
 
                 </DropdownToggle>
 
