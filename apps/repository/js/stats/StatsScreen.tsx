@@ -67,6 +67,11 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                         <SectionHeader>
                             <h2>Flashcards</h2>
+
+                            <SectionText>
+                                Stats for flashcard review including the queue length (amount of work needed to do
+                                to catch up) and the number of flashcards completed.
+                            </SectionText>
                         </SectionHeader>
 
                         <div className="row mt-2">
@@ -83,6 +88,12 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                         <SectionHeader>
                             <h2>Incremental Reading</h2>
+
+                            <SectionText>
+                                Stats regarding incremental reading.  Incremental reading uses spaced repetition along
+                                with your annotations so you can easily review your notes in conjunction with your
+                                flashcards.
+                            </SectionText>
                         </SectionHeader>
 
                         <div className="row mt-2">
