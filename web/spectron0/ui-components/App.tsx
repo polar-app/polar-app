@@ -4,8 +4,6 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Group} from "../../js/datastore/sharing/db/Groups";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {
-    Task,
-    TaskRep,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
@@ -21,6 +19,7 @@ import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/cards/Fl
 import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskActions";
 import {FlashcardCard} from "../../../apps/repository/js/reviewer/cards/FlashcardCard";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 const styles = {
     swatch: {

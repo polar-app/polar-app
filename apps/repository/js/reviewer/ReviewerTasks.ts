@@ -1,10 +1,9 @@
 import {RepoAnnotation} from "../RepoAnnotation";
 import {
+    CalculatedTaskReps,
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
     ReadingTaskAction,
-    Task,
-    TaskRep,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
@@ -12,7 +11,7 @@ import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
-import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
@@ -29,7 +28,7 @@ export interface TasksBuilder<A> {
 export class ReviewerTasks {
 
     public static async createReadingTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
-                                           limit: number = 10): Promise<ReadonlyArray<TaskRep<ReadingTaskAction>>> {
+                                           limit: number = 10): Promise<CalculatedTaskReps<ReadingTaskAction>> {
 
         const mode = 'reading';
 
@@ -58,7 +57,7 @@ export class ReviewerTasks {
     }
 
     public static async createFlashcardTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
-                                             limit: number = 10): Promise<ReadonlyArray<TaskRep<FlashcardTaskAction>>> {
+                                             limit: number = 10): Promise<CalculatedTaskReps<FlashcardTaskAction>> {
 
         const mode = 'flashcard';
 
@@ -97,7 +96,7 @@ export class ReviewerTasks {
     public static async createTasks<A>(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
                                        mode: RepetitionMode,
                                        tasksBuilder: TasksBuilder<A>,
-                                       limit: number = 10): Promise<ReadonlyArray<TaskRep<A>>> {
+                                       limit: number = 10): Promise<CalculatedTaskReps<A>> {
 
         Preconditions.assertPresent(mode, 'mode');
 

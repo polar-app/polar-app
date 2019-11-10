@@ -8,10 +8,10 @@ import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {Firestore} from "../../../../web/js/firebase/Firestore";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
-import {Answer, Rating, RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Answer, Rating, RepetitionMode, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
-    ReadingTaskAction, Task,
-    TaskRep,
+    CalculatedTaskReps,
+    ReadingTaskAction,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -101,7 +101,7 @@ export class Reviewers {
 
         await this.notifyPreview(prefs);
 
-        const createTaskReps = async (): Promise<ReadonlyArray<TaskRep<any>>> => {
+        const calculateTaskReps = async (): Promise<CalculatedTaskReps<any>> => {
             switch (mode) {
                 case "flashcard":
                     return await ReviewerTasks.createFlashcardTasks(repoDocAnnotations, limit);
@@ -111,14 +111,16 @@ export class Reviewers {
             }
         };
 
-        const tasks = await createTaskReps();
 
-        if (tasks.length === 0) {
+        const calculatedTaskReps = await calculateTaskReps();
+        const {taskReps} = calculatedTaskReps;
+
+        if (taskReps.length === 0) {
             this.displayNoTasksMessage();
             return;
         }
 
-        console.log("Found N tasks: " + tasks.length);
+        console.log("Found N tasks: " + taskReps.length);
 
         const uid = await Firebase.currentUserID();
 
@@ -161,7 +163,7 @@ export class Reviewers {
 
         injected = ReactInjector.inject(
             <LightModal>
-                <Reviewer taskReps={tasks}
+                <Reviewer taskReps={taskReps}
                           onRating={onRating}
                           onSuspended={onSuspended}
                           onFinished={onFinished}/>
