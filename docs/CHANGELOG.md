@@ -1,27 +1,27 @@
 # pending
 
-- the header and footer in the doc repo is fixed now...
+- new documentation rework and will be improving this long term.
 
-- Fixed bug with drag and drop and working with items from the second page of results.
-
-- added two more colors to the annotation bar. Was frequently requested by our users so just added it.
-
-- Mobile now a supported platform.
+- Added two more colors to the annotation bar. Was frequently requested by our users so just added it.
 
 - Flashcards now inherit the text of the annotation when being created to avoid double copy / pasting of text.
 
-- Flashcard reviewer now integrated.
+- Mobile now a supported platform and designed for spaced repetition.  This will get us moving on mobile until
+  we can build out a real/full reading platform there.
+
+- The header and footer in the doc repo is fixed now and don't move as you scroll. 
+
+- Fixed bug with drag and drop and working with items from the second page of results.
+
+- Flashcard reviewer now integrated along with our normal spaced repetition.
  
 - Annotation reviewer spaced repetition system finally integrated into Polar
 
-- Flashcards now inherit the text of the annotation when created so that the
-  user doesn't have to do a duplicate copy/paste
-
 - More work on mobile including disabling some features when using the app.
 
-- active filters are now light blue so that users know they have filters enabled.
+- Active filters are now light blue so that users know they have filters enabled.
 
-- color and annotation type filters
+- Color and annotation type filters now work.
 
 - Fixed bug with the root folders having the wrong counts
 

@@ -10,6 +10,7 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import ReadingProgressTable from './ReadingProgressTable';
+import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 
 const log = Logger.create();
 
@@ -44,6 +45,15 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                 <FixedNavBody>
 
                     <div className="container-fluid">
+
+                        <div className="row mt-2">
+                            <div className="col-lg-6">
+                                <SpacedRepQueueChart mode='flashcard'/>
+                            </div>
+                            <div className="col-lg-6">
+                                <SpacedRepQueueChart mode='reading'/>
+                            </div>
+                        </div>
 
                         <div className="row mt-2">
 

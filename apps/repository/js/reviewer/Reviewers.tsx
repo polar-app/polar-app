@@ -24,6 +24,7 @@ import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {FirestoreCollections} from "./FirestoreCollections";
 
 const log = Logger.create();
 
@@ -40,20 +41,6 @@ export class Reviewers {
 
     }
 
-    private static async configureFirestore() {
-
-        if (SpacedReps.firestoreProvider) {
-            return;
-        }
-
-        // TODO: dependency injection would rock here.
-        const firestore = await Firestore.getInstance();
-
-        for (const firestoreBacked of [SpacedReps, SpacedRepStats]) {
-            firestoreBacked.firestoreProvider = () => firestore as any as FirestoreLike;
-        }
-
-    }
 
     private static async notifyPreview(prefs: PersistentPrefs) {
         const latch = new Latch();
@@ -106,7 +93,7 @@ export class Reviewers {
             return;
         }
 
-        await this.configureFirestore();
+        await FirestoreCollections.configure();
 
         await this.notifyPreview(prefs);
 
@@ -157,7 +144,11 @@ export class Reviewers {
 
         const onSuspended = (taskRep: TaskRep<ReadingTaskAction>) => {
 
-            const spacedRep = Dictionaries.onlyDefinedProperties({uid, ...taskRep, suspended: true});
+            const convertedSpacedRep = SpacedReps.convertFromTaskRep(uid, taskRep);
+            const spacedRep: SpacedRep = {
+                ...convertedSpacedRep,
+                suspended: true
+            };
 
             SpacedReps.set(taskRep.id, spacedRep)
                  .catch(err => log.error("Could not save state: ", err));
