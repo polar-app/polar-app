@@ -1,51 +1,50 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocInfoStatistics} from '../../../../web/js/metadata/DocInfoStatistics';
-import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import StatTitle from './StatTitle';
 import {ResponsiveBar} from '@nivo/bar';
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {SpacedRepStatRecord} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {Statistics} from "polar-shared/src/util/Statistics";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
-const log = Logger.create();
-
-export default class NewDocumentRateChart extends React.Component<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.state = {
-        };
-
-    }
+export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
     public render() {
 
-        const dateStats = DocInfoStatistics.computeDocumentsAddedRate(this.props.docInfos);
+        /// FIXME: these tables will not work because I need to ahve a RECORD that's typed too..
 
-        const labels = dateStats.map(current => current.date);
-        const ticks = Arrays.sample(labels, 10);
+        const datapointsReducer = (timestamp: ISODateTimeString,
+                                   datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
 
-        const data = dateStats.map(current => {
+            const first = datapoints[0];
             return {
-                date: current.date,
-                value: current.value
-            };
-        });
+                ...first,
+                created: timestamp
+            }
+        };
+
+        const stats = Statistics.compute(this.props.data, datapointsReducer);
+        const data = [...stats];
+
+        const labels = data.map(current => current.created);
+        const ticks = Arrays.sample(labels, 10);
 
         return (
 
             <div id="new-documents-per-day-chart" className="p-1">
 
-                <StatTitle>New Documents Per Day</StatTitle>
+                <StatTitle>Reviews for {this.props.mode}</StatTitle>
 
                 <div className="p-1" style={{height: '300px', width: '100%'}}>
 
                     <ResponsiveBar
                         data={data}
                         keys={[
-                            "value",
+                            "nrLearning",
+                            "nrReview",
+                            "nrLapsed"
                         ]}
-                        indexBy="date"
+                        indexBy="created"
                         margin={{
                             top: 10,
                             right: 10,
@@ -127,7 +126,8 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 }
 
 export interface IProps {
-    readonly docInfos: ReadonlyArray<IDocInfo>;
+    readonly mode: RepetitionMode;
+    readonly data: ReadonlyArray<SpacedRepStatRecord>;
 }
 
 export interface IState {

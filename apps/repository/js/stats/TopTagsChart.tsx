@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {Statistics} from '../../../../web/js/metadata/Statistics';
+import {DocInfoStatistics} from '../../../../web/js/metadata/DocInfoStatistics';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {ResponsivePie} from '@nivo/pie';
 import StatTitle from './StatTitle';
@@ -19,7 +19,7 @@ export default class TopTagsChart extends React.Component<IProps, IState> {
 
     public render() {
 
-        const topTags = Statistics.computeTopTags(this.props.docInfos, 10);
+        const topTags = DocInfoStatistics.computeTopTags(this.props.docInfos, 10);
 
         const data = topTags.map(current => {
             return {

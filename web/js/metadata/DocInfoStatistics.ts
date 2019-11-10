@@ -1,14 +1,13 @@
-/**
- * Main entrypoint for computing stats on underlying metadata...
- */
-import {DocInfo} from './DocInfo';
 import {ISODateString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {HitMap} from 'polar-shared/src/util/HitMap';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Arrays} from "polar-shared/src/util/Arrays";
 
-export class Statistics {
+/**
+ * Main entrypoint for computing stats on underlying metadata...
+ */
+export class DocInfoStatistics {
 
     public static computeDocumentsAddedRate(docInfos: Iterable<IDocInfo>): DateStats {
 

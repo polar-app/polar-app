@@ -1,12 +1,9 @@
-import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
-import {PagemarkRects} from './PagemarkRects';
-import {Rects} from '../Rects';
 import {MockDocMetas} from './DocMetas';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
-import {Statistics} from './Statistics';
+import {DocInfoStatistics} from './DocInfoStatistics';
 
-describe('Statistics', function() {
+describe('DocInfoStatistics', function() {
 
     describe('computeDocumentsAddedRate', function() {
 
@@ -28,7 +25,7 @@ describe('Statistics', function() {
             docInfos.push(MockDocMetas.createMockDocMeta('0x006').docInfo);
             docInfos.push(MockDocMetas.createMockDocMeta('0x007').docInfo);
 
-            const dateStats = Statistics.computeDocumentsAddedRate(docInfos);
+            const dateStats = DocInfoStatistics.computeDocumentsAddedRate(docInfos);
 
             assertJSON(dateStats, [
                 {
