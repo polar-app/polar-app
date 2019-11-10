@@ -23,6 +23,7 @@ import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 
 const log = Logger.create();
 
@@ -46,9 +47,11 @@ export class Reviewers {
         }
 
         // TODO: dependency injection would rock here.
-
         const firestore = await Firestore.getInstance();
-        SpacedReps.firestoreProvider = () => firestore as any as FirestoreLike;
+
+        for (const firestoreBacked of [SpacedReps, SpacedRepStats]) {
+            firestoreBacked.firestoreProvider = () => firestore as any as FirestoreLike;
+        }
 
     }
 
@@ -92,6 +95,12 @@ export class Reviewers {
 
         Preconditions.assertPresent(mode, 'mode');
 
+        const uid = await Firebase.currentUserID();
+
+        if (! uid) {
+            throw new Error("Not authenticated");
+        }
+
         if (! datastoreCapabilities.networkLayers.has('web')) {
             this.displayWebRequiredError();
             return;
@@ -115,18 +124,26 @@ export class Reviewers {
         const calculatedTaskReps = await calculateTaskReps();
         const {taskReps} = calculatedTaskReps;
 
+        const doWriteStats = async () => {
+
+            const spacedRepStats: SpacedRepStat = {
+                type: 'queue',
+                mode,
+                ...calculatedTaskReps.stageCounts
+            };
+
+            await SpacedRepStats.write(uid, spacedRepStats);
+
+        };
+
+        await doWriteStats();
+
         if (taskReps.length === 0) {
             this.displayNoTasksMessage();
             return;
         }
 
         console.log("Found N tasks: " + taskReps.length);
-
-        const uid = await Firebase.currentUserID();
-
-        if (! uid) {
-            throw new Error("Not authenticated");
-        }
 
         let injected: InjectedComponent | undefined;
 
