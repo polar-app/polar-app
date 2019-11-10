@@ -138,7 +138,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                             // format: '%Y-%m-%d',
                             // precision: 'day',
                         }}
-                        xFormat="time:%Y-%m-%d"
+                        // xFormat="time:%Y-%m-%d"
                         axisBottom={{
                             format: '%b %d',
                             // tickValues: ['every 2 days', 'every 2 days', 'every 2 days'],
@@ -146,8 +146,8 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                             // legend: 'time scale',
                             // legendOffset: -12,
                         }}
-                        useMesh={true}
-                        enablePointLabel={true}
+                        // useMesh={true}
+                        // enablePointLabel={true}
                         animate={true}
 
                     />
