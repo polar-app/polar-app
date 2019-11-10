@@ -155,11 +155,22 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         const Chart = () => {
 
+            const createTitle = () => {
+                switch(this.props.type) {
+                    case "queue":
+                        return "Number of tasks pending (queue length)";
+                    case "completed":
+                        return "Number of tasks completed";
+                }
+            };
+
+            const title = createTitle();
+
             return (
 
                 <div className="">
                     <StatBox style={{height: '300px', width: '100%'}}>
-                        <StatTitle>Number of tasks for {this.props.mode}</StatTitle>
+                        <StatTitle>{title}</StatTitle>
 
                         <ResponsiveLine
                             data={lineData}
