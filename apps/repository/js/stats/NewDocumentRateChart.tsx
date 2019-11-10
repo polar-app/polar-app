@@ -5,6 +5,7 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import StatTitle from './StatTitle';
 import {ResponsiveBar} from '@nivo/bar';
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {StatBox} from "./StatBox";
 
 const log = Logger.create();
 
@@ -36,9 +37,9 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 
             <div id="new-documents-per-day-chart" className="p-1">
 
-                <StatTitle>New Documents Per Day</StatTitle>
+                <StatBox style={{height: '325px', width: '100%'}}>
 
-                <div className="p-1" style={{height: '300px', width: '100%'}}>
+                    <StatTitle>New Documents Per Day</StatTitle>
 
                     <ResponsiveBar
                         data={data}
@@ -116,8 +117,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
 
                     />
 
-                </div>
-
+                </StatBox>
 
             </div>
 

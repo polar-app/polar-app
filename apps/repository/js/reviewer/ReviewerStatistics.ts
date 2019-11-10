@@ -1,11 +1,11 @@
-import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {SpacedRepStats, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FirestoreCollections} from "./FirestoreCollections";
 
 export class ReviewerStatistics {
 
-    public static async queueStatistics(mode: RepetitionMode) {
+    public static async statistics(mode: RepetitionMode, type: StatType) {
 
         await FirestoreCollections.configure();
 
@@ -16,7 +16,7 @@ export class ReviewerStatistics {
             return [];
         }
 
-        return await SpacedRepStats.list(uid, mode, 'queue');
+        return await SpacedRepStats.list(uid, mode, type);
 
     }
 

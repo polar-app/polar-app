@@ -8,6 +8,7 @@ import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {StatBox} from "./StatBox";
 
 const log = Logger.create();
 
@@ -58,72 +59,75 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
         const to = `${fromYear}-12-30`;
 
         return <div id="reading-progress-table">
+            <StatBox>
+                <StatTitle>Reading Progress</StatTitle>
 
-            <StatTitle>Reading Progress</StatTitle>
+                <div style={{height: '150px'}}>
+                    <div className="p-1 mr-auto ml-auto"
+                         style={{height: '100%', width: '800px'}}>
 
-            <div style={{height: '150px'}}>
-                <div className="p-1 mr-auto ml-auto"
-                     style={{height: '100%', width: '800px'}}>
+                        <ResponsiveCalendar
+                            data={data}
+                            from={from}
+                            to={to}
+                            domain={domain}
+                            emptyColor="#eeeeee"
+                            colors={[
+                                "rgba(0,0,255,0.1)",
+                                "rgba(0,0,255,0.2)",
+                                "rgba(0,0,255,0.3)",
+                                "rgba(0,0,255,0.4)",
+                                "rgba(0,0,255,0.5)",
+                                "rgba(0,0,255,0.6)",
+                                "rgba(0,0,255,0.7)",
+                                "rgba(0,0,255,0.8)",
+                                "rgba(0,0,255,0.9)",
+                                "rgba(0,0,255,1.0)",
+                            ]}
+                            margin={{
+                                "top": 20,
+                                "right": 10,
+                                "bottom": 10,
+                                "left": 20
+                            }}
+                            yearSpacing={40}
+                            monthBorderColor="#ffffff"
+                            monthLegendOffset={10}
+                            dayBorderWidth={2}
+                            dayBorderColor="#ffffff"
+                            //     legends={[
+                            //         {
+                            //             "anchor": "bottom",
+                            //             "direction": "row",
+                            //             "translateY": 36,
+                            //             "itemCount": 4,
+                            //             "itemWidth": 34,
+                            //             "itemHeight": 36,
+                            //             "itemDirection": "top-to-bottom"
+                            //         }
+                            //     ]}
+                        />
 
-                    <ResponsiveCalendar
-                        data={data}
-                        from={from}
-                        to={to}
-                        domain={domain}
-                        emptyColor="#eeeeee"
-                        colors={[
-                            "rgba(0,0,255,0.1)",
-                            "rgba(0,0,255,0.2)",
-                            "rgba(0,0,255,0.3)",
-                            "rgba(0,0,255,0.4)",
-                            "rgba(0,0,255,0.5)",
-                            "rgba(0,0,255,0.6)",
-                            "rgba(0,0,255,0.7)",
-                            "rgba(0,0,255,0.8)",
-                            "rgba(0,0,255,0.9)",
-                            "rgba(0,0,255,1.0)",
-                        ]}
-                        margin={{
-                            "top": 20,
-                            "right": 10,
-                            "bottom": 10,
-                            "left": 20
-                        }}
-                        yearSpacing={40}
-                        monthBorderColor="#ffffff"
-                        monthLegendOffset={10}
-                        dayBorderWidth={2}
-                        dayBorderColor="#ffffff"
-                        //     legends={[
-                        //         {
-                        //             "anchor": "bottom",
-                        //             "direction": "row",
-                        //             "translateY": 36,
-                        //             "itemCount": 4,
-                        //             "itemWidth": 34,
-                        //             "itemHeight": 36,
-                        //             "itemDirection": "top-to-bottom"
-                        //         }
-                        //     ]}
-                    />
+                    </div>
+
 
                 </div>
 
-            </div>
+                <div className="p-1 pl-5 pr-5 mr-auto ml-auto"
+                     style={{height: '100%', width: '800px'}}>
 
-            <div className="p-1 pl-5 pr-5 mr-auto ml-auto"
-                 style={{height: '100%', width: '800px'}}>
+                    <p className="text-muted">
+                        The number of pages read per day.  This is computed by using
+                        the 'read' pagemarks from the documents you're tracking.  If
+                        it seems like there are too many pages read per day try
+                        changing the 'mode' of the pagemark to either 'previously
+                        read' or 'ignored'.  This can happen when importing documents
+                        you're previously read and create a large pagemark.
+                    </p>
 
-                <p className="text-muted">
-                    The number of pages read per day.  This is computed by using
-                    the 'read' pagemarks from the documents you're tracking.  If
-                    it seems like there are too many pages read per day try
-                    changing the 'mode' of the pagemark to either 'previously
-                    read' or 'ignored'.  This can happen when importing documents
-                    you're previously read and create a large pagemark.
-                </p>
+                </div>
 
-            </div>
+            </StatBox>
 
         </div>;
 

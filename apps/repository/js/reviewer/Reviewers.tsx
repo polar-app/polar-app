@@ -8,7 +8,13 @@ import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {Firestore} from "../../../../web/js/firebase/Firestore";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
-import {Answer, Rating, RepetitionMode, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {
+    Answer,
+    MutableStageCounts,
+    Rating,
+    RepetitionMode, StageCountsCalculator,
+    TaskRep
+} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
     CalculatedTaskReps,
     ReadingTaskAction,
@@ -111,7 +117,7 @@ export class Reviewers {
         const calculatedTaskReps = await calculateTaskReps();
         const {taskReps} = calculatedTaskReps;
 
-        const doWriteStats = async () => {
+        const doWriteQueueStageCounts = async () => {
 
             const spacedRepStats: SpacedRepStat = {
                 type: 'queue',
@@ -123,7 +129,7 @@ export class Reviewers {
 
         };
 
-        await doWriteStats();
+        await doWriteQueueStageCounts();
 
         if (taskReps.length === 0) {
             this.displayNoTasksMessage();
@@ -138,8 +144,47 @@ export class Reviewers {
             injected!.destroy();
         };
 
+        const completedStageCounts = StageCountsCalculator.createMutable();
+
+        const incrCompletedStageCounts = (taskRep: TaskRep<any>) => {
+
+            switch (taskRep.stage) {
+                case "new":
+                    ++completedStageCounts.nrNew;
+                    break;
+                case "learning":
+                    ++completedStageCounts.nrLearning;
+                    break;
+                case "review":
+                    ++completedStageCounts.nrReview;
+                    break;
+                case "lapsed":
+                    ++completedStageCounts.nrLapsed;
+                    break;
+            }
+
+        };
+
+        const doWriteCompletedStageCounts = async () => {
+
+            const spacedRepStats: SpacedRepStat = {
+                type: 'completed',
+                mode,
+                ...completedStageCounts
+            };
+
+            await SpacedRepStats.write(uid, spacedRepStats);
+
+        };
+
+
         const onFinished = () => {
+
+            doWriteCompletedStageCounts()
+                .catch(err => log.error("Unable to write completed stage counts: ", err));
+
             doClose();
+
         };
 
         const onSuspended = (taskRep: TaskRep<ReadingTaskAction>) => {
@@ -155,13 +200,15 @@ export class Reviewers {
 
         };
 
-        const onRating = (taskRep: TaskRep<ReadingTaskAction>, rating: Rating) => {
+        const onRating = (taskRep: TaskRep<any>, rating: Rating) => {
 
             console.log("Saving rating... ");
 
             const next = TasksCalculator.computeNextSpacedRep(taskRep, rating);
 
             const spacedRep: SpacedRep = Dictionaries.onlyDefinedProperties({uid, ...next});
+
+            incrCompletedStageCounts(taskRep);
 
             SpacedReps.set(next.id, spacedRep)
                 .then(() => console.log("Saving rating... done", JSON.stringify(spacedRep, null, '  ')))

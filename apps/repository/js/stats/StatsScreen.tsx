@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import NewDocumentRateChart from './NewDocumentRateChart';
 import TopTagsChart from './TopTagsChart';
@@ -11,8 +9,6 @@ import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import ReadingProgressTable from './ReadingProgressTable';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
-
-const log = Logger.create();
 
 export default class StatsScreen extends React.Component<IProps, IState> {
 
@@ -30,6 +26,20 @@ export default class StatsScreen extends React.Component<IProps, IState> {
             this.props.repoDocMetaManager.repoDocInfoIndex.values()
                 .map(current => current.docInfo);
 
+        const SectionHeader = (props: any) => {
+            return <div className="row mt-2">
+                <div className="col">
+                    {props.children}
+                </div>
+            </div>;
+        };
+
+        const SectionText = (props: any) => {
+            return <p className="text-lg text-grey700">
+                {props.children}
+            </p>;
+        }
+
         return (
 
             <FixedNav id="doc-repository" className="statistics-view">
@@ -44,19 +54,57 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                 <FixedNavBody>
 
-                    <div className="container">
+                    <div className="container mt-3">
+
+                        <SectionHeader>
+                            <h1>Statistics</h1>
+
+                            <SectionText>
+                                Polar keeps track of statistics of your document repository so you can better understand
+                                your reading habits and what types of documents are stored in your repository.
+                            </SectionText>
+                        </SectionHeader>
+
+                        <SectionHeader>
+                            <h2>Flashcards</h2>
+                        </SectionHeader>
 
                         <div className="row mt-2">
                             <div className="col-lg-12">
-                                <SpacedRepQueueChart mode='flashcard'/>
+                                <SpacedRepQueueChart mode='flashcard' type='queue'/>
                             </div>
                         </div>
 
                         <div className="row mt-2">
                             <div className="col-lg-12">
-                                <SpacedRepQueueChart mode='reading'/>
+                                <SpacedRepQueueChart mode='flashcard' type='completed'/>
                             </div>
                         </div>
+
+                        <SectionHeader>
+                            <h2>Incremental Reading</h2>
+                        </SectionHeader>
+
+                        <div className="row mt-2">
+                            <div className="col-lg-12">
+                                <SpacedRepQueueChart mode='reading' type='queue'/>
+                            </div>
+                        </div>
+
+                        <div className="row mt-2">
+                            <div className="col-lg-12">
+                                <SpacedRepQueueChart mode='reading' type='completed'/>
+                            </div>
+                        </div>
+
+                        <SectionHeader>
+                            <h2>Reading</h2>
+
+                            <SectionText>
+                                Polar keeps track of your reading progress by counting pagemarks and number of pages
+                                you've read per day so you can focus setting a reading/study goal.
+                            </SectionText>
+                        </SectionHeader>
 
                         <div className="row mt-2">
 
@@ -65,6 +113,15 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                             </div>
 
                         </div>
+
+
+                        <SectionHeader>
+                            <h2>Documents</h2>
+
+                            <SectionText>
+                                Statistics on the number and type of documents you've added to your repository.
+                            </SectionText>
+                        </SectionHeader>
 
                         <div className="row mt-2">
 
