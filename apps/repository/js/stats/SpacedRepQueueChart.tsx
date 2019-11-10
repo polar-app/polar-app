@@ -4,14 +4,11 @@ import {LineDatum, LineSerieData, ResponsiveLine} from '@nivo/line';
 import {SpacedRepStatRecord, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {Statistics} from "polar-shared/src/util/Statistics";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {
-    MutableStageCounts,
-    RepetitionMode,
-    StageCountsCalculator
-} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {RepetitionMode, StageCountsCalculator} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {ReviewerStatistics} from "../reviewer/ReviewerStatistics";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {StatBox} from "./StatBox";
+import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
 
 const log = Logger.create();
 
@@ -21,9 +18,8 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            data: []
+            data: undefined
         };
-
     }
 
     public componentDidMount(): void {
@@ -35,6 +31,12 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        const {data} = this.state;
+
+        if (! data) {
+            return <LoadingProgress/>;
+        }
 
 
         // TODO: these need better stats sections for incremental reading and flashcards as we should have counts,
@@ -87,7 +89,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                 }
             };
 
-            return Statistics.compute(this.state.data, createDatapointsReducer());
+            return Statistics.compute(data, createDatapointsReducer());
 
         };
 
@@ -133,7 +135,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         };
 
-        const data: LineSerieData[] = computeLineData();
+        const lineData: LineSerieData[] = computeLineData();
 
         const NeedChardData = () => {
             // return <div className="text-lg text-muted mt-2"
@@ -160,7 +162,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                         <StatTitle>Number of tasks for {this.props.mode}</StatTitle>
 
                         <ResponsiveLine
-                            data={data}
+                            data={lineData}
                             margin={{
                                 top: 10,
                                 right: 10,
@@ -202,7 +204,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         const Main = () => {
 
-            if (data[0].data.length < 3) {
+            if (lineData[0].data.length < 3) {
                 return <NeedChardData/>;
             } else {
                 return <Chart/>;
@@ -227,7 +229,7 @@ export interface IProps {
 }
 
 export interface IState {
-    readonly data: ReadonlyArray<SpacedRepStatRecord>;
+    readonly data: ReadonlyArray<SpacedRepStatRecord> | undefined;
 }
 
 
