@@ -92,13 +92,26 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         const data: LineSerieData[] = computeLineData();
 
-        return (
+        const NeedChardData = () => {
+            return <div className="text-lg text-muted mt-2"
+                        style={{
+                            display: 'flex',
+                            height: '100%'
+                        }}>
 
-            <div id="new-documents-per-day-chart" className="p-1">
+                <div className="m-auto">
+                    More data needed for reliable chart.
+                </div>
+            </div>;
 
-                <StatTitle>Number of tasks for {this.props.mode}</StatTitle>
+        };
 
-                <div className="p-1" style={{height: '300px', width: '100%'}}>
+        const Chart = () => {
+
+            return (
+
+                <div className="p-1"
+                     style={{height: '300px', width: '100%'}}>
 
                     <ResponsiveLine
                         data={data}
@@ -137,10 +150,29 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
                 </div>
 
+            );
 
-            </div>
+        };
 
-        );
+        const Main = () => {
+
+            if (data[0].data.length < 3) {
+                return <NeedChardData/>;
+            } else {
+                return <Chart/>;
+            }
+
+        };
+
+        return <div className="p-1"
+                    style={{}}>
+
+            <StatTitle>Number of tasks for {this.props.mode}</StatTitle>
+
+            <Main/>
+
+        </div>;
+
     }
 
 }

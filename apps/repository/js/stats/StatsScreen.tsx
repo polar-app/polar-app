@@ -44,13 +44,16 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                 <FixedNavBody>
 
-                    <div className="container-fluid">
+                    <div className="container">
 
                         <div className="row mt-2">
-                            <div className="col-lg-6">
+                            <div className="col-lg-12">
                                 <SpacedRepQueueChart mode='flashcard'/>
                             </div>
-                            <div className="col-lg-6">
+                        </div>
+
+                        <div className="row mt-2">
+                            <div className="col-lg-12">
                                 <SpacedRepQueueChart mode='reading'/>
                             </div>
                         </div>
