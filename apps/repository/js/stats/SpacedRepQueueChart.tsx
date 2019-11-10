@@ -11,8 +11,6 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
     public render() {
 
-        /// FIXME: these tables will not work because I need to ahve a RECORD that's typed too..
-
         const datapointsReducer = (timestamp: ISODateTimeString,
                                    datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
 
