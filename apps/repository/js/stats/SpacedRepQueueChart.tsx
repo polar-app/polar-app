@@ -58,6 +58,26 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                 }
             };
 
+            const minDatapointsReducer = (timestamp: ISODateTimeString,
+                                            datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
+
+                const min = StageCountsCalculator.createMutable();
+
+
+                datapoints.forEach(current => {
+                    min.nrNew = Math.min(min.nrNew, current.nrNew);
+                    min.nrLapsed = Math.min(min.nrLapsed, current.nrLapsed);
+                    min.nrLearning = Math.min(min.nrLearning, current.nrLearning);
+                    min.nrReview = Math.min(min.nrReview, current.nrReview);
+                });
+
+                const first = datapoints[0];
+                return {
+                    ...first,
+                    created: timestamp
+                }
+            };
+
             const sumDatapointsReducer = (timestamp: ISODateTimeString,
                                           datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
 
@@ -83,7 +103,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
             const createDatapointsReducer = () => {
                 switch(this.props.type) {
                     case "queue":
-                        return firstDatapointsReducer;
+                        return minDatapointsReducer;
                     case "completed":
                         return sumDatapointsReducer;
                 }
