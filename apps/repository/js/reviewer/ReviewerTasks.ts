@@ -17,6 +17,8 @@ import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Reducers} from "polar-shared/src/util/Reducers";
+import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {FirestoreCollections} from "./FirestoreCollections";
 
 /**
  * Take tasks and then build a
@@ -136,6 +138,24 @@ export class ReviewerTasks {
             resolver,
             limit
         });
+
+    }
+
+    /**
+     * Return true if the user is actively using the flashcard/IR reviewer system.
+     */
+    public static async isReviewer(): Promise<boolean> {
+
+        await FirestoreCollections.configure();
+
+        const uid = await Firebase.currentUserID();
+
+        if (!uid) {
+            // they aren't logged into Firebase so clearly not...
+            return false;
+        }
+
+        return await SpacedRepStats.hasStats(uid);
 
     }
 
