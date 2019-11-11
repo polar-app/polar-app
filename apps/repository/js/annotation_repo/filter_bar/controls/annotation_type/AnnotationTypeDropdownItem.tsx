@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {DropdownItem} from 'reactstrap';
+import {FontAwesomeIcon} from "../../../../../../../web/js/ui/fontawesome/FontAwesomeIcon";
 
 export class AnnotationTypeDropdownItem extends React.PureComponent<IProps, IState> {
 
@@ -10,10 +11,14 @@ export class AnnotationTypeDropdownItem extends React.PureComponent<IProps, ISta
 
     public render() {
 
+        const {selected} = this.props;
+
+        const iconName =  selected ? "far fa-check-square" : "far fa-square";
+
         return (
             <DropdownItem onClick={() => this.props.onClick()}
-                          className={this.props.selected ? 'font-weight-bold' : undefined}>
-                {this.props.children}
+                          className={selected ? 'font-weight-bold' : undefined}>
+                <FontAwesomeIcon name={iconName}/> {this.props.children}
             </DropdownItem>
         );
 
