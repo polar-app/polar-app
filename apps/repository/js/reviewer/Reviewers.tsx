@@ -31,6 +31,7 @@ import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
+import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 
 const log = Logger.create();
 
@@ -215,6 +216,9 @@ export class Reviewers {
                 .catch(err => log.error("Could not save state: ", err));
 
         };
+
+        // emit stats that the reviewer was run...
+        RendererAnalytics.event({category: 'reviewer', action: 'created-' + mode});
 
         injected = ReactInjector.inject(
             <LightModal>
