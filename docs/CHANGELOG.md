@@ -1,8 +1,12 @@
 # 1.50.10
 
-- using proper MacOS system font along with Robot everywhere else including android devices.  
+- Statistics now shown for flashcards when the user is using spaced repetition 
 
-- new documentation rework and will be improving this long term.
+- No more hamburger menu in the sidebar.  All options are now flat in the desktop UI and more discoverable.
+
+- Using proper MacOS system font along with Robot everywhere else including android devices.  
+
+- New documentation rework and will be improving this long term.
 
 - Added two more colors to the annotation bar. Was frequently requested by our users so just added it.
 
