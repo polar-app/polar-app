@@ -1,5 +1,7 @@
 # pending
 
+- using proper MacOS system font along with Robot everywhere else including android devices.  
+
 - new documentation rework and will be improving this long term.
 
 - Added two more colors to the annotation bar. Was frequently requested by our users so just added it.

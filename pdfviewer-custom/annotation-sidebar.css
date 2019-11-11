@@ -20,7 +20,7 @@
 
 .annotation-sidebar {
     padding-top: 5px;
-    font-family: Roboto, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.84);
 }
