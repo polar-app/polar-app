@@ -7,7 +7,7 @@ html[data-platform='ios'] {
 }
 
 html[data-platform='android'] {
-    font-family: 'RobotoRegular', 'Droid Sans', sans-serif;
+    font-family: 'Roboto', 'RobotoRegular', 'Droid Sans', sans-serif;
 }
 
 html[data-platform='windows'] {
