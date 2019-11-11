@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {TrackedDropdownItem} from './TrackedDropdownItem';
-import {Prefs} from '../../../../web/js/util/prefs/Prefs';
+import {FeatureToggles} from "../../../../web/js/ui/FeatureToggles";
 
 const ICON_ON = "fas fa-check text-primary";
 const ICON_OFF = "fas fa-minus";
 
-/**
- */
-export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
+export class SettingsFeatureToggleDropdown extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -15,17 +13,9 @@ export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-        const prefs = this.props.prefs();
+        const marked = FeatureToggles.isEnabled(this.props.name);
 
-        const hidden = prefs === undefined;
-
-        let marked: boolean = false;
-        let icon: string = ICON_OFF;
-
-        if (prefs) {
-            marked = prefs.isMarked(this.props.name, this.props.defaultValue);
-            icon = marked ? ICON_ON : ICON_OFF;
-        }
+        const icon: string = marked ? ICON_ON : ICON_OFF
 
         return (
 
@@ -34,16 +24,14 @@ export class SettingsDropdownItem extends React.PureComponent<IProps, IState> {
                                  title={this.props.title}
                                  tooltip={this.props.tooltip}
                                  icon={icon}
-                                 hidden={hidden}
-                                 onClick={() => this.onClick()}/>
+                                 hidden={false}
+                                 onClick={() => FeatureToggles.toggle(this.props.name)}/>
 
         );
 
     }
 
     private onClick() {
-        const prefs = this.props.prefs()!;
-        prefs.toggleMarked(this.props.name, this.props.defaultValue);
     }
 
 }
@@ -53,15 +41,11 @@ interface IProps {
     // the setting name
     readonly name: string;
 
-    readonly defaultValue: boolean;
-
     readonly title: string;
 
     readonly tooltip: string;
 
     readonly hidden?: boolean;
-
-    readonly prefs: () => Prefs | undefined;
 
 }
 

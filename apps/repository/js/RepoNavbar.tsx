@@ -4,6 +4,7 @@ import {NavLogo} from './nav/NavLogo';
 import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
+import { FeatureToggle } from '../../../web/js/ui/FeatureToggle';
 
 const Styles: IStyleMap = {
 
@@ -63,7 +64,11 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                             <SimpleTab id="nav-tab-document-repository" target={{pathname: "/", hash: "#"}} text="Document Repository"/>
                             <SimpleTab id="nav-tab-annotations" target={{pathname: "/", hash: "#annotations"}} text="Annotations"/>
                             <SimpleTab id="nav-tab-statistics" target={{pathname: "/", hash: "#stats"}} text="Statistics"/>
-                            <SimpleTab id="nav-tab-groups" target={{pathname: "/groups"}} text="Groups"/>
+
+                            <FeatureToggle name='groups'>
+                                <SimpleTab id="nav-tab-groups" target={{pathname: "/groups"}} text="Groups"/>
+                            </FeatureToggle>
+
                         </SimpleTabs>
                     </div>
 

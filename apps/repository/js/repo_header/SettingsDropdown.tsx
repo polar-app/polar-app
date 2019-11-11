@@ -4,6 +4,7 @@ import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {UncontrolledDropdown} from 'reactstrap';
 import {SettingsDropdownItem} from './SettingsDropdownItem';
 import {Prefs} from '../../../../web/js/util/prefs/Prefs';
+import {SettingsFeatureToggleDropdown} from "./SettingsFeatureToggleDropdown";
 
 export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 
@@ -24,7 +25,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
                                 color="light"
                                 caret>
 
-                    <i className="fas fa-cog" style={{fontSize: '17px'}}></i>
+                    <i className="fas fa-cog" style={{fontSize: '17px'}}/>
 
                 </DropdownToggle>
 
@@ -35,6 +36,10 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
                                           prefs={this.props.prefs}
                                           title="Automatically Resume Reading Position"
                                           tooltip="Automatically resume the current reading position when opening documents."/>
+
+                    <SettingsFeatureToggleDropdown name="groups"
+                                                   title="Enable groups"
+                                                   tooltip="Enable groups support for sharing documents with other Polar users"/>
 
                 </DropdownMenu>
 
