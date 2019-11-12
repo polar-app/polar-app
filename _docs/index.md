@@ -46,7 +46,22 @@ Like the document repository, the annotation viewer allows you to filter the vie
 
 Polar supports both desktop and web and supports cloud sync and storage and sync of your across devices.
 
+|                |   |full feature set          | offline support |
+|----------------|---|--------------------------|-----------------|
+| **desktop**    |   | yes                      | yes             |
+| **web**        |   | yes                      | no              |
+| **mobile**     |   | flashcard review only    | no              |
+
+## Mobile
+
+Mobile includes both tablet and phones running iOS and Android.  We don't provide native apps but instead have a mobile
+webapp (or progressive webapp) that can be installed just by [visiting the website](https://app.getpolarized.io) (and logging in) on your phone.
+
+## Desktop
+
 We have desktop apps for Windows, MacOS, and Linux which you can [download here](https://getpolarized.io/download.html).
+
+## Web
 
 The [web version of Polar](https://app.getpolarized.io) runs on Chrome, and Firefox [^1] and supports almost all functionality as the desktop app except 
 for offline support which will come in the future. 
