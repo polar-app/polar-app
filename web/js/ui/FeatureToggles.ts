@@ -1,9 +1,26 @@
 const PREFIX = 'feature:';
 
+/**
+ * Toggle features based on settings specific for each user.
+ */
 export class FeatureToggles {
 
-    public static get(name: string) {
-        return localStorage.getItem(PREFIX + name) === 'true';
+    /**
+     * Get the current value of a feature toggle.
+     *
+     * @param name The name of the feature.
+     * @param defaultValue The default value of the feature toggle.
+     */
+    public static get(name: string, defaultValue: boolean = false): boolean {
+
+        const val = localStorage.getItem(PREFIX + name);
+
+        if (val === null) {
+            return defaultValue;
+        }
+
+        return val === 'true';
+
     }
 
     public static enable(name: string) {
@@ -15,11 +32,13 @@ export class FeatureToggles {
     }
 
     public static toggle(name: string) {
+
         if (this.get(name)) {
             this.disable(name);
         } else {
             this.enable(name);
         }
+
     }
 
 }
