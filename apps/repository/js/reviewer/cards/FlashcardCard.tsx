@@ -35,7 +35,14 @@ export class FlashcardCard extends React.Component<IProps, IState> {
                     return this.props.front;
 
                 case 'back':
-                    return this.props.back;
+                    return <div>
+                        {this.props.front}
+
+                        <div className="m-2">
+                            <hr/>
+                        </div>
+                        {this.props.back}
+                    </div>;
 
             }
 
@@ -46,6 +53,7 @@ export class FlashcardCard extends React.Component<IProps, IState> {
 
                 case 'front':
                     return <Button color="primary"
+                                   size="md"
                                    onClick={() => this.onShowAnswer()}>
                         Show Answer
                     </Button>;

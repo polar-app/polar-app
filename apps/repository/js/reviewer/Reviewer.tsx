@@ -141,14 +141,14 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                     <Row.Right>
 
-                        <Button size="sm"
+                        <Button size="md"
                                 color="light"
                                 className="text-muted mr-1"
                                 onClick={() => this.onSuspended(taskRep)}>
                             <i className="fas fa-pause"/> suspend
                         </Button>
 
-                        <Button size="sm"
+                        <Button size="md"
                                 color="light"
                                 className="text-muted"
                                 onClick={() => this.props.onFinished(true)}>

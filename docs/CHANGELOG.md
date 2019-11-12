@@ -1,4 +1,11 @@
+
+
+- now using larger buttons
+- show the front + back of cards when we 'show answer'
+
 # 1.50.10
+
+- 
 
 - Statistics now shown for flashcards when the user is using spaced repetition 
 

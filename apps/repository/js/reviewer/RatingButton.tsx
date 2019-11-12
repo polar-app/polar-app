@@ -36,6 +36,7 @@ export class RatingButton<A> extends React.Component<IProps<A>, IState> {
 
         return <Button color={color}
                        className="m-1"
+                       size="md"
                        style={{flexGrow: 1}}
                        onClick={() => this.props.onRating(taskRep, 'again')}>{text}</Button>;
 
