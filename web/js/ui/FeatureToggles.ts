@@ -2,7 +2,7 @@ const PREFIX = 'feature:';
 
 export class FeatureToggles {
 
-    public static isEnabled(name: string) {
+    public static get(name: string) {
         return localStorage.getItem(PREFIX + name) === 'true';
     }
 
@@ -15,7 +15,7 @@ export class FeatureToggles {
     }
 
     public static toggle(name: string) {
-        if (this.isEnabled(name)) {
+        if (this.get(name)) {
             this.disable(name);
         } else {
             this.enable(name);

@@ -5,7 +5,7 @@ export class FeatureToggle extends React.Component<IProps, IState> {
 
     public render() {
 
-        if (FeatureToggles.isEnabled(this.props.name)) {
+        if (FeatureToggles.get(this.props.name)) {
             return this.props.children;
         }
 
