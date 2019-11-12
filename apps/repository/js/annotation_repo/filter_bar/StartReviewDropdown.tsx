@@ -15,11 +15,11 @@ export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <UncontrolledDropdown size="sm"
+            <UncontrolledDropdown size="md"
                                   direction="down"
                                   id="start-review-dropdown">
 
-                <DropdownToggle size="sm"
+                <DropdownToggle size="md"
                                 style={{fontWeight: 'bold'}}
                                 color="success" caret>
 

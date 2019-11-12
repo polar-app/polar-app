@@ -36,7 +36,7 @@ export class ToggleButton extends React.Component<IProps, IState> {
             <Button id={this.props.id || ""}
                     color="light p-0 pr-0 border rounded"
                     onClick={() => this.toggle()}
-                    size="sm">
+                    size={this.props.size  || 'sm'}>
 
                 <div style={{display: 'flex'}}>
 
@@ -78,6 +78,7 @@ interface IProps {
     readonly label: string;
     readonly iconClassName?: string;
     readonly onChange: (value: boolean) => void;
+    readonly size?: 'sm' | 'md' | 'lg';
 }
 
 interface IState {

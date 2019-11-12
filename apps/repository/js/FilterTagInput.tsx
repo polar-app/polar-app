@@ -66,7 +66,7 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
                     <Button color="light"
                             id={this.id}
-                            size="sm"
+                            size="md"
                             disabled={this.props.disabled}
                             onClick={() => this.toggle(! this.state.open)}
                             className="header-filter-clickable p-1 pl-2 pr-2 border">

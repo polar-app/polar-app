@@ -16,7 +16,7 @@ export class TextFilter extends React.PureComponent<IProps, IState> {
         const width = Platforms.isMobile() ? '150px' : '250px';
 
         return (
-            <InputGroup size="sm">
+            <InputGroup size="md">
 
                 <Input id="filter_title"
                        type="text"

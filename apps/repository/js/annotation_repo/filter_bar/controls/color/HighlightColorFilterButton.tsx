@@ -57,7 +57,7 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
                 <Button color={buttonProps.color}
                         outline={buttonProps.outline}
                         id={id}
-                        size="sm"
+                        size="md"
                         style={{
                             whiteSpace: 'nowrap'
                         }}

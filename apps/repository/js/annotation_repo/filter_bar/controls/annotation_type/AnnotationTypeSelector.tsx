@@ -46,7 +46,7 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
 
                 <DropdownToggle color={buttonProps.color}
                                 outline={buttonProps.outline}
-                                size="sm"
+                                size="md"
                                 caret>
 
                     <i className="fas fa-filter"/> <span className="d-none-mobile">Annotation Types</span>

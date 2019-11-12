@@ -57,7 +57,7 @@ export class TagButton extends React.Component<IProps, IState> {
 
                     <Button color="light"
                             id={this.id}
-                            size="sm"
+                            size="md"
                             disabled={this.props.disabled}
                             onClick={this.toggle}
                             className="border">

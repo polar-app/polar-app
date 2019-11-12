@@ -21,7 +21,7 @@ export class MultiDeleteButton extends React.Component<IProps, IState> {
                              placement="bottom">
 
                 <Button id="multi-delete-button"
-                        size="sm"
+                        size="md"
                         color="light"
                         className="border"
                         disabled={this.props.disabled}

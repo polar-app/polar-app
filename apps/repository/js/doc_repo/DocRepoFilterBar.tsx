@@ -58,6 +58,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                         <SimpleTooltipEx text="Only show flagged documents.">
 
                             <ToggleButton id="toggle-flagged"
+                                          size="md"
                                           label="flagged"
                                           iconClassName="fas fa-flag"
                                           initialValue={false}
@@ -81,6 +82,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                                          `}>
 
                             <ToggleButton id="toggle-archived"
+                                          size="md"
                                           label="archived"
                                           iconClassName="fas fa-check"
                                           initialValue={false}
@@ -112,7 +114,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                                             Filter the document list by the title of the document.
                                          `}>
 
-                            <InputGroup size="sm">
+                            <InputGroup size="md">
 
                                 <Input id="filter_title"
                                        type="text"
