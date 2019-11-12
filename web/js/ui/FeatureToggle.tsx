@@ -1,5 +1,5 @@
 import React from 'react';
-import {FeatureToggles} from "./FeatureToggles";
+import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 
 export class FeatureToggle extends React.Component<IProps, IState> {
 
