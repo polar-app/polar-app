@@ -1,6 +1,10 @@
 
 
+- major refactor of how text selection works using the new modern text layer code in pdf.js which has 
+  been a major complaint since 1.0.  Excited to finally have this fixed!
+  
 - now using larger buttons
+
 - show the front + back of cards when we 'show answer'
 
 # 1.50.10
