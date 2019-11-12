@@ -14,14 +14,6 @@ export interface ContainerLifecycleListener {
     unregister(): void;
 
     /**
-     * Get the current state from an event.
-     *
-     * @param event
-     */
-    getStateFromEvent(event: any): ContainerLifecycleState | undefined;
-
-
-    /**
      * Get the current state.
      *
      */

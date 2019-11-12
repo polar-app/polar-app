@@ -24,11 +24,12 @@ export class ContainerProvider {
 
         let result: {[key: number]: Container} = {};
 
-        let elements = Array.from(document.querySelectorAll(selector));
+        const elements: HTMLElement[] = Array.from(document.querySelectorAll(selector));
 
         elements.forEach(element => {
-            let id = parseInt(element.getAttribute("data-page-number")!);
-            let container = new Container({id, element });
+            const page = parseInt(element.getAttribute("data-page-number")!);
+            const id = page;
+            const container = new Container({id, element, page});
             result[id] = container;
         });
 

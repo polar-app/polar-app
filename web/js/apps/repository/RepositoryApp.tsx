@@ -64,6 +64,7 @@ import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlig
 import {PrefetchedUserGroupsBackgroundListener} from "../../datastore/sharing/db/PrefetchedUserGroupsBackgroundListener";
 import {PlatformStyles} from "../../ui/PlatformStyles";
 import {Devices} from "../../util/Devices";
+import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 
 const log = Logger.create();
 
@@ -86,6 +87,8 @@ export class RepositoryApp {
         PlatformStyles.assign();
 
         AppOrigin.configure();
+
+        PDFModernTextLayers.configure();
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 

@@ -39,6 +39,7 @@ export class WebController extends Controller {
         this.viewer = Preconditions.assertNotNull(viewer, "viewer");
 
         this.docFormat = notNull(DocFormatFactory.getInstance());
+        this.docFormat.init();
 
         new PagemarkController(model).start();
         new DocTitleController(this.model).start();

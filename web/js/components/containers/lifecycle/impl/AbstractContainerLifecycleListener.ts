@@ -1,10 +1,8 @@
-/**
- *
- */
 import {Container} from '../../Container';
 import {ContainerLifecycleListener} from '../ContainerLifecycleListener';
 import {ContainerLifecycleState} from '../ContainerLifecycleState';
-import {isPresent} from 'polar-shared/src/Preconditions';
+
+export type ContainerLifecycleStateCallback = (state: ContainerLifecycleState) => void;
 
 /**
  * Listens to the lifecycle of .page
@@ -13,26 +11,45 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
 
     protected readonly container: Container;
 
-    // TODO: type this.. not sure what it is yet.
-    protected listener: any;
+    protected observer: MutationObserver | undefined;
+
+    protected state: ContainerLifecycleState;
 
     protected constructor(container: Container) {
         this.container = container;
-        this.listener = null;
+
+        const visible = this.isVisible();
+        this.state = new ContainerLifecycleState({container, visible});
+    }
+
+    public register(callback: ContainerLifecycleStateCallback) {
+
+        const container = this.container;
+
+        this.observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.type == "attributes") {
+                    const visible = this.isVisible();
+                    this.state = new ContainerLifecycleState({container, visible});
+                    callback(this.state);
+
+                }
+            }
+
+        });
+
+        this.observer.observe(container.element, {
+            // only monitor attributes.
+            attributes: true
+        });
 
     }
 
-    register(callback: any) {
-
-        this.listener = this._createListener(callback);
-
-        let element = this.container.element;
-
-        element.addEventListener('DOMNodeInserted', this.listener, false);
-
+    protected isVisible() {
+        return this.container.element.getAttribute('data-loaded') === 'true'
     }
 
-    _createContainerLifecycleEvent(visible: boolean) {
+    protected _createContainerLifecycleEvent(visible: boolean) {
 
         return new ContainerLifecycleState({
             container: this.container,
@@ -41,28 +58,15 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
 
     }
 
-    _createListener(callback: (state: ContainerLifecycleState) => void ) {
-
-        return (event: any) => {
-
-            let containerLifecycleState = this.getStateFromEvent(event);
-
-            if(isPresent(containerLifecycleState)) {
-                callback(containerLifecycleState!);
-            }
-
-        }
-
+    public getState(): ContainerLifecycleState {
+        return this.state;
     }
-
-    abstract getStateFromEvent(event: any): ContainerLifecycleState | undefined;
-
-    abstract getState(): ContainerLifecycleState | undefined;
 
     unregister() {
 
-        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
-        this.listener = null;
+        if (this.observer) {
+            this.observer!.disconnect();
+        }
 
     }
 

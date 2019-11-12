@@ -10,6 +10,13 @@ export abstract class DocFormat {
 
     public abstract readonly name: DocFormatName;
 
+    /**
+     * Called when the viewer is started so we can make any necessary changes.
+     */
+    public init() {
+
+    }
+
     public currentScale(): number {
         return 1.0;
     }

@@ -15,15 +15,17 @@ export class Container {
     /**
      * The components that this container hosts.
      *
-     * @type {Array<Component>}
      */
     public components: Component[] = [];
 
-    constructor(opts: any = {}) {
+    public page: number;
+
+    constructor(opts: IContainer) {
 
         this.id = opts.id;
         this.element = opts.element;
         this.components = opts.components || [];
+        this.page = opts.page;
 
     }
 
@@ -35,4 +37,11 @@ export class Container {
         return this.components;
     }
 
+}
+
+interface IContainer {
+    readonly id: number;
+    readonly element: HTMLElement;
+    readonly components?: Component[];
+    readonly page: number;
 }
