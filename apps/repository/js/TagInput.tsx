@@ -15,12 +15,14 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {PremiumFeature} from "../../../web/js/ui/premium_feature/PremiumFeature";
+import {BlackoutBox} from "../../../web/js/ui/util/BlackoutBox";
 
 const log = Logger.create();
 
 const Styles: IStyleMap = {
 
     popover: {
+        backgroundColor: 'var(--white)',
         width: '500px !important',
         maxWidth: '9999px !important'
     },
@@ -30,7 +32,6 @@ const Styles: IStyleMap = {
     },
 
     relatedTags: {
-        marginTop: '5px',
         display: 'flex',
     },
 
@@ -90,6 +91,10 @@ export class TagInput extends React.Component<IProps, IState> {
         this.setState({open: false});
     }
 
+    public componentWillUnmount(): void {
+        Blackout.disable();
+    }
+
     public render() {
 
         const availableTagOptions = TagOptions.fromTags(this.props.availableTags);
@@ -125,11 +130,12 @@ export class TagInput extends React.Component<IProps, IState> {
         const RelatedTagsWidget = () => {
 
             if (relatedTags.length === 0) {
-                return <div></div>;
+                return null;
             }
 
             return <div style={Styles.relatedTags}>
-                <div className="mr-1" style={Styles.relatedTagsLabel}>
+                <div className="mr-1"
+                     style={Styles.relatedTagsLabel}>
                     <strong>Related tags: </strong>
                 </div>
                 <RelatedTagsItems/>
@@ -152,61 +158,64 @@ export class TagInput extends React.Component<IProps, IState> {
                          delay={0}
                          toggle={() => this.deactivate()}
                          className="tag-input-popover shadow">
-                    {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
 
-                    {/*style={{borderWidth: '1px', backgroundColor: true ? "#b94a48" : "#aaa"}}*/}
-                    <PopoverBody style={Styles.popover} className="shadow">
+                    <PopoverBody style={Styles.popover}
+                                 className="shadow rounded">
 
                         {/*TODO unify this with TagInputWidget*/}
 
-                        <div className="pt-1 pb-1">
-                            <strong>Assign tags to document:</strong>
-                        </div>
+                        <div className="bg-white">
 
-                        <CreatableSelect
-                            isMulti
-                            isClearable
-                            autoFocus
-                            onKeyDown={event => this.onKeyDown(event)}
-                            className="basic-multi-select"
-                            classNamePrefix="select"
-                            onChange={(selectedOptions) => this.handleChange(selectedOptions as TagOption[])}
-                            value={pendingTags}
-                            defaultValue={pendingTags}
-                            placeholder="Create or select tags ..."
-                            options={availableTagOptions}
-                            ref={ref => this.select = ref}>
-
-                        </CreatableSelect>
-
-                        <div>
-
-                            <PremiumFeature required='bronze' size='sm'>
-                                <RelatedTagsWidget/>
-                            </PremiumFeature>
-
-                        </div>
-
-                        <div className="mt-1">
-
-                            <div style={{display: 'flex'}}>
-
-                                <div className="ml-auto"/>
-
-                                <Button color="secondary"
-                                        size="sm"
-                                        onClick={() => this.onCancel()}>
-                                    Cancel
-                                </Button>
-
-                                <div className="ml-1"/>
-
-                                <Button color="primary"
-                                        size="sm"
-                                        onClick={() => this.onDone()}>
-                                    Done
-                                </Button>
+                            <div className="pt-1 pb-1">
+                                <strong>Assign tags to document:</strong>
                             </div>
+
+                            <CreatableSelect
+                                isMulti
+                                isClearable
+                                autoFocus
+                                onKeyDown={event => this.onKeyDown(event)}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                                onChange={(selectedOptions) => this.handleChange(selectedOptions as TagOption[])}
+                                value={pendingTags}
+                                defaultValue={pendingTags}
+                                placeholder="Create or select tags ..."
+                                options={availableTagOptions}
+                                ref={ref => this.select = ref}>
+
+                            </CreatableSelect>
+
+                            <div className="pt-1">
+
+                                <PremiumFeature required='bronze' size='sm' feature="related tags">
+                                    <RelatedTagsWidget/>
+                                </PremiumFeature>
+
+                            </div>
+
+                            <div className="mt-1">
+
+                                <div style={{display: 'flex'}}>
+
+                                    <div className="ml-auto"/>
+
+                                    <Button color="secondary"
+                                            size="sm"
+                                            onClick={() => this.onCancel()}>
+                                        Cancel
+                                    </Button>
+
+                                    <div className="ml-1"/>
+
+                                    <Button color="primary"
+                                            size="sm"
+                                            onClick={() => this.onDone()}>
+                                        Done
+                                    </Button>
+                                </div>
+                            </div>
+
                         </div>
 
                     </PopoverBody>

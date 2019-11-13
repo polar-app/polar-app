@@ -20,6 +20,7 @@ import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/cards/F
 import {FlashcardCard} from "../../../apps/repository/js/reviewer/cards/FlashcardCard";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Button} from "reactstrap";
 
 const styles = {
     swatch: {
@@ -258,12 +259,13 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<StartReviewButton onClick={NULL_FUNCTION}/>*/}
 
-                <LightModal>
-                    <Reviewer taskReps={taskReps}
-                              onRating={(id, answer) => console.log("got answer: ", id, answer)}
-                              onSuspended={NULL_FUNCTION}
-                              onFinished={() => console.log('finished')}/>
-                </LightModal>
+                <div className="p-1">
+
+                    <Button size='sm' color="light" className="border">
+                        <i className="fas fa-gem"/> Upgrade to bronze to unlock related tags
+                    </Button>
+
+                </div>
 
                 {/*<div style={{width: '500px', height: '700px', display: 'flex'}}*/}
                 {/*     className="border">*/}

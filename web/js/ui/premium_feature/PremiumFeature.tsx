@@ -2,16 +2,35 @@
 import React from 'react';
 import {AccountPlan, AccountPlans} from "../../accounts/Account";
 import {AccountProvider} from "../../accounts/AccountProvider";
+import {Button} from "reactstrap";
+import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
 export class PremiumFeature extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+        this.onUpgrade = this.onUpgrade.bind(this);
     }
 
     public render() {
 
-        const requiredPlan = this.props.required;
+        const {required, feature} = this.props;
+
+        const PremiumFeatureWarning = () => {
+            const {size} = this.props;
+
+            switch (size) {
+                case "xs":
+                    break;
+                case "sm":
+                    break;
+                case "md":
+                    break;
+                case "lg":
+                    break;
+            }
+
+        };
 
         const hasRequiredPlan = () => {
 
@@ -23,7 +42,8 @@ export class PremiumFeature extends React.Component<IProps, IState> {
                 return true;
             }
 
-            return AccountPlans.hasLevel(requiredPlan, account.plan);
+            // return AccountPlans.hasLevel(required, account.plan);
+            return AccountPlans.hasLevel(required, 'free');
 
         };
 
@@ -33,13 +53,24 @@ export class PremiumFeature extends React.Component<IProps, IState> {
             return (
 
                 <div>
-                    Premium feature bro...
+                    <Button size='sm'
+                            color="light"
+                            className="border"
+                            onClick={() => this.onUpgrade()}>
+
+                        <i className="fas fa-gem"/> Upgrade to {required} to unlock {feature}
+
+                    </Button>
                 </div>
 
             );
         }
 
+    }
 
+    private onUpgrade() {
+        RendererAnalytics.event({category: 'premium', action: 'upgrade-from-premium-feature-wall'});
+        document.location.hash = "plans";
     }
 
 }
@@ -48,6 +79,7 @@ export type UISize = 'xs' | 'sm' | 'md' | 'lg';
 
 interface IProps {
     readonly required: AccountPlan;
+    readonly feature: string;
     readonly size: UISize;
 }
 

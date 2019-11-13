@@ -13,7 +13,7 @@ const LogoutButton = (props: IProps) => {
                    onClick={() => props.onLogout()}
                    className="ml-1">
 
-        <i className="fas fa-sign-out-alt mr-1"></i>
+        <i className="fas fa-sign-out-alt mr-1"/>
 
         Logout
 
@@ -47,7 +47,7 @@ const InviteUsersButton = (props: IProps) => {
                    size="sm"
                    onClick={() => props.onInvite()}>
 
-        <i className="fas fa-user-plus mr-1"></i>
+        <i className="fas fa-user-plus mr-1"/>
 
         Invite Users
 
@@ -69,7 +69,7 @@ const ViewPlansAndPricingButton = () => {
                    size="md"
                    onClick={handler}>
 
-        <i className="fas fa-certificate"></i>
+        <i className="fas fa-certificate"/>
         &nbsp;
         View Plans and Pricing
 

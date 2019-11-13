@@ -65,6 +65,7 @@ import {PrefetchedUserGroupsBackgroundListener} from "../../datastore/sharing/db
 import {PlatformStyles} from "../../ui/PlatformStyles";
 import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
+import {AccountProvider} from "../../accounts/AccountProvider";
 
 const log = Logger.create();
 
@@ -100,6 +101,7 @@ export class RepositoryApp {
 
         const userInfo = await authHandler.userInfo();
         const account = await Accounts.get();
+        await AccountProvider.init();
 
         const platform = Platforms.get();
 
