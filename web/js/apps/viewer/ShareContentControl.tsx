@@ -9,7 +9,7 @@ import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {SplitLayout} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../ui/split_layout/SplitLayoutRight';
-import CreatableSelect from 'react-select/lib/Creatable';
+import CreatableSelect from 'react-select';
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 
 const log = Logger.create();

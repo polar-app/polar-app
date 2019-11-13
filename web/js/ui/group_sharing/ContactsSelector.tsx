@@ -1,10 +1,9 @@
 import React from 'react';
-import CreatableSelect from 'react-select/lib/Creatable';
+import CreatableSelect from 'react-select';
 import {ContactIDStr} from '../../datastore/sharing/db/Contacts';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {EmailAddresses} from '../../util/EmailAddresses';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
-import {ContactProfile} from './GroupSharingRecords';
 import {ContactOptions} from './ContactOptions';
 
 /**

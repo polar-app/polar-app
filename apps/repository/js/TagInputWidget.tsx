@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CreatableSelect from 'react-select/lib/Creatable';
+import CreatableSelect from 'react-select';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
