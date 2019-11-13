@@ -14,6 +14,7 @@ import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {Tag} from 'polar-shared/src/tags/Tags';
+import {PremiumFeature} from "../../../web/js/ui/premium_feature/PremiumFeature";
 
 const log = Logger.create();
 
@@ -180,7 +181,9 @@ export class TagInput extends React.Component<IProps, IState> {
 
                         <div>
 
-                            <RelatedTagsWidget/>
+                            <PremiumFeature required='bronze' size='sm'>
+                                <RelatedTagsWidget/>
+                            </PremiumFeature>
 
                         </div>
 

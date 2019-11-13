@@ -9,7 +9,6 @@ import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Numbers} from "polar-shared/src/util/Numbers";
 
 const log = Logger.create();
@@ -56,7 +55,7 @@ const PlanIntervalButton = (props: PlanIntervalProps) => {
                    size="sm"
                    onClick={() => props.togglePlanInterval()}>
 
-            Show {props.planInterval === 'month' ? 'Monthly' : 'Yearly'} Plans
+            Show {props.planInterval === 'month' ? 'Yearly' : 'Monthly'} Plans
 
         </Button>;
 
@@ -241,16 +240,16 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 </td>
 
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                             </tr>
                             <tr>
@@ -259,16 +258,16 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 </td>
 
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                             </tr>
                             <tr>
@@ -333,13 +332,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                             </tr>
                             <tr>
@@ -350,13 +349,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                 <td className="">
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                             </tr>
                             <tr>
@@ -368,13 +367,13 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
                                     <span className="feature-na">---</span>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                                 <td className="">
-                                    <i className="fa fa-check"></i>
+                                    <i className="fa fa-check"/>
                                 </td>
                             </tr>
 

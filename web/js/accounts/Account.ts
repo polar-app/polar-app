@@ -51,4 +51,11 @@ export class AccountPlans {
 
     }
 
+    /**
+     * Return true if the required plan level is ok vs the actual plan level.
+     */
+    public static hasLevel(required: AccountPlan, actual: AccountPlan) {
+        return this.toInt(required) <= this.toInt(actual);
+    }
+
 }
