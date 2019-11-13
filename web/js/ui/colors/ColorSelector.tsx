@@ -64,7 +64,7 @@ export class ColorSelector extends React.PureComponent<IProps, IState> {
                          toggle={this.deactivate}>
 
                     <PopoverBody className="shadow rounded p-2"
-                                 style={{backgroundColor: '#ffffff'}}>
+                                 style={{backgroundColor: 'var(--white)'}}>
 
                         <ColorSelectorBox onSelected={(color) => {
                                               this.deactivate();

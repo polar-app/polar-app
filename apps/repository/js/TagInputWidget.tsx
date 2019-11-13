@@ -25,7 +25,7 @@ const Styles: IStyleMap = {
 
     relatedTag: {
         display: 'inline-block',
-        backgroundColor: '#e5e5e5',
+        backgroundColor: 'var(--grey100)',
         color: 'hsl(0,0%,20%)',
         fontSize: '12px',
         padding: '3px',

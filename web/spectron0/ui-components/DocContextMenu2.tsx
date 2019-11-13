@@ -59,7 +59,7 @@ export class DocContextMenu2 extends React.Component<IProps, IState> {
                 <ContextMenuWrapper id={this.id}>
 
                     <div className="border shadow pt-2 pb-2"
-                         style={{backgroundColor: 'white'}}>
+                         style={{backgroundColor: 'var(--white)'}}>
 
                         <Button type="button"
                                 role="menuitem"

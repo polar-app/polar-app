@@ -34,7 +34,7 @@ export class TabButtonContextMenu extends React.Component<IProps, IState> {
                 <ContextMenuWrapper id={this.id}>
 
                     <div className="border shadow rounded pt-2 pb-2"
-                         style={{backgroundColor: 'white'}}>
+                         style={{backgroundColor: 'var(--white)'}}>
 
                         <DropdownItem toggle={false} onClick={() => this.props.onClose()}>
                             Close Tab

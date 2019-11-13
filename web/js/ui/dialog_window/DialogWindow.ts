@@ -10,7 +10,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 const log = Logger.create();
 
 const BROWSER_WINDOW_OPTIONS = {
-    backgroundColor: '#FFF',
+    backgroundColor: 'var(--white)',
     width: 800,
     height: 600,
     show: false,
