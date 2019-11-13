@@ -1,8 +1,9 @@
 import * as React from 'react';
-import Select, {ActionMeta, ValueType} from 'react-select';
+import Select from 'react-select';
 import {TagOptions} from '../../../../apps/repository/js/TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {TagOption} from '../../../../apps/repository/js/TagOption';
+import {ActionMeta, ValueType} from "react-select/lib/types";
 
 export class TagFilter extends React.Component<IProps, IState> {
 
