@@ -12,7 +12,6 @@ import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Blackout} from '../../../web/js/ui/blackout/Blackout';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {PremiumFeature} from "../../../web/js/ui/premium_feature/PremiumFeature";
 import {BlackoutBox} from "../../../web/js/ui/util/BlackoutBox";
@@ -79,20 +78,12 @@ export class TagInput extends React.Component<IProps, IState> {
     private activate() {
 
         const pendingTags = this.props.existingTags || [];
-
-        Blackout.enable();
-
         this.setState({open: true, pendingTags});
 
     }
 
     private deactivate() {
-        Blackout.disable();
         this.setState({open: false});
-    }
-
-    public componentWillUnmount(): void {
-        Blackout.disable();
     }
 
     public render() {
@@ -164,60 +155,63 @@ export class TagInput extends React.Component<IProps, IState> {
 
                         {/*TODO unify this with TagInputWidget*/}
 
-                        <div className="bg-white">
+                        <BlackoutBox>
 
-                            <div className="pt-1 pb-1">
-                                <strong>Assign tags to document:</strong>
-                            </div>
+                            <div className="bg-white">
 
-                            <CreatableSelect
-                                isMulti
-                                isClearable
-                                autoFocus
-                                onKeyDown={event => this.onKeyDown(event)}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                                onChange={(selectedOptions) => this.handleChange(selectedOptions as TagOption[])}
-                                value={pendingTags}
-                                defaultValue={pendingTags}
-                                placeholder="Create or select tags ..."
-                                options={availableTagOptions}
-                                ref={ref => this.select = ref}>
-
-                            </CreatableSelect>
-
-                            <div className="pt-1">
-
-                                <PremiumFeature required='bronze' size='sm' feature="related tags">
-                                    <RelatedTagsWidget/>
-                                </PremiumFeature>
-
-                            </div>
-
-                            <div className="mt-1">
-
-                                <div style={{display: 'flex'}}>
-
-                                    <div className="ml-auto"/>
-
-                                    <Button color="secondary"
-                                            size="sm"
-                                            onClick={() => this.onCancel()}>
-                                        Cancel
-                                    </Button>
-
-                                    <div className="ml-1"/>
-
-                                    <Button color="primary"
-                                            size="sm"
-                                            onClick={() => this.onDone()}>
-                                        Done
-                                    </Button>
+                                <div className="pt-1 pb-1">
+                                    <strong>Assign tags to document:</strong>
                                 </div>
+
+                                <CreatableSelect
+                                    isMulti
+                                    isClearable
+                                    autoFocus
+                                    onKeyDown={event => this.onKeyDown(event)}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    onChange={(selectedOptions) => this.handleChange(selectedOptions as TagOption[])}
+                                    value={pendingTags}
+                                    defaultValue={pendingTags}
+                                    placeholder="Create or select tags ..."
+                                    options={availableTagOptions}
+                                    ref={ref => this.select = ref}>
+
+                                </CreatableSelect>
+
+                                <div className="pt-1">
+
+                                    <PremiumFeature required='bronze' size='sm' feature="related tags">
+                                        <RelatedTagsWidget/>
+                                    </PremiumFeature>
+
+                                </div>
+
+                                <div className="mt-1">
+
+                                    <div style={{display: 'flex'}}>
+
+                                        <div className="ml-auto"/>
+
+                                        <Button color="secondary"
+                                                size="sm"
+                                                onClick={() => this.onCancel()}>
+                                            Cancel
+                                        </Button>
+
+                                        <div className="ml-1"/>
+
+                                        <Button color="primary"
+                                                size="sm"
+                                                onClick={() => this.onDone()}>
+                                            Done
+                                        </Button>
+                                    </div>
+                                </div>
+
                             </div>
 
-                        </div>
-
+                        </BlackoutBox>
                     </PopoverBody>
                 </Popover>
 
@@ -245,13 +239,11 @@ export class TagInput extends React.Component<IProps, IState> {
 
     private onCancel() {
         this.setState({...this.state, open: false});
-        Blackout.disable();
     }
 
     private onDone() {
 
         this.setState({...this.state, open: false});
-        Blackout.disable();
 
         const onChange = this.props.onChange || NULL_FUNCTION;
 

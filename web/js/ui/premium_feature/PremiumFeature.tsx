@@ -16,18 +16,39 @@ export class PremiumFeature extends React.Component<IProps, IState> {
 
         const {required, feature} = this.props;
 
+        const PremiumFeatureWarningSM = () => {
+            return <div>
+                <UpgradeButton/>
+            </div>;
+
+        };
+
+        const PremiumFeatureWarningMD = () => {
+            return <div>
+
+                <div style={{filter: 'blur(8px)'}}>
+                    {this.props.children}
+                </div>
+
+                <div className="text-center mt-1">
+                    <UpgradeButton/>
+                </div>
+
+            </div>;
+
+        };
         const PremiumFeatureWarning = () => {
             const {size} = this.props;
 
             switch (size) {
                 case "xs":
-                    break;
+                    return <PremiumFeatureWarningSM/>;
                 case "sm":
-                    break;
+                    return <PremiumFeatureWarningSM/>;
                 case "md":
-                    break;
+                    return <PremiumFeatureWarningMD/>;
                 case "lg":
-                    break;
+                    return <PremiumFeatureWarningMD/>;
             }
 
         };
@@ -42,8 +63,25 @@ export class PremiumFeature extends React.Component<IProps, IState> {
                 return true;
             }
 
-            // return AccountPlans.hasLevel(required, account.plan);
-            return AccountPlans.hasLevel(required, 'free');
+            return AccountPlans.hasLevel(required, account.plan);
+            // return AccountPlans.hasLevel(required, 'free');
+
+        };
+
+        const UpgradeButton = () => {
+
+            const account = AccountProvider.get();
+
+            const color = AccountPlans.toColor(account!.plan);
+
+            return <Button size={this.props.size}
+                           color="light"
+                           className="border"
+                           onClick={() => this.onUpgrade()}>
+
+                <i className="fas fa-gem" style={{color}}/> Upgrade to {required} to unlock {feature}
+
+            </Button>
 
         };
 
@@ -51,18 +89,7 @@ export class PremiumFeature extends React.Component<IProps, IState> {
             return this.props.children;
         } else {
             return (
-
-                <div>
-                    <Button size='sm'
-                            color="light"
-                            className="border"
-                            onClick={() => this.onUpgrade()}>
-
-                        <i className="fas fa-gem"/> Upgrade to {required} to unlock {feature}
-
-                    </Button>
-                </div>
-
+                <PremiumFeatureWarning/>
             );
         }
 

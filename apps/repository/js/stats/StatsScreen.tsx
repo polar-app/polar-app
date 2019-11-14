@@ -11,6 +11,7 @@ import ReadingProgressTable from './ReadingProgressTable';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeature";
 
 const log = Logger.create();
 
@@ -109,7 +110,8 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
         return (
 
-            <FixedNav id="doc-repository" className="statistics-view">
+            <FixedNav id="doc-repository"
+                      className="statistics-view pb-2">
 
                 <header>
 
@@ -146,7 +148,9 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                         <div className="row mt-2">
 
                             <div className="col-lg-12">
-                                <ReadingProgressTable docInfos={docInfos}/>
+                                <PremiumFeature required='bronze' feature="statistics" size="lg">
+                                    <ReadingProgressTable docInfos={docInfos}/>
+                                </PremiumFeature>
                             </div>
 
                         </div>
@@ -163,7 +167,9 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                         <div className="row mt-2">
 
                             <div className="col-lg-12">
-                                <NewDocumentRateChart docInfos={docInfos}/>
+                                <PremiumFeature required='bronze' feature="statistics" size="lg">
+                                    <NewDocumentRateChart docInfos={docInfos}/>
+                                </PremiumFeature>
                             </div>
 
                         </div>
@@ -171,11 +177,15 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                         <div className="row mt-2 tag-statistics">
 
                             <div className="col-lg-8">
-                                <TopTagsChart docInfos={docInfos}/>
+                                <PremiumFeature required='bronze' feature="statistics" size="lg">
+                                    <TopTagsChart docInfos={docInfos}/>
+                                </PremiumFeature>
                             </div>
 
                             <div className="col-lg-4">
-                                <TopTagsTable docInfos={docInfos}/>
+                                <PremiumFeature required='bronze' feature="statistics" size="lg">
+                                    <TopTagsTable docInfos={docInfos}/>
+                                </PremiumFeature>
                             </div>
 
                         </div>

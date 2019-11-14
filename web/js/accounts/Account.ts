@@ -58,4 +58,17 @@ export class AccountPlans {
         return this.toInt(required) <= this.toInt(actual);
     }
 
+    public static toColor(plan: AccountPlan) {
+        switch (plan) {
+            case "free":
+                return "";
+            case "bronze":
+                return "#cc6633";
+            case "silver":
+                return "#C0C0C0";
+            case "gold":
+                return "#D4AF37";
+        }
+    }
+
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Blackout} from "../blackout/Blackout";
 
 export class BlackoutBox extends React.Component<IProps, IState> {
 
@@ -10,22 +11,16 @@ export class BlackoutBox extends React.Component<IProps, IState> {
 
     }
 
+    public componentWillMount(): void {
+        Blackout.enable();
+    }
+
+    public componentWillUnmount(): void {
+        Blackout.disable();
+    }
+
     public render() {
-        return <div className="blackout-box"
-                    style={{
-                        height: '100%',
-                        width: '100%',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        backgroundColor: 'rgba(0,0,0,0.6)',
-                        zIndex: 999
-                    }}>
-
-            {this.props.children}
-
-        </div>;
-
+        return this.props.children;
     }
 
 }
