@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
+import {DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem} from 'reactstrap';
 import {LinkDropdownItem} from './LinkDropdownItem';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {Platforms} from '../../../../web/js/util/Platforms';
 
 export class LinkDropdown extends React.PureComponent<IProps, IState> {

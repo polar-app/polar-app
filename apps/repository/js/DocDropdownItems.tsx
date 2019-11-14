@@ -5,7 +5,7 @@ import {Directories} from '../../../web/js/datastore/Directories';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {Clipboards} from '../../../web/js/util/system/clipboard/Clipboards';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {DropdownItem} from 'reactstrap';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
