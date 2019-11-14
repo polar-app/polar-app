@@ -24,7 +24,7 @@ export class AccountDropdown extends React.PureComponent<IProps, IState> {
                                       size="md">
 
                     <DropdownToggle color="primary" caret>
-                        <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}/>
+                        <i className="fas fa-user" style={{marginRight: '5px'}}/>
 
                         Cloud Sync
                     </DropdownToggle>

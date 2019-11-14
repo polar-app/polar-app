@@ -30,8 +30,7 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
                         onClick={() => NULL_FUNCTION}
                         style={{whiteSpace: 'nowrap'}}
                         className="header-filter-clickable pl-2 pr-2 border">
-
-                    <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}/>
+                    <i className="fas fa-user" style={{marginRight: '5px'}}/>
 
                     {/*<span className="d-none-mobile">*/}
                     {/*    {AppRuntime.isBrowser() ? 'Account' : 'Cloud Sync'}*/}
