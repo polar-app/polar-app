@@ -1,10 +1,7 @@
 import * as React from 'react';
 import {RepoDocInfo} from './RepoDocInfo';
-import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {DocDropdownItems} from './DocDropdownItems';
-import {UncontrolledDropdown} from "reactstrap";
 
 export class DocDropdown extends React.Component<IProps, IState> {
 

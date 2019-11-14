@@ -1,9 +1,7 @@
 import * as React from 'react';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {LinkDropdownItem} from './LinkDropdownItem';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
-import {UncontrolledDropdown} from 'reactstrap';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import {Platforms} from '../../../../web/js/util/Platforms';
 

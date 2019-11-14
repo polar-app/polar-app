@@ -1,7 +1,5 @@
 import * as React from 'react';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import {UncontrolledDropdown} from 'reactstrap';
+import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {SettingsDropdownItem} from './SettingsDropdownItem';
 import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {SettingsFeatureToggleDropdown} from "./SettingsFeatureToggleDropdown";
