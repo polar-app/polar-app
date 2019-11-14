@@ -6,6 +6,7 @@ import {UserIDStr} from './Profiles';
 import {IDUser} from '../../util/IDUsers';
 import {Collections} from './Collections';
 import FieldValue = admin.firestore.FieldValue;
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 
 
 export class UserGroups {
@@ -105,19 +106,19 @@ interface UserGroupInit {
      */
     readonly uid: UserIDStr;
 
-    readonly groups: ReadonlyArray<GroupIDStr>;
+    readonly groups: FirestoreTypedArray<GroupIDStr>;
 
-    readonly invitations: ReadonlyArray<GroupIDStr>;
+    readonly invitations: FirestoreTypedArray<GroupIDStr>;
 
     /**
      * The groups in which the user is an admin.
      */
-    readonly admin: ReadonlyArray<GroupIDStr>;
+    readonly admin: FirestoreTypedArray<GroupIDStr>;
 
     /**
      * The groups in which the user is a moderator.
      */
-    readonly moderator: ReadonlyArray<GroupIDStr>;
+    readonly moderator: FirestoreTypedArray<GroupIDStr>;
 
 }
 

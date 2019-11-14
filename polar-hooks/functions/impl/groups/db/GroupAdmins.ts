@@ -3,6 +3,7 @@ import {WriteBatch} from "@google-cloud/firestore";
 import {Firestore} from '../../util/Firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {UserIDStr} from './Profiles';
+import {FirestoreArray, FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 
 export class GroupAdmins {
 
@@ -45,8 +46,8 @@ export class GroupAdmins {
 }
 
 export interface GroupAdminInit {
-    readonly admins: ReadonlyArray<UserIDStr>;
-    readonly moderators: ReadonlyArray<UserIDStr>;
+    readonly admins: FirestoreTypedArray<UserIDStr>;
+    readonly moderators: FirestoreTypedArray<UserIDStr>;
 }
 
 export interface GroupAdmin extends GroupAdminInit {

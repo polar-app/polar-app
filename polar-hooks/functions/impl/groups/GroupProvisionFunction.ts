@@ -14,6 +14,7 @@ import {UserRefs} from './db/UserRefs';
 import {GroupMembers} from "./db/GroupMembers";
 import {LinksValidator} from "./rpc/LinksValidator";
 import {TextSerializer} from "polar-shared/src/html5/TextSerializer";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class GroupProvisionFunctions {
 
@@ -51,8 +52,8 @@ export class GroupProvisionFunctions {
             visibility: request.visibility,
             description: TextSerializer.serialize(request.description),
             langs: request.langs,
-            links: LinksValidator.filter(request.links),
-            tags: TagsValidator.validate(request.tags)
+            links: LinksValidator.filter(Arrays.toArray(request.links)),
+            tags: TagsValidator.validate(Arrays.toArray(request.tags))
         };
 
         const group = await Groups.getOrCreate(batch, groupID, groupInit);

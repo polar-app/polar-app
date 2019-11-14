@@ -10,6 +10,7 @@ import {Image} from './db/Images';
 import UserRecord = admin.auth.UserRecord;
 import {ProfileIDStr} from './db/Profiles';
 import {UserIDStr} from './db/Profiles';
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class ProfileUpdates {
 
@@ -20,7 +21,7 @@ export class ProfileUpdates {
 
     public static async doExec(uid: UserIDStr, user: UserRecord, request: ProfileUpdateRequest): Promise<ProfileUpdateResponse> {
 
-        TagsValidator.validate(request.tags);
+        TagsValidator.validate(Arrays.toArray(request.tags));
 
         const firestore = Firestore.getInstance();
 

@@ -7,7 +7,7 @@ import {UserGroups} from '../groups/db/UserGroups';
 import {IDUser} from '../util/IDUsers';
 import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {GroupIDStr} from '../groups/db/Groups';
-import {Arrays} from "polar-shared/src/util/Arrays";
+import {Arrays, ToArrayLike} from "polar-shared/src/util/Arrays";
 
 /**
  * Code for working with datastores.
@@ -48,10 +48,10 @@ export class Datastores {
 
         const userGroups = await UserGroups.get(uid);
 
-        function hasGroupMembership(permittedGroups?: ReadonlyArray<GroupIDStr>,
-                                    membership?: ReadonlyArray<GroupIDStr>) {
+        function hasGroupMembership(permittedGroups?: ToArrayLike<GroupIDStr>,
+                                    membership?: ToArrayLike<GroupIDStr>) {
 
-            return Arrays.hasAny(permittedGroups || [], membership || []);
+            return Arrays.hasAny(Arrays.toArray(permittedGroups), Arrays.toArray(membership));
 
         }
 

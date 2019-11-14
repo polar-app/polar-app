@@ -15,6 +15,7 @@ import UserRecord = admin.auth.UserRecord;
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 import {Clause, Collections} from "./Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 
 const HASHCODE_LEN = 20;
 
@@ -158,7 +159,7 @@ export class Groups {
 
         const userGroups = await UserGroups.get(uid);
 
-        if (userGroups && Arrays.hasAny([groupID], userGroups.groups)) {
+        if (userGroups && Arrays.hasAny([groupID], Arrays.toArray(userGroups.groups))) {
             return group;
         }
 
@@ -200,7 +201,7 @@ export class Groups {
             throw new Error("Group with ID does not exist: " + groupID);
         }
 
-        if (groupAdmin.admins.includes(user.uid)) {
+        if (Arrays.toArray(groupAdmin.admins).includes(user.uid)) {
             return;
         }
 
@@ -244,7 +245,7 @@ export interface GroupInit {
      * group will have a primary language but if it's a language learning group
      * or a multi-lingual group it might have multiple languages.
      */
-    readonly langs?: ReadonlyArray<Lang>;
+    readonly langs?: FirestoreTypedArray<Lang>;
 
     /**
      * Must set the group visibility here so that we inherit the right value.
@@ -256,9 +257,9 @@ export interface GroupInit {
      */
     readonly description?: PlainTextStr;
 
-    readonly links?: ReadonlyArray<URLStr | ExternalLink>;
+    readonly links?: FirestoreTypedArray<URLStr | ExternalLink>;
 
-    readonly tags?: ReadonlyArray<TagStr>;
+    readonly tags?: FirestoreTypedArray<TagStr>;
 
 }
 

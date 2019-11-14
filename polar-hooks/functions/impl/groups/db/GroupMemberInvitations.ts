@@ -13,7 +13,7 @@ import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/I
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserGroups} from './UserGroups';
 import UserRecord = admin.auth.UserRecord;
-import {asArray} from "polar-shared/src/util/Arrays";
+import {Arrays, asArray} from "polar-shared/src/util/Arrays";
 
 export class GroupMemberInvitations {
 
@@ -92,7 +92,7 @@ export class GroupMemberInvitations {
 
         if (userGroups) {
 
-            if (asArray(userGroups.groups).includes(groupID)) {
+            if (Arrays.toArray(userGroups.groups).includes(groupID)) {
                 return {group, membership: 'member'};
             }
 
@@ -140,6 +140,7 @@ export interface GroupMemberInvitationInit {
     /**
      * The actual DocID we're working with.
      */
+    // TODO migrate to FirestoreTypedArray
     readonly docs: ReadonlyArray<DocRef>;
 
 }

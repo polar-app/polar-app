@@ -9,6 +9,7 @@ import {Collections} from './Collections';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ProfileOwners} from "./ProfileOwners";
 import UserRecord = admin.auth.UserRecord;
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 
 /**
  * Metadata index about a profile to allow anyone to read a profile by profileID
@@ -102,9 +103,9 @@ export interface ProfileBase {
     /**
      * Allow the user to pick at most 5 tags for their profile.
      */
-    readonly tags?: ReadonlyArray<TagStr>;
+    readonly tags?: FirestoreTypedArray<TagStr>;
 
-    readonly links?: ReadonlyArray<string>;
+    readonly links?: FirestoreTypedArray<string>;
 
     /**
      * The physical location for the user.

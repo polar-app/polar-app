@@ -13,6 +13,8 @@ import {ProfileOwners} from './ProfileOwners';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import * as admin from 'firebase-admin';
 import UserRecord = admin.auth.UserRecord;
+import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 
 export class Contacts {
@@ -59,8 +61,8 @@ export class Contacts {
 
             if (existing) {
 
-                // TODO: can sue SetArrays
-                const rel = Sets.toArray(Sets.mergedArrays(existing.rel, contactInit.rel));
+                const rel = Sets.toArray(Sets.mergedArrays(Arrays.toArray(existing.rel),
+                                                           Arrays.toArray(contactInit.rel)));
 
                 return {
                     id: existing.id,
@@ -221,7 +223,7 @@ export interface Contact extends ContactInit {
 
 }
 
-export type ContactRelArray = ReadonlyArray<ContactRelType>;
+export type ContactRelArray = FirestoreTypedArray<ContactRelType>;
 
 /**
  * The relationship type:
