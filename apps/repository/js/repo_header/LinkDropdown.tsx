@@ -18,15 +18,15 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
         return (
 
             <UncontrolledDropdown className="ml-1"
-                                  size="sm"
+                                  size="md"
                                   hidden={this.props.hidden}
                                   id="links-dropdown">
 
-                <DropdownToggle className="text-muted"
+                <DropdownToggle className="text-muted border"
                                 color="light"
                                 caret>
 
-                    <i className="fas fa-link" style={{fontSize: '17px'}}></i>
+                    <i className="fas fa-link" style={{fontSize: '17px'}}/>
 
                 </DropdownToggle>
 

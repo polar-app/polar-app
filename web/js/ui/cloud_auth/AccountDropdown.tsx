@@ -21,10 +21,10 @@ export class AccountDropdown extends React.PureComponent<IProps, IState> {
 
                 <UncontrolledDropdown id="cloud-sync-dropdown"
                                       direction="down"
-                                      size="sm">
+                                      size="md">
 
                     <DropdownToggle color="primary" caret>
-                        <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
+                        <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}/>
 
                         Cloud Sync
                     </DropdownToggle>
@@ -38,10 +38,10 @@ export class AccountDropdown extends React.PureComponent<IProps, IState> {
                                                 cloud sync.`}>
 
                             <DropdownItem id="cloud-sync-invite-users"
-                                          size="sm"
+                                          size="md"
                                           onClick={() => this.props.onInvite()}>
 
-                                <i className="fas fa-user-plus mr-1"></i>
+                                <i className="fas fa-user-plus mr-1"/>
 
                                 Invite Users
 
@@ -58,11 +58,11 @@ export class AccountDropdown extends React.PureComponent<IProps, IState> {
                                                 between your devices.`}>
 
                             <DropdownItem id="cloud-sync-logout"
-                                          size="sm"
+                                          size="md"
                                           onClick={() => this.props.onLogout()}
                                           className="text-danger">
 
-                                <i className="fas fa-sign-out-alt mr-1"></i>
+                                <i className="fas fa-sign-out-alt mr-1"/>
 
                                 Logout
 

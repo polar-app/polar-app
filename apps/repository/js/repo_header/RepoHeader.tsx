@@ -14,6 +14,7 @@ import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 import {SplitBarLeft} from '../SplitBarLeft';
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {RepoNavbar} from "../RepoNavbar";
+import {UpgradeAccountButton} from "./UpgradeAccountButton";
 
 const log = Logger.create();
 
@@ -70,6 +71,8 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 
                         <div className="ml-auto mt-auto mb-auto"
                              style={{display: 'flex'}}>
+
+                            <UpgradeAccountButton/>
 
                             <ChromeExtensionInstallButton/>
 

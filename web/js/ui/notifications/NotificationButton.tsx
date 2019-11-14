@@ -71,7 +71,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
 
                 <Button color={color}
                         id="notification-button"
-                        size="sm"
+                        size="md"
                         onClick={() => this.toggle(true)}
                         // style={{fontSize: '15px'}}
                         style={{whiteSpace: 'nowrap'}}

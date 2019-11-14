@@ -36,7 +36,7 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
                         onClick={() => this.onClick()}
                         color="light"
                         className="border"
-                        size="sm">
+                        size="md">
 
                     <div style={{display: 'flex'}}>
 

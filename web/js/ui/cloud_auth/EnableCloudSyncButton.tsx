@@ -33,7 +33,7 @@ export class EnableCloudSyncButton extends React.PureComponent<IProps, IState> {
 
                     <Button id="enable-cloud-sync"
                             color="primary"
-                            size="sm"
+                            size="md"
                             onClick={() => this.props.onClick()}>
 
                         <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>

@@ -18,10 +18,10 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 
             <UncontrolledDropdown className="ml-1"
                                   hidden={this.props.hidden}
-                                  size="sm"
+                                  size="md"
                                   id="settings-dropdown">
 
-                <DropdownToggle className="text-muted"
+                <DropdownToggle className="text-muted border"
                                 color="light"
                                 caret>
 

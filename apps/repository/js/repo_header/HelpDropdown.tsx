@@ -23,10 +23,10 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
         return (
             <UncontrolledDropdown className="ml-1"
-                                  size="sm"
+                                  size="md"
                                   id="help-dropdown">
 
-                <DropdownToggle className="text-muted"
+                <DropdownToggle className="text-muted border"
                                 color="light"
                                 caret>
 

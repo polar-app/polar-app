@@ -26,10 +26,10 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
 
                 <Button color="light"
                         id="account-control-button"
-                        size="sm"
+                        size="md"
                         onClick={() => NULL_FUNCTION}
                         style={{whiteSpace: 'nowrap'}}
-                        className="header-filter-clickable p-1 pl-2 pr-2 border">
+                        className="header-filter-clickable pl-2 pr-2 border">
 
                     <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}/>
 
