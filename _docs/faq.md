@@ -105,7 +105,7 @@ but just issue warnings that these tags aren't supported on all platforms.
 
 # Do you have any plans to support ePub format?
 
-Yes.  But not in the short term.  Check out our notes on [ePub](EPUB_SUPPORT.md).
+Yes.  But not in the short term.  Check out our notes on [EPUB](EPUB_SUPPORT.md).
 
 # How do I build and run from source?
 
