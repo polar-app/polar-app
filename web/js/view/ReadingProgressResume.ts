@@ -6,6 +6,7 @@ import {Rects} from '../Rects';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export class ReadingProgressResume {
 
@@ -49,13 +50,12 @@ export class ReadingProgressResume {
 
             } else {
 
+                // TODO: should be sorted by time and not by position.
                 const pagemarkElements
-                    = Array.from(pageElement.querySelectorAll(".pagemark"));
+                    = Array.from(pageElement.querySelectorAll(".pagemark"))
+                            .sort((a, b) => a.getBoundingClientRect().bottom - b.getBoundingClientRect().bottom);
 
-                // TODO: should be by time and not by position.
-                const pagemarkElement =
-                    pagemarkElements.sort((a, b) => a.getBoundingClientRect().bottom - b.getBoundingClientRect().bottom)
-                        .reduce(Reducers.LAST);
+                const pagemarkElement = Arrays.last(pagemarkElements);
 
                 if (pagemarkElement) {
 
