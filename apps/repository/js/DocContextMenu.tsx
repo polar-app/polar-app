@@ -13,7 +13,7 @@ let sequence: number = 0;
 
 export class DocContextMenu extends React.PureComponent<DocContextMenuProps> {
 
-    private contextMenuHandlers: ContextMenuHandlers;
+    // private contextMenuHandlers: ContextMenuHandlers;
 
     private id: string;
 
@@ -22,7 +22,7 @@ export class DocContextMenu extends React.PureComponent<DocContextMenuProps> {
 
         this.id = 'doc-context-menu2-' + sequence++;
 
-        this.contextMenuHandlers = prepareContextMenuHandlers({id: this.id});
+        // this.contextMenuHandlers = prepareContextMenuHandlers({id: this.id});
 
     }
 
@@ -32,24 +32,28 @@ export class DocContextMenu extends React.PureComponent<DocContextMenuProps> {
 
             <div>
 
-                <div {...this.contextMenuHandlers}>
+                {/*<div {...this.contextMenuHandlers}>*/}
+                {/*    {this.props.children}*/}
+                {/*</div>*/}
+
+                <div>
                     {this.props.children}
                 </div>
 
-                <ContextMenuWrapper id={this.id}>
+                {/*<ContextMenuWrapper id={this.id}>*/}
 
-                    <div className="border shadow rounded pt-2 pb-2"
-                         style={{backgroundColor: 'var(--white)'}}>
+                {/*    <div className="border shadow rounded pt-2 pb-2"*/}
+                {/*         style={{backgroundColor: 'var(--white)'}}>*/}
 
-                        <DocDropdownItems toggle={false}
-                                          getSelected={this.props.getSelected}
-                                          onDelete={this.props.onDelete}
-                                          onSetTitle={this.props.onSetTitle}
-                                          onDocumentLoadRequested={this.props.onDocumentLoadRequested}/>
+                {/*        <DocDropdownItems toggle={false}*/}
+                {/*                          getSelected={this.props.getSelected}*/}
+                {/*                          onDelete={this.props.onDelete}*/}
+                {/*                          onSetTitle={this.props.onSetTitle}*/}
+                {/*                          onDocumentLoadRequested={this.props.onDocumentLoadRequested}/>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                </ContextMenuWrapper>
+                {/*</ContextMenuWrapper>*/}
 
             </div>
 

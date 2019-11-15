@@ -1,4 +1,7 @@
 
+- The document repository view is now much faster and context menus no longer have a 'gap'
+  which wouldn't trigger the menu. 
+
 - bronze now officially required for reading stats and recommended tags
 
 - reworked 

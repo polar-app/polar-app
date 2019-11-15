@@ -25,6 +25,9 @@ import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {ContextMenuHandlers, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
+import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
+import {DocDropdownItems} from "../DocDropdownItems";
 
 const log = Logger.create();
 
@@ -62,9 +65,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         this.createColumnsForDesktop = this.createColumnsForDesktop.bind(this);
 
 
-        this.createCellProps = this.createCellProps.bind(this);
-        this.createCellPropsForMobile = this.createCellPropsForMobile.bind(this);
-        this.createCellPropsForDesktop = this.createCellPropsForDesktop.bind(this);
+        this.createTDProps = this.createTDProps.bind(this);
+        this.createTDPropsForMobile = this.createTDPropsForMobile.bind(this);
+        this.createTDPropsForDesktop = this.createTDPropsForDesktop.bind(this);
 
     }
 
@@ -159,26 +162,22 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnTitle() {
+    private createColumnTitle(contextMenuHandlers: ContextMenuHandlers) {
 
         return {
             Header: 'Title',
             accessor: 'title',
             className: 'doc-table-col-title',
+            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 const id = 'doc-repo-row-title' + row.index;
-                const repoDocInfo: RepoDocInfo = row.original;
 
                 return (
 
                     <div id={id}>
 
-                        <DocContextMenu {...this.contextMenuProps}>
-
-                            <div>{row.value}</div>
-
-                        </DocContextMenu>
+                        <div>{row.value}</div>
 
                     </div>
 
@@ -189,7 +188,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnUpdated() {
+    private createColumnUpdated(contextMenuHandlers: ContextMenuHandlers) {
 
         return {
             Header: 'Updated',
@@ -200,17 +199,12 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 85,
             defaultSortDesc: true,
             className: 'doc-table-col-updated d-none-mobile',
+            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
-
-                const repoDocInfo: RepoDocInfo = row.original;
 
                 return (
 
-                    <DocContextMenu {...this.contextMenuProps}>
-
-                        <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
-
-                    </DocContextMenu>
+                    <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
 
                 );
             }
@@ -219,7 +213,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnAdded() {
+    private createColumnAdded(contextMenuHandlers: ContextMenuHandlers) {
 
         return {
             Header: 'Added',
@@ -229,17 +223,12 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 85,
             defaultSortDesc: true,
             className: 'doc-table-col-added d-none-mobile',
+            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
-
-                const repoDocInfo: RepoDocInfo = row.original;
 
                 return (
 
-                    <DocContextMenu {...this.contextMenuProps}>
-
-                        <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
-
-                    </DocContextMenu>
+                    <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
 
                 );
             }
@@ -247,7 +236,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnSite() {
+    private createColumnSite(contextMenuHandlers: ContextMenuHandlers) {
 
         return {
             Header: 'Site',
@@ -258,6 +247,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 200,
             sortable: false,
             className: "d-none-mobile",
+            getProps: () => contextMenuHandlers,
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                 const toSTR = (doc?: RepoDocInfo): string => {
@@ -296,7 +286,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnTags() {
+    private createColumnTags(contextMenuHandlers: ContextMenuHandlers) {
         return {
             id: 'tags',
             Header: 'Tags',
@@ -305,6 +295,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             accessor: '',
             show: this.props.columns.tags.selected,
             className: 'doc-table-col-tags d-none-mobile',
+            getProps: () => contextMenuHandlers,
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                 const toSTR = (obj: any): string => {
@@ -342,13 +333,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     .sort()
                     .join(", ");
 
-                const repoDocInfo: RepoDocInfo = row.original;
-
                 return (
 
-                    <DocContextMenu {...this.contextMenuProps}>
-                        <div>{formatted}</div>
-                    </DocContextMenu>
+                    <div>{formatted}</div>
 
                 );
 
@@ -356,7 +343,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         };
     }
 
-    private createColumnProgress() {
+    private createColumnProgress(contextMenuHandlers: ContextMenuHandlers) {
 
         return {
             id: 'progress',
@@ -368,25 +355,20 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             defaultSortDesc: true,
             resizable: false,
             className: 'doc-table-col-progress d-none-mobile',
+            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 return (
-
-                    <DocContextMenu {...this.contextMenuProps}>
-
-                        <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
-                            width: '100%'
-                        }} />
-
-                    </DocContextMenu>
-
+                    <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
+                        width: '100%'
+                    }} />
                 );
             }
         };
 
     }
 
-    private createColumnAnnotations() {
+    private createColumnAnnotations(contextMenuHandlers: ContextMenuHandlers) {
 
         return {
             id: 'nrAnnotations',
@@ -398,6 +380,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             defaultSortDesc: true,
             resizable: false,
             className: "d-none-mobile",
+            getProps: () => contextMenuHandlers,
         };
 
     }
@@ -468,59 +451,59 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumns() {
+    private createColumns(contextMenuHandlers: ContextMenuHandlers) {
 
         if (Platforms.isMobile()) {
-            return this.createColumnsForTablet();
+            return this.createColumnsForTablet(contextMenuHandlers);
         } else {
-            return this.createColumnsForDesktop();
+            return this.createColumnsForDesktop(contextMenuHandlers);
         }
 
     }
 
-    private createColumnsForTablet() {
+    private createColumnsForTablet(contextMenuHandlers: ContextMenuHandlers) {
 
         return [
             this.createColumnCheckbox(),
-            this.createColumnTitle(),
+            this.createColumnTitle(contextMenuHandlers),
             // this.createColumnUpdated(),
             // this.createColumnAdded(),
             // this.createColumnSite(),
             // this.createColumnTags(),
             // this.createColumnAnnotations(),
-            this.createColumnProgress(),
+            this.createColumnProgress(contextMenuHandlers),
             // this.createColumnButtons()
         ];
 
     }
 
-    private createColumnsForDesktop() {
+    private createColumnsForDesktop(contextMenuHandlers: ContextMenuHandlers) {
 
         return [
             this.createColumnCheckbox(),
-            this.createColumnTitle(),
-            this.createColumnUpdated(),
-            this.createColumnAdded(),
-            this.createColumnSite(),
-            this.createColumnTags(),
-            this.createColumnAnnotations(),
-            this.createColumnProgress(),
+            this.createColumnTitle(contextMenuHandlers),
+            this.createColumnUpdated(contextMenuHandlers),
+            this.createColumnAdded(contextMenuHandlers),
+            this.createColumnSite(contextMenuHandlers),
+            this.createColumnTags(contextMenuHandlers),
+            this.createColumnAnnotations(contextMenuHandlers),
+            this.createColumnProgress(contextMenuHandlers),
             this.createColumnButtons()
         ];
 
     }
 
-    private createCellProps(rowInfo?: RowInfo, column?: Column) {
+    private createTDProps(rowInfo?: RowInfo, column?: Column) {
 
         if (Platforms.isMobile()) {
-            return this.createCellPropsForMobile(rowInfo, column);
+            return this.createTDPropsForMobile(rowInfo, column);
         } else {
-            return this.createCellPropsForDesktop(rowInfo, column);
+            return this.createTDPropsForDesktop(rowInfo, column);
        }
 
     }
 
-    private createCellPropsForMobile(rowInfo?: RowInfo, column?: Column) {
+    private createTDPropsForMobile(rowInfo?: RowInfo, column?: Column) {
 
         const DEFAULT_BEHAVIOR_COLUMNS = [
             'doc-checkbox'
@@ -561,7 +544,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createCellPropsForDesktop(rowInfo?: RowInfo, column?: Column) {
+    private createTDPropsForDesktop(rowInfo?: RowInfo, column?: Column) {
 
         const DEFAULT_BEHAVIOR_COLUMNS = [
             'tag-input',
@@ -625,6 +608,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
         const { data } = this.props;
 
+        const contextMenuID = 'doc-table-context-menu';
+        const contextMenuHandlers = prepareContextMenuHandlers({id: contextMenuID});
+
         return (
 
             <div id="doc-table"
@@ -633,10 +619,21 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 <AccountUpgradeBar/>
 
+                <ContextMenuWrapper id={contextMenuID}>
+
+                    <div className="border shadow rounded pt-2 pb-2"
+                         style={{backgroundColor: 'var(--white)'}}>
+
+                        <DocDropdownItems toggle={false} {...this.contextMenuProps}/>
+
+                    </div>
+
+                </ContextMenuWrapper>
+
                 <ReactTable
                     data={[...data]}
                     ref={(reactTable: Instance) => this.props.onReactTable(reactTable)}
-                    columns={this.createColumns()}
+                    columns={this.createColumns(contextMenuHandlers)}
                     defaultPageSize={50}
                     noDataText="No documents available."
                     className="-striped -highlight"
@@ -682,7 +679,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                         };
                     }}
                     getTdProps={(state: any, rowInfo?: RowInfo, column?: Column, instance?: any) => {
-                        return this.createCellProps(rowInfo, column);
+                        return this.createTDProps(rowInfo, column);
                     }}
 
                 />
