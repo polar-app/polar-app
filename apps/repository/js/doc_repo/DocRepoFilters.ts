@@ -14,7 +14,7 @@ import {Strings} from "polar-shared/src/util/Strings";
  */
 export class DocRepoFilters {
 
-    public readonly filters: Filters;
+    public readonly filters: MutableFilters;
 
     constructor(private onRefreshed: RefreshedCallback,
                 private repoDocInfosProvider: Provider<ReadonlyArray<RepoDocInfo>>) {
@@ -151,7 +151,7 @@ export class DocRepoFilters {
 
 }
 
-interface Filters {
+interface MutableFilters {
 
     /**
      * When true, only show flagged documents.
@@ -166,6 +166,10 @@ interface Filters {
     title: string;
 
     filteredTags: FilteredTags;
+
+}
+
+export interface Filters extends Readonly<MutableFilters> {
 
 }
 

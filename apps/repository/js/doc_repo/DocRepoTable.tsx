@@ -27,7 +27,8 @@ import {Platforms} from "../../../../web/js/util/Platforms";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {ContextMenuHandlers, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
-import {DocDropdownItems} from "../DocDropdownItems";
+import {DocDropdownItems, OnRemoveFromFolderCallback} from "../DocDropdownItems";
+import {Filters} from "./DocRepoFilters";
 
 const log = Logger.create();
 
@@ -47,7 +48,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             onSetTitle: this.props.onDocSetTitle,
             onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => {
                 this.onDocumentLoadRequested(repoDocInfo);
-            }
+            },
+            onRemoveFromFolder: this.props.onRemoveFromFolder
         };
 
         this.createColumnCheckbox = this.createColumnCheckbox.bind(this);
@@ -433,13 +435,13 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                         <DocButton>
 
-                            {/*FIXME: we need to have this select the current row as it's not selectable... */}
-
                             <DocDropdown id={'doc-dropdown-' + row.index}
+                                         filters={this.props.filters}
                                          getSelected={this.props.getSelected}
                                          onDelete={this.props.onDocDeleteRequested}
                                          onSetTitle={this.props.onDocSetTitle}
-                                         onDocumentLoadRequested={this.contextMenuProps.onDocumentLoadRequested}/>
+                                         onDocumentLoadRequested={this.contextMenuProps.onDocumentLoadRequested}
+                                         onRemoveFromFolder={this.props.onRemoveFromFolder}/>
 
                         </DocButton>
                     </div>
@@ -624,7 +626,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     <div className="border shadow rounded pt-2 pb-2"
                          style={{backgroundColor: 'var(--white)'}}>
 
-                        <DocDropdownItems toggle={false} {...this.contextMenuProps}/>
+                        <DocDropdownItems toggle={false}
+                                          filters={this.props.filters}
+                                          {...this.contextMenuProps}/>
 
                     </div>
 
@@ -783,6 +787,9 @@ interface IProps {
     readonly onDragStart?: (event: DragEvent) => void;
     readonly onDragEnd?: (event: DragEvent) => void;
     readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
+    readonly filters: Filters;
+    readonly onRemoveFromFolder: OnRemoveFromFolderCallback;
+
 }
 
 interface IState {

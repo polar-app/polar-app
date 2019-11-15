@@ -41,6 +41,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
+import {OnRemoveFromFolderCallback} from "../DocDropdownItems";
 
 const log = Logger.create();
 
@@ -90,6 +91,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         this.onDragStart = this.onDragStart.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
+
+        this.onRemoveFromFolder = this.onRemoveFromFolder.bind(this);
 
         this.state = {
             data: [],
@@ -190,6 +193,19 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             const effectiveTags = Tags.union(existingTags, tags || []);
 
             this.onDocTagged(repoDocInfo, effectiveTags)
+                .catch(err => log.error(err));
+
+        }
+
+    }
+
+    private onRemoveFromFolder(folder: Tag, repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+
+        for (const repoDocInfo of repoDocInfos) {
+            const existingTags = Object.values(repoDocInfo.tags || {});
+            const newTags = Tags.difference(existingTags, [folder]);
+
+            this.onDocTagged(repoDocInfo, newTags)
                 .catch(err => log.error(err));
 
         }
@@ -458,7 +474,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   onReactTable={reactTable => this.reactTable = reactTable}
                                                   onDragStart={event => this.onDragStart(event)}
                                                   onDragEnd={() => this.onDragEnd()}
-                                                  getSelected={() => this.getSelected()}/>
+                                                  filters={this.docRepoFilters.filters}
+                                                  getSelected={() => this.getSelected()}
+                                                  onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromFolder(folder, repoDocInfos)}/>
 
                                 }
                                 right={

@@ -1,23 +1,17 @@
 import * as React from 'react';
-import {prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
-import {ContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
-import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
-import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DocDropdownItems} from './DocDropdownItems';
+import {OnRemoveFromFolderCallback} from './DocDropdownItems';
 import {RepoDocInfo} from './RepoDocInfo';
-import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import deepEqual = require('deep-equal');
+import {Filters} from "./doc_repo/DocRepoFilters";
 
 let sequence: number = 0;
 
-export class DocContextMenu extends React.PureComponent<DocContextMenuProps> {
+export class DocContextMenu extends React.PureComponent<IProps> {
 
     // private contextMenuHandlers: ContextMenuHandlers;
 
     private id: string;
 
-    constructor(props: DocContextMenuProps, context: any) {
+    constructor(props: IProps, context: any) {
         super(props, context);
 
         this.id = 'doc-context-menu2-' + sequence++;
@@ -63,10 +57,14 @@ export class DocContextMenu extends React.PureComponent<DocContextMenuProps> {
 
 }
 
-
 export interface DocContextMenuProps {
     readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
     readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => void;
+    readonly onRemoveFromFolder: OnRemoveFromFolderCallback;
+}
+
+export interface IProps extends DocContextMenuProps {
+    readonly filters: Filters;
 }

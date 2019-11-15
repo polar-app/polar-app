@@ -11,6 +11,8 @@ import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {FontAwesomeIcon} from "../../../web/js/ui/fontawesome/FontAwesomeIcon";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
+import {Filters} from "./doc_repo/DocRepoFilters";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 export class DocDropdownItems extends React.Component<IProps, IState> {
 
@@ -38,8 +40,19 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
         // true if multiple items are selected since some actions can't work
         // on multiple items.
         const isMulti = selected.length > 1;
-
         const repoDocInfo = selected[0];
+
+        const computeFolder = () => {
+            const tags = this.props.filters.filteredTags.get();
+            if (tags.length === 1 && tags[0].id.startsWith('/')) {
+                return tags[0];
+            }
+
+            return undefined;
+
+        };
+
+        const folder = computeFolder();
 
         return (
 
@@ -60,6 +73,13 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 
                     <FontAwesomeIcon name="fas fa-pencil-alt"/>
                     Rename
+                </DropdownItem>
+
+                <DropdownItem toggle={this.props.toggle}
+                              hidden={! folder}
+                              onClick={() => this.props.onRemoveFromFolder(folder!, selected)}>
+                    <FontAwesomeIcon name="fas fa-folder-minus"/>
+                    Remove from Folder
                 </DropdownItem>
 
                 <DropdownItem toggle={this.props.toggle}
@@ -170,12 +190,18 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 
 }
 
+export interface OnRemoveFromFolderCallback {
+    (folder: Tag, repoDocInfos: ReadonlyArray<RepoDocInfo>): void;
+}
+
 interface IProps {
+    readonly filters: Filters;
     readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
     readonly toggle: boolean;
     readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => void;
+    readonly onRemoveFromFolder: OnRemoveFromFolderCallback;
 }
 
 interface IState {
