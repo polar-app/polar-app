@@ -3,18 +3,15 @@ import CreatableSelect from 'react-select/lib/Creatable';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import {Blackout} from '../../../../web/js/ui/blackout/Blackout';
 import {TagOption} from '../TagOption';
-import {TagsDB} from '../TagsDB';
 import {TagOptions} from '../TagOptions';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {Tag} from 'polar-shared/src/tags/Tags';
-
-// import {SyntheticKeyboardEvent} from 'react-dom';
 
 export class TagButton extends React.Component<IProps, IState> {
 
     private id: string;
 
-    private selectedTags?: Tag[];
+    private selectedTags?: ReadonlyArray<Tag>;
 
     constructor(props: IProps, context: any) {
         super(props, context);

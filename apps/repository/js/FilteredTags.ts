@@ -5,13 +5,13 @@ import {Tag} from 'polar-shared/src/tags/Tags';
  */
 export class FilteredTags {
 
-    private tags: Tag[] = [];
+    private tags: ReadonlyArray<Tag> = [];
 
     public get(): ReadonlyArray<Tag> {
         return this.tags;
     }
 
-    public set(tags: Tag[]) {
+    public set(tags: ReadonlyArray<Tag>) {
         this.tags = tags;
     }
 

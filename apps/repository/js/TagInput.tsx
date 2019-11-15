@@ -267,7 +267,7 @@ export class TagInput extends React.Component<IProps, IState> {
 
     }
 
-    private handleChange(selectedOptions: TagOption[]) {
+    private handleChange(selectedOptions: ReadonlyArray<TagOption>) {
 
         const tags = TagOptions.toTags(selectedOptions);
 

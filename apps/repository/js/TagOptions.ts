@@ -3,7 +3,9 @@ import {Tag} from 'polar-shared/src/tags/Tags';
 
 export class TagOptions {
 
-    public static toTags(tagOptions: TagOption[]): Tag[] {
+    public static toTags(tagOptions: ReadonlyArray<TagOption>): ReadonlyArray<Tag> {
+
+        tagOptions = tagOptions || [];
 
         return tagOptions.map((current): Tag => {
 
@@ -16,7 +18,9 @@ export class TagOptions {
 
     }
 
-    public static fromTags(tags: ReadonlyArray<Tag>, noSort: boolean = false): TagOption[] {
+    public static fromTags(tags: ReadonlyArray<Tag>, noSort: boolean = false): ReadonlyArray<TagOption> {
+
+        tags = tags || [];
 
         const tagOptions = tags.map(current => {
             return {
