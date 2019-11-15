@@ -249,10 +249,22 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             selectedIdx = parseInt(selectedIdx);
         }
 
-        if (this.state.selected.includes(selectedIdx)) {
-            // we're done because it's already selected.
-            return;
-        }
+        // TODO: enumerate these out into states...
+
+        // click:
+        //   - single click selects one
+        //   - shift plus click selects range
+        //
+        // context-menu:
+        //   -
+        //
+
+        // if (this.state.selected.includes(selectedIdx)) {
+        //     // TODO: this isn't right because single clicking doesn't work to reset to a single entry.
+        //
+        //     // we're done because it's already selected.
+        //     return;
+        // }
 
         let selected: number[] = [selectedIdx];
 
