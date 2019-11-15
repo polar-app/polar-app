@@ -8,6 +8,7 @@ import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {Platforms} from "../../../../web/js/util/Platforms";
+import {Devices} from "../../../../web/js/util/Devices";
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -18,6 +19,8 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
     public render() {
 
         const updatesEnabled = AppRuntime.isElectron() && AppUpdates.platformSupportsUpdates();
+
+        const isPhone = Devices.isPhone();
 
         return (
             <UncontrolledDropdown className="ml-1"
@@ -90,9 +93,10 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                          hidden={!updatesEnabled}
                                          onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
 
-                    <DropdownItem divider/>
+                    <DropdownItem divider hidden={isPhone}/>
 
                     <TrackedDropdownItem id="sidebar-item-logs"
+                                         hidden={isPhone}
                                          title="Logs"
                                          tooltip="Show logs on internal activity during background operations like cloud activity and sync."
                                          icon="fas fa-info-circle"
