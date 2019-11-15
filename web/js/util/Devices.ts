@@ -1,5 +1,4 @@
 import {Platforms} from "./Platforms";
-import DesktopCapturer = Electron.DesktopCapturer;
 
 export class Devices {
 
