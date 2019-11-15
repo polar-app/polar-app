@@ -158,7 +158,6 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly id: string;
     readonly repoDocInfo: RepoDocInfo;
     readonly toggle: boolean;
     readonly onDelete: (repoDocInfo: RepoDocInfo) => void;

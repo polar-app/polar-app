@@ -62,7 +62,6 @@ export class DocContextMenu extends React.Component<IProps, IState> {
 
 
 interface IProps {
-    readonly id: string;
     readonly repoDocInfo: RepoDocInfo;
     readonly onDelete: (repoDocInfo: RepoDocInfo) => void;
     readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;

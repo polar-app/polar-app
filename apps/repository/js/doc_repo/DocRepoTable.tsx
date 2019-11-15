@@ -175,7 +175,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     <div id={id}>
 
                         <DocContextMenu {...this.contextMenuProps}
-                                        id={'context-menu-' + row.index}
                                         repoDocInfo={repoDocInfo}>
 
                             <div>{row.value}</div>
@@ -209,7 +208,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 return (
 
                     <DocContextMenu {...this.contextMenuProps}
-                                    id={'context-menu-' + row.index}
                                     repoDocInfo={repoDocInfo}>
 
                         <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
@@ -240,7 +238,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 return (
 
                     <DocContextMenu {...this.contextMenuProps}
-                                    id={'context-menu-' + row.index}
                                     repoDocInfo={repoDocInfo}>
 
                         <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
@@ -353,7 +350,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 return (
 
                     <DocContextMenu {...this.contextMenuProps}
-                                    id={'context-menu-' + row.index}
                                     repoDocInfo={repoDocInfo}>
                         <div>{formatted}</div>
                     </DocContextMenu>
@@ -383,7 +379,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 return (
 
                     <DocContextMenu {...this.contextMenuProps}
-                                    id={'context-menu-' + row.index}
                                     repoDocInfo={repoDocInfo}>
 
                         <progress className="mt-auto mb-auto" max="100" value={ row.value } style={{
