@@ -22,6 +22,9 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Button} from "reactstrap";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
+import {ContextMenuWrapper} from "@burtonator/react-context-menu-wrapper";
+import {DocDropdownItems} from "../../../apps/repository/js/DocDropdownItems";
+import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
 
 const styles = {
     swatch: {
@@ -110,10 +113,10 @@ export class App<P> extends React.Component<{}, IAppState> {
         //                  subtitle: 'Some really bad stuff is happening right now which you should probably look into.',
         //                  onConfirm: NULL_FUNCTION,
         //                  type: 'danger'});
-
-        Dialogs.prompt({title: 'New folder: ',
-                        onCancel: NULL_FUNCTION,
-                        onDone: NULL_FUNCTION});
+        //
+        // Dialogs.prompt({title: 'New folder: ',
+        //                 onCancel: NULL_FUNCTION,
+        //                 onDone: NULL_FUNCTION});
 
         // PreviewWarnings.createDialog(NULL_FUNCTION);
 
@@ -254,19 +257,26 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <FolderContextMenu toggle={false}
+                                   onCreateFolder={NULL_FUNCTION}>
+                    <div>
+                        Fake folder
+                    </div>
+                </FolderContextMenu>
+
                 {/*<AnnotationTypeSelector selected={[AnnotationType.FLASHCARD]} onSelected={selected => console.log('selected: ', selected)}/>*/}
 
                 {/*<ColorSelectorBox/>*/}
 
                 {/*<StartReviewButton onClick={NULL_FUNCTION}/>*/}
 
-                <div className="p-1">
+                {/*<div className="p-1">*/}
 
-                    <Button size='sm' color="light" className="border">
-                        <i className="fas fa-gem"/> Upgrade to bronze to unlock related tags
-                    </Button>
+                {/*    <Button size='sm' color="light" className="border">*/}
+                {/*        <i className="fas fa-gem"/> Upgrade to bronze to unlock related tags*/}
+                {/*    </Button>*/}
 
-                </div>
+                {/*</div>*/}
 
                 {/*<div style={{width: '500px', height: '700px', display: 'flex'}}*/}
                 {/*     className="border">*/}
