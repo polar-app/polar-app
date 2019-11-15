@@ -51,14 +51,16 @@ export class Prompt extends React.PureComponent<PromptProps, IState> {
 
             <DialogContainer open={true}>
 
-               <div className="p-2">
+               <div className="p-3">
 
                    <InputValidationMessage/>
 
                    <Label className="font-weight-bold"
-                          for={id}>{this.props.title}</Label>
+                          for={id}>
+                       <h4>{this.props.title}</h4>
+                   </Label>
 
-                   <div className="mt-1 mb-2">
+                   <div className="mt-1 mb-3">
                        <Input type="text"
                               name={id}
                               id={id}
@@ -75,13 +77,13 @@ export class Prompt extends React.PureComponent<PromptProps, IState> {
 
                     <div className="text-right">
 
-                        <Button color="secondary"
-                                size="sm"
+                        <Button color="light"
+                                size="lg"
                                 className=""
                                 onClick={() => this.onCancel()}>Cancel</Button>
 
                         <Button color="primary"
-                                size="sm"
+                                size="lg"
                                 className="ml-1"
                                 onClick={() => this.onDone(this.value)}>Done</Button>
 

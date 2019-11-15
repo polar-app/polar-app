@@ -21,6 +21,7 @@ import {FlashcardCard} from "../../../apps/repository/js/reviewer/cards/Flashcar
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Button} from "reactstrap";
+import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 
 const styles = {
     swatch: {
@@ -108,11 +109,11 @@ export class App<P> extends React.Component<{}, IAppState> {
         // Dialogs.confirm({title: 'hello world',
         //                  subtitle: 'Some really bad stuff is happening right now which you should probably look into.',
         //                  onConfirm: NULL_FUNCTION,
-        //                  type: 'warning'});
+        //                  type: 'danger'});
 
-        // Dialogs.prompt({title: 'Give me something ',
-        //                 onCancel: NULL_FUNCTION,
-        //                 onDone: NULL_FUNCTION});
+        Dialogs.prompt({title: 'New folder: ',
+                        onCancel: NULL_FUNCTION,
+                        onDone: NULL_FUNCTION});
 
         // PreviewWarnings.createDialog(NULL_FUNCTION);
 

@@ -12,11 +12,9 @@ class Styles {
     };
 
     public static subtitle: React.CSSProperties = {
-        fontSize: "17px"
     };
 
     public static button: React.CSSProperties = {
-        fontSize: "14px",
         fontWeight: "bold"
     };
 
@@ -60,20 +58,20 @@ export class Confirm extends React.PureComponent<IProps, IState> {
 
                     </div>
 
-                    <div className="w-100 p-1 m-1 text-muted text-grey800 text-xl"
+                    <div className="w-100 p-1 m-1 text-grey900 text-xl"
                          style={Styles.subtitle}>
 
                         {this.props.subtitle}
 
                     </div>
 
-                    <div className="text-right m-1">
+                    <div className="text-right m-1 pb-1">
 
                         <NullCollapse open={! this.props.noCancel}>
 
                             <Button color="secondary"
                                     style={Styles.button}
-                                    size="sm"
+                                    size="lg"
                                     className="m-1"
                                     onClick={() => this.onCancel()}>Cancel</Button>
 
@@ -81,7 +79,7 @@ export class Confirm extends React.PureComponent<IProps, IState> {
 
                         <Button color={opts.buttonColor}
                                 style={Styles.button}
-                                size="sm"
+                                size="lg"
                                 className="m-1"
                                 onClick={() => this.onConfirm()}>Confirm</Button>
 
