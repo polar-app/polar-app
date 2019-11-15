@@ -58,6 +58,7 @@ export class GroupDeleteButton extends React.Component<IProps, IState> {
             title: "Are you sure you want to delete this group?",
             subtitle: "Deleting is final and everyone will lose access to the annotations.  " +
                       "They will still have access to their own annotations and the original documents.",
+            type: 'danger',
             onConfirm: () => this.onDeleteConfirmed(group)
         });
 

@@ -242,10 +242,16 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     }
 
     public selectRow(selectedIdx: number,
-                     event: MouseEvent, checkbox: boolean = false) {
+                     event: MouseEvent,
+                     checkbox: boolean = false) {
 
         if (typeof selectedIdx === 'string') {
             selectedIdx = parseInt(selectedIdx);
+        }
+
+        if (this.state.selected.includes(selectedIdx)) {
+            // we're done because it's already selected.
+            return;
         }
 
         let selected: number[] = [selectedIdx];
@@ -500,6 +506,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             title: "Are you sure you want to delete these document(s)?",
             subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
             onCancel: NULL_FUNCTION,
+            type: 'danger',
             onConfirm: () => this.onDocDeleted(repoDocInfos),
         });
 

@@ -1,4 +1,6 @@
 
+- deleting multiple items via context menu now works.
+
 - The document repository view is now much faster and context menus no longer have a 'gap'
   which wouldn't trigger the menu. 
 

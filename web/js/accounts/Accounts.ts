@@ -124,6 +124,7 @@ export class Accounts {
                     Dialogs.confirm({
                         title: "Your plan has changed and we need to reload.",
                         subtitle: "This will just take a moment we promise.",
+                        type: 'warning',
                         onConfirm,
                         noCancel: true
                     });
