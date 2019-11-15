@@ -1,4 +1,9 @@
 
+- bronze now officially required for reading stats and recommended tags
+
+- reworked 
+
+- the context menus now have icons 
 
 - major refactor of how text selection works using the new modern text layer code in pdf.js which has 
   been a major complaint since 1.0.  Excited to finally have this fixed!

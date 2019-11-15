@@ -198,7 +198,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onMultiDeleted() {
         const repoDocInfos = this.getSelected();
-        this.onDocDeleteRequested(...repoDocInfos);
+        this.onDocDeleteRequested(repoDocInfos);
     }
 
     private clearSelected() {
@@ -439,7 +439,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   onSelected={selected => this.onSelected(selected)}
                                                   onReactTable={reactTable => this.reactTable = reactTable}
                                                   onDragStart={event => this.onDragStart(event)}
-                                                  onDragEnd={() => this.onDragEnd()}/>
+                                                  onDragEnd={() => this.onDragEnd()}
+                                                  getSelected={() => this.getSelected()}/>
 
                                 }
                                 right={
@@ -493,13 +494,13 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onDocDeleteRequested(...repoDocInfos: RepoDocInfo[]) {
+    private onDocDeleteRequested(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
 
         Dialogs.confirm({
             title: "Are you sure you want to delete these document(s)?",
             subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
             onCancel: NULL_FUNCTION,
-            onConfirm: () => this.onDocDeleted(...repoDocInfos),
+            onConfirm: () => this.onDocDeleted(repoDocInfos),
         });
 
     }
@@ -508,7 +509,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.setState({...this.state, docSidebarVisible});
     }
 
-    private onDocDeleted(...repoDocInfos: RepoDocInfo[]) {
+    private onDocDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
 
         const doDeletes = async () => {
 

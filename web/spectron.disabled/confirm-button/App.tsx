@@ -1,4 +1,4 @@
-import * as React from '@types/react';
+import * as React from 'react';
 import {ConfirmButton} from '../../js/ui/confirm/ConfirmButton';
 import {DocDropdown} from '../../../apps/repository/js/DocDropdown';
 import {ConfirmPopover} from '../../js/ui/confirm/ConfirmPopover';

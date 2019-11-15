@@ -27,7 +27,11 @@ export class DocDropdown extends React.Component<IProps, IState> {
                     </DropdownToggle>
 
                     <DropdownMenu className="shadow" right>
-                        <DocDropdownItems toggle={true} {...this.props}/>
+                        <DocDropdownItems toggle={true}
+                                          getSelected={this.props.getSelected}
+                                          onDelete={this.props.onDelete}
+                                          onSetTitle={this.props.onSetTitle}
+                                          onDocumentLoadRequested={this.props.onDocumentLoadRequested}/>
                     </DropdownMenu>
 
                 </UncontrolledDropdown>
@@ -41,8 +45,8 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly id: string;
-    readonly repoDocInfo: RepoDocInfo;
-    readonly onDelete: (repoDocInfo: RepoDocInfo) => void;
+    readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
+    readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => void;
 }

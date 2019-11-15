@@ -11,24 +11,19 @@ import deepEqual = require('deep-equal');
 
 let sequence: number = 0;
 
-export class DocContextMenu extends React.Component<IProps, IState> {
+export class DocContextMenu extends React.PureComponent<DocContextMenuProps> {
 
     private contextMenuHandlers: ContextMenuHandlers;
 
     private id: string;
 
-    constructor(props: IProps, context: any) {
+    constructor(props: DocContextMenuProps, context: any) {
         super(props, context);
 
         this.id = 'doc-context-menu2-' + sequence++;
 
         this.contextMenuHandlers = prepareContextMenuHandlers({id: this.id});
 
-    }
-
-    // TODO: this should go away in favor of simpler PureComponents.
-    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
-        return ! deepEqual(this.props.repoDocInfo, nextProps.repoDocInfo);
     }
 
     public render() {
@@ -46,7 +41,11 @@ export class DocContextMenu extends React.Component<IProps, IState> {
                     <div className="border shadow rounded pt-2 pb-2"
                          style={{backgroundColor: 'var(--white)'}}>
 
-                        <DocDropdownItems toggle={false} {...this.props}/>
+                        <DocDropdownItems toggle={false}
+                                          getSelected={this.props.getSelected}
+                                          onDelete={this.props.onDelete}
+                                          onSetTitle={this.props.onSetTitle}
+                                          onDocumentLoadRequested={this.props.onDocumentLoadRequested}/>
 
                     </div>
 
@@ -61,14 +60,9 @@ export class DocContextMenu extends React.Component<IProps, IState> {
 }
 
 
-interface IProps {
-    readonly repoDocInfo: RepoDocInfo;
-    readonly onDelete: (repoDocInfo: RepoDocInfo) => void;
+export interface DocContextMenuProps {
+    readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
+    readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly onDocumentLoadRequested: (repoDocInfo: RepoDocInfo) => void;
 }
-
-interface IState {
-}
-
-
