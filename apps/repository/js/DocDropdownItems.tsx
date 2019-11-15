@@ -9,6 +9,8 @@ import {DropdownItem} from 'reactstrap';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Dialogs} from '../../../web/js/ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
+import {FontAwesomeIcon} from "../../../web/js/ui/fontawesome/FontAwesomeIcon";
+import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 
 export class DocDropdownItems extends React.Component<IProps, IState> {
 
@@ -32,17 +34,24 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 
                 <DropdownItem toggle={this.props.toggle}
                               onClick={() => this.props.onDocumentLoadRequested(this.props.repoDocInfo)}>
+
+                    <FontAwesomeIcon name="fas fa-eye"/>
+
                     Open Document
                 </DropdownItem>
 
                 <DropdownItem toggle={this.props.toggle}
                               onClick={() => this.onSetTitleRequested()}>
-                    Set Title
+
+                    <FontAwesomeIcon name="fas fa-pencil-alt"/>
+                    Rename
                 </DropdownItem>
 
                 <DropdownItem toggle={this.props.toggle}
                               disabled={! this.props.repoDocInfo.url}
                               onClick={() => this.onCopyURL(this.props.repoDocInfo.url!)}>
+
+                    <FontAwesomeIcon name="fas fa-external-link-alt"/>
                     Copy Original URL
                 </DropdownItem>
 
@@ -50,19 +59,28 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
                               disabled={! this.props.repoDocInfo.filename}
                               hidden={AppRuntime.isBrowser()}
                               onClick={() => this.onShowFile(this.props.repoDocInfo.filename!)}>
+
+                    <FontAwesomeIcon name="far fa-file"/>
                     Show File
                 </DropdownItem>
+
+                <DropdownItem divider />
 
                 <DropdownItem toggle={this.props.toggle}
                               disabled={! this.props.repoDocInfo.filename}
                               hidden={AppRuntime.isBrowser()}
                               onClick={() => this.onCopyFilePath(this.props.repoDocInfo.filename!)}>
+
+                    <FontAwesomeIcon name="far fa-clone"/>
+
                     Copy File Path
                 </DropdownItem>
 
                 <DropdownItem toggle={this.props.toggle}
                               disabled={! this.props.repoDocInfo.filename}
+                              hidden={! FeatureToggles.get('developer')}
                               onClick={() => this.onCopyText(this.props.repoDocInfo.fingerprint, "Document ID copied to clipboard")}>
+                    <FontAwesomeIcon name="far fa-clone"/>
                     Copy Document ID
                 </DropdownItem>
 
@@ -73,6 +91,7 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
                 <DropdownItem toggle={this.props.toggle}
                               className="text-danger"
                               onClick={() => this.onDeleteRequested()}>
+                    <FontAwesomeIcon name="fas fa-trash-alt"/>
                     Delete
                 </DropdownItem>
 

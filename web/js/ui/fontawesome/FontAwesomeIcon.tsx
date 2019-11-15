@@ -8,7 +8,12 @@ export class FontAwesomeIcon extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-        return <i className={this.props.name} style={{width: '20px'}}/>;
+        return <i className={this.props.name}
+                  style={{
+                      width: '20px',
+                      marginLeft: '0.3rem',
+                      marginRight: '0.3rem'
+                  }}/>;
 
     }
 
