@@ -2,7 +2,6 @@ import {app, BrowserWindow} from 'electron';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {Directories} from '../../datastore/Directories';
 import {CaptureController} from '../../capture/controller/CaptureController';
-import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
 import {MainAppController} from './MainAppController';
 import {MainAppMenu} from './MainAppMenu';
 import {Cmdline} from '../../electron/Cmdline';
@@ -68,7 +67,7 @@ export class MainApp {
 
         const captureController = new CaptureController(cacheRegistry, fileRegistry);
 
-        const dialogWindowService = new DialogWindowService();
+        // const dialogWindowService = new DialogWindowService();
 
         const defaultFileLoader = new DefaultFileLoader(fileRegistry, cacheRegistry);
 
@@ -115,8 +114,6 @@ export class MainApp {
         //     .catch(err => log.error(err));
 
         captureController.start();
-
-        await dialogWindowService.start();
 
         const fileLoader = new AnalyticsFileLoader(defaultFileLoader);
 

@@ -132,7 +132,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
 }
 
-export interface IProps {
+interface IProps {
 
     readonly id: string;
 
@@ -149,7 +149,7 @@ export interface IProps {
     readonly defaultValue?: string;
 }
 
-export interface IState {
+interface IState {
     readonly iter: number;
 }
 

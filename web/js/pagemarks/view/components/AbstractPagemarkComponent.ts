@@ -463,7 +463,7 @@ export class AbstractPagemarkComponent extends Component {
 
 }
 
-export interface ElementOptions {
+interface ElementOptions {
     templateElement?: HTMLElement;
     placementElement?: HTMLElement;
 }

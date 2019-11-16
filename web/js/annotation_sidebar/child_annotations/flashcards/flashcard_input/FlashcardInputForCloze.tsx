@@ -195,7 +195,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
 }
 
-export interface IProps {
+interface IProps {
 
     readonly id: string;
 
@@ -211,7 +211,7 @@ export interface IProps {
 
 }
 
-export interface IState {
+interface IState {
     readonly iter: number;
 }
 

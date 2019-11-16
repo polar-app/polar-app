@@ -46,10 +46,10 @@ export class FlashcardTypeSelector extends React.Component<IProps, IState> {
 
 }
 
-export interface IProps {
+interface IProps {
     readonly flashcardType: FlashcardType;
     readonly onChangeFlashcardType: (flashcardType: FlashcardType) => void;
 }
 
-export interface IState {
+interface IState {
 }
