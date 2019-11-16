@@ -1,4 +1,8 @@
 
+- ability to remove items from folders.
+
+- multi-selection for deletes implemented
+
 - deleting multiple items via context menu now works.
 
 - The document repository view is now much faster and context menus no longer have a 'gap'
