@@ -119,9 +119,14 @@ export class MainAppBrowserWindowFactory {
             if (browserWindow.webContents) {
 
                 browserWindow.webContents.clearHistory();
-                browserWindow.webContents.session.clearCache(() => {
+
+                const clearCache = async () => {
+                    await browserWindow.webContents.session.clearCache();
                     browserWindow.destroy();
-                });
+                };
+
+                clearCache()
+                    .catch(err => log.error("Unable to close window: ", err));
 
             }
 

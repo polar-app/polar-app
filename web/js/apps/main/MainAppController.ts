@@ -17,6 +17,7 @@ import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
+import {PathStr} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 
@@ -260,27 +261,25 @@ export class MainAppController {
     /**
      * Open a dialog box for a PDF file.
      */
-    private async promptImportDocs(): Promise<string[] | undefined> {
+    private async promptImportDocs(): Promise<ReadonlyArray<PathStr> | undefined> {
 
         const downloadsDir = app.getPath('downloads');
 
-        return new Promise<string[] | undefined>((resolve) => {
-
-            dialog.showOpenDialog({
-                  title: "Import Document",
-                  defaultPath: downloadsDir,
-                  filters: [
-                      { name: 'Docs', extensions: ['pdf', "phz", "PDF"] }
-                  ],
-                  properties: ['openFile', 'multiSelections']
-                  // properties: ['openFile']
-              }, (paths) => {
-
-                resolve(paths);
-
-            });
-
+        const openedDialog = await dialog.showOpenDialog({
+            title: "Import Document",
+            defaultPath: downloadsDir,
+            filters: [
+                { name: 'Docs', extensions: ['pdf', "phz", "PDF"] }
+            ],
+            properties: ['openFile', 'multiSelections']
+            // properties: ['openFile']
         });
+
+        if (openedDialog.canceled) {
+            return openedDialog.filePaths;
+        }
+
+        return undefined;
 
     }
 

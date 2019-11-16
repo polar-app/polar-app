@@ -59,33 +59,28 @@ export class ScreenshotDelegate implements IScreenshotDelegate {
             height: Math.round(screenshotRequest.rect.height)
         };
 
-        return new Promise<Electron.NativeImage>((resolve) => {
 
-            webContentsInstance.capturePage(rect, (image) => {
+        let image = await webContentsInstance.capturePage(rect);
 
-                if (screenshotRequest.resize) {
+        if (screenshotRequest.resize) {
 
-                    if (screenshotRequest.resize.width !== undefined ||
-                        screenshotRequest.resize.height !== undefined) {
+            if (screenshotRequest.resize.width !== undefined ||
+                screenshotRequest.resize.height !== undefined) {
 
-                        log.info("Resizing image to: ", screenshotRequest.resize);
+                log.info("Resizing image to: ", screenshotRequest.resize);
 
-                        image = image.resize(screenshotRequest.resize);
+                image = image.resize(screenshotRequest.resize);
 
-                    }
+            }
 
-                }
+        }
 
-                if (screenshotRequest.crop) {
-                    log.info("Cropping image to: ", screenshotRequest.resize);
-                    image = image.crop(screenshotRequest.crop);
-                }
+        if (screenshotRequest.crop) {
+            log.info("Cropping image to: ", screenshotRequest.resize);
+            image = image.crop(screenshotRequest.crop);
+        }
 
-                resolve(image);
-
-            });
-
-        });
+        return image;
 
     }
 

@@ -3,6 +3,9 @@ import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from '
 import {ExportFormat} from '../../metadata/exporter/Exporters';
 import {remote} from 'electron';
 import {AppRuntime} from '../../AppRuntime';
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 export class ExportButton extends React.Component<IProps, IState> {
 
@@ -68,13 +71,28 @@ export class ExportButton extends React.Component<IProps, IState> {
 
         };
 
-        remote.dialog.showSaveDialog(opts, (path?: string) => {
+        const doSaveViaDialog = async () => {
 
-            if (path && this.props.onExport) {
-                this.props.onExport(path, format);
+            const saveDialogResult = await remote.dialog.showSaveDialog(opts);
+
+            if (saveDialogResult.canceled) {
+                return;
             }
 
-        });
+            if (! saveDialogResult.filePath) {
+                return;
+            }
+
+            if (! this.props.onExport) {
+                return;
+            }
+
+            this.props.onExport(saveDialogResult.filePath, format);
+
+        };
+
+        doSaveViaDialog()
+            .catch(err => log.error("Unable to save: ", err));
 
     }
 

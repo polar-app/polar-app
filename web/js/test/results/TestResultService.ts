@@ -23,7 +23,7 @@ export class TestResultService {
 
         Preconditions.assertPresent(ipcRenderer, "No ipcRenderer");
 
-        ipcRenderer.on('test-result', (event: Electron.Event, data: any) => {
+        ipcRenderer.on('test-result', (event, data: any) => {
 
             const ipcMessage = IPCMessage.create(data);
 
@@ -43,7 +43,7 @@ export class TestResultService {
 
     }
 
-    public onPing(event: Electron.Event, ipcMessage: IPCMessage<any>) {
+    public onPing(event: Electron.IpcRendererEvent, ipcMessage: IPCMessage<any>) {
 
         const pongMessage = new IPCMessage("pong", true);
 
