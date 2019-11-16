@@ -3,7 +3,8 @@ title: Building Polar's Product Market Fit Engine
 date: 2019-11-15 08:00:00 -0800
 layout: post
 large_image: https://getpolarized.io//assets/screenshots/2019-11-document-view.png
-description: Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0
+description: For the past month or so I've been revamping Polar's product-market-fit engine which is a system we've built to help me understand what our users want and to prioritize feature requests.
+hidden: true
 ---
 
 <img class="img-fluid border border-dark rounded" src="https://getpolarized.io//assets/screenshots/2019-11-document-view.png">
