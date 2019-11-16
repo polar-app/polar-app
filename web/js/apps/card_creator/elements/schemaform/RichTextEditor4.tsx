@@ -1,13 +1,13 @@
 /**
  * This is our main widget for handling text fields which are HTML.
  */
-import ReactSummernote from './ReactSummernote';
 import React from 'react';
 import {TypedWidgetProps} from './TypedWidgetProps';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ReactSummernote4} from './ReactSummernote4';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {RichTextMutator} from './RichTextMutator';
+
 const log = Logger.create();
 
 /**

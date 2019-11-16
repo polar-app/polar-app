@@ -4,13 +4,14 @@ import $ from '../../../../ui/JQuery';
 import 'bootstrap';
 import 'summernote/dist/summernote-bs4';
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {HTMLString, RichTextMutator} from './RichTextMutator';
+
 const randomUid = () => Math.floor(Math.random() * 100000);
 
 /**
- * React Summernote for Twitter Boostrap v4
+ * React Summernote for Twitter Bootstrap v4
  */
 export class ReactSummernote4 extends Component<IProps, any> implements RichTextMutator {
 
