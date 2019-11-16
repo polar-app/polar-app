@@ -482,3 +482,4 @@ export enum MainMenuMode {
     DOC_REPO_APP,
     VIEWER_APP
 }
+
