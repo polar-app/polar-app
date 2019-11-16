@@ -4,9 +4,8 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
+import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Tags} from 'polar-shared/src/tags/Tags';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from '../MessageBanner';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
@@ -41,7 +40,6 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
-import {OnRemoveFromFolderCallback} from "../DocDropdownItems";
 
 const log = Logger.create();
 
@@ -259,28 +257,15 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public selectRow(selectedIdx: number,
                      event: MouseEvent,
-                     checkbox: boolean = false) {
+                     type: SelectRowType) {
 
         if (typeof selectedIdx === 'string') {
             selectedIdx = parseInt(selectedIdx);
         }
 
-        // TODO: enumerate these out into states...
-
-        // click:
-        //   - single click selects one
-        //   - shift plus click selects range
-        //
-        // context-menu:
-        //   -
-        //
-
-        // if (this.state.selected.includes(selectedIdx)) {
-        //     // TODO: this isn't right because single clicking doesn't work to reset to a single entry.
-        //
-        //     // we're done because it's already selected.
-        //     return;
-        // }
+        if (type === 'context' && this.state.selected.includes(selectedIdx)) {
+            return;
+        }
 
         let selected: number[] = [selectedIdx];
 
@@ -302,10 +287,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         }
 
-        const selectIndividual = (event.getModifierState("Control") || event.getModifierState("Meta")) || checkbox;
-
-        if (selectIndividual) {
-
+        const handleToggleSingleRow = () => {
             // one at a time
 
             selected = [...this.state.selected];
@@ -315,7 +297,16 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             } else {
                 selected = [...selected, selectedIdx];
             }
+        };
 
+        const toggleSingleRow =
+            (event.getModifierState("Control")
+            || event.getModifierState("Meta"))
+            || ['checkbox', 'context'].includes(type)
+        ;
+
+        if (toggleSingleRow) {
+            handleToggleSingleRow();
         }
 
         this.setState({...this.state, selected});
@@ -469,7 +460,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   onDocSetTitle={(repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title)}
                                                   onDocTagged={(repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags)}
                                                   onMultiDeleted={() => this.onMultiDeleted()}
-                                                  selectRow={(selectedIdx, event1, checkbox) => this.selectRow(selectedIdx, event1, checkbox)}
+                                                  selectRow={(selectedIdx, event1, type) => this.selectRow(selectedIdx, event1, type)}
                                                   onSelected={selected => this.onSelected(selected)}
                                                   onReactTable={reactTable => this.reactTable = reactTable}
                                                   onDragStart={event => this.onDragStart(event)}
@@ -695,4 +686,8 @@ interface IState {
     readonly docSidebarVisible: boolean;
 }
 
-
+/**
+ * The type of event that triggered the row selection.  Either a normal click, a context menu click (right click) or
+ * a checkbox for selecting multiple.
+ */
+export type SelectRowType = 'click' | 'context' | 'checkbox';

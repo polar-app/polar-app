@@ -29,6 +29,7 @@ import {ContextMenuHandlers, prepareContextMenuHandlers} from '@burtonator/react
 import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
 import {DocDropdownItems, OnRemoveFromFolderCallback} from "../DocDropdownItems";
 import {Filters} from "./DocRepoFilters";
+import {SelectRowType} from "./DocRepoScreen";
 
 const log = Logger.create();
 
@@ -153,7 +154,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                            }}
                            className="m-auto"
                            onChange={NULL_FUNCTION}
-                           onClick={(event) => this.props.selectRow(viewIndex, event.nativeEvent, true)}
+                           onClick={(event) => this.props.selectRow(viewIndex, event.nativeEvent, 'checkbox')}
                            type="checkbox"/>
 
                     {/*<i className="far fa-square"></i>*/}
@@ -407,8 +408,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 const existingTags: Tag[]
                     = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
 
-                const selectCurrentRow = (event: React.MouseEvent<HTMLDivElement>) => {
-                    this.props.selectRow(viewIndex, event.nativeEvent, false)
+                const selectCurrentRow = (event: React.MouseEvent<HTMLDivElement>, type: SelectRowType) => {
+                    this.props.selectRow(viewIndex, event.nativeEvent, type)
                 };
 
                 return (<div className="doc-buttons" style={{display: 'flex'}}>
@@ -430,8 +431,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     <ArchiveDocButton active={repoDocInfo.archived}
                                       onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
 
-                    <div onContextMenu={(event) => selectCurrentRow(event)}
-                         onClick={(event) => selectCurrentRow(event)}>
+                    <div onContextMenu={(event) => selectCurrentRow(event, 'context')}
+                         onClick={(event) => selectCurrentRow(event, 'click')}>
 
                         <DocButton>
 
@@ -575,9 +576,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
         } else {
 
-            const handleSelect = (event: MouseEvent) => {
+            const handleSelect = (event: MouseEvent, type: SelectRowType) => {
                 if (rowInfo) {
-                    this.props.selectRow(rowInfo.viewIndex as number, event);
+                    this.props.selectRow(rowInfo.viewIndex as number, event, type);
                 }
             };
 
@@ -593,11 +594,11 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 },
 
                 onContextMenu: (event: MouseEvent) => {
-                    handleSelect(event);
+                    handleSelect(event, 'context');
                 },
 
-                onMouseDown: (event: MouseEvent, handleOriginal?: () => void) => {
-                    handleSelect(event);
+                onClick: (event: MouseEvent, handleOriginal?: () => void) => {
+                    handleSelect(event, 'click');
                 },
 
             };
@@ -780,7 +781,7 @@ interface IProps {
     readonly onDocDeleteRequested: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
-    readonly selectRow: (selectedIdx: number, event: MouseEvent, checkbox?: boolean) => void;
+    readonly selectRow: (selectedIdx: number, event: MouseEvent, type: SelectRowType) => void;
     readonly onSelected: (selected: ReadonlyArray<number>) => void;
     readonly onReactTable: (reactTable: Instance) => void;
     readonly refresh: () => void;
