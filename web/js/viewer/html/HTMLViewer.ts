@@ -293,14 +293,8 @@ export class HTMLViewer extends Viewer {
         log.info("HTMLViewer: Signaling rescale.");
 
         const pageElement = notNull(document.querySelector(".page"));
-        let endOfContent = notNull(pageElement.querySelector(".endOfContent"));
 
-        notNull(notNull(endOfContent).parentElement).removeChild(endOfContent);
-
-        endOfContent = document.createElement("div");
-        endOfContent.setAttribute("class", "endOfContent" );
-
-        pageElement.appendChild(endOfContent);
+        pageElement.setAttribute("data-loaded", "true");
 
     }
 
