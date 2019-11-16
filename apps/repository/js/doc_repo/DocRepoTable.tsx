@@ -16,7 +16,7 @@ import {DocButton} from '../ui/DocButton';
 import {FlagDocButton} from '../ui/FlagDocButton';
 import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import Input from 'reactstrap/lib/Input';
-import {DocContextMenu, DocContextMenuProps} from '../DocContextMenu';
+import {DocContextMenuProps} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
@@ -25,8 +25,11 @@ import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
 import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
 import {Platforms} from "../../../../web/js/util/Platforms";
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {ContextMenuHandlers, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
-import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
+import {
+    ContextMenuHandlers,
+    ContextMenuWrapper,
+    prepareContextMenuHandlers
+} from '@burtonator/react-context-menu-wrapper';
 import {DocDropdownItems, OnRemoveFromFolderCallback} from "../DocDropdownItems";
 import {Filters} from "./DocRepoFilters";
 import {SelectRowType} from "./DocRepoScreen";
@@ -179,9 +182,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 return (
 
                     <div id={id}>
-
                         <div>{row.value}</div>
-
                     </div>
 
                 );
@@ -230,9 +231,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             Cell: (row: any) => {
 
                 return (
-
                     <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
-
                 );
             }
         };
@@ -412,6 +411,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     this.props.selectRow(viewIndex, event.nativeEvent, type)
                 };
 
+                // TODO: this seems to be somewhat slow so move it to a dedicated PureComponent
                 return (<div className="doc-buttons" style={{display: 'flex'}}>
 
                     <DocButton>
