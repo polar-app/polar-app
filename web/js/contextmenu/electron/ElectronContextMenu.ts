@@ -24,7 +24,7 @@ export class ElectronContextMenu {
     constructor() {
 
         // TODO: move this to a start method.
-        ipcMain.on('context-menu-trigger', (event: Electron.Event, message: any) => {
+        ipcMain.on('context-menu-trigger', (event, message: any) => {
 
             const triggerEvent = TriggerEvent.create(message);
 

@@ -41,7 +41,7 @@ export class BrowserWindows {
 
                 defaultEncoding: 'UTF-8',
 
-                webaudio: browserProfile.webaudio,
+                // webaudio: browserProfile.webaudio,
 
                 offscreen: browserProfile.offscreen,
 

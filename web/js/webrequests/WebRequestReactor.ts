@@ -1,13 +1,13 @@
 import {WebRequest} from 'electron';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Reactor} from '../reactor/Reactor';
-import OnBeforeRedirectDetails = Electron.OnBeforeRedirectDetails;
-import OnBeforeRequestDetails = Electron.OnBeforeRequestDetails;
-import OnCompletedDetails = Electron.OnCompletedDetails;
-import OnErrorOccurredDetails = Electron.OnErrorOccurredDetails;
-import OnResponseStartedDetails = Electron.OnResponseStartedDetails;
-import OnSendHeadersDetails = Electron.OnSendHeadersDetails;
-import OnBeforeSendHeadersDetails = Electron.OnBeforeSendHeadersDetails;
+import OnBeforeRedirectDetails = Electron.OnBeforeRedirectListenerDetails;
+import OnBeforeRequestDetails = Electron.OnBeforeRequestListenerDetails;
+import OnCompletedDetails = Electron.OnCompletedListenerDetails;
+import OnErrorOccurredDetails = Electron.OnErrorOccurredListenerDetails;
+import OnResponseStartedDetails = Electron.OnResponseStartedListenerDetails;
+import OnSendHeadersDetails = Electron.OnSendHeadersListenerDetails;
+import OnBeforeSendHeadersDetails = Electron.OnBeforeSendHeadersListenerDetails;
 
 
 export class WebRequestReactor {

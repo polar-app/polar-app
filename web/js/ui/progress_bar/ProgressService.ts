@@ -13,8 +13,7 @@ export class ProgressService {
 
         if (ipcRenderer) {
 
-            ipcRenderer.on(ProgressMessages.CHANNEL, (event: Electron.EventEmitter,
-                                                      progressMessage: ProgressMessage) => {
+            ipcRenderer.on(ProgressMessages.CHANNEL, (event, progressMessage: ProgressMessage) => {
 
                 this.onProgressMessage(progressMessage);
 

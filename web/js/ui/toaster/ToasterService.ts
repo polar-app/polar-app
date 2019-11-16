@@ -16,8 +16,7 @@ export class ToasterService {
 
         if (ipcRenderer) {
 
-            ipcRenderer.on(ToasterMessages.CHANNEL, (event: Electron.EventEmitter,
-                                                     toasterMessage: ToasterMessage) => {
+            ipcRenderer.on(ToasterMessages.CHANNEL, (event, toasterMessage: ToasterMessage) => {
 
                 switch (toasterMessage.type) {
                     case ToasterMessageType.SUCCESS:
