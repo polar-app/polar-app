@@ -45,8 +45,8 @@ export class BrowserApp2 {
 
         content.addEventListener('dom-ready', async () => {
 
-            content.insertCSS('html, body { overflow: hidden !important; }');
-
+            content.insertCSS('html, body { overflow: hidden !important; }')
+                .catch(err => log.error("Unable to inject CSS:", err));
 
             ['did-start-loading', 'did-stop-loading', 'did-fail-load', 'dom-ready' ]
                 .map(eventListenerName => content.addEventListener(eventListenerName, () => this.refreshTitle(eventListenerName)));

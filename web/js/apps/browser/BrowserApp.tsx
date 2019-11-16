@@ -42,7 +42,8 @@ export class BrowserApp {
 
         content.addEventListener('dom-ready', async () => {
 
-            content.insertCSS('html, body { overflow: hidden !important; }');
+            content.insertCSS('html, body { overflow: hidden !important; }')
+                .catch(err => log.error("Unable to inject CSS:", err));
 
             content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
                 this.onWebviewNavigated(event.url);
