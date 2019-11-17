@@ -1,29 +1,29 @@
 
-- improved performance of doc table when selecting items.
+- Fixed bad bug with stats for spaced repetitions not being computed accurately.
 
-- big refactor of the context menu so that range selection and context menus work properly. 
+- Improved performance of doc table when selecting items.
 
-- ability to remove items from folders...
+- Big refactor of the context menu so that range selection and context menus work properly. 
+
+- Ability to remove items from folders...
 
 - multi-selection for deletes implemented
 
-- deleting multiple items via context menu now works
+- Deleting multiple items via context menu now works
 
 - The document repository view is now much faster and context menus no longer have a 'gap'
   which wouldn't trigger the menu. 
 
-- bronze now officially required for reading stats and recommended tags
+- Bronze now officially required for reading stats and recommended tags
 
-- reworked 
+- The context menus now have icons 
 
-- the context menus now have icons 
-
-- major refactor of how text selection works using the new modern text layer code in pdf.js which has 
+- Major refactor of how text selection works using the new modern text layer code in pdf.js which has 
   been a major complaint since 1.0.  Excited to finally have this fixed!
   
-- now using larger buttons
+- Now using larger buttons in the UI 
 
-- show the front + back of cards when we 'show answer'
+- Show the front + back of cards when we 'show answer'
 
 # 1.50.10
 
