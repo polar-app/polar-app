@@ -25,6 +25,7 @@ import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {ContextMenuWrapper} from "@burtonator/react-context-menu-wrapper";
 import {DocDropdownItems} from "../../../apps/repository/js/DocDropdownItems";
 import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
+import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 
 const styles = {
     swatch: {
@@ -253,6 +254,20 @@ export class App<P> extends React.Component<{}, IAppState> {
         // const taskReps = createReadingTaskReps();
         const taskReps = createFlashcardTaskReps();
 
+        const MockTag = (props: any) => {
+            return <div className="bg-grey100 p-1 rounded mr-1"
+                        style={{
+                        display: 'inline-block'
+                   }}>
+                {props.children}
+
+                <span className="text-sm">
+                    <FontAwesomeIcon name="fas fa-close"/>
+                </span>
+
+            </div>
+        };
+
         return (
 
             <div>
@@ -268,17 +283,20 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                     <div className="item">
 
-                        <div className="title text-xxl">
-                            She literally made a joke how she broke up with him twice.
+                        <div className="title text-xxl font-weight-bold text-grey900" style={{fontSize: '33px'}}>
+                            Something amazing has happened in science and the community is excited.
                         </div>
 
                         <div className="title text-lg text-grey800">
-                            This is somethign longer...
+                            <span className="text-primary">Martin Smith</span>, <span className="text-primary">Carson Weishaus</span>
                         </div>
 
+                        <div className="title text-lg text-grey800 mt-1 mb-2"  style={{fontSize: '22px'}}>
+                            This is a longer overview or abstract of the current document we're reading.
+                        </div>
 
-                        <div className="metadata">
-                            <b>Tags: </b> linux, microsoft
+                        <div className="metadata" style={{fontSize: '14px'}}>
+                            <MockTag>linux</MockTag> <MockTag>microsoft</MockTag>
                         </div>
 
                         <div className="metadata mt-1">
