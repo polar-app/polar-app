@@ -2,9 +2,19 @@ import * as React from 'react';
 import {Input} from "reactstrap";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SelectRowType} from "../DocRepoScreen";
-import {FastComponent} from "../../../../../web/js/react/FastComponent";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
-export class CheckCell extends FastComponent<IProps> {
+export class CheckCell extends React.Component<IProps> {
+
+    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<any>, nextContext: any): boolean {
+
+        if (this.props.viewIndex !== nextProps.viewIndex) {
+            return true;
+        }
+
+        return ! Arrays.equal(this.props.selected, nextProps.selected);
+
+    }
 
     public render() {
 

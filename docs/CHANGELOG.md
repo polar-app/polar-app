@@ -1,4 +1,6 @@
 
+- improved performance of doc table when selecting items.
+
 - big refactor of the context menu so that range selection and context menus work properly. 
 
 - ability to remove items from folders...

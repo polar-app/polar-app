@@ -11,10 +11,10 @@ import {RepoDocInfo} from "../../RepoDocInfo";
 import {OnRemoveFromFolderCallback} from "../../DocDropdownItems";
 import {Filters} from "../DocRepoFilters";
 import {SelectRowType} from "../DocRepoScreen";
-import {FastComponent} from "../../../../../web/js/react/FastComponent";
 import deepEqual from "react-fast-compare";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
-export class DocButtonsCell extends FastComponent<IProps> {
+export class DocButtonsCell extends React.Component<IProps> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -27,26 +27,10 @@ export class DocButtonsCell extends FastComponent<IProps> {
     }
 
     public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<any>, nextContext: any): boolean {
-
-        const canonicalize = (props: IProps) => {
-            return {
-                viewIndex: props.viewIndex,
-                flagged: props.flagged,
-                archived: props.archived
-            };
-        };
-
-        if (! deepEqual(canonicalize(this.props), canonicalize(nextProps))) {
-            return true;
-        }
-
-        return false;
-
+        return ! Dictionaries.equals(this.props, nextProps, ['viewIndex', 'flagged', 'archived']);
     }
 
     public render() {
-
-        console.log("FIXME: rendering");
 
         const {viewIndex, flagged, archived} = this.props;
 
@@ -117,7 +101,6 @@ export class DocButtonsCell extends FastComponent<IProps> {
         const {viewIndex} = this.props;
         this.props.selectRow(viewIndex, event.nativeEvent, type)
     };
-
 
 }
 

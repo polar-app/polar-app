@@ -1,6 +1,11 @@
 import * as React from 'react';
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
-export class TitleCell extends React.PureComponent<IProps> {
+export class TitleCell extends React.Component<IProps> {
+
+    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<any>, nextContext: any): boolean {
+        return ! Dictionaries.equals(this.props, nextProps, ['id', 'title']);
+    }
 
     public render() {
 
