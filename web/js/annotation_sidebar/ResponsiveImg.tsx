@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Img} from '../metadata/Img';
-import {DeepPureComponent} from '../react/DeepPureComponent';
+import {FastComponent} from '../react/FastComponent';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 /**
  * Shows a and image and re-sizes it to its parent properly.
  */
-export class ResponsiveImg extends DeepPureComponent<IProps, IState> {
+export class ResponsiveImg extends FastComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

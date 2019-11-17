@@ -3,7 +3,7 @@ import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {Img} from '../../../../web/js/metadata/Img';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {DeepPureComponent} from '../../../../web/js/react/DeepPureComponent';
+import {FastComponent} from '../../../../web/js/react/FastComponent';
 import {RepoHighlightInfo} from "../RepoAnnotation";
 
 const Body = (props: IProps) => {
@@ -44,7 +44,7 @@ const Body = (props: IProps) => {
 
 };
 
-export class AnnotationPreview extends DeepPureComponent<IProps, IState> {
+export class AnnotationPreview extends FastComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

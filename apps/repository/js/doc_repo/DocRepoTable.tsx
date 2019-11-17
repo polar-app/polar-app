@@ -33,6 +33,8 @@ import {
 import {DocDropdownItems, OnRemoveFromFolderCallback} from "../DocDropdownItems";
 import {Filters} from "./DocRepoFilters";
 import {SelectRowType} from "./DocRepoScreen";
+import {TitleCell} from "./cells/TitleCell";
+import {CheckCell} from "./cells/CheckCell";
 
 const log = Logger.create();
 
@@ -146,26 +148,9 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 const viewIndex = row.viewIndex as number;
 
-                return (<div style={{lineHeight: '1em'}}>
-
-                    <Input checked={this.props.selected.includes(viewIndex)}
-                           style={{
-                               marginLeft: 'auto',
-                               marginRight: 'auto',
-                               margin: 'auto',
-                               position: 'relative',
-                               top: '2px',
-                               width: '16px',
-                               height: '16px',
-                           }}
-                           className="m-auto"
-                           onChange={NULL_FUNCTION}
-                           onClick={(event) => this.props.selectRow(viewIndex, event.nativeEvent, 'checkbox')}
-                           type="checkbox"/>
-
-                    {/*<i className="far fa-square"></i>*/}
-
-                </div>);
+                return <CheckCell viewIndex={viewIndex}
+                                  selected={this.props.selected}
+                                  selectRow={this.props.selectRow}/>;
             }
         };
 
@@ -182,11 +167,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 const id = 'doc-repo-row-title' + row.index;
 
                 return (
-
-                    <div id={id}>
-                        <div>{row.value}</div>
-                    </div>
-
+                    <TitleCell id={id} title={row.value}/>
                 );
             }
 

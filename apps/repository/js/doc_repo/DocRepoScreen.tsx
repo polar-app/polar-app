@@ -40,6 +40,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
+import {SetArrays} from "polar-shared/src/util/SetArrays";
 
 const log = Logger.create();
 
@@ -335,9 +336,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             const selected = [...this.state.selected];
 
             if (selected.includes(selectedIdx)) {
-                return selected.splice(selected.indexOf(selectedIdx), 1);
+                return SetArrays.difference(selected, [selectedIdx]);
             } else {
-                return [...selected, selectedIdx];
+                return SetArrays.union(selected, [selectedIdx]);
             }
 
         };
