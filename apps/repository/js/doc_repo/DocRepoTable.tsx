@@ -605,6 +605,15 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                             desc: true
                         }
                     ]}
+                    getTheadProps={() => {
+                        return {
+                            style: {
+                                // needed to avoid the columns being placed wrong due to the scrollbar.
+                                paddingRight: '1em'
+                            }
+                        }
+                    }}
+
                     // sorted={[{
                     //     id: 'added',
                     //     desc: true
