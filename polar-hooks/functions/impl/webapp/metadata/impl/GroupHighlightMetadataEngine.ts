@@ -149,7 +149,7 @@ export class GroupHighlightMetadataEngine implements MetadataEngine {
             const highlight = <ITextHighlight> groupDocAnnotation.original;
             const html = ITextHighlights.toHTML(highlight);
 
-            const text = HTMLSanitizer.toText(html);
+            const text = HTMLSanitizer.toText(html || "");
             const title = toTitle(text);
 
             return createPage(highlight, title, text);
