@@ -35,6 +35,7 @@ import {Filters} from "./DocRepoFilters";
 import {SelectRowType} from "./DocRepoScreen";
 import {TitleCell} from "./cells/TitleCell";
 import {CheckCell} from "./cells/CheckCell";
+import {DocButtonsCell} from "./cells/DocButtonsCell";
 
 const log = Logger.create();
 
@@ -79,6 +80,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         this.createTDPropsForDesktop = this.createTDPropsForDesktop.bind(this);
 
         this.createContextMenuHandlers = this.createContextMenuHandlers.bind(this);
+
+        this.doHandleToggleField = this.doHandleToggleField.bind(this);
 
     }
 
@@ -381,50 +384,57 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 const repoDocInfo: RepoDocInfo = row.original;
                 const viewIndex = row.viewIndex;
 
-                const existingTags: Tag[]
-                    = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
+                // const existingTags: Tag[]
+                //     = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
+                //
+                // const selectCurrentRow = (event: React.MouseEvent<HTMLDivElement>, type: SelectRowType) => {
+                //     this.props.selectRow(viewIndex, event.nativeEvent, type)
+                // };
 
-                const selectCurrentRow = (event: React.MouseEvent<HTMLDivElement>, type: SelectRowType) => {
-                    this.props.selectRow(viewIndex, event.nativeEvent, type)
-                };
+                // // TODO: this seems to be somewhat slow so move it to a dedicated PureComponent
+                // return (<div className="doc-buttons" style={{display: 'flex'}}>
+                //
+                //     <DocButton>
+                //
+                //         {/*WARNING: making this a function breaks the layout...*/}
+                //
+                //         <TagInput availableTags={this.props.tagsProvider()}
+                //                   existingTags={() => existingTags}
+                //                   relatedTags={this.props.relatedTags}
+                //                   onChange={(tags) => this.props.onDocTagged(repoDocInfo, tags)}/>
+                //
+                //     </DocButton>
+                //
+                //     <FlagDocButton active={repoDocInfo.flagged}
+                //                    onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}/>
+                //
+                //     <ArchiveDocButton active={repoDocInfo.archived}
+                //                       onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
+                //
+                //     <div onContextMenu={(event) => selectCurrentRow(event, 'context')}
+                //          onClick={(event) => selectCurrentRow(event, 'click')}>
+                //
+                //         <DocButton>
+                //
+                //             <DocDropdown id={'doc-dropdown-' + row.index}
+                //                          filters={this.props.filters}
+                //                          getSelected={this.props.getSelected}
+                //                          onDelete={this.props.onDocDeleteRequested}
+                //                          onSetTitle={this.props.onDocSetTitle}
+                //                          onDocumentLoadRequested={this.contextMenuProps.onDocumentLoadRequested}
+                //                          onRemoveFromFolder={this.props.onRemoveFromFolder}/>
+                //
+                //         </DocButton>
+                //     </div>
+                //
+                // </div>);
 
-                // TODO: this seems to be somewhat slow so move it to a dedicated PureComponent
-                return (<div className="doc-buttons" style={{display: 'flex'}}>
-
-                    <DocButton>
-
-                        {/*WARNING: making this a function breaks the layout...*/}
-
-                        <TagInput availableTags={this.props.tagsProvider()}
-                                  existingTags={() => existingTags}
-                                  relatedTags={this.props.relatedTags}
-                                  onChange={(tags) => this.props.onDocTagged(repoDocInfo, tags)}/>
-
-                    </DocButton>
-
-                    <FlagDocButton active={repoDocInfo.flagged}
-                                   onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}/>
-
-                    <ArchiveDocButton active={repoDocInfo.archived}
-                                      onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
-
-                    <div onContextMenu={(event) => selectCurrentRow(event, 'context')}
-                         onClick={(event) => selectCurrentRow(event, 'click')}>
-
-                        <DocButton>
-
-                            <DocDropdown id={'doc-dropdown-' + row.index}
-                                         filters={this.props.filters}
-                                         getSelected={this.props.getSelected}
-                                         onDelete={this.props.onDocDeleteRequested}
-                                         onSetTitle={this.props.onDocSetTitle}
-                                         onDocumentLoadRequested={this.contextMenuProps.onDocumentLoadRequested}
-                                         onRemoveFromFolder={this.props.onRemoveFromFolder}/>
-
-                        </DocButton>
-                    </div>
-
-                </div>);
+                return <DocButtonsCell viewIndex={viewIndex}
+                                       flagged={repoDocInfo.flagged}
+                                       archived={repoDocInfo.archived}
+                                       doHandleToggleField={this.doHandleToggleField}
+                                       onDocumentLoadRequested={this.onDocumentLoadRequested}
+                                       {...this.props}/>
 
             }
         };

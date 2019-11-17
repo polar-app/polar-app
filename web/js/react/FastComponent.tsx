@@ -13,9 +13,9 @@ export abstract class FastComponent<P> extends React.Component<P> {
             return true;
         }
 
-        if (! deepEqual(this.state, nextState)) {
-            return true;
-        }
+        // if (! deepEqual(this.state, nextState)) {
+        //     return true;
+        // }
 
         return false;
 
