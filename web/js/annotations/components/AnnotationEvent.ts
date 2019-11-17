@@ -62,7 +62,7 @@ export class AnnotationEvent extends TraceEvent {
 
         if (this.value) {
             this.id = this.value.id;
-        } else {
+        } else if (this.previousValue) {
             this.id = this.previousValue.id;
         }
 

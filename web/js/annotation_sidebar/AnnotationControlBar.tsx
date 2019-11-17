@@ -25,6 +25,7 @@ import {NullCollapse} from "../ui/null_collapse/NullCollapse";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight";
 import {EditIcon} from "../ui/standard_icons/EditIcon";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const Styles: IStyleMap = {
 
@@ -142,7 +143,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        {/*<ChangeTextHighlightButton/>*/}
+                        <ChangeTextHighlightButton/>
 
                         <CreateCommentButton/>
 
@@ -231,12 +232,17 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     private onDelete(annotation: DocAnnotation) {
 
-        if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
-            delete annotation.pageMeta.textHighlights[annotation.id];
-        }
+        Preconditions.assertPresent(annotation);
 
-        if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
-            delete annotation.pageMeta.areaHighlights[annotation.id];
+        switch(annotation.annotationType) {
+            case AnnotationType.TEXT_HIGHLIGHT:
+                delete annotation.pageMeta.textHighlights[annotation.id];
+                break;
+            case AnnotationType.AREA_HIGHLIGHT:
+                delete annotation.pageMeta.areaHighlights[annotation.id];
+                break;
+            default:
+                break;
         }
 
     }

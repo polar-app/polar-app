@@ -42,35 +42,13 @@ export class TextHighlights {
                                    pageMeta: IPageMeta,
                                    id: IDStr) {
 
-        pageMeta = DocMetas.getPageMeta(docMeta, pageMeta.pageInfo.num);
-
-        const textHighlight = pageMeta.textHighlights[id];
-
-        if (textHighlight) {
-
-            DocMetas.withBatchedMutations(docMeta, () => {
-
-                delete pageMeta.textHighlights[id];
-
-                id = Hashcodes.createRandomID();
-
-                const newTextHighlight = {
-                    ...textHighlight,
-                    lastUpdated: ISODateTimeStrings.create(),
-                    revisedText: undefined
-                };
-
-                pageMeta.textHighlights[id] = newTextHighlight;
-
-            });
-        }
-
+        this.setRevisedText(docMeta, pageMeta, id, undefined);
     }
 
     public static setRevisedText(docMeta: IDocMeta,
                                  pageMeta: IPageMeta,
                                  id: IDStr,
-                                 html: HTMLStr) {
+                                 html: HTMLStr | undefined) {
 
         pageMeta = DocMetas.getPageMeta(docMeta, pageMeta.pageInfo.num);
 
@@ -84,11 +62,13 @@ export class TextHighlights {
 
                 id = Hashcodes.createRandomID();
 
+                const revisedText = html ? Texts.create(html, TextType.HTML) : undefined;
+
                 const newTextHighlight = {
-                    id, // a new ID is required here...
                     ...textHighlight,
+                    id, // a new ID is required here...
                     lastUpdated: ISODateTimeStrings.create(),
-                    revisedText: Texts.create(html, TextType.HTML)
+                    revisedText
                 };
 
                 pageMeta.textHighlights[id] = newTextHighlight;
