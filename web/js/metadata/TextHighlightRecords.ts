@@ -1,7 +1,6 @@
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TextHighlight} from './TextHighlight';
 import {Text} from 'polar-shared/src/metadata/Text';
-import {TextRect} from './TextRect';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
@@ -32,6 +31,7 @@ export class TextHighlightRecords {
 
         const textHighlight = new TextHighlight({
             id,
+            guid: id,
             created,
             lastUpdated,
             rects: Arrays.toDict(rects),
@@ -41,7 +41,6 @@ export class TextHighlightRecords {
             notes: {},
             questions: {},
             flashcards: {},
-            guid: id,
             color
         });
 
