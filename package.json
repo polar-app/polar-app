@@ -1,6 +1,6 @@
 {
   "name": "polar-site",
-  "version": "1.50.14",
+  "version": "1.50.15",
   "description": "Polar Website",
   "main": "index.js",
   "private": true,

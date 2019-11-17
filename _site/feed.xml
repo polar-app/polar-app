@@ -1,4 +1,141 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-11-16T09:27:35-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0</title><link href="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0" /><published>2019-11-11T08:00:00-08:00</published><updated>2019-11-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0</id><content type="html" xml:base="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-11-17T12:01:32-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Building Polar’s Product Market Fit Engine</title><link href="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html" rel="alternate" type="text/html" title="Building Polar's Product Market Fit Engine" /><published>2019-11-15T08:00:00-08:00</published><updated>2019-11-15T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine</id><content type="html" xml:base="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;building-polars-productmarket-fit-engine&quot;&gt;Building Polar’s Product/Market Fit Engine&lt;/h1&gt;
+
+&lt;p&gt;For the past month or so I’ve been revamping Polar’s product-market-fit engine which is a system we’ve built to help me
+understand what our users want and to prioritize feature requests.&lt;/p&gt;
+
+&lt;p&gt;More importantly, it’s helping me build a product for the long term based on science rather than whim.&lt;/p&gt;
+
+&lt;p&gt;Wouldn’t it be great if we could build a engine that could systematically build a product roadmap but also help ensure 
+that we’re building a product that our users actually want?&lt;/p&gt;
+
+&lt;h1 id=&quot;if-you-build-it-they-will-come&quot;&gt;“If you build it, they will come.”&lt;/h1&gt;
+
+&lt;p&gt;In the movie &lt;a href=&quot;https://www.youtube.com/watch?v=NOPTByHw5RA&quot;&gt;Field of Dreams&lt;/a&gt;, (spoiler alert…) the protagonist hears a
+voice that tells him to build a baseball field.&lt;/p&gt;
+
+&lt;p&gt;Later in the movie, after the field is built (and spending all of his family’s money in the process), thousands of people
+arrive out of nowhere, bringing in money to help save his farm.&lt;/p&gt;
+
+&lt;p&gt;In reality, this almost never happens.  Apps that explode and take off virally are very rare and the most successful
+viral apps are actually the 4th or 5th attempt by the founders to get something to take off.&lt;/p&gt;
+
+&lt;p&gt;The truth of the matter is that it’s very difficult to build a highly successful app and when you do there might
+not actually be a customer acquisition model that actually works well.&lt;/p&gt;
+
+&lt;p&gt;Many startups and open source projects have an amazing product but can’t find users because they don’t have an
+affordable customer acquisition channel.&lt;/p&gt;
+
+&lt;p&gt;So, how do we solve this problem?&lt;/p&gt;
+
+&lt;h1 id=&quot;productmarket-fit&quot;&gt;Product/Market Fit&lt;/h1&gt;
+
+&lt;p&gt;Product/Market fit (PMF) is the idea that you’ve both found a market (a pool of users that want to buy and use your 
+product) as well as a product that resonates with them and actually solves their problem.&lt;/p&gt;
+
+&lt;p&gt;This is the holy grail.  If you can nail this you’re going to have happy customers/users.  They’re going to tell their 
+friends, you’re going to find new users just by word of mouth, etc.&lt;/p&gt;
+
+&lt;p&gt;More importantly, they won’t churn.  Specifically, they’re actually going to use your product and keep coming back.&lt;/p&gt;
+
+&lt;p&gt;Churn is the idea that people check out your product, then never return.&lt;/p&gt;
+
+&lt;p&gt;The best way to reduce churn is to build something that people actually want.&lt;/p&gt;
+
+&lt;p&gt;This is where the PMF engine comes into play.  It provides a scientific framework for listening to customers and 
+bootstrapping to PMF.&lt;/p&gt;
+
+&lt;h1 id=&quot;using-science-and-statistics-to-hit-productmarket-fit&quot;&gt;Using Science and Statistics to Hit Product/Market Fit.&lt;/h1&gt;
+
+&lt;p&gt;I’m a scientist and it’s how I see the world. If I can’t quantify something with statistics I can’t 
+improve it over time.&lt;/p&gt;
+
+&lt;p&gt;A scientific approach to actually running a company/startup/project is going to be profoundly superior than just throwing
+darts at a board.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://theleanstartup.com/&quot;&gt;The Lean Startup&lt;/a&gt; was the first book that I read that really put this at the forefront.&lt;/p&gt;
+
+&lt;p&gt;Recently, &lt;a href=&quot;https://firstround.com/review/how-superhuman-built-an-engine-to-find-product-market-fit/&quot;&gt;Superhuman pushed this idea further&lt;/a&gt; with
+the idea of actually using user feedback in a more scientific manner to nail PMF.&lt;/p&gt;
+
+&lt;p&gt;The central focus is to improve your features set for users who already love (and preferably pay for) your product.&lt;/p&gt;
+
+&lt;h1 id=&quot;make-something-people-love&quot;&gt;Make Something People Love&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.paulgraham.com/13sentences.html&quot;&gt;Paul Graham’s observation&lt;/a&gt; that you should first make a small group of users love you is a very important insight:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ideally you want to make large numbers of users love you, but you can’t expect to hit that right away. Initially you
+have to choose between satisfying all the needs of a subset of potential users, or satisfying a subset of the needs of
+all potential users. Take the first. It’s easier to expand userwise than satisfactionwise. And perhaps more importantly,
+it’s harder to lie to yourself. If you think you’re 85% of the way to a great product, how do you know it’s not 70%? Or
+10%? Whereas it’s easy to know how many users you have.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Users that are insanely happy with your product are more likely to recommend it to others, give you money, give you good reviews, etc.&lt;/p&gt;
+
+&lt;p&gt;Users are who are only moderately interested in your product are going to provide you significantly less value.&lt;/p&gt;
+
+&lt;p&gt;They’re significantly less likely to upgrade, less likely to be loyal if your product has a small issue, more likely to
+stop using your product, etc.&lt;/p&gt;
+
+&lt;h1 id=&quot;talk-to-your-users&quot;&gt;Talk to your Users&lt;/h1&gt;
+
+&lt;p&gt;Build out a meaningful set of user interview questions to gain important insight about your app.&lt;/p&gt;
+
+&lt;p&gt;Actually &lt;em&gt;talk&lt;/em&gt; to your users.  No email.  Talk to them.&lt;/p&gt;
+
+&lt;p&gt;For Polar I setup a &lt;a href=&quot;https://calendly.com/&quot;&gt;Calendly&lt;/a&gt; form so that they could just pick a slot. I then tied it to &lt;a href=&quot;http://bit.ly/33W6LsC&quot;&gt;Zoom&lt;/a&gt; so
+that each user could pick a time that works for them and that worked out well with my schedule.&lt;/p&gt;
+
+&lt;p&gt;I then setup a script to send off 10 emails at a time to our users inviting them to time that works for them.&lt;/p&gt;
+
+&lt;p&gt;I find that since only about 10% agree to a user interview I just keep sending out emails until my calendar has enough
+user interviews scheduled.&lt;/p&gt;
+
+&lt;p&gt;Try to target about 3-5x per week.&lt;/p&gt;
+
+&lt;h2 id=&quot;user-polls&quot;&gt;User Polls&lt;/h2&gt;
+
+&lt;p&gt;OK.  I know I said to talk to your users.  But don’t JUST talk to them.  Some don’t have time but still have valuable 
+feedback.  Take a modified version of your user interview questions and create a &lt;a href=&quot;http://referral.typeform.com/mteHQSg&quot;&gt;Typeform&lt;/a&gt; that
+users can complete in less than 1 minute.&lt;/p&gt;
+
+&lt;p&gt;Use a lot of open ended questions.  Ask for data points too.&lt;/p&gt;
+
+&lt;h1 id=&quot;avoiding-survivor-bias&quot;&gt;Avoiding Survivor Bias&lt;/h1&gt;
+
+&lt;p&gt;One of the main issues is that most of the people who reply to our survey’s tend to be people that really like Polar.&lt;/p&gt;
+
+&lt;p&gt;The problem is that this doesn’t help me solve issues that are causing potential users to churn.&lt;/p&gt;
+
+&lt;p&gt;Find this subset of users and reach out to them directly and talk to them. Pay them if you have too.&lt;/p&gt;
+
+&lt;p&gt;This can be valuable insight.&lt;/p&gt;
+
+&lt;h1 id=&quot;feature-prioritization&quot;&gt;Feature Prioritization&lt;/h1&gt;
+
+&lt;h2 id=&quot;technical-difficulty&quot;&gt;Technical Difficulty&lt;/h2&gt;
+
+&lt;h2 id=&quot;customer-demand&quot;&gt;Customer Demand&lt;/h2&gt;
+
+&lt;h2 id=&quot;impact&quot;&gt;Impact&lt;/h2&gt;
+
+&lt;p&gt;This is slightly controversial but sometimes it’s important to ignore your customers and implement a feature that will
+have greater long term impact on the company.&lt;/p&gt;
+
+&lt;p&gt;For example, if you have two features, but one of those features causes dramatically increased user retention, go with 
+this second feature.&lt;/p&gt;
+
+&lt;p&gt;These type of features will yield higher revenue in the long term which means you can have the financial resources
+to build out the rest of your feature set.&lt;/p&gt;
+
+&lt;h2 id=&quot;prioritize-features-by-easy-of-implementation&quot;&gt;Prioritize features by easy of implementation&lt;/h2&gt;
+
+&lt;h1 id=&quot;listen-to-customers&quot;&gt;Listen to Customers&lt;/h1&gt;
+
+&lt;h1 id=&quot;has-polar-hit-pmf-yet&quot;&gt;Has Polar hit PMF Yet?&lt;/h1&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0</title><link href="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0" /><published>2019-11-11T08:00:00-08:00</published><updated>2019-11-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0</id><content type="html" xml:base="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;polar-150---spaced-repetition-better-incremental-reading-and-plans-for-20&quot;&gt;Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0&lt;/h1&gt;
 
@@ -1253,206 +1390,4 @@ perspectives of from different authors.&lt;/p&gt;
 like Polar to easily create flashcards and sync them to Anki.&lt;/p&gt;
 
 &lt;p&gt;Make sure you’re also using the right Anki plugins and that you’re using it to
-full effect.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards</title><link href="https://getpolarized.io/2019/05/11/portable-web-documents.html" rel="alternate" type="text/html" title="Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards" /><published>2019-05-11T10:00:00-07:00</published><updated>2019-05-11T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/11/portable-web-documents</id><content type="html" xml:base="https://getpolarized.io/2019/05/11/portable-web-documents.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/portable-web-documents-scaled.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;portable-web-documents---an-alternative-to-pdf-based-on-html5-and-web-standards&quot;&gt;Portable Web Documents - An Alternative to PDF based on HTML5 and Web Standards&lt;/h1&gt;
-
-&lt;p&gt;Portable Web Documents are a technology similar to PDFs (Portable Document
-Format) implemented in Polar which support offline caching of full HTML
-documents, and with (in the future) improved support for video, charts, and
-other compelling features.&lt;/p&gt;
-
-&lt;p&gt;Polar uses PWDs and PDFs to manage the users reading and allows the user to keep
-all documents in a central repository and allows for suspend/resume of reading,
-tagging, and annotation.&lt;/p&gt;
-
-&lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
-&lt;iframe class=&quot;embed-responsive-item&quot; width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/ZkEo5YmNukY&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;why-a-new-document-format&quot;&gt;Why a New Document Format?&lt;/h2&gt;
-
-&lt;p&gt;PDFs are great and have gotten us pretty far to date but I think their future 
-is limited.&lt;/p&gt;
-
-&lt;p&gt;They’re perfect for laying out text and charts in a static format plus
-preserving the document long term and of course sending them via email or
-storing them in the cloud.&lt;/p&gt;
-
-&lt;p&gt;But they also have a few major limitations.&lt;/p&gt;
-
-&lt;p&gt;They only support static layouts - not fluid/dynamic layouts that change when
-you resize the page.&lt;/p&gt;
-
-&lt;p&gt;Don’t have support for features like video, animated images, interactive charts.&lt;/p&gt;
-
-&lt;p&gt;They also have limited form support.&lt;/p&gt;
-
-&lt;p&gt;Printing HTML pages as PDFs is also difficult as HTML wasn’t designed to be 
-paginated and without explicit support for CSS form-feed on certain items 
-(large images) the resulting PDF becomes mangled and hard to read.&lt;/p&gt;
-
-&lt;h2 id=&quot;html-in-a-portable-document-format&quot;&gt;HTML in a Portable Document Format?&lt;/h2&gt;
-
-&lt;p&gt;What if we could combine the benefits of PDFs with the benefits of HTML content?&lt;/p&gt;
-
-&lt;p&gt;HTML is amazing and supports a lot of compelling features that are not possible 
-in PDF but they’re also limited in a few key areas.&lt;/p&gt;
-
-&lt;p&gt;If any of the resources in your document vanishes it’s effectively broken.&lt;/p&gt;
-
-&lt;p&gt;It would also be nice to have the ability to cache a page offline in perpetuity.&lt;/p&gt;
-
-&lt;p&gt;HTML pages can (for the most part) be censored.  If your ISP or government orders
-a website offline you might be out of luck.&lt;/p&gt;
-
-&lt;h2 id=&quot;portable-web-documents-to-the-rescue&quot;&gt;Portable Web Documents to the Rescue&lt;/h2&gt;
-
-&lt;p&gt;Polar supports a file format called Portable Web Documents (PWDs) (note
-internally we still refer to these as PHZs since we’re still in development of a 
-finalize document format) which supports the best of both worlds.&lt;/p&gt;
-
-&lt;p&gt;PWDs are essentially a full HTML document including all dependent resources 
-bundled in a zip file archive.&lt;/p&gt;
-
-&lt;p&gt;There are some associated file formats like WARC and MHTML that attempt to solve
-this problem but only really get you about 30-50% of a complete solution.&lt;/p&gt;
-
-&lt;p&gt;WARCs or example can’t actually be loaded properly in Chrome due to chrome’s 
-inability to handle service workers elegantly in chrome extensions or to serve
-resources directly via request handlers.&lt;/p&gt;
-
-&lt;p&gt;Request handlers can only redirect you to a new URL.  They can’t really replace 
-content.&lt;/p&gt;
-
-&lt;p&gt;Due to cross origin issues and other web complexities it’s better to take the 
-entire document, rewrite the URLs and properly handle dependent resources,
-and re-bundle into a new layout which bypasses all these technical challenges.&lt;/p&gt;
-
-&lt;h2 id=&quot;capture-and-storage&quot;&gt;Capture and Storage.&lt;/h2&gt;
-
-&lt;p&gt;Capture is by far the biggest challenge in making PWDs as representing the
-original form an intent of the web designer (and the reader) as a document can
-sometimes be very challenging.&lt;/p&gt;
-
-&lt;p&gt;To create a PWD we first have to capture it and this requires support from the 
-browser.&lt;/p&gt;
-
-&lt;p&gt;Right now Polar implements capture via Electron.  We allow the user to preview 
-the URL then store the data directly into a rewritten PWD image.&lt;/p&gt;
-
-&lt;p&gt;However, the web isn’t really static anymore.&lt;/p&gt;
-
-&lt;p&gt;You can’t just take the CSS stylesheets and &lt;img /&gt; references and store them.&lt;/p&gt;
-
-&lt;p&gt;You also have to look at the &lt;em&gt;live&lt;/em&gt; DOM.&lt;/p&gt;
-
-&lt;p&gt;Many toolkits like React actually modify the DOM directly and manipulate and 
-redefine CSS styles.  These have to be written correctly or you will break
-page load.&lt;/p&gt;
-
-&lt;p&gt;Now you have to deactivate all scripts and event handlers so that when the 
-PWD loads it’s in a neutralized document. You wouldn’t want scripts running due
-to potential security issues.&lt;/p&gt;
-
-&lt;p&gt;Now you have to think about web fonts, iframes, and potentially extract metadata 
-from the page including title, description and possibly microdata so that the 
-PWD has the same metadata exposed in its internal metadata manifest.&lt;/p&gt;
-
-&lt;p&gt;This is just an abbreviated list of course of some of the challenges.  There are
-another 10-20 issues that we have to be careful when creating PWDs.&lt;/p&gt;
-
-&lt;p&gt;We still have some challenges now that we’re unsure how to handle.&lt;/p&gt;
-
-&lt;p&gt;For example, some iframes only load when they’re visible so we enabled a cheat 
-to expand the preview window to trigger them to load.&lt;/p&gt;
-
-&lt;p&gt;However, this caused another ugly bug where some websites like to ‘auto-paginate’
-so that when you’re at the bottom of a page you’re given a full related article
-in the hope that you stay with the site longer.&lt;/p&gt;
-
-&lt;p&gt;These issues are mutually exclusive though.  A solution for one breaks the
-solution for the other so we’re stuck in a catch 22 until we have a workaround.&lt;/p&gt;
-
-&lt;h2 id=&quot;current-limitations&quot;&gt;Current Limitations&lt;/h2&gt;
-
-&lt;p&gt;We do have some limitations currently which I’d like to lift in the future.&lt;/p&gt;
-
-&lt;p&gt;Technically we only support static layouts. PWDs could also support fully fluid
-layouts as well which would be really exciting.&lt;/p&gt;
-
-&lt;p&gt;It would be nice to support caching of video, audio, images, and interactive 
-charts.&lt;/p&gt;
-
-&lt;p&gt;This would make PWDs sort of like a ‘young lady’s illustrated primer’ (if you’ve 
-ever read Diamond Age) where a book is now fully interactive.&lt;/p&gt;
-
-&lt;p&gt;This would also mean that this interactivity would work offline and be fully 
-interactive!&lt;/p&gt;
-
-&lt;p&gt;Right now Polar is limited to capturing within Electron which means we can’t 
-access the user’s cookies and prevents some URLs from loading properly.&lt;/p&gt;
-
-&lt;p&gt;We’re porting our capture code to our chrome extension to mitigate this and 
-this should be fixed shortly.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-future&quot;&gt;The Future&lt;/h2&gt;
-
-&lt;p&gt;Polar wanted something like PWDs so that we can enable some cool features in the
-future.&lt;/p&gt;
-
-&lt;p&gt;The first (which we have now actually) is just full offline archival of web
-pages to prevent them from being deleted.  If the content is important you don’t
-want it to vanish.&lt;/p&gt;
-
-&lt;p&gt;We also want a way for users to collaborate around web content.  Add
-annotations, comments, etc.&lt;/p&gt;
-
-&lt;p&gt;We ideally don’t want the content to vanish so PWDs allow us to keep it
-associated with the users document store.&lt;/p&gt;
-
-&lt;p&gt;We’d also like to enable features where users can exchange documents directly 
-without relying on the original site.&lt;/p&gt;
-
-&lt;p&gt;This allows us to bypass censorship for documents that might be sensitive 
-outside of their host country.&lt;/p&gt;
-
-&lt;p&gt;We also want to support video, audio, and interactive charting formats. Video
-is a bit difficult as we need to determine how to stream and store the video 
-within the compressed archive and stream it efficiently.&lt;/p&gt;
-
-&lt;p&gt;Our plan is to use web workers and service workers to decompress it in a 
-background thread.&lt;/p&gt;
-
-&lt;p&gt;Interactive charts and spreadsheets are also compelling but I don’t want to just
-enable raw Javascript support.  It might be possible that something like WASM
-could solve this by putting the controls in a sandbox.&lt;/p&gt;
-
-&lt;p&gt;We also need a strategy to preserve teh fonts long term.  Right now we don’t
-store the fonts along with the PWD because they can increase the size by about
-2x.&lt;/p&gt;
-
-&lt;p&gt;It might be nice for a system like Polar to have sort of a shared CDN so that
-fonts are only stored once but this creates problems with dependencies which 
-aren’t ideal.&lt;/p&gt;
-
-&lt;h2 id=&quot;working-with-portable-web-documents&quot;&gt;Working with Portable Web Documents&lt;/h2&gt;
-
-&lt;p&gt;If you’d like to play with the current version of PWDs download Polar and take
-it for a spin.&lt;/p&gt;
-
-&lt;p&gt;Right now you can view them in the webapp but can’t create them so you need to
-download the desktop version of Polar.&lt;/p&gt;
-
-&lt;p&gt;We’re planning on fixing this issue in the next big refactor to embed the
-capture process in our chrome extension.&lt;/p&gt;
-
-&lt;p&gt;Once created the captured document is stored within Polar as a normal document 
-just like any PDF doc.&lt;/p&gt;
-
-&lt;p&gt;You get all the normal Polar features including tagging, annotation, flashcard
-creation, cloud sync, etc.&lt;/p&gt;
-
-&lt;p&gt;If you have any feedback please jump on our Discord or create a github issue.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+full effect.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
