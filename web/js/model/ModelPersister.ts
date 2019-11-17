@@ -1,4 +1,3 @@
-import {DocMeta} from '../metadata/DocMeta';
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -31,6 +30,8 @@ export class ModelPersister {
 
         // create a new DocMeta proxy that updates on ANY update.
         this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
+
+            console.log("FIXME: got a mutating event...");
 
             if (this.docMeta.docInfo.mutating === 'skip') {
                 return;

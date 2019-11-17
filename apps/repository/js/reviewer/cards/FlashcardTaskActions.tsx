@@ -7,7 +7,7 @@ import {
     ClozeRegion,
     Region
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/util/ClozeParser";
-import {Texts} from "../../../../../web/js/metadata/Texts";
+import {Texts} from "polar-shared/src/metadata/Texts";
 import { Preconditions } from 'polar-shared/src/Preconditions';
 
 export class FlashcardTaskActions {

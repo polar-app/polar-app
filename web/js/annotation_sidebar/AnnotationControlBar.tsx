@@ -194,19 +194,19 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     }
 
     private onTextHighlightReset() {
-        const {annotation} = this.props;
+        const {annotation, doc} = this.props;
 
         setTimeout(() => {
-            TextHighlights.resetRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id);
+            TextHighlights.resetRevisedText(doc.docMeta, annotation.pageMeta, annotation.id);
             this.toggleActiveInputComponent('none');
         }, 1);
     }
 
     private onTextHighlightEdited(text: string) {
-        const {annotation} = this.props;
+        const {annotation, doc} = this.props;
 
         setTimeout(() => {
-            TextHighlights.setRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id, text);
+            TextHighlights.setRevisedText(doc.docMeta, annotation.pageMeta, annotation.id, text);
             this.toggleActiveInputComponent('none');
         }, 1);
 

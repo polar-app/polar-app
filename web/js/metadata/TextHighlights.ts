@@ -12,8 +12,8 @@ import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
 import {HTMLStr, IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Texts} from "./Texts";
-import {TextType} from "./TextType";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {TextType} from "polar-shared/src/metadata/TextType";
 
 export class TextHighlights {
 
@@ -41,6 +41,8 @@ export class TextHighlights {
     public static resetRevisedText(docMeta: IDocMeta,
                                    pageMeta: IPageMeta,
                                    id: IDStr) {
+
+        pageMeta = DocMetas.getPageMeta(docMeta, pageMeta.pageInfo.num);
 
         const textHighlight = pageMeta.textHighlights[id];
 
@@ -70,19 +72,20 @@ export class TextHighlights {
                                  id: IDStr,
                                  html: HTMLStr) {
 
-        console.log("FIXME: setting revised text");
+        pageMeta = DocMetas.getPageMeta(docMeta, pageMeta.pageInfo.num);
 
         const textHighlight = pageMeta.textHighlights[id];
 
         if (textHighlight) {
 
-//            DocMetas.withBatchedMutations(docMeta, () => {
+            DocMetas.withBatchedMutations(docMeta, () => {
 
                 delete pageMeta.textHighlights[id];
 
                 id = Hashcodes.createRandomID();
 
                 const newTextHighlight = {
+                    id, // a new ID is required here...
                     ...textHighlight,
                     lastUpdated: ISODateTimeStrings.create(),
                     revisedText: Texts.create(html, TextType.HTML)
@@ -90,7 +93,7 @@ export class TextHighlights {
 
                 pageMeta.textHighlights[id] = newTextHighlight;
 
-//            });
+            });
         }
 
     }
@@ -138,9 +141,8 @@ export class TextHighlights {
      * @Deprecated use ITextHighlights.toHTML
      * @param textHighlight
      */
-    public static toHTML(textHighlight: ITextHighlight): HTMLStr {
+    public static toHTML(textHighlight: ITextHighlight): HTMLStr | undefined {
         return ITextHighlights.toHTML(textHighlight);
-
     }
 
 }

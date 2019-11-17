@@ -4,7 +4,7 @@ import {AreaHighlight} from '../AreaHighlight';
 import {AbstractExporter} from './AbstractExporter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
-import {Texts} from "../Texts";
+import {Texts} from "polar-shared/src/metadata/Texts";
 import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 
