@@ -72,7 +72,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                         <Button id={`button-${this.props.id}`}
                                 color="light"
-                                size="sm"
+                                size="md"
                                 onClick={() => this.onClozeDelete()}
                                 className="ml-1 p-1 border">[…]</Button>
 

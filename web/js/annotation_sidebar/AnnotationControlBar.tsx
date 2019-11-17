@@ -142,7 +142,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        <ChangeTextHighlightButton/>
+                        {/*<ChangeTextHighlightButton/>*/}
 
                         <CreateCommentButton/>
 

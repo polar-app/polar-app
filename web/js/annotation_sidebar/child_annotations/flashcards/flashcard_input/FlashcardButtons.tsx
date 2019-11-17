@@ -22,7 +22,7 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
                 {this.props.cancelButton}
 
                 <Button color="primary"
-                        size="sm"
+                        size="md"
                         className="ml-1"
                         onClick={() => this.props.onCreate()}>
 
