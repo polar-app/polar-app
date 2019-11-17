@@ -11,8 +11,7 @@ import {RepoDocInfo} from "../../RepoDocInfo";
 import {OnRemoveFromFolderCallback} from "../../DocDropdownItems";
 import {Filters} from "../DocRepoFilters";
 import {SelectRowType} from "../DocRepoScreen";
-import deepEqual from "react-fast-compare";
-import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {ReactComponents} from "../../../../../web/js/react/ReactComponents";
 
 export class DocButtonsCell extends React.Component<IProps> {
 
@@ -27,7 +26,7 @@ export class DocButtonsCell extends React.Component<IProps> {
     }
 
     public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<any>, nextContext: any): boolean {
-        return ! Dictionaries.equals(this.props, nextProps, ['viewIndex', 'flagged', 'archived']);
+        return ReactComponents.shouldComponentUpdate(this.props, nextProps, ['viewIndex', 'flagged', 'archived']);
     }
 
     public render() {

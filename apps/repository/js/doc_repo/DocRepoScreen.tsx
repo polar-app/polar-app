@@ -250,7 +250,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     private getRow(viewIndex: number): RepoDocInfo {
         const resolvedState: IResolvedState = this.reactTable!.getResolvedState();
         const {sortedData} = resolvedState;
-        return sortedData[viewIndex]._original;
+        const offset = (resolvedState.page) * resolvedState.pageSize;
+        const idx = offset + viewIndex;
+        return sortedData[idx]._original;
     }
 
     public selectRow(selectedIdx: number,
