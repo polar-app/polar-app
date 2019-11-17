@@ -257,12 +257,37 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <FolderContextMenu toggle={false}
-                                   onCreateFolder={NULL_FUNCTION}>
-                    <div>
-                        Fake folder
+                {/*<FolderContextMenu toggle={false}*/}
+                {/*                   onCreateFolder={NULL_FUNCTION}>*/}
+                {/*    <div>*/}
+                {/*        Fake folder*/}
+                {/*    </div>*/}
+                {/*</FolderContextMenu>*/}
+
+                <div className="p-1">
+
+                    <div className="item">
+
+                        <div className="title text-xxl">
+                            She literally made a joke how she broke up with him twice.
+                        </div>
+
+                        <div className="title text-lg text-grey800">
+                            This is somethign longer...
+                        </div>
+
+
+                        <div className="metadata">
+                            <b>Tags: </b> linux, microsoft
+                        </div>
+
+                        <div className="metadata mt-1">
+                            <b>Added: </b> 1 month ago <b>Updated: </b> 1 day ago
+                        </div>
+
                     </div>
-                </FolderContextMenu>
+
+                </div>
 
                 {/*<AnnotationTypeSelector selected={[AnnotationType.FLASHCARD]} onSelected={selected => console.log('selected: ', selected)}/>*/}
 
