@@ -259,17 +259,59 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                      event: MouseEvent,
                      type: SelectRowType) {
 
-        if (typeof selectedIdx === 'string') {
-            selectedIdx = parseInt(selectedIdx);
-        }
+        selectedIdx = Numbers.toNumber(selectedIdx);
 
-        if (type === 'context' && this.state.selected.includes(selectedIdx)) {
-            return;
-        }
+        // there are really only three strategies
+        //
+        // - one: select ONE item and unselect the previous item(s).  This is done when we have
+        //        a single click on an item.  It always selects it and never de-selects it.
+        //
+        // - add the new selectedIndex to the list of currently selected items.
+        //
+        //   - FIXME: really what this is is just select-one but we leave the
+        //     previous items in place and perform no mutation on them...
 
-        let selected: number[] = [selectedIdx];
+        // - toggle: used when the type is 'checkbox' because we're only toggling
+        //   the selection of that one item
+        //
+        // - none: do nothing.  this is used when the context menu is being used and no additional
+        //         items are being changed.
 
-        if (event.getModifierState("Shift")) {
+        type SelectionStrategy = 'one' | 'range' | 'toggle' | 'none';
+
+        type SelectedRows = ReadonlyArray<number>;
+
+        const computeStrategy = (): SelectionStrategy => {
+
+            if (type === 'checkbox') {
+                return 'toggle';
+            }
+
+            if (type === 'click') {
+
+                if (event.getModifierState("Shift")) {
+                    return 'range';
+                }
+
+                if (event.getModifierState("Control") || event.getModifierState("Meta")) {
+                    return 'toggle';
+                }
+
+            }
+
+            if (type === 'context') {
+
+                if (this.state.selected.includes(selectedIdx)) {
+                    return 'none';
+                }
+
+            }
+
+            return 'one';
+
+        };
+
+        const doStrategyRange = (): SelectedRows => {
 
             // select a range
 
@@ -282,34 +324,50 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                 max = Arrays.last(sorted)!;
             }
 
-            selected = [...Numbers.range(Math.min(min, selectedIdx),
-                                         Math.max(max, selectedIdx))];
+            const selected = [...Numbers.range(Math.min(min, selectedIdx),
+                    Math.max(max, selectedIdx))];
 
-        }
+            return selected;
 
-        const handleToggleSingleRow = () => {
-            // one at a time
-
-            selected = [...this.state.selected];
-
-            if (selected.includes(selectedIdx)) {
-                selected.splice(selected.indexOf(selectedIdx), 1);
-            } else {
-                selected = [...selected, selectedIdx];
-            }
         };
 
-        const toggleSingleRow =
-            (event.getModifierState("Control")
-            || event.getModifierState("Meta"))
-            || ['checkbox', 'context'].includes(type)
-        ;
+        const doStrategyToggle = (): SelectedRows => {
+            const selected = [...this.state.selected];
 
-        if (toggleSingleRow) {
-            handleToggleSingleRow();
+            if (selected.includes(selectedIdx)) {
+                return selected.splice(selected.indexOf(selectedIdx), 1);
+            } else {
+                return [...selected, selectedIdx];
+            }
+
+        };
+
+        const doStrategyOne = (): SelectedRows => {
+            return [selectedIdx];
+        };
+
+        const doStrategy = (): SelectedRows | undefined => {
+
+            const strategy = computeStrategy();
+
+            switch (strategy) {
+                case "one":
+                    return doStrategyOne();
+                case "range":
+                    return doStrategyRange();
+                case "toggle":
+                    return doStrategyToggle();
+                case "none":
+                    return undefined;
+            }
+
+        };
+
+        const selected = doStrategy();
+
+        if (selected) {
+            this.setState({...this.state, selected});
         }
-
-        this.setState({...this.state, selected});
 
     }
 

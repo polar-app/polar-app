@@ -171,13 +171,12 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnTitle(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnTitle() {
 
         return {
             Header: 'Title',
             accessor: 'title',
             className: 'doc-table-col-title',
-            // FIXME: this has a problem as there are TWO handlers here..
             Cell: (row: any) => {
 
                 const id = 'doc-repo-row-title' + row.index;
@@ -195,7 +194,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnUpdated(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnUpdated() {
 
         return {
             Header: 'Updated',
@@ -206,7 +205,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 85,
             defaultSortDesc: true,
             className: 'doc-table-col-updated d-none-mobile',
-            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 return (
@@ -220,7 +218,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnAdded(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnAdded() {
 
         return {
             Header: 'Added',
@@ -230,7 +228,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 85,
             defaultSortDesc: true,
             className: 'doc-table-col-added d-none-mobile',
-            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 return (
@@ -241,7 +238,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnSite(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnSite() {
 
         return {
             Header: 'Site',
@@ -252,7 +249,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 200,
             sortable: false,
             className: "d-none-mobile",
-            getProps: () => contextMenuHandlers,
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                 const toSTR = (doc?: RepoDocInfo): string => {
@@ -291,7 +287,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnTags(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnTags() {
         return {
             id: 'tags',
             Header: 'Tags',
@@ -300,7 +296,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             accessor: '',
             show: this.props.columns.tags.selected,
             className: 'doc-table-col-tags d-none-mobile',
-            getProps: () => contextMenuHandlers,
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                 const toSTR = (obj: any): string => {
@@ -348,7 +343,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         };
     }
 
-    private createColumnProgress(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnProgress() {
 
         return {
             id: 'progress',
@@ -360,7 +355,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             defaultSortDesc: true,
             resizable: false,
             className: 'doc-table-col-progress d-none-mobile',
-            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 return (
@@ -373,7 +367,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnAnnotations(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnAnnotations() {
 
         return {
             id: 'nrAnnotations',
@@ -385,7 +379,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             defaultSortDesc: true,
             resizable: false,
             className: "d-none-mobile",
-            getProps: () => contextMenuHandlers,
         };
 
     }
@@ -460,40 +453,40 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
     private createColumns(contextMenuHandlers: ContextMenuHandlers) {
 
         if (Platforms.isMobile()) {
-            return this.createColumnsForTablet(contextMenuHandlers);
+            return this.createColumnsForTablet();
         } else {
-            return this.createColumnsForDesktop(contextMenuHandlers);
+            return this.createColumnsForDesktop();
         }
 
     }
 
-    private createColumnsForTablet(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnsForTablet() {
 
         return [
             this.createColumnCheckbox(),
-            this.createColumnTitle(contextMenuHandlers),
+            this.createColumnTitle(),
             // this.createColumnUpdated(),
             // this.createColumnAdded(),
             // this.createColumnSite(),
             // this.createColumnTags(),
             // this.createColumnAnnotations(),
-            this.createColumnProgress(contextMenuHandlers),
+            this.createColumnProgress(),
             // this.createColumnButtons()
         ];
 
     }
 
-    private createColumnsForDesktop(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnsForDesktop() {
 
         return [
             this.createColumnCheckbox(),
-            this.createColumnTitle(contextMenuHandlers),
-            this.createColumnUpdated(contextMenuHandlers),
-            this.createColumnAdded(contextMenuHandlers),
-            this.createColumnSite(contextMenuHandlers),
-            this.createColumnTags(contextMenuHandlers),
-            this.createColumnAnnotations(contextMenuHandlers),
-            this.createColumnProgress(contextMenuHandlers),
+            this.createColumnTitle(),
+            this.createColumnUpdated(),
+            this.createColumnAdded(),
+            this.createColumnSite(),
+            this.createColumnTags(),
+            this.createColumnAnnotations(),
+            this.createColumnProgress(),
             this.createColumnButtons()
         ];
 
