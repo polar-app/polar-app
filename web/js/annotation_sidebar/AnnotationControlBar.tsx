@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
-import Moment from 'react-moment';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
@@ -24,6 +23,8 @@ import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
 import {NullCollapse} from "../ui/null_collapse/NullCollapse";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight";
+import {EditIcon} from "../ui/standard_icons/EditIcon";
 
 const Styles: IStyleMap = {
 
@@ -67,6 +68,53 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     public render() {
         const { annotation } = this.props;
 
+        const ChangeTextHighlightButton = () => {
+
+            if (this.props.annotation.annotationType !== AnnotationType.TEXT_HIGHLIGHT) {
+                return null;
+            }
+
+            return <Button className="text-muted p-1"
+                           title="Edit text highlight"
+                           size="sm"
+                           color="light"
+                           style={Styles.button}
+                           disabled={! this.props.doc.mutable}
+                           onClick={() => this.toggleActiveInputComponent('text-highlight')}>
+
+                <EditIcon/>
+
+            </Button>;
+        };
+
+        const CreateCommentButton = () => {
+            return <Button className="text-muted p-1"
+                           title="Create comment"
+                           size="sm"
+                           color="light"
+                           style={Styles.button}
+                           disabled={! this.props.doc.mutable}
+                           onClick={() => this.toggleActiveInputComponent('comment')}>
+
+                <CommentIcon/>
+
+            </Button>;
+        };
+
+        const CreateFlashcardButton = () => {
+            return <Button className="ml-1 text-muted p-1"
+                    title="Create flashcard"
+                    style={Styles.button}
+                    size="sm"
+                    color="light"
+                    disabled={! this.props.doc.mutable}
+                    onClick={() => this.toggleActiveInputComponent('flashcard')}>
+
+                <FlashcardIcon/>
+
+            </Button>;
+        };
+
         return (
 
             <div style={{userSelect: 'none'}}
@@ -90,29 +138,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        <Button className="text-muted p-1"
-                                title="Create comment"
-                                size="sm"
-                                color="light"
-                                style={Styles.button}
-                                disabled={! this.props.doc.mutable}
-                                onClick={() => this.toggleActiveInputComponent('comment')}>
+                        <ChangeTextHighlightButton/>
 
-                            <CommentIcon/>
+                        <CreateCommentButton/>
 
-                        </Button>
-
-                        <Button className="ml-1 text-muted p-1"
-                                title="Create flashcard"
-                                style={Styles.button}
-                                size="sm"
-                                color="light"
-                                disabled={! this.props.doc.mutable}
-                                onClick={() => this.toggleActiveInputComponent('flashcard')}>
-
-                            <FlashcardIcon/>
-
-                        </Button>
+                        <CreateFlashcardButton/>
 
                         <NullCollapse open={!annotation.immutable}>
                             <ColorSelector className="mt-auto mb-auto"
@@ -134,6 +164,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                     </div>
 
                 </div>
+
+                <EditTextHighlight id={annotation.id}
+                                   hidden={this.props.annotation.annotationType !== AnnotationType.TEXT_HIGHLIGHT}
+                                   active={this.state.activeInputComponent === 'text-highlight'}
+                                   html={this.props.annotation.html || ""}
+                                   onReset={() => TextHighlights.resetRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id)}
+                                   onChanged={text => TextHighlights.setRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id, text)}
+                                   onCancel={() => this.toggleActiveInputComponent('none')}/>
 
                 <CreateComment id={annotation.id}
                                active={this.state.activeInputComponent === 'comment'}
@@ -232,4 +270,4 @@ interface IState {
     activeInputComponent: ActiveInputComponent;
 }
 
-type ActiveInputComponent = 'none' | 'comment' | 'flashcard';
+type ActiveInputComponent = 'none' | 'comment' | 'flashcard' | 'text-highlight';

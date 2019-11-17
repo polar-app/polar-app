@@ -13,7 +13,7 @@ export class CommentIcon extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <i style={IconStyles.ICON} className="fas fa-comment-alt"></i>
+            <i style={IconStyles.ICON} className="fas fa-comment-alt"/>
 
         );
 

@@ -13,7 +13,7 @@ export class EditIcon extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <i style={IconStyles.ICON} className="far fa-edit"></i>
+            <i style={IconStyles.ICON} className="fas fa-pen"/>
 
         );
 
