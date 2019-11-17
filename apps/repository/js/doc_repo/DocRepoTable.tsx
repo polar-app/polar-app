@@ -598,20 +598,20 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 onContextMenu: (event: MouseEvent) => {
                     handleSelect(event, 'context');
-                    // contextMenuHandlers.onContextMenu(event);
+                    contextMenuHandlers.onContextMenu(event);
                 },
 
                 onClick: (event: MouseEvent, handleOriginal?: () => void) => {
                     handleSelect(event, 'click');
                 },
 
-                // onTouchEnd: (event: TouchEvent) => {
-                //     contextMenuHandlers.onTouchEnd(event);
-                // },
-                //
-                // onTouchStart: (event: TouchEvent) => {
-                //     contextMenuHandlers.onTouchStart(event);
-                // }
+                onTouchEnd: (event: TouchEvent) => {
+                    contextMenuHandlers.onTouchEnd(event);
+                },
+
+                onTouchStart: (event: TouchEvent) => {
+                    contextMenuHandlers.onTouchStart(event);
+                }
 
             };
 
@@ -702,7 +702,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     getTdProps={(state: any, rowInfo?: RowInfo, column?: Column) => {
 
                         if (!rowInfo || ! column) {
-                            return;
+                            return {};
                         }
 
                         return this.createTDProps(rowInfo, column, contextMenuHandlers);
