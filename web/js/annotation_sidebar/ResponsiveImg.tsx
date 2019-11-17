@@ -6,7 +6,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 /**
  * Shows a and image and re-sizes it to its parent properly.
  */
-export class ResponsiveImg extends FastComponent<IProps, IState> {
+export class ResponsiveImg extends FastComponent<IProps> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -78,7 +78,3 @@ interface IProps {
     readonly color?: HighlightColor;
     readonly defaultText?: string;
 }
-
-interface IState {
-}
-

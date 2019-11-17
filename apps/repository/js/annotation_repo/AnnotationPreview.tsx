@@ -44,7 +44,7 @@ const Body = (props: IProps) => {
 
 };
 
-export class AnnotationPreview extends FastComponent<IProps, IState> {
+export class AnnotationPreview extends FastComponent<IProps> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -73,7 +73,3 @@ interface IProps {
     readonly created: ISODateTimeString;
     readonly meta?: RepoHighlightInfo
 }
-
-interface IState {
-}
-

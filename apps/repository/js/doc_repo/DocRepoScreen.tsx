@@ -87,6 +87,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.onMultiDeleted = this.onMultiDeleted.bind(this);
 
         this.getSelected = this.getSelected.bind(this);
+        this.getRow = this.getRow.bind(this);
 
         this.onDragStart = this.onDragStart.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
@@ -230,19 +231,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             return [];
         }
 
-        interface TableItem {
-            readonly _original: RepoDocInfo;
-        }
-
-        interface IResolvedState {
-            readonly sortedData: ReadonlyArray<TableItem>;
-            readonly page: number;
-            readonly pageSize: number;
-        }
-
         const resolvedState: IResolvedState = this.reactTable!.getResolvedState();
 
-        const sortedData = resolvedState.sortedData;
+        const {sortedData} = resolvedState;
 
         const offset = (resolvedState.page) * resolvedState.pageSize;
 
@@ -254,6 +245,12 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         return result;
 
+    }
+
+    private getRow(viewIndex: number): RepoDocInfo {
+        const resolvedState: IResolvedState = this.reactTable!.getResolvedState();
+        const {sortedData} = resolvedState;
+        return sortedData[viewIndex]._original;
     }
 
     public selectRow(selectedIdx: number,
@@ -526,6 +523,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   onDragEnd={() => this.onDragEnd()}
                                                   filters={this.docRepoFilters.filters}
                                                   getSelected={() => this.getSelected()}
+                                                  getRow={(viewIndex) => this.getRow(viewIndex)}
                                                   onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromFolder(folder, repoDocInfos)}/>
 
                                 }
@@ -750,3 +748,14 @@ interface IState {
  * a checkbox for selecting multiple.
  */
 export type SelectRowType = 'click' | 'context' | 'checkbox';
+
+
+interface TableItem {
+    readonly _original: RepoDocInfo;
+}
+
+interface IResolvedState {
+    readonly sortedData: ReadonlyArray<TableItem>;
+    readonly page: number;
+    readonly pageSize: number;
+}

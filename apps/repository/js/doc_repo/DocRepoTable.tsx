@@ -396,7 +396,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                         {/*WARNING: making this a function breaks the layout...*/}
 
                         <TagInput availableTags={this.props.tagsProvider()}
-                                  existingTags={existingTags}
+                                  existingTags={() => existingTags}
                                   relatedTags={this.props.relatedTags}
                                   onChange={(tags) => this.props.onDocTagged(repoDocInfo, tags)}/>
 
@@ -785,7 +785,7 @@ interface IProps {
     readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
     readonly filters: Filters;
     readonly onRemoveFromFolder: OnRemoveFromFolderCallback;
-
+    readonly getRow: (viewIndex: number) => RepoDocInfo;
 }
 
 interface IState {
