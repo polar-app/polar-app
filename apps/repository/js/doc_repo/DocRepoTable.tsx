@@ -38,6 +38,7 @@ const log = Logger.create();
 
 // TODO: go back to ExtendedReactTable
 
+const CONTEXT_MENU_ID = 'doc-table-context-menu';
 
 export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
@@ -74,6 +75,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         this.createTDProps = this.createTDProps.bind(this);
         this.createTDPropsForMobile = this.createTDPropsForMobile.bind(this);
         this.createTDPropsForDesktop = this.createTDPropsForDesktop.bind(this);
+
+        this.createContextMenuHandlers = this.createContextMenuHandlers.bind(this);
 
     }
 
@@ -174,7 +177,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             Header: 'Title',
             accessor: 'title',
             className: 'doc-table-col-title',
-            getProps: () => contextMenuHandlers,
+            // FIXME: this has a problem as there are TWO handlers here..
             Cell: (row: any) => {
 
                 const id = 'doc-repo-row-title' + row.index;
@@ -496,12 +499,12 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createTDProps(rowInfo?: RowInfo, column?: Column) {
+    private createTDProps(rowInfo: RowInfo, column: Column, contextMenuHandlers: ContextMenuHandlers) {
 
         if (Platforms.isMobile()) {
             return this.createTDPropsForMobile(rowInfo, column);
         } else {
-            return this.createTDPropsForDesktop(rowInfo, column);
+            return this.createTDPropsForDesktop(rowInfo, column, contextMenuHandlers);
        }
 
     }
@@ -547,7 +550,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createTDPropsForDesktop(rowInfo?: RowInfo, column?: Column) {
+    private createTDPropsForDesktop(rowInfo: RowInfo, column: Column, contextMenuHandlers: ContextMenuHandlers) {
 
         const DEFAULT_BEHAVIOR_COLUMNS = [
             'tag-input',
@@ -584,22 +587,31 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
             return {
 
-                onDoubleClick: (event: MouseEvent) => {
-
-                    if (rowInfo) {
-                        const repoDocInfo: RepoDocInfo = rowInfo.original;
-                        this.onDocumentLoadRequested(repoDocInfo);
+                onDoubleClick: () => {
+                    const selected = this.props.getSelected();
+                    if (selected.length === 1) {
+                        // only allow double click if one item is requested.  Double clicking on > 1 makes
+                        // no sense.
+                        this.onDocumentLoadRequested(selected[0]);
                     }
-
                 },
 
                 onContextMenu: (event: MouseEvent) => {
                     handleSelect(event, 'context');
+                    // contextMenuHandlers.onContextMenu(event);
                 },
 
                 onClick: (event: MouseEvent, handleOriginal?: () => void) => {
                     handleSelect(event, 'click');
                 },
+
+                // onTouchEnd: (event: TouchEvent) => {
+                //     contextMenuHandlers.onTouchEnd(event);
+                // },
+                //
+                // onTouchStart: (event: TouchEvent) => {
+                //     contextMenuHandlers.onTouchStart(event);
+                // }
 
             };
 
@@ -607,12 +619,16 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
+    private createContextMenuHandlers() {
+        const contextMenuHandlers = prepareContextMenuHandlers({id: CONTEXT_MENU_ID});
+        return contextMenuHandlers;
+    }
+
     public render() {
 
         const { data } = this.props;
 
-        const contextMenuID = 'doc-table-context-menu';
-        const contextMenuHandlers = prepareContextMenuHandlers({id: contextMenuID});
+        const contextMenuHandlers = this.createContextMenuHandlers();
 
         return (
 
@@ -622,7 +638,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 <AccountUpgradeBar/>
 
-                <ContextMenuWrapper id={contextMenuID}>
+                <ContextMenuWrapper id={CONTEXT_MENU_ID}>
 
                     <div className="border shadow rounded pt-2 pb-2"
                          style={{backgroundColor: 'var(--white)'}}>
@@ -683,8 +699,13 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                         };
                     }}
-                    getTdProps={(state: any, rowInfo?: RowInfo, column?: Column, instance?: any) => {
-                        return this.createTDProps(rowInfo, column);
+                    getTdProps={(state: any, rowInfo?: RowInfo, column?: Column) => {
+
+                        if (!rowInfo || ! column) {
+                            return;
+                        }
+
+                        return this.createTDProps(rowInfo, column, contextMenuHandlers);
                     }}
 
                 />
