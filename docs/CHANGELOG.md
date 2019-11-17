@@ -1,4 +1,6 @@
 
+- Ability to revise the text of a text highlight.
+
 - Fixed bad bug with stats for spaced repetitions not being computed accurately.
 
 - Improved performance of doc table when selecting items.
