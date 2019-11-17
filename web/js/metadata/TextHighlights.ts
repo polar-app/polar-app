@@ -70,11 +70,13 @@ export class TextHighlights {
                                  id: IDStr,
                                  html: HTMLStr) {
 
+        console.log("FIXME: setting revised text");
+
         const textHighlight = pageMeta.textHighlights[id];
 
         if (textHighlight) {
 
-            DocMetas.withBatchedMutations(docMeta, () => {
+//            DocMetas.withBatchedMutations(docMeta, () => {
 
                 delete pageMeta.textHighlights[id];
 
@@ -88,7 +90,7 @@ export class TextHighlights {
 
                 pageMeta.textHighlights[id] = newTextHighlight;
 
-            });
+//            });
         }
 
     }

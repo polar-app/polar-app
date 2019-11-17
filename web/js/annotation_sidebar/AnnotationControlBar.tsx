@@ -56,8 +56,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onComment = this.onComment.bind(this);
+        this.onCommentCreated = this.onCommentCreated.bind(this);
         this.onColor = this.onColor.bind(this);
+
+        this.onTextHighlightReset = this.onTextHighlightReset.bind(this);
+        this.onTextHighlightEdited = this.onTextHighlightEdited.bind(this);
 
         this.state = {
             activeInputComponent: 'none'
@@ -71,6 +74,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         const ChangeTextHighlightButton = () => {
 
             if (this.props.annotation.annotationType !== AnnotationType.TEXT_HIGHLIGHT) {
+                // this should only be added on text highlights.
                 return null;
             }
 
@@ -169,14 +173,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                                    hidden={this.props.annotation.annotationType !== AnnotationType.TEXT_HIGHLIGHT}
                                    active={this.state.activeInputComponent === 'text-highlight'}
                                    html={this.props.annotation.html || ""}
-                                   onReset={() => TextHighlights.resetRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id)}
-                                   onChanged={text => TextHighlights.setRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id, text)}
+                                   onReset={() => this.onTextHighlightReset()}
+                                   onChanged={text => this.onTextHighlightEdited(text)}
                                    onCancel={() => this.toggleActiveInputComponent('none')}/>
 
                 <CreateComment id={annotation.id}
                                active={this.state.activeInputComponent === 'comment'}
                                onCancel={() => this.toggleActiveInputComponent('none')}
-                               onComment={(html) => this.onComment(html)}/>
+                               onComment={(html) => this.onCommentCreated(html)}/>
 
                 <CreateFlashcard id={annotation.id}
                                  active={this.state.activeInputComponent === 'flashcard'}
@@ -187,6 +191,25 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
             </div>
 
         );
+    }
+
+    private onTextHighlightReset() {
+        const {annotation} = this.props;
+
+        setTimeout(() => {
+            TextHighlights.resetRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id);
+            this.toggleActiveInputComponent('none');
+        }, 1);
+    }
+
+    private onTextHighlightEdited(text: string) {
+        const {annotation} = this.props;
+
+        setTimeout(() => {
+            TextHighlights.setRevisedText(annotation.docMeta, annotation.pageMeta, annotation.id, text);
+            this.toggleActiveInputComponent('none');
+        }, 1);
+
     }
 
     private onColor(color: HighlightColor) {
@@ -228,7 +251,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         });
     }
 
-    private onComment(html: string, existingComment?: Comment) {
+    private onCommentCreated(html: string, existingComment?: Comment) {
 
         RendererAnalytics.event({category: 'annotations', action: 'comment-created'});
 
