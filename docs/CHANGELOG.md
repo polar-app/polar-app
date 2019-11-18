@@ -1,22 +1,14 @@
-
-- Fixed alignment of headers in the doc repo
+## Features
 
 - Ability to revise the text of a text highlight.
 
-- Fixed bad bug with stats for spaced repetition queue not being computed accurately.
-
-- Improved performance of doc table when selecting items.
-
 - Big refactor of the context menu so that range selection and context menus work properly. 
 
-- Ability to remove items from folders...
+- Ability to remove items from folders via right click
 
-- multi-selection for deletes implemented
+- Multi-selection for deletes implemented
 
 - Deleting multiple items via context menu now works
-
-- The document repository view is now much faster and context menus no longer have a 'gap'
-  which wouldn't trigger the menu. 
 
 - Bronze now officially required for reading stats and recommended tags
 
@@ -24,6 +16,19 @@
 
 - Major refactor of how text selection works using the new modern text layer code in pdf.js which has 
   been a major complaint since 1.0.  Excited to finally have this fixed!
+
+## Fixes
+
+- Merged branch for image optimization.
+
+- Fixed alignment of headers in the doc repo
+
+- Fixed bad bug with stats for spaced repetition queue not being computed accurately.
+
+- Improved performance of doc table when selecting items.
+
+- The document repository view is now much faster and context menus no longer have a 'gap'
+  which wouldn't trigger the menu. 
   
 - Now using larger buttons in the UI 
 
