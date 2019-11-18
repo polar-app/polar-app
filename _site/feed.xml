@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-11-17T12:01:32-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Building Polar’s Product Market Fit Engine</title><link href="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html" rel="alternate" type="text/html" title="Building Polar's Product Market Fit Engine" /><published>2019-11-15T08:00:00-08:00</published><updated>2019-11-15T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine</id><content type="html" xml:base="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-11-17T18:26:58-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Building Polar’s Product Market Fit Engine</title><link href="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html" rel="alternate" type="text/html" title="Building Polar's Product Market Fit Engine" /><published>2019-11-15T08:00:00-08:00</published><updated>2019-11-15T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine</id><content type="html" xml:base="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;building-polars-productmarket-fit-engine&quot;&gt;Building Polar’s Product/Market Fit Engine&lt;/h1&gt;
 
@@ -10,7 +10,7 @@ understand what our users want and to prioritize feature requests.&lt;/p&gt;
 &lt;p&gt;Wouldn’t it be great if we could build a engine that could systematically build a product roadmap but also help ensure 
 that we’re building a product that our users actually want?&lt;/p&gt;
 
-&lt;h1 id=&quot;if-you-build-it-they-will-come&quot;&gt;“If you build it, they will come.”&lt;/h1&gt;
+&lt;h1 id=&quot;the-field-of-dreams-fallacy&quot;&gt;The Field of Dreams Fallacy&lt;/h1&gt;
 
 &lt;p&gt;In the movie &lt;a href=&quot;https://www.youtube.com/watch?v=NOPTByHw5RA&quot;&gt;Field of Dreams&lt;/a&gt;, (spoiler alert…) the protagonist hears a
 voice that tells him to build a baseball field.&lt;/p&gt;
@@ -116,9 +116,32 @@ users can complete in less than 1 minute.&lt;/p&gt;
 
 &lt;h1 id=&quot;feature-prioritization&quot;&gt;Feature Prioritization&lt;/h1&gt;
 
+&lt;p&gt;Here’s where the main value comes from and that’s customized feature priority to help you nail PMF and make your users
+insanely happen.&lt;/p&gt;
+
+&lt;p&gt;Here’s the most important part though - do not worry about making everyone happy!&lt;/p&gt;
+
+&lt;p&gt;Some of your users aren’t going to like the app. Maybe you just don’t work well on their favorite platform. Maybe you’re
+missing a key feature that’s not really on your roadmap.&lt;/p&gt;
+
+&lt;p&gt;It doesn’t matter.  If they don’t value your product don’t value their features request and feedback as highly as other users.&lt;/p&gt;
+
+&lt;p&gt;If you do you’re going to be optimizing for building a &lt;em&gt;general&lt;/em&gt; product and we need to focus on landing a beachhead.&lt;/p&gt;
+
+&lt;p&gt;We need to figure out some subset of users that are insanely addicted to your product.&lt;/p&gt;
+
 &lt;h2 id=&quot;technical-difficulty&quot;&gt;Technical Difficulty&lt;/h2&gt;
 
+&lt;p&gt;Not all features are equal in terms of complexity.  Some you can bang out in 1-2 hours and others require months
+of planning and work.&lt;/p&gt;
+
+&lt;p&gt;This needs to be factored into our planning or we might be working on the wrong things.&lt;/p&gt;
+
 &lt;h2 id=&quot;customer-demand&quot;&gt;Customer Demand&lt;/h2&gt;
+
+&lt;p&gt;Now score the customer demand but segment based on how they feel about your product.  There are a few ways to do this.&lt;/p&gt;
+
+&lt;p&gt;The easiest is to segment. FIXME..&lt;/p&gt;
 
 &lt;h2 id=&quot;impact&quot;&gt;Impact&lt;/h2&gt;
 
@@ -131,11 +154,7 @@ this second feature.&lt;/p&gt;
 &lt;p&gt;These type of features will yield higher revenue in the long term which means you can have the financial resources
 to build out the rest of your feature set.&lt;/p&gt;
 
-&lt;h2 id=&quot;prioritize-features-by-easy-of-implementation&quot;&gt;Prioritize features by easy of implementation&lt;/h2&gt;
-
-&lt;h1 id=&quot;listen-to-customers&quot;&gt;Listen to Customers&lt;/h1&gt;
-
-&lt;h1 id=&quot;has-polar-hit-pmf-yet&quot;&gt;Has Polar hit PMF Yet?&lt;/h1&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0</title><link href="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0" /><published>2019-11-11T08:00:00-08:00</published><updated>2019-11-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0</id><content type="html" xml:base="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;prioritize-features-by-easy-of-implementation&quot;&gt;Prioritize features by easy of implementation&lt;/h2&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0</title><link href="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0" /><published>2019-11-11T08:00:00-08:00</published><updated>2019-11-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0</id><content type="html" xml:base="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;polar-150---spaced-repetition-better-incremental-reading-and-plans-for-20&quot;&gt;Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0&lt;/h1&gt;
 
