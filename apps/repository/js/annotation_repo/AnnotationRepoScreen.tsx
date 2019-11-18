@@ -28,6 +28,7 @@ import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightC
 import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/AnnotationTypeSelector";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {RepoFooter} from "../repo_footer/RepoFooter";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -192,6 +193,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                       }
                       side='left'
                       initialWidth={300}/>
+
+                <RepoFooter/>
 
             </FixedNav>
 
