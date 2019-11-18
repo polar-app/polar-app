@@ -96,15 +96,11 @@ export class ComponentManager {
 
         log.debug("onComponentEvent: ", annotationEvent);
 
-        console.log("FIXME: onComponentEvent: ", annotationEvent);
-
         const containerID = annotationEvent.pageMeta.pageInfo.num;
 
         Preconditions.assertNumber(containerID, "containerID");
 
         if (annotationEvent.mutationState === MutationState.PRESENT) {
-            console.log("FIXME: GOT PRESENT!!");
-
             log.debug("PRESENT");
 
             const container = this.containers[containerID];
@@ -123,9 +119,6 @@ export class ComponentManager {
 
             component.init(annotationEvent);
 
-            // FIXME: register the component with the container and ONLY call
-            // he callback if and when the container is visible.
-
             let initialized: boolean = true;
 
             const callback = (containerLifecycleState: ContainerLifecycleState) => {
@@ -133,11 +126,10 @@ export class ComponentManager {
                 if (containerLifecycleState.visible) {
 
                     if (! initialized) {
+                        // the first time it's visible we need to fire an init again...
                         component.init(annotationEvent);
                         initialized = true;
                     }
-
-                    // FIXME: the first time it's visible we need to fire an init again...
 
                     setTimeout(() => {
                         // now render the component on screen.
@@ -146,7 +138,6 @@ export class ComponentManager {
 
 
                 } else {
-                    console.log("FIXME: destroying!");
                     component.destroy();
                     initialized = false;
                 }
@@ -168,8 +159,6 @@ export class ComponentManager {
             this.components[annotationEvent.id] = new ComponentEntry(containerLifecycleListener, component);
 
         } else if (annotationEvent.mutationState === MutationState.ABSENT) {
-
-            console.log("FIXME: GOT ABSENT!!");
 
             log.debug("ABSENT");
 
