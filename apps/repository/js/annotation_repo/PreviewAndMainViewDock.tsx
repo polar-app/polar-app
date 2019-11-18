@@ -99,7 +99,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
             );
         }
 
-    }
+    };
 
     public static Phone = class extends PreviewAndMainViewDock {
 
