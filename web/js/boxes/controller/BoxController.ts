@@ -347,9 +347,9 @@ export class BoxController {
      */
     private _calculateIntersectedBoxes(element: HTMLElement, resizeRect: Rect, intersectedElementsSelector: string) {
 
-        Preconditions.assertNotNull(element, "element");
-        Preconditions.assertNotNull(resizeRect, "resizeRect");
-        Preconditions.assertNotNull(intersectedElementsSelector, "intersectedElementsSelector");
+        Preconditions.assertPresent(element, "element");
+        Preconditions.assertPresent(resizeRect, "resizeRect");
+        Preconditions.assertPresent(intersectedElementsSelector, "intersectedElementsSelector");
 
 
         // // This is where we are NOW, now where we are GOING to be.
