@@ -11,8 +11,8 @@ hidden: true
 
 # Building Polar's Product/Market Fit Engine
 
-For the past month or so I've been revamping Polar's product-market-fit engine which is a system we've built to help me
-understand what our users want and to prioritize feature requests.
+For the past month or so I've been revamping Polar's product-market-fit engine to help understand our users and to
+prioritize feature requests.
 
 More importantly, it's helping me build a product for the long term based on science rather than whim.
 

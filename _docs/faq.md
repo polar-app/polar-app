@@ -27,9 +27,25 @@ This changes between platforms depending if you're on Windows, MacOS or Linux.
 
 You can find out the exact directory by going to ```Help | About```.
 
-# Polar is awesome!
+# How do I backup / restore my data?
 
-That's not really a question but we agree completely.
+If you're using the desktop version of Polar you can perform the following 
+operations to backup/restore your data.
+
+- Go to ```Help | About``` to find the Polar data directory.
+- Stop Polar
+- Backup this directory (copy it to another folder)
+
+## How do I restore?
+
+If you have a backup and want to restore?
+
+- Stop Polar
+- Delete the Polar data directory
+- Copy the data you want to restore to the same path as the Polar data directory
+- Start Polar
+
+Your data should be restored.
 
 # Why is Polar using so much disk space?
 
@@ -69,7 +85,7 @@ like cloud sync, filesystem consistency checks, sharing, etc.
 
 Some of these features aren't implemented yet but are on the roadmap.
 
-# How do I sync to Anki
+# How do I sync to Anki?
 
 Please see [Anki Sync for Spaced Repetition](https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html)
 
