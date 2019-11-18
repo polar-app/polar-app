@@ -78,7 +78,7 @@ export class TextHighlightComponent extends Component {
 
         log.debug("render()");
 
-        Dictionaries.forDict<IRect>(this.textHighlight!.rects, (id, highlightRect) => {
+        Dictionaries.forDict(this.textHighlight!.rects, (id, highlightRect) => {
 
             const pageElement = Preconditions.assertPresent(this.pageElement);
             const pageMeta = Preconditions.assertPresent(this.pageMeta);

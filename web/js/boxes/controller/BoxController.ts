@@ -12,6 +12,8 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 import interact from 'interactjs';
 import {Objects} from "polar-shared/src/util/Objects";
+import rest from "mocha-parallel-tests/dist/bin/options/rest";
+import {IDimensions} from "../../util/IDimensions";
 
 const log = Logger.create();
 
@@ -29,6 +31,8 @@ export class BoxController {
 
     }
 
+    // FIXME: this has a bug now where it can't resize as the page element vanishes...
+
     /**
      */
     public register(opts: BoxOptions) {
@@ -43,7 +47,7 @@ export class BoxController {
             Optional.of(boxOptions.restrictionElement)
                     .getOrElse(boxOptions.target.parentElement!);
 
-        interact(boxOptions.target)
+        const interactable = interact(boxOptions.target)
             .draggable({
 
                 inertia: false,
@@ -116,12 +120,7 @@ export class BoxController {
 
                 const target = interactionEvent.target;
 
-                const restrictionRect = Rects.createFromBasicRect({
-                    left: 0,
-                    top: 0,
-                    width: restrictionElement.offsetWidth,
-                    height: restrictionElement.offsetHeight
-                });
+                const restrictionRect = this.computeRestrictionRect(restrictionElement);
 
                 const origin = this._computeOriginXY(interactionEvent);
 
@@ -185,12 +184,16 @@ export class BoxController {
                 this.fireOnMoveEnd(interactionEvent);
             })
             .on('resizestart', (interactionEvent: any) => {
+                console.log("FIXME1001");
+
                 this._captureStartTargetRect(interactionEvent);
                 log.info("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
                 interactionEvent.interaction.startRect = Objects.duplicate(interactionEvent.rect);
 
             })
             .on('resizemove', (interactionEvent: any) => {
+
+                console.log("FIXME1001");
 
                 log.info("resizemove: event: ", interactionEvent);
                 log.info("resizemove: event.target: ", interactionEvent.target);
@@ -202,12 +205,7 @@ export class BoxController {
 
                 const target = interactionEvent.target;
 
-                const restrictionRect = Rects.createFromBasicRect({
-                    left: 0,
-                    top: 0,
-                    width: restrictionElement.offsetWidth,
-                    height: restrictionElement.offsetHeight
-                });
+                const restrictionRect = this.computeRestrictionRect(restrictionElement);
 
                 // the tempRect is the rect that the user has attempted to draw
                 // but which we have not yet accepted and is controlled by
@@ -269,6 +267,42 @@ export class BoxController {
             .on('resizeend', (interactionEvent: any) => {
                 this.fireOnMoveEnd(interactionEvent);
             });
+
+    }
+
+    private computeRestrictionRect(element: HTMLElement) {
+
+        const computeDimensions = (): IDimensions => {
+
+            console.log("FIXME11114 restrictionElement: ", element);
+
+            if ('canvas' === element.tagName.toLowerCase()) {
+
+                const canvasElement = <HTMLCanvasElement> element;
+
+                return {
+                    width: canvasElement.width,
+                    height: canvasElement.height,
+                }
+            }
+
+            return {
+                width: element.offsetWidth,
+                height: element.offsetHeight
+            };
+
+        };
+
+        const dimensions = computeDimensions();
+
+        Preconditions.assertCondition(dimensions.width > 0, 'restrictionRect width');
+        Preconditions.assertCondition(dimensions.height > 0, 'restrictionRect height');
+
+        return Rects.createFromBasicRect({
+            left: 0,
+            top: 0,
+            ...dimensions
+        });
 
     }
 
