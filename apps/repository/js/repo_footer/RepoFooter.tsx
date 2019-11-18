@@ -11,7 +11,7 @@ export class RepoFooter extends React.PureComponent<IProps> {
 
         return (
 
-            <footer className="d-none-desktop border-top">
+            <footer className="d-none-desktop d-none-tablet border-top">
 
                 <div className="mt-1 mb-1"
                      style={{
