@@ -130,7 +130,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
     public static Phone = class extends StatsScreen {
         public render() {
-            return <FixedNav id="doc-repository" className="statistics-view p-1">
+            return <FixedNav id="doc-repository" className="statistics-view">
 
                 <header>
 
@@ -140,7 +140,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody>
+                <FixedNavBody className="p-1">
                     <ReviewerStats isReviewer={this.state.isReviewer}/>
                 </FixedNavBody>
 
