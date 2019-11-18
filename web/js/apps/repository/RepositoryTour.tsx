@@ -7,7 +7,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
-import {Platforms} from "../../util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 const log = Logger.create();
 

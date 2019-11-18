@@ -6,7 +6,7 @@ import {AppLauncher} from './AppLauncher';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Promises} from '../../util/Promises';
 import {Updates} from '../../updates/Updates';
-import {Platform, Platforms} from '../../util/Platforms';
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {Menus} from './Menus';

@@ -11,7 +11,7 @@ import {Capture} from '../../capture/Capture';
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
 import {CaptureOpts} from '../../capture/CaptureOpts';
-import {Platform, Platforms} from '../../util/Platforms';
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';

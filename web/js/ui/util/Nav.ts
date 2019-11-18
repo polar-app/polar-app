@@ -1,4 +1,4 @@
-import {Platforms} from '../../util/Platforms';
+import {Platforms} from 'polar-shared/src/util/Platforms';
 import {AppRuntime} from '../../AppRuntime';
 import {shell} from 'electron';
 

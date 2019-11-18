@@ -38,7 +38,7 @@ import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {RepositoryTour} from './RepositoryTour';
 import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
-import {Platforms} from '../../util/Platforms';
+import {Platforms} from 'polar-shared/src/util/Platforms';
 import {AppOrigin} from '../AppOrigin';
 import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';

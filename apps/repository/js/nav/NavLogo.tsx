@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {Link} from "react-router-dom";
-import {Platforms} from "../../../../web/js/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 const Styles: IStyleMap = {
     parent: {

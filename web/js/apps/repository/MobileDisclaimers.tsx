@@ -3,7 +3,7 @@ import {ReactInjector} from '../../ui/util/ReactInjector';
 import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {MobileDisclaimer} from './MobileDisclaimer';
-import {Platforms} from '../../util/Platforms';
+import {Platforms} from 'polar-shared/src/util/Platforms';
 import {Logger} from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem} from 'reactstrap';
 import {LinkDropdownItem} from './LinkDropdownItem';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
-import {Platforms} from '../../../../web/js/util/Platforms';
+import {Platforms} from 'polar-shared/src/util/Platforms';
 
 export class LinkDropdown extends React.PureComponent<IProps, IState> {
 

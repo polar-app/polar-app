@@ -7,7 +7,7 @@ import fs from 'fs';
 import {Files} from 'polar-shared/src/util/Files';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Directories, GlobalDataDir} from './Directories';
-import {Platform, Platforms} from '../util/Platforms';
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {DatastoreTester} from './DatastoreTester';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';

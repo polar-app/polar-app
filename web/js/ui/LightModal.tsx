@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platforms} from "../util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 export class LightModal extends React.Component<IProps, IState> {
 

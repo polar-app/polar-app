@@ -8,7 +8,7 @@ import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {EventListener} from '../../reactor/EventListener';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import Button from 'reactstrap/lib/Button';
-import {Platforms} from "../../util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 const log = Logger.create();
 

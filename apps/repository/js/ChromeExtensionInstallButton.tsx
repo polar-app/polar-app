@@ -5,7 +5,7 @@ import Button from 'reactstrap/lib/Button';
 import {Nav} from '../../../web/js/ui/util/Nav';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {AppRuntime} from '../../../web/js/AppRuntime';
-import {Platforms} from "../../../web/js/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 const log = Logger.create();
 

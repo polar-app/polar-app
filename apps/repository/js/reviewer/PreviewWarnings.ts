@@ -1,5 +1,5 @@
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
-import {Platforms} from "../../../../web/js/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Logger} from "polar-shared/src/logger/Logger";
 
