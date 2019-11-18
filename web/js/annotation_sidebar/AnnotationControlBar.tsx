@@ -139,7 +139,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                     </div>
 
                     <div style={Styles.barChild}
-                         className="flexbar-right">
+                         className="flexbar-right muted-color">
 
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
@@ -150,7 +150,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                         <CreateFlashcardButton/>
 
                         <NullCollapse open={!annotation.immutable}>
-                            <ColorSelector className="mt-auto mb-auto"
+                            <ColorSelector className="mt-auto mb-auto muted-color-target-bg"
                                            size='16px'
                                            color={this.props.annotation.color || 'yellow'}
                                            onSelected={color => this.onColor(color)}/>

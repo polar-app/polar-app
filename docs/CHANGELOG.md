@@ -1,5 +1,8 @@
 ## Features
 
+- The sidebar now doesn't show the color for the buttons unless you hover over them.  The colors 
+  are also more muted to help not distract more when using the annotation sidebar. 
+
 - Flashcards stats in the mobile app
 
 - Ability to revise the text of a text highlight.

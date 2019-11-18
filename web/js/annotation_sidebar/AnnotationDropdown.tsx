@@ -7,6 +7,7 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {DocAnnotation} from './DocAnnotation';
 import {Dialogs} from '../ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
+import {DropdownIcon} from "../ui/standard_icons/DropdownIcon";
 
 const log = Logger.create();
 
@@ -60,7 +61,7 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
                                     id={toggleID}>
 
-                        <i className="fas fa-ellipsis-h"></i>
+                        <DropdownIcon/>
 
                     </DropdownToggle>
 

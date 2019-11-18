@@ -113,7 +113,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
                         <DocAnnotationMoment created={flashcard.created}/>
                     </div>
 
-                    <div style={Styles.barChild} className="flexbar-right">
+                    <div style={Styles.barChild} className="flexbar-right muted-color">
 
                         {this.props.editButton}
 
