@@ -160,7 +160,7 @@ export class TextHighlightRows {
 
         let currentScale = docFormat.currentScale();
 
-        Preconditions.assertNotNull(currentScale, "currentScale");
+        Preconditions.assertPresent(currentScale, "currentScale");
         Preconditions.assertNumber(currentScale, "currentScale");
 
         rect = Rects.scale(rect, 1.0 / currentScale);

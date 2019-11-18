@@ -1,5 +1,7 @@
 ## Features
 
+- Flashcards stats in the mobile app
+
 - Ability to revise the text of a text highlight.
 
 - Big refactor of the context menu so that range selection and context menus work properly. 
