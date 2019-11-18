@@ -8,8 +8,9 @@ description: Polar Frequently Asked Questions (FAQ)
 
 # How do I support Polar?
 
-We have an [Open Collective](https://opencollective.com/polar-bookshelf) setup
-to allow donations.
+The best way to support Polar is to just [buy Polar premium](https://getpolarized.io/#pricing) (bronze, silver, or gold).
+
+We also have an [Open Collective](https://opencollective.com/polar-bookshelf) setup to allow donations.
 
 # How do I import my existing data?
 
