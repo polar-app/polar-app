@@ -19,7 +19,7 @@ More importantly, it's helping me build a product for the long term based on sci
 Wouldn't it be great if we could build a engine that could systematically build a product roadmap but also help ensure 
 that we're building a product that our users actually want? 
 
-# "If you build it, they will come."
+# The Field of Dreams Fallacy
 
 In the movie [Field of Dreams](https://www.youtube.com/watch?v=NOPTByHw5RA), (spoiler alert...) the protagonist hears a
 voice that tells him to build a baseball field.
@@ -123,9 +123,32 @@ This can be valuable insight.
 
 # Feature Prioritization
 
+Here's where the main value comes from and that's customized feature priority to help you nail PMF and make your users
+insanely happen.
+
+Here's the most important part though - do not worry about making everyone happy!
+
+Some of your users aren't going to like the app. Maybe you just don't work well on their favorite platform. Maybe you're
+missing a key feature that's not really on your roadmap.
+
+It doesn't matter.  If they don't value your product don't value their features request and feedback as highly as other users.
+
+If you do you're going to be optimizing for building a *general* product and we need to focus on landing a beachhead.
+
+We need to figure out some subset of users that are insanely addicted to your product.   
+
 ## Technical Difficulty
 
+Not all features are equal in terms of complexity.  Some you can bang out in 1-2 hours and others require months
+of planning and work.
+
+This needs to be factored into our planning or we might be working on the wrong things. 
+
 ## Customer Demand
+
+Now score the customer demand but segment based on how they feel about your product.  There are a few ways to do this.
+
+The easiest is to segment. FIXME..
 
 ## Impact
 
@@ -139,8 +162,4 @@ These type of features will yield higher revenue in the long term which means yo
 to build out the rest of your feature set.
 
 ## Prioritize features by easy of implementation 
-
-# Listen to Customers 
-
-# Has Polar hit PMF Yet?
 
