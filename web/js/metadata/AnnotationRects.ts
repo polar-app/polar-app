@@ -73,8 +73,6 @@ export class AnnotationRects {
         Preconditions.assertCondition(containerRect.width > 0, 'containerRect width');
         Preconditions.assertCondition(containerRect.height > 0, 'containerRect height');
 
-        console.log("FIXME: containerRect: ", containerRect);
-
         Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
         let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
