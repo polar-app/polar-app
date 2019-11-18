@@ -59,8 +59,6 @@ export class AbstractPagemarkComponent extends Component {
      */
     public init(annotationEvent: AnnotationEvent) {
 
-        console.log("FIXME init!@!!");
-
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
 
@@ -74,9 +72,6 @@ export class AbstractPagemarkComponent extends Component {
      */
     public onBoxMoved(boxMoveEvent: BoxMoveEvent) {
 
-        console.log("FIXME: Box moved to: ", boxMoveEvent);
-
-        // FIXME: do this without the page rect?  Can I ??
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                                         boxMoveEvent.restrictionRect);
 
@@ -105,10 +100,10 @@ export class AbstractPagemarkComponent extends Component {
             this.pagemark = newPagemark;
 
         } else {
-            console.log("FIXME: New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
+            // console.log("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
         }
 
-        console.log("FIXME: New pagemarkRect: ", this.pagemark!.rect);
+        // console.log("New pagemarkRect: ", this.pagemark!.rect);
 
     }
 
@@ -147,7 +142,6 @@ export class AbstractPagemarkComponent extends Component {
 
         let templateElement = this.options.templateElement;
 
-        // FIXME this is wrong and the second time we render this it's gone!!!
         let placementElement = this.options.placementElement;
 
         if (!templateElement) {
@@ -160,18 +154,12 @@ export class AbstractPagemarkComponent extends Component {
             // TODO: we need to code this directly into the caller
             log.debug("Using a default placementElement from selector: ", placementElement);
         }
-        console.log("FIXME: this.options.placementElement: ", this.options.placementElement);
-
-        console.log("FIXME: placementElement: ", placementElement);
 
         Preconditions.assertPresent(templateElement, "templateElement");
         Preconditions.assertPresent(placementElement, "placementElement");
 
         log.info("Using templateElement: ", templateElement);
         log.info("Using placementElement: ", placementElement);
-
-        console.log("FIXME111: ", placementElement.offsetWidth);
-        console.log("FIXME111: ", placementElement.offsetHeight);
 
         // a unique ID in the DOM for this element.
         const id = this.createID();
@@ -180,9 +168,7 @@ export class AbstractPagemarkComponent extends Component {
 
         if (pagemarkElement === null ) {
 
-            // FIXME: I don't like doing any type of init here... it's ugly...
-
-            console.log("FIXME6667 adding pagemarkElement again");
+            // TODO: I don't like doing any type of init here... it's ugly...
 
             // only create the pagemark if it's missing.
             pagemarkElement = document.createElement("div");
@@ -191,7 +177,6 @@ export class AbstractPagemarkComponent extends Component {
             placementElement.parentElement!.insertBefore(pagemarkElement, placementElement);
 
             if (ENABLE_BOX_CONTROLLER) {
-                console.log("FIXME: creating again" );
                 log.info("Creating box controller for pagemarkElement: ", pagemarkElement);
                 this.pagemarkBoxController!.register({
                     target: pagemarkElement,
@@ -414,8 +399,6 @@ export class AbstractPagemarkComponent extends Component {
      */
     public destroy() {
 
-        console.log("FIXME: we got our destroy event in the pagemark!!!");
-
         const pagemarkElement = document.getElementById(this.createID());
 
         if (pagemarkElement) {
@@ -427,7 +410,6 @@ export class AbstractPagemarkComponent extends Component {
             }
 
         }
-        // FIXME: how do we destroy the box controller (if necessary)...
 
     }
 
