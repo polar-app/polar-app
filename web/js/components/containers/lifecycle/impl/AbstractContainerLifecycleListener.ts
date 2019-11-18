@@ -17,8 +17,6 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
 
     protected constructor(container: Container) {
         this.container = container;
-        console.log("FIXME: starting container with element: ", container.element);
-
         const visible = this.isVisible();
         this.state = new ContainerLifecycleState({container, visible});
     }
@@ -29,10 +27,8 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
 
         this.observer = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-                console.log("FIXME: got mutation: " + mutation.type);
                 if (mutation.type == "attributes") {
                     const visible = this.isVisible();
-                    console.log("FIXME: visible: " + visible);
                     this.state = new ContainerLifecycleState({container, visible});
                     callback(this.state);
                 }
