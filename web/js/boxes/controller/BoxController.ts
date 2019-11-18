@@ -31,8 +31,6 @@ export class BoxController {
 
     }
 
-    // FIXME: this has a bug now where it can't resize as the page element vanishes...
-
     /**
      */
     public register(opts: BoxOptions) {
@@ -47,7 +45,7 @@ export class BoxController {
             Optional.of(boxOptions.restrictionElement)
                     .getOrElse(boxOptions.target.parentElement!);
 
-        const interactable = interact(boxOptions.target)
+        interact(boxOptions.target)
             .draggable({
 
                 inertia: false,
@@ -184,7 +182,6 @@ export class BoxController {
                 this.fireOnMoveEnd(interactionEvent);
             })
             .on('resizestart', (interactionEvent: any) => {
-                console.log("FIXME1001");
 
                 this._captureStartTargetRect(interactionEvent);
                 log.info("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
@@ -192,8 +189,6 @@ export class BoxController {
 
             })
             .on('resizemove', (interactionEvent: any) => {
-
-                console.log("FIXME1001");
 
                 log.info("resizemove: event: ", interactionEvent);
                 log.info("resizemove: event.target: ", interactionEvent.target);
@@ -273,8 +268,6 @@ export class BoxController {
     private computeRestrictionRect(element: HTMLElement) {
 
         const computeDimensions = (): IDimensions => {
-
-            console.log("FIXME11114 restrictionElement: ", element);
 
             if ('canvas' === element.tagName.toLowerCase()) {
 
