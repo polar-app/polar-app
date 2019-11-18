@@ -92,7 +92,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div key={key} className="mt-1">
+            <div key={key} className="mt-1 muted-color-root">
 
                 <div className="flashcard card shadow-sm mb-1">
 

@@ -24,6 +24,8 @@
 
 ## Fixes
 
+- Fixed delete dialogs as they were using older code...
+
 - Merged branch for image optimization.
 
 - Fixed alignment of headers in the doc repo

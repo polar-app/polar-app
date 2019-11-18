@@ -48,18 +48,22 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
             // this because how do I determine when it loses focus?
 
             <div key={key}
-                 className='p-1'>
+                 className="p-1">
 
-                <div style={{
-                        borderLeft: `5px solid ${borderColor}`
-                    }}>
+                <div className="muted-color-root">
 
-                    <Image doc={props.doc} annotation={annotation}/>
+                    <div style={{
+                            borderLeft: `5px solid ${borderColor}`
+                        }}>
+
+                        <Image doc={props.doc} annotation={annotation}/>
+
+                    </div>
+
+                    <AnnotationControlBar doc={this.props.doc}
+                                          annotation={annotation}/>
 
                 </div>
-
-                <AnnotationControlBar doc={this.props.doc}
-                                      annotation={annotation}/>
 
                 <div className="comments">
                     <ChildAnnotationSection doc={this.props.doc}
