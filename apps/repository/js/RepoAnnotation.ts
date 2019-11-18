@@ -12,6 +12,7 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IComment} from 'polar-shared/src/metadata/IComment';
+import {IDStr} from "polar-shared/src/util/Strings";
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 
@@ -22,7 +23,9 @@ export interface RepoAnnotation {
      */
     readonly fingerprint: string;
 
-    readonly id: string;
+    readonly id: IDStr;
+
+    readonly guid: IDStr;
 
     readonly text?: string;
 

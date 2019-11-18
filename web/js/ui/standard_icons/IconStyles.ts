@@ -4,7 +4,7 @@ export class IconStyles {
 
     public static ICON: React.CSSProperties = {
         fontSize: '16px',
-        color: 'var(--grey300)',
+        color: 'var(--grey400)',
         width: '16px'
     };
 

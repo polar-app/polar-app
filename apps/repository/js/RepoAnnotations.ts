@@ -2,9 +2,6 @@ import {TextHighlight} from '../../../web/js/metadata/TextHighlight';
 import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Flashcard} from '../../../web/js/metadata/Flashcard';
-import {Text} from 'polar-shared/src/metadata/Text';
-import {Texts} from 'polar-shared/src/metadata/Texts';
 import {Images} from '../../../web/js/metadata/Images';
 import {Img} from '../../../web/js/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
@@ -91,6 +88,7 @@ export class RepoAnnotations {
 
         return {
             id: sourceAnnotation.id,
+            guid: sourceAnnotation.guid,
             fingerprint: docInfo.fingerprint,
             text,
             type,

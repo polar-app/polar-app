@@ -39,7 +39,7 @@ export class ReviewerTasks {
             const toTask = (repoAnnotation: RepoAnnotation): Task<ReadingTaskAction> => {
                 const color = HighlightColors.withDefaultColor((repoAnnotation.meta || {}).color);
                 return {
-                    id: repoAnnotation.id,
+                    id: repoAnnotation.guid,
                     action: repoAnnotation.text || "",
                     created: repoAnnotation.created,
                     color,
@@ -70,7 +70,7 @@ export class ReviewerTasks {
                 const toTask = (action: FlashcardTaskAction): Task<FlashcardTaskAction> => {
 
                     return {
-                        id: repoAnnotation.id,
+                        id: repoAnnotation.guid,
                         action,
                         created: repoAnnotation.created,
                         mode
