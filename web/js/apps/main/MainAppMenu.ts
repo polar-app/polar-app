@@ -1,7 +1,7 @@
 import {MainAppController} from './MainAppController';
 import {app, BrowserWindow, dialog, Menu, shell} from "electron";
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
-import {Version} from '../../util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {AppLauncher} from './AppLauncher';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Promises} from '../../util/Promises';

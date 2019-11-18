@@ -33,7 +33,7 @@ import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import EditorsPicksScreen
     from '../../../../apps/repository/js/editors_picks/EditorsPicksScreen';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {Version} from '../../util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {RepositoryTour} from './RepositoryTour';
 import {LocalPrefs} from '../../util/LocalPrefs';

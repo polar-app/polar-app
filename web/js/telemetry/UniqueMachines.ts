@@ -5,7 +5,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppRuntime} from '../AppRuntime';
-import {Version} from '../util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 
 /**
  * Does one thing.. records the machine ID to the table and the time it was

@@ -1,6 +1,6 @@
 import {LifecycleToggle} from '../../../../../web/js/ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../../../../web/js/ui/util/LifecycleEvents';
-import {Version} from '../../../../../web/js/util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();

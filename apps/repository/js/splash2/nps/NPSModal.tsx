@@ -8,7 +8,7 @@ import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 import {SplashKeys} from '../SplashKeys';
 import {LocalPrefs} from '../../../../../web/js/util/LocalPrefs';
-import {Version} from '../../../../../web/js/util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 
 export class NPSModal extends React.Component<IProps, IState> {
 

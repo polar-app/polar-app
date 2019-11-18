@@ -12,7 +12,7 @@ import {SplashKeys} from '../SplashKeys';
 import {UserFeedback} from '../../../../../web/js/telemetry/UserFeedback';
 import {NetPromoterScore} from '../../../../../web/js/telemetry/UserFeedback';
 import {RendererAnalytics} from '../../../../../web/js/ga/RendererAnalytics';
-import {Version} from '../../../../../web/js/util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 
 export class SuggestionsModal extends React.Component<IProps, IState> {
 

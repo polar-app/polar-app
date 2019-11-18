@@ -4,7 +4,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {UserFacts} from './SplashEngine';
 import {SplashEngine} from './SplashEngine';
 import {DefaultSplashEngine} from './SplashEngine';
-import {Version} from '../../../../web/js/util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {NPSModal} from './nps/NPSModal';

@@ -16,7 +16,7 @@ import {ProgressService} from '../ui/progress_bar/ProgressService';
 import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
 import {AppOrigin} from './AppOrigin';
 import {CloudService} from '../../../apps/repository/js/cloud/CloudService';
-import {Version} from '../util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 
 const log = Logger.create();
 

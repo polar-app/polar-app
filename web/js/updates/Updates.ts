@@ -5,7 +5,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 
 import process from 'process';
 import {Broadcasters} from '../ipc/Broadcasters';
-import {Version} from '../util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {AppUpdate} from './AppUpdate';
 import {ToasterMessages} from '../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../ui/toaster/Toaster';
