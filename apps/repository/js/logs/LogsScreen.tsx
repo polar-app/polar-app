@@ -30,7 +30,7 @@ export default class LogsScreen extends React.Component<IProps, IState> {
 
                     <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                    <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex'}} className="p-1">
 
                         <div className="mb-1">
                             <CopyLogsToClipboardButton/>
@@ -50,7 +50,7 @@ export default class LogsScreen extends React.Component<IProps, IState> {
 
                         <div className="col-lg-12">
 
-                            <div className="mb-2 pl-1 pr-1">
+                            <div className="mb-2 p-1">
                                 <LogsContent/>
                             </div>
 
