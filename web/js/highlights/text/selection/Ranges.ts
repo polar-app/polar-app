@@ -107,7 +107,7 @@ export class Ranges {
      */
     public static getTextNodes(range: Range) {
 
-        Preconditions.assertNotNull(range, "range");
+        Preconditions.assertPresent(range, "range");
 
         // We start walking the tree until we find the start node, then we
         // enable set inSelection = true... then when we exit the selection by
@@ -117,8 +117,8 @@ export class Ranges {
         const startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
         const endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
 
-        Preconditions.assertNotNull(startNode, "startNode");
-        Preconditions.assertNotNull(endNode, "endNode");
+        Preconditions.assertPresent(startNode, "startNode");
+        Preconditions.assertPresent(endNode, "endNode");
 
         const doc = range.startContainer.ownerDocument!;
 
@@ -183,8 +183,8 @@ export class Ranges {
         const startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
         const endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
 
-        Preconditions.assertNotNull(startNode, "startNode");
-        Preconditions.assertNotNull(endNode, "endNode");
+        Preconditions.assertPresent(startNode, "startNode");
+        Preconditions.assertPresent(endNode, "endNode");
 
         const doc = range.startContainer.ownerDocument!;
 
