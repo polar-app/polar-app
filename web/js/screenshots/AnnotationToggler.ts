@@ -47,7 +47,7 @@ export class AnnotationToggler {
         for (const annotationStyle of this.annotationStyles) {
 
             annotationStyle.element.style.visibility =
-                annotationStyle.styleRestore.visibility;
+                annotationStyle.styleRestore.visibility!;
 
         }
 

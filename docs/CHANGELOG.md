@@ -24,6 +24,8 @@
 
 ## Fixes
 
+- Updated Firebase...
+
 - Fixed delete dialogs as they were using older code...
 
 - Merged branch for image optimization.

@@ -1,6 +1,5 @@
 // A datastore that supports ledgers and checkpoints.
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
