@@ -575,7 +575,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                  className="ml-1"
                  style={{height: '100%', overflow: 'auto'}}>
 
-                <AccountUpgradeBar/>
+                {/*TODO: removing now because it breaks scrollbars for new users.*/}
+                {/*<AccountUpgradeBar/>*/}
 
                 <ContextMenuWrapper id={CONTEXT_MENU_ID}>
 

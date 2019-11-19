@@ -30,8 +30,6 @@ export class RichTextArea extends React.Component<IProps, IState> {
 
         };
 
-        console.log("FIXME: defaultValue: " + this.props.defaultValue);
-
         return (
 
             <div id={this.props.id} className="rich-text-area">
