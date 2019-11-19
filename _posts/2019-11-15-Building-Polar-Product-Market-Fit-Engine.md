@@ -17,7 +17,7 @@ prioritize feature requests.
 More importantly, it's helping me build a product for the long term based on science rather than whim.
 
 Wouldn't it be great if we could build a engine that could systematically build a product roadmap but also help ensure 
-that we're building a product that our users actually want? 
+that we're building something that users actually want? 
 
 # The Field of Dreams Fallacy
 
