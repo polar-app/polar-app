@@ -101,11 +101,13 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
     private onDeleteSelected() {
 
-        Dialogs.confirm({title: "Are you sure you want to delete this annotation? ",
-                         subtitle: "This will also delete all associated comments and flashcards.",
-                         type: 'warning',
-                         onCancel: NULL_FUNCTION,
-                         onConfirm: () => this.onDelete()});
+        Dialogs.confirm({
+            title: "Are you sure you want to delete this annotation? ",
+            subtitle: "This will also delete all associated comments and flashcards.",
+            type: 'danger',
+            onCancel: NULL_FUNCTION,
+            onConfirm: () => this.onDelete()
+        });
 
     }
 

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {DocAnnotation} from '../DocAnnotation';
 import {Dialogs} from "../../ui/dialogs/Dialogs";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export class CommentDropdown extends React.Component<IProps, IState> {
 
@@ -64,6 +65,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
             title: "Are you sure you want to delete this comment? ",
             subtitle: 'This will permanently delete this comment.',
             type: 'danger',
+            onCancel: NULL_FUNCTION,
             onConfirm: () => this.onDelete()
         });
 
