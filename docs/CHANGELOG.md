@@ -24,7 +24,9 @@
 
 ## Fixes
 
-- Updated Firebase...
+- Fixed bug where sometimes exceptions were swallowed
+
+- Updated Firebase to hopefully fix some bugs with latency and exceptions..
 
 - Fixed delete dialogs as they were using older code...
 
