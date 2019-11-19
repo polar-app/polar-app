@@ -3,10 +3,11 @@ import * as React from 'react';
 import {InjectedComponent, ReactInjector} from '../util/ReactInjector';
 import {Prompt, PromptProps} from './Prompt';
 import {Blackout} from '../blackout/Blackout';
+import {Alert} from "./Alert";
 
 export class Dialogs {
 
-    public static confirm(opts: DialogConfirmProps) {
+    public static confirm(opts: ConfirmProps) {
 
         let injected: InjectedComponent | undefined;
 
@@ -31,6 +32,26 @@ export class Dialogs {
         };
 
         injected = ReactInjector.inject(<Confirm {...opts} onCancel={onCancel} onConfirm={onConfirm}/>);
+
+    }
+
+    public static alert(opts: AlertProps) {
+
+        let injected: InjectedComponent | undefined;
+
+        Blackout.enable();
+
+        const cleanup = () => {
+            Blackout.disable();
+            injected!.destroy();
+        };
+
+        const onConfirm = () => {
+            cleanup();
+            opts.onConfirm();
+        };
+
+        injected = ReactInjector.inject(<Alert {...opts} onConfirm={onConfirm}/>);
 
     }
 
@@ -61,7 +82,17 @@ export class Dialogs {
 
 }
 
-export interface DialogConfirmProps {
+export interface AlertProps {
+
+    readonly title: string;
+    readonly body: string | React.ReactElement;
+    readonly onConfirm: () => void;
+    readonly type?: 'danger' | 'warning' | 'success';
+
+}
+
+
+export interface ConfirmProps {
 
     readonly title: string;
     readonly subtitle: string;

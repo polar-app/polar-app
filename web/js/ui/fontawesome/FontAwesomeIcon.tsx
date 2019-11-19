@@ -8,12 +8,18 @@ export class FontAwesomeIcon extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-        return <i className={this.props.name}
-                  style={{
-                      width: '20px',
-                      marginLeft: '0.3rem',
-                      marginRight: '0.3rem'
-                  }}/>;
+        const style = {
+            width: '20px',
+            marginLeft: '0.3rem',
+            marginRight: '0.3rem'
+        };
+
+        if (this.props.name) {
+            return <i className={this.props.name} style={style}/>;
+        } else {
+            return <span style={style}></span>
+        }
+
 
     }
 
@@ -22,9 +28,9 @@ export class FontAwesomeIcon extends React.PureComponent<IProps, IState> {
 export interface IProps {
 
     /**
-     * The name of the font awesome icon to use.
+     * The name of the font awesome icon to use.  If non is specified just a blank spacer icon is used.
      */
-    readonly name: string;
+    readonly name?: string;
 }
 
 interface IState {

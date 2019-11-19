@@ -3,6 +3,7 @@ import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {DropdownItem} from 'reactstrap';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
+import {FontAwesomeIcon} from "../../../../web/js/ui/fontawesome/FontAwesomeIcon";
 
 /**
  */
@@ -31,11 +32,10 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
                              display: 'flex'
                          }}>
 
-                        <i className={this.props.icon}
-                           style={{
-                               fontSize: '20px',
-                               margin: 'auto',
-                           }}/>
+
+                        <div className="m-auto">
+                            <FontAwesomeIcon name={this.props.icon}/>
+                        </div>
 
                     </div>
 
@@ -60,7 +60,10 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
     private onClick() {
 
         const action = this.props.title.replace(/ /g, '').toLowerCase();
-        RendererAnalytics.event({category: this.props.trackingCategory, action});
+
+        if (this.props.trackingCategory) {
+            RendererAnalytics.event({category: this.props.trackingCategory, action});
+        }
 
         this.props.onClick();
 
@@ -73,11 +76,11 @@ export interface TrackedDropdownItemProps {
     readonly id: string;
     readonly title: string;
     readonly tooltip: string;
-    readonly icon: string;
+    readonly icon?: string;
     readonly hidden?: boolean;
     readonly className?: string;
 
-    readonly trackingCategory: string;
+    readonly trackingCategory?: string;
     readonly onClick: () => void;
 
 }

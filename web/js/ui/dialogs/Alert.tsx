@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'reactstrap';
 import {DialogContainer} from './DialogContainer';
 import {NullCollapse} from '../null_collapse/NullCollapse';
-import {ConfirmProps} from "./Dialogs";
+import {AlertProps, ConfirmProps} from "./Dialogs";
 
 class Styles {
 
@@ -20,13 +20,12 @@ class Styles {
 
 }
 
-export class Confirm extends React.PureComponent<IProps, IState> {
+export class Alert extends React.PureComponent<IProps, IState> {
 
     constructor(props: any) {
         super(props);
 
         this.onConfirm = this.onConfirm.bind(this);
-        this.onCancel = this.onCancel.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
 
     }
@@ -62,27 +61,17 @@ export class Confirm extends React.PureComponent<IProps, IState> {
                     <div className="w-100 p-1 m-1 text-grey900 text-xl"
                          style={Styles.subtitle}>
 
-                        {this.props.subtitle}
+                        {this.props.body}
 
                     </div>
 
-                    <div className="text-right m-1 pb-1">
-
-                        <NullCollapse open={! this.props.noCancel}>
-
-                            <Button color="secondary"
-                                    style={Styles.button}
-                                    size="lg"
-                                    className="m-1"
-                                    onClick={() => this.onCancel()}>Cancel</Button>
-
-                        </NullCollapse>
+                    <div className="text-center m-1 pb-1">
 
                         <Button color={opts.buttonColor}
                                 style={Styles.button}
                                 size="lg"
                                 className="m-1"
-                                onClick={() => this.onConfirm()}>Confirm</Button>
+                                onClick={() => this.onConfirm()}>OK</Button>
 
                     </div>
 
@@ -97,7 +86,7 @@ export class Confirm extends React.PureComponent<IProps, IState> {
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
         if (event.key === "Escape") {
-            this.onCancel();
+            this.props.onConfirm();
         }
 
     }
@@ -106,17 +95,10 @@ export class Confirm extends React.PureComponent<IProps, IState> {
         this.props.onConfirm();
     }
 
-    private onCancel(): void {
-
-        if (this.props.onCancel) {
-            this.props.onCancel();
-        }
-
-    }
 
 }
 
-export interface IProps extends ConfirmProps {
+export interface IProps extends AlertProps {
 
 }
 

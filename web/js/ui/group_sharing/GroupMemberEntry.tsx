@@ -2,7 +2,7 @@ import React from 'react';
 import {MemberRecord} from './GroupSharingRecords';
 import Button from 'reactstrap/lib/Button';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Dialogs, DialogConfirmProps} from '../dialogs/Dialogs';
+import {Dialogs, ConfirmProps} from '../dialogs/Dialogs';
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -66,7 +66,7 @@ export class GroupMemberEntry extends React.Component<IProps, IState> {
 
     private onDelete(member: MemberRecord) {
 
-        const opts: DialogConfirmProps = {
+        const opts: ConfirmProps = {
             title: 'Delete group member?',
             subtitle: 'Are you sure you want to delete this group member?',
             type: 'warning',
