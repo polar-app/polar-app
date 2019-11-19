@@ -13,4 +13,5 @@ async function start() {
 
 }
 
-start().catch(err => log.error("Could not start repository app: ", err));
+start()
+    .catch(err => log.error("Could not start repository app: ", err));

@@ -17,6 +17,8 @@ if ('serviceWorker' in navigator && ! isElectron()) {
             // updatefound is fired if service-worker.js changes.
             reg.onupdatefound = function() {
 
+                console.log("Service worker update found");
+
                 // The updatefound event implies that reg.installing is set; see
                 // https://w3c.github.io/ServiceWorker/#service-worker-registration-updatefound-event
                 const installingWorker = reg.installing;
