@@ -1,6 +1,6 @@
 ---
 title: Building Polar's Product Market Fit Engine
-date: 2019-11-15 08:00:00 -0800
+date: 2019-11-11T20:00:00.000-08:00
 layout: post
 large_image: https://getpolarized.io//assets/screenshots/2019-11-document-view.png
 description: For the past month or so I've been revamping Polar's product-market-fit engine which is a system we've built to help me understand what our users want and to prioritize feature requests.

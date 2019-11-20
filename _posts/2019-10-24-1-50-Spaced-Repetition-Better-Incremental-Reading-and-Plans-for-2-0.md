@@ -1,6 +1,6 @@
 ---
 title: Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0
-date: 2019-11-11 08:00:00 -0800
+date: 2019-11-11T08:00:00.000-08:00
 layout: post
 large_image: https://getpolarized.io//assets/screenshots/2019-11-document-view.png
 description: Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0
