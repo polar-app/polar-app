@@ -26,6 +26,7 @@ import {ContextMenuWrapper} from "@burtonator/react-context-menu-wrapper";
 import {DocDropdownItems} from "../../../apps/repository/js/DocDropdownItems";
 import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
+import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 
 const styles = {
     swatch: {
@@ -271,6 +272,8 @@ export class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <WhatsNewModal/>
 
                 {/*<FolderContextMenu toggle={false}*/}
                 {/*                   onCreateFolder={NULL_FUNCTION}>*/}
