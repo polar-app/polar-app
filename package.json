@@ -71,6 +71,7 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "electron-notarize": "0.2.0",
     "@types/chai": "~4.1.7",
     "@types/expect": "~1.20.3",
     "@types/jquery": "~3.3.31",
