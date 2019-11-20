@@ -15,7 +15,6 @@ import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {Platforms} from "polar-shared/src/util/Platforms";
-
 import * as semver from 'semver';
 
 export class SplashEngine {
