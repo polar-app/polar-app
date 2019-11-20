@@ -14,6 +14,9 @@ import {Duration} from 'polar-shared/src/util/TimeDurations';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
+import {Platforms} from "polar-shared/src/util/Platforms";
+
+import * as semver from 'semver';
 
 export class SplashEngine {
 
@@ -178,10 +181,15 @@ class WhatsNewRule implements Rule<UserFacts, SplashEventHandlers, WhatsNewState
                eventMap: EventMap<SplashEventHandlers>,
                state?: Readonly<WhatsNewState>): RuleFactPair<UserFacts, WhatsNewState> {
 
-        const updated = state && state.version !== facts.version;
+        const updated = state && semver.lt(state.version, facts.version);
 
         if (updated) {
-            eventMap.onWhatsNew.handler();
+
+            if (Platforms.isDesktop()) {
+                // only call this on desktop...
+                eventMap.onWhatsNew.handler();
+            }
+
         }
 
         state = {version: facts.version};

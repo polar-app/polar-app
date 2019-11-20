@@ -73,8 +73,7 @@ export class Splashes extends React.Component<IProps, IState> {
                 return <SuggestionsModal/>;
 
             case 'whats-new':
-                return <div/>;
-                // return <WhatsNewModal/>;
+                return <WhatsNewModal/>;
 
         }
 
@@ -82,7 +81,6 @@ export class Splashes extends React.Component<IProps, IState> {
 
     private onWhatsNew() {
         RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-whats-new'});
-
         this.setState({...this.state, splash: 'whats-new'});
     }
 

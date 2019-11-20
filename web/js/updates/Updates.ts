@@ -30,7 +30,7 @@ const AUTO_UPDATE_DELAY_RECHECK = RANDOM_DELAY;
 
 const log = Logger.create();
 
-// autoDownload has to be false becuase we look at the version number we're
+// autoDownload has to be false because we look at the version number we're
 // downloading to avoid downloading it multiple times.
 autoUpdater.autoDownload = false;
 
