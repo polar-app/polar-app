@@ -2,5 +2,5 @@
   "packages": [
     "packages/polar-app-public/*"
   ],
-  "version": "1.60.6"
+  "version": "1.60.7"
 }
