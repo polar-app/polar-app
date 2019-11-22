@@ -1,6 +1,9 @@
 {
   "packages": [
+    "packages/*",
+    "packages/polar-app-private/*",
+    "packages/polar-app-private/polar-hooks/functions",
     "packages/polar-app-public/*"
   ],
-  "version": "1.60.7"
+  "version": "1.60.8"
 }
