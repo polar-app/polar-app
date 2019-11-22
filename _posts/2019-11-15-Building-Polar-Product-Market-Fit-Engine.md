@@ -14,7 +14,7 @@ hidden: true
 For the past month or so I've been revamping Polar's product-market-fit engine to help understand our users and to
 prioritize feature requests.
 
-More importantly, it's helping me build a product for the long term based on science rather than whim.
+More importantly, it's helping me build a product for the long-term based on science rather than whim.
 
 Wouldn't it be great if we could build a engine that could systematically build a product roadmap but also help ensure 
 that we're building something that users actually want? 
