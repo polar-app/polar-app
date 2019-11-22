@@ -224,7 +224,7 @@
     "underscore": "~1.9.1",
     "universal-analytics": "~0.4.20",
     "uuid": "~3.3.2",
-    "workbox-cli": "^4.3.1"
+    "workbox-cli": "^5.0.0-rc.0"
   },
   "collective": {
     "type": "opencollective",
