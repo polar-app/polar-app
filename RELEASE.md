@@ -25,19 +25,25 @@ Publishes all our public node modules.
 In the root of polar-app run:
 
 ```bash
-npm run-script dist-prepare && npm run-script dist-build && npm run-script dist-publish && npm run-script dist-release
+npm run-script dist-release-webapp
 ```
 
 ## MacOS
 
 ```bash
-npm run-script dist-prepare && npm run-script dist-build && npm run-script dist-release-macos
+npm run-script dist-release-macos
 ```
 
 ## Windows
 
 ```bash
-npm run-script dist-prepare && npm run-script dist-build && npm run-script dist-release-win
+npm run-script dist-release-win
+```
+
+## Linux
+
+```bash
+npm run-script dist-release-linux
 ```
 
 ## TODO
