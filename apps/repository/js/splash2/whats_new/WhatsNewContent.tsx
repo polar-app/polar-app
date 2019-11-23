@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {ReleaseMetadatas} from "polar-release-metadata/src/ReleaseMetadatas";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {DateMoment} from "../../../../../web/js/ui/util/DateMoment";
 
 const releases = ReleaseMetadatas.get();
 
@@ -40,6 +41,13 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
         };
 
+        const Announcement = () => {
+            return <span style={{display: 'inline-block'}}
+                         className="bg-attention700 rounded p-1 text-white">
+                ANNOUNCEMENT
+            </span>;
+        };
+
         return (
 
             <div>
@@ -49,6 +57,15 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                 <h1>
                     {release.title}
                 </h1>
+
+                <div className="mb-1">
+                    <Announcement/>
+
+                    <span className="text-muted ml-1">
+                        <DateMoment datetime={release.date}/>
+                    </span>
+
+                </div>
 
                 <div className="text-sm"
                      dangerouslySetInnerHTML={{__html: release.html}}>

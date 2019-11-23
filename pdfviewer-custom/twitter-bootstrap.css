@@ -285,7 +285,42 @@ button.dropdown-item:hover {
     --danger100: #FFBDBD;
     --danger000: #FFE3E3;
 
+    /* https://material-ui.com/customization/color/ */
+    --attention900: #e65100;
+    --attention800: #ef6c00;
+    --attention700: #f57c00;
+    --attention600: #fb8c00;
+    --attention500: #ff9800;
+    --attention400: #ffa726;
+    --attention300: #ffb74d;
+    --attention200: #ffcc80;
+    --attention100: #ffe0b2;
+    --attention000: #fff3e0;
+
 }
+
+/* TODO: auto generate these */
+
+.bg-attention900 {
+    background-color: var(--attention900);
+}
+
+.bg-attention800 {
+    background-color: var(--attention800);
+}
+
+.bg-attention700 {
+    background-color: var(--attention700);
+}
+
+.bg-attention600 {
+    background-color: var(--attention600);
+}
+
+.bg-attention500 {
+    background-color: var(--attention500);
+}
+
 
 .muted-color * {
     transition-property: none;
