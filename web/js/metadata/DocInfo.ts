@@ -51,6 +51,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public published?: ISODateString | ISODateTimeString;
     public publisher?: string;
     public doi?: string;
+    public pmid?: string;
     public readingPerDay?: ReadingOverview;
     public visibility?: Visibility;
     public attachments: {[id: string]: Attachment} = {};
