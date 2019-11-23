@@ -4,6 +4,6 @@ export CSC_IDENTITY_AUTO_DISCOVERY=true
 
 export APPLEID=burtonator2011@gmail.com
 
-if ["${APPLEIDPASS}" = ""]; then
+if [ "${TERMINAL_PROGRAM}" = "Apple_Terminal" && "${APPLEIDPASS}" = "" ]; then
   echo "ERROR: Must set APPLEIDPASS. Hint: pass is F*******3"
 fi
