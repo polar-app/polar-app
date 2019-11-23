@@ -24,7 +24,9 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
             <div>
 
-                <LargeModal isOpen={this.state.open}>
+                <LargeModal isOpen={this.state.open}
+                            minWidth="350px"
+                            maxWidth="900px">
 
                     <LargeModalBody>
 
