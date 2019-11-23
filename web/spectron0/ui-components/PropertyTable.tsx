@@ -21,7 +21,7 @@ export class PropertyTable extends React.Component<IProps, IState> {
 
     }
 
-    static Row = class extends React.Component<IRowProps, any> {
+    public static Row = class extends React.Component<IRowProps, any> {
 
         public render() {
 
