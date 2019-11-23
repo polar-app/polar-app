@@ -6,11 +6,13 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {DocThumbnail} from "../../../apps/repository/js/annotation_repo/meta_view/DocThumbnail";
 import {PersistenceLayerProvider} from "../../js/datastore/PersistenceLayer";
 import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
+import {Texts} from "polar-shared/src/metadata/Texts";
 
 // TODO:
-//     - format the URL with an <a>
-// - make sure all metadata is covered
+//     - format the URL with an <a> so that it's clickable...
+// - make sure all metadata fields are covered
 // - add pmid and other identifiers to model
+// -
 // - add description here.
 // - add abstract
 // - add open button
@@ -19,12 +21,7 @@ import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
 /**
  * The sidebar for viewing document metadata.
  */
-export class DocSidebar extends React.Component<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-    }
+export class DocSidebar extends React.Component<IProps> {
 
     public render() {
 
@@ -53,11 +50,17 @@ export class DocSidebar extends React.Component<IProps, IState> {
 
                 <DocSidebar.Subtitle {...meta}/>
 
+
+
                 <PropertyTable>
+
+                    <PropertyTable.Text name="Summary" value={Texts.toPlainText(meta.summary)}/>
+
                     <PropertyTable.Row name="Added" value={meta.added}/>
                     <PropertyTable.Row name="Updated" value={meta.lastUpdated}/>
                     <PropertyTable.Row name="URL" value={meta.url}/>
                     <PropertyTable.Row name="DOI" value={meta.doi}/>
+                    <PropertyTable.Row name="PMID" value={meta.pmid}/>
                     <PropertyTable.Row name="Year" value={meta.published ? ISODateTimeStrings.toISOYear(meta.published) : undefined}/>
                     <PropertyTable.Row name="Publisher" value={meta.publisher}/>
                     <PropertyTable.Row name="Authors" value={(meta.authors || []).map(current => current.displayName)}/>
@@ -71,7 +74,7 @@ export class DocSidebar extends React.Component<IProps, IState> {
     }
 
 
-    static Subtitle = class extends React.Component<DocMeta, any> {
+    public static Subtitle = class extends React.Component<DocMeta, any> {
 
         public render() {
 
@@ -100,12 +103,6 @@ export interface DocMeta extends DocDetail {
 }
 
 interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    // readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly meta?: DocMeta;
 }
-
-interface IState {
-
-}
-
-

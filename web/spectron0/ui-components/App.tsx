@@ -27,6 +27,7 @@ import {DocDropdownItems} from "../../../apps/repository/js/DocDropdownItems";
 import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
+import {DocSidebar} from "./DocSidebar";
 
 const styles = {
     swatch: {
@@ -333,9 +334,11 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</div>*/}
 
-                {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
-                {/*    <DocSidebar fingerprint="0x01" updated={ISODateTimeStrings.create()}/>*/}
-                {/*</div>*/}
+                <div className="border border-dark m-1" style={{width: '450px'}}>
+                    {/*<DocSidebar meta={{*/}
+                    {/*    fingerprint: "0x01",*/}
+                    {/*}}/>*/}
+                </div>
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01"*/}
