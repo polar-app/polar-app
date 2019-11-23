@@ -48,5 +48,8 @@ npm run-script dist-release-linux
 
 ## TODO
 
-- make sure that the 
+- credentials.sh seems to need to be run BEFORE I do the relase which makes no sense ... 
 
+- remove the git clean, etc. in polar-bookshelf/scripts/dist-release.sh
+
+    "git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}"
