@@ -14,21 +14,49 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
         const release = Arrays.first(releases);
 
-        if (release) {
-            return (
-
-                <div>
-                    <div className="text-sm"
-                         dangerouslySetInnerHTML={{__html: release.html}}>
-
-                    </div>
-                </div>
-            );
-
-        } else {
+        if (! release) {
             // should almost never happen
             return null;
         }
+
+        const VideoEmbed = () => {
+
+            if (release.video_embed) {
+
+                return <div className="embed-responsive embed-responsive-16by9 mt-1 mb-1">
+
+                    <iframe className="embed-responsive-item"
+                            width="560"
+                            height="315"
+                            src={release.video_embed}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen/>
+                </div>;
+
+            }
+
+            return null;
+
+        };
+
+        return (
+
+            <div>
+
+                <VideoEmbed/>
+
+                <h1>
+                    {release.title}
+                </h1>
+
+                <div className="text-sm"
+                     dangerouslySetInnerHTML={{__html: release.html}}>
+
+                </div>
+
+            </div>
+        );
 
     }
 
