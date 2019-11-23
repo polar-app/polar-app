@@ -25,4 +25,6 @@ source ../polar-bookshelf-secrets/credentials.sh
 # TODO: consider doing a full rm -rf node_modules first but the problem is that
 # we need to make sure we're still using the right npm binary.
 
+# TODO: this is no longer needed with the new release system.
+
 git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
