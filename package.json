@@ -26,6 +26,7 @@
     "dist-release-linux": "npm run-script do-release-init && npm run-script do-release-linux",
     "dist-release-win": "npm run-script do-release-init && npm run-script do-release-win",
     "dist-release-macos": "npm run-script do-release-init && npm run-script do-release-macos",
+    "dist-release-site": "cd packages/polar-site && npm run-script publish",
     "lerna-outdated": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && npm outdated'",
     "purge-node-modules": "rm -rf node_modules && lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && rm -rf node_modules'",
     "ls-packages": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd'",
