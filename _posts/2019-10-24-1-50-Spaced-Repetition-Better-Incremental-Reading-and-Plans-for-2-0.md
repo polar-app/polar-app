@@ -7,10 +7,6 @@ description: Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plan
 release: 1.50.0
 ---
 
-<img class="img-fluid border border-dark rounded" src="https://getpolarized.io//assets/screenshots/2019-11-document-view.png">
-
-# Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0
-
 Polar 1.50 was just released and will be rolling out to everyone in a staged over the next week.
 
 This is one of the biggest releases we've had in a long time and will be the foundation for 2.0. 

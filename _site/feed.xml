@@ -1,11 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-11-19T12:55:32-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Building Polar’s Product Market Fit Engine</title><link href="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html" rel="alternate" type="text/html" title="Building Polar's Product Market Fit Engine" /><published>2019-11-15T08:00:00-08:00</published><updated>2019-11-15T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine</id><content type="html" xml:base="https://getpolarized.io/2019/11/15/Building-Polar-Product-Market-Fit-Engine.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-11-23T10:21:39-08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.60 - Preparing for 2.0</title><link href="http://localhost:4000/2019/11/20/1-60-Preparing-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.60 - Preparing for 2.0" /><published>2019-11-20T08:00:00-08:00</published><updated>2019-11-20T08:00:00-08:00</updated><id>http://localhost:4000/2019/11/20/1-60-Preparing-for-2-0</id><content type="html" xml:base="http://localhost:4000/2019/11/20/1-60-Preparing-for-2-0.html">&lt;p&gt;Another big release is out to help prepare us for 2.0.&lt;/p&gt;
+
+&lt;p&gt;Most of the changes here are small to moderate features and improving stability but there have also been a lot of library 
+updates too which were important.&lt;/p&gt;
+
+&lt;h2 id=&quot;prompting-for-premium-and-locked-features&quot;&gt;Prompting for Premium and Locked Features&lt;/h2&gt;
+
+&lt;p&gt;One of the big changes in this release is that we’re now requiring that users upgrade for features in premium 
+for which (in the past) we weren’t requiring an upgrade.&lt;/p&gt;
+
+&lt;p&gt;This might mean at this point you will need to upgrade to premium if you depend on one of these features.&lt;/p&gt;
+
+&lt;h2 id=&quot;features&quot;&gt;Features&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The sidebar no longer shows the color for the buttons unless you hover over them.  The colors 
+are also more muted to help not distract more when using the annotation sidebar.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Flashcards stats in the mobile app now work.  This way you can do a review and them immediately see the size of your
+queue and also the number of tasks completed.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ability to revise the text of a text highlight.  This was requested by a number of users due to some annotations 
+having hyphens or errors in representation of mathematical formulas.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Big refactor of the context menu so that range selection and context menus work properly.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Multi-selection for deletes implemented.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;The context menus now have icons&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ability to remove items from folders via right click&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Bronze now officially required for reading stats and recommended tags&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Major refactor of how text selection works using the new modern text layer code in pdf.js which has 
+been a major complaint since 1.0.  Excited to finally have this fixed!&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;fixes&quot;&gt;Fixes&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed issue with Polar builds not working on MacOS Catalina.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Upgrade to latest electron-builder so that we can have MacOS Catalina&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed bug where sometimes exceptions were swallowed and not properly reported.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Updated Firebase to hopefully fix some bugs with latency and exceptions..&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed delete dialogs as they were using older code…&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Merged branch for image optimization.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed alignment of headers in the doc repo&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed bad bug with stats for spaced repetition queue not being computed accurately.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Improved performance of doc table when selecting items.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The document repository view is now much faster and context menus no longer have a ‘gap’
+which wouldn’t trigger the menu.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Now using larger buttons in the UI&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Show the front + back of cards when we ‘show answer’&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Another big release is out to help prepare us for 2.0.</summary></entry><entry><title type="html">Building Polar’s Product Market Fit Engine</title><link href="http://localhost:4000/2019/11/11/Building-Polar-Product-Market-Fit-Engine.html" rel="alternate" type="text/html" title="Building Polar's Product Market Fit Engine" /><published>2019-11-11T20:00:00-08:00</published><updated>2019-11-11T20:00:00-08:00</updated><id>http://localhost:4000/2019/11/11/Building-Polar-Product-Market-Fit-Engine</id><content type="html" xml:base="http://localhost:4000/2019/11/11/Building-Polar-Product-Market-Fit-Engine.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;building-polars-productmarket-fit-engine&quot;&gt;Building Polar’s Product/Market Fit Engine&lt;/h1&gt;
 
 &lt;p&gt;For the past month or so I’ve been revamping Polar’s product-market-fit engine to help understand our users and to
 prioritize feature requests.&lt;/p&gt;
 
-&lt;p&gt;More importantly, it’s helping me build a product for the long term based on science rather than whim.&lt;/p&gt;
+&lt;p&gt;More importantly, it’s helping me build a product for the long-term based on science rather than whim.&lt;/p&gt;
 
 &lt;p&gt;Wouldn’t it be great if we could build a engine that could systematically build a product roadmap but also help ensure 
 that we’re building something that users actually want?&lt;/p&gt;
@@ -154,11 +245,7 @@ this second feature.&lt;/p&gt;
 &lt;p&gt;These type of features will yield higher revenue in the long term which means you can have the financial resources
 to build out the rest of your feature set.&lt;/p&gt;
 
-&lt;h2 id=&quot;prioritize-features-by-easy-of-implementation&quot;&gt;Prioritize features by easy of implementation&lt;/h2&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0</title><link href="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0" /><published>2019-11-11T08:00:00-08:00</published><updated>2019-11-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0</id><content type="html" xml:base="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://getpolarized.io//assets/screenshots/2019-11-document-view.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;polar-150---spaced-repetition-better-incremental-reading-and-plans-for-20&quot;&gt;Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0&lt;/h1&gt;
-
-&lt;p&gt;Polar 1.50 was just released and will be rolling out to everyone in a staged over the next week.&lt;/p&gt;
+&lt;h2 id=&quot;prioritize-features-by-easy-of-implementation&quot;&gt;Prioritize features by easy of implementation&lt;/h2&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0</title><link href="http://localhost:4000/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0" /><published>2019-11-11T08:00:00-08:00</published><updated>2019-11-11T08:00:00-08:00</updated><id>http://localhost:4000/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0</id><content type="html" xml:base="http://localhost:4000/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html">&lt;p&gt;Polar 1.50 was just released and will be rolling out to everyone in a staged over the next week.&lt;/p&gt;
 
 &lt;p&gt;This is one of the biggest releases we’ve had in a long time and will be the foundation for 2.0.&lt;/p&gt;
 
@@ -301,7 +388,7 @@ increments as it seems many people really dislike monthly payments.&lt;/p&gt;
 &lt;h2 id=&quot;better-keyboard-bindings&quot;&gt;Better Keyboard Bindings&lt;/h2&gt;
 
 &lt;p&gt;We’re investigating bringing on board better keyboard bindings.  It didn’t make it to this release because we have to
-do a big dependency management update (React) and I wanted to get a stable release out the door.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!</title><link href="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html" rel="alternate" type="text/html" title="Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!" /><published>2019-10-24T09:00:00-07:00</published><updated>2019-10-24T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders</id><content type="html" xml:base="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://i.imgur.com/HEKJEE2.png&quot; /&gt;&lt;/p&gt;
+do a big dependency management update (React) and I wanted to get a stable release out the door.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar 1.50 was just released and will be rolling out to everyone in a staged over the next week.</summary></entry><entry><title type="html">Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!</title><link href="http://localhost:4000/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html" rel="alternate" type="text/html" title="Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!" /><published>2019-10-24T09:00:00-07:00</published><updated>2019-10-24T09:00:00-07:00</updated><id>http://localhost:4000/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders</id><content type="html" xml:base="http://localhost:4000/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://i.imgur.com/HEKJEE2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;polar-140---tags-in-the-sidebar-drag-and-drop-folders-and-more&quot;&gt;Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!&lt;/h1&gt;
 
@@ -433,7 +520,7 @@ including features like cross-device full-text search, OCR, text to speech, and 
 &lt;p&gt;If you’re using a desktop app this release will be pushed to all users over the next week. If you’d like to see if
 you’re already on the latest version just go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | About&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;If you’d like to upgrade earlier you can go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | Check for Updates&lt;/code&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">What’s Next for Offline Web Capture of Web Pages in Polar</title><link href="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's Next for Offline Web Capture of Web Pages in Polar" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you’d like to upgrade earlier you can go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | Check for Updates&lt;/code&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">What’s Next for Offline Web Capture of Web Pages in Polar</title><link href="http://localhost:4000/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's Next for Offline Web Capture of Web Pages in Polar" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>http://localhost:4000/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="http://localhost:4000/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
 
@@ -497,7 +584,7 @@ lower storage requirements.&lt;/p&gt;
 &lt;h2 id=&quot;overview-1&quot;&gt;Overview&lt;/h2&gt;
 
 &lt;p&gt;I think these issues will solve 95% of the initial problems we had with capture and make the entire platform much more
-reliable.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
+reliable.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="http://localhost:4000/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>http://localhost:4000/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="http://localhost:4000/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;the-future-of-polar-cloud-sync&quot;&gt;The Future of Polar Cloud Sync&lt;/h1&gt;
 
@@ -701,7 +788,7 @@ and web mode.&lt;/p&gt;
 own datacenter and by default pick one closer to you.&lt;/p&gt;
 
 &lt;p&gt;With the new cloud support we also intend on supporting advanced features like full-text search, machine learning, and 
-backups.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="https://getpolarized.io/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
+backups.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar Outage- Sept 18 2019</title><link href="http://localhost:4000/2019/09/18/Polar-Outage-Sept-2019.html" rel="alternate" type="text/html" title="Polar Outage- Sept 18 2019" /><published>2019-09-18T09:00:00-07:00</published><updated>2019-09-18T09:00:00-07:00</updated><id>http://localhost:4000/2019/09/18/Polar-Outage-Sept-2019</id><content type="html" xml:base="http://localhost:4000/2019/09/18/Polar-Outage-Sept-2019.html">&lt;h1 id=&quot;polar-outage--sept-18-2019&quot;&gt;Polar Outage- Sept 18 2019&lt;/h1&gt;
 
 &lt;p&gt;We had an outage last night for Polar cloud sync and our web application which was related to an issue in Google cloud.&lt;/p&gt;
 
@@ -724,7 +811,7 @@ after upgrading but it was just a timing issue.  Upon restart Polar does a full 
 &lt;p&gt;We apologize or the inconvenience.&lt;/p&gt;
 
 &lt;p&gt;We’re still trying to investigate &lt;em&gt;why&lt;/em&gt; this happened as there were no changes on our end and Google shouldn’t have
-taken our projects offline.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar Outage- Sept 18 2019</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
+taken our projects offline.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar Outage- Sept 18 2019</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="http://localhost:4000/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>http://localhost:4000/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="http://localhost:4000/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
 
 &lt;p&gt;Being that my background is in CompSci I tend to think about thinks in terms of probabilities, statistics, game theory, 
 and distributed systems.&lt;/p&gt;
@@ -832,7 +919,7 @@ if the companies don’t create any externalities for which the consumer doesn�
 majority.&lt;/p&gt;
 
 &lt;p&gt;I think regardless, identify the CORE issue here would allow us to keep working towards a goal.  The first step 
-towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></name></author><summary type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Polar 1.19.8 Released - Better Payments and Fixes</title><link href="https://getpolarized.io/2019/06/02/Polar-1-19-8.html" rel="alternate" type="text/html" title="Polar 1.19.8 Released - Better Payments and Fixes" /><published>2019-06-02T10:00:00-07:00</published><updated>2019-06-02T10:00:00-07:00</updated><id>https://getpolarized.io/2019/06/02/Polar-1-19-8</id><content type="html" xml:base="https://getpolarized.io/2019/06/02/Polar-1-19-8.html">&lt;h1 id=&quot;polar-1198-released---better-payments-and-fixes&quot;&gt;Polar 1.19.8 Released - Better Payments and Fixes&lt;/h1&gt;
+towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></name></author><summary type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Polar 1.19.8 Released - Better Payments and Fixes</title><link href="http://localhost:4000/2019/06/02/Polar-1-19-8.html" rel="alternate" type="text/html" title="Polar 1.19.8 Released - Better Payments and Fixes" /><published>2019-06-02T10:00:00-07:00</published><updated>2019-06-02T10:00:00-07:00</updated><id>http://localhost:4000/2019/06/02/Polar-1-19-8</id><content type="html" xml:base="http://localhost:4000/2019/06/02/Polar-1-19-8.html">&lt;h1 id=&quot;polar-1198-released---better-payments-and-fixes&quot;&gt;Polar 1.19.8 Released - Better Payments and Fixes&lt;/h1&gt;
 
 &lt;p&gt;
     We've revamped our payments system for Polar Premium and
@@ -895,7 +982,7 @@ towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></
     &lt;li&gt;New payment system for Polar premium based on Stripe.&lt;/li&gt;
     &lt;li&gt;Fixed bug when dragging area highlights.&lt;/li&gt;
     &lt;li&gt;Fixed regression in the webapp where PHZ files couldn't be loaded.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.19.8 Released - Better Payments and Fixes</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks</title><link href="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html" rel="alternate" type="text/html" title="GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks" /><published>2019-05-30T10:00:00-07:00</published><updated>2019-05-30T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks</id><content type="html" xml:base="https://getpolarized.io/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/V8RyHZ9.png&quot; /&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.19.8 Released - Better Payments and Fixes</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks</title><link href="http://localhost:4000/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html" rel="alternate" type="text/html" title="GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks" /><published>2019-05-30T10:00:00-07:00</published><updated>2019-05-30T10:00:00-07:00</updated><id>http://localhost:4000/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks</id><content type="html" xml:base="http://localhost:4000/2019/05/30/GPT2-Destruction-of-the-Web-and-Artificially-Intelligent-Textbooks.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/V8RyHZ9.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;gpt-2-the-destruction-of-the-web-and-artificially-intelligent-textbooks&quot;&gt;GPT-2, the Destruction of the Web and Artificially Intelligent Textbooks&lt;/h1&gt;
 
@@ -1124,289 +1211,4 @@ technology on the risks of trusting fake news and deep fakes.&lt;/p&gt;
 
 &lt;p&gt;This might be an uphill battle though. We already have fake news and we haven’t
 done a good job dealing with it already. How are we going to deal with it when
-its gets far far worse?&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">13 Lucky Tips for using Anki and Spaced Repetition in 2019</title><link href="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html" rel="alternate" type="text/html" title="13 Lucky Tips for using Anki and Spaced Repetition in 2019" /><published>2019-05-25T10:00:00-07:00</published><updated>2019-05-25T10:00:00-07:00</updated><id>https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019</id><content type="html" xml:base="https://getpolarized.io/2019/05/25/13-lucky-tips-for-using-anki-and-spaced-repetition-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;13-lucky-tips-for-using-anki-and-spaced-repetition-in-2019&quot;&gt;13 Lucky Tips for using Anki and Spaced Repetition in 2019&lt;/h1&gt;
-
-&lt;p&gt;For the past few years I’ve been using Anki to capture anything I want to
-remember long term.  If I’m reading an important Wikipedia page I save it to
-&lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt;, annotate it directly, then create flashcards 
-from the annotations.&lt;/p&gt;
-
-&lt;p&gt;I do this to my textbooks and anything else I find important enough to remember
-forever.&lt;/p&gt;
-
-&lt;p&gt;The reason SR is so effective for me is it allows me to efficiently schedule
-when to review the material. I’m not constantly reviewing material I already
-know.&lt;/p&gt;
-
-&lt;p&gt;Here are my tips and tricks for using Anki and SR for language learning, pursing
-a medical degree, undergraduate degree, or just trying to be the smartest person
-in the room!&lt;/p&gt;
-
-&lt;p&gt;These tips will work on any spaced repetition platform including Anki, Quizlet,
-or Memrise.&lt;/p&gt;
-
-&lt;h2 id=&quot;understand-how-it-works&quot;&gt;Understand How It Works&lt;/h2&gt;
-
-&lt;p&gt;First, you should read a bit about &lt;a href=&quot;https://en.wikipedia.org/wiki/Spaced_repetition&quot;&gt;spaced repetition&lt;/a&gt; and make sure you know how
-it works.&lt;/p&gt;
-
-&lt;p&gt;This is key or you’re going to make silly mistakes and revert to the old strategy
-of learning and cramming.&lt;/p&gt;
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/otv7GF0.png&quot; /&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;make-it-easy&quot;&gt;Make it Easy.&lt;/h2&gt;
-
-&lt;p&gt;Creating flashcards needs to be easy use a tool like
-&lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt; so that you can create flashcards, comments,
-and annotations directly while you’re reading the material.&lt;/p&gt;
-
-&lt;p&gt;Once created the flashcards can all be sync’d to Anki in batch.&lt;/p&gt;
-
-&lt;p&gt;This prevents you from going back and forth between Anki and your reading app.&lt;/p&gt;
-
-&lt;p&gt;Additionally, Polar supports incremental reading so you can go back and forth
-between books and continue where you left off.&lt;/p&gt;
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/rbAwfR6.png&quot; /&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;active-recall&quot;&gt;Active Recall&lt;/h2&gt;
-
-&lt;p&gt;You should also understand why &lt;a href=&quot;https://en.wikipedia.org/wiki/Active_recall&quot;&gt;active recall&lt;/a&gt; is so important&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Active recall is a principle of efficient learning, which claims the need to
-actively stimulate memory during the learning process. It contrasts with passive
-review, in which the learning material is processed passively (e.g. by reading,
-watching, etc.). For example, reading a text about George Washington, with no
-further action, is a passive review. Answering the question “Who was the first
-US President?”, is active recall.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Essentially you want everything to be a question and you want to have to think of the
-answer. It’s this thinking process which allows your brain to map weights to specific
-neurons and actually learn.&lt;/p&gt;
-
-&lt;p&gt;Don’t give leading questions or give your self hints to the answer. If you don’t
-know the questions that’s fine.  Just fail it so it’s brought up again.&lt;/p&gt;
-
-&lt;h2 id=&quot;habit-habit-habit&quot;&gt;Habit, Habit, Habit.&lt;/h2&gt;
-
-&lt;p&gt;You couldn’t sit down at the end of the month and brush your teeth for 2-3 hours
-to make up for not brushing would you?&lt;/p&gt;
-
-&lt;p&gt;This has to be a habit. You have to do it every day for 15-45 minutes.&lt;/p&gt;
-
-&lt;p&gt;Do it when you have dead time.  During  your commute. While you’re in line at the DMV.&lt;/p&gt;
-
-&lt;p&gt;While you’re bored.&lt;/p&gt;
-
-&lt;h2 id=&quot;85-90-difficulty&quot;&gt;85-90 Difficulty&lt;/h2&gt;
-
-&lt;p&gt;You should try to target 85-90% difficulty for your cards. If you go into Anki 
-stats you can see the difficulty level for your recent usage.&lt;/p&gt;
-
-&lt;p&gt;Too easy and you’re probably reviewing too often (and wasting time).  Too hard
-and you’re not going to learn anything.&lt;/p&gt;
-
-&lt;p&gt;You want it to be difficult to not too difficulty.&lt;/p&gt;
-
-&lt;p&gt;Unfortunately Anki doesn’t tun itself so you have to tune Anki directly.&lt;/p&gt;
-
-&lt;p&gt;This can be adjusted in the per-deck settings by changing the ease factors.&lt;/p&gt;
-
-&lt;h2 id=&quot;think-long-term&quot;&gt;Think LONG Term.&lt;/h2&gt;
-
-&lt;p&gt;Don’t give up on cards after you’ve finished a class or other milestone.&lt;/p&gt;
-
-&lt;p&gt;The cool thing about SR is that you can keep the material forever.  If you paid
-money to learn Calculus you might as well keep it.  Once you’ve learned it
-using SR is mostly about maintenance.&lt;/p&gt;
-
-&lt;p&gt;Since you know the material the scheduling will get farther and farther in the
-future and there won’t be such a massive burden.&lt;/p&gt;
-
-&lt;h2 id=&quot;use-the-right-card-type&quot;&gt;Use the Right Card Type&lt;/h2&gt;
-
-&lt;p&gt;You should prefer to use question and answer cards.&lt;/p&gt;
-
-&lt;p&gt;These are in the form of&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Q: What is the capital of California?&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;A: Sacramento&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This would be as opposed to cloze deletion cards like:&lt;/p&gt;
-
-&lt;p&gt;[Sacramento] is the capital of California.&lt;/p&gt;
-
-&lt;p&gt;In the above the ‘Sacramento’ string is hidden.&lt;/p&gt;
-
-&lt;p&gt;Cloze deletion cards might seem easy but they often give away context clues
-which weakens the entire point of SR.&lt;/p&gt;
-
-&lt;h2 id=&quot;cloze-deletions-for-languages&quot;&gt;Cloze Deletions for Languages.&lt;/h2&gt;
-
-&lt;p&gt;There’s one main exception for cloze deletion cards - languages.&lt;/p&gt;
-
-&lt;p&gt;Cloze can be good to help with grammar and sentence structure.&lt;/p&gt;
-
-&lt;p&gt;They should NOT replace Q/A cards though.&lt;/p&gt;
-
-&lt;p&gt;For a given word you should have the definition and the forward and reverse translation.&lt;/p&gt;
-
-&lt;h2 id=&quot;person-cards--remember-a-persons-face&quot;&gt;Person cards.  Remember a Person’s Face!&lt;/h2&gt;
-
-&lt;p&gt;This is one of my favorite hacks.&lt;/p&gt;
-
-&lt;p&gt;I have trouble with matching names to faces and I used to avoid talking to people.&lt;/p&gt;
-
-&lt;p&gt;Now I just create a card with their picture and the answer is their name.&lt;/p&gt;
-
-&lt;p&gt;It’s really help avoid awkward social situations.&lt;/p&gt;
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/qP4My84.png&quot; /&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;related-cards&quot;&gt;Related Cards&lt;/h2&gt;
-
-&lt;p&gt;If you’re struggling with a card try creating related cards.&lt;/p&gt;
-
-&lt;p&gt;For example if you have difficulties remembering the reasons for the start of WWII
-make flashcards about those reasons.&lt;/p&gt;
-
-&lt;p&gt;If you want to include Pearl Harbor for example maybe you include facts about
-the ships or the types of attacks that were involved.&lt;/p&gt;
-
-&lt;h2 id=&quot;create-only-beneficial-cards&quot;&gt;Create only Beneficial Cards.&lt;/h2&gt;
-
-&lt;p&gt;Don’t create nonsense cards. Ask yourself will this really help you.&lt;/p&gt;
-
-&lt;p&gt;Remember that SR is an efficient scheduler so going from 5-10k cards isn’t 2x
-more work.  It is initially but quickly your spacings increase and you’re going
-to just be reviewing a few cards per day again.&lt;/p&gt;
-
-&lt;p&gt;However, by only keeping important cards in there this helps you avoid card
-burnout since you’re never wondering “why” you’re learning these cards.&lt;/p&gt;
-
-&lt;p&gt;The why is because they’re valuable!&lt;/p&gt;
-
-&lt;p&gt;Knowing key facts might still land you that job.  If you know a technical term
-during an interview or due diligence it could help convince the interviewer that
-you know your stuff.  Consider adding it anyway!&lt;/p&gt;
-
-&lt;h2 id=&quot;use-shingling-to-remember-speeches&quot;&gt;Use ‘shingling’ to Remember Speeches&lt;/h2&gt;
-
-&lt;p&gt;Do not include entire speeches to remember. Instead. Use overlapped sentences.&lt;/p&gt;
-
-&lt;p&gt;For example. If you want to remember the following:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
-Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
-We are met on a great battle-field of that war.
-We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Break this out into three cards:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Q: Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;A: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;–&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Q: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;A: We are met on a great battle-field of that war.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;–&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Q: We are met on a great battle-field of that war.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;A: We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This will help you connect the parts without having to choke on a massive card with the entire speech.&lt;/p&gt;
-
-&lt;h2 id=&quot;use-absurdity-and-keep-it-fun&quot;&gt;Use Absurdity and Keep it Fun&lt;/h2&gt;
-
-&lt;p&gt;If you were driving to work and you saw a naked man riding a horse on the side
-of the road would you need to remember it?&lt;/p&gt;
-
-&lt;p&gt;Would you have to write it down?&lt;/p&gt;
-
-&lt;p&gt;No. It would burn in your mind.  You’d remember this image for a decade.&lt;/p&gt;
-
-&lt;p&gt;Do this for your anki cards you’re trying to remember.&lt;/p&gt;
-
-&lt;p&gt;Let’s say you met a guy and his name is “Mark Nun”.&lt;/p&gt;
-
-&lt;p&gt;(I just made this up btw. If your name is Mark Nun we don’t know each other!)&lt;/p&gt;
-
-&lt;p&gt;Picture this guy as an actual nun wearing a nun’s uniform.&lt;/p&gt;
-
-&lt;p&gt;You’re never going to forget this guy’s name.&lt;/p&gt;
-
-&lt;p&gt;I do this all the time and it’s a great hack.  You can do this for your cards to by
-mapping images with the cards that are absurd.&lt;/p&gt;
-
-&lt;h2 id=&quot;use-extra-fields&quot;&gt;Use Extra Fields&lt;/h2&gt;
-
-&lt;p&gt;Create an ‘extra’ field with your cards so that you can add notes and pictures
-so that when you fail to remember you can get back to the original context.&lt;/p&gt;
-
-&lt;p&gt;I’ll often put the book information.  The actual text of where I saw the card, etc.&lt;/p&gt;
-
-&lt;p&gt;I’m working on a feature for Polar to add this directly so that when you create
-a flashcard in Polar we automatically create a card with the context so you 
-can click back to it.&lt;/p&gt;
-
-&lt;p&gt;The initial version will probably just have a link back to the Polar webapp to
-avoid bloating Anki with too many images.&lt;/p&gt;
-
-&lt;h2 id=&quot;use-stories-and-etymology&quot;&gt;Use Stories and Etymology&lt;/h2&gt;
-
-&lt;p&gt;Attach ‘extra’ stories to the material as above but make them stories or use
-imagery to remember the material.&lt;/p&gt;
-
-&lt;p&gt;I’ve found that etymology works VERY well for learning languages.&lt;/p&gt;
-
-&lt;p&gt;For example.  The German word for sea is meer which is related to the English word
-marine which is also related to mare (spanish / italian for sea).&lt;/p&gt;
-
-&lt;p&gt;Those connections make it easier to remember.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;SR won’t replace the work of actually understanding the material.  This is still
-your job.  If you’re still confused on a subject try reading it from different
-perspectives of from different authors.&lt;/p&gt;
-
-&lt;p&gt;Use the above tips to keep moving forward with spaced repetition. Use a tool
-like Polar to easily create flashcards and sync them to Anki.&lt;/p&gt;
-
-&lt;p&gt;Make sure you’re also using the right Anki plugins and that you’re using it to
-full effect.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+its gets far far worse?&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
