@@ -58,7 +58,7 @@ export class DatastoreFetchImports {
         const filePromise = new Promise(resolve => {
             tmpFile.stream.on('finish', () => {
                 resolve();
-            })
+            });
         });
 
         const hashcodeStream = new PassThrough();
@@ -80,10 +80,10 @@ export class DatastoreFetchImports {
         };
 
         if (! await PDFMetadata.isPDF(streamRangeFactory)) {
-            throw new Error("URL is not a PDF");
+            throw new Error("URL is not a PDF: " + docURL);
         }
 
-        const destination =`cache/${newBasename}`;
+        const destination = `cache/${newBasename}`;
         await this.moveToCache(tmpFile.file, destination);
 
         // we need some basic docInfo here and then to import it directly into the users
