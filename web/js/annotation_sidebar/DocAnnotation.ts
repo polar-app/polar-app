@@ -4,7 +4,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from 'polar-shared/src/metadata/Refs';
 import {ObjectID} from '../util/ObjectIDs';
-import {Img} from '../metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

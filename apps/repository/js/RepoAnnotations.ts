@@ -2,7 +2,7 @@ import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Images} from '../../../web/js/metadata/Images';
-import {Img} from '../../../web/js/metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "polar-shared/src/tags/Tags";

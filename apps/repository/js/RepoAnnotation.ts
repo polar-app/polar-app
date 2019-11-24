@@ -4,7 +4,7 @@
  */
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Img} from '../../../web/js/metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
