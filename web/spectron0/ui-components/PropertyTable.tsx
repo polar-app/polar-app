@@ -124,6 +124,12 @@ interface IState {
 
 
 interface IRowProps {
+
+    /**
+     * The name of the title if one is optional.
+     */
     readonly name: string;
+
     readonly value: string | ReadonlyArray<string> | undefined;
+
 }
