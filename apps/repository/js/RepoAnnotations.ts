@@ -15,6 +15,7 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {Annotations} from "polar-shared/src/metadata/Annotations";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 export class RepoAnnotations {
 
@@ -32,19 +33,19 @@ export class RepoAnnotations {
             const flashcards = Object.values(pageMeta.flashcards || {}) ;
 
             for (const textHighlight of textHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
             }
 
             for (const areaHighlight of areaHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
             }
 
             for (const comment of comments) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, comment, AnnotationType.COMMENT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, comment, AnnotationType.COMMENT, docInfo));
             }
 
             for (const flashcard of flashcards) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, flashcard, AnnotationType.FLASHCARD, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, flashcard, AnnotationType.FLASHCARD, docInfo));
             }
 
         }
@@ -54,6 +55,7 @@ export class RepoAnnotations {
     }
 
     public static toRepoAnnotation(persistenceLayerProvider: PersistenceLayerProvider,
+                                   pageMeta: IPageMeta,
                                    sourceAnnotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
                                    type: AnnotationType,
                                    docInfo: IDocInfo): RepoAnnotation {
@@ -97,6 +99,7 @@ export class RepoAnnotations {
             meta,
             docInfo,
             img,
+            pageMeta,
             original: sourceAnnotation
         };
 

@@ -26,6 +26,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight";
 import {EditIcon} from "../ui/standard_icons/EditIcon";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 
 const Styles: IStyleMap = {
 
