@@ -469,6 +469,8 @@ function createAnnotation(id: string,
         guid: id,
         fingerprint: '1234',
         docInfo: null!,
+        text: undefined,
+        html: undefined,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
         pageNum,
         position: {

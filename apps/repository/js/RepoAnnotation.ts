@@ -29,9 +29,7 @@ export interface RepoAnnotation {
 
     readonly guid: IDStr;
 
-    // readonly text: PlainTextStr | undefined;
-    // TODO: this should fixed to PlainTextStr | undefined;
-    readonly text?: PlainTextStr;
+    readonly text: PlainTextStr | undefined;
 
     // readonly html: HTMLStr;
 

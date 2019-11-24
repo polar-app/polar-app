@@ -16,9 +16,9 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {TextHighlights} from "../metadata/TextHighlights";
 import {Providers} from "polar-shared/src/util/Providers";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
+import {Texts} from "polar-shared/src/metadata/Texts";
 
 export class DocAnnotations {
 
@@ -66,6 +66,8 @@ export class DocAnnotations {
             docInfo: docMeta.docInfo,
             annotationType: AnnotationType.FLASHCARD,
             // html: comment.content.HTML!,
+            text: undefined,
+            html: undefined,
             fields: Flashcards.convertFieldsToMap(flashcard.fields),
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
@@ -88,6 +90,9 @@ export class DocAnnotations {
                                     comment: IComment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
+        const toText = Providers.memoize(() => Texts.toText(comment.content));
+        const toHTML = Providers.memoize(() => Texts.toHTML(comment.content));
+
         return {
             oid: ObjectIDs.create(),
             id: comment.id,
@@ -95,7 +100,12 @@ export class DocAnnotations {
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
             annotationType: AnnotationType.COMMENT,
-            html: comment.content.HTML!,
+            get text() {
+                return toText();
+            },
+            get html() {
+                return toHTML();
+            },
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
             position: {
@@ -142,6 +152,7 @@ export class DocAnnotations {
             docInfo: docMeta.docInfo,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
             img,
+            text: undefined,
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
             position,
