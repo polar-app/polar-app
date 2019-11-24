@@ -1,9 +1,16 @@
 import * as React from 'react';
+import {Button} from "reactstrap";
 
 export class FakeComponent1 extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.updateTitle = this.updateTitle.bind(this);
+
+        this.state = {
+            title: 'FakeComponent1'
+        };
     }
 
     public render() {
@@ -11,18 +18,27 @@ export class FakeComponent1 extends React.PureComponent<IProps, IState> {
         console.log("FakeComponent1: render");
 
         return <div>
-            This is the fake component1: {this.props.title}
+
+            {this.state.title}:
+
+            <Button onClick={() => this.updateTitle()}>
+                Click Me
+            </Button>
+
         </div>;
+    }
+    private updateTitle() {
+        this.setState({title: "FakeComponent1: " + new Date().toISOString()})
     }
 
 }
 
 
 interface IProps {
-    readonly title: string;
 }
 
 interface IState {
+    readonly title: string;
 }
 
 

@@ -7,8 +7,10 @@ export class FakeComponent0 extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.updateTitle = this.updateTitle.bind(this);
+
         this.state = {
-            title: "this is the first title"
+            title: "FakeComponent0"
         };
 
     }
@@ -18,16 +20,20 @@ export class FakeComponent0 extends React.Component<IProps, IState> {
         console.log("FakeComponent0: render");
 
         return <div>
-            This is the fake component0:
 
-            <Button onClick={() => this.setState({title: "This is the new title"})}>
+            {this.state.title}:
+
+            <Button onClick={() => this.updateTitle()}>
                 Click Me
             </Button>
 
-
-            <FakeComponent1 title={this.state.title}/>
+            <FakeComponent1/>
 
         </div>;
+    }
+
+    private updateTitle() {
+        this.setState({title: "FakeComponent0: " + ": " + new Date().toISOString()});
     }
 
 }
