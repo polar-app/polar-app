@@ -59,20 +59,20 @@ export class RepoAnnotations {
     public static toRepoAnnotation(persistenceLayerProvider: PersistenceLayerProvider,
                                    docMeta: IDocMeta,
                                    pageMeta: IPageMeta,
-                                   sourceAnnotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
-                                   type: AnnotationType,
+                                   original: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
+                                   annotationType: AnnotationType,
                                    docInfo: IDocInfo): RepoAnnotation {
 
         // code shared with DocAnnotations and we should refactor to
         // standardize.
 
-        const text = AnnotationTexts.toText(type, sourceAnnotation);
+        const text = AnnotationTexts.toText(annotationType, original);
 
         const toMeta = (): RepoHighlightInfo | undefined => {
 
-            if (type === AnnotationType.TEXT_HIGHLIGHT || type === AnnotationType.AREA_HIGHLIGHT) {
+            if (annotationType === AnnotationType.TEXT_HIGHLIGHT || annotationType === AnnotationType.AREA_HIGHLIGHT) {
 
-                const highlight = <BaseHighlight> sourceAnnotation;
+                const highlight = <BaseHighlight> original;
                 return {
                     color: HighlightColors.withDefaultColor(highlight.color)
                 };
@@ -84,9 +84,9 @@ export class RepoAnnotations {
 
         const toImg = (): Img | undefined => {
 
-            if (type === AnnotationType.AREA_HIGHLIGHT) {
+            if (annotationType === AnnotationType.AREA_HIGHLIGHT) {
 
-                const areaHighlight = <AreaHighlight> sourceAnnotation;
+                const areaHighlight = <AreaHighlight> original;
 
                 const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
                 return Images.toImg(docFileResolver, areaHighlight.image);
@@ -102,12 +102,12 @@ export class RepoAnnotations {
         const meta = toMeta();
 
         return {
-            id: sourceAnnotation.id,
-            guid: sourceAnnotation.guid,
+            id: original.id,
+            guid: original.guid,
             fingerprint: docInfo.fingerprint,
             text,
-            annotationType: type,
-            created: sourceAnnotation.created,
+            annotationType,
+            created: original.created,
             tags: docInfo.tags || {},
             meta,
             docInfo,
@@ -116,7 +116,7 @@ export class RepoAnnotations {
             },
             docMeta,
             pageMeta,
-            original: sourceAnnotation
+            original
         };
 
     }
