@@ -449,6 +449,8 @@ function createAnnotation(id: string,
         oid: ObjectIDs.create(),
         id,
         guid: id,
+        fingerprint: '1234',
+        docInfo: null!,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
         pageNum,
         position: {

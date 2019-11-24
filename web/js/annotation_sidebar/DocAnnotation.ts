@@ -23,8 +23,9 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
-export interface IDocAnnotation extends ObjectID {
+export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
     // fingerprint, guid, type, docInfo...
 
@@ -79,6 +80,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly id: IDStr;
     public readonly guid: IDStr;
+    public readonly fingerprint: IDStr;
+    public readonly docInfo: IDocInfo;
     public readonly annotationType: AnnotationType;
     public readonly html?: HTMLString;
     public readonly fields?: {[name: string]: HTMLString};
@@ -115,6 +118,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.oid = obj.oid;
         this.id = obj.id;
         this.guid = obj.guid;
+        this.fingerprint = obj.fingerprint;
+        this.docInfo = obj.docInfo;
         this.annotationType = obj.annotationType;
         this.html = obj.html;
         this.fields = obj.fields;
