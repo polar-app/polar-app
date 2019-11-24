@@ -6,7 +6,7 @@ large_image: https://getpolarized.io//assets/screenshots/2019-11-document-view.p
 description: For the past month or so I've been revamping Polar's product-market-fit engine which is a system we've built to help me understand what our users want and to prioritize feature requests.
 hidden: true
 ---
-
+    
 <img class="img-fluid border border-dark rounded" src="https://getpolarized.io//assets/screenshots/2019-11-document-view.png">
 
 # Building Polar's Product/Market Fit Engine
