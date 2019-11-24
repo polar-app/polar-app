@@ -1,6 +1,4 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {BaseHighlight} from '../metadata/BaseHighlight';
-import {Screenshot} from '../metadata/Screenshot';
 import {IDocAnnotation} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Flashcard} from '../metadata/Flashcard';
@@ -19,6 +17,8 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {TextHighlights} from "../metadata/TextHighlights";
+import {Providers} from "polar-shared/src/util/Providers";
+import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
 
 export class DocAnnotations {
 
@@ -160,7 +160,8 @@ export class DocAnnotations {
                                           textHighlight: ITextHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
 
-        const html = TextHighlights.toHTML(textHighlight);
+        const toText = Providers.memoize(() => ITextHighlights.toText(textHighlight));
+        const toHTML = Providers.memoize(() => ITextHighlights.toHTML(textHighlight));
 
         return {
             oid: ObjectIDs.create(),
@@ -169,7 +170,12 @@ export class DocAnnotations {
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
             annotationType: AnnotationType.TEXT_HIGHLIGHT,
-            html,
+            get text() {
+                return toText();
+            },
+            get html() {
+                return toHTML();
+            },
             pageNum: pageMeta.pageInfo.num,
             position: {
                 x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
