@@ -105,7 +105,7 @@ export class DocPropTable extends React.Component<IProps, IState> {
 
                     <div style={Styles.metaValue}>
 
-                        {repoAnnotation.type}
+                        {repoAnnotation.annotationType}
 
                     </div>
 

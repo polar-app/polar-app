@@ -91,7 +91,7 @@ export class RepoAnnotations {
             guid: sourceAnnotation.guid,
             fingerprint: docInfo.fingerprint,
             text,
-            type,
+            annotationType: type,
             created: sourceAnnotation.created,
             tags: docInfo.tags || {},
             meta,

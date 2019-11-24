@@ -29,7 +29,7 @@ export interface RepoAnnotation {
 
     readonly text?: string;
 
-    readonly type: AnnotationType;
+    readonly annotationType: AnnotationType;
 
     readonly created: ISODateTimeString;
 

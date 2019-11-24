@@ -48,7 +48,7 @@ export class ReviewerTasks {
             };
 
             return repoDocAnnotations
-                .filter(current => current.type === AnnotationType.TEXT_HIGHLIGHT)
+                .filter(current => current.annotationType === AnnotationType.TEXT_HIGHLIGHT)
                 .filter(current => current.text !== undefined && current.text !== '')
                 .map(toTask);
 
@@ -85,7 +85,7 @@ export class ReviewerTasks {
             };
 
             return repoDocAnnotations
-                .filter(current => current.type === AnnotationType.FLASHCARD)
+                .filter(current => current.annotationType === AnnotationType.FLASHCARD)
                 .map(toTasks)
                 .reduce(Reducers.FLAT)
 
