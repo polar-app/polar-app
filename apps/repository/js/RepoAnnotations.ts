@@ -14,7 +14,7 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
-import {Annotations} from "polar-shared/src/metadata/Annotations";
+import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 
@@ -66,7 +66,7 @@ export class RepoAnnotations {
         // code shared with DocAnnotations and we should refactor to
         // standardize.
 
-        const text = Annotations.toText(type, sourceAnnotation);
+        const text = AnnotationTexts.toText(type, sourceAnnotation);
 
         let meta: RepoHighlightInfo | undefined;
 

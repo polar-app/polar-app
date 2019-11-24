@@ -19,6 +19,7 @@ import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {Providers} from "polar-shared/src/util/Providers";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
 import {Texts} from "polar-shared/src/metadata/Texts";
+import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
 
 export class DocAnnotations {
 
@@ -90,8 +91,10 @@ export class DocAnnotations {
                                     comment: IComment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
-        const toText = Providers.memoize(() => Texts.toText(comment.content));
-        const toHTML = Providers.memoize(() => Texts.toHTML(comment.content));
+        const annotationType = AnnotationType.COMMENT;
+
+        const toText = Providers.memoize(() => AnnotationTexts.toText(annotationType, comment));
+        const toHTML = Providers.memoize(() => AnnotationTexts.toHTML(annotationType, comment));
 
         return {
             oid: ObjectIDs.create(),
@@ -99,7 +102,7 @@ export class DocAnnotations {
             guid: comment.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
-            annotationType: AnnotationType.COMMENT,
+            annotationType,
             get text() {
                 return toText();
             },
