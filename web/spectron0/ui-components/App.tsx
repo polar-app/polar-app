@@ -28,6 +28,7 @@ import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 import {DocSidebar} from "./DocSidebar";
+import {UpgradeRequired} from "../../js/ui/account_upgrade/UpgradeRequired";
 
 const styles = {
     swatch: {
@@ -339,6 +340,8 @@ export class App<P> extends React.Component<{}, IAppState> {
                     {/*    fingerprint: "0x01",*/}
                     {/*}}/>*/}
                 </div>
+
+                <UpgradeRequired/>
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01"*/}
