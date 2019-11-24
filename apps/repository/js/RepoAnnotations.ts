@@ -33,19 +33,19 @@ export class RepoAnnotations {
             const flashcards = Object.values(pageMeta.flashcards || {}) ;
 
             for (const textHighlight of textHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
             }
 
             for (const areaHighlight of areaHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
             }
 
             for (const comment of comments) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, comment, AnnotationType.COMMENT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, comment, AnnotationType.COMMENT, docInfo));
             }
 
             for (const flashcard of flashcards) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, pageMeta, flashcard, AnnotationType.FLASHCARD, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, flashcard, AnnotationType.FLASHCARD, docInfo));
             }
 
         }
@@ -55,6 +55,7 @@ export class RepoAnnotations {
     }
 
     public static toRepoAnnotation(persistenceLayerProvider: PersistenceLayerProvider,
+                                   docMeta: IDocMeta,
                                    pageMeta: IPageMeta,
                                    sourceAnnotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
                                    type: AnnotationType,
@@ -99,6 +100,7 @@ export class RepoAnnotations {
             meta,
             docInfo,
             img,
+            docMeta,
             pageMeta,
             original: sourceAnnotation
         };

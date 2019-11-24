@@ -14,6 +14,7 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IComment} from 'polar-shared/src/metadata/IComment';
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 
@@ -50,6 +51,8 @@ export interface RepoAnnotation {
     readonly docInfo: IDocInfo;
 
     readonly img?: Img;
+
+    readonly docMeta: IDocMeta;
 
     readonly pageMeta: IPageMeta;
 
