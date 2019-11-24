@@ -16,6 +16,7 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {Annotations} from "polar-shared/src/metadata/Annotations";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 
 export class RepoAnnotations {
 
@@ -42,6 +43,7 @@ export class RepoAnnotations {
 
             for (const comment of comments) {
                 result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, comment, AnnotationType.COMMENT, docInfo));
+                // result.push(DocAnnotations.createFromComment(docMeta, comment, pageMeta));
             }
 
             for (const flashcard of flashcards) {

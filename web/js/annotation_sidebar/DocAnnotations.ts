@@ -216,33 +216,6 @@ export class DocAnnotations {
     }
 
 
-    private static getScreenshot(pageMeta: IPageMeta, highlight: BaseHighlight): Screenshot | undefined {
-
-        // tslint:disable-next-line:prefer-const
-        let screenshot: Screenshot | undefined;
-
-        if (highlight.images) {
-
-            Object.values(highlight.images).forEach( image => {
-
-                if (image.rel && image.rel === 'screenshot') {
-
-                    // const screenshotURI = Screenshots.parseURI(image.src);
-                    //
-                    // if (screenshotURI) {
-                    //     screenshot = pageMeta.screenshots[screenshotURI.id];
-                    // }
-
-                }
-
-            });
-
-        }
-
-        return screenshot;
-
-    }
-
     private static firstRect(highlight: IBaseHighlight): Optional<IRect> {
         return Optional.of(highlight)
             .map(current => current.rects)

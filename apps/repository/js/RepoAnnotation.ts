@@ -12,7 +12,7 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IComment} from 'polar-shared/src/metadata/IComment';
-import {IDStr} from "polar-shared/src/util/Strings";
+import {HTMLStr, IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
@@ -29,7 +29,11 @@ export interface RepoAnnotation {
 
     readonly guid: IDStr;
 
-    readonly text?: string;
+    // readonly text: PlainTextStr | undefined;
+    // TODO: this should fixed to PlainTextStr | undefined;
+    readonly text?: PlainTextStr;
+
+    // readonly html: HTMLStr;
 
     readonly annotationType: AnnotationType;
 
