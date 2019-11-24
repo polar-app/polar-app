@@ -448,6 +448,7 @@ function createAnnotation(id: string,
     return {
         oid: ObjectIDs.create(),
         id,
+        guid: id,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
         pageNum,
         position: {

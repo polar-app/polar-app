@@ -61,6 +61,7 @@ export class DocAnnotations {
         return {
             oid: ObjectIDs.create(),
             id: flashcard.id,
+            guid: flashcard.guid,
             annotationType: AnnotationType.FLASHCARD,
             // html: comment.content.HTML!,
             fields: Flashcards.convertFieldsToMap(flashcard.fields),
@@ -88,6 +89,7 @@ export class DocAnnotations {
         return {
             oid: ObjectIDs.create(),
             id: comment.id,
+            guid: comment.guid,
             annotationType: AnnotationType.COMMENT,
             html: comment.content.HTML!,
             pageNum: pageMeta.pageInfo.num,
@@ -131,6 +133,7 @@ export class DocAnnotations {
         return {
             oid: ObjectIDs.create(),
             id: areaHighlight.id,
+            guid: areaHighlight.guid,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
             img,
             html: undefined,
@@ -156,6 +159,7 @@ export class DocAnnotations {
         return {
             oid: ObjectIDs.create(),
             id: textHighlight.id,
+            guid: textHighlight.guid,
             annotationType: AnnotationType.TEXT_HIGHLIGHT,
             html,
             pageNum: pageMeta.pageInfo.num,

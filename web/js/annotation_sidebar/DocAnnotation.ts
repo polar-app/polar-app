@@ -21,10 +21,15 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
+import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 export interface IDocAnnotation extends ObjectID {
 
-    readonly id: string;
+    // fingerprint, guid, type, docInfo...
+
+    readonly id: IDStr;
+    readonly guid: IDStr;
     readonly annotationType: AnnotationType;
     readonly html?: HTMLString;
     readonly fields?: {[name: string]: HTMLString};
@@ -72,7 +77,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly oid: number;
 
-    public readonly id: string;
+    public readonly id: IDStr;
+    public readonly guid: IDStr;
     public readonly annotationType: AnnotationType;
     public readonly html?: HTMLString;
     public readonly fields?: {[name: string]: HTMLString};
@@ -108,6 +114,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
         this.oid = obj.oid;
         this.id = obj.id;
+        this.guid = obj.guid;
         this.annotationType = obj.annotationType;
         this.html = obj.html;
         this.fields = obj.fields;
@@ -149,8 +156,9 @@ export class DefaultDocAnnotation implements DocAnnotation {
 /**
  * A map from ID to the actual DocAnnotation.
  */
-// noinspection TsLint: interface-over-type-literal
-export type DocAnnotationMap = {[id: string]: DefaultDocAnnotation};
+export interface DocAnnotationMap {
+    [id: string]: DefaultDocAnnotation;
+}
 
 /**
  * Annotations according to their position in the document.

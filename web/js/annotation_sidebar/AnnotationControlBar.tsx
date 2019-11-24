@@ -50,8 +50,6 @@ const Styles: IStyleMap = {
 
 };
 
-/**
- */
 export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -234,7 +232,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         Preconditions.assertPresent(annotation);
 
-        switch(annotation.annotationType) {
+        switch (annotation.annotationType) {
             case AnnotationType.TEXT_HIGHLIGHT:
                 delete annotation.pageMeta.textHighlights[annotation.id];
                 break;

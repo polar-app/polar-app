@@ -20,6 +20,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 describe('DocAnnotationIndexManager', function() {
 
@@ -49,9 +50,7 @@ describe('DocAnnotationIndexManager', function() {
             docAnnotationIndexManager.registerListenerForDocMeta(docMeta);
         };
 
-        const errHandler = () => {
-
-        };
+        const errHandler = NULL_FUNCTION;
 
         const docMetaListener = new DocMetaListener(fingerprint, profileID, docMetaHandler, errHandler);
 
@@ -133,7 +132,7 @@ describe('DocAnnotationIndexManager', function() {
                 console.log("id: " + docAnnotation.id);
                 console.log(docAnnotation.html);
 
-                const children = docAnnotation.getChildren()
+                const children = docAnnotation.getChildren();
                 for (const child of children) {
                     console.log("    ====");
                     console.log("    id: ", child.id);
@@ -147,7 +146,7 @@ describe('DocAnnotationIndexManager', function() {
 
         function verify1() {
 
-            console.log("========== Verify1")
+            console.log("========== Verify1");
 
             const docAnnotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
             dumpDocAnnotations(docAnnotationsSorted);
@@ -174,7 +173,7 @@ describe('DocAnnotationIndexManager', function() {
 
         function verify2() {
 
-            console.log("========== Verify2")
+            console.log("========== Verify2");
 
             const annotationsSorted = docAnnotationIndex.getDocAnnotationsSorted();
 
