@@ -20,6 +20,10 @@ Publishes all our public node modules.
 
 # Releases
 
+## Publish
+
+Used for publishing new versions of packages.
+
 ## Webapp
 
 In the root of polar-app run:
