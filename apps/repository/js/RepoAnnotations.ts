@@ -17,6 +17,8 @@ import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
+import {Providers} from "polar-shared/src/util/Providers";
+import {BaseHighlight} from "../../../web/js/metadata/BaseHighlight";
 
 export class RepoAnnotations {
 
@@ -42,12 +44,11 @@ export class RepoAnnotations {
             }
 
             for (const comment of comments) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, comment, AnnotationType.COMMENT, docInfo));
-                // result.push(DocAnnotations.createFromComment(docMeta, comment, pageMeta));
+                result.push(DocAnnotations.createFromComment(docMeta, comment, pageMeta));
             }
 
             for (const flashcard of flashcards) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, flashcard, AnnotationType.FLASHCARD, docInfo));
+                result.push(DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta));
             }
 
         }
@@ -68,28 +69,38 @@ export class RepoAnnotations {
 
         const text = AnnotationTexts.toText(type, sourceAnnotation);
 
-        let meta: RepoHighlightInfo | undefined;
+        const toMeta = (): RepoHighlightInfo | undefined => {
 
-        if (type === AnnotationType.TEXT_HIGHLIGHT) {
-            const textHighlight = <TextHighlight> sourceAnnotation;
-            meta = {
-                color: HighlightColors.withDefaultColor(textHighlight.color)
-            };
-        }
+            if (type === AnnotationType.TEXT_HIGHLIGHT || type === AnnotationType.AREA_HIGHLIGHT) {
 
-        let img: Img | undefined;
+                const highlight = <BaseHighlight> sourceAnnotation;
+                return {
+                    color: HighlightColors.withDefaultColor(highlight.color)
+                };
+            }
 
-        if (type === AnnotationType.AREA_HIGHLIGHT) {
+            return undefined;
 
-            const areaHighlight = <AreaHighlight> sourceAnnotation;
-            meta = {
-                color: HighlightColors.withDefaultColor(areaHighlight.color)
-            };
+        };
 
-            const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-            img = Images.toImg(docFileResolver, areaHighlight.image);
+        const toImg = (): Img | undefined => {
 
-        }
+            if (type === AnnotationType.AREA_HIGHLIGHT) {
+
+                const areaHighlight = <AreaHighlight> sourceAnnotation;
+
+                const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
+                return Images.toImg(docFileResolver, areaHighlight.image);
+
+            }
+
+            return undefined;
+
+        };
+
+
+        const img = Providers.memoize(() => toImg());
+        const meta = toMeta();
 
         return {
             id: sourceAnnotation.id,
@@ -101,7 +112,9 @@ export class RepoAnnotations {
             tags: docInfo.tags || {},
             meta,
             docInfo,
-            img,
+            get img() {
+                return img();
+            },
             docMeta,
             pageMeta,
             original: sourceAnnotation

@@ -17,9 +17,9 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {Providers} from "polar-shared/src/util/Providers";
-import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
-import {Texts} from "polar-shared/src/metadata/Texts";
 import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
+import {PlainTextStr} from "polar-shared/src/util/Strings";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 
 export class DocAnnotations {
 
@@ -56,8 +56,10 @@ export class DocAnnotations {
     }
 
     public static createFromFlashcard(docMeta: IDocMeta,
-                                      flashcard: Flashcard,
+                                      flashcard: IFlashcard,
                                       pageMeta: IPageMeta): IDocAnnotation {
+
+        const iTextConverter = ITextConverters.create(AnnotationType.FLASHCARD, flashcard);
 
         return {
             oid: ObjectIDs.create(),
@@ -65,10 +67,7 @@ export class DocAnnotations {
             guid: flashcard.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
-            annotationType: AnnotationType.FLASHCARD,
-            // html: comment.content.HTML!,
-            text: undefined,
-            html: undefined,
+            ...iTextConverter,
             fields: Flashcards.convertFieldsToMap(flashcard.fields),
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
@@ -91,10 +90,7 @@ export class DocAnnotations {
                                     comment: IComment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
-        const annotationType = AnnotationType.COMMENT;
-
-        const toText = Providers.memoize(() => AnnotationTexts.toText(annotationType, comment));
-        const toHTML = Providers.memoize(() => AnnotationTexts.toHTML(annotationType, comment));
+        const iTextConverter = ITextConverters.create(AnnotationType.COMMENT, comment);
 
         return {
             oid: ObjectIDs.create(),
@@ -102,13 +98,7 @@ export class DocAnnotations {
             guid: comment.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
-            annotationType,
-            get text() {
-                return toText();
-            },
-            get html() {
-                return toHTML();
-            },
+            ...iTextConverter,
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
             position: {
@@ -174,8 +164,7 @@ export class DocAnnotations {
                                           textHighlight: ITextHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
 
-        const toText = Providers.memoize(() => ITextHighlights.toText(textHighlight));
-        const toHTML = Providers.memoize(() => ITextHighlights.toHTML(textHighlight));
+        const iTextConverter = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, textHighlight);
 
         return {
             oid: ObjectIDs.create(),
@@ -183,13 +172,7 @@ export class DocAnnotations {
             guid: textHighlight.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
-            annotationType: AnnotationType.TEXT_HIGHLIGHT,
-            get text() {
-                return toText();
-            },
-            get html() {
-                return toHTML();
-            },
+            ...iTextConverter,
             pageNum: pageMeta.pageInfo.num,
             position: {
                 x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
@@ -242,4 +225,31 @@ export class DocAnnotations {
             .map(current => current[0]);
     }
 
+}
+
+class ITextConverters {
+    public static create(annotationType: AnnotationType,
+                         annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard): ITextConverter {
+
+        const toText = Providers.memoize(() => AnnotationTexts.toText(annotationType, annotation));
+        const toHTML = Providers.memoize(() => AnnotationTexts.toHTML(annotationType, annotation));
+
+        return {
+            annotationType,
+            get text() {
+                return toText();
+            },
+            get html() {
+                return toHTML();
+            },
+        };
+
+    }
+
+}
+
+interface ITextConverter {
+    readonly annotationType: AnnotationType;
+    readonly text: PlainTextStr | undefined;
+    readonly html: PlainTextStr | undefined;
 }
