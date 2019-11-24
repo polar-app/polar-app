@@ -1,4 +1,3 @@
-import {TextHighlight} from '../../../web/js/metadata/TextHighlight';
 import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
