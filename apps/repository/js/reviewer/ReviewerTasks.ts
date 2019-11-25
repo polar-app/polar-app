@@ -2,7 +2,6 @@ import {
     CalculatedTaskReps,
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
-    ReadingTaskAction,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
@@ -19,6 +18,7 @@ import {Reducers} from "polar-shared/src/util/Reducers";
 import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 
 /**
  * Take tasks and then build a
@@ -36,12 +36,14 @@ export class ReviewerTasks {
 
         const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<ReadingTaskAction>> => {
 
-            const toTask = (repoAnnotation: IDocAnnotation): Task<ReadingTaskAction> => {
-                const color = HighlightColors.withDefaultColor(repoAnnotation.color);
+            const toTask = (docAnnotation: IDocAnnotation): Task<ReadingTaskAction> => {
+                const color = HighlightColors.withDefaultColor(docAnnotation.color);
                 return {
-                    id: repoAnnotation.guid,
-                    action: repoAnnotation.text || "",
-                    created: repoAnnotation.created,
+                    id: docAnnotation.guid,
+                    action: {
+                        text: docAnnotation.text || ""
+                    },
+                    created: docAnnotation.created,
                     color,
                     mode
                 };
@@ -65,20 +67,20 @@ export class ReviewerTasks {
 
         const taskBuilder: TasksBuilder<FlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<FlashcardTaskAction>> => {
 
-            const toTasks = (repoAnnotation: IDocAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
+            const toTasks = (docAnnotation: IDocAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
 
                 const toTask = (action: FlashcardTaskAction): Task<FlashcardTaskAction> => {
 
                     return {
-                        id: repoAnnotation.guid,
+                        id: docAnnotation.guid,
                         action,
-                        created: repoAnnotation.created,
+                        created: docAnnotation.created,
                         mode
                     };
 
                 };
 
-                const actions = FlashcardTaskActions.create(<IFlashcard> repoAnnotation.original);
+                const actions = FlashcardTaskActions.create(<IFlashcard> docAnnotation.original);
 
                 return actions.map(toTask);
 

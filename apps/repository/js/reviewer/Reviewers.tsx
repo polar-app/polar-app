@@ -13,7 +13,6 @@ import {
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
     CalculatedTaskReps,
-    ReadingTaskAction,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -29,6 +28,7 @@ import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/Spac
 import {FirestoreCollections} from "./FirestoreCollections";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 
 const log = Logger.create();
 

@@ -11,6 +11,7 @@ import {Img} from 'polar-shared/src/metadata/Img';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DocPropTable} from "./meta_view/DocPropTable";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {AnnotationControlBar} from "../../../../web/js/annotation_sidebar/AnnotationControlBar";
 
 const log = Logger.create();
 
@@ -31,7 +32,7 @@ const AnnotationImage = (props: AnnotationImageProps) => {
     return <ResponsiveImg id={props.id} img={props.img} defaultText=" "/>;
 };
 
-export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
+export class  RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
@@ -80,6 +81,9 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
                     </div>
 
                     <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
+
+                    {/*FIXME: I need to figure out how to get the 'doc' now*/}
+                    {/*<AnnotationControlBar doc={} annotation={}/>*/}
 
                 </div>
 

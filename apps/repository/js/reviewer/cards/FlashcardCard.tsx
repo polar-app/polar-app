@@ -18,7 +18,7 @@ export class FlashcardCard extends React.Component<IProps, IState> {
 
         this.state = {
             side: 'front'
-        }
+        };
 
     }
 
