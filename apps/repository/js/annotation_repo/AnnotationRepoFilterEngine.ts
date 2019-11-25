@@ -4,7 +4,7 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {RepoAnnotation} from '../RepoAnnotation';
-import {RepoAnnotations} from '../RepoAnnotations';
+import {RepoDocAnnotations} from '../RepoDocAnnotations';
 import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
@@ -81,7 +81,7 @@ export class AnnotationRepoFilterEngine {
     }
 
     private doFilterValid(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
-        return repoAnnotations.filter(current => RepoAnnotations.isValid(current));
+        return repoAnnotations.filter(current => RepoDocAnnotations.isValid(current));
     }
 
     private doFilterByText(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {

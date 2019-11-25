@@ -76,7 +76,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         const onUpdated: UpdatedCallback = repoAnnotations => {
 
-            const tags = this.props.repoDocMetaManager.repoAnnotationIndex.toTagDescriptors();
+            const tags = this.props.repoDocMetaManager.repoDocAnnotationIndex.toTagDescriptors();
 
             const state = {...this.state, data: repoAnnotations, tags};
 
@@ -85,7 +85,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         };
 
         const repoAnnotationsProvider: () => ReadonlyArray<RepoAnnotation> =
-            () => this.props.repoDocMetaManager!.repoAnnotationIndex.values();
+            () => this.props.repoDocMetaManager!.repoDocAnnotationIndex.values();
 
         const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
 

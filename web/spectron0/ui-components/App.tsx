@@ -12,7 +12,7 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Flashcards} from "../../js/metadata/Flashcards";
 import {Refs} from "polar-shared/src/metadata/Refs";
-import {RepoAnnotations} from "../../../apps/repository/js/RepoAnnotations";
+import {RepoDocAnnotations} from "../../../apps/repository/js/RepoDocAnnotations";
 import {DocInfos} from "../../js/metadata/DocInfos";
 import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
 import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskAction";

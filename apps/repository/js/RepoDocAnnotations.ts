@@ -4,13 +4,14 @@ import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
+import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
 
-export class RepoAnnotations {
+export class RepoDocAnnotations {
 
     public static convert(persistenceLayerProvider: PersistenceLayerProvider,
-                          docMeta: IDocMeta): ReadonlyArray<RepoAnnotation> {
+                          docMeta: IDocMeta): ReadonlyArray<IDocAnnotation> {
 
-        const result: RepoAnnotation[] = [];
+        const result: IDocAnnotation[] = [];
 
         const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
 

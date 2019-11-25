@@ -1,9 +1,7 @@
-import {DocMeta} from "../../../web/js/metadata/DocMeta";
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocInfos} from './RepoDocInfos';
-import {RepoAnnotations} from './RepoAnnotations';
+import {RepoDocAnnotations} from './RepoDocAnnotations';
 import {Logger} from "polar-shared/src/logger/Logger";
-import {RepoDocInfo} from './RepoDocInfo';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -41,9 +39,9 @@ export class RepoDocMetas {
         }
 
         const repoDocInfo = RepoDocInfos.convert(docMeta.docInfo);
-        const repoAnnotations = RepoAnnotations.convert(persistenceLayerProvider, docMeta);
+        const repoAnnotations = RepoDocAnnotations.convert(persistenceLayerProvider, docMeta);
 
-        return {repoDocInfo, repoAnnotations};
+        return {repoDocInfo, repoDocAnnotations: repoAnnotations};
 
     }
 
