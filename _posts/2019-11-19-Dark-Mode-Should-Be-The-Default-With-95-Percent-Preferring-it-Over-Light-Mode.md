@@ -8,7 +8,7 @@ large_image: https://i.imgur.com/KSK0R75.png
 
 <img class="img-fluid border border-dark rounded" src="https://i.imgur.com/KSK0R75.png">
 
-# Dark Mode Should be the Default with 95% Preferring it Over Light Mode
+# Dark Mode by Default - 95% Prefer Dark over Light Mode
 
 One thing that's kept coming up when talking to Polar users is that we should implement dark mode.
 
