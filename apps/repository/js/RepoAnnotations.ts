@@ -1,24 +1,9 @@
-import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
-import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
-import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Images} from '../../../web/js/metadata/Images';
-import {Img} from 'polar-shared/src/metadata/Img';
+import {RepoAnnotation} from './RepoAnnotation';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {IComment} from "polar-shared/src/metadata/IComment";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
-import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
-import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
-import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
-import {Providers} from "polar-shared/src/util/Providers";
-import {BaseHighlight} from "../../../web/js/metadata/BaseHighlight";
-import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 export class RepoAnnotations {
 
