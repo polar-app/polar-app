@@ -125,7 +125,7 @@ export class RepoAnnotations {
         return true;
     }
 
-    public static toTags(repoAnnotation?: RepoAnnotation): Tag[] {
+    public static toTags(repoAnnotation: RepoAnnotation | undefined): Tag[] {
 
         if (repoAnnotation) {
             return Object.values(repoAnnotation.tags || {});
