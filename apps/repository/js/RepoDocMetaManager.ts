@@ -17,10 +17,11 @@ import {Tag} from 'polar-shared/src/tags/Tags';
 import {DataObjectIndex} from './DataObjectIndex';
 import {RepoDocAnnotations} from "./RepoDocAnnotations";
 import {RepoDocInfos} from "./RepoDocInfos";
+import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
 
 const log = Logger.create();
 
-export class RepoDocAnnotationDataObjectIndex extends DataObjectIndex<RepoAnnotation> {
+export class RepoDocAnnotationDataObjectIndex extends DataObjectIndex<IDocAnnotation> {
 
     constructor() {
         super((repoAnnotation?: RepoAnnotation) => RepoDocAnnotations.toTags(repoAnnotation) );

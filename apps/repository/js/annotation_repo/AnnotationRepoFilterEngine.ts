@@ -10,6 +10,7 @@ import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 /**
  * The actual engine that applies the filters once they are updated.
@@ -18,7 +19,7 @@ export class AnnotationRepoFilterEngine {
 
     private filters: AnnotationRepoFilters = new DefaultAnnotationRepoFilters();
 
-    constructor(private repoAnnotationsProvider: Provider<ReadonlyArray<RepoAnnotation>>,
+    constructor(private repoAnnotationsProvider: Provider<ReadonlyArray<IDocAnnotation>>,
                 private onUpdated: UpdatedCallback) {
 
     }
@@ -41,7 +42,7 @@ export class AnnotationRepoFilterEngine {
         this.onUpdated(this.filter(repoAnnotations));
     }
 
-    private filter(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private filter(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
@@ -57,7 +58,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterByColor(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByColor(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (this.filters.colors.length > 0) {
             return repoAnnotations.filter(current => {
@@ -70,7 +71,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterByAnnotationTypes(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByAnnotationTypes(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (this.filters.annotationTypes.length > 0) {
             return repoAnnotations.filter(current => this.filters.annotationTypes.includes(current.annotationType));
@@ -80,11 +81,11 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterValid(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterValid(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
         return repoAnnotations.filter(current => RepoDocAnnotations.isValid(current));
     }
 
-    private doFilterByText(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByText(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (! Strings.empty(this.filters.text)) {
 
@@ -100,7 +101,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterFlagged(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterFlagged(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (this.filters.flagged) {
             return repoAnnotations.filter(current => current.docInfo.flagged);
@@ -110,7 +111,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterArchived(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterArchived(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (! this.filters.archived) {
             return repoAnnotations.filter(current => !current.docInfo.archived);
@@ -120,7 +121,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByTags(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         const tags = this.filters.filteredTags.get()
             .filter(current => current.id !== '/');
@@ -139,5 +140,5 @@ export class AnnotationRepoFilterEngine {
 
 }
 
-export type UpdatedCallback = (repoAnnotations: ReadonlyArray<RepoAnnotation>) => void;
+export type UpdatedCallback = (repoAnnotations: ReadonlyArray<IDocAnnotation>) => void;
 

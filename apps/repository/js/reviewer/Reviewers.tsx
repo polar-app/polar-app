@@ -32,6 +32,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 const log = Logger.create();
 
@@ -39,7 +40,7 @@ export class Reviewers {
 
     public static start(datastoreCapabilities: DatastoreCapabilities,
                         prefs: PersistentPrefs,
-                        repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                        repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                         mode: RepetitionMode,
                         limit: number = 10) {
 
@@ -83,7 +84,7 @@ export class Reviewers {
 
     public static async create(datastoreCapabilities: DatastoreCapabilities,
                                prefs: PersistentPrefs,
-                               repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                               repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                mode: RepetitionMode,
                                limit: number = 10) {
 

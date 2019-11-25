@@ -29,6 +29,7 @@ import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/Anno
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {RepoFooter} from "../repo_footer/RepoFooter";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -84,7 +85,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         };
 
-        const repoAnnotationsProvider: () => ReadonlyArray<RepoAnnotation> =
+        const repoAnnotationsProvider: () => ReadonlyArray<IDocAnnotation> =
             () => this.props.repoDocMetaManager!.repoDocAnnotationIndex.values();
 
         const filterEngine = new AnnotationRepoFilterEngine(repoAnnotationsProvider, onUpdated);
@@ -244,7 +245,7 @@ export interface IState {
 
     readonly repoAnnotation?: RepoAnnotation;
 
-    readonly data: ReadonlyArray<RepoAnnotation>;
+    readonly data: ReadonlyArray<IDocAnnotation>;
 
 
 

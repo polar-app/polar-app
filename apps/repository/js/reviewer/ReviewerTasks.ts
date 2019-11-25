@@ -19,17 +19,18 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 /**
  * Take tasks and then build a
  */
 export interface TasksBuilder<A> {
-    (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<A>>;
+    (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<A>>;
 }
 
 export class ReviewerTasks {
 
-    public static async createReadingTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+    public static async createReadingTasks(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                            limit: number = 10): Promise<CalculatedTaskReps<ReadingTaskAction>> {
 
         const mode = 'reading';
@@ -58,7 +59,7 @@ export class ReviewerTasks {
 
     }
 
-    public static async createFlashcardTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+    public static async createFlashcardTasks(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                              limit: number = 10): Promise<CalculatedTaskReps<FlashcardTaskAction>> {
 
         const mode = 'flashcard';
@@ -95,7 +96,7 @@ export class ReviewerTasks {
 
     }
 
-    public static async createTasks<A>(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+    public static async createTasks<A>(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                        mode: RepetitionMode,
                                        tasksBuilder: TasksBuilder<A>,
                                        limit: number = 10): Promise<CalculatedTaskReps<A>> {
