@@ -20,6 +20,7 @@ import {Providers} from "polar-shared/src/util/Providers";
 import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
 import {PlainTextStr} from "polar-shared/src/util/Strings";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 
 export class DocAnnotations {
 
@@ -81,7 +82,8 @@ export class DocAnnotations {
             ref: flashcard.ref,
             original: flashcard,
             author: flashcard.author,
-            immutable: this.isImmutable(flashcard.author)
+            immutable: this.isImmutable(flashcard.author),
+            color: undefined
         };
 
     }
@@ -111,7 +113,8 @@ export class DocAnnotations {
             ref: comment.ref,
             original: comment,
             author: comment.author,
-            immutable: this.isImmutable(comment.author)
+            immutable: this.isImmutable(comment.author),
+            color: undefined
         };
 
     }
@@ -149,7 +152,7 @@ export class DocAnnotations {
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
             position,
-            color: areaHighlight.color,
+            color: HighlightColors.withDefaultColor(areaHighlight.color),
             created: areaHighlight.created,
             docMeta,
             pageMeta,
@@ -178,7 +181,7 @@ export class DocAnnotations {
                 x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
                 y: this.firstRect(textHighlight).map(current => current.top).getOrElse(0),
             },
-            color: textHighlight.color,
+            color: HighlightColors.withDefaultColor(textHighlight.color),
             created: textHighlight.created,
             docMeta,
             pageMeta,

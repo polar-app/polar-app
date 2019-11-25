@@ -40,7 +40,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
      * The color for highlights.  When undefined there is no color (which would
      * work for comments, etc)
      */
-    readonly color?: HighlightColor;
+    readonly color: HighlightColor | undefined;
 
     readonly docMeta: IDocMeta;
 
@@ -51,6 +51,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     readonly author?: IAuthor;
 
     readonly immutable: boolean;
+
 }
 
 export interface DocAnnotation extends IDocAnnotation {
@@ -92,7 +93,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
      * The color for highlights.  When undefined there is no color (which would
      * work for comments, etc)
      */
-    public readonly color?: HighlightColor;
+    public readonly color: HighlightColor | undefined;
 
     public readonly docMeta: IDocMeta;
 

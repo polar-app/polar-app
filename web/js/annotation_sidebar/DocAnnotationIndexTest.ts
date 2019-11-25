@@ -482,7 +482,8 @@ function createAnnotation(id: string,
         docMeta: null!,
         original: textHighlight,
         ref,
-        immutable: false
+        immutable: false,
+        color: undefined
     };
 
 }
