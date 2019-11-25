@@ -28,6 +28,7 @@ import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 import {DocSidebar} from "./DocSidebar";
+import {EditableText} from "./EditableText";
 
 const styles = {
     swatch: {
@@ -274,7 +275,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <WhatsNewModal/>
+                {/*<WhatsNewModal/>*/}
 
                 {/*<FolderContextMenu toggle={false}*/}
                 {/*                   onCreateFolder={NULL_FUNCTION}>*/}
@@ -283,33 +284,33 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {/*    </div>*/}
                 {/*</FolderContextMenu>*/}
 
-                <div className="p-1">
+                {/*<div className="p-1">*/}
 
-                    <div className="item">
+                {/*    <div className="item">*/}
 
-                        <div className="title text-xxl font-weight-bold text-grey900" style={{fontSize: '33px'}}>
-                            Something amazing has happened in science and the community is excited.
-                        </div>
+                {/*        <div className="title text-xxl font-weight-bold text-grey900" style={{fontSize: '33px'}}>*/}
+                {/*            Something amazing has happened in science and the community is excited.*/}
+                {/*        </div>*/}
 
-                        <div className="title text-lg text-grey800">
-                            <span className="text-primary">Martin Smith</span>, <span className="text-primary">Carson Weishaus</span>
-                        </div>
+                {/*        <div className="title text-lg text-grey800">*/}
+                {/*            <span className="text-primary">Martin Smith</span>, <span className="text-primary">Carson Weishaus</span>*/}
+                {/*        </div>*/}
 
-                        <div className="title text-lg text-grey800 mt-1 mb-2"  style={{fontSize: '22px'}}>
-                            This is a longer overview or abstract of the current document we're reading.
-                        </div>
+                {/*        <div className="title text-lg text-grey800 mt-1 mb-2"  style={{fontSize: '22px'}}>*/}
+                {/*            This is a longer overview or abstract of the current document we're reading.*/}
+                {/*        </div>*/}
 
-                        <div className="metadata" style={{fontSize: '14px'}}>
-                            <MockTag>linux</MockTag> <MockTag>microsoft</MockTag>
-                        </div>
+                {/*        <div className="metadata" style={{fontSize: '14px'}}>*/}
+                {/*            <MockTag>linux</MockTag> <MockTag>microsoft</MockTag>*/}
+                {/*        </div>*/}
 
-                        <div className="metadata mt-1">
-                            <b>Added: </b> 1 month ago <b>Updated: </b> 1 day ago
-                        </div>
+                {/*        <div className="metadata mt-1">*/}
+                {/*            <b>Added: </b> 1 month ago <b>Updated: </b> 1 day ago*/}
+                {/*        </div>*/}
 
-                    </div>
+                {/*    </div>*/}
 
-                </div>
+                {/*</div>*/}
 
                 {/*<AnnotationTypeSelector selected={[AnnotationType.FLASHCARD]} onSelected={selected => console.log('selected: ', selected)}/>*/}
 
@@ -335,10 +336,24 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {/*</div>*/}
 
                 <div className="border border-dark m-1" style={{width: '450px'}}>
-                    {/*<DocSidebar meta={{*/}
-                    {/*    fingerprint: "0x01",*/}
-                    {/*}}/>*/}
+                    <DocSidebar meta={{
+                        fingerprint: "0x01",
+                        title: 'Bitcoin - A distributed currency system.',
+                        description: "Some stuff about bitcoin and what it does.",
+                        authors: [
+                            {
+                                displayName: "Alice Smith",
+                            }
+                        ],
+                        doi: '12345'
+                    }}/>
                 </div>
+
+                this should be editable:
+
+                <EditableText value="hello world" onCancel={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+
+
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01"*/}

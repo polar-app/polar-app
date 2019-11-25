@@ -17,6 +17,9 @@ import {Texts} from "polar-shared/src/metadata/Texts";
 // - add abstract
 // - add open button
 // - tags (important so I don't have to put these in the
+// - it would be nice to take components but how do I update things like authors.  I think I would need add,
+//   delete methods at the very minimum.
+
 
 /**
  * The sidebar for viewing document metadata.
@@ -49,8 +52,6 @@ export class DocSidebar extends React.Component<IProps> {
                 </div>
 
                 <DocSidebar.Subtitle {...meta}/>
-
-
 
                 <PropertyTable>
 

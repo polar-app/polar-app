@@ -531,8 +531,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                 }
                                 right={
                                     <div>
-                                        <DocSidebar meta={primaryDoc ? primaryDoc.docInfo : undefined}
-                                                    persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
+                                        {/*<DocSidebar meta={primaryDoc ? primaryDoc.docInfo : undefined}*/}
+                                        {/*            persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>*/}
                                     </div>
                                 }
                             />
