@@ -7,7 +7,6 @@ import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {MessageBanner} from '../MessageBanner';
-import {RepoAnnotation} from '../RepoAnnotation';
 import {FixedNav} from '../FixedNav';
 import PreviewAndMainViewDock from './PreviewAndMainViewDock';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
@@ -243,7 +242,7 @@ export interface IProps {
 
 export interface IState {
 
-    readonly repoAnnotation?: RepoAnnotation;
+    readonly repoAnnotation?: IDocAnnotation;
 
     readonly data: ReadonlyArray<IDocAnnotation>;
 

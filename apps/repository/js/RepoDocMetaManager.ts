@@ -2,18 +2,16 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocInfo} from '../../../web/js/metadata/DocInfo';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
-import {Tags} from 'polar-shared/src/tags/Tags';
+import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {TagsDB} from './TagsDB';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IProvider} from 'polar-shared/src/util/Providers';
-import {RepoAnnotation} from './RepoAnnotation';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';
-import {Tag} from 'polar-shared/src/tags/Tags';
 import {DataObjectIndex} from './DataObjectIndex';
 import {RepoDocAnnotations} from "./RepoDocAnnotations";
 import {RepoDocInfos} from "./RepoDocInfos";
@@ -24,7 +22,7 @@ const log = Logger.create();
 export class RepoDocAnnotationDataObjectIndex extends DataObjectIndex<IDocAnnotation> {
 
     constructor() {
-        super((repoAnnotation?: RepoAnnotation) => RepoDocAnnotations.toTags(repoAnnotation) );
+        super((repoAnnotation?: IDocAnnotation) => RepoDocAnnotations.toTags(repoAnnotation) );
     }
 
 }

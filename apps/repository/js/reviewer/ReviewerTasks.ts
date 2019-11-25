@@ -1,4 +1,3 @@
-import {RepoAnnotation} from "../RepoAnnotation";
 import {
     CalculatedTaskReps,
     createDefaultTaskRepResolver,
@@ -35,9 +34,9 @@ export class ReviewerTasks {
 
         const mode = 'reading';
 
-        const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<ReadingTaskAction>> => {
+        const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<ReadingTaskAction>> => {
 
-            const toTask = (repoAnnotation: RepoAnnotation): Task<ReadingTaskAction> => {
+            const toTask = (repoAnnotation: IDocAnnotation): Task<ReadingTaskAction> => {
                 const color = HighlightColors.withDefaultColor(repoAnnotation.color);
                 return {
                     id: repoAnnotation.guid,
@@ -64,9 +63,9 @@ export class ReviewerTasks {
 
         const mode = 'flashcard';
 
-        const taskBuilder: TasksBuilder<FlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<FlashcardTaskAction>> => {
+        const taskBuilder: TasksBuilder<FlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<FlashcardTaskAction>> => {
 
-            const toTasks = (repoAnnotation: RepoAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
+            const toTasks = (repoAnnotation: IDocAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
 
                 const toTask = (action: FlashcardTaskAction): Task<FlashcardTaskAction> => {
 

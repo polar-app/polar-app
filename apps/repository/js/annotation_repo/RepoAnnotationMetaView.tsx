@@ -2,7 +2,6 @@ import * as React from 'react';
 import {DocRepoTableColumns} from '../doc_repo/DocRepoTableColumns';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {RepoAnnotation} from '../RepoAnnotation';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
@@ -11,7 +10,7 @@ import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DocPropTable} from "./meta_view/DocPropTable";
-import {DocThumbnail} from "./meta_view/DocThumbnail";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 const log = Logger.create();
 
@@ -114,7 +113,7 @@ export class RepoAnnotationMetaView extends React.Component<IProps, IState> {
 export interface IProps {
 
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly repoAnnotation?: RepoAnnotation;
+    readonly repoAnnotation?: IDocAnnotation;
 }
 
 export interface IState {

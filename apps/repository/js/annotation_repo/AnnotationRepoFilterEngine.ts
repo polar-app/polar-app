@@ -1,12 +1,8 @@
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {Tags} from 'polar-shared/src/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {Provider} from 'polar-shared/src/util/Providers';
-import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocAnnotations} from '../RepoDocAnnotations';
-import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
-import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {AnnotationRepoFilters, DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {RepoAnnotation} from '../../RepoAnnotation';
 import {IStyleMap} from '../../../../../web/js/react/IStyleMap';
 import Moment from 'react-moment';
 import {FormattedTags} from '../../FormattedTags';
 import Button from 'reactstrap/lib/Button';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 
 const Styles: IStyleMap = {
 
@@ -143,7 +143,7 @@ export class DocPropTable extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly repoAnnotation: RepoAnnotation;
+    readonly repoAnnotation: IDocAnnotation;
     readonly onDocumentLoadRequested: (docInfo: IDocInfo) => void;
 }
 

@@ -1,4 +1,3 @@
-import {RepoAnnotation} from './RepoAnnotation';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "polar-shared/src/tags/Tags";
@@ -44,11 +43,11 @@ export class RepoDocAnnotations {
 
     }
 
-    public static isValid(repoAnnotation: RepoAnnotation) {
+    public static isValid(repoAnnotation: IDocAnnotation) {
         return true;
     }
 
-    public static toTags(repoAnnotation: RepoAnnotation | undefined): Tag[] {
+    public static toTags(repoAnnotation: IDocAnnotation | undefined): Tag[] {
 
         if (repoAnnotation) {
             return Object.values(repoAnnotation.tags || {});

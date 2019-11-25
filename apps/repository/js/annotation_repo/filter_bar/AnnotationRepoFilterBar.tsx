@@ -2,10 +2,7 @@ import * as React from 'react';
 import {TagsDB} from '../../TagsDB';
 import {UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
 import {Placement} from 'popper.js';
-import {Reviewers} from "../../reviewer/Reviewers";
-import {RepoAnnotation} from "../../RepoAnnotation";
-import {StartReviewButton} from "./StartReviewButton";
-import {TextFilter} from "./TextFilter";
+import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState> {
 
@@ -65,7 +62,7 @@ export class AnnotationRepoFilterBar extends React.PureComponent<IProps, IState>
 
 export interface IProps {
 
-    readonly repoAnnotations: ReadonlyArray<RepoAnnotation>;
+    readonly repoAnnotations: ReadonlyArray<IDocAnnotation>;
 
     /**
      * An index of the currently available tags.

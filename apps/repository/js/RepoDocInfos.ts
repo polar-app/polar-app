@@ -1,9 +1,7 @@
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocInfos} from '../../../web/js/metadata/DocInfos';
-import {RepoAnnotation} from "./RepoAnnotation";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 

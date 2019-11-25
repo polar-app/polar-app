@@ -1,22 +1,19 @@
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {FrontAndBackFields} from './flashcard_input/FlashcardInputs';
-import {ClozeFields} from './flashcard_input/FlashcardInputs';
-import {DocAnnotation} from '../../DocAnnotation';
+import {ClozeFields, FrontAndBackFields} from './flashcard_input/FlashcardInputs';
+import {DocAnnotation, IDocAnnotation} from '../../DocAnnotation';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Refs} from 'polar-shared/src/metadata/Refs';
 import {Flashcards} from '../../../metadata/Flashcards';
-import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {RepoAnnotation} from "../../../../../apps/repository/js/RepoAnnotation";
 
 const log = Logger.create();
 
 export class FlashcardActions {
 
-    public static create(annotation: RepoAnnotation | DocAnnotation,
+    public static create(annotation: IDocAnnotation,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields) {
 
@@ -59,7 +56,7 @@ export class FlashcardActions {
     /**
      * Create a new instance from the given fields.
      */
-    private static newInstance(annotation: RepoAnnotation | DocAnnotation,
+    private static newInstance(annotation: IDocAnnotation,
                                type: FlashcardType,
                                fields: FrontAndBackFields | ClozeFields): Flashcard | undefined {
 

@@ -5,15 +5,12 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import AnnotationRepoTable from './AnnotationRepoTable';
-import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoAnnotationMetaView} from './RepoAnnotationMetaView';
-import {AnnotationRepoFilterBar} from './filter_bar/AnnotationRepoFilterBar';
 import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
-import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
-import {Platforms} from "polar-shared/src/util/Platforms";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Devices} from "../../../../web/js/util/Devices";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export default class PreviewAndMainViewDock extends React.Component<IProps, IState> {
 
@@ -27,7 +24,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
     public render() {
 
-        const onSelected = (repoAnnotation: RepoAnnotation) => this.onRepoAnnotationSelected(repoAnnotation);
+        const onSelected = (repoAnnotation: IDocAnnotation) => this.onRepoAnnotationSelected(repoAnnotation);
 
         if (Devices.get() === 'phone') {
             return <PreviewAndMainViewDock.Phone {...this.props}
@@ -41,7 +38,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
     }
 
-    private onRepoAnnotationSelected(repoAnnotation: RepoAnnotation) {
+    private onRepoAnnotationSelected(repoAnnotation: IDocAnnotation) {
         // console.log("A repo annotation was selected: " , repoAnnotation);
 
         this.setState({repoAnnotation});
@@ -128,17 +125,17 @@ export interface IProps {
 
     readonly updateFilters: UpdateFiltersCallback;
 
-    readonly data: ReadonlyArray<RepoAnnotation>;
+    readonly data: ReadonlyArray<IDocAnnotation>;
 
-    readonly onSelected?: (repoAnnotation: RepoAnnotation) => void;
+    readonly onSelected?: (repoAnnotation: IDocAnnotation) => void;
 
-    readonly repoAnnotation?: RepoAnnotation;
+    readonly repoAnnotation?: IDocAnnotation;
 
 }
 
 export interface IState {
 
-    readonly repoAnnotation?: RepoAnnotation;
+    readonly repoAnnotation?: IDocAnnotation;
 
 }
 
