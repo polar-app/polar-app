@@ -18,6 +18,7 @@ import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {Providers} from "polar-shared/src/util/Providers";
 import {BaseHighlight} from "../../../web/js/metadata/BaseHighlight";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 export class RepoAnnotations {
 
@@ -68,14 +69,12 @@ export class RepoAnnotations {
 
         const text = AnnotationTexts.toText(annotationType, original);
 
-        const toMeta = (): RepoHighlightInfo | undefined => {
+        const toColor = (): HighlightColor | undefined => {
 
             if (annotationType === AnnotationType.TEXT_HIGHLIGHT || annotationType === AnnotationType.AREA_HIGHLIGHT) {
 
                 const highlight = <BaseHighlight> original;
-                return {
-                    color: HighlightColors.withDefaultColor(highlight.color)
-                };
+                return HighlightColors.withDefaultColor(highlight.color);
             }
 
             return undefined;
@@ -98,7 +97,7 @@ export class RepoAnnotations {
         };
 
         const img = Providers.memoize(() => toImg());
-        const meta = toMeta();
+        const color = toColor();
 
         return {
             id: original.id,
@@ -108,7 +107,7 @@ export class RepoAnnotations {
             annotationType,
             created: original.created,
             tags: docInfo.tags || {},
-            meta,
+            color,
             docInfo,
             get img() {
                 return img();

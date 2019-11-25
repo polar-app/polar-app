@@ -5,6 +5,7 @@ import {Img} from 'polar-shared/src/metadata/Img';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {FastComponent} from '../../../../web/js/react/FastComponent';
 import {RepoHighlightInfo} from "../RepoAnnotation";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 const Body = (props: IProps) => {
 
@@ -12,14 +13,14 @@ const Body = (props: IProps) => {
 
     const createStyle = (): React.CSSProperties => {
 
-        if (props.meta && props.meta.color) {
+        if (props.color) {
 
             return {
-                borderLeftColor: props.meta.color,
+                borderLeftColor: props.color,
                 borderLeftWidth: '2px',
                 borderLeftStyle: 'solid',
                 paddingLeft: '5px'
-            }
+            };
 
         }
 
@@ -71,5 +72,5 @@ interface IProps {
     readonly text?: string;
     readonly img?: Img;
     readonly created: ISODateTimeString;
-    readonly meta?: RepoHighlightInfo
+    readonly color: HighlightColor | undefined;
 }

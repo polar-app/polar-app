@@ -76,7 +76,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                             <AnnotationPreview id={id}
                                                                text={annotation.text}
                                                                img={annotation.img}
-                                                               meta={annotation.meta}
+                                                               color={annotation.color}
                                                                created={annotation.created}/>
 
                                         );

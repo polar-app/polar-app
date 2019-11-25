@@ -37,7 +37,7 @@ export class ReviewerTasks {
         const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<ReadingTaskAction>> => {
 
             const toTask = (repoAnnotation: RepoAnnotation): Task<ReadingTaskAction> => {
-                const color = HighlightColors.withDefaultColor((repoAnnotation.meta || {}).color);
+                const color = HighlightColors.withDefaultColor(repoAnnotation.color);
                 return {
                     id: repoAnnotation.guid,
                     action: repoAnnotation.text || "",
@@ -87,7 +87,7 @@ export class ReviewerTasks {
             return repoDocAnnotations
                 .filter(current => current.annotationType === AnnotationType.FLASHCARD)
                 .map(toTasks)
-                .reduce(Reducers.FLAT)
+                .reduce(Reducers.FLAT);
 
         };
 

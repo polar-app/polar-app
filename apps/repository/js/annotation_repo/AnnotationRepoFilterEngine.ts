@@ -61,8 +61,8 @@ export class AnnotationRepoFilterEngine {
 
         if (this.filters.colors.length > 0) {
             return repoAnnotations.filter(current => {
-                const color = HighlightColors.withDefaultColor(current.meta ? current.meta.color : undefined);
-                return current.meta && this.filters.colors.includes(color);
+                const color = HighlightColors.withDefaultColor(current.color);
+                return this.filters.colors.includes(color);
             });
         }
 

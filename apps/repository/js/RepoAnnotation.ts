@@ -39,10 +39,7 @@ export interface RepoAnnotation {
 
     readonly tags?: Readonly<{[id: string]: Tag}>;
 
-    /**
-     * Extended metadata specific to each annotation type.
-     */
-    readonly meta?: RepoHighlightInfo;
+    readonly color: HighlightColor | undefined;
 
     /**
      * The original DocInfo used to construct this RepoDocInfo.
@@ -64,6 +61,7 @@ export interface RepoAnnotation {
 
 /**
  * Additional metadata on a highlight.
+ * @Deprecated
  */
 export interface RepoHighlightInfo {
     color?: HighlightColor;
