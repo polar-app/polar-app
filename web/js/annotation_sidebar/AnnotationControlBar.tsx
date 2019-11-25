@@ -26,6 +26,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight";
 import {EditIcon} from "../ui/standard_icons/EditIcon";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 
 const Styles: IStyleMap = {
 
@@ -50,8 +51,6 @@ const Styles: IStyleMap = {
 
 };
 
-/**
- */
 export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -234,7 +233,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         Preconditions.assertPresent(annotation);
 
-        switch(annotation.annotationType) {
+        switch (annotation.annotationType) {
             case AnnotationType.TEXT_HIGHLIGHT:
                 delete annotation.pageMeta.textHighlights[annotation.id];
                 break;

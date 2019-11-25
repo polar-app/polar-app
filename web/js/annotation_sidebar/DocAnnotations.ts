@@ -1,6 +1,4 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {BaseHighlight} from '../metadata/BaseHighlight';
-import {Screenshot} from '../metadata/Screenshot';
 import {IDocAnnotation} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Flashcard} from '../metadata/Flashcard';
@@ -18,7 +16,10 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {IRect} from 'polar-shared/src/util/rects/IRect';
-import {TextHighlights} from "../metadata/TextHighlights";
+import {Providers} from "polar-shared/src/util/Providers";
+import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
+import {PlainTextStr} from "polar-shared/src/util/Strings";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 
 export class DocAnnotations {
 
@@ -55,14 +56,18 @@ export class DocAnnotations {
     }
 
     public static createFromFlashcard(docMeta: IDocMeta,
-                                      flashcard: Flashcard,
+                                      flashcard: IFlashcard,
                                       pageMeta: IPageMeta): IDocAnnotation {
+
+        const iTextConverter = ITextConverters.create(AnnotationType.FLASHCARD, flashcard);
 
         return {
             oid: ObjectIDs.create(),
             id: flashcard.id,
-            annotationType: AnnotationType.FLASHCARD,
-            // html: comment.content.HTML!,
+            guid: flashcard.guid,
+            fingerprint: docMeta.docInfo.fingerprint,
+            docInfo: docMeta.docInfo,
+            ...iTextConverter,
             fields: Flashcards.convertFieldsToMap(flashcard.fields),
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
@@ -85,11 +90,15 @@ export class DocAnnotations {
                                     comment: IComment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
+        const iTextConverter = ITextConverters.create(AnnotationType.COMMENT, comment);
+
         return {
             oid: ObjectIDs.create(),
             id: comment.id,
-            annotationType: AnnotationType.COMMENT,
-            html: comment.content.HTML!,
+            guid: comment.guid,
+            fingerprint: docMeta.docInfo.fingerprint,
+            docInfo: docMeta.docInfo,
+            ...iTextConverter,
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
             position: {
@@ -131,8 +140,12 @@ export class DocAnnotations {
         return {
             oid: ObjectIDs.create(),
             id: areaHighlight.id,
+            guid: areaHighlight.guid,
+            fingerprint: docMeta.docInfo.fingerprint,
+            docInfo: docMeta.docInfo,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
             img,
+            text: undefined,
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
             position,
@@ -151,13 +164,15 @@ export class DocAnnotations {
                                           textHighlight: ITextHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
 
-        const html = TextHighlights.toHTML(textHighlight);
+        const iTextConverter = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, textHighlight);
 
         return {
             oid: ObjectIDs.create(),
             id: textHighlight.id,
-            annotationType: AnnotationType.TEXT_HIGHLIGHT,
-            html,
+            guid: textHighlight.guid,
+            fingerprint: docMeta.docInfo.fingerprint,
+            docInfo: docMeta.docInfo,
+            ...iTextConverter,
             pageNum: pageMeta.pageInfo.num,
             position: {
                 x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
@@ -204,37 +219,37 @@ export class DocAnnotations {
     }
 
 
-    private static getScreenshot(pageMeta: IPageMeta, highlight: BaseHighlight): Screenshot | undefined {
-
-        // tslint:disable-next-line:prefer-const
-        let screenshot: Screenshot | undefined;
-
-        if (highlight.images) {
-
-            Object.values(highlight.images).forEach( image => {
-
-                if (image.rel && image.rel === 'screenshot') {
-
-                    // const screenshotURI = Screenshots.parseURI(image.src);
-                    //
-                    // if (screenshotURI) {
-                    //     screenshot = pageMeta.screenshots[screenshotURI.id];
-                    // }
-
-                }
-
-            });
-
-        }
-
-        return screenshot;
-
-    }
-
     private static firstRect(highlight: IBaseHighlight): Optional<IRect> {
         return Optional.of(highlight)
             .map(current => current.rects)
             .map(current => current[0]);
     }
 
+}
+
+class ITextConverters {
+    public static create(annotationType: AnnotationType,
+                         annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard): ITextConverter {
+
+        const toText = Providers.memoize(() => AnnotationTexts.toText(annotationType, annotation));
+        const toHTML = Providers.memoize(() => AnnotationTexts.toHTML(annotationType, annotation));
+
+        return {
+            annotationType,
+            get text() {
+                return toText();
+            },
+            get html() {
+                return toHTML();
+            },
+        };
+
+    }
+
+}
+
+interface ITextConverter {
+    readonly annotationType: AnnotationType;
+    readonly text: PlainTextStr | undefined;
+    readonly html: PlainTextStr | undefined;
 }

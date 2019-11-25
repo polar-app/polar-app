@@ -10,12 +10,13 @@ import {Flashcards} from '../../../metadata/Flashcards';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {RepoAnnotation} from "../../../../../apps/repository/js/RepoAnnotation";
 
 const log = Logger.create();
 
 export class FlashcardActions {
 
-    public static create(annotation: DocAnnotation,
+    public static create(annotation: RepoAnnotation | DocAnnotation,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields) {
 
@@ -58,7 +59,7 @@ export class FlashcardActions {
     /**
      * Create a new instance from the given fields.
      */
-    private static newInstance(annotation: DocAnnotation,
+    private static newInstance(annotation: RepoAnnotation | DocAnnotation,
                                type: FlashcardType,
                                fields: FrontAndBackFields | ClozeFields): Flashcard | undefined {
 

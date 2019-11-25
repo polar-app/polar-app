@@ -85,6 +85,9 @@ describe('DocAnnotationIndex', function() {
             {
                 "oid": 0,
                 "id": "0001",
+                "guid": "0001",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -124,11 +127,14 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false
             },
             {
                 "oid": 1,
                 "id": "0002",
+                "guid": "0002",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -168,11 +174,14 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false
             },
             {
                 "oid": 2,
                 "id": "0003",
+                "guid": "0003",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -212,7 +221,7 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false
             }
         ]);
 
@@ -231,6 +240,9 @@ describe('DocAnnotationIndex', function() {
             {
                 "oid": 5,
                 "id": "0003",
+                "guid": "0003",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -270,11 +282,14 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false
             },
             {
                 "oid": 4,
                 "id": "0002",
+                "guid": "0002",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 2,
                 "position": {
@@ -314,11 +329,14 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false
             },
             {
                 "oid": 3,
                 "id": "0001",
+                "guid": "0001",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 3,
                 "position": {
@@ -358,7 +376,7 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false
             }
         ];
 
@@ -448,6 +466,11 @@ function createAnnotation(id: string,
     return {
         oid: ObjectIDs.create(),
         id,
+        guid: id,
+        fingerprint: '1234',
+        docInfo: null!,
+        text: undefined,
+        html: undefined,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
         pageNum,
         position: {

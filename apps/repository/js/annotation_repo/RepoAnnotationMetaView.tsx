@@ -8,7 +8,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
-import {Img} from '../../../../web/js/metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DocPropTable} from "./meta_view/DocPropTable";
 import {DocThumbnail} from "./meta_view/DocThumbnail";

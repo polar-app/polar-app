@@ -1,10 +1,7 @@
 import * as React from 'react';
-import {Logger} from "polar-shared/src/logger/Logger";
 import {Button} from "reactstrap";
 import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
-
-const log = Logger.create();
 
 /**
  * Listen to the machine datastore for this user and if their account isn't in
@@ -28,25 +25,26 @@ export class UpgradeRequired extends React.Component<IProps, IState> {
         return <div className="mt-1 mb-1 p-1 rounded"
                     style={{
                         backgroundColor: '#ffcccc',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        display: 'flex'
                     }}>
 
-            <Button color="danger"
+            <Button color="success"
                     size="sm"
                     style={{fontWeight: 'bold'}}
                     onClick={() => onClick()}>
 
                 <i className="fas fa-certificate"/>
                 &nbsp;
-                Upgrade Required
+                Upgrade Now
 
             </Button>
 
-            <span className="ml-1">
+            <div className="ml-1 mt-auto mb-auto">
 
-            Your account has exceeded limits for your current plan.  Sync will be disabled in 1 week.
+                Your account has exceeded limits for your current plan.  Sync will be disabled in 1 week.
 
-        </span>
+            </div>
 
         </div>;
 

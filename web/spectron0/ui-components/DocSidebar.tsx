@@ -55,8 +55,8 @@ export class DocSidebar extends React.Component<IProps> {
 
                 <PropertyTable>
 
-                    <PropertyTable.Text name="Summary" value={Texts.toPlainText(meta.summary)}/>
-                    <PropertyTable.Text name="Description" value={Texts.toPlainText(meta.description)}/>
+                    <PropertyTable.Text name="Summary" value={Texts.toText(meta.summary)}/>
+                    <PropertyTable.Text name="Description" value={Texts.toText(meta.description)}/>
 
                     <PropertyTable.Row name="Added" value={meta.added}/>
                     <PropertyTable.Row name="Updated" value={meta.lastUpdated}/>

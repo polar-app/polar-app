@@ -73,7 +73,7 @@ export class AnnotationRepoFilterEngine {
     private doFilterByAnnotationTypes(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
 
         if (this.filters.annotationTypes.length > 0) {
-            return repoAnnotations.filter(current => this.filters.annotationTypes.includes(current.type));
+            return repoAnnotations.filter(current => this.filters.annotationTypes.includes(current.annotationType));
         }
 
         return repoAnnotations;

@@ -1,9 +1,8 @@
-import {TextHighlight} from '../../../web/js/metadata/TextHighlight';
 import {AreaHighlight} from '../../../web/js/metadata/AreaHighlight';
 import {RepoAnnotation, RepoHighlightInfo} from './RepoAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Images} from '../../../web/js/metadata/Images';
-import {Img} from '../../../web/js/metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {Tag} from "polar-shared/src/tags/Tags";
@@ -14,7 +13,11 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
-import {Annotations} from "polar-shared/src/metadata/Annotations";
+import {AnnotationTexts} from "polar-shared/src/metadata/AnnotationTexts";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
+import {Providers} from "polar-shared/src/util/Providers";
+import {BaseHighlight} from "../../../web/js/metadata/BaseHighlight";
 
 export class RepoAnnotations {
 
@@ -32,19 +35,19 @@ export class RepoAnnotations {
             const flashcards = Object.values(pageMeta.flashcards || {}) ;
 
             for (const textHighlight of textHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
             }
 
             for (const areaHighlight of areaHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
+                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
             }
 
             for (const comment of comments) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, comment, AnnotationType.COMMENT, docInfo));
+                result.push(DocAnnotations.createFromComment(docMeta, comment, pageMeta));
             }
 
             for (const flashcard of flashcards) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, flashcard, AnnotationType.FLASHCARD, docInfo));
+                result.push(DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta));
             }
 
         }
@@ -54,50 +57,66 @@ export class RepoAnnotations {
     }
 
     public static toRepoAnnotation(persistenceLayerProvider: PersistenceLayerProvider,
-                                   sourceAnnotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
-                                   type: AnnotationType,
+                                   docMeta: IDocMeta,
+                                   pageMeta: IPageMeta,
+                                   original: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
+                                   annotationType: AnnotationType,
                                    docInfo: IDocInfo): RepoAnnotation {
 
         // code shared with DocAnnotations and we should refactor to
         // standardize.
 
-        const text = Annotations.toText(type, sourceAnnotation);
+        const text = AnnotationTexts.toText(annotationType, original);
 
-        let meta: RepoHighlightInfo | undefined;
+        const toMeta = (): RepoHighlightInfo | undefined => {
 
-        if (type === AnnotationType.TEXT_HIGHLIGHT) {
-            const textHighlight = <TextHighlight> sourceAnnotation;
-            meta = {
-                color: HighlightColors.withDefaultColor(textHighlight.color)
-            };
-        }
+            if (annotationType === AnnotationType.TEXT_HIGHLIGHT || annotationType === AnnotationType.AREA_HIGHLIGHT) {
 
-        let img: Img | undefined;
+                const highlight = <BaseHighlight> original;
+                return {
+                    color: HighlightColors.withDefaultColor(highlight.color)
+                };
+            }
 
-        if (type === AnnotationType.AREA_HIGHLIGHT) {
+            return undefined;
 
-            const areaHighlight = <AreaHighlight> sourceAnnotation;
-            meta = {
-                color: HighlightColors.withDefaultColor(areaHighlight.color)
-            };
+        };
 
-            const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-            img = Images.toImg(docFileResolver, areaHighlight.image);
+        const toImg = (): Img | undefined => {
 
-        }
+            if (annotationType === AnnotationType.AREA_HIGHLIGHT) {
+
+                const areaHighlight = <AreaHighlight> original;
+
+                const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
+                return Images.toImg(docFileResolver, areaHighlight.image);
+
+            }
+
+            return undefined;
+
+        };
+
+
+        const img = Providers.memoize(() => toImg());
+        const meta = toMeta();
 
         return {
-            id: sourceAnnotation.id,
-            guid: sourceAnnotation.guid,
+            id: original.id,
+            guid: original.guid,
             fingerprint: docInfo.fingerprint,
             text,
-            type,
-            created: sourceAnnotation.created,
+            annotationType,
+            created: original.created,
             tags: docInfo.tags || {},
             meta,
             docInfo,
-            img,
-            original: sourceAnnotation
+            get img() {
+                return img();
+            },
+            docMeta,
+            pageMeta,
+            original
         };
 
     }

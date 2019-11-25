@@ -4,7 +4,7 @@
  */
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Img} from '../../../web/js/metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
@@ -12,7 +12,9 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IComment} from 'polar-shared/src/metadata/IComment';
-import {IDStr} from "polar-shared/src/util/Strings";
+import {HTMLStr, IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 // TODO: a lot of duplication here between DocAnnotations DocAnnotation
 
@@ -27,9 +29,11 @@ export interface RepoAnnotation {
 
     readonly guid: IDStr;
 
-    readonly text?: string;
+    readonly text: PlainTextStr | undefined;
 
-    readonly type: AnnotationType;
+    // readonly html: HTMLStr;
+
+    readonly annotationType: AnnotationType;
 
     readonly created: ISODateTimeString;
 
@@ -49,6 +53,10 @@ export interface RepoAnnotation {
     readonly docInfo: IDocInfo;
 
     readonly img?: Img;
+
+    readonly docMeta: IDocMeta;
+
+    readonly pageMeta: IPageMeta;
 
     readonly original: IFlashcard | IAreaHighlight | ITextHighlight | IComment;
 

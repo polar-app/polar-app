@@ -59,7 +59,7 @@ export class FlashcardTaskActions {
         const regionToElement = (region: Region, id: number) => {
 
             if (region.type === 'cloze' && (region as ClozeRegion).id === id) {
-                return `<span className="text-danger font-weight-bold">[...]</span>`;
+                return `<span class="text-danger font-weight-bold">[...]</span>`;
             } else {
                 return region.text;
             }
@@ -73,7 +73,7 @@ export class FlashcardTaskActions {
             return {
                 front: <div dangerouslySetInnerHTML={{__html: front}}/>,
                 back: <div dangerouslySetInnerHTML={{__html: clozeAsText}}/>
-            }
+            };
 
         };
 

@@ -60,8 +60,8 @@ export class Reviewers {
     private static displayWebRequiredError() {
 
         Dialogs.confirm({
-            title: 'Cloud sync required',
-            subtitle: 'Cloud sync is required to review annotations.  This is needed for mobile review.',
+            title: 'Cloud sync required (please login)',
+            subtitle: 'Cloud sync is required to review annotations.  Please login to review flashcards and reading.',
             type: 'danger',
             onConfirm: NULL_FUNCTION,
             noCancel: true
@@ -91,13 +91,13 @@ export class Reviewers {
 
         const uid = await Firebase.currentUserID();
 
-        if (! uid) {
-            throw new Error("Not authenticated");
-        }
-
         if (! datastoreCapabilities.networkLayers.has('web')) {
             this.displayWebRequiredError();
             return;
+        }
+
+        if (! uid) {
+            throw new Error("Not authenticated");
         }
 
         await FirestoreCollections.configure();

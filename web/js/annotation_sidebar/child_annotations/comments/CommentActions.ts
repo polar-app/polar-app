@@ -7,6 +7,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {DocMeta} from "../../../metadata/DocMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {RepoAnnotation} from "../../../../../apps/repository/js/RepoAnnotation";
 
 const log = Logger.create();
 
@@ -15,13 +16,13 @@ const log = Logger.create();
  */
 export class CommentActions {
 
-    public static delete(comment: DocAnnotation) {
+    public static delete(comment: RepoAnnotation | DocAnnotation) {
         log.info("Comment deleted: ", comment);
         delete comment.pageMeta.comments[comment.id];
     }
 
     public static create(docMeta: IDocMeta,
-                         annotation: DocAnnotation,
+                         annotation: RepoAnnotation | DocAnnotation,
                          html: string) {
 
         const ref = Refs.createFromAnnotationType(annotation.id,

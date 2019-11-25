@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Img} from '../metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {FastComponent} from '../react/FastComponent';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
