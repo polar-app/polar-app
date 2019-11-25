@@ -9987,7 +9987,7 @@ var Page = function PageClosure() {
         var annotationRefs = _this4.annotations;
         var annotationPromises = [];
         for (var i = 0, ii = annotationRefs.length; i < ii; i++) {
-          annotationPromises.push(_annotation.AnnotationFactory.create(_this4.xref, docAnnotation));
+          annotationPromises.push(_annotation.AnnotationFactory.create(_this4.xref, annotationRefs[i], _this4.pdfManager, _this4.idFactory));
         }
         return Promise.all(annotationPromises).then(function (annotations) {
           return annotations.filter(function isDefined(annotation) {
@@ -21952,7 +21952,7 @@ var ColorSpace = function () {
             var name = xref.fetchIfRef(cs[1]);
             numComps = Array.isArray(name) ? name.length : 1;
             alt = this.parseToIR(cs[2], xref, res, pdfFunctionFactory);
-            var tintFn = pdfFunctionFactory.create(xref.fetchIfRef(cs[3]), docAnnotation);
+            var tintFn = pdfFunctionFactory.create(xref.fetchIfRef(cs[3]));
             return ['AlternateCS', numComps, alt, tintFn];
           case 'Lab':
             params = xref.fetchIfRef(cs[1]);
@@ -24724,7 +24724,7 @@ var PartialEvaluator = function PartialEvaluatorClosure() {
       };
       var transferObj = smask.get('TR');
       if ((0, _function.isPDFFunction)(transferObj)) {
-        var transferFn = this.pdfFunctionFactory.create(transferObj, docAnnotation);
+        var transferFn = this.pdfFunctionFactory.create(transferObj);
         var transferMap = new Uint8Array(256);
         var tmp = new Float32Array(1);
         for (var i = 0; i < 256; i++) {
