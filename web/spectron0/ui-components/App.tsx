@@ -28,8 +28,7 @@ import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 import {DocSidebar} from "./DocSidebar";
-import {UpgradeRequired} from "../../js/ui/account_upgrade/UpgradeRequired";
-import {FakeComponent0} from "./FakeComponent0";
+import {EditableText} from "./EditableText";
 
 const styles = {
     swatch: {
@@ -269,14 +268,12 @@ export class App<P> extends React.Component<{}, IAppState> {
                     <FontAwesomeIcon name="fas fa-close"/>
                 </span>
 
-            </div>;
+            </div>
         };
 
         return (
 
             <div>
-
-                <FakeComponent0/>
 
                 {/*<WhatsNewModal/>*/}
 
@@ -338,13 +335,25 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</div>*/}
 
-                {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
-                {/*    /!*<DocSidebar meta={{*!/*/}
-                {/*    /!*    fingerprint: "0x01",*!/*/}
-                {/*    /!*}}/>*!/*/}
-                {/*</div>*/}
+                <div className="border border-dark m-1" style={{width: '450px'}}>
+                    <DocSidebar meta={{
+                        fingerprint: "0x01",
+                        title: 'Bitcoin - A distributed currency system.',
+                        description: "Some stuff about bitcoin and what it does.",
+                        authors: [
+                            {
+                                displayName: "Alice Smith",
+                            }
+                        ],
+                        doi: '12345'
+                    }}/>
+                </div>
 
-                {/*<UpgradeRequired/>*/}
+                this should be editable:
+
+                <EditableText value="hello world" onCancel={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+
+
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01"*/}
