@@ -34,7 +34,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     // the reference to a parent annotation if this is a child annotation.
     readonly ref?: Ref;
 
-    readonly img?: Img;
+    readonly img: Img | undefined;
 
     /**
      * The color for highlights.  When undefined there is no color (which would
@@ -87,7 +87,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
     // the reference to a parent annotation if this is a child annotation.
     public readonly ref?: Ref;
 
-    public readonly img?: Img;
+    public readonly img: Img | undefined;
 
     /**
      * The color for highlights.  When undefined there is no color (which would

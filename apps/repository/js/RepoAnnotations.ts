@@ -97,7 +97,6 @@ export class RepoAnnotations {
 
         };
 
-
         const img = Providers.memoize(() => toImg());
         const meta = toMeta();
 

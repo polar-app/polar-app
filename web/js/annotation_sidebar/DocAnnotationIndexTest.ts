@@ -483,7 +483,8 @@ function createAnnotation(id: string,
         original: textHighlight,
         ref,
         immutable: false,
-        color: undefined
+        color: undefined,
+        img: undefined
     };
 
 }

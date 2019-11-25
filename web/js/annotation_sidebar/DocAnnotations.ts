@@ -83,7 +83,8 @@ export class DocAnnotations {
             original: flashcard,
             author: flashcard.author,
             immutable: this.isImmutable(flashcard.author),
-            color: undefined
+            color: undefined,
+            img: undefined
         };
 
     }
@@ -114,7 +115,8 @@ export class DocAnnotations {
             original: comment,
             author: comment.author,
             immutable: this.isImmutable(comment.author),
-            color: undefined
+            color: undefined,
+            img: undefined
         };
 
     }
@@ -137,7 +139,8 @@ export class DocAnnotations {
 
         };
 
-        const img = Images.toImg(docFileResolver, areaHighlight.image);
+        const img = Providers.memoize(() => Images.toImg(docFileResolver, areaHighlight.image));
+
         const position = createPosition();
 
         return {
@@ -147,7 +150,9 @@ export class DocAnnotations {
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
-            img,
+            get img() {
+                return img();
+            },
             text: undefined,
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
@@ -187,7 +192,8 @@ export class DocAnnotations {
             pageMeta,
             original: textHighlight,
             author: textHighlight.author,
-            immutable: this.isImmutable(textHighlight.author)
+            immutable: this.isImmutable(textHighlight.author),
+            img: undefined
         };
 
     }
