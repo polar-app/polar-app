@@ -161,7 +161,7 @@ export class App<P> extends React.Component<{}, IAppState> {
         const keyBindingHandler = (event: React.KeyboardEvent) => {
 
             if (event.key === 'F') {
-                console.log("YUP!")
+                console.log("YUP!");
             }
 
         };
@@ -212,50 +212,50 @@ export class App<P> extends React.Component<{}, IAppState> {
         //     return ReviewerTasks.createFlashcardTasks(repoAnnotations, 10);
         //
         // };
-
-        const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> => {
-            const ref = Refs.create('1234', 'text-highlight');
-
-            const createFrontAndBackAction = () => {
-                const flashcard = Flashcards.createFrontBack('What is the capital of California? ', 'Sacramento', ref);
-                const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
-                return flashcardTaskActions[0];
-            };
-
-            const createClozeAction = () => {
-                const flashcard = Flashcards.createCloze('The capital of california is {{c1::Sacramento}}.', ref);
-                const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
-                return flashcardTaskActions[0];
-            };
-
-            const clozeAction = createClozeAction();
-
-            Preconditions.assertPresent(clozeAction, 'clozeAction');
-
-            const tasks: ReadonlyArray<Task<FlashcardTaskAction>> = [
-                {
-                    id: "10102",
-                    action: clozeAction,
-                    created: ISODateTimeStrings.create(),
-                    color: 'red',
-                    mode: 'flashcard'
-                },
-                {
-                    id: "10102",
-                    action: createFrontAndBackAction(),
-                    created: ISODateTimeStrings.create(),
-                    color: 'red',
-                    mode: 'flashcard'
-                }
-            ];
-
-            return tasks.map(task => TasksCalculator.createInitialLearningState(task));
-
-        };
+        //
+        // const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> => {
+        //     const ref = Refs.create('1234', 'text-highlight');
+        //
+        //     const createFrontAndBackAction = () => {
+        //         const flashcard = Flashcards.createFrontBack('What is the capital of California? ', 'Sacramento', ref);
+        //         const flashcardTaskActions = FlashcardTaskActions.create(flashcard, docAnnotation);
+        //         return flashcardTaskActions[0];
+        //     };
+        //
+        //     const createClozeAction = () => {
+        //         const flashcard = Flashcards.createCloze('The capital of california is {{c1::Sacramento}}.', ref);
+        //         const flashcardTaskActions = FlashcardTaskActions.create(flashcard, docAnnotation);
+        //         return flashcardTaskActions[0];
+        //     };
+        //
+        //     const clozeAction = createClozeAction();
+        //
+        //     Preconditions.assertPresent(clozeAction, 'clozeAction');
+        //
+        //     const tasks: ReadonlyArray<Task<FlashcardTaskAction>> = [
+        //         {
+        //             id: "10102",
+        //             action: clozeAction,
+        //             created: ISODateTimeStrings.create(),
+        //             color: 'red',
+        //             mode: 'flashcard'
+        //         },
+        //         {
+        //             id: "10102",
+        //             action: createFrontAndBackAction(),
+        //             created: ISODateTimeStrings.create(),
+        //             color: 'red',
+        //             mode: 'flashcard'
+        //         }
+        //     ];
+        //
+        //     return tasks.map(task => TasksCalculator.createInitialLearningState(task));
+        //
+        // };
 
 
         // const taskReps = createReadingTaskReps();
-        const taskReps = createFlashcardTaskReps();
+        // const taskReps = createFlashcardTaskReps();
 
         const MockTag = (props: any) => {
             return <div className="bg-grey100 p-1 rounded mr-1"
@@ -268,7 +268,7 @@ export class App<P> extends React.Component<{}, IAppState> {
                     <FontAwesomeIcon name="fas fa-close"/>
                 </span>
 
-            </div>
+            </div>;
         };
 
         return (

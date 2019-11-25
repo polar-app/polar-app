@@ -9589,7 +9589,7 @@ var InternalRenderTask = function InternalRenderTaskClosure() {
         canvasInRendering.set(this._canvas, this);
       }
       if (this._pdfBug && _global_scope2.default.StepperManager && _global_scope2.default.StepperManager.enabled) {
-        this.stepper = _global_scope2.default.StepperManager.create(this.pageNumber - 1);
+        this.stepper = _global_scope2.default.StepperManager.create(this.pageNumber - 1, docAnnotation);
         this.stepper.init(this.operatorList);
         this.stepper.nextBreakPoint = this.stepper.getNextBreakPoint();
       }
@@ -10669,7 +10669,7 @@ var CachedCanvases = function CachedCanvasesClosure() {
         this.canvasFactory.reset(canvasEntry, width, height);
         canvasEntry.context.setTransform(1, 0, 0, 1, 0, 0);
       } else {
-        canvasEntry = this.canvasFactory.create(width, height);
+        canvasEntry = this.canvasFactory.create(width, docAnnotation);
         this.cache[id] = canvasEntry;
       }
       if (trackTransform) {
@@ -11665,7 +11665,7 @@ var CanvasGraphics = function CanvasGraphicsClosure() {
     },
 
     get isFontSubpixelAAEnabled() {
-      var ctx = this.canvasFactory.create(10, 10).context;
+      var ctx = this.canvasFactory.create(10, docAnnotation).context;
       ctx.scale(1.5, 1);
       ctx.fillText('I', 0, 10);
       var data = ctx.getImageData(0, 0, 10, 10).data;
@@ -16167,7 +16167,7 @@ var LineAnnotationElement = function (_AnnotationElement5) {
       var data = this.data;
       var width = data.rect[2] - data.rect[0];
       var height = data.rect[3] - data.rect[1];
-      var svg = this.svgFactory.create(width, height);
+      var svg = this.svgFactory.create(width, docAnnotation);
       var line = this.svgFactory.createElement('svg:line');
       line.setAttribute('x1', data.rect[2] - data.lineCoordinates[0]);
       line.setAttribute('y1', data.rect[3] - data.lineCoordinates[1]);
@@ -16202,7 +16202,7 @@ var SquareAnnotationElement = function (_AnnotationElement6) {
       var data = this.data;
       var width = data.rect[2] - data.rect[0];
       var height = data.rect[3] - data.rect[1];
-      var svg = this.svgFactory.create(width, height);
+      var svg = this.svgFactory.create(width, docAnnotation);
       var borderWidth = data.borderStyle.width;
       var square = this.svgFactory.createElement('svg:rect');
       square.setAttribute('x', borderWidth / 2);
@@ -16239,7 +16239,7 @@ var CircleAnnotationElement = function (_AnnotationElement7) {
       var data = this.data;
       var width = data.rect[2] - data.rect[0];
       var height = data.rect[3] - data.rect[1];
-      var svg = this.svgFactory.create(width, height);
+      var svg = this.svgFactory.create(width, docAnnotation);
       var borderWidth = data.borderStyle.width;
       var circle = this.svgFactory.createElement('svg:ellipse');
       circle.setAttribute('cx', width / 2);
@@ -16281,7 +16281,7 @@ var PolylineAnnotationElement = function (_AnnotationElement8) {
       var data = this.data;
       var width = data.rect[2] - data.rect[0];
       var height = data.rect[3] - data.rect[1];
-      var svg = this.svgFactory.create(width, height);
+      var svg = this.svgFactory.create(width, docAnnotation);
       var vertices = data.vertices;
       var points = [];
       for (var i = 0, ii = vertices.length; i < ii; i++) {
@@ -16344,7 +16344,7 @@ var InkAnnotationElement = function (_AnnotationElement9) {
       var data = this.data;
       var width = data.rect[2] - data.rect[0];
       var height = data.rect[3] - data.rect[1];
-      var svg = this.svgFactory.create(width, height);
+      var svg = this.svgFactory.create(width, docAnnotation);
       var inkLists = data.inkLists;
       for (var i = 0, ii = inkLists.length; i < ii; i++) {
         var inkList = inkLists[i];
@@ -16559,16 +16559,16 @@ var AnnotationLayer = function () {
           continue;
         }
         var element = AnnotationElementFactory.create({
-          data: data,
-          layer: parameters.div,
-          page: parameters.page,
-          viewport: parameters.viewport,
-          linkService: parameters.linkService,
-          downloadManager: parameters.downloadManager,
-          imageResourcesPath: parameters.imageResourcesPath || '',
-          renderInteractiveForms: parameters.renderInteractiveForms || false,
-          svgFactory: new _dom_utils.DOMSVGFactory()
-        });
+            data: data,
+            layer: parameters.div,
+            page: parameters.page,
+            viewport: parameters.viewport,
+            linkService: parameters.linkService,
+            downloadManager: parameters.downloadManager,
+            imageResourcesPath: parameters.imageResourcesPath || '',
+            renderInteractiveForms: parameters.renderInteractiveForms || false,
+            svgFactory: new _dom_utils.DOMSVGFactory()
+        }, docAnnotation);
         if (element.isRenderable) {
           parameters.div.appendChild(element.render());
         }
@@ -17640,7 +17640,7 @@ var SVGGraphics = function SVGGraphics() {
       },
       paintFormXObjectEnd: function SVGGraphics_paintFormXObjectEnd() {},
       _initialize: function _initialize(viewport) {
-        var svg = this.svgFactory.create(viewport.width, viewport.height);
+        var svg = this.svgFactory.create(viewport.width, docAnnotation);
         var definitions = this.svgFactory.createElement('svg:defs');
         svg.appendChild(definitions);
         this.defs = definitions;

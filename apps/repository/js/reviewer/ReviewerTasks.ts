@@ -41,7 +41,8 @@ export class ReviewerTasks {
                 return {
                     id: docAnnotation.guid,
                     action: {
-                        text: docAnnotation.text || ""
+                        text: docAnnotation.text || "",
+                        docAnnotation
                     },
                     created: docAnnotation.created,
                     color,
@@ -80,7 +81,7 @@ export class ReviewerTasks {
 
                 };
 
-                const actions = FlashcardTaskActions.create(<IFlashcard> docAnnotation.original);
+                const actions = FlashcardTaskActions.create(<IFlashcard> docAnnotation.original, docAnnotation);
 
                 return actions.map(toTask);
 
