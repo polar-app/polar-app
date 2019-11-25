@@ -5,16 +5,11 @@ import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {GetFileOpts} from "../datastore/Datastore";
 import {DocFileMeta} from "../datastore/DocFileMeta";
-import {
-    DocMetaListener,
-    DocMetaRecord,
-    DocMetaRecords
-} from "../datastore/sharing/db/DocMetaListeners";
+import {DocMetaListener, DocMetaRecord, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
 import {UserProfile} from "../datastore/sharing/db/UserProfiles";
 import {assert} from 'chai';
 import {Proxies} from "../proxies/Proxies";
-import {DocMeta} from "../metadata/DocMeta";
 import {DefaultDocAnnotation, DocAnnotation} from "./DocAnnotation";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

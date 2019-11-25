@@ -127,7 +127,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                "immutable": false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 1,
@@ -174,7 +175,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                "immutable": false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 2,
@@ -221,7 +223,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                "immutable": false
+                "immutable": false,
+                "tags": {}
             }
         ]);
 
@@ -282,7 +285,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                "immutable": false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 4,
@@ -329,7 +333,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                "immutable": false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 3,
@@ -376,7 +381,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                "immutable": false
+                "immutable": false,
+                "tags": {}
             }
         ];
 
@@ -484,7 +490,9 @@ function createAnnotation(id: string,
         ref,
         immutable: false,
         color: undefined,
-        img: undefined
+        img: undefined,
+        tags: {}
+
     };
 
 }

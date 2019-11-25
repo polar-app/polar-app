@@ -26,7 +26,8 @@ export class RepoAnnotations {
                           docMeta: IDocMeta): ReadonlyArray<RepoAnnotation> {
 
         const result: RepoAnnotation[] = [];
-        const docInfo = docMeta.docInfo;
+
+        const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
 
         for (const pageMeta of Object.values(docMeta.pageMetas)) {
 
@@ -36,11 +37,11 @@ export class RepoAnnotations {
             const flashcards = Object.values(pageMeta.flashcards || {}) ;
 
             for (const textHighlight of textHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, textHighlight, AnnotationType.TEXT_HIGHLIGHT, docInfo));
+                result.push(DocAnnotations.createFromTextHighlight(docMeta, textHighlight, pageMeta));
             }
 
             for (const areaHighlight of areaHighlights) {
-                result.push(this.toRepoAnnotation(persistenceLayerProvider, docMeta, pageMeta, areaHighlight, AnnotationType.AREA_HIGHLIGHT, docInfo));
+                result.push(DocAnnotations.createFromAreaHighlight(docFileResolver, docMeta, areaHighlight, pageMeta));
             }
 
             for (const comment of comments) {
@@ -54,68 +55,6 @@ export class RepoAnnotations {
         }
 
         return result;
-
-    }
-
-    public static toRepoAnnotation(persistenceLayerProvider: PersistenceLayerProvider,
-                                   docMeta: IDocMeta,
-                                   pageMeta: IPageMeta,
-                                   original: ITextHighlight | IAreaHighlight | IComment | IFlashcard,
-                                   annotationType: AnnotationType,
-                                   docInfo: IDocInfo): RepoAnnotation {
-
-        // code shared with DocAnnotations and we should refactor to
-        // standardize.
-
-        const text = AnnotationTexts.toText(annotationType, original);
-
-        const toColor = (): HighlightColor | undefined => {
-
-            if (annotationType === AnnotationType.TEXT_HIGHLIGHT || annotationType === AnnotationType.AREA_HIGHLIGHT) {
-
-                const highlight = <BaseHighlight> original;
-                return HighlightColors.withDefaultColor(highlight.color);
-            }
-
-            return undefined;
-
-        };
-
-        const toImg = (): Img | undefined => {
-
-            if (annotationType === AnnotationType.AREA_HIGHLIGHT) {
-
-                const areaHighlight = <AreaHighlight> original;
-
-                const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-                return Images.toImg(docFileResolver, areaHighlight.image);
-
-            }
-
-            return undefined;
-
-        };
-
-        const img = Providers.memoize(() => toImg());
-        const color = toColor();
-
-        return {
-            id: original.id,
-            guid: original.guid,
-            fingerprint: docInfo.fingerprint,
-            text,
-            annotationType,
-            created: original.created,
-            tags: docInfo.tags || {},
-            color,
-            docInfo,
-            get img() {
-                return img();
-            },
-            docMeta,
-            pageMeta,
-            original
-        };
 
     }
 

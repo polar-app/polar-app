@@ -37,7 +37,7 @@ export interface RepoAnnotation {
 
     readonly created: ISODateTimeString;
 
-    readonly tags?: Readonly<{[id: string]: Tag}>;
+    readonly tags: Readonly<{[id: string]: Tag}> | undefined;
 
     readonly color: HighlightColor | undefined;
 
@@ -49,7 +49,7 @@ export interface RepoAnnotation {
     // a pointer to this directly.
     readonly docInfo: IDocInfo;
 
-    readonly img?: Img;
+    readonly img: Img | undefined;
 
     readonly docMeta: IDocMeta;
 
