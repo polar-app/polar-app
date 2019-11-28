@@ -113,6 +113,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
             .catch(err => log.error(err));
 
     }
+
     public render() {
 
         if (Devices.get() === 'phone') {
