@@ -213,7 +213,9 @@ export class DocAnnotations {
 
     private static getTextHighlights(docMeta: IDocMeta, pageMeta: IPageMeta): ReadonlyArray<IDocAnnotation> {
 
-        return Object.values(pageMeta.textHighlights).map(textHighlight => {
+        const textHighlights = Object.values(pageMeta.textHighlights);
+
+        return textHighlights.map(textHighlight => {
             return this.createFromTextHighlight(docMeta, textHighlight, pageMeta);
         });
 
