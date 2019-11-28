@@ -2,7 +2,7 @@
 import React from 'react';
 import {Popover} from 'reactstrap';
 import Popper from 'popper.js';
-import {BlackoutBox} from "../util/BlackoutBox";
+import {Blackout} from '../blackout/Blackout';
 
 /**
  * Popover that functions like a normal popover but uses a lightbox to highlight
@@ -10,27 +10,34 @@ import {BlackoutBox} from "../util/BlackoutBox";
  */
 export class LightboxPopover extends React.Component<IProps, IState> {
 
+    private value: string = '';
+
     constructor(props: IProps) {
         super(props);
 
+    }
+
+    public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
+
+        if (this.props.open !== nextProps.open) {
+            Blackout.toggle(nextProps.open);
+        }
     }
 
     public render() {
 
         return (
 
-            <BlackoutBox>
-                <Popover placement={this.props.placement || 'bottom'}
-                         isOpen={this.props.open}
-                         className={this.props.className}
-                         target={this.props.target}
-                         trigger="legacy"
-                         style={this.props.style}>
+            <Popover placement={this.props.placement || 'bottom'}
+                     isOpen={this.props.open}
+                     className={this.props.className}
+                     target={this.props.target}
+                     trigger="legacy"
+                     style={this.props.style}>
 
-                    {this.props.children}
+                {this.props.children}
 
-                </Popover>
-            </BlackoutBox>
+            </Popover>
 
         );
     }

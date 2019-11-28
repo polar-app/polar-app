@@ -35,7 +35,6 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
 
                     <DropdownMenu className="shadow" right>
 
-
                         <DropdownItem header>Download annotations as:</DropdownItem>
 
                         <DropdownItem onClick={() => this.onExport('markdown')}>
