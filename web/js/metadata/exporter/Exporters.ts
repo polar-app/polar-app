@@ -5,6 +5,7 @@ import {JSONExporter} from './JSONExporter';
 import {AnnotationHolders} from '../AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
+import {PathStr} from "polar-shared/src/util/Strings";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -16,10 +17,24 @@ import {ReadableBinaryDatastore} from "../../datastore/Datastore";
  */
 export class Exporters {
 
-    public static async doExport(path: string,
+    public static async doExportFromDocMeta(path: PathStr,
+                                            datastore: ReadableBinaryDatastore,
+                                            format: ExportFormat,
+                                            docMeta: IDocMeta): Promise<void> {
+
+        const annotations = AnnotationHolders.fromDocMeta(docMeta);
+
+        await this.doExport(path, datastore, format, annotations);
+
+    }
+
+    /**
+     * Main export interface.
+     */
+    public static async doExport(path: PathStr,
                                  datastore: ReadableBinaryDatastore,
                                  format: ExportFormat,
-                                 docMeta: IDocMeta): Promise<void> {
+                                 annotations: ReadonlyArray<AnnotationHolder>) {
 
         const writer = new FileWriter(path);
 
@@ -30,14 +45,15 @@ export class Exporters {
 
         await exporter.init(writer, datastore);
 
-        const annotationHolders = [...AnnotationHolders.fromDocMeta(docMeta)]
+        annotations = [...annotations]
             .sort((a, b) => a.original.created.localeCompare(b.original.created));
 
-        for (const annotationHolder of annotationHolders) {
-            await exporter.write(annotationHolder);
+        for (const annotation of annotations) {
+            await exporter.write(annotation);
         }
 
         await exporter.close();
+
 
     }
 

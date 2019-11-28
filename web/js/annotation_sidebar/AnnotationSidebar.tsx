@@ -208,7 +208,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private onExport(path: string, format: ExportFormat) {
 
-        Exporters.doExport(path, this.props.persistenceLayerProvider(), format, this.props.doc.docMeta)
+        Exporters.doExportFromDocMeta(path, this.props.persistenceLayerProvider(), format, this.props.doc.docMeta)
             .catch(err => log.error(err));
 
     }
