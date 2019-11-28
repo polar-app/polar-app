@@ -29,6 +29,7 @@ import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -52,6 +53,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onSelectedFolders = this.onSelectedFolders.bind(this);
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
+        this.onExport = this.onExport.bind(this);
 
         this.state = {
             data: [],
@@ -140,9 +142,13 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                                                                 onSelected={selected => this.filtersHandler.update({colors: selected})}/>
                                 </div>
 
-                                <div className="d-none-mobile">
+                                <div className="ml-1 d-none-mobile">
                                     <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
                                 </div>
+
+                                {/*<div className="ml-1 d-none-mobile mt-auto mb-auto">*/}
+                                {/*    <AnnotationRepoTableDropdown/>*/}
+                                {/*</div>*/}
 
                             </div>
 
@@ -222,6 +228,10 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         const prefs = persistenceLayer.datastore.getPrefs();
 
         Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, mode, 10);
+    }
+
+    private onExport() {
+
     }
 
 }
