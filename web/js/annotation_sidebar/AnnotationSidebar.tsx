@@ -206,9 +206,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     }
 
-    private onExport(path: string, format: ExportFormat) {
+    private onExport(format: ExportFormat) {
 
-        Exporters.doExportFromDocMeta(path, this.props.persistenceLayerProvider(), format, this.props.doc.docMeta)
+        Exporters.doExportFromDocMeta(this.props.persistenceLayerProvider, format, this.props.doc.docMeta)
             .catch(err => log.error(err));
 
     }
@@ -237,7 +237,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                         <SplitBarRight>
 
-                            <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
+                            <ExportButton onExport={(format) => this.onExport(format)}/>
 
                             <FeatureToggle name='groups'>
                                 <GroupSharingButton doc={this.props.doc}

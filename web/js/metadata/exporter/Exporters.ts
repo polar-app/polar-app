@@ -1,11 +1,9 @@
 import {AnnotationHolder} from '../AnnotationHolder';
-import {FileWriter} from './writers/FileWriter';
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
 import {AnnotationHolders} from '../AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
-import {PathStr} from "polar-shared/src/util/Strings";
 import {BlobWriter} from "./writers/BlobWriter";
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
@@ -20,16 +18,13 @@ import {FileSavers} from "polar-file-saver/src/FileSavers";
  */
 export class Exporters {
 
-    public static async doExportFromDocMeta(path: PathStr,
-                                            datastore: ReadableBinaryDatastore,
+    public static async doExportFromDocMeta(persistenceLayerProvider: PersistenceLayerProvider,
                                             format: ExportFormat,
                                             docMeta: IDocMeta): Promise<void> {
 
         const annotations = AnnotationHolders.fromDocMeta(docMeta);
 
-        const writer = new FileWriter(path);
-
-        await this.doExport(writer, datastore, format, annotations);
+        await this.doExportForAnnotations(persistenceLayerProvider, annotations, format);
 
     }
 
