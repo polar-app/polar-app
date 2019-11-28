@@ -1,7 +1,11 @@
 
-## Fixes
+## Features
+
+- usability: you can now export annotations from the annotations view.
 
 - usability: double click of comments or flashcards edits them.
+
+## Fixes
 
 - usability: Fixed an issue where if the user accidentally hit 'r' the document would rotate and people
   couldn't figure out how to revert.
