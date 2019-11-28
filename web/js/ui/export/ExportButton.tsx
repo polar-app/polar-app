@@ -30,6 +30,8 @@ export class ExportButton extends React.Component<IProps, IState> {
                     </DropdownToggle>
 
                     <DropdownMenu className="shadow">
+                        <DropdownItem header>Download annotations as:</DropdownItem>
+
                         <DropdownItem onClick={() => this.doExport('markdown')}>Markdown</DropdownItem>
                         <DropdownItem onClick={() => this.doExport('json')}>JSON</DropdownItem>
                     </DropdownMenu>

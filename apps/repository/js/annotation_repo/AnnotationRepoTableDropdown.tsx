@@ -36,7 +36,7 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
                     <DropdownMenu className="shadow" right>
 
 
-                        <DropdownItem header>Export as</DropdownItem>
+                        <DropdownItem header>Download annotations as:</DropdownItem>
 
                         <DropdownItem onClick={() => this.onExport('markdown')}>
                             Markdown
@@ -58,7 +58,7 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
 
     private onExport(format: ExportFormat) {
         Exporters.doExportForAnnotations(this.props.persistenceLayerProvider,  this.props.annotations, format)
-            .catch(err => log.error("Unable to export: ", err));
+            .catch(err => log.error("Unable to download: ", err));
     }
 
 }
