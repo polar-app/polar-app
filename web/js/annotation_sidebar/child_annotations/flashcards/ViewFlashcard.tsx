@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Moment from 'react-moment';
 import {DocAnnotation} from '../../DocAnnotation';
 import {FlashcardDropdown} from './FlashcardDropdown';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -96,7 +95,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
                 <div className="flashcard card shadow-sm mb-1">
 
-                    <div className="card-body p-1">
+                    <div className="card-body p-1" onDoubleClick={() => this.props.onEdit()}>
 
                         <RenderFields/>
 
@@ -140,6 +139,7 @@ interface IProps {
     readonly flashcard: DocAnnotation;
     readonly doc: Doc;
     readonly editButton: JSX.Element;
+    readonly onEdit: () => void;
 }
 
 interface IState {

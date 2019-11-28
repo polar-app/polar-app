@@ -1,7 +1,9 @@
 
 ## Fixes
 
-- Fixed an issue where if the user accidentally hit 'r' the document would rotate and people
+- usability: double click of comments or flashcards edits them.
+
+- usability: Fixed an issue where if the user accidentally hit 'r' the document would rotate and people
   couldn't figure out how to revert.
 
 # 1.60.11

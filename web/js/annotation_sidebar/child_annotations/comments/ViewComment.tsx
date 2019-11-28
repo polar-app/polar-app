@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Moment from 'react-moment';
 import {DocAnnotation} from '../../DocAnnotation';
 import {CommentDropdown} from '../CommentDropdown';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -7,7 +6,6 @@ import {IStyleMap} from '../../../react/IStyleMap';
 import {Doc} from '../../../metadata/Doc';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
-import {DocAnnotations} from "../../DocAnnotations";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 
 const log = Logger.create();
@@ -49,7 +47,7 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                 <div key={key} className="comment muted-color-root">
 
-                    <div className="pb-1 pt-1">
+                    <div className="pb-1 pt-1" onDoubleClick={() => this.props.onEdit()}>
 
                         {/*TODO: based on the state determine if we should be*/}
                         {/*editing or just displaying the comment*/}
@@ -103,6 +101,7 @@ interface IProps {
     readonly doc: Doc;
     readonly comment: DocAnnotation;
     readonly editButton: JSX.Element;
+    readonly onEdit: () => void;
 }
 
 interface IState {

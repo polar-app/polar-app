@@ -36,6 +36,7 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
 
             return <ViewComment comment={this.props.comment}
                                 doc={this.props.doc}
+                                onEdit={() => this.onEdit()}
                                 editButton={editButton}/>;
 
         } else {
