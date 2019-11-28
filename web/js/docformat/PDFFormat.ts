@@ -14,9 +14,40 @@ export class PDFFormat extends DocFormat {
 
     public init() {
 
-        PDFModernTextLayers.configure();
+        this.initModernTextLayers();
+        this.initCustomEventHandlers();
 
     }
+
+    private initModernTextLayers() {
+        PDFModernTextLayers.configure();
+    }
+
+    private initCustomEventHandlers() {
+
+        const outerContainer = document.getElementById("outerContainer");
+
+        if (outerContainer) {
+
+            outerContainer.addEventListener("keydown", event => {
+
+                // this disables the 'rotate' functionality which breaks Polar because
+                // people accidentally rotate the document and can't figure out why then
+                // get VERY confused about how to fix the problem.
+
+                if (event.key === 'r') {
+                    // TODO: shift and alt, etc might be blocked but I think that's ok
+                    event.stopPropagation();
+                    return false;
+                }
+
+                return true;
+
+            });
+
+        }
+    }
+
 
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
