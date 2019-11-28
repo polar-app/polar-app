@@ -6,6 +6,9 @@ import {AnnotationHolders} from '../AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
 import {PathStr} from "polar-shared/src/util/Strings";
+import {BlobWriter} from "./writers/BlobWriter";
+import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
+import {FileSavers} from "polar-file-saver/src/FileSavers";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -24,19 +27,66 @@ export class Exporters {
 
         const annotations = AnnotationHolders.fromDocMeta(docMeta);
 
-        await this.doExport(path, datastore, format, annotations);
+        const writer = new FileWriter(path);
+
+        await this.doExport(writer, datastore, format, annotations);
+
+    }
+
+    public static async doExportForAnnotations(persistenceLayerProvider: PersistenceLayerProvider,
+                                               annotations: ReadonlyArray<AnnotationHolder>,
+                                               format: ExportFormat) {
+
+        const createType = () => {
+            switch (format) {
+                case 'markdown':
+                    return "text/markdown;charset=utf-8";
+
+                case 'json':
+                    return "application/json;charset=utf-8";
+
+                case 'html':
+                    throw new Error("not supported yet");
+            }
+        };
+
+        const createExt = () => {
+            switch (format) {
+                case 'markdown':
+                    return "md";
+
+                case 'json':
+                    return "json";
+
+                case 'html':
+                    throw new Error("not supported yet");
+            }
+        };
+
+        const type = createType();
+
+        const writer = new BlobWriter();
+
+        const datastore = persistenceLayerProvider().datastore;
+
+        await this.doExport(writer, datastore, format, annotations);
+
+        const blob = writer.toBlob(type);
+        const ext = createExt();
+        const ts = new Date().getTime();
+        const filename = `annotations-${ts}.${ext}`;
+
+        FileSavers.saveAs(blob, filename);
 
     }
 
     /**
      * Main export interface.
      */
-    public static async doExport(path: PathStr,
+    public static async doExport(writer: Writer,
                                  datastore: ReadableBinaryDatastore,
                                  format: ExportFormat,
                                  annotations: ReadonlyArray<AnnotationHolder>) {
-
-        const writer = new FileWriter(path);
 
         await writer.init();
 

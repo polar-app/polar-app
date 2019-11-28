@@ -18,7 +18,7 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
  */
 export interface AnnotationHolder {
 
-    readonly type: AnnotationType;
+    readonly annotationType: AnnotationType;
 
     readonly original: ITextHighlight | IAreaHighlight | IComment | IFlashcard;
 

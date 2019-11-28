@@ -36,10 +36,10 @@ export class PDFDownloadHandlers {
 
             const mimeType = downloadItem.getMimeType();
 
-            // if (mimeType !== 'application/pdf') {
-            //     log.warn("Downloading PDF and unable to handle: " + mimeType);
-            //     return;
-            // }
+            if (mimeType !== 'application/pdf') {
+                log.warn("Not a PDF download: " + mimeType);
+                return;
+            }
 
             const basename = FilePaths.basename(downloadItem.getURL());
             const tmpPath = FilePaths.createTempName(basename);

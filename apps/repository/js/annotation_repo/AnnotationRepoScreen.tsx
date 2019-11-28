@@ -53,7 +53,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onSelectedFolders = this.onSelectedFolders.bind(this);
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
-        this.onExport = this.onExport.bind(this);
 
         this.state = {
             data: [],
@@ -146,9 +145,10 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                                     <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
                                 </div>
 
-                                {/*<div className="ml-1 d-none-mobile mt-auto mb-auto">*/}
-                                {/*    <AnnotationRepoTableDropdown/>*/}
-                                {/*</div>*/}
+                                <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                                    <AnnotationRepoTableDropdown persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                                                 annotations={this.state.data}/>
+                                </div>
 
                             </div>
 
@@ -230,10 +230,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, mode, 10);
     }
 
-    private onExport() {
-
-    }
-
 }
 
 export interface IProps {
@@ -255,8 +251,6 @@ export interface IState {
     readonly repoAnnotation?: IDocAnnotation;
 
     readonly data: ReadonlyArray<IDocAnnotation>;
-
-
 
     /**
      * All available tags
