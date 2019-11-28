@@ -45,20 +45,20 @@ export class AnnotationHolders {
     }
 
     public static fromAreaHighlight(value: IAreaHighlight, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
-        return {type: AnnotationType.AREA_HIGHLIGHT, annotation: value, docInfo, pageInfo};
+        return {type: AnnotationType.AREA_HIGHLIGHT, original: value, docInfo, pageInfo};
     }
 
 
     public static fromTextHighlight(value: ITextHighlight, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
-        return {type: AnnotationType.TEXT_HIGHLIGHT, annotation: value, docInfo, pageInfo};
+        return {type: AnnotationType.TEXT_HIGHLIGHT, original: value, docInfo, pageInfo};
     }
 
     public static fromComment(value: IComment, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
-        return {type: AnnotationType.COMMENT, annotation: value, docInfo, pageInfo};
+        return {type: AnnotationType.COMMENT, original: value, docInfo, pageInfo};
     }
 
     public static fromFlashcard(value: IFlashcard, pageInfo?: IPageInfo, docInfo?: IDocInfo): AnnotationHolder {
-        return {type: AnnotationType.FLASHCARD, annotation: value, docInfo, pageInfo};
+        return {type: AnnotationType.FLASHCARD, original: value, docInfo, pageInfo};
     }
 
 }

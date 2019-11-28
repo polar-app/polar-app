@@ -27,7 +27,7 @@ describe('JSONExporter', function() {
 
         const comment = Comments.createTextComment("hello world", 'page:1');
 
-        await converter.write({type: AnnotationType.COMMENT, annotation: comment} );
+        await converter.write({type: AnnotationType.COMMENT, original: comment} );
 
         await converter.close();
 
@@ -63,10 +63,10 @@ describe('JSONExporter', function() {
         await converter.init(writer, datastore);
 
         const comment0 = Comments.createTextComment("hello world", 'page:1');
-        await converter.write({type: AnnotationType.COMMENT, annotation: comment0} );
+        await converter.write({type: AnnotationType.COMMENT, original: comment0} );
 
         const comment1 = Comments.createTextComment("hello world", 'page:1');
-        await converter.write({type: AnnotationType.COMMENT, annotation: comment1} );
+        await converter.write({type: AnnotationType.COMMENT, original: comment1} );
 
         await converter.close();
 

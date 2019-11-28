@@ -20,7 +20,7 @@ export interface AnnotationHolder {
 
     readonly type: AnnotationType;
 
-    readonly annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard;
+    readonly original: ITextHighlight | IAreaHighlight | IComment | IFlashcard;
 
     /**
      * Optional because in the future it might be nice to have annotations

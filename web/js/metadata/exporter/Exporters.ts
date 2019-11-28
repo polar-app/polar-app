@@ -2,7 +2,6 @@ import {AnnotationHolder} from '../AnnotationHolder';
 import {FileWriter} from './writers/FileWriter';
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
-import {DocMeta} from '../DocMeta';
 import {AnnotationHolders} from '../AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
@@ -13,7 +12,6 @@ import {ReadableBinaryDatastore} from "../../datastore/Datastore";
  * clipboard, perhaps Twitter, email, etc.
  *
  * The exporter takes a ExportFormat (html, markdown, etc) and a target.
- *
  *
  */
 export class Exporters {
@@ -28,12 +26,12 @@ export class Exporters {
         await writer.init();
 
         // create the exporter (markdown, html, etc)
-        const exporter = this.toExporter(format);
+        const exporter = this.create(format);
 
         await exporter.init(writer, datastore);
 
         const annotationHolders = [...AnnotationHolders.fromDocMeta(docMeta)]
-            .sort((a, b) => a.annotation.created.localeCompare(b.annotation.created));
+            .sort((a, b) => a.original.created.localeCompare(b.original.created));
 
         for (const annotationHolder of annotationHolders) {
             await exporter.write(annotationHolder);
@@ -43,7 +41,7 @@ export class Exporters {
 
     }
 
-    private static toExporter(format: ExportFormat) {
+    private static create(format: ExportFormat) {
 
         switch (format) {
 
@@ -105,8 +103,6 @@ export interface Writer extends Writable {
      * Close the exporter.  Pass err if any error was encountered while writing
      * as we might wish to abort the export if an error was encountered but
      * still release resources.
-     *
-     * @param err
      */
     close(err?: Error): Promise<void>;
 
