@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Logger} from "polar-shared/src/logger/Logger";
 
 export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
