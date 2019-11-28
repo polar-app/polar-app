@@ -76,8 +76,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
         const page = await pdf.getPage(1);
 
-        var scale = 1;
-        var viewport = page.getViewport({ scale: scale});
+        const scale = 1;
+        const viewport = page.getViewport({scale});
 
         const canvas = document.querySelector('#pdf canvas') as HTMLCanvasElement | null;
         const textLayer = document.querySelector('#pdf .textLayer') as HTMLDivElement | null;
@@ -99,7 +99,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
         const renderContext = {
             canvasContext: context,
-            viewport: viewport,
+            viewport,
             // textLayer
         };
 
