@@ -12,7 +12,7 @@ class Styles {
     public static PARENT: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: 'var(--white)',
+        backgroundColor: 'var(--primary-background-color)',
     };
 
     public static BAR: React.CSSProperties = {
@@ -89,6 +89,7 @@ export class TagTree extends React.Component<IProps, IState> {
                 </div>
 
                 <TreeView roots={[root]}
+                          nodeContextMenuRender={this.props.nodeContextMenuRender}
                           treeState={this.props.treeState}/>
 
             </div>
@@ -123,13 +124,27 @@ export class TagTree extends React.Component<IProps, IState> {
 
 }
 
+export type NodeContextMenuRenderCallback = (child: React.ReactElement) => void;
+
 interface IProps {
+
     readonly treeState: TreeState<TagDescriptor>;
+
     readonly tags: ReadonlyArray<TagDescriptor>;
+
     readonly tagType: TagType;
+
     readonly noCreate?: boolean;
+
     readonly rootTitle?: string;
+
     readonly filterDisabled?: boolean;
+
+    /**
+     * A render prop to render a context menu for each node.
+     */
+    readonly nodeContextMenuRender?: NodeContextMenuRenderCallback;
+
 }
 
 interface IState {

@@ -38,7 +38,7 @@ export class FolderContextMenu extends React.PureComponent<IProps, IState> {
 
                     <div className="border shadow rounded pt-2 pb-2"
                          style={{
-                             backgroundColor: 'var(--white)'
+                             backgroundColor: 'var(--primary-background-color)'
                          }}>
 
                         <DropdownItem toggle={this.props.toggle}

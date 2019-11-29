@@ -34,6 +34,7 @@ export class TreeNodeChildren<V> extends React.Component<IProps<V>, IState> {
                         {children.map(child =>
                             <TreeNode key={idx++}
                                       node={child}
+                                      nodeContextMenuRender={this.props.nodeContextMenuRender}
                                       treeState={this.props.treeState} />)}
             </div>;
         }
@@ -46,6 +47,8 @@ interface IProps<V> {
     readonly closed?: boolean;
     readonly children?: ReadonlyArray<TNode<V>>;
     readonly treeState: TreeState<V>;
+    readonly nodeContextMenuRender?: (child: React.ReactElement) => void;
+
 }
 
 

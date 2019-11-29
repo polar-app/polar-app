@@ -5,6 +5,10 @@ import {TNode} from './TreeView';
 import {DragTarget} from "./DragTarget";
 import {TreeState} from "./TreeState";
 
+const DEFAULT_NODE_CONTEXT_MENU_RENDER = (child: React.ReactElement) => {
+    return <div>{child}</div>;
+};
+
 class Styles {
 
     public static NODE_PARENT: React.CSSProperties = {
@@ -130,16 +134,10 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.onClick = this.onClick.bind(this);
         this.dispatchSelected = this.dispatchSelected.bind(this);
 
-
         this.state = {
         };
 
     }
-
-    // public componentWillUnmount(): void {
-    //     this.deselect();
-    // }
-
 
     public render() {
 
@@ -192,68 +190,74 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
         const icon = createIcon();
 
+        const nodeContextMenuRender
+            = this.props.nodeContextMenuRender || DEFAULT_NODE_CONTEXT_MENU_RENDER;
+
         return (
 
             <div style={{}}>
 
-                <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.value)}>
+                {nodeContextMenuRender(
+                    <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.value)}>
 
-                    <div style={Styles.NODE_PARENT}
-                         className="hover-highlight">
+                        <div style={Styles.NODE_PARENT}
+                             className="hover-highlight">
 
-                        <div style={Styles.NODE_ICON}
-                             className={icon}
-                             onClick={() => this.toggle()}>
-                        </div>
+                            <div style={Styles.NODE_ICON}
+                                 className={icon}
+                                 onClick={() => this.toggle()}>
+                            </div>
 
-                        <div style={Styles.NODE_SELECTOR}>
+                            <div style={Styles.NODE_SELECTOR}>
 
-                            <input className="m-0"
-                                   checked={selected}
-                                   type="checkbox"
-                                   style={{display: 'block'}}
-                                   onContextMenu={(event) => this.onClick(event)}
-                                   onChange={event => this.onCheckbox(event)}/>
+                                <input className="m-0"
+                                       checked={selected}
+                                       type="checkbox"
+                                       style={{display: 'block'}}
+                                       // onContextMenu={(event) => this.onClick(event)}
+                                       onChange={event => this.onCheckbox(event)}/>
 
-                        </div>
+                            </div>
 
-                        <div style={Styles.NODE_BODY}
-                             onDoubleClick={() => this.toggle()}
-                             onContextMenu={(event) => this.onClick(event)}
-                             onClick={(event) => this.onClick(event)}>
+                            <div style={Styles.NODE_BODY}
+                                 onDoubleClick={() => this.toggle()}
+                                 // onContextMenu={(event) => this.onClick(event)}
+                                 onClick={(event) => this.onClick(event)}>
 
-                            <button style={Styles.NODE_NAME}
-                                    className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
-                                    color="light">
+                                <button style={Styles.NODE_NAME}
+                                        className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
+                                        color="light">
 
-                                {this.props.title || node.name}
+                                    {this.props.title || node.name}
 
-                            </button>
+                                </button>
 
-                        </div>
+                            </div>
 
-                        <div style={Styles.NODE_RIGHT}>
+                            <div style={Styles.NODE_RIGHT}>
 
-                            {/*<div className="mt-auto mb-auto">*/}
-                            {/*    <button style={Styles.CREATE_BUTTON}>*/}
+                                {/*<div className="mt-auto mb-auto">*/}
+                                {/*    <button style={Styles.CREATE_BUTTON}>*/}
 
-                            {/*        <i style={Styles.CREATE_ICON}*/}
-                            {/*           className="hover-button fas fa-plus"></i>*/}
+                                {/*        <i style={Styles.CREATE_ICON}*/}
+                                {/*           className="hover-button fas fa-plus"></i>*/}
 
-                            {/*    </button>*/}
-                            {/*</div>*/}
+                                {/*    </button>*/}
+                                {/*</div>*/}
 
-                            <div>
-                                {node.count}
+                                <div>
+                                    {node.count}
+                                </div>
+
                             </div>
 
                         </div>
-
-                    </div>
-                </DragTarget>
+                    </DragTarget>
+                )}
 
                 <TreeNodeChildren children={children}
                                   closed={closed}
+                                  nodeContextMenuRender={this.props.nodeContextMenuRender}
                                   treeState={this.props.treeState}/>
 
             </div>
@@ -332,6 +336,8 @@ interface IProps<V> {
     readonly node: TNode<V>;
 
     readonly treeState: TreeState<V>;
+
+    readonly nodeContextMenuRender?: (child: React.ReactElement) => void;
 
 }
 

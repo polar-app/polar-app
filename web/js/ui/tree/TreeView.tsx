@@ -16,10 +16,11 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
         return <div>
             {roots.map(node =>
-                   <TreeNode node={node}
-                             title={node.title}
-                             key={node.id}
-                             treeState={treeState}/>)}
+                <TreeNode node={node}
+                          title={node.title}
+                          key={node.id}
+                          nodeContextMenuRender={this.props.nodeContextMenuRender}
+                          treeState={treeState}/>)}
         </div>;
 
     }
@@ -29,6 +30,7 @@ export class TreeView<V> extends React.Component<IProps<V>, IState> {
 interface IProps<V> {
     readonly roots: ReadonlyArray<TRoot<V>>;
     readonly treeState: TreeState<V>;
+    readonly nodeContextMenuRender?: (child: React.ReactElement) => void;
 }
 
 interface IState {
