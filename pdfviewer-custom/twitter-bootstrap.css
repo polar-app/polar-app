@@ -336,3 +336,6 @@ button.dropdown-item:hover {
     background-color: var(--grey100) !important;
 }
 
+.no-outline {
+    outline: none !important;
+}

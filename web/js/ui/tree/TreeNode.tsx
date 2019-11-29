@@ -49,7 +49,7 @@ class Styles {
         backgroundColor: 'inherit',
         border: 'none',
         outlineColor: 'transparent',
-        borderRadius: '4px'
+        borderRadius: '4px',
 
     };
 
@@ -214,18 +214,18 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                                        checked={selected}
                                        type="checkbox"
                                        style={{display: 'block'}}
-                                       // onContextMenu={(event) => this.onClick(event)}
+                                       onContextMenu={(event) => this.onClick(event)}
                                        onChange={event => this.onCheckbox(event)}/>
 
                             </div>
 
                             <div style={Styles.NODE_BODY}
                                  onDoubleClick={() => this.toggle()}
-                                 // onContextMenu={(event) => this.onClick(event)}
+                                 onContextMenu={(event) => this.onClick(event)}
                                  onClick={(event) => this.onClick(event)}>
 
                                 <button style={Styles.NODE_NAME}
-                                        className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
+                                        className={"p-0 pl-1 pr-1 border-0 no-outline " + nodeButtonClazz}
                                         color="light">
 
                                     {this.props.title || node.name}
