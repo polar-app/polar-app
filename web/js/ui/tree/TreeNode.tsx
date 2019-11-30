@@ -234,16 +234,9 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
                             </div>
 
-                            <div style={Styles.NODE_RIGHT}>
-
-                                {/*<div className="mt-auto mb-auto">*/}
-                                {/*    <button style={Styles.CREATE_BUTTON}>*/}
-
-                                {/*        <i style={Styles.CREATE_ICON}*/}
-                                {/*           className="hover-button fas fa-plus"></i>*/}
-
-                                {/*    </button>*/}
-                                {/*</div>*/}
+                            <div style={Styles.NODE_RIGHT}
+                                 onDoubleClick={() => this.toggle()}
+                                 onContextMenu={(event) => this.onClick(event)}>
 
                                 <div>
                                     {node.count}
