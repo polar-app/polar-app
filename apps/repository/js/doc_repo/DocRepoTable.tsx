@@ -5,7 +5,6 @@ import {RepoDocInfo} from '../RepoDocInfo';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
@@ -29,8 +28,10 @@ import {SelectRowType} from "./DocRepoScreen";
 import {TitleCell} from "./cells/TitleCell";
 import {CheckCell} from "./cells/CheckCell";
 import {DocButtonsCell} from "./cells/DocButtonsCell";
-import {Objects} from "polar-shared/src/util/Objects";
-import {SortFunctions} from "./util/SortFunctions";
+import {ReactTableHolder} from "../../../../web/js/ui/ReactTables";
+import {RepoDocInfos} from "../RepoDocInfos";
+import {ListOptionTypeMap} from "../../../../web/js/ui/list_selector/ListSelector";
+import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 
 const log = Logger.create();
 
@@ -251,13 +252,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    // FIXME: thisthe sort method isn't really what I want... untagged should go to the END
-
     private createColumnTags() {
-
-        interface ReactTableHolder<T> {
-            readonly original: T;
-        }
 
         const formatRecord = (repoDocInfo: RepoDocInfo): string => {
 
@@ -271,16 +266,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         };
 
         const sortMethod = (a: RepoDocInfo, b: RepoDocInfo) => {
-
-            const cmp = SortFunctions.compareWithEmptyStringsLast(a, b, formatRecord);
-
-            if (cmp !== 0) {
-                return cmp;
-            }
-
-            // for ties use the date added...
-            return Objects.toObjectSTR(a.added).localeCompare(Objects.toObjectSTR(b.added));
-
+            return RepoDocInfos.sort(a, b, formatRecord);
         };
 
         return {
@@ -298,59 +284,34 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
     }
 
     private createColumnFolders() {
+
+        const formatRecord = (repoDocInfo: RepoDocInfo): string => {
+
+            const tags: { [id: string]: Tag } = repoDocInfo.tags || {};
+
+            return Tags.onlyFolderTags(Object.values(tags))
+                .map(tag => tag.label)
+                .sort()
+                .join(", ");
+
+        };
+
+        const sortMethod = (a: RepoDocInfo, b: RepoDocInfo) => {
+            return RepoDocInfos.sort(a, b, formatRecord);
+        };
+
         return {
             id: 'folders',
             Header: 'Folders',
             headerClassName: "d-none-mobile",
             width: 250,
-            accessor: '',
-            show: this.props.columns.folders.selected,
+            show: this.props.columns.folders?.selected || false,
             className: 'doc-table-col-folders d-none-mobile',
-            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
-
-                const toSTR = (obj: any): string => {
-
-                    if (! obj) {
-                        return "";
-                    }
-
-                    if (typeof obj === 'string') {
-                        return obj;
-                    }
-
-                    return JSON.stringify(obj);
-
-                };
-
-                const cmp = toSTR(a.tags).localeCompare(toSTR(b.tags));
-
-                if (cmp !== 0) {
-                    return cmp;
-                }
-
-                // for ties use the date added...
-                return toSTR(a.added).localeCompare(toSTR(b.added));
-
-            },
-            Cell: (row: any) => {
-                // TODO: move to a PureComponent to
-                // improve performance
-
-                const tags: {[id: string]: Tag} = row.original.tags;
-
-                const formatted = Tags.onlyRegular(Object.values(tags))
-                    .map(tag => tag.label)
-                    .sort()
-                    .join(", ");
-
-                return (
-
-                    <div>{formatted}</div>
-
-                );
-
-            }
+            accessor: '',
+            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => sortMethod(a, b),
+            Cell: (value: ReactTableHolder<RepoDocInfo>) => formatRecord(value.original)
         };
+
     }
 
     private createColumnProgress() {
@@ -437,13 +398,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         return [
             this.createColumnCheckbox(),
             this.createColumnTitle(),
-            // this.createColumnUpdated(),
-            // this.createColumnAdded(),
-            // this.createColumnSite(),
-            // this.createColumnTags(),
-            // this.createColumnAnnotations(),
             this.createColumnProgress(),
-            // this.createColumnButtons()
         ];
 
     }
@@ -457,6 +412,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             this.createColumnAdded(),
             this.createColumnSite(),
             this.createColumnTags(),
+            this.createColumnFolders(),
             this.createColumnAnnotations(),
             this.createColumnProgress(),
             this.createColumnButtons()
@@ -762,7 +718,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 }
 
 interface IProps {
-    readonly columns: DocRepoTableColumns;
+    readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly data: ReadonlyArray<RepoDocInfo>;
     readonly relatedTags: RelatedTags;

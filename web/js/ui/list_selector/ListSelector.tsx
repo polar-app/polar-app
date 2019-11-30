@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Input, Label, ListGroup, ListGroupItem, Button} from 'reactstrap';
 import {IStyleMap} from '../../react/IStyleMap';
+import {IDMap} from "polar-shared/src/util/IDMaps";
 
 const Styles: IStyleMap = {
 
@@ -66,7 +67,7 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
 
         );
 
-    };
+    }
 
     private createListGroupItems(options: T[]) {
 
@@ -129,6 +130,8 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
 
 }
 
+export type ListOptionTypeMap = IDMap<ListOptionType>;
+
 export interface ListOptionType {
 
     /**
@@ -150,11 +153,7 @@ export interface ListOptionType {
 
 }
 
-export interface ListOptionTypeMap {
-    [id: string]: ListOptionType;
-}
-
-export const createListOptionTypeMap = <M extends ListOptionTypeMap>(things: M) => things
+export const createListOptionTypeMap = <M extends ListOptionTypeMap>(things: M) => things;
 
 interface IProps<T> {
 
@@ -174,7 +173,7 @@ interface IProps<T> {
      */
     onCancel?: () => void;
 
-    onSet?: (options: ListOptionType[]) => void;
+    onSet?: (options: ReadonlyArray<ListOptionType>) => void;
 
 }
 
