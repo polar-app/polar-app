@@ -32,8 +32,9 @@ export class FolderContextMenus {
     /**
      * Create the handlers element and the actual context menu wrapper.
      */
-    public static create(treeState: TreeState<TagDescriptor>,
-                         createFolder: CreateFolderCallback): ContextMenuComponents {
+    public static create(type: 'tag' | 'folder',
+                         treeState: TreeState<TagDescriptor>,
+                         onCreate: CreateFolderCallback): ContextMenuComponents {
 
         const id = 'folder-context-menu-' + sequence++;
         const contextMenuHandlers = prepareContextMenuHandlers({id});
@@ -46,9 +47,37 @@ export class FolderContextMenus {
 
         };
 
-        const onCreateFolder = () => {
+        const doCreate = () => {
             const tags = treeState.selected.keys();
-            createFolder(tags);
+            onCreate(tags);
+        };
+
+        const MenuItemsForFolders = () => {
+
+            return <DropdownItem toggle={false}
+                                 onClick={() => doCreate()}>
+                <FontAwesomeIcon name="fas fa-folder-plus"/> Create Folder
+            </DropdownItem>;
+
+        };
+
+        const MenuItemsForTags = () => {
+            return <DropdownItem toggle={false}
+                                 onClick={() => doCreate()}>
+                <FontAwesomeIcon name="fas fa-tag"/> Create Tag
+            </DropdownItem>;
+
+        };
+
+        const MenuItems = () => {
+
+            switch (type) {
+                case "tag":
+                    return <MenuItemsForTags/>;
+                case "folder":
+                    return <MenuItemsForFolders/>;
+            }
+
         };
 
         const contextMenu = () => {
@@ -59,10 +88,7 @@ export class FolderContextMenus {
                          backgroundColor: 'var(--primary-background-color)'
                      }}>
 
-                    <DropdownItem toggle={false}
-                                  onClick={() => onCreateFolder()}>
-                        <FontAwesomeIcon name="fas fa-folder-plus"/> Create Folder
-                    </DropdownItem>
+                    <MenuItems/>
 
                 </div>
 

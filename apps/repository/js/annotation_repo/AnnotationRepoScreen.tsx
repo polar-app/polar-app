@@ -31,6 +31,7 @@ import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
 import {ContextMenuComponents, FolderContextMenus} from "../FolderContextMenus";
+import {AnnotationRepoSidebar} from "./AnnotationRepoSidebar";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -66,8 +67,9 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         this.treeState = new TreeState(onSelected);
 
-        this.contextMenuComponents = FolderContextMenus.create(this.treeState,
-                                                              (tags) => console.log("FIXME: created: ", tags));
+        this.contextMenuComponents = FolderContextMenus.create('folder',
+                                                               this.treeState,
+                                                               (tags) => console.log("FIXME: created: ", tags));
 
         const setStateInBackground = (state: IState) => {
 
@@ -171,35 +173,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                         splitter: 'd-none-mobile'
                       }}
                       left={
-                          // TODO this should be its own component
-                          <div style={{
-                              display: 'flex' ,
-                              flexDirection: 'column',
-                              height: '100%',
-                              overflow: 'auto',
-                          }}>
-
-                            <div className="m-1">
-
-                                {this.contextMenuComponents.contextMenu()}
-
-                                <TagTree tags={this.state.tags}
-                                         treeState={this.treeState}
-                                         rootTitle="Folders"
-                                         tagType='folder'
-                                         nodeContextMenuRender={child => this.contextMenuComponents.render(child)}
-                                         noCreate={true}/>
-
-                                <TagTree tags={this.state.tags}
-                                         treeState={this.treeState}
-                                         rootTitle="Tags"
-                                         tagType='regular'
-                                         filterDisabled={true}
-                                         noCreate={true}/>
-
-                            </div>
-
-                        </div>
+                          <AnnotationRepoSidebar treeState={this.treeState}
+                                                 tags={this.state.tags}/>
                       }
                       right={
                           <PreviewAndMainViewDock data={this.state.data}
