@@ -52,9 +52,14 @@ export class FolderContextMenus {
             onCreate(tags);
         };
 
+        const hasSingleSelectedFolder = () => {
+            return treeState.selected.keys().length === 1;
+        };
+
         const MenuItemsForFolders = () => {
 
             return <DropdownItem toggle={false}
+                                 disabled={! hasSingleSelectedFolder()}
                                  onClick={() => doCreate()}>
                 <FontAwesomeIcon name="fas fa-folder-plus"/> Create Folder
             </DropdownItem>;
