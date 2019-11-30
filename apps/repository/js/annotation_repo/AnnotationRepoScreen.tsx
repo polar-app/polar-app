@@ -30,7 +30,7 @@ import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
-import {FolderContextMenu, FolderContextMenus} from "../FolderContextMenus";
+import {ContextMenuComponents, FolderContextMenus} from "../FolderContextMenus";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -48,7 +48,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
      */
     private selectedFolders: ReadonlyArray<Tag> = [];
 
-    private folderContextMenu: FolderContextMenu;
+    private contextMenuComponents: ContextMenuComponents;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -62,7 +62,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
             tags: [],
         };
 
-        this.folderContextMenu = FolderContextMenus.create(() => console.log("FIXME: created"));
+        this.contextMenuComponents = FolderContextMenus.create(() => console.log("FIXME: created"));
 
         const onSelected = (values: ReadonlyArray<TagStr>) => this.onSelectedFolders(values);
 
@@ -180,13 +180,13 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                             <div className="m-1">
 
-                                {this.folderContextMenu.contextMenu()}
+                                {this.contextMenuComponents.contextMenu()}
 
                                 <TagTree tags={this.state.tags}
                                          treeState={this.treeState}
                                          rootTitle="Folders"
                                          tagType='folder'
-                                         nodeContextMenuRender={child => this.folderContextMenu.renderChild(child)}
+                                         nodeContextMenuRender={child => this.contextMenuComponents.render(child)}
                                          noCreate={true}/>
 
                                 <TagTree tags={this.state.tags}

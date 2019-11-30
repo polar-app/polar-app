@@ -38,6 +38,7 @@ export class TreeState<V> {
 
     public dispatchSelected() {
 
+        // TODO: I think these are the same.  There's no distinction between folders and tags right?
         const selectedFolders = this.selected.keys();
         const selectedTags = this.tags.map(current => current.id);
 
