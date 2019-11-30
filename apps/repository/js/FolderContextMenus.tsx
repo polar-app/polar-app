@@ -4,6 +4,7 @@ import {DropdownItem} from 'reactstrap';
 import {FontAwesomeIcon} from "../../../web/js/ui/fontawesome/FontAwesomeIcon";
 import {TreeState} from "../../../web/js/ui/tree/TreeState";
 import {TagDescriptor} from "../../../web/js/tags/TagNode";
+import {TagStr} from "polar-shared/src/tags/Tags";
 
 let sequence: number = 0;
 
@@ -24,12 +25,15 @@ export interface ContextMenuComponents {
 
 }
 
+export type CreateFolderCallback = (selected: ReadonlyArray<TagStr>) => void;
+
 export class FolderContextMenus {
 
     /**
      * Create the handlers element and the actual context menu wrapper.
      */
-    public static create(createFolder: () => void): ContextMenuComponents {
+    public static create(treeState: TreeState<TagDescriptor>,
+                         createFolder: CreateFolderCallback): ContextMenuComponents {
 
         const id = 'folder-context-menu-' + sequence++;
         const contextMenuHandlers = prepareContextMenuHandlers({id});
@@ -42,6 +46,11 @@ export class FolderContextMenus {
 
         };
 
+        const onCreateFolder = () => {
+            const tags = treeState.selected.keys();
+            createFolder(tags);
+        };
+
         const contextMenu = () => {
 
             return <ContextMenuWrapper id={id}>
@@ -51,7 +60,7 @@ export class FolderContextMenus {
                      }}>
 
                     <DropdownItem toggle={false}
-                                  onClick={() => createFolder()}>
+                                  onClick={() => onCreateFolder()}>
                         <FontAwesomeIcon name="fas fa-folder-plus"/> Create Folder
                     </DropdownItem>
 

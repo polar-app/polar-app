@@ -62,11 +62,12 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
             tags: [],
         };
 
-        this.contextMenuComponents = FolderContextMenus.create(() => console.log("FIXME: created"));
-
         const onSelected = (values: ReadonlyArray<TagStr>) => this.onSelectedFolders(values);
 
         this.treeState = new TreeState(onSelected);
+
+        this.contextMenuComponents = FolderContextMenus.create(this.treeState,
+                                                              (tags) => console.log("FIXME: created: ", tags));
 
         const setStateInBackground = (state: IState) => {
 

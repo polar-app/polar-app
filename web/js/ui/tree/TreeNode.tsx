@@ -214,14 +214,14 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                                        checked={selected}
                                        type="checkbox"
                                        style={{display: 'block'}}
-                                       // onContextMenu={(event) => this.onClick(event)}
+                                       onContextMenu={(event) => this.onClick(event)}
                                        onChange={event => this.onCheckbox(event)}/>
 
                             </div>
 
                             <div style={Styles.NODE_BODY}
                                  onDoubleClick={() => this.toggle()}
-                                 // onContextMenu={(event) => this.onClick(event)}
+                                 onContextMenu={(event) => this.onClick(event)}
                                  onClick={(event) => this.onClick(event)}>
 
                                 <button style={Styles.NODE_NAME}
