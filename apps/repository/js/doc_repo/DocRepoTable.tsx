@@ -2,19 +2,13 @@ import * as React from 'react';
 import ReactTable, {Column, ColumnRenderProps, Instance, RowInfo} from "react-table";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
-import {TagInput} from '../TagInput';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {DocDropdown} from '../DocDropdown';
 import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DocButton} from '../ui/DocButton';
-import {FlagDocButton} from '../ui/FlagDocButton';
-import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import Input from 'reactstrap/lib/Input';
 import {DocContextMenuProps} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
@@ -22,7 +16,6 @@ import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
-import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {
@@ -36,6 +29,8 @@ import {SelectRowType} from "./DocRepoScreen";
 import {TitleCell} from "./cells/TitleCell";
 import {CheckCell} from "./cells/CheckCell";
 import {DocButtonsCell} from "./cells/DocButtonsCell";
+import {Objects} from "polar-shared/src/util/Objects";
+import {SortFunctions} from "./util/SortFunctions";
 
 const log = Logger.create();
 
@@ -249,37 +244,68 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 };
 
-                const aSTR = toSTR(a);
-                const bSTR = toSTR(b);
-
-                // if (aSTR === bSTR) {
-                //     return 0;
-                // }
-                //
-                // if (aSTR === "") {
-                //     return Number.MIN_VALUE;
-                // }
-                //
-                // if (bSTR === "") {
-                //     return Number.MAX_VALUE;
-                // }
-
-                return aSTR.localeCompare(bSTR);
+                return toSTR(a).localeCompare(toSTR(b));
 
             },
         };
 
     }
 
+    // FIXME: thisthe sort method isn't really what I want... untagged should go to the END
+
     private createColumnTags() {
+
+        interface ReactTableHolder<T> {
+            readonly original: T;
+        }
+
+        const formatRecord = (repoDocInfo: RepoDocInfo): string => {
+
+            const tags: { [id: string]: Tag } = repoDocInfo.tags || {};
+
+            return Tags.onlyRegular(Object.values(tags))
+                .map(tag => tag.label)
+                .sort()
+                .join(", ");
+
+        };
+
+        const sortMethod = (a: RepoDocInfo, b: RepoDocInfo) => {
+
+            const cmp = SortFunctions.compareWithEmptyStringsLast(a, b, formatRecord);
+
+            if (cmp !== 0) {
+                return cmp;
+            }
+
+            // for ties use the date added...
+            return Objects.toObjectSTR(a.added).localeCompare(Objects.toObjectSTR(b.added));
+
+        };
+
         return {
             id: 'tags',
             Header: 'Tags',
             headerClassName: "d-none-mobile",
             width: 250,
-            accessor: '',
             show: this.props.columns.tags.selected,
             className: 'doc-table-col-tags d-none-mobile',
+            accessor: '',
+            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => sortMethod(a, b),
+            Cell: (value: ReactTableHolder<RepoDocInfo>) => formatRecord(value.original)
+        };
+
+    }
+
+    private createColumnFolders() {
+        return {
+            id: 'folders',
+            Header: 'Folders',
+            headerClassName: "d-none-mobile",
+            width: 250,
+            accessor: '',
+            show: this.props.columns.folders.selected,
+            className: 'doc-table-col-folders d-none-mobile',
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                 const toSTR = (obj: any): string => {
@@ -389,7 +415,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                                        archived={repoDocInfo.archived}
                                        doHandleToggleField={this.doHandleToggleField}
                                        onDocumentLoadRequested={this.onDocumentLoadRequested}
-                                       {...this.props}/>
+                                       {...this.props}/>;
 
             }
         };
@@ -612,7 +638,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                                 // needed to avoid the columns being placed wrong due to the scrollbar.
                                 paddingRight: '1em'
                             }
-                        }
+                        };
                     }}
 
                     // sorted={[{

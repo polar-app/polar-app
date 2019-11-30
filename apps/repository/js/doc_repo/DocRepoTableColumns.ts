@@ -36,6 +36,12 @@ export class DocRepoTableColumns implements KeyValueMapping<DocRepoTableColumns,
         selected: true,
     };
 
+    public readonly folders: ListOptionType =  {
+        id: "folders",
+        label: "Folders",
+        selected: false,
+    };
+
     public readonly nrAnnotations: ListOptionType =  {
         id: "nrAnnotations",
         label: "Annotations",
