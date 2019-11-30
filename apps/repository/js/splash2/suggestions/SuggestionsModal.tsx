@@ -27,7 +27,7 @@ export class SuggestionsModal extends React.Component<IProps, IState> {
 
             <Suggestions category={"user-suggestions"}
                          title={"How should we improve Polar?"}
-                         description="We need your help to improve Polar!  In your opinion what should we do to make it better?"
+                         description="We need your help to improve Polar!  In your opinion what should we do to make it better? Please be specific as we really do read these but sometimes you guys aren't clear what you want."
                          onDone={text => this.onSuggestion(text)}/>
 
         );
