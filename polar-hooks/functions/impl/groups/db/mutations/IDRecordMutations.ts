@@ -12,8 +12,8 @@ export class IDRecordMutations {
     public static mutations<V extends IDRecord>(prev: ReadonlyArray<V>,
                                                 curr: ReadonlyArray<V>): ReadonlyArray<IDRecordMutation<V>> {
 
-        const prevMap = IDMaps.toIDMap(prev);
-        const currMap = IDMaps.toIDMap(curr);
+        const prevMap = IDMaps.create(prev);
+        const currMap = IDMaps.create(curr);
 
         const result: Array<IDRecordMutation<V>> = [];
 

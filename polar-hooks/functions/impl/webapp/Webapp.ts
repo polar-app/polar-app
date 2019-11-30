@@ -15,12 +15,12 @@ function createRewrites(): ReadonlyArray<Rewrite> {
         [id: string]: Rewrite;
     };
 
-    const idDefaultRewrites: RewriteMap = IDMaps.toIDMap(defaultRewrites.map(current => {
+    const idDefaultRewrites: RewriteMap = IDMaps.create(defaultRewrites.map(current => {
         return {id: current.source, ...current};
     }));
 
     // now convert the static assets to dynamic so that we can serve custom content for SEO.
-    const idMetadataEngineHandlerRefs: RewriteMap = IDMaps.toIDMap(metadataEngineHandlerRefs.map(current => {
+    const idMetadataEngineHandlerRefs: RewriteMap = IDMaps.create(metadataEngineHandlerRefs.map(current => {
         return {
             id: current.source,
             source: current.source,
