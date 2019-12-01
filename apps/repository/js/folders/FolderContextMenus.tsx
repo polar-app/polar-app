@@ -8,6 +8,8 @@ import {TagStr} from "polar-shared/src/tags/Tags";
 
 let sequence: number = 0;
 
+const ENABLED = false;
+
 const contextMenuComponentsFactory = (treeState: TreeState<TagDescriptor>) => {
     // treeState.selected.
 };
@@ -41,9 +43,15 @@ export class FolderContextMenus {
 
         const render = (child: React.ReactElement) => {
 
-            return <div {...contextMenuHandlers}>
-                {child}
-            </div>;
+            if (ENABLED) {
+
+                return <div {...contextMenuHandlers}>
+                    {child}
+                </div>;
+
+            }
+
+            return <div>{child}</div>;
 
         };
 
