@@ -96,18 +96,44 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     public async init(errorListener: ErrorListener = NULL_FUNCTION,
                       opts: DatastoreInitOpts = {noInitialSnapshot: false, noSync: false}): Promise<InitResult> {
 
+        await this.initDelegates(errorListener);
+        await this.initPrefs();
+        await this.initSnapshots(errorListener, opts);
+
+        return {};
+
+    }
+
+    private async initDelegates(errorListener: ErrorListener) {
         await Promise.all([
             this.cloud.init(errorListener, {noInitialSnapshot: true}),
             this.local.init(errorListener)
         ]);
+    }
+
+    private async initPrefs() {
+
+        const localPrefs = this.local.getPrefs().get();
+        const cloudPrefs = this.cloud.getPrefs().get();
+
+        const doUpdate = async (source: DatastorePrefs, target: DatastorePrefs) => {
+            target.prefs.update(source.prefs.toPrefDict());
+            await target.prefs.commit();
+        };
+
+        await doUpdate(localPrefs, cloudPrefs);
+        await doUpdate(cloudPrefs, localPrefs);
+
+    }
+
+    private async initSnapshots(errorListener: ErrorListener,
+                                opts: DatastoreInitOpts) {
 
         const snapshotListener = async (event: DocMetaSnapshotEvent) => this.docMetaSnapshotEventDispatcher.dispatchEvent(event);
 
         if (! opts.noSync) {
             this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
         }
-
-        return {};
 
     }
 

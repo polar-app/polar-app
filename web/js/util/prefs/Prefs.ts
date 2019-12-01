@@ -100,6 +100,8 @@ export interface Pref {
  */
 export interface PersistentPrefs extends Prefs {
 
+    update(dict: StringToPrefDict): void;
+
     fetch(key: string): Pref | undefined;
 
     /**
@@ -290,6 +292,11 @@ export class CompositePrefs implements PersistentPrefs {
     public prefs(): ReadonlyArray<Pref> {
         return this.delegate.prefs();
     }
+
+    public update(dict: StringToPrefDict): void {
+        this.delegate.update(dict);
+    }
+
 
 }
 
