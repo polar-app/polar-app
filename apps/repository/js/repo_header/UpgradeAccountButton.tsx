@@ -18,7 +18,9 @@ export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
         }
 
         return (
-            <Button color="light" size="md" className="border border-success">
+            <Button color="light"
+                    size="md"
+                    className="border border-success">
                 Upgrade Account
             </Button>
         );
