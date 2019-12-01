@@ -34,7 +34,7 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
-import {PersistentPrefs, Prefs, StringToStringDict} from '../util/prefs/Prefs';
+import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict, StringToStringDict} from '../util/prefs/Prefs';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
 import {NetworkLayer} from './Datastore';
@@ -806,7 +806,9 @@ export class DiskPrefsStore {
             log.info("Loaded prefs from: " + this.path);
             const data = await Files.readFileAsync(this.path);
             const prefs = JSON.parse(data.toString("UTF-8"));
-            this.prefs.update(prefs);
+
+            // FIXME: should we use update???
+            this.prefs = prefs;
         }
 
     }
@@ -827,9 +829,7 @@ export class DiskPrefsStore {
 /**
  * Prefs object just backed by a local dictionary.
  */
-export class DiskPrefs extends Prefs implements PersistentPrefs {
-
-    private readonly delegate: StringToStringDict = {};
+export class DiskPrefs extends DictionaryPrefs implements PersistentPrefs {
 
     private readonly diskPrefsStore: DiskPrefsStore;
 
@@ -838,30 +838,8 @@ export class DiskPrefs extends Prefs implements PersistentPrefs {
         this.diskPrefsStore = diskPrefsStore;
     }
 
-    public get(key: string): Optional<string> {
-        return Optional.of(this.delegate[key]);
-    }
-
-    public set(key: string, value: string): void {
-        this.delegate[key] = value;
-    }
-
-    public update(dict: StringToStringDict) {
-
-        for (const key of Object.keys(dict)) {
-            const value = dict[key];
-            this.delegate[key] = value;
-        }
-
-    }
-
-    public toDict(): StringToStringDict {
-        return {...this.delegate};
-    }
-
     public async commit(): Promise<void> {
         return await this.diskPrefsStore.commit();
     }
-
 
 }

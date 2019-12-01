@@ -1,4 +1,4 @@
-import {DictionaryPrefs, Prefs, StringToStringDict} from "../../util/prefs/Prefs";
+import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict, StringToStringDict} from "../../util/prefs/Prefs";
 import {Collections, UserIDStr} from "../sharing/db/Collections";
 import {Firebase} from "../../firebase/Firebase";
 import {Preconditions} from "polar-shared/src/Preconditions";
@@ -25,13 +25,13 @@ export class UserPrefs {
 
     }
 
-    public static async set(prefs: Prefs) {
+    public static async set(prefs: PersistentPrefs) {
         const uid  = await this.getUserID();
         const ref = await Collections.createRef(this.COLLECTION, uid);
 
         const userPref: UserPref = {
-            uid: uid,
-            value: prefs.toDict()
+            uid,
+            value: prefs.toPrefDict()
         };
 
         await ref.set(userPref);
@@ -42,5 +42,5 @@ export class UserPrefs {
 
 export interface UserPref {
     readonly uid: UserIDStr;
-    readonly value: StringToStringDict;
+    readonly value: StringToPrefDict;
 }

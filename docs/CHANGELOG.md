@@ -9,6 +9,8 @@
 
 ## Fixes
 
+- upgrade account button now works.  
+
 - improved text in suggestions dialog.
 
 - the user suggestions dialog is centered.

@@ -2,6 +2,9 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DurationStr} from 'polar-shared/src/util/TimeDurations';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+
+
 
 export abstract class Prefs {
 
@@ -72,12 +75,39 @@ export abstract class Prefs {
 
     public abstract toDict(): StringToStringDict;
 
+    public abstract toPrefDict(): StringToPrefDict;
+
+}
+
+export interface Pref {
+
+    /**
+     * The key for this pref
+     */
+    readonly key: string;
+
+    /**
+     * The value of this pref.
+     */
+    readonly value: string;
+
+    /**
+     * The time this pref was written.
+     */
+    readonly written: ISODateTimeString;
 }
 
 /**
  * A prefs object that can be persisted to disk
  */
 export interface PersistentPrefs extends Prefs {
+
+    fetch(key: string): Promise<Pref | undefined>;
+
+    /**
+     * Get all the prefs.
+     */
+    prefs(): Promise<ReadonlyArray<Pref>>;
 
     /**
      * Commit this prefs.
@@ -91,24 +121,60 @@ export interface PersistentPrefs extends Prefs {
  */
 export class DictionaryPrefs extends Prefs {
 
-    protected delegate: StringToStringDict = {};
+    protected delegate: StringToPrefDict = {};
 
-    constructor(delegate: StringToStringDict = {}) {
+    constructor(delegate: StringToPrefDict = {}) {
         super();
         this.delegate = delegate;
     }
 
     public get(key: string): Optional<string> {
-        return Optional.of(this.delegate[key]);
+
+        const pref = this.delegate[key];
+
+        if (pref) {
+            return Optional.of(pref.value);
+        }
+
+        return Optional.empty();
     }
 
     public set(key: string, value: string): void {
-        this.delegate[key] = value;
+
+        const written = ISODateTimeStrings.create();
+
+        this.delegate[key] = {
+            key,
+            value,
+            written
+        };
     }
 
     public toDict(): StringToStringDict {
+
+        const result: StringToStringDict = {};
+
+        for (const current of Object.values(this.delegate)) {
+            result[current.key] = current.value;
+        }
+
+        return result;
+
+    }
+
+    public toPrefDict(): StringToPrefDict {
         return {...this.delegate};
     }
+
+
+    public async fetch(key: string): Promise<Pref | undefined> {
+        return Optional.of(this.delegate[key]).getOrUndefined();
+    }
+
+    public async prefs(): Promise<ReadonlyArray<Pref>> {
+        return Object.values(this.delegate);
+    }
+
 
 }
 
@@ -154,6 +220,11 @@ export class CompositePrefs implements PersistentPrefs {
         return this.delegate.toDict();
     }
 
+    public toPrefDict(): StringToPrefDict {
+        return this.delegate.toPrefDict();
+    }
+
+
     public toggleMarked(key: string, value?: boolean): void {
         return this.toggleMarked(key, value);
     }
@@ -174,10 +245,19 @@ export class CompositePrefs implements PersistentPrefs {
 
     }
 
+    public async fetch(key: string): Promise<Pref | undefined> {
+        return this.delegate.fetch(key);
+    }
+
+    public async prefs(): Promise<ReadonlyArray<Pref>> {
+        return this.delegate.prefs();
+    }
+
 }
 
 export class NonPersistentPrefs extends DictionaryPrefs implements PersistentPrefs {
 
+    // tslint:disable-next-line:no-empty
     public async commit(): Promise<void> {
 
     }
@@ -186,4 +266,8 @@ export class NonPersistentPrefs extends DictionaryPrefs implements PersistentPre
 
 export interface StringToStringDict {
     [key: string]: string;
+}
+
+export interface StringToPrefDict {
+    [key: string]: Pref;
 }
