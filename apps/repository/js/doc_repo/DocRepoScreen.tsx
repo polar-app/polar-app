@@ -9,7 +9,7 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from '../MessageBanner';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
-import {DocRepoTableColumns} from './DocRepoTableColumns';
+import {DocRepoTableColumns, DocRepoTableColumnsMap} from './DocRepoTableColumns';
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
@@ -20,7 +20,7 @@ import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {FixedNav} from '../FixedNav';
-import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
+import {ListOptionType, ListOptionTypeMap} from '../../../../web/js/ui/list_selector/ListSelector';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
@@ -42,6 +42,7 @@ import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {FolderSidebar} from "../folders/FolderSidebar";
+import {IDMap, IDMaps} from "polar-shared/src/util/IDMaps";
 
 const log = Logger.create();
 
@@ -98,7 +99,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.state = {
             data: [],
             tags: [],
-            columns: new DocRepoTableColumns(),
+            columns: IDMaps.create(Object.values(new DocRepoTableColumns())),
             selected: [],
             docSidebarVisible: false
         };
@@ -161,13 +162,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         Optional.of(settingProvider().documentRepository)
             .map(current => current.columns)
             .when(columns => {
-
-                // columns = Object.assign( new DocRepoTableColumns(), columns);
-
                 log.info("Loaded columns from settings: ", columns);
                 this.setState({...this.state, columns});
                 this.refresh();
-
             });
 
         this.refresh();
@@ -633,13 +630,16 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onSelectedColumns(columns: ListOptionType[]) {
+    private onSelectedColumns(columns: ReadonlyArray<ListOptionType>) {
 
         RendererAnalytics.event({category: 'user', action: 'selected-columns'});
 
-        // new columns have been selected. Note that the UI updates the values
-        // directly so we can just write what's in memory to disk. I think it
-        // would be better practice to keep them immutable.
+        // tslint:disable-next-line:variable-name
+        const columns_map = IDMaps.create(columns);
+
+        setTimeout(() => {
+            this.setState({...this.state, columns: columns_map});
+        }, 1);
 
         SettingsStore.load()
             .then((settingsProvider) => {
@@ -649,7 +649,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                 const settings: Settings = {
                     ...currentSettings,
                     documentRepository: {
-                        columns: this.state.columns
+                        columns: columns_map
                     }
                 };
 
@@ -716,7 +716,7 @@ interface IProps {
 interface IState {
     readonly data: ReadonlyArray<RepoDocInfo>;
     readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly columns: DocRepoTableColumns;
+    readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly docSidebarVisible: boolean;
 }

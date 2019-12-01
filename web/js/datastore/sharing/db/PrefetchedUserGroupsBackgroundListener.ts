@@ -44,7 +44,7 @@ export class PrefetchedUserGroups {
         // get all the referenced groups for the user.
         const referencedGroups = await Groups.getAll(groupIDs);
 
-        const prefetched = IDMaps.toIDMap(referencedGroups);
+        const prefetched = IDMaps.create(referencedGroups);
 
         const groups = IDMaps.fetch(prefetched, userGroup.groups || []);
 

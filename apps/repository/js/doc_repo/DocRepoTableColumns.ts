@@ -1,5 +1,7 @@
-import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
+import {ListOptionType, ListOptionTypeMap} from '../../../../web/js/ui/list_selector/ListSelector';
 import {KeyValueMapping} from '../../../../web/js/util/KeyValueMapping';
+
+export type DocRepoTableColumnsMap = ListOptionTypeMap;
 
 export class DocRepoTableColumns implements KeyValueMapping<DocRepoTableColumns, ListOptionType> {
 
@@ -34,6 +36,12 @@ export class DocRepoTableColumns implements KeyValueMapping<DocRepoTableColumns,
         id: "tags",
         label: "Tags",
         selected: true,
+    };
+
+    public readonly folders: ListOptionType =  {
+        id: "folders",
+        label: "Folders",
+        selected: false,
     };
 
     public readonly nrAnnotations: ListOptionType =  {

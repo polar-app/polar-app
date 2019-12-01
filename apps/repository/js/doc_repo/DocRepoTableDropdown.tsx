@@ -8,6 +8,7 @@ import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
+import {IDMaps} from "polar-shared/src/util/IDMaps";
 
 const Styles: IStyleMap = {
 
@@ -41,7 +42,28 @@ export class DocRepoTableDropdown extends React.Component<IProps, IState> {
 
     public render() {
 
-        const columns = this.props.options || Object.values(new DocRepoTableColumns());
+        const mergeListOptions = (current: ReadonlyArray<ListOptionType> | undefined,
+                                  options: ReadonlyArray<ListOptionType>) => {
+
+            current = current || [];
+
+            const currentMap = IDMaps.create(current);
+
+            return options.map(option => {
+
+                const curr = currentMap[option.id];
+
+                if (curr) {
+                    return curr;
+                } else {
+                    return option;
+                }
+
+            });
+
+        };
+
+        const columns = mergeListOptions(this.props.options, Object.values(new DocRepoTableColumns()));
 
         return (
 
@@ -54,7 +76,7 @@ export class DocRepoTableDropdown extends React.Component<IProps, IState> {
                     <DropdownToggle color="light"
                                     size="md"
                                     className="table-dropdown-button btn text-muted p-1 m-0" id={this.props.id + '-dropdown-toggle'}>
-                        <i className="fas fa-ellipsis-h"></i>
+                        <i className="fas fa-ellipsis-h"/>
                     </DropdownToggle>
 
                     <DropdownMenu className="shadow" right>
@@ -122,7 +144,7 @@ export class DocRepoTableDropdown extends React.Component<IProps, IState> {
 
     // this.onSetTitle = this.onSetTitle.bind(this);
 
-    private onSelectedColumns(options: ListOptionType[]) {
+    private onSelectedColumns(options: ReadonlyArray<ListOptionType>) {
 
         this.select('none');
 
@@ -136,8 +158,8 @@ export class DocRepoTableDropdown extends React.Component<IProps, IState> {
 
 interface IProps {
     id: string;
-    options?: ListOptionType[];
-    onSelectedColumns?: (options: ListOptionType[]) => void;
+    options?: ReadonlyArray<ListOptionType>;
+    onSelectedColumns?: (options: ReadonlyArray<ListOptionType>) => void;
 }
 
 interface IState {

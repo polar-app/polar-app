@@ -117,7 +117,7 @@ export class ReviewerTasks {
 
         const spacedReps = await SpacedReps.list(uid);
 
-        const spacedRepsMap = IDMaps.toIDMap(spacedReps);
+        const spacedRepsMap = IDMaps.create(spacedReps);
 
         const optionalTaskRepResolver: OptionalTaskRepResolver<A>
             = async (task: Task<A>): Promise<TaskRep<A> | undefined> => {

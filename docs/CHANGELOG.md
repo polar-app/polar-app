@@ -1,6 +1,8 @@
 
 ## Features
 
+- usability: you can now see the folders a file is within in the document repository
+
 - usability: you can now export annotations from the annotations view.
 
 - usability: double click of comments or flashcards edits them.
