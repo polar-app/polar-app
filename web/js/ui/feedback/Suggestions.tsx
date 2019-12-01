@@ -25,9 +25,9 @@ export class Suggestions extends React.Component<IProps, IState> {
         const Description = () => {
 
             if (this.props.description) {
-                return <p>{this.props.description}</p>;
+                return this.props.description;
             } else {
-                return <div></div>;
+                return null;
             }
 
         };
@@ -134,7 +134,7 @@ export interface IProps {
 
     readonly title: string;
 
-    readonly description?: string;
+    readonly description?: React.ReactElement;
 
     /**
      * Don't send the event on form submission.  Just for testing.
