@@ -6,7 +6,7 @@ import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 import {TagNodes, TagType} from "../../tags/TagNodes";
 import {TreeState} from "./TreeState";
-import {ContextMenuComponentsFactory} from "../../../../apps/repository/js/FolderContextMenus";
+import {ContextMenuComponentsFactory} from "../../../../apps/repository/js/folders/FolderContextMenus";
 
 class Styles {
 

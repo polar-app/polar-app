@@ -24,7 +24,7 @@ import {Button} from "reactstrap";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {ContextMenuWrapper} from "@burtonator/react-context-menu-wrapper";
 import {DocDropdownItems} from "../../../apps/repository/js/DocDropdownItems";
-import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
+import {FolderContextMenu} from "../../../apps/repository/js/folders/FolderContextMenu";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 import {DocSidebar} from "./DocSidebar";

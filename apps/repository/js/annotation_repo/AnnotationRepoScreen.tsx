@@ -10,7 +10,6 @@ import {MessageBanner} from '../MessageBanner';
 import {FixedNav} from '../FixedNav';
 import PreviewAndMainViewDock from './PreviewAndMainViewDock';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
-import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {AnnotationRepoFilterEngine, UpdatedCallback} from './AnnotationRepoFilterEngine';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
@@ -30,8 +29,8 @@ import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
-import {ContextMenuComponents, FolderContextMenus} from "../FolderContextMenus";
-import {AnnotationRepoSidebar} from "./AnnotationRepoSidebar";
+import {ContextMenuComponents, FolderContextMenus} from "../folders/FolderContextMenus";
+import {FolderSidebar} from "../folders/FolderSidebar";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -173,8 +172,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                         splitter: 'd-none-mobile'
                       }}
                       left={
-                          <AnnotationRepoSidebar treeState={this.treeState}
-                                                 tags={this.state.tags}/>
+                          <FolderSidebar treeState={this.treeState}
+                                         tags={this.state.tags}/>
                       }
                       right={
                           <PreviewAndMainViewDock data={this.state.data}

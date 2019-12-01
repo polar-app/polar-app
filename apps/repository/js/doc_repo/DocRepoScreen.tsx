@@ -41,6 +41,7 @@ import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
+import {FolderSidebar} from "../folders/FolderSidebar";
 
 const log = Logger.create();
 
@@ -467,33 +468,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         side='left'
                         initialWidth={300}
                         left={
-                            <div style={{
-                                display: 'flex' ,
-                                flexDirection: 'column',
-                                height: '100%',
-                                overflow: 'auto'
-                            }}>
-
-                                <div className="p-1 border-top">
-
-                                    <TagTree tags={this.state.tags}
-                                             treeState={this.treeState}
-                                             rootTitle="Folders"
-                                             tagType='folder'
-                                             noCreate={true}/>
-
-                                    <TagTree tags={this.state.tags}
-                                             treeState={this.treeState}
-                                             rootTitle="Tags"
-                                             tagType='regular'
-                                             filterDisabled={true}
-                                             noCreate={true}/>
-
-                                    {/*<TagList tags={this.state.tags}/>*/}
-
-                                </div>
-
-                            </div>
+                            <FolderSidebar treeState={this.treeState}
+                                           tags={this.state.tags}/>
                         }
                         right={
                             <Dock

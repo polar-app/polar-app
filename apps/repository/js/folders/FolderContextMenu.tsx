@@ -5,7 +5,7 @@ import {
     prepareContextMenuHandlers
 } from '@burtonator/react-context-menu-wrapper';
 import {DropdownItem} from 'reactstrap';
-import {FontAwesomeIcon} from "../../../web/js/ui/fontawesome/FontAwesomeIcon";
+import {FontAwesomeIcon} from "../../../../web/js/ui/fontawesome/FontAwesomeIcon";
 
 let sequence: number = 0;
 
