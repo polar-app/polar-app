@@ -9,6 +9,10 @@
 
 ## Fixes
 
+- improved text in suggestions dialog.
+
+- the user suggestions dialog is centered.
+
 - usability: Fixed an issue where if the user accidentally hit 'r' the document would rotate and people
   couldn't figure out how to revert.
 
