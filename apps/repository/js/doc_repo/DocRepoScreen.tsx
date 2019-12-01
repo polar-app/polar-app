@@ -409,7 +409,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
                         <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
-                        <div id="header-filter">
+                        <div id="header-filter" className="border-bottom">
 
                             <div style={{display: 'flex'}}
                                  className="p-1">
