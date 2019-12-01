@@ -9,6 +9,7 @@ import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {DocSidebar} from "./DocSidebar";
 import {EditableText} from "./EditableText";
+import {Suggestions} from "../../js/ui/feedback/Suggestions";
 
 const styles = {
     swatch: {
@@ -254,6 +255,8 @@ export class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <Suggestions category={"foo"} title={"bar"}/>
 
                 {/*<WhatsNewModal/>*/}
 
