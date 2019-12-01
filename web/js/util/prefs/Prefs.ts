@@ -125,7 +125,22 @@ export class DictionaryPrefs extends Prefs {
 
     constructor(delegate: StringToPrefDict = {}) {
         super();
-        this.delegate = delegate;
+        this.update(delegate);
+    }
+
+    public update(dict: StringToPrefDict = {}) {
+
+        for (const pref of Object.values(dict)) {
+
+            if (typeof pref === 'string') {
+                // this is a legacy pref and should be ignored
+                continue;
+            }
+
+            this.delegate[pref.key] = pref;
+
+        }
+
     }
 
     public get(key: string): Optional<string> {

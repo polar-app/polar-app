@@ -805,10 +805,8 @@ export class DiskPrefsStore {
         if (await Files.existsAsync(this.path)) {
             log.info("Loaded prefs from: " + this.path);
             const data = await Files.readFileAsync(this.path);
-            const prefs = JSON.parse(data.toString("UTF-8"));
-
-            // FIXME: should we use update???
-            this.prefs = prefs;
+            const prefs: StringToPrefDict = JSON.parse(data.toString("UTF-8"));
+            this.prefs = new DiskPrefs(this, prefs);
         }
 
     }
@@ -819,7 +817,7 @@ export class DiskPrefsStore {
 
     public async commit(): Promise<void> {
 
-        const data = JSON.stringify(this.prefs.toDict(), null, "  ");
+        const data = JSON.stringify(this.prefs.toPrefDict(), null, "  ");
         await Files.writeFileAsync(this.path, data, {atomic: true});
 
     }
@@ -833,8 +831,9 @@ export class DiskPrefs extends DictionaryPrefs implements PersistentPrefs {
 
     private readonly diskPrefsStore: DiskPrefsStore;
 
-    constructor(diskPrefsStore: DiskPrefsStore) {
-        super();
+    constructor(diskPrefsStore: DiskPrefsStore,
+                delegate: StringToPrefDict = {}) {
+        super(delegate);
         this.diskPrefsStore = diskPrefsStore;
     }
 
