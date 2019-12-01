@@ -4,8 +4,6 @@ import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
-
-
 export abstract class Prefs {
 
     // TODO: migrate to using KeyValueStore
@@ -102,12 +100,12 @@ export interface Pref {
  */
 export interface PersistentPrefs extends Prefs {
 
-    fetch(key: string): Promise<Pref | undefined>;
+    fetch(key: string): Pref | undefined;
 
     /**
      * Get all the prefs.
      */
-    prefs(): Promise<ReadonlyArray<Pref>>;
+    prefs(): ReadonlyArray<Pref>;
 
     /**
      * Commit this prefs.
@@ -130,14 +128,40 @@ export class DictionaryPrefs extends Prefs {
 
     public update(dict: StringToPrefDict = {}) {
 
+        if (! dict) {
+            return;
+        }
+
+        const isInvalid = (pref: Pref | string): boolean => {
+            // this is a legacy pref and should be ignored
+            return typeof pref === 'string';
+        };
+
+        const needsUpdate = (curr: Pref | undefined, next: Pref) => {
+
+            if (curr) {
+
+                if (ISODateTimeStrings.compare(curr.written, next.written) >= 0) {
+                    return false;
+                }
+
+            }
+
+            return true;
+
+        };
+
         for (const pref of Object.values(dict)) {
 
-            if (typeof pref === 'string') {
-                // this is a legacy pref and should be ignored
+            if (isInvalid(pref)) {
                 continue;
             }
 
-            this.delegate[pref.key] = pref;
+            const curr = this.fetch(pref.key);
+
+            if (needsUpdate(curr, pref)) {
+                this.delegate[pref.key] = pref;
+            }
 
         }
 
@@ -182,14 +206,13 @@ export class DictionaryPrefs extends Prefs {
     }
 
 
-    public async fetch(key: string): Promise<Pref | undefined> {
+    public fetch(key: string): Pref | undefined {
         return Optional.of(this.delegate[key]).getOrUndefined();
     }
 
-    public async prefs(): Promise<ReadonlyArray<Pref>> {
+    public prefs(): ReadonlyArray<Pref> {
         return Object.values(this.delegate);
     }
-
 
 }
 
@@ -260,11 +283,11 @@ export class CompositePrefs implements PersistentPrefs {
 
     }
 
-    public async fetch(key: string): Promise<Pref | undefined> {
+    public fetch(key: string): Pref | undefined {
         return this.delegate.fetch(key);
     }
 
-    public async prefs(): Promise<ReadonlyArray<Pref>> {
+    public prefs(): ReadonlyArray<Pref> {
         return this.delegate.prefs();
     }
 
