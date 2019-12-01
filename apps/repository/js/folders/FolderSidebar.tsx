@@ -13,7 +13,6 @@ export class FolderSidebar extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-
         const {treeState} = this.props;
 
         this.folderContextMenuComponents
