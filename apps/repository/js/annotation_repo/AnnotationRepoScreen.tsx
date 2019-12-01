@@ -29,7 +29,6 @@ import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
-import {ContextMenuComponents, FolderContextMenus} from "../folders/FolderContextMenus";
 import {FolderSidebar} from "../folders/FolderSidebar";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
