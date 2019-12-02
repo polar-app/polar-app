@@ -2,9 +2,10 @@ import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict} from "../../u
 import {Collections, UserIDStr} from "../sharing/db/Collections";
 import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber} from "../../firebase/Firebase";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {Firestore} from "../../firebase/Firestore";
 import firebase from "../../firebase/lib/firebase";
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
+
+export type UserPrefCallback = (data: UserPref | undefined) => void;
 
 export class UserPrefs {
 
@@ -28,11 +29,10 @@ export class UserPrefs {
 
     }
 
-    public static async onSnapshot(onSnapshot: (data: UserPref | undefined) => void,
-                                   onError: ErrorHandlerCallback): Promise<SnapshotUnsubscriber> {
-
-        const firestore = await Firestore.getInstance();
-        const uid  = await this.getUserID();
+    public static onSnapshot(firestore: firebase.firestore.Firestore,
+                             uid: UserIDStr,
+                             onSnapshot: UserPrefCallback,
+                             onError?: ErrorHandlerCallback): SnapshotUnsubscriber {
 
         const ref = firestore.collection(this.COLLECTION).doc(uid);
 
