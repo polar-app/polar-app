@@ -4,14 +4,14 @@ import {DropdownItem} from 'reactstrap';
 import {FontAwesomeIcon} from "../../../../web/js/ui/fontawesome/FontAwesomeIcon";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {TagDescriptor} from "../../../../web/js/tags/TagNode";
-import {Tags, TagStr} from "polar-shared/src/tags/Tags";
+import {Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {InvalidInput} from "../../../../web/js/ui/dialogs/InputValidators";
 
 let sequence: number = 0;
 
-const ENABLED = false;
+const ENABLED = true;
 
 const contextMenuComponentsFactory = (treeState: TreeState<TagDescriptor>) => {
     // treeState.selected.
@@ -30,9 +30,7 @@ export interface ContextMenuComponents {
 
 }
 
-export type CreateFolderCallback = (selected: ReadonlyArray<TagStr>) => void;
-
-export type TagType = 'tag' | 'folder';
+export type CreateFolderCallback = (newTag: TagStr) => void;
 
 export class FolderContextMenus {
 
@@ -62,7 +60,25 @@ export class FolderContextMenus {
 
         const doCreate = () => {
             const tags = treeState.selected.keys();
-            onCreate(tags);
+
+            promptForCreate(type, (userTag: string) => {
+
+                const createNewTag = (): TagStr => {
+
+                    switch (type) {
+                        case "tag":
+                            return userTag;
+                        case "folder":
+                            return tags[0] + '/' + userTag;
+                    }
+                };
+
+                const newTag = createNewTag();
+
+                onCreate(newTag);
+
+            });
+
         };
 
         const hasSingleSelectedFolder = () => {

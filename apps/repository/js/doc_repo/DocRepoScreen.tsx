@@ -465,7 +465,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         side='left'
                         initialWidth={300}
                         left={
-                            <FolderSidebar treeState={this.treeState}
+                            <FolderSidebar persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                           treeState={this.treeState}
                                            tags={this.state.tags}/>
                         }
                         right={
