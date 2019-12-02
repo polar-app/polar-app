@@ -19,7 +19,7 @@ import {
     InitResult,
     MutationType,
     NetworkLayers,
-    PrefsProvider,
+    PrefsProvider, PrefsUpdatedCallback,
     SnapshotResult,
     WritableBinaryMetaDatastore,
     WriteFileOpts,
@@ -43,7 +43,7 @@ import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {Firebase, UserID} from '../firebase/Firebase';
+import {Firebase, SnapshotUnsubscriber, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -58,6 +58,7 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {FirestorePrefs} from "./firebase/FirestorePrefs";
+import {UserPrefCallback} from "./firebase/UserPrefs";
 
 const log = Logger.create();
 
@@ -715,14 +716,35 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const prefs = Preconditions.assertPresent(this.prefs);
 
-        return {
-            get(): DatastorePrefs {
-                return {
-                    prefs,
-                    unsubscribe: NULL_FUNCTION
-                };
-            }
+        const get = (onUpdated?: PrefsUpdatedCallback): DatastorePrefs => {
+
+            const createSnapshotListener = (): SnapshotUnsubscriber => {
+
+                if (onUpdated) {
+
+                    const onNext: UserPrefCallback = (data) => {
+                        const prefs = FirestorePrefs.toPersistentPrefs(data);
+                        onUpdated(prefs);
+                    };
+
+                    return this.prefs.onSnapshot(onNext, NULL_FUNCTION);
+                }
+
+                return NULL_FUNCTION;
+
+            };
+
+            const unsubscribe = createSnapshotListener();
+
+            return {
+                prefs,
+                unsubscribe
+            };
+
+
         };
+
+        return {get};
 
     }
 
