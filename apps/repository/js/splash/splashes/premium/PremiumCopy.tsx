@@ -113,7 +113,7 @@ export const MobileContent = (props: IProps) => {
             </NullCollapse>
         </div>
 
-    </div>
+    </div>;
 };
 
 export const DesktopContent =  (props: IProps) => {
@@ -225,6 +225,24 @@ export const DesktopContent =  (props: IProps) => {
                             </td>
                             <td>
                                 mobile, web, and desktop
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Feature/roadmap votes and priority
+                            </td>
+
+                            <td className="text-danger">
+                                1
+                            </td>
+                            <td>
+                                2
+                            </td>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                4
                             </td>
                         </tr>
 
