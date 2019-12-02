@@ -2,27 +2,31 @@
 
 Instructions for doing releases.
 
-# NPM Targets
+# Requirements
 
-## dist-prepare
+## Install lerna 
 
-Does a git clean, makes sure there are no excess files, then pulls down most recent version of code from all modules. 
+Must be installed globally because it has its own dependencies and will break node_modules otherwise.
 
-## dist-build
-
-Removes node-modules, does lerna bootstrap, does full build, etc
-
-## dist-publish
-
-Publishes all our public node modules.
-
-## dist-release
+```bash
+sudo npm install -g lerna
+```
 
 # Releases
+
+## Increment version
+
+```bash
+npm run-script dist-version
+```
 
 ## Publish
 
 Used for publishing new versions of packages.
+
+```bash
+npm run-script dist-publish
+```
 
 ## Webapp
 
@@ -49,6 +53,17 @@ npm run-script dist-release-win
 ```bash
 npm run-script dist-release-linux
 ```
+
+# NPM Targets
+
+## dist-prepare
+
+Does a git clean, makes sure there are no excess files, then pulls down most recent version of code from all modules. 
+
+## dist-build
+
+Removes node-modules, does lerna bootstrap, does full build, etc
+
 
 ## TODO
 
