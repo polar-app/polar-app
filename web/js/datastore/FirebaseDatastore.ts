@@ -727,6 +727,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                         onUpdated(prefs);
                     };
 
+                    // TODO: add the error handler.
                     return this.prefs.onSnapshot(onNext, NULL_FUNCTION);
                 }
 

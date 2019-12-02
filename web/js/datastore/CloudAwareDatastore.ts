@@ -492,12 +492,12 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             // TODO: we should have progress on this...
 
-            const docaMetaFiles: DocMetaRef[] =
+            const docMetaFiles: DocMetaRef[] =
                 docMetaSnapshotEvent.docMetaMutations.map(current => {
                     return {fingerprint: current.fingerprint};
                 });
 
-            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(this.local, docaMetaFiles);
+            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(this.local, docMetaFiles);
 
             return {
                 datastore: this.local,
