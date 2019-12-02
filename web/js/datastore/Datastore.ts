@@ -21,6 +21,7 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
+import {SnapshotUnsubscriber} from "../firebase/Firebase";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -713,11 +714,6 @@ export interface SnapshotResult {
     readonly unsubscribe?: SnapshotUnsubscriber;
 
 }
-
-/**
- * A function for unsubscribing to future snapshot events.
- */
-export type SnapshotUnsubscriber = () => void;
 
 export interface SyncDocMap {
     [fingerprint: string]: SyncDoc;

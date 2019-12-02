@@ -47,6 +47,12 @@ class TagIndex {
 
     }
 
+    public addAll(tags: ReadonlyArray<Tag>) {
+        for (const tag of tags) {
+            this.add("__added__", tag);
+        }
+    }
+
     public remove(key: string, tag: Tag) {
 
         if (this.backing[tag.id]) {
@@ -83,7 +89,7 @@ export class DataObjectIndex<D> {
 
     private index: {[id: string]: D} = {};
 
-    private tags = new TagIndex();
+    public tags = new TagIndex();
 
     public constructor(private readonly toTags: (input?: D) => ReadonlyArray<Tag>) {
 

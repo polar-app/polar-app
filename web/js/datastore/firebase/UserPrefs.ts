@@ -1,7 +1,10 @@
-import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict, StringToStringDict} from "../../util/prefs/Prefs";
+import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict} from "../../util/prefs/Prefs";
 import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {Firebase} from "../../firebase/Firebase";
+import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber} from "../../firebase/Firebase";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {Firestore} from "../../firebase/Firestore";
+import firebase from "../../firebase/lib/firebase";
+import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 
 export class UserPrefs {
 
@@ -25,7 +28,24 @@ export class UserPrefs {
 
     }
 
+    public static async onSnapshot(onSnapshot: (data: UserPref | undefined) => void,
+                                   onError: ErrorHandlerCallback): Promise<SnapshotUnsubscriber> {
+
+        const firestore = await Firestore.getInstance();
+        const uid  = await this.getUserID();
+
+        const ref = firestore.collection(this.COLLECTION).doc(uid);
+
+        const handleSnapshot = (snapshot: DocumentSnapshot) => {
+            const data = <UserPref | undefined> snapshot.data();
+            onSnapshot(data);
+        };
+
+        return ref.onSnapshot(handleSnapshot, onError);
+
+    }
     public static async set(prefs: PersistentPrefs) {
+
         const uid  = await this.getUserID();
         const ref = await Collections.createRef(this.COLLECTION, uid);
 

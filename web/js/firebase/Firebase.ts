@@ -92,6 +92,8 @@ export type UserIDStr = string;
 
 export type UserID = UserIDStr;
 
+export type ErrorHandlerCallback = (err: Error) => void;
+
 /**
  * Function who's sole purpose is unsubscribing to snapshots.
  */
