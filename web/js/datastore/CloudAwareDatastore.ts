@@ -600,24 +600,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     }
 
     public getPrefs(): PrefsProvider {
-
-        const cloudPrefs = this.cloud.getPrefs();
-        const localPrefs = this.local.getPrefs();
-
-        // TODO: add support for the event listener version so I can get the most recent
-        // version of the prefs as I think we need that for firebase support.
-
-        const prefs = new CompositePrefs([cloudPrefs.get().prefs, localPrefs.get().prefs]);
-
-        return {
-            get(): DatastorePrefs {
-                return {
-                    prefs: prefs,
-                    unsubscribe: NULL_FUNCTION
-                };
-            }
-        };
-
+        return this.cloud.getPrefs();
     }
 
 }
