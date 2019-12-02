@@ -5,7 +5,7 @@ import Input from 'reactstrap/lib/Input';
 import {DialogContainer} from './DialogContainer';
 import {InputValidator} from './InputValidators';
 import {NULL_INPUT_VALIDATOR} from './InputValidators';
-import {InputValidation} from './InputValidators';
+import {InvalidInput} from './InputValidators';
 
 /**
  * Ask the user for a text string
@@ -47,6 +47,16 @@ export class Prompt extends React.PureComponent<PromptProps, IState> {
 
         };
 
+        const Description = () => {
+
+            if (this.props.description) {
+                return <p>{this.props.description}</p>;
+            } else {
+                return null;
+            }
+
+        };
+
         return (
 
             <DialogContainer open={true}>
@@ -60,13 +70,17 @@ export class Prompt extends React.PureComponent<PromptProps, IState> {
                        <h4>{this.props.title}</h4>
                    </Label>
 
-                   <div className="mt-1 mb-3">
+                   <Description/>
+
+                   <div className="mt-1 mb-3" style={{display: 'flex'}}>
+
                        <Input type="text"
                               name={id}
                               id={id}
                               style={{
                                   width: '450px',
-                                  maxWidth: '100vh'
+                                  maxWidth: '100vh',
+                                  flexGrow: 1
                               }}
                               onKeyDown={event => this.onKeyDown(event)}
                               defaultValue={this.props.defaultValue  || ''}
@@ -129,6 +143,7 @@ export class Prompt extends React.PureComponent<PromptProps, IState> {
 
 export interface PromptProps {
     title: string;
+    description?: string;
     defaultValue?: string;
     placeholder?: string;
     validator?: InputValidator;
@@ -137,6 +152,6 @@ export interface PromptProps {
 }
 
 interface IState {
-    readonly validation?: InputValidation;
+    readonly validation?: InvalidInput;
 }
 

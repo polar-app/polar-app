@@ -10,6 +10,8 @@ import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {DocSidebar} from "./DocSidebar";
 import {EditableText} from "./EditableText";
 import {Suggestions} from "../../js/ui/feedback/Suggestions";
+import {TagInputWidget} from "../../../apps/repository/js/TagInputWidget";
+import {FolderContextMenus, promptForCreate} from "../../../apps/repository/js/folders/FolderContextMenus";
 
 const styles = {
     swatch: {
@@ -42,6 +44,8 @@ export class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
         super(props, context);
+
+        promptForCreate('tag', NULL_FUNCTION);
 
     }
 
@@ -254,9 +258,9 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
-            <div>
+            <div className="p-1">
 
-                <Suggestions category={"foo"} title={"bar"}/>
+                <TagInputWidget availableTags={[]} onChange={NULL_FUNCTION}/>
 
                 {/*<WhatsNewModal/>*/}
 
@@ -318,23 +322,23 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</div>*/}
 
-                <div className="border border-dark m-1" style={{width: '450px'}}>
-                    <DocSidebar meta={{
-                        fingerprint: "0x01",
-                        title: 'Bitcoin - A distributed currency system.',
-                        description: "Some stuff about bitcoin and what it does.",
-                        authors: [
-                            {
-                                displayName: "Alice Smith",
-                            }
-                        ],
-                        doi: '12345'
-                    }}/>
-                </div>
+                {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
+                {/*    <DocSidebar meta={{*/}
+                {/*        fingerprint: "0x01",*/}
+                {/*        title: 'Bitcoin - A distributed currency system.',*/}
+                {/*        description: "Some stuff about bitcoin and what it does.",*/}
+                {/*        authors: [*/}
+                {/*            {*/}
+                {/*                displayName: "Alice Smith",*/}
+                {/*            }*/}
+                {/*        ],*/}
+                {/*        doi: '12345'*/}
+                {/*    }}/>*/}
+                {/*</div>*/}
 
-                this should be editable:
+                {/*this should be editable:*/}
 
-                <EditableText value="hello world" onCancel={NULL_FUNCTION} onDone={NULL_FUNCTION}/>
+                {/*<EditableText value="hello world" onCancel={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
 
 
 
