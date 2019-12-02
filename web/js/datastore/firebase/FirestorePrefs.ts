@@ -9,7 +9,7 @@ export class FirestorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
     public async init() {
         const prefs = await UserPrefs.get();
-        this.delegate = prefs.toPrefDict();
+        this.update(prefs.toPrefDict());
     }
 
     public async commit(): Promise<void> {
