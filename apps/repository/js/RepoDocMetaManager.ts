@@ -56,23 +56,6 @@ export class RepoDocMetaManager {
         Preconditions.assertPresent(persistenceLayerProvider, 'persistenceLayerProvider');
         this.persistenceLayerProvider = persistenceLayerProvider;
         this.init();
-
-        // const handleTagPrefs = async () => {
-        //
-        //     // FIXME: what if the user deletes or adds the tags.. I think we have to listen ot the tags not just
-        //     // read them once...
-        //
-        //     const persistenceLayer = persistenceLayerProvider.get();
-        //
-        //     const tags = DatastoreTags.get(persistenceLayer.datastore.getPrefs());
-        //
-        //     this.repoDocInfoIndex.tags.addAll(tags);
-        //     this.repoDocAnnotationIndex.tags.addAll(tags);
-        //
-        // };
-        //
-        // handleTagPrefs().catch(err => log.error("Could not fetch tags via prefs: ", err));
-
     }
 
     public updateFromRepoDocMeta(fingerprint: string, repoDocMeta?: RepoDocMeta) {
