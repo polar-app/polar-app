@@ -94,7 +94,20 @@ export type UserID = UserIDStr;
 
 export type ErrorHandlerCallback = (err: Error) => void;
 
+
 /**
  * Function who's sole purpose is unsubscribing to snapshots.
  */
 export type SnapshotUnsubscriber = () => void;
+
+
+export interface SnapshotCallback<V> {
+    // tslint:disable-next-line:callable-types
+    (value: V | undefined): void;
+}
+
+
+export interface SnapshotSubscriber<V> {
+    // tslint:disable-next-line:callable-types
+    (onNext: SnapshotCallback<V>): SnapshotUnsubscriber;
+}

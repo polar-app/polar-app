@@ -1,5 +1,5 @@
 import {
-    AbstractDatastore,
+    AbstractDatastore, AbstractPrefsProvider,
     Datastore,
     DatastoreInfo,
     DatastoreOverview,
@@ -531,14 +531,22 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         const diskPrefsStore = this.diskPrefsStore;
 
-        return {
-            get(): DatastorePrefs {
+        class PrefsProviderImpl extends AbstractPrefsProvider {
+
+            constructor() {
+                super();
+            }
+
+            public get(): DatastorePrefs {
                 return {
                     prefs: diskPrefsStore.getPrefs(),
                     unsubscribe: NULL_FUNCTION
                 };
             }
-        };
+
+        }
+
+        return new PrefsProviderImpl();
 
     }
 

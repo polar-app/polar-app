@@ -11,7 +11,7 @@ import {
     SnapshotResult,
     DatastoreOverview,
     PrefsProvider,
-    DatastorePrefs
+    DatastorePrefs, AbstractPrefsProvider
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -26,7 +26,7 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {DictionaryPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
+import {DictionaryPrefs, NonPersistentPrefs, PersistentPrefs} from '../util/prefs/Prefs';
 import {Providers} from 'polar-shared/src/util/Providers';
 import {WriteFileOpts} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
@@ -216,17 +216,22 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     public getPrefs(): PrefsProvider {
 
-        return {
+        class PrefsProviderImpl extends AbstractPrefsProvider {
 
-            get(): DatastorePrefs {
+            constructor(private readonly prefs: PersistentPrefs) {
+                super();
+            }
+
+            public get(): DatastorePrefs {
                 return {
                     prefs: this.prefs,
                     unsubscribe: NULL_FUNCTION
                 };
             }
 
-        };
+        }
 
+        return new PrefsProviderImpl(this.prefs);
     }
 
 }

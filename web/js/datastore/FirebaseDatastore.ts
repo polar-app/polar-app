@@ -1,5 +1,5 @@
 import {
-    AbstractDatastore,
+    AbstractDatastore, AbstractPrefsProvider,
     BinaryFileData,
     Datastore,
     DatastoreCapabilities,
@@ -716,36 +716,44 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const prefs = Preconditions.assertPresent(this.prefs);
 
-        const get = (onUpdated?: PrefsUpdatedCallback): DatastorePrefs => {
+        class PrefsProviderImpl extends AbstractPrefsProvider {
 
-            const createSnapshotListener = (): SnapshotUnsubscriber => {
+            public constructor(private readonly prefs: FirestorePrefs) {
+                super();
+            }
 
-                if (onUpdated) {
+            public get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs {
 
-                    const onNext: UserPrefCallback = (data) => {
-                        const prefs = FirestorePrefs.toPersistentPrefs(data);
-                        onUpdated(prefs);
-                    };
+                const createSnapshotListener = (): SnapshotUnsubscriber => {
 
-                    // TODO: add the error handler.
-                    return this.prefs.onSnapshot(onNext, NULL_FUNCTION);
-                }
+                    if (onUpdated) {
 
-                return NULL_FUNCTION;
+                        const onNext: UserPrefCallback = (data) => {
+                            const prefs = FirestorePrefs.toPersistentPrefs(data);
+                            onUpdated(prefs);
+                        };
 
-            };
+                        // TODO: add the error handler.
+                        return this.prefs.onSnapshot(onNext, NULL_FUNCTION);
+                    }
 
-            const unsubscribe = createSnapshotListener();
+                    return NULL_FUNCTION;
 
-            return {
-                prefs,
-                unsubscribe
-            };
+                };
+
+                const unsubscribe = createSnapshotListener();
+
+                return {
+                    prefs,
+                    unsubscribe
+                };
 
 
-        };
+            }
 
-        return {get};
+        }
+
+        return new PrefsProviderImpl(this.prefs);
 
     }
 

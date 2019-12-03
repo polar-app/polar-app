@@ -310,6 +310,20 @@ export class NonPersistentPrefs extends DictionaryPrefs implements PersistentPre
 
 }
 
+export class ListenablePersistentPrefs extends CompositePrefs implements PersistentPrefs {
+
+    public constructor(private readonly backing: PersistentPrefs,
+                       private readonly onUpdated: (prefs: PersistentPrefs) => void) {
+        super([backing]);
+    }
+
+    public async commit(): Promise<void> {
+        this.onUpdated(this);
+        return super.commit();
+    }
+
+}
+
 export interface StringToStringDict {
     [key: string]: string;
 }

@@ -22,6 +22,7 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {SnapshotUnsubscriber} from "../firebase/Firebase";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -824,9 +825,39 @@ export interface PrefsProvider {
      */
     get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs;
 
-    // createListener():
+    subscribe(onUpdated: PrefsUpdatedCallback): SnapshotUnsubscriber;
 
 }
+
+export abstract class AbstractPrefsProvider implements PrefsProvider {
+
+    public abstract get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs;
+
+    public subscribe(onUpdated: PrefsUpdatedCallback): SnapshotUnsubscriber {
+        const datastorePrefs = this.get(prefs => onUpdated(prefs));
+        return datastorePrefs.unsubscribe;
+    }
+
+}
+
+/**
+ * A prefs provider which has no update methods.
+ */
+export class DefaultPrefsProvider extends AbstractPrefsProvider {
+
+    constructor(private readonly prefs: PersistentPrefs) {
+        super();
+    }
+
+    public get(): DatastorePrefs {
+        return {
+            prefs: this.prefs,
+            unsubscribe: NULL_FUNCTION
+        };
+    }
+
+}
+
 
 export interface DatastorePrefs {
 
