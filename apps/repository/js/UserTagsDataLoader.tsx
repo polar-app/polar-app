@@ -9,7 +9,14 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
 
     public render() {
 
-        const prefs = this.props.persistenceLayerProvider().datastore.getPrefs();
+        const persistenceLayer = this.props.persistenceLayerProvider();
+
+        if (! persistenceLayer) {
+            // FIXME: we dont have one on start and then it CHANGES on us over time!
+            return null;
+        }
+
+        const prefs = persistenceLayer.datastore.getPrefs();
 
         const render = (prefs: PersistentPrefs | undefined) => {
 

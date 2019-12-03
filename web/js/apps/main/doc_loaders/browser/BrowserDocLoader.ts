@@ -1,8 +1,6 @@
 import {LoadDocRequest} from '../LoadDocRequest';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {IProvider} from 'polar-shared/src/util/Providers';
-import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
-import {Backend} from 'polar-shared/src/datastore/Backend';
+import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PDFLoader} from '../../file_loaders/PDFLoader';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
@@ -14,9 +12,7 @@ const log = Logger.create();
 
 export class BrowserDocLoader implements IDocLoader {
 
-    private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
-
-    constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
+    constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {
         this.persistenceLayerProvider = persistenceLayerProvider;
     }
 
@@ -28,7 +24,7 @@ export class BrowserDocLoader implements IDocLoader {
         Preconditions.assertPresent(loadDocRequest.backendFileRef, "backendFileRef");
         Preconditions.assertPresent(loadDocRequest.backendFileRef.name, "backendFileRef.name");
 
-        const persistenceLayer = this.persistenceLayerProvider.get();
+        const persistenceLayer = this.persistenceLayerProvider();
 
         return {
 

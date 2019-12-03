@@ -3,22 +3,21 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocLoader} from '../../../../web/js/apps/main/doc_loaders/DocLoader';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 const log = Logger.create();
 
 export class SynchronizingDocLoader {
 
-    private persistenceLayerManager: PersistenceLayerManager;
     private readonly docLoader: DocLoader;
 
-    constructor(persistenceLayerManager: PersistenceLayerManager) {
-        this.persistenceLayerManager = persistenceLayerManager;
-        this.docLoader = new DocLoader(persistenceLayerManager);
+    constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {
+        this.docLoader = new DocLoader(persistenceLayerProvider);
     }
 
     public async load(fingerprint: string, backendFileRef: BackendFileRef) {
 
-        const persistenceLayer = this.persistenceLayerManager.get();
+        const persistenceLayer = this.persistenceLayerProvider();
 
         const docLoaderRequest = this.docLoader.create({
              fingerprint,

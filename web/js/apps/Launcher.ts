@@ -52,7 +52,7 @@ export class Launcher {
 
         // import content with the 'add content' button automatically.
 
-        await addContentImporter.doImport(Providers.toInterface(persistenceLayerManager.get()));
+        await addContentImporter.doImport(() => persistenceLayerManager.get());
 
         const model = new Model(persistenceLayerManager);
 

@@ -66,6 +66,7 @@ import {PlatformStyles} from "../../ui/PlatformStyles";
 import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {AccountProvider} from "../../accounts/AccountProvider";
+import {UserTagsDataLoader} from "../../../../apps/repository/js/UserTagsDataLoader";
 
 const log = Logger.create();
 
@@ -113,7 +114,7 @@ export class RepositoryApp {
             MailingList.subscribeWhenNecessary()
                 .catch(err => log.error(err));
 
-            new FileImportController(this.persistenceLayerManager, updatedDocInfoEventDispatcher)
+            new FileImportController(() => this.persistenceLayerManager.get(), updatedDocInfoEventDispatcher)
                 .start();
 
             new DocRepoAnkiSyncController(this.persistenceLayerManager, syncBarProgress)
@@ -156,12 +157,24 @@ export class RepositoryApp {
         }
 
         const renderDocRepoScreen = () => {
+
             return (
                 <AuthRequired authStatus={authStatus}>
+
+                    {/*FIXME: I have to refactor this with a component that listens to the persistenceManager and we use a PersistenceLayerProvider now.*/}
+
                     <DocRepoScreen persistenceLayerManager={this.persistenceLayerManager}
-                                        updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                        repoDocMetaManager={this.repoDocInfoManager}
-                                        repoDocMetaLoader={this.repoDocInfoLoader}/>
+                                   updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                   repoDocMetaManager={this.repoDocInfoManager}
+                                   repoDocMetaLoader={this.repoDocInfoLoader}/>
+
+                    {/*<UserTagsDataLoader persistenceLayerProvider={() => this.persistenceLayerManager.get()}*/}
+                    {/*                    render={userTags =>*/}
+                    {/*                        <DocRepoScreen persistenceLayerManager={this.persistenceLayerManager}*/}
+                    {/*                                       updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}*/}
+                    {/*                                       repoDocMetaManager={this.repoDocInfoManager}*/}
+                    {/*                                       repoDocMetaLoader={this.repoDocInfoLoader}/>*/}
+                    {/*                    }/>*/}
                 </AuthRequired>
             );
         };
@@ -170,10 +183,10 @@ export class RepositoryApp {
             return (
                 <AuthRequired authStatus={authStatus}>
                     <AnnotationRepoScreen persistenceLayerManager={this.persistenceLayerManager}
-                                               updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                               repoDocMetaManager={this.repoDocInfoManager}
-                                               repoDocMetaLoader={this.repoDocInfoLoader}
-                                               syncBarProgress={syncBarProgress}/>
+                                          updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                          repoDocMetaManager={this.repoDocInfoManager}
+                                          repoDocMetaLoader={this.repoDocInfoLoader}
+                                          syncBarProgress={syncBarProgress}/>
                 </AuthRequired>
             );
         };

@@ -39,7 +39,7 @@ export class  RepoAnnotationMetaView extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
+        this.synchronizingDocLoader = new SynchronizingDocLoader(() => this.props.persistenceLayerManager.get());
 
         this.state = {
             data: [],

@@ -13,6 +13,7 @@ import {LoginURLs} from './LoginURLs';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 import {Latch} from "polar-shared/src/util/Latch";
+import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 
 const log = Logger.create();
 
@@ -26,7 +27,7 @@ export interface AddContentImporter {
     /**
      * Do the actual import.
      */
-    doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>): Promise<Optional<ImportedFile>>;
+    doImport(persistenceLayerProvider: PersistenceLayerProvider): Promise<Optional<ImportedFile>>;
 
 }
 
@@ -151,7 +152,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
     }
 
-    public async doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>): Promise<Optional<ImportedFile>> {
+    public async doImport(persistenceLayerProvider: PersistenceLayerProvider): Promise<Optional<ImportedFile>> {
 
         try {
 
@@ -233,7 +234,7 @@ export class NullAddContentImporter implements AddContentImporter {
         // noop
     }
 
-    public async doImport(persistenceLayerProvider: IProvider<ListenablePersistenceLayer>): Promise<Optional<ImportedFile>> {
+    public async doImport(persistenceLayerProvider: PersistenceLayerProvider): Promise<Optional<ImportedFile>> {
         return Optional.empty();
     }
 

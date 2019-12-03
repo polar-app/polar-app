@@ -5,7 +5,6 @@ import {WebPersistenceLayerFactory} from "../../../web/js/datastore/factories/We
 import {GroupMemberInvitation} from "../../../web/js/datastore/sharing/db/GroupMemberInvitations";
 import {PersistenceLayer} from "../../../web/js/datastore/PersistenceLayer";
 import {BrowserDocLoader} from "../../../web/js/apps/main/doc_loaders/browser/BrowserDocLoader";
-import {Providers} from "polar-shared/src/util/Providers";
 import {LoadDocRequest} from "../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {BackendFileRefs} from "../../../web/js/datastore/BackendFileRefs";
 import {RendererAnalytics} from "../../../web/js/ga/RendererAnalytics";
@@ -32,7 +31,7 @@ async function redirectToDocumentViewer(persistenceLayer: PersistenceLayer,
 
     // create a URL for the document and redirect us to it ...
 
-    const docLoader = new BrowserDocLoader(Providers.toInterface(persistenceLayer));
+    const docLoader = new BrowserDocLoader(() => persistenceLayer);
 
     const docRef = invitation.docs[0];
 

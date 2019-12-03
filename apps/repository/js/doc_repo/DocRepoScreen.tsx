@@ -66,7 +66,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
+        this.synchronizingDocLoader = new SynchronizingDocLoader(() => this.props.persistenceLayerManager.get());
 
         this.onDocDeleteRequested = this.onDocDeleteRequested.bind(this);
 

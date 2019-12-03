@@ -3,24 +3,15 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {RepoSidebar} from '../RepoSidebar';
-import {SplitBar, SplitBarRight} from '../SplitBar';
 import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
 import {SettingsDropdown} from './SettingsDropdown';
 import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
 import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
-import {SplitBarLeft} from '../SplitBarLeft';
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {RepoNavbar} from "../RepoNavbar";
 import {UpgradeAccountButton} from "./UpgradeAccountButton";
-
-const log = Logger.create();
-
-const Styles: IStyleMap = {
-
-};
 
 /**
  * Simple header for the repository which supports arbitrary children.

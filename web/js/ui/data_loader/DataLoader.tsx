@@ -1,10 +1,6 @@
 import * as React from 'react';
 import {Alert} from "reactstrap";
-import {
-    ErrorHandlerCallback,
-    SnapshotCallback, SnapshotSubscriber,
-    SnapshotUnsubscriber
-} from "../../firebase/Firebase";
+import {SnapshotSubscriber} from "../../firebase/Firebase";
 
 export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
