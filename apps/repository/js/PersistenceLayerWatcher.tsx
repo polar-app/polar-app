@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
+import {ListenablePersistenceLayerProvider, PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {
     PersistenceLayerManager,
     PersistenceLayerManagerEvent,
@@ -20,6 +20,7 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
         const {persistenceLayerManager} = this.props;
 
         const onPersistenceLayer = (persistenceLayer: ListenablePersistenceLayer) => {
+
             this.setState({
                 persistenceLayerProvider: () => persistenceLayer
             });
@@ -49,7 +50,7 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
     public render() {
 
         if (this.state.persistenceLayerProvider) {
-            this.props.render(this.state.persistenceLayerProvider);
+            return this.props.render(this.state.persistenceLayerProvider);
         }
 
         return null;
@@ -60,11 +61,11 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly render: (persistenceLayerProvider: PersistenceLayerProvider) => React.ReactElement;
+    readonly render: (persistenceLayerProvider: ListenablePersistenceLayerProvider) => React.ReactElement;
 
 }
 
 export interface IState {
-    readonly persistenceLayerProvider?: PersistenceLayerProvider;
+    readonly persistenceLayerProvider?: ListenablePersistenceLayerProvider;
 }
 

@@ -13,9 +13,8 @@ import {DocRepoTableColumns, DocRepoTableColumnsMap} from './DocRepoTableColumns
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
-import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {RepoHeader} from '../repo_header/RepoHeader';
@@ -41,6 +40,7 @@ import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {FolderSidebar} from "../folders/FolderSidebar";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
+import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 const log = Logger.create();
 
@@ -52,8 +52,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private static hasSentInitAnalytics = false;
 
-    private readonly persistenceLayerManager: PersistenceLayerManager;
-
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
     private reactTable?: Instance;
@@ -63,8 +61,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.synchronizingDocLoader = new SynchronizingDocLoader(() => this.props.persistenceLayerManager.get());
+        this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerProvider);
 
         this.onDocDeleteRequested = this.onDocDeleteRequested.bind(this);
 
@@ -128,12 +125,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         // the old event listener as the component is still mounted but the old
         // persistence layer has now gone away.
 
-        PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
+        const persistenceLayer = this.props.persistenceLayerProvider();
 
-            this.releaser.register(
-                persistenceLayer.addEventListener(() => this.refresh()));
-
-        });
+        this.releaser.register(persistenceLayer.addEventListener(() => this.refresh()));
 
         this.releaser.register(
             RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => this.refresh()));
@@ -175,7 +169,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         RendererAnalytics.set({'nrDocs': nrDocs});
 
-        const persistenceLayerType = this.persistenceLayerManager.currentType();
+        const persistenceLayerType = this.props.persistenceLayerController.currentType();
 
         RendererAnalytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
 
@@ -373,10 +367,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public render() {
 
-        const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
+        console.log("FIXME here");
 
-        const selectedDocs = this.getSelected();
-        const primaryDoc = selectedDocs.length > 0 ? selectedDocs[0] : undefined ;
+        const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
 
         const docActive = {
             right: 'd-none-mobile',
@@ -402,8 +395,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
                     <header>
 
-                        <RepoHeader persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
-                                    persistenceLayerController={this.props.persistenceLayerManager}/>
+                        <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                    persistenceLayerController={this.props.persistenceLayerController}/>
 
                         <div id="header-filter" className="border-bottom">
 
@@ -464,7 +457,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         side='left'
                         initialWidth={300}
                         left={
-                            <FolderSidebar persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                            <FolderSidebar persistenceLayerProvider={this.props.persistenceLayerProvider}
                                            treeState={this.treeState}
                                            tags={this.state.tags}/>
                         }
@@ -703,7 +696,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
 interface IProps {
 
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+
+    readonly persistenceLayerController: PersistenceLayerController;
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 

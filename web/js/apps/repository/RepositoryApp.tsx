@@ -57,6 +57,7 @@ import {PlatformStyles} from "../../ui/PlatformStyles";
 import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {AccountProvider} from "../../accounts/AccountProvider";
+import {PersistenceLayerWatcher} from "../../../../apps/repository/js/PersistenceLayerWatcher";
 
 const log = Logger.create();
 
@@ -156,10 +157,14 @@ export class RepositoryApp {
 
                     {/*FIXME: I have to refactor this with a component that listens to the persistenceManager and we use a PersistenceLayerProvider now.*/}
 
-                    <DocRepoScreen persistenceLayerManager={this.persistenceLayerManager}
-                                   updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                   repoDocMetaManager={this.repoDocInfoManager}
-                                   repoDocMetaLoader={this.repoDocInfoLoader}/>
+                    <PersistenceLayerWatcher persistenceLayerManager={this.persistenceLayerManager}
+                                             render={persistenceLayerProvider =>
+                                                 <DocRepoScreen persistenceLayerProvider={persistenceLayerProvider}
+                                                                persistenceLayerController={persistenceLayerController}
+                                                                updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                                                repoDocMetaManager={this.repoDocInfoManager}
+                                                                repoDocMetaLoader={this.repoDocInfoLoader}/>
+                                             }/>
 
                     {/*<UserTagsDataLoader persistenceLayerProvider={() => this.persistenceLayerManager.get()}*/}
                     {/*                    render={userTags =>*/}

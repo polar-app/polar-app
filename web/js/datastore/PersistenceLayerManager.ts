@@ -297,4 +297,5 @@ export class PersistenceLayerTypes {
 
 export interface PersistenceLayerController {
     reset(): void;
+    currentType(): PersistenceLayerType | undefined;
 }
