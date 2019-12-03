@@ -1,12 +1,17 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerController,
+    PersistenceLayerManager
+} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Group, Groups} from "../../../../web/js/datastore/sharing/db/Groups";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {GroupsTable} from "./GroupsTable";
 import {CreateGroupButton} from "./CreateGroupButton";
 import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {SupportScreen} from "../support/SupportScreen";
 
 const log = Logger.create();
 
@@ -43,7 +48,8 @@ export class GroupsScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerController}/>
 
                 </header>
 
@@ -91,7 +97,7 @@ export class GroupsScreen extends React.Component<IProps, IState> {
 
                                 </div>
 
-                                <GroupsTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                <GroupsTable persistenceLayerProvider={this.props.persistenceLayerProvider}
                                              groups={this.state.groups}/>
 
                             </div>
@@ -109,7 +115,8 @@ export class GroupsScreen extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 export interface IState {

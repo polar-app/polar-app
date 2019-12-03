@@ -20,7 +20,7 @@ import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {FixedNav} from '../FixedNav';
-import {ListOptionType, ListOptionTypeMap} from '../../../../web/js/ui/list_selector/ListSelector';
+import {ListOptionType} from '../../../../web/js/ui/list_selector/ListSelector';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocRepoFilterBar} from './DocRepoFilterBar';
 import {DocRepoFilters, RefreshedCallback} from './DocRepoFilters';
@@ -33,16 +33,14 @@ import {DocRepoButtonBar} from './DocRepoButtonBar';
 import {DocRepoTable} from './DocRepoTable';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {TagDescriptor} from '../../../../web/js/tags/TagNode';
-import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
-import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {FolderSidebar} from "../folders/FolderSidebar";
-import {IDMap, IDMaps} from "polar-shared/src/util/IDMaps";
+import {IDMaps} from "polar-shared/src/util/IDMaps";
 
 const log = Logger.create();
 
@@ -404,7 +402,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
                     <header>
 
-                        <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                        <RepoHeader persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                    persistenceLayerController={this.props.persistenceLayerManager}/>
 
                         <div id="header-filter" className="border-bottom">
 

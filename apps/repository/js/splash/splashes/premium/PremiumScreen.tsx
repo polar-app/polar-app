@@ -1,11 +1,15 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../../../FixedNav';
 import {RepoHeader} from '../../../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../../../web/js/datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerController,
+    PersistenceLayerManager
+} from '../../../../../../web/js/datastore/PersistenceLayerManager';
 import {PremiumContent2} from './PremiumContent2';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountPlan} from '../../../../../../web/js/accounts/Account';
 import {RepoFooter} from "../../../repo_footer/RepoFooter";
+import {PersistenceLayerProvider} from "../../../../../../web/js/datastore/PersistenceLayer";
 
 export class PremiumScreen extends React.Component<IProps> {
 
@@ -17,7 +21,8 @@ export class PremiumScreen extends React.Component<IProps> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerController}/>
 
                 </header>
 
@@ -42,7 +47,8 @@ export class PremiumScreen extends React.Component<IProps> {
 }
 
 export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
     readonly plan: AccountPlan;
     readonly userInfo?: UserInfo;
 }

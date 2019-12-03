@@ -2,7 +2,10 @@ import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerController,
+    PersistenceLayerManager
+} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
 import {SettingsDropdown} from './SettingsDropdown';
@@ -12,6 +15,7 @@ import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {RepoNavbar} from "../RepoNavbar";
 import {UpgradeAccountButton} from "./UpgradeAccountButton";
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -28,7 +32,7 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 
             const prefs = (): Prefs | undefined => {
 
-                const persistenceLayer = this.props.persistenceLayerManager.get();
+                const persistenceLayer = this.props.persistenceLayerProvider();
 
                 if (! persistenceLayer) {
                     return undefined;
@@ -67,9 +71,9 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 
                             <ChromeExtensionInstallButton/>
 
-                            <Notifications persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
+                            <Notifications persistenceLayerProvider={this.props.persistenceLayerProvider}/>
 
-                            <CloudAuthButton persistenceLayerManager={this.props.persistenceLayerManager} />
+                            <CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />
 
                             <LinkDropdown hidden={Platforms.isMobile()}/>
 
@@ -92,7 +96,8 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
 }
 
 interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 interface IState {

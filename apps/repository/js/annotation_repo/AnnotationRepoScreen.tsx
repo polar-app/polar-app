@@ -30,6 +30,7 @@ import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
 import {FolderSidebar} from "../folders/FolderSidebar";
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -118,7 +119,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                       className="annotations-view">
 
                 <header>
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerManager}/>
 
                     <Row id="header-filter"
                          className="border-bottom p-1">
@@ -213,6 +215,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 export interface IProps {
 
     readonly persistenceLayerManager: PersistenceLayerManager;
+
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 

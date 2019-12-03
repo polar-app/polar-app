@@ -191,6 +191,10 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         return this.persistenceLayerManagerEventDispatcher.addEventListener(listener);
     }
 
+    public removeEventListener(listener: PersistenceLayerManagerEventListener) {
+        return this.persistenceLayerManagerEventDispatcher.removeEventListener(listener);
+    }
+
     private dispatchEvent(event: PersistenceLayerManagerEvent): void {
         this.persistenceLayerManagerEventDispatcher.dispatchEvent(event);
     }
@@ -291,3 +295,6 @@ export class PersistenceLayerTypes {
 
 }
 
+export interface PersistenceLayerController {
+    reset(): void;
+}

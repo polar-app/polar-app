@@ -3,6 +3,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {GroupCard} from "./GroupCard";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 export class GroupsTable extends React.Component<IProps, IState> {
 
@@ -31,7 +32,7 @@ export class GroupsTable extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly groups?: ReadonlyArray<Group>;
 }
 
