@@ -16,7 +16,6 @@ import {DataObjectIndex} from './DataObjectIndex';
 import {RepoDocAnnotations} from "./RepoDocAnnotations";
 import {RepoDocInfos} from "./RepoDocInfos";
 import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
-import {DatastoreTags} from "../../../web/js/datastore/DatastoreTags";
 
 const log = Logger.create();
 

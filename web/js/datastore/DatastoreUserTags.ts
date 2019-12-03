@@ -1,12 +1,14 @@
 import {PrefsProvider} from "./Datastore";
 import {Tag, Tags, TagStr} from "polar-shared/src/tags/Tags";
 
-export class DatastoreTags {
+const PREF_KEY = "userTags";
+
+export class DatastoreUserTags {
 
     public static get(prefsProvider: PrefsProvider): ReadonlyArray<Tag> {
 
         const datastorePrefs = prefsProvider.get();
-        const tags = datastorePrefs.prefs.get('tags');
+        const tags = datastorePrefs.prefs.get(PREF_KEY);
 
         if (tags.isPresent()) {
             return JSON.parse(tags.get());
@@ -20,7 +22,7 @@ export class DatastoreTags {
 
         const datastorePrefs = prefsProvider.get();
 
-        datastorePrefs.prefs.set('tags', JSON.stringify(tags));
+        datastorePrefs.prefs.set(PREF_KEY, JSON.stringify(tags));
 
         await datastorePrefs.prefs.commit();
 

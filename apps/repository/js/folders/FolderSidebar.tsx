@@ -4,7 +4,7 @@ import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {ContextMenuComponents, FolderContextMenus} from "./FolderContextMenus";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {DatastoreTags} from "../../../../web/js/datastore/DatastoreTags";
+import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
 import {TagStr} from "polar-shared/src/tags/Tags";
 import {Logger} from "polar-shared/src/logger/Logger";
 
@@ -27,7 +27,7 @@ export class FolderSidebar extends React.Component<IProps, IState> {
             const prefs = persistenceLayer.datastore.getPrefs();
 
             const doHandle = async () => {
-                await DatastoreTags.create(prefs, newTag);
+                await DatastoreUserTags.create(prefs, newTag);
             };
 
             doHandle()
