@@ -16,7 +16,12 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
             return null;
         }
 
-        const prefs = persistenceLayer.datastore.getPrefs();
+        const datastore = persistenceLayer.datastore;
+        const prefs = datastore.getPrefs();
+
+        if (! prefs.subscribe) {
+            throw new Error("Prefs is missing subscribe function from datastore: " + datastore.id);
+        }
 
         const render = (prefs: PersistentPrefs | undefined) => {
 

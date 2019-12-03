@@ -58,6 +58,7 @@ import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {AccountProvider} from "../../accounts/AccountProvider";
 import {PersistenceLayerWatcher} from "../../../../apps/repository/js/PersistenceLayerWatcher";
+import {UserTagsDataLoader} from "../../../../apps/repository/js/UserTagsDataLoader";
 
 const log = Logger.create();
 
@@ -155,16 +156,19 @@ export class RepositoryApp {
             return (
                 <AuthRequired authStatus={authStatus}>
 
-                    {/*FIXME: I have to refactor this with a component that listens to the persistenceManager and we use a PersistenceLayerProvider now.*/}
-
                     <PersistenceLayerWatcher persistenceLayerManager={this.persistenceLayerManager}
                                              render={persistenceLayerProvider =>
-                                                 <DocRepoScreen persistenceLayerProvider={persistenceLayerProvider}
-                                                                persistenceLayerController={persistenceLayerController}
-                                                                updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                                                repoDocMetaManager={this.repoDocInfoManager}
-                                                                repoDocMetaLoader={this.repoDocInfoLoader}/>
-                                             }/>
+
+                         <UserTagsDataLoader persistenceLayerProvider={persistenceLayerProvider} render={userTags =>
+                             <DocRepoScreen persistenceLayerProvider={persistenceLayerProvider}
+                                            persistenceLayerController={persistenceLayerController}
+                                            userTags={userTags}
+                                            updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                            repoDocMetaManager={this.repoDocInfoManager}
+                                            repoDocMetaLoader={this.repoDocInfoLoader}/>
+                         }/>
+
+                     }/>
 
                     {/*<UserTagsDataLoader persistenceLayerProvider={() => this.persistenceLayerManager.get()}*/}
                     {/*                    render={userTags =>*/}

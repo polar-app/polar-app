@@ -367,8 +367,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public render() {
 
-        console.log("FIXME here");
-
         const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
 
         const docActive = {
@@ -705,6 +703,8 @@ interface IProps {
     readonly repoDocMetaManager: RepoDocMetaManager;
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
+
+    readonly userTags: ReadonlyArray<Tag> | undefined;
 
 }
 
