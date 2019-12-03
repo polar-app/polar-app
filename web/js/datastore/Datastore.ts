@@ -813,7 +813,7 @@ export interface DatastoreInitOpts {
 
 }
 
-export type PrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => void;
+export type PrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => SnapshotUnsubscriber;
 
 export interface PrefsProvider {
 
@@ -823,6 +823,8 @@ export interface PrefsProvider {
      * @param onUpdated when provided, called when we have an updated copy of our prefs.
      */
     get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs;
+
+    // createListener():
 
 }
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Alert} from "reactstrap";
 
 export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
@@ -10,6 +11,7 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
         super(props, context);
 
         this.state = {
+            data: undefined
         };
 
     }
@@ -39,19 +41,23 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
     }
 
     public render() {
-        if (this.state.data) {
 
-            if (this.state.data.value) {
-                return this.props.render(this.state.data.value);
-            } else if (this.state.data.err) {
+        if (this.state.data && this.state.data.err) {
+
+            if (this.props.error) {
                 return this.props.error(this.state.data.err);
             } else {
-                return null;
+                return <Alert color="danger">
+                    Error: {this.state.data.err.message}
+                </Alert>;
             }
 
         } else {
-            return this.props.pending();
+
+            // the value can be undefined which means that it's not loaded yet.
+            return this.props.render(this.state.data?.value);
         }
+
     }
 
 }
@@ -77,21 +83,17 @@ export interface IProps<D> {
     readonly provider: DataProvider<D>;
 
     /**
-     * Called when we need to render data from our provider function.
+     * Called when we need to render data from our provider function.  If the value you're working
+     * with must be undefined then use a value object.
      */
-    readonly render: (data: D) => React.ReactElement;
+    readonly render: (data: D | undefined) => React.ReactElement;
 
-    readonly error: (err: Error) => React.ReactElement;
-
-    /**
-     * Called when we have no data and it's still loading.
-     */
-    readonly pending: () => React.ReactElement;
+    readonly error?: (err: Error) => React.ReactElement;
 
 }
 
 export interface IState<D> {
-    readonly data?: DataResult<D>;
+    readonly data: DataResult<D> | undefined;
 }
 
 export interface DataResultError {

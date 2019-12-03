@@ -96,6 +96,7 @@ export interface Pref {
 }
 
 /**
+ *
  * A prefs object that can be persisted to disk
  */
 export interface PersistentPrefs extends Prefs {
