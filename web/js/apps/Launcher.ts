@@ -58,16 +58,11 @@ export class Launcher {
 
         new PagemarkView(model).start();
 
-        const prefsProvider
-            = Providers.toInterface(() => {
+        const persistenceLayer = persistenceLayerManager.get();
+        const datastore = persistenceLayer.datastore;
+        const prefs = datastore.getPrefs();
 
-            const persistenceLayer = persistenceLayerManager.get();
-            const datastore = persistenceLayer.datastore;
-            return datastore.getPrefs().get();
-
-        });
-
-        new WebView(model, prefsProvider).start();
+        new WebView(model, prefs).start();
         new TextHighlightView(model).start();
         new AreaHighlightView(model).start();
         new AnnotationSidebarService(model).start();

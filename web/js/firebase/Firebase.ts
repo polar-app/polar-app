@@ -109,5 +109,5 @@ export interface SnapshotCallback<V> {
 
 export interface SnapshotSubscriber<V> {
     // tslint:disable-next-line:callable-types
-    (onNext: SnapshotCallback<V>): SnapshotUnsubscriber;
+    (onNext: SnapshotCallback<V>, onError: ErrorHandlerCallback): SnapshotUnsubscriber;
 }

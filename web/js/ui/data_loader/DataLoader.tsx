@@ -1,5 +1,10 @@
 import * as React from 'react';
 import {Alert} from "reactstrap";
+import {
+    ErrorHandlerCallback,
+    SnapshotCallback, SnapshotSubscriber,
+    SnapshotUnsubscriber
+} from "../../firebase/Firebase";
 
 export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
@@ -18,15 +23,43 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
     public componentDidMount(): void {
 
-        this.unsubscriber = this.props.provider(data => {
+        const onNext = (value: T | undefined) => {
 
             if (this.unmounted) {
                 return;
             }
 
-            this.setState({data});
+            if (value) {
 
-        });
+                const data: DataResultValue<T> = {
+                    value,
+                    err: undefined
+                };
+
+                this.setState({
+                    data
+                });
+
+            } else {
+
+                this.setState({
+                    data: undefined
+                });
+
+            }
+
+        };
+
+        const onError = (err: Error) => {
+
+            const data: DataResultError = {
+                err,
+                value: undefined
+            };
+
+        };
+
+        this.unsubscriber = this.props.provider(onNext, onError);
 
     }
 
@@ -67,20 +100,9 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
  */
 export type Unsubscriber = () => void;
 
-export interface DataCallback<D> {
-    // tslint:disable-next-line:callable-types
-    (data: DataResult<D>): void;
-}
-
-
-export interface DataProvider<D> {
-    // tslint:disable-next-line:callable-types
-    (listener: DataCallback<D>): Unsubscriber;
-}
-
 export interface IProps<D> {
 
-    readonly provider: DataProvider<D>;
+    readonly provider: SnapshotSubscriber<D>;
 
     /**
      * Called when we need to render data from our provider function.  If the value you're working

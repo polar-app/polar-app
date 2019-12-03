@@ -5,7 +5,7 @@ import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {ContextMenuComponents, FolderContextMenus} from "./FolderContextMenus";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
-import {TagStr} from "polar-shared/src/tags/Tags";
+import {TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {Logger} from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();
@@ -21,13 +21,13 @@ export class FolderSidebar extends React.Component<IProps, IState> {
 
         const {treeState, persistenceLayerProvider} = this.props;
 
-        const onCreate = (newTag: TagStr) => {
+        const onCreate = (type: TagType, newTag: TagStr) => {
 
             const persistenceLayer = persistenceLayerProvider();
             const prefs = persistenceLayer.datastore.getPrefs();
 
             const doHandle = async () => {
-                await DatastoreUserTags.create(prefs, newTag);
+                await DatastoreUserTags.create(prefs.get().prefs, newTag);
             };
 
             doHandle()
@@ -38,12 +38,12 @@ export class FolderSidebar extends React.Component<IProps, IState> {
         this.folderContextMenuComponents
             = FolderContextMenus.create('folder',
                                         treeState,
-                                        (newTag) => onCreate(newTag));
+                                        (type: TagType, newTag) => onCreate(type, newTag));
 
         this.tagContextMenuComponents
             = FolderContextMenus.create('tag',
                                         treeState,
-                                        (newTag) => onCreate(newTag));
+                                        (type: TagType, newTag) => onCreate(type, newTag));
 
     }
 

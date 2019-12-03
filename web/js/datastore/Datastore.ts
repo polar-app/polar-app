@@ -21,7 +21,7 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
-import {SnapshotUnsubscriber} from "../firebase/Firebase";
+import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../firebase/Firebase";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
@@ -802,7 +802,6 @@ export class SyncDocs {
 
 export type DatastoreID = string;
 
-
 export interface DatastoreInitOpts {
 
     readonly noInitialSnapshot?: boolean;
@@ -814,18 +813,19 @@ export interface DatastoreInitOpts {
 
 }
 
-export type PrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => SnapshotUnsubscriber;
+export type PrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => void;
 
 export interface PrefsProvider {
 
     /**
      * Get the latest copy of the prefs we're using
      *
-     * @param onUpdated when provided, called when we have an updated copy of our prefs.
+     * @param onNext when provided, called when we have an updated copy of our prefs.
+     * @param onError called when an error has occurred.
      */
-    get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs;
+    get(onNext?: PrefsUpdatedCallback, onError?: ErrorHandlerCallback): DatastorePrefs;
 
-    subscribe(onUpdated: PrefsUpdatedCallback): SnapshotUnsubscriber;
+    subscribe(onNext: PrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber;
 
 }
 
@@ -833,8 +833,8 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
 
     public abstract get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs;
 
-    public subscribe(onUpdated: PrefsUpdatedCallback): SnapshotUnsubscriber {
-        const datastorePrefs = this.get(prefs => onUpdated(prefs));
+    public subscribe(onNext: PrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+        const datastorePrefs = this.get(prefs => onNext(prefs));
         return datastorePrefs.unsubscribe;
     }
 

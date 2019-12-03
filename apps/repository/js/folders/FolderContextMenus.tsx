@@ -30,7 +30,7 @@ export interface ContextMenuComponents {
 
 }
 
-export type CreateFolderCallback = (newTag: TagStr) => void;
+export type CreateFolderCallback = (type: TagType, newTag: TagStr) => void;
 
 export class FolderContextMenus {
 
@@ -75,7 +75,7 @@ export class FolderContextMenus {
 
                 const newTag = createNewTag();
 
-                onCreate(newTag);
+                onCreate(type, newTag);
 
             });
 

@@ -43,7 +43,7 @@ import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {Firebase, SnapshotUnsubscriber, UserID} from '../firebase/Firebase';
+import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -59,6 +59,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {FirestorePrefs} from "./firebase/FirestorePrefs";
 import {UserPrefCallback} from "./firebase/UserPrefs";
+import {PersistentPrefs} from "../util/prefs/Prefs";
 
 const log = Logger.create();
 
@@ -716,28 +717,29 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const prefs = Preconditions.assertPresent(this.prefs);
 
+        const NULL_ON_NEXT = (prefs: PersistentPrefs | undefined) => {
+            return NULL_FUNCTION;
+        };
+
+        const NULL_ON_ERROR = NULL_FUNCTION;
+
         class PrefsProviderImpl extends AbstractPrefsProvider {
 
             public constructor(private readonly prefs: FirestorePrefs) {
                 super();
             }
 
-            public get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs {
+            public get(onNext: PrefsUpdatedCallback = NULL_ON_NEXT,
+                       onError: ErrorHandlerCallback = NULL_ON_ERROR): DatastorePrefs {
 
                 const createSnapshotListener = (): SnapshotUnsubscriber => {
 
-                    if (onUpdated) {
+                    const onNextUserPref: UserPrefCallback = (data) => {
+                        const prefs = FirestorePrefs.toPersistentPrefs(data);
+                        onNext(prefs);
+                    };
 
-                        const onNext: UserPrefCallback = (data) => {
-                            const prefs = FirestorePrefs.toPersistentPrefs(data);
-                            onUpdated(prefs);
-                        };
-
-                        // TODO: add the error handler.
-                        return this.prefs.onSnapshot(onNext, NULL_FUNCTION);
-                    }
-
-                    return NULL_FUNCTION;
+                    return this.prefs.onSnapshot(onNextUserPref, onError);
 
                 };
 
@@ -747,7 +749,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                     prefs,
                     unsubscribe
                 };
-
 
             }
 

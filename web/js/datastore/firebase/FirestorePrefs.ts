@@ -2,7 +2,7 @@ import {DictionaryPrefs, PersistentPrefs, StringToPrefDict} from "../../util/pre
 import {UserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
 import firebase from "../../firebase/lib/firebase";
 import {Firestore} from "../../firebase/Firestore";
-import {Firebase, SnapshotUnsubscriber} from "../../firebase/Firebase";
+import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber} from "../../firebase/Firebase";
 
 export class FirestorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
@@ -25,7 +25,7 @@ export class FirestorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
     }
 
-    public onSnapshot(onNext: UserPrefCallback, onError?: ErrorCallback): SnapshotUnsubscriber {
+    public onSnapshot(onNext: UserPrefCallback, onError?: ErrorHandlerCallback): SnapshotUnsubscriber {
         return UserPrefs.onSnapshot(this.firestore!, this.user!.uid, onNext, onError);
     }
 
