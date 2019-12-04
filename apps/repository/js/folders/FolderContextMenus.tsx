@@ -85,6 +85,10 @@ export class FolderContextMenus {
 
         const doDelete = () => {
             // noop for now.
+
+            // TODO: delete the userTags
+            // TODO: delete the tag from the docs
+
         };
 
         const hasSingleSelectedFolder = () => {
@@ -107,6 +111,7 @@ export class FolderContextMenus {
                               onClick={() => doCreate()}>
                     <FolderIcon/> Create Folder
                 </DropdownItem>,
+                <DropdownItem key="divider1" divider/>,
                 <DropdownItem toggle={false}
                               key="delete"
                               className="text-danger"
@@ -126,13 +131,13 @@ export class FolderContextMenus {
                               onClick={() => doCreate()}>
                     <TagIcon/> Create Tag
                 </DropdownItem>,
+                <DropdownItem key="divider1" divider/>,
                 <DropdownItem toggle={false}
                               key="delete"
                               className="text-danger"
                               onClick={() => doDelete()}>
                     <DeleteIcon/> Delete
                 </DropdownItem>
-
             ];
 
         };
