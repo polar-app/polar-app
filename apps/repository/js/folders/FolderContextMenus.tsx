@@ -91,33 +91,38 @@ export class FolderContextMenus {
 
         };
 
-        const hasSingleSelectedFolder = () => {
+        const hasSingleSelectedTag = () => {
             return treeState.selected.keys().length === 1;
         };
 
         /**
          * Return true if the user has selected folders.
          */
-        const hasSelectedFolders = () => {
+        const hasSelectedTags = () => {
             return treeState.selected.keys().length >= 1;
         };
+
+        const DeleteDropdownItem = () =>
+            <DropdownItem toggle={false}
+                          hidden={! hasSelectedTags()}
+                          className="text-danger"
+                          onClick={() => doDelete()}>
+                <DeleteIcon/> Delete
+            </DropdownItem>
+
+        ;
 
         const MenuItemsForFolders = (): any => {
 
             return [
                 <DropdownItem toggle={false}
                               key="create"
-                              disabled={! hasSingleSelectedFolder()}
+                              disabled={! hasSingleSelectedTag()}
                               onClick={() => doCreate()}>
                     <FolderIcon/> Create Folder
                 </DropdownItem>,
                 <DropdownItem key="divider1" divider/>,
-                <DropdownItem toggle={false}
-                              key="delete"
-                              className="text-danger"
-                              onClick={() => doDelete()}>
-                    <DeleteIcon/> Delete
-                </DropdownItem>
+                <DeleteDropdownItem key="delete"/>
 
             ];
 
@@ -132,12 +137,7 @@ export class FolderContextMenus {
                     <TagIcon/> Create Tag
                 </DropdownItem>,
                 <DropdownItem key="divider1" divider/>,
-                <DropdownItem toggle={false}
-                              key="delete"
-                              className="text-danger"
-                              onClick={() => doDelete()}>
-                    <DeleteIcon/> Delete
-                </DropdownItem>
+                <DeleteDropdownItem key="delete"/>
             ];
 
         };
