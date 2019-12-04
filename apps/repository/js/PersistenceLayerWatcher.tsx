@@ -15,13 +15,17 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
         super(props, context);
 
         this.state = {
+            iter: 0
         };
 
         const {persistenceLayerManager} = this.props;
 
+        // FIXME: the doc repo doesn't reload when switching back to it...
+
         const onPersistenceLayer = (persistenceLayer: ListenablePersistenceLayer) => {
 
             this.setState({
+                iter: this.state.iter + 1,
                 persistenceLayerProvider: () => persistenceLayer
             });
         };
@@ -33,6 +37,10 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
             }
 
         };
+
+        if (persistenceLayerManager.state === 'changed' || persistenceLayerManager.state === 'initialized') {
+            onPersistenceLayer(persistenceLayerManager.get());
+        }
 
         persistenceLayerManager.addEventListener(this.eventListener);
 
@@ -66,6 +74,7 @@ export interface IProps {
 }
 
 export interface IState {
+    readonly iter: number;
     readonly persistenceLayerProvider?: ListenablePersistenceLayerProvider;
 }
 
