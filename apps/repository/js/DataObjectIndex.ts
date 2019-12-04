@@ -1,6 +1,6 @@
 import {Tag} from 'polar-shared/src/tags/Tags';
-import {TagDescriptor} from '../../../web/js/tags/TagNode';
 import {Sets} from "polar-shared/src/util/Sets";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 
 /**

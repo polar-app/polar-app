@@ -15,7 +15,6 @@ import {PersistenceLayerManagers} from '../../../../web/js/datastore/Persistence
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
-import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
@@ -31,6 +30,7 @@ import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotatio
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
 import {FolderSidebar} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 

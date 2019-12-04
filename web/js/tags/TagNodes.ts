@@ -2,10 +2,11 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {TagPaths} from "./TagPaths";
 import {Tags} from "polar-shared/src/tags/Tags";
-import {MutableTagNode, TagDescriptor, TagNode} from "./TagNode";
+import {MutableTagNode, TagNode} from "./TagNode";
 import {TRoot} from "../ui/tree/TreeView";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Sets} from "polar-shared/src/util/Sets";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 export class TagNodes {
 

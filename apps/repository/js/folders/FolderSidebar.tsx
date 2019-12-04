@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
-import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {ContextMenuComponents, FolderContextMenus} from "./FolderContextMenus";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
 import {TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 const log = Logger.create();
 

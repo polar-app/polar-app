@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {TagDescriptor} from '../../tags/TagNode';
 import {TagListItem} from './TagListItem';
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 class Styles {
 

@@ -31,7 +31,6 @@ import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';
 import {DocRepoTable} from './DocRepoTable';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
-import {TagDescriptor} from '../../../../web/js/tags/TagNode';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -41,6 +40,7 @@ import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {FolderSidebar} from "../folders/FolderSidebar";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 
 const log = Logger.create();
 
@@ -93,7 +93,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         this.state = {
             data: [],
-            tags: [],
+            tags: TagDescriptors.merge([], this.props.userTags),
             columns: IDMaps.create(Object.values(new DocRepoTableColumns())),
             selected: [],
             docSidebarVisible: false
@@ -367,7 +367,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public render() {
 
-        const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
+        const tagsProvider = () => this.state.tags;
 
         const docActive = {
             right: 'd-none-mobile',
@@ -378,7 +378,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             right: 'd-none',
             splitter: 'd-none'
         };
-
 
         const rightDocComponentClassNames = this.state.docSidebarVisible ? docActive : docInactive;
 
@@ -668,7 +667,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
      */
     private doRefresh(data: ReadonlyArray<RepoDocInfo>) {
 
-        const tags = this.props.repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
+        const docTags = this.props.repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
+        const tags = TagDescriptors.merge(docTags, this.props.userTags)
 
         const state = {...this.state, data, tags};
 

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {TreeView, TRoot} from './TreeView';
-import {TagDescriptor} from '../../tags/TagNode';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {TagFilter} from './TagFilter';
 import {NullCollapse} from '../null_collapse/NullCollapse';
 import {TagNodes, TagType} from "../../tags/TagNodes";
 import {TreeState} from "./TreeState";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 class Styles {
 

@@ -3,11 +3,11 @@ import {ContextMenuWrapper, prepareContextMenuHandlers} from '@burtonator/react-
 import {DropdownItem} from 'reactstrap';
 import {FontAwesomeIcon} from "../../../../web/js/ui/fontawesome/FontAwesomeIcon";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
-import {TagDescriptor} from "../../../../web/js/tags/TagNode";
 import {Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {InvalidInput} from "../../../../web/js/ui/dialogs/InputValidators";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 let sequence: number = 0;
 
