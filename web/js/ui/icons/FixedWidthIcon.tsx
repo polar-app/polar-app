@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-export class FontAwesomeIcon extends React.PureComponent<IProps, IState> {
+export class FixedWidthIcon extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -17,7 +17,7 @@ export class FontAwesomeIcon extends React.PureComponent<IProps, IState> {
         if (this.props.name) {
             return <i className={this.props.name} style={style}/>;
         } else {
-            return <span style={style}></span>;
+            return <span style={style}/>;
         }
 
 

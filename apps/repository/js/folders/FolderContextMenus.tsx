@@ -8,6 +8,8 @@ import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {InvalidInput} from "../../../../web/js/ui/dialogs/InputValidators";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
+import {Paths} from "polar-shared/src/util/Paths";
+import {DeleteIcon, FolderIcon, TagIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
 
 let sequence: number = 0;
 
@@ -69,7 +71,7 @@ export class FolderContextMenus {
                         case "tag":
                             return userTag;
                         case "folder":
-                            return tags[0] + '/' + userTag;
+                            return Paths.create(tags[0], userTag);
                     }
                 };
 
@@ -81,25 +83,57 @@ export class FolderContextMenus {
 
         };
 
+        const doDelete = () => {
+            // noop for now.
+        };
+
         const hasSingleSelectedFolder = () => {
             return treeState.selected.keys().length === 1;
         };
 
-        const MenuItemsForFolders = () => {
+        /**
+         * Return true if the user has selected folders.
+         */
+        const hasSelectedFolders = () => {
+            return treeState.selected.keys().length >= 1;
+        };
 
-            return <DropdownItem toggle={false}
-                                 disabled={! hasSingleSelectedFolder()}
-                                 onClick={() => doCreate()}>
-                <FontAwesomeIcon name="fas fa-folder-plus"/> Create Folder
-            </DropdownItem>;
+        const MenuItemsForFolders = (): any => {
+
+            return [
+                <DropdownItem toggle={false}
+                              key="create"
+                              disabled={! hasSingleSelectedFolder()}
+                              onClick={() => doCreate()}>
+                    <FolderIcon/> Create Folder
+                </DropdownItem>,
+                <DropdownItem toggle={false}
+                              key="delete"
+                              className="text-danger"
+                              onClick={() => doDelete()}>
+                    <DeleteIcon/> Delete
+                </DropdownItem>
+
+            ];
 
         };
 
-        const MenuItemsForTags = () => {
-            return <DropdownItem toggle={false}
-                                 onClick={() => doCreate()}>
-                <FontAwesomeIcon name="fas fa-tag"/> Create Tag
-            </DropdownItem>;
+        const MenuItemsForTags = (): any => {
+
+            return [
+                <DropdownItem toggle={false}
+                              key="create"
+                              onClick={() => doCreate()}>
+                    <TagIcon/> Create Tag
+                </DropdownItem>,
+                <DropdownItem toggle={false}
+                              key="delete"
+                              className="text-danger"
+                              onClick={() => doDelete()}>
+                    <DeleteIcon/> Delete
+                </DropdownItem>
+
+            ];
 
         };
 
