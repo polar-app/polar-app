@@ -834,6 +834,11 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
     public abstract get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs;
 
     public subscribe(onNext: PrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+
+        if (! this.get) {
+            throw new Error("No get method!");
+        }
+
         const datastorePrefs = this.get(prefs => onNext(prefs));
         return datastorePrefs.unsubscribe;
     }

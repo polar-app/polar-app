@@ -53,6 +53,10 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
                 value: undefined
             };
 
+            this.setState({
+                data
+            });
+
         };
 
         this.unsubscriber = this.props.provider(onNext, onError);

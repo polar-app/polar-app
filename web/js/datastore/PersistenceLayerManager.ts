@@ -26,6 +26,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
     private current?: PersistenceLayerType;
 
     private initialized = new Latch<boolean>();
+    public state: PersistenceLayerState = 'stopped';
 
     constructor(private readonly opts?: DatastoreInitOpts) {
 
@@ -196,6 +197,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
     }
 
     private dispatchEvent(event: PersistenceLayerManagerEvent): void {
+        this.state = event.state;
         this.persistenceLayerManagerEventDispatcher.dispatchEvent(event);
     }
 

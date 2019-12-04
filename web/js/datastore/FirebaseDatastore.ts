@@ -57,7 +57,7 @@ import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {FirestorePrefs} from "./firebase/FirestorePrefs";
+import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
 import {UserPrefCallback} from "./firebase/UserPrefs";
 import {PersistentPrefs} from "../util/prefs/Prefs";
 
@@ -81,7 +81,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
-    private readonly prefs: FirestorePrefs = new FirestorePrefs();
+    private readonly prefs: FirebaseDatastorePrefs = new FirebaseDatastorePrefs();
 
     constructor() {
         super();
@@ -717,7 +717,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const prefs = Preconditions.assertPresent(this.prefs);
 
-        const NULL_ON_NEXT = (prefs: PersistentPrefs | undefined) => {
+        const NULL_ON_NEXT = () => {
             return NULL_FUNCTION;
         };
 
@@ -725,7 +725,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         class PrefsProviderImpl extends AbstractPrefsProvider {
 
-            public constructor(private readonly prefs: FirestorePrefs) {
+            public constructor(private readonly prefs: FirebaseDatastorePrefs) {
                 super();
             }
 
@@ -735,7 +735,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 const createSnapshotListener = (): SnapshotUnsubscriber => {
 
                     const onNextUserPref: UserPrefCallback = (data) => {
-                        const prefs = FirestorePrefs.toPersistentPrefs(data);
+                        const prefs = FirebaseDatastorePrefs.toPersistentPrefs(data);
                         onNext(prefs);
                     };
 

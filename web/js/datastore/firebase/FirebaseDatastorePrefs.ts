@@ -3,17 +3,22 @@ import {UserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
 import firebase from "../../firebase/lib/firebase";
 import {Firestore} from "../../firebase/Firestore";
 import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber} from "../../firebase/Firebase";
+import {Latch} from "polar-shared/src/util/Latch";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-export class FirestorePrefs extends DictionaryPrefs implements PersistentPrefs {
+export class FirebaseDatastorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
     private firestore: firebase.firestore.Firestore | undefined;
     private user: firebase.User | undefined;
+
+    private initLatch = new Latch<boolean>();
 
     constructor(delegate: StringToPrefDict = {}) {
         super(delegate);
     }
 
     public async init() {
+
         // TODO: this adds some initial latency ... we could use cache first, then server.
         const userPref = await UserPrefs.get();
         this.update(userPref.toPrefDict());
@@ -23,10 +28,32 @@ export class FirestorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
         // TODO: add a listener by default to keep our copy updated?
 
+        this.initLatch.resolve(true);
+
     }
 
-    public onSnapshot(onNext: UserPrefCallback, onError?: ErrorHandlerCallback): SnapshotUnsubscriber {
-        return UserPrefs.onSnapshot(this.firestore!, this.user!.uid, onNext, onError);
+    public onSnapshot(onNext: UserPrefCallback, onError: ErrorHandlerCallback = NULL_FUNCTION): SnapshotUnsubscriber {
+
+        const snapshotUnsubscriberLatch = new Latch<SnapshotUnsubscriber>();
+
+        const doHandle = async () => {
+
+            await this.initLatch.get();
+
+            return UserPrefs.onSnapshot(this.firestore!, this.user!.uid, onNext, onError);
+
+        };
+
+        doHandle().catch(err => onError(err));
+
+        const result = () => {
+            snapshotUnsubscriberLatch.get()
+                .then(unsubscriber => unsubscriber())
+                .catch(err => onError(err));
+
+        };
+
+        return result;
     }
 
     public async commit(): Promise<void> {
@@ -39,8 +66,8 @@ export class FirestorePrefs extends DictionaryPrefs implements PersistentPrefs {
             return undefined;
         }
 
-        const dictionaryPrefs = new DictionaryPrefs(userPref.value)
-        return new FirestorePrefs(dictionaryPrefs.toPrefDict());
+        const dictionaryPrefs = new DictionaryPrefs(userPref.value);
+        return new FirebaseDatastorePrefs(dictionaryPrefs.toPrefDict());
 
     }
 
