@@ -9,7 +9,9 @@ import {ListenablePersistenceLayer} from "../../../web/js/datastore/ListenablePe
 
 export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
 
-    private eventListener: PersistenceLayerManagerEventListener;
+    private eventListener: PersistenceLayerManagerEventListener | undefined;
+
+    private unmounted: boolean = false;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -18,9 +20,11 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
             iter: 0
         };
 
-        const {persistenceLayerManager} = this.props;
+    }
 
-        // FIXME: the doc repo doesn't reload when switching back to it...
+    public componentDidMount(): void {
+
+        const {persistenceLayerManager} = this.props;
 
         const onPersistenceLayer = (persistenceLayer: ListenablePersistenceLayer) => {
 
@@ -28,9 +32,14 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
                 iter: this.state.iter + 1,
                 persistenceLayerProvider: () => persistenceLayer
             });
+
         };
 
         this.eventListener = (event: PersistenceLayerManagerEvent) => {
+
+            if (this.unmounted) {
+                console.warn("We've been unmounted");
+            }
 
             if (event.state === 'changed') {
                 onPersistenceLayer(event.persistenceLayer);
@@ -44,14 +53,17 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
 
         persistenceLayerManager.addEventListener(this.eventListener);
 
-    }
+        this.unmounted = false;
 
+    }
 
     public componentWillUnmount(): void {
 
         if (this.eventListener) {
             this.props.persistenceLayerManager.removeEventListener(this.eventListener);
         }
+
+        this.unmounted = true;
 
     }
 

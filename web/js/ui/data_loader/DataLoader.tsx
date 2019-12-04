@@ -22,6 +22,7 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
         const onNext = (value: T | undefined) => {
 
             if (this.unmounted) {
+                console.warn("DataLoader was unmounted but received event");
                 return;
             }
 
