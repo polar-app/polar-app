@@ -145,6 +145,12 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
+    public static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+        // merge the tags passed as props with the current state.
+        const tags = TagDescriptors.merge(prevState.tags, nextProps.userTags);
+        return {...prevState, tags};
+    }
+
     private async initAsync(): Promise<void> {
 
         const settingProvider = await SettingsStore.load();
