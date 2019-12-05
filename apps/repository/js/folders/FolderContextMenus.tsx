@@ -10,10 +10,14 @@ import {InvalidInput} from "../../../../web/js/ui/dialogs/InputValidators";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {Paths} from "polar-shared/src/util/Paths";
 import {DeleteIcon, FolderIcon, TagIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
+import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
+import {Logger} from "polar-shared/src/logger/Logger";
 
 let sequence: number = 0;
 
 const ENABLED = true;
+
+const log = Logger.create();
 
 const contextMenuComponentsFactory = (treeState: TreeState<TagDescriptor>) => {
     // treeState.selected.
@@ -34,14 +38,24 @@ export interface ContextMenuComponents {
 
 export type CreateFolderCallback = (type: TagType, newTag: TagStr) => void;
 
+export interface FolderContextMenuOpts {
+
+    readonly type: TagType;
+
+    readonly treeState: TreeState<TagDescriptor>;
+
+    readonly persistenceLayerMutator: PersistenceLayerMutator;
+
+}
+
 export class FolderContextMenus {
 
     /**
      * Create the handlers element and the actual context menu wrapper.
      */
-    public static create(type: TagType,
-                         treeState: TreeState<TagDescriptor>,
-                         onCreate: CreateFolderCallback): ContextMenuComponents {
+    public static create(opts: FolderContextMenuOpts): ContextMenuComponents {
+
+        const {type, treeState, persistenceLayerMutator} = opts;
 
         const id = 'folder-context-menu-' + sequence++;
         const contextMenuHandlers = prepareContextMenuHandlers({id});
@@ -77,17 +91,41 @@ export class FolderContextMenus {
 
                 const newTag = createNewTag();
 
-                onCreate(type, newTag);
+                persistenceLayerMutator.createTag(newTag)
+                    .catch(err => log.error("Unable to create tag: " + newTag, err));
 
             });
 
         };
 
-        const doDelete = () => {
-            // noop for now.
+        const confirmDelete = (onConfirm: () => void) => {
 
-            // TODO: delete the userTags
-            // TODO: delete the tag from the docs
+            Dialogs.confirm({
+                title: `FIXME: Are you sure you want to delete this ${type}?`,
+                subtitle: "This is a permanent operation and can't be undone.  The underlying documents will NOT be deleted.",
+                onCancel: NULL_FUNCTION,
+                type: 'danger',
+                onConfirm
+            });
+
+        };
+
+        const doDelete = () => {
+
+            console.log("FIXME1");
+
+            const deleteDelegate = () => {
+                console.log("FIXME3");
+
+                const tags = treeState.selected.keys();
+                const tag = tags[0];
+
+                persistenceLayerMutator.deleteTag(tag)
+                    .catch(err => log.error("Unable to delete tag: " + tag, err));
+
+            };
+
+            confirmDelete(() => deleteDelegate());
 
         };
 
@@ -109,7 +147,6 @@ export class FolderContextMenus {
                           onClick={() => doDelete()}>
                 <DeleteIcon/> Delete
             </DropdownItem>
-
         ;
 
         const MenuItemsForFolders = (): any => {
@@ -123,7 +160,6 @@ export class FolderContextMenus {
                 </DropdownItem>,
                 <DropdownItem key="divider1" divider/>,
                 <DeleteDropdownItem key="delete"/>
-
             ];
 
         };

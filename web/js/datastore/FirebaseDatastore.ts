@@ -19,7 +19,7 @@ import {
     InitResult,
     MutationType,
     NetworkLayers,
-    PrefsProvider, PrefsUpdatedCallback,
+    PrefsProvider, PersistentPrefsUpdatedCallback,
     SnapshotResult,
     WritableBinaryMetaDatastore,
     WriteFileOpts,
@@ -729,7 +729,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 super();
             }
 
-            public get(onNext: PrefsUpdatedCallback = NULL_ON_NEXT,
+            public get(onNext: PersistentPrefsUpdatedCallback = NULL_ON_NEXT,
                        onError: ErrorHandlerCallback = NULL_ON_ERROR): DatastorePrefs {
 
                 const createSnapshotListener = (): SnapshotUnsubscriber => {

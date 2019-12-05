@@ -21,6 +21,8 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
         const onNext = (value: T | undefined) => {
 
+            console.log(`Data loader ${this.props.id} new data: `, value);
+
             if (this.unmounted) {
                 console.warn("DataLoader was unmounted but received event");
                 return;
@@ -102,6 +104,11 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 export type Unsubscriber = () => void;
 
 export interface IProps<D> {
+
+    /**
+     * An ID for this loader for logging purposes.
+     */
+    readonly id: string;
 
     readonly provider: SnapshotSubscriber<D>;
 

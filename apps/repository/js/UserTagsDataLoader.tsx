@@ -39,7 +39,7 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
         const provider: SnapshotSubscriber<PersistentPrefs> = (onNext, onError) => prefs.subscribe(onNext, onError);
 
         return (
-            <DataLoader provider={provider} render={prefs => render(prefs)}/>
+            <DataLoader id="userTags" provider={provider} render={prefs => render(prefs)}/>
         );
 
     }

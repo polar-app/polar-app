@@ -11,7 +11,7 @@ import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {PersistentPrefs} from '../util/prefs/Prefs';
+import {PersistentPrefs, Prefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -813,7 +813,7 @@ export interface DatastoreInitOpts {
 
 }
 
-export type PrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => void;
+export type PersistentPrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => void;
 
 export interface PrefsProvider {
 
@@ -823,24 +823,65 @@ export interface PrefsProvider {
      * @param onNext when provided, called when we have an updated copy of our prefs.
      * @param onError called when an error has occurred.
      */
-    get(onNext?: PrefsUpdatedCallback, onError?: ErrorHandlerCallback): DatastorePrefs;
+    get(onNext?: PersistentPrefsUpdatedCallback, onError?: ErrorHandlerCallback): DatastorePrefs;
 
-    subscribe(onNext: PrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber;
+    subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber;
 
 }
 
 export abstract class AbstractPrefsProvider implements PrefsProvider {
 
-    public abstract get(onUpdated?: PrefsUpdatedCallback): DatastorePrefs;
+    public abstract get(onUpdated?: PersistentPrefsUpdatedCallback): DatastorePrefs;
 
-    public subscribe(onNext: PrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+    /**
+     * Default implementation of subscribe which should be used everywhere.
+     */
+    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
 
         if (! this.get) {
             throw new Error("No get method!");
         }
 
-        const datastorePrefs = this.get(prefs => onNext(prefs));
-        return datastorePrefs.unsubscribe;
+        let unsubscribed: boolean = false;
+
+        const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
+
+            if (persistentPrefs) {
+
+                const interceptedPersistentPrefs = {
+                    ...persistentPrefs,
+                    mark: persistentPrefs.mark,
+                    fetch: persistentPrefs.fetch,
+                    isMarkedDelayed: persistentPrefs.isMarkedDelayed,
+                    toggleMarked: persistentPrefs.toggleMarked,
+                    isMarked: persistentPrefs.isMarked,
+                    markDelayed: persistentPrefs.markDelayed,
+                    get: persistentPrefs.get,
+                    set: persistentPrefs.set,
+                    toDict: persistentPrefs.toDict,
+                    toPrefDict: persistentPrefs.toPrefDict,
+                    defined: persistentPrefs.defined,
+                    commit(): Promise<void> {
+                        onNext(persistentPrefs);
+                        return persistentPrefs.commit();
+                    }
+                };
+
+                onNext(interceptedPersistentPrefs);
+
+            } else {
+                onNext(undefined);
+            }
+
+        };
+
+        const datastorePrefs = this.get(persistentPrefs => handleOnNext(persistentPrefs));
+
+        return () => {
+            unsubscribed = true;
+            datastorePrefs.unsubscribe();
+        };
+
     }
 
 }

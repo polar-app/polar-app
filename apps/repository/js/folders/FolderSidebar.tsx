@@ -7,6 +7,8 @@ import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags"
 import {TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 
 const log = Logger.create();
 
@@ -19,31 +21,21 @@ export class FolderSidebar extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        const {treeState, persistenceLayerProvider} = this.props;
-
-        const onCreate = (type: TagType, newTag: TagStr) => {
-
-            const persistenceLayer = persistenceLayerProvider();
-            const prefs = persistenceLayer.datastore.getPrefs();
-
-            const doHandle = async () => {
-                await DatastoreUserTags.create(prefs.get().prefs, newTag);
-            };
-
-            doHandle()
-                .catch(err => log.error("Unable to create tag: " + newTag, err));
-
-        };
+        const {treeState, persistenceLayerMutator} = this.props;
 
         this.folderContextMenuComponents
-            = FolderContextMenus.create('folder',
-                                        treeState,
-                                        (type: TagType, newTag) => onCreate(type, newTag));
+            = FolderContextMenus.create({
+                type: 'folder',
+                treeState,
+                persistenceLayerMutator,
+            });
 
         this.tagContextMenuComponents
-            = FolderContextMenus.create('tag',
-                                        treeState,
-                                        (type: TagType, newTag) => onCreate(type, newTag));
+            = FolderContextMenus.create({
+                type: 'tag',
+                treeState,
+                persistenceLayerMutator,
+            });
 
     }
 
@@ -91,7 +83,7 @@ export class FolderSidebar extends React.Component<IProps, IState> {
 
 export interface IProps {
 
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerMutator: PersistenceLayerMutator;
     readonly treeState: TreeState<TagDescriptor>;
     readonly tags: ReadonlyArray<TagDescriptor>;
 

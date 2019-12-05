@@ -41,6 +41,7 @@ import {FolderSidebar} from "../folders/FolderSidebar";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
+import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 
 const log = Logger.create();
 
@@ -57,6 +58,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     private reactTable?: Instance;
 
     private readonly docRepoFilters: DocRepoFilters;
+
+    private readonly tagsProvider: () => ReadonlyArray<Tag>;
+    private persistenceLayerMutator: PersistenceLayerMutator;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -89,10 +93,12 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.onDragStart = this.onDragStart.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
 
-        this.onRemoveFromFolder = this.onRemoveFromFolder.bind(this);
+        this.onRemoveFromTag = this.onRemoveFromTag.bind(this);
 
         this.state = {
             data: [],
+            docTags: [],
+            userTags: this.props.userTags || [],
             tags: TagDescriptors.merge([], this.props.userTags),
             columns: IDMaps.create(Object.values(new DocRepoTableColumns())),
             selected: [],
@@ -102,12 +108,18 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
 
         const repoDocInfosProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.values();
+        this.tagsProvider = () => TagDescriptors.merge(this.state.docTags, this.state.userTags);
 
-        this.docRepoFilters =
-            new DocRepoFilters(onRefreshed, repoDocInfosProvider);
+        this.persistenceLayerMutator
+            = new PersistenceLayerMutator(this.props.repoDocMetaManager,
+                                          this.props.persistenceLayerProvider,
+                                          this.tagsProvider,
+                                          repoDocInfosProvider,
+                                          () => this.refresh());
+
+        this.docRepoFilters = new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
         const onSelected = (tags: ReadonlyArray<TagStr>) => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current)));
-
         const onDropped = (tag: TagDescriptor) => this.onMultiTagged([tag], DraggingSelectedDocs.get());
 
         this.treeState = new TreeState(onSelected, onDropped);
@@ -147,8 +159,13 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
         // merge the tags passed as props with the current state.
-        const tags = TagDescriptors.merge(prevState.tags, nextProps.userTags);
-        return {...prevState, tags};
+        const userTags = nextProps.userTags;
+
+        const tags = TagDescriptors.merge(prevState.tags, userTags);
+        return {...prevState,
+            tags,
+            userTags
+        };
     }
 
     private async initAsync(): Promise<void> {
@@ -195,12 +212,14 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onRemoveFromFolder(folder: Tag, repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+    private onRemoveFromTag(rawTag: Tag, repoDocInfos: ReadonlyArray<RepoDocInfo>) {
 
         for (const repoDocInfo of repoDocInfos) {
             const existingTags = Object.values(repoDocInfo.tags || {});
-            const newTags = Tags.difference(existingTags, [folder]);
+            const newTags = Tags.difference(existingTags, [rawTag]);
 
+            // TODO: this does N at once but we should really be using a queue for
+            // this operation.
             this.onDocTagged(repoDocInfo, newTags)
                 .catch(err => log.error(err));
 
@@ -460,7 +479,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         side='left'
                         initialWidth={300}
                         left={
-                            <FolderSidebar persistenceLayerProvider={this.props.persistenceLayerProvider}
+                            <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
                                            treeState={this.treeState}
                                            tags={this.state.tags}/>
                         }
@@ -495,7 +514,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   filters={this.docRepoFilters.filters}
                                                   getSelected={() => this.getSelected()}
                                                   getRow={(viewIndex) => this.getRow(viewIndex)}
-                                                  onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromFolder(folder, repoDocInfos)}/>
+                                                  onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos)}/>
 
                                 }
                                 right={
@@ -674,15 +693,18 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     private doRefresh(data: ReadonlyArray<RepoDocInfo>) {
 
         const docTags = this.props.repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
-        const tags = TagDescriptors.merge(docTags, this.props.userTags)
-
-        const state = {...this.state, data, tags};
+        const tags = TagDescriptors.merge(docTags, this.state.userTags);
 
         setTimeout(() => {
 
             // The react table will not update when I change the state from
             // within the event listener
-            this.setState(state);
+            this.setState({
+                ...this.state,
+                data,
+                docTags,
+                tags
+            });
 
         }, 1);
 
@@ -716,7 +738,12 @@ interface IProps {
 
 interface IState {
     readonly data: ReadonlyArray<RepoDocInfo>;
+
     readonly tags: ReadonlyArray<TagDescriptor>;
+
+    readonly docTags: ReadonlyArray<TagDescriptor>;
+    readonly userTags: ReadonlyArray<Tag>;
+
     readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly docSidebarVisible: boolean;

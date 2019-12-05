@@ -12,7 +12,8 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {FontAwesomeIcon} from "../../../web/js/ui/fontawesome/FontAwesomeIcon";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {Filters} from "./doc_repo/DocRepoFilters";
-import {Tag} from "polar-shared/src/tags/Tags";
+import {Tag, TagType} from "polar-shared/src/tags/Tags";
+import {FolderMinusIcon, TagIcon} from "../../../web/js/ui/icons/FixedWidthIcons";
 
 export class DocDropdownItems extends React.Component<IProps, IState> {
 
@@ -42,17 +43,67 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
         const isMulti = selected.length > 1;
         const repoDocInfo = selected[0];
 
-        const computeFolder = () => {
+        const computeSelectedTag = (): SelectedTag | undefined => {
+
             const tags = this.props.filters.filteredTags.get();
-            if (tags.length === 1 && tags[0].id.startsWith('/')) {
-                return tags[0];
+
+            if (tags.length === 1) {
+
+                const tag = tags[0];
+                const type = tag.id.startsWith('/') ? 'folder' : 'tag';
+
+                return {tag, type};
+
             }
 
             return undefined;
 
         };
 
-        const folder = computeFolder();
+        interface SelectedTag {
+            readonly type: TagType;
+            readonly tag: Tag;
+        }
+
+        const selectedTag = computeSelectedTag();
+
+        const RemoveFromTagDropdownItem = () => {
+
+            if (selectedTag) {
+
+                const Icon = () => {
+
+                    if (selectedTag.type === 'folder') {
+                        return <FolderMinusIcon/>;
+                    } else {
+                        return <TagIcon/>;
+                    }
+
+                };
+
+                const Text = () => {
+
+                    if (selectedTag.type === 'folder') {
+                        return "Remove from Folder";
+                    } else {
+                        return "Remove from Tag";
+                    }
+
+                };
+
+                return <DropdownItem toggle={this.props.toggle}
+                                     hidden={!selectedTag}
+                                     onClick={() => this.props.onRemoveFromFolder(selectedTag!.tag, selected)}>
+                    <Icon/>
+                    Remove from {selectedTag.type}
+
+                </DropdownItem>;
+
+            } else {
+                return null;
+            }
+
+        };
 
         return (
 
@@ -75,12 +126,7 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
                     Rename
                 </DropdownItem>
 
-                <DropdownItem toggle={this.props.toggle}
-                              hidden={! folder}
-                              onClick={() => this.props.onRemoveFromFolder(folder!, selected)}>
-                    <FontAwesomeIcon name="fas fa-folder-minus"/>
-                    Remove from Folder
-                </DropdownItem>
+                <RemoveFromTagDropdownItem/>
 
                 <DropdownItem toggle={this.props.toggle}
                               hidden={! repoDocInfo.url || isMulti}
