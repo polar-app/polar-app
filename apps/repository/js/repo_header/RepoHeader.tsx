@@ -38,7 +38,7 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
                     return undefined;
                 }
 
-                return persistenceLayer.datastore.getPrefs().get().prefs;
+                return persistenceLayer.datastore.getPrefs().get();
 
             };
 

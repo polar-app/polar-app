@@ -729,8 +729,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 super();
             }
 
-            public get(onNext: PersistentPrefsUpdatedCallback = NULL_ON_NEXT,
-                       onError: ErrorHandlerCallback = NULL_ON_ERROR): DatastorePrefs {
+            public get(): PersistentPrefs {
+                return this.prefs;
+            }
+
+            protected register(onNext: PersistentPrefsUpdatedCallback,
+                               onError: ErrorHandlerCallback): SnapshotUnsubscriber {
 
                 const createSnapshotListener = (): SnapshotUnsubscriber => {
 
@@ -743,12 +747,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 };
 
-                const unsubscribe = createSnapshotListener();
-
-                return {
-                    prefs,
-                    unsubscribe
-                };
+                return createSnapshotListener();
 
             }
 

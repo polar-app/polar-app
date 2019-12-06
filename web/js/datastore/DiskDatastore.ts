@@ -7,7 +7,7 @@ import {
     DeleteResult,
     DocMetaSnapshotEventListener,
     ErrorListener,
-    InitResult,
+    InitResult, PersistentPrefsUpdatedCallback,
     PrefsProvider,
     SnapshotResult
 } from './Datastore';
@@ -47,6 +47,7 @@ import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
+import {ErrorHandlerCallback} from "../firebase/Firebase";
 
 const log = Logger.create();
 
@@ -66,7 +67,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     public readonly directories: Directories;
 
-    private readonly diskPrefsStore: DiskPrefsStore;
+    private readonly diskPersistentPrefsBacking: DiskPersistentPrefsBacking;
+    private diskPersistentPrefsProviderImpl: DiskPersistentPrefsProviderImpl | undefined;
 
     constructor() {
 
@@ -82,7 +84,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         this.stashDir = this.directories.stashDir;
         this.filesDir = this.directories.filesDir;
         this.logsDir = this.directories.logsDir;
-        this.diskPrefsStore = new DiskPrefsStore(this.directories);
+        this.diskPersistentPrefsBacking = new DiskPersistentPrefsBacking(this.directories);
 
     }
 
@@ -147,9 +149,19 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         };
 
         await doInitInfo();
-        await this.diskPrefsStore.init();
+
+        await this.initPrefs();
 
         return diskInitResult;
+    }
+
+    private async initPrefs() {
+
+        if (! this.diskPersistentPrefsProviderImpl) {
+            await this.diskPersistentPrefsBacking.init();
+            this.diskPersistentPrefsProviderImpl = new DiskPersistentPrefsProviderImpl(this.diskPersistentPrefsBacking);
+        }
+
     }
 
     public async stop() {
@@ -528,26 +540,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     }
 
     public getPrefs(): PrefsProvider {
-
-        const diskPrefsStore = this.diskPrefsStore;
-
-        class PrefsProviderImpl extends AbstractPrefsProvider {
-
-            constructor() {
-                super();
-            }
-
-            public get(): DatastorePrefs {
-                return {
-                    prefs: diskPrefsStore.getPrefs(),
-                    unsubscribe: NULL_FUNCTION
-                };
-            }
-
-        }
-
-        return new PrefsProviderImpl();
-
+        return this.diskPersistentPrefsProviderImpl!;
     }
 
     private createDatastoreFile(backend: Backend,
@@ -794,7 +787,7 @@ export interface InitOptions {
 
 }
 
-export class DiskPrefsStore {
+export class DiskPersistentPrefsBacking {
 
     private prefs: DiskPersistentPrefs;
 
@@ -820,16 +813,15 @@ export class DiskPrefsStore {
 
     }
 
-    public getPrefs() {
+    public async commit(): Promise<void> {
+        const data = JSON.stringify(this.prefs.toPrefDict(), null, "  ");
+        await Files.writeFileAsync(this.path, data, {atomic: true});
+    }
+
+    public get() {
         return this.prefs;
     }
 
-    public async commit(): Promise<void> {
-
-        const data = JSON.stringify(this.prefs.toPrefDict(), null, "  ");
-        await Files.writeFileAsync(this.path, data, {atomic: true});
-
-    }
 
 }
 
@@ -838,9 +830,9 @@ export class DiskPrefsStore {
  */
 export class DiskPersistentPrefs extends DictionaryPrefs implements PersistentPrefs {
 
-    private readonly diskPrefsStore: DiskPrefsStore;
+    private readonly diskPrefsStore: DiskPersistentPrefsBacking;
 
-    constructor(diskPrefsStore: DiskPrefsStore,
+    constructor(diskPrefsStore: DiskPersistentPrefsBacking,
                 delegate: StringToPrefDict = {}) {
         super(delegate);
         this.diskPrefsStore = diskPrefsStore;
@@ -848,6 +840,18 @@ export class DiskPersistentPrefs extends DictionaryPrefs implements PersistentPr
 
     public async commit(): Promise<void> {
         return await this.diskPrefsStore.commit();
+    }
+
+}
+
+class DiskPersistentPrefsProviderImpl extends AbstractPrefsProvider {
+
+    constructor(private readonly backing: DiskPersistentPrefsBacking) {
+        super();
+    }
+
+    public get(): PersistentPrefs {
+        return this.createInterceptedPersistentPrefs(this.backing.get())!;
     }
 
 }

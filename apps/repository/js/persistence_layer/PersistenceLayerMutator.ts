@@ -26,7 +26,7 @@ export class PersistenceLayerMutator {
     public async createTag(newTag: TagStr) {
 
         const persistenceLayer = this.persistenceLayerProvider();
-        const prefs = persistenceLayer.datastore.getPrefs().get().prefs;
+        const prefs = persistenceLayer.datastore.getPrefs().get();
 
         await DatastoreUserTags.create(prefs, newTag);
 
@@ -37,7 +37,7 @@ export class PersistenceLayerMutator {
         const deleteFromUserTags = async () => {
 
             const persistenceLayer = this.persistenceLayerProvider();
-            const prefs = persistenceLayer.datastore.getPrefs().get().prefs;
+            const prefs = persistenceLayer.datastore.getPrefs().get();
 
             const userTags = DatastoreUserTags.get(prefs);
 

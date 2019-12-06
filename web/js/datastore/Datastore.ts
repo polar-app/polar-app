@@ -23,6 +23,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../firebase/Firebase";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {SimpleReactor} from "../reactor/SimpleReactor";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -818,20 +819,33 @@ export type PersistentPrefsUpdatedCallback = (prefs: PersistentPrefs | undefined
 export interface PrefsProvider {
 
     /**
-     * Get the latest copy of the prefs we're using
-     *
-     * @param onNext when provided, called when we have an updated copy of our prefs.
-     * @param onError called when an error has occurred.
+     * Get the users prefs.
      */
-    get(onNext?: PersistentPrefsUpdatedCallback, onError?: ErrorHandlerCallback): DatastorePrefs;
+    get(): PersistentPrefs;
 
     subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber;
 
 }
 
+interface InterceptedPersistentPrefs extends PersistentPrefs {
+    readonly __intercepted: true;
+}
+
 export abstract class AbstractPrefsProvider implements PrefsProvider {
 
-    public abstract get(onNext?: PersistentPrefsUpdatedCallback): DatastorePrefs;
+    protected reactor = new SimpleReactor<PersistentPrefs | undefined>();
+    constructor() {
+    }
+
+    public abstract get(): PersistentPrefs;
+
+    /**
+     * Register a callback with no event listeners for platforms like Firebase that provide listening to the underlying
+     * datastore.
+     */
+    protected register(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback) {
+        return NULL_FUNCTION;
+    }
 
     /**
      * Default implementation of subscribe which should be used everywhere.
@@ -842,49 +856,67 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
             throw new Error("No get method!");
         }
 
-        let unsubscribed: boolean = false;
-
         const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
 
-            if (persistentPrefs) {
-
-                // FIXME: this is a hack as I can't use the ... rest here for some reason.
-                const interceptedPersistentPrefs = {
-                    ...persistentPrefs,
-                    mark: persistentPrefs.mark,
-                    fetch: persistentPrefs.fetch,
-                    isMarkedDelayed: persistentPrefs.isMarkedDelayed,
-                    toggleMarked: persistentPrefs.toggleMarked,
-                    isMarked: persistentPrefs.isMarked,
-                    markDelayed: persistentPrefs.markDelayed,
-                    get: persistentPrefs.get,
-                    set: persistentPrefs.set,
-                    toDict: persistentPrefs.toDict,
-                    toPrefDict: persistentPrefs.toPrefDict,
-                    defined: persistentPrefs.defined,
-                    commit(): Promise<void> {
-                        onNext(persistentPrefs);
-                        return persistentPrefs.commit();
-                    }
-                };
-
-                onNext(interceptedPersistentPrefs);
-
-            } else {
-                onNext(undefined);
-            }
+            const interceptedPersistentPrefs = this.createInterceptedPersistentPrefs(persistentPrefs);
+            onNext(interceptedPersistentPrefs);
 
         };
 
-        const datastorePrefs = this.get(persistentPrefs => handleOnNext(persistentPrefs));
+        const eventListener = (persistentPrefs: PersistentPrefs | undefined) => handleOnNext(persistentPrefs);
 
-        // send the current value on the first call.
-        handleOnNext(datastorePrefs.prefs);
+        const unsubscriber = this.register(eventListener, onError);
+
+        this.reactor.addEventListener(eventListener);
+
+        handleOnNext(this.createInterceptedPersistentPrefs(this.get()));
 
         return () => {
-            unsubscribed = true;
-            datastorePrefs.unsubscribe();
+            this.reactor.removeEventListener(eventListener);
+            unsubscriber();
         };
+
+    }
+
+    protected createInterceptedPersistentPrefs(persistentPrefs: PersistentPrefs | undefined): InterceptedPersistentPrefs | undefined {
+
+        function isIntercepted(persistentPrefs: PersistentPrefs): boolean {
+            return (<any> persistentPrefs).__intercepted === true;
+        }
+
+        if (persistentPrefs) {
+
+            if (isIntercepted(persistentPrefs)) {
+                // don't double intercept...
+                return <InterceptedPersistentPrefs> persistentPrefs;
+            }
+
+            const commit = async (): Promise<void> => {
+                this.reactor.dispatchEvent(persistentPrefs);
+                return persistentPrefs.commit();
+            };
+
+            // FIXME: this is a hack as I can't use the ... rest here for some reason.
+            return {
+                ...persistentPrefs,
+                mark: persistentPrefs.mark,
+                fetch: persistentPrefs.fetch,
+                isMarkedDelayed: persistentPrefs.isMarkedDelayed,
+                toggleMarked: persistentPrefs.toggleMarked,
+                isMarked: persistentPrefs.isMarked,
+                markDelayed: persistentPrefs.markDelayed,
+                get: persistentPrefs.get,
+                set: persistentPrefs.set,
+                toDict: persistentPrefs.toDict,
+                toPrefDict: persistentPrefs.toPrefDict,
+                defined: persistentPrefs.defined,
+                __intercepted: true,
+                commit
+            };
+
+        } else {
+            return undefined;
+        }
 
     }
 
@@ -899,11 +931,8 @@ export class DefaultPrefsProvider extends AbstractPrefsProvider {
         super();
     }
 
-    public get(): DatastorePrefs {
-        return {
-            prefs: this.prefs,
-            unsubscribe: NULL_FUNCTION
-        };
+    public get(): PersistentPrefs {
+        return this.createInterceptedPersistentPrefs(this.prefs)!;
     }
 
 }

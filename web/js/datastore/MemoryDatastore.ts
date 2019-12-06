@@ -11,7 +11,7 @@ import {
     SnapshotResult,
     DatastoreOverview,
     PrefsProvider,
-    DatastorePrefs, AbstractPrefsProvider
+    DatastorePrefs, AbstractPrefsProvider, PersistentPrefsUpdatedCallback
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -35,6 +35,7 @@ import {NetworkLayer} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {ErrorHandlerCallback} from "../firebase/Firebase";
 
 const log = Logger.create();
 
@@ -222,11 +223,8 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
                 super();
             }
 
-            public get(): DatastorePrefs {
-                return {
-                    prefs: this.prefs,
-                    unsubscribe: NULL_FUNCTION
-                };
+            public get(): PersistentPrefs {
+                return this.prefs;
             }
 
         }

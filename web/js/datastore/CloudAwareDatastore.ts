@@ -116,9 +116,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const localPrefs = this.local.getPrefs().get();
         const cloudPrefs = this.cloud.getPrefs().get();
 
-        const doUpdate = async (source: DatastorePrefs, target: DatastorePrefs) => {
-            target.prefs.update(source.prefs.toPrefDict());
-            await target.prefs.commit();
+        const doUpdate = async (source: PersistentPrefs, target: PersistentPrefs) => {
+            target.update(source.toPrefDict());
+            await target.commit();
         };
 
         await doUpdate(localPrefs, cloudPrefs);

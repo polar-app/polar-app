@@ -208,7 +208,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         const datastoreCapabilities = persistenceLayer.capabilities();
         const prefs = persistenceLayer.datastore.getPrefs();
 
-        Reviewers.start(datastoreCapabilities, prefs.get().prefs, this.state.data, mode, 10);
+        Reviewers.start(datastoreCapabilities, prefs.get(), this.state.data, mode, 10);
     }
 
 }
