@@ -127,7 +127,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     constructor(props: IProps<V>, context: any) {
         super(props, context);
 
-        this.toggle = this.toggle.bind(this);
+        this.toggleClosed = this.toggleClosed.bind(this);
         this.select = this.select.bind(this);
         this.deselect = this.deselect.bind(this);
         this.onCheckbox = this.onCheckbox.bind(this);
@@ -205,7 +205,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
                             <div style={Styles.NODE_ICON}
                                  className={icon}
-                                 onClick={() => this.toggle()}>
+                                 onClick={() => this.toggleClosed()}>
                             </div>
 
                             <div style={Styles.NODE_SELECTOR}>
@@ -220,7 +220,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                             </div>
 
                             <div style={Styles.NODE_BODY}
-                                 onDoubleClick={() => this.toggle()}
+                                 onDoubleClick={() => this.toggleClosed()}
                                  onContextMenu={(event) => this.onClick(event)}
                                  onClick={(event) => this.onClick(event)}>
 
@@ -235,7 +235,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                             </div>
 
                             <div style={Styles.NODE_RIGHT}
-                                 onDoubleClick={() => this.toggle()}
+                                 onDoubleClick={() => this.toggleClosed()}
                                  onContextMenu={(event) => this.onClick(event)}>
 
                                 <div>
@@ -268,7 +268,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.select(true, event.target.checked);
     }
 
-    private toggle() {
+    private toggleClosed() {
 
         const children = this.props.node.children || [];
 
@@ -278,6 +278,9 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         }
 
         this.props.treeState.closed.toggle(this.props.node.id);
+
+        // needed to cause the tree to re-render when we have collapsed a folder.
+        this.dispatchSelected();
 
     }
 
