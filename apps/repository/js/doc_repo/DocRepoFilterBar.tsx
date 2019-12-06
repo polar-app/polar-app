@@ -124,7 +124,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                                 <InputFilter id="filter_title"
                                              placeholder="Filter by title"
-                                             onChange={(value) => this.props.onFilterByTitle(value.target.value)}/>
+                                             onChange={(value) => this.props.onFilterByTitle(value)}/>
 
                             </InputGroup>
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {FixedWidthIcon} from "./FixedWidthIcon";
 
-
+export const TimesIcon = () => <FixedWidthIcon name="fas fa-times"/>;
 export const FilterIcon = () => <FixedWidthIcon name="fas fa-filter"/>;
 export const FolderMinusIcon = () => <FixedWidthIcon name="fas fa-folder-minus"/>;
 export const FolderIcon = () => <FixedWidthIcon name="fas fa-folder-plus"/>;

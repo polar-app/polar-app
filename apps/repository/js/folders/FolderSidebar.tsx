@@ -10,6 +10,7 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
+import {TagCreateSelect} from "../../../../web/js/ui/tree/TagCreateSelect";
 
 const log = Logger.create();
 
@@ -65,12 +66,14 @@ export class FolderSidebar extends React.Component<IProps, IState> {
 
                     <div className="m-1">
                         <InputFilter placeholder="Filter by tag or folder"/>
+                        {/*<TagCreateSelect tags={tags} onChange={NULL_FUNCTION}/>*/}
                     </div>
 
                     <div style={{
                             flexGrow: 1,
                             overflow: 'auto',
                         }}>
+
                         <TagTree tags={tags}
                                  treeState={treeState}
                                  rootTitle="Folders"
