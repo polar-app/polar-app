@@ -31,6 +31,7 @@ import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
 import {FolderSidebar} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
+import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 

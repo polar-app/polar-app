@@ -12,6 +12,7 @@ import {Paths} from "polar-shared/src/util/Paths";
 import {DeleteIcon, FolderIcon, TagIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 let sequence: number = 0;
 
@@ -56,6 +57,8 @@ export class FolderContextMenus {
     public static create(opts: FolderContextMenuOpts): ContextMenuComponents {
 
         const {type, treeState, persistenceLayerMutator} = opts;
+
+        Preconditions.assertPresent(persistenceLayerMutator, 'persistenceLayerMutator');
 
         const id = 'folder-context-menu-' + sequence++;
         const contextMenuHandlers = prepareContextMenuHandlers({id});

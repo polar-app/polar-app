@@ -831,7 +831,7 @@ export interface PrefsProvider {
 
 export abstract class AbstractPrefsProvider implements PrefsProvider {
 
-    public abstract get(onUpdated?: PersistentPrefsUpdatedCallback): DatastorePrefs;
+    public abstract get(onNext?: PersistentPrefsUpdatedCallback): DatastorePrefs;
 
     /**
      * Default implementation of subscribe which should be used everywhere.
@@ -877,6 +877,9 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
         };
 
         const datastorePrefs = this.get(persistentPrefs => handleOnNext(persistentPrefs));
+
+        // send the current value on the first call.
+        handleOnNext(datastorePrefs.prefs);
 
         return () => {
             unsubscribed = true;

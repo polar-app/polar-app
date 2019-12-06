@@ -796,7 +796,7 @@ export interface InitOptions {
 
 export class DiskPrefsStore {
 
-    private prefs: DiskPrefs;
+    private prefs: DiskPersistentPrefs;
 
     private readonly directories: Directories;
 
@@ -804,7 +804,7 @@ export class DiskPrefsStore {
 
     constructor(directories: Directories) {
         this.directories = directories;
-        this.prefs = new DiskPrefs(this);
+        this.prefs = new DiskPersistentPrefs(this);
         this.path = FilePaths.create(this.directories.configDir, "prefs.json");
     }
 
@@ -814,7 +814,8 @@ export class DiskPrefsStore {
             log.info("Loaded prefs from: " + this.path);
             const data = await Files.readFileAsync(this.path);
             const prefs: StringToPrefDict = JSON.parse(data.toString("UTF-8"));
-            this.prefs = new DiskPrefs(this, prefs);
+
+            this.prefs = new DiskPersistentPrefs(this, prefs);
         }
 
     }
@@ -835,7 +836,7 @@ export class DiskPrefsStore {
 /**
  * Prefs object just backed by a local dictionary.
  */
-export class DiskPrefs extends DictionaryPrefs implements PersistentPrefs {
+export class DiskPersistentPrefs extends DictionaryPrefs implements PersistentPrefs {
 
     private readonly diskPrefsStore: DiskPrefsStore;
 

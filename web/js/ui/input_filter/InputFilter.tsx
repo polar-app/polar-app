@@ -51,6 +51,7 @@ export class InputFilter extends React.Component<IProps, IState> {
                     onFocus={() => this.setFocused(true)}
                     onBlur={() => this.setFocused(false)}
                     style={{
+                        ...this.props.style,
                         display: 'flex'
                     }}>
 
@@ -99,6 +100,8 @@ export class InputFilter extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly id?: string;
+
+    readonly style?: React.CSSProperties;
 
     /**
      * The changed value or undefined if it has been cleared.
