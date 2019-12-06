@@ -9,6 +9,7 @@ export class FixedWidthIcon extends React.PureComponent<IProps, IState> {
     public render() {
 
         const style = {
+            ...this.props.style,
             width: '20px',
             marginLeft: '0.3rem',
             marginRight: '0.3rem'
@@ -31,6 +32,7 @@ export interface IProps {
      * The name of the font awesome icon to use.  If non is specified just a blank spacer icon is used.
      */
     readonly name?: string;
+    readonly style?: React.CSSProperties;
 }
 
 interface IState {

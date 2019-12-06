@@ -848,6 +848,7 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
 
             if (persistentPrefs) {
 
+                // FIXME: this is a hack as I can't use the ... rest here for some reason.
                 const interceptedPersistentPrefs = {
                     ...persistentPrefs,
                     mark: persistentPrefs.mark,

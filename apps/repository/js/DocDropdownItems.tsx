@@ -94,7 +94,7 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
                 return <DropdownItem toggle={this.props.toggle}
                                      hidden={!selectedTag}
                                      onClick={() => this.props.onRemoveFromFolder(selectedTag!.tag, selected)}>
-                    <Icon/> {nodeText()}
+                    <Icon/>{nodeText()}
 
                 </DropdownItem>;
 

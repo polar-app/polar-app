@@ -7,11 +7,7 @@ import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/sch
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
-import {DocSidebar} from "./DocSidebar";
-import {EditableText} from "./EditableText";
-import {Suggestions} from "../../js/ui/feedback/Suggestions";
-import {TagInputWidget} from "../../../apps/repository/js/TagInputWidget";
-import {FolderContextMenus, promptForCreate} from "../../../apps/repository/js/folders/FolderContextMenus";
+import {InputFilter} from "../../js/ui/input_filter/InputFilter";
 
 const styles = {
     swatch: {
@@ -44,8 +40,6 @@ export class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
         super(props, context);
-
-        promptForCreate('tag', NULL_FUNCTION);
 
     }
 
@@ -260,7 +254,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div className="p-1">
 
-                <TagInputWidget availableTags={[]} onChange={NULL_FUNCTION}/>
+                <InputFilter placeholder="Filter by title"/>
 
                 {/*<WhatsNewModal/>*/}
 
