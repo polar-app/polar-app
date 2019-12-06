@@ -70,7 +70,7 @@ export class Confirm extends React.PureComponent<IProps, IState> {
 
                         <NullCollapse open={! this.props.noCancel}>
 
-                            <Button color="secondary"
+                            <Button color="light"
                                     style={Styles.button}
                                     size="lg"
                                     className="m-1"
