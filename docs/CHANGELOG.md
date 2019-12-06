@@ -9,6 +9,8 @@
 
 ## Fixes
 
+- ChromeOS is now a desktop platform
+
 - upgrade account button now works.  
 
 - improved text in suggestions dialog.
