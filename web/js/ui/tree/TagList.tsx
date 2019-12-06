@@ -25,8 +25,20 @@ export class TagList extends React.Component<IProps, IState> {
 
     public render() {
 
+
+        const comparator = (a: TagDescriptor, b: TagDescriptor) => {
+            const diff = a.count - b.count;
+
+            if (diff !== 0) {
+                return diff;
+            }
+
+            return a.label.localeCompare(b.label);
+
+        };
+
         const tags = [...this.props.tags]
-            .sort((a, b) => a.count - b.count)
+            .sort(comparator)
             .reverse();
 
         return (

@@ -2,17 +2,10 @@ import * as React from 'react';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {ContextMenuComponents, FolderContextMenus} from "./FolderContextMenus";
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
-import {TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
-import {TagCreateSelect} from "../../../../web/js/ui/tree/TagCreateSelect";
-
-const log = Logger.create();
 
 export class FolderSidebar extends React.Component<IProps, IState> {
 
