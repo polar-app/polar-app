@@ -6,6 +6,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 export class FolderSidebar extends React.Component<IProps, IState> {
 
@@ -15,6 +16,8 @@ export class FolderSidebar extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.setFilter = this.setFilter.bind(this);
 
         const {treeState, persistenceLayerMutator} = this.props;
 
@@ -32,11 +35,35 @@ export class FolderSidebar extends React.Component<IProps, IState> {
                 persistenceLayerMutator,
             });
 
+        this.state = {
+            filter: undefined
+        };
+
     }
 
     public render() {
 
-        const {treeState, tags} = this.props;
+        const {treeState} = this.props;
+
+        const computeTags = () => {
+
+            const filter = this.state.filter;
+            const tags = this.props.tags;
+
+            if (filter && filter.trim() !== '') {
+
+                const predicate = (tag: Tag) => {
+                    return tag.label.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+                };
+
+                return tags.filter(predicate);
+            } else {
+                return tags;
+            }
+
+        };
+
+        const tags = computeTags();
 
         return (
 
@@ -58,7 +85,7 @@ export class FolderSidebar extends React.Component<IProps, IState> {
                     {this.tagContextMenuComponents.contextMenu()}
 
                     <div className="m-1">
-                        <InputFilter placeholder="Filter by tag or folder"/>
+                        <InputFilter placeholder="Filter by tag or folder" onChange={value => this.setFilter(value)}/>
                         {/*<TagCreateSelect tags={tags} onChange={NULL_FUNCTION}/>*/}
                     </div>
 
@@ -90,6 +117,13 @@ export class FolderSidebar extends React.Component<IProps, IState> {
         );
     }
 
+    private setFilter(filter: string) {
+        this.setState({
+            ...this.state,
+            filter
+        });
+    }
+
 }
 
 export interface IProps {
@@ -101,6 +135,6 @@ export interface IProps {
 }
 
 export interface IState {
-
+    readonly filter?: string;
 }
 
