@@ -899,8 +899,10 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
             // FIXME: this is a hack as I can't use the ... rest here for some reason.
             return {
                 ...persistentPrefs,
-                mark: persistentPrefs.mark,
+                update: persistentPrefs.update,
                 fetch: persistentPrefs.fetch,
+                prefs: persistentPrefs.prefs,
+                mark: persistentPrefs.mark,
                 isMarkedDelayed: persistentPrefs.isMarkedDelayed,
                 toggleMarked: persistentPrefs.toggleMarked,
                 isMarked: persistentPrefs.isMarked,
