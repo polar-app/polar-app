@@ -9,6 +9,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
+import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
 
 const log = Logger.create();
 
@@ -48,30 +49,44 @@ export class FolderSidebar extends React.Component<IProps, IState> {
             <div style={{
                      display: 'flex' ,
                      flexDirection: 'column',
-                     height: '100%',
-                    overflow: 'auto',
-                 }}>
+                     height: '100%'
+                }}>
 
-                <div className="m-1">
+                <div className=""
+                     style={{
+                         height: '100%',
+                         display: 'flex' ,
+                         flexDirection: 'column',
+                     }}>
 
                     {this.folderContextMenuComponents.contextMenu()}
 
                     {this.tagContextMenuComponents.contextMenu()}
 
-                    <TagTree tags={tags}
-                             treeState={treeState}
-                             rootTitle="Folders"
-                             tagType='folder'
-                             nodeContextMenuRender={this.folderContextMenuComponents.render}
-                             noCreate={true}/>
+                    <div className="m-1">
+                        <InputFilter placeholder="Filter by tag or folder"/>
+                    </div>
 
-                    <TagTree tags={tags}
-                             treeState={treeState}
-                             rootTitle="Tags"
-                             tagType='regular'
-                             filterDisabled={true}
-                             nodeContextMenuRender={this.tagContextMenuComponents.render}
-                             noCreate={true}/>
+                    <div style={{
+                            flexGrow: 1,
+                            overflow: 'auto',
+                        }}>
+                        <TagTree tags={tags}
+                                 treeState={treeState}
+                                 rootTitle="Folders"
+                                 tagType='folder'
+                                 filterDisabled={true}
+                                 nodeContextMenuRender={this.folderContextMenuComponents.render}
+                                 noCreate={true}/>
+
+                        <TagTree tags={tags}
+                                 treeState={treeState}
+                                 rootTitle="Tags"
+                                 tagType='regular'
+                                 filterDisabled={true}
+                                 nodeContextMenuRender={this.tagContextMenuComponents.render}
+                                 noCreate={true}/>
+                    </div>
 
                 </div>
 

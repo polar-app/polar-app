@@ -17,7 +17,6 @@ class Styles {
 
     public static BAR: React.CSSProperties = {
         display: 'flex',
-        marginBottom: '7px'
     };
 
     public static FILTER_INPUT: React.CSSProperties = {
