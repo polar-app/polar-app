@@ -101,7 +101,7 @@ export class FolderContextMenus {
         const confirmDelete = (onConfirm: () => void) => {
 
             Dialogs.confirm({
-                title: `FIXME: Are you sure you want to delete this ${type}?`,
+                title: `Are you sure you want to delete this ${type}?`,
                 subtitle: "This is a permanent operation and can't be undone.  The underlying documents will NOT be deleted.",
                 onCancel: NULL_FUNCTION,
                 type: 'danger',
@@ -112,10 +112,7 @@ export class FolderContextMenus {
 
         const doDelete = () => {
 
-            console.log("FIXME1");
-
             const deleteDelegate = () => {
-                console.log("FIXME3");
 
                 const tags = treeState.selected.keys();
                 const tag = tags[0];
