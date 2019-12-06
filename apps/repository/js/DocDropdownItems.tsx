@@ -81,12 +81,12 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
 
                 };
 
-                const Text = () => {
+                const nodeText = () => {
 
                     if (selectedTag.type === 'folder') {
                         return "Remove from Folder";
                     } else {
-                        return "Remove from Tag";
+                        return `Remove from tag '${selectedTag.tag.label}'`;
                     }
 
                 };
@@ -94,8 +94,7 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
                 return <DropdownItem toggle={this.props.toggle}
                                      hidden={!selectedTag}
                                      onClick={() => this.props.onRemoveFromFolder(selectedTag!.tag, selected)}>
-                    <Icon/>
-                    Remove from {selectedTag.type}
+                    <Icon/> {nodeText()}
 
                 </DropdownItem>;
 

@@ -161,7 +161,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         // merge the tags passed as props with the current state.
         const userTags = nextProps.userTags;
 
-        const tags = TagDescriptors.merge(prevState.tags, userTags);
+        const tags = TagDescriptors.merge(prevState.docTags, userTags);
         return {...prevState,
             tags,
             userTags
@@ -684,6 +684,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     }
 
     private refresh() {
+        // this applies the filters and then calls doRefresh...
         this.docRepoFilters.refresh();
     }
 

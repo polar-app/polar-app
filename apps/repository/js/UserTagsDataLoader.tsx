@@ -28,6 +28,8 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
             if (prefs) {
 
                 const userTags = DatastoreUserTags.get(prefs);
+                console.log("Working with new userTags: ", userTags);
+
                 return this.props.render(userTags);
 
             } else {

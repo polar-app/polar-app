@@ -32,7 +32,7 @@ export class PersistenceLayerMutator {
 
     }
 
-    public async deleteTag(deleteTag: TagStr) {
+    public async deleteTag(deleteTagID: TagStr) {
 
         const deleteFromUserTags = async () => {
 
@@ -41,9 +41,7 @@ export class PersistenceLayerMutator {
 
             const userTags = DatastoreUserTags.get(prefs);
 
-            const newUserTags = userTags.filter(current => current.id !== deleteTag);
-
-            console.log("FIXME: writing new user tags: ", newUserTags);
+            const newUserTags = userTags.filter(current => current.id !== deleteTagID);
 
             await DatastoreUserTags.set(prefs, newUserTags);
 
@@ -57,22 +55,22 @@ export class PersistenceLayerMutator {
 
         };
 
-        const deleteFromDocInfos = async () => {
+        const deleteFromDocInfos = async (deleteTag: Tag | undefined) => {
 
-            const tag = lookupTag(deleteTag);
-
-            if (tag) {
+            if (deleteTag) {
                 const repoDocInfos = this.repoDocInfosProvider();
-                this.removeTagsFromDocInfos([tag], repoDocInfos);
+                this.removeTagsFromDocInfos([deleteTag], repoDocInfos);
             } else {
                 log.warn("Unable to find tag: " + deleteTag);
             }
 
         };
 
+        const deleteTag = lookupTag(deleteTagID);
+
         await deleteFromUserTags();
 
-        await deleteFromDocInfos();
+        await deleteFromDocInfos(deleteTag);
 
     }
 
