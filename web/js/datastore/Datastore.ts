@@ -896,7 +896,7 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
                 return persistentPrefs.commit();
             };
 
-            // FIXME: this is a hack as I can't use the ... rest here for some reason.
+            // TODO: this is a hack as I can't use the ... rest here for some reason.
             return {
                 ...persistentPrefs,
                 update: persistentPrefs.update,
