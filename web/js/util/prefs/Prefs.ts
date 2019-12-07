@@ -117,6 +117,35 @@ export interface PersistentPrefs extends Prefs {
 
 }
 
+export interface InterceptedPersistentPrefs extends PersistentPrefs {
+    readonly __intercepted: true;
+}
+
+export class PersistentPrefsInterceptors {
+
+    public static intercept(persistentPrefs: PersistentPrefs, commit: () => Promise<void>): InterceptedPersistentPrefs {
+        return {
+            ...persistentPrefs,
+            update: persistentPrefs.update,
+            fetch: persistentPrefs.fetch,
+            prefs: persistentPrefs.prefs,
+            mark: persistentPrefs.mark,
+            isMarkedDelayed: persistentPrefs.isMarkedDelayed,
+            toggleMarked: persistentPrefs.toggleMarked,
+            isMarked: persistentPrefs.isMarked,
+            markDelayed: persistentPrefs.markDelayed,
+            get: persistentPrefs.get,
+            set: persistentPrefs.set,
+            toDict: persistentPrefs.toDict,
+            toPrefDict: persistentPrefs.toPrefDict,
+            defined: persistentPrefs.defined,
+            __intercepted: true,
+            commit
+        };
+
+    }
+}
+
 /**
  * Prefs object just backed by a local dictionary.
  */

@@ -11,7 +11,7 @@ import {
     ErrorListener,
     FileSynchronizationEvent,
     FileSynchronizationEventListener,
-    InitResult,
+    InitResult, PersistentPrefsUpdatedCallback,
     PrefsProvider,
     SnapshotResult,
     SyncDocMap,
@@ -48,7 +48,8 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {CompositePrefs, PersistentPrefs} from "../util/prefs/Prefs";
+import {CompositePrefs, PersistentPrefs, PersistentPrefsInterceptors} from "../util/prefs/Prefs";
+import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../firebase/Firebase";
 
 const log = Logger.create();
 
@@ -601,9 +602,48 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public getPrefs(): PrefsProvider {
 
-        // FIXME need this to write to the local datastore first in the commit function, then call the
-        // parent commit function.
-        return this.cloud.getPrefs();
+        // write to firebase first, then commit locally.
+
+        const prefsProvider = this.cloud.getPrefs();
+
+        const commit = async () => {
+
+            const cloudPrefs = prefsProvider.get();
+            const localPrefs = this.local.getPrefs().get();
+
+            for (const pref of cloudPrefs.prefs()) {
+                localPrefs.set(pref.key, pref.value);
+            }
+
+            await localPrefs.commit();
+
+        };
+
+        const createInterceptedPersistentPrefs = (persistentPrefs: PersistentPrefs | undefined): PersistentPrefs | undefined => {
+
+            if (persistentPrefs) {
+                return PersistentPrefsInterceptors.intercept(persistentPrefs, commit);
+            } else {
+                return undefined;
+            }
+
+        };
+
+        return {
+
+            get(): PersistentPrefs {
+                return createInterceptedPersistentPrefs(prefsProvider.get())!;
+            },
+            subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+
+                const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
+                    onNext(createInterceptedPersistentPrefs(persistentPrefs));
+                };
+
+                return prefsProvider.subscribe(handleOnNext, onError);
+            }
+
+        };
 
     }
 

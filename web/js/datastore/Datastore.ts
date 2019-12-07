@@ -11,7 +11,7 @@ import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {PersistentPrefs, Prefs} from '../util/prefs/Prefs';
+import {InterceptedPersistentPrefs, PersistentPrefs, PersistentPrefsInterceptors, Prefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -827,10 +827,6 @@ export interface PrefsProvider {
 
 }
 
-interface InterceptedPersistentPrefs extends PersistentPrefs {
-    readonly __intercepted: true;
-}
-
 export abstract class AbstractPrefsProvider implements PrefsProvider {
 
     protected reactor = new SimpleReactor<PersistentPrefs | undefined>();
@@ -896,25 +892,7 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
                 return persistentPrefs.commit();
             };
 
-            // TODO: this is a hack as I can't use the ... rest here for some reason.
-            return {
-                ...persistentPrefs,
-                update: persistentPrefs.update,
-                fetch: persistentPrefs.fetch,
-                prefs: persistentPrefs.prefs,
-                mark: persistentPrefs.mark,
-                isMarkedDelayed: persistentPrefs.isMarkedDelayed,
-                toggleMarked: persistentPrefs.toggleMarked,
-                isMarked: persistentPrefs.isMarked,
-                markDelayed: persistentPrefs.markDelayed,
-                get: persistentPrefs.get,
-                set: persistentPrefs.set,
-                toDict: persistentPrefs.toDict,
-                toPrefDict: persistentPrefs.toPrefDict,
-                defined: persistentPrefs.defined,
-                __intercepted: true,
-                commit
-            };
+            return PersistentPrefsInterceptors.intercept(persistentPrefs, commit);
 
         } else {
             return undefined;
