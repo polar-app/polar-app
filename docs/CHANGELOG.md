@@ -1,6 +1,11 @@
 
 ## Features
 
+- usability: the sidebar has been significantly redesigned
+    - "+" button for adding tags and folders
+    - context menu for adding tags and folders
+    - remove tag from docs
+
 - usability: expand/collapse of folders now works now. 
 
 - UI: better UI filter control.
