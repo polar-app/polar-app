@@ -601,8 +601,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public getPrefs(): PrefsProvider {
 
-        // FIXME need this to write to the local datastore first..
+        // FIXME need this to write to the local datastore first in the commit function, then call the
+        // parent commit function.
         return this.cloud.getPrefs();
+
     }
 
 }

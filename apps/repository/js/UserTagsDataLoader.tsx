@@ -57,3 +57,4 @@ interface IState {
 
 }
 
+export type UserTags = ReadonlyArray<Tag>;

@@ -21,7 +21,7 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
         const onNext = (value: T | undefined) => {
 
-            console.log(`Data loader ${this.props.id} new data: `, value);
+            // console.log(`Data loader ${this.props.id} new data: `, value);
 
             if (this.unmounted) {
                 console.warn("DataLoader was unmounted but received event");

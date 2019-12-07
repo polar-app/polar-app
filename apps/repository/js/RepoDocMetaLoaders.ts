@@ -12,6 +12,8 @@ export class RepoDocMetaLoaders {
     public static addThrottlingEventListener(repoDocMetaLoader: RepoDocMetaLoader,
                                              callback: () => void): Releaseable {
 
+        // TODO: refactor this method into a ThrottlingEventListener CLASS and handle this there.
+
         // DO NOT refresh too often if we get lots of documents as this really
         // locks up the UI but we also need a reasonable timeout.
         //

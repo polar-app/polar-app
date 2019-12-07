@@ -97,9 +97,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         this.state = {
             data: [],
-            docTags: [],
-            userTags: this.props.userTags || [],
-            tags: TagDescriptors.merge([], this.props.userTags),
             columns: IDMaps.create(Object.values(new DocRepoTableColumns())),
             selected: [],
             docSidebarVisible: false
@@ -108,7 +105,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
 
         const repoDocInfosProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.values();
-        this.tagsProvider = () => TagDescriptors.merge(this.state.docTags, this.state.userTags);
+        this.tagsProvider = () => this.props.tags;
 
         this.persistenceLayerMutator
             = new PersistenceLayerMutator(this.props.repoDocMetaManager,
@@ -155,17 +152,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             })
         );
 
-    }
-
-    public static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
-        // merge the tags passed as props with the current state.
-        const userTags = nextProps.userTags;
-
-        const tags = TagDescriptors.merge(prevState.docTags, userTags);
-        return {...prevState,
-            tags,
-            userTags
-        };
     }
 
     private async initAsync(): Promise<void> {
@@ -392,7 +378,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public render() {
 
-        const tagsProvider = () => this.state.tags;
+        const tagsProvider = () => this.props.tags;
 
         const docActive = {
             right: 'd-none-mobile',
@@ -481,7 +467,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         left={
                             <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
                                            treeState={this.treeState}
-                                           tags={this.state.tags}/>
+                                           tags={this.props.tags}/>
                         }
                         right={
                             <Dock
@@ -693,9 +679,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
      */
     private doRefresh(data: ReadonlyArray<RepoDocInfo>) {
 
-        const docTags = this.props.repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
-        const tags = TagDescriptors.merge(docTags, this.state.userTags);
-
         setTimeout(() => {
 
             // The react table will not update when I change the state from
@@ -703,8 +686,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             this.setState({
                 ...this.state,
                 data,
-                docTags,
-                tags
             });
 
         }, 1);
@@ -733,18 +714,12 @@ interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
-    readonly userTags: ReadonlyArray<Tag> | undefined;
+    readonly tags: ReadonlyArray<TagDescriptor>;
 
 }
 
 interface IState {
     readonly data: ReadonlyArray<RepoDocInfo>;
-
-    readonly tags: ReadonlyArray<TagDescriptor>;
-
-    readonly docTags: ReadonlyArray<TagDescriptor>;
-    readonly userTags: ReadonlyArray<Tag>;
-
     readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly docSidebarVisible: boolean;

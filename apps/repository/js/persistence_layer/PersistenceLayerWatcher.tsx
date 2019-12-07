@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {ListenablePersistenceLayerProvider, PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
+import {ListenablePersistenceLayerProvider, PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {
     PersistenceLayerManager,
     PersistenceLayerManagerEvent,
     PersistenceLayerManagerEventListener
-} from "../../../web/js/datastore/PersistenceLayerManager";
-import {ListenablePersistenceLayer} from "../../../web/js/datastore/ListenablePersistenceLayer";
+} from "../../../../web/js/datastore/PersistenceLayerManager";
+import {ListenablePersistenceLayer} from "../../../../web/js/datastore/ListenablePersistenceLayer";
 
 export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
 
