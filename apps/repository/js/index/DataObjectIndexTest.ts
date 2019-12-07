@@ -1,7 +1,7 @@
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {DataObjectIndex} from './DataObjectIndex';
 import {Tags} from 'polar-shared/src/tags/Tags';
-import {assertJSON} from '../../../web/js/test/Assertions';
+import {assertJSON} from '../../../../web/js/test/Assertions';
 
 describe('DataObjectIndex', function() {
 
@@ -9,8 +9,8 @@ describe('DataObjectIndex', function() {
 
         const index = new DataObjectIndex<Person>((p?: Person) => p!.tags);
 
-        index.add('alice', {name: 'alice', tags: [Tags.create('nice'), Tags.create('happy')]});
-        index.add('bob', {name: 'bob', tags: [Tags.create('mean'), Tags.create('bad')]});
+        index.put('alice', {name: 'alice', tags: [Tags.create('nice'), Tags.create('happy')]});
+        index.put('bob', {name: 'bob', tags: [Tags.create('mean'), Tags.create('bad')]});
 
         assertJSON(index.values(), [
             {
@@ -76,7 +76,7 @@ describe('DataObjectIndex', function() {
             }
         ]);
 
-        index.remove('bob');
+        index.delete('bob');
 
         assertJSON(index.toTagDescriptors(), [
                 {
@@ -97,6 +97,44 @@ describe('DataObjectIndex', function() {
                 }
             ]
         );
+
+    });
+
+    it("tag add and remove", function() {
+
+        const index = new DataObjectIndex<Person>((p?: Person) => p!.tags);
+
+        const cat = Tags.create("cat");
+        const dog = Tags.create("dog");
+
+        index.put('alice', {name: 'alice', tags: []});
+
+        assertJSON(index.toTagDescriptors(), [
+        ]);
+
+        index.put('alice', {name: 'alice', tags: [cat]});
+
+        assertJSON(index.toTagDescriptors(), [
+            {
+                "id": "cat",
+                "label": "cat",
+                "count": 1,
+                "members": [
+                    "alice"
+                ]
+            }
+        ]);
+
+        index.put('alice', {name: 'alice', tags: []});
+
+        assertJSON(index.toTagDescriptors(), [
+            {
+                "id": "cat",
+                "label": "cat",
+                "count": 0,
+                "members": []
+            }
+        ]);
 
     });
 

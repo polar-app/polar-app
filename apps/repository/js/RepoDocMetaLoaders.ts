@@ -28,21 +28,23 @@ export class RepoDocMetaLoaders {
         // even THEN that would add latency because we're not sure how often
         // the server is sending data.
 
-        // TODO: consider ALWAYS sending the last event as soon as we get it
-        // and clear the throttler.  This way if we receive the 100% event we
-        // don't have any latency.  We're goign to need a clear() or flush()
-        // method in the throttler. maybe just a force arg to exec() to force
-        // this method from being called.  We might want to have a minTimeout
-        // here too so that this flush behavior couldn't be triggered too often
-        // but maybe we're overthinking here (for now).
-
         const throttlerOpts = { maxRequests: 250, maxTimeout: 500 };
 
         const refreshThrottler = new Throttler(() => callback(), throttlerOpts);
 
+        let loaded: boolean = false;
+
         return repoDocMetaLoader.addEventListener(event => {
 
-            refreshThrottler.exec();
+            if (event.progress.progress >= 100) {
+                loaded = true;
+            }
+
+            if (loaded) {
+                callback();
+            } else {
+                refreshThrottler.exec();
+            }
 
         });
 

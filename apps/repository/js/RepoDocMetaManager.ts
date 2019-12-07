@@ -12,7 +12,7 @@ import {IProvider} from 'polar-shared/src/util/Providers';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';
-import {DataObjectIndex} from './DataObjectIndex';
+import {DataObjectIndex} from './index/DataObjectIndex';
 import {RepoDocAnnotations} from "./RepoDocAnnotations";
 import {RepoDocInfos} from "./RepoDocInfos";
 import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
@@ -61,7 +61,7 @@ export class RepoDocMetaManager {
 
         if (repoDocMeta) {
 
-            this.repoDocInfoIndex.add(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
+            this.repoDocInfoIndex.put(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
 
             this.updateTagsDB(repoDocMeta.repoDocInfo);
 
@@ -82,7 +82,7 @@ export class RepoDocMetaManager {
                     const deleteIDs = SetArrays.difference(currentAnnotationsIDs, newAnnotationIDs);
 
                     for (const deleteID of deleteIDs) {
-                        this.repoDocAnnotationIndex.remove(deleteID);
+                        this.repoDocAnnotationIndex.delete(deleteID);
                     }
 
                 };
@@ -90,7 +90,7 @@ export class RepoDocMetaManager {
                 const updateExisting = () => {
 
                     for (const repoDocAnnotation of repoDocMeta.repoDocAnnotations) {
-                        this.repoDocAnnotationIndex.add(repoDocAnnotation.id, repoDocAnnotation);
+                        this.repoDocAnnotationIndex.put(repoDocAnnotation.id, repoDocAnnotation);
                     }
 
                 };
@@ -110,14 +110,14 @@ export class RepoDocMetaManager {
                 for (const repoAnnotation of Object.values(this.repoDocAnnotationIndex)) {
 
                     if (repoAnnotation.fingerprint === fingerprint) {
-                        this.repoDocAnnotationIndex.remove(repoAnnotation.id);
+                        this.repoDocAnnotationIndex.delete(repoAnnotation.id);
                     }
                 }
 
             };
 
             const deleteDoc = () => {
-                this.repoDocInfoIndex.remove(fingerprint);
+                this.repoDocInfoIndex.delete(fingerprint);
             };
 
             deleteOrphanedAnnotations();
@@ -134,10 +134,10 @@ export class RepoDocMetaManager {
     public updateFromRepoDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
         if (repoDocInfo) {
-            this.repoDocInfoIndex.add(fingerprint, repoDocInfo);
+            this.repoDocInfoIndex.put(fingerprint, repoDocInfo);
             this.updateTagsDB(repoDocInfo);
         } else {
-            this.repoDocInfoIndex.remove(fingerprint);
+            this.repoDocInfoIndex.delete(fingerprint);
         }
 
     }
