@@ -106,7 +106,7 @@ export class FolderSidebar extends React.Component<IProps, IState> {
                         {/*    <PlusIcon/>*/}
 
                         {/*</Button>*/}
-                        <AddTagsDropdown/>
+                        <AddTagsDropdown createUserTagCallback={this.folderContextMenuComponents.createUserTag}/>
 
                     </div>
 

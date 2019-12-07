@@ -35,6 +35,8 @@ export interface ContextMenuComponents {
 
     readonly contextMenu: () => React.ReactElement;
 
+    readonly createUserTag: CreateUserTagCallback;
+
 }
 
 export type CreateFolderCallback = (type: TagType, newTag: TagStr) => void;
@@ -48,6 +50,8 @@ export interface FolderContextMenuOpts {
     readonly persistenceLayerMutator: PersistenceLayerMutator;
 
 }
+
+export type CreateUserTagCallback = (type: TagType) => void;
 
 export class FolderContextMenus {
 
@@ -77,7 +81,8 @@ export class FolderContextMenus {
 
         };
 
-        const doCreate = () => {
+        const createUserTag = (type: TagType) => {
+
             const tags = treeState.selected.keys();
 
             promptForCreate(type, (userTag: string) => {
@@ -88,8 +93,10 @@ export class FolderContextMenus {
                         case "tag":
                             return userTag;
                         case "folder":
-                            return Paths.create(tags[0], userTag);
+                            const parent = tags.length > 0 ? tags[0] : '/';
+                            return Paths.create(parent, userTag);
                     }
+
                 };
 
                 const newTag = createNewTag();
@@ -155,7 +162,7 @@ export class FolderContextMenus {
                 <DropdownItem toggle={false}
                               key="create"
                               disabled={! hasSingleSelectedTag()}
-                              onClick={() => doCreate()}>
+                              onClick={() => createUserTag(type)}>
                     <FolderIcon/> Create Folder
                 </DropdownItem>,
                 <DropdownItem key="divider1" divider/>,
@@ -169,7 +176,7 @@ export class FolderContextMenus {
             return [
                 <DropdownItem toggle={false}
                               key="create"
-                              onClick={() => doCreate()}>
+                              onClick={() => createUserTag(type)}>
                     <TagIcon/> Create Tag
                 </DropdownItem>,
                 <DropdownItem key="divider1" divider/>,
@@ -205,7 +212,7 @@ export class FolderContextMenus {
 
         };
 
-        return {render, contextMenu};
+        return {render, contextMenu, createUserTag};
 
     }
 
