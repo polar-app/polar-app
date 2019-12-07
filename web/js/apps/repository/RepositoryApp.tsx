@@ -57,8 +57,6 @@ import {PlatformStyles} from "../../ui/PlatformStyles";
 import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {AccountProvider} from "../../accounts/AccountProvider";
-import {PersistenceLayerWatcher} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerWatcher";
-import {UserTagsDataLoader} from "../../../../apps/repository/js/UserTagsDataLoader";
 import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
 const log = Logger.create();
@@ -162,7 +160,7 @@ export class RepositoryApp {
                                          render={(props) =>
                         <DocRepoScreen persistenceLayerProvider={persistenceLayerProvider}
                                        persistenceLayerController={persistenceLayerController}
-                                       tags={props.tags}
+                                       tags={props.docTags}
                                        updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                        repoDocMetaManager={this.repoDocInfoManager}
                                        repoDocMetaLoader={this.repoDocInfoLoader}/>
@@ -180,6 +178,7 @@ export class RepositoryApp {
                                          render={(props) =>
                         <AnnotationRepoScreen persistenceLayerManager={this.persistenceLayerManager}
                                               persistenceLayerProvider={persistenceLayerProvider}
+                                              tags={props.annotationTags}
                                               updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                               repoDocMetaManager={this.repoDocInfoManager}
                                               repoDocMetaLoader={this.repoDocInfoLoader}

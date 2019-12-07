@@ -104,7 +104,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
 
-        const repoDocInfosProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.values();
+        const repoDocInfosProvider = () => this.props.repoDocMetaManager.repoDocInfoIndex.values();
         this.tagsProvider = () => this.props.tags;
 
         this.persistenceLayerMutator

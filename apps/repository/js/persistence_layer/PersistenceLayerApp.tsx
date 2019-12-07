@@ -5,16 +5,14 @@ import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceL
 import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
-import {RepoDataLoader} from "./RepoDataLoader";
+import {RepoDataLoader, TagView} from "./RepoDataLoader";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 
-export class PersistenceLayerApp extends React.PureComponent<IProps, IState> {
+export class PersistenceLayerApp extends React.Component<IProps, IState> {
 
     constructor(props: any) {
         super(props);
-
-
     }
 
     public render() {
@@ -25,15 +23,16 @@ export class PersistenceLayerApp extends React.PureComponent<IProps, IState> {
 
                  <RepoDataLoader repoDocMetaLoader={this.props.repoDocMetaLoader}
                                  repoDocMetaManager={this.props.repoDocMetaManager}
-                                 render={docTags =>
+                                 render={(appTags) =>
                      <UserTagsDataLoader persistenceLayerProvider={persistenceLayerProvider} render={userTags => {
 
-                         const tags = TagDescriptors.merge(docTags || [], userTags);
+                         const docTags = TagDescriptors.merge(appTags?.docTags, userTags);
+                         const annotationTags = TagDescriptors.merge(appTags?.annotationTags, userTags);
 
                          return this.props.render({
                              persistenceLayerProvider,
-                             tags,
-                             docTags: docTags || [],
+                             docTags,
+                             annotationTags,
                              userTags: userTags || []
                          });
 
@@ -64,7 +63,7 @@ export interface IState {
  */
 export interface DocRepoAppProps {
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
-    readonly tags: ReadonlyArray<TagDescriptor>;
     readonly docTags: ReadonlyArray<TagDescriptor>;
+    readonly annotationTags: ReadonlyArray<TagDescriptor>;
     readonly userTags: ReadonlyArray<Tag>;
 }

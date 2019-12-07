@@ -32,6 +32,7 @@ import {FolderSidebar} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
+import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -48,6 +49,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
      * The tags that are selected by the user.
      */
     private selectedFolders: ReadonlyArray<Tag> = [];
+    private persistenceLayerMutator: PersistenceLayerMutator;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -58,7 +60,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         this.state = {
             data: [],
-            tags: [],
         };
 
         const onSelected = (values: ReadonlyArray<TagStr>) => this.onSelectedFolders(values);
@@ -96,6 +97,15 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.filtersHandler = new AnnotationRepoFiltersHandler(filters => filterEngine.onFiltered(filters));
 
         const doRefresh = () => filterEngine.onProviderUpdated();
+
+        const repoDocInfosProvider = () => this.props.repoDocMetaManager.repoDocInfoIndex.values();
+
+        this.persistenceLayerMutator
+            = new PersistenceLayerMutator(this.props.repoDocMetaManager,
+                                          this.props.persistenceLayerProvider,
+                                          () => this.props.tags,
+                                          repoDocInfosProvider,
+                                          () => doRefresh());
 
         PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
 
@@ -169,9 +179,9 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                         splitter: 'd-none-mobile'
                       }}
                       left={
-                          <FolderSidebar persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                          <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
                                          treeState={this.treeState}
-                                         tags={this.state.tags}/>
+                                         tags={this.props.tags}/>
                       }
                       right={
                           <PreviewAndMainViewDock data={this.state.data}
@@ -227,6 +237,7 @@ export interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
+    readonly tags: ReadonlyArray<TagDescriptor>;
 }
 
 export interface IState {
@@ -234,16 +245,6 @@ export interface IState {
     readonly repoAnnotation?: IDocAnnotation;
 
     readonly data: ReadonlyArray<IDocAnnotation>;
-
-    /**
-     * All available tags
-     */
-    readonly tags: ReadonlyArray<TagDescriptor>;
-
-    /**
-     * The currently selected tags.
-     */
-    // readonly selected: ReadonlyArray<TagStr>;
 
 }
 

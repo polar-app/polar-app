@@ -1,15 +1,14 @@
 import React from 'react';
-import {Tag} from "polar-shared/src/tags/Tags";
 import {ErrorHandlerCallback, SnapshotSubscriber} from "../../../../web/js/firebase/Firebase";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {RepoDocMetaLoaders} from "../RepoDocMetaLoaders";
-import {TagDescriptor} from 'polar-shared/src/tags/TagDescriptors';
+import {AppTags} from "./AppTags";
 
-export class RepoDataLoader extends React.PureComponent<IProps, IState> {
+export class RepoDataLoader extends React.Component<IProps, IState> {
 
-    private subscriber: SnapshotSubscriber<DocTags>;
+    private subscriber: SnapshotSubscriber<AppTags>;
 
     constructor(props: any) {
         super(props);
@@ -19,20 +18,22 @@ export class RepoDataLoader extends React.PureComponent<IProps, IState> {
 
     }
 
-    public render() {
+        public render() {
 
         return (
-            <DataLoader id="repoDocMetaLoader" provider={this.subscriber} render={docTags => this.props.render(docTags)}/>
+            <DataLoader id="repoDocMetaLoader" provider={this.subscriber} render={value => this.props.render(value)}/>
         );
 
     }
 
 }
 
+export type TagView = 'docs' | 'annotations';
+
 export interface IProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
-    readonly render: (docTags: ReadonlyArray<TagDescriptor> | undefined) => React.ReactElement;
+    readonly render: (appTags: AppTags | undefined) => React.ReactElement;
 }
 
 export interface IState {
@@ -61,15 +62,18 @@ class RepoDocMetaLoaderSnapshots {
 class RepoDocMetaManagerSnapshots {
 
     public static create(repoDocMetaLoader: RepoDocMetaLoader,
-                         repoDocMetaManager: RepoDocMetaManager): SnapshotSubscriber<DocTags> {
+                         repoDocMetaManager: RepoDocMetaManager): SnapshotSubscriber<AppTags> {
 
-        return (onNext: (value: DocTags) => void, onError: ErrorHandlerCallback) => {
+        return (onNext: (value: AppTags) => void, onError: ErrorHandlerCallback) => {
 
             const loaderSnapshotter = RepoDocMetaLoaderSnapshots.create(repoDocMetaLoader);
 
             const onLoaderNext = () => {
+
                 const docTags = repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
-                onNext(docTags);
+                const annotationTags = repoDocMetaManager.repoDocAnnotationIndex.toTagDescriptors();
+
+                onNext({docTags, annotationTags});
             };
 
             const onLoaderError = onError;
@@ -83,7 +87,6 @@ class RepoDocMetaManagerSnapshots {
 
 }
 
-export type DocTags = ReadonlyArray<TagDescriptor>;
 
 
 
