@@ -28,23 +28,22 @@ export class RepoDocMetaLoaders {
         // even THEN that would add latency because we're not sure how often
         // the server is sending data.
 
+        // TODO: it might be possible to remove the throttler AFTER we start
+        // BUT I noticed that it doesn't work. The general idea is to improve
+        // the latency by no longer trading latency for throughput after
+        // startup but we don't have a reliable way to notify that we have
+        // fully read in the main snapshot after init.  If I can do that then I
+        // can disable the throttler by flipping a loaded flag but right now that
+        // strategy doesn't work as once we hit 100% (which seems to happen too
+        // soon) we will no longer throttle and performance will suck.
+
         const throttlerOpts = { maxRequests: 250, maxTimeout: 500 };
 
         const refreshThrottler = new Throttler(() => callback(), throttlerOpts);
 
-        let loaded: boolean = false;
-
         return repoDocMetaLoader.addEventListener(event => {
 
-            if (event.progress.progress >= 100) {
-                loaded = true;
-            }
-
-            if (loaded) {
-                callback();
-            } else {
-                refreshThrottler.exec();
-            }
+            refreshThrottler.exec();
 
         });
 
