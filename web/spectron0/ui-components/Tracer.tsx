@@ -5,16 +5,16 @@ export class Tracer extends React.PureComponent<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        console.log("FIXME: constructor of trace");
+        console.log("tracer: constructor of trace");
 
     }
 
     public componentDidMount(): void {
-        console.log("FIXME: trace componentDidMount " + this.props.id);
+        console.log("tracer: trace componentDidMount " + this.props.id);
     }
 
     public componentWillUnmount(): void {
-        console.log("FIXME: trace componentWillUnmount: " + this.props.id);
+        console.log("tracer: trace componentWillUnmount: " + this.props.id);
     }
 
     public render() {

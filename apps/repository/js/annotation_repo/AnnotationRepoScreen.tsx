@@ -78,14 +78,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         };
 
         const onUpdated: UpdatedCallback = repoAnnotations => {
-
-            // FIXME: combine the tags with the datastore tags...
-            const tags = this.props.repoDocMetaManager.repoDocAnnotationIndex.toTagDescriptors();
-
-            const state = {...this.state, data: repoAnnotations, tags};
-
+            const state = {...this.state, data: repoAnnotations};
             setStateInBackground(state);
-
         };
 
         const repoAnnotationsProvider: () => ReadonlyArray<IDocAnnotation> =
