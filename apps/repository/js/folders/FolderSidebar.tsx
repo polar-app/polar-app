@@ -9,6 +9,7 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {Button} from "reactstrap";
 import {PlusIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {AddTagsDropdown} from "./AddTagsDropdown";
 
 export class FolderSidebar extends React.Component<IProps, IState> {
 
@@ -86,7 +87,7 @@ export class FolderSidebar extends React.Component<IProps, IState> {
 
                     {this.tagContextMenuComponents.contextMenu()}
 
-                    <div className="p-1 border-bottom"
+                    <div className="p-1"
                          style={{
                              display: 'flex'
                          }}>
@@ -105,6 +106,7 @@ export class FolderSidebar extends React.Component<IProps, IState> {
                         {/*    <PlusIcon/>*/}
 
                         {/*</Button>*/}
+                        <AddTagsDropdown/>
 
                     </div>
 
