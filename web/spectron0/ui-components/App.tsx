@@ -9,6 +9,8 @@ import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {InputFilter} from "../../js/ui/input_filter/InputFilter";
 import {Tracer} from "./Tracer";
+import {Button} from "reactstrap";
+import {TimesIcon} from "../../js/ui/icons/FixedWidthIcons";
 
 const styles = {
     swatch: {
@@ -255,10 +257,19 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div className="p-1">
 
-                {/*<InputFilter placeholder="Filter by title"/>*/}
+                <Button className="mt-auto mb-auto text-secondary p-0 no-focus"
+                        style={{outline: 'none', boxShadow: 'none'}}
+                        onClick={() => console.log("FIXME clear")}
+                        color="clear">
 
-                <Tracer id="1"/>
-                <Tracer id="2"/>
+                    <TimesIcon/>
+
+                </Button>
+
+                <InputFilter placeholder="Filter by title"/>
+
+                {/*<Tracer id="1"/>*/}
+                {/*<Tracer id="2"/>*/}
 
                 {/*<WhatsNewModal/>*/}
 

@@ -2,6 +2,8 @@ import React from 'react';
 import {FilterIcon, TimesIcon} from "../icons/FixedWidthIcons";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Button} from "reactstrap";
+import {ResetButton} from "./ResetButton";
+import {FocusInput} from "./FocusInput";
 
 /**
  * Text input widget that allow the user to filter their input.
@@ -12,33 +14,25 @@ export class InputFilter extends React.Component<IProps, IState> {
         super(props);
 
         this.setValue = this.setValue.bind(this);
-        this.setFocused = this.setFocused.bind(this);
 
         this.state = {
-            focused: false,
-            value: ""
+            value: "",
         };
 
     }
 
     public render() {
 
-        const borderClass = this.state.focused ? 'border-primary' : 'border-muted';
-
-        const clear = () => this.setValue("");
+        const clear = () => {
+            console.log("clear");
+            this.setValue("");
+        };
 
         const ClearButton = () => {
 
             if (this.state.value !== "") {
                 return (
-                    <Button className="mt-auto mb-auto text-secondary p-0 no-focus"
-                            style={{outline: 'none', boxShadow: 'none'}}
-                            onClick={() => console.log("FIXME clear")}
-                            color="clear">
-
-                        <TimesIcon/>
-
-                    </Button>
+                    <ResetButton onClick={() => clear()}/>
                 );
 
             }
@@ -47,32 +41,41 @@ export class InputFilter extends React.Component<IProps, IState> {
 
         };
 
-        return <div className={"p-1 pl-1 border rounded " + borderClass}
-                    onFocus={() => this.setFocused(true)}
-                    onBlur={() => this.setFocused(false)}
-                    style={{
-                        ...this.props.style,
-                        display: 'flex'
-                    }}>
+        // TODO: ideally we would have a 'clear' button to reset the input but we have
+        // two problems with it:
+        //
+        //
+        // - setting the value in the state doesn't work
+        // - when we have onFocus onBlur methods the click event doesn't fire
+        //
+        // - this is probably happening because the focus is setting teh state , then
+        //   we click button but it's not there or somethign like that...
 
-            <div className="mt-auto mb-auto text-secondary">
-                <FilterIcon/>
+        return <FocusInput style={{...this.props.style}}>
+            <div className={"pl-1 pt-1 pb-1"}
+                 style={{
+                     display: 'flex'
+                 }}>
+
+                <div className="mt-auto mb-auto text-secondary">
+                    <FilterIcon/>
+                </div>
+
+                <input id={this.props.id}
+                       placeholder={this.props.placeholder}
+                       value={this.state.value}
+                       defaultValue={this.props.defaultValue}
+                       className="border-0"
+                       onChange={event => this.setValue(event.target.value)}
+                       style={{
+                           flexGrow: 1,
+                           outline: 'none'
+                       }}/>
+
+                {/*<ClearButton/>*/}
+
             </div>
-
-            <input id={this.props.id}
-                   placeholder={this.props.placeholder}
-                   value={this.state.value}
-                   defaultValue={this.props.defaultValue}
-                   className="border-0 text-muted"
-                   onChange={event => this.setValue(event.target.value)}
-                   style={{
-                       flexGrow: 1,
-                       outline: 'none'
-                   }}/>
-
-           {/*<ClearButton/>*/}
-
-        </div>;
+        </FocusInput>;
 
     }
 
@@ -84,14 +87,6 @@ export class InputFilter extends React.Component<IProps, IState> {
         this.setState({
             ...this.state,
             value
-        });
-    }
-
-    private setFocused(focused: boolean) {
-
-        this.setState({
-            ...this.state,
-            focused
         });
 
     }
@@ -115,6 +110,5 @@ interface IProps {
 }
 
 interface IState {
-    readonly focused?: boolean;
     readonly value: string;
 }

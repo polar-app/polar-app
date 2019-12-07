@@ -84,8 +84,8 @@ export class FolderSidebar extends React.Component<IProps, IState> {
                     {this.tagContextMenuComponents.contextMenu()}
 
                     <div className="m-1">
-                        <InputFilter placeholder="Filter by tag or folder" onChange={value => this.setFilter(value)}/>
-                        {/*<TagCreateSelect tags={tags} onChange={NULL_FUNCTION}/>*/}
+                        <InputFilter placeholder="Filter by tag or folder"
+                                     onChange={value => this.setFilter(value)}/>
                     </div>
 
                     <div style={{
