@@ -18,13 +18,23 @@ export class RepoDataLoader extends React.Component<IProps, IState> {
 
     }
 
-        public render() {
-
+    public render() {
         return (
             <DataLoader id="repoDocMetaLoader" provider={this.subscriber} render={value => this.props.render(value)}/>
         );
 
     }
+
+}
+
+function createSnapshot(repoDocMetaManager: RepoDocMetaManager): AppTags {
+
+    const docTags = () => repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
+    const annotationTags = () => repoDocMetaManager.repoDocAnnotationIndex.toTagDescriptors();
+
+    return {
+        docTags, annotationTags
+    };
 
 }
 
@@ -69,14 +79,13 @@ class RepoDocMetaManagerSnapshots {
             const loaderSnapshotter = RepoDocMetaLoaderSnapshots.create(repoDocMetaLoader);
 
             const onLoaderNext = () => {
-
-                const docTags = repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
-                const annotationTags = repoDocMetaManager.repoDocAnnotationIndex.toTagDescriptors();
-
-                onNext({docTags, annotationTags});
+                onNext(createSnapshot(repoDocMetaManager));
             };
 
             const onLoaderError = onError;
+
+            // send the current snapshot when we first start
+            onNext(createSnapshot(repoDocMetaManager));
 
             return loaderSnapshotter(onLoaderNext, onLoaderError);
 

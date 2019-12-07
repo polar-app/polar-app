@@ -1,10 +1,10 @@
 import * as React from "react";
-import {DataLoader} from "../../../web/js/ui/data_loader/DataLoader";
+import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
-import {PersistentPrefs} from "../../../web/js/util/prefs/Prefs";
-import {DatastoreUserTags} from "../../../web/js/datastore/DatastoreUserTags";
-import {SnapshotSubscriber} from "../../../web/js/firebase/Firebase";
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
+import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
+import {SnapshotSubscriber} from "../../../../web/js/firebase/Firebase";
 
 export class UserTagsDataLoader extends React.Component<IProps, IState> {
 

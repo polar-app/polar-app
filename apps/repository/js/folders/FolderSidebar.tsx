@@ -2,7 +2,6 @@ import * as React from 'react';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {ContextMenuComponents, FolderContextMenus} from "./FolderContextMenus";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";

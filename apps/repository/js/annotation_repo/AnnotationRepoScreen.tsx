@@ -31,7 +31,6 @@ import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
 import {FolderSidebar} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
-import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
@@ -103,7 +102,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.persistenceLayerMutator
             = new PersistenceLayerMutator(this.props.repoDocMetaManager,
                                           this.props.persistenceLayerProvider,
-                                          () => this.props.tags,
+                                          this.props.tags,
                                           repoDocInfosProvider,
                                           () => doRefresh());
 
@@ -181,7 +180,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                       left={
                           <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
                                          treeState={this.treeState}
-                                         tags={this.props.tags}/>
+                                         tags={this.props.tags()}/>
                       }
                       right={
                           <PreviewAndMainViewDock data={this.state.data}
@@ -237,7 +236,7 @@ export interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
-    readonly tags: ReadonlyArray<TagDescriptor>;
+    readonly tags: () => ReadonlyArray<TagDescriptor>;
 }
 
 export interface IState {

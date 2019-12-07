@@ -1,6 +1,6 @@
 import React from 'react';
 import {PersistenceLayerWatcher} from "./PersistenceLayerWatcher";
-import {UserTagsDataLoader} from "../UserTagsDataLoader";
+import {UserTagsDataLoader} from "./UserTagsDataLoader";
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {Tag} from "polar-shared/src/tags/Tags";
@@ -26,14 +26,15 @@ export class PersistenceLayerApp extends React.Component<IProps, IState> {
                                  render={(appTags) =>
                      <UserTagsDataLoader persistenceLayerProvider={persistenceLayerProvider} render={userTags => {
 
-                         const docTags = TagDescriptors.merge(appTags?.docTags, userTags);
-                         const annotationTags = TagDescriptors.merge(appTags?.annotationTags, userTags);
+                         const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTags);
+                         const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
+
 
                          return this.props.render({
                              persistenceLayerProvider,
                              docTags,
                              annotationTags,
-                             userTags: userTags || []
+                             userTags: () => userTags || []
                          });
 
                      }}/>
@@ -51,19 +52,19 @@ export interface IProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly render: (props: DocRepoAppProps) => React.ReactElement;
+    readonly render: (props: DocRepoRenderProps) => React.ReactElement;
 }
 
 export interface IState {
-
+    readonly iter: number;
 }
 
 /**
  * Main props for any app that's using the full state of our app
  */
-export interface DocRepoAppProps {
+export interface DocRepoRenderProps {
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
-    readonly docTags: ReadonlyArray<TagDescriptor>;
-    readonly annotationTags: ReadonlyArray<TagDescriptor>;
-    readonly userTags: ReadonlyArray<Tag>;
+    readonly docTags: () => ReadonlyArray<TagDescriptor>;
+    readonly annotationTags: () => ReadonlyArray<TagDescriptor>;
+    readonly userTags: () => ReadonlyArray<Tag>;
 }

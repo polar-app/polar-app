@@ -157,10 +157,11 @@ export class RepositoryApp {
                     <PersistenceLayerApp repoDocMetaManager={this.repoDocInfoManager}
                                          repoDocMetaLoader={this.repoDocInfoLoader}
                                          persistenceLayerManager={this.persistenceLayerManager}
-                                         render={(props) =>
+                                         render={(docRepo) =>
                         <DocRepoScreen persistenceLayerProvider={persistenceLayerProvider}
                                        persistenceLayerController={persistenceLayerController}
-                                       tags={props.docTags}
+                                       tags={docRepo.docTags}
+                                       docRepo={docRepo}
                                        updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                        repoDocMetaManager={this.repoDocInfoManager}
                                        repoDocMetaLoader={this.repoDocInfoLoader}/>

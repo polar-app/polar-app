@@ -42,6 +42,7 @@ import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
+import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
 
 const log = Logger.create();
 
@@ -105,7 +106,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
 
         const repoDocInfosProvider = () => this.props.repoDocMetaManager.repoDocInfoIndex.values();
-        this.tagsProvider = () => this.props.tags;
+        this.tagsProvider = this.props.tags;
 
         this.persistenceLayerMutator
             = new PersistenceLayerMutator(this.props.repoDocMetaManager,
@@ -378,7 +379,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public render() {
 
-        const tagsProvider = () => this.props.tags;
+        const tagsProvider = this.props.tags;
 
         const docActive = {
             right: 'd-none-mobile',
@@ -467,7 +468,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         left={
                             <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
                                            treeState={this.treeState}
-                                           tags={this.props.tags}/>
+                                           tags={this.props.tags()}/>
                         }
                         right={
                             <Dock
@@ -714,7 +715,9 @@ interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
-    readonly tags: ReadonlyArray<TagDescriptor>;
+    readonly tags: () => ReadonlyArray<TagDescriptor>;
+
+    readonly docRepo: DocRepoRenderProps;
 
 }
 

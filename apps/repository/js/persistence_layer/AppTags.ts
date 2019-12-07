@@ -2,9 +2,9 @@ import {TagDescriptor} from "polar-shared/src/tags/Tags";
 
 export interface AppTags {
 
-    readonly docTags: DocTags;
+    readonly docTags: () => DocTags;
 
-    readonly annotationTags: AnnotationTags;
+    readonly annotationTags: () => AnnotationTags;
 
 }
 
