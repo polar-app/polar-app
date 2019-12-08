@@ -19,7 +19,7 @@ export class AddTagsDropdown extends React.Component<IProps, IState> {
             <UncontrolledDropdown>
 
                 <DropdownToggle color="light"
-                                className="ml-1 pl-1 pr-1"
+                                className="ml-1 pl-1 pr-1 border"
                                 style={{outline: 'none', boxShadow: 'none'}}
                                 caret>
 

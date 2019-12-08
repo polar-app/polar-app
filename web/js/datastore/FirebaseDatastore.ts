@@ -715,14 +715,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public getPrefs(): PrefsProvider {
 
-        const prefs = Preconditions.assertPresent(this.prefs);
-
-        const NULL_ON_NEXT = () => {
-            return NULL_FUNCTION;
-        };
-
-        const NULL_ON_ERROR = NULL_FUNCTION;
-
         class PrefsProviderImpl extends AbstractPrefsProvider {
 
             public constructor(private readonly prefs: FirebaseDatastorePrefs) {
@@ -730,6 +722,13 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             }
 
             public get(): PersistentPrefs {
+                // FIXME: I think this is the bug... the problem is that we're
+                // using an older version of the prefs and we should probably register our own
+                // snapshot listener to update it with the latest data OR update it on every
+                // commit() to update the stale version.
+                //
+                // FIXME: it MIGHT be flat out better to have writePrefs() and not have a commit()
+                // in PersistentPrefs so the code is a LOT cleaner.. no hacks are needed here.
                 return this.prefs;
             }
 

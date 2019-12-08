@@ -339,8 +339,6 @@ export class RepositoryApp {
 
                     <Switch location={ReactRouters.createLocationWithPathnameHash()}>
 
-                        <Route exact path='/#annotations' render={renderAnnotationRepoScreen} />
-
                         <Route exact path='/#whats-new' render={renderWhatsNewScreen} />
 
                         <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
@@ -370,7 +368,9 @@ export class RepositoryApp {
 
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
 
-                        <Route exact path='/' render={renderDefaultScreenByDevice}/>
+                        <Route exact path='/#annotations' component={renderAnnotationRepoScreen} />
+
+                        <Route exact path='/' component={renderDefaultScreenByDevice}/>
 
                     </Switch>
 

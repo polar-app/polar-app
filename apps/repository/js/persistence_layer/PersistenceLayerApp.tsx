@@ -29,7 +29,6 @@ export class PersistenceLayerApp extends React.Component<IProps, IState> {
                          const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTags);
                          const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
 
-
                          return this.props.render({
                              persistenceLayerProvider,
                              docTags,

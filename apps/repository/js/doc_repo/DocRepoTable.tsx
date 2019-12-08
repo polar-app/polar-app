@@ -30,7 +30,6 @@ import {CheckCell} from "./cells/CheckCell";
 import {DocButtonsCell} from "./cells/DocButtonsCell";
 import {ReactTableHolder} from "../../../../web/js/ui/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
-import {ListOptionTypeMap} from "../../../../web/js/ui/list_selector/ListSelector";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 
 const log = Logger.create();
@@ -541,8 +540,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
     }
 
     private createContextMenuHandlers() {
-        const contextMenuHandlers = prepareContextMenuHandlers({id: CONTEXT_MENU_ID});
-        return contextMenuHandlers;
+        return prepareContextMenuHandlers({id: CONTEXT_MENU_ID});
     }
 
     public render() {
@@ -554,7 +552,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         return (
 
             <div id="doc-table"
-                 className="ml-1"
+                 className=""
                  style={{height: '100%', overflow: 'auto'}}>
 
                 {/*TODO: removing now because it breaks scrollbars for new users.*/}

@@ -27,8 +27,11 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
 
             if (prefs) {
 
+                // FIXME: I think the version of the prefs is being created and NOT shared,
+                // written by the same thread...
+
                 const userTags = DatastoreUserTags.get(prefs);
-                // console.log("Working with new userTags: ", userTags);
+                console.log("Working with new userTags: ", userTags);
 
                 return this.props.render(userTags);
 

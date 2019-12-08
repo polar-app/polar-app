@@ -1,9 +1,6 @@
 import * as React from 'react';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Tooltip} from 'reactstrap';
-import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
-import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {DocAnnotation} from './DocAnnotation';
 import {Dialogs} from '../ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
