@@ -601,12 +601,26 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     // }]}
                     getTrProps={(state: any, rowInfo: any) => {
 
+                        const computeStyle = (): React.CSSProperties => {
+
+                            if (rowInfo && this.props.selected.includes(rowInfo.viewIndex)) {
+                                return {
+                                    background: 'var(--selected-background-color)',
+                                    color: 'var(--selected-text-color)'
+                                };
+                            } else {
+                                return {};
+                            }
+
+                        };
+
+                        const style = computeStyle();
+
                         return {
 
                             draggable: true,
                             onDragStart: (event: DragEvent) => (this.props.onDragStart || NULL_FUNCTION)(event),
                             onDragEnd: (event: DragEvent) => (this.props.onDragEnd || NULL_FUNCTION)(event),
-
 
                             // include the doc fingerprint in the table
                             // so that the tour can use
@@ -614,13 +628,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                             tabIndex: rowInfo ? (rowInfo.viewIndex as number) + 1 : undefined,
 
-                            style: {
-                                // TODO: dark-mode.  Use CSS variable
-                                // names for colors
-
-                                background: rowInfo && this.props.selected.includes(rowInfo.viewIndex) ? 'var(--selected-background-color)' : 'var(--primary-background-color)',
-                                color: rowInfo && this.props.selected.includes(rowInfo.viewIndex) ? 'var(--selected-text-color)' : 'var(--primary-text-color)',
-                            },
+                            style,
 
                             onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
                                 this.onKeyDown(event);
