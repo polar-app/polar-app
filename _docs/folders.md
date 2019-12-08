@@ -6,7 +6,17 @@ permalink: /docs/folders.html
 description: Polar supports folders for managing your files in a hierarchy. 
 ---
 
-# Folders
+# Folders and Tags
+
+Polar supports two strategies for structuring your documents and annotations.
+
+Folders allow for hierarchical storage.
+
+Tags allow for structured storage without hierarchy.
+
+Both systems have their own advantages and it's up to you how you want to structure your workflow.
+
+# Creating Folders and Tags
 
 Polar supports folders for managing your files in a hierarchy.
 
