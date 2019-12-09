@@ -5,6 +5,7 @@ import {RatingButtons} from "../RatingButtons";
 import {FlashcardTaskAction} from "./FlashcardTaskAction";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RatingCallback} from "../Reviewer";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 /**
  * Basic flashcard component which allows us to display any type of card as long as it has a front/back design.
@@ -15,6 +16,9 @@ export class FlashcardCard extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onShowAnswer = this.onShowAnswer.bind(this);
+
+        Preconditions.assertPresent(this.props.front, 'front');
+        Preconditions.assertPresent(this.props.back, 'back');
 
         this.state = {
             side: 'front'
@@ -43,6 +47,9 @@ export class FlashcardCard extends React.Component<IProps, IState> {
                         {this.props.back}
                     </div>;
 
+                default:
+                    throw new Error("Invalid side: " + this.state.side);
+
             }
 
         };
@@ -60,7 +67,9 @@ export class FlashcardCard extends React.Component<IProps, IState> {
                 case 'back':
                     return <RatingButtons taskRep={taskRep}
                                           stage={taskRep.stage}
-                                          onRating={this.props.onRating}/>
+                                          onRating={this.props.onRating}/>;
+                default:
+                    throw new Error("Invalid side: " + this.state.side);
 
             }
         };

@@ -117,7 +117,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
         const Card = () => {
 
-            if (typeof action === 'string') {
+            if (this.state.taskRep!.mode === 'reading') {
                 return <DoReadingCard/>;
             } else {
                 return <DoFlashcardCard/>;
