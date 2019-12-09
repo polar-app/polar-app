@@ -603,13 +603,33 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                         const computeStyle = (): React.CSSProperties => {
 
-                            if (rowInfo && this.props.selected.includes(rowInfo.viewIndex)) {
-                                return {
-                                    background: 'var(--selected-background-color)',
-                                    color: 'var(--selected-text-color)'
-                                };
+                            if (rowInfo) {
+
+                                if (this.props.selected.includes(rowInfo.viewIndex)) {
+                                    return {
+                                        background: 'var(--selected-background-color)',
+                                        color: 'var(--selected-text-color)'
+                                    };
+                                } else {
+
+                                    const even = (rowInfo.viewIndex % 2) === 0;
+
+                                    if (even) {
+                                        return {
+                                            background: 'var(--grey050)'
+                                        };
+                                    } else {
+                                        return {
+                                            background: 'var(--primary-background-color)'
+                                        };
+                                    }
+
+                                }
+
                             } else {
-                                return {};
+                                return {
+                                    background: 'var(--primary-background-color)'
+                                };
                             }
 
                         };
