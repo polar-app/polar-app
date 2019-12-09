@@ -59,7 +59,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
 import {UserPrefCallback} from "./firebase/UserPrefs";
-import {PersistentPrefs} from "../util/prefs/Prefs";
+import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
 
 const log = Logger.create();
 
@@ -715,6 +715,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public getPrefs(): PrefsProvider {
 
+        const onCommit = async (persistentPrefs: PersistentPrefs) => {
+            // we have to update the main copy of our prefs or else the caller doesn't see
+            // the latest version
+            this.prefs.update(persistentPrefs.toPrefDict());
+        };
+
         class PrefsProviderImpl extends AbstractPrefsProvider {
 
             public constructor(private readonly prefs: FirebaseDatastorePrefs) {
@@ -722,13 +728,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             }
 
             public get(): PersistentPrefs {
-                // FIXME: I think this is the bug... the problem is that we're
-                // using an older version of the prefs and we should probably register our own
-                // snapshot listener to update it with the latest data OR update it on every
-                // commit() to update the stale version.
-                //
-                // FIXME: it MIGHT be flat out better to have writePrefs() and not have a commit()
-                // in PersistentPrefs so the code is a LOT cleaner.. no hacks are needed here.
                 return this.prefs;
             }
 
@@ -752,7 +751,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         }
 
-        return new PrefsProviderImpl(this.prefs);
+        const prefsProviderImpl = new PrefsProviderImpl(this.prefs);
+
+        // we now need to intercept it to update our main prefs on a commit.
+        return new InterceptedPrefsProvider(prefsProviderImpl, onCommit);
 
     }
 

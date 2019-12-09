@@ -2,8 +2,9 @@ import {
     AbstractDatastore,
     BinaryFileData,
     Datastore,
+    DatastoreCapabilities,
+    DatastoreInitOpts,
     DatastoreOverview,
-    DatastorePrefs,
     DeleteResult,
     DocMetaSnapshotEvent,
     DocMetaSnapshotEventListener,
@@ -11,26 +12,23 @@ import {
     ErrorListener,
     FileSynchronizationEvent,
     FileSynchronizationEventListener,
-    InitResult, PersistentPrefsUpdatedCallback,
+    GetFileOpts,
+    InitResult,
+    NetworkLayer,
     PrefsProvider,
     SnapshotResult,
     SyncDocMap,
     SyncDocMaps,
     SynchronizationEvent,
     SynchronizationEventListener,
-    SynchronizingDatastore
+    SynchronizingDatastore,
+    WriteFileOpts,
+    WriteOpts
 } from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayer} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
-import {WriteOpts} from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -48,8 +46,7 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {CompositePrefs, PersistentPrefs, PersistentPrefsInterceptors} from "../util/prefs/Prefs";
-import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../firebase/Firebase";
+import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
 
 const log = Logger.create();
 
@@ -602,48 +599,17 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public getPrefs(): PrefsProvider {
 
-        // write to firebase first, then commit locally.
+        const onCommit = async (persistentPrefs: PersistentPrefs) => {
 
-        const prefsProvider = this.cloud.getPrefs();
+            // write to firebase first, then commit locally.
 
-        const commit = async () => {
-
-            const cloudPrefs = prefsProvider.get();
             const localPrefs = this.local.getPrefs().get();
-
-            for (const pref of cloudPrefs.prefs()) {
-                localPrefs.set(pref.key, pref.value);
-            }
-
+            localPrefs.update(persistentPrefs.toPrefDict());
             await localPrefs.commit();
 
         };
 
-        const createInterceptedPersistentPrefs = (persistentPrefs: PersistentPrefs | undefined): PersistentPrefs | undefined => {
-
-            if (persistentPrefs) {
-                return PersistentPrefsInterceptors.intercept(persistentPrefs, commit);
-            } else {
-                return undefined;
-            }
-
-        };
-
-        return {
-
-            get(): PersistentPrefs {
-                return createInterceptedPersistentPrefs(prefsProvider.get())!;
-            },
-            subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
-
-                const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
-                    onNext(createInterceptedPersistentPrefs(persistentPrefs));
-                };
-
-                return prefsProvider.subscribe(handleOnNext, onError);
-            }
-
-        };
+        return new InterceptedPrefsProvider(this.cloud.getPrefs(), onCommit);
 
     }
 

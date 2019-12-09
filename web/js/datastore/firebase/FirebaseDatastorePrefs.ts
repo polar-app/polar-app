@@ -19,14 +19,11 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
 
     public async init() {
 
-        // TODO: this adds some initial latency ... we could use cache first, then server.
         const userPref = await UserPrefs.get();
         this.update(userPref.toPrefDict());
 
         this.firestore = await Firestore.getInstance();
         this.user = (await Firebase.currentUser())!;
-
-        // TODO: add a listener by default to keep our copy updated?
 
         this.initLatch.resolve(true);
 

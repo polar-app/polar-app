@@ -11,7 +11,7 @@ import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {InterceptedPersistentPrefs, PersistentPrefs, PersistentPrefsInterceptors, Prefs} from '../util/prefs/Prefs';
+import {InterceptedPersistentPrefs, PersistentPrefs, InterceptedPersistentPrefsFactory, Prefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -830,8 +830,6 @@ export interface PrefsProvider {
 export abstract class AbstractPrefsProvider implements PrefsProvider {
 
     protected reactor = new SimpleReactor<PersistentPrefs | undefined>();
-    constructor() {
-    }
 
     public abstract get(): PersistentPrefs;
 
@@ -892,7 +890,7 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
                 return persistentPrefs.commit();
             };
 
-            return PersistentPrefsInterceptors.intercept(persistentPrefs, commit);
+            return InterceptedPersistentPrefsFactory.create(persistentPrefs, commit);
 
         } else {
             return undefined;

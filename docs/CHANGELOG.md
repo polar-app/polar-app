@@ -1,6 +1,8 @@
 
 ## Features
 
+- odd/even coloring in the document list / table.
+
 - usability: the sidebar has been significantly redesigned
     - "+" button for adding tags and folders
     - context menu for adding tags and folders

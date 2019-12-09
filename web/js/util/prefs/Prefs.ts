@@ -3,6 +3,8 @@ import {DurationStr} from 'polar-shared/src/util/TimeDurations';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {PersistentPrefsUpdatedCallback, PrefsProvider} from "../../datastore/Datastore";
+import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../../firebase/Firebase";
 
 export abstract class Prefs {
 
@@ -101,7 +103,7 @@ export interface Pref {
  */
 export interface PersistentPrefs extends Prefs {
 
-    update(dict: StringToPrefDict): void;
+    update(source: StringToPrefDict): void;
 
     fetch(key: string): Pref | undefined;
 
@@ -121,9 +123,54 @@ export interface InterceptedPersistentPrefs extends PersistentPrefs {
     readonly __intercepted: true;
 }
 
-export class PersistentPrefsInterceptors {
+export type CommitCallback = (persistentPrefs: PersistentPrefs) => Promise<void>;
 
-    public static intercept(persistentPrefs: PersistentPrefs, commit: () => Promise<void>): InterceptedPersistentPrefs {
+export class InterceptedPrefsProvider {
+
+    constructor(private readonly delegate: PrefsProvider,
+                private readonly onCommit: CommitCallback) {
+
+    }
+
+    public get(): PersistentPrefs {
+        return this.intercept(this.delegate.get())!;
+    }
+
+    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+
+        const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
+            onNext(this.intercept(persistentPrefs));
+        };
+
+        return this.delegate.subscribe(handleOnNext, onError);
+    }
+
+    private intercept(persistentPrefs: PersistentPrefs | undefined): PersistentPrefs | undefined {
+
+        if (persistentPrefs) {
+            return InterceptedPersistentPrefsFactory.create(persistentPrefs, this.onCommit);
+        } else {
+            return undefined;
+        }
+
+    }
+
+}
+
+export class InterceptedPersistentPrefsFactory {
+
+    public static create(persistentPrefs: PersistentPrefs, onCommit: CommitCallback): InterceptedPersistentPrefs {
+
+        const commit = async () => {
+
+            // notify the listener
+            await onCommit(persistentPrefs);
+
+            // do the commit
+            await persistentPrefs.commit();
+
+        };
+
         return {
             ...persistentPrefs,
             update: persistentPrefs.update,
