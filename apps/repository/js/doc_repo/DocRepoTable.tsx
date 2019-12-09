@@ -28,7 +28,7 @@ import {SelectRowType} from "./DocRepoScreen";
 import {TitleCell} from "./cells/TitleCell";
 import {CheckCell} from "./cells/CheckCell";
 import {DocButtonsCell} from "./cells/DocButtonsCell";
-import {ReactTableHolder} from "../../../../web/js/ui/ReactTables";
+import {ReactTableRowInfo} from "../../../../web/js/ui/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 
@@ -277,7 +277,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             className: 'doc-table-col-tags d-none-mobile',
             accessor: '',
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => sortMethod(a, b),
-            Cell: (value: ReactTableHolder<RepoDocInfo>) => formatRecord(value.original)
+            Cell: (value: ReactTableRowInfo<RepoDocInfo>) => formatRecord(value.original)
         };
 
     }
@@ -308,7 +308,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             className: 'doc-table-col-folders d-none-mobile',
             accessor: '',
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => sortMethod(a, b),
-            Cell: (value: ReactTableHolder<RepoDocInfo>) => formatRecord(value.original)
+            Cell: (value: ReactTableRowInfo<RepoDocInfo>) => formatRecord(value.original)
         };
 
     }
@@ -599,38 +599,59 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     //     id: 'added',
                     //     desc: true
                     // }]}
-                    getTrProps={(state: any, rowInfo: any) => {
+                    getTrProps={(state: any, rowInfo: ReactTableRowInfo<RepoDocInfo>) => {
 
                         const computeStyle = (): React.CSSProperties => {
 
-                            if (rowInfo) {
+                            const computeRowSelectionStyle = () => {
 
-                                if (this.props.selected.includes(rowInfo.viewIndex)) {
-                                    return {
-                                        background: 'var(--selected-background-color)',
-                                        color: 'var(--selected-text-color)'
-                                    };
-                                } else {
+                                if (rowInfo) {
 
-                                    const even = (rowInfo.viewIndex % 2) === 0;
-
-                                    if (even) {
+                                    if (this.props.selected.includes(rowInfo.viewIndex)) {
                                         return {
-                                            background: 'var(--grey050)'
+                                            background: 'var(--selected-background-color)',
+                                            color: 'var(--selected-text-color)'
                                         };
                                     } else {
-                                        return {
-                                            background: 'var(--primary-background-color)'
-                                        };
+
+                                        const even = (rowInfo.viewIndex % 2) === 0;
+
+                                        if (even) {
+                                            return {
+                                                background: 'var(--grey050)'
+                                            };
+                                        } else {
+                                            return {
+                                                background: 'var(--primary-background-color)'
+                                            };
+                                        }
+
                                     }
 
+                                } else {
+                                    return {
+                                        background: 'var(--primary-background-color)'
+                                    };
                                 }
 
-                            } else {
-                                return {
-                                    background: 'var(--primary-background-color)'
-                                };
-                            }
+                            };
+
+                            const computeFlaggedStyle = (): React.CSSProperties => {
+
+                                if (rowInfo && rowInfo.original.flagged) {
+                                    return {
+                                        fontWeight: 'bold'
+                                    };
+                                }
+
+                                return {};
+                            };
+
+                            return {
+                                ...computeRowSelectionStyle(),
+                                ...computeFlaggedStyle()
+                            };
+
 
                         };
 

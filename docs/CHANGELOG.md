@@ -1,6 +1,8 @@
 
 ## Features
 
+- flagged items are now bold.
+
 - odd/even coloring in the document list / table.
 
 - usability: the sidebar has been significantly redesigned

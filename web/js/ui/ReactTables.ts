@@ -1,4 +1,5 @@
 
-export interface ReactTableHolder<T> {
+export interface ReactTableRowInfo<T> {
+    readonly viewIndex: number;
     readonly original: T;
 }
