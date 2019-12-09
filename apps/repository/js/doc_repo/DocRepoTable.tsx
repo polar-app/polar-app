@@ -599,7 +599,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                     //     id: 'added',
                     //     desc: true
                     // }]}
-                    getTrProps={(state: any, rowInfo: ReactTableRowInfo<RepoDocInfo>) => {
+                    getTrProps={(state: any, rowInfo: any) => {
 
                         const computeStyle = (): React.CSSProperties => {
 
@@ -638,7 +638,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                             const computeFlaggedStyle = (): React.CSSProperties => {
 
-                                if (rowInfo && rowInfo.original.flagged) {
+                                if (rowInfo && rowInfo.original && rowInfo.original.flagged) {
                                     return {
                                         fontWeight: 'bold'
                                     };
