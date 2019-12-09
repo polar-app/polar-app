@@ -46,6 +46,13 @@ export class FlashcardTaskActions {
                                         docAnnotation: IDocAnnotation): ReadonlyArray<FlashcardTaskAction> {
 
         const cloze = Texts.toString(flashcard.fields.cloze || flashcard.fields.text);
+
+        if (! cloze) {
+            const msg = "No cloze text found";
+            console.warn(`${msg}: `, flashcard);
+            throw new Error(msg);
+        }
+
         Preconditions.assertPresent(cloze, 'cloze');
         const regions = ClozeParser.toRegions(cloze!);
 
