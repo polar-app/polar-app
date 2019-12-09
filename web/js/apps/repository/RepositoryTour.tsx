@@ -256,7 +256,19 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 </div>,
                 image: "/web/assets/images/add-file.svg"
             }),
+            {
+                target: '#add-tags-dropdown',
+                title: <Title>Create Folders and Tags</Title>,
+                disableBeacon: true,
+                content: <div>
+                    <p>
+                        Polar supports either folders and tags. You create folders or tags by selecting this
+                        button or right clicking on the sidebar.
+                    </p>
+                </div>,
 
+                // placement: "bottom",
+            },
             JoyrideTours.createImageStep({
                 target: '#enable-cloud-sync, #cloud-sync-dropdown',
                 title: <Title>Cloud Sync</Title>,

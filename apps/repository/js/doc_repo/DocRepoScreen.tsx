@@ -43,6 +43,7 @@ import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/P
 import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
+import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
 
 const log = Logger.create();
 
@@ -399,6 +400,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                  style={{
                      height: '100%'
                  }}>
+
+                <RepositoryTour/>
 
                 <FixedNav id="doc-repo-table">
 

@@ -333,8 +333,6 @@ export class RepositoryApp {
 
                 <SyncBar progress={syncBarProgress}/>
 
-                <RepositoryTour/>
-
                 <BrowserRouter>
 
                     <Switch location={ReactRouters.createLocationWithPathnameHash()}>

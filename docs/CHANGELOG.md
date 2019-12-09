@@ -20,13 +20,15 @@
 
 ## Fixes
 
+- Reading and review for older items would fail due to schema changes.
+
 - ChromeOS is now a desktop platform
 
-- upgrade account button now works.  
+- Upgrade account button now works.  
 
-- improved text in suggestions dialog.
+- Improved text in suggestions dialog.
 
-- the user suggestions dialog is centered.
+- The user suggestions dialog is centered.
 
 - usability: Fixed an issue where if the user accidentally hit 'r' the document would rotate and people
   couldn't figure out how to revert.
