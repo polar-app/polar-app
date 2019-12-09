@@ -39,7 +39,7 @@ export class ReviewerTasks {
             const toTask = (docAnnotation: IDocAnnotation): Task<ReadingTaskAction> => {
                 const color = HighlightColors.withDefaultColor(docAnnotation.color);
                 return {
-                    id: docAnnotation.guid,
+                    id: docAnnotation.guid || docAnnotation.id,
                     action: {
                         text: docAnnotation.text || "",
                         docAnnotation
@@ -73,7 +73,7 @@ export class ReviewerTasks {
                 const toTask = (action: FlashcardTaskAction): Task<FlashcardTaskAction> => {
 
                     return {
-                        id: docAnnotation.guid,
+                        id: docAnnotation.guid || docAnnotation.id,
                         action,
                         created: docAnnotation.created,
                         mode
