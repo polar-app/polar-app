@@ -8,7 +8,7 @@ import {
     Region
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/util/ClozeParser";
 import {Texts} from "polar-shared/src/metadata/Texts";
-import {Preconditions} from 'polar-shared/src/Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export class FlashcardTaskActions {
@@ -47,7 +47,7 @@ export class FlashcardTaskActions {
 
         const cloze = Texts.toString(flashcard.fields.cloze || flashcard.fields.text);
 
-        if (! cloze) {
+        if (cloze === undefined) {
             const msg = "No cloze text found";
             console.warn(`${msg}: `, flashcard);
             throw new Error(msg);
