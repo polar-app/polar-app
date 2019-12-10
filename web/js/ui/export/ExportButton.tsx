@@ -47,9 +47,7 @@ export class ExportButton extends React.Component<IProps, IState> {
     }
 
     private doExport(format: ExportFormat) {
-
         this.props.onExport(format);
-
     }
 
 }
