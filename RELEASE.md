@@ -25,7 +25,7 @@ npm run-script dist-version
 Used for publishing new versions of packages.
 
 ```bash
-npm run-script dist-publish
+npm run-script dist-release-publish
 ```
 
 ## Webapp
