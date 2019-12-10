@@ -186,6 +186,8 @@ export class MainAppBrowserWindowFactory {
 
                 browserWindow.show();
 
+                ElectronUserAgents.configureForWebContents(browserWindow.webContents);
+
                 resolve(browserWindow);
 
             });
