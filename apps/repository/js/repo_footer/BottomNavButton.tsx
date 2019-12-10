@@ -12,8 +12,6 @@ export class BottomNavButton extends React.Component<IProps> {
         const active = document.location.pathname === this.props.pathname &&
                        document.location.hash ===  this.props.hash;
 
-        console.log("FIXME: active: ", active);
-
         const textColorClazz = active ? 'text-primary' : '';
 
         return (
