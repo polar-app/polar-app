@@ -48,7 +48,7 @@ There are three ways to create folders and tags.
 The sidebar has a ```+``` button you can use to create a new folder or tag.  Just click this and you will
 be presented with a dropdown with options to ```Create Folder``` or ```Create Tag```.
 
-<!-- FIXME: screenshot -->
+<img class="img-shadow" src="https://i.imgur.com/GJ3wvGv.png">
 
 ## Sidebar context menu
 
@@ -59,12 +59,14 @@ When right click on a specific folder, the new folder will be created as a subfo
 For example.  If you select ```/school``` as your folder, then right click, and create ```Create Folder```
 and you enter ```compsci``` it will create a new folder at ```/school/compsci```.
 
-<!-- FIXME: screenshot -->
+<img class="img-shadow" src="https://i.imgur.com/1hYaGfB.png">
 
 ## Tagging a document
 
 You can create a new tag when tagging a document.  In the document repository, select the tag button, then enter your
 new tag in the text area, a new tag will automatically be created and will show up on the sidebar.
+
+<img class="img-shadow" src="https://i.imgur.com/DeHNaU6.png">
 
 ### Tag Removal / Garbage Collection
 
@@ -72,23 +74,7 @@ new tag in the text area, a new tag will automatically be created and will show 
 If you remove them from the documents, they will not exist when you restart.  You can just create them again
 at anytime.
 
-<!-- FIXME: screenshot -->
-
-
-
-
-
-Regular tags are shown in the document to the right of the document title and hierarchical tags are shown in the left 
-pane/sidebar.
-
-## Creating folders
-
-Folders are just tags that have a path.  For example ```linux``` would be a regular tag.  But '/tech/linux' would be 
-a folder.  
-
-A document can be stored in multiple folders just like a document can have multiple tags. 
-
-## Moving documents to folders
+# Moving documents to folders/tags
 
 Once a folder is created, documents can be dragged from the document repository and dropped directly 
 on the folder where you want it stored.
@@ -100,17 +86,4 @@ Polar folders are different than regular folders on your local hard drive:
 - A file can be in one or more folders.
 
 - Moving a file in a folder does NOT change the physical storage location on your local hard drive.
-
-## Filtering
-
-<img class="img-fluid img-shadow" src="https://i.imgur.com/IahYDAE.png">
-
-You can also select tags just on a specific folder for further filtering:
-
-<img class="img-fluid img-shadow" src="https://i.imgur.com/KBImGeT.png">
-
-The annotations view also supports the folder setup. The main difference is that you're now filtering by annotations
-and not documents and the counts per folder are different (annotations vs documents).
-
-<img class="img-fluid img-shadow" src="https://i.imgur.com/BEwHOq6.png">
 
