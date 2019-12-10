@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
+import {BottomNavButton} from "./BottomNavButton";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -18,23 +19,8 @@ export class RepoFooter extends React.PureComponent<IProps> {
                          display: 'flex'
                      }}>
 
-                    <div className="m-auto">
-                        <Link to={{pathname: "/", hash: "#annotations"}}>
-                            <Button size="lg"
-                                    color="light">
-                                <i className="fas fa-home"/>
-                            </Button>
-                        </Link>
-                    </div>
-
-                    <div className="m-auto">
-                        <Link to={{pathname: "/", hash: "#stats"}}>
-                            <Button size="lg"
-                                    color="light">
-                                <i className="fas fa-chart-line"/>
-                            </Button>
-                        </Link>
-                    </div>
+                    <BottomNavButton pathname="/" hash="#annotations" icon="fas fa-home"/>
+                    <BottomNavButton pathname="/" hash="#stats" icon="fas fa-chart-line"/>
 
                 </div>
 
