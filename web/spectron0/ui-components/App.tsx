@@ -11,6 +11,7 @@ import {InputFilter} from "../../js/ui/input_filter/InputFilter";
 import {Tracer} from "./Tracer";
 import {Button} from "reactstrap";
 import {TimesIcon} from "../../js/ui/icons/FixedWidthIcons";
+import {FloatingActionButton} from "./mobile/FloatingActionButton";
 
 const styles = {
     swatch: {
@@ -257,16 +258,73 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div className="p-1">
 
-                <Button className="mt-auto mb-auto text-secondary p-0 no-focus"
-                        style={{outline: 'none', boxShadow: 'none'}}
-                        onClick={() => console.log("FIXME clear")}
-                        color="clear">
+                {/*<Button className="mt-auto mb-auto text-secondary p-0 no-focus"*/}
+                {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
+                {/*        onClick={() => console.log("FIXME clear")}*/}
+                {/*        color="clear">*/}
 
-                    <TimesIcon/>
+                {/*    <TimesIcon/>*/}
 
-                </Button>
+                {/*</Button>*/}
 
-                <InputFilter placeholder="Filter by title"/>
+                {/*<InputFilter placeholder="Filter by title"/>*/}
+
+                <FloatingActionButton onClick={NULL_FUNCTION} style={{paddingBottom: '4.5em'}}/>
+
+                    <h4>Normal Circle Buttons</h4>
+                    <button type="button" className="btn btn-default btn-circle"><i className="fa fa-check"></i>
+                    </button>
+                    <button type="button" className="btn btn-primary btn-circle"><i className="fa fa-list"></i>
+                    </button>
+                    <button type="button" className="btn btn-success btn-circle"><i className="fa fa-link"></i>
+                    </button>
+                    <button type="button" className="btn btn-info btn-circle"><i className="fa fa-check"></i>
+                    </button>
+                    <button type="button" className="btn btn-warning btn-circle"><i className="fa fa-times"></i>
+                    </button>
+                    <button type="button" className="btn btn-danger btn-circle"><i className="fa fa-heart"></i>
+                    </button>
+
+
+                <h4>Large Circle Buttons</h4>
+                            <button type="button" className="btn btn-default btn-circle btn-lg"><i
+                                className="fa fa-check"></i>
+                            </button>
+                            <button type="button" className="btn btn-primary btn-circle btn-lg"><i
+                                className="fa fa-list"></i>
+                            </button>
+                            <button type="button" className="btn btn-success btn-circle btn-lg"><i
+                                className="fa fa-link"></i>
+                            </button>
+                            <button type="button" className="btn btn-info btn-circle btn-lg"><i
+                                className="fa fa-check"></i>
+                            </button>
+                            <button type="button" className="btn btn-warning btn-circle btn-lg"><i
+                                className="fa fa-times"></i>
+                            </button>
+                            <button type="button" className="btn btn-danger btn-circle btn-lg"><i
+                                className="fa fa-heart"></i>
+                            </button>
+                                    <h4>Extra Large Circle Buttons</h4>
+                                    <button type="button" className="btn btn-default btn-circle btn-xl"><i
+                                        className="fa fa-check"></i>
+                                    </button>
+                                    <button type="button" className="btn btn-primary btn-circle btn-xl"><i
+                                        className="fa fa-list"></i>
+                                    </button>
+                                    <button type="button" className="btn btn-success btn-circle btn-xl"><i
+                                        className="fa fa-link"></i>
+                                    </button>
+                                    <button type="button" className="btn btn-info btn-circle btn-xl"><i
+                                        className="fa fa-check"></i>
+                                    </button>
+                                    <button type="button" className="btn btn-warning btn-circle btn-xl"><i
+                                        className="fa fa-times"></i>
+                                    </button>
+                                    <button type="button" className="btn btn-danger btn-circle btn-xl"><i
+                                        className="fa fa-heart"></i>
+                                    </button>
+
 
                 {/*<Tracer id="1"/>*/}
                 {/*<Tracer id="2"/>*/}
