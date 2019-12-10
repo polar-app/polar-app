@@ -187,7 +187,7 @@ export class MainAppBrowserWindowFactory {
                 // it persists teh zoom factor between restarts and restores
                 // the zoom factor for the user but this can break / confuse
                 // PHZ loading so we always want them to start at 1.0
-                browserWindow.webContents.setZoomFactor(1.0);
+                browserWindow.webContents.zoomFactor = 1.0;
 
                 browserWindow.show();
 
