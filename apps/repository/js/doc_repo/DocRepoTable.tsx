@@ -594,12 +594,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                             }
                         };
                     }}
-
-                    // sorted={[{
-                    //     id: 'added',
-                    //     desc: true
-                    // }]}
-                    getTrProps={(state: any, rowInfo: ReactTableRowInfo<RepoDocInfo>) => {
+                    getTrProps={(state: any, rowInfo: any) => {
 
                         const computeStyle = (): React.CSSProperties => {
 
