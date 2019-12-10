@@ -19,6 +19,7 @@ export class BottomNavButton extends React.Component<IProps> {
             <div className="m-auto">
                 <Link to={{pathname: this.props.pathname, hash: this.props.hash}}>
                     <Button size="lg"
+                            className="btn-no-outline"
                             color="clear">
                         <span className={textColorClazz}>
                           <i className={this.props.icon}/>
