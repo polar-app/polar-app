@@ -2,6 +2,7 @@ import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents, screen} fr
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {AuthHosts} from "./AuthHosts";
+import {ElectronUserAgents} from "../electron_browser/ElectronUserAgents";
 
 const log = Logger.create();
 
@@ -54,7 +55,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
          * that we keep user cookies including Google Analytics cookies.
          */
         //
-        partition: 'persist:polar-app'
+        partition: MAIN_SESSION_PARTITION_NAME
 
     }
 
@@ -180,6 +181,8 @@ export class MainAppBrowserWindowFactory {
                 browserWindow.webContents.setZoomFactor(1.0);
 
                 browserWindow.show();
+
+                ElectronUserAgents.configureForWebContents(browserWindow.webContents);
 
                 resolve(browserWindow);
 
