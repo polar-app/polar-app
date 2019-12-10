@@ -87,7 +87,7 @@ export interface AlertProps {
     readonly title: string;
     readonly body: string | React.ReactElement;
     readonly onConfirm: () => void;
-    readonly type?: 'danger' | 'warning' | 'success';
+    readonly type?: 'danger' | 'warning' | 'success' | 'info';
 
 }
 
@@ -98,7 +98,7 @@ export interface ConfirmProps {
     readonly subtitle: string;
     readonly onCancel?: () => void;
     readonly onConfirm: () => void;
-    readonly type?: 'danger' | 'warning' | 'success';
+    readonly type?: 'danger' | 'warning' | 'success' | 'info';
     readonly noCancel?: boolean;
 
 }
