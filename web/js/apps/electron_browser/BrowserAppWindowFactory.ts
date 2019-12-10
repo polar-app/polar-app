@@ -50,7 +50,7 @@ export class BrowserAppWindowFactory {
 
     public static async createWindow(url: string): Promise<BrowserWindow> {
         const browserWindow = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
-        // ElectronUserAgents.configureForWebContents(browserWindow.webContents);
+        ElectronUserAgents.configureForWebContents(browserWindow.webContents);
         return browserWindow;
     }
 
