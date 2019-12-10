@@ -11,6 +11,8 @@ const SIDEBAR_BUFFER = 100;
 
 const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/home/default.html');
 
+export const MAIN_SESSION_PARTITION_NAME = 'persist:polar-app';
+
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
 export const APP_ICON = ResourcePaths.resourceURLFromRelativeURL('./icon.png');

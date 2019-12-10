@@ -633,7 +633,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                             const computeFlaggedStyle = (): React.CSSProperties => {
 
-                                if (rowInfo && rowInfo.original.flagged) {
+                                if (rowInfo && rowInfo.original && rowInfo.original.flagged) {
                                     return {
                                         fontWeight: 'bold'
                                     };

@@ -1,5 +1,6 @@
 import {BrowserWindow} from "electron";
-import {APP_ICON, MainAppBrowserWindowFactory} from '../main/MainAppBrowserWindowFactory';
+import {APP_ICON, MAIN_SESSION_PARTITION_NAME, MainAppBrowserWindowFactory} from '../main/MainAppBrowserWindowFactory';
+import {ElectronUserAgents} from "./ElectronUserAgents";
 
 const WIDTH = 800 * 1.2;
 const HEIGHT = 1100 * 1.2;
@@ -36,7 +37,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
          * Use a persistent cookie session between restarts.  This is used so
          * that we keep user cookies including Google Analytics cookies.
          */
-        partition: 'persist:polar-app'
+        partition: MAIN_SESSION_PARTITION_NAME
     }
 
 };
@@ -47,8 +48,10 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
  */
 export class BrowserAppWindowFactory {
 
-    public static createWindow(url: string): Promise<BrowserWindow> {
-        return MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
+    public static async createWindow(url: string): Promise<BrowserWindow> {
+        const browserWindow = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
+        // ElectronUserAgents.configureForWebContents(browserWindow.webContents);
+        return browserWindow;
     }
 
 }
