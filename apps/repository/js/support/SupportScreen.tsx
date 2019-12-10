@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {SupportContent} from './SupportContent';
-import {FixedNav} from '../FixedNav';
-import {FixedNavBody} from '../FixedNav';
+import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {AccountPlan} from '../../../../web/js/accounts/Account';
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {PersistenceLayerController} from "../../../../web/js/datastore/PersistenceLayerManager";
 
 export class SupportScreen extends React.Component<IProps, IState> {
 
@@ -24,7 +24,8 @@ export class SupportScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerController}/>
 
                 </header>
 
@@ -47,7 +48,8 @@ export class SupportScreen extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
     readonly plan: AccountPlan;
 
 }

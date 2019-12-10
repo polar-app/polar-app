@@ -25,9 +25,9 @@ export class Suggestions extends React.Component<IProps, IState> {
         const Description = () => {
 
             if (this.props.description) {
-                return <p>{this.props.description}</p>;
+                return this.props.description;
             } else {
-                return <div></div>;
+                return null;
             }
 
         };
@@ -35,38 +35,45 @@ export class Suggestions extends React.Component<IProps, IState> {
         const Form = () => {
 
             return <div style={{
-                            width: '600px',
                             position: 'fixed',
-                            right: 25,
                             bottom: 25,
                             zIndex: 9999,
+                            width: '100%'
                         }}
-                        className="border rounded shadow bg-white p-3">
+                        className="">
 
-                <h3>{this.props.title}</h3>
+                <div style={{
+                         width: '600px',
+                         backgroundColor: "var(--primary-background-color)"
+                     }}
+                     className="border rounded shadow p-3 ml-auto mr-auto">
 
-                <div className="ml-auto mr-auto">
-                    <Description/>
-                </div>
+                    <h3>{this.props.title}</h3>
 
-                <Input type="textarea"
-                       onChange={event => this.value = event.target.value}
-                       style={{height: '8em'}}/>
+                    <div className="ml-auto mr-auto">
+                        <Description/>
+                    </div>
 
-                <div className="mt-2" style={{display: 'flex'}}>
+                    <Input type="textarea"
+                           onChange={event => this.value = event.target.value}
+                           style={{height: '8em'}}/>
 
-                    <div className="ml-auto">
+                    <div className="mt-2" style={{display: 'flex'}}>
 
-                        <TakeExtendedSurveyButton/>
+                        <div className="ml-auto">
 
-                        <Button size="md"
-                                color="secondary"
-                                onClick={() => this.onCancel()}>Cancel</Button>
+                            <TakeExtendedSurveyButton/>
 
-                        <Button size="md"
-                                color="primary"
-                                className="ml-1"
-                                onClick={() => this.onDone()}>Send Feedback</Button>
+                            <Button size="md"
+                                    color="secondary"
+                                    onClick={() => this.onCancel()}>Cancel</Button>
+
+                            <Button size="md"
+                                    color="primary"
+                                    className="ml-1"
+                                    onClick={() => this.onDone()}>Send Feedback</Button>
+
+                        </div>
 
                     </div>
 
@@ -134,7 +141,7 @@ export interface IProps {
 
     readonly title: string;
 
-    readonly description?: string;
+    readonly description?: React.ReactElement;
 
     /**
      * Don't send the event on form submission.  Just for testing.

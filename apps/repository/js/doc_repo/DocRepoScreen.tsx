@@ -9,13 +9,12 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from '../MessageBanner';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
-import {DocRepoTableColumns} from './DocRepoTableColumns';
+import {DocRepoTableColumns, DocRepoTableColumnsMap} from './DocRepoTableColumns';
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
-import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {RepoHeader} from '../repo_header/RepoHeader';
@@ -32,14 +31,19 @@ import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';
 import {DocRepoTable} from './DocRepoTable';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
-import {TagDescriptor} from '../../../../web/js/tags/TagNode';
-import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
-import {DocSidebar} from "../../../../web/spectron0/ui-components/DocSidebar";
+import {SetArrays} from "polar-shared/src/util/SetArrays";
+import {FolderSidebar} from "../folders/FolderSidebar";
+import {IDMaps} from "polar-shared/src/util/IDMaps";
+import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
+import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
+import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
+import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
 
 const log = Logger.create();
 
@@ -51,19 +55,19 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private static hasSentInitAnalytics = false;
 
-    private readonly persistenceLayerManager: PersistenceLayerManager;
-
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
     private reactTable?: Instance;
 
     private readonly docRepoFilters: DocRepoFilters;
 
+    private readonly tagsProvider: () => ReadonlyArray<Tag>;
+    private persistenceLayerMutator: PersistenceLayerMutator;
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerManager);
+        this.synchronizingDocLoader = new SynchronizingDocLoader(this.props.persistenceLayerProvider);
 
         this.onDocDeleteRequested = this.onDocDeleteRequested.bind(this);
 
@@ -86,29 +90,35 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.onMultiDeleted = this.onMultiDeleted.bind(this);
 
         this.getSelected = this.getSelected.bind(this);
+        this.getRow = this.getRow.bind(this);
 
         this.onDragStart = this.onDragStart.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
 
-        this.onRemoveFromFolder = this.onRemoveFromFolder.bind(this);
+        this.onRemoveFromTag = this.onRemoveFromTag.bind(this);
 
         this.state = {
             data: [],
-            tags: [],
-            columns: new DocRepoTableColumns(),
+            columns: IDMaps.create(Object.values(new DocRepoTableColumns())),
             selected: [],
             docSidebarVisible: false
         };
 
         const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
 
-        const repoDocInfosProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.values();
+        const repoDocInfosProvider = () => this.props.repoDocMetaManager.repoDocInfoIndex.values();
+        this.tagsProvider = this.props.tags;
 
-        this.docRepoFilters =
-            new DocRepoFilters(onRefreshed, repoDocInfosProvider);
+        this.persistenceLayerMutator
+            = new PersistenceLayerMutator(this.props.repoDocMetaManager,
+                                          this.props.persistenceLayerProvider,
+                                          this.tagsProvider,
+                                          repoDocInfosProvider,
+                                          () => this.refresh());
+
+        this.docRepoFilters = new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
         const onSelected = (tags: ReadonlyArray<TagStr>) => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current)));
-
         const onDropped = (tag: TagDescriptor) => this.onMultiTagged([tag], DraggingSelectedDocs.get());
 
         this.treeState = new TreeState(onSelected, onDropped);
@@ -126,12 +136,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         // the old event listener as the component is still mounted but the old
         // persistence layer has now gone away.
 
-        PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
+        const persistenceLayer = this.props.persistenceLayerProvider();
 
-            this.releaser.register(
-                persistenceLayer.addEventListener(() => this.refresh()));
-
-        });
+        this.releaser.register(persistenceLayer.addEventListener(() => this.refresh()));
 
         this.releaser.register(
             RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => this.refresh()));
@@ -158,13 +165,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         Optional.of(settingProvider().documentRepository)
             .map(current => current.columns)
             .when(columns => {
-
-                // columns = Object.assign( new DocRepoTableColumns(), columns);
-
                 log.info("Loaded columns from settings: ", columns);
                 this.setState({...this.state, columns});
                 this.refresh();
-
             });
 
         this.refresh();
@@ -177,7 +180,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         RendererAnalytics.set({'nrDocs': nrDocs});
 
-        const persistenceLayerType = this.persistenceLayerManager.currentType();
+        const persistenceLayerType = this.props.persistenceLayerController.currentType();
 
         RendererAnalytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
 
@@ -197,12 +200,14 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onRemoveFromFolder(folder: Tag, repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+    private onRemoveFromTag(rawTag: Tag, repoDocInfos: ReadonlyArray<RepoDocInfo>) {
 
         for (const repoDocInfo of repoDocInfos) {
             const existingTags = Object.values(repoDocInfo.tags || {});
-            const newTags = Tags.difference(existingTags, [folder]);
+            const newTags = Tags.difference(existingTags, [rawTag]);
 
+            // TODO: this does N at once but we should really be using a queue for
+            // this operation.
             this.onDocTagged(repoDocInfo, newTags)
                 .catch(err => log.error(err));
 
@@ -229,19 +234,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             return [];
         }
 
-        interface TableItem {
-            readonly _original: RepoDocInfo;
-        }
-
-        interface IResolvedState {
-            readonly sortedData: ReadonlyArray<TableItem>;
-            readonly page: number;
-            readonly pageSize: number;
-        }
-
         const resolvedState: IResolvedState = this.reactTable!.getResolvedState();
 
-        const sortedData = resolvedState.sortedData;
+        const {sortedData} = resolvedState;
 
         const offset = (resolvedState.page) * resolvedState.pageSize;
 
@@ -255,21 +250,71 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
+    private getRow(viewIndex: number): RepoDocInfo {
+        const resolvedState: IResolvedState = this.reactTable!.getResolvedState();
+        const {sortedData} = resolvedState;
+        const offset = (resolvedState.page) * resolvedState.pageSize;
+        const idx = offset + viewIndex;
+        return sortedData[idx]._original;
+    }
+
     public selectRow(selectedIdx: number,
                      event: MouseEvent,
                      type: SelectRowType) {
 
-        if (typeof selectedIdx === 'string') {
-            selectedIdx = parseInt(selectedIdx);
-        }
+        selectedIdx = Numbers.toNumber(selectedIdx);
 
-        if (type === 'context' && this.state.selected.includes(selectedIdx)) {
-            return;
-        }
+        // there are really only three strategies
+        //
+        // - one: select ONE item and unselect the previous item(s).  This is done when we have
+        //        a single click on an item.  It always selects it and never de-selects it.
+        //
+        // - add the new selectedIndex to the list of currently selected items.
+        //
+        //   - FIXME: really what this is is just select-one but we leave the
+        //     previous items in place and perform no mutation on them...
 
-        let selected: number[] = [selectedIdx];
+        // - toggle: used when the type is 'checkbox' because we're only toggling
+        //   the selection of that one item
+        //
+        // - none: do nothing.  this is used when the context menu is being used and no additional
+        //         items are being changed.
 
-        if (event.getModifierState("Shift")) {
+        type SelectionStrategy = 'one' | 'range' | 'toggle' | 'none';
+
+        type SelectedRows = ReadonlyArray<number>;
+
+        const computeStrategy = (): SelectionStrategy => {
+
+            if (type === 'checkbox') {
+                return 'toggle';
+            }
+
+            if (type === 'click') {
+
+                if (event.getModifierState("Shift")) {
+                    return 'range';
+                }
+
+                if (event.getModifierState("Control") || event.getModifierState("Meta")) {
+                    return 'toggle';
+                }
+
+            }
+
+            if (type === 'context') {
+
+                if (this.state.selected.includes(selectedIdx)) {
+                    return 'none';
+                }
+
+            }
+
+            return 'one';
+
+        };
+
+        const doStrategyRange = (): SelectedRows => {
 
             // select a range
 
@@ -282,34 +327,50 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                 max = Arrays.last(sorted)!;
             }
 
-            selected = [...Numbers.range(Math.min(min, selectedIdx),
-                                         Math.max(max, selectedIdx))];
+            const selected = [...Numbers.range(Math.min(min, selectedIdx),
+                    Math.max(max, selectedIdx))];
 
-        }
+            return selected;
 
-        const handleToggleSingleRow = () => {
-            // one at a time
-
-            selected = [...this.state.selected];
-
-            if (selected.includes(selectedIdx)) {
-                selected.splice(selected.indexOf(selectedIdx), 1);
-            } else {
-                selected = [...selected, selectedIdx];
-            }
         };
 
-        const toggleSingleRow =
-            (event.getModifierState("Control")
-            || event.getModifierState("Meta"))
-            || ['checkbox', 'context'].includes(type)
-        ;
+        const doStrategyToggle = (): SelectedRows => {
+            const selected = [...this.state.selected];
 
-        if (toggleSingleRow) {
-            handleToggleSingleRow();
+            if (selected.includes(selectedIdx)) {
+                return SetArrays.difference(selected, [selectedIdx]);
+            } else {
+                return SetArrays.union(selected, [selectedIdx]);
+            }
+
+        };
+
+        const doStrategyOne = (): SelectedRows => {
+            return [selectedIdx];
+        };
+
+        const doStrategy = (): SelectedRows | undefined => {
+
+            const strategy = computeStrategy();
+
+            switch (strategy) {
+                case "one":
+                    return doStrategyOne();
+                case "range":
+                    return doStrategyRange();
+                case "toggle":
+                    return doStrategyToggle();
+                case "none":
+                    return undefined;
+            }
+
+        };
+
+        const selected = doStrategy();
+
+        if (selected) {
+            this.setState({...this.state, selected});
         }
-
-        this.setState({...this.state, selected});
 
     }
 
@@ -319,10 +380,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     public render() {
 
-        const tagsProvider = () => this.props.repoDocMetaManager!.repoDocInfoIndex.toTagDescriptors();
-
-        const selectedDocs = this.getSelected();
-        const primaryDoc = selectedDocs.length > 0 ? selectedDocs[0] : undefined ;
+        const tagsProvider = this.props.tags;
 
         const docActive = {
             right: 'd-none-mobile',
@@ -334,7 +392,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             splitter: 'd-none'
         };
 
-
         const rightDocComponentClassNames = this.state.docSidebarVisible ? docActive : docInactive;
 
         return (
@@ -344,13 +401,16 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                      height: '100%'
                  }}>
 
+                <RepositoryTour/>
+
                 <FixedNav id="doc-repo-table">
 
                     <header>
 
-                        <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                        <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                    persistenceLayerController={this.props.persistenceLayerController}/>
 
-                        <div id="header-filter">
+                        <div id="header-filter" className="border-bottom">
 
                             <div style={{display: 'flex'}}
                                  className="p-1">
@@ -409,33 +469,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                         side='left'
                         initialWidth={300}
                         left={
-                            <div style={{
-                                display: 'flex' ,
-                                flexDirection: 'column',
-                                height: '100%',
-                                overflow: 'auto'
-                            }}>
-
-                                <div className="p-1 border-top">
-
-                                    <TagTree tags={this.state.tags}
-                                             treeState={this.treeState}
-                                             rootTitle="Folders"
-                                             tagType='folder'
-                                             noCreate={true}/>
-
-                                    <TagTree tags={this.state.tags}
-                                             treeState={this.treeState}
-                                             rootTitle="Tags"
-                                             tagType='regular'
-                                             filterDisabled={true}
-                                             noCreate={true}/>
-
-                                    {/*<TagList tags={this.state.tags}/>*/}
-
-                                </div>
-
-                            </div>
+                            <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
+                                           treeState={this.treeState}
+                                           tags={this.props.tags()}/>
                         }
                         right={
                             <Dock
@@ -467,13 +503,14 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   onDragEnd={() => this.onDragEnd()}
                                                   filters={this.docRepoFilters.filters}
                                                   getSelected={() => this.getSelected()}
-                                                  onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromFolder(folder, repoDocInfos)}/>
+                                                  getRow={(viewIndex) => this.getRow(viewIndex)}
+                                                  onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos)}/>
 
                                 }
                                 right={
                                     <div>
-                                        <DocSidebar meta={primaryDoc ? primaryDoc.docInfo : undefined}
-                                                    persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>
+                                        {/*<DocSidebar meta={primaryDoc ? primaryDoc.docInfo : undefined}*/}
+                                        {/*            persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>*/}
                                     </div>
                                 }
                             />
@@ -598,13 +635,16 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onSelectedColumns(columns: ListOptionType[]) {
+    private onSelectedColumns(columns: ReadonlyArray<ListOptionType>) {
 
         RendererAnalytics.event({category: 'user', action: 'selected-columns'});
 
-        // new columns have been selected. Note that the UI updates the values
-        // directly so we can just write what's in memory to disk. I think it
-        // would be better practice to keep them immutable.
+        // tslint:disable-next-line:variable-name
+        const columns_map = IDMaps.create(columns);
+
+        setTimeout(() => {
+            this.setState({...this.state, columns: columns_map});
+        }, 1);
 
         SettingsStore.load()
             .then((settingsProvider) => {
@@ -614,7 +654,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                 const settings: Settings = {
                     ...currentSettings,
                     documentRepository: {
-                        columns: this.state.columns
+                        columns: columns_map
                     }
                 };
 
@@ -634,6 +674,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     }
 
     private refresh() {
+        // this applies the filters and then calls doRefresh...
         this.docRepoFilters.refresh();
     }
 
@@ -642,15 +683,14 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
      */
     private doRefresh(data: ReadonlyArray<RepoDocInfo>) {
 
-        const tags = this.props.repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
-
-        const state = {...this.state, data, tags};
-
         setTimeout(() => {
 
             // The react table will not update when I change the state from
             // within the event listener
-            this.setState(state);
+            this.setState({
+                ...this.state,
+                data,
+            });
 
         }, 1);
 
@@ -668,7 +708,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
 interface IProps {
 
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+
+    readonly persistenceLayerController: PersistenceLayerController;
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
@@ -676,12 +718,15 @@ interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
+    readonly tags: () => ReadonlyArray<TagDescriptor>;
+
+    readonly docRepo: DocRepoRenderProps;
+
 }
 
 interface IState {
     readonly data: ReadonlyArray<RepoDocInfo>;
-    readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly columns: DocRepoTableColumns;
+    readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly docSidebarVisible: boolean;
 }
@@ -691,3 +736,14 @@ interface IState {
  * a checkbox for selecting multiple.
  */
 export type SelectRowType = 'click' | 'context' | 'checkbox';
+
+
+interface TableItem {
+    readonly _original: RepoDocInfo;
+}
+
+interface IResolvedState {
+    readonly sortedData: ReadonlyArray<TableItem>;
+    readonly page: number;
+    readonly pageSize: number;
+}

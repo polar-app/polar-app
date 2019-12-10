@@ -52,7 +52,7 @@ export class PagemarkCoverageEventListener {
 
             case "create-pagemark-to-point":
                 this.onContextMenuCreatePagemarkToPoint(triggerEvent)
-                    .catch(err => log.error(err));
+                    .catch(err => log.error("Unable to create pagemark: ", err));
                 break;
 
         }
@@ -160,6 +160,8 @@ export class PagemarkCoverageEventListener {
         const docMeta = this.model.docMeta;
 
         await DocMetas.withBatchedMutations(docMeta, async () => {
+            // TODO: do not use the model here and instead move this to the Pagemarks code which
+            // we can test better...
             this.model.erasePagemark(pageNum);
             await this.model.createPagemarksForRange(pageNum, percentage);
         });

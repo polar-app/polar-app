@@ -1,37 +1,22 @@
 import * as React from 'react';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Tooltip} from 'reactstrap';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {IStyleMap} from '../../react/IStyleMap';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {DocAnnotation} from '../DocAnnotation';
-import {ConfirmPopover} from '../../ui/confirm/ConfirmPopover';
-
-const log = Logger.create();
-
-const Styles: IStyleMap = {
-
-    DropdownMenu: {
-        zIndex: 999,
-        fontSize: '14px'
-    },
-
-};
+import {Dialogs} from "../../ui/dialogs/Dialogs";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export class CommentDropdown extends React.Component<IProps, IState> {
 
     private open: boolean = false;
-    private selected: SelectedOption = 'none';
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
-        this.select = this.select.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onDeleteSelected = this.onDeleteSelected.bind(this);
 
         this.state = {
             open: this.open,
-            selected: this.selected,
         };
 
     }
@@ -53,7 +38,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
                                     disabled={this.props.disabled}
                                     id={toggleID}>
 
-                        <i className="fas fa-ellipsis-h"></i>
+                        <i className="fas fa-ellipsis-h"/>
 
                     </DropdownToggle>
 
@@ -68,12 +53,6 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 
                 </Dropdown>
 
-                <ConfirmPopover open={this.state.selected === 'delete'}
-                                target={toggleID}
-                                title="Are you sure you want to delete this comment? "
-                                onCancel={() => this.select('none')}
-                                onConfirm={() => this.onDelete()}/>
-
             </div>
 
         );
@@ -81,12 +60,19 @@ export class CommentDropdown extends React.Component<IProps, IState> {
     }
 
     private onDeleteSelected() {
-        this.select('delete');
+
+        Dialogs.confirm({
+            title: "Are you sure you want to delete this comment? ",
+            subtitle: 'This will permanently delete this comment.',
+            type: 'danger',
+            onCancel: NULL_FUNCTION,
+            onConfirm: () => this.onDelete()
+        });
+
     }
 
     private onDelete() {
         this.props.onDelete(this.props.comment);
-        this.select('none');
     }
 
     private toggle() {
@@ -97,16 +83,10 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 
     }
 
-    private select(selected: SelectedOption) {
-        this.selected = selected;
-        this.refresh();
-    }
-
     private refresh() {
 
         this.setState({
             open: this.open,
-            selected: this.selected
         });
 
     }
@@ -123,9 +103,5 @@ interface IProps {
 interface IState {
 
     open: boolean;
-    selected: SelectedOption;
 
 }
-
-type SelectedOption = 'delete' | 'none';
-

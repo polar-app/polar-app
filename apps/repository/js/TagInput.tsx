@@ -77,7 +77,7 @@ export class TagInput extends React.Component<IProps, IState> {
 
     private activate() {
 
-        const pendingTags = this.props.existingTags || [];
+        const pendingTags = this.props.existingTags ? this.props.existingTags() : [];
         this.setState({open: true, pendingTags});
 
     }
@@ -303,14 +303,14 @@ export interface IProps {
     /**
      * The existing tags on this item.
      */
-    readonly existingTags?: Tag[];
+    readonly existingTags?: () => ReadonlyArray<Tag>;
 
     /**
      * The relatedTags index which is updated as the user selects new tags.
      */
     readonly relatedTags: RelatedTags;
 
-    readonly onChange?: (values: Tag[]) => void;
+    readonly onChange?: (values: ReadonlyArray<Tag>) => void;
 
 }
 
@@ -321,7 +321,7 @@ interface IState {
     /**
      * The tags that are actively being selected but not yet applied.
      */
-    readonly pendingTags: Tag[];
+    readonly pendingTags: ReadonlyArray<Tag>;
 
 
 }

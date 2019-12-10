@@ -2,6 +2,7 @@ import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents, screen} fr
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {AuthHosts} from "./AuthHosts";
+import {ElectronUserAgents} from "../electron_browser/ElectronUserAgents";
 
 const log = Logger.create();
 
@@ -10,6 +11,8 @@ const HEIGHT = 1100 * 1.2;
 const SIDEBAR_BUFFER = 100;
 
 const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/home/default.html');
+
+export const MAIN_SESSION_PARTITION_NAME = 'persist:polar-app';
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
@@ -52,7 +55,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
          * that we keep user cookies including Google Analytics cookies.
          */
         //
-        partition: 'persist:polar-app'
+        partition: MAIN_SESSION_PARTITION_NAME
 
     }
 
@@ -62,6 +65,8 @@ export class MainAppBrowserWindowFactory {
 
     public static createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS,
                                url = DEFAULT_URL): Promise<BrowserWindow> {
+
+        // ElectronUserAgents.registerUserAgentHandler(MAIN_SESSION_PARTITION_NAME);
 
         browserWindowOptions = Object.assign({}, browserWindowOptions);
 
@@ -170,7 +175,9 @@ export class MainAppBrowserWindowFactory {
 
         log.info("Loading URL: " + url);
         browserWindow.loadURL(url)
-            .catch(err => log.error("Cloud not load URL ", err, url));
+            .catch(err => log.error("Could not load URL ", err, url));
+
+        ElectronUserAgents.configureForWebContents(browserWindow.webContents);
 
         return new Promise<BrowserWindow>(resolve => {
 
@@ -183,6 +190,8 @@ export class MainAppBrowserWindowFactory {
                 browserWindow.webContents.setZoomFactor(1.0);
 
                 browserWindow.show();
+
+                ElectronUserAgents.configureForWebContents(browserWindow.webContents);
 
                 resolve(browserWindow);
 

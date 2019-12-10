@@ -1,5 +1,5 @@
-import {TextType} from './TextType';
-import {Texts} from './Texts';
+import {TextType} from 'polar-shared/src/metadata/TextType';
+import {Texts} from 'polar-shared/src/metadata/Texts';
 import {assertJSON} from '../test/Assertions';
 
 describe('Texts', function() {
@@ -24,7 +24,7 @@ describe('Texts', function() {
             "HTML": "asdf"
         };
 
-        assertJSON(Texts.toPlainText(input), "");
+        assertJSON(Texts.toText(input), "");
 
     });
 

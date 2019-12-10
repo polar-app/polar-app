@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {TagTree} from '../../js/ui/tree/TagTree';
 import {Tags, TagStr} from 'polar-shared/src/tags/Tags';
-import {TagDescriptor} from '../../js/tags/TagNode';
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 export class MockFolderTree extends React.Component<IProps, IState> {
 

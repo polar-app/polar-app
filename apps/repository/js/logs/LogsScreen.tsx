@@ -6,7 +6,11 @@ import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 import ClearLogsButton from './ClearLogsButton';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerController,
+    PersistenceLayerManager
+} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 const log = Logger.create();
 
@@ -28,9 +32,10 @@ export default class LogsScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerController}/>
 
-                    <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex'}} className="p-1">
 
                         <div className="mb-1">
                             <CopyLogsToClipboardButton/>
@@ -50,7 +55,7 @@ export default class LogsScreen extends React.Component<IProps, IState> {
 
                         <div className="col-lg-12">
 
-                            <div className="mb-2 pl-1 pr-1">
+                            <div className="mb-2 p-1">
                                 <LogsContent/>
                             </div>
 
@@ -68,7 +73,8 @@ export default class LogsScreen extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 export interface IState {

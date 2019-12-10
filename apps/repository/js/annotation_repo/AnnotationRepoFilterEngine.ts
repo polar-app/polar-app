@@ -1,15 +1,12 @@
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {Tags} from 'polar-shared/src/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {Provider} from 'polar-shared/src/util/Providers';
-import {RepoAnnotation} from '../RepoAnnotation';
-import {RepoAnnotations} from '../RepoAnnotations';
-import {AnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
-import {DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
+import {RepoDocAnnotations} from '../RepoDocAnnotations';
+import {AnnotationRepoFilters, DefaultAnnotationRepoFilters} from './AnnotationRepoFiltersHandler';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 /**
  * The actual engine that applies the filters once they are updated.
@@ -18,7 +15,7 @@ export class AnnotationRepoFilterEngine {
 
     private filters: AnnotationRepoFilters = new DefaultAnnotationRepoFilters();
 
-    constructor(private repoAnnotationsProvider: Provider<ReadonlyArray<RepoAnnotation>>,
+    constructor(private repoAnnotationsProvider: Provider<ReadonlyArray<IDocAnnotation>>,
                 private onUpdated: UpdatedCallback) {
 
     }
@@ -41,7 +38,7 @@ export class AnnotationRepoFilterEngine {
         this.onUpdated(this.filter(repoAnnotations));
     }
 
-    private filter(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private filter(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
@@ -57,12 +54,12 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterByColor(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByColor(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (this.filters.colors.length > 0) {
             return repoAnnotations.filter(current => {
-                const color = HighlightColors.withDefaultColor(current.meta ? current.meta.color : undefined);
-                return current.meta && this.filters.colors.includes(color);
+                const color = HighlightColors.withDefaultColor(current.color);
+                return this.filters.colors.includes(color);
             });
         }
 
@@ -70,21 +67,21 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterByAnnotationTypes(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByAnnotationTypes(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (this.filters.annotationTypes.length > 0) {
-            return repoAnnotations.filter(current => this.filters.annotationTypes.includes(current.type));
+            return repoAnnotations.filter(current => this.filters.annotationTypes.includes(current.annotationType));
         }
 
         return repoAnnotations;
 
     }
 
-    private doFilterValid(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
-        return repoAnnotations.filter(current => RepoAnnotations.isValid(current));
+    private doFilterValid(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
+        return repoAnnotations.filter(current => RepoDocAnnotations.isValid(current));
     }
 
-    private doFilterByText(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByText(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (! Strings.empty(this.filters.text)) {
 
@@ -100,7 +97,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterFlagged(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterFlagged(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (this.filters.flagged) {
             return repoAnnotations.filter(current => current.docInfo.flagged);
@@ -110,7 +107,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterArchived(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterArchived(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         if (! this.filters.archived) {
             return repoAnnotations.filter(current => !current.docInfo.archived);
@@ -120,7 +117,7 @@ export class AnnotationRepoFilterEngine {
 
     }
 
-    private doFilterByTags(repoAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<RepoAnnotation> {
+    private doFilterByTags(repoAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<IDocAnnotation> {
 
         const tags = this.filters.filteredTags.get()
             .filter(current => current.id !== '/');
@@ -139,5 +136,5 @@ export class AnnotationRepoFilterEngine {
 
 }
 
-export type UpdatedCallback = (repoAnnotations: ReadonlyArray<RepoAnnotation>) => void;
+export type UpdatedCallback = (repoAnnotations: ReadonlyArray<IDocAnnotation>) => void;
 

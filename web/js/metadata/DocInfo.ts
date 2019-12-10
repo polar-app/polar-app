@@ -15,6 +15,7 @@ import {DocMutating, IDocInfo, ShareStrategy, StoredResource} from "polar-shared
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
 import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
+import {IText} from "polar-shared/src/metadata/Text";
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -50,11 +51,13 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public published?: ISODateString | ISODateTimeString;
     public publisher?: string;
     public doi?: string;
+    public pmid?: string;
     public readingPerDay?: ReadingOverview;
     public visibility?: Visibility;
     public attachments: {[id: string]: Attachment} = {};
     public authors?: ReadonlyArray<IDocAuthor>;
     public thumbnails?: { [id: string]: IThumbnail };
+    public summary?: IText;
 
     constructor(val: IDocInfo) {
 

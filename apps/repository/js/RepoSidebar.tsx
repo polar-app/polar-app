@@ -10,7 +10,7 @@ import ListGroup from 'reactstrap/lib/ListGroup';
 import {SimpleTooltipEx} from '../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
-import {Platforms} from "../../../web/js/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 import {NullCollapse} from "../../../web/js/ui/null_collapse/NullCollapse";
 
 const Styles: IStyleMap = {

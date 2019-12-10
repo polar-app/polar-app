@@ -12,7 +12,7 @@ import {SplashKeys} from '../SplashKeys';
 import {UserFeedback} from '../../../../../web/js/telemetry/UserFeedback';
 import {NetPromoterScore} from '../../../../../web/js/telemetry/UserFeedback';
 import {RendererAnalytics} from '../../../../../web/js/ga/RendererAnalytics';
-import {Version} from '../../../../../web/js/util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 
 export class SuggestionsModal extends React.Component<IProps, IState> {
 
@@ -23,11 +23,17 @@ export class SuggestionsModal extends React.Component<IProps, IState> {
 
     public render() {
 
+        const Description = () => <p>
+            We need your help to improve Polar!  In your opinion what should we do to make it better? Please be specific
+            as we really do read every one of these and there's a good chance your suggestion will be incorporated
+            into a future version of Polar.
+        </p>;
+
         return (
 
             <Suggestions category={"user-suggestions"}
                          title={"How should we improve Polar?"}
-                         description="We need your help to improve Polar!  In your opinion what should we do to make it better?"
+                         description={<Description/>}
                          onDone={text => this.onSuggestion(text)}/>
 
         );

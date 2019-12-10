@@ -25,6 +25,11 @@ export class ClipboardCleanser {
             return;
         }
 
+        if (sel.rangeCount <= 0) {
+            // there are no ranges...
+            return;
+        }
+
         const text = Ranges.toText(sel.getRangeAt(0));
 
         event.clipboardData.setData('text/plain', text);

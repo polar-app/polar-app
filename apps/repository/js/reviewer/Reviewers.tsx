@@ -2,22 +2,17 @@ import {Reviewer} from "./Reviewer";
 import {InjectedComponent, ReactInjector} from "../../../../web/js/ui/util/ReactInjector";
 import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
-import {RepoAnnotation} from "../RepoAnnotation";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
-import {Firestore} from "../../../../web/js/firebase/Firestore";
-import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {LightModal} from "../../../../web/js/ui/LightModal";
 import {
-    Answer,
-    MutableStageCounts,
     Rating,
-    RepetitionMode, StageCountsCalculator,
+    RepetitionMode,
+    StageCountsCalculator,
     TaskRep
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
     CalculatedTaskReps,
-    ReadingTaskAction,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -32,6 +27,8 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 
 const log = Logger.create();
 
@@ -39,7 +36,7 @@ export class Reviewers {
 
     public static start(datastoreCapabilities: DatastoreCapabilities,
                         prefs: PersistentPrefs,
-                        repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                        repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                         mode: RepetitionMode,
                         limit: number = 10) {
 
@@ -60,8 +57,8 @@ export class Reviewers {
     private static displayWebRequiredError() {
 
         Dialogs.confirm({
-            title: 'Cloud sync required',
-            subtitle: 'Cloud sync is required to review annotations.  This is needed for mobile review.',
+            title: 'Cloud sync required (please login)',
+            subtitle: 'Cloud sync is required to review annotations.  Please login to review flashcards and reading.',
             type: 'danger',
             onConfirm: NULL_FUNCTION,
             noCancel: true
@@ -83,7 +80,7 @@ export class Reviewers {
 
     public static async create(datastoreCapabilities: DatastoreCapabilities,
                                prefs: PersistentPrefs,
-                               repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+                               repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                mode: RepetitionMode,
                                limit: number = 10) {
 
@@ -91,13 +88,13 @@ export class Reviewers {
 
         const uid = await Firebase.currentUserID();
 
-        if (! uid) {
-            throw new Error("Not authenticated");
-        }
-
         if (! datastoreCapabilities.networkLayers.has('web')) {
             this.displayWebRequiredError();
             return;
+        }
+
+        if (! uid) {
+            throw new Error("Not authenticated");
         }
 
         await FirestoreCollections.configure();

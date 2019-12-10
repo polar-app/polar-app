@@ -4,7 +4,7 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {UserFacts} from './SplashEngine';
 import {SplashEngine} from './SplashEngine';
 import {DefaultSplashEngine} from './SplashEngine';
-import {Version} from '../../../../web/js/util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {NPSModal} from './nps/NPSModal';
@@ -73,8 +73,7 @@ export class Splashes extends React.Component<IProps, IState> {
                 return <SuggestionsModal/>;
 
             case 'whats-new':
-                return <div/>;
-                // return <WhatsNewModal/>;
+                return <WhatsNewModal/>;
 
         }
 
@@ -82,7 +81,6 @@ export class Splashes extends React.Component<IProps, IState> {
 
     private onWhatsNew() {
         RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-whats-new'});
-
         this.setState({...this.state, splash: 'whats-new'});
     }
 

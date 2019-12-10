@@ -3,28 +3,14 @@ import {Tags} from 'polar-shared/src/tags/Tags';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Group} from "../../js/datastore/sharing/db/Groups";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {
-    TasksCalculator
-} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Reviewer} from "../../../apps/repository/js/reviewer/Reviewer";
-import {LightModal} from "../../js/ui/LightModal";
-import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
+import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Lorems} from "polar-shared/src/util/Lorems";
-import {Flashcards} from "../../js/metadata/Flashcards";
-import {Refs} from "polar-shared/src/metadata/Refs";
-import {RepoAnnotations} from "../../../apps/repository/js/RepoAnnotations";
-import {DocInfos} from "../../js/metadata/DocInfos";
-import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
-import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskAction";
-import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskActions";
-import {FlashcardCard} from "../../../apps/repository/js/reviewer/cards/FlashcardCard";
-import {Preconditions} from "polar-shared/src/Preconditions";
-import {Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
+import {InputFilter} from "../../js/ui/input_filter/InputFilter";
+import {Tracer} from "./Tracer";
 import {Button} from "reactstrap";
-import {Dialogs} from "../../js/ui/dialogs/Dialogs";
-import {ContextMenuWrapper} from "@burtonator/react-context-menu-wrapper";
-import {DocDropdownItems} from "../../../apps/repository/js/DocDropdownItems";
-import {FolderContextMenu} from "../../../apps/repository/js/FolderContextMenu";
+import {TimesIcon} from "../../js/ui/icons/FixedWidthIcons";
 
 const styles = {
     swatch: {
@@ -157,7 +143,7 @@ export class App<P> extends React.Component<{}, IAppState> {
         const keyBindingHandler = (event: React.KeyboardEvent) => {
 
             if (event.key === 'F') {
-                console.log("YUP!")
+                console.log("YUP!");
             }
 
         };
@@ -208,61 +194,119 @@ export class App<P> extends React.Component<{}, IAppState> {
         //     return ReviewerTasks.createFlashcardTasks(repoAnnotations, 10);
         //
         // };
-
-        const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> => {
-            const ref = Refs.create('1234', 'text-highlight');
-
-            const createFrontAndBackAction = () => {
-                const flashcard = Flashcards.createFrontBack('What is the capital of California? ', 'Sacramento', ref);
-                const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
-                return flashcardTaskActions[0];
-            };
-
-            const createClozeAction = () => {
-                const flashcard = Flashcards.createCloze('The capital of california is {{c1::Sacramento}}.', ref);
-                const flashcardTaskActions = FlashcardTaskActions.create(flashcard);
-                return flashcardTaskActions[0];
-            };
-
-            const clozeAction = createClozeAction();
-
-            Preconditions.assertPresent(clozeAction, 'clozeAction');
-
-            const tasks: ReadonlyArray<Task<FlashcardTaskAction>> = [
-                {
-                    id: "10102",
-                    action: clozeAction,
-                    created: ISODateTimeStrings.create(),
-                    color: 'red',
-                    mode: 'flashcard'
-                },
-                {
-                    id: "10102",
-                    action: createFrontAndBackAction(),
-                    created: ISODateTimeStrings.create(),
-                    color: 'red',
-                    mode: 'flashcard'
-                }
-            ];
-
-            return tasks.map(task => TasksCalculator.createInitialLearningState(task));
-
-        };
+        //
+        // const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> => {
+        //     const ref = Refs.create('1234', 'text-highlight');
+        //
+        //     const createFrontAndBackAction = () => {
+        //         const flashcard = Flashcards.createFrontBack('What is the capital of California? ', 'Sacramento', ref);
+        //         const flashcardTaskActions = FlashcardTaskActions.create(flashcard, docAnnotation);
+        //         return flashcardTaskActions[0];
+        //     };
+        //
+        //     const createClozeAction = () => {
+        //         const flashcard = Flashcards.createCloze('The capital of california is {{c1::Sacramento}}.', ref);
+        //         const flashcardTaskActions = FlashcardTaskActions.create(flashcard, docAnnotation);
+        //         return flashcardTaskActions[0];
+        //     };
+        //
+        //     const clozeAction = createClozeAction();
+        //
+        //     Preconditions.assertPresent(clozeAction, 'clozeAction');
+        //
+        //     const tasks: ReadonlyArray<Task<FlashcardTaskAction>> = [
+        //         {
+        //             id: "10102",
+        //             action: clozeAction,
+        //             created: ISODateTimeStrings.create(),
+        //             color: 'red',
+        //             mode: 'flashcard'
+        //         },
+        //         {
+        //             id: "10102",
+        //             action: createFrontAndBackAction(),
+        //             created: ISODateTimeStrings.create(),
+        //             color: 'red',
+        //             mode: 'flashcard'
+        //         }
+        //     ];
+        //
+        //     return tasks.map(task => TasksCalculator.createInitialLearningState(task));
+        //
+        // };
 
 
         // const taskReps = createReadingTaskReps();
-        const taskReps = createFlashcardTaskReps();
+        // const taskReps = createFlashcardTaskReps();
+
+        const MockTag = (props: any) => {
+            return <div className="bg-grey100 p-1 rounded mr-1"
+                        style={{
+                        display: 'inline-block'
+                   }}>
+                {props.children}
+
+                <span className="text-sm">
+                    <FontAwesomeIcon name="fas fa-close"/>
+                </span>
+
+            </div>;
+        };
 
         return (
 
-            <div>
+            <div className="p-1">
 
-                <FolderContextMenu toggle={false}
-                                   onCreateFolder={NULL_FUNCTION}>
-                    <div>
-                        Fake folder
-                    </div>
-                </FolderContextMenu>
+                <Button className="mt-auto mb-auto text-secondary p-0 no-focus"
+                        style={{outline: 'none', boxShadow: 'none'}}
+                        onClick={() => console.log("FIXME clear")}
+                        color="clear">
+
+                    <TimesIcon/>
+
+                </Button>
+
+                <InputFilter placeholder="Filter by title"/>
+
+                {/*<Tracer id="1"/>*/}
+                {/*<Tracer id="2"/>*/}
+
+                {/*<WhatsNewModal/>*/}
+
+                {/*<FolderContextMenu toggle={false}*/}
+                {/*                   onCreateFolder={NULL_FUNCTION}>*/}
+                {/*    <div>*/}
+                {/*        Fake folder*/}
+                {/*    </div>*/}
+                {/*</FolderContextMenu>*/}
+
+                {/*<div className="p-1">*/}
+
+                {/*    <div className="item">*/}
+
+                {/*        <div className="title text-xxl font-weight-bold text-grey900" style={{fontSize: '33px'}}>*/}
+                {/*            Something amazing has happened in science and the community is excited.*/}
+                {/*        </div>*/}
+
+                {/*        <div className="title text-lg text-grey800">*/}
+                {/*            <span className="text-primary">Martin Smith</span>, <span className="text-primary">Carson Weishaus</span>*/}
+                {/*        </div>*/}
+
+                {/*        <div className="title text-lg text-grey800 mt-1 mb-2"  style={{fontSize: '22px'}}>*/}
+                {/*            This is a longer overview or abstract of the current document we're reading.*/}
+                {/*        </div>*/}
+
+                {/*        <div className="metadata" style={{fontSize: '14px'}}>*/}
+                {/*            <MockTag>linux</MockTag> <MockTag>microsoft</MockTag>*/}
+                {/*        </div>*/}
+
+                {/*        <div className="metadata mt-1">*/}
+                {/*            <b>Added: </b> 1 month ago <b>Updated: </b> 1 day ago*/}
+                {/*        </div>*/}
+
+                {/*    </div>*/}
+
+                {/*</div>*/}
 
                 {/*<AnnotationTypeSelector selected={[AnnotationType.FLASHCARD]} onSelected={selected => console.log('selected: ', selected)}/>*/}
 
@@ -288,8 +332,24 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {/*</div>*/}
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
-                {/*    <DocSidebar fingerprint="0x01" updated={ISODateTimeStrings.create()}/>*/}
+                {/*    <DocSidebar meta={{*/}
+                {/*        fingerprint: "0x01",*/}
+                {/*        title: 'Bitcoin - A distributed currency system.',*/}
+                {/*        description: "Some stuff about bitcoin and what it does.",*/}
+                {/*        authors: [*/}
+                {/*            {*/}
+                {/*                displayName: "Alice Smith",*/}
+                {/*            }*/}
+                {/*        ],*/}
+                {/*        doi: '12345'*/}
+                {/*    }}/>*/}
                 {/*</div>*/}
+
+                {/*this should be editable:*/}
+
+                {/*<EditableText value="hello world" onCancel={NULL_FUNCTION} onDone={NULL_FUNCTION}/>*/}
+
+
 
                 {/*<div className="border border-dark m-1" style={{width: '450px'}}>*/}
                 {/*    <DocSidebar fingerprint="0x01"*/}

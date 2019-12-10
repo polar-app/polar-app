@@ -5,6 +5,10 @@ import {TNode} from './TreeView';
 import {DragTarget} from "./DragTarget";
 import {TreeState} from "./TreeState";
 
+const DEFAULT_NODE_CONTEXT_MENU_RENDER = (child: React.ReactElement) => {
+    return <div>{child}</div>;
+};
+
 class Styles {
 
     public static NODE_PARENT: React.CSSProperties = {
@@ -32,7 +36,7 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         marginLeft: '2px',
-        fontSize: '15px',
+        fontSize: '14px',
         lineHeight: '1.5',
         cursor: 'pointer',
         userSelect: 'none',
@@ -45,13 +49,13 @@ class Styles {
         backgroundColor: 'inherit',
         border: 'none',
         outlineColor: 'transparent',
-        borderRadius: '4px'
+        borderRadius: '4px',
 
     };
 
     public static NODE_SELECTOR: React.CSSProperties = {
         lineHeight: '1.5',
-        fontSize: '15px',
+        fontSize: '14px',
         userSelect: 'none',
         marginTop: 'auto',
         marginBottom: 'auto',
@@ -72,7 +76,7 @@ class Styles {
         marginBottom: 'auto',
         marginLeft: 'auto',
 
-        fontSize: '15px',
+        fontSize: '14px',
         lineHeight: '1.5',
         userSelect: 'none',
         whiteSpace: 'nowrap',
@@ -123,23 +127,17 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
     constructor(props: IProps<V>, context: any) {
         super(props, context);
 
-        this.toggle = this.toggle.bind(this);
+        this.toggleClosed = this.toggleClosed.bind(this);
         this.select = this.select.bind(this);
         this.deselect = this.deselect.bind(this);
         this.onCheckbox = this.onCheckbox.bind(this);
         this.onClick = this.onClick.bind(this);
         this.dispatchSelected = this.dispatchSelected.bind(this);
 
-
         this.state = {
         };
 
     }
-
-    // public componentWillUnmount(): void {
-    //     this.deselect();
-    // }
-
 
     public render() {
 
@@ -192,68 +190,67 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
         const icon = createIcon();
 
+        const nodeContextMenuRender
+            = this.props.nodeContextMenuRender || DEFAULT_NODE_CONTEXT_MENU_RENDER;
+
         return (
 
             <div style={{}}>
 
-                <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.value)}>
+                {nodeContextMenuRender(
+                    <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.value)}>
 
-                    <div style={Styles.NODE_PARENT}
-                         className="hover-highlight">
+                        <div style={Styles.NODE_PARENT}
+                             className="hover-highlight">
 
-                        <div style={Styles.NODE_ICON}
-                             className={icon}
-                             onClick={() => this.toggle()}>
-                        </div>
+                            <div style={Styles.NODE_ICON}
+                                 className={icon}
+                                 onClick={() => this.toggleClosed()}>
+                            </div>
 
-                        <div style={Styles.NODE_SELECTOR}>
+                            <div style={Styles.NODE_SELECTOR}>
 
-                            <input className="m-0"
-                                   checked={selected}
-                                   type="checkbox"
-                                   style={{display: 'block'}}
-                                   onContextMenu={(event) => this.onClick(event)}
-                                   onChange={event => this.onCheckbox(event)}/>
+                                <input className="m-0"
+                                       checked={selected}
+                                       type="checkbox"
+                                       style={{display: 'block'}}
+                                       onContextMenu={(event) => this.onClick(event)}
+                                       onChange={event => this.onCheckbox(event)}/>
 
-                        </div>
+                            </div>
 
-                        <div style={Styles.NODE_BODY}
-                             onDoubleClick={() => this.toggle()}
-                             onContextMenu={(event) => this.onClick(event)}
-                             onClick={(event) => this.onClick(event)}>
+                            <div style={Styles.NODE_BODY}
+                                 onDoubleClick={() => this.toggleClosed()}
+                                 onContextMenu={(event) => this.onClick(event)}
+                                 onClick={(event) => this.onClick(event)}>
 
-                            <button style={Styles.NODE_NAME}
-                                    className={"p-0 pl-1 pr-1 border-0 " + nodeButtonClazz}
-                                    color="light">
+                                <button style={Styles.NODE_NAME}
+                                        className={"p-0 pl-1 pr-1 border-0 no-outline " + nodeButtonClazz}
+                                        color="light">
 
-                                {this.props.title || node.name}
+                                    {this.props.title || node.name}
 
-                            </button>
+                                </button>
 
-                        </div>
+                            </div>
 
-                        <div style={Styles.NODE_RIGHT}>
+                            <div style={Styles.NODE_RIGHT}
+                                 onDoubleClick={() => this.toggleClosed()}
+                                 onContextMenu={(event) => this.onClick(event)}>
 
-                            {/*<div className="mt-auto mb-auto">*/}
-                            {/*    <button style={Styles.CREATE_BUTTON}>*/}
+                                <div>
+                                    {node.count}
+                                </div>
 
-                            {/*        <i style={Styles.CREATE_ICON}*/}
-                            {/*           className="hover-button fas fa-plus"></i>*/}
-
-                            {/*    </button>*/}
-                            {/*</div>*/}
-
-                            <div>
-                                {node.count}
                             </div>
 
                         </div>
-
-                    </div>
-                </DragTarget>
+                    </DragTarget>
+                )}
 
                 <TreeNodeChildren children={children}
                                   closed={closed}
+                                  nodeContextMenuRender={this.props.nodeContextMenuRender}
                                   treeState={this.props.treeState}/>
 
             </div>
@@ -271,7 +268,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.select(true, event.target.checked);
     }
 
-    private toggle() {
+    private toggleClosed() {
 
         const children = this.props.node.children || [];
 
@@ -281,6 +278,9 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         }
 
         this.props.treeState.closed.toggle(this.props.node.id);
+
+        // needed to cause the tree to re-render when we have collapsed a folder.
+        this.dispatchSelected();
 
     }
 
@@ -332,6 +332,8 @@ interface IProps<V> {
     readonly node: TNode<V>;
 
     readonly treeState: TreeState<V>;
+
+    readonly nodeContextMenuRender?: (child: React.ReactElement) => void;
 
 }
 

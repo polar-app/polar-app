@@ -5,7 +5,7 @@ import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../toaster/Toaster';
 import {NotificationButton} from './NotificationButton';
-import {Platforms} from "../../util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 const log = Logger.create();
 

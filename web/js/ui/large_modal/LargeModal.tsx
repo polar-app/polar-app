@@ -16,6 +16,7 @@ export class LargeModal extends React.Component<IProps, IState> {
     public render() {
 
         const minWidth = this.props.minWidth || '90%';
+        const maxWidth = this.props.maxWidth || '90%';
 
         // noinspection TsLint
         return (
@@ -27,7 +28,8 @@ export class LargeModal extends React.Component<IProps, IState> {
                    toggle={this.props.toggle ? this.props.toggle : NULL_FUNCTION}
                    style={{
                        overflowY: 'initial',
-                       minWidth
+                       minWidth,
+                       maxWidth
                    }}>
 
                 {this.props.children}
@@ -43,7 +45,8 @@ interface IProps {
     readonly centered?: boolean;
     readonly isOpen: boolean;
     readonly toggle?: () => void;
-    readonly minWidth?: string;
+    readonly minWidth?: string | number;
+    readonly maxWidth?: string | number;
 }
 
 interface IState {

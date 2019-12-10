@@ -1,15 +1,12 @@
 import {LoadDocRequest} from '../LoadDocRequest';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {IProvider} from 'polar-shared/src/util/Providers';
-import {PersistenceLayer} from '../../../../datastore/PersistenceLayer';
+import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 import {ipcRenderer} from 'electron';
 
 export class ElectronDocLoader implements IDocLoader {
 
-    private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
-
-    constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
+    constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {
         this.persistenceLayerProvider = persistenceLayerProvider;
     }
 

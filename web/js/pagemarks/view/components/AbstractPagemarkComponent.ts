@@ -17,6 +17,7 @@ import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {DocMetas} from "../../../metadata/DocMetas";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {BoxMoveEvent} from "../../../boxes/controller/BoxMoveEvent";
 
 const log = Logger.create();
 
@@ -35,7 +36,7 @@ export class AbstractPagemarkComponent extends Component {
 
     private annotationEvent?: AnnotationEvent;
 
-    private pagemarkBoxController: any;
+    private pagemarkBoxController: BoxController | undefined;
 
     protected options: ElementOptions;
 
@@ -61,7 +62,7 @@ export class AbstractPagemarkComponent extends Component {
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
 
-        this.pagemarkBoxController = new BoxController((boxMoveEvent: any) => this.onBoxMoved(boxMoveEvent));
+        this.pagemarkBoxController = new BoxController((boxMoveEvent) => this.onBoxMoved(boxMoveEvent));
 
     }
 
@@ -69,11 +70,7 @@ export class AbstractPagemarkComponent extends Component {
      *
      * @param boxMoveEvent {BoxMoveEvent}
      */
-    public onBoxMoved(boxMoveEvent: any) {
-
-        log.info("Box moved to: ", boxMoveEvent);
-
-        // boxRect, containerRect, pageRect...
+    public onBoxMoved(boxMoveEvent: BoxMoveEvent) {
 
         const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                                         boxMoveEvent.restrictionRect);
@@ -103,10 +100,10 @@ export class AbstractPagemarkComponent extends Component {
             this.pagemark = newPagemark;
 
         } else {
-            log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
+            // console.log("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
         }
 
-        log.info("New pagemarkRect: ", this.pagemark!.rect);
+        // console.log("New pagemarkRect: ", this.pagemark!.rect);
 
     }
 
@@ -144,6 +141,7 @@ export class AbstractPagemarkComponent extends Component {
         }
 
         let templateElement = this.options.templateElement;
+
         let placementElement = this.options.placementElement;
 
         if (!templateElement) {
@@ -157,8 +155,8 @@ export class AbstractPagemarkComponent extends Component {
             log.debug("Using a default placementElement from selector: ", placementElement);
         }
 
-        Preconditions.assertNotNull(templateElement, "templateElement");
-        Preconditions.assertNotNull(placementElement, "placementElement");
+        Preconditions.assertPresent(templateElement, "templateElement");
+        Preconditions.assertPresent(placementElement, "placementElement");
 
         log.info("Using templateElement: ", templateElement);
         log.info("Using placementElement: ", placementElement);
@@ -169,6 +167,9 @@ export class AbstractPagemarkComponent extends Component {
         let pagemarkElement = document.getElementById(id);
 
         if (pagemarkElement === null ) {
+
+            // TODO: I don't like doing any type of init here... it's ugly...
+
             // only create the pagemark if it's missing.
             pagemarkElement = document.createElement("div");
             pagemarkElement.setAttribute("id", id);
@@ -177,7 +178,7 @@ export class AbstractPagemarkComponent extends Component {
 
             if (ENABLE_BOX_CONTROLLER) {
                 log.info("Creating box controller for pagemarkElement: ", pagemarkElement);
-                this.pagemarkBoxController.register({
+                this.pagemarkBoxController!.register({
                     target: pagemarkElement,
                     restrictionElement: placementElement,
                     intersectedElementsSelector: ".pagemark"

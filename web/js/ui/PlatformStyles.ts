@@ -7,7 +7,7 @@
  * https://css-tricks.com/os-specific-fonts-css/
  * https://www.simicart.com/blog/pwa-design-ui/
  */
-import {Platforms} from "../util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 export class PlatformStyles {
 

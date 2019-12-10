@@ -1,4 +1,4 @@
-import {Platforms} from "./Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 export class Devices {
 

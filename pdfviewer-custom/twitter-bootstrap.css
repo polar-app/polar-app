@@ -252,16 +252,25 @@ button.dropdown-item:hover {
 
 :root {
 
-    --grey900: #222222;
-    --grey800: #3B3B3B;
-    --grey700: #515151;
-    --grey600: #626262;
-    --grey500: #7E7E7E;
-    --grey400: #9E9E9E;
-    --grey300: #B1B1B1;
-    --grey200: #CFCFCF;
-    --grey100: #E1E1E1;
-    --grey000: #F7F7F7;
+    --grey950: rgb(13, 13, 13);
+    --grey900: rgb(26, 26, 26);
+    --grey850: rgb(38, 38, 38);
+    --grey800: rgb(51, 51, 51);
+    --grey750: rgb(64, 64, 64);
+    --grey700: rgb(77, 77, 77);
+    --grey650: rgb(90, 90, 90);
+    --grey600: rgb(102, 102, 102);
+    --grey550: rgb(115, 115, 115);
+    --grey500: rgb(128, 128, 128);
+    --grey450: rgb(141, 141, 141);
+    --grey400: rgb(154, 154, 154);
+    --grey350: rgb(166, 166, 166);
+    --grey300: rgb(179, 179, 179);
+    --grey250: rgb(192, 192, 192);
+    --grey200: rgb(205, 205, 205);
+    --grey150: rgb(218, 218, 218);
+    --grey100: rgb(230, 230, 230);
+    --grey050: rgb(243, 243, 243);
 
     --primary900: #002159;
     --primary800: #01337D;
@@ -285,6 +294,54 @@ button.dropdown-item:hover {
     --danger100: #FFBDBD;
     --danger000: #FFE3E3;
 
+    /* https://material-ui.com/customization/color/ */
+    --attention900: #e65100;
+    --attention800: #ef6c00;
+    --attention700: #f57c00;
+    --attention600: #fb8c00;
+    --attention500: #ff9800;
+    --attention400: #ffa726;
+    --attention300: #ffb74d;
+    --attention200: #ffcc80;
+    --attention100: #ffe0b2;
+    --attention000: #fff3e0;
+
 }
 
+/* TODO: auto generate these */
+
+.bg-attention900 {
+    background-color: var(--attention900);
+}
+
+.bg-attention800 {
+    background-color: var(--attention800);
+}
+
+.bg-attention700 {
+    background-color: var(--attention700);
+}
+
+.bg-attention600 {
+    background-color: var(--attention600);
+}
+
+.bg-attention500 {
+    background-color: var(--attention500);
+}
+
+
+.muted-color * {
+    transition-property: none;
+}
+
+.muted-color-root:not(:hover) .muted-color * {
+    color: var(--grey100) !important;
+}
+
+.muted-color-root:not(:hover) .muted-color .muted-color-target-bg *,
+.muted-color-root:not(:hover) .muted-color * .muted-color-target-bg * {
+    color: var(--grey100) !important;
+    background-color: var(--grey100) !important;
+}
 

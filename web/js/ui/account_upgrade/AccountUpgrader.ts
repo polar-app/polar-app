@@ -7,6 +7,9 @@ import {Logger} from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();
 
+/**
+ * Looks at the amount of storage used, etc to verify that the user doesn't need to upgrade.
+ */
 export class AccountUpgrader {
 
     public async upgradeRequired() {

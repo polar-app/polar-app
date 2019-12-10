@@ -67,6 +67,12 @@ export class AnnotationRects {
      */
     static createFromPositionedRect(boxRect: Rect, containerRect: Rect): AnnotationRect {
 
+        Preconditions.assertCondition(boxRect.width > 0, 'boxRect width');
+        Preconditions.assertCondition(boxRect.height > 0, 'boxRect height');
+
+        Preconditions.assertCondition(containerRect.width > 0, 'containerRect width');
+        Preconditions.assertCondition(containerRect.height > 0, 'containerRect height');
+
         Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
         let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);

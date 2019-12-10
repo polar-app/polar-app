@@ -7,7 +7,7 @@ export class CardBody extends React.Component<IProps, IState> {
         return this.props.children;
     }
 
-    static Main = class extends React.Component<IProps, IState> {
+    public static Main = class extends React.Component<IProps, IState> {
 
         public render() {
 
@@ -33,7 +33,7 @@ export class CardBody extends React.Component<IProps, IState> {
 
     };
 
-    static Footer = class extends React.Component<IProps, IState> {
+    public static Footer = class extends React.Component<IProps, IState> {
 
         public render() {
 
@@ -57,7 +57,7 @@ export class CardBody extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly taskRep: TaskRep<any>
+    readonly taskRep: TaskRep<any>;
 }
 
 export interface IState {

@@ -1,5 +1,5 @@
 import {
-    AbstractDatastore,
+    AbstractDatastore, AbstractPrefsProvider,
     BinaryFileData,
     Datastore,
     DatastoreCapabilities,
@@ -19,7 +19,7 @@ import {
     InitResult,
     MutationType,
     NetworkLayers,
-    PrefsProvider,
+    PrefsProvider, PersistentPrefsUpdatedCallback,
     SnapshotResult,
     WritableBinaryMetaDatastore,
     WriteFileOpts,
@@ -43,7 +43,7 @@ import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {Firebase, UserID} from '../firebase/Firebase';
+import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -57,7 +57,9 @@ import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {FirestorePrefs} from "./firebase/FirestorePrefs";
+import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
+import {UserPrefCallback} from "./firebase/UserPrefs";
+import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
 
 const log = Logger.create();
 
@@ -79,7 +81,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
-    private readonly prefs: FirestorePrefs = new FirestorePrefs();
+    private readonly prefs: FirebaseDatastorePrefs = new FirebaseDatastorePrefs();
 
     constructor() {
         super();
@@ -713,16 +715,46 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public getPrefs(): PrefsProvider {
 
-        const prefs = Preconditions.assertPresent(this.prefs);
-
-        return {
-            get(): DatastorePrefs {
-                return {
-                    prefs,
-                    unsubscribe: NULL_FUNCTION
-                };
-            }
+        const onCommit = async (persistentPrefs: PersistentPrefs) => {
+            // we have to update the main copy of our prefs or else the caller doesn't see
+            // the latest version
+            this.prefs.update(persistentPrefs.toPrefDict());
         };
+
+        class PrefsProviderImpl extends AbstractPrefsProvider {
+
+            public constructor(private readonly prefs: FirebaseDatastorePrefs) {
+                super();
+            }
+
+            public get(): PersistentPrefs {
+                return this.prefs;
+            }
+
+            protected register(onNext: PersistentPrefsUpdatedCallback,
+                               onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+
+                const createSnapshotListener = (): SnapshotUnsubscriber => {
+
+                    const onNextUserPref: UserPrefCallback = (data) => {
+                        const prefs = FirebaseDatastorePrefs.toPersistentPrefs(data);
+                        onNext(prefs);
+                    };
+
+                    return this.prefs.onSnapshot(onNextUserPref, onError);
+
+                };
+
+                return createSnapshotListener();
+
+            }
+
+        }
+
+        const prefsProviderImpl = new PrefsProviderImpl(this.prefs);
+
+        // we now need to intercept it to update our main prefs on a commit.
+        return new InterceptedPrefsProvider(prefsProviderImpl, onCommit);
 
     }
 

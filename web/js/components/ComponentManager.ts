@@ -11,7 +11,6 @@ import {Container} from './containers/Container';
 import {ContainerLifecycleState} from './containers/lifecycle/ContainerLifecycleState';
 import {ContainerLifecycleListener} from './containers/lifecycle/ContainerLifecycleListener';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
-import {DocMeta} from "../metadata/DocMeta";
 import {DocMetaListeners} from "../datastore/sharing/db/DocMetaListeners";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
@@ -26,9 +25,6 @@ export class ComponentManager {
     private containers: { [key: number]: Container } = {};
     private components: { [key: string]: ComponentEntry } = {};
 
-    /**
-     *
-     */
     constructor(private readonly type: string,
                 private readonly model: Model,
                 containerProvider: ContainerProvider,
@@ -74,7 +70,7 @@ export class ComponentManager {
 
     private registerListenerForDocMeta(docMeta: IDocMeta) {
         const docMetaModel = this.createDocMetaModel();
-        docMetaModel.registerListener(docMeta, this.onComponentEvent.bind(this));
+        docMetaModel.registerListener(docMeta, annotationEvent => this.onAnnotationEvent(annotationEvent));
     }
 
     private registerListenerForSecondaryDocMetas(fingerprint: string) {
@@ -92,20 +88,19 @@ export class ComponentManager {
 
     }
 
-    private onComponentEvent(componentEvent: AnnotationEvent) {
+    private onAnnotationEvent(annotationEvent: AnnotationEvent) {
 
         // TODO: I think it would be better to build up pageNum and pageElement
         // within AnnotationEvent - not here.  This should just be a ComponentEvent
         // and not know anything about annotations.
 
-        log.debug("onComponentEvent: ", componentEvent);
+        log.debug("onComponentEvent: ", annotationEvent);
 
-        const containerID = componentEvent.pageMeta.pageInfo.num;
+        const containerID = annotationEvent.pageMeta.pageInfo.num;
 
         Preconditions.assertNumber(containerID, "containerID");
 
-        if (componentEvent.mutationState === MutationState.PRESENT) {
-
+        if (annotationEvent.mutationState === MutationState.PRESENT) {
             log.debug("PRESENT");
 
             const container = this.containers[containerID];
@@ -114,7 +109,7 @@ export class ComponentManager {
                 throw new Error("No container for containerID: " + containerID);
             }
 
-            componentEvent.container = container;
+            annotationEvent.container = container;
 
             // let container = this.cont
 
@@ -122,20 +117,29 @@ export class ComponentManager {
 
             const component = this.createComponent();
 
-            component.init(componentEvent);
+            component.init(annotationEvent);
 
-            // FIXME: register the component with the container and ONLY call
-            // he callback if and when the container is visible.
+            let initialized: boolean = true;
 
             const callback = (containerLifecycleState: ContainerLifecycleState) => {
 
                 if (containerLifecycleState.visible) {
 
-                    // now render the component on screen.
-                    component.render();
+                    if (! initialized) {
+                        // the first time it's visible we need to fire an init again...
+                        component.init(annotationEvent);
+                        initialized = true;
+                    }
+
+                    setTimeout(() => {
+                        // now render the component on screen.
+                        component.render();
+                    }, 1);
+
 
                 } else {
                     component.destroy();
+                    initialized = false;
                 }
 
             };
@@ -152,25 +156,25 @@ export class ComponentManager {
                 callback(containerState);
             }
 
-            this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
+            this.components[annotationEvent.id] = new ComponentEntry(containerLifecycleListener, component);
 
-        } else if (componentEvent.mutationState === MutationState.ABSENT) {
+        } else if (annotationEvent.mutationState === MutationState.ABSENT) {
 
             log.debug("ABSENT");
 
-            const componentEntry = this.components[componentEvent.id];
+            const componentEntry = this.components[annotationEvent.id];
 
             if (componentEntry) {
 
                 componentEntry.containerLifecycleListener.unregister();
                 componentEntry.component.destroy();
 
-                log.debug("Destroyed component: " + componentEvent.id);
+                log.debug("Destroyed component: " + annotationEvent.id);
 
-                delete this.components[componentEvent.id];
+                delete this.components[annotationEvent.id];
 
             } else {
-                log.warn("No component entry for: " + componentEvent.id);
+                log.warn("No component entry for: " + annotationEvent.id);
             }
 
         }

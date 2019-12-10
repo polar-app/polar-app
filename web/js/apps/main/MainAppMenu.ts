@@ -1,12 +1,12 @@
 import {MainAppController} from './MainAppController';
 import {app, BrowserWindow, dialog, Menu, shell} from "electron";
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
-import {Version} from '../../util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {AppLauncher} from './AppLauncher';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Promises} from '../../util/Promises';
 import {Updates} from '../../updates/Updates';
-import {Platform, Platforms} from '../../util/Platforms';
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {Menus} from './Menus';

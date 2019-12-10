@@ -20,6 +20,7 @@ import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
 import {SplitBarLeft} from '../../../apps/repository/js/SplitBarLeft';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {FeatureToggle} from "../ui/FeatureToggle";
 
 const log = Logger.create();
 
@@ -205,9 +206,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     }
 
-    private onExport(path: string, format: ExportFormat) {
+    private onExport(format: ExportFormat) {
 
-        Exporters.doExport(path, this.props.persistenceLayerProvider(), format, this.props.doc.docMeta)
+        Exporters.doExportFromDocMeta(this.props.persistenceLayerProvider, format, this.props.doc.docMeta)
             .catch(err => log.error(err));
 
     }
@@ -236,11 +237,13 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
                         <SplitBarRight>
 
-                            <ExportButton onExport={(path, format) => this.onExport(path, format)}/>
+                            <ExportButton onExport={(format) => this.onExport(format)}/>
 
-                            <GroupSharingButton doc={this.props.doc}
-                                                datastoreCapabilities={capabilities}
-                                                onDone={NULL_FUNCTION}/>
+                            <FeatureToggle name='groups'>
+                                <GroupSharingButton doc={this.props.doc}
+                                                    datastoreCapabilities={capabilities}
+                                                    onDone={NULL_FUNCTION}/>
+                            </FeatureToggle>
 
                         </SplitBarRight>
 

@@ -13,7 +13,7 @@ export class FlashcardIcon extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <i style={IconStyles.ICON} className="fas fa-bolt"></i>
+            <i style={IconStyles.ICON} className="fas fa-bolt"/>
 
         );
 

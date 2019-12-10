@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'reactstrap';
 import {DialogContainer} from './DialogContainer';
 import {NullCollapse} from '../null_collapse/NullCollapse';
-import {DialogConfirmProps} from "./Dialogs";
+import {ConfirmProps} from "./Dialogs";
 
 class Styles {
 
@@ -49,7 +49,8 @@ export class Confirm extends React.PureComponent<IProps, IState> {
 
             <DialogContainer open={true}>
 
-                <div onKeyDown={(event) => this.onKeyDown(event)}>
+                <div onKeyDown={(event) => this.onKeyDown(event)}
+                     style={{minWidth: '350px'}}>
 
                     <div className={"w-100 p-1 pl-2 pr-2 " + opts.titlebarClassName}
                          style={Styles.title}>
@@ -69,7 +70,7 @@ export class Confirm extends React.PureComponent<IProps, IState> {
 
                         <NullCollapse open={! this.props.noCancel}>
 
-                            <Button color="secondary"
+                            <Button color="light"
                                     style={Styles.button}
                                     size="lg"
                                     className="m-1"
@@ -115,7 +116,7 @@ export class Confirm extends React.PureComponent<IProps, IState> {
 
 }
 
-export interface IProps extends DialogConfirmProps {
+export interface IProps extends ConfirmProps {
 
 }
 

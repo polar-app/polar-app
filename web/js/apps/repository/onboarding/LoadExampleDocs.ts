@@ -39,10 +39,7 @@ export class LoadExampleDocs {
         this.persistenceLayer = persistenceLayer;
 
         this.pdfImporter
-            = new PDFImporter(
-                Providers.toInterface(
-                    Providers.of(
-                        this.persistenceLayer)));
+            = new PDFImporter(() => this.persistenceLayer);
 
     }
 

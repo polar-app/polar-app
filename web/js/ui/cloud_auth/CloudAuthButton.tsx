@@ -4,7 +4,7 @@ import {CloudLoginModal} from './CloudLoginModal';
 import {Firebase} from '../../firebase/Firebase';
 import * as firebase from '../../firebase/lib/firebase';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
+import {PersistenceLayerController, PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Nav} from '../util/Nav';
@@ -15,6 +15,7 @@ import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';
 import {AuthHandlers, UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import {AccountControlDropdown} from './AccountControlDropdown';
+import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 
 const log = Logger.create();
 
@@ -115,7 +116,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
     private logout() {
 
-        this.props.persistenceLayerManager.reset();
+        this.props.persistenceLayerController.reset();
 
         firebase.auth().signOut()
             .then(() => {
@@ -201,7 +202,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 interface IState {

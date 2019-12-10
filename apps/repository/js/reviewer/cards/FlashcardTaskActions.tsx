@@ -7,40 +7,52 @@ import {
     ClozeRegion,
     Region
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/util/ClozeParser";
-import {Texts} from "../../../../../web/js/metadata/Texts";
-import { Preconditions } from 'polar-shared/src/Preconditions';
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
+import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export class FlashcardTaskActions {
 
-    public static create(flashcard: IFlashcard): ReadonlyArray<FlashcardTaskAction> {
+    public static create(flashcard: IFlashcard,
+                         docAnnotation: IDocAnnotation): ReadonlyArray<FlashcardTaskAction> {
 
         if (flashcard.type === FlashcardType.BASIC_FRONT_BACK) {
-            return this.createBasicFrontBackFlashcard(flashcard);
+            return this.createBasicFrontBackFlashcard(flashcard, docAnnotation);
         } else if (flashcard.type === FlashcardType.CLOZE) {
-            return this.createClozeFlashcard(flashcard);
+            return this.createClozeFlashcard(flashcard, docAnnotation);
         } else {
             throw new Error("Type not yet supported: " + flashcard.type);
         }
 
     }
 
-    private static createBasicFrontBackFlashcard(flashcard: IFlashcard): ReadonlyArray<FlashcardTaskAction> {
+    private static createBasicFrontBackFlashcard(flashcard: IFlashcard,
+                                                 docAnnotation: IDocAnnotation): ReadonlyArray<FlashcardTaskAction> {
 
         const front = Texts.toString(flashcard.fields.front);
         const back = Texts.toString(flashcard.fields.back);
 
-        const result = {
+        const result: FlashcardTaskAction = {
             front: <div dangerouslySetInnerHTML={{__html: front || ""}}/>,
-            back: <div dangerouslySetInnerHTML={{__html: back || ""}}/>
+            back: <div dangerouslySetInnerHTML={{__html: back || ""}}/>,
+            docAnnotation
         };
 
         return [result];
 
     }
 
-    private static createClozeFlashcard(flashcard: IFlashcard): ReadonlyArray<FlashcardTaskAction> {
+    private static createClozeFlashcard(flashcard: IFlashcard,
+                                        docAnnotation: IDocAnnotation): ReadonlyArray<FlashcardTaskAction> {
 
         const cloze = Texts.toString(flashcard.fields.cloze || flashcard.fields.text);
+
+        if (cloze === undefined) {
+            const msg = "No cloze text found";
+            console.warn(`${msg}: `, flashcard);
+            throw new Error(msg);
+        }
+
         Preconditions.assertPresent(cloze, 'cloze');
         const regions = ClozeParser.toRegions(cloze!);
 
@@ -59,7 +71,7 @@ export class FlashcardTaskActions {
         const regionToElement = (region: Region, id: number) => {
 
             if (region.type === 'cloze' && (region as ClozeRegion).id === id) {
-                return `<span className="text-danger font-weight-bold">[...]</span>`;
+                return `<span class="text-danger font-weight-bold">[...]</span>`;
             } else {
                 return region.text;
             }
@@ -72,8 +84,9 @@ export class FlashcardTaskActions {
 
             return {
                 front: <div dangerouslySetInnerHTML={{__html: front}}/>,
-                back: <div dangerouslySetInnerHTML={{__html: clozeAsText}}/>
-            }
+                back: <div dangerouslySetInnerHTML={{__html: clozeAsText}}/>,
+                docAnnotation
+            };
 
         };
 

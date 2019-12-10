@@ -29,11 +29,11 @@ export class Container {
 
     }
 
-    addComponent(component: Component) {
+    public addComponent(component: Component) {
         this.components.push(component);
     }
 
-    getComponents() {
+    public getComponents(): ReadonlyArray<Component> {
         return this.components;
     }
 

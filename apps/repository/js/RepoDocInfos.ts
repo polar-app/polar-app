@@ -1,11 +1,11 @@
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocInfos} from '../../../web/js/metadata/DocInfos';
-import {RepoAnnotation} from "./RepoAnnotation";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {SortFunctions} from "./doc_repo/util/SortFunctions";
+import {Objects} from "polar-shared/src/util/Objects";
 
 export class RepoDocInfos {
 
@@ -101,6 +101,22 @@ export class RepoDocInfos {
         }
 
         return [];
+
+    }
+
+    /**
+     * Sort doc infos and handle ties by using the added field.
+     */
+    public static sort(a: RepoDocInfo, b: RepoDocInfo, formatRecord: (repoDocInfo: RepoDocInfo) => string) {
+
+        const cmp = SortFunctions.compareWithEmptyStringsLast(a, b, formatRecord);
+
+        if (cmp !== 0) {
+            return cmp;
+        }
+
+        // for ties use the date added...
+        return Objects.toObjectSTR(a.added).localeCompare(Objects.toObjectSTR(b.added));
 
     }
 

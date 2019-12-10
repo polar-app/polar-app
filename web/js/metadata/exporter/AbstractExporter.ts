@@ -21,22 +21,22 @@ export abstract class AbstractExporter implements Exporter {
 
     public async write(exportable: AnnotationHolder): Promise<void> {
 
-        switch (exportable.type) {
+        switch (exportable.annotationType) {
 
             case AnnotationType.TEXT_HIGHLIGHT:
-                await this.writeTextHighlight(<TextHighlight> exportable.annotation, exportable);
+                await this.writeTextHighlight(<TextHighlight> exportable.original, exportable);
                 break;
 
             case AnnotationType.AREA_HIGHLIGHT:
-                await this.writeAreaHighlight(<AreaHighlight> exportable.annotation, exportable);
+                await this.writeAreaHighlight(<AreaHighlight> exportable.original, exportable);
                 break;
 
             case AnnotationType.COMMENT:
-                await this.writeComment(<Comment> exportable.annotation, exportable);
+                await this.writeComment(<Comment> exportable.original, exportable);
                 break;
 
             case AnnotationType.FLASHCARD:
-                await this.writeFlashcard(<Flashcard> exportable.annotation, exportable);
+                await this.writeFlashcard(<Flashcard> exportable.original, exportable);
                 break;
 
         }

@@ -2,28 +2,41 @@ import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {TagPaths} from "./TagPaths";
 import {Tags} from "polar-shared/src/tags/Tags";
-import {MutableTagNode, TagDescriptor, TagNode} from "./TagNode";
+import {MutableTagNode, TagNode} from "./TagNode";
 import {TRoot} from "../ui/tree/TreeView";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Sets} from "polar-shared/src/util/Sets";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 export class TagNodes {
 
     public static createTagsRoot(tags: ReadonlyArray<TagDescriptor>): TagNode<TagDescriptor> {
 
+        const comparator = (a: TagDescriptor, b: TagDescriptor) => {
+            const diff = b.count - a.count;
+
+            if (diff !== 0) {
+                return diff;
+            }
+
+            return a.label.localeCompare(b.label);
+
+        };
+
         const children: ReadonlyArray<TagNode<TagDescriptor>> =
-            [...tags].sort((a, b) => b.count - a.count)
+            [...tags]
+                .sort(comparator)
                 .filter(tagDescriptor => ! tagDescriptor.label.startsWith('/'))
                 .map(tagDescriptor => {
-                return {
-                    id: tagDescriptor.id,
-                    name: tagDescriptor.label,
-                    path: tagDescriptor.id,
-                    children: [],
-                    count: tagDescriptor.count,
-                    value: tagDescriptor,
-                }
-            });
+                    return {
+                        id: tagDescriptor.id,
+                        name: tagDescriptor.label,
+                        path: tagDescriptor.id,
+                        children: [],
+                        count: tagDescriptor.count,
+                        value: tagDescriptor,
+                    };
+                });
 
         const tagMembership = this.computeTagMembership(tags);
 

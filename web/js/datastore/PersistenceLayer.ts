@@ -1,22 +1,27 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {DatastoreOverview} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
-import {BackendFileRefData} from './Datastore';
-import {DocMeta} from '../metadata/DocMeta';
+import {
+    BackendFileRefData,
+    BinaryFileData,
+    Datastore,
+    DatastoreCapabilities,
+    DatastoreInitOpts,
+    DatastoreOverview,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    GetFileOpts,
+    GroupIDStr,
+    SnapshotResult,
+    WriteFileOpts
+} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {GroupIDStr} from './Datastore';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 
 export interface PersistenceLayer {
 
@@ -109,4 +114,5 @@ export type PersistenceLayerID = string;
 
 export type PersistenceLayerProvider = () => PersistenceLayer;
 
+export type ListenablePersistenceLayerProvider = () => ListenablePersistenceLayer;
 

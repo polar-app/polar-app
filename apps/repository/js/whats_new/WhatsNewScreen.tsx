@@ -2,7 +2,11 @@ import * as React from 'react';
 import {WhatsNewContent} from '../splash2/whats_new/WhatsNewContent';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerController,
+    PersistenceLayerManager
+} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 export default class WhatsNewScreen extends React.Component<IProps, IState> {
 
@@ -22,7 +26,8 @@ export default class WhatsNewScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerController}/>
 
                 </header>
 
@@ -45,7 +50,8 @@ export default class WhatsNewScreen extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 export interface IState {

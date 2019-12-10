@@ -1,4 +1,4 @@
-import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
+import {PersistenceLayer, PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -34,10 +34,7 @@ const log = Logger.create();
  */
 export class PDFImporter {
 
-    private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
-
-    constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
-        this.persistenceLayerProvider = persistenceLayerProvider;
+    constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {
     }
 
     private async prefetch(docPath: string, basename: string): Promise<string> {
@@ -127,7 +124,7 @@ export class PDFImporter {
 
         const pdfMeta = opts.pdfMeta || await PDFMetadata.getMetadata(docPath);
 
-        const persistenceLayer = this.persistenceLayerProvider.get();
+        const persistenceLayer = this.persistenceLayerProvider();
 
         if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
 

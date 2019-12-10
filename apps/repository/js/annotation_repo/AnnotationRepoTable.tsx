@@ -3,11 +3,11 @@ import ReactTable from "react-table";
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationPreview} from './AnnotationPreview';
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
@@ -24,7 +24,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     }
 
     public onSelected(selected: number,
-                      repoAnnotation: RepoAnnotation) {
+                      repoAnnotation: IDocAnnotation) {
 
         this.setState({...this.state, selected, repoAnnotation});
         this.props.onSelected(repoAnnotation);
@@ -69,14 +69,14 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                     Cell: (row: any) => {
                                         const id = 'annotation-title' + row.index;
 
-                                        const annotation: RepoAnnotation = row.original;
+                                        const annotation: IDocAnnotation = row.original;
 
                                         return (
 
                                             <AnnotationPreview id={id}
                                                                text={annotation.text}
                                                                img={annotation.img}
-                                                               meta={annotation.meta}
+                                                               color={annotation.color}
                                                                created={annotation.created}/>
 
                                         );
@@ -137,7 +137,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                             const doSelect = () => {
 
                                 if (rowInfo && rowInfo.original) {
-                                    const repoAnnotation = rowInfo.original as RepoAnnotation;
+                                    const repoAnnotation = rowInfo.original as IDocAnnotation;
                                     this.onSelected(rowInfo.viewIndex as number, repoAnnotation);
                                 } else {
                                     // this is not a row with data and just an
@@ -236,9 +236,9 @@ interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
-    readonly onSelected: (repoAnnotation: RepoAnnotation) => void;
+    readonly onSelected: (repoAnnotation: IDocAnnotation) => void;
 
-    readonly data: ReadonlyArray<RepoAnnotation>;
+    readonly data: ReadonlyArray<IDocAnnotation>;
 
 }
 
@@ -248,6 +248,6 @@ interface IState extends IReactTableState {
     /**
      * The currently selected repo annotation.
      */
-    repoAnnotation?: RepoAnnotation;
+    repoAnnotation?: IDocAnnotation;
 
 }

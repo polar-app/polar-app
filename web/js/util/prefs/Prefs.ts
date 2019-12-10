@@ -2,6 +2,9 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {DurationStr} from 'polar-shared/src/util/TimeDurations';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {PersistentPrefsUpdatedCallback, PrefsProvider} from "../../datastore/Datastore";
+import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../../firebase/Firebase";
 
 export abstract class Prefs {
 
@@ -72,12 +75,42 @@ export abstract class Prefs {
 
     public abstract toDict(): StringToStringDict;
 
+    public abstract toPrefDict(): StringToPrefDict;
+
+}
+
+export interface Pref {
+
+    /**
+     * The key for this pref
+     */
+    readonly key: string;
+
+    /**
+     * The value of this pref.
+     */
+    readonly value: string;
+
+    /**
+     * The time this pref was written.
+     */
+    readonly written: ISODateTimeString;
 }
 
 /**
+ *
  * A prefs object that can be persisted to disk
  */
 export interface PersistentPrefs extends Prefs {
+
+    update(source: StringToPrefDict): void;
+
+    fetch(key: string): Pref | undefined;
+
+    /**
+     * Get all the prefs.
+     */
+    prefs(): ReadonlyArray<Pref>;
 
     /**
      * Commit this prefs.
@@ -86,28 +119,178 @@ export interface PersistentPrefs extends Prefs {
 
 }
 
+export interface InterceptedPersistentPrefs extends PersistentPrefs {
+    readonly __intercepted: true;
+}
+
+export type CommitCallback = (persistentPrefs: PersistentPrefs) => Promise<void>;
+
+export class InterceptedPrefsProvider {
+
+    constructor(private readonly delegate: PrefsProvider,
+                private readonly onCommit: CommitCallback) {
+
+    }
+
+    public get(): PersistentPrefs {
+        return this.intercept(this.delegate.get())!;
+    }
+
+    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+
+        const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
+            onNext(this.intercept(persistentPrefs));
+        };
+
+        return this.delegate.subscribe(handleOnNext, onError);
+    }
+
+    private intercept(persistentPrefs: PersistentPrefs | undefined): PersistentPrefs | undefined {
+
+        if (persistentPrefs) {
+            return InterceptedPersistentPrefsFactory.create(persistentPrefs, this.onCommit);
+        } else {
+            return undefined;
+        }
+
+    }
+
+}
+
+export class InterceptedPersistentPrefsFactory {
+
+    public static create(persistentPrefs: PersistentPrefs, onCommit: CommitCallback): InterceptedPersistentPrefs {
+
+        const commit = async () => {
+
+            // notify the listener
+            await onCommit(persistentPrefs);
+
+            // do the commit
+            await persistentPrefs.commit();
+
+        };
+
+        return {
+            ...persistentPrefs,
+            update: persistentPrefs.update,
+            fetch: persistentPrefs.fetch,
+            prefs: persistentPrefs.prefs,
+            mark: persistentPrefs.mark,
+            isMarkedDelayed: persistentPrefs.isMarkedDelayed,
+            toggleMarked: persistentPrefs.toggleMarked,
+            isMarked: persistentPrefs.isMarked,
+            markDelayed: persistentPrefs.markDelayed,
+            get: persistentPrefs.get,
+            set: persistentPrefs.set,
+            toDict: persistentPrefs.toDict,
+            toPrefDict: persistentPrefs.toPrefDict,
+            defined: persistentPrefs.defined,
+            __intercepted: true,
+            commit
+        };
+
+    }
+}
+
 /**
  * Prefs object just backed by a local dictionary.
  */
 export class DictionaryPrefs extends Prefs {
 
-    protected delegate: StringToStringDict = {};
+    protected delegate: StringToPrefDict = {};
 
-    constructor(delegate: StringToStringDict = {}) {
+    constructor(delegate: StringToPrefDict = {}) {
         super();
-        this.delegate = delegate;
+        this.update(delegate);
+    }
+
+    public update(dict: StringToPrefDict = {}) {
+
+        if (! dict) {
+            return;
+        }
+
+        const isInvalid = (pref: Pref | string): boolean => {
+            // this is a legacy pref and should be ignored
+            return typeof pref === 'string';
+        };
+
+        const needsUpdate = (curr: Pref | undefined, next: Pref) => {
+
+            if (curr) {
+
+                if (ISODateTimeStrings.compare(curr.written, next.written) >= 0) {
+                    return false;
+                }
+
+            }
+
+            return true;
+
+        };
+
+        for (const pref of Object.values(dict)) {
+
+            if (isInvalid(pref)) {
+                continue;
+            }
+
+            const curr = this.fetch(pref.key);
+
+            if (needsUpdate(curr, pref)) {
+                this.delegate[pref.key] = pref;
+            }
+
+        }
+
     }
 
     public get(key: string): Optional<string> {
-        return Optional.of(this.delegate[key]);
+
+        const pref = this.delegate[key];
+
+        if (pref) {
+            return Optional.of(pref.value);
+        }
+
+        return Optional.empty();
     }
 
     public set(key: string, value: string): void {
-        this.delegate[key] = value;
+
+        const written = ISODateTimeStrings.create();
+
+        this.delegate[key] = {
+            key,
+            value,
+            written
+        };
     }
 
     public toDict(): StringToStringDict {
+
+        const result: StringToStringDict = {};
+
+        for (const current of Object.values(this.delegate)) {
+            result[current.key] = current.value;
+        }
+
+        return result;
+
+    }
+
+    public toPrefDict(): StringToPrefDict {
         return {...this.delegate};
+    }
+
+
+    public fetch(key: string): Pref | undefined {
+        return Optional.of(this.delegate[key]).getOrUndefined();
+    }
+
+    public prefs(): ReadonlyArray<Pref> {
+        return Object.values(this.delegate);
     }
 
 }
@@ -154,6 +337,11 @@ export class CompositePrefs implements PersistentPrefs {
         return this.delegate.toDict();
     }
 
+    public toPrefDict(): StringToPrefDict {
+        return this.delegate.toPrefDict();
+    }
+
+
     public toggleMarked(key: string, value?: boolean): void {
         return this.toggleMarked(key, value);
     }
@@ -174,16 +362,48 @@ export class CompositePrefs implements PersistentPrefs {
 
     }
 
+    public fetch(key: string): Pref | undefined {
+        return this.delegate.fetch(key);
+    }
+
+    public prefs(): ReadonlyArray<Pref> {
+        return this.delegate.prefs();
+    }
+
+    public update(dict: StringToPrefDict): void {
+        this.delegate.update(dict);
+    }
+
+
 }
 
 export class NonPersistentPrefs extends DictionaryPrefs implements PersistentPrefs {
 
+    // tslint:disable-next-line:no-empty
     public async commit(): Promise<void> {
 
     }
 
 }
 
+export class ListenablePersistentPrefs extends CompositePrefs implements PersistentPrefs {
+
+    public constructor(private readonly backing: PersistentPrefs,
+                       private readonly onUpdated: (prefs: PersistentPrefs) => void) {
+        super([backing]);
+    }
+
+    public async commit(): Promise<void> {
+        this.onUpdated(this);
+        return super.commit();
+    }
+
+}
+
 export interface StringToStringDict {
     [key: string]: string;
+}
+
+export interface StringToPrefDict {
+    [key: string]: Pref;
 }

@@ -2,39 +2,41 @@ import * as React from 'react';
 import ReactTable, {Column, ColumnRenderProps, Instance, RowInfo} from "react-table";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
-import {TagInput} from '../TagInput';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {DocDropdown} from '../DocDropdown';
-import {DocRepoTableColumns} from './DocRepoTableColumns';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DocButton} from '../ui/DocButton';
-import {FlagDocButton} from '../ui/FlagDocButton';
-import {ArchiveDocButton} from '../ui/ArchiveDocButton';
 import Input from 'reactstrap/lib/Input';
-import {DocContextMenu, DocContextMenuProps} from '../DocContextMenu';
+import {DocContextMenuProps} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
-import {AccountUpgradeBar} from "../../../../web/js/ui/account_upgrade/AccountUpgradeBar";
-import {Platforms} from "../../../../web/js/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {ContextMenuHandlers, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
-import {ContextMenuWrapper} from '@burtonator/react-context-menu-wrapper';
+import {
+    ContextMenuHandlers,
+    ContextMenuWrapper,
+    prepareContextMenuHandlers
+} from '@burtonator/react-context-menu-wrapper';
 import {DocDropdownItems, OnRemoveFromFolderCallback} from "../DocDropdownItems";
 import {Filters} from "./DocRepoFilters";
 import {SelectRowType} from "./DocRepoScreen";
+import {TitleCell} from "./cells/TitleCell";
+import {CheckCell} from "./cells/CheckCell";
+import {DocButtonsCell} from "./cells/DocButtonsCell";
+import {ReactTableRowInfo} from "../../../../web/js/ui/ReactTables";
+import {RepoDocInfos} from "../RepoDocInfos";
+import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 
 const log = Logger.create();
 
 // TODO: go back to ExtendedReactTable
 
+const CONTEXT_MENU_ID = 'doc-table-context-menu';
 
 export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
@@ -71,6 +73,10 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         this.createTDProps = this.createTDProps.bind(this);
         this.createTDPropsForMobile = this.createTDPropsForMobile.bind(this);
         this.createTDPropsForDesktop = this.createTDPropsForDesktop.bind(this);
+
+        this.createContextMenuHandlers = this.createContextMenuHandlers.bind(this);
+
+        this.doHandleToggleField = this.doHandleToggleField.bind(this);
 
     }
 
@@ -140,50 +146,26 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 const viewIndex = row.viewIndex as number;
 
-                return (<div style={{lineHeight: '1em'}}>
-
-                    <Input checked={this.props.selected.includes(viewIndex)}
-                           style={{
-                               marginLeft: 'auto',
-                               marginRight: 'auto',
-                               margin: 'auto',
-                               position: 'relative',
-                               top: '2px',
-                               width: '16px',
-                               height: '16px',
-                           }}
-                           className="m-auto"
-                           onChange={NULL_FUNCTION}
-                           onClick={(event) => this.props.selectRow(viewIndex, event.nativeEvent, 'checkbox')}
-                           type="checkbox"/>
-
-                    {/*<i className="far fa-square"></i>*/}
-
-                </div>);
+                return <CheckCell viewIndex={viewIndex}
+                                  selected={this.props.selected}
+                                  selectRow={this.props.selectRow}/>;
             }
         };
 
     }
 
-    private createColumnTitle(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnTitle() {
 
         return {
             Header: 'Title',
             accessor: 'title',
             className: 'doc-table-col-title',
-            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 const id = 'doc-repo-row-title' + row.index;
 
                 return (
-
-                    <div id={id}>
-
-                        <div>{row.value}</div>
-
-                    </div>
-
+                    <TitleCell id={id} title={row.value}/>
                 );
             }
 
@@ -191,7 +173,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnUpdated(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnUpdated() {
 
         return {
             Header: 'Updated',
@@ -202,7 +184,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 85,
             defaultSortDesc: true,
             className: 'doc-table-col-updated d-none-mobile',
-            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 return (
@@ -216,7 +197,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnAdded(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnAdded() {
 
         return {
             Header: 'Added',
@@ -226,20 +207,17 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 85,
             defaultSortDesc: true,
             className: 'doc-table-col-added d-none-mobile',
-            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 return (
-
                     <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
-
                 );
             }
         };
 
     }
 
-    private createColumnSite(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnSite() {
 
         return {
             Header: 'Site',
@@ -250,7 +228,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             maxWidth: 200,
             sortable: false,
             className: "d-none-mobile",
-            getProps: () => contextMenuHandlers,
             sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
 
                 const toSTR = (doc?: RepoDocInfo): string => {
@@ -267,86 +244,76 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                 };
 
-                const aSTR = toSTR(a);
-                const bSTR = toSTR(b);
-
-                // if (aSTR === bSTR) {
-                //     return 0;
-                // }
-                //
-                // if (aSTR === "") {
-                //     return Number.MIN_VALUE;
-                // }
-                //
-                // if (bSTR === "") {
-                //     return Number.MAX_VALUE;
-                // }
-
-                return aSTR.localeCompare(bSTR);
+                return toSTR(a).localeCompare(toSTR(b));
 
             },
         };
 
     }
 
-    private createColumnTags(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnTags() {
+
+        const formatRecord = (repoDocInfo: RepoDocInfo): string => {
+
+            const tags: { [id: string]: Tag } = repoDocInfo.tags || {};
+
+            return Tags.onlyRegular(Object.values(tags))
+                .map(tag => tag.label)
+                .sort()
+                .join(", ");
+
+        };
+
+        const sortMethod = (a: RepoDocInfo, b: RepoDocInfo) => {
+            return RepoDocInfos.sort(a, b, formatRecord);
+        };
+
         return {
             id: 'tags',
             Header: 'Tags',
             headerClassName: "d-none-mobile",
             width: 250,
-            accessor: '',
             show: this.props.columns.tags.selected,
             className: 'doc-table-col-tags d-none-mobile',
-            getProps: () => contextMenuHandlers,
-            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => {
-
-                const toSTR = (obj: any): string => {
-
-                    if (! obj) {
-                        return "";
-                    }
-
-                    if (typeof obj === 'string') {
-                        return obj;
-                    }
-
-                    return JSON.stringify(obj);
-
-                };
-
-                const cmp = toSTR(a.tags).localeCompare(toSTR(b.tags));
-
-                if (cmp !== 0) {
-                    return cmp;
-                }
-
-                // for ties use the date added...
-                return toSTR(a.added).localeCompare(toSTR(b.added));
-
-            },
-            Cell: (row: any) => {
-                // TODO: move to a PureComponent to
-                // improve performance
-
-                const tags: {[id: string]: Tag} = row.original.tags;
-
-                const formatted = Tags.onlyRegular(Object.values(tags))
-                    .map(tag => tag.label)
-                    .sort()
-                    .join(", ");
-
-                return (
-
-                    <div>{formatted}</div>
-
-                );
-
-            }
+            accessor: '',
+            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => sortMethod(a, b),
+            Cell: (value: ReactTableRowInfo<RepoDocInfo>) => formatRecord(value.original)
         };
+
     }
 
-    private createColumnProgress(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnFolders() {
+
+        const formatRecord = (repoDocInfo: RepoDocInfo): string => {
+
+            const tags: { [id: string]: Tag } = repoDocInfo.tags || {};
+
+            return Tags.onlyFolderTags(Object.values(tags))
+                .map(tag => tag.label)
+                .sort()
+                .join(", ");
+
+        };
+
+        const sortMethod = (a: RepoDocInfo, b: RepoDocInfo) => {
+            return RepoDocInfos.sort(a, b, formatRecord);
+        };
+
+        return {
+            id: 'folders',
+            Header: 'Folders',
+            headerClassName: "d-none-mobile",
+            width: 250,
+            show: this.props.columns.folders?.selected || false,
+            className: 'doc-table-col-folders d-none-mobile',
+            accessor: '',
+            sortMethod: (a: RepoDocInfo, b: RepoDocInfo) => sortMethod(a, b),
+            Cell: (value: ReactTableRowInfo<RepoDocInfo>) => formatRecord(value.original)
+        };
+
+    }
+
+    private createColumnProgress() {
 
         return {
             id: 'progress',
@@ -358,7 +325,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             defaultSortDesc: true,
             resizable: false,
             className: 'doc-table-col-progress d-none-mobile',
-            getProps: () => contextMenuHandlers,
             Cell: (row: any) => {
 
                 return (
@@ -371,7 +337,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createColumnAnnotations(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnAnnotations() {
 
         return {
             id: 'nrAnnotations',
@@ -383,7 +349,6 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             defaultSortDesc: true,
             resizable: false,
             className: "d-none-mobile",
-            getProps: () => contextMenuHandlers,
         };
 
     }
@@ -405,49 +370,12 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 const repoDocInfo: RepoDocInfo = row.original;
                 const viewIndex = row.viewIndex;
 
-                const existingTags: Tag[]
-                    = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
-
-                const selectCurrentRow = (event: React.MouseEvent<HTMLDivElement>, type: SelectRowType) => {
-                    this.props.selectRow(viewIndex, event.nativeEvent, type)
-                };
-
-                return (<div className="doc-buttons" style={{display: 'flex'}}>
-
-                    <DocButton>
-
-                        {/*WARNING: making this a function breaks the layout...*/}
-
-                        <TagInput availableTags={this.props.tagsProvider()}
-                                  existingTags={existingTags}
-                                  relatedTags={this.props.relatedTags}
-                                  onChange={(tags) => this.props.onDocTagged(repoDocInfo, tags)}/>
-
-                    </DocButton>
-
-                    <FlagDocButton active={repoDocInfo.flagged}
-                                   onClick={() => this.doHandleToggleField(repoDocInfo, 'flagged')}/>
-
-                    <ArchiveDocButton active={repoDocInfo.archived}
-                                      onClick={() => this.doHandleToggleField(repoDocInfo, 'archived')}/>
-
-                    <div onContextMenu={(event) => selectCurrentRow(event, 'context')}
-                         onClick={(event) => selectCurrentRow(event, 'click')}>
-
-                        <DocButton>
-
-                            <DocDropdown id={'doc-dropdown-' + row.index}
-                                         filters={this.props.filters}
-                                         getSelected={this.props.getSelected}
-                                         onDelete={this.props.onDocDeleteRequested}
-                                         onSetTitle={this.props.onDocSetTitle}
-                                         onDocumentLoadRequested={this.contextMenuProps.onDocumentLoadRequested}
-                                         onRemoveFromFolder={this.props.onRemoveFromFolder}/>
-
-                        </DocButton>
-                    </div>
-
-                </div>);
+                return <DocButtonsCell viewIndex={viewIndex}
+                                       flagged={repoDocInfo.flagged}
+                                       archived={repoDocInfo.archived}
+                                       doHandleToggleField={this.doHandleToggleField}
+                                       onDocumentLoadRequested={this.onDocumentLoadRequested}
+                                       {...this.props}/>;
 
             }
         };
@@ -457,51 +385,46 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
     private createColumns(contextMenuHandlers: ContextMenuHandlers) {
 
         if (Platforms.isMobile()) {
-            return this.createColumnsForTablet(contextMenuHandlers);
+            return this.createColumnsForTablet();
         } else {
-            return this.createColumnsForDesktop(contextMenuHandlers);
+            return this.createColumnsForDesktop();
         }
 
     }
 
-    private createColumnsForTablet(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnsForTablet() {
 
         return [
             this.createColumnCheckbox(),
-            this.createColumnTitle(contextMenuHandlers),
-            // this.createColumnUpdated(),
-            // this.createColumnAdded(),
-            // this.createColumnSite(),
-            // this.createColumnTags(),
-            // this.createColumnAnnotations(),
-            this.createColumnProgress(contextMenuHandlers),
-            // this.createColumnButtons()
+            this.createColumnTitle(),
+            this.createColumnProgress(),
         ];
 
     }
 
-    private createColumnsForDesktop(contextMenuHandlers: ContextMenuHandlers) {
+    private createColumnsForDesktop() {
 
         return [
             this.createColumnCheckbox(),
-            this.createColumnTitle(contextMenuHandlers),
-            this.createColumnUpdated(contextMenuHandlers),
-            this.createColumnAdded(contextMenuHandlers),
-            this.createColumnSite(contextMenuHandlers),
-            this.createColumnTags(contextMenuHandlers),
-            this.createColumnAnnotations(contextMenuHandlers),
-            this.createColumnProgress(contextMenuHandlers),
+            this.createColumnTitle(),
+            this.createColumnUpdated(),
+            this.createColumnAdded(),
+            this.createColumnSite(),
+            this.createColumnTags(),
+            this.createColumnFolders(),
+            this.createColumnAnnotations(),
+            this.createColumnProgress(),
             this.createColumnButtons()
         ];
 
     }
 
-    private createTDProps(rowInfo?: RowInfo, column?: Column) {
+    private createTDProps(rowInfo: RowInfo, column: Column, contextMenuHandlers: ContextMenuHandlers) {
 
         if (Platforms.isMobile()) {
             return this.createTDPropsForMobile(rowInfo, column);
         } else {
-            return this.createTDPropsForDesktop(rowInfo, column);
+            return this.createTDPropsForDesktop(rowInfo, column, contextMenuHandlers);
        }
 
     }
@@ -547,7 +470,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
-    private createTDPropsForDesktop(rowInfo?: RowInfo, column?: Column) {
+    private createTDPropsForDesktop(rowInfo: RowInfo, column: Column, contextMenuHandlers: ContextMenuHandlers) {
 
         const DEFAULT_BEHAVIOR_COLUMNS = [
             'tag-input',
@@ -584,22 +507,31 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
             return {
 
-                onDoubleClick: (event: MouseEvent) => {
-
-                    if (rowInfo) {
-                        const repoDocInfo: RepoDocInfo = rowInfo.original;
-                        this.onDocumentLoadRequested(repoDocInfo);
+                onDoubleClick: () => {
+                    const selected = this.props.getSelected();
+                    if (selected.length === 1) {
+                        // only allow double click if one item is requested.  Double clicking on > 1 makes
+                        // no sense.
+                        this.onDocumentLoadRequested(selected[0]);
                     }
-
                 },
 
                 onContextMenu: (event: MouseEvent) => {
                     handleSelect(event, 'context');
+                    contextMenuHandlers.onContextMenu(event);
                 },
 
                 onClick: (event: MouseEvent, handleOriginal?: () => void) => {
                     handleSelect(event, 'click');
                 },
+
+                onTouchEnd: (event: TouchEvent) => {
+                    contextMenuHandlers.onTouchEnd(event);
+                },
+
+                onTouchStart: (event: TouchEvent) => {
+                    contextMenuHandlers.onTouchStart(event);
+                }
 
             };
 
@@ -607,22 +539,26 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     }
 
+    private createContextMenuHandlers() {
+        return prepareContextMenuHandlers({id: CONTEXT_MENU_ID});
+    }
+
     public render() {
 
         const { data } = this.props;
 
-        const contextMenuID = 'doc-table-context-menu';
-        const contextMenuHandlers = prepareContextMenuHandlers({id: contextMenuID});
+        const contextMenuHandlers = this.createContextMenuHandlers();
 
         return (
 
             <div id="doc-table"
-                 className="ml-1"
+                 className=""
                  style={{height: '100%', overflow: 'auto'}}>
 
-                <AccountUpgradeBar/>
+                {/*TODO: removing now because it breaks scrollbars for new users.*/}
+                {/*<AccountUpgradeBar/>*/}
 
-                <ContextMenuWrapper id={contextMenuID}>
+                <ContextMenuWrapper id={CONTEXT_MENU_ID}>
 
                     <div className="border shadow rounded pt-2 pb-2"
                          style={{backgroundColor: 'var(--white)'}}>
@@ -650,11 +586,71 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                             desc: true
                         }
                     ]}
-                    // sorted={[{
-                    //     id: 'added',
-                    //     desc: true
-                    // }]}
+                    getTheadProps={() => {
+                        return {
+                            style: {
+                                // needed to avoid the columns being placed wrong due to the scrollbar.
+                                paddingRight: '1em'
+                            }
+                        };
+                    }}
                     getTrProps={(state: any, rowInfo: any) => {
+
+                        const computeStyle = (): React.CSSProperties => {
+
+                            const computeRowSelectionStyle = () => {
+
+                                if (rowInfo) {
+
+                                    if (this.props.selected.includes(rowInfo.viewIndex)) {
+                                        return {
+                                            background: 'var(--selected-background-color)',
+                                            color: 'var(--selected-text-color)'
+                                        };
+                                    } else {
+
+                                        const even = (rowInfo.viewIndex % 2) === 0;
+
+                                        if (even) {
+                                            return {
+                                                background: 'var(--grey050)'
+                                            };
+                                        } else {
+                                            return {
+                                                background: 'var(--primary-background-color)'
+                                            };
+                                        }
+
+                                    }
+
+                                } else {
+                                    return {
+                                        background: 'var(--primary-background-color)'
+                                    };
+                                }
+
+                            };
+
+                            const computeFlaggedStyle = (): React.CSSProperties => {
+
+                                if (rowInfo && rowInfo.original && rowInfo.original.flagged) {
+                                    return {
+                                        fontWeight: 'bold'
+                                    };
+                                }
+
+                                return {};
+                            };
+
+                            return {
+                                ...computeRowSelectionStyle(),
+                                ...computeFlaggedStyle()
+                            };
+
+
+                        };
+
+                        const style = computeStyle();
 
                         return {
 
@@ -662,20 +658,13 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                             onDragStart: (event: DragEvent) => (this.props.onDragStart || NULL_FUNCTION)(event),
                             onDragEnd: (event: DragEvent) => (this.props.onDragEnd || NULL_FUNCTION)(event),
 
-
                             // include the doc fingerprint in the table
                             // so that the tour can use
                             'data-doc-fingerprint': ((rowInfo || {}).original || {}).fingerprint || '',
 
                             tabIndex: rowInfo ? (rowInfo.viewIndex as number) + 1 : undefined,
 
-                            style: {
-                                // TODO: dark-mode.  Use CSS variable
-                                // names for colors
-
-                                background: rowInfo && this.props.selected.includes(rowInfo.viewIndex) ? 'var(--selected-background-color)' : 'var(--primary-background-color)',
-                                color: rowInfo && this.props.selected.includes(rowInfo.viewIndex) ? 'var(--selected-text-color)' : 'var(--primary-text-color)',
-                            },
+                            style,
 
                             onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
                                 this.onKeyDown(event);
@@ -683,8 +672,13 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
                         };
                     }}
-                    getTdProps={(state: any, rowInfo?: RowInfo, column?: Column, instance?: any) => {
-                        return this.createTDProps(rowInfo, column);
+                    getTdProps={(state: any, rowInfo?: RowInfo, column?: Column) => {
+
+                        if (!rowInfo || ! column) {
+                            return {};
+                        }
+
+                        return this.createTDProps(rowInfo, column, contextMenuHandlers);
                     }}
 
                 />
@@ -766,7 +760,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 }
 
 interface IProps {
-    readonly columns: DocRepoTableColumns;
+    readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly data: ReadonlyArray<RepoDocInfo>;
     readonly relatedTags: RelatedTags;
@@ -790,7 +784,7 @@ interface IProps {
     readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
     readonly filters: Filters;
     readonly onRemoveFromFolder: OnRemoveFromFolderCallback;
-
+    readonly getRow: (viewIndex: number) => RepoDocInfo;
 }
 
 interface IState {

@@ -17,7 +17,6 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
 
     protected constructor(container: Container) {
         this.container = container;
-
         const visible = this.isVisible();
         this.state = new ContainerLifecycleState({container, visible});
     }
@@ -32,7 +31,6 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
                     const visible = this.isVisible();
                     this.state = new ContainerLifecycleState({container, visible});
                     callback(this.state);
-
                 }
             }
 
@@ -62,7 +60,7 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
         return this.state;
     }
 
-    unregister() {
+    public unregister() {
 
         if (this.observer) {
             this.observer!.disconnect();

@@ -3,17 +3,17 @@ import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
 import {Image} from './Image';
-import {isPresent, notNull} from 'polar-shared/src/Preconditions';
-import {PageMeta} from './PageMeta';
+import {notNull} from 'polar-shared/src/Preconditions';
 import {DocMetas} from './DocMetas';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocMeta} from './DocMeta';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {Text} from "polar-shared/src/metadata/Text";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
-import {HTMLStr} from "polar-shared/src/util/Strings";
+import {HTMLStr, IDStr} from "polar-shared/src/util/Strings";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {TextType} from "polar-shared/src/metadata/TextType";
 
 export class TextHighlights {
 
@@ -31,9 +31,50 @@ export class TextHighlights {
         const updated = new TextHighlight({...existing, ...updates});
 
         DocMetas.withBatchedMutations(docMeta, () => {
+            // TODO: I think this is wrong and we have to use a new ID...
             // delete pageMeta.textHighlights[id];
             pageMeta.textHighlights[id] = updated;
         });
+
+    }
+
+    public static resetRevisedText(docMeta: IDocMeta,
+                                   pageMeta: IPageMeta,
+                                   id: IDStr) {
+
+        this.setRevisedText(docMeta, pageMeta, id, undefined);
+    }
+
+    public static setRevisedText(docMeta: IDocMeta,
+                                 pageMeta: IPageMeta,
+                                 id: IDStr,
+                                 html: HTMLStr | undefined) {
+
+        pageMeta = DocMetas.getPageMeta(docMeta, pageMeta.pageInfo.num);
+
+        const textHighlight = pageMeta.textHighlights[id];
+
+        if (textHighlight) {
+
+            DocMetas.withBatchedMutations(docMeta, () => {
+
+                delete pageMeta.textHighlights[id];
+
+                id = Hashcodes.createRandomID();
+
+                const revisedText = html ? Texts.create(html, TextType.HTML) : undefined;
+
+                const newTextHighlight = {
+                    ...textHighlight,
+                    id, // a new ID is required here...
+                    lastUpdated: ISODateTimeStrings.create(),
+                    revisedText
+                };
+
+                pageMeta.textHighlights[id] = newTextHighlight;
+
+            });
+        }
 
     }
 
@@ -80,9 +121,8 @@ export class TextHighlights {
      * @Deprecated use ITextHighlights.toHTML
      * @param textHighlight
      */
-    public static toHTML(textHighlight: ITextHighlight): HTMLStr {
+    public static toHTML(textHighlight: ITextHighlight): HTMLStr | undefined {
         return ITextHighlights.toHTML(textHighlight);
-
     }
 
 }

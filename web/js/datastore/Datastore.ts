@@ -1,6 +1,5 @@
 // A datastore that supports ledgers and checkpoints.
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
@@ -12,7 +11,7 @@ import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {PersistentPrefs} from '../util/prefs/Prefs';
+import {InterceptedPersistentPrefs, PersistentPrefs, InterceptedPersistentPrefsFactory, Prefs} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -22,6 +21,9 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
+import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../firebase/Firebase";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {SimpleReactor} from "../reactor/SimpleReactor";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -715,11 +717,6 @@ export interface SnapshotResult {
 
 }
 
-/**
- * A function for unsubscribing to future snapshot events.
- */
-export type SnapshotUnsubscriber = () => void;
-
 export interface SyncDocMap {
     [fingerprint: string]: SyncDoc;
 
@@ -806,7 +803,6 @@ export class SyncDocs {
 
 export type DatastoreID = string;
 
-
 export interface DatastoreInitOpts {
 
     readonly noInitialSnapshot?: boolean;
@@ -818,16 +814,107 @@ export interface DatastoreInitOpts {
 
 }
 
+export type PersistentPrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => void;
+
 export interface PrefsProvider {
 
     /**
-     * Get the latest copy of the prefs we're using
-     *
-     * @param onUpdated when provided, called when we have an updated copy of our prefs.
+     * Get the users prefs.
      */
-    get(onUpdated?: () => void): DatastorePrefs;
+    get(): PersistentPrefs;
+
+    subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber;
 
 }
+
+export abstract class AbstractPrefsProvider implements PrefsProvider {
+
+    protected reactor = new SimpleReactor<PersistentPrefs | undefined>();
+
+    public abstract get(): PersistentPrefs;
+
+    /**
+     * Register a callback with no event listeners for platforms like Firebase that provide listening to the underlying
+     * datastore.
+     */
+    protected register(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback) {
+        return NULL_FUNCTION;
+    }
+
+    /**
+     * Default implementation of subscribe which should be used everywhere.
+     */
+    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+
+        if (! this.get) {
+            throw new Error("No get method!");
+        }
+
+        const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
+
+            const interceptedPersistentPrefs = this.createInterceptedPersistentPrefs(persistentPrefs);
+            onNext(interceptedPersistentPrefs);
+
+        };
+
+        const eventListener = (persistentPrefs: PersistentPrefs | undefined) => handleOnNext(persistentPrefs);
+
+        const unsubscriber = this.register(eventListener, onError);
+
+        this.reactor.addEventListener(eventListener);
+
+        handleOnNext(this.createInterceptedPersistentPrefs(this.get()));
+
+        return () => {
+            this.reactor.removeEventListener(eventListener);
+            unsubscriber();
+        };
+
+    }
+
+    protected createInterceptedPersistentPrefs(persistentPrefs: PersistentPrefs | undefined): InterceptedPersistentPrefs | undefined {
+
+        function isIntercepted(persistentPrefs: PersistentPrefs): boolean {
+            return (<any> persistentPrefs).__intercepted === true;
+        }
+
+        if (persistentPrefs) {
+
+            if (isIntercepted(persistentPrefs)) {
+                // don't double intercept...
+                return <InterceptedPersistentPrefs> persistentPrefs;
+            }
+
+            const commit = async (): Promise<void> => {
+                this.reactor.dispatchEvent(persistentPrefs);
+                return persistentPrefs.commit();
+            };
+
+            return InterceptedPersistentPrefsFactory.create(persistentPrefs, commit);
+
+        } else {
+            return undefined;
+        }
+
+    }
+
+}
+
+/**
+ * A prefs provider which has no update methods.
+ */
+export class DefaultPrefsProvider extends AbstractPrefsProvider {
+
+    constructor(private readonly prefs: PersistentPrefs) {
+        super();
+    }
+
+    public get(): PersistentPrefs {
+        return this.createInterceptedPersistentPrefs(this.prefs)!;
+    }
+
+}
+
 
 export interface DatastorePrefs {
 

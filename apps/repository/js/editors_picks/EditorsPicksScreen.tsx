@@ -2,7 +2,11 @@ import * as React from 'react';
 import {EditorsPicksContent} from './EditorsPicksContent';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {MessageBanner} from '../MessageBanner';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerController,
+    PersistenceLayerManager
+} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 export default class EditorsPicksScreen extends React.Component<IProps, IState> {
 
@@ -21,7 +25,8 @@ export default class EditorsPicksScreen extends React.Component<IProps, IState> 
             <div id="doc-repository">
 
                 <header>
-                    <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerController}/>
                 </header>
 
 
@@ -51,8 +56,8 @@ export default class EditorsPicksScreen extends React.Component<IProps, IState> 
 }
 
 export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
-
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 export interface IState {

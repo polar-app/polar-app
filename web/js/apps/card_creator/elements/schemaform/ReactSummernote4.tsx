@@ -107,7 +107,7 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
 
     }
 
-    public componentWillReceiveProps(nextProps: any) {
+    public componentWillReceiveProps(nextProps: IProps) {
 
         const { props } = this;
 

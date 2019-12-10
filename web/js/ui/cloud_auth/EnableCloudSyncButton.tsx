@@ -36,9 +36,9 @@ export class EnableCloudSyncButton extends React.PureComponent<IProps, IState> {
                             size="md"
                             onClick={() => this.props.onClick()}>
 
-                        <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
+                        <i className="fas fa-sign-in-alt" style={{marginRight: '5px'}}/>
 
-                        <span className="d-none-mobile">Cloud Sync</span>
+                        <span className="d-none-mobile">Login</span>
 
                     </Button>
 

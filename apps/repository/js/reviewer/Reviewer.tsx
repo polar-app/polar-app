@@ -1,17 +1,16 @@
 import * as React from 'react';
 import {Button, Progress} from "reactstrap";
-import {AnnotationPreview} from "../annotation_repo/AnnotationPreview";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {Answer, Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {
-    ReadingTaskAction,
     TaskRep
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Platforms} from "../../../../web/js/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
 import {FlashcardCard} from "./cards/FlashcardCard";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {ReadingCard} from "./cards/ReadingCard";
+import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -98,7 +97,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
             const readingTaskRep = taskRep as any as TaskRep<ReadingTaskAction>;
 
             return <ReadingCard taskRep={readingTaskRep}
-                                onRating={(_, rating) => this.onRating(taskRep, rating)}/>
+                                onRating={(_, rating) => this.onRating(taskRep, rating)}/>;
 
         };
 
@@ -113,14 +112,13 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
             return <FlashcardCard taskRep={flashcardTaskRep}
                                   front={front}
                                   back={back}
-                                  onRating={(_, rating) => this.onRating(taskRep, rating)}/>
+                                  onRating={(_, rating) => this.onRating(taskRep, rating)}/>;
         };
 
         const Card = () => {
 
-            if (typeof action === 'string') {
+            if (this.state.taskRep!.mode === 'reading') {
                 return <DoReadingCard/>;
-
             } else {
                 return <DoFlashcardCard/>;
             }
@@ -282,7 +280,7 @@ export interface IState<A> {
      */
     readonly taskRep?: TaskRep<A> | undefined;
 
-    readonly pending: TaskRep<A>[];
+    readonly pending: Array<TaskRep<A>>;
 
     readonly finished: number;
 

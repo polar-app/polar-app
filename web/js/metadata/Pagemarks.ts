@@ -330,7 +330,6 @@ export class Pagemarks {
     /**
      * Update pagemarks on the given page.
      *
-     * @param pagemark The pagemark to update.
      */
     public static updatePagemark(docMeta: IDocMeta, pageNum: number, pagemark: IPagemark) {
 
@@ -406,11 +405,12 @@ export class Pagemarks {
     }
 
     /**
-     *
+     * @param docMeta The DocMeta to update
+     * @param pageNum: The page number to update.
      * @param id When id is specified we delete just a specific pagemark,
      * otherwise we delete all of them.
      */
-    public static deletePagemark(docMeta: IDocMeta, pageNum: number, id?: string) {
+    public static deletePagemark(docMeta: IDocMeta, pageNum: PageNumber, id?: string) {
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
 

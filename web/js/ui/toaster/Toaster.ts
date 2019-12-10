@@ -50,7 +50,6 @@ export class Toaster {
      * Create an error that doesn't auto-hide and is a singleton around the same
      * messages and requires the user to acknowledge it...
      *
-     * @param message
      */
     public static persistentError(message: string, title: string = "") {
 
@@ -64,15 +63,23 @@ export class Toaster {
 
     private static augmentExtendedOptions(options: ToasterOptions): ToasterOptions {
 
-        const result = Object.assign({}, options);
+        let result = {...options};
 
         if (options.requiresAcknowledgment) {
-            Object.assign(result, {
+            result = {
+                ...result,
                 closeButton: true,
                 timeOut: 0,
                 extendedTimeOut: 0,
-            });
+            };
         }
+
+        // if (! options.positionClass) {
+        //     result = {
+        //         ...result,
+        //         positionClass: 'toast-top-center'
+        //     };
+        // }
 
         return result;
 

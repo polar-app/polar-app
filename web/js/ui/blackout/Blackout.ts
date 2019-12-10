@@ -31,7 +31,7 @@ export class Blackout {
         blackoutElement.style.top = '0';
         blackoutElement.style.left = '0';
         blackoutElement.style.backgroundColor = '#000000';
-        blackoutElement.style.opacity = '0.5';
+        blackoutElement.style.opacity = '0.7';
 
         blackoutElement.style.zIndex = '999';
 

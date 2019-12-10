@@ -1,9 +1,7 @@
-import {RepoAnnotation} from "../RepoAnnotation";
 import {
     CalculatedTaskReps,
     createDefaultTaskRepResolver,
     OptionalTaskRepResolver,
-    ReadingTaskAction,
     TasksCalculator
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
@@ -19,36 +17,41 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 
 /**
  * Take tasks and then build a
  */
 export interface TasksBuilder<A> {
-    (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<A>>;
+    (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<A>>;
 }
 
 export class ReviewerTasks {
 
-    public static async createReadingTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+    public static async createReadingTasks(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                            limit: number = 10): Promise<CalculatedTaskReps<ReadingTaskAction>> {
 
         const mode = 'reading';
 
-        const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<ReadingTaskAction>> => {
+        const taskBuilder: TasksBuilder<ReadingTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<ReadingTaskAction>> => {
 
-            const toTask = (repoAnnotation: RepoAnnotation): Task<ReadingTaskAction> => {
-                const color = HighlightColors.withDefaultColor((repoAnnotation.meta || {}).color);
+            const toTask = (docAnnotation: IDocAnnotation): Task<ReadingTaskAction> => {
+                const color = HighlightColors.withDefaultColor(docAnnotation.color);
                 return {
-                    id: repoAnnotation.id,
-                    action: repoAnnotation.text || "",
-                    created: repoAnnotation.created,
+                    id: docAnnotation.guid || docAnnotation.id,
+                    action: {
+                        text: docAnnotation.text || "",
+                        docAnnotation
+                    },
+                    created: docAnnotation.created,
                     color,
                     mode
                 };
             };
 
             return repoDocAnnotations
-                .filter(current => current.type === AnnotationType.TEXT_HIGHLIGHT)
+                .filter(current => current.annotationType === AnnotationType.TEXT_HIGHLIGHT)
                 .filter(current => current.text !== undefined && current.text !== '')
                 .map(toTask);
 
@@ -58,36 +61,36 @@ export class ReviewerTasks {
 
     }
 
-    public static async createFlashcardTasks(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+    public static async createFlashcardTasks(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                              limit: number = 10): Promise<CalculatedTaskReps<FlashcardTaskAction>> {
 
         const mode = 'flashcard';
 
-        const taskBuilder: TasksBuilder<FlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<RepoAnnotation>): ReadonlyArray<Task<FlashcardTaskAction>> => {
+        const taskBuilder: TasksBuilder<FlashcardTaskAction> = (repoDocAnnotations: ReadonlyArray<IDocAnnotation>): ReadonlyArray<Task<FlashcardTaskAction>> => {
 
-            const toTasks = (repoAnnotation: RepoAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
+            const toTasks = (docAnnotation: IDocAnnotation): ReadonlyArray<Task<FlashcardTaskAction>> => {
 
                 const toTask = (action: FlashcardTaskAction): Task<FlashcardTaskAction> => {
 
                     return {
-                        id: repoAnnotation.id,
+                        id: docAnnotation.guid || docAnnotation.id,
                         action,
-                        created: repoAnnotation.created,
+                        created: docAnnotation.created,
                         mode
                     };
 
                 };
 
-                const actions = FlashcardTaskActions.create(<IFlashcard> repoAnnotation.original);
+                const actions = FlashcardTaskActions.create(<IFlashcard> docAnnotation.original, docAnnotation);
 
                 return actions.map(toTask);
 
             };
 
             return repoDocAnnotations
-                .filter(current => current.type === AnnotationType.FLASHCARD)
+                .filter(current => current.annotationType === AnnotationType.FLASHCARD)
                 .map(toTasks)
-                .reduce(Reducers.FLAT)
+                .reduce(Reducers.FLAT);
 
         };
 
@@ -95,7 +98,7 @@ export class ReviewerTasks {
 
     }
 
-    public static async createTasks<A>(repoDocAnnotations: ReadonlyArray<RepoAnnotation>,
+    public static async createTasks<A>(repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                        mode: RepetitionMode,
                                        tasksBuilder: TasksBuilder<A>,
                                        limit: number = 10): Promise<CalculatedTaskReps<A>> {
@@ -114,7 +117,7 @@ export class ReviewerTasks {
 
         const spacedReps = await SpacedReps.list(uid);
 
-        const spacedRepsMap = IDMaps.toIDMap(spacedReps);
+        const spacedRepsMap = IDMaps.create(spacedReps);
 
         const optionalTaskRepResolver: OptionalTaskRepResolver<A>
             = async (task: Task<A>): Promise<TaskRep<A> | undefined> => {

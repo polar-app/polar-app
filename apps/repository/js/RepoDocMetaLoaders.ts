@@ -12,6 +12,8 @@ export class RepoDocMetaLoaders {
     public static addThrottlingEventListener(repoDocMetaLoader: RepoDocMetaLoader,
                                              callback: () => void): Releaseable {
 
+        // TODO: refactor this method into a ThrottlingEventListener CLASS and handle this there.
+
         // DO NOT refresh too often if we get lots of documents as this really
         // locks up the UI but we also need a reasonable timeout.
         //
@@ -26,13 +28,14 @@ export class RepoDocMetaLoaders {
         // even THEN that would add latency because we're not sure how often
         // the server is sending data.
 
-        // TODO: consider ALWAYS sending the last event as soon as we get it
-        // and clear the throttler.  This way if we receive the 100% event we
-        // don't have any latency.  We're goign to need a clear() or flush()
-        // method in the throttler. maybe just a force arg to exec() to force
-        // this method from being called.  We might want to have a minTimeout
-        // here too so that this flush behavior couldn't be triggered too often
-        // but maybe we're overthinking here (for now).
+        // TODO: it might be possible to remove the throttler AFTER we start
+        // BUT I noticed that it doesn't work. The general idea is to improve
+        // the latency by no longer trading latency for throughput after
+        // startup but we don't have a reliable way to notify that we have
+        // fully read in the main snapshot after init.  If I can do that then I
+        // can disable the throttler by flipping a loaded flag but right now that
+        // strategy doesn't work as once we hit 100% (which seems to happen too
+        // soon) we will no longer throttle and performance will suck.
 
         const throttlerOpts = { maxRequests: 250, maxTimeout: 500 };
 

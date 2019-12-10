@@ -1,4 +1,3 @@
-import {DocMeta} from '../metadata/DocMeta';
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from 'polar-shared/src/logger/Logger';

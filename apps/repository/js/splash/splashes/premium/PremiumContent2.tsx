@@ -127,6 +127,7 @@ export const PricingOverview = () => {
 };
 
 export const FindPlan = () => {
+
     return <div>
         <h2 className="text-tint text-left">
 
@@ -143,7 +144,8 @@ export const FindPlan = () => {
         </p>
 
 
-    </div>
+    </div>;
+
 };
 
 export const FreePlan = () => {

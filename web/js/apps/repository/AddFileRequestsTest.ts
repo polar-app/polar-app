@@ -17,6 +17,19 @@ describe('AddFileRequests', function() {
 
     });
 
+
+    xit('windows share path', function() {
+
+        const url = "\\\\foo\\foo$\\cat\dog";
+        const actual = AddFileRequests.fromURL(url);
+
+        assertJSON(actual, {
+            "basename": "furbysource.pdf",
+            "docPath": "https://us-central1-polar-cors.cloudfunctions.net/cors?url=http%3A%2F%2Fwww.seanriddle.com%2Ffurbysource.pdf"
+        });
+
+    });
+
     it('with basic URL', function() {
 
         const url = "https://example.com/furbysource.pdf";

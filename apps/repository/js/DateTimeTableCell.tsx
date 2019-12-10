@@ -1,12 +1,8 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import Moment from 'react-moment';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
-const log = Logger.create();
-
-// TODO: this isn't really a table cell anymore.
 export class DateTimeTableCell extends React.PureComponent<IProps, any> {
 
     constructor(props: IProps, context: any) {
@@ -39,6 +35,6 @@ export class DateTimeTableCell extends React.PureComponent<IProps, any> {
 }
 
 interface IProps {
-    datetime: ISODateTimeString | null | undefined;
-    className: string;
+    readonly datetime: ISODateTimeString | null | undefined;
+    readonly className: string;
 }

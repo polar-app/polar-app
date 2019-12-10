@@ -11,6 +11,7 @@ import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {Button} from "reactstrap";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {DocSidebarButton} from "./DocSidebarButton";
+import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
 
 const log = Logger.create();
 
@@ -116,10 +117,17 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                             <InputGroup size="md">
 
-                                <Input id="filter_title"
-                                       type="text"
-                                       placeholder="Filter by title"
-                                       onChange={(value) => this.props.onFilterByTitle(value.target.value)}/>
+                                {/*<Input id="filter_title"*/}
+                                {/*       type="text"*/}
+                                {/*       placeholder="Filter by title"*/}
+                                {/*       onChange={(value) => this.props.onFilterByTitle(value.target.value)}/>*/}
+
+                                <InputFilter id="filter_title"
+                                             placeholder="Filter by title"
+                                             style={{
+                                                 width: '20em'
+                                             }}
+                                             onChange={(value) => this.props.onFilterByTitle(value)}/>
 
                             </InputGroup>
 

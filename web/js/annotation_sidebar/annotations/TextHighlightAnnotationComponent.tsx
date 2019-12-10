@@ -47,28 +47,33 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     <div style={{display: 'flex', flexDirection: 'column'}}>
 
-                        <div style={{display: 'flex'}}>
+                        <div className="muted-color-root">
+                            <div style={{display: 'flex'}}>
 
-                            <div className="p-1"
-                                        style={{
-                                            borderLeft: `5px solid ${borderColor}`
-                                        }}>
+                                <div className="p-1"
+                                            style={{
+                                                borderLeft: `5px solid ${borderColor}`
+                                            }}>
+
+                                </div>
+
+                                <div className="text-sm"
+                                      dangerouslySetInnerHTML={{__html: html}}>
+
+                                </div>
+
+                                <div/>
 
                             </div>
 
-                            <div className="text-sm"
-                                  dangerouslySetInnerHTML={{__html: html}}>
+                            <div>
+                                <AnnotationControlBar doc={this.props.doc}
+                                                      annotation={annotation}/>
 
                             </div>
-
-                            <div/>
-
                         </div>
 
                         <div>
-
-                            <AnnotationControlBar doc={this.props.doc}
-                                                  annotation={annotation}/>
 
                             <div className="comments">
                                 <ChildAnnotationSection doc={this.props.doc}

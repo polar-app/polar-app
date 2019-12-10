@@ -12,7 +12,7 @@ import {forDict} from 'polar-shared/src/util/Functions';
 import {ElectronContextMenus} from './electron/ElectronContextMenus';
 import {BrowserContextMenus} from './browser/BrowserContextMenus';
 import {BrowserContextMenu} from './browser/BrowserContextMenu';
-import {Platforms} from "../util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 
 const log = Logger.create();
 

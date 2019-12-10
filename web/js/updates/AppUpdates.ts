@@ -1,4 +1,4 @@
-import {Platform, Platforms} from '../util/Platforms';
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {DistConfig} from '../dist_config/DistConfig';
 
 export class AppUpdates {

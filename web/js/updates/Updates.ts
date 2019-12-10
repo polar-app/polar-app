@@ -5,12 +5,12 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 
 import process from 'process';
 import {Broadcasters} from '../ipc/Broadcasters';
-import {Version} from '../util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {AppUpdate} from './AppUpdate';
 import {ToasterMessages} from '../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../ui/toaster/Toaster';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
-import {Platform, Platforms} from '../util/Platforms';
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {DistConfig} from '../dist_config/DistConfig';
 import {AppUpdates} from './AppUpdates';
 
@@ -30,7 +30,7 @@ const AUTO_UPDATE_DELAY_RECHECK = RANDOM_DELAY;
 
 const log = Logger.create();
 
-// autoDownload has to be false becuase we look at the version number we're
+// autoDownload has to be false because we look at the version number we're
 // downloading to avoid downloading it multiple times.
 autoUpdater.autoDownload = false;
 

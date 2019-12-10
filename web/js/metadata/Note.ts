@@ -1,7 +1,7 @@
-import {TextType} from './TextType';
+import {TextType} from 'polar-shared/src/metadata/TextType';
 import {VersionedObject} from './VersionedObject';
 import {Text} from 'polar-shared/src/metadata/Text';
-import {Texts} from './Texts';
+import {Texts} from 'polar-shared/src/metadata/Texts';
 import {INote} from "polar-shared/src/metadata/INote";
 
 /**

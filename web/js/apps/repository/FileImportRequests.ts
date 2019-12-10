@@ -1,4 +1,3 @@
-import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileImportRequest} from './FileImportRequest';
 import {AddFileRequests} from './AddFileRequests';
 import {PathStr} from "polar-shared/src/util/Strings";

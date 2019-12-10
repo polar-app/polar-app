@@ -3,8 +3,7 @@ import {DocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
 import {ViewFlashcard} from './ViewFlashcard';
-import {FlashcardInput} from './flashcard_input/FlashcardInput';
-import {FlashcardCallback} from './flashcard_input/FlashcardInput';
+import {FlashcardCallback, FlashcardInput} from './flashcard_input/FlashcardInput';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Doc} from '../../../metadata/Doc';
 
@@ -37,6 +36,7 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
 
             return <ViewFlashcard flashcard={this.props.flashcard}
                                   doc={this.props.doc}
+                                  onEdit={() => this.onEdit()}
                                   editButton={editButton}/>;
 
         } else {

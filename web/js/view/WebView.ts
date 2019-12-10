@@ -108,8 +108,8 @@ export class WebView extends View {
      */
     private onDocumentLoaded(event: DocumentLoadedEvent) {
 
-        const datastorePrefs = this.prefsProvider.get();
-        const autoResume = datastorePrefs.prefs.isMarked('settings-auto-resume', true);
+        const prefs = this.prefsProvider.get();
+        const autoResume = prefs.isMarked('settings-auto-resume', true);
 
         const docMeta = event.docMeta;
 

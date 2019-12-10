@@ -1,11 +1,12 @@
 import {AnnotationHolder} from '../AnnotationHolder';
-import {FileWriter} from './writers/FileWriter';
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
-import {DocMeta} from '../DocMeta';
 import {AnnotationHolders} from '../AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
+import {BlobWriter} from "./writers/BlobWriter";
+import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
+import {FileSavers} from "polar-file-saver/src/FileSavers";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -14,36 +15,94 @@ import {ReadableBinaryDatastore} from "../../datastore/Datastore";
  *
  * The exporter takes a ExportFormat (html, markdown, etc) and a target.
  *
- *
  */
 export class Exporters {
 
-    public static async doExport(path: string,
+    public static async doExportFromDocMeta(persistenceLayerProvider: PersistenceLayerProvider,
+                                            format: ExportFormat,
+                                            docMeta: IDocMeta): Promise<void> {
+
+        const annotations = AnnotationHolders.fromDocMeta(docMeta);
+
+        await this.doExportForAnnotations(persistenceLayerProvider, annotations, format);
+
+    }
+
+    public static async doExportForAnnotations(persistenceLayerProvider: PersistenceLayerProvider,
+                                               annotations: ReadonlyArray<AnnotationHolder>,
+                                               format: ExportFormat) {
+
+        const createType = () => {
+            switch (format) {
+                case 'markdown':
+                    return "text/markdown;charset=utf-8";
+
+                case 'json':
+                    return "application/json;charset=utf-8";
+
+                case 'html':
+                    throw new Error("not supported yet");
+            }
+        };
+
+        const createExt = () => {
+            switch (format) {
+                case 'markdown':
+                    return "md";
+
+                case 'json':
+                    return "json";
+
+                case 'html':
+                    throw new Error("not supported yet");
+            }
+        };
+
+        const type = createType();
+
+        const writer = new BlobWriter();
+
+        const datastore = persistenceLayerProvider().datastore;
+
+        await this.doExport(writer, datastore, format, annotations);
+
+        const blob = writer.toBlob(type);
+        const ext = createExt();
+        const ts = new Date().getTime();
+        const filename = `annotations-${ts}.${ext}`;
+
+        FileSavers.saveAs(blob, filename);
+
+    }
+
+    /**
+     * Main export interface.
+     */
+    public static async doExport(writer: Writer,
                                  datastore: ReadableBinaryDatastore,
                                  format: ExportFormat,
-                                 docMeta: IDocMeta): Promise<void> {
-
-        const writer = new FileWriter(path);
+                                 annotations: ReadonlyArray<AnnotationHolder>) {
 
         await writer.init();
 
         // create the exporter (markdown, html, etc)
-        const exporter = this.toExporter(format);
+        const exporter = this.create(format);
 
         await exporter.init(writer, datastore);
 
-        const annotationHolders = [...AnnotationHolders.fromDocMeta(docMeta)]
-            .sort((a, b) => a.annotation.created.localeCompare(b.annotation.created));
+        annotations = [...annotations]
+            .sort((a, b) => a.original.created.localeCompare(b.original.created));
 
-        for (const annotationHolder of annotationHolders) {
-            await exporter.write(annotationHolder);
+        for (const annotation of annotations) {
+            await exporter.write(annotation);
         }
 
         await exporter.close();
 
+
     }
 
-    private static toExporter(format: ExportFormat) {
+    private static create(format: ExportFormat) {
 
         switch (format) {
 
@@ -105,8 +164,6 @@ export interface Writer extends Writable {
      * Close the exporter.  Pass err if any error was encountered while writing
      * as we might wish to abort the export if an error was encountered but
      * still release resources.
-     *
-     * @param err
      */
     close(err?: Error): Promise<void>;
 

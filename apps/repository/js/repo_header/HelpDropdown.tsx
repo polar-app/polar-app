@@ -7,13 +7,20 @@ import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
-import {Platforms} from "../../../../web/js/util/Platforms";
+import {Platforms} from "polar-shared/src/util/Platforms";
 import {Devices} from "../../../../web/js/util/Devices";
+import {Version} from "polar-shared/src/util/Version";
+import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onAbout = this.onAbout.bind(this);
+
     }
 
     public render() {
@@ -38,6 +45,12 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                 <DropdownMenu className="shadow" right>
 
                     {/*<DropdownItem header>Extensions and Addons</DropdownItem>*/}
+
+                    <TrackedDropdownItem id="about-link"
+                                         title="About"
+                                         tooltip="About Polar"
+                                         onClick={() => this.onAbout()}
+                                         />
 
                     <HelpDropdownItem id="documentation-link"
                                       title="Documentation"
@@ -110,6 +123,24 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
     }
 
+    private onAbout() {
+
+        const version = Version.get();
+
+        const body = <div>
+
+            <b>Version: </b> {version}
+
+        </div>;
+
+        Dialogs.alert({
+            title: 'About',
+            body,
+            type: 'success',
+            onConfirm: NULL_FUNCTION
+        })
+
+    }
 
 }
 

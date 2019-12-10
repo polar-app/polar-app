@@ -74,7 +74,7 @@ export class FilterTagInput extends React.PureComponent<IProps, IState> {
                         <i className="fa fa-tag doc-button doc-button-selectable mr-1"/>
                         <span className="d-none-mobile">Tags</span>
 
-                        <div style={Styles.dropdownChevron}></div>
+                        <div style={Styles.dropdownChevron}/>
 
                     </Button>
 

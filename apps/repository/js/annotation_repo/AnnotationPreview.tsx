@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DateTimeTableCell} from '../DateTimeTableCell';
-import {Img} from '../../../../web/js/metadata/Img';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {DeepPureComponent} from '../../../../web/js/react/DeepPureComponent';
+import {FastComponent} from '../../../../web/js/react/FastComponent';
 import {RepoHighlightInfo} from "../RepoAnnotation";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 const Body = (props: IProps) => {
 
@@ -12,14 +13,14 @@ const Body = (props: IProps) => {
 
     const createStyle = (): React.CSSProperties => {
 
-        if (props.meta && props.meta.color) {
+        if (props.color) {
 
             return {
-                borderLeftColor: props.meta.color,
+                borderLeftColor: props.color,
                 borderLeftWidth: '2px',
                 borderLeftStyle: 'solid',
                 paddingLeft: '5px'
-            }
+            };
 
         }
 
@@ -44,7 +45,7 @@ const Body = (props: IProps) => {
 
 };
 
-export class AnnotationPreview extends DeepPureComponent<IProps, IState> {
+export class AnnotationPreview extends FastComponent<IProps> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -71,9 +72,5 @@ interface IProps {
     readonly text?: string;
     readonly img?: Img;
     readonly created: ISODateTimeString;
-    readonly meta?: RepoHighlightInfo
+    readonly color: HighlightColor | undefined;
 }
-
-interface IState {
-}
-

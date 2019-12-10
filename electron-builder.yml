@@ -22,6 +22,19 @@ mac:
     - ext: pdf
       role: Viewer
 
+  # steps for notarizing the MacOS builds:
+  # https://kilianvalkhof.com/2019/electron/notarizing-your-electron-application/
+
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/macos/entitlements.mac.plist
+  entitlementsInherit: build/macos/entitlements.mac.plist
+
+dmg:
+  # The inner app inside the .dmg is signed and there is some broken logic
+  # which requires that the DMG itself is not signed.
+  sign: false
+
 linux:
   # TODO: consider using a custom productName here of polar-bookshelf to fix
   # a bug on Linux with the application windows.

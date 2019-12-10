@@ -2,8 +2,9 @@ import {
     AbstractDatastore,
     BinaryFileData,
     Datastore,
+    DatastoreCapabilities,
+    DatastoreInitOpts,
     DatastoreOverview,
-    DatastorePrefs,
     DeleteResult,
     DocMetaSnapshotEvent,
     DocMetaSnapshotEventListener,
@@ -11,26 +12,23 @@ import {
     ErrorListener,
     FileSynchronizationEvent,
     FileSynchronizationEventListener,
+    GetFileOpts,
     InitResult,
+    NetworkLayer,
     PrefsProvider,
     SnapshotResult,
     SyncDocMap,
     SyncDocMaps,
     SynchronizationEvent,
     SynchronizationEventListener,
-    SynchronizingDatastore
+    SynchronizingDatastore,
+    WriteFileOpts,
+    WriteOpts
 } from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayer} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
-import {WriteOpts} from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -48,7 +46,7 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {CompositePrefs, PersistentPrefs} from "../util/prefs/Prefs";
+import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
 
 const log = Logger.create();
 
@@ -96,18 +94,44 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     public async init(errorListener: ErrorListener = NULL_FUNCTION,
                       opts: DatastoreInitOpts = {noInitialSnapshot: false, noSync: false}): Promise<InitResult> {
 
+        await this.initDelegates(errorListener);
+        await this.initPrefs();
+        await this.initSnapshots(errorListener, opts);
+
+        return {};
+
+    }
+
+    private async initDelegates(errorListener: ErrorListener) {
         await Promise.all([
             this.cloud.init(errorListener, {noInitialSnapshot: true}),
             this.local.init(errorListener)
         ]);
+    }
+
+    private async initPrefs() {
+
+        const localPrefs = this.local.getPrefs().get();
+        const cloudPrefs = this.cloud.getPrefs().get();
+
+        const doUpdate = async (source: PersistentPrefs, target: PersistentPrefs) => {
+            target.update(source.toPrefDict());
+            await target.commit();
+        };
+
+        await doUpdate(localPrefs, cloudPrefs);
+        await doUpdate(cloudPrefs, localPrefs);
+
+    }
+
+    private async initSnapshots(errorListener: ErrorListener,
+                                opts: DatastoreInitOpts) {
 
         const snapshotListener = async (event: DocMetaSnapshotEvent) => this.docMetaSnapshotEventDispatcher.dispatchEvent(event);
 
         if (! opts.noSync) {
             this.primarySnapshot = await this.snapshot(snapshotListener, errorListener);
         }
-
-        return {};
 
     }
 
@@ -466,12 +490,12 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             // TODO: we should have progress on this...
 
-            const docaMetaFiles: DocMetaRef[] =
+            const docMetaFiles: DocMetaRef[] =
                 docMetaSnapshotEvent.docMetaMutations.map(current => {
                     return {fingerprint: current.fingerprint};
                 });
 
-            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(this.local, docaMetaFiles);
+            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(this.local, docMetaFiles);
 
             return {
                 datastore: this.local,
@@ -575,22 +599,17 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public getPrefs(): PrefsProvider {
 
-        const cloudPrefs = this.cloud.getPrefs();
-        const localPrefs = this.local.getPrefs();
+        const onCommit = async (persistentPrefs: PersistentPrefs) => {
 
-        // TODO: add support for the event listener version so I can get the most recent
-        // version of the prefs as I think we need that for firebase support.
+            // write to firebase first, then commit locally.
 
-        const prefs = new CompositePrefs([cloudPrefs.get().prefs, localPrefs.get().prefs]);
+            const localPrefs = this.local.getPrefs().get();
+            localPrefs.update(persistentPrefs.toPrefDict());
+            await localPrefs.commit();
 
-        return {
-            get(): DatastorePrefs {
-                return {
-                    prefs: prefs,
-                    unsubscribe: NULL_FUNCTION
-                };
-            }
         };
+
+        return new InterceptedPrefsProvider(this.cloud.getPrefs(), onCommit);
 
     }
 

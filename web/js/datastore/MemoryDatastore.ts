@@ -11,7 +11,7 @@ import {
     SnapshotResult,
     DatastoreOverview,
     PrefsProvider,
-    DatastorePrefs
+    DatastorePrefs, AbstractPrefsProvider, PersistentPrefsUpdatedCallback
 } from './Datastore';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -26,7 +26,7 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DiskInitResult} from './DiskDatastore';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {DictionaryPrefs, NonPersistentPrefs} from '../util/prefs/Prefs';
+import {DictionaryPrefs, NonPersistentPrefs, PersistentPrefs} from '../util/prefs/Prefs';
 import {Providers} from 'polar-shared/src/util/Providers';
 import {WriteFileOpts} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
@@ -35,6 +35,7 @@ import {NetworkLayer} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {ErrorHandlerCallback} from "../firebase/Firebase";
 
 const log = Logger.create();
 
@@ -216,17 +217,19 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     public getPrefs(): PrefsProvider {
 
-        return {
+        class PrefsProviderImpl extends AbstractPrefsProvider {
 
-            get(): DatastorePrefs {
-                return {
-                    prefs: this.prefs,
-                    unsubscribe: NULL_FUNCTION
-                };
+            constructor(private readonly prefs: PersistentPrefs) {
+                super();
             }
 
-        };
+            public get(): PersistentPrefs {
+                return this.prefs;
+            }
 
+        }
+
+        return new PrefsProviderImpl(this.prefs);
     }
 
 }

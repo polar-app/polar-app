@@ -6,6 +6,7 @@ import {Image} from './Image';
 import {Author} from './Author';
 import {ISODateString, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IDocAuthor} from "polar-shared/src/metadata/IDocAuthor";
+import {IText} from "polar-shared/src/metadata/Text";
 
 export interface DocDetail {
 
@@ -61,6 +62,10 @@ export interface DocDetail {
     readonly publisher?: string;
 
     readonly doi?: string;
+
+    readonly pmid?: string;
+
+    readonly summary?: IText;
 
 }
 

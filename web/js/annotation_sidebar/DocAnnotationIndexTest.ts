@@ -85,6 +85,9 @@ describe('DocAnnotationIndex', function() {
             {
                 "oid": 0,
                 "id": "0001",
+                "guid": "0001",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -124,11 +127,15 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 1,
                 "id": "0002",
+                "guid": "0002",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -168,11 +175,15 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 2,
                 "id": "0003",
+                "guid": "0003",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -212,7 +223,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false,
+                "tags": {}
             }
         ]);
 
@@ -231,6 +243,9 @@ describe('DocAnnotationIndex', function() {
             {
                 "oid": 5,
                 "id": "0003",
+                "guid": "0003",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -270,11 +285,15 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 4,
                 "id": "0002",
+                "guid": "0002",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 2,
                 "position": {
@@ -314,11 +333,15 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false,
+                "tags": {}
             },
             {
                 "oid": 3,
                 "id": "0001",
+                "guid": "0001",
+                "fingerprint": "1234",
+                "docInfo": null,
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 3,
                 "position": {
@@ -358,7 +381,8 @@ describe('DocAnnotationIndex', function() {
                     "flashcards": {},
                     "color": "yellow"
                 },
-                immutable: false
+                "immutable": false,
+                "tags": {}
             }
         ];
 
@@ -448,6 +472,11 @@ function createAnnotation(id: string,
     return {
         oid: ObjectIDs.create(),
         id,
+        guid: id,
+        fingerprint: '1234',
+        docInfo: null!,
+        text: undefined,
+        html: undefined,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,
         pageNum,
         position: {
@@ -459,7 +488,11 @@ function createAnnotation(id: string,
         docMeta: null!,
         original: textHighlight,
         ref,
-        immutable: false
+        immutable: false,
+        color: undefined,
+        img: undefined,
+        tags: {}
+
     };
 
 }

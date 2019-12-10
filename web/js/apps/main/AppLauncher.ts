@@ -1,5 +1,9 @@
 import {BrowserWindow} from "electron";
-import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
+import {
+    BROWSER_WINDOW_OPTIONS,
+    MAIN_SESSION_PARTITION_NAME,
+    MainAppBrowserWindowFactory
+} from './MainAppBrowserWindowFactory';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -26,7 +30,7 @@ export class AppLauncher {
 
             // use a 'polar-app' session so we don't use the default session
             // which is intercepted.
-            browserWindowOptions.webPreferences!.partition = 'persist:polar-app';
+            browserWindowOptions.webPreferences!.partition = MAIN_SESSION_PARTITION_NAME;
 
             return await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 

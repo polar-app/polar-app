@@ -1,25 +1,88 @@
 
-- ability to remove items from folders...
+## Features
 
-- multi-selection for deletes implemented
+- flagged items are now bold.
 
-- deleting multiple items via context menu now works.
+- odd/even coloring in the document list / table.
+
+- usability: the sidebar has been significantly redesigned
+    - "+" button for adding tags and folders
+    - context menu for adding tags and folders
+    - remove tag from docs
+
+- usability: expand/collapse of folders now works now. 
+
+- UI: better UI filter control.
+
+- usability: you can now see the folders a file is within in the document repository
+
+- usability: you can now export annotations from the annotations view.
+
+- usability: double click of comments or flashcards edits them.
+
+## Fixes
+
+- Reading and review for older items would fail due to schema changes.
+
+- ChromeOS is now a desktop platform
+
+- Upgrade account button now works.  
+
+- Improved text in suggestions dialog.
+
+- The user suggestions dialog is centered.
+
+- usability: Fixed an issue where if the user accidentally hit 'r' the document would rotate and people
+  couldn't figure out how to revert.
+
+# 1.60.11
+
+## Features
+
+- The sidebar now doesn't show the color for the buttons unless you hover over them.  The colors 
+  are also more muted to help not distract more when using the annotation sidebar. 
+
+- Flashcards stats in the mobile app
+
+- Ability to revise the text of a text highlight.
+
+- Big refactor of the context menu so that range selection and context menus work properly. 
+
+- Ability to remove items from folders via right click
+
+- Multi-selection for deletes implemented
+
+- Deleting multiple items via context menu now works
+
+- Bronze now officially required for reading stats and recommended tags
+
+- The context menus now have icons 
+
+- Major refactor of how text selection works using the new modern text layer code in pdf.js which has 
+  been a major complaint since 1.0.  Excited to finally have this fixed!
+
+## Fixes
+
+- Fixed bug where sometimes exceptions were swallowed
+
+- Updated Firebase to hopefully fix some bugs with latency and exceptions..
+
+- Fixed delete dialogs as they were using older code...
+
+- Merged branch for image optimization.
+
+- Fixed alignment of headers in the doc repo
+
+- Fixed bad bug with stats for spaced repetition queue not being computed accurately.
+
+- Improved performance of doc table when selecting items.
 
 - The document repository view is now much faster and context menus no longer have a 'gap'
   which wouldn't trigger the menu. 
-
-- bronze now officially required for reading stats and recommended tags
-
-- reworked 
-
-- the context menus now have icons 
-
-- major refactor of how text selection works using the new modern text layer code in pdf.js which has 
-  been a major complaint since 1.0.  Excited to finally have this fixed!
   
-- now using larger buttons
+- Now using larger buttons in the UI 
 
-- show the front + back of cards when we 'show answer'
+- Show the front + back of cards when we 'show answer'
 
 # 1.50.10
 

@@ -59,6 +59,10 @@ export class TagInputWidget extends React.Component<IProps, IState> {
 
         const computeRelatedTags = () => {
 
+            if (! this.props.relatedTags) {
+                return [];
+            }
+
             const input = [...this.state.pendingTags]
                             .map(current => current.label)
                             ;
@@ -185,7 +189,7 @@ export interface IProps {
     /**
      * The relatedTags index which is updated as the user selects new tags.
      */
-    readonly relatedTags: RelatedTags;
+    readonly relatedTags?: RelatedTags;
 
     readonly onChange: (values: Tag[]) => void;
 

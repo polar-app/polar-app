@@ -1,7 +1,5 @@
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
-import {Img} from './Img';
-import {Image} from './Image';
+import {Img} from 'polar-shared/src/metadata/Img';
 import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {IImage, ImageType} from "polar-shared/src/metadata/IImage";
 

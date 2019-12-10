@@ -11,7 +11,7 @@ import {Capture} from '../../capture/Capture';
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
 import {CaptureOpts} from '../../capture/CaptureOpts';
-import {Platform, Platforms} from '../../util/Platforms';
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
@@ -176,13 +176,27 @@ export class MainAppController {
 
         return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
 
-            let window;
+            const computeWindow = async () => {
 
-            if (newWindow) {
-                window = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
-            } else {
-                window = BrowserWindow.getFocusedWindow()!;
-            }
+                const createWindow = async () => {
+                    return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
+                };
+
+                if (newWindow) {
+                    return createWindow();
+                }
+
+                const focusedWindow = BrowserWindow.getFocusedWindow();
+
+                if (focusedWindow) {
+                    return focusedWindow;
+                } else {
+                    return await createWindow();
+                }
+
+            };
+
+            const window = await computeWindow();
 
             return await this.loadDoc(path, window);
 

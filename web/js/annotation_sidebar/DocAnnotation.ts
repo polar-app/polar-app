@@ -1,17 +1,10 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Comment} from '../metadata/Comment';
 import {Point} from '../Point';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {PageMeta} from '../metadata/PageMeta';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from 'polar-shared/src/metadata/Refs';
-import {Flashcard} from '../metadata/Flashcard';
-import {AreaHighlight} from '../metadata/AreaHighlight';
-import {TextHighlight} from '../metadata/TextHighlight';
 import {ObjectID} from '../util/ObjectIDs';
-import {Img} from '../metadata/Img';
-import {DocMeta} from '../metadata/DocMeta';
-import {Author} from "../metadata/Author";
+import {Img} from 'polar-shared/src/metadata/Img';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -21,12 +14,19 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
+import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
+import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {Tag} from "polar-shared/src/tags/Tags";
 
-export interface IDocAnnotation extends ObjectID {
+export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
-    readonly id: string;
+    // fingerprint, guid, type, docInfo...
+
+    readonly id: IDStr;
+    readonly guid: IDStr;
     readonly annotationType: AnnotationType;
-    readonly html?: HTMLString;
+    readonly html: HTMLString | undefined;
     readonly fields?: {[name: string]: HTMLString};
     readonly pageNum: number;
     readonly position: Point;
@@ -35,13 +35,13 @@ export interface IDocAnnotation extends ObjectID {
     // the reference to a parent annotation if this is a child annotation.
     readonly ref?: Ref;
 
-    readonly img?: Img;
+    readonly img: Img | undefined;
 
     /**
      * The color for highlights.  When undefined there is no color (which would
      * work for comments, etc)
      */
-    readonly color?: HighlightColor;
+    readonly color: HighlightColor | undefined;
 
     readonly docMeta: IDocMeta;
 
@@ -52,6 +52,9 @@ export interface IDocAnnotation extends ObjectID {
     readonly author?: IAuthor;
 
     readonly immutable: boolean;
+
+    readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+
 }
 
 export interface DocAnnotation extends IDocAnnotation {
@@ -72,9 +75,13 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly oid: number;
 
-    public readonly id: string;
+    public readonly id: IDStr;
+    public readonly guid: IDStr;
+    public readonly fingerprint: IDStr;
+    public readonly docInfo: IDocInfo;
     public readonly annotationType: AnnotationType;
-    public readonly html?: HTMLString;
+    public readonly text: PlainTextStr | undefined;
+    public readonly html: HTMLString | undefined;
     public readonly fields?: {[name: string]: HTMLString};
     public readonly pageNum: number;
     public readonly position: Point;
@@ -83,13 +90,13 @@ export class DefaultDocAnnotation implements DocAnnotation {
     // the reference to a parent annotation if this is a child annotation.
     public readonly ref?: Ref;
 
-    public readonly img?: Img;
+    public readonly img: Img | undefined;
 
     /**
      * The color for highlights.  When undefined there is no color (which would
      * work for comments, etc)
      */
-    public readonly color?: HighlightColor;
+    public readonly color: HighlightColor | undefined;
 
     public readonly docMeta: IDocMeta;
 
@@ -101,6 +108,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly immutable: boolean;
 
+    public readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+
     constructor(readonly index: DocAnnotationIndex,
                 public readonly obj: IDocAnnotation) {
 
@@ -108,7 +117,11 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
         this.oid = obj.oid;
         this.id = obj.id;
+        this.guid = obj.guid;
+        this.fingerprint = obj.fingerprint;
+        this.docInfo = obj.docInfo;
         this.annotationType = obj.annotationType;
+        this.text = obj.text;
         this.html = obj.html;
         this.fields = obj.fields;
         this.pageNum = obj.pageNum;
@@ -122,6 +135,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.original = obj.original;
         this.author = obj.author;
         this.immutable = obj.immutable;
+        this.tags = obj.tags;
 
     }
 
@@ -149,8 +163,9 @@ export class DefaultDocAnnotation implements DocAnnotation {
 /**
  * A map from ID to the actual DocAnnotation.
  */
-// noinspection TsLint: interface-over-type-literal
-export type DocAnnotationMap = {[id: string]: DefaultDocAnnotation};
+export interface DocAnnotationMap {
+    [id: string]: DefaultDocAnnotation;
+}
 
 /**
  * Annotations according to their position in the document.
