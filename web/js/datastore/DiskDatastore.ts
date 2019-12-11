@@ -1,18 +1,24 @@
 import {
-    AbstractDatastore, AbstractPrefsProvider,
+    AbstractDatastore,
+    AbstractPrefsProvider,
+    BinaryFileData,
     Datastore,
+    DatastoreCapabilities,
     DatastoreInfo,
     DatastoreOverview,
-    DatastorePrefs,
+    DefaultWriteFileOpts,
     DeleteResult,
     DocMetaSnapshotEventListener,
     ErrorListener,
-    InitResult, PersistentPrefsUpdatedCallback,
+    GetFileOpts,
+    InitResult,
+    NetworkLayer,
     PrefsProvider,
-    SnapshotResult
+    SnapshotResult,
+    WriteFileOpts,
+    WriteOpts
 } from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {Preconditions} from 'polar-shared/src/Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FileDeleted, FileHandle, Files} from 'polar-shared/src/util/Files';
@@ -25,31 +31,24 @@ import os from 'os';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "polar-shared/src/util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {DocMeta} from '../metadata/DocMeta';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
-import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict, StringToStringDict} from '../util/prefs/Prefs';
-import {DefaultWriteFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayer} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {isPresent} from 'polar-shared/src/Preconditions';
-import {BinaryFileData} from './Datastore';
-import {WriteOpts} from './Datastore';
+import {DictionaryPrefs, PersistentPrefs, StringToPrefDict} from '../util/prefs/Prefs';
 import {DatastoreMutations} from './DatastoreMutations';
-import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
+import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
-import {ErrorHandlerCallback} from "../firebase/Firebase";
+import {Mutexes} from "polar-shared/src/util/Mutexes";
 
 const log = Logger.create();
+
+const writeMutex = Mutexes.create();
 
 export class DiskDatastore extends AbstractDatastore implements Datastore {
 
@@ -397,7 +396,11 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         };
 
-        await DatastoreMutations.handle(async () => writeDelegate(), datastoreMutation, () => true);
+        // write this using a write mutex so that on Windows we don't have any race
+        // conditions writing files.
+        writeMutex.execute(async () => {
+            await DatastoreMutations.handle(async () => writeDelegate(), datastoreMutation, () => true);
+        });
 
     }
 
