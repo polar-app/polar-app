@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {ContextMenuWrapper, prepareContextMenuHandlers} from '@burtonator/react-context-menu-wrapper';
 import {DropdownItem} from 'reactstrap';
-import {FontAwesomeIcon} from "../../../../web/js/ui/fontawesome/FontAwesomeIcon";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";

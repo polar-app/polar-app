@@ -57,7 +57,7 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                     <NavLogo/>
                 </div>
 
-                <div className="mt-auto mb-auto d-none-mobile">
+                <div className="mt-auto mb-auto d-none-mobile d-none-tablet">
 
                     <div className="ml-4">
                         <SimpleTabs>

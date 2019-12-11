@@ -29,11 +29,11 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
         if (Devices.get() === 'phone') {
             return <PreviewAndMainViewDock.Phone {...this.props}
                                                  repoAnnotation={this.state.repoAnnotation}
-                                                 onSelected={onSelected}/>
+                                                 onSelected={onSelected}/>;
         } else {
             return <PreviewAndMainViewDock.Default {...this.props}
                                                    repoAnnotation={this.state.repoAnnotation}
-                                                   onSelected={onSelected}/>
+                                                   onSelected={onSelected}/>;
         }
 
     }
@@ -109,7 +109,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
             );
         }
 
-    }
+    };
 
 }
 
