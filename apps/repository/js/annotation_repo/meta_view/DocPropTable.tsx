@@ -122,7 +122,7 @@ export class DocPropTable extends React.Component<IProps, IState> {
                         <Button onClick={() => this.props.onDocumentLoadRequested(repoAnnotation.docInfo)}
                                 style={{whiteSpace: 'normal', textAlign: 'left'}}
                                 className="p-0"
-                                size="sm"
+                                size="md"
                                 color="link">
 
                             {repoAnnotation.docInfo.title}

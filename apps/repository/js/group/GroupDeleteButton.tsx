@@ -37,7 +37,7 @@ export class GroupDeleteButton extends React.Component<IProps, IState> {
             <div className="mr-1 ml-1">
 
                 <Button color="danger"
-                        size="sm"
+                        size="md"
                         hidden={! isAdmin}
                         onClick={() => this.onDelete(group)}
                         className="pl-2 pr-2">

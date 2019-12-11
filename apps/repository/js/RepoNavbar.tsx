@@ -13,7 +13,7 @@ const Styles: IStyleMap = {
         top: 0,
         left: 0,
         // display: 'none',
-        backgroundColor: 'var(--white)',
+        backgroundColor: 'var(--primary-background-color)',
         zIndex: 99999,
         height: 'calc(100%)',
         // paddingLeft: '1px',
@@ -57,7 +57,7 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                     <NavLogo/>
                 </div>
 
-                <div className="mt-auto mb-auto d-none-mobile">
+                <div className="mt-auto mb-auto d-none-mobile d-none-tablet">
 
                     <div className="ml-4">
                         <SimpleTabs>

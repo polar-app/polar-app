@@ -77,7 +77,7 @@ export class Dock extends React.Component<IProps, IState> {
                 minWidth: '4px',
                 maxWidth: '4px',
                 cursor: 'col-resize',
-                backgroundColor: '#c6c6c6'
+                backgroundColor: 'var(--grey200)'
             };
 
             if (this.props.side === 'left') {

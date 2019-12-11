@@ -6,7 +6,7 @@ const Styles: IStyleMap = {
 
     button: {
         paddingTop: '4px',
-        color: 'red !important',
+        color: 'var(--danger) !important',
         fontSize: '15px'
 
         // minWidth: '350px',

@@ -60,7 +60,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
         const style: React.CSSProperties = {
             display: 'flex',
             flexDirection: 'column',
-            background: 'var(--white)'
+            backgroundColor: 'var(--primary-background-color)',
         };
 
         if (Platforms.isMobile()) {
@@ -161,7 +161,13 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                 <div className="pt-1 pb-1">
 
-                    <Progress value={perc}>{createProgressText()}</Progress>
+                    <Progress value={perc}
+                              className="text-md"
+                              style={{
+                                  height: '1.75em'
+                              }}>
+                        {createProgressText()}
+                    </Progress>
 
                 </div>
 

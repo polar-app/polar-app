@@ -64,6 +64,8 @@ export class LoadExampleDocs {
             this.doDoc7()
         ];
 
+        // TODO: this code isn't very clean and could be refactored using an
+        // async worker queue.
         for (const promise of promises) {
 
             promise
@@ -384,6 +386,7 @@ export class LoadExampleDocs {
         const appPath = AppPath.get();
 
         if (! appPath) {
+            log.warn("No appPath");
             return Optional.empty();
         }
 

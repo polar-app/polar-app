@@ -1,11 +1,10 @@
 import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 
-describe('Repository App', function() {
+xdescribe('Repository App', function() {
 
     Spectron.setup(__dirname);
-
-    it('basic', async function() {
+    xit('basic', async function() {
         await SpectronSpec.create(this.app).waitFor(true);
     });
 

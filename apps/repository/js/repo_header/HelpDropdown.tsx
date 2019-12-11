@@ -126,19 +126,23 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
     private onAbout() {
 
         const version = Version.get();
+        const device = Devices.get();
+        const platform = Platforms.toSymbol(Platforms.get());
 
         const body = <div>
 
-            <b>Version: </b> {version}
+            <b>Version: </b> {version}<br/>
+            <b>Device: </b> {device}<br/>
+            <b>Platform: </b> {platform}
 
         </div>;
 
         Dialogs.alert({
             title: 'About',
             body,
-            type: 'success',
+            type: 'info',
             onConfirm: NULL_FUNCTION
-        })
+        });
 
     }
 

@@ -39,6 +39,14 @@ button.dropdown-item:hover {
 
 }
 
+@media only screen and (max-device-width: 700px) {
+
+    .d-none-tablet {
+        display: none;
+    }
+
+}
+
 @media only screen and (min-device-width: 480px) {
 
     .d-none-desktop {
@@ -345,3 +353,36 @@ button.dropdown-item:hover {
     background-color: var(--grey100) !important;
 }
 
+.btn-no-outline {
+    outline: none !important;
+    box-shadow: none !important;;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
+/* apply margins to child elements to apply space between them. Works well with flexbox items and we don't have to
+   remember to keep applying the spacing. */
+.children-margin > * {
+    margin-left: 5px;
+}
+
+.children-margin > *:first-child {
+    margin-left: 0;
+}

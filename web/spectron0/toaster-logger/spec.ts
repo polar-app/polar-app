@@ -1,7 +1,7 @@
 import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 
-describe('Toaster', function() {
+describe('toaster-logger', function() {
 
     Spectron.setup(__dirname);
     this.timeout(30000);

@@ -191,8 +191,9 @@ export class RepositoryApp {
 
         const renderDefaultScreenByDevice = () => {
 
-            if (Devices.get() === 'phone' || Platforms.isMobile()) {
-                // for tablets or phones we need to use the annotation repo screen
+            if (['phone', 'tablet'].includes(Devices.get())) {
+                // for tablets or phones we need to use the annotation repo screen as the other UI
+                // isn't ready yet.
                 return renderAnnotationRepoScreen();
             }
 

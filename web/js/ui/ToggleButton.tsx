@@ -34,7 +34,8 @@ export class ToggleButton extends React.Component<IProps, IState> {
         return (
 
             <Button id={this.props.id || ""}
-                    color="light p-0 pr-0 border rounded"
+                    color="light"
+                    className="p-0 pr-0 border rounded"
                     onClick={() => this.toggle()}
                     size={this.props.size  || 'sm'}>
 

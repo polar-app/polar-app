@@ -11,7 +11,7 @@ class Styles {
     };
 
     public static DROP_INACTIVE: React.CSSProperties = {
-        borderColor: 'var(--white)',
+        borderColor: 'transparent',
         borderWidth: '1px',
         borderStyle: 'solid'
     };
