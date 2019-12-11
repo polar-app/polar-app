@@ -41,7 +41,7 @@ export class GroupDocAddButton extends React.PureComponent<IProps, IState> {
             <div className="mr-1 ml-1">
 
                 <Button color="success"
-                        size="sm"
+                        size="md"
                         onClick={() => this.onJoin()}
                         className="pl-2 pr-2">
 

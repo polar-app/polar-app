@@ -7,7 +7,7 @@ class Styles {
     public static PARENT: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: 'var(--white)',
+        backgroundColor: 'var(--primary-background-color)',
     };
 
 }

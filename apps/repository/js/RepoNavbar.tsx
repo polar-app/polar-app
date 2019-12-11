@@ -13,7 +13,7 @@ const Styles: IStyleMap = {
         top: 0,
         left: 0,
         // display: 'none',
-        backgroundColor: 'var(--white)',
+        backgroundColor: 'var(--primary-background-color)',
         zIndex: 99999,
         height: 'calc(100%)',
         // paddingLeft: '1px',

@@ -76,7 +76,7 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
                          target={id}>
 
                     <PopoverBody className="shadow rounded p-2"
-                                 style={{backgroundColor: 'var(--white)'}}>
+                                 style={{backgroundColor: 'var(--primary-background-color)'}}>
 
                         {/*FIXME: reset button and multi-colors*/}
 

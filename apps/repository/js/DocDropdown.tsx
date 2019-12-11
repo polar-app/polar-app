@@ -17,7 +17,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
             <div className="doc-dropdown-parent">
 
                 <UncontrolledDropdown id={this.props.id}
-                                      size="sm">
+                                      size="md">
 
                     <DropdownToggle color="link"
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"

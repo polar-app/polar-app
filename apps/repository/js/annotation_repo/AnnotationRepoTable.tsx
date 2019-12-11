@@ -118,7 +118,9 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                             ]}
 
                         defaultPageSize={50}
-                        style={{height: '100%'}}
+                        style={{
+                            height: '100%'
+                        }}
                         showPageSizeOptions={false}
                         noDataText="No annotations available."
                         className="-striped -highlight"
@@ -167,7 +169,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                 style: {
                                     borderWidth: '1px',
                                     borderStyle: 'solid',
-                                    borderColor: rowInfo && rowInfo.viewIndex === this.state.selected ? '#00afec' : 'white',
+                                    borderColor: rowInfo && rowInfo.viewIndex === this.state.selected ? 'var(--primary)' : 'var(--primary-background-color)',
                                     // color: rowInfo && rowInfo.viewIndex === this.state.selected ? 'white' : 'black',
                                 }
 

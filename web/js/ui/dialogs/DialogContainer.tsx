@@ -34,7 +34,7 @@ export class DialogContainer extends React.PureComponent<ConfirmProps, IState> {
 
                         <div className="m-1 rounded"
                              style={{
-                                 backgroundColor: 'var(--white)',
+                                 backgroundColor: 'var(--primary-background-color)',
                                  maxWidth: '650px'
                              }}>
                             {this.props.children}

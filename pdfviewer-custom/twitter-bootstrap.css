@@ -368,3 +368,13 @@ button.dropdown-item:hover {
     font-size: 12px;
     line-height: 1.42857;
 }
+
+/* apply margins to child elements to apply space between them. Works well with flexbox items and we don't have to
+   remember to keep applying the spacing. */
+.children-margin > * {
+    margin-left: 5px;
+}
+
+.children-margin > *:first-child {
+    margin-left: 0;
+}

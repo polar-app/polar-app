@@ -561,7 +561,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 <ContextMenuWrapper id={CONTEXT_MENU_ID}>
 
                     <div className="border shadow rounded pt-2 pb-2"
-                         style={{backgroundColor: 'var(--white)'}}>
+                         style={{backgroundColor: 'var(--primary-background-color)'}}>
 
                         <DocDropdownItems toggle={false}
                                           filters={this.props.filters}

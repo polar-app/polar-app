@@ -21,7 +21,7 @@ const log = Logger.create();
 const Styles: IStyleMap = {
 
     popover: {
-        backgroundColor: 'var(--white)',
+        backgroundColor: 'var(--primary-background-color)',
         width: '500px !important',
         maxWidth: '9999px !important'
     },

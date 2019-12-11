@@ -91,7 +91,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         };
 
         const CreateCommentButton = () => {
-            return <Button className="text-muted p-1"
+            return <Button className="ml-1 text-muted p-1"
                            title="Create comment"
                            size="sm"
                            color="light"

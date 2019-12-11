@@ -42,9 +42,9 @@ export class MessageBox extends React.Component<IProps, IState> {
                      width:  width + 'px',
                      marginLeft: 'auto',
                      marginRight: 'auto',
-                     backgroundColor: 'var(--white)'
+                     backgroundColor: 'var(--primary-background-color)'
                  }}
-                 className="border rounded shadow bg-white p-3">
+                 className="border rounded shadow p-3">
 
                 {this.props.children}
 
