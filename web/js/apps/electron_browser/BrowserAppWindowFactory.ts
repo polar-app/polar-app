@@ -1,6 +1,5 @@
 import {BrowserWindow} from "electron";
 import {APP_ICON, MAIN_SESSION_PARTITION_NAME, MainAppBrowserWindowFactory} from '../main/MainAppBrowserWindowFactory';
-import {ElectronUserAgents} from "./ElectronUserAgents";
 
 const WIDTH = 800 * 1.2;
 const HEIGHT = 1100 * 1.2;
@@ -51,7 +50,6 @@ export class BrowserAppWindowFactory {
 
     public static async createWindow(url: string): Promise<BrowserWindow> {
         const browserWindow = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
-        ElectronUserAgents.configureForWebContents(browserWindow.webContents);
         return browserWindow;
     }
 

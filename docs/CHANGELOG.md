@@ -1,7 +1,12 @@
 
 ## Features
 
-- flagged items are now bold.
+- Fix for Google authentication issues due to exposing Electron in User Agent and confused
+  Google.
+
+- Migration to Electron 7.1.4
+
+- Flagged items are now bold.
 
 - odd/even coloring in the document list / table.
 

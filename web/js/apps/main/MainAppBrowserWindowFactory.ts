@@ -1,4 +1,4 @@
-import {BrowserWindow, nativeImage, shell, DownloadItem, WebContents, screen} from "electron";
+import {BrowserWindow, screen, shell} from "electron";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {AuthHosts} from "./AuthHosts";
@@ -173,11 +173,12 @@ export class MainAppBrowserWindowFactory {
 
         });
 
-        log.info("Loading URL: " + url);
-        browserWindow.loadURL(url)
-            .catch(err => log.error("Could not load URL ", err, url));
+        // compute the userAgent that we should be using for the renderer
+        const userAgent = ElectronUserAgents.computeUserAgentFromWebContents(browserWindow.webContents);
 
-        ElectronUserAgents.configureForWebContents(browserWindow.webContents);
+        log.info("Loading URL: " + url);
+        browserWindow.loadURL(url, {userAgent})
+            .catch(err => log.error("Could not load URL ", err, url));
 
         return new Promise<BrowserWindow>(resolve => {
 
@@ -190,8 +191,6 @@ export class MainAppBrowserWindowFactory {
                 browserWindow.webContents.zoomFactor = 1.0;
 
                 browserWindow.show();
-
-                ElectronUserAgents.configureForWebContents(browserWindow.webContents);
 
                 resolve(browserWindow);
 

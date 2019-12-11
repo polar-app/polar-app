@@ -287,6 +287,7 @@ export class RepositoryApp {
             return (<GroupHighlightScreen persistenceLayerProvider={persistenceLayerProvider}
                                           persistenceLayerController={persistenceLayerController}/>);
         };
+
         const onNavChange = () => {
 
             try {
