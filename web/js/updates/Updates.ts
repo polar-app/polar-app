@@ -1,4 +1,4 @@
-import {app, ipcMain} from 'electron';
+import {ipcMain} from 'electron';
 import {autoUpdater, UpdateCheckResult, UpdateInfo} from 'electron-updater';
 import {ProgressInfo} from "builder-util-runtime";
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -10,8 +10,6 @@ import {AppUpdate} from './AppUpdate';
 import {ToasterMessages} from '../ui/toaster/ToasterMessages';
 import {ToasterMessageType} from '../ui/toaster/Toaster';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
-import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
-import {DistConfig} from '../dist_config/DistConfig';
 import {AppUpdates} from './AppUpdates';
 
 const ENABLE_AUTO_UPDATE = true;
