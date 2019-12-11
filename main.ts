@@ -6,6 +6,7 @@ import {Logging} from './web/js/logger/Logging';
 import {Datastores} from './web/js/datastore/Datastores';
 import process from 'process';
 import {LazyWriteDatastore} from './web/js/datastore/LazyWriteDatastore';
+import {Version} from "polar-shared/src/util/Version";
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
@@ -26,8 +27,9 @@ app.commandLine.appendSwitch('disable-site-isolation-trials');
 async function launch() {
 
     console.log("Running with CWD: " + process.cwd());
-    console.log("Running with node version: " + process.version);
-    console.log("Running with electron: " + process.versions.electron);
+    console.log("Running with Node version: " + process.version);
+    console.log("Running with Electron version: " + process.versions.electron);
+    console.log("Running with Polar version: " + Version.get());
 
     const log = Logger.create();
 
