@@ -207,7 +207,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
-        webContents.setAudioMuted(! browserProfile.webaudio);
+        webContents.audioMuted = ! browserProfile.webaudio;
 
         let deviceEmulation = browserProfile.deviceEmulation;
 
@@ -216,7 +216,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         log.info("Emulating device...");
         webContents.enableDeviceEmulation(deviceEmulation);
 
-        webContents.setUserAgent(browserProfile.userAgent);
+        webContents.userAgent = browserProfile.userAgent;
 
         const windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,

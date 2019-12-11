@@ -9,9 +9,9 @@ export class ElectronUserAgents {
     public static configureForWebContents(webContents: Electron.WebContents) {
 
         if (ENABLE_CONFIGURED_USER_AGENT) {
-            const ua = webContents.getUserAgent();
+            const ua = webContents.userAgent;
             const newUA = ElectronUserAgents.computeUserAgent(ua);
-            webContents.setUserAgent(newUA);
+            webContents.userAgent = newUA;
         }
 
     }
