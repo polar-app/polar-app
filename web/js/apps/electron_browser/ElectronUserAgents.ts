@@ -2,7 +2,7 @@
  * TODO: This won't work on Electron 5.x due to a bug where a 'virtual' page visit causes
  * an ERR_ABORTED.  I didn't want to enable this to avoid breaking something.
  */
-const ENABLE_CONFIGURED_USER_AGENT = false;
+const ENABLE_CONFIGURED_USER_AGENT = true;
 
 export class ElectronUserAgents {
 
