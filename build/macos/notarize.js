@@ -9,6 +9,17 @@ exports.default = async function notarizing(context) {
 
     console.log("Waiting for MacOS build notarization...");
 
+    function requireENV(key) {
+
+        if (! process.env[key]) {
+            throw new Error("No env " + key);
+        }
+
+    }
+
+    requireENV('APPLEID');
+    requireENV('APPLEIDPASS');
+
     const appName = context.packager.appInfo.productFilename;
 
     // this is going to either be
