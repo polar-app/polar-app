@@ -68,7 +68,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     public readonly directories: Directories;
 
     private readonly diskPersistentPrefsBacking: DiskPersistentPrefsBacking;
-    private diskPersistentPrefsProviderImpl: DiskPersistentPrefsProviderImpl | undefined;
+    private prefs: DiskPersistentPrefsProviderImpl | undefined;
 
     constructor() {
 
@@ -157,9 +157,9 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     private async initPrefs() {
 
-        if (! this.diskPersistentPrefsProviderImpl) {
+        if (! this.prefs) {
             await this.diskPersistentPrefsBacking.init();
-            this.diskPersistentPrefsProviderImpl = new DiskPersistentPrefsProviderImpl(this.diskPersistentPrefsBacking);
+            this.prefs = new DiskPersistentPrefsProviderImpl(this.diskPersistentPrefsBacking);
         }
 
     }
@@ -540,7 +540,13 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
     }
 
     public getPrefs(): PrefsProvider {
-        return this.diskPersistentPrefsProviderImpl!;
+
+        if (this.prefs) {
+            return this.prefs;
+        } else {
+            throw new Error("No prefs. Not initialized yet.");
+        }
+
     }
 
     private createDatastoreFile(backend: Backend,

@@ -4,15 +4,23 @@ import {SpectronWebappMain} from "../../js/test/SpectronWebappMain";
 import {Rewrite} from "polar-shared-webserver/src/webserver/Rewrites";
 
 const webRoot = FilePaths.join(__dirname, "..", "..", "..");
-const appRoot = __dirname;
+const appRoot = webRoot;
 
 const rewrites: ReadonlyArray<Rewrite> = [
     {
         source: "/",
-        destination: "web/spectron0/repository-app/app.html"
-    }
+        destination: "content.html"
+    },
 ];
 
-MainDatastore.create();
+const datastore = MainDatastore.create();
 
-SpectronWebappMain.run({webRoot, appRoot, path: "/", rewrites});
+const path = "/web/spectron0/repository-app/content.html";
+
+SpectronWebappMain.run({
+    initializer: async () => await datastore.init(),
+    webRoot,
+    appRoot,
+    path,
+    rewrites
+});

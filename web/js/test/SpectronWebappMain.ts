@@ -27,6 +27,12 @@ export class SpectronWebappMain {
 
             console.log("Running with web root: " + webRoot);
 
+            if (opts.initializer) {
+                console.log("Running initializer...");
+                await opts.initializer();
+                console.log("Running initializer...done");
+            }
+
             const webserverConfig = WebserverConfigs.create({dir: webRoot, port: 8005, rewrites});
 
             const fileRegistry = new FileRegistry(webserverConfig);
@@ -59,5 +65,7 @@ export interface ISpectronWebappOpts {
     readonly path: string;
 
     readonly rewrites?: ReadonlyArray<Rewrite>;
+
+    readonly initializer?: () => Promise<any>;
 
 }
