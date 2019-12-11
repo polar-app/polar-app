@@ -1,4 +1,8 @@
 
+- usability: I give up. You guys win. Spaces " " and hyphens "-" are now supported in tags and folders :)
+
+# 1.70.4
+
 ## Features
 
 - Fix for Google authentication issues due to exposing Electron in User Agent and confused
