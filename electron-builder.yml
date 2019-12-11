@@ -114,3 +114,4 @@ publish:
 
 asar: true
 afterPack: "./electron-builder-afterpack.js"
+afterSign: "./build/macos/notarize.js"

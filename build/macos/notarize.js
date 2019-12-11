@@ -7,6 +7,8 @@ exports.default = async function notarizing(context) {
         return;
     }
 
+    console.log("Waiting for MacOS build notarization...");
+
     const appName = context.packager.appInfo.productFilename;
 
     // this is going to either be
