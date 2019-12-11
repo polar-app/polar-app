@@ -25,9 +25,9 @@ app.commandLine.appendSwitch('disable-site-isolation-trials');
 
 async function launch() {
 
-    console.log("Running with app path: " + app.getAppPath());
     console.log("Running with CWD: " + process.cwd());
     console.log("Running with node version: " + process.version);
+    console.log("Running with electron: " + process.versions.electron);
 
     const log = Logger.create();
 
