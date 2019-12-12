@@ -386,3 +386,7 @@ button.dropdown-item:hover {
 .children-margin > *:first-child {
     margin-left: 0;
 }
+
+/*.btn:focus {*/
+/*    outline: none;*/
+/*}*/

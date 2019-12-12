@@ -215,24 +215,24 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 disabled: AppRuntime.isElectron()
             }),
 
-            JoyrideTours.createImageStep({
-                target: '#nav-tab-document-repository',
-                title: <Title>Document Repository</Title>,
-                content: <div>
-                    <p>
-                        Your documents are kept here in
-                        the <Term>document repository</Term> and
-                        can be opened by <Term>double clicking</Term>.
-                    </p>
-
-                    <p>
-                        We went ahead and added some <b>sample documents</b> so you can
-                        see what Polar looks like in action.  You can just
-                        delete them once the tour is finished.
-                    </p>
-                </div>,
-                image: "/web/assets/images/files.svg"
-            }),
+            // JoyrideTours.createImageStep({
+            //     target: '#nav-tab-document-repository',
+            //     title: <Title>Document Repository</Title>,
+            //     content: <div>
+            //         <p>
+            //             Your documents are kept here in
+            //             the <Term>document repository</Term> and
+            //             can be opened by <Term>double clicking</Term>.
+            //         </p>
+            //
+            //         <p>
+            //             We went ahead and added some <b>sample documents</b> so you can
+            //             see what Polar looks like in action.  You can just
+            //             delete them once the tour is finished.
+            //         </p>
+            //     </div>,
+            //     image: "/web/assets/images/files.svg"
+            // }),
 
             JoyrideTours.createImageStep({
                 target: '#add-content-dropdown',
@@ -289,23 +289,23 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     <Icon className="fas fa-cloud-upload-alt"/>
 
             }),
-
-            JoyrideTours.createImageStep({
-                target: '#links-dropdown',
-                title: <Title>Links</Title>,
-                content: <div>
-                    <p>
-                        We include direct links to additional tools including
-                        our <Term>Chrome Extension</Term> and <Term>chat</Term> to
-                        enable you to discuss Polar live with the developers and
-                        other users.
-                    </p>
-
-                </div>,
-                image:
-                    <Icon className="fas fa-link"/>
-
-            }),
+            //
+            // JoyrideTours.createImageStep({
+            //     target: '#links-dropdown',
+            //     title: <Title>Links</Title>,
+            //     content: <div>
+            //         <p>
+            //             We include direct links to additional tools including
+            //             our <Term>Chrome Extension</Term> and <Term>chat</Term> to
+            //             enable you to discuss Polar live with the developers and
+            //             other users.
+            //         </p>
+            //
+            //     </div>,
+            //     image:
+            //         <Icon className="fas fa-link"/>
+            //
+            // }),
 
             {
                 target: '.doc-table-col-progress',
@@ -320,22 +320,22 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 // placement: "bottom",
             },
 
-            JoyrideTours.createImageStep({
-                target: '.doc-table-col-tags',
-                title: <Title>Tags</Title>,
-                content: <div>
-                    <p>
-                        Each document can be tagged to enable
-                        filtering and allow you to easily manage your documents.
-                    </p>
-
-                    <p>Tags for documents are also assigned to your annotations.</p>
-
-                </div>,
-                image:
-                    <Icon className="fa fa-tag"/>
-
-            }),
+            // JoyrideTours.createImageStep({
+            //     target: '.doc-table-col-tags',
+            //     title: <Title>Tags</Title>,
+            //     content: <div>
+            //         <p>
+            //             Each document can be tagged to enable
+            //             filtering and allow you to easily manage your documents.
+            //         </p>
+            //
+            //         <p>Tags for documents are also assigned to your annotations.</p>
+            //
+            //     </div>,
+            //     image:
+            //         <Icon className="fa fa-tag"/>
+            //
+            // }),
 
 
             {
@@ -373,56 +373,56 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 },
                 // placement: "bottom",
             },
+            //
+            // {
+            //     target: '#filter-bar',
+            //     disableBeacon: true,
+            //     content: <div>
+            //
+            //         <p>
+            //             The <Term>filter bar</Term> allows you to configure
+            //             which documents are visible.
+            //         </p>
+            //
+            //         <p>
+            //             You can hide/show documents that are flagged, archived and
+            //             also filter by tags or search by title.
+            //         </p>
+            //
+            //         <p>
+            //             You can also sort by the columns to build queues to determine what you should read next.
+            //             Flags can be used to manage your primary/active reading.
+            //         </p>
+            //
+            //     </div>,
+            //     styles: {
+            //         tooltip: {
+            //             width: '650px'
+            //         }
+            //     },
+            // },
 
-            {
-                target: '#filter-bar',
-                disableBeacon: true,
-                content: <div>
-
-                    <p>
-                        The <Term>filter bar</Term> allows you to configure
-                        which documents are visible.
-                    </p>
-
-                    <p>
-                        You can hide/show documents that are flagged, archived and
-                        also filter by tags or search by title.
-                    </p>
-
-                    <p>
-                        You can also sort by the columns to build queues to determine what you should read next.
-                        Flags can be used to manage your primary/active reading.
-                    </p>
-
-                </div>,
-                styles: {
-                    tooltip: {
-                        width: '650px'
-                    }
-                },
-            },
-
-            {
-                title: <Title>Annotations</Title>,
-                target: '#nav-tab-annotations',
-                content: <div>
-                    The <Term>annotations view</Term> allows you to view all your annotations including highlights,
-                    comments, and flashcards.
-                </div>,
-            },
-            JoyrideTours.createImageStep({
-                target: '#nav-tab-statistics',
-                title: <Title>Statistics View</Title>,
-                content: <div>
-                    <p>
-                        The <Term>statistics view</Term> allows you
-                        to view important statistics regarding your reading,
-                        documents, and annotations including the rate of new
-                        documents and statistics on your tags.
-                    </p>
-                </div>,
-                image: "/web/assets/images/statistics.svg",
-            }),
+            // {
+            //     title: <Title>Annotations</Title>,
+            //     target: '#nav-tab-annotations',
+            //     content: <div>
+            //         The <Term>annotations view</Term> allows you to view all your annotations including highlights,
+            //         comments, and flashcards.
+            //     </div>,
+            // },
+            // JoyrideTours.createImageStep({
+            //     target: '#nav-tab-statistics',
+            //     title: <Title>Statistics View</Title>,
+            //     content: <div>
+            //         <p>
+            //             The <Term>statistics view</Term> allows you
+            //             to view important statistics regarding your reading,
+            //             documents, and annotations including the rate of new
+            //             documents and statistics on your tags.
+            //         </p>
+            //     </div>,
+            //     image: "/web/assets/images/statistics.svg",
+            // }),
 
             JoyrideTours.createImageStep({
                 target: 'header',
