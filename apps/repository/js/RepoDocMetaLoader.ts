@@ -1,6 +1,5 @@
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfos} from './RepoDocInfos';
-import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {MutationType, SnapshotProgress} from '../../../web/js/datastore/Datastore';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
@@ -10,7 +9,7 @@ import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
-import {IndeterminateProgressBars} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
+import {IndeterminateProgressBars} from '../../../web/js/ui/progress_bar/IndeterminateProgressBars';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
